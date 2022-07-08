@@ -67,7 +67,8 @@
         {
           "offsetTernaryExpressions": true
         }
-      ]
+      ],
+      "@typescript-eslint/no-explicit-any": 0
     }
   },
   "lint-staged": {
