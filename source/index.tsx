@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from '@/models'
 import Routes from '@/routes'
 import log from '@jihe/secure-log'
+import 'antd/dist/antd.css';
 
 log.init({ isDEV: import.meta.env.DEV })
 

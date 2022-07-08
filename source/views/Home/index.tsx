@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom'
-import Button from '@/components/Button'
 import { useModel } from '@/models'
-import style from './style.module.css'
 import { useState } from 'react'
 import styled from '@emotion/styled'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
 const CountWrap = styled.div<{ marginTop: number }>(
   {
-    background: '#240',
     [Button.toString()]: {
       color: '#f08',
       cursor: 'pointer',
@@ -31,14 +29,11 @@ const Home = () => {
   }
 
   return (
-    <div className={style.wrap}>
+    <div >
       首页
       <div>
         名称：{user?.name}；年龄：{user?.age}
       </div>
-      <Link to="/about">
-        <Button>去关于页面</Button>
-      </Link>
       <Button onClick={onTap}>获取用户信息</Button>
       <CountWrap marginTop={count}>
         计数：{count}

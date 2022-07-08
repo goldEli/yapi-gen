@@ -1,10 +1,10 @@
 import { useRoutes } from 'react-router-dom'
-import About from '@/views/About'
 import Home from '@/views/Home'
+import Demo from '@/views/Demo'
 
 const routes = [
   { path: '/', element: <Home /> },
-  { path: '/about', element: <About /> },
+  { path: '/Demo', element: <Demo /> }
 ]
 
 export default () => useRoutes(routes)
