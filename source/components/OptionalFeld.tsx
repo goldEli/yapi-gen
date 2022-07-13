@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Table, Checkbox, Button, Dropdown, Menu, Modal, Col, Row } from 'antd'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 const CheckboxGroup = Checkbox.Group
 
 export const plainOptions = [
@@ -24,8 +25,8 @@ type OptionalFeldProps = {
   visible: boolean
 }
 export const OptionalFeld = (props: OptionalFeldProps) => {
-  const [checkList, setCheckList] = useState(props.checkList)
-  const [checkList2, setCheckList2] = useState(props.checkList2)
+  const [checkList, setCheckList] = useState<string[]>(props.checkList)
+  const [checkList2, setCheckList2] = useState<string[]>(props.checkList2)
   const onChange = (list: string[]) => {
     setCheckList(list)
   }

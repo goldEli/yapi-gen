@@ -47,7 +47,6 @@ type ShapeProps = {
 }
 export const ShapeContent = (props: ShapeProps) => {
   const { record, hide } = props
-  console.log(record)
 
   const [text, setText] = useState('')
   return (

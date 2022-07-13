@@ -51,9 +51,9 @@ export const useDynamicColumns = (state: any) => {
       key: 'address',
       render: (text: any, record: any) => (
         <Pop
-          content={({ onHide }) => (
-            <ShapeContent hide={onHide} record={record}></ShapeContent>
-          )}
+          content={({ onHide }: { onHide: () => void }) => {
+            return <ShapeContent hide={onHide} record={record}></ShapeContent>
+          }}
           record={record}
         >
           123
@@ -79,7 +79,7 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => (
         <Pop
-          content={({ onHide }) => (
+          content={({ onHide }: { onHide: () => void }) => (
             <LevelContent hide={onHide} record={record}></LevelContent>
           )}
           record={record}
