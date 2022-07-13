@@ -1,0 +1,117 @@
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable at-rule-no-unknown */
+/* stylelint-disable declaration-no-important */
+/* stylelint-disable selector-no-qualifying-type */
+@import "antd/dist/antd.less";
+
+@primary-color: #2877ff;
+@border-radius-base: 4px;
+@btn-default-color: #646566;
+@table-header-bg: white;
+@table-header-color: #969799;
+@table-row-hover-bg: #f0f4fa;
+@table-body-sort-bg: none;
+@table-header-sort-bg: white;
+@table-header-sort-active-bg: white;
+@table-selected-row-bg: #f0f4fa;
+@table-header-cell-split-color: rgba(0, 0, 0, 0);
+@border-color-base: #d5d6d9;
+@text-color: #323233;
+
+//table样式 --- start
+.ant-table-thead > tr > th {
+  height: 44px;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: none;
+}
+
+.ant-table-tbody > tr > td,
+.ant-table-thead > tr > th {
+  padding: 0 16px;
+}
+
+.ant-table-row {
+  height: 52px;
+}
+
+.ant-table-column-sorters {
+  justify-content: inherit;
+}
+
+.ant-table-column-title {
+  flex: initial;
+}
+
+.ant-table-column-sorter {
+  margin-left: 12px;
+}
+
+.ant-table-tbody .ant-table-row:nth-child(odd) td {
+  background-color: #f8f9fa;
+}
+[data-not-scroll] .ant-table-row {
+  &:nth-child(odd) td {
+    background-color: #fff;
+  }
+  &:nth-child(even) td {
+    background-color: #f8f9fa;
+  }
+}
+
+//table样式 --- end
+
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-item:active {
+  background: #f0f4fa;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+body,
+html {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+* {
+  user-select: none;
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0 1000px #fff inset !important;
+}
+
+input:-internal-autofill-previewed,
+input.ant-input:-internal-autofill-previewed {
+  -webkit-text-fill-color: #333 !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+.ant-btn-default:hover {
+  background: #f2f2f4;
+  color: #646566;
+  border-color: #d5d6d9;
+}
+
+.ant-btn-default:focus {
+  color: #646566;
+  border-color: #d5d6d9;
+}
+.ant-btn-link:hover,
+.ant-btn-link:focus {
+  background: #f2f2f4;
+}

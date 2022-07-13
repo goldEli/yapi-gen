@@ -1,20 +1,27 @@
-import React from 'react'
 import AddButton from './AddButton'
 import { Input, Space } from 'antd'
 import IconFont from './IconFont'
 
 interface Props {
   text: string
-  onChangeClick?(): void
+  onChangeVisible?(): void
   onChangeSearch?(val: string): void
+  placeholder: string
 }
 
 export default (props: Props) => (
   <Space size={16}>
-    <AddButton text={props.text} onChangeClick={props.onChangeClick} />
+    <AddButton text={props.text} onChangeClick={props.onChangeVisible} />
     <Input
-      onChange={e => props.onChangeSearch?.(e.target.value)}
-      suffix={<IconFont type="linesearch" style={{ color: '#ccc', fontSize: 16 }} />}
+      onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
+      onChange={(e: any) =>
+        e.target.value ? void 0 : props.onChangeSearch?.(e.target.value)
+      }
+      suffix={
+        <IconFont type="search" style={{ color: '#BBBDBF', fontSize: 16 }} />
+      }
+      placeholder={props.placeholder}
+      allowClear
     />
   </Space>
 )
