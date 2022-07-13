@@ -1,7 +1,7 @@
 import { Button, Dropdown, Menu } from 'antd'
-import { ShapeContent } from './components/Shape'
-import { LevelContent } from './components/level'
-import Pop from './components/Popconfirm'
+import { ShapeContent } from '../Shape'
+import { LevelContent } from '../Level'
+import Pop from '../Popconfirm'
 
 export const useDynamicColumns = (state: any) => {
   const menu = (

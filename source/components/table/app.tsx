@@ -1,8 +1,8 @@
 import React, { useMemo, useCallback, useState } from 'react'
 import { Table, Button, Dropdown, Menu } from 'antd'
-import { CustomModal } from './components/Custom-modal.js'
+import { CustomModal } from '../Custom-Modal'
 import { useDynamicColumns } from './DynamicColumns'
-import { OptionalFeld } from './components/OptionalFeld.js'
+import { OptionalFeld } from '../OptionalFeld'
 
 const data = [
   {
