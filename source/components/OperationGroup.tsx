@@ -1,4 +1,3 @@
-import React from 'react'
 import { Divider, Space } from 'antd'
 import IconFont from './IconFont'
 import styled from '@emotion/styled'
@@ -6,20 +5,26 @@ import TableSetting from './TableSetting'
 
 interface Props {
   keys: string[]
+  onChangeFilter?(): void
 }
 
 const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end'
+  justifyContent: 'flex-end',
 })
 
 export default (props: Props) => {
   const getHiddenState = (str: string) => !props.keys.includes(str)
-
   return (
     <Wrap>
-      <div hidden={!props.keys.filter(item => ['columnar', 'Lattice', 'table'].includes(item)).length}>
+      <div
+        hidden={
+          !props.keys.filter(item =>
+            ['columnar', 'Lattice', 'table'].includes(item),
+          ).length
+        }
+      >
         <Space>
           <IconFont type="lineall" />
           <IconFont type="linelist" />
@@ -28,7 +33,7 @@ export default (props: Props) => {
         <Divider type="vertical" />
       </div>
       <div hidden={getHiddenState('filter')}>
-        <IconFont type="linesearch" />
+        <IconFont type="linesearch" onClick={props.onChangeFilter} />
         <Divider type="vertical" />
       </div>
       <div hidden={getHiddenState('sort')}>

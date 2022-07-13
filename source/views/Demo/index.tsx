@@ -15,7 +15,10 @@ export default () => {
   return (
     <div style={{ padding: 24 }}>
       <Button onClick={() => setVisible(true)}>切换公司</Button>
-      <CompanyModal visible={visible} onChangeState={() => setVisible(!visible)} />
+      <CompanyModal
+        visible={visible}
+        onChangeState={() => setVisible(!visible)}
+      />
       <TotalCard title="总计" number={100} />
       <ProjectCard item={item} />
       <IterationCard item={item} />

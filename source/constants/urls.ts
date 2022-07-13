@@ -1,5 +1,5 @@
 const urls = {
-  userLoginOut: '/user/loginOut',
+  getCosSign: 'https://www.ifunsms.com/api/622ad916aabae',
 }
 
 export default urls
