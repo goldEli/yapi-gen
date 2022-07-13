@@ -1,14 +1,38 @@
-import { useRoutes } from 'react-router-dom'
+import { Outlet, useRoutes } from 'react-router-dom'
 import Home from '@/views/Home'
 import Demo from '@/views/Demo'
 import Project from '@/views/Project'
-import Yangyi from '@/views/Yangyi'
+import { Container } from '@/views/Container'
+import React from 'react'
+
+const lazy = (
+  component: () => Promise<{
+    default: React.ComponentType<unknown>
+  }>,
+) => {
+  const LazyComponent = React.lazy(component)
+  return (
+    <React.Suspense fallback="...">
+      <LazyComponent />
+    </React.Suspense>
+  )
+}
 
 const routes = [
-  { path: '/', element: <Home /> },
+  {
+    path: '/home',
+    element: <Container />,
+
+    children: [
+      {
+        path: '',
+        element: lazy(() => import('@/views/Yangyi')),
+      },
+    ],
+  },
+  { path: '', element: <Home /> },
   { path: '/Demo', element: <Demo /> },
   { path: '/Project', element: <Project /> },
-  { path: '/Yangyi', element: <Yangyi /> },
 ]
 
 export default () => useRoutes(routes)
