@@ -1,7 +1,13 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { Button, Popover } from 'antd'
 
-const Popconfirm = (props: any) => {
+type PopConfirmProps = {
+  children: ReactNode
+  content: any
+  record: Record<string, string | number>
+  // onHide
+}
+const Popconfirm = (props: PopConfirmProps) => {
   const [visible, setVisible] = useState(false)
   const PropsContent = props.content
   const handleVisibleChange = (newVisible: boolean) => {

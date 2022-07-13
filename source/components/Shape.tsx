@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 
 const Left = styled.div`
   width: 200px;
@@ -8,22 +8,16 @@ const Left = styled.div`
   box-sizing: border-box;
   padding-top: 50px;
   background-color: #f2f2f2;
-`;
+`
 const Right = styled.div`
   width: 300px;
   height: 500px;
-`;
+`
 const Contain = styled.div`
   width: 500px;
   height: 500px;
   display: flex;
-  /* background-color: pink; */
-  /* position: absolute;
-  left: ${(props) => props.left || 0}px;
-  top: ${(props) => props.right + 20 || 0}px;
-  pointer-events: none;
-  transform: translate(-50%); */
-`;
+`
 const StyledShape = styled.div`
   text-align: center;
   box-sizing: border-box;
@@ -34,26 +28,32 @@ const StyledShape = styled.div`
   border: 1px solid black;
   border-radius: 20px;
   margin-bottom: 20px;
-`;
+`
 const level = [
-  { id: 1, name: "高" },
-  { id: 2, name: "中" },
-  { id: 3, name: "低" },
-  { id: 4, name: "极低" },
-];
+  { id: 1, name: '高' },
+  { id: 2, name: '中' },
+  { id: 3, name: '低' },
+  { id: 4, name: '极低' },
+]
 const shape = [
-  { id: 1, name: "规划中" },
-  { id: 2, name: "实现中" },
-  { id: 3, name: "已实现" },
-  { id: 4, name: "已关闭" },
-];
-export const ShapeContent = (props) => {
-  const { record, hide } = props;
-  const [text, setText] = useState("");
+  { id: 1, name: '规划中' },
+  { id: 2, name: '实现中' },
+  { id: 3, name: '已实现' },
+  { id: 4, name: '已关闭' },
+]
+type ShapeProps = {
+  record: Record<string, number | string>
+  hide: () => void
+}
+export const ShapeContent = (props: ShapeProps) => {
+  const { record, hide } = props
+  console.log(record)
+
+  const [text, setText] = useState('')
   return (
     <Contain>
       <Left>
-        {shape.map((item) => (
+        {shape.map(item => (
           <div key={item.id}>
             <StyledShape
             // style={{
@@ -69,11 +69,11 @@ export const ShapeContent = (props) => {
       </Left>
       <Right>
         <div>
-          <span>处理人</span>{" "}
+          <span>处理人</span>{' '}
           <input
             value={text}
-            onChange={(e) => {
-              setText(e.target.value);
+            onChange={e => {
+              setText(e.target.value)
             }}
           />
         </div>
@@ -82,13 +82,13 @@ export const ShapeContent = (props) => {
         </div>
         <button
           onClick={() => {
-            console.log(text);
-            hide();
+            console.log(text)
+            hide()
           }}
         >
           流转
         </button>
       </Right>
     </Contain>
-  );
-};
+  )
+}

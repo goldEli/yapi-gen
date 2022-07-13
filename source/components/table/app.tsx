@@ -30,13 +30,13 @@ const tableList = [
   { id: 5, name: '其他' },
 ]
 export default function App() {
-  const [rowActiveIndex, setRowActiveIndex] = useState(null)
+  const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isModalVisible2, setIsModalVisible2] = useState(false)
   const [titleList, setTitleList] = useState(['name', 'age', 'address'])
   const [titleList2, setTitleList2] = useState(['feiji', 'dapao', 'tanke'])
   const [data2, setData] = useState('')
-  const [tableState, setTableState] = useState(2)
+  const [tableState, setTableState] = useState<boolean>(false)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -66,7 +66,7 @@ export default function App() {
     return newList
   }, [titleList, columns])
 
-  const onTableRow = useCallback((row, index) => {
+  const onTableRow = useCallback((row: unknown, index: number) => {
     return {
       onMouseEnter: () => {
         setRowActiveIndex(index)
@@ -83,7 +83,7 @@ export default function App() {
   const close2 = () => {
     setIsModalVisible(false)
   }
-  const getCheckList = (list, list2) => {
+  const getCheckList = (list: string[], list2: string[]) => {
     console.log(list)
 
     setTitleList(list)
