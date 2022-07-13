@@ -1,8 +1,9 @@
 import React, { useMemo, useCallback, useState } from 'react'
 import { Table, Button, Dropdown, Menu } from 'antd'
-import { CustomModal } from './components/Custom-modal.js'
+import { CustomModal } from '../Custom-Modal'
 import { useDynamicColumns } from './DynamicColumns'
-import { OptionalFeld } from './components/OptionalFeld.js'
+import { OptionalFeld } from '../OptionalFeld'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const data = [
   {
@@ -30,13 +31,13 @@ const tableList = [
   { id: 5, name: '其他' },
 ]
 export default function App() {
-  const [rowActiveIndex, setRowActiveIndex] = useState(null)
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isModalVisible2, setIsModalVisible2] = useState(false)
+  const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [isModalVisible2, setIsModalVisible2] = useState<boolean>(false)
   const [titleList, setTitleList] = useState(['name', 'age', 'address'])
   const [titleList2, setTitleList2] = useState(['feiji', 'dapao', 'tanke'])
   const [data2, setData] = useState('')
-  const [tableState, setTableState] = useState(2)
+  const [tableState, setTableState] = useState<boolean>(false)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -65,8 +66,15 @@ export default function App() {
     }
     return newList
   }, [titleList, columns])
-
-  const onTableRow = useCallback((row, index) => {
+  type TableRow = {
+    key: string
+    name: string
+    age: number
+    address: string
+    feiji: string
+    level: number
+  }
+  const onTableRow = useCallback((row, index: number) => {
     return {
       onMouseEnter: () => {
         setRowActiveIndex(index)
@@ -83,9 +91,7 @@ export default function App() {
   const close2 = () => {
     setIsModalVisible(false)
   }
-  const getCheckList = (list, list2) => {
-    console.log(list)
-
+  const getCheckList = (list:string[], list2:string[]) => {
     setTitleList(list)
     setTitleList2(list2)
   }

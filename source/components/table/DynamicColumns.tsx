@@ -1,7 +1,7 @@
 import { Button, Dropdown, Menu } from 'antd'
-import { ShapeContent } from './components/Shape'
-import { LevelContent } from './components/level'
-import Pop from './components/Popconfirm'
+import { ShapeContent } from '../Shape'
+import { LevelContent } from '../Level'
+import Pop from '../Popconfirm'
 
 export const useDynamicColumns = (state: any) => {
   const menu = (
@@ -38,7 +38,10 @@ export const useDynamicColumns = (state: any) => {
       title: '2',
       dataIndex: 'age',
       key: 'age',
-      render: (text, record) => {
+      render: (
+        text: string | number,
+        record: Record<string, string | number>,
+      ) => {
         return <div onClick={() => state.showModal2(record)}>{text}</div>
       },
     },
@@ -48,9 +51,9 @@ export const useDynamicColumns = (state: any) => {
       key: 'address',
       render: (text: any, record: any) => (
         <Pop
-          content={({ onHide }) => (
-            <ShapeContent hide={onHide} record={record}></ShapeContent>
-          )}
+          content={({ onHide }: { onHide: () => void }) => {
+            return <ShapeContent hide={onHide} record={record}></ShapeContent>
+          }}
           record={record}
         >
           123
@@ -71,14 +74,17 @@ export const useDynamicColumns = (state: any) => {
       title: '飞机',
       dataIndex: 'feiji',
       key: 'feiji',
-      render: (text, record) => (
+      render: (
+        text: string | number,
+        record: Record<string, string | number>,
+      ) => (
         <Pop
-          content={({ onHide }) => (
+          content={({ onHide }: { onHide: () => void }) => (
             <LevelContent hide={onHide} record={record}></LevelContent>
           )}
           record={record}
         >
-          <Button type="">321</Button>
+          <Button>321</Button>
         </Pop>
       ),
     },
