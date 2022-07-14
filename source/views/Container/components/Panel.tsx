@@ -5,6 +5,7 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
 import { Tooltip, Popover } from 'antd'
+import { Personal } from './Personal'
 const buttonCss = css`
   width: 24px;
   /* display: block; */
@@ -107,6 +108,8 @@ const LanguageLine = styled.div`
 `
 export const Panel = (props: { visible: boolean }) => {
   const navigate = useNavigate()
+  const [personalModalVisible, setPersonalModalVisible] =
+    useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setlanguageModeVisible] = useState<boolean>(false)
   const [languageMode, setLanguageMode] = useState(1)
@@ -155,7 +158,7 @@ export const Panel = (props: { visible: boolean }) => {
               onClick={() => setCompanyModalVisible(true)}
               className={buttonCss}
             >
-              <IconFont type="swap-right" style={{ fontSize: 20 }} />
+              <IconFont type="swap" style={{ fontSize: 20 }} />
             </div>
           </Tooltip>
         </PanelHeaderSecond>
@@ -183,7 +186,7 @@ export const Panel = (props: { visible: boolean }) => {
           </Line>
         </Popover>
 
-        <Line>
+        <Line onClick={() => setPersonalModalVisible(true)}>
           <div>
             <IconFont type="container" style={{ fontSize: 15 }} />
             <span className={lineText}>个人资料</span>
@@ -199,6 +202,10 @@ export const Panel = (props: { visible: boolean }) => {
           </div>
         </Line>
       </PanelFooter>
+      <Personal
+        visible={personalModalVisible}
+        close={() => setPersonalModalVisible(!personalModalVisible)}
+      ></Personal>
       <CompanyModal
         visible={companyModalVisible}
         onChangeState={() => setCompanyModalVisible(!companyModalVisible)}

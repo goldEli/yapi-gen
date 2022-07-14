@@ -5,6 +5,7 @@ import { Outlet, useRoutes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
+import sideLogo from '@/assets/side_logo.svg'
 
 const SideWrap = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const SideWrap = styled.div`
 const imgCSS = css`
   width: 80px;
   height: 106px;
+  margin-bottom:50px ;
 `
 const SideHeader = styled.div`
   display: flex;
@@ -114,7 +116,7 @@ export const Side = () => {
   return (
     <SideWrap>
       <SideHeader>
-        <img className={imgCSS} src="" alt="1" />
+        <img className={imgCSS} src={sideLogo} alt="1" />
         {AllEach}
       </SideHeader>
 
