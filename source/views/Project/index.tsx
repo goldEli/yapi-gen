@@ -59,6 +59,7 @@ export default () => {
   return (
     <div>
       <Modal
+        width={420}
         title="创建项目"
         visible={visible}
         footer={false}
