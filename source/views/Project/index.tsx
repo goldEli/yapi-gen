@@ -13,6 +13,7 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   paddingLeft: 24,
+  background: 'white',
 })
 
 const Content = styled.div({
@@ -91,24 +92,26 @@ export default () => {
           <Button type="primary">确认</Button>
         </Footer>
       </Modal>
-      <SearchWrap>
-        <SearchComponent
-          placeholder="搜索项目或任务"
-          text="创建项目"
-          onChangeSearch={onChangeSearch}
-          onChangeVisible={() => setVisible(true)}
+      <div style={{ position: 'sticky', top: 0 }}>
+        <SearchWrap>
+          <SearchComponent
+            placeholder="搜索项目或任务"
+            text="创建项目"
+            onChangeSearch={onChangeSearch}
+            onChangeVisible={() => setVisible(true)}
+          />
+        </SearchWrap>
+        <Filter
+          total={31}
+          sort={sort}
+          isGrid={isGrid}
+          activeType={activeType}
+          onChangeSort={onChangeSort}
+          onChangeFormat={() => setIsGrid(!isGrid)}
+          onChangeHidden={onChangeHidden}
+          onChangeType={onChangeType}
         />
-      </SearchWrap>
-      <Filter
-        total={31}
-        sort={sort}
-        isGrid={isGrid}
-        activeType={activeType}
-        onChangeSort={onChangeSort}
-        onChangeFormat={() => setIsGrid(!isGrid)}
-        onChangeHidden={onChangeHidden}
-        onChangeType={onChangeType}
-      />
+      </div>
       <Content>
         {isGrid ? (
           <MainGrid onChangeOperation={onChangeOperation} />

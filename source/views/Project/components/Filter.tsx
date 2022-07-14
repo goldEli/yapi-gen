@@ -122,12 +122,12 @@ export default (props: Props) => {
           <IconfontWrap
             onClick={props.onChangeFormat}
             active={props.isGrid}
-            type="appstore"
+            type="app-store"
           />
           <IconfontWrap
             onClick={props.onChangeFormat}
             active={!props.isGrid}
-            type="menu"
+            type="unorderedlist"
           />
         </Space>
       </WrapRight>

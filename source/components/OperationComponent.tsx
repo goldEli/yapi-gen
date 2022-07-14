@@ -15,10 +15,10 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const keys = ['columnar', 'table', 'Lattice', 'filter', 'sort', 'set']
+  const keys = ['columnar', 'table', 'Lattice', 'filter', 'set']
   const [filterState, setFilterState] = useState(true)
   return (
-    <div>
+    <div style={{ background: 'white', padding: '0 24px' }}>
       <Wrap>
         <SearchComponent text={props.text} placeholder="222" />
         <OperationGroup

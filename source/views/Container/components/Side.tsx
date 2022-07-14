@@ -122,7 +122,7 @@ export const Side = () => {
 
       <SideFooter>
         <SideEach>
-          <IconFont type="shezhimoren" style={{ fontSize: 20 }} />
+          <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>设置</span>
         </SideEach>
         <SetHead onClick={controlPanelVisible}>何飞</SetHead>

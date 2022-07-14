@@ -16,6 +16,7 @@ const ClearForm = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
+  marginLeft: 16,
 })
 
 const FormWrap = styled(Form)({
@@ -108,11 +109,6 @@ export default (props: Props) => {
             <SelectWrap showSearch />
           </Form.Item>
           <Form.Item>
-            <Popover placement="bottom" content={content} trigger={['click']}>
-              <Button icon={<IconFont type="lineadd" />} />
-            </Popover>
-          </Form.Item>
-          <Form.Item>
             <div></div>
             <DatePicker.RangePicker
               className={rangPicker}
@@ -135,6 +131,11 @@ export default (props: Props) => {
                 今天截止: [moment.max(), moment(new Date()).endOf('days')],
               }}
             />
+          </Form.Item>
+          <Form.Item>
+            <Popover placement="bottom" content={content} trigger={['click']}>
+              <Button icon={<IconFont type="plus" />} />
+            </Popover>
           </Form.Item>
         </Space>
       </FormWrap>

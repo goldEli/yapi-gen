@@ -3,19 +3,11 @@ import styled from '@emotion/styled'
 import { Table, Menu, Dropdown, Pagination } from 'antd'
 import { useCallback, useState } from 'react'
 import projectImg from '@/assets/projectImg.png'
+import { TableWrap } from '@/components/StyleCommon'
 
 interface Props {
   onChangeOperation(type: string, id: number): void
 }
-
-const TableWrap = styled(Table)({
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
-  '.ant-table table': {
-    paddingBottom: 10,
-  },
-})
 
 const StatusWrap = styled.div({
   width: 8,
