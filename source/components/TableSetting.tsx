@@ -50,7 +50,7 @@ const CheckedItem = styled.div({
   '&: hover': {
     background: '#F0F4FA',
     '.iconBox': {
-      display: 'block',
+      display: 'block!important',
     },
   },
 })

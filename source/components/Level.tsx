@@ -11,10 +11,7 @@ const Contain = styled.div`
   width: 120px;
   height: 136px;
   display: flex;
-<<<<<<< HEAD
-=======
   flex-direction: column;
->>>>>>> 10474d94e0dfb13653d356a3a61abbbf820f98cd
 `
 const StyledShape = styled.div`
   width: 120px;
