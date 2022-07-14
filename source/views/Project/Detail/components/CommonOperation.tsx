@@ -84,14 +84,10 @@ const MenuItems = styled.div({
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
-  color: '#969799',
-  '.anticon': {
-    fontSize: 16,
-  },
+  color: '#646566',
   div: {
     fontSize: 14,
     fontWeight: 400,
-    marginLeft: 8,
   },
 })
 
@@ -146,7 +142,6 @@ export default (props: Props) => {
           key: 1,
           label: (
             <MenuItems onClick={() => setInfoVisible(true)}>
-              <IconFont type="team" />
               <div>项目信息</div>
             </MenuItems>
           ),
@@ -155,7 +150,6 @@ export default (props: Props) => {
           key: 2,
           label: (
             <MenuItems onClick={() => setVisible(true)}>
-              <IconFont type="team" />
               <div>编辑项目</div>
             </MenuItems>
           ),
@@ -164,7 +158,6 @@ export default (props: Props) => {
           key: 3,
           label: (
             <MenuItems onClick={() => navigate('/Detail?type=set')}>
-              <IconFont type="team" />
               <div>项目设置</div>
             </MenuItems>
           ),
