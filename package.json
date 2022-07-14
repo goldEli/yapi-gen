@@ -18,6 +18,7 @@
     "@jihe/http-client": "^0.0.2",
     "@jihe/secure-log": "^0.0.2",
     "@jihe/use-model": "^0.0.1",
+    "@star-yun/ui": "^0.0.3",
     "@staryuntech/ant-pro": "0.0.22",
     "antd": "^4.19.2",
     "cos-js-sdk-v5": "^1.3.9",

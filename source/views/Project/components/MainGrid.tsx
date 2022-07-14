@@ -1,6 +1,7 @@
 import ProjectCard from '@/components/ProjectCard'
 import styled from '@emotion/styled'
 import { Space } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   onChangeOperation(type: string, id: number): void
@@ -198,14 +199,16 @@ const List = [
 ]
 
 export default (props: Props) => {
+  const navigate = useNavigate()
   return (
     <SpaceWrap size={32}>
       {List.map((item, index) => (
-        <ProjectCard
-          key={`${item.id}_${index}`}
-          item={item}
-          onChangeOperation={props.onChangeOperation}
-        />
+        <div key={`${item.id}_${index}`} onClick={() => navigate('/Demand')}>
+          <ProjectCard
+            item={item}
+            onChangeOperation={props.onChangeOperation}
+          />
+        </div>
       ))}
     </SpaceWrap>
   )

@@ -14,7 +14,7 @@ const ModalContent = styled.div({
 
 const ModalFooter = styled(Space)({
   display: 'flex',
-  justifyContent: 'flex-end'
+  justifyContent: 'flex-end',
 })
 
 const ContentLeft = styled.div({
@@ -27,18 +27,18 @@ const ContentLeft = styled.div({
 const ContentRight = styled.div({
   height: 400,
   width: '30%',
-  paddingLeft: 8
+  paddingLeft: 8,
 })
 
 const TitleWrap = styled.div({
   fontSize: 16,
   color: '#23333',
-  marginBottom: 12
+  marginBottom: 12,
 })
 
 const CheckboxGroup = styled.div({
   display: 'flex',
-  flexWrap: 'wrap'
+  flexWrap: 'wrap',
 })
 
 const CheckedItem = styled.div({
@@ -49,8 +49,8 @@ const CheckedItem = styled.div({
   borderRadius: 4,
   padding: '0 8px',
   '&: hover': {
-    background: '#f2f2f4'
-  }
+    background: '#f2f2f4',
+  },
 })
 
 const plainOptions = [
@@ -66,7 +66,7 @@ const plainOptions2 = [
   { label: '坦克', value: 'tanke' },
   { label: '直升机', value: 'zhishengji' },
   { label: '战舰', value: 'zhanjian' },
-  { label: '时间', value: 'time' }
+  { label: '时间', value: 'time' },
 ]
 
 interface ItemType {
@@ -75,7 +75,11 @@ interface ItemType {
 }
 
 export default () => {
-  const [basicList, setBasicList] = useState<CheckboxValueType[]>(['ID', 'tag', 'status'])
+  const [basicList, setBasicList] = useState<CheckboxValueType[]>([
+    'ID',
+    'tag',
+    'status',
+  ])
   const [otherList, setOtherList] = useState<CheckboxValueType[]>(['time'])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const menu = (
@@ -114,7 +118,11 @@ export default () => {
     return all.map((item: ItemType) => (
       <CheckedItem key={item.value}>
         <span>{item.label}</span>
-        <IconFont style={{ fontSize: 12 }} type="linecloseplus" onClick={() => delChecked(item.value)} />
+        <IconFont
+          style={{ fontSize: 12 }}
+          type="linecloseplus"
+          onClick={() => delChecked(item.value)}
+        />
       </CheckedItem>
     ))
   }, [basicList, otherList])
@@ -129,7 +137,7 @@ export default () => {
   return (
     <div>
       <Dropdown overlay={menu}>
-        <IconFont type="lineset" />
+        <IconFont type="shezhimoren" />
       </Dropdown>
       <Modal
         title="显示字段配置"
@@ -144,11 +152,19 @@ export default () => {
             <ContentLeft>
               <TitleWrap>基本字段</TitleWrap>
               <CheckboxGroup>
-                <Checkbox.Group value={basicList} options={plainOptions} onChange={onBasicChange} />
+                <Checkbox.Group
+                  value={basicList}
+                  options={plainOptions}
+                  onChange={onBasicChange}
+                />
               </CheckboxGroup>
               <TitleWrap style={{ marginTop: 24 }}>人员与时间字段</TitleWrap>
               <CheckboxGroup>
-                <Checkbox.Group value={otherList} options={plainOptions2} onChange={onOtherChange} />
+                <Checkbox.Group
+                  value={otherList}
+                  options={plainOptions2}
+                  onChange={onOtherChange}
+                />
               </CheckboxGroup>
             </ContentLeft>
             <Divider style={{ height: 400 }} type="vertical" />

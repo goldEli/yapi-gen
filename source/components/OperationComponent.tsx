@@ -10,13 +10,17 @@ const Wrap = styled.div({
   justifyContent: 'space-between',
 })
 
-export default () => {
+interface Props {
+  text: string
+}
+
+export default (props: Props) => {
   const keys = ['columnar', 'table', 'Lattice', 'filter', 'sort', 'set']
   const [filterState, setFilterState] = useState(true)
   return (
     <div>
       <Wrap>
-        <SearchComponent text="添加需求" />
+        <SearchComponent text={props.text} placeholder="222" />
         <OperationGroup
           keys={keys}
           onChangeFilter={() => setFilterState(!filterState)}

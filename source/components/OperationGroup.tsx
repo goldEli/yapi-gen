@@ -26,18 +26,18 @@ export default (props: Props) => {
         }
       >
         <Space>
-          <IconFont type="lineall" />
-          <IconFont type="linelist" />
-          <IconFont type="lineswapright" />
+          <IconFont type="layout" />
+          <IconFont type="menu" />
+          <IconFont type="appstore" />
         </Space>
         <Divider type="vertical" />
       </div>
       <div hidden={getHiddenState('filter')}>
-        <IconFont type="linesearch" onClick={props.onChangeFilter} />
+        <IconFont type="filter" onClick={props.onChangeFilter} />
         <Divider type="vertical" />
       </div>
       <div hidden={getHiddenState('sort')}>
-        <IconFont type="linequery" />
+        <IconFont type="sort" />
         <Divider type="vertical" />
       </div>
       <div hidden={getHiddenState('set')}>
