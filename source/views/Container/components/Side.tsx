@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Outlet, useRoutes } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 
 const SideWrap = styled.div`
@@ -43,27 +44,37 @@ const SetHead = styled.div`
   border: 1px solid rgba(40, 119, 255, 1);
   color: white;
 `
+type MenuType = {
+  key: string
+  title: string
+  icon: React.ReactElement
+  path: string
+}
 const getMenu = () => {
-  const menu: any = [
+  const menu: MenuType[] = [
     {
       key: '/organization',
       title: '概况',
-      icon: <IconFont type="more" style={{ fontSize: 20 }} />,
+      icon: <IconFont type="survey" style={{ fontSize: 20 }} />,
+      path: '1',
     },
     {
       key: '/organization',
       title: '项目',
-      icon: <IconFont type="more" style={{ fontSize: 20 }} />,
+      icon: <IconFont type="project" style={{ fontSize: 20 }} />,
+      path: '2',
     },
     {
       key: '/organization',
       title: '我的',
-      icon: <IconFont type="more" style={{ fontSize: 20 }} />,
+      icon: <IconFont type="my" style={{ fontSize: 20 }} />,
+      path: '3',
     },
     {
       key: '/organization',
       title: '员工',
-      icon: <IconFont type="more" style={{ fontSize: 20 }} />,
+      icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
+      path: '/staff',
     },
   ]
   return menu
@@ -83,12 +94,17 @@ const SideEach = styled.div`
 `
 
 export const Side = () => {
+  const navigate = useNavigate()
+
   const AllEach = getMenu().map(item => (
-    <SideEach>
+    <SideEach key={item.path} onClick={() => onNavigation(item.path)}>
       {item.icon}
       {item.title}
     </SideEach>
   ))
+  const onNavigation = (path: string) => {
+    navigate(path)
+  }
   return (
     <SideWrap>
       <SideHeader>
@@ -98,7 +114,7 @@ export const Side = () => {
 
       <SideFooter>
         <SideEach>
-          <IconFont type="more" style={{ fontSize: 20 }} />
+          <IconFont type="shezhimoren" style={{ fontSize: 20 }} />
           <span>设置</span>
         </SideEach>
         <SetHead>何飞</SetHead>

@@ -20,17 +20,17 @@ const lazy = (
 
 const routes = [
   {
-    path: '/home',
+    path: '',
     element: <Container />,
 
     children: [
       {
-        path: '',
-        element: lazy(() => import('@/views/Yangyi')),
+        path: '/staff',
+        element: lazy(() => import('@/views/staff')),
       },
     ],
   },
-  { path: '', element: <Home /> },
+  { path: '/home', element: <Home /> },
   { path: '/Demo', element: <Demo /> },
   { path: '/Project', element: <Project /> },
 ]
