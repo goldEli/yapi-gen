@@ -138,7 +138,7 @@ export default (props: Props) => {
           <Button>删除</Button>
         </Space>
       </DemandInfo> */}
-      <div style={{ height: 52, lineHeight: '52px' }}>
+      <div style={{ minHeight: 52, lineHeight: '52px' }}>
         <OperationComponent text="创建需求" />
       </div>
     </div>

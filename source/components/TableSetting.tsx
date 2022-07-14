@@ -137,7 +137,10 @@ export default () => {
   return (
     <div>
       <Dropdown overlay={menu}>
-        <IconFont type="set-default" />
+        <IconFont
+          type="settings"
+          style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
+        />
       </Dropdown>
       <Modal
         title="显示字段配置"
