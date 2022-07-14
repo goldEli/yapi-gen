@@ -3,31 +3,43 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 const Left = styled.div`
-  width: 200px;
-  height: 500px;
+  width: 120px;
+  height: 316px;
   box-sizing: border-box;
-  padding-top: 50px;
-  background-color: #f2f2f2;
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  border-right: 1px solid #ebedf0;
 `
 const Right = styled.div`
-  width: 300px;
-  height: 500px;
+box-sizing: border-box;
+padding-left: 24px;
+  width: 354px;
+  height: 316px;
 `
 const Contain = styled.div`
-  width: 500px;
-  height: 500px;
+  width: 475px;
+  height: 316px;
   display: flex;
 `
 const StyledShape = styled.div`
+  font-size: 12px;
+  padding: 1px 8px 1px 8px;
+  width: 60px;
+  height: 32px;
+  line-height: 32px;
+  background: rgba(255, 255, 255, 1);
+  background-blend-mode: normal;
+  border: 1px solid rgba(235, 237, 240, 1);
+  border-radius: 6px;
+  margin-bottom: 16px;
   text-align: center;
-  box-sizing: border-box;
-  padding: 10px 20px;
-  margin: auto;
-  width: 100px;
-  height: 40px;
-  border: 1px solid black;
-  border-radius: 20px;
-  margin-bottom: 20px;
+  &:hover {
+    border: 1px solid rgba(40, 119, 255, 1);
+    color: rgba(40, 119, 255, 1);
+  }
 `
 const level = [
   { id: 1, name: '高' },
@@ -55,10 +67,10 @@ export const ShapeContent = (props: ShapeProps) => {
         {shape.map(item => (
           <div key={item.id}>
             <StyledShape
-            // style={{
-            //   color: item.id === record.level ? "blue" : "",
-            //   border: item.id === record.level ? " 1px solid blue" : "",
-            // }}
+            style={{
+              color: item.id === record.level ? "blue" : "",
+              border: item.id === record.level ? " 1px solid blue" : "",
+            }}
             >
               {item.name}
             </StyledShape>
