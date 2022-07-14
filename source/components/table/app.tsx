@@ -34,8 +34,16 @@ export default function App() {
   const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isModalVisible2, setIsModalVisible2] = useState<boolean>(false)
-  const [titleList, setTitleList] = useState(['name', 'age', 'address'])
-  const [titleList2, setTitleList2] = useState(['feiji', 'dapao', 'tanke'])
+  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
+    'name',
+    'age',
+    'address',
+  ])
+  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
+    'feiji',
+    'dapao',
+    'tanke',
+  ])
   const [data2, setData] = useState('')
   const [tableState, setTableState] = useState<boolean>(false)
 
@@ -66,15 +74,7 @@ export default function App() {
     }
     return newList
   }, [titleList, columns])
-  type TableRow = {
-    key: string
-    name: string
-    age: number
-    address: string
-    feiji: string
-    level: number
-  }
-  const onTableRow = useCallback((row, index: number) => {
+  const onTableRow = useCallback((row: any, index?: number) => {
     return {
       onMouseEnter: () => {
         setRowActiveIndex(index)
@@ -91,7 +91,10 @@ export default function App() {
   const close2 = () => {
     setIsModalVisible(false)
   }
-  const getCheckList = (list:string[], list2:string[]) => {
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+  ) => {
     setTitleList(list)
     setTitleList2(list2)
   }

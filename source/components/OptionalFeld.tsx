@@ -18,19 +18,26 @@ export const plainOptions2 = [
   { label: '战舰', value: 'zhanjian' },
 ]
 type OptionalFeldProps = {
-  checkList: string[]
-  checkList2: string[]
-  getCheckList: (checkList: string[], checkList2: string[]) => void
+  checkList: CheckboxValueType[]
+  checkList2: CheckboxValueType[]
+  getCheckList: (
+    checkList: CheckboxValueType[],
+    checkList2: CheckboxValueType[],
+  ) => void
   close: () => void
   visible: boolean
 }
 export const OptionalFeld = (props: OptionalFeldProps) => {
-  const [checkList, setCheckList] = useState<string[]>(props.checkList)
-  const [checkList2, setCheckList2] = useState<string[]>(props.checkList2)
-  const onChange = (list: string[]) => {
+  const [checkList, setCheckList] = useState<CheckboxValueType[]>(
+    props.checkList,
+  )
+  const [checkList2, setCheckList2] = useState<CheckboxValueType[]>(
+    props.checkList2,
+  )
+  const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
   }
-  const onChange2 = (list: string[]) => {
+  const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
   }
   function del(value: string) {
@@ -50,7 +57,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const allList = useMemo(() => {
     let arr = [...checkList, ...checkList2]
     let arr2 = [...plainOptions, ...plainOptions2]
-    let all = arr2.reduce((res, item) => {
+    let all = arr2.reduce((res: { label: string; value: string }[], item) => {
       if (arr.includes(item.value)) {
         res.push(item)
       }
