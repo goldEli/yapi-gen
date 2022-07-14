@@ -113,6 +113,20 @@ const data = [
     level: 2,
   },
 ]
+export const plainOptions = [
+  { label: 'id', value: 'name' },
+  { label: 'id1', value: 'age' },
+  { label: 'id2', value: 'address' },
+  { label: 'id3', value: 'address1' },
+  { label: 'id4', value: 'address2' },
+]
+export const plainOptions2 = [
+  { label: '飞机', value: 'feiji' },
+  { label: '大炮', value: 'dapao' },
+  { label: '坦克', value: 'tanke' },
+  { label: '直升机', value: 'zhishengji' },
+  { label: '战舰', value: 'zhanjian' },
+]
 export default () => {
   const navigate = useNavigate()
   const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
@@ -258,6 +272,8 @@ export default () => {
         />
       </PaginationWrap>
       <OptionalFeld
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
         checkList={titleList}
         checkList2={titleList2}
         visible={isModalVisible}

@@ -1,23 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Table, Checkbox, Button, Dropdown, Menu, Modal, Col, Row } from 'antd'
+import React, { useMemo, useState } from 'react'
+import { Checkbox, Button, Modal, Col, Row } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 const CheckboxGroup = Checkbox.Group
 
-export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
-]
-export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
-]
 type OptionalFeldProps = {
+  plainOptions: { label: string; value: string }[]
+  plainOptions2: { label: string; value: string }[]
   checkList: CheckboxValueType[]
   checkList2: CheckboxValueType[]
   getCheckList: (
@@ -28,6 +16,7 @@ type OptionalFeldProps = {
   visible: boolean
 }
 export const OptionalFeld = (props: OptionalFeldProps) => {
+  const { plainOptions, plainOptions2 } = props
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props.checkList,
   )
