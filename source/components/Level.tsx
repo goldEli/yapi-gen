@@ -17,7 +17,6 @@ const Contain = styled.div`
   width: 200px;
   height: 500px;
   display: flex;
-  
 `
 const StyledShape = styled.div`
   text-align: center;
@@ -38,10 +37,10 @@ const level = [
 ]
 
 type LevelProps = {
-  record: Record<string, number | string>
-  hide: () => void
+  record?: Record<string, number | string>
+  hide?: () => void
 }
-export const LevelContent = (props:LevelProps) => {
+export const LevelContent = (props: LevelProps) => {
   const { record, hide } = props
   const [text, setText] = useState('')
   return (
@@ -51,13 +50,13 @@ export const LevelContent = (props:LevelProps) => {
           <div key={item.id}>
             <StyledShape
               style={{
-                color: item.id === record.level ? 'blue' : '',
-                border: item.id === record.level ? ' 1px solid blue' : '',
+                color: item.id === record?.level ? 'blue' : '',
+                border: item.id === record?.level ? ' 1px solid blue' : '',
               }}
             >
               {item.name}
             </StyledShape>
-            {item.id === record.level}
+            {item.id === record?.level}
           </div>
         ))}
       </Left>

@@ -203,7 +203,10 @@ export default (props: Props) => {
   return (
     <SpaceWrap size={32}>
       {List.map((item, index) => (
-        <div key={`${item.id}_${index}`} onClick={() => navigate('/Demand')}>
+        <div
+          key={`${item.id}_${index}`}
+          onClick={() => navigate('/Detail?type=demand')}
+        >
           <ProjectCard
             item={item}
             onChangeOperation={props.onChangeOperation}

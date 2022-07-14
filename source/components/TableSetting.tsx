@@ -27,13 +27,12 @@ const ContentLeft = styled.div({
 const ContentRight = styled.div({
   height: 400,
   width: '30%',
-  paddingLeft: 8,
 })
 
 const TitleWrap = styled.div({
-  fontSize: 16,
-  color: '#23333',
-  marginBottom: 12,
+  fontSize: 12,
+  color: '#969799',
+  marginBottom: 8,
 })
 
 const CheckboxGroup = styled.div({
@@ -45,11 +44,14 @@ const CheckedItem = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 28,
-  borderRadius: 4,
+  height: 40,
+  borderRadius: 6,
   padding: '0 8px',
   '&: hover': {
-    background: '#f2f2f4',
+    background: '#F0F4FA',
+    '.iconBox': {
+      display: 'block',
+    },
   },
 })
 
@@ -117,10 +119,17 @@ export default () => {
 
     return all.map((item: ItemType) => (
       <CheckedItem key={item.value}>
-        <span>{item.label}</span>
+        <div>
+          <IconFont
+            style={{ fontSize: 16, color: '#969799', marginRight: 8 }}
+            type="move"
+          />
+          <span>{item.label}</span>
+        </div>
         <IconFont
-          style={{ fontSize: 12 }}
-          type="linecloseplus"
+          className="iconBox"
+          style={{ fontSize: 16, color: '#969799', display: 'none' }}
+          type="close"
           onClick={() => delChecked(item.value)}
         />
       </CheckedItem>
@@ -170,15 +179,18 @@ export default () => {
                 />
               </CheckboxGroup>
             </ContentLeft>
-            <Divider style={{ height: 400 }} type="vertical" />
+            <Divider
+              style={{ height: 400, margin: '0 24px' }}
+              type="vertical"
+            />
             <ContentRight>
               <TitleWrap>当前选择字段</TitleWrap>
               {checkedList}
             </ContentRight>
           </ModalContent>
           <ModalFooter size={16}>
-            <Button type="primary">保存</Button>
             <Button onClick={() => setIsModalVisible(false)}>取消</Button>
+            <Button type="primary">保存</Button>
           </ModalFooter>
         </div>
       </Modal>

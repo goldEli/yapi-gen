@@ -3,34 +3,45 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Menu, Dropdown, Avatar } from 'antd'
+import { Dropdown, Avatar } from 'antd'
+import { OmitText } from '@star-yun/ui'
+
+interface Item {
+  name: string
+  person: number
+  demand: number
+}
 
 interface Props {
-  item: object
+  item: Item
   onChangeEdit?(): void
   onChangeDelete?(): void
+  menu: React.ReactElement
 }
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
   position: 'absolute',
-  top: 8,
-  right: 8
+  top: 16,
+  right: 16,
+  cursor: 'pointer',
+  color: '#BBBDBF',
 })
 
 const Wrap = styled.div({
-  width: 240,
-  height: 100,
+  width: 268,
+  height: 90,
   background: 'white',
-  borderRadius: 4,
-  border: '1px solid #ccc',
+  borderRadius: 6,
+  border: '1px solid #EBEDF0',
   overflow: 'hidden',
   position: 'relative',
+  marginTop: 16,
   '&: hover': {
     [MoreWrap.toString()]: {
-      display: 'block'
-    }
-  }
+      display: 'block',
+    },
+  },
 })
 
 const WrapBorder = styled.div({
@@ -38,52 +49,49 @@ const WrapBorder = styled.div({
   left: 0,
   height: '100%',
   width: 4,
-  background: '#ccc'
+  background: '#BBBDBF',
 })
 
 const MainWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  padding: '8px 16px 8px 24px'
+  padding: '12px 16px 12px 20px',
 })
 
 const AvatarWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  marginTop: 16
+  justifyContent: 'space-between',
+  marginTop: 12,
 })
 
-
 export default (props: Props) => {
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <div onClick={props.onChangeEdit}> 编辑 </div>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <div onClick={props.onChangeDelete}> 删除 </div>
-          ),
-        },
-      ]}
-    />
-  )
   return (
     <Wrap>
       <WrapBorder />
       <MainWrap>
-        <div>需求名称</div>
+        <OmitText width={200}>{props.item.name}</OmitText>
         <AvatarWrap>
           <Avatar />
+          <div
+            style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+            <IconFont
+              type="apartment"
+              style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+            />
+            <span style={{ color: '#323233', fontSize: 16 }}>
+              {props.item.demand}
+            </span>
+          </div>
         </AvatarWrap>
       </MainWrap>
-      <Dropdown overlay={menu} placement="bottomCenter" trigger={['hover']}>
-        <MoreWrap type="lineelse" />
+      <Dropdown
+        overlay={props.menu}
+        placement="bottomCenter"
+        trigger={['hover']}
+      >
+        <MoreWrap type="more" />
       </Dropdown>
     </Wrap>
   )
