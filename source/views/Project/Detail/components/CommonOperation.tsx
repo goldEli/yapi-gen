@@ -15,11 +15,12 @@ const OperationTop = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   position: 'relative',
+  padding: '0 24px',
 })
 
 const ProjectInfo = styled.div({
   position: 'absolute',
-  left: 0,
+  left: 24,
   display: 'flex',
   alignItems: 'center',
 })
@@ -57,33 +58,33 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
-const DemandInfo = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  height: 64,
-  background: 'white',
-})
+// const DemandInfo = styled.div({
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'space-between',
+//   height: 64,
+//   background: 'white',
+// })
 
-const NameWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  span: {
-    fontSize: 16,
-    fontWeight: 400,
-    color: 'black',
-    marginRight: 8,
-  },
-  div: {
-    height: 22,
-    borderRadius: 6,
-    border: '1px solid #2877FF',
-    padding: '0 8px',
-    color: '#2877FF',
-    fontSize: 12,
-    fontWeight: 400,
-  },
-})
+// const NameWrap = styled.div({
+//   display: 'flex',
+//   alignItems: 'center',
+//   span: {
+//     fontSize: 16,
+//     fontWeight: 400,
+//     color: 'black',
+//     marginRight: 8,
+//   },
+//   div: {
+//     height: 22,
+//     borderRadius: 6,
+//     border: '1px solid #2877FF',
+//     padding: '0 8px',
+//     color: '#2877FF',
+//     fontSize: 12,
+//     fontWeight: 400,
+//   },
+// })
 
 interface Props {
   active: string

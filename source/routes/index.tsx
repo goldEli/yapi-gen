@@ -31,8 +31,8 @@ const routes = [
         element: lazy(() => import('@/views/Project')),
       },
       {
-        path: '/Demand',
-        element: lazy(() => import('@/views/Project/Demand')),
+        path: '/Detail',
+        element: lazy(() => import('@/views/Project/Detail')),
       },
     ],
   },

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Operation from './components/Operation'
+import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
 
 const Wrap = styled.div({
@@ -15,7 +15,7 @@ export default () => {
   return (
     <Wrap>
       <HeaderWrap>
-        <Operation active={active} onChangeActive={setActive} />
+        <CommonOperation active={active} onChangeActive={setActive} />
       </HeaderWrap>
     </Wrap>
   )
