@@ -2,34 +2,74 @@ import { Button, Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
+import IconFont from '@/components/IconFont'
+import styled from '@emotion/styled'
+import { css } from '@emotion/css'
+
+const flexCss = css`
+  display: flex;
+  align-items: center;
+`
+
+const SetHead = styled.div`
+  margin-left: 32px;
+  margin-right: 12px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 12px;
+  background: rgba(40, 119, 255, 1);
+  background-blend-mode: normal;
+  border: 2px solid rgba(40, 119, 255, 0.16);
+  border: 1px solid rgba(40, 119, 255, 1);
+  color: white;
+`
 
 export const useDynamicColumns = (state: any) => {
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <Button onClick={state.showModal}>设置</Button>,
-        },
-      ]}
-    />
-  )
-
   return [
     {
+      width: 200,
+      align: 'center',
       title: '1',
       dataIndex: 'name',
       key: 'name',
       render: (text: any, record: any, index: any) => {
+        const menu = (
+          <Menu
+            items={[
+              {
+                key: '1',
+                label: (
+                  <Button
+                    onClick={() => state.controlStaffPersonalVisible(record)}
+                  >
+                    设置
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        )
         return (
-          <div
-            style={{
-              visibility: index === state.rowActiveIndex ? 'visible' : 'hidden',
-            }}
-          >
-            <Dropdown overlay={menu} placement="bottomLeft">
-              <Button>设置</Button>
-            </Dropdown>
+          <div className={flexCss}>
+            <div
+              style={{
+                visibility:
+                  index === state.rowActiveIndex ? 'visible' : 'hidden',
+              }}
+            >
+              <Dropdown overlay={menu} placement="bottomLeft">
+                <IconFont
+                  type="more
+              "
+                  style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+                />
+              </Dropdown>
+            </div>
+            <SetHead>{text}</SetHead>
+            <span>{text}</span>
           </div>
         )
       },

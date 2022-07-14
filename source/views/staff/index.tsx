@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
-import SearchComponent from '@/components/SearchComponent'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Input, Menu, Table } from 'antd'
+import { Button, Dropdown, Input, Menu, Pagination, Table } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import { StaffPersonal } from './components/StaffPower'
 
 const StaffWrap = styled.div``
 const StaffHeader = styled.div`
@@ -83,9 +83,17 @@ const SearchLine = styled.div`
   background: rgba(255, 255, 255, 1);
 `
 const StaffTableWrap = styled.div`
+  overflow-y: scroll;
   box-sizing: border-box;
   padding: 16px;
   background: #f5f7fa;
+`
+const PaginationWrap = styled.div`
+  height: 64px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-right: 16px;
 `
 const data = [
   {
@@ -106,9 +114,11 @@ const data = [
   },
 ]
 export default () => {
-  const [state, setState] = useState()
+  const navigate = useNavigate()
   const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [staffPersonalVisible, setStaffPersonalVisible] =
+    useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
     'age',
@@ -119,11 +129,21 @@ export default () => {
     'dapao',
     'tanke',
   ])
+  const controlStaffPersonalVisible = (
+    record: Record<string, string | number>,
+  ) => {
+    console.log(record)
+
+    setStaffPersonalVisible(true)
+  }
+  const closeStaffPersonal = () => {
+    setStaffPersonalVisible(false)
+  }
   const columns = useDynamicColumns({
     rowActiveIndex,
+    controlStaffPersonalVisible,
   })
 
-  const navigate = useNavigate()
   const selectColum = useMemo(() => {
     let arr = [...titleList, ...titleList2]
     let newList = []
@@ -146,18 +166,28 @@ export default () => {
       },
     }
   }, [])
+
   const showModal = () => {
     setIsModalVisible(true)
   }
   const close2 = () => {
     setIsModalVisible(false)
   }
+
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
+  }
+
+  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
+    console.log(page, size)
+  }
+
+  const onShowSizeChange = (current: number, pageSize: number) => {
+    console.log(current, pageSize)
   }
   useEffect(() => {}, [])
   const menu = (
@@ -213,6 +243,20 @@ export default () => {
           scroll={{ x: 'max-content' }}
         />
       </StaffTableWrap>
+      <PaginationWrap>
+        <Pagination
+          defaultCurrent={1}
+          current={1}
+          showSizeChanger
+          showQuickJumper
+          total={200}
+          showTotal={total => `Total ${total} items`}
+          pageSizeOptions={['10', '20', '50']}
+          onChange={onChangePage}
+          onShowSizeChange={onShowSizeChange}
+          hideOnSinglePage={true}
+        />
+      </PaginationWrap>
       <OptionalFeld
         checkList={titleList}
         checkList2={titleList2}
@@ -220,6 +264,10 @@ export default () => {
         close={close2}
         getCheckList={getCheckList}
       ></OptionalFeld>
+      <StaffPersonal
+        visible={staffPersonalVisible}
+        close={closeStaffPersonal}
+      ></StaffPersonal>
     </StaffWrap>
   )
 }

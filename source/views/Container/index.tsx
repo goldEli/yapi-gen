@@ -11,7 +11,7 @@ const Wrap = styled.div`
 const Main = styled.div`
   background: rgba(245, 247, 250, 1);
   flex: 1;
-  /* overflow: scroll; */
+  overflow: scroll;
 `
 
 export const Container = () => {

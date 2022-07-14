@@ -21,6 +21,7 @@ const Popconfirm = (props: PopConfirmProps) => {
   // content={() => <Content record={props.record} hide={hide}></Content>}
   return (
     <Popover
+      placement="bottomLeft"
       trigger="click"
       visible={visible}
       onVisibleChange={handleVisibleChange}
