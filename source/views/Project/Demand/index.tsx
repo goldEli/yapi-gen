@@ -2,18 +2,21 @@ import { useState } from 'react'
 import Operation from './components/Operation'
 import styled from '@emotion/styled'
 
-const HeaderWrap = styled.div({
+const Wrap = styled.div({
   position: 'sticky',
-  padding: '0 24px',
+})
+
+const HeaderWrap = styled.div({
+  background: 'white',
 })
 
 export default () => {
   const [active, setActive] = useState('demand')
   return (
-    <div>
+    <Wrap>
       <HeaderWrap>
         <Operation active={active} onChangeActive={setActive} />
       </HeaderWrap>
-    </div>
+    </Wrap>
   )
 }

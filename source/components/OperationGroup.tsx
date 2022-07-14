@@ -27,8 +27,8 @@ export default (props: Props) => {
       >
         <Space>
           <IconFont type="layout" />
-          <IconFont type="menu" />
-          <IconFont type="appstore" />
+          <IconFont type="unorderedlist" />
+          <IconFont type="app-store" />
         </Space>
         <Divider type="vertical" />
       </div>

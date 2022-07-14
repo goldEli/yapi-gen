@@ -137,7 +137,7 @@ export default () => {
   return (
     <div>
       <Dropdown overlay={menu}>
-        <IconFont type="shezhimoren" />
+        <IconFont type="set-default" />
       </Dropdown>
       <Modal
         title="显示字段配置"
