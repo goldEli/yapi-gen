@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Outlet, useRoutes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
+import { Panel } from './Panel'
 
 const SideWrap = styled.div`
   display: flex;
@@ -95,6 +96,7 @@ const SideEach = styled.div`
 
 export const Side = () => {
   const navigate = useNavigate()
+  const [panelVisible, setPanelVisible] = useState(false)
 
   const AllEach = getMenu().map(item => (
     <SideEach key={item.path} onClick={() => onNavigation(item.path)}>
@@ -105,6 +107,10 @@ export const Side = () => {
   const onNavigation = (path: string) => {
     navigate(path)
   }
+  const controlPanelVisible = () => {
+    setPanelVisible(!panelVisible)
+  }
+
   return (
     <SideWrap>
       <SideHeader>
@@ -117,8 +123,9 @@ export const Side = () => {
           <IconFont type="shezhimoren" style={{ fontSize: 20 }} />
           <span>设置</span>
         </SideEach>
-        <SetHead>何飞</SetHead>
+        <SetHead onClick={controlPanelVisible}>何飞</SetHead>
       </SideFooter>
+      <Panel visible={panelVisible}></Panel>
     </SideWrap>
   )
 }
