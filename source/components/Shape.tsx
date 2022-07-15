@@ -1,40 +1,86 @@
 import React, { useState } from 'react'
-
+import { Select, Button } from 'antd'
+import { css } from '@emotion/css'
+const { Option } = Select
+import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 
-const Left = styled.div`
-  width: 200px;
-  height: 500px;
+const selectCss = css`
+  margin-top: 48px;
+  margin-bottom: 24px;
+`
+const textareaCss = css`
+  display: flex;
+  align-items: start;
+`
+const areaCss = css`
   box-sizing: border-box;
-  padding-top: 50px;
-  background-color: #f2f2f2;
+  padding: 5px 0 0 12px;
+  /* color: rgba(187, 189, 191, 1); */
+  resize: none;
+  border: 1px solid rgba(235, 237, 240, 1);
+  width: 240px;
+  height: 132px;
+  &::placeholder {
+    color: rgba(187, 189, 191, 1);
+  }
+`
+const Left = styled.div`
+  width: 120px;
+  height: 316px;
+  box-sizing: border-box;
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  border-right: 1px solid #ebedf0;
 `
 const Right = styled.div`
-  width: 300px;
-  height: 500px;
+  box-sizing: border-box;
+  padding-left: 24px;
+  width: 354px;
+  height: 316px;
 `
 const Contain = styled.div`
-  width: 500px;
-  height: 500px;
+  position: relative;
+  width: 475px;
+  height: 316px;
   display: flex;
 `
 const StyledShape = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 1px 8px 1px 8px;
+  width: 60px;
+  height: 25px;
+  background: rgba(255, 255, 255, 1);
+  background-blend-mode: normal;
+  border: 1px solid rgba(235, 237, 240, 1);
+  border-radius: 6px;
+  margin-bottom: 16px;
   text-align: center;
-  box-sizing: border-box;
-  padding: 10px 20px;
-  margin: auto;
-  width: 100px;
-  height: 40px;
-  border: 1px solid black;
-  border-radius: 20px;
-  margin-bottom: 20px;
+  &:hover {
+    border: 1px solid rgba(40, 119, 255, 1);
+    color: rgba(40, 119, 255, 1);
+  }
 `
-const level = [
-  { id: 1, name: '高' },
-  { id: 2, name: '中' },
-  { id: 3, name: '低' },
-  { id: 4, name: '极低' },
-]
+const ButtonFooter = styled.div`
+  height: 56px;
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  flex-direction: row-reverse;
+  box-sizing: border-box;
+  padding-right: 24px;
+`
+const Close = styled.span`
+  position: absolute;
+  right: 24px;
+  top: 6px;
+`
 const shape = [
   { id: 1, name: '规划中' },
   { id: 2, name: '实现中' },
@@ -49,16 +95,23 @@ export const ShapeContent = (props: ShapeProps) => {
   const { record, hide } = props
 
   const [text, setText] = useState('')
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`)
+  }
+
   return (
     <Contain>
       <Left>
         {shape.map(item => (
           <div key={item.id}>
             <StyledShape
-            // style={{
-            //   color: item.id === record.level ? "blue" : "",
-            //   border: item.id === record.level ? " 1px solid blue" : "",
-            // }}
+              style={{
+                color: item.id === record.level ? 'rgba(40, 119, 255, 1)' : '',
+                border:
+                  item.id === record.level
+                    ? ' 1px solid rgba(40, 119, 255, 1)'
+                    : '',
+              }}
             >
               {item.name}
             </StyledShape>
@@ -67,27 +120,38 @@ export const ShapeContent = (props: ShapeProps) => {
         ))}
       </Left>
       <Right>
-        <div>
-          <span>处理人</span>{' '}
-          <input
-            value={text}
-            onChange={e => {
-              setText(e.target.value)
-            }}
-          />
+        <div className={selectCss}>
+          <span style={{ marginRight: '24px' }}> 处理人</span>
+          <Select
+            defaultValue="lucy"
+            style={{ width: 240 }}
+            onChange={handleChange}
+          >
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+            <Option value="disabled" disabled>
+              Disabled
+            </Option>
+            <Option value="Yiminghe">yiminghe</Option>
+          </Select>
         </div>
-        <div>
-          <span>评论</span> <textarea></textarea>
+        <div className={textareaCss}>
+          <span style={{ marginRight: '38px' }}>评论</span>
+          <textarea
+            className={areaCss}
+            placeholder="请输入评论处理意见"
+          ></textarea>
         </div>
-        <button
-          onClick={() => {
-            console.log(text)
-            hide()
-          }}
-        >
-          流转
-        </button>
+        <ButtonFooter>
+          <Button style={{ marginLeft: '16px' }} type="primary">
+            流转
+          </Button>
+          <Button onClick={() => hide()}>取消</Button>
+        </ButtonFooter>
       </Right>
+      <Close onClick={() => hide()}>
+        <IconFont type="close" style={{ fontSize: 20 }} />
+      </Close>
     </Contain>
   )
 }
