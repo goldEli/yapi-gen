@@ -144,7 +144,7 @@ export default () => {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <Dropdown overlay={menu}>
         <IconFont
           type="settings"

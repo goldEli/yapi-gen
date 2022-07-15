@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { Dropdown, Avatar } from 'antd'
 import { OmitText } from '@star-yun/ui'
+import { useNavigate } from 'react-router-dom'
 
 interface Item {
   name: string
@@ -66,8 +67,9 @@ const AvatarWrap = styled.div({
 })
 
 export default (props: Props) => {
+  const navigate = useNavigate()
   return (
-    <Wrap>
+    <Wrap onClick={() => navigate('/Detail?type=demandInfo')}>
       <WrapBorder />
       <MainWrap>
         <OmitText width={200}>{props.item.name}</OmitText>
