@@ -7,7 +7,6 @@ import IterationCard from '@/components/IterationCard'
 import { Button } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import SearchComponent from '@/components/SearchComponent'
-import OperationComponent from '@/components/OperationComponent'
 
 export default () => {
   const [visible, setVisible] = useState(false)
@@ -23,7 +22,6 @@ export default () => {
       <ProjectCard item={item} />
       <IterationCard item={item} />
       <DemandCard item={item} />
-      <OperationComponent />
     </div>
   )
 }

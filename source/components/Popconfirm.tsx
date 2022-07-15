@@ -4,7 +4,7 @@ import { Button, Popover } from 'antd'
 type PopConfirmProps = {
   children: ReactNode
   content: any
-  record: Record<string, string | number>
+  record?: Record<string, string | number>
   // onHide
 }
 const Popconfirm = (props: PopConfirmProps) => {
