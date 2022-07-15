@@ -27,6 +27,32 @@ const routes = [
         element: lazy(() => import('@/views/staff')),
       },
       {
+        path: '/mine',
+        element: lazy(() => import('@/views/Mine')),
+        children: [
+          {
+            path: '',
+            element: lazy(() => import('@/views/Mine/Agenda')),
+          },
+          {
+            path: 'carbon',
+            element: lazy(() => import('@/views/Mine/Carbon')),
+          },
+          {
+            path: 'create',
+            element: lazy(() => import('@/views/Mine/Create/index')),
+          },
+          {
+            path: 'finished',
+            element: lazy(() => import('@/views/Mine/Finished')),
+          },
+          {
+            path: 'profile',
+            element: lazy(() => import('@/views/Mine/Profile')),
+          },
+        ],
+      },
+      {
         path: '/Project',
         element: lazy(() => import('@/views/Project')),
       },

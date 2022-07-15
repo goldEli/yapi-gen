@@ -6,6 +6,10 @@ import { css } from '@emotion/css'
 const flexCss = css`
   display: flex;
   align-items: center;
+  &:hover {
+    background-color: #f0f4fa;
+    color: #2877ff;
+  }
 `
 const Contain = styled.div`
   width: 120px;
@@ -31,9 +35,7 @@ const level = [
   {
     id: 2,
     name: '中',
-    icon: (
-      <IconFont type="middle" style={{ color: '#fa9746', fontSize: 20 }} />
-    ),
+    icon: <IconFont type="middle" style={{ color: '#fa9746', fontSize: 20 }} />,
   },
   {
     id: 3,

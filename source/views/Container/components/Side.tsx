@@ -20,7 +20,7 @@ const SideWrap = styled.div`
 const imgCSS = css`
   width: 80px;
   height: 106px;
-  margin-bottom:50px ;
+  margin-bottom: 50px;
 `
 const SideHeader = styled.div`
   display: flex;
@@ -71,7 +71,7 @@ const getMenu = () => {
       key: '/organization',
       title: '我的',
       icon: <IconFont type="my" style={{ fontSize: 20 }} />,
-      path: '3',
+      path: '/mine',
     },
     {
       key: '/organization',

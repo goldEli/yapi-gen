@@ -2,12 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
-import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Input, Menu, Pagination, Table } from 'antd'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from './components/StaffTable'
-import { OptionalFeld } from '@/components/OptionalFeld'
-import { StaffPersonal } from './components/StaffPower'
 import {
   StaffHeader,
   Hehavior,
@@ -16,20 +10,16 @@ import {
   MyInput,
   SearchLine,
   SetButton,
+  TabsItem,
+  TabsHehavior,
+  LabNumber,
+  tabCss,
 } from '@/components/StyleCommon'
-
-const Reset = styled.div`
-  width: 60px;
-  height: 32px;
-  background: rgba(40, 119, 255, 1);
-  background-blend-mode: normal;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 16px 5px 16px;
-  margin-left: 24px;
-`
+import IconFont from '@/components/IconFont'
+import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { useDynamicColumns } from './CreatePrejectTableColum'
+import { OptionalFeld } from '@/components/OptionalFeld'
 
 const data = [
   {
@@ -39,6 +29,7 @@ const data = [
     address: 'New York No. 12 Lake Park',
     feiji: 'New York No. 22 Lake Park',
     level: 1,
+    shape: '规划中',
   },
   {
     key: '2',
@@ -47,8 +38,28 @@ const data = [
     address: 'New York No. 1 Lake Park',
     feiji: 'New York No. 12222 Lake Park',
     level: 2,
+    shape: '实现中',
+  },
+  {
+    key: '3',
+    name: 'John Brown',
+    age: 3222,
+    address: 'New York No. 1 Lake Park',
+    feiji: 'New York No. 12222 Lake Park',
+    level: 3,
+    shape: '已实现',
+  },
+  {
+    key: '4',
+    name: 'John Brown',
+    age: 3222,
+    address: 'New York No. 1 Lake Park',
+    feiji: 'New York No. 12222 Lake Park',
+    level: 4,
+    shape: '已关闭',
   },
 ]
+
 export const plainOptions = [
   { label: 'id', value: 'name' },
   { label: 'id1', value: 'age' },
@@ -63,12 +74,15 @@ export const plainOptions2 = [
   { label: '直升机', value: 'zhishengji' },
   { label: '战舰', value: 'zhanjian' },
 ]
+const tabsList = [
+  { name: '创建的项目', type: 1 },
+  { name: '创建的需求', type: 2 },
+]
 export default () => {
-  const navigate = useNavigate()
+  const [active, setActive] = useState(1)
   const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
+  const navigate = useNavigate()
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [staffPersonalVisible, setStaffPersonalVisible] =
-    useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
     'age',
@@ -79,21 +93,12 @@ export default () => {
     'dapao',
     'tanke',
   ])
-  const controlStaffPersonalVisible = (
-    record: Record<string, string | number>,
-  ) => {
-    console.log(record)
-
-    setStaffPersonalVisible(true)
-  }
-  const closeStaffPersonal = () => {
-    setStaffPersonalVisible(false)
-  }
   const columns = useDynamicColumns({
     rowActiveIndex,
-    controlStaffPersonalVisible,
   })
-
+  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
+    console.log(page, size)
+  }
   const selectColum = useMemo(() => {
     let arr = [...titleList, ...titleList2]
     let newList = []
@@ -106,17 +111,9 @@ export default () => {
     }
     return newList
   }, [titleList, columns])
-  const onTableRow = useCallback((row: any, index?: number) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(index)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
-
+  const onShowSizeChange = (current: number, pageSize: number) => {
+    console.log(current, pageSize)
+  }
   const showModal = () => {
     setIsModalVisible(true)
   }
@@ -131,13 +128,18 @@ export default () => {
     setTitleList(list)
     setTitleList2(list2)
   }
-
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
-  }
-
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+  const onTableRow = useCallback((row: any, index?: number) => {
+    return {
+      onMouseEnter: () => {
+        setRowActiveIndex(index)
+      },
+      onMouseLeave: () => {
+        setRowActiveIndex(null)
+      },
+    }
+  }, [])
+  const onChange = (key: string) => {
+    console.log(key)
   }
   useEffect(() => {}, [])
   const menu = (
@@ -152,10 +154,8 @@ export default () => {
   )
   return (
     <>
-      <StaffHeader>敏捷系统V2.0</StaffHeader>
       <Hehavior>
-        <div style={{ display: 'flex' }}>
-          <Reset>刷新</Reset>
+        <div>
           <MyInput
             suffix={
               <IconFont
@@ -182,9 +182,7 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-
       <SearchLine></SearchLine>
-
       <StaffTableWrap>
         <Table
           rowKey="key"
@@ -195,7 +193,6 @@ export default () => {
           scroll={{ x: 'max-content' }}
         />
       </StaffTableWrap>
-
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
@@ -210,7 +207,6 @@ export default () => {
           hideOnSinglePage={true}
         />
       </PaginationWrap>
-
       <OptionalFeld
         plainOptions={plainOptions}
         plainOptions2={plainOptions2}
@@ -220,11 +216,6 @@ export default () => {
         close={close2}
         getCheckList={getCheckList}
       ></OptionalFeld>
-
-      <StaffPersonal
-        visible={staffPersonalVisible}
-        close={closeStaffPersonal}
-      ></StaffPersonal>
     </>
   )
 }
