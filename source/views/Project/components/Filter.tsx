@@ -72,6 +72,7 @@ interface Props {
   onChangeFormat(): void
   onChangeHidden(val: boolean): void
   onChangeType(val: number): void
+  show: boolean
 }
 
 export default (props: Props) => {
@@ -91,17 +92,23 @@ export default (props: Props) => {
   )
   return (
     <Wrap>
-      <WrapLeft size={48}>
-        <TitleBox onClick={() => props.onChangeType(0)} idx={!props.activeType}>
-          我参与的项目
-        </TitleBox>
-        <TitleBox
-          onClick={() => props.onChangeType(1)}
-          idx={props.activeType === 1}
-        >
-          企业全部
-        </TitleBox>
-      </WrapLeft>
+      {props.show && (
+        <WrapLeft size={48}>
+          <TitleBox
+            onClick={() => props.onChangeType(0)}
+            idx={!props.activeType}
+          >
+            我参与的项目
+          </TitleBox>
+          <TitleBox
+            onClick={() => props.onChangeType(1)}
+            idx={props.activeType === 1}
+          >
+            企业全部
+          </TitleBox>
+        </WrapLeft>
+      )}
+
       <WrapRight>
         <Space size={12}>
           <div style={{ display: 'flex', alignItems: 'center' }}>

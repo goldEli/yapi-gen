@@ -21,26 +21,26 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import Preijct from './components/Preijct'
+import Need from './components/Need'
 
 const tabsList = [
-  { name: '创建的项目', type: 1 },
-  { name: '创建的需求', type: 2 },
+  { name: '创建的项目', type: 1, path: 'project' },
+  { name: '创建的需求', type: 2, path: 'need' },
 ]
 export default () => {
   const [active, setActive] = useState(1)
-
+  const navigate = useNavigate()
   useEffect(() => {}, [])
-
+  const switchTo = (value: { name: string; type: number; path: string }) => {
+    setActive(value.type)
+    // navigate(`/create?type=${value.path}`)
+  }
   return (
     <>
       <StaffHeader>我创建的</StaffHeader>
       <TabsHehavior>
         {tabsList.map(i => (
-          <div
-            key={i.type}
-            onClick={() => setActive(i.type)}
-            className={tabCss}
-          >
+          <div key={i.type} onClick={() => switchTo(i)} className={tabCss}>
             <TabsItem isActive={active === i.type}>
               <div>{i.name}</div>
             </TabsItem>
@@ -48,7 +48,8 @@ export default () => {
           </div>
         ))}
       </TabsHehavior>
-      <Preijct></Preijct>
+      {active === 1 && <Need></Need>}
+      {active === 2 && <Preijct></Preijct>}
     </>
   )
 }

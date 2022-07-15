@@ -1,38 +1,34 @@
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import SearchComponent from '@/components/SearchComponent'
-import Filter from './components/Filter'
-import MainGrid from './components/MainGrid'
-import MainTable from './components/MainTable'
-import EditProject from './components/EditProject'
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/css'
+import { Hehavior, MyInput } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
+import Filter from '@/views/Project/components/Filter'
+import MainGrid from './MainGrid'
+import MainTable from './MainTable'
 
-const SearchWrap = styled.div({
-  height: 64,
-  display: 'flex',
-  alignItems: 'center',
-  paddingLeft: 24,
-  background: 'white',
-})
-
+const buttonCss = css``
+const StyledUpload = styled.div``
 const Content = styled.div({
   padding: 16,
   background: '#F5F7FA',
 })
 
 export default () => {
+  const [state, setState] = useState()
   const [isGrid, setIsGrid] = useState(true)
   const [sort, setSort] = useState('name')
-  const [isHidden, setIsHidden] = useState(false)
   const [activeType, setActiveType] = useState(0)
-  const [visible, setVisible] = useState(false)
-  const onChangeOperation = (type: string, id: number) => {
-    console.log(type)
-  }
+  const navigate = useNavigate()
+  const [isHidden, setIsHidden] = useState(false)
   const onChangeType = (type: number) => {
     setActiveType(type)
     console.log('调用接口-企业和我参与的')
   }
-
+  const onChangeOperation = (type: string, id: number) => {
+    console.log(type)
+  }
   const onChangeHidden = (hidden: boolean) => {
     setIsHidden(hidden)
     console.log('调用接口-隐藏结束项目')
@@ -43,27 +39,21 @@ export default () => {
     console.log('调用接口-排序')
   }
 
-  const onChangeSearch = (value: string) => {
-    console.log(value, '搜索任务或项目')
-  }
-
+  useEffect(() => {}, [])
   return (
     <div>
-      <EditProject
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
-      />
-      <div style={{ position: 'sticky', top: 0 }}>
-        <SearchWrap>
-          <SearchComponent
-            placeholder="搜索项目或任务"
-            text="创建项目"
-            onChangeSearch={onChangeSearch}
-            onChangeVisible={() => setVisible(true)}
-          />
-        </SearchWrap>
+      <Hehavior>
+        <MyInput
+          suffix={
+            <IconFont
+              type="search"
+              style={{ color: '#BBBDBF', fontSize: 20 }}
+            />
+          }
+          placeholder="请输入昵称姓名邮箱电话"
+          allowClear
+        ></MyInput>
         <Filter
-          show
           total={31}
           sort={sort}
           isGrid={isGrid}
@@ -72,8 +62,8 @@ export default () => {
           onChangeFormat={() => setIsGrid(!isGrid)}
           onChangeHidden={onChangeHidden}
           onChangeType={onChangeType}
-        />
-      </div>
+        ></Filter>
+      </Hehavior>
       <Content>
         {isGrid ? (
           <MainGrid onChangeOperation={onChangeOperation} />
