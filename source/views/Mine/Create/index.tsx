@@ -30,16 +30,11 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 
 const SwiperWrap = styled.div`
+  /* width: 1000px; */
   box-sizing: border-box;
   padding: 24px;
-  /* width: 1500px; */
-  /* min-width: 1400px; */
   height: 144px;
   background-color: #f5f7fa;
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: space-evenly; */
-  /* overflow: hidden; */
 `
 const tabsList = [
   { name: '创建的项目', type: 1, path: 'project' },
@@ -55,10 +50,11 @@ export default () => {
     // navigate(`/create?type=${value.path}`)
   }
   return (
-    <div style={{ border: '1px solid red' }}>
+    <div>
       <StaffHeader>我创建的</StaffHeader>
       <SwiperWrap>
         <Swiper
+          slideToClickedSlide
           spaceBetween={50}
           slidesPerView={6}
           grabCursor
@@ -67,11 +63,11 @@ export default () => {
           observeParents
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(item => (
-            <SwiperSlide key={item}>
+            <SwiperSlide key={item} style={{ minWidth: '162px',}}>
               <div
                 onClick={() => setSwiperActive(item)}
                 style={{
-                  width: '162px',
+                  
                   border: swiperActive === item ? '1px solid red' : '',
                 }}
               >
