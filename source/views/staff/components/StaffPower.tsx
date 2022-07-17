@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Select } from 'antd'
+import { Button, Modal, Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import head from '@/assets/head.png'
@@ -29,21 +29,7 @@ const RightLine = styled(Line)`
   margin-top: 24px;
   color: rgba(50, 50, 51, 1);
 `
-const MyButton = styled.div`
-  width: 60px;
-  height: 32px;
-  background: rgba(242, 242, 244, 1);
-  background-blend-mode: normal;
-  border-radius: 6px;
-  padding: 5px 16px 5px 16px;
-  color: rgba(100, 101, 102, 1);
-  font-size: 14px;
-`
-const ConfirmButton = styled(MyButton)`
-  background: rgba(40, 119, 255, 1);
-  color: rgba(255, 255, 255, 1);
-  margin-left: 16px;
-`
+
 const Right = styled.div``
 const imgCss = css`
   width: 104px;
@@ -98,8 +84,10 @@ export const StaffPersonal = (props: {
         </Right>
       </PersonalFooter>
       <Footer>
-        <ConfirmButton onClick={() => props.close()}>确定</ConfirmButton>
-        <MyButton onClick={() => props.close()}>取消</MyButton>
+        <Button type="primary" onClick={() => props.close()}>
+          确定
+        </Button>
+        <Button onClick={() => props.close()}>取消</Button>
       </Footer>
     </Modal>
   )
