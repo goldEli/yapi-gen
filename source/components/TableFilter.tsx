@@ -5,7 +5,7 @@ import IconFont from './IconFont'
 import * as dayjs from 'dayjs'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import moment, { Moment } from 'moment'
-
+const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
   minHeight: 64,
@@ -27,9 +27,16 @@ const FormWrap = styled(Form)({
   },
 })
 
-const SelectWrap = styled(Select)({
-  width: 200,
-})
+const SelectWrap = styled(Select)`
+  .ant-select-selection-placeholder {
+    color: black;
+  }
+  .ant-select-selector {
+    min-width: 200px;
+    border: none !important;
+    outline: none !important;
+  }
+`
 
 interface Props {
   keys?: string[]
@@ -54,7 +61,31 @@ const rangPicker = css`
     margin-right: 0;
   }
 `
-
+const SelectWrapBedeck = styled.div`
+  margin-right: 16px;
+  position: relative;
+  /* width: 186px; */
+  height: 32px;
+  border: 1px solid rgba(235, 237, 240, 1);
+  display: flex;
+  align-items: center;
+  span {
+    white-space: nowrap;
+  }
+`
+const DelButton = styled.div`
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #9b9daa;
+  position: absolute;
+  right: -15px;
+  top: -12px;
+  width: 20px;
+  height: 20px;
+`
 const list = [
   { name: '人员' },
   { name: '需求' },
@@ -74,11 +105,11 @@ const timeList = [
 
 export default (props: Props) => {
   const [form] = Form.useForm()
-  const onClearForm = () => {
+  const onClearForm = async () => {
     form.resetFields()
   }
 
-  console.log(dayjs())
+  // console.log(dayjs())
 
   const content = (
     <div>
@@ -100,46 +131,65 @@ export default (props: Props) => {
       console.log('Clear')
     }
   }
-
+  const handleChange = (value: string[]) => {
+    console.log(`selected ${value}`)
+  }
+  const confirm = async () => {
+    const value = await form.validateFields()
+    console.log(value)
+  }
   return (
     <Wrap hidden={props.showForm}>
       <FormWrap form={form}>
-        <Space size={16}>
-          <Form.Item style={{ width: 200 }}>
-            <SelectWrap showSearch />
+        <SelectWrapBedeck>
+          <span style={{ margin: '0 16px', fontSize: '12px' }}>迭代</span>
+          <Form.Item name="tall">
+            <SelectWrap
+              mode="multiple"
+              style={{ width: '100%' }}
+              placeholder="所有"
+              showSearch
+            >
+              <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="disabled">Disabled</Option>
+              <Option value="Yiminghe">yiminghe</Option>
+            </SelectWrap>
           </Form.Item>
-          <Form.Item>
-            <div></div>
-            <DatePicker.RangePicker
-              className={rangPicker}
-              getPopupContainer={node => node}
-              onChange={onChange}
-              ranges={{
-                最近一周: [
-                  moment(new Date()).startOf('days').subtract(6, 'days'),
-                  moment(new Date()).endOf('days'),
-                ],
-                最近一月: [
-                  moment(new Date()).startOf('months').subtract(1, 'months'),
-                  moment(new Date()).endOf('days'),
-                ],
-                最近三月: [
-                  moment(new Date()).startOf('months').subtract(3, 'months'),
-                  moment(new Date()).endOf('days'),
-                ],
-                今天开始: [moment(new Date()).startOf('days'), moment.min()],
-                今天截止: [moment.max(), moment(new Date()).endOf('days')],
-              }}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Popover placement="bottom" content={content} trigger={['click']}>
-              <Button icon={<IconFont type="plus" />} />
-            </Popover>
-          </Form.Item>
-        </Space>
+          <DelButton>×</DelButton>
+        </SelectWrapBedeck>
+
+        <Form.Item name="time">
+          <DatePicker.RangePicker
+            className={rangPicker}
+            getPopupContainer={node => node}
+            onChange={onChange}
+            ranges={{
+              最近一周: [
+                moment(new Date()).startOf('days').subtract(6, 'days'),
+                moment(new Date()).endOf('days'),
+              ],
+              最近一月: [
+                moment(new Date()).startOf('months').subtract(1, 'months'),
+                moment(new Date()).endOf('days'),
+              ],
+              最近三月: [
+                moment(new Date()).startOf('months').subtract(3, 'months'),
+                moment(new Date()).endOf('days'),
+              ],
+              今天开始: [moment(new Date()).startOf('days'), moment.min()],
+              今天截止: [moment.max(), moment(new Date()).endOf('days')],
+            }}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Popover placement="bottom" content={content} trigger={['click']}>
+            <Button icon={<IconFont type="plus" />} />
+          </Popover>
+        </Form.Item>
       </FormWrap>
       <ClearForm onClick={onClearForm}>清除条件</ClearForm>
+      <Button onClick={confirm}>搜索</Button>
     </Wrap>
   )
 }

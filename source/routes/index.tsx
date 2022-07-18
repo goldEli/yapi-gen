@@ -31,7 +31,7 @@ const routes = [
         element: lazy(() => import('@/views/Mine')),
         children: [
           {
-            path: '',
+            path: 'agenda',
             element: lazy(() => import('@/views/Mine/Agenda')),
           },
           {
@@ -47,7 +47,7 @@ const routes = [
             element: lazy(() => import('@/views/Mine/Finished')),
           },
           {
-            path: 'profile',
+            path: '',
             element: lazy(() => import('@/views/Mine/Profile')),
           },
         ],

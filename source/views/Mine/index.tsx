@@ -26,6 +26,7 @@ const Wrap = styled.div`
   display: flex;
 `
 const Side = styled.div`
+  align-self: stretch;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,9 +36,8 @@ const Side = styled.div`
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
 `
-const Main = styled.div<{ width: number }>`
+const Main = styled.div`
   flex: 1;
-  /* min-width: ${({ width }) => width} px; */
 `
 const Menu = styled.div`
   width: 100%;
@@ -89,7 +89,7 @@ const menuList = [
   {
     id: 5,
     name: '抄送我的',
-    path: 'profile',
+    path: 'agenda',
   },
 ]
 export default () => {
