@@ -1,18 +1,21 @@
 import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from 'antd'
-
+import { createPortal } from 'react-dom'
 const Container = styled.div`
-  position: relative;
+  z-index: 10;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #282c34;
+  background-color: rgba(61, 63, 61, 0.5);
 `
 const Dialog = styled.div`
   width: 500px;
   height: 500px;
   background-color: white;
-  position: relative;
+  position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -57,7 +60,7 @@ export default function Next(props: { visible: boolean; close(): void }) {
   if (!props.visible) {
     return null
   }
-  return (
+  return createPortal(
     <Container>
       <Dialog>
         <header>头</header>
@@ -74,6 +77,7 @@ export default function Next(props: { visible: boolean; close(): void }) {
           {active !== 0 && <Button onClick={prev}>上一步</Button>}
         </footer>
       </Dialog>
-    </Container>
+    </Container>,
+    document.body,
   )
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useState} from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
+import Project from './components/Project'
+
 
 const buttonCss = css``
 const StyledUpload = styled.div``
@@ -16,7 +18,7 @@ const navigate = useNavigate()
  }, [])
 return (
  <div>
-概况
+<Project></Project>
  </div>
 )
 }
