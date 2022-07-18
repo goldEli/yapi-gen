@@ -150,7 +150,7 @@ const tabCss = css`
   align-items: center;
   margin-right: 32px;
 `
-const SwiperWrap = styled.div<{ width: number }>`
+const SwiperWrap = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;

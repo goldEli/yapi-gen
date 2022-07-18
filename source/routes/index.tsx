@@ -60,6 +60,10 @@ const routes = [
         path: '/Detail',
         element: lazy(() => import('@/views/Project/Detail')),
       },
+      {
+        path: '',
+        element: lazy(() => import('@/views/Situation')),
+      },
     ],
   },
   { path: '/home', element: <Home /> },

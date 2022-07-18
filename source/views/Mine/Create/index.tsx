@@ -38,7 +38,7 @@ import 'swiper/css'
 import { log } from 'console'
 const Bcss = css`
   border: 1px solid blue;
-  /* transform: translate(0, -10%); */
+  transform: translate(0, -10%);
 `
 
 const tabsList = [
