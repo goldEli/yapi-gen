@@ -11,9 +11,9 @@ export default () => {
   const [searchParams] = useSearchParams()
   const activeType = searchParams.get('type') || 'demand'
   const content = () => {
-    if (activeType === 'demand') {
+    if (activeType.includes('demand')) {
       return <Demand />
-    } else if (activeType === 'set') {
+    } else if (activeType.includes('set')) {
       return <Setting />
     } else {
       return <Iteration />

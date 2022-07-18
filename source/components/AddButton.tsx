@@ -17,7 +17,6 @@ const AddButton = styled.div({
 interface Props {
   text: string
   onChangeClick?(): void
-  placeholder?: string
 }
 
 export default (props: Props) => (
@@ -25,7 +24,6 @@ export default (props: Props) => (
     <IconFont
       style={{ marginRight: 8, fontSize: 14, fontWeight: 400, color: 'white' }}
       type="plus"
-      placeholder={props.placeholder}
     />
     <span>{props.text}</span>
   </AddButton>

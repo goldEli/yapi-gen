@@ -91,34 +91,6 @@ const MenuItems = styled.div({
   },
 })
 
-// const DemandInfo = styled.div({
-//   display: 'flex',
-//   alignItems: 'center',
-//   justifyContent: 'space-between',
-//   height: 64,
-//   background: 'white',
-// })
-
-// const NameWrap = styled.div({
-//   display: 'flex',
-//   alignItems: 'center',
-//   span: {
-//     fontSize: 16,
-//     fontWeight: 400,
-//     color: 'black',
-//     marginRight: 8,
-//   },
-//   div: {
-//     height: 22,
-//     borderRadius: 6,
-//     border: '1px solid #2877FF',
-//     padding: '0 8px',
-//     color: '#2877FF',
-//     fontSize: 12,
-//     fontWeight: 400,
-//   },
-// })
-
 interface Props {
   activeType: string
 }
@@ -130,9 +102,9 @@ export default (props: Props) => {
   const [memberVisible, setMemberVisible] = useState(false)
 
   const tabsList = [
-    { name: '需求', type: 'demand' },
-    { name: '迭代', type: 'iteration' },
-    { name: '设置', type: 'set' },
+    { name: '需求', type: 'demandMain', activeType: 'demand' },
+    { name: '迭代', type: 'iterationMain', activeType: 'iteration' },
+    { name: '设置', type: 'set', activeType: 'set' },
   ]
 
   const menu = (
@@ -202,7 +174,7 @@ export default (props: Props) => {
             <TabsItem
               onClick={() => navigate(`/Detail?type=${i.type}`)}
               key={i.type}
-              isActive={props.activeType === i.type}
+              isActive={props.activeType.includes(i.activeType)}
             >
               <div>{i.name}</div>
             </TabsItem>
@@ -221,16 +193,6 @@ export default (props: Props) => {
           </Dropdown>
         </TopRight>
       </OperationTop>
-      {/* <DemandInfo>
-        <NameWrap>
-          <span>【ID466897】需求名称xxxxxx</span>
-          <div>实现中</div>
-        </NameWrap>
-        <Space size={16}>
-          <Button type="primary">编辑</Button>
-          <Button>删除</Button>
-        </Space>
-      </DemandInfo> */}
     </div>
   )
 }

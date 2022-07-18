@@ -205,7 +205,7 @@ export default (props: Props) => {
       {List.map((item, index) => (
         <div
           key={`${item.id}_${index}`}
-          onClick={() => navigate('/Detail?type=demand')}
+          onClick={() => navigate('/Detail?type=demandMain')}
         >
           <ProjectCard
             item={item}

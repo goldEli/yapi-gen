@@ -1,6 +1,6 @@
 import { Drawer, Button, Input } from 'antd'
 import styled from '@emotion/styled'
-import { IconFont } from '@staryuntech/ant-pro'
+import IconFont from '@/components/IconFont'
 import posterImg from '@/assets/poster.png'
 
 interface Props {
@@ -58,6 +58,9 @@ const ListItem = styled.div({
     color: 'black',
     fontSize: 12,
   },
+  '&:nth-child(even)': {
+    backgroundColor: '#f8f9fa',
+  },
 })
 
 const personList = [
@@ -75,22 +78,29 @@ export default (props: Props) => {
       onClose={props.onChangeVisible}
       visible={props.visible}
       headerStyle={{ padding: 16 }}
-      bodyStyle={{ padding: '0 16px 16px' }}
+      bodyStyle={{ padding: 0 }}
     >
-      <ButtonWrap
-        type="primary"
-        icon={<IconFont type="plus" style={{ color: 'white', fontSize: 16 }} />}
-      >
-        添加成员
-      </ButtonWrap>
-      <Input
-        style={{ marginTop: 16 }}
-        suffix={
-          <IconFont type="search" style={{ color: '#BBBDBF', fontSize: 16 }} />
-        }
-        placeholder="搜索成员"
-        allowClear
-      />
+      <div style={{ padding: '0 16px' }}>
+        <ButtonWrap
+          type="primary"
+          icon={
+            <IconFont type="plus" style={{ color: 'white', fontSize: 16 }} />
+          }
+        >
+          添加成员
+        </ButtonWrap>
+        <Input
+          style={{ marginTop: 16 }}
+          suffix={
+            <IconFont
+              type="search"
+              style={{ color: '#BBBDBF', fontSize: 16 }}
+            />
+          }
+          placeholder="搜索成员"
+          allowClear
+        />
+      </div>
       <ListWrap>
         {personList.map((i, idx) => (
           <ListItem key={`${i.name}_${idx}`}>
