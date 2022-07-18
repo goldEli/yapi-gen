@@ -90,6 +90,7 @@ const SideEach = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 8px; 
   &:hover {
     background: rgba(240, 244, 250, 1);
     color: rgba(40, 119, 255, 1);
