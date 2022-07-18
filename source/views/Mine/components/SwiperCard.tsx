@@ -9,35 +9,47 @@ const DropdownWrap = styled(Dropdown)({
   cursor: 'pointer',
 })
 
-const Warp = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  borderRadius: 4,
-  height: 104,
-  width: 160,
-  overflow: 'hidden',
-  cursor: 'pointer',
-  // border: '1px solid blue',
-  // transform: 'translate(0, -10%)',
-  '&: hover': {
-    boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
-    [DropdownWrap.toString()]: {
-      display: 'block',
+const Warp = styled.div<{ show?: boolean }>(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: 4,
+    height: 104,
+    width: 160,
+    overflow: 'hidden',
+    cursor: 'pointer',
+    // border: '1px solid blue',
+    // transform: 'translate(0, -10%)',
+    '&: hover': {
+      boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
+      [DropdownWrap.toString()]: {
+        display: 'block',
+      },
     },
   },
-})
+  ({ show }) => ({
+    transform: `${show ? 'translate(0, -10%)' : ''}`,
+    boxShadow: `${show ? ' 0px 2px 8px rgba(170, 193, 227, 1)' : ''}`,
+  }),
+)
 
-const ImgWrap = styled.div({
-  height: 104,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '100%',
-  img: {
-    maxWidth: '100%',
-    maxHeight: '100%',
+const ImgWrap = styled.div<{ show?: boolean }>(
+  ({ show }) => ({
+    filter: `${show ? 'brightness(70%)' : ''}`,
+  }),
+  {
+    height: 104,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    // filter: 'brightness(70%)',
+    img: {
+      maxWidth: '100%',
+      maxHeight: '100%',
+    },
   },
-})
+)
 
 const NameWrap = styled.div({
   width: '90%',
@@ -58,10 +70,17 @@ const TextWarp = styled.div({
   background: 'white',
 })
 
-export default () => {
+export default (props: { show?: boolean; tap?(): void }) => {
   return (
-    <Warp>
-      <ImgWrap>
+    <Warp
+      show={props.show}
+      onClick={e => {
+        if (props.tap) {
+          props.tap()
+        }
+      }}
+    >
+      <ImgWrap show={props.show}>
         <img src={projectImg} alt="" />
       </ImgWrap>
       <TextWarp>

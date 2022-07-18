@@ -11,6 +11,7 @@ const flexCss = css`
   align-items: center;
 `
 const StyledShape = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +105,7 @@ export const useDynamicColumns = (state: any) => {
             <div
               style={{
                 visibility:
-                  index === state.rowActiveIndex ? 'visible' : 'hidden',
+                  record.key === state.rowActiveIndex ? 'visible' : 'hidden',
               }}
             >
               <Dropdown overlay={menu} placement="bottomLeft">
@@ -190,7 +191,7 @@ export const useDynamicColumns = (state: any) => {
             <IconFont
               style={{
                 visibility:
-                  index === state.rowActiveIndex ? 'visible' : 'hidden',
+                  record.key === state.rowActiveIndex ? 'visible' : 'hidden',
                 fontSize: 20,
               }}
               type="down-60kl9fcg"

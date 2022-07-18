@@ -21,6 +21,17 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 
+const titleCss = css`
+  height: 54px;
+  padding: 17px 0;
+  color: rgba(150, 151, 153, 1);
+  font-size: 14px;
+`
+const titleCssWrap = css`
+  &:nth-of-type(1) {
+    padding-top: 0;
+  }
+`
 const data = [
   {
     key: '1',
@@ -59,7 +70,172 @@ const data = [
     shape: '已关闭',
   },
 ]
-
+const moreData = [
+  {
+    name: '逾期',
+    data: [
+      {
+        key: '5',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 12 Lake Park',
+        feiji: 'New York No. 22 Lake Park',
+        level: 1,
+        shape: '规划中',
+      },
+      {
+        key: '6',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 2,
+        shape: '实现中',
+      },
+      {
+        key: '7',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 3,
+        shape: '已实现',
+      },
+      {
+        key: '8',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 4,
+        shape: '已关闭',
+      },
+    ],
+  },
+  {
+    name: '本月到期',
+    data: [
+      {
+        key: '9',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 12 Lake Park',
+        feiji: 'New York No. 22 Lake Park',
+        level: 1,
+        shape: '规划中',
+      },
+      {
+        key: '10',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 2,
+        shape: '实现中',
+      },
+      {
+        key: '11',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 3,
+        shape: '已实现',
+      },
+      {
+        key: '12',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 4,
+        shape: '已关闭',
+      },
+    ],
+  },
+  {
+    name: '今天到期',
+    data: [
+      {
+        key: '13',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 12 Lake Park',
+        feiji: 'New York No. 22 Lake Park',
+        level: 1,
+        shape: '规划中',
+      },
+      {
+        key: '14',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 2,
+        shape: '实现中',
+      },
+      {
+        key: '15',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 3,
+        shape: '已实现',
+      },
+      {
+        key: '16',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 4,
+        shape: '已关闭',
+      },
+    ],
+  },
+  {
+    name: '本周到期',
+    data: [
+      {
+        key: '1',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 12 Lake Park',
+        feiji: 'New York No. 22 Lake Park',
+        level: 1,
+        shape: '规划中',
+      },
+      {
+        key: '2',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 2,
+        shape: '实现中',
+      },
+      {
+        key: '3',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 3,
+        shape: '已实现',
+      },
+      {
+        key: '4',
+        name: 'John Brown',
+        age: 3222,
+        address: 'New York No. 1 Lake Park',
+        feiji: 'New York No. 12222 Lake Park',
+        level: 4,
+        shape: '已关闭',
+      },
+    ],
+  },
+]
 export const plainOptions = [
   { label: 'id', value: 'name' },
   { label: 'id1', value: 'age' },
@@ -79,7 +255,7 @@ const tabsList = [
   { name: '创建的需求', type: 2 },
 ]
 export default () => {
-  const [active, setActive] = useState(1)
+  const [tableState, setTableState] = useState(false)
   const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
   const navigate = useNavigate()
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
@@ -131,7 +307,7 @@ export default () => {
   const onTableRow = useCallback((row: any, index?: number) => {
     return {
       onMouseEnter: () => {
-        setRowActiveIndex(index)
+        setRowActiveIndex(row.key)
       },
       onMouseLeave: () => {
         setRowActiveIndex(null)
@@ -140,6 +316,9 @@ export default () => {
   }, [])
   const onChange = (key: string) => {
     console.log(key)
+  }
+  const changeTableState = () => {
+    setTableState(!tableState)
   }
   useEffect(() => {}, [])
   const menu = (
@@ -168,6 +347,12 @@ export default () => {
           />
         </div>
         <div style={{ marginRight: '40px', display: 'flex' }}>
+          <SetButton onClick={changeTableState} show={!tableState}>
+            <IconFont type="unorderedlist" style={{ fontSize: 20 }} />
+          </SetButton>
+          <SetButton onClick={changeTableState} show={tableState}>
+            <IconFont type="layout" style={{ fontSize: 20 }} />
+          </SetButton>
           <SetButton>
             <IconFont type="filter" style={{ fontSize: 20 }} />
           </SetButton>
@@ -184,14 +369,30 @@ export default () => {
       </Hehavior>
       <SearchLine></SearchLine>
       <StaffTableWrap>
-        <Table
-          rowKey="key"
-          onRow={onTableRow}
-          columns={selectColum}
-          dataSource={data}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
+        {!tableState && (
+          <Table
+            rowKey="key"
+            onRow={onTableRow}
+            columns={selectColum}
+            dataSource={data}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        )}
+        {tableState &&
+          moreData.map(i => (
+            <div>
+              <div className={titleCss}>{i.name}</div>
+              <Table
+                rowKey="key"
+                onRow={onTableRow}
+                columns={selectColum}
+                dataSource={i.data}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+              />
+            </div>
+          ))}
       </StaffTableWrap>
       <PaginationWrap>
         <Pagination

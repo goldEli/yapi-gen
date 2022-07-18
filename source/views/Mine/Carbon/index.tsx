@@ -17,11 +17,13 @@ import 'swiper/css'
 import SwiperCard from '../components/SwiperCard'
 
 const Bcss = css`
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
+  filter: brightness(70%);
+  box-shadow: 0px 2px 8px rgba(170, 193, 227, 1);
   transform: translate(0, -10%);
 `
 
-const tabsList = [{ name: '创建的需求', type: 2, path: 'need' }]
+const tabsList = [{ name: '待办需求', type: 2, path: 'need' }]
 export default () => {
   const [swiperActive, setSwiperActive] = useState(1)
   const active = 2
@@ -42,12 +44,10 @@ export default () => {
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(item => (
             <SwiperSlide key={item}>
-              <div
-                onClick={() => setSwiperActive(item)}
-                className={swiperActive === item ? Bcss : ''}
-              >
-                <SwiperCard></SwiperCard>
-              </div>
+              <SwiperCard
+                tap={() => setSwiperActive(item)}
+                show={swiperActive === item}
+              ></SwiperCard>
             </SwiperSlide>
           ))}
         </Swiper>

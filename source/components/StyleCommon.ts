@@ -60,7 +60,7 @@ const TabsHehavior = styled.div`
   display: flex;
   color: rgba(255, 255, 255, 1);
   font-size: 14px;
-  height: 52px;
+  height: 65px;
   background: rgba(255, 255, 255, 1);
   align-items: center;
   box-sizing: border-box;
@@ -103,12 +103,14 @@ const SearchLine = styled.div`
   height: 64px;
   background: rgba(255, 255, 255, 1);
 `
-const SetButton = styled.div`
+const SetButton = styled.div<{ show?: boolean }>`
+  cursor: pointer;
   text-align: center;
   width: 52px;
   height: 20px;
   border-left: 1px solid #d5d6d9;
   color: #bbbdbf;
+  color: ${({ show }) => (show ? ' rgba(40, 119, 255, 1)' : '')};
   &:hover {
     color: rgba(40, 119, 255, 1);
   }
@@ -129,19 +131,20 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   ({ isActive }) => ({
     div: {
       color: `${isActive ? '#2877FF' : '#323233'}`,
-      borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
+      borderBottom: `3px solid ${isActive ? '#2877FF' : 'white'}`,
     },
   }),
 )
 const LabNumber = styled.div<{ isActive: boolean }>`
   margin-left: 4px;
   width: 20px;
-  height: 20px;
+  height: 18px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 12px;
+
   color: ${({ isActive }) => (isActive ? '#2877ff' : 'rgba(150, 151, 153, 1)')};
   background: ${({ isActive }) =>
     isActive ? '#f0f4fa' : 'rgba(242, 242, 244, 1)'};
@@ -154,6 +157,7 @@ const tabCss = css`
 const SwiperWrap = styled.div`
   display: flex;
   align-items: center;
+  justify-content: start;
   box-sizing: border-box;
   padding: 0 24px;
   height: 144px;
@@ -161,6 +165,7 @@ const SwiperWrap = styled.div`
   overflow: hidden;
   & .swiper {
     overflow: visible;
+    margin: 0;
   }
   & .swiper-wrapper {
     max-width: 1400px;

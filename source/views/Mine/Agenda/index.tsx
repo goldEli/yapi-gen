@@ -21,7 +21,7 @@ const Bcss = css`
   transform: translate(0, -10%);
 `
 
-const tabsList = [{ name: '创建的需求', type: 2, path: 'need' }]
+const tabsList = [{ name: '抄送我的', type: 2, path: 'need' }]
 export default () => {
   const [swiperActive, setSwiperActive] = useState(1)
   const active = 2
@@ -42,12 +42,12 @@ export default () => {
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(item => (
             <SwiperSlide key={item}>
-              <div
-                onClick={() => setSwiperActive(item)}
-                className={swiperActive === item ? Bcss : ''}
-              >
-                <SwiperCard></SwiperCard>
-              </div>
+           <SwiperSlide key={item}>
+              <SwiperCard
+                tap={() => setSwiperActive(item)}
+                show={swiperActive === item}
+              ></SwiperCard>
+            </SwiperSlide>
             </SwiperSlide>
           ))}
         </Swiper>

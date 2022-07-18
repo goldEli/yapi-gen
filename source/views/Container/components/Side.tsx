@@ -83,6 +83,7 @@ const getMenu = () => {
   return menu
 }
 const SideEach = styled.div`
+  cursor: pointer;
   border-radius: 8px;
   width: 64px;
   height: 64px;
@@ -90,7 +91,7 @@ const SideEach = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 8px; 
+  margin-bottom: 8px;
   &:hover {
     background: rgba(240, 244, 250, 1);
     color: rgba(40, 119, 255, 1);
