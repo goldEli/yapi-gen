@@ -59,13 +59,13 @@ const getMenu = () => {
       key: '/organization',
       title: '概况',
       icon: <IconFont type="survey" style={{ fontSize: 20 }} />,
-      path: '1',
+      path: '',
     },
     {
       key: '/organization',
       title: '项目',
       icon: <IconFont type="project" style={{ fontSize: 20 }} />,
-      path: '2',
+      path: '/Project',
     },
     {
       key: '/organization',
@@ -95,13 +95,34 @@ const SideEach = styled.div`
     color: rgba(40, 119, 255, 1);
   }
 `
-
+const activeCss = css`
+  border-radius: 8px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(240, 244, 250, 1);
+  color: rgba(40, 119, 255, 1);
+`
 export const Side = () => {
+  const urlParams = new URL(window.location.href)
+  const pathname = urlParams?.pathname
+  const nowPath = pathname.split('/')[1]
+    ? '/' + pathname.split('/')[1]
+    : '' || ''
+  console.log(nowPath)
+
   const navigate = useNavigate()
   const [panelVisible, setPanelVisible] = useState(false)
 
   const AllEach = getMenu().map(item => (
-    <SideEach key={item.path} onClick={() => onNavigation(item.path)}>
+    <SideEach
+      className={nowPath === item.path ? activeCss : ''}
+      key={item.path}
+      onClick={() => onNavigation(item.path)}
+    >
       {item.icon}
       {item.title}
     </SideEach>
@@ -121,7 +142,9 @@ export const Side = () => {
       </SideHeader>
 
       <SideFooter>
-        <SideEach>
+        <SideEach
+        // className={'/' + nowPath === item.path ? activeCss : ''}
+        >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>设置</span>
         </SideEach>

@@ -33,9 +33,11 @@ const Side = styled.div`
   padding-top: 24px;
   width: 220px;
   background: rgba(255, 255, 255, 1);
+  flex-shrink: 0;
 `
-const Main = styled.div`
+const Main = styled.div<{ width: number }>`
   flex: 1;
+  /* min-width: ${({ width }) => width} px; */
 `
 const Menu = styled.div`
   width: 100%;
@@ -91,12 +93,14 @@ const menuList = [
   },
 ]
 export default () => {
-  const [active, setActive] = useState<number>(1)
+  const urlParams = new URL(window.location.href)
+  const pathname = urlParams?.pathname
+  const nowPath = pathname.split('/')[2] || ''
+
   const navigate = useNavigate()
   useEffect(() => {}, [])
   const changeActive = (value: MenuList) => {
     navigate(value.path)
-    setActive(value.id)
   }
   return (
     <Wrap>
@@ -118,7 +122,7 @@ export default () => {
             <div
               onClick={() => changeActive(item)}
               key={item.id}
-              className={active === item.id ? MenuItemColor : MenuItem}
+              className={nowPath === item.path ? MenuItemColor : MenuItem}
             >
               {item.name}
             </div>

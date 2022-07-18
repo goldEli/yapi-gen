@@ -17,6 +17,8 @@ const Warp = styled.div({
   width: 160,
   overflow: 'hidden',
   cursor: 'pointer',
+  // border: '1px solid blue',
+  // transform: 'translate(0, -10%)',
   '&: hover': {
     boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
     [DropdownWrap.toString()]: {

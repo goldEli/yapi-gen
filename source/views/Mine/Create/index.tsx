@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
@@ -14,6 +20,7 @@ import {
   TabsHehavior,
   LabNumber,
   tabCss,
+  SwiperWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
@@ -28,48 +35,44 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Import Swiper styles
 import 'swiper/css'
-
-const SwiperWrap = styled.div`
-  /* width: 1000px; */
-  box-sizing: border-box;
-  padding: 24px;
-  height: 144px;
-  background-color: #f5f7fa;
+import { log } from 'console'
+const Bcss = css`
+  border: 1px solid blue;
+  /* transform: translate(0, -10%); */
 `
+
 const tabsList = [
-  { name: '创建的项目', type: 1, path: 'project' },
+  // { name: '创建的项目', type: 1, path: 'project' },
   { name: '创建的需求', type: 2, path: 'need' },
 ]
 export default () => {
   const [swiperActive, setSwiperActive] = useState(1)
-  const [active, setActive] = useState(1)
+  const [active, setActive] = useState(2)
+
   const navigate = useNavigate()
-  useEffect(() => {}, [])
+
   const switchTo = (value: { name: string; type: number; path: string }) => {
     setActive(value.type)
     // navigate(`/create?type=${value.path}`)
   }
+
   return (
     <div>
       <StaffHeader>我创建的</StaffHeader>
       <SwiperWrap>
         <Swiper
-          slideToClickedSlide
           spaceBetween={50}
-          slidesPerView={6}
-          grabCursor
           freeMode
+          grabCursor
           observer
           observeParents
+          slidesPerView={6}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(item => (
-            <SwiperSlide key={item} style={{ minWidth: '162px',}}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(item => (
+            <SwiperSlide key={item}>
               <div
                 onClick={() => setSwiperActive(item)}
-                style={{
-                  
-                  border: swiperActive === item ? '1px solid red' : '',
-                }}
+                className={swiperActive === item ? Bcss : ''}
               >
                 <SwiperCard></SwiperCard>
               </div>
@@ -77,6 +80,7 @@ export default () => {
           ))}
         </Swiper>
       </SwiperWrap>
+      
       <TabsHehavior>
         {tabsList.map(i => (
           <div key={i.type} onClick={() => switchTo(i)} className={tabCss}>

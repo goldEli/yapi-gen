@@ -150,6 +150,25 @@ const tabCss = css`
   align-items: center;
   margin-right: 32px;
 `
+const SwiperWrap = styled.div<{ width: number }>`
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 24px;
+  height: 144px;
+  background-color: #f5f7fa;
+  overflow: hidden;
+  & .swiper {
+    overflow: visible;
+  }
+  & .swiper-wrapper {
+    max-width: 1400px;
+    width: 100%;
+  }
+  & .swiper-slide {
+    width: auto !important;
+  }
+`
 export {
   TableWrap,
   StylePagination,
@@ -164,4 +183,5 @@ export {
   TabsItem,
   LabNumber,
   tabCss,
+  SwiperWrap,
 }
