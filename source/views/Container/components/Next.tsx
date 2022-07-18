@@ -9,7 +9,7 @@ const Container = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(61, 63, 61, 0.5);
+  background-color: rgba(135, 136, 137, 0.6);
 `
 const Dialog = styled.div`
   width: 500px;

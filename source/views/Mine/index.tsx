@@ -89,7 +89,7 @@ const menuList = [
   {
     id: 5,
     name: '抄送我的',
-    path: 'profile',
+    path: 'agenda',
   },
 ]
 export default () => {

@@ -1,22 +1,70 @@
-import React, { useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
+import {
+  StaffHeader,
+  TabsItem,
+  TabsHehavior,
+  LabNumber,
+  tabCss,
+  SwiperWrap,
+} from '@/components/StyleCommon'
 
-const buttonCss = css``
-const StyledUpload = styled.div``
+import Need from './components/Need'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import SwiperCard from '../components/SwiperCard'
 
+const Bcss = css`
+  border: 1px solid blue;
+  transform: translate(0, -10%);
+`
+
+const tabsList = [{ name: '创建的需求', type: 2, path: 'need' }]
 export default () => {
- const [state, setState] = useState()
+  const [swiperActive, setSwiperActive] = useState(1)
+  const active = 2
 
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
- useEffect(() => {
+  return (
+    <div>
+      <StaffHeader>抄送我的</StaffHeader>
+      <SwiperWrap>
+        <Swiper
+          spaceBetween={50}
+          freeMode
+          grabCursor
+          observer
+          observeParents
+          slidesPerView={6}
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(item => (
+            <SwiperSlide key={item}>
+              <div
+                onClick={() => setSwiperActive(item)}
+                className={swiperActive === item ? Bcss : ''}
+              >
+                <SwiperCard></SwiperCard>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </SwiperWrap>
 
- }, []) 
-return (
- <div>
-ddd1
- </div>
-)
+      <TabsHehavior>
+        {tabsList.map(i => (
+          <div key={i.type} className={tabCss}>
+            <TabsItem isActive={active === i.type}>
+              <div>{i.name}</div>
+            </TabsItem>
+            <LabNumber isActive={active === i.type}>5</LabNumber>
+          </div>
+        ))}
+      </TabsHehavior>
+
+      {active === 2 && <Need></Need>}
+    </div>
+  )
 }

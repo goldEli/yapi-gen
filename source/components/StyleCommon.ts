@@ -99,6 +99,7 @@ const MyInput = styled(Input)`
   }
 `
 const SearchLine = styled.div`
+  padding-left: 24px;
   height: 64px;
   background: rgba(255, 255, 255, 1);
 `

@@ -17,6 +17,7 @@ import {
   SearchLine,
   SetButton,
 } from '@/components/StyleCommon'
+import TableFilter from '@/components/TableFilter'
 
 const Reset = styled.div`
   width: 60px;
@@ -183,7 +184,9 @@ export default () => {
         </div>
       </Hehavior>
 
-      <SearchLine></SearchLine>
+      <SearchLine>
+        <TableFilter></TableFilter>
+      </SearchLine>
 
       <StaffTableWrap>
         <Table
