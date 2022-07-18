@@ -2,15 +2,29 @@ import ProjectCard from '@/components/ProjectCard'
 import styled from '@emotion/styled'
 import { Space } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import IconFont from '@/components/IconFont'
 
 interface Props {
   onChangeOperation(type: string, id: number): void
+  onChangeVisible(): void
 }
 
 const SpaceWrap = styled(Space)({
   display: 'flex',
   flexWrap: 'wrap',
   padding: '0 8px',
+})
+
+const AddProject = styled.div({
+  height: 144,
+  borderRadius: 4,
+  background: 'white',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 220,
+  cursor: 'pointer',
 })
 
 const List = [
@@ -205,7 +219,7 @@ export default (props: Props) => {
       {List.map((item, index) => (
         <div
           key={`${item.id}_${index}`}
-          onClick={() => navigate('/Detail?type=demandMain')}
+          onClick={() => navigate('/Detail/Demand')}
         >
           <ProjectCard
             item={item}
@@ -213,6 +227,13 @@ export default (props: Props) => {
           />
         </div>
       ))}
+      <AddProject onClick={props.onChangeVisible}>
+        <IconFont
+          style={{ color: '#969799', fontSize: 24, marginBottom: 16 }}
+          type="plus"
+        />
+        <div style={{ color: '#646566', fontSize: 14 }}>创建项目</div>
+      </AddProject>
     </SpaceWrap>
   )
 }

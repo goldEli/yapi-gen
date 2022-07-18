@@ -267,7 +267,11 @@ export default (props: Props) => {
                 getPopupContainer={node => node}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: '#BBBDBF' }}
+                  style={{
+                    fontSize: 16,
+                    cursor: 'pointer',
+                    color: record.id === rowActiveIndex ? '#2877ff' : '#BBBDBF',
+                  }}
                   type="more"
                 />
               </Dropdown>

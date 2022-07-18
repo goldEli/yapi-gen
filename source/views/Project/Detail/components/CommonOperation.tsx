@@ -91,20 +91,17 @@ const MenuItems = styled.div({
   },
 })
 
-interface Props {
-  activeType: string
-}
-
-export default (props: Props) => {
+export default () => {
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
+  const pathname = new URL(window.location.href).pathname
 
   const tabsList = [
-    { name: '需求', type: 'demandMain', activeType: 'demand' },
-    { name: '迭代', type: 'iterationMain', activeType: 'iteration' },
-    { name: '设置', type: 'set', activeType: 'set' },
+    { name: '需求', type: 'Demand' },
+    { name: '迭代', type: 'Iteration' },
+    { name: '设置', type: 'Setting' },
   ]
 
   const menu = (
@@ -129,7 +126,7 @@ export default (props: Props) => {
         {
           key: 3,
           label: (
-            <MenuItems onClick={() => navigate('/Detail?type=set')}>
+            <MenuItems onClick={() => navigate('/Detail/Setting')}>
               <div>项目设置</div>
             </MenuItems>
           ),
@@ -172,9 +169,9 @@ export default (props: Props) => {
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
-              onClick={() => navigate(`/Detail?type=${i.type}`)}
+              onClick={() => navigate(`/Detail/${i.type}`)}
               key={i.type}
-              isActive={props.activeType.includes(i.activeType)}
+              isActive={pathname.includes(i.type)}
             >
               <div>{i.name}</div>
             </TabsItem>

@@ -99,7 +99,7 @@ export default (props: Props) => {
     />
   )
   return (
-    <CardWrap onClick={() => navigate('/Detail?type=iterationInfo')}>
+    <CardWrap onClick={() => navigate('/Detail/Iteration?type=info')}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Progress
           strokeColor="#43BA9A"

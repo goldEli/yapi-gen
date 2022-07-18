@@ -63,28 +63,24 @@ interface Props {
 }
 
 export default (props: Props) => {
+  const onClickMenu = (e: any, type: string) => {
+    e.stopPropagation()
+    props.onChangeOperation?.(type, 0)
+  }
   const menu = (
     <Menu
       items={[
         {
           key: '1',
-          label: (
-            <div onClick={() => props.onChangeOperation?.('edit', 0)}>编辑</div>
-          ),
+          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
         },
         {
           key: '2',
-          label: (
-            <div onClick={() => props.onChangeOperation?.('end', 0)}>结束</div>
-          ),
+          label: <div onClick={e => onClickMenu(e, 'end')}>结束</div>,
         },
         {
           key: '3',
-          label: (
-            <div onClick={() => props.onChangeOperation?.('delete', 0)}>
-              删除
-            </div>
-          ),
+          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
         },
       ]}
     />
