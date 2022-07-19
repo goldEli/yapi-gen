@@ -16,7 +16,7 @@ const AddButton = styled.div({
 
 interface Props {
   text: string
-  onChangeClick?(): void
+  onChangeClick?(e?: any): void
 }
 
 export default (props: Props) => (

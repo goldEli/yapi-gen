@@ -25,14 +25,17 @@ const MyInput = styled(Input)`
 
 interface Props {
   text: string
-  onChangeVisible?(): void
+  onChangeVisible?(e?: any): void
   onChangeSearch?(val: string): void
   placeholder: string
 }
 
 export default (props: Props) => (
   <Space size={24}>
-    <AddButton text={props.text} onChangeClick={props.onChangeVisible} />
+    <AddButton
+      text={props.text}
+      onChangeClick={(e: any) => props.onChangeVisible?.(e)}
+    />
     <MyInput
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       onChange={(e: any) =>

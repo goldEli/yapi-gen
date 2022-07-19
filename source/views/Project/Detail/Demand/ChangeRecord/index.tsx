@@ -108,7 +108,12 @@ export default () => {
             {text.map(i => (
               <span>
                 {i.name === '--' ? (
-                  <span onClick={() => setVisible(true)}>查看详情</span>
+                  <span
+                    style={{ cursor: 'pointer', color: '#2877ff' }}
+                    onClick={() => setVisible(true)}
+                  >
+                    查看详情
+                  </span>
                 ) : (
                   i.name
                 )}

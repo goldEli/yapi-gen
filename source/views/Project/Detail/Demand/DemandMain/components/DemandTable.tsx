@@ -6,6 +6,7 @@ import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
+import { useNavigate } from 'react-router-dom'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -17,6 +18,21 @@ const StatusWrap = styled.div({
   border: '1px solid #2877FF',
   color: '#2877FF',
   width: 'fit-content',
+  cursor: 'pointer',
+})
+
+const PriorityWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  div: {
+    color: '#323233',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  '.antion': {
+    fontSize: 16,
+  },
 })
 
 const Content = styled.div({
@@ -30,8 +46,16 @@ interface Props {
   List: any[]
 }
 
+const priorityList = [
+  { name: '高', type: 'tall', color: '#ff5c5e' },
+  { name: '中', type: 'middle', color: '#fa9746' },
+  { name: '低', type: 'low', color: '#43ba9a' },
+  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
+]
+
 export default (props: Props) => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
+  const navigate = useNavigate()
   const onTableRow = useCallback((row: any) => {
     return {
       onMouseEnter: () => {
@@ -39,6 +63,9 @@ export default (props: Props) => {
       },
       onMouseLeave: () => {
         setRowActiveIndex(null)
+      },
+      onClick: () => {
+        navigate('/Detail/Demand?type=info')
       },
     }
   }, [])
@@ -69,7 +96,7 @@ export default (props: Props) => {
                 getPopupContainer={node => node}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: '#2877FF' }}
+                  style={{ fontSize: 16, color: '#2877FF', cursor: 'pointer' }}
                   type="more"
                 />
               </Dropdown>
@@ -92,7 +119,7 @@ export default (props: Props) => {
     },
     {
       title: '优先级',
-      dataIndex: 'iteration',
+      dataIndex: 'priority',
       render: (text: string, record: any) => {
         return (
           <PopConfirm
@@ -101,7 +128,16 @@ export default (props: Props) => {
             }}
             record={record}
           >
-            {text}
+            <PriorityWrap>
+              <IconFont
+                type={priorityList[Number(text)].type}
+                style={{
+                  fontSize: 16,
+                  color: priorityList[Number(text)].color,
+                }}
+              />
+              <div>{priorityList[Number(text)].name}</div>
+            </PriorityWrap>
           </PopConfirm>
         )
       },
