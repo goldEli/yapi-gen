@@ -113,7 +113,7 @@ export default () => {
           <DemandInfoWrap>
             <NameWrap>
               <span>敏捷系统V2.0</span>
-              <div>实现中</div>
+              <div>开启</div>
             </NameWrap>
             <Space size={16}>
               <Button type="primary" onClick={() => setVisible(!visible)}>

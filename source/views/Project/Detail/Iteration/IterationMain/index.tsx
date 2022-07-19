@@ -14,7 +14,7 @@ const List = [
     iteration: '敏捷版本V1.0',
     priority: 0,
     dealName: '何飞',
-    status: '进行中',
+    status: 0,
     createTime: '2022-02-32',
     endTime: '200-03-12',
     startTime: '200-03-12',
@@ -26,7 +26,7 @@ const List = [
     iteration: '敏捷版本V1.0',
     priority: 0,
     dealName: '何飞',
-    status: '进行中',
+    status: 0,
     createTime: '2022-02-32',
     endTime: '200-03-12',
     startTime: '200-03-12',
@@ -61,7 +61,10 @@ export default (props: Props) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <WrapLeft isShowLeft={isShowLeft} />
+      <WrapLeft
+        isShowLeft={isShowLeft}
+        onChangeVisible={props.onChangeVisible}
+      />
       <Right isShowLeft={isShowLeft}>
         <Operation
           isGrid={isGrid}

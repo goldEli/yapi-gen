@@ -72,34 +72,13 @@ const DetailWrap = styled.div({
 
 interface Props {
   item: object
-  onChangeEdit?(): void
-  onChangeDelete?(): void
-  onChangeEnd?(): void
+  menu: React.ReactElement
 }
 
 export default (props: Props) => {
   const navigate = useNavigate()
-
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={props.onChangeEdit}> 编辑 </div>,
-        },
-        {
-          key: '2',
-          label: <div onClick={props.onChangeEnd}> 结束 </div>,
-        },
-        {
-          key: '3',
-          label: <div onClick={props.onChangeDelete}> 删除 </div>,
-        },
-      ]}
-    />
-  )
   return (
-    <CardWrap onClick={() => navigate('/Detail/Iteration?type=info')}>
+    <CardWrap>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Progress
           strokeColor="#43BA9A"
@@ -114,11 +93,15 @@ export default (props: Props) => {
           <StatusTag>开启中</StatusTag>
         </InfoContent>
       </div>
-      <DetailWrap>
+      <DetailWrap onClick={() => navigate('/Detail/Iteration?type=info')}>
         <span>详情</span>
         <IconFont type="right" />
       </DetailWrap>
-      <Dropdown overlay={menu} placement="bottomCenter" trigger={['hover']}>
+      <Dropdown
+        overlay={props.menu}
+        placement="bottomCenter"
+        trigger={['hover']}
+      >
         <MoreWrap type="more" />
       </Dropdown>
     </CardWrap>

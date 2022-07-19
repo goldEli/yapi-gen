@@ -3,6 +3,8 @@ import SearchComponent from '@/components/SearchComponent'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
+import { OptionalFeld } from '@/components/OptionalFeld'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -27,10 +29,46 @@ interface Props {
   onChangeVisible?(e?: any): void
 }
 
+export const plainOptions = [
+  { label: 'id', value: 'name' },
+  { label: 'id1', value: 'age' },
+  { label: 'id2', value: 'address' },
+  { label: 'id3', value: 'address1' },
+  { label: 'id4', value: 'address2' },
+]
+export const plainOptions2 = [
+  { label: '飞机', value: 'feiji' },
+  { label: '大炮', value: 'dapao' },
+  { label: '坦克', value: 'tanke' },
+  { label: '直升机', value: 'zhishengji' },
+  { label: '战舰', value: 'zhanjian' },
+]
+
 export default (props: Props) => {
   const [filterState, setFilterState] = useState(true)
+  const [settingState, setSettingState] = useState(false)
+
+  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
+    'name',
+    'age',
+    'address',
+  ])
+  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
+    'feiji',
+    'dapao',
+    'tanke',
+  ])
+
   const onChangeSearch = (value: string) => {
     console.log(value, '搜索任务或项目')
+  }
+
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+  ) => {
+    setTitleList(list)
+    setTitleList2(list2)
   }
   return (
     <StickyWrap>
@@ -46,9 +84,20 @@ export default (props: Props) => {
           onChangeGrid={props.onChangeGrid}
           isGrid={props.isGrid}
           filterState={filterState}
+          settingState={settingState}
+          onChangeSetting={() => setSettingState(!settingState)}
         />
       </OperationWrap>
       <TableFilter showForm={filterState} />
+      <OptionalFeld
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        checkList={titleList}
+        checkList2={titleList2}
+        visible={settingState}
+        close={() => setSettingState(false)}
+        getCheckList={getCheckList}
+      ></OptionalFeld>
     </StickyWrap>
   )
 }

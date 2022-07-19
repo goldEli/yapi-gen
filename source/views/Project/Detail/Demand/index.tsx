@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button } from 'antd'
+import { ShapeContent } from '@/components/Shape'
+import PopConfirm from '@/components/Popconfirm'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -87,6 +89,26 @@ const Item = styled.div<{ activeIdx: boolean }>(
   }),
 )
 
+const StatusWrap = styled.div({
+  height: 22,
+  borderRadius: 6,
+  padding: '0 8px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: '1px solid #2877FF',
+  color: '#2877FF',
+  width: 'fit-content',
+  cursor: 'pointer',
+})
+
+const statusList = [
+  { id: 0, name: '规划中', color: '#2877ff' },
+  { id: 1, name: '实现中', color: '#2877ff' },
+  { id: 2, name: '已实现', color: '#2877ff' },
+  { id: 3, name: '已关闭', color: '#2877ff' },
+]
+
 export default () => {
   const [visible, setVisible] = useState(false)
   const [searchParams] = useSearchParams()
@@ -118,7 +140,27 @@ export default () => {
           <DemandInfoWrap>
             <NameWrap>
               <span>【ID466897】需求名称xxxxxx</span>
-              <div>实现中</div>
+              <PopConfirm
+                content={({ onHide }: { onHide: () => void }) => {
+                  return (
+                    <ShapeContent
+                      tap={() => {}}
+                      hide={onHide}
+                      record={{ level: 0 }}
+                    ></ShapeContent>
+                  )
+                }}
+                record={{ level: 0 }}
+              >
+                <StatusWrap
+                  style={{
+                    color: statusList[0].color,
+                    border: `1px solid ${statusList[0].color}`,
+                  }}
+                >
+                  {statusList[0].name}
+                </StatusWrap>
+              </PopConfirm>
             </NameWrap>
             <Space size={16}>
               <Button type="primary" onClick={() => setVisible(!visible)}>

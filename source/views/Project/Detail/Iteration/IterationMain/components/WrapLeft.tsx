@@ -9,6 +9,7 @@ import {
   Input,
   DatePicker,
   Checkbox,
+  Menu,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -105,6 +106,7 @@ const list = [
 
 interface Props {
   isShowLeft: boolean
+  onChangeVisible(): void
 }
 
 const sortList = [
@@ -162,22 +164,62 @@ export default (props: Props) => {
       </Form>
     </div>
   )
+
+  const onChangeEdit = () => {
+    props.onChangeVisible()
+  }
+
+  const onChangeEnd = () => {
+    //
+  }
+
+  const onChangeDelete = () => {
+    //
+  }
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={onChangeEdit}> 编辑 </div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={onChangeEnd}> 结束 </div>,
+        },
+        {
+          key: '3',
+          label: <div onClick={onChangeDelete}> 删除 </div>,
+        },
+      ]}
+    />
+  )
   return (
     <Left isShowLeft={props.isShowLeft}>
       <TopWrap>
-        <AddButton text="创建迭代" />
+        <AddButton text="创建迭代" onChangeClick={props.onChangeVisible} />
         <Space size={20}>
-          <Popover placement="bottom" content={sortContent}>
+          <Popover
+            placement="bottom"
+            content={sortContent}
+            getPopupContainer={node => node}
+          >
             <IconWrap type="sort" />
           </Popover>
           <Divider style={{ margin: 0, height: 20 }} type="vertical" />
-          <Popover placement="bottomRight" content={filterContent}>
+          <Popover
+            placement="bottomRight"
+            content={filterContent}
+            getPopupContainer={node => node}
+          >
             <IconWrap type="filter" />
           </Popover>
         </Space>
       </TopWrap>
       {list.map((item, index) => (
         <IterationCard
+          menu={menu}
           key={`${item.name}_${index}`}
           item={item}
         ></IterationCard>

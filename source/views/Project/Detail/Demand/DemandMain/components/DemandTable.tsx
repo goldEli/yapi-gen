@@ -7,6 +7,7 @@ import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { useNavigate } from 'react-router-dom'
+import { OmitText } from '@star-yun/ui'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -64,9 +65,6 @@ export default (props: Props) => {
       onMouseLeave: () => {
         setRowActiveIndex(null)
       },
-      onClick: () => {
-        navigate('/Detail/Demand?type=info')
-      },
     }
   }, [])
 
@@ -109,6 +107,16 @@ export default (props: Props) => {
     {
       title: '标题',
       dataIndex: 'name',
+      render: (text: string) => {
+        return (
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={() => navigate('/Detail/Demand?type=info')}
+          >
+            <OmitText width={200}>{text}</OmitText>
+          </div>
+        )
+      },
     },
     {
       title: '需求数',
@@ -124,7 +132,13 @@ export default (props: Props) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide: () => void }) => {
-              return <LevelContent hide={onHide} record={record}></LevelContent>
+              return (
+                <LevelContent
+                  tap={() => {}}
+                  hide={onHide}
+                  record={record}
+                ></LevelContent>
+              )
             }}
             record={record}
           >
@@ -159,7 +173,13 @@ export default (props: Props) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide: () => void }) => {
-              return <ShapeContent hide={onHide} record={record}></ShapeContent>
+              return (
+                <ShapeContent
+                  tap={() => {}}
+                  hide={onHide}
+                  record={record}
+                ></ShapeContent>
+              )
             }}
             record={record}
           >

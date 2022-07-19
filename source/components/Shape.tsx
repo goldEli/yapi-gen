@@ -123,7 +123,7 @@ export const ShapeContent = (props: ShapeProps) => {
             >
               {item.name}
             </StyledShape>
-            {item.id === record.level}
+            {item.id === record?.level}
           </div>
         ))}
       </Left>

@@ -3,7 +3,9 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Space } from 'antd'
+import { Popover, Space, Modal } from 'antd'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { OptionalFeld } from '@/components/OptionalFeld'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -46,8 +48,44 @@ interface Props {
   onChangeIsShowLeft?(): void
 }
 
+export const plainOptions = [
+  { label: 'id', value: 'name' },
+  { label: 'id1', value: 'age' },
+  { label: 'id2', value: 'address' },
+  { label: 'id3', value: 'address1' },
+  { label: 'id4', value: 'address2' },
+]
+export const plainOptions2 = [
+  { label: '飞机', value: 'feiji' },
+  { label: '大炮', value: 'dapao' },
+  { label: '坦克', value: 'tanke' },
+  { label: '直升机', value: 'zhishengji' },
+  { label: '战舰', value: 'zhanjian' },
+]
+
 export default (props: Props) => {
   const [filterState, setFilterState] = useState(true)
+  const [settingState, setSettingState] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
+    'name',
+    'age',
+    'address',
+  ])
+  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
+    'feiji',
+    'dapao',
+    'tanke',
+  ])
+
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+  ) => {
+    setTitleList(list)
+    setTitleList2(list2)
+  }
 
   const changeStatus = (
     <Space
@@ -63,6 +101,15 @@ export default (props: Props) => {
 
   return (
     <StickyWrap>
+      <Modal
+        width={548}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        title="迭代目标"
+        footer={false}
+      >
+        211212
+      </Modal>
       <OperationWrap>
         <IterationInfo>
           <IconFont
@@ -81,7 +128,11 @@ export default (props: Props) => {
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             2022.06.17-2022.07.30
           </span>
-          <Popover placement="bottom" content={changeStatus}>
+          <Popover
+            placement="bottom"
+            content={changeStatus}
+            getPopupContainer={node => node}
+          >
             <StatusTag>
               开启中
               <IconFont
@@ -91,6 +142,7 @@ export default (props: Props) => {
             </StatusTag>
           </Popover>
           <IconFont
+            onClick={() => setVisible(true)}
             type="detail"
             style={{
               fontSize: 16,
@@ -105,9 +157,20 @@ export default (props: Props) => {
           onChangeGrid={props.onChangeGrid}
           isGrid={props.isGrid}
           filterState={filterState}
+          settingState={settingState}
+          onChangeSetting={() => setSettingState(!settingState)}
         />
       </OperationWrap>
       <TableFilter showForm={filterState} />
+      <OptionalFeld
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        checkList={titleList}
+        checkList2={titleList2}
+        visible={settingState}
+        close={() => setSettingState(false)}
+        getCheckList={getCheckList}
+      ></OptionalFeld>
     </StickyWrap>
   )
 }
