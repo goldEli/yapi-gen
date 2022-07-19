@@ -78,10 +78,31 @@ const routes = [
         path: '',
         element: lazy(() => import('@/views/Situation')),
       },
+      {
+        path: '/Setting',
+        element: lazy(() => import('@/views/Setting')),
+        children: [
+          {
+            path: '',
+            element: lazy(() => import('@/views/Setting/CompanyInfo')),
+          },
+          {
+            path: 'permission',
+            element: lazy(() => import('@/views/Setting/Permission')),
+          },
+          {
+            path: 'operation',
+            element: lazy(() => import('@/views/Setting/Operation')),
+          },
+          {
+            path: 'loginLog',
+            element: lazy(() => import('@/views/Setting/LoginLog')),
+          },
+        ],
+      },
     ],
   },
   { path: '/home', element: <Home /> },
-  { path: '/Demo', element: <Demo /> },
 ]
 
 export default () => useRoutes(routes)

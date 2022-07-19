@@ -45,7 +45,7 @@ const PriorityWrap = styled.div({
     fontSize: 14,
     marginLeft: 8,
   },
-  '.antion': {
+  '.anticon': {
     fontSize: 16,
   },
 })

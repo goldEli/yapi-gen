@@ -64,7 +64,7 @@ const CardGroup = styled(Space)({
 })
 
 const CardItem = styled.div({
-  height: 71,
+  height: 72,
   width: 158,
   display: 'flex',
   flexDirection: 'column',
@@ -76,11 +76,11 @@ const CardItem = styled.div({
     fontSize: 32,
     color: '#2877FF',
     fontWeight: 400,
+    lineHeight: '32px',
   },
   span: {
     fontSize: 14,
     color: '#323233',
-    marginTop: '-10px',
   },
 })
 
