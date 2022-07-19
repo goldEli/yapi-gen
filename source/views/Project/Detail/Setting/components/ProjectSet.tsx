@@ -1,5 +1,5 @@
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Table } from 'antd'
+import { Checkbox, Space, Modal, Input } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState } from 'react'
@@ -98,6 +98,21 @@ const MainWrapItem = styled.div({
   alignItems: 'center',
 })
 
+const ModalHeader = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  fontSize: 16,
+  color: '#323233',
+})
+
+const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+})
+
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
 
@@ -152,8 +167,33 @@ const permissionList = [
 
 export default () => {
   const [activeTabs, setActiveTabs] = useState(0)
+  const [visible, setVisible] = useState(false)
   return (
     <Warp>
+      <Modal
+        footer={false}
+        visible={visible}
+        title={false}
+        closable={false}
+        bodyStyle={{ padding: '16px 24px' }}
+        width={420}
+      >
+        <ModalHeader>
+          <span>创建权限组</span>
+          <IconFont
+            onClick={() => setVisible(false)}
+            style={{ cursor: 'pointer' }}
+            type="close"
+          />
+        </ModalHeader>
+        <div style={{ margin: '24px 0' }}>
+          <Input placeholder="请输入权限组名称" />
+        </div>
+        <ModalFooter size={16}>
+          <Button onClick={() => setVisible(false)}>取消</Button>
+          <Button type="primary">确认</Button>
+        </ModalFooter>
+      </Modal>
       <SetMain>
         <SetLeft>
           <Title style={{ marginLeft: 24 }}>用户组</Title>
@@ -170,6 +210,7 @@ export default () => {
             ))}
           </MenuItems>
           <div
+            onClick={() => setVisible(true)}
             style={{ textAlign: 'center', cursor: 'pointer', color: '#2877FF' }}
           >
             <IconFont type="plus" />

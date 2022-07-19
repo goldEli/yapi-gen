@@ -3,6 +3,8 @@ import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
+import EditProject from '@/views/Project/components/EditProject'
+import { useState } from 'react'
 
 const Wrap = styled.div({
   padding: 24,
@@ -71,7 +73,7 @@ const CardItem = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
-  background: '#EBEDF0',
+  background: 'rgba(235, 237, 240, 0.6)',
   div: {
     fontSize: 32,
     color: '#2877FF',
@@ -85,8 +87,13 @@ const CardItem = styled.div({
 })
 
 export default () => {
+  const [visible, setVisible] = useState(false)
   return (
     <div style={{ padding: 16 }}>
+      <EditProject
+        visible={visible}
+        onChangeVisible={() => setVisible(!visible)}
+      />
       <Wrap>
         <InfoLeft>
           <img src={posterImg} alt="" />
@@ -96,8 +103,11 @@ export default () => {
               alignItems: 'center',
             }}
           >
-            <OmitText width={340}>项目名称XXXXXXXX</OmitText>
+            <OmitText width={340}>
+              项目名称XXX项目名称XXXXXXXX项目名称XXXXXXXX项目名称XXXXXXXXXXXXX
+            </OmitText>
             <IconFont
+              onClick={() => setVisible(true)}
               style={{
                 marginLeft: 24,
                 cursor: 'pointer',

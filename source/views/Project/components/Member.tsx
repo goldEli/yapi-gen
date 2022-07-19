@@ -109,6 +109,22 @@ const personList = [
   { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
   { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
   { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
 ]
 
 export default (props: Props) => {
