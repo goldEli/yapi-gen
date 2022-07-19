@@ -70,9 +70,39 @@ const DemoColumn = () => {
   }
   return <Column {...config} />
 }
-const buttonCss = css``
-const StyledUpload = styled.div``
-
+const titleCss = css`
+  color: rgba(0, 0, 0, 1);
+  font-size: 14px;
+`
+const title1Css = css`
+  color: rgba(40, 119, 255, 1);
+  font-size: 24px;
+`
+const title2Css = css`
+  color: rgba(100, 101, 102, 1);
+  font-size: 12px;
+`
+const Wrap = styled.div`
+  background-color: #ffffff;
+  box-sizing: border-box;
+  padding: 16px 24px;
+`
+const HomeWrap = styled.div`
+  height: 104px;
+  border: 1px solid rgba(235, 237, 240, 1);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
+const Item = styled.span`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 export default () => {
   const [state, setState] = useState()
 
@@ -80,9 +110,35 @@ export default () => {
 
   useEffect(() => {}, [])
   return (
-    <div>
-      项目概况
+    <Wrap>
+      <div className={titleCss}>项目概况</div>
+      <HomeWrap>
+        <Item>
+          <span className={title1Css}>16</span>
+          <span className={title2Css}>公司项目</span>
+        </Item>
+        <Item>
+          <span className={title1Css}>16</span>
+          <span className={title2Css}>公司项目</span>
+        </Item>
+        <Item>
+          <span className={title1Css}>16</span>
+          <span className={title2Css}>公司项目</span>
+        </Item>
+        <Item>
+          <span className={title1Css}>16</span>
+          <span className={title2Css}>公司项目</span>
+        </Item>
+        <Item>
+          <span className={title1Css}>16</span>
+          <span className={title2Css}>公司项目</span>
+        </Item>
+        <Item>
+          <span className={title1Css}>16</span>
+          <span className={title2Css}>公司项目</span>
+        </Item>
+      </HomeWrap>
       <DemoColumn></DemoColumn>
-    </div>
+    </Wrap>
   )
 }
