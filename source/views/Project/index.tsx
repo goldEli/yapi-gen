@@ -53,27 +53,27 @@ export default () => {
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
       />
-      <div style={{ position: 'sticky', top: 0 }}>
-        <SearchWrap>
-          <SearchComponent
-            placeholder="搜索项目或任务"
-            text="创建项目"
-            onChangeSearch={onChangeSearch}
-            onChangeVisible={() => setVisible(true)}
-          />
-        </SearchWrap>
-        <Filter
-          show
-          total={31}
-          sort={sort}
-          isGrid={isGrid}
-          activeType={activeType}
-          onChangeSort={onChangeSort}
-          onChangeFormat={() => setIsGrid(!isGrid)}
-          onChangeHidden={onChangeHidden}
-          onChangeType={onChangeType}
+      {/* <div style={{ position: 'sticky', top: 0 }}> */}
+      <SearchWrap>
+        <SearchComponent
+          placeholder="搜索项目或任务"
+          text="创建项目"
+          onChangeSearch={onChangeSearch}
+          onChangeVisible={() => setVisible(true)}
         />
-      </div>
+      </SearchWrap>
+      <Filter
+        show
+        total={31}
+        sort={sort}
+        isGrid={isGrid}
+        activeType={activeType}
+        onChangeSort={onChangeSort}
+        onChangeFormat={() => setIsGrid(!isGrid)}
+        onChangeHidden={onChangeHidden}
+        onChangeType={onChangeType}
+      />
+      {/* </div> */}
       <Content>
         {isGrid ? (
           <MainGrid

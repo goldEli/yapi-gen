@@ -170,8 +170,8 @@ export default (props: Props) => {
         <div
           style={{
             padding: '0 16px',
-            position: 'sticky',
-            top: 0,
+            // position: 'sticky',
+            // top: 0,
             background: 'white',
           }}
         >

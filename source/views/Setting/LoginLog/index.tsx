@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
-import { Table, Select, DatePicker } from 'antd'
-import { StylePagination } from '@/components/StyleCommon'
+import { Table, Select, DatePicker, Pagination } from 'antd'
 import moment, { Moment } from 'moment'
 import { css } from '@emotion/css'
 import type { RangePickerProps } from 'antd/es/date-picker'
@@ -241,7 +240,7 @@ export default () => {
           scroll={{ x: 'max-content' }}
           showSorterTooltip={false}
         />
-        <StylePagination
+        <Pagination
           defaultCurrent={1}
           current={1}
           showSizeChanger

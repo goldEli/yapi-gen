@@ -2,6 +2,7 @@ import { Modal, Form, Input, DatePicker, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import Editor from '@/components/Editor'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -57,7 +58,7 @@ export default (props: Props) => {
   return (
     <Modal
       visible={props.visible}
-      width={524}
+      width={740}
       footer={false}
       title="创建迭代"
       onCancel={props.onChangeVisible}
@@ -79,7 +80,7 @@ export default (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont type="detail" />
           <Form.Item label="迭代目标">
-            <Input placeholder="编辑器" />
+            <Editor />
           </Form.Item>
         </div>
       </FormWrap>
