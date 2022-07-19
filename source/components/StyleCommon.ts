@@ -99,8 +99,12 @@ const MyInput = styled(Input)`
   }
 `
 const SearchLine = styled.div`
+  box-sizing: border-box;
+  padding: 16px 0;
+  display: flex;
+  gap: 16px;
   padding-left: 24px;
-  height: 64px;
+  min-height: 64px;
   background: rgba(255, 255, 255, 1);
 `
 const SetButton = styled.div<{ show?: boolean }>`

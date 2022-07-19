@@ -81,7 +81,7 @@ const Charts = styled.div`
 `
 const TimeLineWrap = styled.div`
   box-sizing: border-box;
-  padding: 10px 0;
+  padding: 10px 10px;
   margin-top: 10px;
   overflow-y: scroll;
   height: 350px;

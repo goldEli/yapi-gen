@@ -77,6 +77,7 @@ const DelButton = styled.div`
 `
 const SelectWrapBedeck = styled.div`
   margin-right: 16px;
+  margin-bottom: 16px;
   position: relative;
   /* width: 186px; */
   height: 32px;
@@ -107,7 +108,255 @@ const timeList = [
   { name: '今天截止', type: '5' },
   { name: '时间为空', type: '6' },
 ]
-
+const searchData = [
+  {
+    name: '迭代',
+    key: 'name',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '职位',
+    key: 'age',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+  {
+    name: '权限组',
+    key: 'tall',
+    type: 'select',
+    children: [
+      {
+        name: 'jack',
+      },
+      {
+        name: 'Lucy',
+      },
+      {
+        name: 'Disabled',
+      },
+      {
+        name: 'yiminghe',
+      },
+    ],
+  },
+]
 export default (props: Props) => {
   const [form] = Form.useForm()
   const onClearForm = async () => {
@@ -146,25 +395,26 @@ export default (props: Props) => {
   return (
     <Wrap hidden={props.showForm}>
       <FormWrap form={form}>
-        <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '12px' }}>迭代</span>
-          <Form.Item name="tall">
-            <SelectWrap
-              mode="multiple"
-              style={{ width: '100%' }}
-              placeholder="所有"
-              showSearch
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled">Disabled</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-            </SelectWrap>
-          </Form.Item>
-          <DelButton>
-            <IconFont type="close" style={{ fontSize: '12px' }}></IconFont>
-          </DelButton>
-        </SelectWrapBedeck>
+        {searchData.map(i => (
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>{i.name}</span>
+            <Form.Item name={i.key}>
+              <SelectWrap
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="所有"
+                showSearch
+              >
+                {i.children.map(v => (
+                  <Option value={v.name}>{v.name}</Option>
+                ))}
+              </SelectWrap>
+            </Form.Item>
+            <DelButton>
+              <IconFont type="close" style={{ fontSize: '12px' }}></IconFont>
+            </DelButton>
+          </SelectWrapBedeck>
+        ))}
 
         <Form.Item name="time">
           <DatePicker.RangePicker
@@ -189,14 +439,12 @@ export default (props: Props) => {
             }}
           />
         </Form.Item>
-        <Form.Item>
-          <Popover placement="bottom" content={content} trigger={['click']}>
-            <Button icon={<IconFont type="plus" />} />
-          </Popover>
-        </Form.Item>
+        <Popover placement="bottom" content={content} trigger={['click']}>
+          <Button icon={<IconFont type="plus" />} />
+        </Popover>
+        <ClearForm onClick={onClearForm}>清除条件</ClearForm>
+        <Button onClick={confirm}>搜索</Button>
       </FormWrap>
-      <ClearForm onClick={onClearForm}>清除条件</ClearForm>
-      <Button onClick={confirm}>搜索</Button>
     </Wrap>
   )
 }

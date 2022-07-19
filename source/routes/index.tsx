@@ -102,7 +102,7 @@ const routes = [
       },
     ],
   },
-  { path: '/home', element: <Home /> },
+ 
 ]
 
 export default () => useRoutes(routes)
