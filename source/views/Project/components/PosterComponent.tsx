@@ -107,7 +107,11 @@ export default () => {
     <div>
       <ImgWrap>
         <img src={projectImg} alt="" />
-        <Popover placement="bottom" content={choosePoster}>
+        <Popover
+          placement="bottom"
+          content={choosePoster}
+          getPopupContainer={node => node}
+        >
           <ChangeWrap>修改图片</ChangeWrap>
         </Popover>
       </ImgWrap>

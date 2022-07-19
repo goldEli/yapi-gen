@@ -3,6 +3,9 @@ import { Pagination, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import { ShapeContent } from '@/components/Shape'
+import { LevelContent } from '@/components/Level'
+import PopConfirm from '@/components/Popconfirm'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -14,6 +17,21 @@ const StatusWrap = styled.div({
   border: '1px solid #2877FF',
   color: '#2877FF',
   width: 'fit-content',
+  cursor: 'pointer',
+})
+
+const PriorityWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  div: {
+    color: '#323233',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  '.anticon': {
+    fontSize: 16,
+  },
 })
 
 const Content = styled.div({
@@ -26,6 +44,20 @@ interface Props {
   menu: React.ReactElement
   List: any[]
 }
+
+const statusList = [
+  { id: 0, name: '规划中', color: '#2877ff' },
+  { id: 1, name: '实现中', color: '#2877ff' },
+  { id: 2, name: '已实现', color: '#2877ff' },
+  { id: 3, name: '已关闭', color: '#2877ff' },
+]
+
+const priorityList = [
+  { name: '高', type: 'tall', color: '#ff5c5e' },
+  { name: '中', type: 'middle', color: '#fa9746' },
+  { name: '低', type: 'low', color: '#43ba9a' },
+  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
+]
 
 export default (props: Props) => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
@@ -89,7 +121,28 @@ export default (props: Props) => {
     },
     {
       title: '优先级',
-      dataIndex: 'iteration',
+      dataIndex: 'priority',
+      render: (text: string, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide: () => void }) => {
+              return <LevelContent hide={onHide} record={record}></LevelContent>
+            }}
+            record={record}
+          >
+            <PriorityWrap>
+              <IconFont
+                type={priorityList[0].type}
+                style={{
+                  fontSize: 16,
+                  color: priorityList[0].color,
+                }}
+              />
+              <div>{priorityList[0].name}</div>
+            </PriorityWrap>
+          </PopConfirm>
+        )
+      },
       sorter: {
         compare: (a: any, b: any) => a.iteration - b.iteration,
       },
@@ -104,8 +157,26 @@ export default (props: Props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: string) => {
-        return <StatusWrap>{text}</StatusWrap>
+      render: (text: number, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide: () => void }) => {
+              return <ShapeContent hide={onHide} record={record}></ShapeContent>
+            }}
+            record={record}
+          >
+            <StatusWrap
+              style={{
+                color: statusList.filter(i => i.id === text)[0].color,
+                border: `1px solid ${
+                  statusList.filter(i => i.id === text)[0].color
+                }`,
+              }}
+            >
+              {statusList.filter(i => i.id === text)[0].name}
+            </StatusWrap>
+          </PopConfirm>
+        )
       },
     },
     {

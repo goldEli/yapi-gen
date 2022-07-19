@@ -3,7 +3,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Space } from 'antd'
+import { Popover, Space, Modal } from 'antd'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -48,6 +48,7 @@ interface Props {
 
 export default (props: Props) => {
   const [filterState, setFilterState] = useState(true)
+  const [visible, setVisible] = useState(false)
 
   const changeStatus = (
     <Space
@@ -63,6 +64,15 @@ export default (props: Props) => {
 
   return (
     <StickyWrap>
+      <Modal
+        width={548}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        title="迭代目标"
+        footer={false}
+      >
+        211212
+      </Modal>
       <OperationWrap>
         <IterationInfo>
           <IconFont
@@ -81,7 +91,11 @@ export default (props: Props) => {
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             2022.06.17-2022.07.30
           </span>
-          <Popover placement="bottom" content={changeStatus}>
+          <Popover
+            placement="bottom"
+            content={changeStatus}
+            getPopupContainer={node => node}
+          >
             <StatusTag>
               开启中
               <IconFont
@@ -91,6 +105,7 @@ export default (props: Props) => {
             </StatusTag>
           </Popover>
           <IconFont
+            onClick={() => setVisible(true)}
             type="detail"
             style={{
               fontSize: 16,

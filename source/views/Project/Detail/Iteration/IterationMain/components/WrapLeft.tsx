@@ -167,11 +167,19 @@ export default (props: Props) => {
       <TopWrap>
         <AddButton text="创建迭代" />
         <Space size={20}>
-          <Popover placement="bottom" content={sortContent}>
+          <Popover
+            placement="bottom"
+            content={sortContent}
+            getPopupContainer={node => node}
+          >
             <IconWrap type="sort" />
           </Popover>
           <Divider style={{ margin: 0, height: 20 }} type="vertical" />
-          <Popover placement="bottomRight" content={filterContent}>
+          <Popover
+            placement="bottomRight"
+            content={filterContent}
+            getPopupContainer={node => node}
+          >
             <IconWrap type="filter" />
           </Popover>
         </Space>

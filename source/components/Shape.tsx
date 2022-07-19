@@ -88,7 +88,7 @@ const shape = [
   { id: 4, name: '已关闭' },
 ]
 type ShapeProps = {
-  record: Record<string, number | string>
+  record?: Record<string, number | string>
   hide: () => void
 }
 export const ShapeContent = (props: ShapeProps) => {
@@ -106,16 +106,16 @@ export const ShapeContent = (props: ShapeProps) => {
           <div key={item.id}>
             <StyledShape
               style={{
-                color: item.id === record.level ? 'rgba(40, 119, 255, 1)' : '',
+                color: item.id === record?.level ? 'rgba(40, 119, 255, 1)' : '',
                 border:
-                  item.id === record.level
+                  item.id === record?.level
                     ? ' 1px solid rgba(40, 119, 255, 1)'
                     : '',
               }}
             >
               {item.name}
             </StyledShape>
-            {item.id === record.level}
+            {item.id === record?.level}
           </div>
         ))}
       </Left>
