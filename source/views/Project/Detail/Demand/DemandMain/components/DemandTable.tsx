@@ -3,6 +3,9 @@ import { Pagination, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import { ShapeContent } from '@/components/Shape'
+import { LevelContent } from '@/components/Level'
+import PopConfirm from '@/components/Popconfirm'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -66,7 +69,7 @@ export default (props: Props) => {
                 getPopupContainer={node => node}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: '#BBBDBF' }}
+                  style={{ fontSize: 16, color: '#2877FF' }}
                   type="more"
                 />
               </Dropdown>
@@ -90,6 +93,18 @@ export default (props: Props) => {
     {
       title: '优先级',
       dataIndex: 'iteration',
+      render: (text: string, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide: () => void }) => {
+              return <LevelContent hide={onHide} record={record}></LevelContent>
+            }}
+            record={record}
+          >
+            {text}
+          </PopConfirm>
+        )
+      },
       sorter: {
         compare: (a: any, b: any) => a.iteration - b.iteration,
       },
@@ -104,8 +119,17 @@ export default (props: Props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: string) => {
-        return <StatusWrap>{text}</StatusWrap>
+      render: (text: string, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide: () => void }) => {
+              return <ShapeContent hide={onHide} record={record}></ShapeContent>
+            }}
+            record={record}
+          >
+            <StatusWrap>{text}</StatusWrap>
+          </PopConfirm>
+        )
       },
     },
     {

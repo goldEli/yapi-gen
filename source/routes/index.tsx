@@ -59,6 +59,20 @@ const routes = [
       {
         path: '/Detail',
         element: lazy(() => import('@/views/Project/Detail')),
+        children: [
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Project/Detail/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Project/Detail/Iteration')),
+          },
+          {
+            path: 'Setting',
+            element: lazy(() => import('@/views/Project/Detail/Setting')),
+          },
+        ],
       },
       {
         path: '',

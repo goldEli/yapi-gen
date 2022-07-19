@@ -1,28 +1,16 @@
 import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
-import Demand from './Demand'
-import { useSearchParams } from 'react-router-dom'
-import Iteration from './Iteration'
-import Setting from './Setting'
+import { Outlet } from 'react-router-dom'
 
-const Wrap = styled.div({})
+const Wrap = styled.div({
+  height: '100%',
+})
 
 export default () => {
-  const [searchParams] = useSearchParams()
-  const activeType = searchParams.get('type') || 'demand'
-  const content = () => {
-    if (activeType.includes('demand')) {
-      return <Demand />
-    } else if (activeType.includes('set')) {
-      return <Setting />
-    } else {
-      return <Iteration />
-    }
-  }
   return (
     <Wrap>
-      <CommonOperation activeType={activeType} />
-      {content()}
+      <CommonOperation />
+      <Outlet></Outlet>
     </Wrap>
   )
 }

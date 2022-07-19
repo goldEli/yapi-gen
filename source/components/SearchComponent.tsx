@@ -31,7 +31,7 @@ interface Props {
 }
 
 export default (props: Props) => (
-  <Space size={16}>
+  <Space size={24}>
     <AddButton text={props.text} onChangeClick={props.onChangeVisible} />
     <MyInput
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
@@ -46,4 +46,3 @@ export default (props: Props) => (
     />
   </Space>
 )
- 

@@ -48,7 +48,7 @@ export default () => {
   }
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
@@ -76,7 +76,10 @@ export default () => {
       </div>
       <Content>
         {isGrid ? (
-          <MainGrid onChangeOperation={onChangeOperation} />
+          <MainGrid
+            onChangeVisible={() => setVisible(true)}
+            onChangeOperation={onChangeOperation}
+          />
         ) : (
           <MainTable onChangeOperation={onChangeOperation} />
         )}

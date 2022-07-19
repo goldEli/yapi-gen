@@ -90,22 +90,22 @@ const Item = styled.div<{ activeIdx: boolean }>(
 export default () => {
   const [visible, setVisible] = useState(false)
   const [searchParams] = useSearchParams()
-  const type = searchParams.get('type') || 'iterationMain'
+  const type = searchParams.get('type')
   const navigate = useNavigate()
   const childContent = () => {
-    if (type === 'iterationInfo') {
+    if (type === 'info') {
       return <IterationInfo />
-    } else if (type === 'iterationNeed') {
+    } else if (type === 'demand') {
       return <Demand />
     } else {
       return <ChangeRecord />
     }
   }
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail?type=${val}`)
+    navigate(`/Detail/Iteration?type=${val}`)
   }
   const content = () => {
-    if (type === 'iterationMain') {
+    if (!type) {
       return <IterationMain onChangeVisible={() => setVisible(!visible)} />
     } else {
       return (
@@ -125,21 +125,21 @@ export default () => {
           <ContentWrap>
             <MainWrap size={32}>
               <Item
-                onClick={() => onChangeIdx('iterationInfo')}
-                activeIdx={type === 'iterationInfo'}
+                onClick={() => onChangeIdx('info')}
+                activeIdx={type === 'info'}
               >
                 <span>迭代概况</span>
               </Item>
               <Item
-                onClick={() => onChangeIdx('iterationNeed')}
-                activeIdx={type === 'iterationNeed'}
+                onClick={() => onChangeIdx('demand')}
+                activeIdx={type === 'demand'}
               >
                 <span>需求</span>
                 <div>6</div>
               </Item>
               <Item
-                onClick={() => onChangeIdx('iterationRecord')}
-                activeIdx={type === 'iterationRecord'}
+                onClick={() => onChangeIdx('record')}
+                activeIdx={type === 'record'}
               >
                 <span>变更记录</span>
                 <div>12</div>

@@ -69,7 +69,7 @@ const AvatarWrap = styled.div({
 export default (props: Props) => {
   const navigate = useNavigate()
   return (
-    <Wrap onClick={() => navigate('/Detail?type=demandInfo')}>
+    <Wrap onClick={() => navigate('/Detail/demand?type=info')}>
       <WrapBorder />
       <MainWrap>
         <OmitText width={200}>{props.item.name}</OmitText>
