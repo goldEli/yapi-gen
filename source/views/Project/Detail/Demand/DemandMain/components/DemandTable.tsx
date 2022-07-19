@@ -132,7 +132,13 @@ export default (props: Props) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide: () => void }) => {
-              return <LevelContent hide={onHide} record={record}></LevelContent>
+              return (
+                <LevelContent
+                  tap={() => {}}
+                  hide={onHide}
+                  record={record}
+                ></LevelContent>
+              )
             }}
             record={record}
           >
@@ -167,7 +173,13 @@ export default (props: Props) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide: () => void }) => {
-              return <ShapeContent hide={onHide} record={record}></ShapeContent>
+              return (
+                <ShapeContent
+                  tap={() => {}}
+                  hide={onHide}
+                  record={record}
+                ></ShapeContent>
+              )
             }}
             record={record}
           >

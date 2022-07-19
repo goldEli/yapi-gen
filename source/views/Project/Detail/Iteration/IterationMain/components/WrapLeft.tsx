@@ -9,6 +9,7 @@ import {
   Input,
   DatePicker,
   Checkbox,
+  Menu,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -105,6 +106,7 @@ const list = [
 
 interface Props {
   isShowLeft: boolean
+  onChangeVisible(): void
 }
 
 const sortList = [
@@ -162,10 +164,41 @@ export default (props: Props) => {
       </Form>
     </div>
   )
+
+  const onChangeEdit = () => {
+    props.onChangeVisible()
+  }
+
+  const onChangeEnd = () => {
+    //
+  }
+
+  const onChangeDelete = () => {
+    //
+  }
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={onChangeEdit}> 编辑 </div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={onChangeEnd}> 结束 </div>,
+        },
+        {
+          key: '3',
+          label: <div onClick={onChangeDelete}> 删除 </div>,
+        },
+      ]}
+    />
+  )
   return (
     <Left isShowLeft={props.isShowLeft}>
       <TopWrap>
-        <AddButton text="创建迭代" />
+        <AddButton text="创建迭代" onChangeClick={props.onChangeVisible} />
         <Space size={20}>
           <Popover
             placement="bottom"
@@ -186,6 +219,7 @@ export default (props: Props) => {
       </TopWrap>
       {list.map((item, index) => (
         <IterationCard
+          menu={menu}
           key={`${item.name}_${index}`}
           item={item}
         ></IterationCard>

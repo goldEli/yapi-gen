@@ -72,43 +72,11 @@ const DetailWrap = styled.div({
 
 interface Props {
   item: object
-  onChangeEdit?(): void
-  onChangeDelete?(): void
-  onChangeEnd?(): void
+  menu: React.ReactElement
 }
 
 export default (props: Props) => {
   const navigate = useNavigate()
-
-  const menuClick = (e: any, type: string) => {
-    e.stopPropagation()
-    if (type === 'edit') {
-      props.onChangeEdit?.()
-    } else if (type === 'end') {
-      props.onChangeEnd?.()
-    } else {
-      props.onChangeDelete?.()
-    }
-  }
-
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => menuClick(e, 'edit')}> 编辑 </div>,
-        },
-        {
-          key: '2',
-          label: <div onClick={e => menuClick(e, 'end')}> 结束 </div>,
-        },
-        {
-          key: '3',
-          label: <div onClick={e => menuClick(e, 'delete')}> 删除 </div>,
-        },
-      ]}
-    />
-  )
   return (
     <CardWrap>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -129,7 +97,11 @@ export default (props: Props) => {
         <span>详情</span>
         <IconFont type="right" />
       </DetailWrap>
-      <Dropdown overlay={menu} placement="bottomCenter" trigger={['hover']}>
+      <Dropdown
+        overlay={props.menu}
+        placement="bottomCenter"
+        trigger={['hover']}
+      >
         <MoreWrap type="more" />
       </Dropdown>
     </CardWrap>

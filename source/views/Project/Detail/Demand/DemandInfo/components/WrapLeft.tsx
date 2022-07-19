@@ -154,7 +154,7 @@ export default () => {
         <Label>优先级</Label>
         <Popconfirm
           content={({ onHide }: { onHide: () => void }) => {
-            return <LevelContent hide={onHide}></LevelContent>
+            return <LevelContent tap={() => {}} hide={onHide}></LevelContent>
           }}
         >
           <IconFont type="knockdown" />

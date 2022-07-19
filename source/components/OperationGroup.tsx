@@ -1,13 +1,14 @@
-import { Divider, Space } from 'antd'
+import { Divider, Space, Dropdown, Menu } from 'antd'
 import IconFont from './IconFont'
 import styled from '@emotion/styled'
-import TableSetting from './TableSetting'
 
 interface Props {
   onChangeFilter?(): void
   onChangeGrid?(val: boolean): void
-  isGrid?: boolean | undefined
-  filterState?: boolean | undefined
+  onChangeSetting?(): void
+  isGrid: boolean | undefined
+  filterState: boolean | undefined
+  settingState: boolean | undefined
 }
 
 const SpaceWrap = styled(Space)({
@@ -32,6 +33,18 @@ const DividerWrap = styled(Divider)({
 })
 
 export default (props: Props) => {
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: (
+            <div onClick={() => props.onChangeSetting?.()}>设置显示字段</div>
+          ),
+        },
+      ]}
+    />
+  )
   return (
     <SpaceWrap size={16}>
       <IconFontWrap
@@ -51,7 +64,14 @@ export default (props: Props) => {
         onClick={props.onChangeFilter}
       />
       <DividerWrap type="vertical" />
-      <TableSetting />
+
+      <Dropdown overlay={menu}>
+        <IconFontWrap
+          active={props.settingState}
+          type="settings"
+          onClick={props.onChangeSetting}
+        />
+      </Dropdown>
     </SpaceWrap>
   )
 }

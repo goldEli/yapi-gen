@@ -1,9 +1,10 @@
-import { Modal, Form, Input, DatePicker, Select, Popover } from 'antd'
+import { Modal, Form, Input, DatePicker, Select, Popover, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -57,6 +58,13 @@ const PriorityWrap = styled.div({
       margin: '0!important',
     },
   },
+})
+
+const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
 })
 
 const priorityList = [
@@ -116,7 +124,7 @@ export default (props: Props) => {
       visible={props.visible}
       width={524}
       footer={false}
-      title=" "
+      title="创建需求"
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px' }}
     >
@@ -162,7 +170,9 @@ export default (props: Props) => {
           <Form.Item label="优先级">
             <PopConfirm
               content={({ onHide }: { onHide: () => void }) => {
-                return <LevelContent hide={onHide}></LevelContent>
+                return (
+                  <LevelContent tap={() => {}} hide={onHide}></LevelContent>
+                )
               }}
             >
               <PriorityWrap>
@@ -211,6 +221,10 @@ export default (props: Props) => {
           </Form.Item>
         </div>
       </FormWrap>
+      <ModalFooter size={16}>
+        <Button>取消</Button>
+        <Button type="primary">确认</Button>
+      </ModalFooter>
     </Modal>
   )
 }

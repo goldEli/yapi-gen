@@ -61,7 +61,10 @@ export default (props: Props) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <WrapLeft isShowLeft={isShowLeft} />
+      <WrapLeft
+        isShowLeft={isShowLeft}
+        onChangeVisible={props.onChangeVisible}
+      />
       <Right isShowLeft={isShowLeft}>
         <Operation
           isGrid={isGrid}
