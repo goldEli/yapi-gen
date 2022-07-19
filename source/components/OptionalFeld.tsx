@@ -5,6 +5,7 @@ import { css } from '@emotion/css'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 const CheckboxGroup = Checkbox.Group
 import styled from '@emotion/styled'
+import { ShowWrap } from './StyleCommon'
 
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -20,6 +21,9 @@ const CheckedItem = styled.div({
   padding: '0 8px',
   '&: hover': {
     background: ' rgba(240, 244, 250, 1)',
+    [ShowWrap.toString()]: {
+      visibility: 'visible',
+    },
   },
 })
 const Wrap = styled.div`
@@ -96,11 +100,13 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       <CheckedItem key={item.value}>
         <IconFont style={{ fontSize: 12, marginRight: '8px' }} type="move" />
         <span>{item.label}</span>
-        <IconFont
-          style={{ fontSize: 12, marginLeft: 'auto' }}
-          type="close"
-          onClick={() => del(item.value)}
-        />
+        <ShowWrap style={{ marginLeft: 'auto' }}>
+          <IconFont
+            style={{ fontSize: 12 }}
+            type="close"
+            onClick={() => del(item.value)}
+          />
+        </ShowWrap>
       </CheckedItem>
     ))
   }, [checkList, checkList2])
