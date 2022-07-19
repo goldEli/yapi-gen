@@ -31,10 +31,11 @@ export default (props: Props) => {
           <PosterComponent />
         </Form.Item>
         <Form.Item label="项目名称" required>
-          <Input placeholder="请输入项目名称" />
+          <Input maxLength={30} placeholder="请输入项目名称" />
         </Form.Item>
         <Form.Item label="项目描述">
           <Input.TextArea
+            maxLength={500}
             placeholder="请输入项目描述"
             autoSize={{ minRows: 3, maxRows: 5 }}
           />

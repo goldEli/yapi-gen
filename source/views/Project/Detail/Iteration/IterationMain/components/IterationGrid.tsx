@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Space } from 'antd'
 import DemandCard from '@/components/DemandCard'
+import projectImg from '@/assets/projectImg.png'
 
 const Content = styled.div({
   padding: 24,
@@ -25,18 +26,90 @@ interface Props {
 }
 
 const finshEdList = [
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
-  { name: '需求标题名称需求标题名称需求标题名称', demand: 5, person: 2 },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [
+      { name: '张三', avatar: '' },
+      { name: '张三', avatar: '' },
+      { name: '张三', avatar: projectImg },
+      { name: '张三', avatar: '' },
+      { name: '张三', avatar: projectImg },
+    ],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [
+      { name: '张三', avatar: projectImg },
+      { name: '张三', avatar: '' },
+      { name: '张三', avatar: projectImg },
+    ],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [
+      { name: '张三', avatar: projectImg },
+      { name: '张三', avatar: '' },
+      { name: '张三', avatar: projectImg },
+    ],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
+  {
+    name: '需求标题名称需求标题名称需求标题名称',
+    demand: 5,
+    person: [{ name: '张三', avatar: '' }],
+  },
 ]
 
 export default (props: Props) => {

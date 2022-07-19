@@ -1,14 +1,12 @@
-import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
-import ProjectInfo from './components/ProjectInfo'
-import ProjectMember from './components/ProjectMember'
-import ProjectSet from './components/ProjectSet'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import styled from '@emotion/styled'
+import { useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import posterImg from '@/assets/poster.png'
 
 const Wrap = styled.div({
+  height: '100%',
   display: 'flex',
-  height: 'calc(100% - 64px)',
 })
 
 const Side = styled.div({
@@ -31,6 +29,7 @@ const Side = styled.div({
 const Content = styled.div({
   width: 'calc(100% - 220px)',
   height: '100%',
+  overflow: 'auto',
 })
 
 const MenuWrap = styled.div({
@@ -76,26 +75,46 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
+const CompanyImg = styled.img({
+  width: '100%',
+  height: 88,
+  marginBottom: 32,
+  borderRadius: 6,
+  padding: '0 16px',
+})
+
 const SideList = [
-  { name: '项目信息', icon: 'file-text', content: <ProjectInfo /> },
-  { name: '项目成员', icon: 'team', content: <ProjectMember /> },
-  { name: '项目权限组', icon: 'lock', content: <ProjectSet /> },
+  { name: '公司信息', icon: 'file-text', path: '' },
+  { name: '权限管理', icon: 'safety-certificate', path: 'permission' },
+  { name: '操作日志', icon: 'file-protect', path: 'operation' },
+  { name: '登录日志', icon: 'solution', path: 'loginLog' },
 ]
+
+interface MenuList {
+  icon: string
+  name: string
+  path: string
+}
 
 export default () => {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const activeTabs = Number(searchParams.get('type')) || 0
+  const urlParams = new URL(window.location.href)
+  const pathname = urlParams?.pathname
+  const nowPath = pathname.split('/')[2] || ''
+  const changeActive = (value: MenuList) => {
+    navigate(value.path)
+  }
+
   return (
     <Wrap>
       <Side>
-        <img src={posterImg} alt="" />
+        <CompanyImg src={posterImg} />
         <MenuWrap>
-          {SideList.map((item, index) => (
+          {SideList.map(item => (
             <MenuItem
-              onClick={() => navigate(`/Detail/Setting?type=${index}`)}
+              onClick={() => changeActive(item)}
               key={item.name}
-              isActive={index === activeTabs}
+              isActive={nowPath === item.path}
             >
               <IconFont type={item.icon} />
               <div>{item.name}</div>
@@ -103,7 +122,9 @@ export default () => {
           ))}
         </MenuWrap>
       </Side>
-      <Content>{SideList[activeTabs].content}</Content>
+      <Content>
+        <Outlet></Outlet>
+      </Content>
     </Wrap>
   )
 }

@@ -104,9 +104,14 @@ export default () => {
   const onChangeIdx = (val: string) => {
     navigate(`/Detail/Demand?type=${val}`)
   }
+
+  const MoreClick = (e: any) => {
+    e.stopPropagation()
+    setVisible(!visible)
+  }
   const content = () => {
     if (!type) {
-      return <DemandMain onChangeVisible={() => setVisible(!visible)} />
+      return <DemandMain onChangeVisible={(e: any) => MoreClick(e)} />
     } else {
       return (
         <>

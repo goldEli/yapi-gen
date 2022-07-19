@@ -1,8 +1,9 @@
 import { Modal, Form, Input, DatePicker, Select, Popover } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
-import Popconfirm from '@/components/Popconfirm'
+import PopConfirm from '@/components/Popconfirm'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -40,6 +41,30 @@ const FormWrap = styled(Form)({
     minHeight: 'inherit',
   },
 })
+
+const PriorityWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  div: {
+    color: '#323233',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  '.anticon': {
+    fontSize: 16,
+    svg: {
+      margin: '0!important',
+    },
+  },
+})
+
+const priorityList = [
+  { name: '高', type: 'tall', color: '#ff5c5e' },
+  { name: '中', type: 'middle', color: '#fa9746' },
+  { name: '低', type: 'low', color: '#43ba9a' },
+  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
+]
 
 interface Props {
   visible: boolean
@@ -135,13 +160,22 @@ export default (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont type="carryout" />
           <Form.Item label="优先级">
-            <Popconfirm
+            <PopConfirm
               content={({ onHide }: { onHide: () => void }) => {
                 return <LevelContent hide={onHide}></LevelContent>
               }}
             >
-              123
-            </Popconfirm>
+              <PriorityWrap>
+                <IconFont
+                  type={priorityList[0].type}
+                  style={{
+                    fontSize: 16,
+                    color: `${priorityList[0].color}!important`,
+                  }}
+                />
+                <div>{priorityList[0].name}</div>
+              </PriorityWrap>
+            </PopConfirm>
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

@@ -22,7 +22,7 @@ const List = [
     name: '需求标题名称',
     demand: 8,
     iteration: '敏捷版本V1.0',
-    priority: 0,
+    priority: 2,
     dealName: '何飞',
     status: '进行中',
     createTime: '2022-02-32',
@@ -32,7 +32,7 @@ const List = [
 ]
 
 interface Props {
-  onChangeVisible(): void
+  onChangeVisible(e: any): void
 }
 
 export default (props: Props) => {
@@ -43,7 +43,7 @@ export default (props: Props) => {
       items={[
         {
           key: '1',
-          label: <div onClick={props.onChangeVisible}>编辑</div>,
+          label: <div onClick={e => props.onChangeVisible(e)}>编辑</div>,
         },
         {
           key: '2',
@@ -58,7 +58,7 @@ export default (props: Props) => {
       <Operation
         isGrid={isGrid}
         onChangeGrid={setIsGrid}
-        onChangeVisible={props.onChangeVisible}
+        onChangeVisible={(e: any) => props.onChangeVisible(e)}
       />
       {isGrid ? (
         <DemandGrid menu={menu} />

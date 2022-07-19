@@ -24,7 +24,7 @@ const StickyWrap = styled.div({
 interface Props {
   isGrid: boolean
   onChangeGrid(val: boolean): void
-  onChangeVisible?(): void
+  onChangeVisible?(e?: any): void
 }
 
 export default (props: Props) => {
@@ -36,7 +36,7 @@ export default (props: Props) => {
     <StickyWrap>
       <OperationWrap>
         <SearchComponent
-          onChangeVisible={props.onChangeVisible}
+          onChangeVisible={(e: any) => props.onChangeVisible?.(e)}
           onChangeSearch={onChangeSearch}
           placeholder="搜索项目或任务"
           text="创建需求"

@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, Avatar } from 'antd'
+import { Dropdown, Modal } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import { useNavigate } from 'react-router-dom'
 
 interface Item {
   name: string
-  person: number
+  person: { name: string; avatar: string }[]
   demand: number
 }
 
@@ -38,6 +38,7 @@ const Wrap = styled.div({
   overflow: 'hidden',
   position: 'relative',
   marginTop: 16,
+  cursor: 'pointer',
   '&: hover': {
     [MoreWrap.toString()]: {
       display: 'block',
@@ -66,35 +67,106 @@ const AvatarWrap = styled.div({
   marginTop: 12,
 })
 
+const NameGroup = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  '.item': {
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    overflow: 'hidden',
+    boxSizing: 'border-box',
+    background: '#619BFF',
+    border: '1px solid white',
+    color: 'white',
+    fontSize: 12,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  '.more': {
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    border: '1px solid white',
+    background: '#A8C8FF',
+    fontSize: 16,
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: -10,
+    zIndex: 4,
+  },
+})
+
 export default (props: Props) => {
   const navigate = useNavigate()
+  const [visible, setVisible] = useState(false)
+
+  const onDemandClick = (e: any) => {
+    e.stopPropagation()
+    setVisible(true)
+  }
+
   return (
-    <Wrap onClick={() => navigate('/Detail/demand?type=info')}>
-      <WrapBorder />
-      <MainWrap>
-        <OmitText width={200}>{props.item.name}</OmitText>
-        <AvatarWrap>
-          <Avatar />
-          <div
-            style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-          >
-            <IconFont
-              type="apartment"
-              style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
-            />
-            <span style={{ color: '#323233', fontSize: 16 }}>
-              {props.item.demand}
-            </span>
+    <div>
+      <Wrap>
+        <WrapBorder />
+        <MainWrap>
+          <div onClick={() => navigate('/Detail/Demand?type=info')}>
+            <OmitText width={200}>{props.item.name}</OmitText>
           </div>
-        </AvatarWrap>
-      </MainWrap>
-      <Dropdown
-        overlay={props.menu}
-        placement="bottomCenter"
-        trigger={['hover']}
-      >
-        <MoreWrap type="more" />
-      </Dropdown>
-    </Wrap>
+          <AvatarWrap>
+            <NameGroup>
+              {props.item.person.slice(0, 4).map((item, index) => (
+                <div
+                  className="box"
+                  key={item.name}
+                  style={{ marginLeft: index ? -10 : 0, zIndex: index }}
+                >
+                  <div
+                    className="item"
+                    style={{ background: index ? '#619BFF' : '#2877FF' }}
+                  >
+                    {item.name}
+                  </div>
+                </div>
+              ))}
+              <div className="more">
+                <IconFont type="more" />
+              </div>
+            </NameGroup>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={e => onDemandClick(e)}
+            >
+              <IconFont
+                type="apartment"
+                style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+              />
+              <span style={{ color: '#323233', fontSize: 16 }}>
+                {props.item.demand}
+              </span>
+            </div>
+          </AvatarWrap>
+        </MainWrap>
+        <Dropdown
+          overlay={props.menu}
+          placement="bottomCenter"
+          trigger={['hover']}
+        >
+          <MoreWrap type="more" />
+        </Dropdown>
+      </Wrap>
+
+      <Modal visible={visible} onCancel={() => setVisible(false)}>
+        sdsdsd
+      </Modal>
+    </div>
   )
 }

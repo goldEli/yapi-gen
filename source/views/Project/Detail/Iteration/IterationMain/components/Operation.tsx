@@ -3,6 +3,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
+import { Popover, Space } from 'antd'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -27,7 +28,6 @@ const IterationInfo = styled.div({
 })
 
 const StatusTag = styled.div({
-  marginRight: 8,
   height: 22,
   borderRadius: 6,
   textAlign: 'center',
@@ -36,6 +36,7 @@ const StatusTag = styled.div({
   color: '#43BA9A',
   fontSize: 12,
   background: '#EDF7F4',
+  cursor: 'pointer',
 })
 
 interface Props {
@@ -47,6 +48,18 @@ interface Props {
 
 export default (props: Props) => {
   const [filterState, setFilterState] = useState(true)
+
+  const changeStatus = (
+    <Space
+      size={8}
+      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    >
+      <StatusTag>开启中</StatusTag>
+      <StatusTag style={{ color: '#969799', background: '#F2F2F4' }}>
+        已结束
+      </StatusTag>
+    </Space>
+  )
 
   return (
     <StickyWrap>
@@ -68,13 +81,22 @@ export default (props: Props) => {
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             2022.06.17-2022.07.30
           </span>
-          <StatusTag>开启中</StatusTag>
+          <Popover placement="bottom" content={changeStatus}>
+            <StatusTag>
+              开启中
+              <IconFont
+                type="down-60kl9fcg"
+                style={{ fontSize: 12, marginLeft: 4 }}
+              />
+            </StatusTag>
+          </Popover>
           <IconFont
             type="detail"
             style={{
               fontSize: 16,
               color: '#969799',
               cursor: 'pointer',
+              marginLeft: 8,
             }}
           />
         </IterationInfo>
