@@ -91,7 +91,7 @@ export default (props: Props) => {
       visible={props.visible}
       width={524}
       footer={false}
-      title="创建需求"
+      title=" "
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px' }}
     >

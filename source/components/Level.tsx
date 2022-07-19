@@ -56,16 +56,15 @@ const level = [
 
 type LevelProps = {
   record?: Record<string, number | string>
-  hide?: () => void
-  tap(id: number): void
+  hide: () => void
+  tap: (id: any) => void
 }
 export const LevelContent = (props: LevelProps) => {
   const { record, hide, tap } = props
   const changeState = (value: any) => {
     tap(value.id)
-    if (hide) {
-      hide()
-    }
+
+    hide()
   }
   return (
     <Contain>

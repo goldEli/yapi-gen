@@ -14,6 +14,7 @@ import {
   TabsHehavior,
   LabNumber,
   tabCss,
+  StyledTable,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
@@ -304,16 +305,7 @@ export default () => {
     setTitleList(list)
     setTitleList2(list2)
   }
-  const onTableRow = useCallback((row: any, index?: number) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.key)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
+
   const onChange = (key: string) => {
     console.log(key)
   }
@@ -370,9 +362,8 @@ export default () => {
       <SearchLine></SearchLine>
       <StaffTableWrap>
         {!tableState && (
-          <Table
+          <StyledTable
             rowKey="key"
-            onRow={onTableRow}
             columns={selectColum}
             dataSource={data}
             pagination={false}
@@ -383,9 +374,8 @@ export default () => {
           moreData.map(i => (
             <div>
               <div className={titleCss}>{i.name}</div>
-              <Table
+              <StyledTable
                 rowKey="key"
-                onRow={onTableRow}
                 columns={selectColum}
                 dataSource={i.data}
                 pagination={false}

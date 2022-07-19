@@ -96,7 +96,7 @@ const shape = [
 type ShapeProps = {
   record: Record<string, number | string>
   hide: () => void
-  tap?: (value: any, active: any) => void
+  tap: (value: any, active: any) => void
 }
 export const ShapeContent = (props: ShapeProps) => {
   const [form] = Form.useForm()

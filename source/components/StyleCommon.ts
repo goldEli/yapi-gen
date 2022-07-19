@@ -225,7 +225,16 @@ const StyledTable = styled(Table)({
     },
   },
 })
+const SecondTitle = styled.span`
+  height: 24px;
+  padding-left: 8px;
+  border-left: 3px solid rgba(40, 119, 255, 1);
+  color: rgba(0, 0, 0, 1);
+  font-size: 16px;
+  font-weight: bold;
+`
 export {
+  SecondTitle,
   TableWrap,
   StylePagination,
   StaffHeader,
