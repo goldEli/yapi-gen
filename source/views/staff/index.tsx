@@ -67,7 +67,7 @@ export const plainOptions2 = [
 ]
 export default () => {
   const navigate = useNavigate()
-  const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
+  const [isShow, setIsShow] = useState<boolean>(false)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [staffPersonalVisible, setStaffPersonalVisible] =
     useState<boolean>(false)
@@ -92,7 +92,6 @@ export default () => {
     setStaffPersonalVisible(false)
   }
   const columns = useDynamicColumns({
-    rowActiveIndex,
     controlStaffPersonalVisible,
   })
 
@@ -160,8 +159,14 @@ export default () => {
           />
         </div>
         <div style={{ marginRight: '40px', display: 'flex' }}>
-          <SetButton>
-            <IconFont type="filter" style={{ fontSize: 20 }} />
+          <SetButton onClick={() => setIsShow(!isShow)}>
+            <IconFont
+              type="filter"
+              style={{
+                fontSize: 20,
+                color: isShow ? 'rgba(40, 119, 255, 1)' : '',
+              }}
+            />
           </SetButton>
           <Dropdown overlay={menu} placement="bottomLeft">
             <SetButton>
@@ -174,10 +179,11 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-
-      <SearchLine>
-        <TableFilter></TableFilter>
-      </SearchLine>
+      {isShow && (
+        <SearchLine>
+          <TableFilter></TableFilter>
+        </SearchLine>
+      )}
 
       <StaffTableWrap>
         <StyledTable
