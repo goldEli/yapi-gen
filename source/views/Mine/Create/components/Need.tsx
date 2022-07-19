@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
@@ -14,11 +20,13 @@ import {
   TabsHehavior,
   LabNumber,
   tabCss,
+  ShowWrap,
+  StyledTable,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from './CreatePrejectTableColum'
+import { useDynamicColumns} from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 
 const data = [
@@ -78,9 +86,11 @@ const tabsList = [
   { name: '创建的项目', type: 1 },
   { name: '创建的需求', type: 2 },
 ]
+
+
 export default () => {
   const [active, setActive] = useState(1)
-  const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
+
   const navigate = useNavigate()
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
@@ -93,8 +103,16 @@ export default () => {
     'dapao',
     'tanke',
   ])
+  const levelTap = (value: any) => {
+    console.log(value)
+  }
+  const shapeTap = (value: any, active: any) => {
+    console.log(value, active)
+  }
+
   const columns = useDynamicColumns({
-    rowActiveIndex,
+    levelTap,
+    shapeTap,
   })
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
     console.log(page, size)
@@ -128,16 +146,7 @@ export default () => {
     setTitleList(list)
     setTitleList2(list2)
   }
-  const onTableRow = useCallback((row: any, index?: number) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(index)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
+
   const onChange = (key: string) => {
     console.log(key)
   }
@@ -184,9 +193,8 @@ export default () => {
       </Hehavior>
       <SearchLine></SearchLine>
       <StaffTableWrap>
-        <Table
+        <StyledTable
           rowKey="key"
-          onRow={onTableRow}
           columns={selectColum}
           dataSource={data}
           pagination={false}

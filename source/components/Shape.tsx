@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Select, Button } from 'antd'
+import { Select, Button, Form, Input } from 'antd'
 import { css } from '@emotion/css'
 const { Option } = Select
 import IconFont from '@/components/IconFont'
@@ -49,6 +49,7 @@ const Contain = styled.div`
   display: flex;
 `
 const StyledShape = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,6 +68,11 @@ const StyledShape = styled.div`
     color: rgba(40, 119, 255, 1);
   }
 `
+const FormWrap = styled.div`
+  margin-top: 48px;
+  box-sizing: border-box;
+  padding-right: 24px;
+`
 const ButtonFooter = styled.div`
   height: 56px;
   display: flex;
@@ -78,8 +84,8 @@ const ButtonFooter = styled.div`
 `
 const Close = styled.span`
   position: absolute;
-  right: 24px;
-  top: 6px;
+  right: 10px;
+  top: 10px;
 `
 const shape = [
   { id: 1, name: '规划中' },
@@ -90,27 +96,29 @@ const shape = [
 type ShapeProps = {
   record: Record<string, number | string>
   hide: () => void
+  tap?: (value: any, active: any) => void
 }
 export const ShapeContent = (props: ShapeProps) => {
-  const { record, hide } = props
+  const [form] = Form.useForm()
+  const { record, hide, tap } = props
 
-  const [text, setText] = useState('')
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
+  const [active, setActive] = useState(record.level)
+
+  const confirm = async () => {
+    let res = await form.validateFields()
+    tap(res, active)
+    hide()
   }
-
   return (
     <Contain>
       <Left>
         {shape.map(item => (
-          <div key={item.id}>
+          <div onClick={() => setActive(item.id)} key={item.id}>
             <StyledShape
               style={{
-                color: item.id === record.level ? 'rgba(40, 119, 255, 1)' : '',
+                color: item.id === active ? 'rgba(40, 119, 255, 1)' : '',
                 border:
-                  item.id === record.level
-                    ? ' 1px solid rgba(40, 119, 255, 1)'
-                    : '',
+                  item.id === active ? ' 1px solid rgba(40, 119, 255, 1)' : '',
               }}
             >
               {item.name}
@@ -120,30 +128,38 @@ export const ShapeContent = (props: ShapeProps) => {
         ))}
       </Left>
       <Right>
-        <div className={selectCss}>
-          <span style={{ marginRight: '24px' }}> 处理人</span>
-          <Select
-            defaultValue="lucy"
-            style={{ width: 240 }}
-            onChange={handleChange}
-          >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="disabled" disabled>
-              Disabled
-            </Option>
-            <Option value="Yiminghe">yiminghe</Option>
-          </Select>
-        </div>
-        <div className={textareaCss}>
-          <span style={{ marginRight: '38px' }}>评论</span>
-          <textarea
-            className={areaCss}
-            placeholder="请输入评论处理意见"
-          ></textarea>
-        </div>
+        <FormWrap>
+          <Form form={form}>
+            <Form.Item
+              labelCol={{ span: 5 }}
+              label="处理人"
+              name="username"
+              rules={[
+                { required: true, message: 'Please input your username!' },
+              ]}
+            >
+              <Select placeholder="请选择" allowClear>
+                <Option value="male">male</Option>
+                <Option value="female">female</Option>
+                <Option value="other">other</Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item labelCol={{ span: 5 }} label="评论" name="password">
+              <Input.TextArea
+                maxLength={200}
+                style={{ maxHeight: '132px', minHeight: '132px' }}
+              />
+            </Form.Item>
+          </Form>
+        </FormWrap>
+
         <ButtonFooter>
-          <Button style={{ marginLeft: '16px' }} type="primary">
+          <Button
+            onClick={confirm}
+            style={{ marginLeft: '16px' }}
+            type="primary"
+          >
             流转
           </Button>
           <Button onClick={() => hide()}>取消</Button>

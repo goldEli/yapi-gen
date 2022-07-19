@@ -16,6 +16,7 @@ import {
   MyInput,
   SearchLine,
   SetButton,
+  StyledTable,
 } from '@/components/StyleCommon'
 import TableFilter from '@/components/TableFilter'
 
@@ -107,16 +108,6 @@ export default () => {
     }
     return newList
   }, [titleList, columns])
-  const onTableRow = useCallback((row: any, index?: number) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(index)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -189,9 +180,8 @@ export default () => {
       </SearchLine>
 
       <StaffTableWrap>
-        <Table
+        <StyledTable
           rowKey="key"
-          onRow={onTableRow}
           columns={selectColum}
           dataSource={data}
           pagination={false}

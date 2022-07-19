@@ -80,7 +80,7 @@ export default () => {
   useEffect(() => {}, [])
   return (
     <ChartsWrap>
-      <div className={titleCss}>项目概况</div>
+      <div className={titleCss}>员工概况</div>
       <HomeWrap>
         <ChartsItem>
           <span className={title1Css}>16</span>
@@ -103,7 +103,7 @@ export default () => {
           <span className={title2Css}>公司项目</span>
         </ChartsItem>
       </HomeWrap>
-      <div className={chartsTitle}>项目进度分布</div>
+      <div className={chartsTitle}>职位人数分布</div>
       <DemoColumn></DemoColumn>
     </ChartsWrap>
   )

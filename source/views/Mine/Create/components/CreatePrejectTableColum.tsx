@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu } from 'antd'
+import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
@@ -6,10 +6,13 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 
+import { ShowWrap } from '@/components/StyleCommon'
+
 const flexCss = css`
   display: flex;
   align-items: center;
 `
+
 const StyledShape = styled.div`
   display: flex;
   align-items: center;
@@ -101,12 +104,7 @@ export const useDynamicColumns = (state: any) => {
         )
         return (
           <div className={flexCss}>
-            <div
-              style={{
-                visibility:
-                  index === state.rowActiveIndex ? 'visible' : 'hidden',
-              }}
-            >
+            <ShowWrap>
               <Dropdown overlay={menu} placement="bottomLeft">
                 <IconFont
                   type="more
@@ -114,7 +112,7 @@ export const useDynamicColumns = (state: any) => {
                   style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
                 />
               </Dropdown>
-            </div>
+            </ShowWrap>
             <SetHead>{text}</SetHead>
             <span>{text}</span>
           </div>
@@ -136,16 +134,24 @@ export const useDynamicColumns = (state: any) => {
       title: '3',
       dataIndex: 'shape',
       key: 'address',
-      render: (text: any, record: any) => (
-        <Pop
-          content={({ onHide }: { onHide: () => void }) => {
-            return <ShapeContent hide={onHide} record={record}></ShapeContent>
-          }}
-          record={record}
-        >
-          <StyledShape>{text}</StyledShape>
-        </Pop>
-      ),
+      render: (text: any, record: any) => {
+        return (
+          <Pop
+            content={({ onHide }: { onHide: () => void }) => {
+              return (
+                <ShapeContent
+                  hide={onHide}
+                  tap={state.shapeTap}
+                  record={record}
+                ></ShapeContent>
+              )
+            }}
+            record={record}
+          >
+            <StyledShape>{text}</StyledShape>
+          </Pop>
+        )
+      },
     },
     {
       title: '4',
@@ -182,19 +188,19 @@ export const useDynamicColumns = (state: any) => {
             })}
           </div>
           <Pop
+            show
             content={({ onHide }: { onHide: () => void }) => (
-              <LevelContent hide={onHide} record={record}></LevelContent>
+              <LevelContent
+                tap={state.levelTap}
+                hide={onHide}
+                record={record}
+              ></LevelContent>
             )}
             record={record}
           >
-            <IconFont
-              style={{
-                visibility:
-                  index === state.rowActiveIndex ? 'visible' : 'hidden',
-                fontSize: 20,
-              }}
-              type="down-60kl9fcg"
-            />
+            <ShowWrap>
+              <IconFont type="down-60kl9fcg" />
+            </ShowWrap>
           </Pop>
         </div>
       ),

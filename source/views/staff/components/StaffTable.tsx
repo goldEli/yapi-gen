@@ -5,6 +5,7 @@ import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
+import { ShowWrap } from '@/components/StyleCommon'
 
 const flexCss = css`
   display: flex;
@@ -54,11 +55,8 @@ export const useDynamicColumns = (state: any) => {
         )
         return (
           <div className={flexCss}>
-            <div
-              style={{
-                visibility:
-                  index === state.rowActiveIndex ? 'visible' : 'hidden',
-              }}
+            <ShowWrap
+             
             >
               <Dropdown overlay={menu} placement="bottomLeft">
                 <IconFont
@@ -67,7 +65,7 @@ export const useDynamicColumns = (state: any) => {
                   style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
                 />
               </Dropdown>
-            </div>
+            </ShowWrap>
             <SetHead>{text}</SetHead>
             <span>{text}</span>
           </div>

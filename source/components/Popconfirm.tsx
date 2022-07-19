@@ -5,6 +5,7 @@ type PopConfirmProps = {
   children: ReactNode
   content: any
   record?: Record<string, string | number>
+  show?: boolean
   // onHide
 }
 const Popconfirm = (props: PopConfirmProps) => {
@@ -17,14 +18,13 @@ const Popconfirm = (props: PopConfirmProps) => {
     setVisible(false)
   }
 
-  // content={Content(props.record, hide)}
-  // content={() => <Content record={props.record} hide={hide}></Content>}
   return (
     <Popover
       placement="bottomLeft"
       trigger="click"
       visible={visible}
       onVisibleChange={handleVisibleChange}
+      getPopupContainer={n => (props.show ? n : document.body)}
       content={<PropsContent onHide={hide} />}
     >
       {props.children}

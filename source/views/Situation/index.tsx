@@ -6,6 +6,9 @@ import Project from './components/Project'
 import { Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
+import Staff from './components/Staff'
+import Need from './components/Need'
+import Iteration from './components/Iteration'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -60,9 +63,9 @@ export default () => {
       </Head>
       <Wrap>
         <Project></Project>
-        <Project></Project>
-        <Project></Project>
-        <Project></Project>
+        <Staff></Staff>
+        <Need></Need>
+        <Iteration></Iteration>
       </Wrap>
       <CompanyModal
         visible={companyModalVisible}
