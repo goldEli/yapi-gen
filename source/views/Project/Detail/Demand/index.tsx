@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button } from 'antd'
+import { ShapeContent } from '@/components/Shape'
+import PopConfirm from '@/components/Popconfirm'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -118,7 +120,9 @@ export default () => {
           <DemandInfoWrap>
             <NameWrap>
               <span>【ID466897】需求名称xxxxxx</span>
-              <div>实现中</div>
+              <PopConfirm>
+                <div>实现中</div>
+              </PopConfirm>
             </NameWrap>
             <Space size={16}>
               <Button type="primary" onClick={() => setVisible(!visible)}>

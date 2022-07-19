@@ -61,6 +61,20 @@ const rangPicker = css`
     margin-right: 0;
   }
 `
+const DelButton = styled.div`
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #9b9daa;
+  position: absolute;
+  right: -7px;
+  top: -7px;
+  width: 15px;
+  height: 15px;
+  visibility: hidden;
+`
 const SelectWrapBedeck = styled.div`
   margin-right: 16px;
   position: relative;
@@ -72,20 +86,11 @@ const SelectWrapBedeck = styled.div`
   span {
     white-space: nowrap;
   }
+  &:hover ${DelButton.toString()} {
+    visibility: visible;
+  }
 `
-const DelButton = styled.div`
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #9b9daa;
-  position: absolute;
-  right: -15px;
-  top: -12px;
-  width: 20px;
-  height: 20px;
-`
+
 const list = [
   { name: '人员' },
   { name: '需求' },
@@ -156,7 +161,9 @@ export default (props: Props) => {
               <Option value="Yiminghe">yiminghe</Option>
             </SelectWrap>
           </Form.Item>
-          <DelButton>×</DelButton>
+          <DelButton>
+            <IconFont type="close" style={{ fontSize: '12px' }}></IconFont>
+          </DelButton>
         </SelectWrapBedeck>
 
         <Form.Item name="time">

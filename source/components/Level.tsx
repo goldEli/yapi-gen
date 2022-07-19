@@ -4,6 +4,9 @@ import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 
 const flexCss = css`
+  width: 120px;
+  box-sizing: border-box;
+  padding: 0px 16px;
   display: flex;
   align-items: center;
   &:hover {
@@ -53,15 +56,24 @@ const level = [
 
 type LevelProps = {
   record?: Record<string, number | string>
-  hide?: () => void
+  hide: () => void
+  tap: (id: any) => void
 }
 export const LevelContent = (props: LevelProps) => {
-  const { record, hide } = props
-  const [text, setText] = useState('')
+  const { record, hide, tap } = props
+  const changeState = (value: any) => {
+    tap(value.id)
+
+    hide()
+  }
   return (
     <Contain>
       {level.map(item => (
-        <div className={flexCss} key={item.id}>
+        <div
+          onClick={() => changeState(item)}
+          className={flexCss}
+          key={item.id}
+        >
           {item.icon}
           <StyledShape>{item.name}</StyledShape>
           {item.id === record?.level}

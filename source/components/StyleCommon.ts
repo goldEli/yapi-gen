@@ -175,7 +175,66 @@ const SwiperWrap = styled.div`
     width: auto !important;
   }
 `
+const titleCss = css`
+  color: rgba(0, 0, 0, 1);
+  font-size: 14px;
+  font-weight: bold;
+`
+const title1Css = css`
+  color: rgba(40, 119, 255, 1);
+  font-size: 24px;
+`
+const title2Css = css`
+  color: rgba(100, 101, 102, 1);
+  font-size: 12px;
+`
+const chartsTitle = css`
+  color: rgba(100, 101, 102, 1);
+  font-size: 12px;
+  margin-bottom: 10px;
+`
+const ChartsWrap = styled.div`
+  background-color: #ffffff;
+  box-sizing: border-box;
+  padding: 16px 24px;
+  border-radius: 6px;
+`
+const HomeWrap = styled.div`
+  height: 104px;
+  border: 1px solid rgba(235, 237, 240, 1);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
+const ChartsItem = styled.span`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+const ShowWrap = styled.div`
+  visibility: hidden;
+`
+const StyledTable = styled(Table)({
+  '.ant-table-row:hover': {
+    [ShowWrap.toString()]: {
+      visibility: 'visible',
+    },
+  },
+})
+const SecondTitle = styled.span`
+  height: 24px;
+  padding-left: 8px;
+  border-left: 3px solid rgba(40, 119, 255, 1);
+  color: rgba(0, 0, 0, 1);
+  font-size: 16px;
+  font-weight: bold;
+`
 export {
+  SecondTitle,
   TableWrap,
   StylePagination,
   StaffHeader,
@@ -190,4 +249,13 @@ export {
   LabNumber,
   tabCss,
   SwiperWrap,
+  titleCss,
+  title1Css,
+  title2Css,
+  chartsTitle,
+  ChartsWrap,
+  HomeWrap,
+  ChartsItem,
+  ShowWrap,
+  StyledTable,
 }
