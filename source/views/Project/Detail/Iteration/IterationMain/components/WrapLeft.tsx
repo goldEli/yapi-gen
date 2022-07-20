@@ -182,7 +182,7 @@ export default (props: Props) => {
       items={[
         {
           key: '1',
-          label: <div onClick={onChangeEdit}> 编辑 </div>,
+          label: <div onClick={onChangeEdit}>编辑</div>,
         },
         {
           key: '2',

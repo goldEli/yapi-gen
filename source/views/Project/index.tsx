@@ -5,7 +5,6 @@ import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
 import { useState } from 'react'
-import { Affix } from 'antd'
 
 const SearchWrap = styled.div({
   height: 64,
