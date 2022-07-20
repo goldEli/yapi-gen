@@ -264,11 +264,7 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-      {isShow && (
-        <SearchLine>
-          <TableFilter allList={list} list={searchData}></TableFilter>
-        </SearchLine>
-      )}
+      {isShow && <TableFilter allList={list} list={searchData}></TableFilter>}
 
       <StaffTableWrap>
         <StyledTable

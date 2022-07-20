@@ -16,6 +16,7 @@ import type { RangePickerProps } from 'antd/es/date-picker'
 import moment, { Moment } from 'moment'
 import { DataNode } from 'antd/lib/tree'
 import { useMemo, useState } from 'react'
+import { SearchLine } from './StyleCommon'
 const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
@@ -155,7 +156,8 @@ export default (props: Props) => {
     console.log(value)
   }
   return (
-    <Wrap hidden={props.showForm}>
+    <SearchLine>
+       <Wrap hidden={props.showForm}>
       <FormWrap form={form}>
         {list?.map((i, index) => {
           if (i.type === 'select') {
@@ -236,5 +238,7 @@ export default (props: Props) => {
         <Button onClick={confirm}>搜索</Button>
       </FormWrap>
     </Wrap>
+    </SearchLine>
+   
   )
 }
