@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { Table, Menu, Dropdown, Pagination } from 'antd'
 import { useCallback, useState } from 'react'
 import projectImg from '@/assets/projectImg.png'
-import { TableWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 
 interface Props {
   onChangeOperation(type: string, id: number): void
@@ -378,18 +378,20 @@ export default (props: Props) => {
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
       />
-      <Pagination
-        defaultCurrent={1}
-        current={1}
-        showSizeChanger
-        showQuickJumper
-        total={200}
-        showTotal={total => `Total ${total} items`}
-        pageSizeOptions={['10', '20', '50']}
-        onChange={onChangePage}
-        onShowSizeChange={onShowSizeChange}
-        hideOnSinglePage={true}
-      />
+      <PaginationWrap>
+        <Pagination
+          defaultCurrent={1}
+          current={1}
+          showSizeChanger
+          showQuickJumper
+          total={200}
+          showTotal={total => `Total ${total} items`}
+          pageSizeOptions={['10', '20', '50']}
+          onChange={onChangePage}
+          onShowSizeChange={onShowSizeChange}
+          hideOnSinglePage={true}
+        />
+      </PaginationWrap>
     </div>
   )
 }

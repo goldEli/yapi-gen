@@ -1,7 +1,7 @@
 import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useCallback, useState } from 'react'
 import EditIteration from '../components/EditIteration'
 import { ShapeContent } from '@/components/Shape'
@@ -258,18 +258,20 @@ export default () => {
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
       />
-      <Pagination
-        defaultCurrent={1}
-        current={1}
-        showSizeChanger
-        showQuickJumper
-        total={200}
-        showTotal={total => `Total ${total} items`}
-        pageSizeOptions={['10', '20', '50']}
-        onChange={onChangePage}
-        onShowSizeChange={onShowSizeChange}
-        hideOnSinglePage={true}
-      />
+      <PaginationWrap>
+        <Pagination
+          defaultCurrent={1}
+          current={1}
+          showSizeChanger
+          showQuickJumper
+          total={200}
+          showTotal={total => `Total ${total} items`}
+          pageSizeOptions={['10', '20', '50']}
+          onChange={onChangePage}
+          onShowSizeChange={onShowSizeChange}
+          hideOnSinglePage={true}
+        />
+      </PaginationWrap>
     </div>
   )
 }

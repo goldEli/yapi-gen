@@ -2,13 +2,14 @@ import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
 import TableSetting from '@/components/TableSetting'
-import { TableWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useCallback, useState } from 'react'
 import EditDemand from '../components/EditDemand'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
-// import { OptionalFeld } from '@/components/OptionalFeld'
+import { OptionalFeld } from '@/components/OptionalFeld'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const Operation = styled.div({
   display: 'flex',
@@ -51,6 +52,16 @@ const PriorityWrap = styled.div({
   },
 })
 
+const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
+  {
+    fontSize: 20,
+    cursor: 'pointer',
+  },
+  ({ active }) => ({
+    color: active ? '#2877FF' : '#969799',
+  }),
+)
+
 const statusList = [
   { id: 0, name: '规划中', color: '#2877ff' },
   { id: 1, name: '实现中', color: '#2877ff' },
@@ -88,6 +99,21 @@ const List = [
   },
 ]
 
+export const plainOptions = [
+  { label: 'id', value: 'name' },
+  { label: 'id1', value: 'age' },
+  { label: 'id2', value: 'address' },
+  { label: 'id3', value: 'address1' },
+  { label: 'id4', value: 'address2' },
+]
+export const plainOptions2 = [
+  { label: '飞机', value: 'feiji' },
+  { label: '大炮', value: 'dapao' },
+  { label: '坦克', value: 'tanke' },
+  { label: '直升机', value: 'zhishengji' },
+  { label: '战舰', value: 'zhanjian' },
+]
+
 export default () => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const [visible, setVisible] = useState(false)
@@ -102,6 +128,27 @@ export default () => {
     }
   }, [])
 
+  const [settingState, setSettingState] = useState(false)
+
+  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
+    'name',
+    'age',
+    'address',
+  ])
+  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
+    'feiji',
+    'dapao',
+    'tanke',
+  ])
+
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+  ) => {
+    setTitleList(list)
+    setTitleList2(list2)
+  }
+
   const menu = (
     <Menu
       items={[
@@ -112,6 +159,17 @@ export default () => {
         {
           key: '3',
           label: <div>删除</div>,
+        },
+      ]}
+    />
+  )
+
+  const setMenu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={() => setSettingState(true)}>设置显示字段</div>,
         },
       ]}
     />
@@ -266,7 +324,9 @@ export default () => {
         >
           添加子需求
         </ButtonWrap>
-        <TableSetting />
+        <Dropdown overlay={setMenu}>
+          <IconFontWrap type="settings" />
+        </Dropdown>
       </Operation>
       <TableWrap
         rowKey="key"
@@ -277,18 +337,29 @@ export default () => {
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
       />
-      <Pagination
-        defaultCurrent={1}
-        current={1}
-        showSizeChanger
-        showQuickJumper
-        total={200}
-        showTotal={total => `Total ${total} items`}
-        pageSizeOptions={['10', '20', '50']}
-        onChange={onChangePage}
-        onShowSizeChange={onShowSizeChange}
-        hideOnSinglePage={true}
-      />
+      <PaginationWrap>
+        <Pagination
+          defaultCurrent={1}
+          current={1}
+          showSizeChanger
+          showQuickJumper
+          total={200}
+          showTotal={total => `Total ${total} items`}
+          pageSizeOptions={['10', '20', '50']}
+          onChange={onChangePage}
+          onShowSizeChange={onShowSizeChange}
+          hideOnSinglePage={true}
+        />
+      </PaginationWrap>
+      <OptionalFeld
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        checkList={titleList}
+        checkList2={titleList2}
+        visible={settingState}
+        close={() => setSettingState(false)}
+        getCheckList={getCheckList}
+      ></OptionalFeld>
     </div>
   )
 }

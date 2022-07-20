@@ -1,4 +1,4 @@
-import { TableWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import TableFilter from '@/components/TableFilter'
 import styled from '@emotion/styled'
@@ -15,9 +15,6 @@ const Wrap = styled.div({
 const Header = styled.div({
   minHeight: 64,
   background: 'white',
-  // position: 'sticky',
-  // top: 64,
-  // zIndex: 2,
   padding: '0 24px',
 })
 
@@ -179,18 +176,20 @@ export default () => {
           scroll={{ x: 'max-content' }}
           showSorterTooltip={false}
         />
-        <Pagination
-          defaultCurrent={1}
-          current={1}
-          showSizeChanger
-          showQuickJumper
-          total={200}
-          showTotal={total => `Total ${total} items`}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
-        />
+        <PaginationWrap>
+          <Pagination
+            defaultCurrent={1}
+            current={1}
+            showSizeChanger
+            showQuickJumper
+            total={200}
+            showTotal={total => `Total ${total} items`}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+            hideOnSinglePage={true}
+          />
+        </PaginationWrap>
       </Content>
     </Wrap>
   )

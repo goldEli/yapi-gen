@@ -3,6 +3,7 @@ import { Table, Select, DatePicker, Pagination } from 'antd'
 import moment, { Moment } from 'moment'
 import { css } from '@emotion/css'
 import type { RangePickerProps } from 'antd/es/date-picker'
+import { PaginationWrap } from '@/components/StyleCommon'
 
 const Header = styled.div({
   height: 'auto',
@@ -217,18 +218,20 @@ export default () => {
           scroll={{ x: 'max-content' }}
           showSorterTooltip={false}
         />
-        <Pagination
-          defaultCurrent={1}
-          current={1}
-          showSizeChanger
-          showQuickJumper
-          total={200}
-          showTotal={total => `Total ${total} items`}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
-        />
+        <PaginationWrap>
+          <Pagination
+            defaultCurrent={1}
+            current={1}
+            showSizeChanger
+            showQuickJumper
+            total={200}
+            showTotal={total => `Total ${total} items`}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+            hideOnSinglePage={true}
+          />
+        </PaginationWrap>
       </Content>
     </div>
   )
