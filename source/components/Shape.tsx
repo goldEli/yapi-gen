@@ -5,26 +5,6 @@ const { Option } = Select
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 
-const selectCss = css`
-  margin-top: 48px;
-  margin-bottom: 24px;
-`
-const textareaCss = css`
-  display: flex;
-  align-items: start;
-`
-const areaCss = css`
-  box-sizing: border-box;
-  padding: 5px 0 0 12px;
-  /* color: rgba(187, 189, 191, 1); */
-  resize: none;
-  border: 1px solid rgba(235, 237, 240, 1);
-  width: 240px;
-  height: 132px;
-  &::placeholder {
-    color: rgba(187, 189, 191, 1);
-  }
-`
 const Left = styled.div`
   width: 120px;
   height: 316px;

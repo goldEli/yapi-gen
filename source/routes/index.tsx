@@ -1,6 +1,5 @@
-import { Outlet, useRoutes } from 'react-router-dom'
-import Home from '@/views/Home'
-import Demo from '@/views/Demo'
+import { useRoutes } from 'react-router-dom'
+
 import { Container } from '@/views/Container'
 import React from 'react'
 
@@ -102,7 +101,6 @@ const routes = [
       },
     ],
   },
- 
 ]
 
 export default () => useRoutes(routes)
