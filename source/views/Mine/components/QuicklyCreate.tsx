@@ -5,6 +5,7 @@ import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import Editor from '@/components/Editor'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -42,6 +43,18 @@ const FormWrap = styled(Form)({
     minHeight: 'inherit',
   },
 })
+const AddButtonWrap = styled.div({
+  height: 32,
+  boxSizing: 'border-box',
+  borderRadius: 6,
+  border: '1px solid #2877FF',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#2877FF',
+  padding: '0 16px',
+  cursor: 'pointer',
+})
 
 const PriorityWrap = styled.div({
   display: 'flex',
@@ -59,12 +72,11 @@ const PriorityWrap = styled.div({
     },
   },
 })
-
-const ModalFooter = styled(Space)({
+const ModalFooter = styled.div({
   width: '100%',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
 })
 
 const priorityList = [
@@ -150,18 +162,10 @@ export default (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont type="edit-square" />
           <Form.Item label="需求描述">
-            <Input placeholder="编辑器" />
+         <Editor  />
           </Form.Item>
         </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont type="user" />
-          <Form.Item label="处理人" required>
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>添加</div>
-            </AddWrap>
-          </Form.Item>
-        </div>
+
         <div style={{ display: 'flex' }}>
           <IconFont type="carryout" />
           <Form.Item label="预计时间">
@@ -233,9 +237,12 @@ export default (props: Props) => {
           </Form.Item>
         </div>
       </FormWrap>
-      <ModalFooter size={16}>
-        <Button>取消</Button>
-        <Button type="primary">确认</Button>
+      <ModalFooter>
+        <AddButtonWrap>完成并创建下一个</AddButtonWrap>
+        <Space size={16}>
+          <Button>取消</Button>
+          <Button type="primary">完成</Button>
+        </Space>
       </ModalFooter>
     </Modal>
   )

@@ -19,6 +19,7 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: row-reverse;
   height: 56px;
+  gap: 16px;
 `
 const Left = styled.div``
 const Line = styled.div`

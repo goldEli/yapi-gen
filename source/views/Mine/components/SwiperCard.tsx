@@ -8,18 +8,27 @@ const DropdownWrap = styled(Dropdown)({
   display: 'none',
   cursor: 'pointer',
 })
-
+const Triangle = styled.div`
+  visibility: hidden;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: -30px;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-bottom: 20px solid rgba(40, 119, 255, 1);
+`
 const Warp = styled.div<{ show?: boolean }>(
   {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     borderRadius: 4,
     height: 104,
     width: 160,
-    overflow: 'hidden',
     cursor: 'pointer',
-    // border: '1px solid blue',
-    // transform: 'translate(0, -10%)',
+
     '&: hover': {
       boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
       [DropdownWrap.toString()]: {
@@ -30,6 +39,10 @@ const Warp = styled.div<{ show?: boolean }>(
   ({ show }) => ({
     transform: `${show ? 'translate(0, -10%)' : ''}`,
     boxShadow: `${show ? ' 0px 2px 8px rgba(170, 193, 227, 1)' : ''}`,
+    border: `${show ? '  1px solid rgba(235, 237, 240, 1)' : ''}`,
+    [Triangle.toString()]: {
+      visibility: `${show ? 'visible' : 'hidden'}`,
+    },
   }),
 )
 
@@ -51,15 +64,20 @@ const ImgWrap = styled.div<{ show?: boolean }>(
   },
 )
 
-const NameWrap = styled.div({
-  width: '90%',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  fontSize: 14,
-  fontWeight: 400,
-  color: 'black',
-})
+const NameWrap = styled.div<{ show?: boolean }>(
+  {
+    width: '90%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    fontSize: 14,
+    fontWeight: 400,
+    color: 'black',
+  },
+  ({ show }) => ({
+    color: `${show ? 'rgba(40, 119, 255, 1)' : ''}`,
+  }),
+)
 
 const TextWarp = styled.div({
   display: 'flex',
@@ -84,8 +102,11 @@ export default (props: { show?: boolean; tap?(): void }) => {
         <img src={projectImg} alt="" />
       </ImgWrap>
       <TextWarp>
-        <NameWrap>公司名称公司名称公公司名称公司名称公司名称司名称</NameWrap>
+        <NameWrap show={props.show}>
+          公司名称公司名称公公司名称公司名称公司名称司名称
+        </NameWrap>
       </TextWarp>
+      <Triangle></Triangle>
     </Warp>
   )
 }

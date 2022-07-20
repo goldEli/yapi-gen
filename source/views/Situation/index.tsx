@@ -35,9 +35,6 @@ const Head = styled.div`
   padding: 20px;
   display: flex;
   justify-content: space-between;
-  position: sticky;
-  left: 0;
-  top: 0;
 `
 export default () => {
   const [state, setState] = useState()

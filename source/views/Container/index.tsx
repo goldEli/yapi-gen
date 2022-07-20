@@ -27,7 +27,7 @@ export const Container = () => {
       <Main>
         <Outlet />
       </Main>
-      <Next visible={nextVisible} close={() => setNextVisible(false)} />
+      {/* <Next visible={nextVisible} close={() => setNextVisible(false)} /> */}
     </Wrap>
   )
 }

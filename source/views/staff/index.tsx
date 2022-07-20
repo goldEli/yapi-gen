@@ -67,7 +67,7 @@ export const plainOptions2 = [
 ]
 export default () => {
   const navigate = useNavigate()
-  const [isShow, setIsShow] = useState<boolean>(false)
+  const [isShow, setIsShow] = useState<boolean>(true)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [staffPersonalVisible, setStaffPersonalVisible] =
     useState<boolean>(false)
@@ -141,6 +141,73 @@ export default () => {
       ]}
     />
   )
+  const searchData = [
+    {
+      name: '迭代',
+      key: 'name',
+      type: 'select',
+      children: [
+        {
+          name: 'jack',
+        },
+        {
+          name: 'Lucy',
+        },
+        {
+          name: 'Disabled',
+        },
+        {
+          name: 'yiminghe',
+        },
+      ],
+    },
+    {
+      name: '职位',
+      key: 'age',
+      type: 'select',
+      children: [
+        {
+          name: 'jack',
+        },
+        {
+          name: 'Lucy',
+        },
+        {
+          name: 'Disabled',
+        },
+        {
+          name: 'yiminghe',
+        },
+      ],
+    },
+    {
+      name: '权限组',
+      key: 'tall',
+      type: 'select',
+      children: [
+        {
+          name: 'jack',
+        },
+        {
+          name: 'Lucy',
+        },
+        {
+          name: 'Disabled',
+        },
+        {
+          name: 'yiminghe',
+        },
+      ],
+    },
+  ]
+  const list = [
+    { name: '人员' },
+    { name: '需求' },
+    { name: '迭代' },
+    { name: '时间' },
+    { name: '状态' },
+  ]
+
   return (
     <>
       <StaffHeader>敏捷系统V2.0</StaffHeader>
@@ -181,7 +248,7 @@ export default () => {
       </Hehavior>
       {isShow && (
         <SearchLine>
-          <TableFilter></TableFilter>
+          <TableFilter allList={list} list={searchData}></TableFilter>
         </SearchLine>
       )}
 

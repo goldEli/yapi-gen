@@ -1,10 +1,21 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Form, Input, Select, DatePicker, Button, Popover, Space } from 'antd'
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Button,
+  Popover,
+  Space,
+  Tree,
+} from 'antd'
 import IconFont from './IconFont'
 import * as dayjs from 'dayjs'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import moment, { Moment } from 'moment'
+import { DataNode } from 'antd/lib/tree'
+import { useState } from 'react'
 const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
@@ -20,6 +31,7 @@ const ClearForm = styled.div({
 })
 
 const FormWrap = styled(Form)({
+  gap: '16px',
   display: 'flex',
   flexWrap: 'wrap',
   '.ant-form-item': {
@@ -27,23 +39,26 @@ const FormWrap = styled(Form)({
   },
 })
 
-const SelectWrap = styled(Select)`
+const SelectWrap = styled(Select)<{ label: string }>`
+  & .ant-select-selector::before {
+    content: '${({ label }) => label}';
+    display: inline-block;
+    margin-right: 16px;
+    margin-left: 10px;
+  }
+  /* padding-left: 56px; */
   .ant-select-selection-placeholder {
     color: black;
+    left: 65px;
   }
+
   .ant-select-selector {
-    min-width: 200px;
-    border: none !important;
-    outline: none !important;
+    min-width: 186px;
   }
+  /* .ant-select-selection-overflow {
+    padding-left: 45px;
+  } */
 `
-
-interface Props {
-  keys?: string[]
-  onChangeForm?(value: any): void
-  showForm?: boolean
-}
-
 const rangPicker = css`
   .ant-picker-panel-container {
     display: flex;
@@ -74,14 +89,13 @@ const DelButton = styled.div`
   width: 15px;
   height: 15px;
   visibility: hidden;
+  &:hover {
+    background-color: blue;
+  }
 `
 const SelectWrapBedeck = styled.div`
-  margin-right: 16px;
-  margin-bottom: 16px;
   position: relative;
-  /* width: 186px; */
   height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
   display: flex;
   align-items: center;
   span {
@@ -91,273 +105,16 @@ const SelectWrapBedeck = styled.div`
     visibility: visible;
   }
 `
-
-const list = [
-  { name: '人员' },
-  { name: '需求' },
-  { name: '迭代' },
-  { name: '时间' },
-  { name: '状态' },
-]
-
-const timeList = [
-  { name: '最近一周', type: '1' },
-  { name: '最近一月', type: '2' },
-  { name: '最近三月', type: '3' },
-  { name: '今天开始', type: '4' },
-  { name: '今天截止', type: '5' },
-  { name: '时间为空', type: '6' },
-]
-const searchData = [
-  {
-    name: '迭代',
-    key: 'name',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '职位',
-    key: 'age',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-  {
-    name: '权限组',
-    key: 'tall',
-    type: 'select',
-    children: [
-      {
-        name: 'jack',
-      },
-      {
-        name: 'Lucy',
-      },
-      {
-        name: 'Disabled',
-      },
-      {
-        name: 'yiminghe',
-      },
-    ],
-  },
-]
+interface Props {
+  list: any[]
+  allList: any[]
+  keys?: string[]
+  onChangeForm?(value: any): void
+  showForm?: boolean
+}
 export default (props: Props) => {
+  const [list, setList] = useState(props.list)
+  const [allList, setAllList] = useState(props.allList)
   const [form] = Form.useForm()
   const onClearForm = async () => {
     form.resetFields()
@@ -369,13 +126,15 @@ export default (props: Props) => {
     <div>
       <Input.Search />
       <div>
-        {list.map(i => (
-          <div key={i.name}>{i.name}</div>
+        {allList.map(i => (
+          <div>{i.name}</div>
         ))}
       </div>
     </div>
   )
-
+  const delList = (key: string) => {
+    setList(list.filter((item, idx) => item.key !== key))
+  }
   const onChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
     if (dates) {
       console.log('From: ', dates[0], ', to: ', dates[1])
@@ -395,11 +154,11 @@ export default (props: Props) => {
   return (
     <Wrap hidden={props.showForm}>
       <FormWrap form={form}>
-        {searchData.map(i => (
+        {list.map((i, index) => (
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>{i.name}</span>
             <Form.Item name={i.key}>
               <SelectWrap
+                label={i.name}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="所有"
@@ -410,7 +169,7 @@ export default (props: Props) => {
                 ))}
               </SelectWrap>
             </Form.Item>
-            <DelButton>
+            <DelButton onClick={() => delList(i.key)}>
               <IconFont type="close" style={{ fontSize: '12px' }}></IconFont>
             </DelButton>
           </SelectWrapBedeck>
