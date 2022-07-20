@@ -121,7 +121,7 @@ export default (props: Props) => {
     form.resetFields()
   }
   const filterList = useMemo(() => {
-    let newKeys = list.map(item => item.key)
+    let newKeys = list?.map(item => item.key)
     const arr = allList?.filter(item => !newKeys.includes(item.key))
     return arr
   }, [list, allList])
