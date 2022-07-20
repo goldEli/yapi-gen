@@ -5,6 +5,7 @@ import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
 import { useState } from 'react'
+import { Affix } from 'antd'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -48,32 +49,32 @@ export default () => {
   }
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', overflow: 'auto' }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
       />
-      {/* <div style={{ position: 'sticky', top: 0 }}> */}
-      <SearchWrap>
-        <SearchComponent
-          placeholder="搜索项目或任务"
-          text="创建项目"
-          onChangeSearch={onChangeSearch}
-          onChangeVisible={() => setVisible(true)}
+      <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
+        <SearchWrap>
+          <SearchComponent
+            placeholder="搜索项目或任务"
+            text="创建项目"
+            onChangeSearch={onChangeSearch}
+            onChangeVisible={() => setVisible(true)}
+          />
+        </SearchWrap>
+        <Filter
+          show
+          total={31}
+          sort={sort}
+          isGrid={isGrid}
+          activeType={activeType}
+          onChangeSort={onChangeSort}
+          onChangeFormat={() => setIsGrid(!isGrid)}
+          onChangeHidden={onChangeHidden}
+          onChangeType={onChangeType}
         />
-      </SearchWrap>
-      <Filter
-        show
-        total={31}
-        sort={sort}
-        isGrid={isGrid}
-        activeType={activeType}
-        onChangeSort={onChangeSort}
-        onChangeFormat={() => setIsGrid(!isGrid)}
-        onChangeHidden={onChangeHidden}
-        onChangeType={onChangeType}
-      />
-      {/* </div> */}
+      </div>
       <Content>
         {isGrid ? (
           <MainGrid
