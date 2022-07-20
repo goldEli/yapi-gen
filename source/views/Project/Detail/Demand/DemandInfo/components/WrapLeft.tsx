@@ -1,9 +1,13 @@
 import styled from '@emotion/styled'
-import { Divider, Space } from 'antd'
+import { Select, Upload } from 'antd'
 import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
 import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
+import TagComponent from '../../components/TagComponent'
+import DemandStatus from '../../components/DemandStatus'
+import ParentDemand from '../../components/ParentDemand'
+import UploadAttach from '../../components/UploadAttach'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -12,6 +16,7 @@ const WrapLeft = styled.div({
 const InfoItem = styled.div({
   display: 'flex',
   marginTop: 24,
+  position: 'relative',
 })
 
 const Label = styled.div({
@@ -33,18 +38,6 @@ const TextWrap = styled.div({
   },
 })
 
-const StatusWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 28,
-  borderRadius: 6,
-  padding: '0 12px',
-  fontSize: 14,
-  border: '1px solid #EBEDF0',
-  color: '#969799',
-})
-
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
@@ -52,7 +45,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     height: 26,
     boxSizing: 'border-box',
     cursor: 'pointer',
-    borderRadius: 4,
+    borderRadius: 6,
     width: 'fit-content',
     '.anticon': {
       fontSize: 16,
@@ -83,25 +76,12 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const statusList = [
-  { name: '规划中' },
-  { name: '实现中' },
-  { name: '已实现' },
-  { name: '已关闭' },
-]
-
 export default () => {
   return (
     <WrapLeft>
       <InfoItem>
         <Label>需求状态</Label>
-        <div style={{ display: 'flex', width: '100%' }}>
-          {statusList.map(i => (
-            <div style={{ display: 'flex' }}>
-              <StatusWrap>{i.name}</StatusWrap>
-            </div>
-          ))}
-        </div>
+        <DemandStatus />
       </InfoItem>
       <InfoItem>
         <Label>需求描述</Label>
@@ -126,25 +106,35 @@ export default () => {
       </InfoItem>
       <InfoItem>
         <Label>父需求</Label>
-        <TextWrap>
-          <AddWrap>
-            <IconFont type="plus" />
-            <div>添加</div>
-          </AddWrap>
-        </TextWrap>
+        <ParentDemand
+          addWrap={
+            <AddWrap>
+              <IconFont type="plus" />
+              <div>添加</div>
+            </AddWrap>
+          }
+        />
       </InfoItem>
       <InfoItem>
         <Label>标签</Label>
-        <AddWrap hasDash>
-          <IconFont type="plus" />
-        </AddWrap>
+        <TagComponent
+          addWrap={
+            <AddWrap hasDash>
+              <IconFont type="plus" />
+            </AddWrap>
+          }
+        />
       </InfoItem>
       <InfoItem>
         <Label>附件</Label>
-        <AddWrap>
-          <IconFont type="plus" />
-          <div>添加</div>
-        </AddWrap>
+        <UploadAttach
+          addWrap={
+            <AddWrap>
+              <IconFont type="plus" />
+              <div>添加</div>
+            </AddWrap>
+          }
+        />
       </InfoItem>
       <InfoItem>
         <Label>迭代</Label>
@@ -157,8 +147,12 @@ export default () => {
             return <LevelContent tap={() => {}} hide={onHide}></LevelContent>
           }}
         >
-          <IconFont type="knockdown" />
-          <span style={{ marginLeft: 8 }}>中</span>
+          <div
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+          >
+            <IconFont style={{ fontSize: 16 }} type="knockdown" />
+            <span style={{ marginLeft: 8 }}>中</span>
+          </div>
         </Popconfirm>
       </InfoItem>
       <InfoItem>

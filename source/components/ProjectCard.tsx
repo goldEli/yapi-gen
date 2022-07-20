@@ -10,6 +10,28 @@ const DropdownWrap = styled(Dropdown)({
   cursor: 'pointer',
 })
 
+const ImgWrap = styled.div({
+  height: 104,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  position: 'relative',
+  div: {
+    width: '100%',
+    height: '100%',
+    background: 'black',
+    opacity: '0.2',
+    zIndex: 2,
+    position: 'absolute',
+    display: 'none',
+  },
+  img: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
+})
+
 const Warp = styled.div({
   display: 'flex',
   flexDirection: 'column',
@@ -23,18 +45,11 @@ const Warp = styled.div({
     [DropdownWrap.toString()]: {
       display: 'block',
     },
-  },
-})
-
-const ImgWrap = styled.div({
-  height: 104,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '100%',
-  img: {
-    maxWidth: '100%',
-    maxHeight: '100%',
+    [ImgWrap.toString()]: {
+      div: {
+        display: 'block',
+      },
+    },
   },
 })
 
@@ -88,6 +103,7 @@ export default (props: Props) => {
   return (
     <Warp>
       <ImgWrap>
+        <div></div>
         <img src={projectImg} alt="" />
       </ImgWrap>
       <TextWarp>

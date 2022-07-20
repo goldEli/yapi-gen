@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
-import { Pagination, Dropdown } from 'antd'
+import { Pagination, Dropdown, Table } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
@@ -75,6 +75,67 @@ export default (props: Props) => {
   const onShowSizeChange = (current: number, pageSize: number) => {
     console.log(current, pageSize)
   }
+
+  const columnsChild = [
+    {
+      title: '项目名称',
+      dataIndex: 'name',
+      render: (text: string) => {
+        return <OmitText width={180}>{text}</OmitText>
+      },
+    },
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      sorter: {
+        compare: (a: any, b: any) => a.demand - b.demand,
+      },
+    },
+    {
+      title: '需求名称',
+      dataIndex: 'name',
+      render: (text: string) => {
+        return <OmitText width={180}>{text}</OmitText>
+      },
+      sorter: {
+        compare: (a: any, b: any) => a.iteration - b.iteration,
+      },
+    },
+    {
+      title: '迭代',
+      dataIndex: 'iteration',
+      sorter: {
+        compare: (a: any, b: any) => a.progress - b.progress,
+      },
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      render: (text: string, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide: () => void }) => {
+              return (
+                <ShapeContent
+                  tap={() => {}}
+                  hide={onHide}
+                  record={record}
+                ></ShapeContent>
+              )
+            }}
+            record={record}
+          >
+            <StatusWrap>{text}</StatusWrap>
+          </PopConfirm>
+        )
+      },
+    },
+    {
+      title: '创建人',
+      dataIndex: 'dealName',
+    },
+  ]
+
   const columns = [
     {
       title: 'ID',
@@ -121,6 +182,24 @@ export default (props: Props) => {
     {
       title: '需求数',
       dataIndex: 'demand',
+      render: (text: string, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide: () => void }) => {
+              return (
+                <Table
+                  pagination={false}
+                  columns={columnsChild}
+                  dataSource={props.List}
+                />
+              )
+            }}
+            record={record}
+          >
+            <div style={{ cursor: 'pointer' }}>{text}</div>
+          </PopConfirm>
+        )
+      },
       sorter: {
         compare: (a: any, b: any) => a.demand - b.demand,
       },
@@ -225,18 +304,20 @@ export default (props: Props) => {
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
       />
-      <Pagination
-        defaultCurrent={1}
-        current={1}
-        showSizeChanger
-        showQuickJumper
-        total={200}
-        showTotal={total => `Total ${total} items`}
-        pageSizeOptions={['10', '20', '50']}
-        onChange={onChangePage}
-        onShowSizeChange={onShowSizeChange}
-        hideOnSinglePage={true}
-      />
+      <PaginationWrap>
+        <Pagination
+          defaultCurrent={1}
+          current={1}
+          showSizeChanger
+          showQuickJumper
+          total={200}
+          showTotal={total => `Total ${total} items`}
+          pageSizeOptions={['10', '20', '50']}
+          onChange={onChangePage}
+          onShowSizeChange={onShowSizeChange}
+          hideOnSinglePage={true}
+        />
+      </PaginationWrap>
     </Content>
   )
 }

@@ -56,7 +56,7 @@ const AddUplaod = styled.div({
 
 export default () => {
   const choosePoster = (
-    <div style={{ width: 340 }}>
+    <div style={{ width: 372, padding: 16 }}>
       <ChooseTitle>请选择一个封面</ChooseTitle>
       <PosterGroup size={8}>
         <img

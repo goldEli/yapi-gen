@@ -5,6 +5,8 @@ import projectImg from '@/assets/projectImg.png'
 
 const Content = styled.div({
   padding: 24,
+  // width: '100%',
+  // overflowY: 'auto',
 })
 
 const CardGroup = styled.div({
@@ -116,6 +118,18 @@ export default (props: Props) => {
   return (
     <Content>
       <Space size={20}>
+        <CardGroup>
+          <Title>规划中(8)</Title>
+          {finshEdList.map((i, idx) => (
+            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
+          ))}
+        </CardGroup>
+        <CardGroup>
+          <Title>规划中(8)</Title>
+          {finshEdList.map((i, idx) => (
+            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
+          ))}
+        </CardGroup>
         <CardGroup>
           <Title>规划中(8)</Title>
           {finshEdList.map((i, idx) => (

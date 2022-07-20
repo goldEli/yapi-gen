@@ -145,7 +145,8 @@ export const Side = () => {
 
       <SideFooter>
         <SideEach
-        // className={'/' + nowPath === item.path ? activeCss : ''}
+          onClick={() => navigate('/Setting')}
+          // className={'/' + nowPath === item.path ? activeCss : ''}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>设置</span>

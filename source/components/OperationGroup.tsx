@@ -66,11 +66,7 @@ export default (props: Props) => {
       <DividerWrap type="vertical" />
 
       <Dropdown overlay={menu}>
-        <IconFontWrap
-          active={props.settingState}
-          type="settings"
-          onClick={props.onChangeSetting}
-        />
+        <IconFontWrap active={props.settingState} type="settings" />
       </Dropdown>
     </SpaceWrap>
   )

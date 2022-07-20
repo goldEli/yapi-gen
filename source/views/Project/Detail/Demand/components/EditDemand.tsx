@@ -1,14 +1,18 @@
-import { Modal, Form, Input, DatePicker, Select, Popover, Space } from 'antd'
+import { Modal, Form, Input, DatePicker, Select, Space, Upload } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import Editor from '@/components/Editor'
+import TagComponent from './TagComponent'
+import UploadAttach from './UploadAttach'
 
 const FormWrap = styled(Form)({
-  '.anticon': {
+  height: 600,
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',
     svg: {
@@ -142,45 +146,50 @@ export default (props: Props) => {
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px' }}
     >
-      <FormWrap form={form} labelCol={{ span: 6 }}>
+      <FormWrap form={form} labelCol={{ span: 5 }}>
         <div style={{ display: 'flex' }}>
-          <IconFont type="apartment" />
+          <IconFont className="labelIcon" type="apartment" />
           <Form.Item label="需求名称" required>
             <Input placeholder="请输入需求名称" />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="edit-square" />
+          <IconFont className="labelIcon" type="edit-square" />
           <Form.Item label="需求描述">
             <Editor />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="user" />
+          <IconFont className="labelIcon" type="user" />
           <Form.Item label="处理人" required>
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>添加</div>
-            </AddWrap>
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              mode="multiple"
+              showSearch
+              placeholder="请选择处理人"
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="carryout" />
+          <IconFont className="labelIcon" type="carryout" />
           <Form.Item label="预计时间">
-            <DatePicker.RangePicker />
+            <DatePicker.RangePicker style={{ width: '100%' }} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="apartment" />
+          <IconFont className="labelIcon" type="apartment" />
           <Form.Item label="父需求">
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>添加</div>
-            </AddWrap>
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              showSearch
+              placeholder="请选择父需求"
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="carryout" />
+          <IconFont className="labelIcon" type="carryout" />
           <Form.Item label="优先级">
             <PopConfirm
               content={({ onHide }: { onHide: () => void }) => {
@@ -203,13 +212,13 @@ export default (props: Props) => {
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="interation" />
+          <IconFont className="labelIcon" type="interation" />
           <Form.Item label="迭代">
             <Select placeholder="请选择" />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="id-card" />
+          <IconFont className="labelIcon" type="id-card" />
           <Form.Item label="抄送人">
             <AddWrap hasColor>
               <IconFont type="plus" />
@@ -218,20 +227,28 @@ export default (props: Props) => {
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="app-store-add" />
+          <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label="标签">
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
+            <TagComponent
+              addWrap={
+                <AddWrap hasDash>
+                  <IconFont type="plus" />
+                </AddWrap>
+              }
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont type="attachment" />
+          <IconFont className="labelIcon" type="attachment" />
           <Form.Item label="附件">
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>添加</div>
-            </AddWrap>
+            <UploadAttach
+              addWrap={
+                <AddWrap>
+                  <IconFont type="plus" />
+                  <div>添加</div>
+                </AddWrap>
+              }
+            />
           </Form.Item>
         </div>
       </FormWrap>
