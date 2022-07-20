@@ -107,7 +107,7 @@ const SelectWrapBedeck = styled.div`
 `
 interface Props {
   list: any[]
-  allList: any[]
+  allList?: any[]
   keys?: string[]
   onChangeForm?(value: any): void
   showForm?: boolean
@@ -126,7 +126,7 @@ export default (props: Props) => {
     <div>
       <Input.Search />
       <div>
-        {allList.map(i => (
+        {allList?.map(i => (
           <div>{i.name}</div>
         ))}
       </div>
@@ -154,7 +154,7 @@ export default (props: Props) => {
   return (
     <Wrap hidden={props.showForm}>
       <FormWrap form={form}>
-        {list.map((i, index) => (
+        {list?.map((i, index) => (
           <SelectWrapBedeck>
             <Form.Item name={i.key}>
               <SelectWrap
