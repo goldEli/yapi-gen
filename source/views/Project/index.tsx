@@ -5,6 +5,7 @@ import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
 import { useState } from 'react'
+import { Affix } from 'antd'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -48,12 +49,12 @@ export default () => {
   }
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', overflow: 'auto' }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
       />
-      <div style={{ position: 'sticky', top: 0 }}>
+      <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
         <SearchWrap>
           <SearchComponent
             placeholder="搜索项目或任务"

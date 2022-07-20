@@ -19,9 +19,9 @@ const OperationWrap = styled.div({
 const StickyWrap = styled.div({
   padding: '0 24px',
   background: 'white',
-  position: 'sticky',
-  top: 64,
-  zIndex: 2,
+  // position: 'sticky',
+  // top: 64,
+  // zIndex: 2,
 })
 
 const IterationInfo = styled.div({

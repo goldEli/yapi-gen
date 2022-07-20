@@ -136,7 +136,7 @@ export default () => {
   )
 
   return (
-    <div style={{ position: 'sticky', top: 0, zIndex: 2 }}>
+    <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}

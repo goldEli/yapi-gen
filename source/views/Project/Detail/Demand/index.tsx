@@ -19,7 +19,7 @@ const DemandInfoWrap = styled.div({
   padding: '0 24px',
   position: 'sticky',
   top: 64,
-  zIndex: 2,
+  zIndex: 9,
 })
 
 const NameWrap = styled.div({

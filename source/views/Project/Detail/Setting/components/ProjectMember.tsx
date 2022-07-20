@@ -1,10 +1,10 @@
-import { TableWrap, StylePagination } from '@/components/StyleCommon'
+import { TableWrap } from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import TableFilter from '@/components/TableFilter'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useCallback } from 'react'
-import { Menu, Dropdown } from 'antd'
+import { Menu, Dropdown, Pagination } from 'antd'
 import posterImg from '@/assets/poster.png'
 
 const Wrap = styled.div({
@@ -15,9 +15,9 @@ const Wrap = styled.div({
 const Header = styled.div({
   minHeight: 64,
   background: 'white',
-  position: 'sticky',
-  top: 64,
-  zIndex: 2,
+  // position: 'sticky',
+  // top: 64,
+  // zIndex: 2,
   padding: '0 24px',
 })
 
@@ -179,7 +179,7 @@ export default () => {
           scroll={{ x: 'max-content' }}
           showSorterTooltip={false}
         />
-        <StylePagination
+        <Pagination
           defaultCurrent={1}
           current={1}
           showSizeChanger

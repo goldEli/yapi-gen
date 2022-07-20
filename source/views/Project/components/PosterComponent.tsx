@@ -5,7 +5,6 @@ import posterImg from '@/assets/poster.png'
 import { IconFont } from '@staryuntech/ant-pro'
 
 const ImgWrap = styled.div({
-  position: 'relative',
   borderRadius: 6,
   height: 176,
   overflow: 'hidden',
@@ -104,17 +103,17 @@ export default () => {
   )
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <ImgWrap>
         <img src={projectImg} alt="" />
-        <Popover
-          placement="bottom"
-          content={choosePoster}
-          getPopupContainer={node => node}
-        >
-          <ChangeWrap>修改图片</ChangeWrap>
-        </Popover>
       </ImgWrap>
+      <Popover
+        placement="bottom"
+        content={choosePoster}
+        getPopupContainer={node => node}
+      >
+        <ChangeWrap>修改图片</ChangeWrap>
+      </Popover>
     </div>
   )
 }
