@@ -5,6 +5,7 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { type } from 'os'
 import { Outlet, useRoutes } from 'react-router-dom'
+import QuicklyCreate from './components/QuicklyCreate'
 
 const buttonCss = css``
 
@@ -97,15 +98,19 @@ export default () => {
   const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[2] || ''
 
+  const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
   useEffect(() => {}, [])
   const changeActive = (value: MenuList) => {
     navigate(value.path)
   }
+  const controlquickCreateVisible = () => {
+    setQuickCreateVisible(true)
+  }
   return (
     <Wrap>
       <Side>
-        <AddButton>
+        <AddButton onClick={controlquickCreateVisible}>
           <IconFont
             style={{
               marginRight: 8,
@@ -132,6 +137,10 @@ export default () => {
       <Main>
         <Outlet></Outlet>
       </Main>
+      <QuicklyCreate
+        visible={quickCreateVisible}
+        onChangeVisible={() => setQuickCreateVisible(false)}
+      ></QuicklyCreate>
     </Wrap>
   )
 }

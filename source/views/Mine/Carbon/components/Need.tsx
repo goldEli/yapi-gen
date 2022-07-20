@@ -343,7 +343,7 @@ export default () => {
             <IconFont type="unorderedlist" style={{ fontSize: 20 }} />
           </SetButton>
           <SetButton onClick={changeTableState} show={tableState}>
-            <IconFont type="layout" style={{ fontSize: 20 }} />
+            <IconFont type="database" style={{ fontSize: 20 }} />
           </SetButton>
           <SetButton>
             <IconFont type="filter" style={{ fontSize: 20 }} />

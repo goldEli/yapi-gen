@@ -2,6 +2,30 @@ import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from 'antd'
 import { createPortal } from 'react-dom'
+import { css } from '@emotion/css'
+import projectImg from '@/assets/projectImg.png'
+const textCss = css`
+  height: 100px;
+  box-sizing: border-box;
+  padding: 24px 183px;
+  color: rgba(0, 0, 0, 1);
+  font-size: 20px;
+  text-align: center;
+`
+const imgBoxCss = css`
+  height: 448px;
+  box-sizing: border-box;
+  padding: 46px 109px 65px 109px;
+`
+const FooterCss = css`
+  display: flex;
+  justify-content: end;
+  height: 75px;
+  box-sizing: border-box;
+  padding-right: 53px;
+  align-items: center;
+  gap: 10px;
+`
 const Container = styled.div`
   z-index: 10;
   position: absolute;
@@ -12,10 +36,11 @@ const Container = styled.div`
   background-color: rgba(135, 136, 137, 0.6);
 `
 const Dialog = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: white;
+  width: 900px;
+  /* height: 600px; */
+  background: rgba(245, 246, 247, 1);
   position: absolute;
+  border-radius: 6px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -40,8 +65,10 @@ export default function Next(props: { visible: boolean; close(): void }) {
     const filterActive = inform.filter((item, index) => index === active)
     return filterActive.map(item => (
       <div>
-        <p>{item.text}</p>
-        <img src="" alt="12"></img>
+        <div className={textCss}>{item.text}</div>
+        <div className={imgBoxCss}>
+          <img style={{ width: '100%' }} src={projectImg} alt="12"></img>
+        </div>
       </div>
     ))
   }, [active])
@@ -63,18 +90,18 @@ export default function Next(props: { visible: boolean; close(): void }) {
   return createPortal(
     <Container>
       <Dialog>
-        <header>头</header>
+        {/* <header>头</header> */}
         <div>{filterData}</div>
-        <footer>
+        <footer className={FooterCss}>
+          {active !== 0 && <Button onClick={prev}>上一步</Button>}
+          {active !== inform.length - 1 && (
+            <Button onClick={next}>下一步</Button>
+          )}
           {active === inform.length - 1 && (
             <Button onClick={() => props.close()} type="primary">
               完成
             </Button>
           )}
-          {active !== inform.length - 1 && (
-            <Button onClick={next}>下一步</Button>
-          )}
-          {active !== 0 && <Button onClick={prev}>上一步</Button>}
         </footer>
       </Dialog>
     </Container>,

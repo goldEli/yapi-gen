@@ -7,17 +7,16 @@ const Wrap = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
-  flex: 1 0 auto;
+  flex: 1 ;
 `
 
 const Main = styled.div`
   background: rgba(245, 247, 250, 1);
   // flex: 1;
-  flex: 1 0 auto;
-  width: 0;
-  height: 100%;
-  overflow: hidden;
-  // overflow: scroll;
+  flex: 1;
+
+  overflow: auto;
+  /* // overflow: scroll; */
 `
 
 export const Container = () => {
@@ -28,7 +27,7 @@ export const Container = () => {
       <Main>
         <Outlet />
       </Main>
-      {/* <Next visible={nextVisible} close={() => setNextVisible(false)} /> */}
+      <Next visible={nextVisible} close={() => setNextVisible(false)} />
     </Wrap>
   )
 }
