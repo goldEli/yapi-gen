@@ -26,8 +26,9 @@ import {
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns} from './CreatePrejectTableColum'
+import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import EditCreate from './EditCreate'
 
 const data = [
   {
@@ -87,12 +88,12 @@ const tabsList = [
   { name: '创建的需求', type: 2 },
 ]
 
-
 export default () => {
   const [active, setActive] = useState(1)
 
   const navigate = useNavigate()
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [isEditVisible, setEditVisible] = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
     'age',
@@ -109,10 +110,13 @@ export default () => {
   const shapeTap = (value: any, active: any) => {
     console.log(value, active)
   }
-
+  const controlEditVisible = () => {
+    setEditVisible(true)
+  }
   const columns = useDynamicColumns({
     levelTap,
     shapeTap,
+    controlEditVisible,
   })
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
     console.log(page, size)
@@ -224,6 +228,10 @@ export default () => {
         close={close2}
         getCheckList={getCheckList}
       ></OptionalFeld>
+      <EditCreate
+        visible={isEditVisible}
+        onChangeVisible={() => setEditVisible(false)}
+      ></EditCreate>
     </>
   )
 }

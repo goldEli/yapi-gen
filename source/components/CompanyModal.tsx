@@ -18,7 +18,7 @@ const ContentWrap = styled.div({
   overflow: 'auto',
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'space-between',
+  justifyContent: 'start',
   gap: '16px',
 })
 

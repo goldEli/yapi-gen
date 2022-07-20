@@ -82,18 +82,8 @@ export const useDynamicColumns = (state: any) => {
           <Menu
             items={[
               {
-                key: '1',
-                label: (
-                  <span
-                    onClick={() => state.controlStaffPersonalVisible(record)}
-                  >
-                    设置
-                  </span>
-                ),
-              },
-              {
                 key: '2',
-                label: <span>编辑</span>,
+                label: <span onClick={state.controlEditVisible}>编辑</span>,
               },
               {
                 key: '3',

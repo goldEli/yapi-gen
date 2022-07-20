@@ -13,6 +13,7 @@ const Main = styled.div`
   background: rgba(245, 247, 250, 1);
   flex: 1;
   overflow: scroll;
+  min-width: 1440px;
 `
 
 export const Container = () => {
@@ -23,7 +24,7 @@ export const Container = () => {
       <Main>
         <Outlet />
       </Main>
-      {/* <Next visible={nextVisible} close={() => setNextVisible(false)} /> */}
+      <Next visible={nextVisible} close={() => setNextVisible(false)} />
     </Wrap>
   )
 }
