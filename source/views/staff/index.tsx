@@ -219,9 +219,11 @@ export default () => {
       ],
     },
   ]
-  const list = [
+  const basicsList = [
     { name: '迭代', key: 'name' },
     { name: '人员', key: 'age' },
+  ]
+  const specialList = [
     { name: '权限组', key: 'tall' },
     { name: '时间', key: 'time' },
   ]
@@ -264,7 +266,13 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-      {isShow && <TableFilter allList={list} list={searchData}></TableFilter>}
+      {isShow && (
+        <TableFilter
+          basicsList={basicsList}
+          specialList={specialList}
+          list={searchData}
+        ></TableFilter>
+      )}
 
       <StaffTableWrap>
         <StyledTable
