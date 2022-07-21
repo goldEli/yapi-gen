@@ -1,4 +1,3 @@
-import { log } from '@jihe/secure-log'
 import * as http from '../tools/http'
 
 export const getLoginDetail: any = async () => {
@@ -11,9 +10,8 @@ export const loginOut: any = async () => {
 }
 export const getUserDetail: any = async () => {
   const response = await http.get('getUserDetail')
-  console.log(response)
 
-  return response
+  return response.data
 }
 export const getCompanyList: any = async () => {
   const response = await http.get('getCompanyList')

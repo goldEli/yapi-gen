@@ -6,6 +6,8 @@ import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
 import { Tooltip, Popover } from 'antd'
 import { Personal } from './Personal'
+import { useModel } from '@/models'
+
 const buttonCss = css`
   width: 24px;
   /* display: block; */
@@ -107,6 +109,7 @@ const LanguageLine = styled.div`
   }
 `
 export const Panel = (props: { visible: boolean }) => {
+  const { loginOut } = useModel('user')
   const navigate = useNavigate()
   const [personalModalVisible, setPersonalModalVisible] =
     useState<boolean>(false)
@@ -137,6 +140,11 @@ export const Panel = (props: { visible: boolean }) => {
   }
   const handleVisibleChange = (newVisible: boolean) => {
     setlanguageModeVisible(newVisible)
+  }
+  const toLoginOut = ()=>{
+    console.log('注销');
+    
+    loginOut()
   }
   if (!props.visible) {
     return null
@@ -196,7 +204,7 @@ export const Panel = (props: { visible: boolean }) => {
           </div>
         </Line>
         <Line>
-          <div>
+          <div onClick={toLoginOut}>
             <IconFont type="login" style={{ fontSize: 15 }} />
             <span className={lineText}>退出登录</span>
           </div>

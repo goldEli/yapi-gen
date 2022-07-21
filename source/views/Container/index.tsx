@@ -19,11 +19,12 @@ const Main = styled.div`
 
 export const Container = () => {
   const [nextVisible, setNextVisible] = useState(true)
-  const { getUserDetail } = useModel('user')
+  const { getUserDetail, getLoginDetail } = useModel('user')
 
   const init = async () => {
-    const res = await getUserDetail()
-    // console.log(res, '获取用户详情')
+    const res2 = await getUserDetail()
+    const res = await getLoginDetail()
+    // console.log(res, res2, '获取登录详情')
   }
 
   useEffect(() => {
