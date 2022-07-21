@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import posterImg from '@/assets/poster.png'
 import { OmitText } from '@star-yun/ui'
+import { useModel } from '@/models'
 
 const Header = styled.div({
   height: 64,
@@ -99,6 +100,7 @@ const CardWrap = styled.div({
 })
 
 export default () => {
+  const { companyInfo } = useModel('setting')
   return (
     <div style={{ height: '100%' }}>
       <Header>
@@ -107,17 +109,12 @@ export default () => {
       <Content>
         <InfoWrap>
           <InfoTop>
-            <CompanyImg src={posterImg} />
+            <CompanyImg src={companyInfo.logo} />
             <TextWrap>
               <Title>
-                <OmitText width={400}>
-                  项目名称XXXXXXXX项目名称XXXXXXXX项目名称XXXXXXXX项目名称XXXXXXXX项目名称XXXXXXXX
-                </OmitText>
+                <OmitText width={400}>{companyInfo.name}</OmitText>
               </Title>
-              <Subtext>
-                为了借助社交产品的流量，让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上绝大多数APP都有第三方分享的功能，它是内容分发。为了借助社交产品的流量，让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上绝大多数APP都有第三方分享的功能，它是内容分发。为了借助社交产品的流量，让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上绝大多数APP都有第三方分享的功能，它是内容分发。为了借助社交产品的流量，让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上绝大多数APP都有第三方分享的功能，它是内容分发。为了借助社交产品的流量，
-                让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上绝大多数APP都有第三方分享的功能，它是内容分发。\
-              </Subtext>
+              <Subtext>{companyInfo.info}</Subtext>
             </TextWrap>
           </InfoTop>
           <InfoBottom>
@@ -130,11 +127,11 @@ export default () => {
               }}
             >
               <CardWrap>
-                <div>5</div>
+                <div>{companyInfo.projectCount}</div>
                 <span>当前项目</span>
               </CardWrap>
               <CardWrap>
-                <div>10</div>
+                <div>{companyInfo.userCount}</div>
                 <span>公司员工</span>
               </CardWrap>
             </div>

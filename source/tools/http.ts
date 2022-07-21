@@ -23,15 +23,15 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   return client.get<SearchParams, Result>(urls[key], data)
 }
 
-export const post = <Payload, Result>(key: UrlKeys, data: any) => {
+export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {
   return client.post<Payload, Result>(urls[key], data)
 }
 
-export const put = <Payload, Result>(key: UrlKeys, data: any) => {
+export const put = <Payload, Result = any>(key: UrlKeys, data?: any) => {
   return client.put<Payload, Result>(urls[key], data)
 }
 
-const deleteMethod = <Payload, Result>(key: UrlKeys, data: any) => {
+const deleteMethod = <Payload, Result = any>(key: UrlKeys, data?: any) => {
   return client.delete<Payload, Result>(urls[key], data)
 }
 

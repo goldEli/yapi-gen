@@ -1,9 +1,11 @@
 import styled from '@emotion/styled'
 import { Table, Select, DatePicker, Pagination } from 'antd'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { css } from '@emotion/css'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import { PaginationWrap } from '@/components/StyleCommon'
+import { useEffect, useState } from 'react'
+import { useModel } from '@/models'
 
 const Header = styled.div({
   height: 'auto',
@@ -101,30 +103,17 @@ const StatusWrap = styled.div({
   },
 })
 
-const List = [
-  {
-    id: '1001',
-    username: 'HEFEI',
-    nickname: '何飞',
-    time: '2022-06-15 15:25:36',
-    loginIp: '157.55.39.207',
-    client: 'FirefoX',
-    system: 'win10',
-    status: 0,
-  },
-  {
-    id: '1001',
-    username: 'HEFEI',
-    nickname: '何飞',
-    time: '2022-06-15 15:25:36',
-    loginIp: '157.55.39.207',
-    client: 'FirefoX',
-    system: 'win10',
-    status: 0,
-  },
-]
-
 export default () => {
+  const { getLoginLogs } = useModel('setting')
+  const [dataList, setDataList] = useState<any>([])
+
+  const init = async () => {
+    const result = await getLoginLogs()
+    setDataList(result)
+  }
+  useEffect(() => {
+    init()
+  }, [])
   const Option = Select.Option
   const columns = [
     {
@@ -236,7 +225,7 @@ export default () => {
         <Table
           rowKey="key"
           columns={columns}
-          dataSource={List}
+          dataSource={dataList.list}
           pagination={false}
           scroll={{ x: 'max-content' }}
           showSorterTooltip={false}
@@ -244,10 +233,10 @@ export default () => {
         <PaginationWrap>
           <Pagination
             defaultCurrent={1}
-            current={1}
+            current={dataList.currentPage}
             showSizeChanger
             showQuickJumper
-            total={200}
+            total={dataList.total}
             showTotal={total => `Total ${total} items`}
             pageSizeOptions={['10', '20', '50']}
             onChange={onChangePage}

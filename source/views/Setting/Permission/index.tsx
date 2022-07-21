@@ -2,7 +2,8 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { Checkbox, Modal, Input, Space } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useModel } from '@/models'
 
 const Header = styled.div({
   height: 64,
@@ -132,58 +133,103 @@ const ModalFooter = styled(Space)({
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
 
-const permissionList = [
-  {
-    name: '管理员',
-    subName: '系统分组',
-    children: [
-      {
-        name: '需求',
-        children: [
-          { name: '创建需求' },
-          { name: '删除需求' },
-          { name: '编辑需求' },
-        ],
-      },
-      {
-        name: '迭代',
-        children: [
-          { name: '创建迭代' },
-          { name: '删除迭代' },
-          { name: '编辑迭代' },
-        ],
-      },
-    ],
-  },
-  {
-    name: '编辑者',
-    subName: '系统分组',
-    children: [
-      {
-        name: '需求',
-        children: [
-          { name: '创建需求' },
-          { name: '删除需求' },
-          { name: '编辑需求' },
-        ],
-      },
-    ],
-  },
-  {
-    name: '参与者',
-    subName: '系统分组',
-    children: [
-      {
-        name: '需求',
-        children: [{ name: '创建需求' }],
-      },
-    ],
-  },
-]
+interface ItemProps {
+  item: any
+  onchangeKeys(arr: React.Key[]): void
+  selectKeys: React.Key[]
+}
+
+const PermissionItem = (props: ItemProps) => {
+  const [itemCheckedKeys, setItemCheckedKeys] = useState<React.Key[]>([])
+
+  const onItemChange = (e: any, item: any) => {
+    if (e.target.checked) {
+      if (!props.selectKeys.includes(item.id)) {
+        const arr = [...props.selectKeys, ...[item.id]]
+        setItemCheckedKeys(arr)
+        props.onchangeKeys(arr)
+        console.log(arr, 'checked')
+      }
+    } else {
+      const arr = props.selectKeys.filter(i => i !== item.id)
+      setItemCheckedKeys(arr)
+      props.onchangeKeys(arr)
+      console.log(arr, 'nochecked')
+    }
+  }
+
+  const onAllChange = (e: any, item: any) => {
+    const arr = e.target.checked ? item.children.map((i: any) => i.id) : []
+    setItemCheckedKeys(arr)
+    props.onchangeKeys([...props.selectKeys, ...arr])
+    console.log(arr, 'alll')
+  }
+
+  return (
+    <MainWrapItem>
+      <CheckboxWrap>
+        <Checkbox
+          value={itemCheckedKeys}
+          onChange={e => onAllChange(e, props.item)}
+        />
+      </CheckboxWrap>
+      <OperationWrap>{props.item.name}</OperationWrap>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {props.item.children.map((k: any) => (
+          <div
+            key={k.name}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 24,
+            }}
+          >
+            {itemCheckedKeys.includes(k.id)}
+            <Checkbox
+              checked={itemCheckedKeys.includes(k.id)}
+              style={{ marginRight: 8 }}
+              onChange={e => onItemChange(e, k)}
+            />
+            <span>{k.name}</span>
+          </div>
+        ))}
+      </div>
+    </MainWrapItem>
+  )
+}
 
 export default () => {
-  const [activeTabs, setActiveTabs] = useState(0)
+  const [activeTabs, setActiveTabs] = useState(-1)
   const [visible, setVisible] = useState(false)
+  const [dataList, setDataList] = useState<any>([])
+  const [permission, setPermission] = useState<any>([])
+  const [selectKeys, setSelectKeys] = useState<React.Key[]>([])
+  const { getRoleList, getRolePermission, setRolePermission } =
+    useModel('setting')
+
+  const init = async () => {
+    const result = await getRoleList()
+    setDataList(result)
+    setActiveTabs(0)
+  }
+
+  const getPermission = async () => {
+    const result = await getRolePermission(activeTabs)
+    setPermission(result)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  useEffect(() => {
+    getPermission()
+  }, [activeTabs])
+
+  const save = () => {
+    console.log(selectKeys, '===selectKeys')
+  }
+
   return (
     <div style={{ height: '100%' }}>
       <Modal
@@ -218,14 +264,15 @@ export default () => {
           <SetLeft>
             <Title style={{ marginLeft: 24 }}>用户组</Title>
             <MenuItems>
-              {permissionList.map((item, index) => (
+              {dataList.list?.map((item: any) => (
                 <MenuItem
-                  key={item.name}
-                  onClick={() => setActiveTabs(index)}
-                  isActive={index === activeTabs}
+                  key={item.id}
+                  onClick={() => setActiveTabs(item.id)}
+                  isActive={item.id === activeTabs}
                 >
                   <div>{item.name}</div>
-                  <span>{item.subName}</span>
+                  <span>{item.type === 1 ? '系统权限组' : '自定义权限组'}</span>
+                  {/* <IconFont type='more' /> */}
                 </MenuItem>
               ))}
             </MenuItems>
@@ -242,40 +289,26 @@ export default () => {
             </div>
           </SetLeft>
           <SetRight>
-            <Title>管理员</Title>
+            <Title>{dataList.list ? dataList.list[activeTabs].name : ''}</Title>
             <TitleGroup>
               <CheckboxWrap>全选</CheckboxWrap>
               <OperationWrap>操作对象</OperationWrap>
               <span>权限</span>
             </TitleGroup>
             <MainWrap>
-              {permissionList[activeTabs].children.map(i => (
-                <MainWrapItem key={i.name}>
-                  <CheckboxWrap>
-                    <Checkbox />
-                  </CheckboxWrap>
-                  <OperationWrap>{i.name}</OperationWrap>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {i.children.map(k => (
-                      <div
-                        key={k.name}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          marginRight: 24,
-                        }}
-                      >
-                        <Checkbox style={{ marginRight: 8 }} />
-                        <span>{k.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </MainWrapItem>
+              {permission.list?.map((i: any) => (
+                <PermissionItem
+                  key={i.id}
+                  item={i}
+                  onchangeKeys={setSelectKeys}
+                  selectKeys={selectKeys}
+                />
               ))}
             </MainWrap>
             <Button
               style={{ width: 'fit-content', marginTop: 16 }}
               type="primary"
+              onClick={save}
             >
               保存
             </Button>

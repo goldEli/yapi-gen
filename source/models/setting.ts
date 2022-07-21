@@ -9,8 +9,16 @@ export default () => {
     setCompanyInfo(result)
   }
 
-  const { getOperateLogs, getLoginLogs, getRoleList, getRolePermission } =
-    services.setting
+  const {
+    getOperateLogs,
+    getLoginLogs,
+    getRoleList,
+    getRolePermission,
+    setRolePermission,
+    addRole,
+    deleteRole,
+    updateRole,
+  } = services.setting
 
   return {
     companyInfo,
@@ -19,5 +27,9 @@ export default () => {
     getLoginLogs,
     getRoleList,
     getRolePermission,
+    setRolePermission,
+    addRole,
+    deleteRole,
+    updateRole,
   }
 }
