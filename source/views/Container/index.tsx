@@ -7,16 +7,13 @@ const Wrap = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
-  flex: 1 ;
+  flex: 1;
 `
 
 const Main = styled.div`
   background: rgba(245, 247, 250, 1);
-  // flex: 1;
   flex: 1;
-
   overflow: auto;
-  /* // overflow: scroll; */
 `
 
 export const Container = () => {

@@ -22,40 +22,6 @@ const ContentWrap = styled.div({
   gap: '16px',
 })
 
-const CardWrap = styled.div<{ active: boolean }>(
-  {
-    width: 200,
-    borderRadius: 4,
-    border: '1px solid #f2f2f4',
-    marginTop: 8,
-    padding: 8,
-    marginLeft: 8,
-  },
-  ({ active }) =>
-    active
-      ? {
-          border: '1px solid #2877ff',
-        }
-      : { border: '1px solid #f2f2f4' },
-)
-
-const ImgWrap = styled.div({
-  width: '100%',
-  height: 80,
-  borderRadius: 4,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-})
-
-const TitleWrap = styled.div({
-  width: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  marginTop: 8,
-})
-
 const FooterWrap = styled(Space)({
   width: '100%',
   display: 'flex',
@@ -96,12 +62,6 @@ export default (props: Props) => {
     >
       <ContentWrap>
         {list.map((i, index) => (
-          // <CardWrap active={index === activeIdx} key={i.url} onClick={() => setActiveIdx(index)}>
-          //   <ImgWrap>
-          //     <img style={{ maxWidth: '100%', maxHeight: '100%' }} src={i.url} alt="" />
-          //   </ImgWrap>
-          //   <TitleWrap>{i.name}</TitleWrap>
-          // </CardWrap>
           <SwiperCard
             tap={() => setActiveIdx(index)}
             show={index === activeIdx}

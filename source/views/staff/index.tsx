@@ -199,13 +199,31 @@ export default () => {
         },
       ],
     },
+    {
+      name: '时间',
+      key: 'time',
+      type: 'time',
+      children: [
+        {
+          name: 'jack',
+        },
+        {
+          name: 'Lucy',
+        },
+        {
+          name: 'Disabled',
+        },
+        {
+          name: 'yiminghe',
+        },
+      ],
+    },
   ]
   const list = [
-    { name: '人员' },
-    { name: '需求' },
-    { name: '迭代' },
-    { name: '时间' },
-    { name: '状态' },
+    { name: '迭代', key: 'name' },
+    { name: '人员', key: 'age' },
+    { name: '权限组', key: 'tall' },
+    { name: '时间', key: 'time' },
   ]
 
   return (
@@ -246,11 +264,7 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-      {isShow && (
-        <SearchLine>
-          <TableFilter allList={list} list={searchData}></TableFilter>
-        </SearchLine>
-      )}
+      {isShow && <TableFilter allList={list} list={searchData}></TableFilter>}
 
       <StaffTableWrap>
         <StyledTable

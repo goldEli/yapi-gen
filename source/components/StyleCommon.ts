@@ -99,6 +99,15 @@ const MyInput = styled(Input)`
   }
 `
 const SearchLine = styled.div`
+  @keyframes expandAnim {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  animation: expandAnim 1s 0.5s linear;
   box-sizing: border-box;
   padding: 16px 0;
   display: flex;
