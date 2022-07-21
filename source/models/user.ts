@@ -2,15 +2,21 @@ import { useState } from 'react'
 import * as services from '@/services'
 
 export default () => {
-  const [user, setUser] = useState<Models.User.User>()
-
-  const getUser = async () => {
-    const userResult = await services.user.getUser('123')
-    setUser(userResult)
-  }
+  const {
+    getUserDetail,
+    loginOut,
+    getLoginDetail,
+    getCompanyList,
+    changeCompany,
+    getGlobalGeneral,
+  } = services.user
 
   return {
-    user,
-    getUser,
+    getUserDetail,
+    loginOut,
+    getLoginDetail,
+    getCompanyList,
+    changeCompany,
+    getGlobalGeneral,
   }
 }

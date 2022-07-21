@@ -176,7 +176,7 @@ export default (props: Props) => {
           {list?.map((i, index) => {
             if (i.type === 'select') {
               return (
-                <SelectWrapBedeck>
+                <SelectWrapBedeck >
                   <Form.Item name={i.key}>
                     <SelectWrap
                       label={i.name}

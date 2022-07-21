@@ -147,17 +147,17 @@ export const getRolePermission: any = async (params: any) => {
     {
       group_name: '需求',
       permissions: [
-        { id: '01', name: '创建需求' },
-        { id: '11', name: '删除需求' },
-        { id: '21', name: '编辑需求' },
+        { value: '01', label: '创建需求' },
+        { value: '11', label: '删除需求' },
+        { value: '21', label: '编辑需求' },
       ],
     },
     {
       group_name: '迭代',
       permissions: [
-        { id: '41', name: '迭代创建需求' },
-        { id: '51', name: '迭代删除需求' },
-        { id: '61', name: '迭代编辑需求' },
+        { value: '41', label: '迭代创建需求' },
+        { value: '51', label: '迭代删除需求' },
+        { value: '61', label: '迭代编辑需求' },
       ],
     },
   ]
@@ -171,7 +171,7 @@ export const getRolePermission: any = async (params: any) => {
 
 export const setRolePermission: any = async (params: any) => {
   await http.put<any>('setRolePermission', {
-    role_id: params.roleIds,
+    role_id: params.roleId,
     permission_ids: params.permissionIds,
   })
 }

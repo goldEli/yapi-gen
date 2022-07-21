@@ -1,9 +1,11 @@
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Modal, Input, Space } from 'antd'
+import { Checkbox, Modal, Input, Space, Popover } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import React, { useEffect, useState } from 'react'
 import { useModel } from '@/models'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const Header = styled.div({
   height: 64,
@@ -64,6 +66,13 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
+const IconWrap = styled(IconFont)({
+  display: 'none',
+  position: 'absolute',
+  right: 10,
+  fontSize: '16px!important',
+})
+
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -73,6 +82,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     justifyContent: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
+    position: 'relative',
     div: {
       fontSize: 14,
       color: 'black',
@@ -84,8 +94,12 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      borderRight: '3px solid #2877FF',
-      background: '#F0F4FA',
+      div: {
+        color: '#2877FF',
+      },
+      [IconWrap.toString()]: {
+        display: 'block',
+      },
     },
   },
   ({ isActive }) => ({
@@ -135,64 +149,50 @@ const OperationWrap = styled.div({ width: 100 })
 
 interface ItemProps {
   item: any
-  onchangeKeys(arr: React.Key[]): void
-  selectKeys: React.Key[]
+  onChange?(value: CheckboxValueType[]): void
+  value?: CheckboxValueType[]
 }
 
 const PermissionItem = (props: ItemProps) => {
-  const [itemCheckedKeys, setItemCheckedKeys] = useState<React.Key[]>([])
+  const keys =
+    props.value?.filter(
+      (i: any) => !!props.item.children.find((item: any) => item.value === i),
+    ) || []
 
-  const onItemChange = (e: any, item: any) => {
-    if (e.target.checked) {
-      if (!props.selectKeys.includes(item.id)) {
-        const arr = [...props.selectKeys, ...[item.id]]
-        setItemCheckedKeys(arr)
-        props.onchangeKeys(arr)
-        console.log(arr, 'checked')
-      }
-    } else {
-      const arr = props.selectKeys.filter(i => i !== item.id)
-      setItemCheckedKeys(arr)
-      props.onchangeKeys(arr)
-      console.log(arr, 'nochecked')
-    }
+  const otherKeys = props.value?.filter((i: any) => !keys.includes(i)) || []
+
+  const onChange = (newKeys: CheckboxValueType[]) => {
+    console.log(newKeys)
+    props.onChange?.([...new Set([...newKeys, ...otherKeys])])
   }
 
-  const onAllChange = (e: any, item: any) => {
-    const arr = e.target.checked ? item.children.map((i: any) => i.id) : []
-    setItemCheckedKeys(arr)
-    props.onchangeKeys([...props.selectKeys, ...arr])
-    console.log(arr, 'alll')
+  const onCheckAllChange = (e: CheckboxChangeEvent) => {
+    onChange(
+      e.target.checked ? props.item.children.map((i: any) => i.value) : [],
+    )
   }
 
   return (
     <MainWrapItem>
       <CheckboxWrap>
         <Checkbox
-          value={itemCheckedKeys}
-          onChange={e => onAllChange(e, props.item)}
+          indeterminate={
+            keys.length > 0 && keys.length !== props.item.children.length
+          }
+          onChange={onCheckAllChange}
+          checked={
+            keys.length > 0 && keys.length === props.item.children.length
+          }
         />
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {props.item.children.map((k: any) => (
-          <div
-            key={k.name}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: 24,
-            }}
-          >
-            {itemCheckedKeys.includes(k.id)}
-            <Checkbox
-              checked={itemCheckedKeys.includes(k.id)}
-              style={{ marginRight: 8 }}
-              onChange={e => onItemChange(e, k)}
-            />
-            <span>{k.name}</span>
-          </div>
-        ))}
+        <Checkbox.Group
+          options={props.item.children}
+          style={{ marginRight: 8 }}
+          value={keys}
+          onChange={onChange}
+        />
       </div>
     </MainWrapItem>
   )
@@ -203,8 +203,9 @@ export default () => {
   const [visible, setVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const [permission, setPermission] = useState<any>([])
-  const [selectKeys, setSelectKeys] = useState<React.Key[]>([])
-  const { getRoleList, getRolePermission, setRolePermission } =
+  const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
+  const [addValue, setAddValue] = useState('')
+  const { getRoleList, getRolePermission, setRolePermission, addRole } =
     useModel('setting')
 
   const init = async () => {
@@ -226,10 +227,25 @@ export default () => {
     getPermission()
   }, [activeTabs])
 
-  const save = () => {
+  const savePermission = async () => {
+    // try {
+    //   await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
+    //   //
+    // } catch (error) {
+    //   //
+    // }
     console.log(selectKeys, '===selectKeys')
   }
 
+  const saveGroup = async () => {
+    console.log(addValue, '===')
+    try {
+      await addRole({ name: addValue })
+      //
+    } catch (error) {
+      //
+    }
+  }
   return (
     <div style={{ height: '100%' }}>
       <Modal
@@ -249,11 +265,17 @@ export default () => {
           />
         </ModalHeader>
         <div style={{ margin: '24px 0' }}>
-          <Input placeholder="请输入权限组名称" />
+          <Input
+            value={addValue}
+            onChange={e => setAddValue(e.target.value)}
+            placeholder="请输入权限组名称"
+          />
         </div>
         <ModalFooter size={16}>
           <Button onClick={() => setVisible(false)}>取消</Button>
-          <Button type="primary">确认</Button>
+          <Button disabled={!addValue} onClick={saveGroup} type="primary">
+            确认
+          </Button>
         </ModalFooter>
       </Modal>
       <Header>
@@ -272,7 +294,9 @@ export default () => {
                 >
                   <div>{item.name}</div>
                   <span>{item.type === 1 ? '系统权限组' : '自定义权限组'}</span>
-                  {/* <IconFont type='more' /> */}
+                  <Popover placement="bottomRight" overlay={<>121212</>}>
+                    <IconWrap type="more" />
+                  </Popover>
                 </MenuItem>
               ))}
             </MenuItems>
@@ -300,15 +324,15 @@ export default () => {
                 <PermissionItem
                   key={i.id}
                   item={i}
-                  onchangeKeys={setSelectKeys}
-                  selectKeys={selectKeys}
+                  onChange={setSelectKeys}
+                  value={selectKeys}
                 />
               ))}
             </MainWrap>
             <Button
               style={{ width: 'fit-content', marginTop: 16 }}
               type="primary"
-              onClick={save}
+              onClick={savePermission}
             >
               保存
             </Button>

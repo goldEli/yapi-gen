@@ -9,6 +9,17 @@ const urls = {
   addRole: '/b/company/role',
   deleteRole: '/b/company/role',
   updateRole: '/b/company/role',
+  getLoginDetail: '/b/userinfo', //yangyi
+  loginOut: '/b/logout', //yangyi
+  getUserDetail: '/b/userdetail', //yangyi
+  getCompanyList: '/b/user_companys', //yangyi
+  changeCompany: '/b/user_change_company', //yangyi
+  getStaffList: '/b/user/list', //yangyi
+  editStaff: '/b/user/update', //yangyi
+  refreshStaff: '/b/user/refresh', //yangyi
+  getDepartmentSelectList: '/b/user/department/list', //yangyi
+  getPositionSelectList: '/b/user/position/list', //yangyi
+  getGlobalGeneral: '/b/company/statistics', //yangyi
 }
 
 export default urls

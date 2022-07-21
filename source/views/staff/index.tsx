@@ -18,7 +18,7 @@ import {
   SetButton,
   StyledTable,
 } from '@/components/StyleCommon'
-import TableFilter from '@/components/TableFilter'
+import SearchList from './components/SearchList'
 
 const Reset = styled.div`
   width: 60px;
@@ -267,11 +267,11 @@ export default () => {
         </div>
       </Hehavior>
       {isShow && (
-        <TableFilter
-          basicsList={basicsList}
-          specialList={specialList}
-          list={searchData}
-        ></TableFilter>
+        <SearchList
+          onSearch={value => {
+            console.log(value)
+          }}
+        ></SearchList>
       )}
 
       <StaffTableWrap>
