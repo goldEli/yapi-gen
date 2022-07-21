@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
+import { useModel } from '@/models'
 const Wrap = styled.div`
   display: flex;
   width: 100vw;
@@ -18,6 +19,17 @@ const Main = styled.div`
 
 export const Container = () => {
   const [nextVisible, setNextVisible] = useState(true)
+  const { getUserDetail } = useModel('user')
+
+  const init = async () => {
+    const res = await getUserDetail()
+    // console.log(res, '获取用户详情')
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
   return (
     <Wrap>
       <Side></Side>

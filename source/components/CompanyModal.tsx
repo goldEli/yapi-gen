@@ -63,6 +63,7 @@ export default (props: Props) => {
       <ContentWrap>
         {list.map((i, index) => (
           <SwiperCard
+            key={index}
             tap={() => setActiveIdx(index)}
             show={index === activeIdx}
           ></SwiperCard>

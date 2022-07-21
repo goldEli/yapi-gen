@@ -132,7 +132,7 @@ export default () => {
   const [state, setState] = useState()
 
   const navigate = useNavigate()
-
+  const tap = () => {}
   useEffect(() => {}, [])
   return (
     <StyledWrap>
@@ -155,7 +155,7 @@ export default () => {
           </InnerWrap>
         </HeadLeft>
         <HeadRight>
-          <SecondTitle>基本高考</SecondTitle>
+          <SecondTitle onClick={tap}>基本高考</SecondTitle>
           <InnerWrap>
             <ChartsItem>
               <span className={titleNumberCss}>16</span>
@@ -191,8 +191,8 @@ export default () => {
           <SecondTitle>我的动态</SecondTitle>
           <TimeLineWrap>
             <Timeline>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
-                <Timeline.Item>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
+                <Timeline.Item key={item}>
                   <LineItem>
                     <span>2022-06-06 15:30</span>
                     <span style={{ color: 'rgba(40, 119, 255, 1)' }}>
