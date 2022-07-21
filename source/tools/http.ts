@@ -9,9 +9,9 @@ client.config({
   },
   requestInterceptors: [
     options => {
-      ;(options.headers.Token = localStorage.getItem('token') || ''),
-        (options.headers.System = 'win10'),
-        (options.headers.Client = 'chrome')
+      options.headers.Token = localStorage.getItem('token') || ''
+      options.headers.System = 'win10'
+      options.headers.Client = 'chrome'
     },
   ],
 })
