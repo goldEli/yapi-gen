@@ -236,7 +236,7 @@ export default (props: Props) => {
         </MainWrap>
         <Dropdown
           overlay={props.menu}
-          placement="bottomCenter"
+          placement="bottomRight"
           trigger={['click']}
           getPopupContainer={node => node}
         >

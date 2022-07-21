@@ -1,7 +1,6 @@
 import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
-import TableSetting from '@/components/TableSetting'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useCallback, useState } from 'react'
 import EditDemand from '../components/EditDemand'

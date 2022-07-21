@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react'
 import styled from '@emotion/styled'
-import { Dropdown, Progress, Menu } from 'antd'
+import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
 import { useNavigate } from 'react-router-dom'
 
@@ -99,8 +99,9 @@ export default (props: Props) => {
       </DetailWrap>
       <Dropdown
         overlay={props.menu}
-        placement="bottomCenter"
+        placement="bottomRight"
         trigger={['hover']}
+        getPopupContainer={node => node}
       >
         <MoreWrap type="more" />
       </Dropdown>

@@ -64,7 +64,7 @@ export default (props: Props) => {
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px' }}
     >
-      <FormWrap form={form} labelCol={{ span: 6 }}>
+      <FormWrap form={form} labelCol={{ span: 5 }}>
         <div style={{ display: 'flex' }}>
           <IconFont type="interation" />
           <Form.Item label="迭代名称" required>

@@ -220,10 +220,13 @@ export default (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="id-card" />
           <Form.Item label="抄送人">
-            <AddWrap hasColor>
-              <IconFont type="plus" />
-              <div>添加</div>
-            </AddWrap>
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              mode="multiple"
+              showSearch
+              placeholder="请选择抄送人"
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
