@@ -88,7 +88,7 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: any) => (
         <Pop
           content={({ onHide }: { onHide: () => void }) => {
-            return <ShapeContent hide={onHide} record={record}></ShapeContent>
+            return <ShapeContent tap={()=>{}} hide={onHide} record={record}></ShapeContent>
           }}
           record={record}
         >

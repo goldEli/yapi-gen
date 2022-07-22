@@ -61,6 +61,12 @@
   "eslintConfig": {
     "extends": [
       "@jihe/eslint-config-react"
-    ]
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "@typescript-eslint/no-explicit-any": 0
+    }
   }
 }

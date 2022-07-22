@@ -95,7 +95,7 @@ export default () => {
     controlStaffPersonalVisible,
   })
 
-  const selectColum = useMemo(() => {
+  const selectColum:any = useMemo(() => {
     let arr = [...titleList, ...titleList2]
     let newList = []
     for (let i = 0; i < arr.length; i++) {

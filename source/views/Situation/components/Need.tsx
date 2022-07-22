@@ -44,7 +44,7 @@ const DemoLine = () => {
     yAxis: {
       label: {
         // 数值格式化为千分位
-        formatter: v => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+        formatter: (v: any) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
       },
     },
   }

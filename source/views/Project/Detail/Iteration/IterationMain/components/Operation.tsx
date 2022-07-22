@@ -161,7 +161,7 @@ export default (props: Props) => {
           onChangeSetting={() => setSettingState(!settingState)}
         />
       </OperationWrap>
-      <TableFilter showForm={filterState} />
+      <TableFilter showForm={filterState} list={[]} />
       <OptionalFeld
         plainOptions={plainOptions}
         plainOptions2={plainOptions2}

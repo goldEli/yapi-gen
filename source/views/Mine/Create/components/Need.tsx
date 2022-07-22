@@ -121,7 +121,7 @@ export default () => {
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
     console.log(page, size)
   }
-  const selectColum = useMemo(() => {
+  const selectColum:any = useMemo(() => {
     let arr = [...titleList, ...titleList2]
     let newList = []
     for (let i = 0; i < arr.length; i++) {

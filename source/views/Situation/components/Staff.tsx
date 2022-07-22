@@ -57,7 +57,7 @@ const DemoColumn = () => {
     yField: 'sales',
     label: {
       // 可手动配置 label 数据标签位置
-      position: 'middle',
+      // position: 'middle',
       // 'top', 'bottom', 'middle',
       // 配置样式
       style: {
@@ -124,7 +124,7 @@ export default () => {
       </TextWrap>
       <div className={chartsTitle}>职位人数分布</div>
       <HightChartsWrap>
-      <DemoColumn></DemoColumn>
+        <DemoColumn></DemoColumn>
       </HightChartsWrap>
     </ChartsWrap>
   )
