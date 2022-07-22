@@ -63,10 +63,43 @@
       "@jihe/eslint-config-react"
     ],
     "parserOptions": {
-      "project": "./tsconfig.json"
+      "project": [
+        "./tsconfig.json",
+        "./tsconfig.node.json"
+      ]
     },
     "rules": {
+      "object-property-newline": [
+        1,
+        {
+          "allowAllPropertiesOnSameLine": true
+        }
+      ],
+      "function-call-argument-newline": [
+        1,
+        "consistent"
+      ],
+      "@typescript-eslint/indent": [
+        1,
+        2,
+        {
+          "offsetTernaryExpressions": true
+        }
+      ],
       "@typescript-eslint/no-explicit-any": 0
     }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,vue}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{css,less}": [
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "*.{md,json,json5,html,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }
