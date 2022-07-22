@@ -214,7 +214,11 @@ export default (props: Props) => {
                   />
                 )
               }}
-              record={props.item}
+              record={
+                props.item as unknown as
+                  | Record<string, string | number>
+                  | undefined
+              }
             >
               <div
                 style={{

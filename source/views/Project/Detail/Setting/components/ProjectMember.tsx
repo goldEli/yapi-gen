@@ -164,7 +164,7 @@ export default () => {
             onClick={() => setVisible(!visible)}
           />
         </HeaderTop>
-        <TableFilter showForm={visible} />
+        <TableFilter showForm={visible} list={[]} />
       </Header>
       <Content>
         <TableWrap

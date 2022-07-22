@@ -1,4 +1,3 @@
-import { log } from '@jihe/secure-log'
 import * as http from '../tools/http'
 
 export const getLoginDetail: any = async () => {

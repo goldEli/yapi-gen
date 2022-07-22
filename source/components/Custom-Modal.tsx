@@ -1,15 +1,15 @@
 import React from 'react'
 import { Modal } from 'antd'
 
-export const CustomModal = prpps => {
+export const CustomModal = (props: any) => {
   return (
     <Modal
       footer={null}
-      onCancel={prpps.close()}
+      onCancel={props.close()}
       title="显示字段配置"
-      visible={prpps.visible}
+      visible={props.visible}
     >
-      <div style={{ display: 'flex' }}>{prpps.data2.age}</div>
+      <div style={{ display: 'flex' }}>{props.data2.age}</div>
     </Modal>
   )
 }

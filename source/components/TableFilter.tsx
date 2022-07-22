@@ -176,7 +176,7 @@ export default (props: Props) => {
           {list?.map((i, index) => {
             if (i.type === 'select') {
               return (
-                <SelectWrapBedeck >
+                <SelectWrapBedeck>
                   <Form.Item name={i.key}>
                     <SelectWrap
                       label={i.name}
@@ -185,7 +185,7 @@ export default (props: Props) => {
                       placeholder="所有"
                       showSearch
                     >
-                      {i.children.map(v => (
+                      {i.children.map((v: any) => (
                         <Option value={v.name}>{v.name}</Option>
                       ))}
                     </SelectWrap>
