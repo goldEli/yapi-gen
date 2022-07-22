@@ -108,7 +108,7 @@ export default () => {
     getCompanyInfo()
   }, [])
 
-  const changeActive = (value: MenuList) => {
+  const onChangeActive = (value: MenuList) => {
     navigate(value.path)
   }
 
@@ -119,7 +119,7 @@ export default () => {
         <MenuWrap>
           {SideList.map(item => (
             <MenuItem
-              onClick={() => changeActive(item)}
+              onClick={() => onChangeActive(item)}
               key={item.name}
               isActive={nowPath === item.path}
             >

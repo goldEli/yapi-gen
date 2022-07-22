@@ -11,7 +11,7 @@ client.config({
   requestInterceptors: [
     options => {
       options.headers.Authorization =
-        localStorage.getItem('token') || 'ade544e7886eff95f6bb4f89e5ce7c22'
+        localStorage.getItem('token') || '0b243d35072cc173f16c0d76ab337cd4'
       options.headers.System = 'win10'
       options.headers.Client = 'chrome'
     },
@@ -23,15 +23,15 @@ client.config({
     (data: any) => {
       if (data.code !== '00000') {
         message.error(data.msg)
-        throw new Error("error");
+        throw new Error('error')
       }
       return {
         code: Number(data.code),
         data: data.data,
-        message: data.msg
+        message: data.msg,
       }
-    }
-  ]
+    },
+  ],
 })
 
 export const get = <SearchParams extends HttpRequestSearch, Result = any>(
@@ -45,12 +45,18 @@ export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {
   return client.post<Payload, Result>(urls[key], data)
 }
 
-export const put = <Payload, Result = any>(key: UrlKeys, data?: any) => {
-  return client.put<Payload, Result>(urls[key], data)
+export const put = <Payload, Result = any>(
+  key: UrlKeys | string,
+  data?: any,
+) => {
+  return client.put<Payload, Result>(urls[key as UrlKeys] || key, data)
 }
 
-const deleteMethod = <Payload, Result = any>(key: UrlKeys, data?: any) => {
-  return client.delete<Payload, Result>(urls[key], data)
+const deleteMethod = <Payload, Result = any>(
+  key: UrlKeys | string,
+  data?: any,
+) => {
+  return client.delete<Payload, Result>(urls[key as UrlKeys] || key, data)
 }
 
 export { deleteMethod as delete }

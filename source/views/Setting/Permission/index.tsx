@@ -1,8 +1,8 @@
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Modal, Input, Space, Popover } from 'antd'
+import { Checkbox, Modal, Input, Space, Popover, Menu, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
@@ -83,18 +83,18 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
-    div: {
+    '.name': {
       fontSize: 14,
       color: 'black',
       fontWeight: 400,
     },
-    span: {
+    '.subName': {
       fontSize: 12,
       color: '#BBBDBF',
       fontWeight: 400,
     },
     '&:hover': {
-      div: {
+      '.name': {
         color: '#2877FF',
       },
       [IconWrap.toString()]: {
@@ -200,13 +200,19 @@ const PermissionItem = (props: ItemProps) => {
 
 export default () => {
   const [activeTabs, setActiveTabs] = useState(-1)
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const [permission, setPermission] = useState<any>([])
   const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
   const [addValue, setAddValue] = useState('')
-  const { getRoleList, getRolePermission, setRolePermission, addRole } =
-    useModel('setting')
+  const {
+    getRoleList,
+    getRolePermission,
+    setRolePermission,
+    addRole,
+    deleteRole,
+    updateRole,
+  } = useModel('setting')
 
   const init = async () => {
     const result = await getRoleList()
@@ -227,18 +233,16 @@ export default () => {
     getPermission()
   }, [activeTabs])
 
-  const savePermission = async () => {
-    // try {
-    //   await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
-    //   //
-    // } catch (error) {
-    //   //
-    // }
-    console.log(selectKeys, '===selectKeys')
+  const onSavePermission = async () => {
+    try {
+      await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
+      //
+    } catch (error) {
+      //
+    }
   }
 
-  const saveGroup = async () => {
-    console.log(addValue, '===')
+  const onSaveGroup = async () => {
     try {
       await addRole({ name: addValue })
       //
@@ -246,11 +250,31 @@ export default () => {
       //
     }
   }
+
+  const onClickMenu = (e: any, type: string) => {
+    e.stopPropagation()
+    type === 'edit' ? setIsVisible(true) : console.log('删除')
+  }
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+        },
+      ]}
+    />
+  )
   return (
     <div style={{ height: '100%' }}>
       <Modal
         footer={false}
-        visible={visible}
+        visible={isVisible}
         title={false}
         closable={false}
         bodyStyle={{ padding: '16px 24px' }}
@@ -259,7 +283,7 @@ export default () => {
         <ModalHeader>
           <span>创建权限组</span>
           <IconFont
-            onClick={() => setVisible(false)}
+            onClick={() => setIsVisible(false)}
             style={{ cursor: 'pointer' }}
             type="close"
           />
@@ -272,8 +296,8 @@ export default () => {
           />
         </div>
         <ModalFooter size={16}>
-          <Button onClick={() => setVisible(false)}>取消</Button>
-          <Button disabled={!addValue} onClick={saveGroup} type="primary">
+          <Button onClick={() => setIsVisible(false)}>取消</Button>
+          <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
             确认
           </Button>
         </ModalFooter>
@@ -292,11 +316,18 @@ export default () => {
                   onClick={() => setActiveTabs(item.id)}
                   isActive={item.id === activeTabs}
                 >
-                  <div>{item.name}</div>
-                  <span>{item.type === 1 ? '系统权限组' : '自定义权限组'}</span>
-                  <Popover placement="bottomRight" overlay={<>121212</>}>
+                  <div className="name">{item.name}</div>
+                  <span className="subName">
+                    {item.type === 1 ? '系统权限组' : '自定义权限组'}
+                  </span>
+                  <Dropdown
+                    overlay={menu}
+                    placement="bottomRight"
+                    trigger={['click']}
+                    getPopupContainer={node => node}
+                  >
                     <IconWrap type="more" />
-                  </Popover>
+                  </Dropdown>
                 </MenuItem>
               ))}
             </MenuItems>
@@ -306,7 +337,7 @@ export default () => {
                 cursor: 'pointer',
                 color: '#2877FF',
               }}
-              onClick={() => setVisible(true)}
+              onClick={() => setIsVisible(true)}
             >
               <IconFont type="plus" />
               <span>添加用户组</span>
@@ -332,7 +363,7 @@ export default () => {
             <Button
               style={{ width: 'fit-content', marginTop: 16 }}
               type="primary"
-              onClick={savePermission}
+              onClick={onSavePermission}
             >
               保存
             </Button>

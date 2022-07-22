@@ -183,14 +183,11 @@ export const addRole: any = async (params: any) => {
 }
 
 export const deleteRole: any = async (params: any) => {
-  await http.delete<any>('deleteRole', {
-    id: params.id,
-  })
+  await http.delete<any>(`/b/company/role/${params.id}`)
 }
 
 export const updateRole: any = async (params: any) => {
-  await http.put<any>('updateRole', {
-    id: params.id,
+  await http.put<any>(`/b/company/role/${params.id}`, {
     name: params.name,
   })
 }
