@@ -3,13 +3,67 @@ import * as services from '@/services'
 
 export default () => {
   const [projectList, setProjectList] = useState<any>([])
+  const [tagList, setTagList] = useState<any>([])
+  const [coverList, setCoverList] = useState<any>([])
+  const [projectInfo, setProjectInfo] = useState<any>({})
 
-  const getProjectList = async () => {
-    const result = await services.project.getProjectList()
+  const getProjectList = async (params: any) => {
+    const result = await services.project.getProjectList(params)
     setProjectList(result)
   }
+
+  const getTagList = async (params: any) => {
+    const result = await services.project.getTagList(params)
+    setTagList(result)
+  }
+
+  const getProjectCoverList = async () => {
+    const result = await services.project.getProjectCoverList()
+    setCoverList(result)
+  }
+
+  const getProjectInfo = async (params: any) => {
+    const result = await services.project.getProjectInfo(params)
+    setProjectInfo(result)
+  }
+
+  const {
+    addProject,
+    updateProject,
+    deleteProject,
+    openProject,
+    stopProject,
+    updateMemberPermission,
+    deleteMemberPermission,
+    getProjectPermission,
+    addPermission,
+    deletePermission,
+    updatePermission,
+    getPermission,
+    setPermission,
+  } = services.project
+
   return {
     projectList,
     getProjectList,
+    tagList,
+    getTagList,
+    coverList,
+    getProjectCoverList,
+    projectInfo,
+    getProjectInfo,
+    addProject,
+    updateProject,
+    deleteProject,
+    openProject,
+    stopProject,
+    updateMemberPermission,
+    deleteMemberPermission,
+    getProjectPermission,
+    addPermission,
+    deletePermission,
+    updatePermission,
+    getPermission,
+    setPermission,
   }
 }

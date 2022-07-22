@@ -60,9 +60,12 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       color: '#323233',
     },
     '&:hover': {
-      background: '#F0F4FA',
-      borderRight: '3px solid #2877FF',
-      color: '#2877FF',
+      div: {
+        color: '#2877FF',
+      },
+      svg: {
+        color: '#2877FF',
+      },
     },
   },
   ({ isActive }) => ({

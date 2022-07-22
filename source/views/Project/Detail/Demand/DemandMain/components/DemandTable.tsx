@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { Pagination, Dropdown, Table } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
@@ -46,6 +46,21 @@ const Content = styled.div({
   height: 'auto',
 })
 
+const RowIconFont = styled(IconFont)({
+  visibility: 'hidden',
+  fontSize: 16,
+  cursor: 'pointer',
+  color: '#2877ff',
+})
+
+const TableBox = styled(TableWrap)({
+  '.ant-table-row:hover': {
+    [RowIconFont.toString()]: {
+      visibility: 'visible',
+    },
+  },
+})
+
 interface Props {
   menu: React.ReactElement
   List: any[]
@@ -59,18 +74,7 @@ const priorityList = [
 ]
 
 const DemandTable = (props: Props) => {
-  const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const navigate = useNavigate()
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
 
   const onChangePage = () => {
 
@@ -142,26 +146,17 @@ const DemandTable = (props: Props) => {
     {
       title: 'ID',
       dataIndex: 'id',
-      render: (text: string, record: any) => {
+      render: (text: string) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div
-              style={{
-                visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
-              }}
+            <Dropdown
+              overlay={props.menu}
+              trigger={['hover']}
+              placement="bottomRight"
+              getPopupContainer={node => node}
             >
-              <Dropdown
-                overlay={props.menu}
-                trigger={['hover']}
-                placement="bottomRight"
-                getPopupContainer={node => node}
-              >
-                <IconFont
-                  style={{ fontSize: 16, color: '#2877FF', cursor: 'pointer' }}
-                  type="more"
-                />
-              </Dropdown>
-            </div>
+              <RowIconFont type="more" />
+            </Dropdown>
             <div style={{ marginLeft: 32 }}>{text}</div>
           </div>
         )
@@ -300,9 +295,8 @@ const DemandTable = (props: Props) => {
   ]
   return (
     <Content>
-      <TableWrap
+      <TableBox
         rowKey="key"
-        onRow={onTableRow}
         columns={columns}
         dataSource={props.List}
         pagination={false}

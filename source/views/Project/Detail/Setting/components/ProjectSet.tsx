@@ -1,9 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Modal, Input } from 'antd'
+import { Checkbox, Space, Modal, Input, Menu, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { useModel } from '@/models'
+import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const Warp = styled.div({
   padding: 16,
@@ -48,6 +52,13 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
+const IconWrap = styled(IconFont)({
+  display: 'none',
+  position: 'absolute',
+  right: 10,
+  fontSize: '16px!important',
+})
+
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -68,8 +79,12 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      borderRight: '3px solid #2877FF',
-      background: '#F0F4FA',
+      '.name': {
+        color: '#2877FF',
+      },
+      [IconWrap.toString()]: {
+        display: 'block',
+      },
     },
   },
   ({ isActive }) => ({
@@ -117,63 +132,141 @@ const ModalFooter = styled(Space)({
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
 
-const permissionList = [
-  {
-    name: '管理员',
-    subName: '系统分组',
-    children: [
-      {
-        name: '需求',
-        children: [
-          { name: '创建需求' },
-          { name: '删除需求' },
-          { name: '编辑需求' },
-        ],
-      },
-      {
-        name: '迭代',
-        children: [
-          { name: '创建迭代' },
-          { name: '删除迭代' },
-          { name: '编辑迭代' },
-        ],
-      },
-    ],
-  },
-  {
-    name: '编辑者',
-    subName: '系统分组',
-    children: [
-      {
-        name: '需求',
-        children: [
-          { name: '创建需求' },
-          { name: '删除需求' },
-          { name: '编辑需求' },
-        ],
-      },
-    ],
-  },
-  {
-    name: '参与者',
-    subName: '系统分组',
-    children: [
-      {
-        name: '需求',
-        children: [{ name: '创建需求' }],
-      },
-    ],
-  },
-]
+interface ItemProps {
+  item: any
+  onChange?(value: CheckboxValueType[]): void
+  value?: CheckboxValueType[]
+}
+
+const PermissionItem = (props: ItemProps) => {
+  const keys
+    = props.value?.filter(
+      (i: any) => !!props.item.children.find((item: any) => item.value === i),
+    ) || []
+
+  const otherKeys = props.value?.filter((i: any) => !keys.includes(i)) || []
+
+  const onChange = (newKeys: CheckboxValueType[]) => {
+    props.onChange?.([...new Set([...newKeys, ...otherKeys])])
+  }
+
+  const onCheckAllChange = (e: CheckboxChangeEvent) => {
+    onChange(
+      e.target.checked ? props.item.children.map((i: any) => i.value) : [],
+    )
+  }
+
+  return (
+    <MainWrapItem>
+      <CheckboxWrap>
+        <Checkbox
+          indeterminate={
+            keys.length > 0 && keys.length !== props.item.children.length
+          }
+          onChange={onCheckAllChange}
+          checked={
+            keys.length > 0 && keys.length === props.item.children.length
+          }
+        />
+      </CheckboxWrap>
+      <OperationWrap>{props.item.name}</OperationWrap>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Checkbox.Group
+          options={props.item.children}
+          style={{ marginRight: 8 }}
+          value={keys}
+          onChange={onChange}
+        />
+      </div>
+    </MainWrapItem>
+  )
+}
 
 const ProjectSet = () => {
-  const [activeTabs, setActiveTabs] = useState(0)
-  const [visible, setVisible] = useState(false)
+  const [activeTabs, setActiveTabs] = useState(-1)
+  const [isVisible, setIsVisible] = useState(false)
+  const [dataList, setDataList] = useState<any>([])
+  const [havePermission, setHavePermission] = useState<any>([])
+  const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
+  const [addValue, setAddValue] = useState('')
+  const { getProjectPermission, getPermission, setPermission, addPermission }
+    = useModel('project')
+
+  const init = async () => {
+    const result = await getProjectPermission()
+    setDataList(result)
+    setActiveTabs(0)
+  }
+
+  const getPermissionMethod = async () => {
+    const result = await getPermission(activeTabs)
+    setHavePermission(result)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  useEffect(() => {
+    getPermissionMethod()
+  }, [activeTabs])
+
+  const onSavePermission = async () => {
+    try {
+      await setPermission({ roleId: activeTabs, permissionIds: selectKeys })
+      getPermissionMethod()
+
+      //
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onSaveGroup = async () => {
+    try {
+      await addPermission({ name: addValue })
+      setIsVisible(false)
+      setAddValue('')
+
+      //
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onClickMenu = (e: any, type: string) => {
+    e.stopPropagation()
+    if (type === 'edit') {
+      setIsVisible(true)
+    }
+  }
+
+  const onClose = () => {
+    setIsVisible(false)
+    setAddValue('')
+  }
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+        },
+      ]}
+    />
+  )
   return (
-    <Warp>
+    <div style={{ height: '100%' }}>
       <Modal
         footer={false}
-        visible={visible}
+        visible={isVisible}
         title={false}
         closable={false}
         bodyStyle={{ padding: '16px 24px' }}
@@ -182,83 +275,91 @@ const ProjectSet = () => {
         <ModalHeader>
           <span>创建权限组</span>
           <IconFont
-            onClick={() => setVisible(false)}
+            onClick={onClose}
             style={{ cursor: 'pointer' }}
             type="close"
           />
         </ModalHeader>
         <div style={{ margin: '24px 0' }}>
-          <Input placeholder="请输入权限组名称" />
+          <Input
+            value={addValue}
+            onChange={e => setAddValue(e.target.value)}
+            placeholder="请输入权限组名称"
+          />
         </div>
         <ModalFooter size={16}>
-          <Button onClick={() => setVisible(false)}>取消</Button>
-          <Button type="primary">确认</Button>
+          <Button onClick={onClose}>取消</Button>
+          <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
+            确认
+          </Button>
         </ModalFooter>
       </Modal>
-      <SetMain>
-        <SetLeft>
-          <Title style={{ marginLeft: 24 }}>用户组</Title>
-          <MenuItems>
-            {permissionList.map((item, index) => (
-              <MenuItem
-                key={item.name}
-                onClick={() => setActiveTabs(index)}
-                isActive={index === activeTabs}
-              >
-                <div>{item.name}</div>
-                <span>{item.subName}</span>
-              </MenuItem>
-            ))}
-          </MenuItems>
-          <div
-            onClick={() => setVisible(true)}
-            style={{ textAlign: 'center', cursor: 'pointer', color: '#2877FF' }}
-          >
-            <IconFont type="plus" />
-            <span>添加用户组</span>
-          </div>
-        </SetLeft>
-        <SetRight>
-          <Title>管理员</Title>
-          <TitleGroup>
-            <CheckboxWrap>全选</CheckboxWrap>
-            <OperationWrap>操作对象</OperationWrap>
-            <span>权限</span>
-          </TitleGroup>
-          <MainWrap>
-            {permissionList[activeTabs].children.map(i => (
-              <MainWrapItem key={i.name}>
-                <CheckboxWrap>
-                  <Checkbox />
-                </CheckboxWrap>
-                <OperationWrap>{i.name}</OperationWrap>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  {i.children.map(k => (
-                    <div
-                      key={k.name}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginRight: 24,
-                      }}
-                    >
-                      <Checkbox style={{ marginRight: 8 }} />
-                      <span>{k.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </MainWrapItem>
-            ))}
-          </MainWrap>
-          <Button
-            style={{ width: 'fit-content', marginTop: 16 }}
-            type="primary"
-          >
-            保存
-          </Button>
-        </SetRight>
-      </SetMain>
-    </Warp>
+      <Warp>
+        <SetMain>
+          <SetLeft>
+            <Title style={{ marginLeft: 24 }}>用户组</Title>
+            <MenuItems>
+              {dataList.list?.map((item: any) => (
+                <MenuItem
+                  key={item.id}
+                  onClick={() => setActiveTabs(item.id)}
+                  isActive={item.id === activeTabs}
+                >
+                  <div className="name">{item.name}</div>
+                  <span className="subName">
+                    {item.type === 1 ? '系统权限组' : '自定义权限组'}
+                  </span>
+                  <Dropdown
+                    overlay={menu}
+                    placement="bottomRight"
+                    trigger={['click']}
+                    getPopupContainer={node => node}
+                  >
+                    <IconWrap type="more" />
+                  </Dropdown>
+                </MenuItem>
+              ))}
+            </MenuItems>
+            <div
+              style={{
+                textAlign: 'center',
+                cursor: 'pointer',
+                color: '#2877FF',
+              }}
+              onClick={() => setIsVisible(true)}
+            >
+              <IconFont type="plus" />
+              <span>添加用户组</span>
+            </div>
+          </SetLeft>
+          <SetRight>
+            <Title>{dataList.list ? dataList.list[activeTabs].name : ''}</Title>
+            <TitleGroup>
+              <CheckboxWrap>全选</CheckboxWrap>
+              <OperationWrap>操作对象</OperationWrap>
+              <span>权限</span>
+            </TitleGroup>
+            <MainWrap>
+              {havePermission.list?.map((i: any) => (
+                <PermissionItem
+                  key={i.id}
+                  item={i}
+                  onChange={setSelectKeys}
+                  value={selectKeys}
+                />
+              ))}
+            </MainWrap>
+            <Button
+              style={{ width: 'fit-content', marginTop: 16 }}
+              type="primary"
+              onClick={onSavePermission}
+            >
+              保存
+            </Button>
+          </SetRight>
+        </SetMain>
+      </Warp>
+    </div>
   )
 }
 

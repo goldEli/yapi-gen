@@ -59,6 +59,7 @@ export const getDemandList: any = async (params: any) => {
       users_copysend_name: params.copySendId,
       parent_id: params.parentId,
       all: params.all,
+      panel: params.panel,
     },
     pagesize: params.pagesize,
     page: params.page,
