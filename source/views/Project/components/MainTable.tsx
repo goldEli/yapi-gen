@@ -7,6 +7,7 @@ import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 
 interface Props {
   onChangeOperation(type: string, id: number): void
+  projectList: any
 }
 
 const StatusWrap = styled.div({
@@ -15,191 +16,6 @@ const StatusWrap = styled.div({
   borderRadius: '50%',
   marginRight: 8,
 })
-
-const list = [
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    url: '',
-    name: '项目名称',
-    person: 6,
-    demand: 8,
-    iteration: 9,
-    progress: '90%',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-]
 
 const statusList = [
   { id: 0, name: '运行中', color: '#2877ff' },
@@ -297,23 +113,23 @@ const MainTable = (props: Props) => {
     },
     {
       title: '项目人数',
-      dataIndex: 'person',
+      dataIndex: 'memberCount',
       sorter: {
-        compare: (a: any, b: any) => a.person - b.person,
+        compare: (a: any, b: any) => a.memberCount - b.memberCount,
       },
     },
     {
       title: '需求数',
-      dataIndex: 'demand',
+      dataIndex: 'storyCount',
       sorter: {
-        compare: (a: any, b: any) => a.demand - b.demand,
+        compare: (a: any, b: any) => a.storyCount - b.storyCount,
       },
     },
     {
       title: '迭代数',
-      dataIndex: 'iteration',
+      dataIndex: 'iterateCount',
       sorter: {
-        compare: (a: any, b: any) => a.iteration - b.iteration,
+        compare: (a: any, b: any) => a.iterateCount - b.iterateCount,
       },
     },
     {
@@ -345,17 +161,11 @@ const MainTable = (props: Props) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'time',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
+      dataIndex: 'createdTime',
     },
     {
       title: '结束时间',
       dataIndex: 'endTime',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
   ]
 
@@ -372,10 +182,10 @@ const MainTable = (props: Props) => {
   return (
     <div>
       <TableWrap
-        rowKey="key"
+        rowKey="id"
         onRow={onTableRow}
         columns={columns}
-        dataSource={list}
+        dataSource={props.projectList?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}

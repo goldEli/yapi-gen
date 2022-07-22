@@ -55,6 +55,13 @@ export const put = <Payload, Result = any>(
   return client.put<Payload, Result>(urls[key as UrlKeys] || key, data)
 }
 
+export const patch = <Payload, Result = any>(
+  key: UrlKeys | string,
+  data?: any,
+) => {
+  return client.patch<Payload, Result>(urls[key as UrlKeys] || key, data)
+}
+
 const deleteMethod = <Payload, Result = any>(
   key: UrlKeys | string,
   data?: any,

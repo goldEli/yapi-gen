@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from '@emotion/styled'
 import SearchComponent from '@/components/SearchComponent'
 import Filter from './components/Filter'
 import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useModel } from '@/models'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -24,7 +26,13 @@ const Project = () => {
   const [sort, setSort] = useState('name')
   const [isHidden, setIsHidden] = useState(false)
   const [activeType, setActiveType] = useState(0)
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const { getProjectList, projectList } = useModel('project')
+
+  useEffect(() => {
+    getProjectList()
+  }, [])
+
   const onChangeOperation = () => {
 
     //
@@ -56,8 +64,8 @@ const Project = () => {
     <div style={{ height: '100%', overflow: 'auto' }}>
       <span>{isHidden}</span>
       <EditProject
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
+        visible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
       />
       <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
         <SearchWrap>
@@ -65,7 +73,7 @@ const Project = () => {
             placeholder="搜索项目或任务"
             text="创建项目"
             onChangeSearch={onChangeSearch}
-            onChangeVisible={() => setVisible(true)}
+            onChangeVisible={() => setIsVisible(true)}
           />
         </SearchWrap>
         <Filter
@@ -84,12 +92,17 @@ const Project = () => {
         {isGrid
           ? (
               <MainGrid
-                onChangeVisible={() => setVisible(true)}
+                projectList={projectList}
+                onChangeVisible={() => setIsVisible(true)}
                 onChangeOperation={onChangeOperation}
               />
             )
-          : <MainTable onChangeOperation={onChangeOperation} />
-        }
+          : (
+              <MainTable
+                onChangeOperation={onChangeOperation}
+                projectList={projectList}
+              />
+            )}
       </Content>
     </div>
   )
