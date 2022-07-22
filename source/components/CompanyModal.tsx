@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-no-literals */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Space } from 'antd'
 import logoWithNameImage from '@/assets/logo_with_name.png'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import SwiperCard from '@/views/Mine/components/SwiperCard'
-
+import CompanyCard from '@/views/Container/components/CompanyCard'
+import { useModel } from '@/models'
 interface Props {
   onChangeState(): void
   visible: boolean
@@ -30,6 +30,15 @@ const FooterWrap = styled(Space)({
 })
 
 export default (props: Props) => {
+  const { getCompanyList, changeCompany } = useModel('user')
+  const init = async () => {
+    const res = await getCompanyList()
+    console.log(res, '公司列表')
+  }
+  useEffect(() => {
+    init()
+  }, [])
+
   const list = [
     { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
     { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
@@ -62,11 +71,11 @@ export default (props: Props) => {
     >
       <ContentWrap>
         {list.map((i, index) => (
-          <SwiperCard
+          <CompanyCard
             key={index}
             tap={() => setActiveIdx(index)}
             show={index === activeIdx}
-          ></SwiperCard>
+          ></CompanyCard>
         ))}
       </ContentWrap>
       <FooterWrap size={16}>

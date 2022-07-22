@@ -4,6 +4,10 @@ import { Button } from 'antd'
 import { createPortal } from 'react-dom'
 import { css } from '@emotion/css'
 import projectImg from '@/assets/projectImg.png'
+import guide_1 from '@/assets/guide_1.svg'
+import guide_2 from '@/assets/guide_2.svg'
+import guide_3 from '@/assets/guide_3.svg'
+import guide_4 from '@/assets/guide_4.svg'
 const textCss = css`
   height: 100px;
   box-sizing: border-box;
@@ -13,9 +17,9 @@ const textCss = css`
   text-align: center;
 `
 const imgBoxCss = css`
-  height: 448px;
+  /* height: 448px; */
   box-sizing: border-box;
-  padding: 46px 109px 65px 109px;
+  /* padding: 0px 0px 65px 0px; */
 `
 const FooterCss = css`
   display: flex;
@@ -50,24 +54,28 @@ export default function Next(props: { visible: boolean; close(): void }) {
   const inform = [
     {
       text: 'IFUN敏捷系统将同步OA企业信息员工成员',
+      img: guide_1,
     },
     {
       text: '请到设置-权限管理配置权限组系统提供了管理员、编辑者、参与者三个系统权限组还可自定义更多权限组',
+      img: guide_2,
     },
     {
       text: '请在员工管理中配置用户权限',
+      img: guide_3,
     },
     {
       text: '创建项目，开始项目管理',
+      img: guide_4,
     },
   ]
   const filterData = useMemo(() => {
     const filterActive = inform.filter((item, index) => index === active)
     return filterActive.map(item => (
       <div>
-        <div className={textCss}>{item.text}</div>
+        {/* <div className={textCss}>{item.text}</div> */}
         <div className={imgBoxCss}>
-          <img style={{ width: '100%' }} src={projectImg} alt="12"></img>
+          <img src={item.img} alt="12"></img>
         </div>
       </div>
     ))
@@ -91,7 +99,7 @@ export default function Next(props: { visible: boolean; close(): void }) {
     <Container>
       <Dialog>
         {/* <header>头</header> */}
-        <div>{filterData}</div>
+        {filterData}
         <footer className={FooterCss}>
           {active !== 0 && <Button onClick={prev}>上一步</Button>}
           {active !== inform.length - 1 && (
