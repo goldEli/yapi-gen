@@ -7,6 +7,8 @@ const urls = {
   getRolePermission: '/b/company/role_get_permission',
   setRolePermission: '/b/company/role_set_permission',
   addRole: '/b/company/role',
+  getProjectList: '/b/project/getlist',
+
   getLoginDetail: '/b/userinfo', //yangyi
   loginOut: '/b/logout', //yangyi
   getUserDetail: '/b/userdetail', //yangyi
