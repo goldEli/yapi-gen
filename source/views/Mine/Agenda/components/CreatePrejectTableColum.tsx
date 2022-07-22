@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-handler-names */
 import { Button, Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
+import { level, LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -45,30 +45,6 @@ const SetHead = styled.div`
   border: 1px solid rgba(40, 119, 255, 1);
   color: white;
 `
-const level = [
-  {
-    id: 1,
-    name: '高',
-    icon: <IconFont type="tall" style={{ color: '#ff5c5e', fontSize: 20 }} />,
-  },
-  {
-    id: 2,
-    name: '中',
-    icon: <IconFont type="middle" style={{ color: '#fa9746', fontSize: 20 }} />,
-  },
-  {
-    id: 3,
-    name: '低',
-    icon: <IconFont type="low" style={{ color: '#43ba9a', fontSize: 20 }} />,
-  },
-  {
-    id: 4,
-    name: '极低',
-    icon:
-      <IconFont type="knockdown" style={{ color: '#bbbdbf', fontSize: 20 }} />
-    ,
-  },
-]
 
 export const useDynamicColumns = (state: any) => {
   return [
@@ -203,7 +179,7 @@ export const useDynamicColumns = (state: any) => {
             record={record}
           >
             <ShowWrap>
-              <IconFont type="down-60kl9fcg" />
+              <IconFont type="down-icon" />
             </ShowWrap>
           </Pop>
         </div>

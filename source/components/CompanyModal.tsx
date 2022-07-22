@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-no-literals */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, Space } from 'antd'
-import logoWithNameImage from '@/assets/logo_with_name.png'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CompanyCard from '@/views/Container/components/CompanyCard'
@@ -31,34 +29,18 @@ const FooterWrap = styled(Space)({
 })
 
 const CompanyModal = (props: Props) => {
-  const { getCompanyList, changeCompany } = useModel('user')
+  const { getCompanyList } = useModel('user')
+  const [companyList, setCompanyList] = useState<any[]>([])
+
   const init = async () => {
     const res = await getCompanyList()
+
+    setCompanyList(res.data)
   }
   useEffect(() => {
     init()
   }, [])
 
-  const list = [
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-  ]
   const [activeIdx, setActiveIdx] = useState(0)
   return (
     <Modal
@@ -70,9 +52,11 @@ const CompanyModal = (props: Props) => {
       bodyStyle={{ padding: 16 }}
     >
       <ContentWrap>
-        {list.map((i, index) => (
+        {companyList.map((i, index) => (
           <CompanyCard
-            key={i.name}
+            logo={i.logo}
+            name={i.name}
+            key={i.id}
             tap={() => setActiveIdx(index)}
             show={index === activeIdx}
           />

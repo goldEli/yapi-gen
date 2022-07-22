@@ -1,26 +1,14 @@
-import {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import {
-  StaffHeader,
   Hehavior,
   PaginationWrap,
   StaffTableWrap,
   MyInput,
   SearchLine,
   SetButton,
-  TabsItem,
-  TabsHehavior,
-  LabNumber,
-  tabCss,
-  ShowWrap,
   StyledTable,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -229,8 +217,8 @@ const Need = () => {
         plainOptions2={plainOptions2}
         checkList={titleList}
         checkList2={titleList2}
-        visible={isModalVisible}
-        close={close2}
+        isVisible={isModalVisible}
+        onClose={close2}
         getCheckList={getCheckList}
       />
       <EditCreate

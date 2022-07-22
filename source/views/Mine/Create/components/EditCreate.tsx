@@ -175,11 +175,11 @@ const EditCreate = (props: Props) => {
               content={({ onHide }: { onHide(): void }) => {
                 return (
                   <LevelContent
-                    tap={() => {
+                    onTap={() => {
 
                       //
                     }}
-                    hide={onHide}
+                    onHide={onHide}
                   />
                 )
               }}

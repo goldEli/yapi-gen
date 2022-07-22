@@ -1,8 +1,5 @@
-/* eslint-disable no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import Project from './components/Project'
 import { Tooltip } from 'antd'
@@ -42,7 +39,6 @@ const Head = styled.div`
 const Situation = () => {
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
 
-  useEffect(() => {}, [])
   return (
     <>
       <Head>

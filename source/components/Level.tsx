@@ -4,6 +4,7 @@ import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 
 const flexCss = css`
+  height: 32px;
   width: 120px;
   box-sizing: border-box;
   padding: 0px 16px;
@@ -15,8 +16,9 @@ const flexCss = css`
   }
 `
 const Contain = styled.div`
+  padding: 10px 0;
   width: 120px;
-  height: 136px;
+  /* height: 136px; */
   display: flex;
   flex-direction: column;
 `
@@ -29,43 +31,57 @@ const StyledShape = styled.div`
   align-items: center;
   padding: 5px 16px 5px 16px;
 `
-const level = [
+
+export const level = [
   {
     id: 1,
-    name: '高',
-    icon: <IconFont type="tall" style={{ color: '#ff5c5e', fontSize: 20 }} />,
+    name: '极高',
+    icon: (
+      <IconFont
+        type="extremely-high"
+        style={{ color: '#ff5c5e', fontSize: 20 }}
+      />
+    ),
   },
   {
     id: 2,
-    name: '中',
-    icon: <IconFont type="middle" style={{ color: '#fa9746', fontSize: 20 }} />,
+    name: '高',
+    icon: <IconFont type="high" style={{ color: '#fa9746', fontSize: 20 }} />,
   },
   {
     id: 3,
+    name: '中',
+    icon: <IconFont type="middle" style={{ color: '#2877ff', fontSize: 20 }} />,
+  },
+  {
+    id: 4,
     name: '低',
     icon: <IconFont type="low" style={{ color: '#43ba9a', fontSize: 20 }} />,
   },
   {
-    id: 4,
+    id: 5,
     name: '极低',
-    icon:
-      <IconFont type="knockdown" style={{ color: '#bbbdbf', fontSize: 20 }} />
-    ,
+    icon: (
+      <IconFont
+        type="extremely-low"
+        style={{ color: '#bbbdbf', fontSize: 20 }}
+      />
+    ),
   },
 ]
 
 type LevelProps = {
   record?: Record<string, number | string>
-  hide(): void
-  tap(id: any): void
+  onHide(): void
+  onTap(id: any): void
 }
 
 export const LevelContent = (props: LevelProps) => {
-  const { record, hide, tap } = props
+  const { record, onHide, onTap } = props
   const changeState = (value: any) => {
-    tap(value.id)
+    onTap(value.id)
 
-    hide()
+    onHide()
   }
   return (
     <Contain>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import {
@@ -8,15 +7,11 @@ import {
   DatePicker,
   Button,
   Popover,
-  Space,
-  Tree,
   Collapse,
 } from 'antd'
 import IconFont from './IconFont'
-import * as dayjs from 'dayjs'
 import type { RangePickerProps } from 'antd/es/date-picker'
-import moment, { Moment } from 'moment'
-import { DataNode } from 'antd/lib/tree'
+import moment from 'moment'
 import { useMemo, useState } from 'react'
 import { SearchLine } from './StyleCommon'
 
@@ -38,6 +33,7 @@ const FormWrap = styled(Form)({
   gap: '16px',
   display: 'flex',
   flexWrap: 'wrap',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '.ant-form-item': {
     margin: 0,
   },
@@ -153,7 +149,7 @@ const TableFilter = (props: Props) => {
   const delList = (key: string) => {
     setList(list.filter((item, idx) => item.key !== key))
   }
-  const onChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
+  const onChange: RangePickerProps['onChange'] = dates => {
     if (dates) {
 
       //

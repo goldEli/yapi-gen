@@ -138,7 +138,7 @@ const Operation = (props: Props) => {
             <StatusTag>
               开启中
               <IconFont
-                type="down-60kl9fcg"
+                type="down-icon"
                 style={{ fontSize: 12, marginLeft: 4 }}
               />
             </StatusTag>

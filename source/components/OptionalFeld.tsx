@@ -1,6 +1,3 @@
-/* eslint-disable react/boolean-prop-naming */
-/* eslint-disable react/jsx-handler-names */
-/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useMemo, useState } from 'react'
 import { Checkbox, Modal, Col, Row } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -23,6 +20,7 @@ const CheckedItem = styled.div({
   height: 40,
   borderRadius: 4,
   padding: '0 8px',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   '&: hover': {
     background: ' rgba(240, 244, 250, 1)',
     [ShowWrap.toString()]: {
@@ -59,8 +57,8 @@ type OptionalFeldProps = {
     checkList: CheckboxValueType[],
     checkList2: CheckboxValueType[],
   ): void
-  close(): void
-  visible: boolean
+  onClose(): void
+  isVisible: boolean
 }
 
 export const OptionalFeld = (props: OptionalFeldProps) => {
@@ -90,7 +88,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
 
   const handleOk = () => {
     props.getCheckList(checkList, checkList2)
-    props.close()
+    props.onClose()
   }
   const allList = useMemo(() => {
     const arr = [...checkList, ...checkList2]
@@ -120,8 +118,8 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     <Modal
       width={800}
       title="显示字段配置"
-      visible={props.visible}
-      onCancel={props.close}
+      visible={props.isVisible}
+      onCancel={props.onClose}
       onOk={handleOk}
     >
       <Wrap>

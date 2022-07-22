@@ -90,8 +90,14 @@ const TextWarp = styled.div({
   background: 'white',
   borderRadius: '6px',
 })
-
-const CompanyCard = (props: { show?: boolean, tap?(): void }) => {
+type Props = {
+  // eslint-disable-next-line react/boolean-prop-naming
+  show?: boolean
+  tap?(): void
+  name: string
+  logo: string
+}
+const CompanyCard = (props: Props) => {
   return (
     <Warp
       show={props.show}
@@ -104,14 +110,12 @@ const CompanyCard = (props: { show?: boolean, tap?(): void }) => {
       <ImgWrap show={props.show}>
         <img
           style={{ borderRadius: '  6px 6px 0 0' }}
-          src={projectImg}
+          src={props.logo ? props.logo : projectImg}
           alt=""
         />
       </ImgWrap>
       <TextWarp>
-        <NameWrap show={props.show}>
-          公司名称公司名称公公司名称公司名称公司名称司名称
-        </NameWrap>
+        <NameWrap show={props.show}>{props.name}</NameWrap>
       </TextWarp>
     </Warp>
   )

@@ -1,5 +1,3 @@
-/* eslint-disable no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Column } from '@ant-design/plots'
@@ -87,8 +85,6 @@ const DemoColumn = () => {
 const Staff = () => {
   const [state, setState] = useState()
   const navigate = useNavigate()
-
-  useEffect(() => {}, [])
   return (
     <ChartsWrap>
       <div className={titleCss}>员工概况</div>
