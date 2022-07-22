@@ -29,7 +29,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: "'*'",
+        content: '\'*\'',
       },
     '> label::before': {
       display: 'none!important',
@@ -68,10 +68,18 @@ const ModalFooter = styled(Space)({
 })
 
 const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
+  { name: '高',
+    type: 'tall',
+    color: '#ff5c5e' },
+  { name: '中',
+    type: 'middle',
+    color: '#fa9746' },
+  { name: '低',
+    type: 'low',
+    color: '#43ba9a' },
+  { name: '极低',
+    type: 'knockdown',
+    color: '#bbbdbf' },
 ]
 
 interface Props {
@@ -79,7 +87,7 @@ interface Props {
   onChangeVisible(): void
 }
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -106,8 +114,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
+        ? '1px dashed #969799'
+        : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -169,9 +177,9 @@ export default (props: Props) => {
           <IconFont type="carryout" />
           <Form.Item label="优先级">
             <PopConfirm
-              content={({ onHide }: { onHide: () => void }) => {
+              content={({ onHide }: { onHide(): void }) => {
                 return (
-                  <LevelContent tap={() => {}} hide={onHide}></LevelContent>
+                  <LevelContent tap={() => {}} hide={onHide} />
                 )
               }}
             >

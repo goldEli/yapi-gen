@@ -89,7 +89,10 @@ const TextareaWrap = styled.div({
 })
 
 const list = [
-  { name: '黑飞', from: '从【规划中】添加', time: '2022-02-21', text: '内容' },
+  { name: '黑飞',
+    from: '从【规划中】添加',
+    time: '2022-02-21',
+    text: '内容' },
   {
     name: '黑飞',
     from: '从【规划中】添加',
@@ -108,7 +111,8 @@ export default () => {
           <TextWrap>
             <div className="textTop">
               <IconFont type="close" />
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ display: 'flex',
+                alignItems: 'center' }}>
                 <span className="name">{item.name}</span>
                 <span className="common">{item.from}</span>
               </div>
@@ -123,7 +127,8 @@ export default () => {
       <TextareaWrap>
         <Input.TextArea
           placeholder="输入评论，按Enter快速发布"
-          autoSize={{ minRows: 5, maxRows: 5 }}
+          autoSize={{ minRows: 5,
+            maxRows: 5 }}
         />
         <Button type="primary">回复</Button>
       </TextareaWrap>

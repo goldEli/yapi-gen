@@ -54,7 +54,7 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     div: {
-      color: `${isActive ? '#2877FF' : '#323233'}`,
+      color: String(isActive ? '#2877FF' : '#323233'),
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
     },
   }),
@@ -96,12 +96,15 @@ export default () => {
   const [visible, setVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
-  const pathname = new URL(window.location.href).pathname
+  const { pathname } = new URL(window.location.href)
 
   const tabsList = [
-    { name: '需求', type: 'Demand' },
-    { name: '迭代', type: 'Iteration' },
-    { name: '设置', type: 'Setting' },
+    { name: '需求',
+      type: 'Demand' },
+    { name: '迭代',
+      type: 'Iteration' },
+    { name: '设置',
+      type: 'Setting' },
   ]
 
   const menu = (
@@ -136,7 +139,9 @@ export default () => {
   )
 
   return (
-    <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
+    <div style={{ position: 'sticky',
+      top: 0,
+      zIndex: 9 }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
@@ -153,7 +158,9 @@ export default () => {
         <ProjectInfo>
           <IconFont
             onClick={() => navigate('/Project')}
-            style={{ color: '#969799', fontSize: 16, marginRight: 16 }}
+            style={{ color: '#969799',
+              fontSize: 16,
+              marginRight: 16 }}
             type="left"
           />
           <ImgWrap src={posterImg} />
@@ -161,7 +168,9 @@ export default () => {
             项目名称最长尺寸名称项目名称最长尺寸名称...项目名称最长尺寸名称...
           </OmitText>
           <IconFont
-            style={{ color: '#323233', fontSize: 16, marginLeft: 8 }}
+            style={{ color: '#323233',
+              fontSize: 16,
+              marginLeft: 8 }}
             type="edit-square"
             onClick={() => setVisible(true)}
           />

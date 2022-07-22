@@ -10,7 +10,6 @@ import {
   tabCss,
   SwiperWrap,
 } from '@/components/StyleCommon'
-
 import Need from './components/Need'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -23,11 +22,13 @@ const Bcss = css`
   transform: translate(0, -10%);
 `
 
-const tabsList = [{ name: '待办需求', type: 2, path: 'need' }]
+const tabsList = [{ name: '待办需求',
+  type: 2,
+  path: 'need' }]
+
 export default () => {
   const [swiperActive, setSwiperActive] = useState(1)
   const active = 2
-
   const navigate = useNavigate()
 
   return (
@@ -47,7 +48,7 @@ export default () => {
               <SwiperCard
                 tap={() => setSwiperActive(item)}
                 show={swiperActive === item}
-              ></SwiperCard>
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -64,7 +65,7 @@ export default () => {
         ))}
       </TabsHehavior>
 
-      {active === 2 && <Need></Need>}
+      {active === 2 && <Need />}
     </div>
   )
 }

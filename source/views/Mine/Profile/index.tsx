@@ -94,9 +94,12 @@ const LineItem = styled.div`
 const DemoLine = () => {
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    asyncFetch()
-  }, [])
+  useEffect(
+    () => {
+      asyncFetch()
+    },
+    [],
+  )
 
   const asyncFetch = () => {
     fetch(
@@ -105,7 +108,10 @@ const DemoLine = () => {
       .then(response => response.json())
       .then(json => setData(json))
       .catch(error => {
-        console.log('fetch data failed', error)
+        console.log(
+          'fetch data failed',
+          error,
+        )
       })
   }
   const config = {
@@ -119,8 +125,12 @@ const DemoLine = () => {
     },
     yAxis: {
       label: {
+
         // 数值格式化为千分位
-        formatter: (v: any) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+        formatter: (v: any) => String(v).replace(
+          /\d{1,3}(?=(\d{3})+$)/g,
+          s => `${s},`,
+        ),
       },
     },
   }
@@ -130,10 +140,12 @@ const DemoLine = () => {
 
 export default () => {
   const [state, setState] = useState()
-
   const navigate = useNavigate()
   const tap = () => {}
-  useEffect(() => {}, [])
+  useEffect(
+    () => {},
+    [],
+  )
   return (
     <StyledWrap>
       <Head>

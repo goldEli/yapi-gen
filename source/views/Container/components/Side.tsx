@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Outlet, useRoutes } from 'react-router-dom'
@@ -108,11 +109,12 @@ const activeCss = css`
   background: rgba(240, 244, 250, 1);
   color: rgba(40, 119, 255, 1);
 `
+
 export const Side = () => {
   const urlParams = new URL(window.location.href)
   const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[1]
-    ? '/' + pathname.split('/')[1]
+    ? `/${pathname.split('/')[1]}`
     : '' || ''
   console.log(nowPath)
 
@@ -146,6 +148,7 @@ export const Side = () => {
       <SideFooter>
         <SideEach
           onClick={() => navigate('/Setting')}
+
           // className={'/' + nowPath === item.path ? activeCss : ''}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
@@ -153,7 +156,7 @@ export const Side = () => {
         </SideEach>
         <SetHead onClick={controlPanelVisible}>何飞</SetHead>
       </SideFooter>
-      <Panel visible={panelVisible}></Panel>
+      <Panel visible={panelVisible} />
     </SideWrap>
   )
 }

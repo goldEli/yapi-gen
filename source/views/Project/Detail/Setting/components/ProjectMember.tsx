@@ -56,23 +56,32 @@ export default () => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const [visible, setVisible] = useState(true)
 
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
+  const onTableRow = useCallback(
+    (row: any) => {
+      return {
+        onMouseEnter: () => {
+          setRowActiveIndex(row.id)
+        },
+        onMouseLeave: () => {
+          setRowActiveIndex(null)
+        },
+      }
+    },
+    [],
+  )
 
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+    console.log(
+      page,
+      size,
+    )
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+    console.log(
+      current,
+      pageSize,
+    )
   }
   const menu = (
     <Menu
@@ -94,7 +103,8 @@ export default () => {
       dataIndex: 'nickname',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <div
               style={{
                 visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
@@ -107,7 +117,8 @@ export default () => {
                 getPopupContainer={node => node}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: '#BBBDBF' }}
+                  style={{ fontSize: 16,
+                    color: '#BBBDBF' }}
                   type="more"
                 />
               </Dropdown>
@@ -121,7 +132,9 @@ export default () => {
                 borderRadius: '50%',
               }}
             />
-            <span style={{ marginLeft: 12, color: '#323233', fontSize: 14 }}>
+            <span style={{ marginLeft: 12,
+              color: '#323233',
+              fontSize: 14 }}>
               {text}
             </span>
           </div>
@@ -159,7 +172,9 @@ export default () => {
         <HeaderTop>
           <SearchComponent text="添加成员" placeholder="输入昵称姓名" />
           <IconFont
-            style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
+            style={{ fontSize: 20,
+              color: '#969799',
+              cursor: 'pointer' }}
             type="filter"
             onClick={() => setVisible(!visible)}
           />
@@ -187,7 +202,7 @@ export default () => {
             pageSizeOptions={['10', '20', '50']}
             onChange={onChangePage}
             onShowSizeChange={onShowSizeChange}
-            hideOnSinglePage={true}
+            hideOnSinglePage
           />
         </PaginationWrap>
       </Content>

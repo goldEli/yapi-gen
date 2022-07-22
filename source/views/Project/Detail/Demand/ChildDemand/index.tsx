@@ -8,7 +8,7 @@ import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const Operation = styled.div({
   display: 'flex',
@@ -62,17 +62,33 @@ const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
 )
 
 const statusList = [
-  { id: 0, name: '规划中', color: '#2877ff' },
-  { id: 1, name: '实现中', color: '#2877ff' },
-  { id: 2, name: '已实现', color: '#2877ff' },
-  { id: 3, name: '已关闭', color: '#2877ff' },
+  { id: 0,
+    name: '规划中',
+    color: '#2877ff' },
+  { id: 1,
+    name: '实现中',
+    color: '#2877ff' },
+  { id: 2,
+    name: '已实现',
+    color: '#2877ff' },
+  { id: 3,
+    name: '已关闭',
+    color: '#2877ff' },
 ]
 
 const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
+  { name: '高',
+    type: 'tall',
+    color: '#ff5c5e' },
+  { name: '中',
+    type: 'middle',
+    color: '#fa9746' },
+  { name: '低',
+    type: 'low',
+    color: '#43ba9a' },
+  { name: '极低',
+    type: 'knockdown',
+    color: '#bbbdbf' },
 ]
 
 const List = [
@@ -99,33 +115,47 @@ const List = [
 ]
 
 export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
+  { label: 'id',
+    value: 'name' },
+  { label: 'id1',
+    value: 'age' },
+  { label: 'id2',
+    value: 'address' },
+  { label: 'id3',
+    value: 'address1' },
+  { label: 'id4',
+    value: 'address2' },
 ]
+
 export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
+  { label: '飞机',
+    value: 'feiji' },
+  { label: '大炮',
+    value: 'dapao' },
+  { label: '坦克',
+    value: 'tanke' },
+  { label: '直升机',
+    value: 'zhishengji' },
+  { label: '战舰',
+    value: 'zhanjian' },
 ]
 
 export default () => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const [visible, setVisible] = useState(false)
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
+  const onTableRow = useCallback(
+    (row: any) => {
+      return {
+        onMouseEnter: () => {
+          setRowActiveIndex(row.id)
+        },
+        onMouseLeave: () => {
+          setRowActiveIndex(null)
+        },
+      }
+    },
+    [],
+  )
 
   const [settingState, setSettingState] = useState(false)
 
@@ -180,7 +210,8 @@ export default () => {
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <div
               style={{
                 visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
@@ -193,7 +224,9 @@ export default () => {
                 getPopupContainer={node => node}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: '#2877ff', cursor: 'pointer' }}
+                  style={{ fontSize: 16,
+                    color: '#2877ff',
+                    cursor: 'pointer' }}
                   type="more"
                 />
               </Dropdown>
@@ -213,13 +246,13 @@ export default () => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <LevelContent
                   tap={() => {}}
                   hide={onHide}
                   record={record}
-                ></LevelContent>
+                />
               )
             }}
             record={record}
@@ -251,13 +284,13 @@ export default () => {
       render: (text: number, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
                   tap={() => {}}
                   hide={onHide}
                   record={record}
-                ></ShapeContent>
+                />
               )
             }}
             record={record}
@@ -304,11 +337,17 @@ export default () => {
   ]
 
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+    console.log(
+      page,
+      size,
+    )
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+    console.log(
+      current,
+      pageSize,
+    )
   }
   return (
     <div>
@@ -347,7 +386,7 @@ export default () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
       <OptionalFeld
@@ -358,7 +397,7 @@ export default () => {
         visible={settingState}
         close={() => setSettingState(false)}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
     </div>
   )
 }

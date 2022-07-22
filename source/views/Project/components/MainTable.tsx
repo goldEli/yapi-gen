@@ -202,44 +202,64 @@ const List = [
 ]
 
 const statusList = [
-  { id: 0, name: '运行中', color: '#2877ff' },
-  { id: 1, name: '已上线', color: '#2877ff' },
-  { id: 2, name: '异常', color: '#2877ff' },
-  { id: 3, name: '关闭', color: '#2877ff' },
+  { id: 0,
+    name: '运行中',
+    color: '#2877ff' },
+  { id: 1,
+    name: '已上线',
+    color: '#2877ff' },
+  { id: 2,
+    name: '异常',
+    color: '#2877ff' },
+  { id: 3,
+    name: '关闭',
+    color: '#2877ff' },
 ]
 
 export default (props: Props) => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
+  const onTableRow = useCallback(
+    (row: any) => {
+      return {
+        onMouseEnter: () => {
+          setRowActiveIndex(row.id)
+        },
+        onMouseLeave: () => {
+          setRowActiveIndex(null)
+        },
+      }
+    },
+    [],
+  )
 
   const menu = (
     <Menu
       items={[
         {
           key: '1',
-          label: (
-            <div onClick={() => props.onChangeOperation?.('edit', 0)}>编辑</div>
-          ),
+          label:
+            <div onClick={() => props.onChangeOperation?.(
+              'edit',
+              0,
+            )}>编辑</div>
+          ,
         },
         {
           key: '2',
-          label: (
-            <div onClick={() => props.onChangeOperation?.('end', 0)}>结束</div>
-          ),
+          label:
+            <div onClick={() => props.onChangeOperation?.(
+              'end',
+              0,
+            )}>结束</div>
+          ,
         },
         {
           key: '3',
           label: (
-            <div onClick={() => props.onChangeOperation?.('delete', 0)}>
+            <div onClick={() => props.onChangeOperation?.(
+              'delete',
+              0,
+            )}>
               删除
             </div>
           ),
@@ -254,7 +274,8 @@ export default (props: Props) => {
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <div
               style={{
                 visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
@@ -286,7 +307,9 @@ export default (props: Props) => {
       dataIndex: 'url',
       render: () => (
         <img
-          style={{ width: 60, height: 28, borderRadius: 2 }}
+          style={{ width: 60,
+            height: 28,
+            borderRadius: 2 }}
           src={projectImg}
         />
       ),
@@ -332,12 +355,13 @@ export default (props: Props) => {
       dataIndex: 'status',
       render: (text: number) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <StatusWrap
               style={{
                 background: statusList.filter(i => i.id === text)[0].color,
               }}
-            ></StatusWrap>
+            />
             <div>{statusList.filter(i => i.id === text)[0].name}</div>
           </div>
         )
@@ -360,11 +384,17 @@ export default (props: Props) => {
   ]
 
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+    console.log(
+      page,
+      size,
+    )
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+    console.log(
+      current,
+      pageSize,
+    )
   }
 
   return (
@@ -389,7 +419,7 @@ export default (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
     </div>

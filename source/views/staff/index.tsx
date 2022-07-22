@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type SetStateAction } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Input, Menu, Pagination, Table } from 'antd'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { Button, Dropdown, Menu, Pagination } from 'antd'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
@@ -14,7 +13,6 @@ import {
   PaginationWrap,
   StaffTableWrap,
   MyInput,
-  SearchLine,
   SetButton,
   StyledTable,
 } from '@/components/StyleCommon'
@@ -51,26 +49,38 @@ const data = [
     level: 2,
   },
 ]
+
 export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
+  { label: 'id',
+    value: 'name' },
+  { label: 'id1',
+    value: 'age' },
+  { label: 'id2',
+    value: 'address' },
+  { label: 'id3',
+    value: 'address1' },
+  { label: 'id4',
+    value: 'address2' },
 ]
+
 export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
+  { label: '飞机',
+    value: 'feiji' },
+  { label: '大炮',
+    value: 'dapao' },
+  { label: '坦克',
+    value: 'tanke' },
+  { label: '直升机',
+    value: 'zhishengji' },
+  { label: '战舰',
+    value: 'zhanjian' },
 ]
-export default () => {
-  const navigate = useNavigate()
+
+const Staff = () => {
   const [isShow, setIsShow] = useState<boolean>(true)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [staffPersonalVisible, setStaffPersonalVisible] =
-    useState<boolean>(false)
+  const [staffPersonalVisible, setStaffPersonalVisible]
+    = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
     'age',
@@ -81,11 +91,7 @@ export default () => {
     'dapao',
     'tanke',
   ])
-  const controlStaffPersonalVisible = (
-    record: Record<string, string | number>,
-  ) => {
-    console.log(record)
-
+  const controlStaffPersonalVisible = () => {
     setStaffPersonalVisible(true)
   }
   const closeStaffPersonal = () => {
@@ -95,18 +101,21 @@ export default () => {
     controlStaffPersonalVisible,
   })
 
-  const selectColum:any = useMemo(() => {
-    let arr = [...titleList, ...titleList2]
-    let newList = []
-    for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < columns.length; j++) {
-        if (arr[i] === columns[j].key) {
-          newList.push(columns[j])
+  const selectColum: any = useMemo(
+    () => {
+      const arr = [...titleList, ...titleList2]
+      const newList = []
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < columns.length; j++) {
+          if (arr[i] === columns[j].key) {
+            newList.push(columns[j])
+          }
         }
       }
-    }
-    return newList
-  }, [titleList, columns])
+      return newList
+    },
+    [titleList, columns],
+  )
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -123,14 +132,12 @@ export default () => {
     setTitleList2(list2)
   }
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
-  }
-
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
-  }
-  useEffect(() => {}, [])
+  const onChangePage = (page: SetStateAction<number>, size: any) => {}
+  const onShowSizeChange = (current: number, pageSize: number) => {}
+  useEffect(
+    () => {},
+    [],
+  )
   const menu = (
     <Menu
       items={[
@@ -220,12 +227,16 @@ export default () => {
     },
   ]
   const basicsList = [
-    { name: '迭代', key: 'name' },
-    { name: '人员', key: 'age' },
+    { name: '迭代',
+      key: 'name' },
+    { name: '人员',
+      key: 'age' },
   ]
   const specialList = [
-    { name: '权限组', key: 'tall' },
-    { name: '时间', key: 'time' },
+    { name: '权限组',
+      key: 'tall' },
+    { name: '时间',
+      key: 'time' },
   ]
 
   return (
@@ -238,14 +249,16 @@ export default () => {
             suffix={
               <IconFont
                 type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
+                style={{ color: '#BBBDBF',
+                  fontSize: 20 }}
               />
             }
             placeholder="请输入昵称姓名邮箱电话"
             allowClear
           />
         </div>
-        <div style={{ marginRight: '40px', display: 'flex' }}>
+        <div style={{ marginRight: '40px',
+          display: 'flex' }}>
           <SetButton onClick={() => setIsShow(!isShow)}>
             <IconFont
               type="filter"
@@ -266,13 +279,15 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-      {isShow && (
-        <SearchList
-          onSearch={value => {
-            console.log(value)
-          }}
-        ></SearchList>
-      )}
+      {isShow
+        ? (
+          <SearchList
+            onSearch={value => {
+              console.log(value)
+            }}
+          />
+        )
+        : null}
 
       <StaffTableWrap>
         <StyledTable
@@ -295,7 +310,7 @@ export default () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
 
@@ -307,12 +322,14 @@ export default () => {
         visible={isModalVisible}
         close={close2}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
 
       <StaffPersonal
         visible={staffPersonalVisible}
         close={closeStaffPersonal}
-      ></StaffPersonal>
+      />
     </>
   )
 }
+
+export default Staff

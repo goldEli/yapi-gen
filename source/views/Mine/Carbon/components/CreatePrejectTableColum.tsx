@@ -47,24 +47,28 @@ const level = [
   {
     id: 1,
     name: '高',
-    icon: <IconFont type="tall" style={{ color: '#ff5c5e', fontSize: 20 }} />,
+    icon: <IconFont type="tall" style={{ color: '#ff5c5e',
+      fontSize: 20 }} />,
   },
   {
     id: 2,
     name: '中',
-    icon: <IconFont type="middle" style={{ color: '#fa9746', fontSize: 20 }} />,
+    icon: <IconFont type="middle" style={{ color: '#fa9746',
+      fontSize: 20 }} />,
   },
   {
     id: 3,
     name: '低',
-    icon: <IconFont type="low" style={{ color: '#43ba9a', fontSize: 20 }} />,
+    icon: <IconFont type="low" style={{ color: '#43ba9a',
+      fontSize: 20 }} />,
   },
   {
     id: 4,
     name: '极低',
-    icon: (
-      <IconFont type="knockdown" style={{ color: '#bbbdbf', fontSize: 20 }} />
-    ),
+    icon:
+      <IconFont type="knockdown" style={{ color: '#bbbdbf',
+        fontSize: 20 }} />
+    ,
   },
 ]
 
@@ -108,7 +112,8 @@ export const useDynamicColumns = (state: any) => {
                 <IconFont
                   type="more
               "
-                  style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+                  style={{ color: 'rgba(40, 119, 255, 1)',
+                    fontSize: 20 }}
                 />
               </Dropdown>
             </ShowWrap>
@@ -135,13 +140,13 @@ export const useDynamicColumns = (state: any) => {
       key: 'address',
       render: (text: any, record: any) => (
         <Pop
-          content={({ onHide }: { onHide: () => void }) => {
+          content={({ onHide }: { onHide(): void }) => {
             return (
               <ShapeContent
                 tap={() => {}}
                 hide={onHide}
                 record={record}
-              ></ShapeContent>
+              />
             )
           }}
           record={record}
@@ -185,12 +190,12 @@ export const useDynamicColumns = (state: any) => {
             })}
           </div>
           <Pop
-            content={({ onHide }: { onHide: () => void }) => (
+            content={({ onHide }: { onHide(): void }) => (
               <LevelContent
                 tap={() => {}}
                 hide={onHide}
                 record={record}
-              ></LevelContent>
+              />
             )}
             record={record}
           >

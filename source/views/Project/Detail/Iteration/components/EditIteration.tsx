@@ -27,7 +27,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: "'*'",
+        content: '\'*\'',
       },
     '> label::before': {
       display: 'none!important',

@@ -93,14 +93,17 @@ const menuList = [
     path: 'agenda',
   },
 ]
+
 export default () => {
   const urlParams = new URL(window.location.href)
   const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[2] || ''
-
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
-  useEffect(() => {}, [])
+  useEffect(
+    () => {},
+    [],
+  )
   const changeActive = (value: MenuList) => {
     navigate(value.path)
   }
@@ -120,7 +123,7 @@ export default () => {
             }}
             type="plus"
           />
-          <span>{'快速创建'}</span>
+          <span>快速创建</span>
         </AddButton>
         <Menu>
           {menuList.map(item => (
@@ -135,12 +138,12 @@ export default () => {
         </Menu>
       </Side>
       <Main>
-        <Outlet></Outlet>
+        <Outlet />
       </Main>
       <QuicklyCreate
         visible={quickCreateVisible}
         onChangeVisible={() => setQuickCreateVisible(false)}
-      ></QuicklyCreate>
+      />
     </Wrap>
   )
 }

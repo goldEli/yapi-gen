@@ -33,32 +33,37 @@ const level = [
   {
     id: 1,
     name: '高',
-    icon: <IconFont type="tall" style={{ color: '#ff5c5e', fontSize: 20 }} />,
+    icon: <IconFont type="tall" style={{ color: '#ff5c5e',
+      fontSize: 20 }} />,
   },
   {
     id: 2,
     name: '中',
-    icon: <IconFont type="middle" style={{ color: '#fa9746', fontSize: 20 }} />,
+    icon: <IconFont type="middle" style={{ color: '#fa9746',
+      fontSize: 20 }} />,
   },
   {
     id: 3,
     name: '低',
-    icon: <IconFont type="low" style={{ color: '#43ba9a', fontSize: 20 }} />,
+    icon: <IconFont type="low" style={{ color: '#43ba9a',
+      fontSize: 20 }} />,
   },
   {
     id: 4,
     name: '极低',
-    icon: (
-      <IconFont type="knockdown" style={{ color: '#bbbdbf', fontSize: 20 }} />
-    ),
+    icon:
+      <IconFont type="knockdown" style={{ color: '#bbbdbf',
+        fontSize: 20 }} />
+    ,
   },
 ]
 
 type LevelProps = {
   record?: Record<string, number | string>
-  hide: () => void
-  tap: (id: any) => void
+  hide(): void
+  tap(id: any): void
 }
+
 export const LevelContent = (props: LevelProps) => {
   const { record, hide, tap } = props
   const changeState = (value: any) => {

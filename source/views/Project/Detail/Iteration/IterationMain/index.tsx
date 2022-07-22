@@ -33,9 +33,12 @@ const List = [
   },
 ]
 
-const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
-  width: isShowLeft ? 'calc(100% - 300px)' : '100%',
-}))
+const Right = styled.div<{ isShowLeft: boolean }>(
+  {},
+  ({ isShowLeft }) => ({
+    width: isShowLeft ? 'calc(100% - 300px)' : '100%',
+  }),
+)
 
 interface Props {
   onChangeVisible(): void
@@ -72,11 +75,10 @@ export default (props: Props) => {
           onChangeVisible={props.onChangeVisible}
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
         />
-        {isGrid ? (
-          <IterationGrid menu={menu} />
-        ) : (
-          <IterationTable menu={menu} List={List} />
-        )}
+        {isGrid
+          ? <IterationGrid menu={menu} />
+          : <IterationTable menu={menu} List={List} />
+        }
       </Right>
     </div>
   )

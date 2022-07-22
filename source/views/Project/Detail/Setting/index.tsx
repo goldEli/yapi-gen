@@ -77,9 +77,15 @@ const MenuItem = styled.div<{ isActive: boolean }>(
 )
 
 const SideList = [
-  { name: '项目信息', icon: 'file-text', content: <ProjectInfo /> },
-  { name: '项目成员', icon: 'team', content: <ProjectMember /> },
-  { name: '项目权限组', icon: 'lock', content: <ProjectSet /> },
+  { name: '项目信息',
+    icon: 'file-text',
+    content: <ProjectInfo /> },
+  { name: '项目成员',
+    icon: 'team',
+    content: <ProjectMember /> },
+  { name: '项目权限组',
+    icon: 'lock',
+    content: <ProjectSet /> },
 ]
 
 export default () => {

@@ -80,9 +80,12 @@ const ChartWrap = styled.div({
 const DemoLine = () => {
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    asyncFetch()
-  }, [])
+  useEffect(
+    () => {
+      asyncFetch()
+    },
+    [],
+  )
 
   const asyncFetch = () => {
     fetch(
@@ -91,7 +94,10 @@ const DemoLine = () => {
       .then(response => response.json())
       .then(json => setData(json))
       .catch(error => {
-        console.log('fetch data failed', error)
+        console.log(
+          'fetch data failed',
+          error,
+        )
       })
   }
   const config = {
@@ -104,9 +110,12 @@ const DemoLine = () => {
     },
     yAxis: {
       label: {
+
         // 数值格式化为千分位
-        formatter: (v: any) =>
-          `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+        formatter: (v: any) => String(v).replace(
+          /\d{1,3}(?=(\d{3})+$)/g,
+          s => `${s},`,
+        ),
       },
     },
   }
@@ -188,13 +197,18 @@ export default () => {
                 percent={75}
                 strokeWidth={16}
               />
-              <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
+              <div style={{ marginTop: 16,
+                color: '#646566',
+                fontSize: 14 }}>
                 2022/06/17-2022/07/30
               </div>
             </SurveyBox>
             <SurveyBox style={{ alignItems: 'flex-start' }}>
-              <span style={{ color: '#000', fontSize: 14 }}>需求</span>
-              <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
+              <span style={{ color: '#000',
+                fontSize: 14 }}>需求</span>
+              <span style={{ color: '#000',
+                fontSize: 28,
+                marginTop: 12 }}>
                 25/36
               </span>
             </SurveyBox>

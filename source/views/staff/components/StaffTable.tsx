@@ -60,7 +60,8 @@ export const useDynamicColumns = (state: any) => {
                 <IconFont
                   type="more
               "
-                  style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+                  style={{ color: 'rgba(40, 119, 255, 1)',
+                    fontSize: 20 }}
                 />
               </Dropdown>
             </ShowWrap>
@@ -87,8 +88,8 @@ export const useDynamicColumns = (state: any) => {
       key: 'address',
       render: (text: any, record: any) => (
         <Pop
-          content={({ onHide }: { onHide: () => void }) => {
-            return <ShapeContent tap={()=>{}} hide={onHide} record={record}></ShapeContent>
+          content={({ onHide }: { onHide(): void }) => {
+            return <ShapeContent tap={() => {}} hide={onHide} record={record} />
           }}
           record={record}
         >
@@ -115,12 +116,12 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => (
         <Pop
-          content={({ onHide }: { onHide: () => void }) => (
+          content={({ onHide }: { onHide(): void }) => (
             <LevelContent
               tap={() => {}}
               hide={onHide}
               record={record}
-            ></LevelContent>
+            />
           )}
           record={record}
         >

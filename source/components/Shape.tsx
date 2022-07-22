@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Select, Button, Form, Input } from 'antd'
 import { css } from '@emotion/css'
+
 const { Option } = Select
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -68,25 +69,32 @@ const Close = styled.span`
   top: 10px;
 `
 const shape = [
-  { id: 1, name: '规划中' },
-  { id: 2, name: '实现中' },
-  { id: 3, name: '已实现' },
-  { id: 4, name: '已关闭' },
+  { id: 1,
+    name: '规划中' },
+  { id: 2,
+    name: '实现中' },
+  { id: 3,
+    name: '已实现' },
+  { id: 4,
+    name: '已关闭' },
 ]
 type ShapeProps = {
   record: Record<string, number | string>
-  hide: () => void
-  tap: (value: any, active: any) => void
+  hide(): void
+  tap(value: any, active: any): void
 }
+
 export const ShapeContent = (props: ShapeProps) => {
   const [form] = Form.useForm()
   const { record, hide, tap } = props
-
   const [active, setActive] = useState(record.level)
 
   const confirm = async () => {
-    let res = await form.validateFields()
-    tap(res, active)
+    const res = await form.validateFields()
+    tap(
+      res,
+      active,
+    )
     hide()
   }
   return (
@@ -115,7 +123,8 @@ export const ShapeContent = (props: ShapeProps) => {
               label="处理人"
               name="username"
               rules={[
-                { required: true, message: 'Please input your username!' },
+                { required: true,
+                  message: 'Please input your username!' },
               ]}
             >
               <Select placeholder="请选择" allowClear>
@@ -128,7 +137,8 @@ export const ShapeContent = (props: ShapeProps) => {
             <Form.Item labelCol={{ span: 5 }} label="评论" name="password">
               <Input.TextArea
                 maxLength={200}
-                style={{ maxHeight: '132px', minHeight: '132px' }}
+                style={{ maxHeight: '132px',
+                  minHeight: '132px' }}
               />
             </Form.Item>
           </Form>

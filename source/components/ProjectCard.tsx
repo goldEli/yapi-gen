@@ -80,22 +80,34 @@ interface Props {
 export default (props: Props) => {
   const onClickMenu = (e: any, type: string) => {
     e.stopPropagation()
-    props.onChangeOperation?.(type, 0)
+    props.onChangeOperation?.(
+      type,
+      0,
+    )
   }
   const menu = (
     <Menu
       items={[
         {
           key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+          label: <div onClick={e => onClickMenu(
+            e,
+            'edit',
+          )}>编辑</div>,
         },
         {
           key: '2',
-          label: <div onClick={e => onClickMenu(e, 'end')}>结束</div>,
+          label: <div onClick={e => onClickMenu(
+            e,
+            'end',
+          )}>结束</div>,
         },
         {
           key: '3',
-          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+          label: <div onClick={e => onClickMenu(
+            e,
+            'delete',
+          )}>删除</div>,
         },
       ]}
     />
@@ -103,7 +115,7 @@ export default (props: Props) => {
   return (
     <Warp>
       <ImgWrap>
-        <div></div>
+        <div />
         <img src={projectImg} alt="" />
       </ImgWrap>
       <TextWarp>
@@ -114,7 +126,8 @@ export default (props: Props) => {
           placement="bottomRight"
           getPopupContainer={node => node}
         >
-          <IconFont style={{ fontSize: 16, color: '#BBBDBF' }} type="more" />
+          <IconFont style={{ fontSize: 16,
+            color: '#BBBDBF' }} type="more" />
         </DropdownWrap>
       </TextWarp>
     </Warp>

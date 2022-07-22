@@ -4,7 +4,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -30,18 +30,29 @@ interface Props {
 }
 
 export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
+  { label: 'id',
+    value: 'name' },
+  { label: 'id1',
+    value: 'age' },
+  { label: 'id2',
+    value: 'address' },
+  { label: 'id3',
+    value: 'address1' },
+  { label: 'id4',
+    value: 'address2' },
 ]
+
 export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
+  { label: '飞机',
+    value: 'feiji' },
+  { label: '大炮',
+    value: 'dapao' },
+  { label: '坦克',
+    value: 'tanke' },
+  { label: '直升机',
+    value: 'zhishengji' },
+  { label: '战舰',
+    value: 'zhanjian' },
 ]
 
 export default (props: Props) => {
@@ -60,7 +71,10 @@ export default (props: Props) => {
   ])
 
   const onChangeSearch = (value: string) => {
-    console.log(value, '搜索任务或项目')
+    console.log(
+      value,
+      '搜索任务或项目',
+    )
   }
 
   const getCheckList = (
@@ -97,7 +111,7 @@ export default (props: Props) => {
         visible={settingState}
         close={() => setSettingState(false)}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
     </StickyWrap>
   )
 }

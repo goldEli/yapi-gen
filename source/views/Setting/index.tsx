@@ -85,10 +85,18 @@ const CompanyImg = styled.img({
 })
 
 const SideList = [
-  { name: '公司信息', icon: 'file-text', path: '' },
-  { name: '权限管理', icon: 'safety-certificate', path: 'permission' },
-  { name: '操作日志', icon: 'file-protect', path: 'operation' },
-  { name: '登录日志', icon: 'solution', path: 'loginLog' },
+  { name: '公司信息',
+    icon: 'file-text',
+    path: '' },
+  { name: '权限管理',
+    icon: 'safety-certificate',
+    path: 'permission' },
+  { name: '操作日志',
+    icon: 'file-protect',
+    path: 'operation' },
+  { name: '登录日志',
+    icon: 'solution',
+    path: 'loginLog' },
 ]
 
 interface MenuList {
@@ -104,9 +112,12 @@ export default () => {
   const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[2] || ''
 
-  useEffect(() => {
-    getCompanyInfo()
-  }, [])
+  useEffect(
+    () => {
+      getCompanyInfo()
+    },
+    [],
+  )
 
   const onChangeActive = (value: MenuList) => {
     navigate(value.path)
@@ -130,7 +141,7 @@ export default () => {
         </MenuWrap>
       </Side>
       <Content>
-        <Outlet></Outlet>
+        <Outlet />
       </Content>
     </Wrap>
   )

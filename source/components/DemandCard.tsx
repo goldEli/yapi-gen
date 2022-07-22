@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { Dropdown, Table } from 'antd'
@@ -11,7 +12,7 @@ import { ShapeContent } from '@/components/Shape'
 
 interface Item {
   name: string
-  person: { name: string; avatar: string }[]
+  person: { name: string, avatar: string }[]
   demand: number
 }
 
@@ -154,13 +155,13 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
                   tap={() => {}}
                   hide={onHide}
                   record={record}
-                ></ShapeContent>
+                />
               )
             }}
             record={record}
@@ -189,11 +190,15 @@ export default (props: Props) => {
           </div>
           <AvatarWrap>
             <NameGroup>
-              {props.item.person.slice(0, 3).map((item, index) => (
+              {props.item.person.slice(
+                0,
+                3,
+              ).map((item, index) => (
                 <div
                   className="box"
                   key={item.name}
-                  style={{ marginLeft: index ? -10 : 0, zIndex: index }}
+                  style={{ marginLeft: index ? -10 : 0,
+                    zIndex: index }}
                 >
                   <div className="item" style={{ background: '#A4ACF5' }}>
                     {item.name}
@@ -205,7 +210,7 @@ export default (props: Props) => {
               </div>
             </NameGroup>
             <PopConfirm
-              content={({ onHide }: { onHide: () => void }) => {
+              content={({ onHide }: { onHide(): void }) => {
                 return (
                   <Table
                     pagination={false}
@@ -229,9 +234,12 @@ export default (props: Props) => {
               >
                 <IconFont
                   type="apartment"
-                  style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+                  style={{ color: '#969799',
+                    fontSize: 16,
+                    marginRight: 8 }}
                 />
-                <span style={{ color: '#323233', fontSize: 16 }}>
+                <span style={{ color: '#323233',
+                  fontSize: 16 }}>
                   {props.item.demand}
                 </span>
               </div>

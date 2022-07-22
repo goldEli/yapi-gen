@@ -8,6 +8,7 @@ import guide_1 from '@/assets/guide_1.svg'
 import guide_2 from '@/assets/guide_2.svg'
 import guide_3 from '@/assets/guide_3.svg'
 import guide_4 from '@/assets/guide_4.svg'
+
 const textCss = css`
   height: 100px;
   box-sizing: border-box;
@@ -49,7 +50,8 @@ const Dialog = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
 `
-export default function Next(props: { visible: boolean; close(): void }) {
+
+export default function Next(props: { visible: boolean, close(): void }) {
   const [active, setActive] = useState(0)
   const inform = [
     {
@@ -69,17 +71,20 @@ export default function Next(props: { visible: boolean; close(): void }) {
       img: guide_4,
     },
   ]
-  const filterData = useMemo(() => {
-    const filterActive = inform.filter((item, index) => index === active)
-    return filterActive.map(item => (
-      <div>
-        {/* <div className={textCss}>{item.text}</div> */}
-        <div className={imgBoxCss}>
-          <img src={item.img} alt="12"></img>
+  const filterData = useMemo(
+    () => {
+      const filterActive = inform.filter((item, index) => index === active)
+      return filterActive.map(item => (
+        <div>
+          {/* <div className={textCss}>{item.text}</div> */}
+          <div className={imgBoxCss}>
+            <img src={item.img} alt="12" />
+          </div>
         </div>
-      </div>
-    ))
-  }, [active])
+      ))
+    },
+    [active],
+  )
 
   const next = () => {
     let index = active
@@ -102,9 +107,9 @@ export default function Next(props: { visible: boolean; close(): void }) {
         {filterData}
         <footer className={FooterCss}>
           {active !== 0 && <Button onClick={prev}>上一步</Button>}
-          {active !== inform.length - 1 && (
-            <Button onClick={next}>下一步</Button>
-          )}
+          {active !== inform.length - 1
+            && <Button onClick={next}>下一步</Button>
+          }
           {active === inform.length - 1 && (
             <Button onClick={() => props.close()} type="primary">
               完成

@@ -4,7 +4,7 @@ import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal } from 'antd'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 
 const OperationWrap = styled.div({
@@ -19,6 +19,7 @@ const OperationWrap = styled.div({
 const StickyWrap = styled.div({
   padding: '0 24px',
   background: 'white',
+
   // position: 'sticky',
   // top: 64,
   // zIndex: 2,
@@ -49,18 +50,29 @@ interface Props {
 }
 
 export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
+  { label: 'id',
+    value: 'name' },
+  { label: 'id1',
+    value: 'age' },
+  { label: 'id2',
+    value: 'address' },
+  { label: 'id3',
+    value: 'address1' },
+  { label: 'id4',
+    value: 'address2' },
 ]
+
 export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
+  { label: '飞机',
+    value: 'feiji' },
+  { label: '大炮',
+    value: 'dapao' },
+  { label: '坦克',
+    value: 'tanke' },
+  { label: '直升机',
+    value: 'zhishengji' },
+  { label: '战舰',
+    value: 'zhanjian' },
 ]
 
 export default (props: Props) => {
@@ -90,10 +102,13 @@ export default (props: Props) => {
   const changeStatus = (
     <Space
       size={8}
-      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+      style={{ padding: '8px 16px',
+        display: 'flex',
+        flexDirection: 'column' }}
     >
       <StatusTag>开启中</StatusTag>
-      <StatusTag style={{ color: '#969799', background: '#F2F2F4' }}>
+      <StatusTag style={{ color: '#969799',
+        background: '#F2F2F4' }}>
         已结束
       </StatusTag>
     </Space>
@@ -122,10 +137,14 @@ export default (props: Props) => {
               marginRight: 8,
             }}
           />
-          <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
+          <span style={{ fontSize: 14,
+            color: 'black',
+            marginRight: 8 }}>
             敏捷版本v1.0
           </span>
-          <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
+          <span style={{ fontSize: 12,
+            color: '#BBBDBF',
+            marginRight: 8 }}>
             2022.06.17-2022.07.30
           </span>
           <Popover
@@ -137,7 +156,8 @@ export default (props: Props) => {
               开启中
               <IconFont
                 type="down-60kl9fcg"
-                style={{ fontSize: 12, marginLeft: 4 }}
+                style={{ fontSize: 12,
+                  marginLeft: 4 }}
               />
             </StatusTag>
           </Popover>
@@ -170,7 +190,7 @@ export default (props: Props) => {
         visible={settingState}
         close={() => setSettingState(false)}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
     </StickyWrap>
   )
 }

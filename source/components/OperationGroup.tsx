@@ -38,9 +38,9 @@ export default (props: Props) => {
       items={[
         {
           key: '1',
-          label: (
+          label:
             <div onClick={() => props.onChangeSetting?.()}>设置显示字段</div>
-          ),
+          ,
         },
       ]}
     />

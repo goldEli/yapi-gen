@@ -211,7 +211,9 @@ export default () => {
           </MenuItems>
           <div
             onClick={() => setVisible(true)}
-            style={{ textAlign: 'center', cursor: 'pointer', color: '#2877FF' }}
+            style={{ textAlign: 'center',
+              cursor: 'pointer',
+              color: '#2877FF' }}
           >
             <IconFont type="plus" />
             <span>添加用户组</span>
@@ -231,7 +233,8 @@ export default () => {
                   <Checkbox />
                 </CheckboxWrap>
                 <OperationWrap>{i.name}</OperationWrap>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex',
+                  alignItems: 'center' }}>
                   {i.children.map(k => (
                     <div
                       key={k.name}
@@ -250,7 +253,8 @@ export default () => {
             ))}
           </MainWrap>
           <Button
-            style={{ width: 'fit-content', marginTop: 16 }}
+            style={{ width: 'fit-content',
+              marginTop: 16 }}
             type="primary"
           >
             保存

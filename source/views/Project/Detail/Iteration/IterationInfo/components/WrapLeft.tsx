@@ -45,7 +45,7 @@ const StatusWrap = styled.div({
   color: '#969799',
 })
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -72,8 +72,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
+        ? '1px dashed #969799'
+        : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -95,7 +95,8 @@ export default () => {
     <WrapLeft>
       <InfoItem>
         <Label>需求状态</Label>
-        <div style={{ display: 'flex', width: '100%' }}>
+        <div style={{ display: 'flex',
+          width: '100%' }}>
           {statusList.map(i => (
             <div style={{ display: 'flex' }}>
               <StatusWrap>{i.name}</StatusWrap>
@@ -153,8 +154,8 @@ export default () => {
       <InfoItem>
         <Label>优先级</Label>
         <Popconfirm
-          content={({ onHide }: { onHide: () => void }) => {
-            return <LevelContent tap={() => {}} hide={onHide}></LevelContent>
+          content={({ onHide }: { onHide(): void }) => {
+            return <LevelContent tap={() => {}} hide={onHide} />
           }}
         >
           <IconFont type="knockdown" />

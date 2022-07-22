@@ -38,7 +38,7 @@ const TextWrap = styled.div({
   },
 })
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -65,8 +65,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
+        ? '1px dashed #969799'
+        : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -143,12 +143,14 @@ export default () => {
       <InfoItem>
         <Label>优先级</Label>
         <Popconfirm
-          content={({ onHide }: { onHide: () => void }) => {
-            return <LevelContent tap={() => {}} hide={onHide}></LevelContent>
+          content={({ onHide }: { onHide(): void }) => {
+            return <LevelContent tap={() => {}} hide={onHide} />
           }}
         >
           <div
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            style={{ cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center' }}
           >
             <IconFont style={{ fontSize: 16 }} type="knockdown" />
             <span style={{ marginLeft: 8 }}>中</span>

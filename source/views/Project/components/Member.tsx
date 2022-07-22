@@ -22,7 +22,8 @@ const DrawerWrap = styled(Drawer)({
   },
 })
 
-const ButtonWrap = styled(Button)({ width: '100%', height: 32 })
+const ButtonWrap = styled(Button)({ width: '100%',
+  height: 32 })
 
 const ListWrap = styled.div({
   marginTop: 16,
@@ -93,38 +94,134 @@ const ModalFooter = styled.div({
 })
 
 const personList = [
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
+  { name: '张三',
+    avatar: posterImg,
+    subname: '普通成员',
+    job: '设计' },
 ]
 
 export default (props: Props) => {
@@ -147,10 +244,13 @@ export default (props: Props) => {
           showArrow={false}
           mode="multiple"
           showSearch
-        ></ModalContent>
+        />
         <ModalFooter>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
+            <span style={{ fontSize: 14,
+              color: '#323233',
+              marginRight: 16 }}>
               加入权限组
             </span>
             <Select style={{ width: 192 }} />
@@ -170,6 +270,7 @@ export default (props: Props) => {
         <div
           style={{
             padding: '0 16px',
+
             // position: 'sticky',
             // top: 0,
             background: 'white',
@@ -179,7 +280,8 @@ export default (props: Props) => {
             type="primary"
             onClick={() => setVisible(true)}
             icon={
-              <IconFont type="plus" style={{ color: 'white', fontSize: 16 }} />
+              <IconFont type="plus" style={{ color: 'white',
+                fontSize: 16 }} />
             }
           >
             添加成员
@@ -189,7 +291,8 @@ export default (props: Props) => {
             suffix={
               <IconFont
                 type="search"
-                style={{ color: '#BBBDBF', fontSize: 16 }}
+                style={{ color: '#BBBDBF',
+                  fontSize: 16 }}
               />
             }
             placeholder="搜索成员"

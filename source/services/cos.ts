@@ -6,9 +6,12 @@ import * as http from '../tools/http'
 import COS, { type Task, type UploadFileItemResult } from 'cos-js-sdk-v5'
 
 export function getUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c =>
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+    /[xy]/g,
+    c =>
+
     // @ts-expect-error
-    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16),
+      (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16),
   )
 }
 
@@ -26,11 +29,14 @@ export const formatFileSize = (val: number) => {
 }
 
 const getCosSign = async (): Promise<any> => {
-  const response = await http.post<any, any>('getCosSign', {
-    accessToken: 'aFjZCHViLrnYwqBCHQTyPPhiciLGnuuJ',
-    app_id: 13,
-    bucket_id: 6,
-  })
+  const response = await http.post<any, any>(
+    'getCosSign',
+    {
+      accessToken: 'aFjZCHViLrnYwqBCHQTyPPhiciLGnuuJ',
+      app_id: 13,
+      bucket_id: 6,
+    },
+  )
   if (response.code !== 1) {
     throw new Error(response.msg)
   }
@@ -53,7 +59,8 @@ export const cos = new COS({
 
 // 获取文件后缀
 export function getFileSuffix(name: string, withDot = false) {
-  const fileSuffix = name.split('.').pop()?.toLowerCase()
+  const fileSuffix = name.split('.').pop()
+    ?.toLowerCase()
   return fileSuffix?.length ? `${withDot ? '.' : ''}${fileSuffix}` : ''
 }
 
@@ -118,10 +125,13 @@ export const uploadFileByTask = (
         if (error) {
           reject(error)
         } else {
-          cos.emit('task-over', {
-            id,
-            url: `https://${data.Location}`,
-          })
+          cos.emit(
+            'task-over',
+            {
+              id,
+              url: `https://${data.Location}`,
+            },
+          )
         }
       },
     })

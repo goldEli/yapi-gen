@@ -4,8 +4,8 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const Header = styled.div({
   height: 64,
@@ -154,8 +154,8 @@ interface ItemProps {
 }
 
 const PermissionItem = (props: ItemProps) => {
-  const keys =
-    props.value?.filter(
+  const keys
+    = props.value?.filter(
       (i: any) => !!props.item.children.find((item: any) => item.value === i),
     ) || []
 
@@ -186,7 +186,8 @@ const PermissionItem = (props: ItemProps) => {
         />
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex',
+        alignItems: 'center' }}>
         <Checkbox.Group
           options={props.item.children}
           style={{ marginRight: 8 }}
@@ -225,19 +226,28 @@ export default () => {
     setPermission(result)
   }
 
-  useEffect(() => {
-    init()
-  }, [])
+  useEffect(
+    () => {
+      init()
+    },
+    [],
+  )
 
-  useEffect(() => {
-    getPermission()
-  }, [activeTabs])
+  useEffect(
+    () => {
+      getPermission()
+    },
+    [activeTabs],
+  )
 
   const onSavePermission = async () => {
     try {
-      await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
+      await setRolePermission({ roleId: activeTabs,
+        permissionIds: selectKeys })
+
       //
     } catch (error) {
+
       //
     }
   }
@@ -245,8 +255,10 @@ export default () => {
   const onSaveGroup = async () => {
     try {
       await addRole({ name: addValue })
+
       //
     } catch (error) {
+
       //
     }
   }
@@ -261,11 +273,17 @@ export default () => {
       items={[
         {
           key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+          label: <div onClick={e => onClickMenu(
+            e,
+            'edit',
+          )}>编辑</div>,
         },
         {
           key: '2',
-          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+          label: <div onClick={e => onClickMenu(
+            e,
+            'delete',
+          )}>删除</div>,
         },
       ]}
     />
@@ -361,7 +379,8 @@ export default () => {
               ))}
             </MainWrap>
             <Button
-              style={{ width: 'fit-content', marginTop: 16 }}
+              style={{ width: 'fit-content',
+                marginTop: 16 }}
               type="primary"
               onClick={onSavePermission}
             >

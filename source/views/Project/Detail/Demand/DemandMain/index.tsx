@@ -60,11 +60,10 @@ export default (props: Props) => {
         onChangeGrid={setIsGrid}
         onChangeVisible={(e: any) => props.onChangeVisible(e)}
       />
-      {isGrid ? (
-        <DemandGrid menu={menu} />
-      ) : (
-        <DemandTable menu={menu} List={List} />
-      )}
+      {isGrid
+        ? <DemandGrid menu={menu} />
+        : <DemandTable menu={menu} List={List} />
+      }
     </div>
   )
 }

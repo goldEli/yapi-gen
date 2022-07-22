@@ -54,14 +54,16 @@ const DemandItem = styled.div({
 
 interface DemandProps {
   onChangeList(val: []): void
-  tap?: (value: any, active: any) => void
+  tap?(value: any, active: any): void
 }
 
 const TagBox = (props: DemandProps) => {
   const [value, setValue] = useState('')
   const DemandList = [
-    { name: '有风险', color: 'red' },
-    { name: '等待转测', color: 'green' },
+    { name: '有风险',
+      color: 'red' },
+    { name: '等待转测',
+      color: 'green' },
   ]
   return (
     <DemandWrap title="">
@@ -70,7 +72,7 @@ const TagBox = (props: DemandProps) => {
       </div>
       {DemandList.filter(k => k.name.includes(value)).map(i => (
         <DemandItem key={i.name}>
-          <div style={{ background: i.color }}></div>
+          <div style={{ background: i.color }} />
           <span>{i.name}</span>
         </DemandItem>
       ))}
@@ -87,22 +89,30 @@ export default (props: Props) => {
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
   const colorStatus = (
     <Space
-      style={{ display: 'flex', alignItems: 'center', padding: 16 }}
+      style={{ display: 'flex',
+        alignItems: 'center',
+        padding: 16 }}
       size={8}
     >
       {colorList.map(i => (
         <div
-          style={{ background: i, height: 16, width: 16, borderRadius: 4 }}
-        ></div>
+          style={{ background: i,
+            height: 16,
+            width: 16,
+            borderRadius: 4 }}
+        />
       ))}
     </Space>
   )
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: 'flex',
+      alignItems: 'center' }}>
       <DemandCheckedItem>
         {demandGroup.map(i => (
           <div
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            style={{ cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center' }}
           >
             <Popover placement="bottom" trigger="click" content={colorStatus}>
               {i.name}
@@ -111,18 +121,18 @@ export default (props: Props) => {
           </div>
         ))}
       </DemandCheckedItem>
-      {demandGroup.length ? (
-        ''
-      ) : (
-        <Popover
-          placement="bottom"
-          trigger="click"
-          content={<TagBox tap={() => {}} onChangeList={setDemandGroup} />}
-          getPopupContainer={node => node}
-        >
-          {props.addWrap}
-        </Popover>
-      )}
+      {demandGroup.length
+        ? ''
+        : (
+          <Popover
+            placement="bottom"
+            trigger="click"
+            content={<TagBox tap={() => {}} onChangeList={setDemandGroup} />}
+            getPopupContainer={node => node}
+          >
+            {props.addWrap}
+          </Popover>
+        )}
     </div>
   )
 }

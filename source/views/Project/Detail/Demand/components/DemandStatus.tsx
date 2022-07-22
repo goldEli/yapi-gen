@@ -42,8 +42,8 @@ const statusList = [
 ]
 
 interface Props {
-  hide?: () => void
-  tap?: (value: any, active: any) => void
+  hide?(): void
+  tap?(value: any, active: any): void
 }
 
 const DemandBox = (props: Props) => {
@@ -52,7 +52,9 @@ const DemandBox = (props: Props) => {
     <DemandStatus title="">
       <div
         onClick={() => props.hide?.()}
-        style={{ textAlign: 'right', color: '#323233', cursor: 'pointer' }}
+        style={{ textAlign: 'right',
+          color: '#323233',
+          cursor: 'pointer' }}
       >
         <IconFont type="close" />
       </div>
@@ -62,7 +64,8 @@ const DemandBox = (props: Props) => {
         </Form.Item>
         <Form.Item label="评论">
           <Input.TextArea
-            autoSize={{ minRows: 5, maxRows: 5 }}
+            autoSize={{ minRows: 5,
+              maxRows: 5 }}
             placeholder="请输入评论处理意见"
           />
         </Form.Item>
@@ -80,11 +83,12 @@ export default () => {
     <>
       {statusList.map((i, index) => (
         <Popconfirm
-          content={({ onHide }: { onHide: () => void }) => {
+          content={({ onHide }: { onHide(): void }) => {
             return <DemandBox tap={() => {}} hide={onHide} />
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <StatusWrap>{i.name}</StatusWrap>
             <Divider
               style={{

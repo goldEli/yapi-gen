@@ -92,8 +92,8 @@ export default (props: Props) => {
   )
   return (
     <Wrap>
-      {props.show && (
-        <WrapLeft size={48}>
+      {props.show
+        ? <WrapLeft size={48}>
           <TitleBox
             onClick={() => props.onChangeType(0)}
             idx={!props.activeType}
@@ -107,11 +107,12 @@ export default (props: Props) => {
             企业全部
           </TitleBox>
         </WrapLeft>
-      )}
+        : null}
 
       <WrapRight>
         <Space size={12}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <Checkbox onChange={e => props.onChangeHidden(e.target.value)} />
             <MainTitle style={{ marginLeft: 8 }}>隐藏结束项目</MainTitle>
           </div>

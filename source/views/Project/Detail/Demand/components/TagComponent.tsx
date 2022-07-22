@@ -61,14 +61,16 @@ const TagItem = styled.div({
 
 interface TagProps {
   onChangeList(val: []): void
-  tap?: (value: any, active: any) => void
+  tap?(value: any, active: any): void
 }
 
 const TagBox = (props: TagProps) => {
   const [value, setValue] = useState('')
   const tagList = [
-    { name: '有风险', color: 'red' },
-    { name: '等待转测', color: 'green' },
+    { name: '有风险',
+      color: 'red' },
+    { name: '等待转测',
+      color: 'green' },
   ]
   return (
     <TagWrap title="">
@@ -79,7 +81,7 @@ const TagBox = (props: TagProps) => {
         .filter(k => k.name.includes(value))
         .map(i => (
           <TagItem key={i.name}>
-            <div style={{ background: i.color }}></div>
+            <div style={{ background: i.color }} />
             <span>{i.name}</span>
           </TagItem>
         ))}
@@ -99,27 +101,36 @@ export default (props: Props) => {
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
   const colorStatus = (
     <Space
-      style={{ display: 'flex', alignItems: 'center', padding: 16 }}
+      style={{ display: 'flex',
+        alignItems: 'center',
+        padding: 16 }}
       size={8}
     >
       {colorList.map(i => (
         <div
-          style={{ background: i, height: 16, width: 16, borderRadius: 4 }}
-        ></div>
+          style={{ background: i,
+            height: 16,
+            width: 16,
+            borderRadius: 4 }}
+        />
       ))}
     </Space>
   )
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: 'flex',
+      alignItems: 'center' }}>
       <TagCheckedItem>
         {tagGroup.map(i => (
-          <div style={{ cursor: 'pointer', alignItems: 'center' }}>
+          <div style={{ cursor: 'pointer',
+            alignItems: 'center' }}>
             <Popover placement="bottom" trigger="click" content={colorStatus}>
               {i.name}
             </Popover>
             <IconFont
               className="icon"
-              style={{ position: 'absolute', right: -6, top: -6 }}
+              style={{ position: 'absolute',
+                right: -6,
+                top: -6 }}
               type="close-circle"
             />
           </div>

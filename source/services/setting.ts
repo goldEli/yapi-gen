@@ -2,6 +2,7 @@ import * as http from '@/tools/http'
 import posterImg from '@/assets/poster.png'
 
 export const getCompanyInfo: any = async () => {
+
   // const response: any = await http.get<any>('getCompanyInfo')
   const response: any = {}
   response.data = {
@@ -23,6 +24,7 @@ export const getCompanyInfo: any = async () => {
 }
 
 export const getOperateLogs: any = async (params: any) => {
+
   // const response: any = await http.get<any>('getOperateLogs', {
   //   search: {
   //     user_id: params.userId,
@@ -74,6 +76,7 @@ export const getOperateLogs: any = async (params: any) => {
 }
 
 export const getLoginLogs: any = async (params: any) => {
+
   // const response: any = await http.get<any>('getLoginLogs', {
   //   search: {
   //     user_id: params.userId,
@@ -121,13 +124,22 @@ export const getLoginLogs: any = async (params: any) => {
 }
 
 export const getRoleList: any = async () => {
+
   // const response: any = await http.get<any>('getRoleList')
   const response: any = {}
   response.data = [
-    { name: '管理员', id: 0, type: 1 },
-    { name: '编辑者', id: 1, type: 1 },
-    { name: '参与者', id: 2, type: 1 },
-    { name: '测试组', id: 3, type: 2 },
+    { name: '管理员',
+      id: 0,
+      type: 1 },
+    { name: '编辑者',
+      id: 1,
+      type: 1 },
+    { name: '参与者',
+      id: 2,
+      type: 1 },
+    { name: '测试组',
+      id: 3,
+      type: 2 },
   ]
   return {
     list: response.data.map((i: any) => ({
@@ -139,6 +151,7 @@ export const getRoleList: any = async () => {
 }
 
 export const getRolePermission: any = async (params: any) => {
+
   // const response: any = await http.get<any>('getRolePermission', {
   //   role_id: params.roleId,
   // })
@@ -147,17 +160,23 @@ export const getRolePermission: any = async (params: any) => {
     {
       group_name: '需求',
       permissions: [
-        { value: '01', label: '创建需求' },
-        { value: '11', label: '删除需求' },
-        { value: '21', label: '编辑需求' },
+        { value: '01',
+          label: '创建需求' },
+        { value: '11',
+          label: '删除需求' },
+        { value: '21',
+          label: '编辑需求' },
       ],
     },
     {
       group_name: '迭代',
       permissions: [
-        { value: '41', label: '迭代创建需求' },
-        { value: '51', label: '迭代删除需求' },
-        { value: '61', label: '迭代编辑需求' },
+        { value: '41',
+          label: '迭代创建需求' },
+        { value: '51',
+          label: '迭代删除需求' },
+        { value: '61',
+          label: '迭代编辑需求' },
       ],
     },
   ]
@@ -170,16 +189,22 @@ export const getRolePermission: any = async (params: any) => {
 }
 
 export const setRolePermission: any = async (params: any) => {
-  await http.put<any>('setRolePermission', {
-    role_id: params.roleId,
-    permission_ids: params.permissionIds,
-  })
+  await http.put<any>(
+    'setRolePermission',
+    {
+      role_id: params.roleId,
+      permission_ids: params.permissionIds,
+    },
+  )
 }
 
 export const addRole: any = async (params: any) => {
-  await http.post<any>('addRole', {
-    name: params.name,
-  })
+  await http.post<any>(
+    'addRole',
+    {
+      name: params.name,
+    },
+  )
 }
 
 export const deleteRole: any = async (params: any) => {
@@ -187,7 +212,10 @@ export const deleteRole: any = async (params: any) => {
 }
 
 export const updateRole: any = async (params: any) => {
-  await http.put<any>(`/b/company/role/${params.id}`, {
-    name: params.name,
-  })
+  await http.put<any>(
+    `/b/company/role/${params.id}`,
+    {
+      name: params.name,
+    },
+  )
 }

@@ -103,10 +103,18 @@ const StatusWrap = styled.div({
 })
 
 const statusList = [
-  { id: 0, name: '规划中', color: '#2877ff' },
-  { id: 1, name: '实现中', color: '#2877ff' },
-  { id: 2, name: '已实现', color: '#2877ff' },
-  { id: 3, name: '已关闭', color: '#2877ff' },
+  { id: 0,
+    name: '规划中',
+    color: '#2877ff' },
+  { id: 1,
+    name: '实现中',
+    color: '#2877ff' },
+  { id: 2,
+    name: '已实现',
+    color: '#2877ff' },
+  { id: 3,
+    name: '已关闭',
+    color: '#2877ff' },
 ]
 
 export default () => {
@@ -119,9 +127,9 @@ export default () => {
       return <DemandInfo />
     } else if (type === 'child') {
       return <ChildDemand />
-    } else {
-      return <ChangeRecord />
     }
+    return <ChangeRecord />
+
   }
   const onChangeIdx = (val: string) => {
     navigate(`/Detail/Demand?type=${val}`)
@@ -134,69 +142,69 @@ export default () => {
   const content = () => {
     if (!type) {
       return <DemandMain onChangeVisible={(e: any) => MoreClick(e)} />
-    } else {
-      return (
-        <>
-          <DemandInfoWrap>
-            <NameWrap>
-              <span>【ID466897】需求名称xxxxxx</span>
-              <PopConfirm
-                content={({ onHide }: { onHide: () => void }) => {
-                  return (
-                    <ShapeContent
-                      tap={() => {}}
-                      hide={onHide}
-                      record={{ level: 0 }}
-                    ></ShapeContent>
-                  )
-                }}
-                record={{ level: 0 }}
-              >
-                <StatusWrap
-                  style={{
-                    color: statusList[0].color,
-                    border: `1px solid ${statusList[0].color}`,
-                  }}
-                >
-                  {statusList[0].name}
-                </StatusWrap>
-              </PopConfirm>
-            </NameWrap>
-            <Space size={16}>
-              <Button type="primary" onClick={() => setVisible(!visible)}>
-                编辑
-              </Button>
-              <Button>删除</Button>
-            </Space>
-          </DemandInfoWrap>
-          <ContentWrap>
-            <MainWrap size={32}>
-              <Item
-                onClick={() => onChangeIdx('info')}
-                activeIdx={type === 'info'}
-              >
-                <span>详细信息</span>
-              </Item>
-              <Item
-                onClick={() => onChangeIdx('child')}
-                activeIdx={type === 'child'}
-              >
-                <span>子需求</span>
-                <div>6</div>
-              </Item>
-              <Item
-                onClick={() => onChangeIdx('record')}
-                activeIdx={type === 'record'}
-              >
-                <span>变更记录</span>
-                <div>12</div>
-              </Item>
-            </MainWrap>
-            {childContent()}
-          </ContentWrap>
-        </>
-      )
     }
+    return (
+      <>
+        <DemandInfoWrap>
+          <NameWrap>
+            <span>【ID466897】需求名称xxxxxx</span>
+            <PopConfirm
+              content={({ onHide }: { onHide(): void }) => {
+                return (
+                  <ShapeContent
+                    tap={() => {}}
+                    hide={onHide}
+                    record={{ level: 0 }}
+                  />
+                )
+              }}
+              record={{ level: 0 }}
+            >
+              <StatusWrap
+                style={{
+                  color: statusList[0].color,
+                  border: `1px solid ${statusList[0].color}`,
+                }}
+              >
+                {statusList[0].name}
+              </StatusWrap>
+            </PopConfirm>
+          </NameWrap>
+          <Space size={16}>
+            <Button type="primary" onClick={() => setVisible(!visible)}>
+                编辑
+            </Button>
+            <Button>删除</Button>
+          </Space>
+        </DemandInfoWrap>
+        <ContentWrap>
+          <MainWrap size={32}>
+            <Item
+              onClick={() => onChangeIdx('info')}
+              activeIdx={type === 'info'}
+            >
+              <span>详细信息</span>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('child')}
+              activeIdx={type === 'child'}
+            >
+              <span>子需求</span>
+              <div>6</div>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('record')}
+              activeIdx={type === 'record'}
+            >
+              <span>变更记录</span>
+              <div>12</div>
+            </Item>
+          </MainWrap>
+          {childContent()}
+        </ContentWrap>
+      </>
+    )
+
   }
 
   return (

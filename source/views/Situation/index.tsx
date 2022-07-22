@@ -36,12 +36,16 @@ const Head = styled.div`
   display: flex;
   justify-content: space-between;
 `
+
 export default () => {
   const [state, setState] = useState()
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const navigate = useNavigate()
 
-  useEffect(() => {}, [])
+  useEffect(
+    () => {},
+    [],
+  )
   return (
     <>
       <Head>
@@ -55,17 +59,18 @@ export default () => {
             >
               <IconFont
                 type="swap"
-                style={{ cursor: 'pointer', fontSize: 14 }}
+                style={{ cursor: 'pointer',
+                  fontSize: 14 }}
               />
             </div>
           </Tooltip>
         </PanelHeaderSecond>
       </Head>
       <Wrap>
-        <Project></Project>
-        <Staff></Staff>
-        <Need></Need>
-        <Iteration></Iteration>
+        <Project />
+        <Staff />
+        <Need />
+        <Iteration />
       </Wrap>
       <CompanyModal
         visible={companyModalVisible}

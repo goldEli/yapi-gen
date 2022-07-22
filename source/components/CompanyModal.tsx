@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
+
 interface Props {
   onChangeState(): void
   visible: boolean
@@ -33,31 +34,55 @@ export default (props: Props) => {
   const { getCompanyList, changeCompany } = useModel('user')
   const init = async () => {
     const res = await getCompanyList()
-    console.log(res, '公司列表')
+    console.log(
+      res,
+      '公司列表',
+    )
   }
-  useEffect(() => {
-    init()
-  }, [])
+  useEffect(
+    () => {
+      init()
+    },
+    [],
+  )
 
   const list = [
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
-    { name: '公司名公司名称公司名称公司名称称', url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
+    { name: '公司名公司名称公司名称公司名称称',
+      url: logoWithNameImage },
   ]
   const [activeIdx, setActiveIdx] = useState(0)
   return (
@@ -75,7 +100,7 @@ export default (props: Props) => {
             key={index}
             tap={() => setActiveIdx(index)}
             show={index === activeIdx}
-          ></CompanyCard>
+          />
         ))}
       </ContentWrap>
       <FooterWrap size={16}>

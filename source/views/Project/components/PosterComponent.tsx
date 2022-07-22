@@ -56,36 +56,43 @@ const AddUplaod = styled.div({
 
 export default () => {
   const choosePoster = (
-    <div style={{ width: 372, padding: 16 }}>
+    <div style={{ width: 372,
+      padding: 16 }}>
       <ChooseTitle>请选择一个封面</ChooseTitle>
       <PosterGroup size={8}>
         <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
+          style={{ marginBottom: 8,
+            cursor: 'pointer' }}
           src={posterImg}
           alt=""
         />
         <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
+          style={{ marginBottom: 8,
+            cursor: 'pointer' }}
           src={posterImg}
           alt=""
         />
         <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
+          style={{ marginBottom: 8,
+            cursor: 'pointer' }}
           src={posterImg}
           alt=""
         />
         <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
+          style={{ marginBottom: 8,
+            cursor: 'pointer' }}
           src={posterImg}
           alt=""
         />
         <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
+          style={{ marginBottom: 8,
+            cursor: 'pointer' }}
           src={posterImg}
           alt=""
         />
         <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
+          style={{ marginBottom: 8,
+            cursor: 'pointer' }}
           src={posterImg}
           alt=""
         />
@@ -96,7 +103,9 @@ export default () => {
           <IconFont style={{ color: '#969799' }} type="plus" />
         </AddUplaod>
       </Upload>
-      <span style={{ fontSize: 12, fontWeight: 400, color: '#969799' }}>
+      <span style={{ fontSize: 12,
+        fontWeight: 400,
+        color: '#969799' }}>
         图片格式支持jpg、png，大小为220*104px
       </span>
     </div>

@@ -44,16 +44,22 @@ export default () => {
   }
 
   const onChangeSearch = (value: string) => {
-    console.log(value, '搜索任务或项目')
+    console.log(
+      value,
+      '搜索任务或项目',
+    )
   }
 
   return (
-    <div style={{ height: '100%', overflow: 'auto' }}>
+    <div style={{ height: '100%',
+      overflow: 'auto' }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
       />
-      <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
+      <div style={{ position: 'sticky',
+        top: 0,
+        zIndex: 9 }}>
         <SearchWrap>
           <SearchComponent
             placeholder="搜索项目或任务"
@@ -75,14 +81,15 @@ export default () => {
         />
       </div>
       <Content>
-        {isGrid ? (
-          <MainGrid
-            onChangeVisible={() => setVisible(true)}
-            onChangeOperation={onChangeOperation}
-          />
-        ) : (
-          <MainTable onChangeOperation={onChangeOperation} />
-        )}
+        {isGrid
+          ? (
+            <MainGrid
+              onChangeVisible={() => setVisible(true)}
+              onChangeOperation={onChangeOperation}
+            />
+          )
+          : <MainTable onChangeOperation={onChangeOperation} />
+        }
       </Content>
     </div>
   )

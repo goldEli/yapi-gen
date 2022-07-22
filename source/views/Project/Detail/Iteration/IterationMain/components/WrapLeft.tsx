@@ -35,6 +35,7 @@ const TopWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+
   // position: 'sticky',
   // top: 64,
   // zIndex: 2,
@@ -110,32 +111,43 @@ interface Props {
 }
 
 const sortList = [
-  { name: '创建时间升序', type: 'createTimeUp' },
-  { name: '创建时间降序', type: 'createTimeDown' },
-  { name: '开始时间升序', type: 'startTimeUp' },
-  { name: '开始时间降序', type: 'startTimeDown' },
-  { name: '结束时间升序', type: 'endTimeUp' },
-  { name: '结束时间降序', type: 'endTimeDown' },
-  { name: '标题升序', type: 'titleUp' },
-  { name: '标题降序', type: 'titleDown' },
+  { name: '创建时间升序',
+    type: 'createTimeUp' },
+  { name: '创建时间降序',
+    type: 'createTimeDown' },
+  { name: '开始时间升序',
+    type: 'startTimeUp' },
+  { name: '开始时间降序',
+    type: 'startTimeDown' },
+  { name: '结束时间升序',
+    type: 'endTimeUp' },
+  { name: '结束时间降序',
+    type: 'endTimeDown' },
+  { name: '标题升序',
+    type: 'titleUp' },
+  { name: '标题降序',
+    type: 'titleDown' },
 ]
 
 export default (props: Props) => {
   const [from] = Form.useForm()
   const options = [
-    { label: '开始', value: 'Apple' },
-    { label: '结束', value: 'Pear' },
+    { label: '开始',
+      value: 'Apple' },
+    { label: '结束',
+      value: 'Pear' },
   ]
   const sortContent = (
-    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
-      {sortList.map(i => (
-        <SortItem key={i.type}>{i.name}</SortItem>
-      ))}
+    <div style={{ display: 'flex',
+      flexDirection: 'column',
+      minWidth: 132 }}>
+      {sortList.map(i => <SortItem key={i.type}>{i.name}</SortItem>)}
     </div>
   )
   const filterContent = (
     <div className="filterContent">
-      <Form form={from} style={{ width: 260, padding: 24 }} layout="vertical">
+      <Form form={from} style={{ width: 260,
+        padding: 24 }} layout="vertical">
         <Form.Item label="标题">
           <Input placeholder="请输入标题" />
         </Form.Item>
@@ -170,10 +182,12 @@ export default (props: Props) => {
   }
 
   const onChangeEnd = () => {
+
     //
   }
 
   const onChangeDelete = () => {
+
     //
   }
 
@@ -207,7 +221,8 @@ export default (props: Props) => {
           >
             <IconWrap type="sort" />
           </Popover>
-          <Divider style={{ margin: 0, height: 20 }} type="vertical" />
+          <Divider style={{ margin: 0,
+            height: 20 }} type="vertical" />
           <Popover
             placement="bottomRight"
             content={filterContent}
@@ -222,7 +237,7 @@ export default (props: Props) => {
           menu={menu}
           key={`${item.name}_${index}`}
           item={item}
-        ></IterationCard>
+        />
       ))}
     </Left>
   )

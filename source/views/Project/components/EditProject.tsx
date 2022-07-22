@@ -37,7 +37,8 @@ export default (props: Props) => {
           <Input.TextArea
             maxLength={500}
             placeholder="请输入项目描述"
-            autoSize={{ minRows: 3, maxRows: 5 }}
+            autoSize={{ minRows: 3,
+              maxRows: 5 }}
           />
         </Form.Item>
         <Form.Item label="公开/私有">

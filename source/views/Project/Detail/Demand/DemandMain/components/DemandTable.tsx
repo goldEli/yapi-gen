@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react'
+import type React from 'react'
+import { useState, useCallback } from 'react'
 import { Pagination, Dropdown, Table } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
@@ -48,32 +49,49 @@ interface Props {
 }
 
 const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
+  { name: '高',
+    type: 'tall',
+    color: '#ff5c5e' },
+  { name: '中',
+    type: 'middle',
+    color: '#fa9746' },
+  { name: '低',
+    type: 'low',
+    color: '#43ba9a' },
+  { name: '极低',
+    type: 'knockdown',
+    color: '#bbbdbf' },
 ]
 
 export default (props: Props) => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const navigate = useNavigate()
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
+  const onTableRow = useCallback(
+    (row: any) => {
+      return {
+        onMouseEnter: () => {
+          setRowActiveIndex(row.id)
+        },
+        onMouseLeave: () => {
+          setRowActiveIndex(null)
+        },
+      }
+    },
+    [],
+  )
 
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+    console.log(
+      page,
+      size,
+    )
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+    console.log(
+      current,
+      pageSize,
+    )
   }
 
   const columnsChild = [
@@ -114,13 +132,13 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
                   tap={() => {}}
                   hide={onHide}
                   record={record}
-                ></ShapeContent>
+                />
               )
             }}
             record={record}
@@ -142,7 +160,8 @@ export default (props: Props) => {
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex',
+            alignItems: 'center' }}>
             <div
               style={{
                 visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
@@ -155,7 +174,9 @@ export default (props: Props) => {
                 getPopupContainer={node => node}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: '#2877FF', cursor: 'pointer' }}
+                  style={{ fontSize: 16,
+                    color: '#2877FF',
+                    cursor: 'pointer' }}
                   type="more"
                 />
               </Dropdown>
@@ -185,7 +206,7 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <Table
                   pagination={false}
@@ -210,13 +231,13 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <LevelContent
                   tap={() => {}}
                   hide={onHide}
                   record={record}
-                ></LevelContent>
+                />
               )
             }}
             record={record}
@@ -251,13 +272,13 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
                   tap={() => {}}
                   hide={onHide}
                   record={record}
-                ></ShapeContent>
+                />
               )
             }}
             record={record}
@@ -315,7 +336,7 @@ export default (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
     </Content>

@@ -56,6 +56,7 @@ const DemoColumn = () => {
     xField: 'type',
     yField: 'sales',
     label: {
+
       // 可手动配置 label 数据标签位置
       // position: 'middle',
       // 'top', 'bottom', 'middle',
@@ -85,10 +86,12 @@ const DemoColumn = () => {
 
 export default () => {
   const [state, setState] = useState()
-
   const navigate = useNavigate()
 
-  useEffect(() => {}, [])
+  useEffect(
+    () => {},
+    [],
+  )
   return (
     <ChartsWrap>
       <div className={titleCss}>迭代概况</div>
@@ -125,7 +128,7 @@ export default () => {
 
       <div className={chartsTitle}>迭代进度分布</div>
       <HightChartsWrap>
-        <DemoColumn></DemoColumn>
+        <DemoColumn />
       </HightChartsWrap>
     </ChartsWrap>
   )

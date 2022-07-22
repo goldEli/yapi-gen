@@ -95,10 +95,13 @@ export default () => {
     setDataList(result)
   }
 
-  useEffect(() => {
-    init()
-  }, [])
-  const Option = Select.Option
+  useEffect(
+    () => {
+      init()
+    },
+    [],
+  )
+  const { Option } = Select
   const columns = [
     {
       title: '操作人',
@@ -119,16 +122,32 @@ export default () => {
   ]
 
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+    console.log(
+      page,
+      size,
+    )
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+    console.log(
+      current,
+      pageSize,
+    )
   }
   const onChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
     if (dates) {
-      console.log('From: ', dates[0], ', to: ', dates[1])
-      console.log('From: ', dateStrings[0], ', to: ', dateStrings[1])
+      console.log(
+        'From: ',
+        dates[0],
+        ', to: ',
+        dates[1],
+      )
+      console.log(
+        'From: ',
+        dateStrings[0],
+        ', to: ',
+        dateStrings[1],
+      )
     } else {
       console.log('Clear')
     }
@@ -139,7 +158,8 @@ export default () => {
         <div className="label">操作日志</div>
         <SearchWrap>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作人</span>
+            <span style={{ margin: '0 16px',
+              fontSize: '12px' }}>操作人</span>
             <SelectWrap
               mode="multiple"
               style={{ width: '100%' }}
@@ -153,7 +173,8 @@ export default () => {
             </SelectWrap>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作类型</span>
+            <span style={{ margin: '0 16px',
+              fontSize: '12px' }}>操作类型</span>
             <SelectWrap
               mode="multiple"
               style={{ width: '100%' }}
@@ -167,22 +188,35 @@ export default () => {
             </SelectWrap>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作时间</span>
+            <span style={{ margin: '0 16px',
+              fontSize: '12px' }}>操作时间</span>
             <DatePicker.RangePicker
               className={rangPicker}
               getPopupContainer={node => node}
               onChange={onChange}
               ranges={{
                 最近一周: [
-                  moment(new Date()).startOf('days').subtract(6, 'days'),
+                  moment(new Date()).startOf('days')
+                    .subtract(
+                      6,
+                      'days',
+                    ),
                   moment(new Date()).endOf('days'),
                 ],
                 最近一月: [
-                  moment(new Date()).startOf('months').subtract(1, 'months'),
+                  moment(new Date()).startOf('months')
+                    .subtract(
+                      1,
+                      'months',
+                    ),
                   moment(new Date()).endOf('days'),
                 ],
                 最近三月: [
-                  moment(new Date()).startOf('months').subtract(3, 'months'),
+                  moment(new Date()).startOf('months')
+                    .subtract(
+                      3,
+                      'months',
+                    ),
                   moment(new Date()).endOf('days'),
                 ],
                 今天开始: [moment(new Date()).startOf('days'), moment.min()],
@@ -190,7 +224,9 @@ export default () => {
               }}
             />
           </SelectWrapBedeck>
-          <div style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}>
+          <div style={{ color: '#2877FF',
+            fontSize: 12,
+            cursor: 'pointer' }}>
             清除条件
           </div>
         </SearchWrap>
@@ -215,7 +251,7 @@ export default () => {
             pageSizeOptions={['10', '20', '50']}
             onChange={onChangePage}
             onShowSizeChange={onShowSizeChange}
-            hideOnSinglePage={true}
+            hideOnSinglePage
           />
         </PaginationWrap>
       </Content>

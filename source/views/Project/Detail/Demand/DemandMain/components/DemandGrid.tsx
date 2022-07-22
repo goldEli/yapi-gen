@@ -5,6 +5,7 @@ import projectImg from '@/assets/projectImg.png'
 
 const Content = styled.div({
   padding: 24,
+
   // width: '100%',
   // overflowY: 'auto',
 })
@@ -32,85 +33,107 @@ const finshEdList = [
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
     person: [
-      { name: '张三', avatar: '' },
-      { name: '张三', avatar: '' },
-      { name: '张三', avatar: projectImg },
-      { name: '张三', avatar: '' },
-      { name: '张三', avatar: projectImg },
+      { name: '张三',
+        avatar: '' },
+      { name: '张三',
+        avatar: '' },
+      { name: '张三',
+        avatar: projectImg },
+      { name: '张三',
+        avatar: '' },
+      { name: '张三',
+        avatar: projectImg },
     ],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
     person: [
-      { name: '张三', avatar: projectImg },
-      { name: '张三', avatar: '' },
-      { name: '张三', avatar: projectImg },
+      { name: '张三',
+        avatar: projectImg },
+      { name: '张三',
+        avatar: '' },
+      { name: '张三',
+        avatar: projectImg },
     ],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
     person: [
-      { name: '张三', avatar: projectImg },
-      { name: '张三', avatar: '' },
-      { name: '张三', avatar: projectImg },
+      { name: '张三',
+        avatar: projectImg },
+      { name: '张三',
+        avatar: '' },
+      { name: '张三',
+        avatar: projectImg },
     ],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
   {
     name: '需求标题名称需求标题名称需求标题名称',
     demand: 5,
-    person: [{ name: '张三', avatar: '' }],
+    person: [{ name: '张三',
+      avatar: '' }],
   },
 ]
 
@@ -120,27 +143,19 @@ export default (props: Props) => {
       <Space size={20}>
         <CardGroup>
           <Title>规划中(8)</Title>
-          {finshEdList.map((i, idx) => (
-            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
-          ))}
+          {finshEdList.map((i, idx) => <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />)}
         </CardGroup>
         <CardGroup>
           <Title>规划中(8)</Title>
-          {finshEdList.map((i, idx) => (
-            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
-          ))}
+          {finshEdList.map((i, idx) => <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />)}
         </CardGroup>
         <CardGroup>
           <Title>规划中(8)</Title>
-          {finshEdList.map((i, idx) => (
-            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
-          ))}
+          {finshEdList.map((i, idx) => <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />)}
         </CardGroup>
         <CardGroup>
           <Title>规划中(8)</Title>
-          {finshEdList.map((i, idx) => (
-            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
-          ))}
+          {finshEdList.map((i, idx) => <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />)}
         </CardGroup>
       </Space>
     </Content>
