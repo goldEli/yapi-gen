@@ -152,7 +152,11 @@ const DemandWrap = () => {
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
               return (
-                <LevelContent tap={() => {}} hide={onHide} record={record} />
+                <LevelContent
+                  onTap={() => {}}
+                  onHide={onHide}
+                  record={record}
+                />
               )
             }}
             record={record}

@@ -198,7 +198,7 @@ const EditDemand = (props: Props) => {
           <Form.Item label="优先级">
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
-                return <LevelContent tap={() => {}} hide={onHide} />
+                return <LevelContent onTap={() => {}} onHide={onHide} />
               }}
             >
               <PriorityWrap>

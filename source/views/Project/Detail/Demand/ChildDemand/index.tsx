@@ -220,7 +220,11 @@ const ChildDemand = () => {
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
               return (
-                <LevelContent tap={() => {}} hide={onHide} record={record} />
+                <LevelContent
+                  onTap={() => {}}
+                  onHide={onHide}
+                  record={record}
+                />
               )
             }}
             record={record}
@@ -354,8 +358,8 @@ const ChildDemand = () => {
         plainOptions2={plainOptions2}
         checkList={titleList}
         checkList2={titleList2}
-        visible={settingState}
-        close={() => setSettingState(false)}
+        isVisible={settingState}
+        onClose={() => setSettingState(false)}
         getCheckList={getCheckList}
       />
     </div>

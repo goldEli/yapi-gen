@@ -96,8 +96,8 @@ const Operation = (props: Props) => {
         plainOptions2={plainOptions2}
         checkList={titleList}
         checkList2={titleList2}
-        visible={settingState}
-        close={() => setSettingState(false)}
+        isVisible={settingState}
+        onClose={() => setSettingState(false)}
         getCheckList={getCheckList}
       />
     </StickyWrap>

@@ -159,7 +159,7 @@ const WrapLeftBox = () => {
         <Label>优先级</Label>
         <Popconfirm
           content={({ onHide }: { onHide(): void }) => {
-            return <LevelContent tap={() => {}} hide={onHide} />
+            return <LevelContent onTap={() => {}} onHide={onHide} />
           }}
         >
           <IconFont type="knockdown" />

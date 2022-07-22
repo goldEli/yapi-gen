@@ -128,7 +128,7 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => (
         <Pop
-          content={({ onHide }: { onHide(): void }) => <LevelContent tap={() => {}} hide={onHide} record={record} />
+          content={({ onHide }: { onHide(): void }) => <LevelContent onTap={() => {}} onHide={onHide} record={record} />
           }
           record={record}
         >

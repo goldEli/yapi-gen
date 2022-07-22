@@ -410,8 +410,8 @@ const Need = () => {
         plainOptions2={plainOptions2}
         checkList={titleList}
         checkList2={titleList2}
-        visible={isModalVisible}
-        close={close2}
+        isVisible={isModalVisible}
+        onClose={close2}
         getCheckList={getCheckList}
       />
     </>
