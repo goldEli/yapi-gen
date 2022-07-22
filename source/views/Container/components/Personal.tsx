@@ -37,13 +37,47 @@ export const Personal = (props: { visible: boolean; close: () => void }) => {
   const init = async () => {
     const response = await getUserDetail()
     setUserDetail(response)
-    console.log(response, '获取登录详情')
+    console.log(response, '获取个人资料')
   }
 
   useEffect(() => {
     init()
   }, [])
 
+  const labelList = [
+    {
+      label: '手机号',
+      value: userDetail.account,
+    },
+    {
+      label: '邮箱',
+      value: userDetail.email,
+    },
+    {
+      label: '昵称',
+      value: userDetail.nickname,
+    },
+    {
+      label: '姓名',
+      value: userDetail.name,
+    },
+    {
+      label: '性别',
+      value: userDetail.gender === 1 ? '男' : '女',
+    },
+    {
+      label: '所属部门',
+      value: userDetail.department_name,
+    },
+    {
+      label: '职位',
+      value: userDetail.position_name,
+    },
+    {
+      label: '权限组',
+      value: userDetail.group_name,
+    },
+  ]
   return (
     <Modal
       width={420}
@@ -56,30 +90,22 @@ export const Personal = (props: { visible: boolean; close: () => void }) => {
       {!isShow && (
         <>
           <PersonalHead>
-            <img className={imgCss} src={userDetail.avatar} alt="" />
+            <img
+              className={imgCss}
+              src={userDetail.avatar ? userDetail.avatar : head}
+              alt=""
+            />
           </PersonalHead>
           <PersonalFooter>
             <Left>
-              <Line>手机号</Line>
-              <Line>邮箱</Line>
-              <Line>邮箱</Line>
-              <Line>姓名</Line>
-              <Line>性别</Line>
-              <Line>所属部门</Line>
-              <Line>职位</Line>
-              <Line>权限组</Line>
-              <Line>状态</Line>
+              {labelList.map(item => (
+                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
+              ))}
             </Left>
             <Right>
-              <RightLine>{userDetail.account}</RightLine>
-              <RightLine>{userDetail.email}</RightLine>
-              <RightLine>{userDetail.nickname}</RightLine>
-              <RightLine>{userDetail.name}</RightLine>
-              <RightLine>{userDetail.gender}</RightLine>
-              <RightLine>{userDetail.department_name}</RightLine>
-              <RightLine>{userDetail.position_name}</RightLine>
-              <RightLine>{userDetail.group_name}</RightLine>
-              <RightLine>{userDetail.status}</RightLine>
+              {labelList.map(item => (
+                <Line key={item.label}>{item.value ? item.value : '-'}</Line>
+              ))}
             </Right>
           </PersonalFooter>
         </>

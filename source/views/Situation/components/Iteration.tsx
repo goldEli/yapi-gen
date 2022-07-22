@@ -7,7 +7,10 @@ import {
   ChartsItem,
   chartsTitle,
   ChartsWrap,
+  HightChartsWrap,
   HomeWrap,
+  TextBlueWrap,
+  TextWrap,
   title1Css,
   title2Css,
   titleCss,
@@ -89,30 +92,41 @@ export default () => {
   return (
     <ChartsWrap>
       <div className={titleCss}>迭代概况</div>
-      <HomeWrap>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-      </HomeWrap>
+      <TextWrap>
+        <TextBlueWrap>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+        </TextBlueWrap>
+        <HomeWrap>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+        </HomeWrap>
+      </TextWrap>
+
       <div className={chartsTitle}>迭代进度分布</div>
-      <DemoColumn></DemoColumn>
+      <HightChartsWrap>
+        <DemoColumn></DemoColumn>
+      </HightChartsWrap>
     </ChartsWrap>
   )
 }

@@ -3,7 +3,20 @@ import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { Column } from '@ant-design/plots'
-import { ChartsItem, chartsTitle, ChartsWrap, HomeWrap, title1Css, title2Css, titleCss } from '@/components/StyleCommon'
+import {
+  ChartsItem,
+  chartsTitle,
+  ChartsWrap,
+  HightChartsWrap,
+  HomeWrap,
+  TextBlueWrap,
+  TextWrap,
+  title1Css,
+  title2Css,
+  titleCss,
+} from '@/components/StyleCommon'
+
+
 
 const DemoColumn = () => {
   const data = [
@@ -81,30 +94,40 @@ export default () => {
   return (
     <ChartsWrap>
       <div className={titleCss}>项目概况</div>
-      <HomeWrap>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-      </HomeWrap>
+      <TextWrap>
+        <TextBlueWrap>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+        </TextBlueWrap>
+        <HomeWrap>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+        </HomeWrap>
+      </TextWrap>
       <div className={chartsTitle}>项目进度分布</div>
-      <DemoColumn></DemoColumn>
+      <HightChartsWrap>
+        <DemoColumn></DemoColumn>
+      </HightChartsWrap>
     </ChartsWrap>
   )
 }

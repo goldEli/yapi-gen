@@ -207,11 +207,10 @@ const HomeWrap = styled.div`
   height: 104px;
   border: 1px solid rgba(235, 237, 240, 1);
   border-radius: 6px;
-  margin-bottom: 24px;
-  margin-top: 16px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
+  flex: 1;
 `
 const ChartsItem = styled.span`
   align-items: center;
@@ -237,7 +236,31 @@ const SecondTitle = styled.span`
   font-size: 16px;
   font-weight: bold;
 `
+const TextWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  margin-top: 16px;
+`
+const TextBlueWrap = styled.div`
+  width: 104px;
+  height: 104px;
+  background: rgba(205, 221, 253, 1);
+  background-blend-mode: normal;
+  border-radius: 6px;
+  display: flex;
+  margin-right: 24px;
+  justify-content: center;
+  align-items: center;
+`
+const HightChartsWrap = styled.div`
+  height: 350px;
+
+`
 export {
+  HightChartsWrap,
+  TextWrap,
+  TextBlueWrap,
   SecondTitle,
   TableWrap,
   StylePagination,

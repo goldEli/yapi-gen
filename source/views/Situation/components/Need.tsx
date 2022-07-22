@@ -7,7 +7,10 @@ import {
   ChartsItem,
   chartsTitle,
   ChartsWrap,
+  HightChartsWrap,
   HomeWrap,
+  TextBlueWrap,
+  TextWrap,
   title1Css,
   title2Css,
   titleCss,
@@ -58,30 +61,41 @@ export default () => {
   return (
     <ChartsWrap>
       <div className={titleCss}>需求概况</div>
-      <HomeWrap>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-        <ChartsItem>
-          <span className={title1Css}>16</span>
-          <span className={title2Css}>公司项目</span>
-        </ChartsItem>
-      </HomeWrap>
+      <TextWrap>
+        <TextBlueWrap>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+        </TextBlueWrap>
+        <HomeWrap>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+          <ChartsItem>
+            <span className={title1Css}>16</span>
+            <span className={title2Css}>公司项目</span>
+          </ChartsItem>
+        </HomeWrap>
+      </TextWrap>
       <div className={chartsTitle}>需求累计图</div>
+      <HightChartsWrap>
       <DemoLine></DemoLine>
+      </HightChartsWrap>
+   
     </ChartsWrap>
   )
 }

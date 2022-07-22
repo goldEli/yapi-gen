@@ -18,13 +18,14 @@ const Main = styled.div`
 `
 
 export const Container = () => {
-  const [nextVisible, setNextVisible] = useState(true)
-  const { getUserDetail, getLoginDetail } = useModel('user')
+  const [nextVisible, setNextVisible] = useState(false)
+  const { getLoginDetail } = useModel('user')
 
   const init = async () => {
-    const res2 = await getUserDetail()
+    // const res2 = await getUserDetail()
     const res = await getLoginDetail()
-    // console.log(res, res2, '获取登录详情')
+    console.log(res.data, '获取登录详情')
+    setNextVisible(res.data.admin_first_login)
   }
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export const Container = () => {
       <Main>
         <Outlet />
       </Main>
-      {/* <Next visible={nextVisible} close={() => setNextVisible(false)} /> */}
+      <Next visible={nextVisible} close={() => setNextVisible(false)} />
     </Wrap>
   )
 }
