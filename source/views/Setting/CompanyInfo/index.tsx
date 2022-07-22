@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 
@@ -99,7 +98,7 @@ const CardWrap = styled.div({
   },
 })
 
-export default () => {
+const CompanyInfo = () => {
   const { companyInfo } = useModel('setting')
   return (
     <div style={{ height: '100%' }}>
@@ -141,3 +140,5 @@ export default () => {
     </div>
   )
 }
+
+export default CompanyInfo

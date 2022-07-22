@@ -1,3 +1,6 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/naming-convention */
 import urls, { type UrlKeys } from '@/constants/urls'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'

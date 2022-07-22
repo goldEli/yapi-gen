@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable operator-linebreak */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { Checkbox, Modal, Input, Space, Popover, Menu, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const Header = styled.div({
   height: 64,
@@ -162,7 +165,6 @@ const PermissionItem = (props: ItemProps) => {
   const otherKeys = props.value?.filter((i: any) => !keys.includes(i)) || []
 
   const onChange = (newKeys: CheckboxValueType[]) => {
-    console.log(newKeys)
     props.onChange?.([...new Set([...newKeys, ...otherKeys])])
   }
 
@@ -198,21 +200,15 @@ const PermissionItem = (props: ItemProps) => {
   )
 }
 
-export default () => {
+const Permission = () => {
   const [activeTabs, setActiveTabs] = useState(-1)
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const [permission, setPermission] = useState<any>([])
   const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
   const [addValue, setAddValue] = useState('')
-  const {
-    getRoleList,
-    getRolePermission,
-    setRolePermission,
-    addRole,
-    deleteRole,
-    updateRole,
-  } = useModel('setting')
+  const { getRoleList, getRolePermission, setRolePermission, addRole } =
+    useModel('setting')
 
   const init = async () => {
     const result = await getRoleList()
@@ -236,8 +232,10 @@ export default () => {
   const onSavePermission = async () => {
     try {
       await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
+
       //
     } catch (error) {
+
       //
     }
   }
@@ -245,15 +243,19 @@ export default () => {
   const onSaveGroup = async () => {
     try {
       await addRole({ name: addValue })
+
       //
     } catch (error) {
+
       //
     }
   }
 
   const onClickMenu = (e: any, type: string) => {
     e.stopPropagation()
-    type === 'edit' ? setIsVisible(true) : console.log('删除')
+    if (type === 'edit') {
+      setIsVisible(true)
+    }
   }
 
   const menu = (
@@ -373,3 +375,5 @@ export default () => {
     </div>
   )
 }
+
+export default Permission

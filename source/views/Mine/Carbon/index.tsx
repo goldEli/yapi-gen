@@ -10,24 +10,23 @@ import {
   tabCss,
   SwiperWrap,
 } from '@/components/StyleCommon'
-
 import Need from './components/Need'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import SwiperCard from '../components/SwiperCard'
 
-const Bcss = css`
-  /* border: 1px solid blue; */
-  filter: brightness(70%);
-  box-shadow: 0px 2px 8px rgba(170, 193, 227, 1);
-  transform: translate(0, -10%);
-`
+// const Bcss = css`
+//   /* border: 1px solid blue; */
+//   filter: brightness(70%);
+//   box-shadow: 0px 2px 8px rgba(170, 193, 227, 1);
+//   transform: translate(0, -10%);
+// `
 
 const tabsList = [{ name: '待办需求', type: 2, path: 'need' }]
-export default () => {
+
+const Carbon = () => {
   const [swiperActive, setSwiperActive] = useState(1)
   const active = 2
-
   const navigate = useNavigate()
 
   return (
@@ -47,7 +46,7 @@ export default () => {
               <SwiperCard
                 tap={() => setSwiperActive(item)}
                 show={swiperActive === item}
-              ></SwiperCard>
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -64,7 +63,9 @@ export default () => {
         ))}
       </TabsHehavior>
 
-      {active === 2 && <Need></Need>}
+      {active === 2 && <Need />}
     </div>
   )
 }
+
+export default Carbon

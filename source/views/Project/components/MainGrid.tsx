@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import ProjectCard from '@/components/ProjectCard'
 import styled from '@emotion/styled'
 import { Space } from 'antd'
@@ -27,7 +28,7 @@ const AddProject = styled.div({
   cursor: 'pointer',
 })
 
-const List = [
+const list = [
   {
     id: '121212',
     url: '',
@@ -212,11 +213,11 @@ const List = [
   },
 ]
 
-export default (props: Props) => {
+const MainGrid = (props: Props) => {
   const navigate = useNavigate()
   return (
     <SpaceWrap size={32}>
-      {List.map((item, index) => (
+      {list.map((item, index) => (
         <div
           key={`${item.id}_${index}`}
           onClick={() => navigate('/Detail/Demand')}
@@ -237,3 +238,5 @@ export default (props: Props) => {
     </SpaceWrap>
   )
 }
+
+export default MainGrid

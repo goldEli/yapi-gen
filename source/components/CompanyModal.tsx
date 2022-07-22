@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
+
 interface Props {
   onChangeState(): void
   visible: boolean
@@ -29,11 +30,10 @@ const FooterWrap = styled(Space)({
   paddingTop: 16,
 })
 
-export default (props: Props) => {
+const CompanyModal = (props: Props) => {
   const { getCompanyList, changeCompany } = useModel('user')
   const init = async () => {
     const res = await getCompanyList()
-    console.log(res, '公司列表')
   }
   useEffect(() => {
     init()
@@ -72,10 +72,10 @@ export default (props: Props) => {
       <ContentWrap>
         {list.map((i, index) => (
           <CompanyCard
-            key={index}
+            key={i.name}
             tap={() => setActiveIdx(index)}
             show={index === activeIdx}
-          ></CompanyCard>
+          />
         ))}
       </ContentWrap>
       <FooterWrap size={16}>
@@ -87,3 +87,5 @@ export default (props: Props) => {
     </Modal>
   )
 }
+
+export default CompanyModal

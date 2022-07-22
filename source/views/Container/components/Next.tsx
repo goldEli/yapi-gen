@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-handler-names */
+/* eslint-disable camelcase */
 import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from 'antd'
@@ -8,6 +10,7 @@ import guide_1 from '@/assets/guide_1.svg'
 import guide_2 from '@/assets/guide_2.svg'
 import guide_3 from '@/assets/guide_3.svg'
 import guide_4 from '@/assets/guide_4.svg'
+
 const textCss = css`
   height: 100px;
   box-sizing: border-box;
@@ -21,7 +24,7 @@ const imgBoxCss = css`
   box-sizing: border-box;
   /* padding: 0px 0px 65px 0px; */
 `
-const FooterCss = css`
+const footerCss = css`
   display: flex;
   justify-content: end;
   height: 75px;
@@ -49,7 +52,8 @@ const Dialog = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
 `
-export default function Next(props: { visible: boolean; close(): void }) {
+
+const Next = (props: { visible: boolean, close(): void }) => {
   const [active, setActive] = useState(0)
   const inform = [
     {
@@ -72,10 +76,10 @@ export default function Next(props: { visible: boolean; close(): void }) {
   const filterData = useMemo(() => {
     const filterActive = inform.filter((item, index) => index === active)
     return filterActive.map(item => (
-      <div>
+      <div key={item.text}>
         {/* <div className={textCss}>{item.text}</div> */}
         <div className={imgBoxCss}>
-          <img src={item.img} alt="12"></img>
+          <img src={item.img} alt="12" />
         </div>
       </div>
     ))
@@ -100,11 +104,11 @@ export default function Next(props: { visible: boolean; close(): void }) {
       <Dialog>
         {/* <header>头</header> */}
         {filterData}
-        <footer className={FooterCss}>
+        <footer className={footerCss}>
           {active !== 0 && <Button onClick={prev}>上一步</Button>}
-          {active !== inform.length - 1 && (
-            <Button onClick={next}>下一步</Button>
-          )}
+          {active !== inform.length - 1
+            && <Button onClick={next}>下一步</Button>
+          }
           {active === inform.length - 1 && (
             <Button onClick={() => props.close()} type="primary">
               完成
@@ -116,3 +120,5 @@ export default function Next(props: { visible: boolean; close(): void }) {
     document.body,
   )
 }
+
+export default Next

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-named-capture-group */
+/* eslint-disable require-unicode-regexp */
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
@@ -19,20 +21,18 @@ import {
 const DemoLine = () => {
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    asyncFetch()
-  }, [])
-
   const asyncFetch = () => {
     fetch(
       'https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json',
     )
       .then(response => response.json())
       .then(json => setData(json))
-      .catch(error => {
-        console.log('fetch data failed', error)
-      })
   }
+
+  useEffect(() => {
+    asyncFetch()
+  }, [])
+
   const config = {
     data,
     xField: 'year',
@@ -43,8 +43,9 @@ const DemoLine = () => {
     },
     yAxis: {
       label: {
+
         // 数值格式化为千分位
-        formatter: v => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+        formatter: (v: any) => String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
       },
     },
   }
@@ -52,12 +53,10 @@ const DemoLine = () => {
   return <Line {...config} />
 }
 
-export default () => {
+const Need = () => {
   const [state, setState] = useState()
-
   const navigate = useNavigate()
 
-  useEffect(() => {}, [])
   return (
     <ChartsWrap>
       <div className={titleCss}>需求概况</div>
@@ -93,9 +92,10 @@ export default () => {
       </TextWrap>
       <div className={chartsTitle}>需求累计图</div>
       <HightChartsWrap>
-      <DemoLine></DemoLine>
+        <DemoLine />
       </HightChartsWrap>
-   
     </ChartsWrap>
   )
 }
+
+export default Need

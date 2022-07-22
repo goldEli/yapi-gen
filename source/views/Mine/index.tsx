@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { type } from 'os'
-import { Outlet, useRoutes } from 'react-router-dom'
 import QuicklyCreate from './components/QuicklyCreate'
 
 const buttonCss = css``
@@ -44,14 +43,14 @@ const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
 `
-const MenuItem = css`
+const menuItem = css`
   box-sizing: border-box;
   justify-content: center;
   height: 44px;
   display: flex;
   align-items: center;
 `
-const MenuItemColor = css`
+const menuItemColor = css`
   box-sizing: border-box;
   background: rgba(240, 244, 250, 1);
   color: rgba(40, 119, 255, 1);
@@ -93,14 +92,14 @@ const menuList = [
     path: 'agenda',
   },
 ]
-export default () => {
+
+const MineBox = () => {
   const urlParams = new URL(window.location.href)
   const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[2] || ''
-
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
-  useEffect(() => {}, [])
+
   const changeActive = (value: MenuList) => {
     navigate(value.path)
   }
@@ -120,14 +119,14 @@ export default () => {
             }}
             type="plus"
           />
-          <span>{'快速创建'}</span>
+          <span>快速创建</span>
         </AddButton>
         <Menu>
           {menuList.map(item => (
             <div
               onClick={() => changeActive(item)}
               key={item.id}
-              className={nowPath === item.path ? MenuItemColor : MenuItem}
+              className={nowPath === item.path ? menuItemColor : menuItem}
             >
               {item.name}
             </div>
@@ -135,12 +134,14 @@ export default () => {
         </Menu>
       </Side>
       <Main>
-        <Outlet></Outlet>
+        <Outlet />
       </Main>
       <QuicklyCreate
         visible={quickCreateVisible}
         onChangeVisible={() => setQuickCreateVisible(false)}
-      ></QuicklyCreate>
+      />
     </Wrap>
   )
 }
+
+export default MineBox

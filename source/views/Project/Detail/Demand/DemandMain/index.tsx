@@ -4,7 +4,7 @@ import DemandGrid from './components/DemandGrid'
 import { Menu } from 'antd'
 import { useState } from 'react'
 
-const List = [
+const list = [
   {
     id: '121212',
     name: '需求标题名称',
@@ -35,7 +35,7 @@ interface Props {
   onChangeVisible(e: any): void
 }
 
-export default (props: Props) => {
+const DemandMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(true)
 
   const menu = (
@@ -60,11 +60,12 @@ export default (props: Props) => {
         onChangeGrid={setIsGrid}
         onChangeVisible={(e: any) => props.onChangeVisible(e)}
       />
-      {isGrid ? (
-        <DemandGrid menu={menu} />
-      ) : (
-        <DemandTable menu={menu} List={List} />
-      )}
+      {isGrid
+        ? <DemandGrid menu={menu} />
+        : <DemandTable menu={menu} List={list} />
+      }
     </div>
   )
 }
+
+export default DemandMain

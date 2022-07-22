@@ -29,7 +29,7 @@ const Content = styled.div({
   padding: 16,
 })
 
-const List = [
+const list = [
   {
     nickname: '张三',
     username: '里斯',
@@ -52,7 +52,7 @@ const List = [
   },
 ]
 
-export default () => {
+const ProjectMember = () => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const [visible, setVisible] = useState(true)
 
@@ -67,12 +67,14 @@ export default () => {
     }
   }, [])
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+  const onChangePage = () => {
+
+    //
   }
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+  const onShowSizeChange = () => {
+
+    //
   }
   const menu = (
     <Menu
@@ -171,7 +173,7 @@ export default () => {
           rowKey="key"
           onRow={onTableRow}
           columns={columns}
-          dataSource={List}
+          dataSource={list}
           pagination={false}
           scroll={{ x: 'max-content' }}
           showSorterTooltip={false}
@@ -187,10 +189,12 @@ export default () => {
             pageSizeOptions={['10', '20', '50']}
             onChange={onChangePage}
             onShowSizeChange={onShowSizeChange}
-            hideOnSinglePage={true}
+            hideOnSinglePage
           />
         </PaginationWrap>
       </Content>
     </Wrap>
   )
 }
+
+export default ProjectMember

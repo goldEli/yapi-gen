@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
 import { Space } from 'antd'
 import DemandCard from '@/components/DemandCard'
@@ -112,23 +113,21 @@ const finshEdList = [
   },
 ]
 
-export default (props: Props) => {
+const IterationGrid = (props: Props) => {
   return (
     <Content>
       <Space size={20}>
         <CardGroup>
           <Title>规划中(8)</Title>
-          {finshEdList.map((i, idx) => (
-            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
-          ))}
+          {finshEdList.map((i, idx) => <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />)}
         </CardGroup>
         <CardGroup>
           <Title>规划中(8)</Title>
-          {finshEdList.map((i, idx) => (
-            <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />
-          ))}
+          {finshEdList.map((i, idx) => <DemandCard menu={props.menu} key={`${i.demand}_${idx}`} item={i} />)}
         </CardGroup>
       </Space>
     </Content>
   )
 }
+
+export default IterationGrid

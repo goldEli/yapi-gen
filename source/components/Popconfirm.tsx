@@ -1,4 +1,6 @@
-import React, { ReactNode, useState } from 'react'
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react/boolean-prop-naming */
+import { useState, type ReactNode } from 'react'
 import { Popover } from 'antd'
 
 type PopConfirmProps = {
@@ -6,6 +8,7 @@ type PopConfirmProps = {
   content: any
   record?: Record<string, string | number>
   show?: boolean
+
   // onHide
 }
 const Popconfirm = (props: PopConfirmProps) => {
@@ -24,11 +27,12 @@ const Popconfirm = (props: PopConfirmProps) => {
       trigger="click"
       visible={visible}
       onVisibleChange={handleVisibleChange}
-      getPopupContainer={n => (props.show ? n : document.body)}
+      getPopupContainer={n => props.show ? n : document.body}
       content={<PropsContent onHide={hide} />}
     >
       {props.children}
     </Popover>
   )
 }
+
 export default Popconfirm

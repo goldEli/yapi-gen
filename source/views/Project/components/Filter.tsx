@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -75,7 +76,7 @@ interface Props {
   show: boolean
 }
 
-export default (props: Props) => {
+const Filter = (props: Props) => {
   const menu = (
     <Menu
       items={[
@@ -92,22 +93,24 @@ export default (props: Props) => {
   )
   return (
     <Wrap>
-      {props.show && (
-        <WrapLeft size={48}>
-          <TitleBox
-            onClick={() => props.onChangeType(0)}
-            idx={!props.activeType}
-          >
+      {props.show
+        ? (
+            <WrapLeft size={48}>
+              <TitleBox
+                onClick={() => props.onChangeType(0)}
+                idx={!props.activeType}
+              >
             我参与的项目
-          </TitleBox>
-          <TitleBox
-            onClick={() => props.onChangeType(1)}
-            idx={props.activeType === 1}
-          >
+              </TitleBox>
+              <TitleBox
+                onClick={() => props.onChangeType(1)}
+                idx={props.activeType === 1}
+              >
             企业全部
-          </TitleBox>
-        </WrapLeft>
-      )}
+              </TitleBox>
+            </WrapLeft>
+          )
+        : null}
 
       <WrapRight>
         <Space size={12}>
@@ -141,3 +144,5 @@ export default (props: Props) => {
     </Wrap>
   )
 }
+
+export default Filter

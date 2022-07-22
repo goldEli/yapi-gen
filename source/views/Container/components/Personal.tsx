@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 import React, { useEffect, useState } from 'react'
 import { Modal, Spin } from 'antd'
 import { css } from '@emotion/css'
@@ -30,14 +31,14 @@ const imgCss = css`
   height: 104px;
   border-radius: 50%;
 `
-export const Personal = (props: { visible: boolean; close: () => void }) => {
+
+export const Personal = (props: { visible: boolean, close(): void }) => {
   const { getUserDetail } = useModel('user')
   const [userDetail, setUserDetail] = useState<any>('')
   const [isShow, setIsShow] = useState<any>(false)
   const init = async () => {
     const response = await getUserDetail()
     setUserDetail(response)
-    console.log(response, '获取个人资料')
   }
 
   useEffect(() => {
@@ -86,7 +87,7 @@ export const Personal = (props: { visible: boolean; close: () => void }) => {
       title="个人资料"
       visible={props.visible}
     >
-      {isShow && <Spin></Spin>}
+      {isShow ? <Spin /> : null}
       {!isShow && (
         <>
           <PersonalHead>
@@ -98,14 +99,10 @@ export const Personal = (props: { visible: boolean; close: () => void }) => {
           </PersonalHead>
           <PersonalFooter>
             <Left>
-              {labelList.map(item => (
-                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
-              ))}
+              {labelList.map(item => <Line key={item.label}>{item.label ? item.label : '-'}</Line>)}
             </Left>
             <Right>
-              {labelList.map(item => (
-                <Line key={item.label}>{item.value ? item.value : '-'}</Line>
-              ))}
+              {labelList.map(item => <Line key={item.label}>{item.value ? item.value : '-'}</Line>)}
             </Right>
           </PersonalFooter>
         </>

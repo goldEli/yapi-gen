@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import {
@@ -18,6 +19,7 @@ import moment, { Moment } from 'moment'
 import { DataNode } from 'antd/lib/tree'
 import { useMemo, useState } from 'react'
 import { SearchLine } from './StyleCommon'
+
 const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
@@ -112,7 +114,8 @@ interface Props {
   onChangeForm?(value: any): void
   showForm?: boolean
 }
-export default (props: Props) => {
+
+const TableFilter = (props: Props) => {
   const [list, setList] = useState(props.list)
   const [basicsList, setBasicsList] = useState(props.basicsList)
   const [specialList, setSpecialList] = useState(props.specialList)
@@ -121,15 +124,16 @@ export default (props: Props) => {
     form.resetFields()
   }
   const filterBasicsList = useMemo(() => {
-    let newKeys = list?.map(item => item.key)
+    const newKeys = list?.map(item => item.key)
     const arr = basicsList?.filter(item => !newKeys.includes(item.key))
     return arr
   }, [list, basicsList])
   const filterSpecialList = useMemo(() => {
-    let newKeys = list?.map(item => item.key)
+    const newKeys = list?.map(item => item.key)
     const arr = specialList?.filter(item => !newKeys.includes(item.key))
     return arr
   }, [list, specialList])
+
   // console.log(dayjs())
   const content = (
     <div>
@@ -137,14 +141,10 @@ export default (props: Props) => {
       <div>
         <Collapse>
           <Collapse.Panel header="基础字段" key="1">
-            {filterBasicsList?.map(i => (
-              <div>{i.name}</div>
-            ))}
+            {filterBasicsList?.map(i => <div key={i}>{i.name}</div>)}
           </Collapse.Panel>
           <Collapse.Panel header="人员和时间" key="2">
-            {filterSpecialList?.map(i => (
-              <div>{i.name}</div>
-            ))}
+            {filterSpecialList?.map(i => <div key={i}>{i.name}</div>)}
           </Collapse.Panel>
         </Collapse>
       </div>
@@ -155,19 +155,21 @@ export default (props: Props) => {
   }
   const onChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
     if (dates) {
-      console.log('From: ', dates[0], ', to: ', dates[1])
-      console.log('From: ', dateStrings[0], ', to: ', dateStrings[1])
-      console.log(dayjs().startOf('week'))
+
+      //
     } else {
-      console.log('Clear')
+
+      //
     }
   }
   const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`)
+
+    //
   }
   const confirm = async () => {
     const value = await form.validateFields()
-    console.log(value)
+
+    //
   }
   return (
     <SearchLine>
@@ -186,65 +188,59 @@ export default (props: Props) => {
                       showSearch
                     >
                       {i.children.map((v: any) => (
-                        <Option value={v.name}>{v.name}</Option>
+                        <Option key={v} value={v.name}>
+                          {v.name}
+                        </Option>
                       ))}
                     </SelectWrap>
                   </Form.Item>
                   <DelButton onClick={() => delList(i.key)}>
-                    <IconFont
-                      type="close"
-                      style={{ fontSize: '12px' }}
-                    ></IconFont>
-                  </DelButton>
-                </SelectWrapBedeck>
-              )
-            } else {
-              return (
-                <SelectWrapBedeck>
-                  <Form.Item name="time">
-                    <DatePicker.RangePicker
-                      className={rangPicker}
-                      getPopupContainer={node => node}
-                      onChange={onChange}
-                      ranges={{
-                        最近一周: [
-                          moment(new Date())
-                            .startOf('days')
-                            .subtract(6, 'days'),
-                          moment(new Date()).endOf('days'),
-                        ],
-                        最近一月: [
-                          moment(new Date())
-                            .startOf('months')
-                            .subtract(1, 'months'),
-                          moment(new Date()).endOf('days'),
-                        ],
-                        最近三月: [
-                          moment(new Date())
-                            .startOf('months')
-                            .subtract(3, 'months'),
-                          moment(new Date()).endOf('days'),
-                        ],
-                        今天开始: [
-                          moment(new Date()).startOf('days'),
-                          moment.min(),
-                        ],
-                        今天截止: [
-                          moment.max(),
-                          moment(new Date()).endOf('days'),
-                        ],
-                      }}
-                    />
-                  </Form.Item>
-                  <DelButton onClick={() => delList(i.key)}>
-                    <IconFont
-                      type="close"
-                      style={{ fontSize: '12px' }}
-                    ></IconFont>
+                    <IconFont type="close" style={{ fontSize: '12px' }} />
                   </DelButton>
                 </SelectWrapBedeck>
               )
             }
+            return (
+              <SelectWrapBedeck key={i}>
+                <Form.Item name="time">
+                  <DatePicker.RangePicker
+                    className={rangPicker}
+                    getPopupContainer={node => node}
+                    onChange={onChange}
+                    ranges={{
+                      最近一周: [
+                        moment(new Date()).startOf('days')
+                          .subtract(6, 'days'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      最近一月: [
+                        moment(new Date())
+                          .startOf('months')
+                          .subtract(1, 'months'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      最近三月: [
+                        moment(new Date())
+                          .startOf('months')
+                          .subtract(3, 'months'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      今天开始: [
+                        moment(new Date()).startOf('days'),
+                        moment.min(),
+                      ],
+                      今天截止: [
+                        moment.max(),
+                        moment(new Date()).endOf('days'),
+                      ],
+                    }}
+                  />
+                </Form.Item>
+                <DelButton onClick={() => delList(i.key)}>
+                  <IconFont type="close" style={{ fontSize: '12px' }} />
+                </DelButton>
+              </SelectWrapBedeck>
+            )
           })}
 
           <Popover placement="bottom" content={content} trigger={['click']}>
@@ -257,3 +253,5 @@ export default (props: Props) => {
     </SearchLine>
   )
 }
+
+export default TableFilter

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-hooks/exhaustive-deps */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { Outlet } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 
@@ -84,7 +85,7 @@ const CompanyImg = styled.img({
   padding: '0 16px',
 })
 
-const SideList = [
+const sideList = [
   { name: '公司信息', icon: 'file-text', path: '' },
   { name: '权限管理', icon: 'safety-certificate', path: 'permission' },
   { name: '操作日志', icon: 'file-protect', path: 'operation' },
@@ -97,7 +98,7 @@ interface MenuList {
   path: string
 }
 
-export default () => {
+const Setting = () => {
   const navigate = useNavigate()
   const { getCompanyInfo, companyInfo } = useModel('setting')
   const urlParams = new URL(window.location.href)
@@ -117,7 +118,7 @@ export default () => {
       <Side>
         <CompanyImg src={companyInfo.logo} />
         <MenuWrap>
-          {SideList.map(item => (
+          {sideList.map(item => (
             <MenuItem
               onClick={() => onChangeActive(item)}
               key={item.name}
@@ -130,8 +131,10 @@ export default () => {
         </MenuWrap>
       </Side>
       <Content>
-        <Outlet></Outlet>
+        <Outlet />
       </Content>
     </Wrap>
   )
 }
+
+export default Setting

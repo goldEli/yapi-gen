@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input } from 'antd'
@@ -114,7 +115,7 @@ const SetButton = styled.div<{ show?: boolean }>`
   height: 20px;
   border-left: 1px solid #d5d6d9;
   color: #bbbdbf;
-  color: ${({ show }) => (show ? ' rgba(40, 119, 255, 1)' : '')};
+  color: ${({ show }) => show ? ' rgba(40, 119, 255, 1)' : ''};
   &:hover {
     color: rgba(40, 119, 255, 1);
   }
@@ -134,7 +135,7 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     div: {
-      color: `${isActive ? '#2877FF' : '#323233'}`,
+      color: String(isActive ? '#2877FF' : '#323233'),
       borderBottom: `3px solid ${isActive ? '#2877FF' : 'white'}`,
     },
   }),
@@ -149,9 +150,8 @@ const LabNumber = styled.div<{ isActive: boolean }>`
   align-items: center;
   font-size: 12px;
 
-  color: ${({ isActive }) => (isActive ? '#2877ff' : 'rgba(150, 151, 153, 1)')};
-  background: ${({ isActive }) =>
-    isActive ? '#f0f4fa' : 'rgba(242, 242, 244, 1)'};
+  color: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(150, 151, 153, 1)'};
+  background: ${({ isActive }) => isActive ? '#f0f4fa' : 'rgba(242, 242, 244, 1)'};
 `
 const tabCss = css`
   display: flex;
@@ -255,8 +255,8 @@ const TextBlueWrap = styled.div`
 `
 const HightChartsWrap = styled.div`
   height: 350px;
-
 `
+
 export {
   HightChartsWrap,
   TextWrap,

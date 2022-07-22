@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable no-bitwise */
 /* eslint-disable @typescript-eslint/no-extra-parens */
 /* eslint-disable camelcase */
@@ -7,9 +9,9 @@ import COS, { type Task, type UploadFileItemResult } from 'cos-js-sdk-v5'
 
 export function getUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c =>
+
     // @ts-expect-error
-    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16),
-  )
+    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16))
 }
 
 /**
@@ -53,7 +55,8 @@ export const cos = new COS({
 
 // 获取文件后缀
 export function getFileSuffix(name: string, withDot = false) {
-  const fileSuffix = name.split('.').pop()?.toLowerCase()
+  const fileSuffix = name.split('.').pop()
+    ?.toLowerCase()
   return fileSuffix?.length ? `${withDot ? '.' : ''}${fileSuffix}` : ''
 }
 

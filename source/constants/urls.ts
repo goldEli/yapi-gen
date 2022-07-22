@@ -8,18 +8,17 @@ const urls = {
   setRolePermission: '/b/company/role_set_permission',
   addRole: '/b/company/role',
   getProjectList: '/b/project/getlist',
-
-  getLoginDetail: '/b/userinfo', //yangyi
-  loginOut: '/b/logout', //yangyi
-  getUserDetail: '/b/userdetail', //yangyi
-  getCompanyList: '/b/user_companys', //yangyi
-  changeCompany: '/b/user_change_company', //yangyi
-  getStaffList: '/b/user/list', //yangyi
-  editStaff: '/b/user/update', //yangyi
-  refreshStaff: '/b/user/refresh', //yangyi
-  getDepartmentSelectList: '/b/user/department/list', //yangyi
-  getPositionSelectList: '/b/user/position/list', //yangyi
-  getGlobalGeneral: '/b/company/statistics', //yangyi
+  getLoginDetail: '/b/userinfo',
+  loginOut: '/b/logout',
+  getUserDetail: '/b/userdetail',
+  getCompanyList: '/b/user_companys',
+  changeCompany: '/b/user_change_company',
+  getStaffList: '/b/user/list',
+  editStaff: '/b/user/update',
+  refreshStaff: '/b/user/refresh',
+  getDepartmentSelectList: '/b/user/department/list',
+  getPositionSelectList: '/b/user/position/list',
+  getGlobalGeneral: '/b/company/statistics',
 }
 
 export default urls

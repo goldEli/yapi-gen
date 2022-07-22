@@ -1,6 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { Dropdown, Table } from 'antd'
@@ -11,7 +11,7 @@ import { ShapeContent } from '@/components/Shape'
 
 interface Item {
   name: string
-  person: { name: string; avatar: string }[]
+  person: { name: string, avatar: string }[]
   demand: number
 }
 
@@ -113,7 +113,7 @@ const StatusWrap = styled.div({
   cursor: 'pointer',
 })
 
-export default (props: Props) => {
+const DemandCard = (props: Props) => {
   const navigate = useNavigate()
 
   const columnsChild = [
@@ -154,13 +154,16 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
-                  tap={() => {}}
+                  tap={() => {
+
+                    //
+                  }}
                   hide={onHide}
                   record={record}
-                ></ShapeContent>
+                />
               )
             }}
             record={record}
@@ -205,7 +208,7 @@ export default (props: Props) => {
               </div>
             </NameGroup>
             <PopConfirm
-              content={({ onHide }: { onHide: () => void }) => {
+              content={({ onHide }: { onHide(): void }) => {
                 return (
                   <Table
                     pagination={false}
@@ -250,3 +253,5 @@ export default (props: Props) => {
     </div>
   )
 }
+
+export default DemandCard

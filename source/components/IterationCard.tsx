@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React from 'react'
+import type React from 'react'
 import styled from '@emotion/styled'
 import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
@@ -75,7 +75,7 @@ interface Props {
   menu: React.ReactElement
 }
 
-export default (props: Props) => {
+const IterationCard = (props: Props) => {
   const navigate = useNavigate()
   return (
     <CardWrap>
@@ -108,3 +108,5 @@ export default (props: Props) => {
     </CardWrap>
   )
 }
+
+export default IterationCard

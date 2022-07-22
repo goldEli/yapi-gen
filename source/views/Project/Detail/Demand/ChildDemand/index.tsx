@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-empty-function */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
@@ -8,7 +12,7 @@ import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const Operation = styled.div({
   display: 'flex',
@@ -75,7 +79,7 @@ const priorityList = [
   { name: '极低', type: 'knockdown', color: '#bbbdbf' },
 ]
 
-const List = [
+const list = [
   {
     id: '121212',
     name: '项目名称',
@@ -105,6 +109,7 @@ export const plainOptions = [
   { label: 'id3', value: 'address1' },
   { label: 'id4', value: 'address2' },
 ]
+
 export const plainOptions2 = [
   { label: '飞机', value: 'feiji' },
   { label: '大炮', value: 'dapao' },
@@ -113,7 +118,7 @@ export const plainOptions2 = [
   { label: '战舰', value: 'zhanjian' },
 ]
 
-export default () => {
+const ChildDemand = () => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const [visible, setVisible] = useState(false)
   const onTableRow = useCallback((row: any) => {
@@ -141,10 +146,10 @@ export default () => {
   ])
 
   const getCheckList = (
-    list: CheckboxValueType[],
+    keys: CheckboxValueType[],
     list2: CheckboxValueType[],
   ) => {
-    setTitleList(list)
+    setTitleList(keys)
     setTitleList2(list2)
   }
 
@@ -213,13 +218,9 @@ export default () => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
-                <LevelContent
-                  tap={() => {}}
-                  hide={onHide}
-                  record={record}
-                ></LevelContent>
+                <LevelContent tap={() => {}} hide={onHide} record={record} />
               )
             }}
             record={record}
@@ -251,13 +252,9 @@ export default () => {
       render: (text: number, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
-                <ShapeContent
-                  tap={() => {}}
-                  hide={onHide}
-                  record={record}
-                ></ShapeContent>
+                <ShapeContent tap={() => {}} hide={onHide} record={record} />
               )
             }}
             record={record}
@@ -304,11 +301,13 @@ export default () => {
   ]
 
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+
+    //
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+
+    //
   }
   return (
     <div>
@@ -331,7 +330,7 @@ export default () => {
         rowKey="key"
         onRow={onTableRow}
         columns={columns}
-        dataSource={List}
+        dataSource={list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -347,7 +346,7 @@ export default () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
       <OptionalFeld
@@ -358,7 +357,9 @@ export default () => {
         visible={settingState}
         close={() => setSettingState(false)}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
     </div>
   )
 }
+
+export default ChildDemand

@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable react/jsx-handler-names */
 import { Button, Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
@@ -61,9 +64,9 @@ const level = [
   {
     id: 4,
     name: '极低',
-    icon: (
+    icon:
       <IconFont type="knockdown" style={{ color: '#bbbdbf', fontSize: 20 }} />
-    ),
+    ,
   },
 ]
 
@@ -134,8 +137,17 @@ export const useDynamicColumns = (state: any) => {
       key: 'address',
       render: (text: any, record: any) => (
         <Pop
-          content={({ onHide }: { onHide: () => void }) => {
-            return <ShapeContent hide={onHide} record={record}></ShapeContent>
+          content={({ onHide }: { onHide(): void }) => {
+            return (
+              <ShapeContent
+                tap={() => {
+
+                  //
+                }}
+                hide={onHide}
+                record={record}
+              />
+            )
           }}
           record={record}
         >
@@ -178,8 +190,15 @@ export const useDynamicColumns = (state: any) => {
             })}
           </div>
           <Pop
-            content={({ onHide }: { onHide: () => void }) => (
-              <LevelContent hide={onHide} record={record}></LevelContent>
+            content={({ onHide }: { onHide(): void }) => (
+              <LevelContent
+                tap={() => {
+
+                  //
+                }}
+                hide={onHide}
+                record={record}
+              />
             )}
             record={record}
           >

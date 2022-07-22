@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Table, Select, DatePicker, Pagination } from 'antd'
 import moment from 'moment'
@@ -103,7 +104,7 @@ const StatusWrap = styled.div({
   },
 })
 
-export default () => {
+const LoginLog = () => {
   const { getLoginLogs } = useModel('setting')
   const [dataList, setDataList] = useState<any>([])
 
@@ -114,7 +115,7 @@ export default () => {
   useEffect(() => {
     init()
   }, [])
-  const Option = Select.Option
+  const { Option } = Select
   const columns = [
     {
       title: '序号',
@@ -150,27 +151,30 @@ export default () => {
       render: (text: number) => {
         return (
           <StatusWrap>
-            <div></div>
-            <span>成功</span>
+            <div />
+            <span>{text}</span>
           </StatusWrap>
         )
       },
     },
   ]
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+  const onChangePage = () => {
+
+    // page: React.SetStateAction<number>, size: any
   }
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+  const onShowSizeChange = () => {
+
+    // current: number, pageSize: number
   }
-  const onChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
+  const onChange: RangePickerProps['onChange'] = dates => {
     if (dates) {
-      console.log('From: ', dates[0], ', to: ', dates[1])
-      console.log('From: ', dateStrings[0], ', to: ', dateStrings[1])
+
+      // dateStrings
     } else {
-      console.log('Clear')
+
+      //
     }
   }
   return (
@@ -200,15 +204,18 @@ export default () => {
               onChange={onChange}
               ranges={{
                 最近一周: [
-                  moment(new Date()).startOf('days').subtract(6, 'days'),
+                  moment(new Date()).startOf('days')
+                    .subtract(6, 'days'),
                   moment(new Date()).endOf('days'),
                 ],
                 最近一月: [
-                  moment(new Date()).startOf('months').subtract(1, 'months'),
+                  moment(new Date()).startOf('months')
+                    .subtract(1, 'months'),
                   moment(new Date()).endOf('days'),
                 ],
                 最近三月: [
-                  moment(new Date()).startOf('months').subtract(3, 'months'),
+                  moment(new Date()).startOf('months')
+                    .subtract(3, 'months'),
                   moment(new Date()).endOf('days'),
                 ],
                 今天开始: [moment(new Date()).startOf('days'), moment.min()],
@@ -241,10 +248,12 @@ export default () => {
             pageSizeOptions={['10', '20', '50']}
             onChange={onChangePage}
             onShowSizeChange={onShowSizeChange}
-            hideOnSinglePage={true}
+            hideOnSinglePage
           />
         </PaginationWrap>
       </Content>
     </div>
   )
 }
+
+export default LoginLog

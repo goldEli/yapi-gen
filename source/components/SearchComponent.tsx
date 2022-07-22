@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import AddButton from './AddButton'
 import { Input, Space } from 'antd'
 import IconFont from './IconFont'
@@ -30,7 +31,7 @@ interface Props {
   placeholder: string
 }
 
-export default (props: Props) => (
+const SearchComponent = (props: Props) => (
   <Space size={24}>
     <AddButton
       text={props.text}
@@ -38,8 +39,7 @@ export default (props: Props) => (
     />
     <MyInput
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
-      onChange={(e: any) =>
-        e.target.value ? void 0 : props.onChangeSearch?.(e.target.value)
+      onChange={(e: any) => e.target.value ? void 0 : props.onChangeSearch?.(e.target.value)
       }
       suffix={
         <IconFont type="search" style={{ color: '#BBBDBF', fontSize: 16 }} />
@@ -49,3 +49,5 @@ export default (props: Props) => (
     />
   </Space>
 )
+
+export default SearchComponent

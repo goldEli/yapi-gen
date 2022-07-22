@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable no-empty-function */
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
 import { useState } from 'react'
@@ -61,7 +64,7 @@ const TagItem = styled.div({
 
 interface TagProps {
   onChangeList(val: []): void
-  tap?: (value: any, active: any) => void
+  tap?(value: any, active: any): void
 }
 
 const TagBox = (props: TagProps) => {
@@ -79,7 +82,7 @@ const TagBox = (props: TagProps) => {
         .filter(k => k.name.includes(value))
         .map(i => (
           <TagItem key={i.name}>
-            <div style={{ background: i.color }}></div>
+            <div style={{ background: i.color }} />
             <span>{i.name}</span>
           </TagItem>
         ))}
@@ -94,7 +97,7 @@ interface Props {
   addWrap: React.ReactElement
 }
 
-export default (props: Props) => {
+const TagComponent = (props: Props) => {
   const [tagGroup, setTagGroup] = useState([{ name: '已确认' }])
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
   const colorStatus = (
@@ -104,8 +107,9 @@ export default (props: Props) => {
     >
       {colorList.map(i => (
         <div
+          key={i}
           style={{ background: i, height: 16, width: 16, borderRadius: 4 }}
-        ></div>
+        />
       ))}
     </Space>
   )
@@ -113,7 +117,7 @@ export default (props: Props) => {
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <TagCheckedItem>
         {tagGroup.map(i => (
-          <div style={{ cursor: 'pointer', alignItems: 'center' }}>
+          <div key={i.name} style={{ cursor: 'pointer', alignItems: 'center' }}>
             <Popover placement="bottom" trigger="click" content={colorStatus}>
               {i.name}
             </Popover>
@@ -136,3 +140,5 @@ export default (props: Props) => {
     </div>
   )
 }
+
+export default TagComponent

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-named-capture-group */
+/* eslint-disable require-unicode-regexp */
 import styled from '@emotion/styled'
 import { Progress } from 'antd'
 import { Line, Column } from '@ant-design/plots'
@@ -80,20 +82,17 @@ const ChartWrap = styled.div({
 const DemoLine = () => {
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    asyncFetch()
-  }, [])
-
   const asyncFetch = () => {
     fetch(
       'https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json',
     )
       .then(response => response.json())
       .then(json => setData(json))
-      .catch(error => {
-        console.log('fetch data failed', error)
-      })
   }
+  useEffect(() => {
+    asyncFetch()
+  }, [])
+
   const config = {
     data,
     xField: 'year',
@@ -104,9 +103,7 @@ const DemoLine = () => {
     },
     yAxis: {
       label: {
-        // 数值格式化为千分位
-        formatter: (v: any) =>
-          `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+        formatter: (v: any) => String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
       },
     },
   }
@@ -173,7 +170,7 @@ const DemoColumn = () => {
   return <Column {...config} />
 }
 
-export default () => {
+const IterationInfo = () => {
   return (
     <div>
       <TopWrap>
@@ -238,3 +235,5 @@ export default () => {
     </div>
   )
 }
+
+export default IterationInfo

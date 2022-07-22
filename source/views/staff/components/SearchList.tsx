@@ -1,24 +1,7 @@
-import { css } from '@emotion/css'
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import {
-  Form,
-  Input,
-  Select,
-  DatePicker,
-  Button,
-  Popover,
-  Space,
-  Tree,
-  Collapse,
-} from 'antd'
-
-import * as dayjs from 'dayjs'
-import type { RangePickerProps } from 'antd/es/date-picker'
-import moment, { Moment } from 'moment'
-import { DataNode } from 'antd/lib/tree'
-import { useMemo, useState } from 'react'
+import { Form, Select, Button } from 'antd'
 import { SearchLine } from '@/components/StyleCommon'
-import IconFont from '@/components/IconFont'
 
 const { Option } = Select
 const Wrap = styled.div({
@@ -60,23 +43,7 @@ const SelectWrap = styled(Select)<{ label: string }>`
     min-width: 186px;
   }
 `
-const rangPicker = css`
-  .ant-picker-panel-container {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  .ant-picker-footer {
-    min-width: inherit;
-    width: max-content;
-  }
-  .ant-picker-ranges {
-    display: flex;
-    flex-direction: column;
-  }
-  .ant-tag {
-    margin-right: 0;
-  }
-`
+
 const DelButton = styled.div`
   color: white;
   border-radius: 50%;
@@ -111,15 +78,13 @@ interface Props {
   showForm?: boolean
   onSearch(value: any): void
 }
-export default (props: Props) => {
+
+const SearchList = (props: Props) => {
   const [form] = Form.useForm()
   const onClearForm = async () => {
     form.resetFields()
   }
 
-  const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`)
-  }
   const confirm = async () => {
     const value = await form.validateFields()
 
@@ -185,3 +150,5 @@ export default (props: Props) => {
     </SearchLine>
   )
 }
+
+export default SearchList

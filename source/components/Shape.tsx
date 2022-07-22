@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Select, Button, Form, Input } from 'antd'
 import { css } from '@emotion/css'
+
 const { Option } = Select
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -75,17 +76,17 @@ const shape = [
 ]
 type ShapeProps = {
   record: Record<string, number | string>
-  hide: () => void
-  tap: (value: any, active: any) => void
+  hide(): void
+  tap(value: any, active: any): void
 }
+
 export const ShapeContent = (props: ShapeProps) => {
   const [form] = Form.useForm()
   const { record, hide, tap } = props
-
   const [active, setActive] = useState(record.level)
 
   const confirm = async () => {
-    let res = await form.validateFields()
+    const res = await form.validateFields()
     tap(res, active)
     hide()
   }

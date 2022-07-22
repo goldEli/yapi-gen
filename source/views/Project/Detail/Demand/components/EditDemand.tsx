@@ -1,4 +1,9 @@
-import { Modal, Form, Input, DatePicker, Select, Space, Upload } from 'antd'
+/* eslint-disable no-empty-function */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Modal, Form, Input, DatePicker, Select, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -34,7 +39,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: "'*'",
+        content: '\'*\'',
       },
     '> label::before': {
       display: 'none!important',
@@ -97,7 +102,7 @@ interface Props {
   onChangeVisible(): void
 }
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -124,8 +129,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
+        ? '1px dashed #969799'
+        : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -135,7 +140,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-export default (props: Props) => {
+const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   return (
     <Modal
@@ -192,10 +197,8 @@ export default (props: Props) => {
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label="优先级">
             <PopConfirm
-              content={({ onHide }: { onHide: () => void }) => {
-                return (
-                  <LevelContent tap={() => {}} hide={onHide}></LevelContent>
-                )
+              content={({ onHide }: { onHide(): void }) => {
+                return <LevelContent tap={() => {}} hide={onHide} />
               }}
             >
               <PriorityWrap>
@@ -265,3 +268,5 @@ export default (props: Props) => {
     </Modal>
   )
 }
+
+export default EditDemand

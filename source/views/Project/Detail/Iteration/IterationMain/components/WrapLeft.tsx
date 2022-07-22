@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable @typescript-eslint/naming-convention */
 import AddButton from '@/components/AddButton'
 import IterationCard from '@/components/IterationCard'
 import IconFont from '@/components/IconFont'
@@ -35,6 +37,7 @@ const TopWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+
   // position: 'sticky',
   // top: 64,
   // zIndex: 2,
@@ -120,7 +123,7 @@ const sortList = [
   { name: '标题降序', type: 'titleDown' },
 ]
 
-export default (props: Props) => {
+const WrapLeft = (props: Props) => {
   const [from] = Form.useForm()
   const options = [
     { label: '开始', value: 'Apple' },
@@ -128,9 +131,7 @@ export default (props: Props) => {
   ]
   const sortContent = (
     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
-      {sortList.map(i => (
-        <SortItem key={i.type}>{i.name}</SortItem>
-      ))}
+      {sortList.map(i => <SortItem key={i.type}>{i.name}</SortItem>)}
     </div>
   )
   const filterContent = (
@@ -170,10 +171,12 @@ export default (props: Props) => {
   }
 
   const onChangeEnd = () => {
+
     //
   }
 
   const onChangeDelete = () => {
+
     //
   }
 
@@ -217,13 +220,9 @@ export default (props: Props) => {
           </Popover>
         </Space>
       </TopWrap>
-      {list.map((item, index) => (
-        <IterationCard
-          menu={menu}
-          key={`${item.name}_${index}`}
-          item={item}
-        ></IterationCard>
-      ))}
+      {list.map((item, index) => <IterationCard menu={menu} key={`${item.name}_${index}`} item={item} />)}
     </Left>
   )
 }
+
+export default WrapLeft

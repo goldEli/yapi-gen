@@ -16,8 +16,6 @@ import {
   titleCss,
 } from '@/components/StyleCommon'
 
-
-
 const DemoColumn = () => {
   const data = [
     {
@@ -58,8 +56,9 @@ const DemoColumn = () => {
     xField: 'type',
     yField: 'sales',
     label: {
+
       // 可手动配置 label 数据标签位置
-      position: 'middle',
+      // position: 'middle',
       // 'top', 'bottom', 'middle',
       // 配置样式
       style: {
@@ -85,12 +84,10 @@ const DemoColumn = () => {
   return <Column {...config} />
 }
 
-export default () => {
+const Project = () => {
   const [state, setState] = useState()
-
   const navigate = useNavigate()
 
-  useEffect(() => {}, [])
   return (
     <ChartsWrap>
       <div className={titleCss}>项目概况</div>
@@ -126,8 +123,10 @@ export default () => {
       </TextWrap>
       <div className={chartsTitle}>项目进度分布</div>
       <HightChartsWrap>
-        <DemoColumn></DemoColumn>
+        <DemoColumn />
       </HightChartsWrap>
     </ChartsWrap>
   )
 }
+
+export default Project

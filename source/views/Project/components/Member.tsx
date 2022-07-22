@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Drawer, Input, Modal, Select } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -127,7 +129,7 @@ const personList = [
   { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
 ]
 
-export default (props: Props) => {
+const Member = (props: Props) => {
   const [visible, setVisible] = useState(false)
   return (
     <>
@@ -143,11 +145,7 @@ export default (props: Props) => {
           <span>添加项目成员</span>
           <IconFont onClick={() => setVisible(false)} type="close" />
         </ModalHeader>
-        <ModalContent
-          showArrow={false}
-          mode="multiple"
-          showSearch
-        ></ModalContent>
+        <ModalContent showArrow={false} mode="multiple" showSearch />
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
@@ -170,6 +168,7 @@ export default (props: Props) => {
         <div
           style={{
             padding: '0 16px',
+
             // position: 'sticky',
             // top: 0,
             background: 'white',
@@ -214,3 +213,5 @@ export default (props: Props) => {
     </>
   )
 }
+
+export default Member

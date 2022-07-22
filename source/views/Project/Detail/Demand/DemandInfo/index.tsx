@@ -8,7 +8,7 @@ const DividerWrap = styled(Divider)({
   height: 'inherit',
 })
 
-export default () => {
+const DemandInfo = () => {
   return (
     <div
       style={{
@@ -24,3 +24,5 @@ export default () => {
     </div>
   )
 }
+
+export default DemandInfo

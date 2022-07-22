@@ -1,8 +1,9 @@
-import React from 'react'
+/* eslint-disable react/jsx-handler-names */
 import { Button, Modal, Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import head from '@/assets/head.png'
+
 const { Option } = Select
 
 const PersonalHead = styled.div`
@@ -37,12 +38,11 @@ const imgCss = css`
   height: 104px;
   border-radius: 50%;
 `
-export const StaffPersonal = (props: {
-  visible: boolean
-  close: () => void
-}) => {
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
+
+export const StaffPersonal = (props: { visible: boolean, close(): void }) => {
+  const handleChange = () => {
+
+    //
   }
   return (
     <Modal

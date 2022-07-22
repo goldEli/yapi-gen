@@ -1,6 +1,6 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Table, Menu, Dropdown, Pagination } from 'antd'
+import { Menu, Dropdown, Pagination } from 'antd'
 import { useCallback, useState } from 'react'
 import projectImg from '@/assets/projectImg.png'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
@@ -16,7 +16,7 @@ const StatusWrap = styled.div({
   marginRight: 8,
 })
 
-const List = [
+const list = [
   {
     id: '121212',
     url: '',
@@ -208,7 +208,7 @@ const statusList = [
   { id: 3, name: '关闭', color: '#2877ff' },
 ]
 
-export default (props: Props) => {
+const MainTable = (props: Props) => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const onTableRow = useCallback((row: any) => {
     return {
@@ -226,15 +226,15 @@ export default (props: Props) => {
       items={[
         {
           key: '1',
-          label: (
+          label:
             <div onClick={() => props.onChangeOperation?.('edit', 0)}>编辑</div>
-          ),
+          ,
         },
         {
           key: '2',
-          label: (
+          label:
             <div onClick={() => props.onChangeOperation?.('end', 0)}>结束</div>
-          ),
+          ,
         },
         {
           key: '3',
@@ -337,7 +337,7 @@ export default (props: Props) => {
               style={{
                 background: statusList.filter(i => i.id === text)[0].color,
               }}
-            ></StatusWrap>
+            />
             <div>{statusList.filter(i => i.id === text)[0].name}</div>
           </div>
         )
@@ -359,12 +359,14 @@ export default (props: Props) => {
     },
   ]
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+  const onChangePage = () => {
+
+    //
   }
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+  const onShowSizeChange = () => {
+
+    //
   }
 
   return (
@@ -373,7 +375,7 @@ export default (props: Props) => {
         rowKey="key"
         onRow={onTableRow}
         columns={columns}
-        dataSource={List}
+        dataSource={list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -389,9 +391,11 @@ export default (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
     </div>
   )
 }
+
+export default MainTable

@@ -54,7 +54,7 @@ const AddUplaod = styled.div({
   cursor: 'pointer',
 })
 
-export default () => {
+const PosterComponent = () => {
   const choosePoster = (
     <div style={{ width: 372, padding: 16 }}>
       <ChooseTitle>请选择一个封面</ChooseTitle>
@@ -117,3 +117,5 @@ export default () => {
     </div>
   )
 }
+
+export default PosterComponent

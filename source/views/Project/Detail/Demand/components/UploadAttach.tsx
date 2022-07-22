@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Upload } from 'antd'
 
 interface Props {
   addWrap: React.ReactElement
 }
 
-export default (props: Props) => {
+const UploadAttach = (props: Props) => {
   return (
     <Upload
       progress={{
@@ -20,3 +21,5 @@ export default (props: Props) => {
     </Upload>
   )
 }
+
+export default UploadAttach

@@ -37,18 +37,18 @@ const Warp = styled.div<{ show?: boolean }>(
     },
   },
   ({ show }) => ({
-    // transform: `${show ? 'translate(0, -10%)' : ''}`,
-    // boxShadow: `${show ? ' 0px 2px 8px rgba(170, 193, 227, 1)' : ''}`,
-    border: `${show ? '2px solid rgba(40, 119, 255, 1);' : ' 2px solid rgba(235, 237, 240, 1)'}`,
+    border: show
+      ? '2px solid rgba(40, 119, 255, 1);'
+      : ' 2px solid rgba(235, 237, 240, 1)',
     [Triangle.toString()]: {
-      visibility: `${show ? 'visible' : 'hidden'}`,
+      visibility: show ? 'visible' : 'hidden',
     },
   }),
 )
 
 const ImgWrap = styled.div<{ show?: boolean }>(
   ({ show }) => ({
-    filter: `${show ? 'brightness(70%)' : ''}`,
+    filter: String(show ? 'brightness(70%)' : ''),
   }),
   {
     borderRadius: '6px',
@@ -57,6 +57,7 @@ const ImgWrap = styled.div<{ show?: boolean }>(
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+
     // filter: 'brightness(70%)',
     img: {
       maxWidth: '100%',
@@ -76,7 +77,7 @@ const NameWrap = styled.div<{ show?: boolean }>(
     color: 'black',
   },
   ({ show }) => ({
-    color: `${show ? 'rgba(40, 119, 255, 1)' : ''}`,
+    color: String(show ? 'rgba(40, 119, 255, 1)' : ''),
   }),
 )
 
@@ -90,7 +91,7 @@ const TextWarp = styled.div({
   borderRadius: '6px',
 })
 
-export default (props: { show?: boolean; tap?(): void }) => {
+const CompanyCard = (props: { show?: boolean, tap?(): void }) => {
   return (
     <Warp
       show={props.show}
@@ -101,7 +102,11 @@ export default (props: { show?: boolean; tap?(): void }) => {
       }}
     >
       <ImgWrap show={props.show}>
-        <img style={{ borderRadius: '  6px 6px 0 0' }} src={projectImg} alt="" />
+        <img
+          style={{ borderRadius: '  6px 6px 0 0' }}
+          src={projectImg}
+          alt=""
+        />
       </ImgWrap>
       <TextWarp>
         <NameWrap show={props.show}>
@@ -111,3 +116,5 @@ export default (props: { show?: boolean; tap?(): void }) => {
     </Warp>
   )
 }
+
+export default CompanyCard

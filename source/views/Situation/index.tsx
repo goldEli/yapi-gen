@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
@@ -36,10 +38,9 @@ const Head = styled.div`
   display: flex;
   justify-content: space-between;
 `
-export default () => {
-  const [state, setState] = useState()
+
+const Situation = () => {
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
-  const navigate = useNavigate()
 
   useEffect(() => {}, [])
   return (
@@ -62,10 +63,10 @@ export default () => {
         </PanelHeaderSecond>
       </Head>
       <Wrap>
-        <Project></Project>
-        <Staff></Staff>
-        <Need></Need>
-        <Iteration></Iteration>
+        <Project />
+        <Staff />
+        <Need />
+        <Iteration />
       </Wrap>
       <CompanyModal
         visible={companyModalVisible}
@@ -74,3 +75,5 @@ export default () => {
     </>
   )
 }
+
+export default Situation

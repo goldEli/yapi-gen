@@ -1,8 +1,12 @@
+/* eslint-disable react/boolean-prop-naming */
+/* eslint-disable react/jsx-handler-names */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useMemo, useState } from 'react'
 import { Checkbox, Modal, Col, Row } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+
 const CheckboxGroup = Checkbox.Group
 import styled from '@emotion/styled'
 import { ShowWrap } from './StyleCommon'
@@ -47,17 +51,18 @@ const ItemWrap = styled.div`
   margin-bottom: 24px;
 `
 type OptionalFeldProps = {
-  plainOptions: { label: string; value: string }[]
-  plainOptions2: { label: string; value: string }[]
+  plainOptions: { label: string, value: string }[]
+  plainOptions2: { label: string, value: string }[]
   checkList: CheckboxValueType[]
   checkList2: CheckboxValueType[]
-  getCheckList: (
+  getCheckList(
     checkList: CheckboxValueType[],
     checkList2: CheckboxValueType[],
-  ) => void
-  close: () => void
+  ): void
+  close(): void
   visible: boolean
 }
+
 export const OptionalFeld = (props: OptionalFeldProps) => {
   const { plainOptions, plainOptions2 } = props
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
@@ -72,12 +77,13 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
   }
+
   function del(value: string) {
     if (checkList.includes(value)) {
-      let arr = checkList.filter(value1 => value1 !== value)
+      const arr = checkList.filter(value1 => value1 !== value)
       setCheckList([...arr])
     } else {
-      let arr2 = checkList2.filter(value1 => value1 !== value)
+      const arr2 = checkList2.filter(value1 => value1 !== value)
       setCheckList2([...arr2])
     }
   }
@@ -87,9 +93,9 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     props.close()
   }
   const allList = useMemo(() => {
-    let arr = [...checkList, ...checkList2]
-    let arr2 = [...plainOptions, ...plainOptions2]
-    let all = arr2.reduce((res: { label: string; value: string }[], item) => {
+    const arr = [...checkList, ...checkList2]
+    const arr2 = [...plainOptions, ...plainOptions2]
+    const all = arr2.reduce((res: { label: string, value: string }[], item) => {
       if (arr.includes(item.value)) {
         res.push(item)
       }

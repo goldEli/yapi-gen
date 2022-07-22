@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import EditIteration from './components/EditIteration'
 import IterationMain from './IterationMain'
 import IterationInfo from './IterationInfo'
@@ -15,6 +16,7 @@ const DemandInfoWrap = styled.div({
   height: 64,
   background: 'white',
   padding: '0 24px',
+
   // position: 'sticky',
   // top: 64,
   // zIndex: 2,
@@ -87,7 +89,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
   }),
 )
 
-export default () => {
+const IterationWrap = () => {
   const [visible, setVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
@@ -97,9 +99,8 @@ export default () => {
       return <IterationInfo />
     } else if (type === 'demand') {
       return <Demand />
-    } else {
-      return <ChangeRecord />
     }
+    return <ChangeRecord />
   }
   const onChangeIdx = (val: string) => {
     navigate(`/Detail/Iteration?type=${val}`)
@@ -107,49 +108,48 @@ export default () => {
   const content = () => {
     if (!type) {
       return <IterationMain onChangeVisible={() => setVisible(!visible)} />
-    } else {
-      return (
-        <>
-          <DemandInfoWrap>
-            <NameWrap>
-              <span>敏捷系统V2.0</span>
-              <div>开启</div>
-            </NameWrap>
-            <Space size={16}>
-              <Button type="primary" onClick={() => setVisible(!visible)}>
-                编辑
-              </Button>
-              <Button>删除</Button>
-            </Space>
-          </DemandInfoWrap>
-          <ContentWrap>
-            <MainWrap size={32}>
-              <Item
-                onClick={() => onChangeIdx('info')}
-                activeIdx={type === 'info'}
-              >
-                <span>迭代概况</span>
-              </Item>
-              <Item
-                onClick={() => onChangeIdx('demand')}
-                activeIdx={type === 'demand'}
-              >
-                <span>需求</span>
-                <div>6</div>
-              </Item>
-              <Item
-                onClick={() => onChangeIdx('record')}
-                activeIdx={type === 'record'}
-              >
-                <span>变更记录</span>
-                <div>12</div>
-              </Item>
-            </MainWrap>
-            {childContent()}
-          </ContentWrap>
-        </>
-      )
     }
+    return (
+      <>
+        <DemandInfoWrap>
+          <NameWrap>
+            <span>敏捷系统V2.0</span>
+            <div>开启</div>
+          </NameWrap>
+          <Space size={16}>
+            <Button type="primary" onClick={() => setVisible(!visible)}>
+              编辑
+            </Button>
+            <Button>删除</Button>
+          </Space>
+        </DemandInfoWrap>
+        <ContentWrap>
+          <MainWrap size={32}>
+            <Item
+              onClick={() => onChangeIdx('info')}
+              activeIdx={type === 'info'}
+            >
+              <span>迭代概况</span>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('demand')}
+              activeIdx={type === 'demand'}
+            >
+              <span>需求</span>
+              <div>6</div>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('record')}
+              activeIdx={type === 'record'}
+            >
+              <span>变更记录</span>
+              <div>12</div>
+            </Item>
+          </MainWrap>
+          {childContent()}
+        </ContentWrap>
+      </>
+    )
   }
 
   return (
@@ -162,3 +162,5 @@ export default () => {
     </div>
   )
 }
+
+export default IterationWrap

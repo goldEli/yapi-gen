@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Divider, Space, Dropdown, Menu } from 'antd'
 import IconFont from './IconFont'
 import styled from '@emotion/styled'
@@ -32,15 +33,15 @@ const DividerWrap = styled(Divider)({
   margin: 0,
 })
 
-export default (props: Props) => {
+const OperationGroup = (props: Props) => {
   const menu = (
     <Menu
       items={[
         {
           key: '1',
-          label: (
+          label:
             <div onClick={() => props.onChangeSetting?.()}>设置显示字段</div>
-          ),
+          ,
         },
       ]}
     />
@@ -71,3 +72,5 @@ export default (props: Props) => {
     </SpaceWrap>
   )
 }
+
+export default OperationGroup

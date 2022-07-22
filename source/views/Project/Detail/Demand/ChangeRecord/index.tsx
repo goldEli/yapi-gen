@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Table, Pagination, Modal, Space } from 'antd'
 import { useState } from 'react'
 import styled from '@emotion/styled'
@@ -34,10 +36,10 @@ const list = [
   },
 ]
 
-const beforeHtml =
-  '<p>项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述</p>'
+const beforeHtml
+  = '<p>项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述</p>'
 
-export default () => {
+const ChangeRecord = () => {
   const [visible, setVisible] = useState(false)
   const columns = [
     {
@@ -68,9 +70,7 @@ export default () => {
               padding: '16px 0',
             }}
           >
-            {text.map(i => (
-              <span>{i.name}</span>
-            ))}
+            {text.map(i => <span key={i.name}>{i.name}</span>)}
           </div>
         )
       },
@@ -87,9 +87,7 @@ export default () => {
               padding: '16px 0',
             }}
           >
-            {text.map(i => (
-              <span>{i.name}</span>
-            ))}
+            {text.map(i => <span key={i.name}>{i.name}</span>)}
           </div>
         )
       },
@@ -107,17 +105,18 @@ export default () => {
             }}
           >
             {text.map(i => (
-              <span>
-                {i.name === '--' ? (
-                  <span
-                    style={{ cursor: 'pointer', color: '#2877ff' }}
-                    onClick={() => setVisible(true)}
-                  >
+              <span key={i.name}>
+                {i.name === '--'
+                  ? (
+                      <span
+                        style={{ cursor: 'pointer', color: '#2877ff' }}
+                        onClick={() => setVisible(true)}
+                      >
                     查看详情
-                  </span>
-                ) : (
-                  i.name
-                )}
+                      </span>
+                    )
+                  : i.name
+                }
               </span>
             ))}
           </div>
@@ -126,11 +125,13 @@ export default () => {
     },
   ]
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+
+    //
   }
 
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+
+    //
   }
   return (
     <div>
@@ -145,11 +146,11 @@ export default () => {
         <Space size={32} style={{ display: 'flex' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更前</TitleWrap>
-            <div dangerouslySetInnerHTML={{ __html: beforeHtml }}></div>
+            <div dangerouslySetInnerHTML={{ __html: beforeHtml }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更后</TitleWrap>
-            <div dangerouslySetInnerHTML={{ __html: beforeHtml }}></div>
+            <div dangerouslySetInnerHTML={{ __html: beforeHtml }} />
           </div>
         </Space>
       </Modal>
@@ -172,9 +173,11 @@ export default () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
     </div>
   )
 }
+
+export default ChangeRecord

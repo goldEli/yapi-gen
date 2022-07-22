@@ -6,7 +6,7 @@ import { Menu } from 'antd'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 
-const List = [
+const list = [
   {
     id: '121212',
     name: '需求标题名称',
@@ -41,7 +41,7 @@ interface Props {
   onChangeVisible(): void
 }
 
-export default (props: Props) => {
+const IterationMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(true)
   const [isShowLeft, setIsShowLeft] = useState(true)
   const menu = (
@@ -72,12 +72,13 @@ export default (props: Props) => {
           onChangeVisible={props.onChangeVisible}
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
         />
-        {isGrid ? (
-          <IterationGrid menu={menu} />
-        ) : (
-          <IterationTable menu={menu} List={List} />
-        )}
+        {isGrid
+          ? <IterationGrid menu={menu} />
+          : <IterationTable menu={menu} List={list} />
+        }
       </Right>
     </div>
   )
 }
+
+export default IterationMain

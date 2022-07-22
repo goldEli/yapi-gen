@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
 import { useModel } from '@/models'
+
 const Wrap = styled.div`
   display: flex;
   width: 100vw;
@@ -22,9 +23,11 @@ export const Container = () => {
   const { getLoginDetail } = useModel('user')
 
   const init = async () => {
+
     // const res2 = await getUserDetail()
     const res = await getLoginDetail()
-    console.log(res.data, '获取登录详情')
+
+    //
     setNextVisible(res.data.admin_first_login)
   }
 
@@ -34,7 +37,7 @@ export const Container = () => {
 
   return (
     <Wrap>
-      <Side></Side>
+      <Side />
       <Main>
         <Outlet />
       </Main>

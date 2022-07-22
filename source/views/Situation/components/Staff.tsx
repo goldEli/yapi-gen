@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
+/* eslint-disable no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
@@ -56,8 +56,9 @@ const DemoColumn = () => {
     xField: 'type',
     yField: 'sales',
     label: {
+
       // 可手动配置 label 数据标签位置
-      position: 'middle',
+      // position: 'middle',
       // 'top', 'bottom', 'middle',
       // 配置样式
       style: {
@@ -83,9 +84,8 @@ const DemoColumn = () => {
   return <Column {...config} />
 }
 
-export default () => {
+const Staff = () => {
   const [state, setState] = useState()
-
   const navigate = useNavigate()
 
   useEffect(() => {}, [])
@@ -124,8 +124,10 @@ export default () => {
       </TextWrap>
       <div className={chartsTitle}>职位人数分布</div>
       <HightChartsWrap>
-      <DemoColumn></DemoColumn>
+        <DemoColumn />
       </HightChartsWrap>
     </ChartsWrap>
   )
 }
+
+export default Staff

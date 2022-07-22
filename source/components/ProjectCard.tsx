@@ -77,7 +77,7 @@ interface Props {
   onChangeOperation?(type: string, id: number): void
 }
 
-export default (props: Props) => {
+const ProjectCard = (props: Props) => {
   const onClickMenu = (e: any, type: string) => {
     e.stopPropagation()
     props.onChangeOperation?.(type, 0)
@@ -103,7 +103,7 @@ export default (props: Props) => {
   return (
     <Warp>
       <ImgWrap>
-        <div></div>
+        <div />
         <img src={projectImg} alt="" />
       </ImgWrap>
       <TextWarp>
@@ -120,3 +120,5 @@ export default (props: Props) => {
     </Warp>
   )
 }
+
+export default ProjectCard

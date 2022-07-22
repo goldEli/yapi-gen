@@ -48,17 +48,18 @@ const level = [
   {
     id: 4,
     name: '极低',
-    icon: (
+    icon:
       <IconFont type="knockdown" style={{ color: '#bbbdbf', fontSize: 20 }} />
-    ),
+    ,
   },
 ]
 
 type LevelProps = {
   record?: Record<string, number | string>
-  hide: () => void
-  tap: (id: any) => void
+  hide(): void
+  tap(id: any): void
 }
+
 export const LevelContent = (props: LevelProps) => {
   const { record, hide, tap } = props
   const changeState = (value: any) => {

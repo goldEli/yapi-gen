@@ -19,36 +19,42 @@ const Content = styled.div({
   background: '#F5F7FA',
 })
 
-export default () => {
+const Project = () => {
   const [isGrid, setIsGrid] = useState(true)
   const [sort, setSort] = useState('name')
   const [isHidden, setIsHidden] = useState(false)
   const [activeType, setActiveType] = useState(0)
   const [visible, setVisible] = useState(false)
-  const onChangeOperation = (type: string, id: number) => {
-    console.log(type)
+  const onChangeOperation = () => {
+
+    //
   }
   const onChangeType = (type: number) => {
     setActiveType(type)
-    console.log('调用接口-企业和我参与的')
+
+    //
   }
 
   const onChangeHidden = (hidden: boolean) => {
     setIsHidden(hidden)
-    console.log('调用接口-隐藏结束项目')
+
+    //
   }
 
   const onChangeSort = (value: string) => {
     setSort(value)
-    console.log('调用接口-排序')
+
+    //
   }
 
-  const onChangeSearch = (value: string) => {
-    console.log(value, '搜索任务或项目')
+  const onChangeSearch = () => {
+
+    //
   }
 
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
+      <span>{isHidden}</span>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
@@ -75,15 +81,18 @@ export default () => {
         />
       </div>
       <Content>
-        {isGrid ? (
-          <MainGrid
-            onChangeVisible={() => setVisible(true)}
-            onChangeOperation={onChangeOperation}
-          />
-        ) : (
-          <MainTable onChangeOperation={onChangeOperation} />
-        )}
+        {isGrid
+          ? (
+              <MainGrid
+                onChangeVisible={() => setVisible(true)}
+                onChangeOperation={onChangeOperation}
+              />
+            )
+          : <MainTable onChangeOperation={onChangeOperation} />
+        }
       </Content>
     </div>
   )
 }
+
+export default Project

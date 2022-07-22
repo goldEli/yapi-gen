@@ -1,3 +1,7 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import Popconfirm from '@/components/Popconfirm'
 import styled from '@emotion/styled'
@@ -42,8 +46,8 @@ const statusList = [
 ]
 
 interface Props {
-  hide?: () => void
-  tap?: (value: any, active: any) => void
+  hide?(): void
+  tap?(value: any, active: any): void
 }
 
 const DemandBox = (props: Props) => {
@@ -75,12 +79,13 @@ const DemandBox = (props: Props) => {
   )
 }
 
-export default () => {
+const DemandStatusBox = () => {
   return (
     <>
       {statusList.map((i, index) => (
         <Popconfirm
-          content={({ onHide }: { onHide: () => void }) => {
+          key={i.name}
+          content={({ onHide }: { onHide(): void }) => {
             return <DemandBox tap={() => {}} hide={onHide} />
           }}
         >
@@ -101,3 +106,5 @@ export default () => {
     </>
   )
 }
+
+export default DemandStatusBox

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Input, Button } from 'antd'
 import styled from '@emotion/styled'
 import posterImg from '@/assets/poster.png'
@@ -98,12 +99,12 @@ const list = [
   },
 ]
 
-export default () => {
+const WrapRightBox = () => {
   return (
     <WrapRight>
       <Title>评论</Title>
-      {list.map((item, i) => (
-        <CommentItem key={i}>
+      {list.map(item => (
+        <CommentItem key={item.name}>
           <img src={posterImg} alt="" />
           <TextWrap>
             <div className="textTop">
@@ -130,3 +131,5 @@ export default () => {
     </WrapRight>
   )
 }
+
+export default WrapRightBox

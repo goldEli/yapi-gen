@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Outlet, useRoutes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
@@ -108,18 +107,20 @@ const activeCss = css`
   background: rgba(240, 244, 250, 1);
   color: rgba(40, 119, 255, 1);
 `
+
 export const Side = () => {
   const urlParams = new URL(window.location.href)
   const pathname = urlParams?.pathname
-  const nowPath = pathname.split('/')[1]
-    ? '/' + pathname.split('/')[1]
-    : '' || ''
-  console.log(nowPath)
+  const nowPath
+    = (pathname.split('/')[1] ? `/${pathname.split('/')[1]}` : '') || ''
 
   const navigate = useNavigate()
   const [panelVisible, setPanelVisible] = useState(false)
+  const onNavigation = (path: string) => {
+    navigate(path)
+  }
 
-  const AllEach = getMenu().map(item => (
+  const allEach = getMenu().map(item => (
     <SideEach
       className={nowPath === item.path ? activeCss : ''}
       key={item.path}
@@ -129,9 +130,7 @@ export const Side = () => {
       {item.title}
     </SideEach>
   ))
-  const onNavigation = (path: string) => {
-    navigate(path)
-  }
+
   const controlPanelVisible = () => {
     setPanelVisible(!panelVisible)
   }
@@ -140,12 +139,13 @@ export const Side = () => {
     <SideWrap>
       <SideHeader>
         <img className={imgCSS} src={sideLogo} alt="1" />
-        {AllEach}
+        {allEach}
       </SideHeader>
 
       <SideFooter>
         <SideEach
           onClick={() => navigate('/Setting')}
+
           // className={'/' + nowPath === item.path ? activeCss : ''}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
@@ -153,7 +153,7 @@ export const Side = () => {
         </SideEach>
         <SetHead onClick={controlPanelVisible}>何飞</SetHead>
       </SideFooter>
-      <Panel visible={panelVisible}></Panel>
+      <Panel visible={panelVisible} />
     </SideWrap>
   )
 }

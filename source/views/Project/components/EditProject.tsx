@@ -15,7 +15,7 @@ interface Props {
   onChangeVisible(): void
 }
 
-export default (props: Props) => {
+const EditProject = (props: Props) => {
   const [form] = Form.useForm()
   return (
     <Modal
@@ -54,3 +54,5 @@ export default (props: Props) => {
     </Modal>
   )
 }
+
+export default EditProject

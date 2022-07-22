@@ -1,3 +1,7 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react/jsx-handler-names */
+/* eslint-disable max-len */
 import { Button, Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
@@ -36,7 +40,7 @@ export const useDynamicColumns = (state: any) => {
       title: '1',
       dataIndex: 'name',
       key: 'name',
-      render: (text: any, record: any, index: any) => {
+      render: (text: any, record: any) => {
         const menu = (
           <Menu
             items={[
@@ -87,8 +91,17 @@ export const useDynamicColumns = (state: any) => {
       key: 'address',
       render: (text: any, record: any) => (
         <Pop
-          content={({ onHide }: { onHide: () => void }) => {
-            return <ShapeContent hide={onHide} record={record}></ShapeContent>
+          content={({ onHide }: { onHide(): void }) => {
+            return (
+              <ShapeContent
+                tap={() => {
+
+                  //
+                }}
+                hide={onHide}
+                record={record}
+              />
+            )
           }}
           record={record}
         >
@@ -115,13 +128,8 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => (
         <Pop
-          content={({ onHide }: { onHide: () => void }) => (
-            <LevelContent
-              tap={() => {}}
-              hide={onHide}
-              record={record}
-            ></LevelContent>
-          )}
+          content={({ onHide }: { onHide(): void }) => <LevelContent tap={() => {}} hide={onHide} record={record} />
+          }
           record={record}
         >
           <Button>321</Button>

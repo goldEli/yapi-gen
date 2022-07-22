@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
@@ -18,7 +18,7 @@ import {
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 
@@ -68,6 +68,7 @@ export const plainOptions = [
   { label: 'id3', value: 'address1' },
   { label: 'id4', value: 'address2' },
 ]
+
 export const plainOptions2 = [
   { label: '飞机', value: 'feiji' },
   { label: '大炮', value: 'dapao' },
@@ -75,11 +76,13 @@ export const plainOptions2 = [
   { label: '直升机', value: 'zhishengji' },
   { label: '战舰', value: 'zhanjian' },
 ]
+
 const tabsList = [
   { name: '创建的项目', type: 1 },
   { name: '创建的需求', type: 2 },
 ]
-export default () => {
+
+const Need = () => {
   const [active, setActive] = useState(1)
   const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
   const navigate = useNavigate()
@@ -98,11 +101,12 @@ export default () => {
     rowActiveIndex,
   })
   const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+
+    //
   }
-  const selectColum = useMemo(() => {
-    let arr = [...titleList, ...titleList2]
-    let newList = []
+  const selectColum: any = useMemo(() => {
+    const arr = [...titleList, ...titleList2]
+    const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
         if (arr[i] === columns[j].key) {
@@ -113,7 +117,8 @@ export default () => {
     return newList
   }, [titleList, columns])
   const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+
+    //
   }
   const showModal = () => {
     setIsModalVisible(true)
@@ -131,9 +136,9 @@ export default () => {
   }
 
   const onChange = (key: string) => {
-    console.log(key)
+
+    //
   }
-  useEffect(() => {}, [])
   const menu = (
     <Menu
       items={[
@@ -174,7 +179,7 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-      <SearchLine></SearchLine>
+      <SearchLine />
       <StaffTableWrap>
         <StyledTable
           rowKey="key"
@@ -195,7 +200,7 @@ export default () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
       <OptionalFeld
@@ -206,7 +211,9 @@ export default () => {
         visible={isModalVisible}
         close={close2}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
     </>
   )
 }
+
+export default Need

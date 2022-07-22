@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
@@ -54,7 +55,7 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     div: {
-      color: `${isActive ? '#2877FF' : '#323233'}`,
+      color: String(isActive ? '#2877FF' : '#323233'),
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
     },
   }),
@@ -91,12 +92,12 @@ const MenuItems = styled.div({
   },
 })
 
-export default () => {
+const CommonOperation = () => {
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
-  const pathname = new URL(window.location.href).pathname
+  const { pathname } = new URL(window.location.href)
 
   const tabsList = [
     { name: '需求', type: 'Demand' },
@@ -193,3 +194,5 @@ export default () => {
     </div>
   )
 }
+
+export default CommonOperation

@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
 import posterImg from '@/assets/poster.png'
 
 export const getProjectList: any = async (params: any) => {
+
   // const response: any = await http.get<any>('getProjectList', {
   //     search: {
   //         self: params.self,
@@ -49,7 +52,7 @@ export const getProjectList: any = async (params: any) => {
     },
   }
   return {
-    currentPage: 1, // params.page ||
+    currentPage: 1,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,

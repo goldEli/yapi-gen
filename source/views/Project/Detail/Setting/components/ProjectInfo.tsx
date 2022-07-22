@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import styled from '@emotion/styled'
 import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
@@ -86,7 +87,7 @@ const CardItem = styled.div({
   },
 })
 
-export default () => {
+const ProjectInfo = () => {
   const [visible, setVisible] = useState(false)
   return (
     <div style={{ padding: 16 }}>
@@ -163,3 +164,5 @@ export default () => {
     </div>
   )
 }
+
+export default ProjectInfo

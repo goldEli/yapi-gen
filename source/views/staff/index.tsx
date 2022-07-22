@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type SetStateAction } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Input, Menu, Pagination, Table } from 'antd'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { Button, Dropdown, Menu, Pagination } from 'antd'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
@@ -14,7 +12,6 @@ import {
   PaginationWrap,
   StaffTableWrap,
   MyInput,
-  SearchLine,
   SetButton,
   StyledTable,
 } from '@/components/StyleCommon'
@@ -51,6 +48,7 @@ const data = [
     level: 2,
   },
 ]
+
 export const plainOptions = [
   { label: 'id', value: 'name' },
   { label: 'id1', value: 'age' },
@@ -58,6 +56,7 @@ export const plainOptions = [
   { label: 'id3', value: 'address1' },
   { label: 'id4', value: 'address2' },
 ]
+
 export const plainOptions2 = [
   { label: '飞机', value: 'feiji' },
   { label: '大炮', value: 'dapao' },
@@ -65,12 +64,12 @@ export const plainOptions2 = [
   { label: '直升机', value: 'zhishengji' },
   { label: '战舰', value: 'zhanjian' },
 ]
-export default () => {
-  const navigate = useNavigate()
+
+const Staff = () => {
   const [isShow, setIsShow] = useState<boolean>(true)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [staffPersonalVisible, setStaffPersonalVisible] =
-    useState<boolean>(false)
+  const [staffPersonalVisible, setStaffPersonalVisible]
+    = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
     'age',
@@ -81,11 +80,7 @@ export default () => {
     'dapao',
     'tanke',
   ])
-  const controlStaffPersonalVisible = (
-    record: Record<string, string | number>,
-  ) => {
-    console.log(record)
-
+  const controlStaffPersonalVisible = () => {
     setStaffPersonalVisible(true)
   }
   const closeStaffPersonal = () => {
@@ -95,9 +90,9 @@ export default () => {
     controlStaffPersonalVisible,
   })
 
-  const selectColum = useMemo(() => {
-    let arr = [...titleList, ...titleList2]
-    let newList = []
+  const selectColum: any = useMemo(() => {
+    const arr = [...titleList, ...titleList2]
+    const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
         if (arr[i] === columns[j].key) {
@@ -123,14 +118,18 @@ export default () => {
     setTitleList2(list2)
   }
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
-  }
+  const onChangePage = () => {
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+    //
   }
-  useEffect(() => {}, [])
+  const onShowSizeChange = () => {
+
+    //
+  }
+  useEffect(() => {
+
+    //
+  }, [])
   const menu = (
     <Menu
       items={[
@@ -141,92 +140,6 @@ export default () => {
       ]}
     />
   )
-  const searchData = [
-    {
-      name: '迭代',
-      key: 'name',
-      type: 'select',
-      children: [
-        {
-          name: 'jack',
-        },
-        {
-          name: 'Lucy',
-        },
-        {
-          name: 'Disabled',
-        },
-        {
-          name: 'yiminghe',
-        },
-      ],
-    },
-    {
-      name: '职位',
-      key: 'age',
-      type: 'select',
-      children: [
-        {
-          name: 'jack',
-        },
-        {
-          name: 'Lucy',
-        },
-        {
-          name: 'Disabled',
-        },
-        {
-          name: 'yiminghe',
-        },
-      ],
-    },
-    {
-      name: '权限组',
-      key: 'tall',
-      type: 'select',
-      children: [
-        {
-          name: 'jack',
-        },
-        {
-          name: 'Lucy',
-        },
-        {
-          name: 'Disabled',
-        },
-        {
-          name: 'yiminghe',
-        },
-      ],
-    },
-    {
-      name: '时间',
-      key: 'time',
-      type: 'time',
-      children: [
-        {
-          name: 'jack',
-        },
-        {
-          name: 'Lucy',
-        },
-        {
-          name: 'Disabled',
-        },
-        {
-          name: 'yiminghe',
-        },
-      ],
-    },
-  ]
-  const basicsList = [
-    { name: '迭代', key: 'name' },
-    { name: '人员', key: 'age' },
-  ]
-  const specialList = [
-    { name: '权限组', key: 'tall' },
-    { name: '时间', key: 'time' },
-  ]
 
   return (
     <>
@@ -266,13 +179,14 @@ export default () => {
           </Dropdown>
         </div>
       </Hehavior>
-      {isShow && (
+      {isShow ? (
         <SearchList
-          onSearch={value => {
-            console.log(value)
+          onSearch={() => {
+
+            //
           }}
-        ></SearchList>
-      )}
+        />
+      ) : null}
 
       <StaffTableWrap>
         <StyledTable
@@ -295,7 +209,7 @@ export default () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
 
@@ -307,12 +221,14 @@ export default () => {
         visible={isModalVisible}
         close={close2}
         getCheckList={getCheckList}
-      ></OptionalFeld>
+      />
 
       <StaffPersonal
         visible={staffPersonalVisible}
         close={closeStaffPersonal}
-      ></StaffPersonal>
+      />
     </>
   )
 }
+
+export default Staff

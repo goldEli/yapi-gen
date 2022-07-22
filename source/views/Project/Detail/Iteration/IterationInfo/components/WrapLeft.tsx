@@ -1,5 +1,10 @@
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-empty-function */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable max-len */
 import styled from '@emotion/styled'
-import { Divider, Space } from 'antd'
 import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
 import { LevelContent } from '@/components/Level'
@@ -45,7 +50,7 @@ const StatusWrap = styled.div({
   color: '#969799',
 })
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -72,8 +77,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
+        ? '1px dashed #969799'
+        : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -90,14 +95,14 @@ const statusList = [
   { name: '已关闭' },
 ]
 
-export default () => {
+const WrapLeftBox = () => {
   return (
     <WrapLeft>
       <InfoItem>
         <Label>需求状态</Label>
         <div style={{ display: 'flex', width: '100%' }}>
           {statusList.map(i => (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex' }} key={i.name}>
               <StatusWrap>{i.name}</StatusWrap>
             </div>
           ))}
@@ -153,8 +158,8 @@ export default () => {
       <InfoItem>
         <Label>优先级</Label>
         <Popconfirm
-          content={({ onHide }: { onHide: () => void }) => {
-            return <LevelContent tap={() => {}} hide={onHide}></LevelContent>
+          content={({ onHide }: { onHide(): void }) => {
+            return <LevelContent tap={() => {}} hide={onHide} />
           }}
         >
           <IconFont type="knockdown" />
@@ -176,3 +181,5 @@ export default () => {
     </WrapLeft>
   )
 }
+
+export default WrapLeftBox

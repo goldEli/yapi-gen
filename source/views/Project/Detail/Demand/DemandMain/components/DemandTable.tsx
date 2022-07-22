@@ -1,4 +1,8 @@
-import React, { useState, useCallback } from 'react'
+/* eslint-disable no-empty-function */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { useState, useCallback } from 'react'
 import { Pagination, Dropdown, Table } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
@@ -54,7 +58,7 @@ const priorityList = [
   { name: '极低', type: 'knockdown', color: '#bbbdbf' },
 ]
 
-export default (props: Props) => {
+const DemandTable = (props: Props) => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const navigate = useNavigate()
   const onTableRow = useCallback((row: any) => {
@@ -68,12 +72,14 @@ export default (props: Props) => {
     }
   }, [])
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-    console.log(page, size)
+  const onChangePage = () => {
+
+    //
   }
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize)
+  const onShowSizeChange = () => {
+
+    //
   }
 
   const columnsChild = [
@@ -114,13 +120,9 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
-                <ShapeContent
-                  tap={() => {}}
-                  hide={onHide}
-                  record={record}
-                ></ShapeContent>
+                <ShapeContent tap={() => {}} hide={onHide} record={record} />
               )
             }}
             record={record}
@@ -185,7 +187,7 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <Table
                   pagination={false}
@@ -210,13 +212,9 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
-                <LevelContent
-                  tap={() => {}}
-                  hide={onHide}
-                  record={record}
-                ></LevelContent>
+                <LevelContent tap={() => {}} hide={onHide} record={record} />
               )
             }}
             record={record}
@@ -251,13 +249,16 @@ export default (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <PopConfirm
-            content={({ onHide }: { onHide: () => void }) => {
+            content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
-                  tap={() => {}}
+                  tap={() => {
+
+                    //
+                  }}
                   hide={onHide}
                   record={record}
-                ></ShapeContent>
+                />
               )
             }}
             record={record}
@@ -315,9 +316,11 @@ export default (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage={true}
+          hideOnSinglePage
         />
       </PaginationWrap>
     </Content>
   )
 }
+
+export default DemandTable

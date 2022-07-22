@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
@@ -82,7 +83,7 @@ const SideList = [
   { name: '项目权限组', icon: 'lock', content: <ProjectSet /> },
 ]
 
-export default () => {
+const Setting = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const activeTabs = Number(searchParams.get('type')) || 0
@@ -107,3 +108,5 @@ export default () => {
     </Wrap>
   )
 }
+
+export default Setting

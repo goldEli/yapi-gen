@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Modal, Form, Input, DatePicker, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -27,7 +28,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: "'*'",
+        content: '\'*\'',
       },
     '> label::before': {
       display: 'none!important',
@@ -53,7 +54,7 @@ interface Props {
   onChangeVisible(): void
 }
 
-export default (props: Props) => {
+const EditIteration = (props: Props) => {
   const [form] = Form.useForm()
   return (
     <Modal
@@ -91,3 +92,5 @@ export default (props: Props) => {
     </Modal>
   )
 }
+
+export default EditIteration

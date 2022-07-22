@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Select, Space } from 'antd'
+import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import posterImg from '@/assets/poster.png'
 
@@ -44,7 +44,7 @@ interface Props {
   onChangeVisible(): void
 }
 
-export default (props: Props) => {
+const ProjectInfo = (props: Props) => {
   const infoDetail = {
     id: '1000',
     name: '小河',
@@ -108,3 +108,5 @@ export default (props: Props) => {
     </Modal>
   )
 }
+
+export default ProjectInfo

@@ -108,42 +108,42 @@ const LanguageLine = styled.div`
     background-color: #f0f4fa;
   }
 `
+
 export const Panel = (props: { visible: boolean }) => {
   const { loginOut } = useModel('user')
   const navigate = useNavigate()
-  const [personalModalVisible, setPersonalModalVisible] =
-    useState<boolean>(false)
+  const [personalModalVisible, setPersonalModalVisible]
+    = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
-  const [languageModeVisible, setlanguageModeVisible] = useState<boolean>(false)
+  const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
   const [languageMode, setLanguageMode] = useState(1)
-  useEffect(() => {}, [])
+
+  const changeLanguageMode = (value: number) => {
+    setLanguageMode(value)
+    setLanguageModeVisible(false)
+  }
 
   const content = (
     <div>
       <LanguageLine onClick={() => changeLanguageMode(1)}>
         <span> 中文 </span>
-        {languageMode === 1 && (
-          <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
-        )}
+        {languageMode === 1
+          && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+        }
       </LanguageLine>
       <LanguageLine onClick={() => changeLanguageMode(2)}>
         <span> English </span>
-        {languageMode === 2 && (
-          <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
-        )}
+        {languageMode === 2
+          && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+        }
       </LanguageLine>
     </div>
   )
-  const changeLanguageMode = (value: number) => {
-    setLanguageMode(value)
-    setlanguageModeVisible(false)
-  }
+
   const handleVisibleChange = (newVisible: boolean) => {
-    setlanguageModeVisible(newVisible)
+    setLanguageModeVisible(newVisible)
   }
-  const toLoginOut = ()=>{
-    console.log('注销');
-    
+  const toLoginOut = () => {
     loginOut()
   }
   if (!props.visible) {
@@ -213,7 +213,7 @@ export const Panel = (props: { visible: boolean }) => {
       <Personal
         visible={personalModalVisible}
         close={() => setPersonalModalVisible(!personalModalVisible)}
-      ></Personal>
+      />
       <CompanyModal
         visible={companyModalVisible}
         onChangeState={() => setCompanyModalVisible(!companyModalVisible)}

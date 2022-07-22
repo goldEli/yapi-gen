@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { Checkbox, Space, Modal, Input } from 'antd'
 import styled from '@emotion/styled'
@@ -165,7 +166,7 @@ const permissionList = [
   },
 ]
 
-export default () => {
+const ProjectSet = () => {
   const [activeTabs, setActiveTabs] = useState(0)
   const [visible, setVisible] = useState(false)
   return (
@@ -260,3 +261,5 @@ export default () => {
     </Warp>
   )
 }
+
+export default ProjectSet

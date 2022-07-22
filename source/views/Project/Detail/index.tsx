@@ -7,11 +7,13 @@ const Wrap = styled.div({
   overflow: 'auto',
 })
 
-export default () => {
+const Detail = () => {
   return (
     <Wrap>
       <CommonOperation />
-      <Outlet></Outlet>
+      <Outlet />
     </Wrap>
   )
 }
+
+export default Detail
