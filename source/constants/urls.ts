@@ -5,6 +5,8 @@ const urls = {
   getLoginLogs: '/b/company/login_logs',
   getRoleList: '/b/company/role',
   getRolePermission: '/b/company/role_get_permission',
+  setRolePermission: '/b/company/role_set_permission',
+  addRole: '/b/company/role',
   getLoginDetail: '/b/userinfo', //yangyi
   loginOut: '/b/logout', //yangyi
   getUserDetail: '/b/userdetail', //yangyi

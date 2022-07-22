@@ -2,7 +2,8 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
-import posterImg from '@/assets/poster.png'
+import { useModel } from '@/models'
+import { useEffect } from 'react'
 
 const Wrap = styled.div({
   height: '100%',
@@ -98,21 +99,27 @@ interface MenuList {
 
 export default () => {
   const navigate = useNavigate()
+  const { getCompanyInfo, companyInfo } = useModel('setting')
   const urlParams = new URL(window.location.href)
   const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[2] || ''
-  const changeActive = (value: MenuList) => {
+
+  useEffect(() => {
+    getCompanyInfo()
+  }, [])
+
+  const onChangeActive = (value: MenuList) => {
     navigate(value.path)
   }
 
   return (
     <Wrap>
       <Side>
-        <CompanyImg src={posterImg} />
+        <CompanyImg src={companyInfo.logo} />
         <MenuWrap>
           {SideList.map(item => (
             <MenuItem
-              onClick={() => changeActive(item)}
+              onClick={() => onChangeActive(item)}
               key={item.name}
               isActive={nowPath === item.path}
             >

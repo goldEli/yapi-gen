@@ -23,15 +23,15 @@ client.config({
     (data: any) => {
       if (data.code !== '00000') {
         message.error(data.msg)
-        throw new Error("error");
+        throw new Error('error')
       }
       return {
         code: Number(data.code),
         data: data.data,
-        message: data.msg
+        message: data.msg,
       }
-    }
-  ]
+    },
+  ],
 })
 
 export const get = <SearchParams extends HttpRequestSearch, Result = any>(
@@ -41,16 +41,22 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   return client.get<SearchParams, Result>(urls[key], data)
 }
 
-export const post = <Payload, Result>(key: UrlKeys, data: any) => {
+export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {
   return client.post<Payload, Result>(urls[key], data)
 }
 
-export const put = <Payload, Result>(key: UrlKeys, data: any) => {
-  return client.put<Payload, Result>(urls[key], data)
+export const put = <Payload, Result = any>(
+  key: UrlKeys | string,
+  data?: any,
+) => {
+  return client.put<Payload, Result>(urls[key as UrlKeys] || key, data)
 }
 
-const deleteMethod = <Payload, Result>(key: UrlKeys, data: any) => {
-  return client.delete<Payload, Result>(urls[key], data)
+const deleteMethod = <Payload, Result = any>(
+  key: UrlKeys | string,
+  data?: any,
+) => {
+  return client.delete<Payload, Result>(urls[key as UrlKeys] || key, data)
 }
 
 export { deleteMethod as delete }
