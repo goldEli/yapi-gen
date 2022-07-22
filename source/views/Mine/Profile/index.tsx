@@ -7,6 +7,7 @@ import { css } from '@emotion/css'
 import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
 import { Line } from '@ant-design/plots'
 import { Timeline } from 'antd'
+import Gatte from './components/Gatte'
 
 const titleNumberCss = css`
   color: rgba(67, 186, 154, 1);
@@ -93,6 +94,7 @@ const LineItem = styled.div`
   display: flex;
   justify-content: space-between;
 `
+const GatteWrap = styled.div``
 const DemoLine = () => {
   const [data, setData] = useState([])
 
@@ -209,6 +211,9 @@ const Profile = () => {
           </TimeLineWrap>
         </CenterRight>
       </Center>
+      <GatteWrap>
+        <Gatte />
+      </GatteWrap>
     </StyledWrap>
   )
 }

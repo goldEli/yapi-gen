@@ -7,7 +7,7 @@ import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
 
 client.config({
-  base: 'http://new.minjie',
+  base: 'https://dev.staryuntech.com/dev-agile',
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },

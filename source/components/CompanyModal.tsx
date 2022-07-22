@@ -29,8 +29,9 @@ const FooterWrap = styled(Space)({
 })
 
 const CompanyModal = (props: Props) => {
-  const { getCompanyList } = useModel('user')
+  const { getCompanyList, updateCompany } = useModel('user')
   const [companyList, setCompanyList] = useState<any[]>([])
+  const [activeIdx, setActiveIdx] = useState(0)
 
   const init = async () => {
     const res = await getCompanyList()
@@ -41,7 +42,14 @@ const CompanyModal = (props: Props) => {
     init()
   }, [])
 
-  const [activeIdx, setActiveIdx] = useState(0)
+  const cutCompany = (value: any, index: number) => {
+    setActiveIdx(index)
+    updateCompany({
+      companyId: '',
+      companyUserId: '',
+    })
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -57,7 +65,7 @@ const CompanyModal = (props: Props) => {
             logo={i.logo}
             name={i.name}
             key={i.id}
-            tap={() => setActiveIdx(index)}
+            tap={() => cutCompany(i, index)}
             show={index === activeIdx}
           />
         ))}

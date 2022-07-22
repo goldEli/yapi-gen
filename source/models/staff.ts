@@ -4,7 +4,7 @@ import * as services from '@/services'
 export default () => {
   const {
     getStaffList,
-    editStaff,
+    updateStaff,
     refreshStaff,
     getDepartmentSelectList,
     getPositionSelectList,
@@ -12,7 +12,7 @@ export default () => {
 
   return {
     getStaffList,
-    editStaff,
+    updateStaff,
     refreshStaff,
     getDepartmentSelectList,
     getPositionSelectList,
