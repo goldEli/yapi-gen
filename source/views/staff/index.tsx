@@ -15,6 +15,7 @@ import {
   SetButton,
   StyledTable,
 } from '@/components/StyleCommon'
+import SearchList from './components/SearchList'
 
 const Reset = styled.div`
   width: 60px;
@@ -83,6 +84,10 @@ const Staff = () => {
     setStaffPersonalVisible(true)
   }
   const closeStaffPersonal = () => {
+    const params = {
+      roleId: '',
+      userId: '',
+    }
     setStaffPersonalVisible(false)
   }
   const columns = useDynamicColumns({
@@ -116,7 +121,10 @@ const Staff = () => {
     setTitleList(list)
     setTitleList2(list2)
   }
+  const onSearch = (e: any) => {
 
+    // console.log(e)
+  }
   const onChangePage = () => {
 
     //
@@ -178,7 +186,7 @@ const Staff = () => {
           </Dropdown>
         </div>
       </Hehavior>
-
+      <SearchList onSearch={onSearch} />
       <StaffTableWrap>
         <StyledTable
           rowKey="key"
@@ -215,8 +223,9 @@ const Staff = () => {
       />
 
       <StaffPersonal
-        visible={staffPersonalVisible}
-        close={closeStaffPersonal}
+        isVisible={staffPersonalVisible}
+        onClose={() => setStaffPersonalVisible(false)}
+        onConfirm={closeStaffPersonal}
       />
     </>
   )

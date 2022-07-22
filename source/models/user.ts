@@ -9,14 +9,12 @@ export default () => {
     setUserInfo(result.data)
     return result.data
   }
+  const updateCompany = async (params: any) => {
+    await services.user.updateCompany(params)
+  }
 
-  const {
-    loginOut,
-    getLoginDetail,
-    getCompanyList,
-    changeCompany,
-    getGlobalGeneral,
-  } = services.user
+  const { loginOut, getLoginDetail, getCompanyList, getGlobalGeneral }
+    = services.user
 
   return {
     userInfo,
@@ -24,7 +22,7 @@ export default () => {
     loginOut,
     getLoginDetail,
     getCompanyList,
-    changeCompany,
+    updateCompany,
     getGlobalGeneral,
   }
 }

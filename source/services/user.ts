@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
 
 export const getLoginDetail: any = async () => {
@@ -21,9 +23,14 @@ export const getCompanyList: any = async () => {
   return response
 }
 
-export const changeCompany: any = async (params: any) => {
-  const response = await http.put('changeCompany', params)
-  return response
+export const updateCompany: any = async (params: any) => {
+  const response = await http.put('changeCompany', {
+    company_id: params.companyId,
+    company_user_id: params.companyUserId,
+  })
+  return {
+    data: response,
+  }
 }
 
 // 全局概况

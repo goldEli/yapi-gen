@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-handler-names */
 import { Button, Modal, Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
@@ -39,7 +38,11 @@ const imgCss = css`
   border-radius: 50%;
 `
 
-export const StaffPersonal = (props: { visible: boolean, close(): void }) => {
+export const StaffPersonal = (props: {
+  isVisible: boolean
+  onClose(): void
+  onConfirm(): void
+}) => {
   const handleChange = () => {
 
     //
@@ -48,9 +51,9 @@ export const StaffPersonal = (props: { visible: boolean, close(): void }) => {
     <Modal
       width={420}
       footer={null}
-      onCancel={() => props.close()}
+      onCancel={() => props.onClose()}
       title="配置权限"
-      visible={props.visible}
+      visible={props.isVisible}
     >
       <PersonalHead>
         <img className={imgCss} src={head} alt="" />
@@ -85,10 +88,10 @@ export const StaffPersonal = (props: { visible: boolean, close(): void }) => {
         </Right>
       </PersonalFooter>
       <Footer>
-        <Button type="primary" onClick={() => props.close()}>
+        <Button type="primary" onClick={() => props.onConfirm()}>
           确定
         </Button>
-        <Button onClick={() => props.close()}>取消</Button>
+        <Button onClick={() => props.onClose()}>取消</Button>
       </Footer>
     </Modal>
   )

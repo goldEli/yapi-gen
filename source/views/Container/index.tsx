@@ -16,6 +16,7 @@ const Main = styled.div`
   background: rgba(245, 247, 250, 1);
   flex: 1;
   overflow: auto;
+  min-width: 1360px;
 `
 
 export const Container = () => {
