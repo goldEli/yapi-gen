@@ -6,6 +6,7 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
+import { useModel } from '@/models'
 import {
   StaffHeader,
   Hehavior,
@@ -30,56 +31,44 @@ const Reset = styled.div`
   margin-left: 24px;
 `
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 12 Lake Park',
-    feiji: 'New York No. 22 Lake Park',
-    level: 1,
-  },
-  {
-    key: '2',
-    name: 'John Brown',
-    age: 3222,
-    address: 'New York No. 1 Lake Park',
-    feiji: 'New York No. 12222 Lake Park',
-    level: 2,
-  },
-]
-
-export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
-]
-
-export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
-]
-
 const Staff = () => {
+  const { getStaffList } = useModel('staff')
   const [isShow, setIsShow] = useState<boolean>(true)
+  const [page, setPage] = useState<number>(1)
+  const [pagesize, setPagesize] = useState<number>(3)
+  const [listData, setListData] = useState<any>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [staffPersonalVisible, setStaffPersonalVisible]
     = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
-    'age',
-    'address',
+    'email',
+    'phone',
+    'department_name',
+    'gender',
+    'nickname',
+    'position_name',
+    'project_num',
+    'role_name',
   ])
   const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
-    'feiji',
-    'dapao',
-    'tanke',
+    'created_at',
   ])
+
+  const getStaffListData = async () => {
+    const res = await getStaffList({
+      page,
+      pagesize,
+    })
+    setListData(res.list)
+    setPlainOptions(res.plainOptions)
+    setPlainOptions2(res.plainOptions2)
+  }
+  const init = () => {
+    getStaffListData()
+  }
   const controlStaffPersonalVisible = () => {
     setStaffPersonalVisible(true)
   }
@@ -105,7 +94,7 @@ const Staff = () => {
       }
     }
     return newList
-  }, [titleList, columns])
+  }, [titleList, titleList2, columns])
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -125,17 +114,14 @@ const Staff = () => {
 
     // console.log(e)
   }
-  const onChangePage = () => {
-
-    //
+  const onChangePage = (newPage: any) => {
+    setPage(newPage)
   }
-  const onShowSizeChange = () => {
-
-    //
+  const onShowSizeChange = (current: any) => {
+    setPagesize(current)
   }
   useEffect(() => {
-
-    //
+    init()
   }, [])
   const menu = (
     <Menu
@@ -191,7 +177,7 @@ const Staff = () => {
         <StyledTable
           rowKey="key"
           columns={selectColum}
-          dataSource={data}
+          dataSource={listData}
           pagination={false}
           scroll={{ x: 'max-content' }}
         />
@@ -199,8 +185,8 @@ const Staff = () => {
 
       <PaginationWrap>
         <Pagination
-          defaultCurrent={1}
-          current={1}
+          pageSize={pagesize}
+          current={page}
           showSizeChanger
           showQuickJumper
           total={200}

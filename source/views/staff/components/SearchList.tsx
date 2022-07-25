@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Form, Select, Button } from 'antd'
 import { SearchLine } from '@/components/StyleCommon'
+import { useEffect, useState } from 'react'
 
 const { Option } = Select
 const Wrap = styled.div({
@@ -80,10 +82,25 @@ interface Props {
 }
 
 const SearchList = (props: Props) => {
+  const { getDepartmentSelectList, getPositionSelectList } = useModel('staff')
   const [form] = Form.useForm()
+  const [departmentOptions, setDepartmentOptions] = useState([])
+  const [positionOptions, setPositionOptions] = useState([])
   const onClearForm = async () => {
     form.resetFields()
   }
+  const init = async () => {
+    const res = await getDepartmentSelectList()
+
+    setDepartmentOptions(res.data)
+
+    const res2 = await getPositionSelectList()
+    setPositionOptions(res2.data)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
 
   const confirm = async () => {
     const value = await form.validateFields()
@@ -103,10 +120,11 @@ const SearchList = (props: Props) => {
                 placeholder="所有"
                 showSearch
               >
-                <Option value={1}>haha</Option>
-                <Option value={2}>haha</Option>
-                <Option value={3}>haha</Option>
-                <Option value={4}>haha</Option>
+                {departmentOptions.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </SelectWrap>
             </Form.Item>
           </SelectWrapBedeck>
@@ -119,10 +137,11 @@ const SearchList = (props: Props) => {
                 placeholder="所有"
                 showSearch
               >
-                <Option value={1}>haha</Option>
-                <Option value={2}>haha</Option>
-                <Option value={3}>haha</Option>
-                <Option value={4}>haha</Option>
+                {positionOptions.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </SelectWrap>
             </Form.Item>
           </SelectWrapBedeck>
