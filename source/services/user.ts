@@ -24,10 +24,13 @@ export const getCompanyList: any = async () => {
 }
 
 export const updateCompany: any = async (params: any) => {
-  const response = await http.put('changeCompany', {
-    company_id: params.companyId,
-    company_user_id: params.companyUserId,
-  })
+  const response = await http.put(
+    'changeCompany',
+    JSON.stringify({
+      company_id: params.companyId,
+      company_user_id: params.companyUserId,
+    }),
+  )
   return {
     data: response,
   }

@@ -38,6 +38,7 @@ export const Personal = (props: { visible: boolean, close(): void }) => {
   const [isShow, setIsShow] = useState<any>(false)
   const init = async () => {
     const response = await getUserDetail()
+
     setUserDetail(response)
   }
 

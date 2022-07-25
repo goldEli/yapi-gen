@@ -29,12 +29,17 @@ const FooterWrap = styled(Space)({
 })
 
 const CompanyModal = (props: Props) => {
-  const { getCompanyList, updateCompany } = useModel('user')
+  const { getCompanyList, updateCompany, userInfo } = useModel('user')
   const [companyList, setCompanyList] = useState<any[]>([])
-  const [activeIdx, setActiveIdx] = useState(0)
+  const [activeId, setActiveId] = useState('')
+  const [companyParams, setCompanyParams] = useState({
+    companyId: '',
+    companyUserId: '',
+  })
 
   const init = async () => {
     const res = await getCompanyList()
+    setActiveId(userInfo.company_id)
 
     setCompanyList(res.data)
   }
@@ -42,14 +47,17 @@ const CompanyModal = (props: Props) => {
     init()
   }, [])
 
-  const cutCompany = (value: any, index: number) => {
-    setActiveIdx(index)
-    updateCompany({
-      companyId: '',
-      companyUserId: '',
+  const cutCompany = (value: any) => {
+    setActiveId(value.id)
+    setCompanyParams({
+      companyId: value.id,
+      companyUserId: value.companyUserId,
     })
   }
-
+  const confirm = () => {
+    props.onChangeState()
+    updateCompany(companyParams)
+  }
   return (
     <Modal
       visible={props.visible}
@@ -60,21 +68,21 @@ const CompanyModal = (props: Props) => {
       bodyStyle={{ padding: 16 }}
     >
       <ContentWrap>
-        {companyList.map((i, index) => (
+        {companyList.map(i => (
           <CompanyCard
             logo={i.logo}
             name={i.name}
             key={i.id}
-            tap={() => cutCompany(i, index)}
-            show={index === activeIdx}
+            tap={() => cutCompany(i)}
+            show={i.id === activeId}
           />
         ))}
       </ContentWrap>
       <FooterWrap size={16}>
-        <Button type="primary" onClick={props.onChangeState}>
+        <Button onClick={props.onChangeState}>取消</Button>
+        <Button type="primary" onClick={confirm}>
           确定
         </Button>
-        <Button onClick={props.onChangeState}>取消</Button>
       </FooterWrap>
     </Modal>
   )

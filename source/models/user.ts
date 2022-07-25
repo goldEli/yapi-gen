@@ -6,8 +6,9 @@ export default () => {
 
   const getUserDetail = async () => {
     const result = await services.user.getUserDetail()
-    setUserInfo(result.data)
-    return result.data
+
+    setUserInfo(result)
+    return result
   }
   const updateCompany = async (params: any) => {
     await services.user.updateCompany(params)
