@@ -46,8 +46,6 @@ const Box = styled.div`
   box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px rgba(0, 0, 0, 0.05),
     0px 12px 48px 16px rgba(0, 0, 0, 0.03);
   border-radius: 6px;
-  box-sizing: border-box;
-  padding: 16px 16px 22px 16px;
 `
 const SetHead = styled.div`
   width: 40px;
@@ -64,8 +62,11 @@ const SetHead = styled.div`
   margin-right: 8px;
 `
 const PanelHeader = styled.div`
+  padding: 16px 16px 22px 16px;
+  box-sizing: border-box;
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(235, 237, 240, 1);
+  margin-bottom: 8px;
 `
 const PanelHeaderFirst = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ const Line = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 32px;
+  padding: 0 16px;
   &:hover {
     background-color: #f0f4fa;
   }
@@ -104,6 +106,8 @@ const LanguageLine = styled.div`
   justify-content: space-between;
   width: 120px;
   height: 32px;
+  box-sizing: border-box;
+  padding: 0 16px;
   &:hover {
     background-color: #f0f4fa;
   }

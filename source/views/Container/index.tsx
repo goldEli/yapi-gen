@@ -24,11 +24,7 @@ export const Container = () => {
   const { getLoginDetail } = useModel('user')
 
   const init = async () => {
-
-    // const res2 = await getUserDetail()
     const res = await getLoginDetail()
-
-    //
     setNextVisible(res.data.admin_first_login)
   }
 

@@ -150,7 +150,7 @@ const Staff = () => {
 
   return (
     <>
-      <StaffHeader>敏捷系统V2.0</StaffHeader>
+      <StaffHeader>公司员工</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
           <Reset>刷新</Reset>
