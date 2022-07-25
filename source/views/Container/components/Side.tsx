@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
 import sideLogo from '@/assets/side_logo.svg'
@@ -109,8 +109,8 @@ const activeCss = css`
 `
 
 export const Side = () => {
-  const urlParams = new URL(window.location.href)
-  const pathname = urlParams?.pathname
+  const location = useLocation()
+  const { pathname } = location
   const nowPath
     = (pathname.split('/')[1] ? `/${pathname.split('/')[1]}` : '') || ''
 

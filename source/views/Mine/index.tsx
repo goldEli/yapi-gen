@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { type } from 'os'
@@ -94,8 +94,7 @@ const menuList = [
 ]
 
 const MineBox = () => {
-  const urlParams = new URL(window.location.href)
-  const pathname = urlParams?.pathname
+  const { pathname } = useLocation()
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
