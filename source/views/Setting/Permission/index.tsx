@@ -2,13 +2,14 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Modal, Input, Space, Popover, Menu, Dropdown } from 'antd'
+import { Checkbox, Modal, Input, Space, message, Menu, Dropdown } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const Header = styled.div({
   height: 64,
@@ -201,38 +202,55 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const Permission = () => {
-  const [activeTabs, setActiveTabs] = useState(-1)
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const [permission, setPermission] = useState<any>([])
   const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
+  const [activeDetail, setActiveDetail] = useState<any>({})
   const [addValue, setAddValue] = useState('')
-  const { getRoleList, getRolePermission, setRolePermission, addRole } =
-    useModel('setting')
+  const [operationDetail, setOperationDetail] = useState<any>({})
+  const [isDelete, setIsDelete] = useState(false)
+  const {
+    getRoleList,
+    getRolePermission,
+    setRolePermission,
+    addRole,
+    updateRole,
+    deleteRole,
+  } = useModel('setting')
 
-  const init = async () => {
-    const result = await getRoleList()
-    setDataList(result)
-    setActiveTabs(0)
-  }
-
-  const getPermission = async () => {
-    const result = await getRolePermission(activeTabs)
+  const getPermission = async (id: number) => {
+    const result = await getRolePermission({ roleId: id })
     setPermission(result)
+    let keys: any[] = []
+    result.list.forEach((i: any) => {
+      const a = i.children.filter((j: any) => j.checked)
+      keys = [...keys, ...a.map((k: any) => k.value)]
+    })
+    setSelectKeys(keys)
+  }
+
+  const init = async (isInit?: boolean) => {
+    const result = await getRoleList()
+    setDataList(result.list)
+    if (isInit) {
+      setActiveDetail(result.list[0])
+      getPermission(result.list[0].id)
+    }
   }
 
   useEffect(() => {
-    init()
+    init(true)
   }, [])
-
-  useEffect(() => {
-    getPermission()
-  }, [activeTabs])
 
   const onSavePermission = async () => {
     try {
-      await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
-      getRolePermission({ roleId: activeTabs })
+      await setRolePermission({
+        roleId: activeDetail.id,
+        permissionIds: selectKeys,
+      })
+      getRolePermission({ roleId: activeDetail.id })
+      message.success('保存成功')
 
       //
     } catch (error) {
@@ -243,9 +261,18 @@ const Permission = () => {
 
   const onSaveGroup = async () => {
     try {
-      await addRole({ name: addValue })
+      if (operationDetail.id) {
+        await updateRole({ name: addValue, id: operationDetail.id })
+        setAddValue('')
+        setOperationDetail({})
+        message.success('编辑成功')
+      } else {
+        await addRole({ name: addValue })
+        setAddValue('')
+        message.success('创建成功')
+      }
       setIsVisible(false)
-      setAddValue('')
+      init()
 
       //
     } catch (error) {
@@ -254,10 +281,14 @@ const Permission = () => {
     }
   }
 
-  const onClickMenu = (e: any, type: string) => {
+  const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
+    setOperationDetail(item)
     if (type === 'edit') {
       setIsVisible(true)
+      setAddValue(item.name)
+    } else {
+      setIsDelete(true)
     }
   }
 
@@ -266,22 +297,47 @@ const Permission = () => {
     setAddValue('')
   }
 
-  const menu = (
+  const onChangeTabs = (item: any) => {
+    setActiveDetail(item)
+    getPermission(item.id)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteRole({ id: operationDetail.id })
+      setIsDelete(false)
+      setOperationDetail({})
+      message.success('删除成功')
+      init()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const menu = (item: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+          label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
         },
         {
           key: '2',
-          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+          label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
         },
       ]}
     />
   )
+
   return (
     <div style={{ height: '100%' }}>
+      <DeleteConfirm
+        isVisible={isDelete}
+        text="确认要删除该分组？"
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
       <Modal
         footer={false}
         visible={isVisible}
@@ -291,7 +347,7 @@ const Permission = () => {
         width={420}
       >
         <ModalHeader>
-          <span>创建权限组</span>
+          <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>
           <IconFont
             onClick={onClose}
             style={{ cursor: 'pointer' }}
@@ -320,23 +376,23 @@ const Permission = () => {
           <SetLeft>
             <Title style={{ marginLeft: 24 }}>用户组</Title>
             <MenuItems>
-              {dataList.list?.map((item: any) => (
+              {dataList?.map((item: any) => (
                 <MenuItem
                   key={item.id}
-                  onClick={() => setActiveTabs(item.id)}
-                  isActive={item.id === activeTabs}
+                  onClick={() => onChangeTabs(item)}
+                  isActive={item.id === activeDetail.id}
                 >
                   <div className="name">{item.name}</div>
                   <span className="subName">
                     {item.type === 1 ? '系统权限组' : '自定义权限组'}
                   </span>
                   <Dropdown
-                    overlay={menu}
+                    overlay={() => menu(item)}
                     placement="bottomRight"
-                    trigger={['click']}
+                    trigger={['hover']}
                     getPopupContainer={node => node}
                   >
-                    <IconWrap type="more" />
+                    <IconWrap type="more" hidden={item.type === 1} />
                   </Dropdown>
                 </MenuItem>
               ))}
@@ -354,7 +410,7 @@ const Permission = () => {
             </div>
           </SetLeft>
           <SetRight>
-            <Title>{dataList.list ? dataList.list[activeTabs].name : ''}</Title>
+            <Title>{activeDetail.name}</Title>
             <TitleGroup>
               <CheckboxWrap>全选</CheckboxWrap>
               <OperationWrap>操作对象</OperationWrap>

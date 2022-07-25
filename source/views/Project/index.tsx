@@ -27,10 +27,19 @@ const Project = () => {
   const [isHidden, setIsHidden] = useState(false)
   const [activeType, setActiveType] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-  const { getProjectList, projectList } = useModel('project')
+  const { getProjectList, projectList, getProjectCoverList }
+    = useModel('project')
 
   useEffect(() => {
-    getProjectList()
+    getProjectList({
+
+      // self: false,
+      pagesize: 2,
+      page: 1,
+      orderkey: 'name',
+      order: 'asc',
+    })
+    getProjectCoverList()
   }, [])
 
   const onChangeOperation = () => {

@@ -1,20 +1,10 @@
+/* eslint-disable no-useless-computed-key */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
-import posterImg from '@/assets/poster.png'
 
 export const getCompanyInfo: any = async () => {
-
-  // const response: any = await http.get<any>('getCompanyInfo')
-  const response: any = {}
-  response.data = {
-    id: '1',
-    name: '定星科技',
-    info: '1212121212121212121212',
-    project_count: 10,
-    user_count: 20,
-    logo: posterImg,
-  }
+  const response: any = await http.get<any>('getCompanyInfo')
   return {
     name: response.data.name,
     logo: response.data.logo,
@@ -26,46 +16,19 @@ export const getCompanyInfo: any = async () => {
 }
 
 export const getOperateLogs: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getOperateLogs', {
-  //   search: {
-  //     user_id: params.userId,
-  //     method: params.method,
-  //     created_at: params.createdAt,
-  //   },
-  //   pagesize: params.pagesize,
-  //   page: params.page,
-  //   orderkey: params.orderkey,
-  //   order: params.order,
-  // })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        id: '1',
-        content: '【新增项目】项目名称【项目 XXXXXX】',
-        method: 'put',
-        name: '张三',
-        nickname: '里斯',
-        updated_at: '2022-01-12',
-      },
-      {
-        id: '2',
-        content: '【编辑项目】项目名称【项目 XXXXXX】',
-        method: 'post',
-        name: '小米',
-        nickname: '大卫',
-        updated_at: '2022-01-01',
-      },
-    ],
-    pager: {
-      total: 20,
-      page: 2,
-      pagesize: 12,
+  const response: any = await http.get<any>('getOperateLogs', {
+    search: {
+      user_id: params.userId,
+      method: params.method,
+      created_at: params.createdAt,
     },
-  }
+    pagesize: params.pagesize,
+    page: params.page,
+    orderkey: params.orderkey,
+    order: params.order,
+  })
   return {
-    currentPage: 1,
+    currentPage: params.page,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -126,15 +89,7 @@ export const getLoginLogs: any = async (params: any) => {
 }
 
 export const getRoleList: any = async () => {
-
-  // const response: any = await http.get<any>('getRoleList')
-  const response: any = {}
-  response.data = [
-    { name: '管理员', id: 0, type: 1 },
-    { name: '编辑者', id: 1, type: 1 },
-    { name: '参与者', id: 2, type: 1 },
-    { name: '测试组', id: 3, type: 2 },
-  ]
+  const response: any = await http.get<any>('getRoleList')
   return {
     list: response.data.map((i: any) => ({
       id: i.id,
@@ -145,33 +100,17 @@ export const getRoleList: any = async () => {
 }
 
 export const getRolePermission: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getRolePermission', {
-  //   role_id: params.roleId,
-  // })
-  const response: any = {}
-  response.data = [
-    {
-      group_name: '需求',
-      permissions: [
-        { value: '01', label: '创建需求' },
-        { value: '11', label: '删除需求' },
-        { value: '21', label: '编辑需求' },
-      ],
-    },
-    {
-      group_name: '迭代',
-      permissions: [
-        { value: '41', label: '迭代创建需求' },
-        { value: '51', label: '迭代删除需求' },
-        { value: '61', label: '迭代编辑需求' },
-      ],
-    },
-  ]
+  const response: any = await http.get<any>('getRolePermission', {
+    role_id: params.roleId,
+  })
   return {
     list: response.data.map((i: any) => ({
       name: i.group_name,
-      children: i.permissions,
+      children: i.permissions.map((k: any) => ({
+        label: k.name,
+        value: k.id,
+        checked: k.checked,
+      })),
     })),
   }
 }

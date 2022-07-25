@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Table, Select, DatePicker, Pagination } from 'antd'
@@ -89,16 +90,26 @@ const Content = styled.div({
 
 const Operation = () => {
   const { getOperateLogs } = useModel('setting')
+  const { userInfo } = useModel('user')
   const [dataList, setDataList] = useState<any>([])
+  const [pageNumber, setPageNumber] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
 
-  const init = async () => {
-    const result = await getOperateLogs()
+  const init = async (page?: number, size?: number) => {
+    const result = await getOperateLogs({
+      userId: userInfo.id,
+      pagesize: size || pageSize,
+      page: page || pageNumber,
+      orderkey: 'created_at',
+      order: 'desc',
+    })
     setDataList(result)
   }
 
   useEffect(() => {
     init()
   }, [])
+
   const { Option } = Select
   const columns = [
     {
@@ -119,14 +130,14 @@ const Operation = () => {
     },
   ]
 
-  const onChangePage = () => {
-
-    // page: React.SetStateAction<number>, size: any
+  const onChangePage = (page: React.SetStateAction<number>) => {
+    setPageNumber(page)
+    init()
   }
 
-  const onShowSizeChange = () => {
-
-    // current: number, pageSize: number
+  const onShowSizeChange = (current: number, size: number) => {
+    setPageSize(size)
+    init()
   }
   const onChange: RangePickerProps['onChange'] = dates => {
     if (dates) {

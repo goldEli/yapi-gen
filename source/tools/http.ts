@@ -19,11 +19,12 @@ client.config({
         localStorage.getItem('token') || '670f96006642dcb616610358568c6503'
       options.headers.System = 'win10'
       options.headers.Client = 'chrome'
+      options.payload = JSON.stringify(options.payload)
     },
   ],
   responseInterceptors: [
     (response: any) => {
-      return JSON.parse(response.body)
+      return JSON.parse((response as { body: string }).body)
     },
     (data: any) => {
       if (data.code !== '00000') {
