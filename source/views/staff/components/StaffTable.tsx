@@ -37,7 +37,7 @@ export const useDynamicColumns = (state: any) => {
     {
       width: 200,
       align: 'center',
-      title: '1',
+      title: '昵称',
       dataIndex: 'name',
       key: 'name',
       render: (text: any, record: any) => {
@@ -75,9 +75,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: '2',
-      dataIndex: 'age',
-      key: 'age',
+      title: '性别',
+      dataIndex: 'gender',
+      key: 'gender',
       render: (
         text: string | number,
         record: Record<string, string | number>,
@@ -86,9 +86,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: '3',
-      dataIndex: 'address',
-      key: 'address',
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email',
       render: (text: any, record: any) => (
         <Pop
           content={({ onHide }: { onHide(): void }) => {
@@ -110,19 +110,19 @@ export const useDynamicColumns = (state: any) => {
       ),
     },
     {
-      title: '4',
-      dataIndex: 'address1',
-      key: 'address1',
+      title: '手机',
+      dataIndex: 'phone',
+      key: 'phone',
     },
     {
-      title: '5',
-      dataIndex: 'address2',
-      key: 'address2',
+      title: '部门',
+      dataIndex: 'department_name',
+      key: 'department_name',
     },
     {
-      title: '飞机',
-      dataIndex: 'feiji',
-      key: 'feiji',
+      title: '职位',
+      dataIndex: 'position_name',
+      key: 'position_name',
       render: (
         text: string | number,
         record: Record<string, string | number>,
@@ -137,24 +137,19 @@ export const useDynamicColumns = (state: any) => {
       ),
     },
     {
-      title: '大炮',
-      dataIndex: 'dapao',
-      key: 'dapao',
+      title: '权限组',
+      dataIndex: 'role_name',
+      key: 'role_name',
     },
     {
-      title: '坦克',
-      dataIndex: 'tanke',
-      key: 'tanke',
+      title: '项目数',
+      dataIndex: 'project_num',
+      key: 'project_num',
     },
     {
-      title: '直升机',
-      dataIndex: 'zhishengji',
-      key: 'zhishengji',
-    },
-    {
-      title: '战舰',
-      dataIndex: 'zhanjian',
-      key: 'zhanjian',
+      title: '创建时间',
+      dataIndex: 'created_at',
+      key: 'created_at',
     },
   ]
 }

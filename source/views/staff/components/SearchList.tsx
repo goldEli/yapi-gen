@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Form, Select, Button } from 'antd'
 import { SearchLine } from '@/components/StyleCommon'
+import { useEffect, useState } from 'react'
 
 const { Option } = Select
 const Wrap = styled.div({
@@ -80,10 +82,32 @@ interface Props {
 }
 
 const SearchList = (props: Props) => {
+  const { getDepartmentSelectList, getPositionSelectList, getRoleList }
+    = useModel('staff')
   const [form] = Form.useForm()
+  const [departmentOptions, setDepartmentOptions] = useState([])
+  const [positionOptions, setPositionOptions] = useState([])
+  const [roleOptions, setRoleOptions] = useState([])
   const onClearForm = async () => {
     form.resetFields()
+    const value = await form.validateFields()
+
+    props.onSearch(value)
   }
+  const init = async () => {
+    const res = await getDepartmentSelectList()
+
+    setDepartmentOptions(res.data)
+
+    const res2 = await getPositionSelectList()
+    setPositionOptions(res2.data)
+    const res3 = await getRoleList()
+    setRoleOptions(res3.data)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
 
   const confirm = async () => {
     const value = await form.validateFields()
@@ -95,7 +119,7 @@ const SearchList = (props: Props) => {
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
-            <Form.Item name="name">
+            <Form.Item name="department">
               <SelectWrap
                 label="部门"
                 mode="multiple"
@@ -103,15 +127,16 @@ const SearchList = (props: Props) => {
                 placeholder="所有"
                 showSearch
               >
-                <Option value={1}>haha</Option>
-                <Option value={2}>haha</Option>
-                <Option value={3}>haha</Option>
-                <Option value={4}>haha</Option>
+                {departmentOptions.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </SelectWrap>
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <Form.Item name="age">
+            <Form.Item name="position">
               <SelectWrap
                 label="职位"
                 mode="multiple"
@@ -119,15 +144,16 @@ const SearchList = (props: Props) => {
                 placeholder="所有"
                 showSearch
               >
-                <Option value={1}>haha</Option>
-                <Option value={2}>haha</Option>
-                <Option value={3}>haha</Option>
-                <Option value={4}>haha</Option>
+                {positionOptions.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </SelectWrap>
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <Form.Item name="tall">
+            <Form.Item name="userGroup">
               <SelectWrap
                 label="权限组"
                 mode="multiple"
@@ -135,10 +161,11 @@ const SearchList = (props: Props) => {
                 placeholder="所有"
                 showSearch
               >
-                <Option value={1}>haha</Option>
-                <Option value={2}>haha</Option>
-                <Option value={3}>haha</Option>
-                <Option value={4}>haha</Option>
+                {roleOptions.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </SelectWrap>
             </Form.Item>
           </SelectWrapBedeck>

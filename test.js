@@ -43,12 +43,13 @@ let list = [
   },
 ]
 const handleData = data => {
-  return data.reduce((res, item) => {
+  return data.reduce((res, item, index) => {
     const { children, ...rest } = item
     children.forEach(child => {
       res.push({
         ...rest,
         ...child,
+        y: index,
       })
     })
     return res

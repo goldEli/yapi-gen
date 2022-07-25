@@ -16,8 +16,8 @@ const Triangle = styled.div`
   bottom: -30px;
   width: 0;
   height: 0;
-  border: 20px solid transparent;
-  border-bottom: 20px solid rgba(40, 119, 255, 1);
+  border: 16px solid transparent;
+  border-bottom: 16px solid rgba(40, 119, 255, 1);
 `
 const Warp = styled.div<{ show?: boolean }>(
   {

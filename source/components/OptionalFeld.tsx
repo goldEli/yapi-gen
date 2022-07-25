@@ -19,7 +19,7 @@ const CheckedItem = styled.div({
   alignItems: 'center',
   height: 40,
   borderRadius: 4,
-  padding: '0 8px',
+  padding: '  0 16px',
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '&: hover': {
     background: ' rgba(240, 244, 250, 1)',
@@ -40,7 +40,7 @@ const Left = styled.div`
 `
 const Right = styled.div`
   box-sizing: border-box;
-  padding: 0 24px;
+  padding: 0 0 0 24px;
   width: 240px;
   height: 350px;
   overflow: scroll;
@@ -127,25 +127,21 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
           <ItemWrap>
             <div className={text}>基本字段</div>
             <CheckboxGroup value={checkList} onChange={onChange}>
-              <Row>
-                {plainOptions.map(item => (
-                  <Col key={item.value} span={8}>
-                    <Checkbox value={item.value}>{item.label}</Checkbox>
-                  </Col>
-                ))}
-              </Row>
+              {plainOptions.map(item => (
+                <Checkbox key={item.label} value={item.value}>
+                  {item.label}
+                </Checkbox>
+              ))}
             </CheckboxGroup>
           </ItemWrap>
           <ItemWrap>
             <div className={text}>人员与时间字段</div>
             <CheckboxGroup value={checkList2} onChange={onChange2}>
-              <Row>
-                {plainOptions2.map(item => (
-                  <Col key={item.value} span={8}>
-                    <Checkbox value={item.value}>{item.label}</Checkbox>
-                  </Col>
-                ))}
-              </Row>
+              {plainOptions2.map(item => (
+                <Checkbox key={item.label} value={item.value}>
+                  {item.label}
+                </Checkbox>
+              ))}
             </CheckboxGroup>
           </ItemWrap>
         </Left>

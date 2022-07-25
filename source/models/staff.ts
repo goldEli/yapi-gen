@@ -3,6 +3,7 @@ import * as services from '@/services'
 
 export default () => {
   const {
+    getRoleList,
     getStaffList,
     updateStaff,
     refreshStaff,
@@ -11,6 +12,7 @@ export default () => {
   } = services.staff
 
   return {
+    getRoleList,
     getStaffList,
     updateStaff,
     refreshStaff,

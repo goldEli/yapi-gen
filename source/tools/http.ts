@@ -8,6 +8,8 @@ import { message } from 'antd'
 
 client.config({
   base: import.meta.env.__API_BASE_URL__,
+
+  // base: 'http://new.minjie',
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },

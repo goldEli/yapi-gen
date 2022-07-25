@@ -34,7 +34,32 @@ export const updateCompany: any = async (params: any) => {
 }
 
 // 全局概况
-export const getGlobalGeneral: any = async (params: any) => {
-  const response = await http.put('getGlobalGeneral', params)
-  return response
+export const getGlobalGeneral: any = async () => {
+  const response = await http.get('getGlobalGeneral')
+  return {
+    project: {
+      ...response.data.project_statistics,
+      chartsData: [
+        {
+          type: '进度100%',
+          sales: response.data.project_statistics.schedule.schedule_100,
+        },
+        {
+          type: '进度50~100%',
+          sales: response.data.project_statistics.schedule.schedule_pass50,
+        },
+        {
+          type: '进度0~50%',
+          sales: response.data.project_statistics.schedule.schedule_pass0,
+        },
+        {
+          type: '进度0%',
+          sales: response.data.project_statistics.schedule.schedule_0,
+        },
+      ],
+    },
+    user: response.data.user_statistics,
+    need: response.data.story_statistics,
+    iterate: response.data.iterate_statistics,
+  }
 }
