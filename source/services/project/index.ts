@@ -16,43 +16,6 @@ export const getProjectList: any = async (params: any) => {
     orderkey: params.orderkey,
     order: params.order,
   })
-
-  // const response: any = {}
-  // response.data = {
-  //   list: [
-  //     {
-  //       id: '1',
-  //       status: 1,
-  //       cover: posterImg,
-  //       name: '敏捷项目',
-  //       member_count: 20,
-  //       story_count: 10,
-  //       iterate_count: 20,
-  //       progress: '0.5',
-  //       created_at: '2022-01-21',
-  //       stop_at: '2022-2-21',
-  //       user_name: '历史',
-  //     },
-  //     {
-  //       id: '2',
-  //       status: 1,
-  //       cover: posterImg,
-  //       name: '敏捷项目2.0',
-  //       member_count: 20,
-  //       story_count: 10,
-  //       iterate_count: 20,
-  //       progress: '0.5',
-  //       created_at: '2022-01-21',
-  //       stop_at: '2022-2-21',
-  //       user_name: '历史',
-  //     },
-  //   ],
-  //   pager: {
-  //     total: 20,
-  //     page: 2,
-  //     pagesize: 12,
-  //   },
-  // }
   return {
     currentPage: 1,
     total: response.data.pager.total,
@@ -73,41 +36,21 @@ export const getProjectList: any = async (params: any) => {
 }
 
 export const getTagList: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getTagList', {
-  //   project_id: params.projectId,
-  // })
-  const response: any = {}
-  response.data = [{ id: '0', content: '修改0', color: '#000' }]
+  const response: any = await http.get<any>('getTagList', {
+    project_id: params.projectId,
+  })
   return response.data
 }
 
 export const getProjectCoverList: any = async () => {
-
-  // const response: any = await http.get('getProjectCoverList')
-  const response: any = {}
-  response.data = [{ id: '0', path: '修改0' }]
+  const response: any = await http.get('getProjectCoverList')
   return response.data
 }
 
 export const getProjectInfo: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getProjectInfo')
-  const response: any = {}
-  response.data = {
-    status: 1,
-    name: '敏捷',
-    info: '敏捷描述',
-    id: 120,
-    created_at: '2011-02-12',
-    is_public: 1,
-    story_count: 2,
-    iterate_count: 12,
-    member_count: 32,
-    stop_at: '2011-02-12',
-    user_name: '何飞',
-    cover: posterImg,
-  }
+  const response: any = await http.get<any>('getProjectInfo', {
+    id: params.projectId,
+  })
   return response.data
 }
 
@@ -116,7 +59,7 @@ export const addProject: any = async (params: any) => {
     is_public: params.isPublic,
     name: params.name,
     info: params.info,
-    cover: params.url,
+    cover: params.cover,
   })
 }
 

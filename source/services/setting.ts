@@ -16,46 +16,19 @@ export const getCompanyInfo: any = async () => {
 }
 
 export const getOperateLogs: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getOperateLogs', {
-  //   search: {
-  //     user_id: params.userId,
-  //     method: params.method,
-  //     created_at: params.createdAt,
-  //   },
-  //   pagesize: params.pagesize,
-  //   page: params.page,
-  //   orderkey: params.orderkey,
-  //   order: params.order,
-  // })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        id: '1',
-        content: '【新增项目】项目名称【项目 XXXXXX】',
-        method: 'put',
-        name: '张三',
-        nickname: '里斯',
-        updated_at: '2022-01-12',
-      },
-      {
-        id: '2',
-        content: '【编辑项目】项目名称【项目 XXXXXX】',
-        method: 'post',
-        name: '小米',
-        nickname: '大卫',
-        updated_at: '2022-01-01',
-      },
-    ],
-    pager: {
-      total: 20,
-      page: 2,
-      pagesize: 12,
+  const response: any = await http.get<any>('getOperateLogs', {
+    search: {
+      user_id: params.userId,
+      method: params.method,
+      created_at: params.createdAt,
     },
-  }
+    pagesize: params.pagesize,
+    page: params.page,
+    orderkey: params.orderkey,
+    order: params.order,
+  })
   return {
-    currentPage: 1,
+    currentPage: params.page,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,

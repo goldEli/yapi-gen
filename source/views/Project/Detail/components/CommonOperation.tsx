@@ -3,12 +3,12 @@ import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
-import posterImg from '@/assets/poster.png'
 import { Space, Dropdown, Menu } from 'antd'
 import { useState } from 'react'
 import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
+import { useModel } from '@/models'
 
 const OperationTop = styled.div({
   height: 64,
@@ -98,6 +98,7 @@ const CommonOperation = () => {
   const [visible, setVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
+  const { projectInfo } = useModel('project')
 
   const tabsList = [
     { name: '需求', type: 'Demand' },
@@ -157,10 +158,8 @@ const CommonOperation = () => {
             style={{ color: '#969799', fontSize: 16, marginRight: 16 }}
             type="left"
           />
-          <ImgWrap src={posterImg} />
-          <OmitText width={152}>
-            项目名称最长尺寸名称项目名称最长尺寸名称...项目名称最长尺寸名称...
-          </OmitText>
+          <ImgWrap src={projectInfo.cover} />
+          <OmitText width={152}>{projectInfo.name}</OmitText>
           <IconFont
             style={{ color: '#323233', fontSize: 16, marginLeft: 8 }}
             type="edit-square"

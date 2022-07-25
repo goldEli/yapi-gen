@@ -1,6 +1,7 @@
 import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import posterImg from '@/assets/poster.png'
+import { useModel } from '@/models'
 
 const InfoItem = styled.div({
   display: 'flex',
@@ -45,16 +46,7 @@ interface Props {
 }
 
 const ProjectInfo = (props: Props) => {
-  const infoDetail = {
-    id: '1000',
-    name: '小河',
-    time: '2002-1-1',
-    status: '开启',
-    permission: '私有',
-    demand: '9',
-    iteration: '3',
-    person: '7',
-  }
+  const { projectInfo } = useModel('project')
   return (
     <Modal
       width={420}
@@ -66,43 +58,41 @@ const ProjectInfo = (props: Props) => {
     >
       <div>
         <PosterWrap>
-          <img src={posterImg} alt="" />
-          <div>项目名称项目名称项目名称项目名称项目名称</div>
-          <span>
-            项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述
-          </span>
+          <img src={projectInfo.cover} alt="" />
+          <div>{projectInfo.name}</div>
+          <span>{projectInfo.info}</span>
         </PosterWrap>
         <InfoItem>
           <span>项目id</span>
-          <div>{infoDetail.id}</div>
+          <div>{projectInfo.id}</div>
         </InfoItem>
         <InfoItem>
           <span>创建人</span>
-          <div>{infoDetail.name}</div>
+          <div>{projectInfo.user_name}</div>
         </InfoItem>
         <InfoItem>
           <span>创建时间</span>
-          <div>{infoDetail.time}</div>
+          <div>{projectInfo.created_at}</div>
         </InfoItem>
         <InfoItem>
           <span>项目状态</span>
-          <div>{infoDetail.status}</div>
+          <div>{projectInfo.status === 1 ? '开启' : '结束'}</div>
         </InfoItem>
         <InfoItem>
           <span>权限</span>
-          <div>{infoDetail.permission}</div>
+          <div>{projectInfo.permission}</div>
         </InfoItem>
         <InfoItem>
           <span>需求</span>
-          <div>{infoDetail.demand}</div>
+          <div>{projectInfo.story_count}</div>
         </InfoItem>
         <InfoItem>
           <span>迭代版本</span>
-          <div>{infoDetail.iteration}</div>
+          <div>{projectInfo.iterate_count}</div>
         </InfoItem>
         <InfoItem>
           <span>项目成员</span>
-          <div>{infoDetail.person}</div>
+          <div>{projectInfo.member_count}</div>
         </InfoItem>
       </div>
     </Modal>

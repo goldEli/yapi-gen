@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Popover, Upload, Space } from 'antd'
 import styled from '@emotion/styled'
-import projectImg from '@/assets/projectImg.png'
-import posterImg from '@/assets/poster.png'
 import { IconFont } from '@staryuntech/ant-pro'
+import { useModel } from '@/models'
+import { useEffect, useState } from 'react'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -27,6 +29,8 @@ const ChangeWrap = styled.div({
   fontSize: 14,
   fontWeight: 400,
   cursor: 'pointer',
+  borderBottomLeftRadius: 6,
+  borderBottomRightRadius: 6,
 })
 
 const ChooseTitle = styled.div({
@@ -41,7 +45,7 @@ const PosterGroup = styled(Space)({
   flexWrap: 'wrap',
   marginBottom: 8,
 })
-const AddUplaod = styled.div({
+const AddUpload = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -51,50 +55,59 @@ const AddUplaod = styled.div({
   boxSizing: 'border-box',
   border: '1px solid #EBEDF0',
   marginBottom: 8,
+  color: '#969799',
   cursor: 'pointer',
+  '&: hover': {
+    color: '#2877ff',
+    border: '1px solid #2877ff',
+  },
 })
 
-const PosterComponent = () => {
+interface Props {
+  value?: any
+  onChangeValue?(cover: string): void
+}
+
+const PosterComponent = (props: Props) => {
+  const { coverList } = useModel('project')
+  const [checkedPoster, setCheckedPoster] = useState(props.value || '')
+
+  const onUpdateValue = (path: string) => {
+    setCheckedPoster(path)
+    props.onChangeValue?.(path)
+  }
+
+  useEffect(() => {
+    if (coverList.length && !props.value) {
+      onUpdateValue(coverList[0].path)
+    }
+  }, [coverList])
+
   const choosePoster = (
     <div style={{ width: 372, padding: 16 }}>
       <ChooseTitle>请选择一个封面</ChooseTitle>
       <PosterGroup size={8}>
-        <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
-          src={posterImg}
-          alt=""
-        />
-        <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
-          src={posterImg}
-          alt=""
-        />
-        <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
-          src={posterImg}
-          alt=""
-        />
-        <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
-          src={posterImg}
-          alt=""
-        />
-        <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
-          src={posterImg}
-          alt=""
-        />
-        <img
-          style={{ marginBottom: 8, cursor: 'pointer' }}
-          src={posterImg}
-          alt=""
-        />
+        {coverList.map((i: any) => (
+          <img
+            key={i.id}
+            onClick={() => onUpdateValue(i.path)}
+            style={{
+              marginBottom: 8,
+              cursor: 'pointer',
+              width: 60,
+              height: 28,
+              borderRadius: 2,
+            }}
+            src={i.path}
+            alt=""
+          />
+        ))}
       </PosterGroup>
       <ChooseTitle>自定义封面</ChooseTitle>
       <Upload>
-        <AddUplaod>
-          <IconFont style={{ color: '#969799' }} type="plus" />
-        </AddUplaod>
+        <AddUpload>
+          <IconFont type="plus" />
+        </AddUpload>
       </Upload>
       <span style={{ fontSize: 12, fontWeight: 400, color: '#969799' }}>
         图片格式支持jpg、png，大小为220*104px
@@ -105,7 +118,7 @@ const PosterComponent = () => {
   return (
     <div style={{ position: 'relative' }}>
       <ImgWrap>
-        <img src={projectImg} alt="" />
+        <img src={checkedPoster} alt="" />
       </ImgWrap>
       <Popover
         placement="bottom"
