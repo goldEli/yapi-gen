@@ -73,7 +73,7 @@ const TextWarp = styled.div({
 })
 
 interface Props {
-  item: object
+  item: any
   onChangeOperation?(type: string, id: number): void
 }
 
@@ -82,6 +82,7 @@ const ProjectCard = (props: Props) => {
     e.stopPropagation()
     props.onChangeOperation?.(type, 0)
   }
+
   const menu = (
     <Menu
       items={[
@@ -100,14 +101,15 @@ const ProjectCard = (props: Props) => {
       ]}
     />
   )
+
   return (
     <Warp>
       <ImgWrap>
         <div />
-        <img src={projectImg} alt="" />
+        <img src={props.item.url} alt="" />
       </ImgWrap>
       <TextWarp>
-        <NameWrap>公司名称公司名称公公司名称公司名称公司名称司名称</NameWrap>
+        <NameWrap>{props.item.name}</NameWrap>
         <DropdownWrap
           overlay={menu}
           trigger={['hover']}

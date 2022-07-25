@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from '@emotion/styled'
 import SearchComponent from '@/components/SearchComponent'
@@ -32,8 +33,6 @@ const Project = () => {
 
   useEffect(() => {
     getProjectList({
-
-      // self: false,
       pagesize: 2,
       page: 1,
       orderkey: 'name',
@@ -71,7 +70,6 @@ const Project = () => {
 
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
-      <span>{isHidden}</span>
       <EditProject
         visible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
@@ -98,20 +96,18 @@ const Project = () => {
         />
       </div>
       <Content>
-        {isGrid
-          ? (
-              <MainGrid
-                projectList={projectList}
-                onChangeVisible={() => setIsVisible(true)}
-                onChangeOperation={onChangeOperation}
-              />
-            )
-          : (
-              <MainTable
-                onChangeOperation={onChangeOperation}
-                projectList={projectList}
-              />
-            )}
+        {isGrid ? (
+          <MainGrid
+            projectList={projectList}
+            onChangeVisible={() => setIsVisible(true)}
+            onChangeOperation={onChangeOperation}
+          />
+        ) : (
+          <MainTable
+            onChangeOperation={onChangeOperation}
+            projectList={projectList}
+          />
+        )}
       </Content>
     </div>
   )

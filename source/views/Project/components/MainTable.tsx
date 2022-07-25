@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
-import projectImg from '@/assets/projectImg.png'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 
 interface Props {
@@ -31,18 +31,20 @@ const MoreWrap = styled.div({
 })
 
 const StatusWrap = styled.div({
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-  marginRight: 8,
+  display: 'flex',
+  alignItems: 'center',
+  div: {
+    width: 8,
+    height: 8,
+    borderRadius: '50%',
+    marginRight: 8,
+  },
+  span: {
+    color: '#323233',
+    fontSize: 14,
+    fontWeight: 400,
+  },
 })
-
-const statusList = [
-  { id: 0, name: '运行中', color: '#2877ff' },
-  { id: 1, name: '已上线', color: '#2877ff' },
-  { id: 2, name: '异常', color: '#2877ff' },
-  { id: 3, name: '关闭', color: '#2877ff' },
-]
 
 const MainTable = (props: Props) => {
   const menu = (
@@ -95,12 +97,8 @@ const MainTable = (props: Props) => {
     {
       title: '图片',
       dataIndex: 'url',
-      render: () => (
-        <img
-          style={{ width: 60, height: 28, borderRadius: 2 }}
-          src={projectImg}
-        />
-      ),
+      render: (text: string) => <img style={{ width: 60, height: 28, borderRadius: 2 }} src={text} />
+      ,
     },
     {
       title: '项目名称',
@@ -143,14 +141,10 @@ const MainTable = (props: Props) => {
       dataIndex: 'status',
       render: (text: number) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <StatusWrap
-              style={{
-                background: statusList.filter(i => i.id === text)[0].color,
-              }}
-            />
-            <div>{statusList.filter(i => i.id === text)[0].name}</div>
-          </div>
+          <StatusWrap>
+            <div style={{ background: text === 1 ? '#43BA9A' : '#BBBDBF' }} />
+            <span>{text === 1 ? '已开启' : '已关闭'}</span>
+          </StatusWrap>
         )
       },
     },
@@ -187,10 +181,10 @@ const MainTable = (props: Props) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={props.projectList?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={props.projectList?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

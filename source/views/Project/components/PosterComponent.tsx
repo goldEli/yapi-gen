@@ -1,10 +1,12 @@
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Popover, Upload, Space } from 'antd'
+import { Popover, Upload, Space, message } from 'antd'
 import styled from '@emotion/styled'
 import { IconFont } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
+import type { UploadRequestOption } from 'rc-upload/lib/interface'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -71,6 +73,7 @@ interface Props {
 const PosterComponent = (props: Props) => {
   const { coverList } = useModel('project')
   const [checkedPoster, setCheckedPoster] = useState(props.value || '')
+  const { uploadFile } = useModel('cos')
 
   const onUpdateValue = (path: string) => {
     setCheckedPoster(path)
@@ -82,6 +85,25 @@ const PosterComponent = (props: Props) => {
       onUpdateValue(coverList[0].path)
     }
   }, [coverList])
+
+  const onUploadBefore = (file: any) => {
+    const acceptArr = ['jpg', 'png']
+    const urlType = file.name.split('.')
+    if (!acceptArr.includes(urlType[urlType.length - 1])) {
+      message.warning('格式不正确')
+      return Upload.LIST_IGNORE
+    }
+  }
+
+  const onUploadFileClick = async (option: UploadRequestOption) => {
+
+    // const { file } = option
+    // if (file instanceof File) {
+    //   const { downloadUrl } = await uploadFile(file)
+    //   const newData = JSON.parse(JSON.stringify(initialData))
+    //   newData.avatar = downloadUrl
+    // }
+  }
 
   const choosePoster = (
     <div style={{ width: 372, padding: 16 }}>
@@ -104,7 +126,7 @@ const PosterComponent = (props: Props) => {
         ))}
       </PosterGroup>
       <ChooseTitle>自定义封面</ChooseTitle>
-      <Upload>
+      <Upload beforeUpload={onUploadBefore} customRequest={onUploadFileClick}>
         <AddUpload>
           <IconFont type="plus" />
         </AddUpload>

@@ -1,13 +1,23 @@
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Table, Select, DatePicker, Pagination } from 'antd'
+import {
+  Table,
+  Select,
+  DatePicker,
+  Pagination,
+  Form,
+  message,
+  Spin,
+} from 'antd'
 import moment from 'moment'
 import { css } from '@emotion/css'
-import type { RangePickerProps } from 'antd/es/date-picker'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
+
+window.moment = moment
 
 const Header = styled.div({
   height: 'auto',
@@ -88,26 +98,46 @@ const Content = styled.div({
   height: 'calc(100% - 64px)',
 })
 
+const typeList = [
+  { label: '新增', value: 'POST' },
+  { label: '编辑', value: 'PUT' },
+  { label: '删除', value: 'DELETE' },
+]
+
 const Operation = () => {
   const { getOperateLogs } = useModel('setting')
   const { userInfo } = useModel('user')
   const [dataList, setDataList] = useState<any>([])
-  const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [form] = Form.useForm()
 
-  const init = async (page?: number, size?: number) => {
-    const result = await getOperateLogs({
-      userId: userInfo.id,
-      pagesize: size || pageSize,
-      page: page || pageNumber,
-      orderkey: 'created_at',
-      order: 'desc',
-    })
-    setDataList(result)
+  const getList = async () => {
+    const values = await form.getFieldsValue()
+    const clear = message.loading('加载中')
+    if (values.times) {
+      values.times = [
+        moment(values.times[0]).unix()
+          ? values.times[0].format('YYYY-MM-DD')
+          : '',
+        moment(values.times[0]).unix() === 1893427200
+          ? values.times[1].format('YYYY-MM-DD')
+          : '',
+      ]
+    }
+    try {
+      const result = await getOperateLogs({
+        orderKey: 'created_at',
+        order: 'desc',
+        userId: userInfo.id,
+        ...values,
+      })
+      setDataList(result)
+    } finally {
+      clear()
+    }
   }
 
   useEffect(() => {
-    init()
+    getList()
   }, [])
 
   const { Option } = Select
@@ -123,6 +153,9 @@ const Operation = () => {
     {
       title: '操作类型',
       dataIndex: 'type',
+      render: (text: string) => {
+        return <div>{typeList.filter(i => i.value === text)[0].label}</div>
+      },
     },
     {
       title: '操作详情',
@@ -130,85 +163,108 @@ const Operation = () => {
     },
   ]
 
-  const onChangePage = (page: React.SetStateAction<number>) => {
-    setPageNumber(page)
-    init()
+  const onShowSizeChange = (_current: number, size: number) => {
+    form.setFieldsValue({
+      pageSize: size,
+      page: 1,
+    })
   }
 
-  const onShowSizeChange = (current: number, size: number) => {
-    setPageSize(size)
-    init()
-  }
-  const onChange: RangePickerProps['onChange'] = dates => {
-    if (dates) {
-
-      // dateStrings
-    } else {
-
-      //
+  const onValuesChange = (changedValues: any) => {
+    if (!Reflect.has(changedValues, 'page')) {
+      form.setFieldsValue({ page: 1 })
     }
+    getList()
   }
+
+  const onReset = () => {
+    form.resetFields()
+    getList()
+  }
+
   return (
-    <div style={{ height: '100%' }}>
+    <Form
+      style={{ height: '100%' }}
+      form={form}
+      onValuesChange={onValuesChange}
+      initialValues={{
+        pageSize: 10,
+        page: 1,
+      }}
+    >
       <Header>
         <div className="label">操作日志</div>
         <SearchWrap>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '12px' }}>操作人</span>
-            <SelectWrap
-              mode="multiple"
-              style={{ width: '100%' }}
-              placeholder="所有"
-              showSearch
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled">Disabled</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-            </SelectWrap>
+            <Form.Item name="pageSize" />
+            <Form.Item name="userIds" noStyle>
+              <SelectWrap
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="所有"
+                showSearch
+              >
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+                <Option value="disabled">Disabled</Option>
+                <Option value="Yiminghe">yiminghe</Option>
+              </SelectWrap>
+            </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '12px' }}>操作类型</span>
-            <SelectWrap
-              mode="multiple"
-              style={{ width: '100%' }}
-              placeholder="所有"
-              showSearch
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled">Disabled</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-            </SelectWrap>
+            <Form.Item name="types" noStyle>
+              <SelectWrap
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="所有"
+                showSearch
+                options={typeList}
+              />
+            </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '12px' }}>操作时间</span>
-            <DatePicker.RangePicker
-              className={rangPicker}
-              getPopupContainer={node => node}
-              onChange={onChange}
-              ranges={{
-                最近一周: [
-                  moment(new Date()).startOf('days')
-                    .subtract(6, 'days'),
-                  moment(new Date()).endOf('days'),
-                ],
-                最近一月: [
-                  moment(new Date()).startOf('months')
-                    .subtract(1, 'months'),
-                  moment(new Date()).endOf('days'),
-                ],
-                最近三月: [
-                  moment(new Date()).startOf('months')
-                    .subtract(3, 'months'),
-                  moment(new Date()).endOf('days'),
-                ],
-                今天开始: [moment(new Date()).startOf('days'), moment.min()],
-                今天截止: [moment.max(), moment(new Date()).endOf('days')],
-              }}
-            />
+            <Form.Item name="times" noStyle>
+              <DatePicker.RangePicker
+                className={rangPicker}
+                getPopupContainer={node => node}
+                format={(times: moment.Moment) => {
+                  if (times.unix() === 0 || times.unix() === 1893427200) {
+                    return '空'
+                  }
+                  return times.format('YYYY-MM-DD')
+                }}
+                ranges={{
+                  最近一周: [
+                    moment(new Date()).startOf('days')
+                      .subtract(6, 'days'),
+                    moment(new Date()).endOf('days'),
+                  ],
+                  最近一月: [
+                    moment(new Date()).startOf('months')
+                      .subtract(1, 'months'),
+                    moment(new Date()).endOf('days'),
+                  ],
+                  最近三月: [
+                    moment(new Date()).startOf('months')
+                      .subtract(3, 'months'),
+                    moment(new Date()).endOf('days'),
+                  ],
+                  今天开始: [
+                    moment(new Date()).startOf('days'),
+                    moment(1893427200 * 1000),
+                  ],
+                  今天截止: [moment(0), moment(new Date()).endOf('days')],
+                }}
+              />
+            </Form.Item>
           </SelectWrapBedeck>
-          <div style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}>
+          <div
+            style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
+            onClick={onReset}
+          >
             清除条件
           </div>
         </SearchWrap>
@@ -223,21 +279,28 @@ const Operation = () => {
           showSorterTooltip={false}
         />
         <PaginationWrap>
-          <Pagination
-            defaultCurrent={1}
-            current={dataList.currentPage}
-            showSizeChanger
-            showQuickJumper
-            total={dataList.total}
-            showTotal={total => `Total ${total} items`}
-            pageSizeOptions={['10', '20', '50']}
-            onChange={onChangePage}
-            onShowSizeChange={onShowSizeChange}
-            hideOnSinglePage
-          />
+          <Form.Item noStyle dependencies={['pageSize']}>
+            {() => {
+              return (
+                <Form.Item name="page" valuePropName="current" noStyle>
+                  <Pagination
+                    defaultCurrent={1}
+                    showSizeChanger
+                    showQuickJumper
+                    total={dataList.total}
+                    showTotal={total => `Total ${total} items`}
+                    pageSizeOptions={[10, 20, 50]}
+                    pageSize={form.getFieldValue('pageSize') || 10}
+                    onShowSizeChange={onShowSizeChange}
+                    hideOnSinglePage
+                  />
+                </Form.Item>
+              )
+            }}
+          </Form.Item>
         </PaginationWrap>
       </Content>
-    </div>
+    </Form>
   )
 }
 
