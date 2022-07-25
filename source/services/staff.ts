@@ -3,21 +3,18 @@
 import * as http from '../tools/http'
 
 export const getStaffList: any = async (params: any) => {
-  const response = await http.get(
-    'getStaffList',
-    JSON.stringify({
-      search: {
-        job_id: [],
-        department_id: [],
-        user_group_id: [],
-      },
-      keyword: '',
-      order: '',
-      orderkey: '',
-      page: params.page,
-      pagesize: params.pagesize,
-    }),
-  )
+  const response = await http.get('getStaffList', {
+    search: {
+      job_id: params.jobId,
+      department_id: params.departmentId,
+      user_group_id: params.userGroupId,
+    },
+    keyword: params.keyword,
+    order: params.order,
+    orderkey: params.orderkey,
+    page: params.page,
+    pagesize: params.pagesize,
+  })
 
   // console.log(response)
 
@@ -75,5 +72,10 @@ export const getDepartmentSelectList: any = async (params: any) => {
 
 export const getPositionSelectList: any = async (params: any) => {
   const response = await http.get('getPositionSelectList', params)
+  return response
+}
+
+export const getRoleList: any = async () => {
+  const response = await http.get('getRoleList')
   return response
 }

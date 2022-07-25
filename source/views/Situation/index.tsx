@@ -8,6 +8,7 @@ import CompanyModal from '@/components/CompanyModal'
 import Staff from './components/Staff'
 import Need from './components/Need'
 import Iteration from './components/Iteration'
+import { useModel } from '@/models'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -37,7 +38,17 @@ const Head = styled.div`
 `
 
 const Situation = () => {
+  const { getGlobalGeneral } = useModel('user')
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
+  const [generalData, setGeneralData] = useState<any>()
+  const init = async () => {
+    const res = await getGlobalGeneral()
+
+    setGeneralData(res)
+  }
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <>
@@ -59,7 +70,7 @@ const Situation = () => {
         </PanelHeaderSecond>
       </Head>
       <Wrap>
-        <Project />
+        <Project data={generalData?.project} />
         <Staff />
         <Need />
         <Iteration />

@@ -84,7 +84,7 @@ const DemoColumn = () => {
   return <Column {...config} />
 }
 
-const Project = () => {
+const Project = (props: any) => {
   const [state, setState] = useState()
   const navigate = useNavigate()
 

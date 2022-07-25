@@ -82,12 +82,17 @@ interface Props {
 }
 
 const SearchList = (props: Props) => {
-  const { getDepartmentSelectList, getPositionSelectList } = useModel('staff')
+  const { getDepartmentSelectList, getPositionSelectList, getRoleList }
+    = useModel('staff')
   const [form] = Form.useForm()
   const [departmentOptions, setDepartmentOptions] = useState([])
   const [positionOptions, setPositionOptions] = useState([])
+  const [roleOptions, setRoleOptions] = useState([])
   const onClearForm = async () => {
     form.resetFields()
+    const value = await form.validateFields()
+
+    props.onSearch(value)
   }
   const init = async () => {
     const res = await getDepartmentSelectList()
@@ -96,6 +101,8 @@ const SearchList = (props: Props) => {
 
     const res2 = await getPositionSelectList()
     setPositionOptions(res2.data)
+    const res3 = await getRoleList()
+    setRoleOptions(res3.data)
   }
 
   useEffect(() => {
@@ -112,7 +119,7 @@ const SearchList = (props: Props) => {
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
-            <Form.Item name="name">
+            <Form.Item name="department">
               <SelectWrap
                 label="部门"
                 mode="multiple"
@@ -129,7 +136,7 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <Form.Item name="age">
+            <Form.Item name="position">
               <SelectWrap
                 label="职位"
                 mode="multiple"
@@ -146,7 +153,7 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <Form.Item name="tall">
+            <Form.Item name="userGroup">
               <SelectWrap
                 label="权限组"
                 mode="multiple"
@@ -154,10 +161,11 @@ const SearchList = (props: Props) => {
                 placeholder="所有"
                 showSearch
               >
-                <Option value={1}>haha</Option>
-                <Option value={2}>haha</Option>
-                <Option value={3}>haha</Option>
-                <Option value={4}>haha</Option>
+                {roleOptions.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </SelectWrap>
             </Form.Item>
           </SelectWrapBedeck>

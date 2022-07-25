@@ -2,6 +2,8 @@ import { Button, Modal, Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import head from '@/assets/head.png'
+import { useModel } from '@/models'
+import { useEffect, useState } from 'react'
 
 const { Option } = Select
 
@@ -39,14 +41,36 @@ const imgCss = css`
 `
 
 export const StaffPersonal = (props: {
+  data: any
   isVisible: boolean
   onClose(): void
-  onConfirm(): void
+  onConfirm(info: { userId: string, roleId: string }): void
 }) => {
-  const handleChange = () => {
+  const { data } = props
+  const [roleOptions, setRoleOptions] = useState([])
+  const [info, setInfo] = useState({
+    roleId: data.user_group_id,
+    userId: data.id,
+  })
+  const { getRoleList } = useModel('staff')
 
-    //
+  const init = async () => {
+    const res3 = await getRoleList()
+
+    setRoleOptions(res3.data)
   }
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  const handleChange = (value: any) => {
+    setInfo({ userId: data.id, roleId: value })
+  }
+  const onConfirm = () => {
+    props.onConfirm(info)
+  }
+
   return (
     <Modal
       width={420}
@@ -67,28 +91,27 @@ export const StaffPersonal = (props: {
           <Line>权限组</Line>
         </Left>
         <Right>
-          <RightLine>18866686868</RightLine>
-          <RightLine>1056982569@qq.com</RightLine>
-          <RightLine>千颂伊</RightLine>
-          <RightLine>万颂伊</RightLine>
+          <RightLine>{data.phone}</RightLine>
+          <RightLine>{data.email}</RightLine>
+          <RightLine>{data.name}</RightLine>
+          <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
           <RightLine>
             <Select
-              defaultValue="lucy"
+              defaultValue={info.roleId}
               style={{ width: 120 }}
               onChange={handleChange}
             >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled" disabled>
-                Disabled
-              </Option>
-              <Option value="Yiminghe">yiminghe</Option>
+              {roleOptions.map((item: any) => (
+                <Option key={item.id} value={item.id}>
+                  {item.name}
+                </Option>
+              ))}
             </Select>
           </RightLine>
         </Right>
       </PersonalFooter>
       <Footer>
-        <Button type="primary" onClick={() => props.onConfirm()}>
+        <Button type="primary" onClick={onConfirm}>
           确定
         </Button>
         <Button onClick={() => props.onClose()}>取消</Button>

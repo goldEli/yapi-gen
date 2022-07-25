@@ -32,11 +32,19 @@ const Reset = styled.div`
 `
 
 const Staff = () => {
-  const { getStaffList } = useModel('staff')
+  const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const [isShow, setIsShow] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(3)
+  const [pagesize, setPagesize] = useState<number>(10)
+  const [total, setTotal] = useState<number>()
+  const [keyword, setKeyword] = useState<string>('')
+  const [searchGroups, setSearchGroups] = useState<any>({
+    jobId: [],
+    departmentId: [],
+    userGroupId: [],
+  })
   const [listData, setListData] = useState<any>([])
+  const [editData, setEditData] = useState<any>({})
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
@@ -59,24 +67,29 @@ const Staff = () => {
 
   const getStaffListData = async () => {
     const res = await getStaffList({
+      jobId: searchGroups.jobId,
+      departmentId: searchGroups.departmentId,
+      userGroupId: searchGroups.userGroupId,
+      keyword,
+      order: 'asc',
+      orderkey: '',
       page,
       pagesize,
     })
     setListData(res.list)
+    setTotal(res.pager.total)
     setPlainOptions(res.plainOptions)
     setPlainOptions2(res.plainOptions2)
   }
   const init = () => {
     getStaffListData()
   }
-  const controlStaffPersonalVisible = () => {
+  const controlStaffPersonalVisible = (e: any) => {
+    setEditData(e)
     setStaffPersonalVisible(true)
   }
-  const closeStaffPersonal = () => {
-    const params = {
-      roleId: '',
-      userId: '',
-    }
+  const closeStaffPersonal = (e: any) => {
+    updateStaff(e)
     setStaffPersonalVisible(false)
   }
   const columns = useDynamicColumns({
@@ -111,18 +124,24 @@ const Staff = () => {
     setTitleList2(list2)
   }
   const onSearch = (e: any) => {
-
-    // console.log(e)
+    setSearchGroups({
+      jobId: e.position,
+      departmentId: e.department,
+      userGroupId: e.userGroup,
+    })
   }
   const onChangePage = (newPage: any) => {
     setPage(newPage)
   }
-  const onShowSizeChange = (current: any) => {
-    setPagesize(current)
+  const onShowSizeChange = (current: any, size: any) => {
+    setPagesize(size)
+  }
+  const onPressEnter = (e: any) => {
+    setKeyword(e.target.value)
   }
   useEffect(() => {
     init()
-  }, [])
+  }, [page, pagesize, keyword, searchGroups])
   const menu = (
     <Menu
       items={[
@@ -139,7 +158,7 @@ const Staff = () => {
       <StaffHeader>公司员工</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset>刷新</Reset>
+          <Reset onClick={() => refreshStaff()}>刷新</Reset>
           <MyInput
             suffix={
               <IconFont
@@ -147,6 +166,7 @@ const Staff = () => {
                 style={{ color: '#BBBDBF', fontSize: 20 }}
               />
             }
+            onPressEnter={onPressEnter}
             placeholder="请输入昵称姓名邮箱电话"
             allowClear
           />
@@ -189,8 +209,8 @@ const Staff = () => {
           current={page}
           showSizeChanger
           showQuickJumper
-          total={200}
-          showTotal={total => `Total ${total} items`}
+          total={total}
+          showTotal={newTotal => `Total ${newTotal} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
@@ -209,8 +229,11 @@ const Staff = () => {
       />
 
       <StaffPersonal
+        data={editData}
         isVisible={staffPersonalVisible}
-        onClose={() => setStaffPersonalVisible(false)}
+        onClose={() => {
+          setStaffPersonalVisible(false)
+        }}
         onConfirm={closeStaffPersonal}
       />
     </>
