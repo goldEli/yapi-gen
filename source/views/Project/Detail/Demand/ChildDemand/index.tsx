@@ -6,7 +6,7 @@ import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import EditDemand from '../components/EditDemand'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
@@ -65,6 +65,21 @@ const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
   }),
 )
 
+const RowIconFont = styled(IconFont)({
+  visibility: 'hidden',
+  fontSize: 16,
+  cursor: 'pointer',
+  color: '#2877ff',
+})
+
+const TableBox = styled(TableWrap)({
+  '.ant-table-row:hover': {
+    [RowIconFont.toString()]: {
+      visibility: 'visible',
+    },
+  },
+})
+
 const statusList = [
   { id: 0, name: '规划中', color: '#2877ff' },
   { id: 1, name: '实现中', color: '#2877ff' },
@@ -119,19 +134,7 @@ export const plainOptions2 = [
 ]
 
 const ChildDemand = () => {
-  const [rowActiveIndex, setRowActiveIndex] = useState(null)
   const [visible, setVisible] = useState(false)
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
-
   const [settingState, setSettingState] = useState(false)
 
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
@@ -186,23 +189,14 @@ const ChildDemand = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div
-              style={{
-                visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
-              }}
+            <Dropdown
+              overlay={menu}
+              trigger={['hover']}
+              placement="bottomRight"
+              getPopupContainer={node => node}
             >
-              <Dropdown
-                overlay={menu}
-                trigger={['hover']}
-                placement="bottomRight"
-                getPopupContainer={node => node}
-              >
-                <IconFont
-                  style={{ fontSize: 16, color: '#2877ff', cursor: 'pointer' }}
-                  type="more"
-                />
-              </Dropdown>
-            </div>
+              <RowIconFont type="more" />
+            </Dropdown>
             <div style={{ marginLeft: 32 }}>{text}</div>
           </div>
         )
@@ -330,9 +324,8 @@ const ChildDemand = () => {
           <IconFontWrap type="settings" />
         </Dropdown>
       </Operation>
-      <TableWrap
-        rowKey="key"
-        onRow={onTableRow}
+      <TableBox
+        rowKey="id"
         columns={columns}
         dataSource={list}
         pagination={false}

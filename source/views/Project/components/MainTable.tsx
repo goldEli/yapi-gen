@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
-import { useCallback, useState } from 'react'
 import projectImg from '@/assets/projectImg.png'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 
@@ -9,6 +9,26 @@ interface Props {
   onChangeOperation(type: string, id: number): void
   projectList: any
 }
+
+const RowIconFont = styled(IconFont)({
+  visibility: 'hidden',
+  fontSize: 16,
+  cursor: 'pointer',
+  color: '#2877ff',
+})
+
+const TableBox = styled(TableWrap)({
+  '.ant-table-row:hover': {
+    [RowIconFont.toString()]: {
+      visibility: 'visible',
+    },
+  },
+})
+
+const MoreWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+})
 
 const StatusWrap = styled.div({
   width: 8,
@@ -25,18 +45,6 @@ const statusList = [
 ]
 
 const MainTable = (props: Props) => {
-  const [rowActiveIndex, setRowActiveIndex] = useState(null)
-  const onTableRow = useCallback((row: any) => {
-    return {
-      onMouseEnter: () => {
-        setRowActiveIndex(row.id)
-      },
-      onMouseLeave: () => {
-        setRowActiveIndex(null)
-      },
-    }
-  }, [])
-
   const menu = (
     <Menu
       items={[
@@ -68,32 +76,19 @@ const MainTable = (props: Props) => {
     {
       title: '项目ID',
       dataIndex: 'id',
-      render: (text: string, record: any) => {
+      render: (text: string) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div
-              style={{
-                visibility: record.id === rowActiveIndex ? 'visible' : 'hidden',
-              }}
+          <MoreWrap>
+            <Dropdown
+              overlay={menu}
+              trigger={['hover']}
+              placement="bottomRight"
+              getPopupContainer={node => node}
             >
-              <Dropdown
-                overlay={menu}
-                trigger={['hover']}
-                placement="bottomRight"
-                getPopupContainer={node => node}
-              >
-                <IconFont
-                  style={{
-                    fontSize: 16,
-                    cursor: 'pointer',
-                    color: record.id === rowActiveIndex ? '#2877ff' : '#BBBDBF',
-                  }}
-                  type="more"
-                />
-              </Dropdown>
-            </div>
+              <RowIconFont type="more" />
+            </Dropdown>
             <div style={{ marginLeft: 32 }}>{text}</div>
-          </div>
+          </MoreWrap>
         )
       },
     },
@@ -181,9 +176,8 @@ const MainTable = (props: Props) => {
 
   return (
     <div>
-      <TableWrap
+      <TableBox
         rowKey="id"
-        onRow={onTableRow}
         columns={columns}
         dataSource={props.projectList?.list}
         pagination={false}

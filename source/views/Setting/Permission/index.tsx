@@ -232,6 +232,7 @@ const Permission = () => {
   const onSavePermission = async () => {
     try {
       await setRolePermission({ roleId: activeTabs, permissionIds: selectKeys })
+      getRolePermission({ roleId: activeTabs })
 
       //
     } catch (error) {
@@ -243,6 +244,8 @@ const Permission = () => {
   const onSaveGroup = async () => {
     try {
       await addRole({ name: addValue })
+      setIsVisible(false)
+      setAddValue('')
 
       //
     } catch (error) {
@@ -256,6 +259,11 @@ const Permission = () => {
     if (type === 'edit') {
       setIsVisible(true)
     }
+  }
+
+  const onClose = () => {
+    setIsVisible(false)
+    setAddValue('')
   }
 
   const menu = (
@@ -285,7 +293,7 @@ const Permission = () => {
         <ModalHeader>
           <span>创建权限组</span>
           <IconFont
-            onClick={() => setIsVisible(false)}
+            onClick={onClose}
             style={{ cursor: 'pointer' }}
             type="close"
           />
@@ -298,7 +306,7 @@ const Permission = () => {
           />
         </div>
         <ModalFooter size={16}>
-          <Button onClick={() => setIsVisible(false)}>取消</Button>
+          <Button onClick={onClose}>取消</Button>
           <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
             确认
           </Button>

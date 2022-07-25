@@ -6,6 +6,7 @@ import IconFont from '@/components/IconFont'
 import { useState, useCallback } from 'react'
 import { Menu, Dropdown, Pagination } from 'antd'
 import posterImg from '@/assets/poster.png'
+import AddMember from '@/views/Project/components/AddMember'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -54,7 +55,8 @@ const list = [
 
 const ProjectMember = () => {
   const [rowActiveIndex, setRowActiveIndex] = useState(null)
-  const [visible, setVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true)
+  const [isAddVisible, setIsAddVisible] = useState(false)
 
   const onTableRow = useCallback((row: any) => {
     return {
@@ -157,16 +159,24 @@ const ProjectMember = () => {
   ]
   return (
     <Wrap>
+      <AddMember
+        value={isAddVisible}
+        onChangeValue={() => setIsAddVisible(!isAddVisible)}
+      />
       <Header>
         <HeaderTop>
-          <SearchComponent text="添加成员" placeholder="输入昵称姓名" />
+          <SearchComponent
+            onChangeVisible={() => setIsAddVisible(!isAddVisible)}
+            text="添加成员"
+            placeholder="输入昵称姓名"
+          />
           <IconFont
             style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
             type="filter"
-            onClick={() => setVisible(!visible)}
+            onClick={() => setIsVisible(!isVisible)}
           />
         </HeaderTop>
-        <TableFilter showForm={visible} list={[]} />
+        <TableFilter showForm={isVisible} list={[]} />
       </Header>
       <Content>
         <TableWrap
