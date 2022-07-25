@@ -31,7 +31,7 @@ export default defineConfig(config => {
     },
     server: {
       host: '0.0.0.0',
-      port:'2800'
+      port: '2800',
     },
     envDir: './environments/',
     envPrefix: '__',

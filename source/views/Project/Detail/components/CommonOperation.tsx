@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
 import posterImg from '@/assets/poster.png'
@@ -93,11 +93,11 @@ const MenuItems = styled.div({
 })
 
 const CommonOperation = () => {
+  const { pathname } = useLocation()
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
-  const { pathname } = new URL(window.location.href)
 
   const tabsList = [
     { name: '需求', type: 'Demand' },

@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 
@@ -99,10 +99,9 @@ interface MenuList {
 }
 
 const Setting = () => {
+  const { pathname } = useLocation()
   const navigate = useNavigate()
   const { getCompanyInfo, companyInfo } = useModel('setting')
-  const urlParams = new URL(window.location.href)
-  const pathname = urlParams?.pathname
   const nowPath = pathname.split('/')[2] || ''
 
   useEffect(() => {

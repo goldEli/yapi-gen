@@ -7,14 +7,14 @@ import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
 
 client.config({
-  base: 'https://dev.staryuntech.com/dev-agile',
+  base: import.meta.env.__API_BASE_URL__,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
   requestInterceptors: [
     options => {
       options.headers.Authorization =
-        localStorage.getItem('token') || '0b243d35072cc173f16c0d76ab337cd4'
+        localStorage.getItem('token') || '670f96006642dcb616610358568c6503'
       options.headers.System = 'win10'
       options.headers.Client = 'chrome'
     },

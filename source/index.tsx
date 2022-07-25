@@ -11,7 +11,7 @@ log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
       <Provider>
         <Routes />
       </Provider>
