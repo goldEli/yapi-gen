@@ -89,10 +89,11 @@ const Content = styled.div({
 
 const Operation = () => {
   const { getOperateLogs } = useModel('setting')
+  // const { userInfo } = useModel('user')
   const [dataList, setDataList] = useState<any>([])
 
   const init = async () => {
-    const result = await getOperateLogs()
+    const result = await getOperateLogs({ userId: 118 })
     setDataList(result)
   }
 
