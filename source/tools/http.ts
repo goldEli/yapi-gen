@@ -27,9 +27,9 @@ client.config({
       return JSON.parse((response as { body: string }).body)
     },
     (data: any) => {
-      if (data.code !== '00000') {
+      if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
         message.error(data.msg)
-        throw new Error('error')
+        throw new Error(data.code)
       }
       return {
         code: Number(data.code),

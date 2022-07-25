@@ -142,6 +142,7 @@ const CommonOperation = () => {
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
+        details={projectInfo}
       />
       <ProjectInfoModal
         visible={infoVisible}

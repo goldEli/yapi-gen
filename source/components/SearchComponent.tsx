@@ -39,8 +39,10 @@ const SearchComponent = (props: Props) => (
     />
     <MyInput
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
-      onChange={(e: any) => e.target.value ? void 0 : props.onChangeSearch?.(e.target.value)
-      }
+
+      // onChange={(e: any) =>
+      //   e.target.value ? void 0 : props.onChangeSearch?.(e.target.value)
+      // }
       suffix={
         <IconFont type="search" style={{ color: '#BBBDBF', fontSize: 16 }} />
       }

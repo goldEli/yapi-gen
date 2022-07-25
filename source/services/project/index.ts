@@ -10,10 +10,11 @@ export const getProjectList: any = async (params: any) => {
       keyword: params.searchValue,
       is_public: params.isPublic,
       status: params.status,
+      all: params.all,
     },
-    pagesize: params.pagesize,
+    pagesize: params.pageSize,
     page: params.page,
-    orderkey: params.orderkey,
+    orderkey: params.orderKey,
     order: params.order,
   })
   return {
@@ -22,7 +23,7 @@ export const getProjectList: any = async (params: any) => {
     list: response.data.list.map((i: any) => ({
       id: i.id,
       status: i.status,
-      url: i.cover,
+      cover: i.cover,
       name: i.name,
       memberCount: i.member_count,
       storyCount: i.story_count,
@@ -31,6 +32,8 @@ export const getProjectList: any = async (params: any) => {
       createdTime: i.created_at,
       endTime: i.stop_at,
       createName: i.user_name,
+      info: i.info,
+      isPublic: i.is_public,
     })),
   }
 }
@@ -68,7 +71,7 @@ export const updateProject: any = async (params: any) => {
     is_public: params.isPublic,
     name: params.name,
     info: params.info,
-    cover: params.url,
+    cover: params.cover,
     id: params.id,
   })
 }
@@ -92,29 +95,15 @@ export const stopProject: any = async (params: any) => {
 }
 
 export const getProjectMember: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getProjectMember', {
-  //   search: {
-  //     project_id: params.projectId,
-  //     keyword: params.searchValue,
-  //     all: true,
-  //   },
-  //   orderkey: params.orderkey,
-  //   order: params.order,
-  // })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        name: '张三',
-        nickname: '敏捷描述',
-        id: 0,
-        avatar: posterImg,
-        position_name: '设计',
-        role_name: '普通成员',
-      },
-    ],
-  }
+  const response: any = await http.get<any>('getProjectMember', {
+    search: {
+      project_id: params.projectId,
+      keyword: params.searchValue,
+      all: true,
+    },
+    orderkey: params.orderkey,
+    order: params.order,
+  })
   return response.data.list
 }
 

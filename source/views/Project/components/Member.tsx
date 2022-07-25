@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Drawer, Input } from 'antd'
@@ -5,8 +6,9 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import posterImg from '@/assets/poster.png'
 import AddMember from './AddMember'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { useModel } from '@/models'
 
 interface Props {
   visible: boolean
@@ -68,43 +70,31 @@ const ListItem = styled.div({
   },
 })
 
-const personList = [
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-  { name: '张三', avatar: posterImg, subname: '普通成员', job: '设计' },
-]
-
 const Member = (props: Props) => {
+  const { getProjectMember, projectInfo } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
+  const [memberList, setMemberList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getProjectMember({
+      projectId: projectInfo?.id,
+      searchValue: '',
+    })
+    setMemberList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [projectInfo])
+
+  const onChangeSearch = async (value: string) => {
+    const result = await getProjectMember({
+      projectId: projectInfo?.id,
+      searchValue: value,
+    })
+    setMemberList(result)
+  }
+
   return (
     <>
       <AddMember
@@ -112,7 +102,7 @@ const Member = (props: Props) => {
         onChangeValue={() => setIsVisible(!isVisible)}
       />
       <DrawerWrap
-        title="项目成员（10）"
+        title={`项目成员（${memberList?.length}）`}
         placement="right"
         onClose={props.onChangeVisible}
         visible={props.visible}
@@ -140,6 +130,7 @@ const Member = (props: Props) => {
           </ButtonWrap>
           <Input
             style={{ marginTop: 16 }}
+            onPressEnter={(e: any) => onChangeSearch(e.target.value)}
             suffix={
               <IconFont
                 type="search"
@@ -151,8 +142,8 @@ const Member = (props: Props) => {
           />
         </div>
         <ListWrap>
-          {personList.map((i, idx) => (
-            <ListItem key={`${i.name}_${idx}`}>
+          {memberList?.map((i: any) => (
+            <ListItem key={i.id}>
               <div className="avatarBox">
                 <img src={i.avatar} alt="" />
                 <div>

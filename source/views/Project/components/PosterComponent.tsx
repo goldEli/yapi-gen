@@ -96,13 +96,12 @@ const PosterComponent = (props: Props) => {
   }
 
   const onUploadFileClick = async (option: UploadRequestOption) => {
+    const { file } = option
+    if (file instanceof File) {
+      const result = await uploadFile(file, file.name, 'file')
 
-    // const { file } = option
-    // if (file instanceof File) {
-    //   const { downloadUrl } = await uploadFile(file)
-    //   const newData = JSON.parse(JSON.stringify(initialData))
-    //   newData.avatar = downloadUrl
-    // }
+      // console.log(result)
+    }
   }
 
   const choosePoster = (

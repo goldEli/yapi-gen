@@ -4,9 +4,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { useNavigate } from 'react-router-dom'
+import { useCallback } from 'react'
 
 interface Props {
-  onChangeOperation(type: string, id: number): void
+  onChangeOperation(type: string, item: any): void
   projectList: any
 }
 
@@ -47,25 +49,31 @@ const StatusWrap = styled.div({
 })
 
 const MainTable = (props: Props) => {
-  const menu = (
+  const navigate = useNavigate()
+
+  const menu = (record: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label:
-            <div onClick={() => props.onChangeOperation?.('edit', 0)}>编辑</div>
-          ,
+          label: (
+            <div onClick={() => props.onChangeOperation?.('edit', record)}>
+              编辑
+            </div>
+          ),
         },
         {
           key: '2',
-          label:
-            <div onClick={() => props.onChangeOperation?.('end', 0)}>结束</div>
-          ,
+          label: (
+            <div onClick={() => props.onChangeOperation?.('end', record)}>
+              {record.status === 1 ? '结束' : '开启'}
+            </div>
+          ),
         },
         {
           key: '3',
           label: (
-            <div onClick={() => props.onChangeOperation?.('delete', 0)}>
+            <div onClick={() => props.onChangeOperation?.('delete', record)}>
               删除
             </div>
           ),
@@ -78,11 +86,11 @@ const MainTable = (props: Props) => {
     {
       title: '项目ID',
       dataIndex: 'id',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <MoreWrap>
             <Dropdown
-              overlay={menu}
+              overlay={() => menu(record)}
               trigger={['hover']}
               placement="bottomRight"
               getPopupContainer={node => node}
@@ -96,7 +104,7 @@ const MainTable = (props: Props) => {
     },
     {
       title: '图片',
-      dataIndex: 'url',
+      dataIndex: 'cover',
       render: (text: string) => <img style={{ width: 60, height: 28, borderRadius: 2 }} src={text} />
       ,
     },
@@ -168,6 +176,14 @@ const MainTable = (props: Props) => {
     //
   }
 
+  const onTableRow = useCallback((row: any) => {
+    return {
+      onClick: () => {
+        navigate(`/Detail/Demand?id=${row.id}`)
+      },
+    }
+  }, [])
+
   return (
     <div>
       <TableBox
@@ -177,6 +193,7 @@ const MainTable = (props: Props) => {
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
+        onRow={onTableRow}
       />
       <PaginationWrap>
         <Pagination
