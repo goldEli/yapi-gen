@@ -1,5 +1,5 @@
 const urls = {
-  getCosSign: 'https://www.ifunsms.com/api/622ad916aabae',
+  getCosSign: import.meta.env.__COS_SIGN_URL__,
   getCompanyInfo: '/b/company/info',
   getOperateLogs: '/b/company/operate_logs',
   getLoginLogs: '/b/company/login_logs',

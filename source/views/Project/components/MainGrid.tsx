@@ -30,10 +30,15 @@ const AddProject = styled.div({
 
 const MainGrid = (props: Props) => {
   const navigate = useNavigate()
+
+  const onToDetail = (item: any) => {
+    navigate(`/Detail/Demand?id=${item.id}`)
+  }
+
   return (
     <SpaceWrap size={32}>
       {props.projectList.list?.map((item: any) => (
-        <div key={item.id} onClick={() => navigate('/Detail/Demand')}>
+        <div key={item.id} onClick={() => onToDetail(item)}>
           <ProjectCard
             item={item}
             onChangeOperation={props.onChangeOperation}

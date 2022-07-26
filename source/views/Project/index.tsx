@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from '@emotion/styled'
 import SearchComponent from '@/components/SearchComponent'
@@ -7,6 +8,8 @@ import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { message } from 'antd'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -24,57 +27,112 @@ const Content = styled.div({
 const Project = () => {
   const [isGrid, setIsGrid] = useState(true)
   const [sort, setSort] = useState('name')
-  const [isHidden, setIsHidden] = useState(false)
   const [activeType, setActiveType] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-  const { getProjectList, projectList, getProjectCoverList }
-    = useModel('project')
+  const [isDelete, setIsDelete] = useState(false)
+  const [operationDetail, setOperationDetail] = useState<any>({})
+  const {
+    getProjectList,
+    projectList,
+    getProjectCoverList,
+    deleteProject,
+    stopProject,
+    openProject,
+  } = useModel('project')
+
+  const data = {
+    pageSize: 10,
+    page: 1,
+    orderKey: 'name',
+    order: 'asc',
+    self: true,
+    searchValue: '',
+    isPublic: '',
+    all: '',
+    status: 1,
+  }
+
+  const getList = (params: any) => {
+    getProjectList(params)
+  }
 
   useEffect(() => {
-    getProjectList({
-
-      // self: false,
-      pagesize: 2,
-      page: 1,
-      orderkey: 'name',
-      order: 'asc',
-    })
+    getList(data)
     getProjectCoverList()
   }, [])
 
-  const onChangeOperation = () => {
-
-    //
-  }
   const onChangeType = (type: number) => {
     setActiveType(type)
-
-    //
+    data.self = type !== 1
+    getList(data)
   }
 
   const onChangeHidden = (hidden: boolean) => {
-    setIsHidden(hidden)
-
-    //
+    data.status = hidden ? 2 : 1
+    getList(data)
   }
 
   const onChangeSort = (value: string) => {
     setSort(value)
-
-    //
+    data.orderKey = value
+    getList(data)
   }
 
-  const onChangeSearch = () => {
+  const onChangeSearch = (value: string) => {
+    data.searchValue = value
+    getList(data)
+  }
 
-    //
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteProject({ id: operationDetail.id })
+      message.success('删除成功')
+      setIsDelete(false)
+      setOperationDetail({})
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onEndOrOpen = async (item: any) => {
+    try {
+      if (operationDetail.status === 1) {
+        await stopProject({ id: item.id })
+      } else {
+        await openProject({ id: item.id })
+      }
+      message.success(operationDetail.status === 1 ? '结束成功' : '开启成功')
+      setOperationDetail({})
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onChangeOperation = (type: string, item: any) => {
+    setOperationDetail(item)
+    if (type === 'delete') {
+      setIsDelete(true)
+    } else if (type === 'edit') {
+      setIsVisible(true)
+    } else {
+      onEndOrOpen(item)
+    }
   }
 
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
-      <span>{isHidden}</span>
+      <DeleteConfirm
+        text="确认删除该项目？"
+        isVisible={isDelete}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
       <EditProject
         visible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
+        details={operationDetail}
       />
       <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
         <SearchWrap>
@@ -87,7 +145,7 @@ const Project = () => {
         </SearchWrap>
         <Filter
           show
-          total={31}
+          total={projectList.list?.length}
           sort={sort}
           isGrid={isGrid}
           activeType={activeType}
@@ -98,20 +156,18 @@ const Project = () => {
         />
       </div>
       <Content>
-        {isGrid
-          ? (
-              <MainGrid
-                projectList={projectList}
-                onChangeVisible={() => setIsVisible(true)}
-                onChangeOperation={onChangeOperation}
-              />
-            )
-          : (
-              <MainTable
-                onChangeOperation={onChangeOperation}
-                projectList={projectList}
-              />
-            )}
+        {isGrid ? (
+          <MainGrid
+            projectList={projectList}
+            onChangeVisible={() => setIsVisible(true)}
+            onChangeOperation={onChangeOperation}
+          />
+        ) : (
+          <MainTable
+            onChangeOperation={onChangeOperation}
+            projectList={projectList}
+          />
+        )}
       </Content>
     </div>
   )

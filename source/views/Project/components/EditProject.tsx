@@ -23,9 +23,9 @@ const EditProject = (props: Props) => {
 
   const onConfirm = async () => {
     try {
-      if (props.details) {
+      if (props.details?.id) {
         const data = form.getFieldsValue()
-        data.id = props.details.id
+        data.id = props.details?.id
         await updateProject(data)
         message.success('编辑成功')
       } else {
@@ -49,17 +49,17 @@ const EditProject = (props: Props) => {
   return (
     <Modal
       width={420}
-      title={props.details ? '编辑项目' : '创建项目'}
+      title={props.details?.id ? '编辑项目' : '创建项目'}
       visible={props.visible}
       footer={false}
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px 0' }}
       destroyOnClose
     >
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" initialValues={props.details}>
         <Form.Item label="项目封面" required name="cover">
           <PosterComponent
-            value={props.details ? props.details.cover : ''}
+            value={props.details?.id ? props.details?.cover : ''}
             onChangeValue={cover => onChangePoster(cover)}
           />
         </Form.Item>

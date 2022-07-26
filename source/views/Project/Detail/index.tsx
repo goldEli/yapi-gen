@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 
@@ -12,8 +12,11 @@ const Wrap = styled.div({
 
 const Detail = () => {
   const { getProjectInfo, getProjectCoverList } = useModel('project')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+
   useEffect(() => {
-    getProjectInfo({ projectId: 66 })
+    getProjectInfo({ projectId })
     getProjectCoverList()
   }, [])
   return (

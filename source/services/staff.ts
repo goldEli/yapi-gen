@@ -9,6 +9,7 @@ export const getStaffList: any = async (params: any) => {
       department_id: params.departmentId,
       user_group_id: params.userGroupId,
       keyword: params.keyword,
+      all: params.all,
     },
     order: params.order,
     orderkey: params.orderkey,

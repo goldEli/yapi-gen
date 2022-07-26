@@ -41,6 +41,7 @@ export default () => {
     updatePermission,
     getPermission,
     setPermission,
+    getProjectMember,
   } = services.project
 
   return {
@@ -65,5 +66,6 @@ export default () => {
     updatePermission,
     getPermission,
     setPermission,
+    getProjectMember,
   }
 }

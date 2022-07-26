@@ -18,13 +18,13 @@ export const getCompanyInfo: any = async () => {
 export const getOperateLogs: any = async (params: any) => {
   const response: any = await http.get<any>('getOperateLogs', {
     search: {
-      user_id: params.userId,
-      method: params.method,
-      created_at: params.createdAt,
+      user_id: params.userIds,
+      method: params.types,
+      created_at: params.times,
     },
-    pagesize: params.pagesize,
+    pagesize: params.pageSize,
     page: params.page,
-    orderkey: params.orderkey,
+    orderkey: params.orderKey,
     order: params.order,
   })
   return {
@@ -33,7 +33,7 @@ export const getOperateLogs: any = async (params: any) => {
     list: response.data.list.map((i: any) => ({
       id: i.id,
       name: i.name || i.nickname,
-      time: i.updated_at,
+      time: i.created_at,
       info: i.content,
       type: i.method,
     })),
@@ -41,39 +41,19 @@ export const getOperateLogs: any = async (params: any) => {
 }
 
 export const getLoginLogs: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getLoginLogs', {
-  //   search: {
-  //     user_id: params.userId,
-  //     created_at: params.createdAt,
-  //   },
-  //   pagesize: params.pagesize,
-  //   page: params.page,
-  //   orderkey: params.orderkey,
-  //   order: params.order,
-  // })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        id: '1',
-        client: '火狐',
-        system: 'win10',
-        name: '张三',
-        nickname: '里斯',
-        created_at: '2022-01-12',
-        ip: '192.168.1.10',
-        login_status: 1,
-      },
-    ],
-    pager: {
-      total: 20,
-      page: 2,
-      pagesize: 12,
+  const response: any = await http.get<any>('getLoginLogs', {
+    search: {
+      user_id: params.userIds,
+      created_at: params.times,
     },
-  }
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+
   return {
-    currentPage: 1,
+    currentPage: params.page,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,

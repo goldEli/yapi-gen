@@ -73,43 +73,49 @@ const TextWarp = styled.div({
 })
 
 interface Props {
-  item: object
-  onChangeOperation?(type: string, id: number): void
+  item: any
+  onChangeOperation?(type: string, item: any): void
 }
 
 const ProjectCard = (props: Props) => {
-  const onClickMenu = (e: any, type: string) => {
+  const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
-    props.onChangeOperation?.(type, 0)
+    props.onChangeOperation?.(type, item)
   }
-  const menu = (
+
+  const menu = (item: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+          label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
         },
         {
           key: '2',
-          label: <div onClick={e => onClickMenu(e, 'end')}>结束</div>,
+          label: (
+            <div onClick={e => onClickMenu(e, 'end', item)}>
+              {item.status === 1 ? '结束' : '开启'}
+            </div>
+          ),
         },
         {
           key: '3',
-          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+          label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
         },
       ]}
     />
   )
+
   return (
     <Warp>
       <ImgWrap>
         <div />
-        <img src={projectImg} alt="" />
+        <img src={props.item.cover} alt="" />
       </ImgWrap>
       <TextWarp>
-        <NameWrap>公司名称公司名称公公司名称公司名称公司名称司名称</NameWrap>
+        <NameWrap>{props.item.name}</NameWrap>
         <DropdownWrap
-          overlay={menu}
+          overlay={() => menu(props.item)}
           trigger={['hover']}
           placement="bottomRight"
           getPopupContainer={node => node}

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
@@ -85,7 +86,7 @@ const Filter = (props: Props) => {
           label: <div onClick={() => props.onChangeSort('name')}>项目名称</div>,
         },
         {
-          key: 'time',
+          key: 'created_at',
           label: <div onClick={() => props.onChangeSort('time')}>创建时间</div>,
         },
       ]}
@@ -93,37 +94,40 @@ const Filter = (props: Props) => {
   )
   return (
     <Wrap>
-      {props.show
-        ? (
-            <WrapLeft size={48}>
-              <TitleBox
-                onClick={() => props.onChangeType(0)}
-                idx={!props.activeType}
-              >
+      {props.show ? (
+        <WrapLeft size={48}>
+          <TitleBox
+            onClick={() => props.onChangeType(0)}
+            idx={!props.activeType}
+          >
             我参与的项目
-              </TitleBox>
-              <TitleBox
-                onClick={() => props.onChangeType(1)}
-                idx={props.activeType === 1}
-              >
+          </TitleBox>
+          <TitleBox
+            onClick={() => props.onChangeType(1)}
+            idx={props.activeType === 1}
+          >
             企业全部
-              </TitleBox>
-            </WrapLeft>
-          )
-        : null}
+          </TitleBox>
+        </WrapLeft>
+      ) : null}
 
       <WrapRight>
         <Space size={12}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Checkbox onChange={e => props.onChangeHidden(e.target.value)} />
+            <Checkbox onChange={e => props.onChangeHidden(e.target.checked)} />
             <MainTitle style={{ marginLeft: 8 }}>隐藏结束项目</MainTitle>
           </div>
-          <MainTitle>
-            {props.sort === 'name' ? '项目名称' : '创建时间'}
-          </MainTitle>
-          <Dropdown overlay={menu}>
-            <IconfontWrap type="sort" />
-          </Dropdown>
+          <div
+            hidden={!props.isGrid}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <MainTitle style={{ marginRight: 12 }}>
+              {props.sort === 'name' ? '项目名称' : '创建时间'}
+            </MainTitle>
+            <Dropdown overlay={menu}>
+              <IconfontWrap type="sort" />
+            </Dropdown>
+          </div>
         </Space>
         <Divider style={{ height: 20 }} type="vertical" />
         <TotalText>共{props.total}个项目</TotalText>

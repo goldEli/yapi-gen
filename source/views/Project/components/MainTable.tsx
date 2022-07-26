@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
-import projectImg from '@/assets/projectImg.png'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { useNavigate } from 'react-router-dom'
+import { useCallback } from 'react'
 
 interface Props {
-  onChangeOperation(type: string, id: number): void
+  onChangeOperation(type: string, item: any): void
   projectList: any
 }
 
@@ -31,39 +33,47 @@ const MoreWrap = styled.div({
 })
 
 const StatusWrap = styled.div({
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-  marginRight: 8,
+  display: 'flex',
+  alignItems: 'center',
+  div: {
+    width: 8,
+    height: 8,
+    borderRadius: '50%',
+    marginRight: 8,
+  },
+  span: {
+    color: '#323233',
+    fontSize: 14,
+    fontWeight: 400,
+  },
 })
 
-const statusList = [
-  { id: 0, name: '运行中', color: '#2877ff' },
-  { id: 1, name: '已上线', color: '#2877ff' },
-  { id: 2, name: '异常', color: '#2877ff' },
-  { id: 3, name: '关闭', color: '#2877ff' },
-]
-
 const MainTable = (props: Props) => {
-  const menu = (
+  const navigate = useNavigate()
+
+  const menu = (record: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label:
-            <div onClick={() => props.onChangeOperation?.('edit', 0)}>编辑</div>
-          ,
+          label: (
+            <div onClick={() => props.onChangeOperation?.('edit', record)}>
+              编辑
+            </div>
+          ),
         },
         {
           key: '2',
-          label:
-            <div onClick={() => props.onChangeOperation?.('end', 0)}>结束</div>
-          ,
+          label: (
+            <div onClick={() => props.onChangeOperation?.('end', record)}>
+              {record.status === 1 ? '结束' : '开启'}
+            </div>
+          ),
         },
         {
           key: '3',
           label: (
-            <div onClick={() => props.onChangeOperation?.('delete', 0)}>
+            <div onClick={() => props.onChangeOperation?.('delete', record)}>
               删除
             </div>
           ),
@@ -76,11 +86,11 @@ const MainTable = (props: Props) => {
     {
       title: '项目ID',
       dataIndex: 'id',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <MoreWrap>
             <Dropdown
-              overlay={menu}
+              overlay={() => menu(record)}
               trigger={['hover']}
               placement="bottomRight"
               getPopupContainer={node => node}
@@ -94,13 +104,9 @@ const MainTable = (props: Props) => {
     },
     {
       title: '图片',
-      dataIndex: 'url',
-      render: () => (
-        <img
-          style={{ width: 60, height: 28, borderRadius: 2 }}
-          src={projectImg}
-        />
-      ),
+      dataIndex: 'cover',
+      render: (text: string) => <img style={{ width: 60, height: 28, borderRadius: 2 }} src={text} />
+      ,
     },
     {
       title: '项目名称',
@@ -143,14 +149,10 @@ const MainTable = (props: Props) => {
       dataIndex: 'status',
       render: (text: number) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <StatusWrap
-              style={{
-                background: statusList.filter(i => i.id === text)[0].color,
-              }}
-            />
-            <div>{statusList.filter(i => i.id === text)[0].name}</div>
-          </div>
+          <StatusWrap>
+            <div style={{ background: text === 1 ? '#43BA9A' : '#BBBDBF' }} />
+            <span>{text === 1 ? '已开启' : '已关闭'}</span>
+          </StatusWrap>
         )
       },
     },
@@ -174,6 +176,14 @@ const MainTable = (props: Props) => {
     //
   }
 
+  const onTableRow = useCallback((row: any) => {
+    return {
+      onClick: () => {
+        navigate(`/Detail/Demand?id=${row.id}`)
+      },
+    }
+  }, [])
+
   return (
     <div>
       <TableBox
@@ -183,14 +193,15 @@ const MainTable = (props: Props) => {
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
+        onRow={onTableRow}
       />
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={props.projectList?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={props.projectList?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
