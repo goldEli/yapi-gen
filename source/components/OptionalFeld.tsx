@@ -113,7 +113,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
         </ShowWrap>
       </CheckedItem>
     ))
-  }, [checkList, checkList2])
+  }, [checkList, checkList2, plainOptions, plainOptions2])
   return (
     <Modal
       width={800}
