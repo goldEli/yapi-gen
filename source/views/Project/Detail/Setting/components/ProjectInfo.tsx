@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
@@ -125,15 +124,15 @@ const ProjectInfo = () => {
           </InfoItem>
           <InfoItem>
             <div>创建人：</div>
-            <span>{projectInfo.user_name}</span>
+            <span>{projectInfo.userName}</span>
           </InfoItem>
           <InfoItem>
             <div>创建时间：</div>
-            <span>{projectInfo.created_at}</span>
+            <span>{projectInfo.createTime}</span>
           </InfoItem>
           <InfoItem>
             <div>结束时间：</div>
-            <span>{projectInfo.stop_at}</span>
+            <span>{projectInfo.endTime}</span>
           </InfoItem>
           <InfoItem>
             <div>项目状态：</div>
@@ -141,19 +140,19 @@ const ProjectInfo = () => {
           </InfoItem>
           <InfoItem>
             <div>权限：</div>
-            <span>{projectInfo.is_public === 1 ? '企业公开' : '私有项目'}</span>
+            <span>{projectInfo.isPublic === 1 ? '企业公开' : '私有项目'}</span>
           </InfoItem>
           <CardGroup size={24}>
             <CardItem>
-              <div>{projectInfo.story_count}</div>
+              <div>{projectInfo.demandCount}</div>
               <span>需求</span>
             </CardItem>
             <CardItem>
-              <div>{projectInfo.iterate_count}</div>
+              <div>{projectInfo.iterateCount}</div>
               <span>迭代版本</span>
             </CardItem>
             <CardItem>
-              <div>{projectInfo.member_count}</div>
+              <div>{projectInfo.memberCount}</div>
               <span>项目成员</span>
             </CardItem>
           </CardGroup>

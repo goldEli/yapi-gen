@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import AddButton from '@/components/AddButton'
 import IterationCard from '@/components/IterationCard'
 import IconFont from '@/components/IconFont'
@@ -12,9 +14,14 @@ import {
   DatePicker,
   Checkbox,
   Menu,
+  message,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -52,101 +59,102 @@ const IconWrap = styled(IconFont)({
   cursor: 'pointer',
 })
 
-const SortItem = styled.div({
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: '#646566',
-  fontSize: 14,
-  cursor: 'pointer',
-  marginTop: 4,
-  '&:hover': {
-    color: '#2877ff',
-    background: '#F0F4FA',
-  },
-})
-
-const list = [
+const SortItem = styled.div<{ isActive: boolean }>(
   {
-    name: '敏捷版本v1.0',
-    process: 75,
-    time: '2022.06.17-2022.07.30',
-    status: 0,
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 14,
+    cursor: 'pointer',
+    marginTop: 4,
+    '&:hover': {
+      color: '#2877ff',
+      background: '#F0F4FA',
+    },
   },
-  {
-    name: '敏捷版本v1.0',
-    process: 75,
-    time: '2022.06.17-2022.07.30',
-    status: 0,
-  },
-  {
-    name: '敏捷版本v1.0',
-    process: 75,
-    time: '2022.06.17-2022.07.30',
-    status: 0,
-  },
-  {
-    name: '敏捷版本v1.0',
-    process: 75,
-    time: '2022.06.17-2022.07.30',
-    status: 0,
-  },
-  {
-    name: '敏捷版本v1.0',
-    process: 75,
-    time: '2022.06.17-2022.07.30',
-    status: 0,
-  },
-  {
-    name: '敏捷版本v1.0',
-    process: 75,
-    time: '2022.06.17-2022.07.30',
-    status: 0,
-  },
-]
+  ({ isActive }) => ({
+    color: isActive ? '#2877ff' : '#646566',
+    background: isActive ? '#F0F4FA' : 'white',
+  }),
+)
 
 interface Props {
   isShowLeft: boolean
   onChangeVisible(): void
+  onChangeOperation(item: any): void
 }
 
 const sortList = [
-  { name: '创建时间升序', type: 'createTimeUp' },
-  { name: '创建时间降序', type: 'createTimeDown' },
-  { name: '开始时间升序', type: 'startTimeUp' },
-  { name: '开始时间降序', type: 'startTimeDown' },
-  { name: '结束时间升序', type: 'endTimeUp' },
-  { name: '结束时间降序', type: 'endTimeDown' },
-  { name: '标题升序', type: 'titleUp' },
-  { name: '标题降序', type: 'titleDown' },
+  { name: '创建时间升序', type: 'asc', key: 'created_at' },
+  { name: '创建时间降序', type: 'desc', key: 'created_at' },
+  { name: '开始时间升序', type: 'asc', key: 'start_at' },
+  { name: '开始时间降序', type: 'desc', key: 'start_at' },
+  { name: '结束时间升序', type: 'asc', key: 'end_at' },
+  { name: '结束时间降序', type: 'desc', key: 'end_at' },
+  { name: '标题升序', type: 'asc', key: 'name' },
+  { name: '标题降序', type: 'desc', key: 'name' },
 ]
 
 const WrapLeft = (props: Props) => {
   const [from] = Form.useForm()
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteId, setIsDeleteId] = useState(0)
+  const [currentSort, setCurrentSort] = useState(sortList[0])
+  const [dataList, setDataList] = useState<any>([])
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const { getIterateList, updateIterateStatus, deleteIterate }
+    = useModel('iterate')
+
+  const getList = async () => {
+    const values = from.getFieldsValue()
+    const params = {
+      projectId,
+      order: currentSort.type,
+      orderKey: currentSort.key,
+      ...values,
+    }
+    const result = await getIterateList(params)
+    setDataList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
   const options = [
-    { label: '开始', value: 'Apple' },
-    { label: '结束', value: 'Pear' },
+    { label: '开启', value: '1' },
+    { label: '结束', value: '2' },
   ]
+
   const sortContent = (
     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
-      {sortList.map(i => <SortItem key={i.type}>{i.name}</SortItem>)}
+      {sortList.map(i => (
+        <SortItem
+          isActive={currentSort.name === i.name}
+          key={i.type}
+          onClick={() => setCurrentSort(i)}
+        >
+          {i.name}
+        </SortItem>
+      ))}
     </div>
   )
   const filterContent = (
     <div className="filterContent">
       <Form form={from} style={{ width: 260, padding: 24 }} layout="vertical">
-        <Form.Item label="标题">
+        <Form.Item label="标题" name="name">
           <Input placeholder="请输入标题" />
         </Form.Item>
-        <Form.Item label="开始时间">
+        <Form.Item label="开始时间" name="startTime">
           <DatePicker.RangePicker />
         </Form.Item>
-        <Form.Item label="结束时间">
+        <Form.Item label="结束时间" name="endTime">
           <DatePicker.RangePicker />
         </Form.Item>
-        <Form.Item label="状态">
+        <Form.Item label="状态" name="status">
           <Checkbox.Group options={options} defaultValue={['Apple']} />
         </Form.Item>
         <div
@@ -166,40 +174,77 @@ const WrapLeft = (props: Props) => {
     </div>
   )
 
-  const onChangeEdit = () => {
+  const onChangeEdit = (item: any) => {
+    props.onChangeOperation(item)
     props.onChangeVisible()
   }
 
-  const onChangeEnd = () => {
+  const onChangeEnd = async (item: any) => {
+    try {
+      await updateIterateStatus({
+        projectId,
+        id: item.id,
+        status: item.status !== 1,
+      })
+      message.success('更改状态成功')
+      getList()
+    } catch (error) {
 
-    //
+      //
+    }
   }
 
-  const onChangeDelete = () => {
-
-    //
+  const onChangeDelete = (item: any) => {
+    setIsDeleteId(item.id)
+    setIsVisible(true)
   }
 
-  const menu = (
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteIterate({
+        projectId,
+        id: isDeleteId,
+      })
+      setIsVisible(false)
+      message.success('删除成功')
+      getList()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const menu = (item: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label: <div onClick={onChangeEdit}>编辑</div>,
+          label: <div onClick={() => onChangeEdit(item)}>编辑</div>,
         },
         {
           key: '2',
-          label: <div onClick={onChangeEnd}> 结束 </div>,
+          label: (
+            <div onClick={() => onChangeEnd(item)}>
+              {item.status === 1 ? '关闭' : '开启'}
+            </div>
+          ),
         },
         {
           key: '3',
-          label: <div onClick={onChangeDelete}> 删除 </div>,
+          label: <div onClick={() => onChangeDelete(item)}> 删除 </div>,
         },
       ]}
     />
   )
+
   return (
     <Left isShowLeft={props.isShowLeft}>
+      <DeleteConfirm
+        text="确认要删除当前迭代版本？"
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      />
       <TopWrap>
         <AddButton text="创建迭代" onChangeClick={props.onChangeVisible} />
         <Space size={20}>
@@ -220,7 +265,7 @@ const WrapLeft = (props: Props) => {
           </Popover>
         </Space>
       </TopWrap>
-      {list.map((item, index) => <IterationCard menu={menu} key={`${item.name}_${index}`} item={item} />)}
+      {dataList.list?.map((item: any) => <IterationCard menu={menu(item)} key={item.id} item={item} />)}
     </Left>
   )
 }

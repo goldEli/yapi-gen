@@ -155,6 +155,7 @@ const CommonOperation = () => {
       <Member
         visible={memberVisible}
         onChangeVisible={() => setMemberVisible(!memberVisible)}
+        projectId={projectId}
       />
       <OperationTop>
         <ProjectInfo>

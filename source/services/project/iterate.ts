@@ -1,53 +1,23 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
+import moment from 'moment'
 
 export const getIterateList: any = async (params: any) => {
-
-  //   const response: any = await http.get<any>('getIterateList', {
-  //     search: {
-  //       project_id: params.projectId,
-  //       name: params.name,
-  //       created_at: params.time,
-  //       status: params.status,
-  //     },
-  //     pagesize: params.pagesize,
-  //     page: params.page,
-  //     orderkey: params.orderkey,
-  //     order: params.order,
-  //   })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        id: '1',
-        start_at: '2022-01-12',
-        end_at: '2011-12-12',
-        story_count: 12,
-        story_finish_count: 21,
-        status: 1,
-        name: '敏捷',
-      },
-      {
-        id: '2',
-        start_at: '2022-01-12',
-        end_at: '2011-12-12',
-        story_count: 12,
-        story_finish_count: 21,
-        status: 1,
-        name: '敏捷',
-      },
-    ],
-    pager: {
-      total: 20,
-      page: 2,
-      pagesize: 12,
+  const response: any = await http.get<any>('getIterateList', {
+    search: {
+      project_id: params.projectId,
+      name: params.name,
+      created_at: params.startTime,
+      end_at: params.endTime,
+      status: params.status,
+      all: true,
     },
-  }
+    orderkey: params.orderKey,
+    order: params.order,
+  })
   return {
-    currentPage: 1,
-    total: response.data.pager.total,
-    list: response.data.list.map((i: any) => ({
+    list: response.data.map((i: any) => ({
       id: i.id,
       status: i.status,
       name: i.name,
@@ -55,6 +25,7 @@ export const getIterateList: any = async (params: any) => {
       storyCount: i.story_count,
       createdTime: i.created_at,
       endTime: i.end_at,
+      info: i.info,
     })),
   }
 }
@@ -63,8 +34,8 @@ export const addIterate: any = async (params: any) => {
   await http.post<any>('addIterate', {
     name: params.name,
     info: params.info,
-    start_at: params.startTime,
-    end_at: params.endTime,
+    start_at: moment(params.time[0]).format('YYYY-MM-DD'),
+    end_at: moment(params.time[1]).format('YYYY-MM-DD'),
     project_id: params.projectId,
   })
 }
@@ -73,10 +44,10 @@ export const updateIterate: any = async (params: any) => {
   await http.patch<any>('editIterate', {
     name: params.name,
     info: params.info,
-    start_at: params.startTime,
-    end_at: params.endTime,
     project_id: params.projectId,
     id: params.id,
+    start_at: moment(params.time[0]).format('YYYY-MM-DD'),
+    end_at: moment(params.time[1]).format('YYYY-MM-DD'),
   })
 }
 

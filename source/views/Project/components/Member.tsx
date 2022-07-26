@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Input } from 'antd'
+import { Drawer, Form, Input } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import AddMember from './AddMember'
@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 interface Props {
   visible: boolean
   onChangeVisible(): void
+  projectId: any
 }
 
 const DrawerWrap = styled(Drawer)({
@@ -70,30 +71,25 @@ const ListItem = styled.div({
 })
 
 const Member = (props: Props) => {
-  const { getProjectMember, projectInfo } = useModel('project')
+  const { getProjectMember } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
+  const [form] = Form.useForm()
 
   const getList = async () => {
-    const result = await getProjectMember({
-      projectId: projectInfo?.id,
-      searchValue: '',
-      all: true,
-    })
+    const params = form.getFieldsValue()
+    const result = await getProjectMember(params)
     setMemberList(result)
   }
 
   useEffect(() => {
+    if (props.visible) {
+      getList()
+    }
+  }, [props.visible])
 
-    // getList()
-  }, [projectInfo])
-
-  const onChangeSearch = async (value: string) => {
-    const result = await getProjectMember({
-      projectId: projectInfo?.id,
-      searchValue: value,
-    })
-    setMemberList(result)
+  const onChangeSearch = () => {
+    getList()
   }
 
   return (
@@ -101,6 +97,7 @@ const Member = (props: Props) => {
       <AddMember
         value={isVisible}
         onChangeValue={() => setIsVisible(!isVisible)}
+        onChangeUpdate={() => getList()}
       />
       <DrawerWrap
         title={`项目成员（${memberList?.length}）`}
@@ -114,9 +111,6 @@ const Member = (props: Props) => {
         <div
           style={{
             padding: '0 16px',
-
-            // position: 'sticky',
-            // top: 0,
             background: 'white',
           }}
         >
@@ -129,18 +123,25 @@ const Member = (props: Props) => {
           >
             添加成员
           </ButtonWrap>
-          <Input
-            style={{ marginTop: 16 }}
-            onPressEnter={(e: any) => onChangeSearch(e.target.value)}
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 16 }}
+          <Form
+            form={form}
+            initialValues={{ all: true, projectId: props.projectId }}
+          >
+            <Form.Item noStyle label="searchValue">
+              <Input
+                style={{ marginTop: 16 }}
+                onPressEnter={onChangeSearch}
+                suffix={
+                  <IconFont
+                    type="search"
+                    style={{ color: '#BBBDBF', fontSize: 16 }}
+                  />
+                }
+                placeholder="搜索成员"
+                allowClear
               />
-            }
-            placeholder="搜索成员"
-            allowClear
-          />
+            </Form.Item>
+          </Form>
         </div>
         <ListWrap>
           {memberList?.map((i: any) => (
@@ -149,10 +150,10 @@ const Member = (props: Props) => {
                 <img src={i.avatar} alt="" />
                 <div>
                   <span>{i.name}</span>
-                  <span>{i.subname}</span>
+                  <span>{i.roleName}</span>
                 </div>
               </div>
-              <div className="job">{i.job}</div>
+              <div className="job">{i.positionName}</div>
             </ListItem>
           ))}
         </ListWrap>

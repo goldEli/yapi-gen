@@ -68,11 +68,11 @@ const ProjectInfo = (props: Props) => {
         </InfoItem>
         <InfoItem>
           <span>创建人</span>
-          <div>{projectInfo.user_name}</div>
+          <div>{projectInfo.userName}</div>
         </InfoItem>
         <InfoItem>
           <span>创建时间</span>
-          <div>{projectInfo.created_at}</div>
+          <div>{projectInfo.createTime}</div>
         </InfoItem>
         <InfoItem>
           <span>项目状态</span>
@@ -84,15 +84,15 @@ const ProjectInfo = (props: Props) => {
         </InfoItem>
         <InfoItem>
           <span>需求</span>
-          <div>{projectInfo.story_count}</div>
+          <div>{projectInfo.demandCount}</div>
         </InfoItem>
         <InfoItem>
           <span>迭代版本</span>
-          <div>{projectInfo.iterate_count}</div>
+          <div>{projectInfo.iterateCount}</div>
         </InfoItem>
         <InfoItem>
           <span>项目成员</span>
-          <div>{projectInfo.member_count}</div>
+          <div>{projectInfo.memberCount}</div>
         </InfoItem>
       </div>
     </Modal>

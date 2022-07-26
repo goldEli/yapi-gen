@@ -39,11 +39,13 @@ const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
 
 interface Props {
   onChangeVisible(): void
+  onChangeOperation(item: any): void
 }
 
 const IterationMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(true)
   const [isShowLeft, setIsShowLeft] = useState(true)
+
   const menu = (
     <Menu
       items={[
@@ -64,6 +66,7 @@ const IterationMain = (props: Props) => {
       <WrapLeft
         isShowLeft={isShowLeft}
         onChangeVisible={props.onChangeVisible}
+        onChangeOperation={props.onChangeOperation}
       />
       <Right isShowLeft={isShowLeft}>
         <Operation

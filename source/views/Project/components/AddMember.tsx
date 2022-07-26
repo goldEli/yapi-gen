@@ -38,6 +38,7 @@ interface Props {
   value: boolean
   onChangeValue(): void
   details?: any
+  onChangeUpdate(): void
 }
 
 const AddMember = (props: Props) => {
@@ -73,6 +74,7 @@ const AddMember = (props: Props) => {
         message.success('添加成功')
       }
       props.onChangeValue()
+      props.onChangeUpdate()
       form.resetFields()
     } catch (error) {
 
