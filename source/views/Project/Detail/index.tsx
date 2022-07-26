@@ -11,13 +11,28 @@ const Wrap = styled.div({
 })
 
 const Detail = () => {
-  const { getProjectInfo, getProjectCoverList } = useModel('project')
+  const {
+    getProjectInfo,
+    getProjectCoverList,
+    getProjectPermission,
+    setProjectPermission,
+  } = useModel('project')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+
+  const getPermissionList = async () => {
+    const result = await getProjectPermission({ projectId })
+    const arr = result.list?.map((i: any) => ({
+      label: i.name,
+      value: i.id,
+    }))
+    setProjectPermission(arr)
+  }
 
   useEffect(() => {
     getProjectInfo({ projectId })
     getProjectCoverList()
+    getPermissionList()
   }, [])
   return (
     <Wrap>

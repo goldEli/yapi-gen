@@ -6,6 +6,7 @@ import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
 import EditProject from '@/views/Project/components/EditProject'
 import { useState } from 'react'
+import { useModel } from '@/models'
 
 const Wrap = styled.div({
   padding: 24,
@@ -89,6 +90,7 @@ const CardItem = styled.div({
 
 const ProjectInfo = () => {
   const [visible, setVisible] = useState(false)
+  const { projectInfo } = useModel('project')
   return (
     <div style={{ padding: 16 }}>
       <EditProject
@@ -97,16 +99,14 @@ const ProjectInfo = () => {
       />
       <Wrap>
         <InfoLeft>
-          <img src={posterImg} alt="" />
+          <img src={projectInfo.cover} alt="" />
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
             }}
           >
-            <OmitText width={340}>
-              项目名称XXX项目名称XXXXXXXX项目名称XXXXXXXX项目名称XXXXXXXXXXXXX
-            </OmitText>
+            <OmitText width={340}>{projectInfo.name}</OmitText>
             <IconFont
               onClick={() => setVisible(true)}
               style={{
@@ -116,46 +116,44 @@ const ProjectInfo = () => {
               type="edit-square"
             />
           </div>
-          <SubText>
-            为了借助社交产品的流量，让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上绝大多数APP都有第三方分享的功能，它是内容分发。
-          </SubText>
+          <SubText>{projectInfo.info}</SubText>
         </InfoLeft>
         <InfoRight>
           <InfoItem>
             <div>项目ID</div>
-            <span>1000001</span>
+            <span>{projectInfo.id}</span>
           </InfoItem>
           <InfoItem>
             <div>创建人：</div>
-            <span>何飞</span>
+            <span>{projectInfo.user_name}</span>
           </InfoItem>
           <InfoItem>
             <div>创建时间：</div>
-            <span>2022-6-17 15:20</span>
+            <span>{projectInfo.created_at}</span>
           </InfoItem>
           <InfoItem>
             <div>结束时间：</div>
-            <span>2022-6-17 15:20</span>
+            <span>{projectInfo.stop_at}</span>
           </InfoItem>
           <InfoItem>
             <div>项目状态：</div>
-            <span>已开启</span>
+            <span>{projectInfo.status === 1 ? '开启' : '结束'}</span>
           </InfoItem>
           <InfoItem>
             <div>权限：</div>
-            <span>私有项目</span>
+            <span>{projectInfo.is_public === 1 ? '企业公开' : '私有项目'}</span>
           </InfoItem>
           <CardGroup size={24}>
             <CardItem>
-              <div>6</div>
+              <div>{projectInfo.story_count}</div>
               <span>需求</span>
             </CardItem>
             <CardItem>
-              <div>5</div>
+              <div>{projectInfo.iterate_count}</div>
               <span>迭代版本</span>
             </CardItem>
             <CardItem>
-              <div>20</div>
+              <div>{projectInfo.member_count}</div>
               <span>项目成员</span>
             </CardItem>
           </CardGroup>

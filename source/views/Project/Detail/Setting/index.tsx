@@ -6,6 +6,7 @@ import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useModel } from '@/models'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -89,15 +90,18 @@ const SideList = [
 const Setting = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { projectInfo } = useModel('project')
   const activeTabs = Number(searchParams.get('type')) || 0
+
   return (
     <Wrap>
       <Side>
-        <img src={posterImg} alt="" />
+        <img src={projectInfo.cover} alt="" />
         <MenuWrap>
           {SideList.map((item, index) => (
             <MenuItem
-              onClick={() => navigate(`/Detail/Setting?type=${index}`)}
+              onClick={() => navigate(`/Detail/Setting?type=${index}&id=${projectInfo.id}`)
+              }
               key={item.name}
               isActive={index === activeTabs}
             >

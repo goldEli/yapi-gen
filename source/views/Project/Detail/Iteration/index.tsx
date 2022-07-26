@@ -93,6 +93,7 @@ const IterationWrap = () => {
   const [visible, setVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
+  const projectId = searchParams.get('id')
   const navigate = useNavigate()
   const childContent = () => {
     if (type === 'info') {
@@ -103,7 +104,7 @@ const IterationWrap = () => {
     return <ChangeRecord />
   }
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Iteration?type=${val}`)
+    navigate(`/Detail/Iteration?type=${val}&id=${projectId}`)
   }
   const content = () => {
     if (!type) {

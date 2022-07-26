@@ -4,7 +4,6 @@
 import { Drawer, Input } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import posterImg from '@/assets/poster.png'
 import AddMember from './AddMember'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -79,12 +78,14 @@ const Member = (props: Props) => {
     const result = await getProjectMember({
       projectId: projectInfo?.id,
       searchValue: '',
+      all: true,
     })
     setMemberList(result)
   }
 
   useEffect(() => {
-    getList()
+
+    // getList()
   }, [projectInfo])
 
   const onChangeSearch = async (value: string) => {

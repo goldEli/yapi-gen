@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { Dropdown, Table } from 'antd'
 import { OmitText } from '@star-yun/ui'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import PopConfirm from '@/components/Popconfirm'
 import { ShapeContent } from '@/components/Shape'
 
@@ -115,6 +115,8 @@ const StatusWrap = styled.div({
 
 const DemandCard = (props: Props) => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
 
   const columnsChild = [
     {
@@ -186,7 +188,7 @@ const DemandCard = (props: Props) => {
         <MainWrap>
           <div
             style={{ cursor: 'pointer' }}
-            onClick={() => navigate('/Detail/Demand?type=info')}
+            onClick={() => navigate(`/Detail/Demand?type=info&id=${projectId}`)}
           >
             <OmitText width={200}>{props.item.name}</OmitText>
           </div>

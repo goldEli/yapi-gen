@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { Table, Select, DatePicker, Pagination, message, Form } from 'antd'
 import moment from 'moment'
 import { css } from '@emotion/css'
-import type { RangePickerProps } from 'antd/es/date-picker'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
@@ -28,9 +27,10 @@ const Header = styled.div({
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  height: 64,
+  minHeight: 64,
   background: 'white',
   padding: '0 24px',
+  flexWrap: 'wrap',
 })
 
 const SelectWrapBedeck = styled.div`
@@ -107,7 +107,9 @@ const StatusWrap = styled.div({
 const LoginLog = () => {
   const { getLoginLogs } = useModel('setting')
   const { userInfo } = useModel('user')
+  const { getStaffList } = useModel('staff')
   const [dataList, setDataList] = useState<any>([])
+  const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
 
   const getList = async () => {
@@ -136,11 +138,16 @@ const LoginLog = () => {
     }
   }
 
+  const getStaff = async () => {
+    const result = await getStaffList({ all: 1 })
+    setStaffList(result)
+  }
+
   useEffect(() => {
     getList()
+    getStaff()
   }, [])
 
-  const { Option } = Select
   const columns = [
     {
       title: '序号',
@@ -224,12 +231,8 @@ const LoginLog = () => {
                 style={{ width: '100%' }}
                 placeholder="所有"
                 showSearch
-              >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="disabled">Disabled</Option>
-                <Option value="Yiminghe">yiminghe</Option>
-              </SelectWrap>
+                options={staffList}
+              />
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>

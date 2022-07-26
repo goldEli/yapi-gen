@@ -1,7 +1,7 @@
+/* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
-import posterImg from '@/assets/poster.png'
 
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
@@ -9,7 +9,7 @@ export const getProjectList: any = async (params: any) => {
       self: params.self,
       keyword: params.searchValue,
       is_public: params.isPublic,
-      status: params.status,
+      status: Number(params.status) || '',
       all: params.all,
     },
     pagesize: params.pageSize,
@@ -99,53 +99,72 @@ export const getProjectMember: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params.searchValue,
-      all: true,
+      all: params.all,
+      job_id: params.jobIds,
+      user_group_id: params.userGroupIds,
     },
-    orderkey: params.orderkey,
+    orderkey: params.orderKey,
     order: params.order,
+    page: params.page,
+    pagesize: params.pageSize,
   })
-  return response.data.list
+  if (params.all) {
+    return response.data.list.map((i: any) => ({
+      id: i.id,
+      avatar: i.avatar,
+      name: i.name,
+      nickname: i.nickname,
+      positionName: i.position_name,
+      roleName: i.role_name,
+    }))
+  } else {
+    return {
+      currentPage: params.page,
+      total: response.data.pager.total,
+      list: response.data.list.map((i: any) => ({
+        id: i.id,
+        avatar: i.avatar,
+        name: i.name,
+        nickname: i.nickname,
+        gender: i.gender,
+        departmentName: i.department_name,
+        positionName: i.position_name,
+        roleName: i.role_name,
+        joinTime: i.created_at,
+        userGroupId: i.user_group_id,
+        userIds: i.id,
+      })),
+    }
+  }
 }
 
-export const addProjectMember: any = async (params: any) => {
+export const addMember: any = async (params: any) => {
   await http.post<any>('addProjectMember', {
-    search: {
-      project_id: params.projectId,
-      user_group_id: params.userGroupId,
-      user_ids: params.userIds,
-    },
+    project_id: params.projectId,
+    user_group_id: params.userGroupId,
+    user_ids: params.userIds,
   })
 }
 
-export const updateMemberPermission: any = async (params: any) => {
-  await http.put<any>('updateMemberPermission', {
-    search: {
-      project_id: params.projectId,
-      user_group_id: params.userGroupId,
-      user_ids: params.userIds,
-    },
+export const updateMember: any = async (params: any) => {
+  await http.put<any>('updateMember', {
+    project_id: Number(params.projectId),
+    user_group_id: params.userGroupId,
+    user_id: params.userIds,
   })
 }
 
-export const deleteMemberPermission: any = async (params: any) => {
-  await http.delete<any>('deleteMemberPermission', {
-    search: {
-      project_id: params.projectId,
-      user_id: params.userId,
-    },
+export const deleteMember: any = async (params: any) => {
+  await http.delete<any>('deleteMember', {
+    project_id: Number(params.projectId),
+    user_id: params.userId,
   })
 }
 
-export const getProjectPermission: any = async () => {
-
-  // const response: any = await http.get<any>('getProjectPermission')
-  const response: any = {}
-  response.data = [
-    { name: '管理员', id: 0, type: 1 },
-    { name: '编辑者', id: 1, type: 1 },
-    { name: '参与者', id: 2, type: 1 },
-    { name: '测试组', id: 3, type: 2 },
-  ]
+export const getProjectPermission: any = async (params: any) => {
+  const response: any = await http.get<any>('getProjectPermission', {
+    project_id: params.projectId,
+  })
   return {
     list: response.data.map((i: any) => ({
       id: i.id,
@@ -176,34 +195,18 @@ export const updatePermission: any = async (params: any) => {
 }
 
 export const getPermission: any = async (params: any) => {
-
-  // const response: any = await http.get<any>('getPermission', {
-  //   role_id: params.roleId,
-  // project_id: params.projectId,
-  // })
-  const response: any = {}
-  response.data = [
-    {
-      group_name: '需求',
-      permissions: [
-        { value: '01', label: '创建需求' },
-        { value: '11', label: '删除需求' },
-        { value: '21', label: '编辑需求' },
-      ],
-    },
-    {
-      group_name: '迭代',
-      permissions: [
-        { value: '41', label: '迭代创建需求' },
-        { value: '51', label: '迭代删除需求' },
-        { value: '61', label: '迭代编辑需求' },
-      ],
-    },
-  ]
+  const response: any = await http.get<any>('getPermission', {
+    role_id: params.roleId,
+    project_id: params.projectId,
+  })
   return {
     list: response.data.map((i: any) => ({
       name: i.group_name,
-      children: i.permissions,
+      children: i.permissions.map((k: any) => ({
+        label: k.name,
+        value: k.id,
+        checked: k.checked,
+      })),
     })),
   }
 }

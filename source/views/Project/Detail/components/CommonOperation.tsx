@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
 import { Space, Dropdown, Menu } from 'antd'
@@ -99,6 +99,8 @@ const CommonOperation = () => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const { projectInfo } = useModel('project')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
 
   const tabsList = [
     { name: '需求', type: 'Demand' },
@@ -128,7 +130,9 @@ const CommonOperation = () => {
         {
           key: 3,
           label: (
-            <MenuItems onClick={() => navigate('/Detail/Setting')}>
+            <MenuItems
+              onClick={() => navigate(`/Detail/Setting?id=${projectId}`)}
+            >
               <div>项目设置</div>
             </MenuItems>
           ),
@@ -170,7 +174,7 @@ const CommonOperation = () => {
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
-              onClick={() => navigate(`/Detail/${i.type}`)}
+              onClick={() => navigate(`/Detail/${i.type}?id=${projectId}`)}
               key={i.type}
               isActive={pathname.includes(i.type)}
             >

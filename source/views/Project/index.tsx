@@ -49,7 +49,7 @@ const Project = () => {
     searchValue: '',
     isPublic: '',
     all: '',
-    status: 1,
+    status: '',
   }
 
   const getList = (params: any) => {
@@ -68,7 +68,7 @@ const Project = () => {
   }
 
   const onChangeHidden = (hidden: boolean) => {
-    data.status = hidden ? 2 : 1
+    data.status = hidden ? '2' : '1'
     getList(data)
   }
 
@@ -97,12 +97,12 @@ const Project = () => {
 
   const onEndOrOpen = async (item: any) => {
     try {
-      if (operationDetail.status === 1) {
+      if (item.status === 1) {
         await stopProject({ id: item.id })
       } else {
         await openProject({ id: item.id })
       }
-      message.success(operationDetail.status === 1 ? '结束成功' : '开启成功')
+      message.success(item.status === 1 ? '结束成功' : '开启成功')
       setOperationDetail({})
     } catch (error) {
 
