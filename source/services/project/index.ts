@@ -54,7 +54,19 @@ export const getProjectInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params.projectId,
   })
-  return response.data
+  return {
+    cover: response.data.cover,
+    name: response.data.name,
+    info: response.data.info,
+    id: response.data.id,
+    userName: response.data.user_name,
+    createTime: response.data.created_at,
+    demandCount: response.data.story_count,
+    iterateCount: response.data.iterate_count,
+    memberCount: response.data.member_count,
+    endTime: response.data.stop_at,
+    isPublic: response.data.is_public,
+  }
 }
 
 export const addProject: any = async (params: any) => {
@@ -109,7 +121,7 @@ export const getProjectMember: any = async (params: any) => {
     pagesize: params.pageSize,
   })
   if (params.all) {
-    return response.data.list.map((i: any) => ({
+    return response.data.map((i: any) => ({
       id: i.id,
       avatar: i.avatar,
       name: i.name,

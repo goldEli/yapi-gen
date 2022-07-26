@@ -161,6 +161,7 @@ const ProjectMember = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationItem({})
+      getList()
     } catch (error) {
 
       //
@@ -270,6 +271,7 @@ const ProjectMember = () => {
         value={isAddVisible}
         onChangeValue={() => setIsAddVisible(!isAddVisible)}
         details={operationItem}
+        onChangeUpdate={() => getList()}
       />
       <Header>
         <HeaderTop>

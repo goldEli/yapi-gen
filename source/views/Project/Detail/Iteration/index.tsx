@@ -91,6 +91,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
 
 const IterationWrap = () => {
   const [visible, setVisible] = useState(false)
+  const [operationDetail, setOperationDetail] = useState({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
@@ -108,7 +109,12 @@ const IterationWrap = () => {
   }
   const content = () => {
     if (!type) {
-      return <IterationMain onChangeVisible={() => setVisible(!visible)} />
+      return (
+        <IterationMain
+          onChangeVisible={() => setVisible(!visible)}
+          onChangeOperation={setOperationDetail}
+        />
+      )
     }
     return (
       <>
@@ -158,6 +164,7 @@ const IterationWrap = () => {
       <EditIteration
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
+        details={operationDetail}
       />
       {content()}
     </div>

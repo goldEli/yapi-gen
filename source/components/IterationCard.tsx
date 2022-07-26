@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import Item from 'antd/lib/list/Item'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -71,7 +72,7 @@ const DetailWrap = styled.div({
 })
 
 interface Props {
-  item: object
+  item: any
   menu: React.ReactElement
 }
 
@@ -86,13 +87,15 @@ const IterationCard = (props: Props) => {
           strokeColor="#43BA9A"
           width={48}
           type="circle"
-          percent={75}
+          percent={props.item.finishCount / props.item.storyCount * 100}
           strokeWidth={8}
         />
         <InfoContent>
-          <TitleWrap>敏捷版本V1.0</TitleWrap>
-          <TimeWrap>2022-6-17-2022-6-17</TimeWrap>
-          <StatusTag>开启中</StatusTag>
+          <TitleWrap>{props.item.name}</TitleWrap>
+          <TimeWrap>
+            {props.item.createdTime}-{props.item.endTime}
+          </TimeWrap>
+          <StatusTag>{props.item.status === 1 ? '开启中' : '已关闭'}</StatusTag>
         </InfoContent>
       </div>
       <DetailWrap
