@@ -90,9 +90,12 @@ const Staff = () => {
     setEditData(e)
     setStaffPersonalVisible(true)
   }
-  const closeStaffPersonal = (e: any) => {
-    updateStaff(e)
-    setStaffPersonalVisible(false)
+  const closeStaffPersonal = async (e: any) => {
+    const res = await updateStaff(e)
+    if (res.code === 0) {
+      getStaffListData()
+      setStaffPersonalVisible(false)
+    }
   }
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const updateOrderkey = (key: any, order: any) => {

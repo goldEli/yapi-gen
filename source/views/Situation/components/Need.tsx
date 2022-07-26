@@ -1,10 +1,7 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
-import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
-import { Line } from '@ant-design/plots'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 import {
   ChartsItem,
   chartsTitle,
@@ -18,29 +15,55 @@ import {
   titleCss,
 } from '@/components/StyleCommon'
 
-const DemoLine = (props: any) => {
-  const { data: res } = props
-
-  const config = {
-    data: res,
-    xField: 'month',
-    yField: 'value',
-    seriesField: 'category',
-    xAxis: {
-      type: 'time',
-    },
-    yAxis: {
-      label: {},
-    },
-  }
-  if (res) {
-    return <Line {...config} />
-  }
-  return null
-}
-
 const Need = (props: any) => {
   const { data } = props
+
+  const options = {
+    chart: {
+      height: 350,
+      type: 'line',
+    },
+    title: {
+      text: '',
+    },
+    subtitle: {
+      text: '',
+    },
+    credits: {
+      enabled: false,
+    },
+    xAxis: {
+      categories: [
+        '一月',
+        '二月',
+        '三月',
+        '四月',
+        '五月',
+        '六月',
+        '七月',
+        '八月',
+        '九月',
+        '十月',
+        '十一月',
+        '十二月',
+      ],
+    },
+    yAxis: {
+      title: {
+        text: '',
+      },
+    },
+    plotOptions: {
+      line: {
+        dataLabels: {
+          enabled: true,
+        },
+
+        enableMouseTracking: false,
+      },
+    },
+    series: data?.chartsData,
+  }
 
   return (
     <ChartsWrap>
@@ -68,8 +91,8 @@ const Need = (props: any) => {
         </HomeWrap>
       </TextWrap>
       <div className={chartsTitle}>需求累计图</div>
-      <HightChartsWrap>
-        <DemoLine data={data?.chartsData} />
+      <HightChartsWrap style={{ height: '300px' }}>
+        <HighchartsReact highcharts={Highcharts} options={options} />
       </HightChartsWrap>
     </ChartsWrap>
   )

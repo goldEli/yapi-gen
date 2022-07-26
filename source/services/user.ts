@@ -1,3 +1,4 @@
+import { log } from '@jihe/secure-log'
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
@@ -79,29 +80,35 @@ export const getGlobalGeneral: any = async () => {
       ongoingTotal: response.data.story_statistics.ongoing_total,
       planningTotal: response.data.story_statistics.planning_total,
       chartsData: (() => {
-        const data1 = response.data.story_statistics.line_list.create.map(
-          (item: { month: any, number: any }) => ({
-            month: item.month,
-            value: item.number,
-            category: '创建需求',
-          }),
+        const timeData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        response.data.story_statistics.line_list.create.forEach((item: any) => {
+          timeData[item.month - 1] = item.number
+        })
+        const timeData2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        response.data.story_statistics.line_list.ongoing.forEach(
+          (item: any) => {
+            timeData2[item.month - 1] = item.number
+          },
         )
-        const data2 = response.data.story_statistics.line_list.ongoing.map(
-          (item: { month: any, number: any }) => ({
-            month: item.month,
-            value: item.number,
-            category: '进行中',
-          }),
-        )
-        const data3 = response.data.story_statistics.line_list.end.map(
-          (item: { month: any, number: any }) => ({
-            month: item.month,
-            value: item.number,
-            category: '已结束',
-          }),
-        )
+        const timeData3 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        response.data.story_statistics.line_list.end.forEach((item: any) => {
+          timeData3[item.month - 1] = item.number
+        })
 
-        return [...data1, ...data2, ...data3]
+        return [
+          {
+            name: '创建需求',
+            data: timeData,
+          },
+          {
+            name: '进行中',
+            data: timeData2,
+          },
+          {
+            name: '已结束',
+            data: timeData3,
+          },
+        ]
       })(),
     },
 
