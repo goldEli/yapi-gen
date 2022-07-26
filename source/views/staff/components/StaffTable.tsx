@@ -1,15 +1,10 @@
-/* eslint-disable no-empty-function */
-/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/jsx-handler-names */
-/* eslint-disable max-len */
-import { Button, Dropdown, Menu } from 'antd'
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import Pop from '@/components/Popconfirm'
+import { Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ShowWrap } from '@/components/StyleCommon'
+import Sort from '@/components/Sort'
 
 const flexCss = css`
   display: flex;
@@ -33,6 +28,18 @@ const SetHead = styled.div`
 `
 
 export const useDynamicColumns = (state: any) => {
+  const NewSort = (props: any) => {
+    return (
+      <Sort
+        fixedKey={props.fixedKey}
+        onChangeKey={state.updateOrderkey}
+        nowKey={state.orderKey}
+        order={state.order}
+      >
+        {props.children}
+      </Sort>
+    )
+  }
   return [
     {
       width: 200,
@@ -82,35 +89,20 @@ export const useDynamicColumns = (state: any) => {
         text: string | number,
         record: Record<string, string | number>,
       ) => {
-        return <div onClick={() => state.showModal2(record)}>{text}</div>
+        return (
+          <div onClick={() => state.showModal2(record)}>
+            {text === 2 ? '男' : '女'}
+          </div>
+        )
       },
     },
     {
-      title: '邮箱',
+      title: <NewSort fixedKey="email">邮箱</NewSort>,
       dataIndex: 'email',
       key: 'email',
-      render: (text: any, record: any) => (
-        <Pop
-          content={({ onHide }: { onHide(): void }) => {
-            return (
-              <ShapeContent
-                tap={() => {
-
-                  //
-                }}
-                hide={onHide}
-                record={record}
-              />
-            )
-          }}
-          record={record}
-        >
-          123
-        </Pop>
-      ),
     },
     {
-      title: '手机',
+      title: <NewSort fixedKey="phone">手机</NewSort>,
       dataIndex: 'phone',
       key: 'phone',
     },
@@ -123,18 +115,6 @@ export const useDynamicColumns = (state: any) => {
       title: '职位',
       dataIndex: 'position_name',
       key: 'position_name',
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-      ) => (
-        <Pop
-          content={({ onHide }: { onHide(): void }) => <LevelContent onTap={() => {}} onHide={onHide} record={record} />
-          }
-          record={record}
-        >
-          <Button>321</Button>
-        </Pop>
-      ),
     },
     {
       title: '权限组',

@@ -11,7 +11,7 @@ export const getStaffList: any = async (params: any) => {
       keyword: params.keyword,
       all: params.all,
     },
-    order: params.order,
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
     page: params.page,
     pagesize: params.pagesize,

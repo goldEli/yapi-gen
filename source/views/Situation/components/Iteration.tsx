@@ -39,7 +39,7 @@ const DemoColumn = (props: any) => {
         alias: '类别',
       },
       sales: {
-        alias: '销售额',
+        alias: '数量',
       },
     },
   }
