@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
@@ -14,51 +12,14 @@ import {
   titleCss,
 } from '@/components/StyleCommon'
 
-const DemoColumn = () => {
-  const data = [
-    {
-      type: '家具家电',
-      sales: 38,
-    },
-    {
-      type: '粮油副食',
-      sales: 52,
-    },
-    {
-      type: '生鲜水果',
-      sales: 61,
-    },
-    {
-      type: '美容洗护',
-      sales: 145,
-    },
-    {
-      type: '母婴用品',
-      sales: 48,
-    },
-    {
-      type: '进口食品',
-      sales: 38,
-    },
-    {
-      type: '食品饮料',
-      sales: 38,
-    },
-    {
-      type: '家庭清洁',
-      sales: 38,
-    },
-  ]
+const DemoColumn = (props: any) => {
+  const { data: res } = props
+
   const config = {
-    data,
+    data: res,
     xField: 'type',
     yField: 'sales',
     label: {
-
-      // 可手动配置 label 数据标签位置
-      // position: 'middle',
-      // 'top', 'bottom', 'middle',
-      // 配置样式
       style: {
         fill: '#FFFFFF',
         opacity: 0.6,
@@ -75,52 +36,42 @@ const DemoColumn = () => {
         alias: '类别',
       },
       sales: {
-        alias: '销售额',
+        alias: '数量',
       },
     },
   }
-  return <Column {...config} />
+  if (res) {
+    return <Column {...config} />
+  }
+  return null
 }
 
-const Staff = () => {
-  const [state, setState] = useState()
-  const navigate = useNavigate()
+const Staff = (props: any) => {
+  const { data } = props
   return (
     <ChartsWrap>
       <div className={titleCss}>员工概况</div>
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.total}</span>
+            <span className={title2Css}>公司成员</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.boyCount}</span>
+            <span className={title2Css}>男</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.girlCount}</span>
+            <span className={title2Css}>女</span>
           </ChartsItem>
         </HomeWrap>
       </TextWrap>
       <div className={chartsTitle}>职位人数分布</div>
       <HightChartsWrap>
-        <DemoColumn />
+        <DemoColumn data={data?.chartsData} />
       </HightChartsWrap>
     </ChartsWrap>
   )
