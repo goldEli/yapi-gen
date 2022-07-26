@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type SetStateAction } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, Pagination } from 'antd'
@@ -47,6 +47,8 @@ const Staff = () => {
   const [editData, setEditData] = useState<any>({})
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [orderKey, setOrderKey] = useState<any>()
+  const [order, setOrder] = useState<any>(3)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [staffPersonalVisible, setStaffPersonalVisible]
     = useState<boolean>(false)
@@ -71,8 +73,8 @@ const Staff = () => {
       departmentId: searchGroups.departmentId,
       userGroupId: searchGroups.userGroupId,
       keyword,
-      order: 'asc',
-      orderkey: '',
+      order,
+      orderkey: orderKey,
       page,
       pagesize,
     })
@@ -92,8 +94,17 @@ const Staff = () => {
     updateStaff(e)
     setStaffPersonalVisible(false)
   }
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const updateOrderkey = (key: any, order: any) => {
+    setOrderKey(key)
+    setOrder(order)
+  }
+
   const columns = useDynamicColumns({
     controlStaffPersonalVisible,
+    orderKey,
+    order,
+    updateOrderkey,
   })
 
   const selectColum: any = useMemo(() => {
@@ -141,7 +152,8 @@ const Staff = () => {
   }
   useEffect(() => {
     init()
-  }, [page, pagesize, keyword, searchGroups])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, pagesize, keyword, searchGroups, orderKey, order])
   const menu = (
     <Menu
       items={[
