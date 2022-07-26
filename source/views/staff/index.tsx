@@ -239,15 +239,18 @@ const Staff = () => {
         onClose={close2}
         getCheckList={getCheckList}
       />
-
-      <StaffPersonal
-        data={editData}
-        isVisible={staffPersonalVisible}
-        onClose={() => {
-          setStaffPersonalVisible(false)
-        }}
-        onConfirm={closeStaffPersonal}
-      />
+      {staffPersonalVisible
+        ? (
+            <StaffPersonal
+              data={editData}
+              isVisible={staffPersonalVisible}
+              onClose={() => {
+                setStaffPersonalVisible(false)
+              }}
+              onConfirm={closeStaffPersonal}
+            />
+          )
+        : null}
     </>
   )
 }

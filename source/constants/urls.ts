@@ -50,7 +50,7 @@ const urls = {
   changeCompany: '/b/user_change_company',
   getStaffList: '/b/user/list',
   editStaff: '/b/user/update',
-  refreshStaff: '/b/user/refresh',
+  refreshStaff: '/b/user/update/refresh',
   getDepartmentSelectList: '/b/user/department/list',
   getPositionSelectList: '/b/user/position/list',
   getGlobalGeneral: '/b/company/statistics',

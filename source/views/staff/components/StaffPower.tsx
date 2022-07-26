@@ -52,6 +52,7 @@ export const StaffPersonal = (props: {
     roleId: data.user_group_id,
     userId: data.id,
   })
+
   const { getRoleList } = useModel('staff')
 
   const init = async () => {
@@ -97,7 +98,7 @@ export const StaffPersonal = (props: {
           <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
           <RightLine>
             <Select
-              defaultValue={info.roleId}
+              defaultValue={data.user_group_id === 0 ? '' : data.user_group_id}
               style={{ width: 120 }}
               onChange={handleChange}
             >

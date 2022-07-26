@@ -82,7 +82,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: '性别',
+      title: <NewSort fixedKey="gender">性别</NewSort>,
       dataIndex: 'gender',
       key: 'gender',
       render: (
@@ -107,27 +107,27 @@ export const useDynamicColumns = (state: any) => {
       key: 'phone',
     },
     {
-      title: '部门',
+      title: <NewSort fixedKey="department_name">部门</NewSort>,
       dataIndex: 'department_name',
       key: 'department_name',
     },
     {
-      title: '职位',
+      title: <NewSort fixedKey="position_name">职位</NewSort>,
       dataIndex: 'position_name',
       key: 'position_name',
     },
     {
-      title: '权限组',
+      title: <NewSort fixedKey="role_name">权限组</NewSort>,
       dataIndex: 'role_name',
       key: 'role_name',
     },
     {
-      title: '项目数',
+      title: <NewSort fixedKey="project_num">项目数</NewSort>,
       dataIndex: 'project_num',
       key: 'project_num',
     },
     {
-      title: '创建时间',
+      title: <NewSort fixedKey="created_at">创建时间</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
     },

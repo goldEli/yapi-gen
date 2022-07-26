@@ -66,7 +66,7 @@ export const updateStaff: any = async (params: any) => {
 }
 
 export const refreshStaff: any = async (params: any) => {
-  const response = await http.get('refreshStaff', params)
+  const response = await http.post('refreshStaff', params)
   return response
 }
 
