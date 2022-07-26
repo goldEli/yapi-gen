@@ -16,6 +16,7 @@ export default () => {
     deleteIterate,
     getIterateChangeLog,
     updateIterateStatus,
+    getIterateStatistics,
   } = services.iterate
 
   return {
@@ -27,5 +28,6 @@ export default () => {
     getIterateInfo,
     getIterateChangeLog,
     updateIterateStatus,
+    getIterateStatistics,
   }
 }

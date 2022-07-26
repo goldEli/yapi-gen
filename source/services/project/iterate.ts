@@ -23,7 +23,7 @@ export const getIterateList: any = async (params: any) => {
       name: i.name,
       finishCount: i.story_finish_count,
       storyCount: i.story_count,
-      createdTime: i.created_at,
+      createdTime: i.start_at,
       endTime: i.end_at,
       info: i.info,
     })),
@@ -59,23 +59,21 @@ export const deleteIterate: any = async (params: any) => {
 }
 
 export const getIterateInfo: any = async (params: any) => {
+  const response: any = await http.get<any>('getIterateInfo', {
+    project_id: params.projectId,
+    id: params.id,
+  })
 
-  //   const response: any = await http.get<any>('getIterateInfo', {
-  //     project_id: params.projectId,
-  //     id: params.id,
-  //   })
-  const response: any = {}
-  response.data = {
-    id: 0,
-    name: '敏捷',
-    info: '描述',
-    start_at: '2022-01-12',
-    end_at: '2022-12-01',
-    story_count: 12,
-    story_finish_count: 21,
-    status: 2,
+  return {
+    name: response.data.name,
+    id: response.data.id,
+    info: response.data.info,
+    status: response.data.status,
+    finishCount: response.data.story_finish_count,
+    storyCount: response.data.story_count,
+    startTime: response.data.start_at,
+    endTime: response.data.end_at,
   }
-  return response.data
 }
 
 export const getIterateChangeLog: any = async (params: any) => {
@@ -138,4 +136,19 @@ export const updateIterateStatus: any = async (params: any) => {
     id: params.id,
     status: params.status,
   })
+}
+
+export const getIterateStatistics: any = async (params: any) => {
+  const response = await http.get<any>('iterateStatistics', {
+    project_id: params.projectId,
+    iterate_id: params.id,
+  })
+
+  return {
+    burnDownChart: response.data.burnDownChart,
+    storyStatusChart: response.data.storyStatusChart.map((i: any) => ({
+      type: i.content,
+      sales: i.sort,
+    })),
+  }
 }

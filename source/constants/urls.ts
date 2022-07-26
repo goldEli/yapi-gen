@@ -31,6 +31,7 @@ const urls = {
   getIterateInfo: '/b/iterate/info',
   getIterateChangeLog: '/b/iterate/changelog',
   updateIterateStatus: '/b/iterate/status',
+  iterateStatistics: '/b/iterate/statistics',
   updateDemandStatus: '/b/story/update_status',
   getDemandInfo: '/b/story/getinfo',
   getDemandList: '/b/story/getlist',

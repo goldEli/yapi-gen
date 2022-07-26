@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import EditIteration from './components/EditIteration'
 import IterationMain from './IterationMain'
 import IterationInfo from './IterationInfo'
 import ChangeRecord from './ChangeRecord'
 import Demand from './Demand'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button } from 'antd'
+import { useModel } from '@/models'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -96,6 +98,15 @@ const IterationWrap = () => {
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
   const navigate = useNavigate()
+  const iterateId = searchParams.get('iterateId')
+  const { getIterateInfo, iterateInfo } = useModel('iterate')
+
+  useEffect(() => {
+    if (type) {
+      getIterateInfo({ projectId, id: iterateId })
+    }
+  }, [type])
+
   const childContent = () => {
     if (type === 'info') {
       return <IterationInfo />
@@ -105,8 +116,11 @@ const IterationWrap = () => {
     return <ChangeRecord />
   }
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Iteration?type=${val}&id=${projectId}`)
+    navigate(
+      `/Detail/Iteration?type=${val}&id=${projectId}&iterateId=${iterateId}`,
+    )
   }
+
   const content = () => {
     if (!type) {
       return (
@@ -120,8 +134,8 @@ const IterationWrap = () => {
       <>
         <DemandInfoWrap>
           <NameWrap>
-            <span>敏捷系统V2.0</span>
-            <div>开启</div>
+            <span>{iterateInfo.name}</span>
+            <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
           </NameWrap>
           <Space size={16}>
             <Button type="primary" onClick={() => setVisible(!visible)}>
@@ -164,7 +178,7 @@ const IterationWrap = () => {
       <EditIteration
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
-        details={operationDetail}
+        details={iterateId ? iterateInfo : operationDetail}
       />
       {content()}
     </div>

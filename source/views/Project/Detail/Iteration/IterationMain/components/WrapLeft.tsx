@@ -15,13 +15,15 @@ import {
   Checkbox,
   Menu,
   message,
+  Radio,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import moment from 'moment'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -98,8 +100,10 @@ const sortList = [
 ]
 
 const WrapLeft = (props: Props) => {
-  const [from] = Form.useForm()
+  const [form] = Form.useForm()
+  const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
+  const [isFilter, setIsFilter] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [currentSort, setCurrentSort] = useState(sortList[0])
   const [dataList, setDataList] = useState<any>([])
@@ -109,7 +113,21 @@ const WrapLeft = (props: Props) => {
     = useModel('iterate')
 
   const getList = async () => {
-    const values = from.getFieldsValue()
+    const values = form.getFieldsValue()
+    if (values.startTime) {
+      values.startTime = [
+        moment(values.startTime[0]).format('YYYY-MM-DD'),
+        moment(values.startTime[1]).format('YYYY-MM-DD'),
+      ]
+    }
+
+    if (values.endTime) {
+      values.endTime = [
+        moment(values.endTime[0]).format('YYYY-MM-DD'),
+        moment(values.endTime[1]).format('YYYY-MM-DD'),
+      ]
+    }
+
     const params = {
       projectId,
       order: currentSort.type,
@@ -124,10 +142,27 @@ const WrapLeft = (props: Props) => {
     getList()
   }, [])
 
+  useEffect(() => {
+    getList()
+  }, [currentSort])
+
   const options = [
-    { label: '开启', value: '1' },
-    { label: '结束', value: '2' },
+    { label: '开启', value: 1 },
+    { label: '结束', value: 2 },
   ]
+
+  const onConfirmFilter = () => {
+    getList()
+  }
+
+  const onReset = () => {
+    form.resetFields()
+  }
+
+  const onClose = () => {
+    form.resetFields()
+    setIsFilter(false)
+  }
 
   const sortContent = (
     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
@@ -142,9 +177,10 @@ const WrapLeft = (props: Props) => {
       ))}
     </div>
   )
+
   const filterContent = (
     <div className="filterContent">
-      <Form form={from} style={{ width: 260, padding: 24 }} layout="vertical">
+      <Form form={form} style={{ width: 260, padding: 24 }} layout="vertical">
         <Form.Item label="标题" name="name">
           <Input placeholder="请输入标题" />
         </Form.Item>
@@ -155,7 +191,7 @@ const WrapLeft = (props: Props) => {
           <DatePicker.RangePicker />
         </Form.Item>
         <Form.Item label="状态" name="status">
-          <Checkbox.Group options={options} defaultValue={['Apple']} />
+          <Radio.Group options={options} defaultValue={1} />
         </Form.Item>
         <div
           style={{
@@ -164,10 +200,12 @@ const WrapLeft = (props: Props) => {
             justifyContent: 'space-between',
           }}
         >
-          <div>清空</div>
+          <div onClick={onReset}>清空</div>
           <Space size={16}>
-            <Button>取消</Button>
-            <Button type="primary">过滤</Button>
+            <Button onClick={onClose}>取消</Button>
+            <Button type="primary" onClick={onConfirmFilter}>
+              过滤
+            </Button>
           </Space>
         </div>
       </Form>
@@ -237,6 +275,10 @@ const WrapLeft = (props: Props) => {
     />
   )
 
+  const onClickItem = (item: any) => {
+    navigate(`/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`)
+  }
+
   return (
     <Left isShowLeft={props.isShowLeft}>
       <DeleteConfirm
@@ -249,6 +291,7 @@ const WrapLeft = (props: Props) => {
         <AddButton text="创建迭代" onChangeClick={props.onChangeVisible} />
         <Space size={20}>
           <Popover
+            trigger="click"
             placement="bottom"
             content={sortContent}
             getPopupContainer={node => node}
@@ -257,15 +300,24 @@ const WrapLeft = (props: Props) => {
           </Popover>
           <Divider style={{ margin: 0, height: 20 }} type="vertical" />
           <Popover
+            trigger="click"
             placement="bottomRight"
             content={filterContent}
             getPopupContainer={node => node}
+            visible={isFilter}
           >
-            <IconWrap type="filter" />
+            <IconWrap onClick={() => setIsFilter(true)} type="filter" />
           </Popover>
         </Space>
       </TopWrap>
-      {dataList.list?.map((item: any) => <IterationCard menu={menu(item)} key={item.id} item={item} />)}
+      {dataList.list?.map((item: any) => (
+        <IterationCard
+          menu={menu(item)}
+          key={item.id}
+          item={item}
+          onClickItem={() => onClickItem(item)}
+        />
+      ))}
     </Left>
   )
 }

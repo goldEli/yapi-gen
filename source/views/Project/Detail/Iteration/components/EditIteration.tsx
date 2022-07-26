@@ -69,9 +69,14 @@ const EditIteration = (props: Props) => {
 
   useEffect(() => {
     setHtml(props.details.info)
-    form.setFieldsValue({
-      time: [moment(props.details.createdTime), moment(props.details.endTime)],
-    })
+    if (props.details.startTime) {
+      form.setFieldsValue({
+        time: [
+          moment(props.details.createdTime),
+          moment(props.details.endTime),
+        ],
+      })
+    }
   }, [props.details])
 
   const onConfirm = async () => {
