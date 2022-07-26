@@ -28,13 +28,13 @@ client.config({
     },
     (data: any) => {
       if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
-        message.error(data.msg)
+        message.error(data.message)
         throw new Error(data.code)
       }
       return {
         code: Number(data.code),
         data: data.data,
-        message: data.msg,
+        message: data.message,
       }
     },
   ],

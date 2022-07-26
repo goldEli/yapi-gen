@@ -18,44 +18,29 @@ import {
   titleCss,
 } from '@/components/StyleCommon'
 
-const DemoLine = () => {
-  const [data, setData] = useState([])
-
-  const asyncFetch = () => {
-    fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json',
-    )
-      .then(response => response.json())
-      .then(json => setData(json))
-  }
-
-  useEffect(() => {
-    asyncFetch()
-  }, [])
+const DemoLine = (props: any) => {
+  const { data: res } = props
 
   const config = {
-    data,
-    xField: 'year',
+    data: res,
+    xField: 'month',
     yField: 'value',
     seriesField: 'category',
     xAxis: {
       type: 'time',
     },
     yAxis: {
-      label: {
-
-        // 数值格式化为千分位
-        formatter: (v: any) => String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
-      },
+      label: {},
     },
   }
-
-  return <Line {...config} />
+  if (res) {
+    return <Line {...config} />
+  }
+  return null
 }
 
-const Need = () => {
-  const [state, setState] = useState()
-  const navigate = useNavigate()
+const Need = (props: any) => {
+  const { data } = props
 
   return (
     <ChartsWrap>
@@ -63,36 +48,28 @@ const Need = () => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.total}</span>
+            <span className={title2Css}>创建需求</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.planningTotal}</span>
+            <span className={title2Css}>未开始</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.ongoingTotal}</span>
+            <span className={title2Css}>进行中</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>16</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title1Css}>{data?.endTotal}</span>
+            <span className={title2Css}>已结束</span>
           </ChartsItem>
         </HomeWrap>
       </TextWrap>
       <div className={chartsTitle}>需求累计图</div>
       <HightChartsWrap>
-        <DemoLine />
+        <DemoLine data={data?.chartsData} />
       </HightChartsWrap>
     </ChartsWrap>
   )

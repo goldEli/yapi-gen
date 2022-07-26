@@ -58,8 +58,81 @@ export const getGlobalGeneral: any = async () => {
         },
       ],
     },
-    user: response.data.user_statistics,
-    need: response.data.story_statistics,
-    iterate: response.data.iterate_statistics,
+
+    user: {
+      total: response.data.user_statistics.user_total,
+      boyCount: response.data.user_statistics.user_count[1].count,
+      girlCount: response.data.user_statistics.user_count[0].count,
+      chartsData: response.data.user_statistics.position_count.map(
+        (item: { position_name: any, count: any }) => {
+          return {
+            type: item.position_name,
+            sales: item.count,
+          }
+        },
+      ),
+    },
+
+    need: {
+      total: response.data.story_statistics.total,
+      endTotal: response.data.story_statistics.end_total,
+      ongoingTotal: response.data.story_statistics.ongoing_total,
+      planningTotal: response.data.story_statistics.planning_total,
+      chartsData: (() => {
+        const data1 = response.data.story_statistics.line_list.create.map(
+          (item: { month: any, number: any }) => ({
+            month: item.month,
+            value: item.number,
+            category: '创建需求',
+          }),
+        )
+        const data2 = response.data.story_statistics.line_list.ongoing.map(
+          (item: { month: any, number: any }) => ({
+            month: item.month,
+            value: item.number,
+            category: '进行中',
+          }),
+        )
+        const data3 = response.data.story_statistics.line_list.end.map(
+          (item: { month: any, number: any }) => ({
+            month: item.month,
+            value: item.number,
+            category: '已结束',
+          }),
+        )
+
+        return [...data1, ...data2, ...data3]
+      })(),
+    },
+
+    iterate: {
+      ...response.data.iterate_statistics,
+      chartsData: [
+        {
+          type: '进度100%',
+          sales: response.data.iterate_statistics.schedule.schedule_100,
+        },
+        {
+          type: '进度90~100%',
+          sales: response.data.iterate_statistics.schedule.schedule_pass90,
+        },
+        {
+          type: '进度60%~90%',
+          sales: response.data.iterate_statistics.schedule.schedule_pass60,
+        },
+        {
+          type: '进度30%~60%',
+          sales: response.data.iterate_statistics.schedule.schedule_pass30,
+        },
+        {
+          type: '进度0%~30%',
+          sales: response.data.iterate_statistics.schedule.schedule_pass0,
+        },
+        {
+          type: '进度0%',
+          sales: response.data.iterate_statistics.schedule.schedule_0,
+        },
+      ],
+    },
   }
 }

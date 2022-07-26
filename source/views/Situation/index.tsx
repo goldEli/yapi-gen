@@ -71,9 +71,9 @@ const Situation = () => {
       </Head>
       <Wrap>
         <Project data={generalData?.project} />
-        <Staff />
-        <Need />
-        <Iteration />
+        <Staff data={generalData?.user} />
+        <Need data={generalData?.need} />
+        <Iteration data={generalData?.iterate} />
       </Wrap>
       <CompanyModal
         visible={companyModalVisible}
