@@ -1,14 +1,12 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, DatePicker, Select, Popover, Space } from 'antd'
+import { Modal, Form, Input, DatePicker, Select, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import Editor from '@/components/Editor'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -164,9 +162,7 @@ const QuicklyCreate = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont type="edit-square" />
-          <Form.Item label="需求描述">
-            <Editor />
-          </Form.Item>
+          <Form.Item label="需求描述" />
         </div>
 
         <div style={{ display: 'flex' }}>

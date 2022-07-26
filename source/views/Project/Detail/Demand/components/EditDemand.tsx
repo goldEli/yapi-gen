@@ -9,7 +9,6 @@ import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import Editor from '@/components/Editor'
 import TagComponent from './TagComponent'
 import UploadAttach from './UploadAttach'
 
@@ -160,9 +159,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="edit-square" />
-          <Form.Item label="需求描述">
-            <Editor />
-          </Form.Item>
+          <Form.Item label="需求描述" />
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="user" />
