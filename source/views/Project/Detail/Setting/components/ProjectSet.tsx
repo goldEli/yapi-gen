@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Modal, Input, Menu, Dropdown } from 'antd'
+import { Checkbox, Space, Modal, Input, Menu, Dropdown, message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { useSearchParams } from 'react-router-dom'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const Warp = styled.div({
   padding: 16,
@@ -68,12 +70,13 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     justifyContent: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
-    div: {
+    position: 'relative',
+    '.name': {
       fontSize: 14,
       color: 'black',
       fontWeight: 400,
     },
-    span: {
+    '.subName': {
       fontSize: 12,
       color: '#BBBDBF',
       fontWeight: 400,
@@ -183,38 +186,58 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const ProjectSet = () => {
-  const [activeTabs, setActiveTabs] = useState(-1)
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
-  const [havePermission, setHavePermission] = useState<any>([])
+  const [permissionList, setPermissionList] = useState<any>([])
   const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
+  const [activeDetail, setActiveDetail] = useState<any>({})
   const [addValue, setAddValue] = useState('')
-  const { getProjectPermission, getPermission, setPermission, addPermission }
-    = useModel('project')
+  const [operationDetail, setOperationDetail] = useState<any>({})
+  const [isDelete, setIsDelete] = useState(false)
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const {
+    getProjectPermission,
+    getPermission,
+    setPermission,
+    addPermission,
+    updatePermission,
+    deletePermission,
+  } = useModel('project')
 
-  const init = async () => {
-    const result = await getProjectPermission()
-    setDataList(result)
-    setActiveTabs(0)
+  const getPermissionList = async (id: number) => {
+    const result = await getPermission({ projectId, roleId: id })
+    setPermissionList(result)
+    let keys: any[] = []
+    result.list.forEach((i: any) => {
+      const a = i.children.filter((j: any) => j.checked)
+      keys = [...keys, ...a.map((k: any) => k.value)]
+    })
+    setSelectKeys(keys)
   }
 
-  const getPermissionMethod = async () => {
-    const result = await getPermission(activeTabs)
-    setHavePermission(result)
+  const init = async (isInit?: boolean) => {
+    const result = await getProjectPermission({ projectId })
+    setDataList(result.list)
+    if (isInit) {
+      setActiveDetail(result.list[0])
+      getPermissionList(result.list[0].id)
+    }
   }
 
   useEffect(() => {
-    init()
+    init(true)
   }, [])
-
-  useEffect(() => {
-    getPermissionMethod()
-  }, [activeTabs])
 
   const onSavePermission = async () => {
     try {
-      await setPermission({ roleId: activeTabs, permissionIds: selectKeys })
-      getPermissionMethod()
+      await setPermission({
+        roleId: activeDetail.id,
+        permissionIds: selectKeys,
+        projectId,
+      })
+      getPermissionList(activeDetail.id)
+      message.success('保存成功')
 
       //
     } catch (error) {
@@ -225,9 +248,22 @@ const ProjectSet = () => {
 
   const onSaveGroup = async () => {
     try {
-      await addPermission({ name: addValue })
+      if (operationDetail.id) {
+        await updatePermission({
+          name: addValue,
+          id: operationDetail.id,
+          projectId,
+        })
+        setAddValue('')
+        setOperationDetail({})
+        message.success('编辑成功')
+      } else {
+        await addPermission({ name: addValue, projectId })
+        setAddValue('')
+        message.success('创建成功')
+      }
       setIsVisible(false)
-      setAddValue('')
+      init()
 
       //
     } catch (error) {
@@ -236,10 +272,14 @@ const ProjectSet = () => {
     }
   }
 
-  const onClickMenu = (e: any, type: string) => {
+  const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
+    setOperationDetail(item)
     if (type === 'edit') {
       setIsVisible(true)
+      setAddValue(item.name)
+    } else {
+      setIsDelete(true)
     }
   }
 
@@ -248,22 +288,47 @@ const ProjectSet = () => {
     setAddValue('')
   }
 
-  const menu = (
+  const onChangeTabs = (item: any) => {
+    setActiveDetail(item)
+    getPermissionList(item.id)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deletePermission({ id: operationDetail.id })
+      setIsDelete(false)
+      setOperationDetail({})
+      message.success('删除成功')
+      init()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const menu = (item: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit')}>编辑</div>,
+          label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
         },
         {
           key: '2',
-          label: <div onClick={e => onClickMenu(e, 'delete')}>删除</div>,
+          label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
         },
       ]}
     />
   )
+
   return (
     <div style={{ height: '100%' }}>
+      <DeleteConfirm
+        isVisible={isDelete}
+        text="确认要删除该分组？"
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
       <Modal
         footer={false}
         visible={isVisible}
@@ -273,7 +338,7 @@ const ProjectSet = () => {
         width={420}
       >
         <ModalHeader>
-          <span>创建权限组</span>
+          <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>
           <IconFont
             onClick={onClose}
             style={{ cursor: 'pointer' }}
@@ -299,23 +364,23 @@ const ProjectSet = () => {
           <SetLeft>
             <Title style={{ marginLeft: 24 }}>用户组</Title>
             <MenuItems>
-              {dataList.list?.map((item: any) => (
+              {dataList?.map((item: any) => (
                 <MenuItem
                   key={item.id}
-                  onClick={() => setActiveTabs(item.id)}
-                  isActive={item.id === activeTabs}
+                  onClick={() => onChangeTabs(item)}
+                  isActive={item.id === activeDetail.id}
                 >
                   <div className="name">{item.name}</div>
                   <span className="subName">
                     {item.type === 1 ? '系统权限组' : '自定义权限组'}
                   </span>
                   <Dropdown
-                    overlay={menu}
+                    overlay={() => menu(item)}
                     placement="bottomRight"
-                    trigger={['click']}
+                    trigger={['hover']}
                     getPopupContainer={node => node}
                   >
-                    <IconWrap type="more" />
+                    <IconWrap type="more" hidden={item.type === 1} />
                   </Dropdown>
                 </MenuItem>
               ))}
@@ -333,14 +398,14 @@ const ProjectSet = () => {
             </div>
           </SetLeft>
           <SetRight>
-            <Title>{dataList.list ? dataList.list[activeTabs].name : ''}</Title>
+            <Title>{activeDetail.name}</Title>
             <TitleGroup>
               <CheckboxWrap>全选</CheckboxWrap>
               <OperationWrap>操作对象</OperationWrap>
               <span>权限</span>
             </TitleGroup>
             <MainWrap>
-              {havePermission.list?.map((i: any) => (
+              {permissionList.list?.map((i: any) => (
                 <PermissionItem
                   key={i.id}
                   item={i}

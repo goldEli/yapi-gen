@@ -16,7 +16,7 @@ client.config({
   requestInterceptors: [
     options => {
       options.headers.Authorization =
-        localStorage.getItem('token') || 'b89961de45f4f7483a092c3c5d7a8a67'
+        localStorage.getItem('token') || 'df79996bd3d096f5ff4b95ff62fe6215'
       options.headers.System = 'win10'
       options.headers.Client = 'chrome'
       options.payload = JSON.stringify(options.payload)

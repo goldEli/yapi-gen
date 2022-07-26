@@ -5,6 +5,7 @@ export default () => {
   const [projectList, setProjectList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
   const [coverList, setCoverList] = useState<any>([])
+  const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
 
   const getProjectList = async (params: any) => {
@@ -33,8 +34,9 @@ export default () => {
     deleteProject,
     openProject,
     stopProject,
-    updateMemberPermission,
-    deleteMemberPermission,
+    updateMember,
+    deleteMember,
+    addMember,
     getProjectPermission,
     addPermission,
     deletePermission,
@@ -58,8 +60,9 @@ export default () => {
     deleteProject,
     openProject,
     stopProject,
-    updateMemberPermission,
-    deleteMemberPermission,
+    updateMember,
+    deleteMember,
+    addMember,
     getProjectPermission,
     addPermission,
     deletePermission,
@@ -67,5 +70,7 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
+    setProjectPermission,
+    projectPermission,
   }
 }

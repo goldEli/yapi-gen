@@ -2,22 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import {
-  Table,
-  Select,
-  DatePicker,
-  Pagination,
-  Form,
-  message,
-  Spin,
-} from 'antd'
+import { Table, Select, DatePicker, Pagination, Form, message } from 'antd'
 import moment from 'moment'
 import { css } from '@emotion/css'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
-
-window.moment = moment
 
 const Header = styled.div({
   height: 'auto',
@@ -38,9 +28,10 @@ const Header = styled.div({
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  height: 64,
+  minHeight: 64,
   background: 'white',
   padding: '0 24px',
+  flexWrap: 'wrap',
 })
 
 const SelectWrapBedeck = styled.div`
@@ -109,6 +100,7 @@ const Operation = () => {
   const { userInfo } = useModel('user')
   const { getStaffList } = useModel('staff')
   const [dataList, setDataList] = useState<any>([])
+  const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
 
   const getList = async () => {
@@ -138,16 +130,15 @@ const Operation = () => {
   }
 
   const getStaff = async () => {
-    const result = await getStaffList()
+    const result = await getStaffList({ all: 1 })
+    setStaffList(result)
   }
 
   useEffect(() => {
     getList()
-
-    // getStaff()
+    getStaff()
   }, [])
 
-  const { Option } = Select
   const columns = [
     {
       title: '操作人',
@@ -211,12 +202,8 @@ const Operation = () => {
                 style={{ width: '100%' }}
                 placeholder="所有"
                 showSearch
-              >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="disabled">Disabled</Option>
-                <Option value="Yiminghe">yiminghe</Option>
-              </SelectWrap>
+                options={staffList}
+              />
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>

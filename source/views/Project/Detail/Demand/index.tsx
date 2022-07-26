@@ -117,6 +117,7 @@ const DemandBox = () => {
   const [visible, setVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
+  const projectId = searchParams.get('id')
   const navigate = useNavigate()
   const childContent = () => {
     if (type === 'info') {
@@ -127,7 +128,7 @@ const DemandBox = () => {
     return <ChangeRecord />
   }
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Demand?type=${val}`)
+    navigate(`/Detail/Demand?type=${val}&id=${projectId}`)
   }
 
   const moreClick = (e: any) => {
