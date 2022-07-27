@@ -68,10 +68,15 @@ const EditIteration = (props: Props) => {
   const { addIterate, updateIterate } = useModel('iterate')
 
   useEffect(() => {
-    setHtml(props.details.info)
-    form.setFieldsValue({
-      time: [moment(props.details.createdTime), moment(props.details.endTime)],
-    })
+    setHtml(props.details?.info)
+    if (props.details?.startTime) {
+      form.setFieldsValue({
+        time: [
+          moment(props.details.createdTime),
+          moment(props.details.endTime),
+        ],
+      })
+    }
   }, [props.details])
 
   const onConfirm = async () => {

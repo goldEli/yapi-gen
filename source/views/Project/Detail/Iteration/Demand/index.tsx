@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -6,11 +7,12 @@ import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useState } from 'react'
-import EditIteration from '../components/EditIteration'
+import { useEffect, useState } from 'react'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -94,7 +96,21 @@ const priorityList = [
 ]
 
 const DemandWrap = () => {
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const iterateId = searchParams.get('iterateId')
+  const { getDemandList } = useModel('demand')
   const [visible, setVisible] = useState(false)
+  const [dataList, setDataList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getDemandList({ projectId, iterateIds: [iterateId] })
+    setDataList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   const menu = (
     <Menu
@@ -206,7 +222,7 @@ const DemandWrap = () => {
     },
     {
       title: '处理人',
-      dataIndex: 'createName',
+      dataIndex: 'dealName',
     },
     {
       title: '创建时间',
@@ -217,14 +233,14 @@ const DemandWrap = () => {
     },
     {
       title: '预计开始时间',
-      dataIndex: 'time',
+      dataIndex: 'expectedStart',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
       title: '预计结束时间',
-      dataIndex: 'endTime',
+      dataIndex: 'expectedEnd',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
@@ -242,14 +258,10 @@ const DemandWrap = () => {
   }
   return (
     <div>
-      <EditIteration
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
-      />
       <TableBox
         rowKey="id"
         columns={columns}
-        dataSource={List}
+        dataSource={dataList?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -257,10 +269,10 @@ const DemandWrap = () => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={dataList?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={dataList?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

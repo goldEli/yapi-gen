@@ -1,5 +1,6 @@
 import { useRoutes } from 'react-router-dom'
 import { Container } from '@/views/Container'
+import Layout from '@/components/Layout'
 import React from 'react'
 
 const lazy = (

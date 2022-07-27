@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Input, Button } from 'antd'
+import { Input, Button, message } from 'antd'
 import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
+import { useModel } from '@/models'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -89,35 +93,83 @@ const TextareaWrap = styled.div({
   },
 })
 
-const list = [
-  { name: '黑飞', from: '从【规划中】添加', time: '2022-02-21', text: '内容' },
-  {
-    name: '黑飞',
-    from: '从【规划中】添加',
-    time: '2022-02-21',
-    text: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
-  },
-]
-
 const WrapRightBox = () => {
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteId, setIsDeleteId] = useState(0)
+  const [addValue, setAddValue] = useState('')
+  const { getCommentList, addComment, deleteComment } = useModel('demand')
+  const [dataList, setDataList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getCommentList({ projectId, demandId })
+    setDataList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
+  const onDeleteComment = (item: any) => {
+    setIsVisible(true)
+    setIsDeleteId(item.id)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteComment({ projectId, id: isDeleteId })
+      message.success('删除成功')
+      setIsDeleteId(0)
+      setIsVisible(false)
+      getList()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onAddComment = async (content: string) => {
+    try {
+      await addComment({ projectId, demandId, content })
+      message.success('回复成功')
+      setAddValue('')
+      getList()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onPressEnter = (e: any) => {
+    onAddComment(e.target.value)
+  }
+
   return (
     <WrapRight>
+      <DeleteConfirm
+        text="确认删除当前评论？"
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      />
       <Title>评论</Title>
-      {list.map(item => (
-        <CommentItem key={item.name}>
-          <img src={posterImg} alt="" />
+      {dataList?.list?.map((item: any) => (
+        <CommentItem key={item.id}>
+          <img src={item.avatar} alt="" />
           <TextWrap>
             <div className="textTop">
-              <IconFont type="close" />
+              <IconFont type="close" onClick={() => onDeleteComment(item)} />
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span className="name">{item.name}</span>
-                <span className="common">{item.from}</span>
+                <span className="common">{item.name}</span>
               </div>
               <div className="common" style={{ paddingRight: 30 }}>
-                {item.time}
+                {item.createdTime}
               </div>
             </div>
-            <div className="content">{item.text}</div>
+            <div className="content">{item.content}</div>
           </TextWrap>
         </CommentItem>
       ))}
@@ -125,8 +177,13 @@ const WrapRightBox = () => {
         <Input.TextArea
           placeholder="输入评论，按Enter快速发布"
           autoSize={{ minRows: 5, maxRows: 5 }}
+          value={addValue}
+          onClick={(e: any) => setAddValue(e.target.value)}
+          onPressEnter={onPressEnter}
         />
-        <Button type="primary">回复</Button>
+        <Button type="primary" onClick={() => onAddComment(addValue)}>
+          回复
+        </Button>
       </TextareaWrap>
     </WrapRight>
   )

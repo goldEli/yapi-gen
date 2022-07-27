@@ -13,6 +13,7 @@ import TagComponent from '../../components/TagComponent'
 import DemandStatus from '../../components/DemandStatus'
 import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
+import { useModel } from '@/models'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -43,7 +44,7 @@ const TextWrap = styled.div({
   },
 })
 
-const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
+const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -82,6 +83,8 @@ const AddWrap = styled.div<{ hasColor?: boolean, hasDash?: boolean }>(
 )
 
 const WrapLeftBox = () => {
+  const { demandInfo } = useModel('demand')
+
   return (
     <WrapLeft>
       <InfoItem>
@@ -90,24 +93,19 @@ const WrapLeftBox = () => {
       </InfoItem>
       <InfoItem>
         <Label>需求描述</Label>
-        <TextWrap>
-          需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容需求描述内容容需求描述内容需求描述内容需求描述内容需求描述内容...
-          <img src={posterImg} alt="" />
-          1. 需求描述示例文案占位 2. 需求描述示例文案占位 3.
-          需求描述示例文案占位
-        </TextWrap>
+        <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
       </InfoItem>
       <InfoItem>
         <Label>处理人</Label>
-        <TextWrap>张三</TextWrap>
+        <TextWrap>{demandInfo?.name}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>创建人</Label>
-        <TextWrap>里斯</TextWrap>
+        <TextWrap>{demandInfo?.userName}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>创建时间</Label>
-        <TextWrap>2022-02-12</TextWrap>
+        <TextWrap>{demandInfo?.createdTime}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>父需求</Label>
@@ -143,7 +141,7 @@ const WrapLeftBox = () => {
       </InfoItem>
       <InfoItem>
         <Label>迭代</Label>
-        <TextWrap>敏捷V2.0</TextWrap>
+        <TextWrap>{demandInfo?.iterateName}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>优先级</Label>
@@ -162,15 +160,15 @@ const WrapLeftBox = () => {
       </InfoItem>
       <InfoItem>
         <Label>预计开始</Label>
-        <TextWrap>2022-02-12</TextWrap>
+        <TextWrap>{demandInfo?.expectedStart}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>预计结束</Label>
-        <TextWrap>2022-02-12</TextWrap>
+        <TextWrap>{demandInfo?.expectedEnd}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>抄送人</Label>
-        <TextWrap>撒啊</TextWrap>
+        <TextWrap>{demandInfo?.user}</TextWrap>
       </InfoItem>
     </WrapLeft>
   )

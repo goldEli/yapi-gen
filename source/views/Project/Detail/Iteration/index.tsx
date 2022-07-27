@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import EditIteration from './components/EditIteration'
 import IterationMain from './IterationMain'
 import IterationInfo from './IterationInfo'
 import ChangeRecord from './ChangeRecord'
 import Demand from './Demand'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button } from 'antd'
+import { useModel } from '@/models'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -91,11 +93,14 @@ const Item = styled.div<{ activeIdx: boolean }>(
 
 const IterationWrap = () => {
   const [visible, setVisible] = useState(false)
-  const [operationDetail, setOperationDetail] = useState({})
+  const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
   const navigate = useNavigate()
+  const iterateId = searchParams.get('iterateId')
+  const { getIterateInfo, iterateInfo } = useModel('iterate')
+
   const childContent = () => {
     if (type === 'info') {
       return <IterationInfo />
@@ -104,15 +109,24 @@ const IterationWrap = () => {
     }
     return <ChangeRecord />
   }
+
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Iteration?type=${val}&id=${projectId}`)
+    navigate(
+      `/Detail/Iteration?type=${val}&id=${projectId}&iterateId=${iterateId}`,
+    )
   }
+
+  const onChangeOperation = (item: any) => {
+    setOperationDetail(item)
+    getIterateInfo({ projectId, id: item?.id })
+  }
+
   const content = () => {
     if (!type) {
       return (
         <IterationMain
           onChangeVisible={() => setVisible(!visible)}
-          onChangeOperation={setOperationDetail}
+          onChangeOperation={item => onChangeOperation(item)}
         />
       )
     }
@@ -120,8 +134,8 @@ const IterationWrap = () => {
       <>
         <DemandInfoWrap>
           <NameWrap>
-            <span>敏捷系统V2.0</span>
-            <div>开启</div>
+            <span>{iterateInfo.name}</span>
+            <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
           </NameWrap>
           <Space size={16}>
             <Button type="primary" onClick={() => setVisible(!visible)}>
@@ -143,14 +157,14 @@ const IterationWrap = () => {
               activeIdx={type === 'demand'}
             >
               <span>需求</span>
-              <div>6</div>
+              <div>{iterateInfo?.storyCount}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
               <span>变更记录</span>
-              <div>12</div>
+              <div>{iterateInfo?.changeCount}</div>
             </Item>
           </MainWrap>
           {childContent()}
@@ -164,7 +178,7 @@ const IterationWrap = () => {
       <EditIteration
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
-        details={operationDetail}
+        details={iterateId ? iterateInfo : operationDetail}
       />
       {content()}
     </div>

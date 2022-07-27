@@ -1,9 +1,13 @@
+/* eslint-disable multiline-ternary */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Table, Pagination, Modal, Space } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { PaginationWrap } from '@/components/StyleCommon'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
 
 const TitleWrap = styled(Space)({
   height: 40,
@@ -15,32 +19,36 @@ const TitleWrap = styled(Space)({
   marginBottom: 24,
 })
 
-const list = [
-  {
-    id: 1212,
-    changeTime: '2022-02-12',
-    changeName: '大菲菲',
-    type: '需求创建',
-    field: [{ name: '标题' }, { name: '详情' }, { name: '创建人' }],
-    beforeField: [{ name: '吃饭' }, { name: '--' }, { name: '张三' }],
-    afterField: [{ name: '唱歌' }, { name: '--' }, { name: '里斯' }],
-  },
-  {
-    id: 1212,
-    changeTime: '2022-02-12',
-    changeName: '大菲菲',
-    type: '需求创建',
-    field: [{ name: '标题' }, { name: '详情' }, { name: '创建人' }],
-    beforeField: [{ name: '吃饭' }, { name: '--' }, { name: '张三' }],
-    afterField: [{ name: '唱歌' }, { name: '--' }, { name: '里斯' }],
-  },
-]
-
-const beforeHtml
-  = '<p>项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述项目描述</p>'
-
 const ChangeRecord = () => {
+  const { getDemandChangeLog } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const demandId = searchParams.get('demandId')
+  const projectId = searchParams.get('id')
+  const [dataList, setDataList] = useState<any>([])
+  const [checkDetail, setCheckDetail] = useState<any>({})
   const [visible, setVisible] = useState(false)
+
+  const getList = async () => {
+    const result = await getDemandChangeLog({
+      demandId,
+      projectId,
+      pageSize: 10,
+      page: 1,
+      order: 'id',
+      orderKey: 'asc',
+    })
+    setDataList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
+  const onClickCheck = (item: any) => {
+    setCheckDetail(item)
+    setVisible(true)
+  }
+
   const columns = [
     {
       title: '序号',
@@ -48,20 +56,23 @@ const ChangeRecord = () => {
     },
     {
       title: '变更时间',
-      dataIndex: 'changeTime',
+      dataIndex: 'updateTime',
     },
     {
       title: '变更人',
-      dataIndex: 'changeName',
+      dataIndex: 'userName',
     },
     {
       title: '变更类型',
       dataIndex: 'type',
+      render: (text: any) => {
+        return <div>{text.content}</div>
+      },
     },
     {
       title: '变更字段',
-      dataIndex: 'field',
-      render: (text: { name: string }[]) => {
+      dataIndex: 'fields',
+      render: (text: []) => {
         return (
           <div
             style={{
@@ -70,7 +81,7 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {text.map(i => <span key={i.name}>{i.name}</span>)}
+            {text.map(i => <span key={i}>{i}</span>)}
           </div>
         )
       },
@@ -78,7 +89,7 @@ const ChangeRecord = () => {
     {
       title: '变更前',
       dataIndex: 'beforeField',
-      render: (text: { name: string }[]) => {
+      render: (text: any, record: any) => {
         return (
           <div
             style={{
@@ -87,7 +98,7 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {text.map(i => <span key={i.name}>{i.name}</span>)}
+            {record.fields.map((i: any) => <span key={i}>{text[i]}</span>)}
           </div>
         )
       },
@@ -95,7 +106,7 @@ const ChangeRecord = () => {
     {
       title: '变更后',
       dataIndex: 'afterField',
-      render: (text: { name: string }[]) => {
+      render: (text: any, record: any) => {
         return (
           <div
             style={{
@@ -104,18 +115,17 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {text.map(i => (
-              <span key={i.name}>
-                {i.name === '--'
-                  ? (
-                      <span
-                        style={{ cursor: 'pointer', color: '#2877ff' }}
-                        onClick={() => setVisible(true)}
-                      >
+            {record.fields.map((i: any) => (
+              <span key={i}>
+                {i === 'info' ? (
+                  <span
+                    style={{ cursor: 'pointer', color: '#2877ff' }}
+                    onClick={() => onClickCheck(record)}
+                  >
                     查看详情
-                      </span>
-                    )
-                  : i.name
+                  </span>
+                )
+                  : <span>{text[i]}</span>
                 }
               </span>
             ))}
@@ -142,22 +152,31 @@ const ChangeRecord = () => {
         width={1080}
         onCancel={() => setVisible(false)}
         bodyStyle={{ padding: '8px 24px 24px' }}
+        destroyOnClose
       >
         <Space size={32} style={{ display: 'flex' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更前</TitleWrap>
-            <div dangerouslySetInnerHTML={{ __html: beforeHtml }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: checkDetail?.beforeField?.info,
+              }}
+            />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更后</TitleWrap>
-            <div dangerouslySetInnerHTML={{ __html: beforeHtml }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: checkDetail?.afterField?.info,
+              }}
+            />
           </div>
         </Space>
       </Modal>
       <Table
-        rowKey="key"
+        rowKey="id"
         columns={columns}
-        dataSource={list}
+        dataSource={dataList?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -165,10 +184,10 @@ const ChangeRecord = () => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={dataList?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={dataList?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

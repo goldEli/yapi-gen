@@ -6,11 +6,11 @@ import moment from 'moment'
 export const getIterateList: any = async (params: any) => {
   const response: any = await http.get<any>('getIterateList', {
     search: {
-      project_id: params.projectId,
-      name: params.name,
-      created_at: params.startTime,
-      end_at: params.endTime,
-      status: params.status,
+      project_id: params?.projectId,
+      name: params?.name,
+      created_at: params?.startTime,
+      end_at: params?.endTime,
+      status: params?.status,
       all: true,
     },
     orderkey: params.orderKey,
@@ -23,7 +23,7 @@ export const getIterateList: any = async (params: any) => {
       name: i.name,
       finishCount: i.story_finish_count,
       storyCount: i.story_count,
-      createdTime: i.created_at,
+      createdTime: i.start_at,
       endTime: i.end_at,
       info: i.info,
     })),
@@ -59,75 +59,47 @@ export const deleteIterate: any = async (params: any) => {
 }
 
 export const getIterateInfo: any = async (params: any) => {
+  const response: any = await http.get<any>('getIterateInfo', {
+    project_id: params.projectId,
+    id: params.id,
+  })
 
-  //   const response: any = await http.get<any>('getIterateInfo', {
-  //     project_id: params.projectId,
-  //     id: params.id,
-  //   })
-  const response: any = {}
-  response.data = {
-    id: 0,
-    name: '敏捷',
-    info: '描述',
-    start_at: '2022-01-12',
-    end_at: '2022-12-01',
-    story_count: 12,
-    story_finish_count: 21,
-    status: 2,
+  return {
+    name: response.data.name,
+    id: response.data.id,
+    info: response.data.info,
+    status: response.data.status,
+    finishCount: response.data.story_finish_count,
+    storyCount: response.data.story_count,
+    startTime: response.data.start_at,
+    endTime: response.data.end_at,
+    changeCount: response.data.app_changelog_count,
   }
-  return response.data
 }
 
 export const getIterateChangeLog: any = async (params: any) => {
-
-  //   const response: any = await http.get<any>('getIterateChangeLog', {
-  //     search: {
-  //       app_id: params.iterateId,
-  //     },
-  //     pagesize: params.pagesize,
-  //     page: params.page,
-  //     orderkey: params.orderkey,
-  //     order: params.order,
-  //   })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        id: '1',
-        start_at: '2022-01-12',
-        end_at: '2011-12-12',
-        story_count: 12,
-        story_finish_count: 21,
-        status: 1,
-        name: '敏捷',
-      },
-      {
-        id: '2',
-        start_at: '2022-01-12',
-        end_at: '2011-12-12',
-        story_count: 12,
-        story_finish_count: 21,
-        status: 1,
-        name: '敏捷',
-      },
-    ],
-    pager: {
-      total: 20,
-      page: 2,
-      pagesize: 12,
+  const response: any = await http.get<any>('getIterateChangeLog', {
+    search: {
+      app_id: params.iterateId,
+      project_id: params.projectId,
     },
-  }
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+
   return {
-    currentPage: 1,
+    currentPage: params.page,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
-      status: i.status,
-      name: i.name,
-      finishCount: i.story_finish_count,
-      storyCount: i.story_count,
-      createdTime: i.created_at,
-      endTime: i.end_at,
+      fields: i.fields,
+      userName: i.user_id,
+      updateTime: i.created_at,
+      type: i.change_log_type,
+      beforeField: JSON.stringify(i.before) === '[]' ? {} : i.before,
+      afterField: i.after,
     })),
   }
 }
@@ -138,4 +110,19 @@ export const updateIterateStatus: any = async (params: any) => {
     id: params.id,
     status: params.status,
   })
+}
+
+export const getIterateStatistics: any = async (params: any) => {
+  const response = await http.get<any>('iterateStatistics', {
+    project_id: params.projectId,
+    iterate_id: params.id,
+  })
+
+  return {
+    burnDownChart: response.data.burnDownChart,
+    storyStatusChart: response.data.storyStatusChart.map((i: any) => ({
+      type: i.content,
+      sales: i.sort,
+    })),
+  }
 }

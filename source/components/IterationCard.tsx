@@ -4,8 +4,6 @@ import type React from 'react'
 import styled from '@emotion/styled'
 import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import Item from 'antd/lib/list/Item'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -74,12 +72,10 @@ const DetailWrap = styled.div({
 interface Props {
   item: any
   menu: React.ReactElement
+  onClickItem(): void
 }
 
 const IterationCard = (props: Props) => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
   return (
     <CardWrap>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -98,9 +94,7 @@ const IterationCard = (props: Props) => {
           <StatusTag>{props.item.status === 1 ? '开启中' : '已关闭'}</StatusTag>
         </InfoContent>
       </div>
-      <DetailWrap
-        onClick={() => navigate(`/Detail/Iteration?type=info&id=${projectId}`)}
-      >
+      <DetailWrap onClick={props.onClickItem}>
         <span>详情</span>
         <IconFont type="right" />
       </DetailWrap>

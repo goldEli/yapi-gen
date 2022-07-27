@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react/no-danger */
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
@@ -6,6 +8,7 @@ import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import { useModel } from '@/models'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -69,6 +72,7 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   const [settingState, setSettingState] = useState(false)
   const [visible, setVisible] = useState(false)
+  const { iterateInfo } = useModel('iterate')
 
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
@@ -110,7 +114,11 @@ const Operation = (props: Props) => {
         title="迭代目标"
         footer={false}
       >
-        211212
+        <div
+          dangerouslySetInnerHTML={{
+            __html: iterateInfo?.info,
+          }}
+        />
       </Modal>
       <OperationWrap>
         <IterationInfo>
@@ -125,10 +133,10 @@ const Operation = (props: Props) => {
             }}
           />
           <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
-            敏捷版本v1.0
+            {iterateInfo?.name}
           </span>
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
-            2022.06.17-2022.07.30
+            {iterateInfo?.startTime}-{iterateInfo?.endTime}
           </span>
           <Popover
             placement="bottom"
@@ -136,7 +144,7 @@ const Operation = (props: Props) => {
             getPopupContainer={node => node}
           >
             <StatusTag>
-              开启中
+              {iterateInfo?.status === 1 ? '开启中' : '已结束'}
               <IconFont
                 type="down-icon"
                 style={{ fontSize: 12, marginLeft: 4 }}

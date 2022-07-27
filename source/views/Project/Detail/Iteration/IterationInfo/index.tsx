@@ -1,9 +1,14 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import styled from '@emotion/styled'
 import { Progress } from 'antd'
 import { Line, Column } from '@ant-design/plots'
 import { useEffect, useState } from 'react'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -79,23 +84,26 @@ const ChartWrap = styled.div({
   marginTop: 24,
 })
 
-const DemoLine = () => {
-  const [data, setData] = useState([])
-
-  const asyncFetch = () => {
-    fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json',
-    )
-      .then(response => response.json())
-      .then(json => setData(json))
-  }
-  useEffect(() => {
-    asyncFetch()
-  }, [])
-
+const DemoLine = (props: { data: any }) => {
+  let arr: any[] = []
+  props.data?.date?.forEach((element: any, index: number) => {
+    const items = [
+      {
+        date: element,
+        value: props.data.actual_last_count[index],
+        category: '实际剩余',
+      },
+      {
+        date: element,
+        value: props.data.predict_last_count[index],
+        category: '预计剩余',
+      },
+    ]
+    arr = [...arr, ...items]
+  })
   const config = {
-    data,
-    xField: 'year',
+    data: arr,
+    xField: 'date',
     yField: 'value',
     seriesField: 'category',
     xAxis: {
@@ -103,65 +111,23 @@ const DemoLine = () => {
     },
     yAxis: {
       label: {
-        formatter: (v: any) => String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+        formatter: (v: any) =>
+          String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
       },
     },
   }
-
   return <Line {...config} />
 }
 
-const DemoColumn = () => {
-  const data = [
-    {
-      type: '家具家电',
-      sales: 38,
-    },
-    {
-      type: '粮油副食',
-      sales: 52,
-    },
-    {
-      type: '生鲜水果',
-      sales: 61,
-    },
-    {
-      type: '美容洗护',
-      sales: 145,
-    },
-    {
-      type: '母婴用品',
-      sales: 48,
-    },
-    {
-      type: '进口食品',
-      sales: 38,
-    },
-    {
-      type: '食品饮料',
-      sales: 38,
-    },
-    {
-      type: '家庭清洁',
-      sales: 38,
-    },
-  ]
+const DemoColumn = (props: { data: any }) => {
   const config = {
-    data,
+    data: props.data,
     xField: 'type',
     yField: 'sales',
     xAxis: {
       label: {
         autoHide: true,
         autoRotate: false,
-      },
-    },
-    meta: {
-      type: {
-        alias: '类别',
-      },
-      sales: {
-        alias: '销售额',
       },
     },
     minColumnWidth: 20,
@@ -171,6 +137,21 @@ const DemoColumn = () => {
 }
 
 const IterationInfo = () => {
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const iterateId = searchParams.get('iterateId')
+  const { iterateInfo, getIterateStatistics } = useModel('iterate')
+  const [chartData, setChartData] = useState<any>({})
+
+  const getData = async () => {
+    const result = await getIterateStatistics({ projectId, id: iterateId })
+    setChartData(result)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
     <div>
       <TopWrap>
@@ -182,53 +163,39 @@ const IterationInfo = () => {
                 strokeColor="#43BA9A"
                 width={125}
                 type="circle"
-                percent={75}
+                percent={
+                  iterateInfo.finishCount / iterateInfo.storyCount * 100
+                }
                 strokeWidth={16}
               />
               <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
-                2022/06/17-2022/07/30
+                {iterateInfo.startTime}-{iterateInfo.endTime}
               </div>
             </SurveyBox>
             <SurveyBox style={{ alignItems: 'flex-start' }}>
               <span style={{ color: '#000', fontSize: 14 }}>需求</span>
               <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
-                25/36
+                {`${iterateInfo.finishCount} / ${iterateInfo.storyCount}`}
               </span>
             </SurveyBox>
           </SurveyContent>
         </SurveyWrap>
         <SurveyWrap>
           <Title>迭代目标</Title>
-          <TargetWrap>
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-            1.目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述目标描述
-          </TargetWrap>
+          <TargetWrap dangerouslySetInnerHTML={{ __html: iterateInfo.info }} />
         </SurveyWrap>
       </TopWrap>
       <BottomWrap>
         <DiagramWrap>
           <Title>燃尽图</Title>
           <ChartWrap>
-            <DemoLine />
+            <DemoLine data={chartData?.burnDownChart || {}} />
           </ChartWrap>
         </DiagramWrap>
         <StatusWrap>
           <Title>状态分布</Title>
           <ChartWrap>
-            <DemoColumn />
+            <DemoColumn data={chartData?.storyStatusChart || []} />
           </ChartWrap>
         </StatusWrap>
       </BottomWrap>

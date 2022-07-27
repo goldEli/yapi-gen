@@ -7,6 +7,7 @@ export default () => {
   const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
+  const [memberList, setMemberList] = useState<any>([])
 
   const getProjectList = async (params: any) => {
     const result = await services.project.getProjectList(params)
@@ -26,6 +27,11 @@ export default () => {
   const getProjectInfo = async (params: any) => {
     const result = await services.project.getProjectInfo(params)
     setProjectInfo(result)
+  }
+
+  const getMemberList = async (params: any) => {
+    const result = await services.project.getProjectMember(params)
+    setMemberList(result)
   }
 
   const {
@@ -72,5 +78,7 @@ export default () => {
     getProjectMember,
     setProjectPermission,
     projectPermission,
+    getMemberList,
+    memberList,
   }
 }

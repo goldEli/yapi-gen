@@ -59,7 +59,7 @@ export const getField: any = async (params: any) => {
 
   const plainOptions = display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '基本字段')
-    .map((item: { title: any, content: any, is_default_display: any }) => {
+    .map((item: { title: any; content: any; is_default_display: any }) => {
       return {
         label: item.title,
         value: item.content,
@@ -71,7 +71,7 @@ export const getField: any = async (params: any) => {
     .filter(
       (item: { group_name: string }) => item.group_name === '人员与时间字段',
     )
-    .map((item: { is_default_display: any, title: any, content: any }) => {
+    .map((item: { is_default_display: any; title: any; content: any }) => {
       return {
         label: item.title,
         value: item.content,
@@ -82,14 +82,14 @@ export const getField: any = async (params: any) => {
   const titleList: any[] = []
   plainOptions
     .filter((item: any) => item.is_default_display === 1)
-    .forEach((item: { title: any, value: any }) => {
+    .forEach((item: { title: any; value: any }) => {
       titleList.push(item.value)
     })
 
   const titleList2: any[] = []
   plainOptions2
     .filter((item: any) => item.is_default_display === 1)
-    .forEach((item: { title: any, value: any }) => {
+    .forEach((item: { title: any; value: any }) => {
       titleList2.push(item.value)
     })
 
@@ -121,7 +121,7 @@ export const getMineGatte: any = async (params: any) => {
 }
 
 // 获取状态下的成员列表
-export const getProjectMember: any = async params => {
+export const getProjectMember: any = async (params: any) => {
   const response = await http.get('getProjectMember', {
     search: {
       project_id: params,

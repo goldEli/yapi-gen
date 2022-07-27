@@ -43,20 +43,10 @@ interface Props {
 
 const AddMember = (props: Props) => {
   const [searchParams] = useSearchParams()
-  const [staffList, setStaffList] = useState<any>([])
-  const { getStaffList } = useModel('staff')
-  const { projectPermission, addMember, updateMember } = useModel('project')
+  const { projectPermission, addMember, updateMember, memberList }
+    = useModel('project')
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
-
-  const getStaff = async () => {
-    const result = await getStaffList({ all: 1 })
-    setStaffList(result)
-  }
-
-  useEffect(() => {
-    getStaff()
-  }, [])
 
   const onConfirm = async () => {
     const values = form.getFieldsValue()
@@ -102,9 +92,16 @@ const AddMember = (props: Props) => {
             showArrow={false}
             mode="multiple"
             showSearch
-            options={staffList}
             disabled={props.details?.id}
-          />
+          >
+            {memberList?.map((i: any) => {
+              return (
+                <Select.Option key={i.id} value={i.id}>
+                  {i.name}
+                </Select.Option>
+              )
+            })}
+          </ModalContent>
         </Form.Item>
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>

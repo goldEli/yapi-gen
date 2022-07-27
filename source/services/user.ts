@@ -1,4 +1,3 @@
-import { log } from '@jihe/secure-log'
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
@@ -65,7 +64,7 @@ export const getGlobalGeneral: any = async () => {
       boyCount: response.data.user_statistics.user_count[1].count,
       girlCount: response.data.user_statistics.user_count[0].count,
       chartsData: response.data.user_statistics.position_count.map(
-        (item: { position_name: any, count: any }) => {
+        (item: { position_name: any; count: any }) => {
           return {
             type: item.position_name,
             sales: item.count,
