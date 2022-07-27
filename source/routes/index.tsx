@@ -19,7 +19,7 @@ const lazy = (
 const routes = [
   {
     path: '',
-    element: <Layout />,
+    element: <Container />,
     children: [
       {
         path: '/staff',
