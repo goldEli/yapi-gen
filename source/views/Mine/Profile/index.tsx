@@ -173,8 +173,8 @@ const Profile = () => {
                       </span>
                     </LineItem>
                     <LineItem>
-                      <span>{item.feedable.project.name}</span>
-                      <span>{item.feedable.name}</span>
+                      <span>{item.feedable?.project.name}</span>
+                      <span>{item.feedable?.name}</span>
                     </LineItem>
                   </Timeline.Item>
                 ))}

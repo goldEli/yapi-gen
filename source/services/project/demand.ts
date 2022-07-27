@@ -67,7 +67,7 @@ export const getDemandList: any = async (params: any) => {
     order: params?.order,
   })
 
-  if (params.all) {
+  if (params.all && params.panel) {
     return response.data.map((k: any) => ({
       count: k.count,
       list: k.list.map((i: any) => ({
@@ -83,6 +83,23 @@ export const getDemandList: any = async (params: any) => {
         parentId: i.parent_id,
       })),
       name: k.status_name,
+    }))
+  } else if (params.all) {
+    return response.data.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      demand: i.child_story_count,
+      priority: i.priority,
+      iteration: i.iterate_name,
+      status: i.status,
+      dealName: i.users_name,
+      time: i.created_at,
+      expectedStart: i.expected_start_at,
+      expectedEnd: i.expected_end_at,
+      info: i.info,
+      userIds: i.user_id,
+      iterateId: i.iterate_id,
+      parentId: i.parent_id,
     }))
   } else {
     return {
