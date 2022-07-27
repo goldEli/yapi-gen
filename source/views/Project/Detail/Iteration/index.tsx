@@ -157,14 +157,14 @@ const IterationWrap = () => {
               activeIdx={type === 'demand'}
             >
               <span>需求</span>
-              <div>6</div>
+              <div>{iterateInfo?.storyCount}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
               <span>变更记录</span>
-              <div>12</div>
+              <div>{iterateInfo?.changeCount}</div>
             </Item>
           </MainWrap>
           {childContent()}

@@ -8,14 +8,8 @@ import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import { ShapeContent } from '@/components/Shape'
 
-interface Item {
-  name: string
-  person: { name: string; avatar: string }[]
-  demand: number
-}
-
 interface Props {
-  item: Item
+  item: any
   onChangeEdit?(): void
   onChangeDelete?(): void
   menu: React.ReactElement
@@ -82,7 +76,8 @@ const NameGroup = styled.div({
     fontSize: 12,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    whiteSpace: 'nowrap',
   },
   '.more': {
     width: 32,
@@ -149,7 +144,7 @@ const DemandCard = (props: Props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -166,7 +161,7 @@ const DemandCard = (props: Props) => {
             }}
             record={record}
           >
-            <StatusWrap>{text}</StatusWrap>
+            <StatusWrap color={text.color}>{text.content}</StatusWrap>
           </PopConfirm>
         )
       },
@@ -180,32 +175,38 @@ const DemandCard = (props: Props) => {
   return (
     <div>
       <Wrap>
-        <WrapBorder />
+        <WrapBorder style={{ background: props.item.priority.color }} />
         <MainWrap>
           <div style={{ cursor: 'pointer' }} onClick={props.onClickItem}>
             <OmitText width={200}>{props.item.name}</OmitText>
           </div>
           <AvatarWrap>
             <NameGroup>
-              {props.item.person.slice(0, 3).map((item, index) => (
-                <div
-                  className="box"
-                  key={item.name}
-                  style={{ marginLeft: index ? -10 : 0, zIndex: index }}
-                >
-                  <div className="item" style={{ background: '#A4ACF5' }}>
-                    {item.name}
+              {props.item.userName
+                .slice(0, 3)
+                .map((item: any, index: number) => (
+                  <div
+                    className="box"
+                    key={item}
+                    style={{ marginLeft: index ? -10 : 0, zIndex: index }}
+                  >
+                    <div className="item" style={{ background: '#A4ACF5' }}>
+                      {item}
+                    </div>
                   </div>
-                </div>
-              ))}
-              <div className="more" hidden={props.item.person.length - 3 <= 0}>
-                +{props.item.person.length - 3}
+                ))}
+              <div
+                className="more"
+                hidden={props.item.userName.length - 3 <= 0}
+              >
+                +{props.item.userName.length - 3}
               </div>
             </NameGroup>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
                 return (
                   <Table
+                    rowKey="id"
                     pagination={false}
                     columns={columnsChild}
                     dataSource={[props.item]}
@@ -230,7 +231,7 @@ const DemandCard = (props: Props) => {
                   style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
                 />
                 <span style={{ color: '#323233', fontSize: 16 }}>
-                  {props.item.demand}
+                  {props.item.childCount}
                 </span>
               </div>
             </PopConfirm>

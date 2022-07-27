@@ -13,18 +13,22 @@ import PopConfirm from '@/components/Popconfirm'
 import { useNavigate } from 'react-router-dom'
 import { OmitText } from '@star-yun/ui'
 
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
+const StatusWrap = styled.div<{ color?: string }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 'fit-content',
+    cursor: 'pointer',
+  },
+  ({ color }) => ({
+    color,
+    border: `1px solid ${color}`,
+  }),
+)
 
 const PriorityWrap = styled.div({
   display: 'flex',
@@ -63,7 +67,7 @@ const TableBox = styled(TableWrap)({
 
 interface Props {
   menu: React.ReactElement
-  List: any[]
+  data: any
 }
 
 const priorityList = [
@@ -121,7 +125,7 @@ const DemandTable = (props: Props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -131,7 +135,7 @@ const DemandTable = (props: Props) => {
             }}
             record={record}
           >
-            <StatusWrap>{text}</StatusWrap>
+            <StatusWrap color={text.color}>{text.content}</StatusWrap>
           </PopConfirm>
         )
       },
@@ -187,7 +191,7 @@ const DemandTable = (props: Props) => {
                 <Table
                   pagination={false}
                   columns={columnsChild}
-                  dataSource={props.List}
+                  dataSource={props.data?.list}
                 />
               )
             }}
@@ -204,7 +208,7 @@ const DemandTable = (props: Props) => {
     {
       title: '优先级',
       dataIndex: 'priority',
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -220,13 +224,13 @@ const DemandTable = (props: Props) => {
           >
             <PriorityWrap>
               <IconFont
-                type={priorityList[Number(text)].type}
+                type={text.icon}
                 style={{
                   fontSize: 16,
-                  color: priorityList[Number(text)].color,
+                  color: text.color,
                 }}
               />
-              <div>{priorityList[Number(text)].name}</div>
+              <div>{text.content}</div>
             </PriorityWrap>
           </PopConfirm>
         )
@@ -245,7 +249,7 @@ const DemandTable = (props: Props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -262,7 +266,7 @@ const DemandTable = (props: Props) => {
             }}
             record={record}
           >
-            <StatusWrap>{text}</StatusWrap>
+            <StatusWrap color={text.color}>{text.content}</StatusWrap>
           </PopConfirm>
         )
       },
@@ -273,21 +277,21 @@ const DemandTable = (props: Props) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'time',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
       title: '预计开始时间',
-      dataIndex: 'startTime',
+      dataIndex: 'expectedStart',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
       title: '预计结束时间',
-      dataIndex: 'endTime',
+      dataIndex: 'expectedEnd',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
@@ -296,9 +300,9 @@ const DemandTable = (props: Props) => {
   return (
     <Content>
       <TableBox
-        rowKey="key"
+        rowKey="id"
         columns={columns}
-        dataSource={props.List}
+        dataSource={props.data?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -306,10 +310,10 @@ const DemandTable = (props: Props) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={props.data?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={props.data?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
@@ -65,21 +66,36 @@ export const getDemandList: any = async (params: any) => {
     order: params?.order,
   })
 
-  return {
-    currentPage: params.page,
-    total: response.data.pager.total,
-    list: response.data.list.map((i: any) => ({
-      id: i.id,
-      name: i.name,
-      demand: i.child_story_count,
-      priority: i.priority,
-      iteration: i.iterate_name,
-      status: i.status,
-      dealName: i.users_name,
-      time: i.created_at,
-      expectedStart: i.expected_start_at,
-      expectedEnd: i.expected_end_at,
-    })),
+  if (params.all) {
+    return response.data.map((k: any) => ({
+      count: k.count,
+      list: k.list.map((i: any) => ({
+        childCount: i.child_story_count,
+        id: i.id,
+        name: i.name,
+        userName: i.user_name.split(',') || [],
+        priority: i.priority,
+        status: i.status,
+      })),
+      name: k.status_name,
+    }))
+  } else {
+    return {
+      currentPage: params.page,
+      total: response.data.pager.total,
+      list: response.data.list.map((i: any) => ({
+        id: i.id,
+        name: i.name,
+        demand: i.child_story_count,
+        priority: i.priority,
+        iteration: i.iterate_name,
+        status: i.status,
+        dealName: i.users_name,
+        time: i.created_at,
+        expectedStart: i.expected_start_at,
+        expectedEnd: i.expected_end_at,
+      })),
+    }
   }
 }
 
@@ -144,18 +160,18 @@ export const deleteComment: any = async (params: any) => {
 
 export const addDemand: any = async (params: any) => {
   await http.post<any>('addDemand', {
-    project_id: params.projectId,
+    project_id: Number(params.projectId),
     name: params.name,
-    info: params.info,
-    expected_start_at: params.expectedStart,
-    expected_end_at: params.expectedEnd,
-    iterate_id: params.iterateId,
-    parent_id: params.parentId,
-    priority: params.priority,
-    users: params.userIds,
-    copysend: params.copySendIds,
-    tag: params.tagIds,
-    attachment: params.attachments,
+    info: params?.info,
+    expected_start_at: params?.expectedStart,
+    expected_end_at: params?.expectedEnd,
+    iterate_id: params?.iterateId,
+    parent_id: params?.parentId,
+    priority: params?.priority,
+    users: params?.userIds,
+    copysend: params?.copySendIds,
+    tag: params?.tagIds,
+    attachment: params?.attachments,
   })
 }
 

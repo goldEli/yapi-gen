@@ -16,9 +16,10 @@ const Detail = () => {
     getProjectCoverList,
     getProjectPermission,
     setProjectPermission,
-    getStaffList,
+    getMemberList,
     getTagList,
   } = useModel('project')
+  const { getIterateSelectList } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
 
@@ -35,8 +36,9 @@ const Detail = () => {
     getProjectInfo({ projectId })
     getProjectCoverList()
     getPermissionList()
-    getStaffList({ all: 1 })
+    getMemberList({ all: true, projectId })
     getTagList({ projectId })
+    getIterateSelectList({ projectId })
   }, [])
   return (
     <Wrap>

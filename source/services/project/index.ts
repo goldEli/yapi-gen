@@ -66,6 +66,8 @@ export const getProjectInfo: any = async (params: any) => {
     memberCount: response.data.member_count,
     endTime: response.data.stop_at,
     isPublic: response.data.is_public,
+    filterField: response.data.storyConfig.filter_fidlds,
+    showField: response.data.storyConfig.display_fidlds,
   }
 }
 
@@ -110,10 +112,10 @@ export const getProjectMember: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectMember', {
     search: {
       project_id: params.projectId,
-      keyword: params.searchValue,
-      all: params.all,
-      job_id: params.jobIds,
-      user_group_id: params.userGroupIds,
+      keyword: params?.searchValue,
+      all: params?.all,
+      job_id: params?.jobIds,
+      user_group_id: params?.userGroupIds,
     },
     orderkey: params.orderKey,
     order: params.order,

@@ -6,11 +6,11 @@ import moment from 'moment'
 export const getIterateList: any = async (params: any) => {
   const response: any = await http.get<any>('getIterateList', {
     search: {
-      project_id: params.projectId,
-      name: params.name,
-      created_at: params.startTime,
-      end_at: params.endTime,
-      status: params.status,
+      project_id: params?.projectId,
+      name: params?.name,
+      created_at: params?.startTime,
+      end_at: params?.endTime,
+      status: params?.status,
       all: true,
     },
     orderkey: params.orderKey,
@@ -73,6 +73,7 @@ export const getIterateInfo: any = async (params: any) => {
     storyCount: response.data.story_count,
     startTime: response.data.start_at,
     endTime: response.data.end_at,
+    changeCount: response.data.app_changelog_count,
   }
 }
 

@@ -43,7 +43,7 @@ interface Props {
 
 const AddMember = (props: Props) => {
   const [searchParams] = useSearchParams()
-  const { projectPermission, addMember, updateMember, staffList }
+  const { projectPermission, addMember, updateMember, memberList }
     = useModel('project')
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
@@ -92,9 +92,16 @@ const AddMember = (props: Props) => {
             showArrow={false}
             mode="multiple"
             showSearch
-            options={staffList}
             disabled={props.details?.id}
-          />
+          >
+            {memberList?.map((i: any) => {
+              return (
+                <Select.Option key={i.id} value={i.id}>
+                  {i.name}
+                </Select.Option>
+              )
+            })}
+          </ModalContent>
         </Form.Item>
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>

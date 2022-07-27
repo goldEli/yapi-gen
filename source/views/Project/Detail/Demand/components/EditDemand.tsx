@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, DatePicker, Select, Space } from 'antd'
+import { Modal, Form, Input, DatePicker, Select, Space, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -14,6 +14,8 @@ import UploadAttach from './UploadAttach'
 import Editor from '@/components/Editor'
 import { useState } from 'react'
 import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import moment from 'moment'
 
 const FormWrap = styled(Form)({
   height: 600,
@@ -145,6 +147,36 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const { memberList } = useModel('project')
+  const { addDemand } = useModel('demand')
+  const { selectIterate } = useModel('iterate')
+
+  const onAddDemand = async () => {
+    const values = form.getFieldsValue()
+    if (values.times && values.times[0]) {
+      values.expectedStart = moment(values.times[0]).format('YYYY-MM-DD')
+    }
+    if (values.times && values.times[1]) {
+      values.expectedEnd = moment(values.times[1]).format('YYYY-MM-DD')
+    }
+
+    values.info = html
+    try {
+      await addDemand({
+        projectId,
+        ...values,
+      })
+      message.success('创建成功')
+      form.resetFields()
+      props.onChangeVisible()
+    } catch (error) {
+
+      //
+    }
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -176,7 +208,15 @@ const EditDemand = (props: Props) => {
               mode="multiple"
               showSearch
               placeholder="请选择处理人"
-            />
+            >
+              {memberList?.map((i: any) => {
+                return (
+                  <Select.Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Select.Option>
+                )
+              })}
+            </Select>
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -220,7 +260,15 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="interation" />
           <Form.Item label="迭代" name="iterateId">
-            <Select placeholder="请选择" />
+            <Select placeholder="请选择" showSearch showArrow>
+              {selectIterate?.list?.map((i: any) => {
+                return (
+                  <Select.Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Select.Option>
+                )
+              })}
+            </Select>
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -232,7 +280,15 @@ const EditDemand = (props: Props) => {
               mode="multiple"
               showSearch
               placeholder="请选择抄送人"
-            />
+            >
+              {memberList?.map((i: any) => {
+                return (
+                  <Select.Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Select.Option>
+                )
+              })}
+            </Select>
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -265,7 +321,9 @@ const EditDemand = (props: Props) => {
         <AddButtonWrap>完成并创建下一个</AddButtonWrap>
         <Space size={16}>
           <Button>取消</Button>
-          <Button type="primary">确认</Button>
+          <Button type="primary" onClick={onAddDemand}>
+            确认
+          </Button>
         </Space>
       </ModalFooter>
     </Modal>
