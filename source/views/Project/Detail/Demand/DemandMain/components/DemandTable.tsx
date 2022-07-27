@@ -3,14 +3,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from 'react'
-import { Pagination, Dropdown, Table } from 'antd'
+import { Pagination, Dropdown, Table, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { OmitText } from '@star-yun/ui'
 
 const StatusWrap = styled.div<{ color?: string }>(
@@ -66,19 +66,15 @@ const TableBox = styled(TableWrap)({
 })
 
 interface Props {
-  menu: React.ReactElement
   data: any
+  onChangeVisible(e: any, item: any): void
+  onDelete(item: any): void
 }
-
-const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
-]
 
 const DemandTable = (props: Props) => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
 
   const onChangePage = () => {
 
@@ -89,6 +85,25 @@ const DemandTable = (props: Props) => {
 
     //
   }
+
+  const onClickItem = (item: any) => {
+    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+  }
+
+  const menu = (item: any) => (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={e => props.onChangeVisible(e, item)}>编辑</div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={() => props.onDelete(item)}>删除</div>,
+        },
+      ]}
+    />
+  )
 
   const columnsChild = [
     {
@@ -150,12 +165,12 @@ const DemandTable = (props: Props) => {
     {
       title: 'ID',
       dataIndex: 'id',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Dropdown
-              overlay={props.menu}
-              trigger={['hover']}
+              overlay={menu(record)}
+              trigger={['click']}
               placement="bottomRight"
               getPopupContainer={node => node}
             >
@@ -169,11 +184,11 @@ const DemandTable = (props: Props) => {
     {
       title: '标题',
       dataIndex: 'name',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <div
             style={{ cursor: 'pointer' }}
-            onClick={() => navigate('/Detail/Demand?type=info')}
+            onClick={() => onClickItem(record)}
           >
             <OmitText width={200}>{text}</OmitText>
           </div>
@@ -297,6 +312,7 @@ const DemandTable = (props: Props) => {
       },
     },
   ]
+
   return (
     <Content>
       <TableBox

@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-danger */
@@ -8,6 +10,12 @@ import styled from '@emotion/styled'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+
+const SpaceWrap = styled(Space)({
+  '.ant-space-item': {
+    width: '48.5%',
+  },
+})
 
 const TitleWrap = styled(Space)({
   height: 40,
@@ -47,6 +55,16 @@ const ChangeRecord = () => {
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
     setVisible(true)
+  }
+
+  const fieldContent = (item: any, i: string) => {
+    if (i === 'tag') {
+      return item[i]?.length ? item[i]?.map((k: any) => k.name) : '--'
+    } else if (i === 'attachment' || i === 'copysend') {
+      return item[i]?.length ? item[i].map((k: any) => k) : '--'
+    } else {
+      return item[i] || '--'
+    }
   }
 
   const columns = [
@@ -98,7 +116,20 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {record.fields.map((i: any) => <span key={i}>{text[i]}</span>)}
+            {record?.fields?.map((i: any) => (
+              <span key={i}>
+                {i === 'info' ? (
+                  <span
+                    style={{ cursor: 'pointer', color: '#2877ff' }}
+                    onClick={() => onClickCheck(record)}
+                  >
+                    {text[i]?.length ? '查看详情' : '--'}
+                  </span>
+                )
+                  : <span>{fieldContent(text, i)}</span>
+                }
+              </span>
+            ))}
           </div>
         )
       },
@@ -122,10 +153,10 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    查看详情
+                    {text[i]?.length ? '查看详情' : '--'}
                   </span>
                 )
-                  : <span>{text[i]}</span>
+                  : <span>{fieldContent(text, i)}</span>
                 }
               </span>
             ))}
@@ -155,7 +186,7 @@ const ChangeRecord = () => {
         bodyStyle={{ padding: '8px 24px 24px' }}
         destroyOnClose
       >
-        <Space size={32} style={{ display: 'flex' }}>
+        <SpaceWrap size={32} style={{ display: 'flex' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更前</TitleWrap>
             <div
@@ -172,7 +203,7 @@ const ChangeRecord = () => {
               }}
             />
           </div>
-        </Space>
+        </SpaceWrap>
       </Modal>
       <Table
         rowKey="id"

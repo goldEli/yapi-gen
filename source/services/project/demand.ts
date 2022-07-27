@@ -36,6 +36,7 @@ export const getDemandInfo: any = async (params: any) => {
     copySend: response.data.copysend,
     user: response.data.user,
     createdTime: response.data.created_at,
+    status: response.data.status,
   }
 }
 
@@ -43,7 +44,7 @@ export const getDemandList: any = async (params: any) => {
   const response: any = await http.get<any>('getDemandList', {
     search: {
       project_id: params?.projectId,
-      keywaord: params?.searchValue,
+      keyword: params?.searchValue,
       iterate_id: params?.iterateIds,
       status: params?.statusIds,
       priority: params?.priorityIds,
@@ -76,6 +77,10 @@ export const getDemandList: any = async (params: any) => {
         userName: i.user_name.split(',') || [],
         priority: i.priority,
         status: i.status,
+        info: i.info,
+        userIds: i.user_id,
+        iterateId: i.iterate_id,
+        parentId: i.parent_id,
       })),
       name: k.status_name,
     }))
@@ -94,6 +99,10 @@ export const getDemandList: any = async (params: any) => {
         time: i.created_at,
         expectedStart: i.expected_start_at,
         expectedEnd: i.expected_end_at,
+        info: i.info,
+        userIds: i.user_id,
+        iterateId: i.iterate_id,
+        parentId: i.parent_id,
       })),
     }
   }
@@ -131,6 +140,8 @@ export const getCommentList: any = async (params: any) => {
       story_id: params.demandId,
       project_id: params.projectId,
     },
+    page: params.page,
+    pagesize: params.pageSize,
   })
   return {
     list: response.data.list.map((i: any) => ({
@@ -139,6 +150,8 @@ export const getCommentList: any = async (params: any) => {
       content: i.content,
       avatar: i.avatar,
       createdTime: i.created_at,
+      statusContent: i.status_content,
+      userId: i.user_id,
     })),
   }
 }
@@ -194,7 +207,7 @@ export const updateDemand: any = async (params: any) => {
 }
 
 export const deleteDemand: any = async (params: any) => {
-  await http.delete<any>('deleteDemand', {
+  await http.post<any>('deleteDemand', {
     project_id: params.projectId,
     id: params.id,
   })

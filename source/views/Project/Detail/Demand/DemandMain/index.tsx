@@ -1,30 +1,37 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
-import { Menu } from 'antd'
+import DeleteConfirm from '@/components/DeleteConfirm'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
+import { message } from 'antd'
 
 interface Props {
   onChangeVisible(e: any): void
+  onSetOperationItem(item: any): void
 }
 
 const DemandMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(true)
+  const [searchVal, setSearchVal] = useState('')
+  const [isVisible, setIsVisible] = useState(false)
+  const [deleteId, setDeleteId] = useState(0)
   const [dataList, setDataList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const { getDemandList } = useModel('demand')
+  const { getDemandList, deleteDemand } = useModel('demand')
 
-  const getList = async (state: boolean) => {
+  const getList = async (state: boolean, val: string) => {
     let params = {}
     if (state) {
       params = {
         projectId,
         all: true,
         panel: true,
+        searchValue: val,
       }
     } else {
       params = {
@@ -33,6 +40,7 @@ const DemandMain = (props: Props) => {
         pageSize: 10,
         order: 'asc',
         orderKey: 'id',
+        searchValue: val,
       }
     }
     const result = await getDemandList(params)
@@ -40,41 +48,70 @@ const DemandMain = (props: Props) => {
   }
 
   useEffect(() => {
-    getList(isGrid)
+    getList(isGrid, searchVal)
   }, [])
-
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => props.onChangeVisible(e)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: <div>删除</div>,
-        },
-      ]}
-    />
-  )
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val)
+    getList(val, searchVal)
+  }
+
+  const onChangeOperation = (e: any, item: any) => {
+    props.onSetOperationItem(item)
+    props.onChangeVisible(e)
+  }
+
+  const onDelete = (item: any) => {
+    setDeleteId(item.id)
+    setIsVisible(true)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({ projectId, id: deleteId })
+      message.success('删除成功')
+      setIsVisible(false)
+      setDeleteId(0)
+      getList(isGrid, searchVal)
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onSearch = (val: string) => {
+    setSearchVal(val)
+    getList(isGrid, val)
   }
 
   return (
     <div>
+      <DeleteConfirm
+        text="确认要删除当前需求？"
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      />
       <Operation
         isGrid={isGrid}
         onChangeGrid={val => onChangeGrid(val)}
         onChangeVisible={(e: any) => props.onChangeVisible(e)}
+        onSearch={onSearch}
       />
-      {isGrid
-        ? <DemandGrid menu={menu} list={dataList} />
-        : <DemandTable menu={menu} data={dataList} />
-      }
+      {isGrid ? (
+        <DemandGrid
+          onChangeVisible={onChangeOperation}
+          onDelete={onDelete}
+          list={dataList}
+        />
+      ) : (
+        <DemandTable
+          onChangeVisible={onChangeOperation}
+          onDelete={onDelete}
+          data={dataList}
+        />
+      )}
     </div>
   )
 }

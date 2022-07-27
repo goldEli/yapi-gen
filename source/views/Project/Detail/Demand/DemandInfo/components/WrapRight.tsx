@@ -101,10 +101,16 @@ const WrapRightBox = () => {
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [addValue, setAddValue] = useState('')
   const { getCommentList, addComment, deleteComment } = useModel('demand')
+  const { userInfo } = useModel('user')
   const [dataList, setDataList] = useState<any>([])
 
   const getList = async () => {
-    const result = await getCommentList({ projectId, demandId })
+    const result = await getCommentList({
+      projectId,
+      demandId,
+      page: 1,
+      pageSize: 999,
+    })
     setDataList(result)
   }
 
@@ -131,14 +137,16 @@ const WrapRightBox = () => {
   }
 
   const onAddComment = async (content: string) => {
-    try {
-      await addComment({ projectId, demandId, content })
-      message.success('回复成功')
-      setAddValue('')
-      getList()
-    } catch (error) {
+    if (content.trim().length) {
+      try {
+        await addComment({ projectId, demandId, content: content.trim() })
+        message.success('回复成功')
+        setAddValue('')
+        getList()
+      } catch (error) {
 
-      //
+        //
+      }
     }
   }
 
@@ -160,10 +168,14 @@ const WrapRightBox = () => {
           <img src={item.avatar} alt="" />
           <TextWrap>
             <div className="textTop">
-              <IconFont type="close" onClick={() => onDeleteComment(item)} />
+              <IconFont
+                type="close"
+                hidden={item.userId !== userInfo.id}
+                onClick={() => onDeleteComment(item)}
+              />
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span className="name">{item.name}</span>
-                <span className="common">{item.name}</span>
+                <span className="common">{item.statusContent}</span>
               </div>
               <div className="common" style={{ paddingRight: 30 }}>
                 {item.createdTime}
@@ -178,7 +190,7 @@ const WrapRightBox = () => {
           placeholder="输入评论，按Enter快速发布"
           autoSize={{ minRows: 5, maxRows: 5 }}
           value={addValue}
-          onClick={(e: any) => setAddValue(e.target.value)}
+          onChange={(e: any) => setAddValue(e.target.value)}
           onPressEnter={onPressEnter}
         />
         <Button type="primary" onClick={() => onAddComment(addValue)}>

@@ -161,7 +161,7 @@ const DemandCard = (props: Props) => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
+            <StatusWrap color={text?.color}>{text?.content}</StatusWrap>
           </PopConfirm>
         )
       },
@@ -175,16 +175,16 @@ const DemandCard = (props: Props) => {
   return (
     <div>
       <Wrap>
-        <WrapBorder style={{ background: props.item.priority.color }} />
+        <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
           <div style={{ cursor: 'pointer' }} onClick={props.onClickItem}>
             <OmitText width={200}>{props.item.name}</OmitText>
           </div>
           <AvatarWrap>
             <NameGroup>
-              {props.item.userName
-                .slice(0, 3)
-                .map((item: any, index: number) => (
+              {props.item?.userName
+                ?.slice(0, 3)
+                ?.map((item: any, index: number) => (
                   <div
                     className="box"
                     key={item}
@@ -197,9 +197,9 @@ const DemandCard = (props: Props) => {
                 ))}
               <div
                 className="more"
-                hidden={props.item.userName.length - 3 <= 0}
+                hidden={props.item?.userName?.length - 3 <= 0}
               >
-                +{props.item.userName.length - 3}
+                +{props.item?.userName?.length - 3}
               </div>
             </NameGroup>
             <PopConfirm
@@ -231,7 +231,7 @@ const DemandCard = (props: Props) => {
                   style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
                 />
                 <span style={{ color: '#323233', fontSize: 16 }}>
-                  {props.item.childCount}
+                  {props.item?.childCount}
                 </span>
               </div>
             </PopConfirm>

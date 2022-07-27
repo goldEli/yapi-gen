@@ -87,6 +87,7 @@ const IterationTable = (props: Props) => {
 
     //
   }
+
   const columns = [
     {
       title: 'ID',
@@ -212,6 +213,7 @@ const IterationTable = (props: Props) => {
       },
     },
   ]
+
   return (
     <Content>
       <TableBox

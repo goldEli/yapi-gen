@@ -47,9 +47,9 @@ const Project = () => {
     order: 'asc',
     self: true,
     searchValue: '',
-    isPublic: '',
+    isPublic: 0,
     all: '',
-    status: '',
+    status: 0,
   }
 
   const getList = (params: any) => {
@@ -63,12 +63,17 @@ const Project = () => {
 
   const onChangeType = (type: number) => {
     setActiveType(type)
-    data.self = type !== 1
+
+    if (type === 1) {
+      data.isPublic = 1
+    } else {
+      data.self = true
+    }
     getList(data)
   }
 
   const onChangeHidden = (hidden: boolean) => {
-    data.status = hidden ? '2' : '1'
+    data.status = hidden ? 1 : 0
     getList(data)
   }
 
