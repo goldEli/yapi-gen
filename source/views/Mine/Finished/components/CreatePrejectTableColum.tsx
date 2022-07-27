@@ -124,30 +124,52 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="child_story_count">子需求</NewSort>,
       dataIndex: 'child_story_count',
       key: 'child_story_count',
-      render: (text: any, record: any) => (
-        <Pop
-          content={({ onHide }: { onHide(): void }) => {
-            return (
-              <ShapeContent
-                tap={() => {
-
-                  //
-                }}
-                hide={onHide}
-                record={record}
-              />
-            )
-          }}
-          record={record}
-        >
-          <StyledShape>{text}</StyledShape>
-        </Pop>
-      ),
     },
     {
       title: <NewSort fixedKey="priority">优先级</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
+      render: (
+        text: string | number,
+        record: Record<string, string | number>,
+        index: number,
+      ) => {
+        return (
+          <div className={flexCss}>
+            <div className={flexCss}>
+              {level.map(item => {
+                if (text === item.id) {
+                  return (
+                    <div className={flexCss} key={item.id}>
+                      {item.icon}
+                      <span style={{ margin: '0px 16px 0px 10px' }}>
+                        {item.name}
+                      </span>
+                    </div>
+                  )
+                }
+              })}
+            </div>
+            <Pop
+              content={({ onHide }: { onHide(): void }) => (
+                <LevelContent
+                  onTap={() => {
+
+                    //
+                  }}
+                  onHide={onHide}
+                  record={record}
+                />
+              )}
+              record={record}
+            >
+              <ShowWrap>
+                <IconFont type="down-icon" />
+              </ShowWrap>
+            </Pop>
+          </div>
+        )
+      },
     },
     {
       title: <NewSort fixedKey="iterate_name">迭代</NewSort>,
@@ -163,45 +185,24 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">状态</NewSort>,
       dataIndex: 'status',
       key: 'status',
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-        index: number,
-      ) => (
-        <div className={flexCss}>
-          <div className={flexCss}>
-            {level.map(item => {
-              if (text === item.id) {
-                return (
-                  <div className={flexCss} key={item.id}>
-                    {item.icon}
-                    <span style={{ margin: '0px 16px 0px 10px' }}>
-                      {item.name}
-                    </span>
-                  </div>
-                )
-              }
-            })}
-          </div>
+      render: (text: any, record: any) => {
+        return (
           <Pop
-            content={({ onHide }: { onHide(): void }) => (
-              <LevelContent
-                onTap={() => {
-
-                  //
-                }}
-                onHide={onHide}
-                record={record}
-              />
-            )}
+            content={({ onHide }: { onHide(): void }) => {
+              return (
+                <ShapeContent
+                  tap={state.updateStatus}
+                  hide={onHide}
+                  record={record}
+                />
+              )
+            }}
             record={record}
           >
-            <ShowWrap>
-              <IconFont type="down-icon" />
-            </ShowWrap>
+            <StyledShape>{text.content}</StyledShape>
           </Pop>
-        </div>
-      ),
+        )
+      },
     },
     {
       title: <NewSort fixedKey="user_name">创建人</NewSort>,

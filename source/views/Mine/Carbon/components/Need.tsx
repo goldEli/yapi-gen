@@ -16,7 +16,8 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 
 const Need = (props: any) => {
-  const { getMineNoFinishList, getField, getSearchField } = useModel('mine')
+  const { getMineNoFinishList, getField, getSearchField, updateDemandStatus }
+    = useModel('mine')
   const [listData, setListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
@@ -37,8 +38,36 @@ const Need = (props: any) => {
     setOrderKey(key)
     setOrder(order)
   }
+  const init = async () => {
+    const res = await getMineNoFinishList({
+      projectId: props.id,
+      keyword,
+      status: '',
+      tag: '',
+      userId: '',
+      usersName: '',
+      usersCopysendName: '',
+      order,
+      orderkey: orderKey,
+      page,
+      pagesize,
+    })
 
-  const columns = useDynamicColumns({ orderKey, order, updateOrderkey })
+    setListData(res.list)
+    setTotal(res.pager.total)
+  }
+  const updateStatus = async (res1: any) => {
+    const res = await updateDemandStatus(res1)
+    if (res.code === '00000') {
+      init()
+    }
+  }
+  const columns = useDynamicColumns({
+    orderKey,
+    order,
+    updateOrderkey,
+    updateStatus,
+  })
 
   const selectColum: any = useMemo(() => {
     const arr = [...titleList, ...titleList2]
@@ -66,24 +95,6 @@ const Need = (props: any) => {
     setSearchList(res.allList)
     setFilterBasicsList(res.filterBasicsList)
     setFilterSpecialList(res.filterSpecialList)
-  }
-  const init = async () => {
-    const res = await getMineNoFinishList({
-      projectId: props.id,
-      keyword,
-      status: '',
-      tag: '',
-      userId: '',
-      usersName: '',
-      usersCopysendName: '',
-      order,
-      orderkey: orderKey,
-      page,
-      pagesize,
-    })
-
-    setListData(res.list)
-    setTotal(res.pager.total)
   }
 
   const onChangePage = (newPage: any) => {
