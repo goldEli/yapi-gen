@@ -68,8 +68,8 @@ const EditIteration = (props: Props) => {
   const { addIterate, updateIterate } = useModel('iterate')
 
   useEffect(() => {
-    setHtml(props.details.info)
-    if (props.details.startTime) {
+    setHtml(props.details?.info)
+    if (props.details?.startTime) {
       form.setFieldsValue({
         time: [
           moment(props.details.createdTime),

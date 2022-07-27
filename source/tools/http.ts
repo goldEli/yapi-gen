@@ -8,15 +8,13 @@ import { message } from 'antd'
 
 client.config({
   base: import.meta.env.__API_BASE_URL__,
-
-  // base: 'http://new.minjie',
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
   requestInterceptors: [
     options => {
       options.headers.Authorization =
-        localStorage.getItem('token') || 'df79996bd3d096f5ff4b95ff62fe6215'
+        localStorage.getItem('token') || '4b2ba48a37c0a8b5be924715e8916896'
       options.headers.System = 'win10'
       options.headers.Client = 'chrome'
       options.payload = JSON.stringify(options.payload)

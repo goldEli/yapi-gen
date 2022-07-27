@@ -77,55 +77,28 @@ export const getIterateInfo: any = async (params: any) => {
 }
 
 export const getIterateChangeLog: any = async (params: any) => {
-
-  //   const response: any = await http.get<any>('getIterateChangeLog', {
-  //     search: {
-  //       app_id: params.iterateId,
-  //     },
-  //     pagesize: params.pagesize,
-  //     page: params.page,
-  //     orderkey: params.orderkey,
-  //     order: params.order,
-  //   })
-  const response: any = {}
-  response.data = {
-    list: [
-      {
-        id: '1',
-        start_at: '2022-01-12',
-        end_at: '2011-12-12',
-        story_count: 12,
-        story_finish_count: 21,
-        status: 1,
-        name: '敏捷',
-      },
-      {
-        id: '2',
-        start_at: '2022-01-12',
-        end_at: '2011-12-12',
-        story_count: 12,
-        story_finish_count: 21,
-        status: 1,
-        name: '敏捷',
-      },
-    ],
-    pager: {
-      total: 20,
-      page: 2,
-      pagesize: 12,
+  const response: any = await http.get<any>('getIterateChangeLog', {
+    search: {
+      app_id: params.iterateId,
+      project_id: params.projectId,
     },
-  }
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+
   return {
-    currentPage: 1,
+    currentPage: params.page,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
-      status: i.status,
-      name: i.name,
-      finishCount: i.story_finish_count,
-      storyCount: i.story_count,
-      createdTime: i.created_at,
-      endTime: i.end_at,
+      fields: i.fields,
+      userName: i.user_id,
+      updateTime: i.created_at,
+      type: i.change_log_type,
+      beforeField: JSON.stringify(i.before) === '[]' ? {} : i.before,
+      afterField: i.after,
     })),
   }
 }

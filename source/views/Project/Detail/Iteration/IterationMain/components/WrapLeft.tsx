@@ -136,6 +136,7 @@ const WrapLeft = (props: Props) => {
     }
     const result = await getIterateList(params)
     setDataList(result)
+    props.onChangeOperation(result?.list[0])
   }
 
   useEffect(() => {

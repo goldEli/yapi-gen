@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
 import { useState } from 'react'
 import IconFont from '@/components/IconFont'
+import { useModel } from '@/models'
 
 const TagCheckedItem = styled.div<{ color?: string }>(
   {
@@ -68,19 +69,16 @@ interface TagProps {
 }
 
 const TagBox = (props: TagProps) => {
+  const { tagList } = useModel('project')
   const [value, setValue] = useState('')
-  const tagList = [
-    { name: '有风险', color: 'red' },
-    { name: '等待转测', color: 'green' },
-  ]
   return (
     <TagWrap title="">
       <div style={{ padding: '16px 16px 4px 16px' }}>
         <Input.Search value={value} onChange={e => setValue(e.target.value)} />
       </div>
       {tagList
-        .filter(k => k.name.includes(value))
-        .map(i => (
+        .filter((k: any) => k.name.includes(value))
+        .map((i: any) => (
           <TagItem key={i.name}>
             <div style={{ background: i.color }} />
             <span>{i.name}</span>
@@ -98,7 +96,7 @@ interface Props {
 }
 
 const TagComponent = (props: Props) => {
-  const [tagGroup, setTagGroup] = useState([{ name: '已确认' }])
+  const [tagGroup, setTagGroup] = useState([])
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
   const colorStatus = (
     <Space
@@ -116,7 +114,7 @@ const TagComponent = (props: Props) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <TagCheckedItem>
-        {tagGroup.map(i => (
+        {tagGroup.map((i: any) => (
           <div key={i.name} style={{ cursor: 'pointer', alignItems: 'center' }}>
             <Popover placement="bottom" trigger="click" content={colorStatus}>
               {i.name}

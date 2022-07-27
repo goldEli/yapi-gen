@@ -93,19 +93,13 @@ const Item = styled.div<{ activeIdx: boolean }>(
 
 const IterationWrap = () => {
   const [visible, setVisible] = useState(false)
-  const [operationDetail, setOperationDetail] = useState({})
+  const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
   const navigate = useNavigate()
   const iterateId = searchParams.get('iterateId')
   const { getIterateInfo, iterateInfo } = useModel('iterate')
-
-  useEffect(() => {
-    if (type) {
-      getIterateInfo({ projectId, id: iterateId })
-    }
-  }, [type])
 
   const childContent = () => {
     if (type === 'info') {
@@ -115,10 +109,16 @@ const IterationWrap = () => {
     }
     return <ChangeRecord />
   }
+
   const onChangeIdx = (val: string) => {
     navigate(
       `/Detail/Iteration?type=${val}&id=${projectId}&iterateId=${iterateId}`,
     )
+  }
+
+  const onChangeOperation = (item: any) => {
+    setOperationDetail(item)
+    getIterateInfo({ projectId, id: item?.id })
   }
 
   const content = () => {
@@ -126,7 +126,7 @@ const IterationWrap = () => {
       return (
         <IterationMain
           onChangeVisible={() => setVisible(!visible)}
-          onChangeOperation={setOperationDetail}
+          onChangeOperation={item => onChangeOperation(item)}
         />
       )
     }

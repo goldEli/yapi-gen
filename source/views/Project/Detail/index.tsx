@@ -16,6 +16,8 @@ const Detail = () => {
     getProjectCoverList,
     getProjectPermission,
     setProjectPermission,
+    getStaffList,
+    getTagList,
   } = useModel('project')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
@@ -33,6 +35,8 @@ const Detail = () => {
     getProjectInfo({ projectId })
     getProjectCoverList()
     getPermissionList()
+    getStaffList({ all: 1 })
+    getTagList({ projectId })
   }, [])
   return (
     <Wrap>

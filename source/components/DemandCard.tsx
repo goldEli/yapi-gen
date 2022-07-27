@@ -5,13 +5,12 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { Dropdown, Table } from 'antd'
 import { OmitText } from '@star-yun/ui'
-import { useNavigate, useSearchParams } from 'react-router-dom'
 import PopConfirm from '@/components/Popconfirm'
 import { ShapeContent } from '@/components/Shape'
 
 interface Item {
   name: string
-  person: { name: string, avatar: string }[]
+  person: { name: string; avatar: string }[]
   demand: number
 }
 
@@ -20,6 +19,7 @@ interface Props {
   onChangeEdit?(): void
   onChangeDelete?(): void
   menu: React.ReactElement
+  onClickItem(): void
 }
 
 const MoreWrap = styled(IconFont)({
@@ -114,10 +114,6 @@ const StatusWrap = styled.div({
 })
 
 const DemandCard = (props: Props) => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-
   const columnsChild = [
     {
       title: '项目名称',
@@ -186,10 +182,7 @@ const DemandCard = (props: Props) => {
       <Wrap>
         <WrapBorder />
         <MainWrap>
-          <div
-            style={{ cursor: 'pointer' }}
-            onClick={() => navigate(`/Detail/Demand?type=info&id=${projectId}`)}
-          >
+          <div style={{ cursor: 'pointer' }} onClick={props.onClickItem}>
             <OmitText width={200}>{props.item.name}</OmitText>
           </div>
           <AvatarWrap>

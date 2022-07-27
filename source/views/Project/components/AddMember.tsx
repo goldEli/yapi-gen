@@ -43,20 +43,10 @@ interface Props {
 
 const AddMember = (props: Props) => {
   const [searchParams] = useSearchParams()
-  const [staffList, setStaffList] = useState<any>([])
-  const { getStaffList } = useModel('staff')
-  const { projectPermission, addMember, updateMember } = useModel('project')
+  const { projectPermission, addMember, updateMember, staffList }
+    = useModel('project')
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
-
-  const getStaff = async () => {
-    const result = await getStaffList({ all: 1 })
-    setStaffList(result)
-  }
-
-  useEffect(() => {
-    getStaff()
-  }, [])
 
   const onConfirm = async () => {
     const values = form.getFieldsValue()

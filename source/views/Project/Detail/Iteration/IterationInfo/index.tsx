@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-named-capture-group */
@@ -84,24 +85,38 @@ const ChartWrap = styled.div({
 })
 
 const DemoLine = (props: { data: any }) => {
-
-  // console.log(props.data, '====')
-  // const config = {
-  //   data: props.data.predict_last_count,
-  //   xField: 'year',
-  //   yField: 'value',
-  //   seriesField: 'category',
-  //   xAxis: {
-  //     type: 'time',
-  //   },
-  //   yAxis: {
-  //     label: {
-  //       formatter: (v: any) =>
-  //         String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
-  //     },
-  //   },
-  // }
-  // return <Line {...config} />
+  let arr: any[] = []
+  props.data?.date?.forEach((element: any, index: number) => {
+    const items = [
+      {
+        date: element,
+        value: props.data.actual_last_count[index],
+        category: '实际剩余',
+      },
+      {
+        date: element,
+        value: props.data.predict_last_count[index],
+        category: '预计剩余',
+      },
+    ]
+    arr = [...arr, ...items]
+  })
+  const config = {
+    data: arr,
+    xField: 'date',
+    yField: 'value',
+    seriesField: 'category',
+    xAxis: {
+      type: 'time',
+    },
+    yAxis: {
+      label: {
+        formatter: (v: any) =>
+          String(v).replace(/\d{1,3}(?=(\d{3})+$)/g, s => `${s},`),
+      },
+    },
+  }
+  return <Line {...config} />
 }
 
 const DemoColumn = (props: { data: any }) => {
@@ -174,7 +189,7 @@ const IterationInfo = () => {
         <DiagramWrap>
           <Title>燃尽图</Title>
           <ChartWrap>
-            {/* <DemoLine data={chartData?.burnDownChart || {}} /> */}
+            <DemoLine data={chartData?.burnDownChart || {}} />
           </ChartWrap>
         </DiagramWrap>
         <StatusWrap>
