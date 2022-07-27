@@ -1,109 +1,47 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import styled from '@emotion/styled'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import {
-  StaffHeader,
   Hehavior,
   PaginationWrap,
   StaffTableWrap,
   MyInput,
   SearchLine,
   SetButton,
-  TabsItem,
-  TabsHehavior,
-  LabNumber,
-  tabCss,
   StyledTable,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Pagination, Table } from 'antd'
+import { Button, Dropdown, Menu, Pagination } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import { useModel } from '@/models'
+import TableFilter from '@/components/TableFilter'
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 12 Lake Park',
-    feiji: 'New York No. 22 Lake Park',
-    level: 1,
-    shape: '规划中',
-  },
-  {
-    key: '2',
-    name: 'John Brown',
-    age: 3222,
-    address: 'New York No. 1 Lake Park',
-    feiji: 'New York No. 12222 Lake Park',
-    level: 2,
-    shape: '实现中',
-  },
-  {
-    key: '3',
-    name: 'John Brown',
-    age: 3222,
-    address: 'New York No. 1 Lake Park',
-    feiji: 'New York No. 12222 Lake Park',
-    level: 3,
-    shape: '已实现',
-  },
-  {
-    key: '4',
-    name: 'John Brown',
-    age: 3222,
-    address: 'New York No. 1 Lake Park',
-    feiji: 'New York No. 12222 Lake Park',
-    level: 4,
-    shape: '已关闭',
-  },
-]
-
-export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
-]
-
-export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
-]
-
-const tabsList = [
-  { name: '创建的项目', type: 1 },
-  { name: '创建的需求', type: 2 },
-]
-
-const Need = () => {
-  const [active, setActive] = useState(1)
-  const [rowActiveIndex, setRowActiveIndex] = useState<number | null>()
-  const navigate = useNavigate()
+const Need = (props: any) => {
+  const { getMineFinishList, getField, getSearchField } = useModel('mine')
+  const [listData, setListData] = useState<any>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [page, setPage] = useState<number>(1)
+  const [pagesize, setPagesize] = useState<number>(10)
+  const [total, setTotal] = useState<number>()
+  const [orderKey, setOrderKey] = useState<any>()
+  const [order, setOrder] = useState<any>(3)
+  const [keyword, setKeyword] = useState<string>('')
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
-    'name',
-    'age',
-    'address',
-  ])
-  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
-    'feiji',
-    'dapao',
-    'tanke',
-  ])
-  const columns = useDynamicColumns({
-    rowActiveIndex,
-  })
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-
-    //
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
+  const [searchList, setSearchList] = useState<any[]>([])
+  const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
+  const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const updateOrderkey = (key: any, order: any) => {
+    setOrderKey(key)
+    setOrder(order)
   }
+
+  const columns = useDynamicColumns({ orderKey, order, updateOrderkey })
+
   const selectColum: any = useMemo(() => {
     const arr = [...titleList, ...titleList2]
     const newList = []
@@ -116,10 +54,61 @@ const Need = () => {
     }
     return newList
   }, [titleList, columns])
-  const onShowSizeChange = (current: number, pageSize: number) => {
+  const getShowkey = async () => {
+    const res2 = await getField(props.id || 0)
 
-    //
+    setPlainOptions(res2.plainOptions)
+    setPlainOptions2(res2.plainOptions2)
+    setTitleList(res2.titleList)
+    setTitleList2(res2.titleList2)
   }
+  const getSearchKey = async () => {
+    const res = await getSearchField(props.id || 0)
+
+    setSearchList(res.allList)
+    setFilterBasicsList(res.filterBasicsList)
+    setFilterSpecialList(res.filterSpecialList)
+  }
+  const init = async () => {
+    const res = await getMineFinishList({
+      projectId: props.id,
+      keyword,
+      status: '',
+      tag: '',
+      userId: '',
+      usersName: '',
+      usersCopysendName: '',
+      order,
+      orderkey: orderKey,
+      page,
+      pagesize,
+    })
+
+    setListData(res.list)
+    setTotal(res.pager.total)
+  }
+
+  const onChangePage = (newPage: any) => {
+    setPage(newPage)
+  }
+  const onShowSizeChange = (current: any, size: any) => {
+    setPagesize(size)
+  }
+  const onPressEnter = (e: any) => {
+    setKeyword(e.target.value)
+  }
+  useEffect(() => {
+    init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, pagesize, keyword, orderKey, order, props.id])
+  useEffect(() => {
+    getSearchKey()
+  }, [props.id])
+
+  useEffect(() => {
+    getShowkey()
+  }, [])
+
   const showModal = () => {
     setIsModalVisible(true)
   }
@@ -135,10 +124,6 @@ const Need = () => {
     setTitleList2(list2)
   }
 
-  const onChange = (key: string) => {
-
-    //
-  }
   const menu = (
     <Menu
       items={[
@@ -160,6 +145,7 @@ const Need = () => {
                 style={{ color: '#BBBDBF', fontSize: 20 }}
               />
             }
+            onPressEnter={onPressEnter}
             placeholder="请输入昵称姓名邮箱电话"
             allowClear
           />
@@ -179,12 +165,17 @@ const Need = () => {
           </Dropdown>
         </div>
       </Hehavior>
-      <SearchLine />
+
+      <TableFilter
+        list={searchList}
+        basicsList={filterBasicsList}
+        specialList={filterSpecialList}
+      />
       <StaffTableWrap>
         <StyledTable
           rowKey="key"
           columns={selectColum}
-          dataSource={data}
+          dataSource={listData}
           pagination={false}
           scroll={{ x: 'max-content' }}
         />
@@ -195,23 +186,27 @@ const Need = () => {
           current={1}
           showSizeChanger
           showQuickJumper
-          total={200}
-          showTotal={total => `Total ${total} items`}
+          total={total}
+          showTotal={newTotal => `Total ${newTotal} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
           hideOnSinglePage
         />
       </PaginationWrap>
-      <OptionalFeld
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        checkList={titleList}
-        checkList2={titleList2}
-        isVisible={isModalVisible}
-        onClose={close2}
-        getCheckList={getCheckList}
-      />
+      {isModalVisible
+        ? (
+            <OptionalFeld
+              plainOptions={plainOptions}
+              plainOptions2={plainOptions2}
+              checkList={titleList}
+              checkList2={titleList2}
+              isVisible={isModalVisible}
+              onClose={close2}
+              getCheckList={getCheckList}
+            />
+          )
+        : null}
     </>
   )
 }

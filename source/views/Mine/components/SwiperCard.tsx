@@ -89,7 +89,12 @@ const TextWarp = styled.div({
   background: 'white',
 })
 
-const SwiperCard = (props: { show?: boolean, tap?(): void }) => {
+const SwiperCard = (props: {
+  show?: boolean
+  tap?(): void
+  name: string
+  avtar: string
+}) => {
   return (
     <Warp
       show={props.show}
@@ -100,12 +105,10 @@ const SwiperCard = (props: { show?: boolean, tap?(): void }) => {
       }}
     >
       <ImgWrap show={props.show}>
-        <img src={projectImg} alt="" />
+        <img src={props.avtar ? props.avtar : projectImg} alt="" />
       </ImgWrap>
       <TextWarp>
-        <NameWrap show={props.show}>
-          公司名称公司名称公公司名称公司名称公司名称司名称
-        </NameWrap>
+        <NameWrap show={props.show}>{props.name}</NameWrap>
       </TextWarp>
       <Triangle />
     </Warp>

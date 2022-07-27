@@ -49,8 +49,10 @@ const ItemWrap = styled.div`
   margin-bottom: 24px;
 `
 type OptionalFeldProps = {
-  plainOptions: { label: string, value: string }[]
-  plainOptions2: { label: string, value: string }[]
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  plainOptions: { label: string, value: string, is_default_display?: number }[]
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  plainOptions2: { label: string, value: string, is_default_display?: number }[]
   checkList: CheckboxValueType[]
   checkList2: CheckboxValueType[]
   getCheckList(
@@ -63,6 +65,7 @@ type OptionalFeldProps = {
 
 export const OptionalFeld = (props: OptionalFeldProps) => {
   const { plainOptions, plainOptions2 } = props
+
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props.checkList,
   )

@@ -1,5 +1,5 @@
-/* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
 import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
@@ -9,12 +9,12 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ShowWrap } from '@/components/StyleCommon'
+import Sort from '@/components/Sort'
 
 const flexCss = css`
   display: flex;
   align-items: center;
 `
-
 const StyledShape = styled.div`
   display: flex;
   align-items: center;
@@ -48,20 +48,42 @@ const SetHead = styled.div`
 `
 
 export const useDynamicColumns = (state: any) => {
+  const NewSort = (props: any) => {
+    return (
+      <Sort
+        fixedKey={props.fixedKey}
+        onChangeKey={state.updateOrderkey}
+        nowKey={state.orderKey}
+        order={state.order}
+      >
+        {props.children}
+      </Sort>
+    )
+  }
   return [
     {
       width: 200,
       align: 'center',
-      title: '1',
-      dataIndex: 'name',
-      key: 'name',
+      title: <NewSort fixedKey="id">ID</NewSort>,
+      dataIndex: 'id',
+      key: 'id',
       render: (text: any, record: any, index: any) => {
         const menu = (
           <Menu
             items={[
               {
+                key: '1',
+                label: (
+                  <span
+                    onClick={() => state.controlStaffPersonalVisible(record)}
+                  >
+                    设置
+                  </span>
+                ),
+              },
+              {
                 key: '2',
-                label: <span onClick={state.controlEditVisible}>编辑</span>,
+                label: <span>编辑</span>,
               },
               {
                 key: '3',
@@ -88,9 +110,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: '2',
-      dataIndex: 'age',
-      key: 'age',
+      title: <NewSort fixedKey="name">标题</NewSort>,
+      dataIndex: 'name',
+      key: 'name',
       render: (
         text: string | number,
         record: Record<string, string | number>,
@@ -99,42 +121,48 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: '3',
-      dataIndex: 'shape',
-      key: 'address',
-      render: (text: any, record: any) => {
-        return (
-          <Pop
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  hide={onHide}
-                  tap={state.shapeTap}
-                  record={record}
-                />
-              )
-            }}
-            record={record}
-          >
-            <StyledShape>{text}</StyledShape>
-          </Pop>
-        )
-      },
+      title: <NewSort fixedKey="child_story_count">子需求</NewSort>,
+      dataIndex: 'child_story_count',
+      key: 'child_story_count',
+      render: (text: any, record: any) => (
+        <Pop
+          content={({ onHide }: { onHide(): void }) => {
+            return (
+              <ShapeContent
+                tap={() => {
+
+                  //
+                }}
+                hide={onHide}
+                record={record}
+              />
+            )
+          }}
+          record={record}
+        >
+          <StyledShape>{text}</StyledShape>
+        </Pop>
+      ),
     },
     {
-      title: '4',
-      dataIndex: 'address1',
-      key: 'address1',
+      title: <NewSort fixedKey="priority">优先级</NewSort>,
+      dataIndex: 'priority',
+      key: 'priority',
     },
     {
-      title: '5',
-      dataIndex: 'address2',
-      key: 'address2',
+      title: <NewSort fixedKey="iterate_name">迭代</NewSort>,
+      dataIndex: 'iterate_name',
+      key: 'iterate_name',
     },
     {
-      title: '飞机',
-      dataIndex: 'level',
-      key: 'feiji',
+      title: <NewSort fixedKey="tag">标签</NewSort>,
+      dataIndex: 'tag',
+      key: 'tag',
+    },
+    {
+      title: <NewSort fixedKey="status">状态</NewSort>,
+      dataIndex: 'status',
+      key: 'status',
       render: (
         text: string | number,
         record: Record<string, string | number>,
@@ -156,10 +184,12 @@ export const useDynamicColumns = (state: any) => {
             })}
           </div>
           <Pop
-            isShow
             content={({ onHide }: { onHide(): void }) => (
               <LevelContent
-                onTap={state.levelTap}
+                onTap={() => {
+
+                  //
+                }}
                 onHide={onHide}
                 record={record}
               />
@@ -174,24 +204,44 @@ export const useDynamicColumns = (state: any) => {
       ),
     },
     {
-      title: '大炮',
-      dataIndex: 'dapao',
-      key: 'dapao',
+      title: <NewSort fixedKey="user_name">创建人</NewSort>,
+      dataIndex: 'user_name',
+      key: 'user_name',
     },
     {
-      title: '坦克',
-      dataIndex: 'tanke',
-      key: 'tanke',
+      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      dataIndex: 'users_name',
+      key: 'users_name',
     },
     {
-      title: '直升机',
-      dataIndex: 'zhishengji',
-      key: 'zhishengji',
+      title: <NewSort fixedKey="users_copysend_name">抄送人</NewSort>,
+      dataIndex: 'users_copysend_name',
+      key: 'users_copysend_name',
     },
     {
-      title: '战舰',
-      dataIndex: 'zhanjian',
-      key: 'zhanjian',
+      title: <NewSort fixedKey="created_at">创建时间</NewSort>,
+      dataIndex: 'created_at',
+      key: 'created_at',
+    },
+    {
+      title: <NewSort fixedKey="expected_start_at">预计开始时间</NewSort>,
+      dataIndex: 'expected_start_at',
+      key: 'expected_start_at',
+    },
+    {
+      title: <NewSort fixedKey="expected_end_at">预计结束时间</NewSort>,
+      dataIndex: 'expected_end_at',
+      key: 'expected_end_at',
+    },
+    {
+      title: <NewSort fixedKey="updated_at">最后修改时间</NewSort>,
+      dataIndex: 'updated_at',
+      key: 'updated_at',
+    },
+    {
+      title: <NewSort fixedKey="finish_at">完成时间</NewSort>,
+      dataIndex: 'finish_at',
+      key: 'finish_at',
     },
   ]
 }

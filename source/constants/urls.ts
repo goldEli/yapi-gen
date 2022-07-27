@@ -54,6 +54,14 @@ const urls = {
   getDepartmentSelectList: '/b/user/department/list',
   getPositionSelectList: '/b/user/position/list',
   getGlobalGeneral: '/b/company/statistics',
+  getMineProjectList: '/b/user/project',
+  getMineGatte: '/b/user/overview/gantt/chart',
+  getUserFeedList: '/b/user/overview/feed',
+  getMineNeedList: '/b/user/copysend/story',
+  getMineNoFinishList: '/b/user/abeyance/story',
+  getMineFinishList: '/b/user/finish/story',
+  getMineChartsList: '/b/user/overview/statistics',
+  getMineCreacteList: '/b/user/create/story',
 }
 
 export default urls
