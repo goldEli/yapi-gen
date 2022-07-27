@@ -1,5 +1,6 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
+import { useModel } from '@/models'
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
@@ -92,56 +93,68 @@ const GatteWrap = styled.div`
   padding: 0 16px;
 `
 const Profile = () => {
+  const { getMineChartsList, getUserFeedList } = useModel('mine')
+  const [data, setData] = useState<any>({})
+  const [lineData, setLineData] = useState<any>([])
+  const init = async () => {
+    const res = await getMineChartsList()
 
-  // const [state, setState] = useState()
-  // const navigate = useNavigate()
-  const tap = () => {
+    setData(res)
+    const res1 = await getUserFeedList({
+      limit: '',
+      page: 1,
+      pagesize: 10,
+    })
 
-    //
+    setLineData(res1.data)
   }
+  useEffect(() => {
+    init()
+  }, [])
+
   return (
     <>
       <StyledWrap>
         <Head>
           <HeadLeft>
-            <SecondTitle>基本高考</SecondTitle>
+            <SecondTitle>基本概况</SecondTitle>
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.firstP}</span>
+                <span className={titleTextCss}>累计参与项目</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.firstN}</span>
+                <span className={titleTextCss}>累计参与需求</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.firstD}</span>
+                <span className={titleTextCss}>累计参与迭代</span>
               </ChartsItem>
             </InnerWrap>
           </HeadLeft>
           <HeadRight>
-            <SecondTitle onClick={tap}>基本高考</SecondTitle>
+            <SecondTitle>待办事项</SecondTitle>
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.secondAll}</span>
+                <span className={titleTextCss}>总计</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.secondNoFinish}</span>
+                <span className={titleTextCss}>待办</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.secondTimeOut}</span>
+                <span className={titleTextCss}>逾期</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.secondFinish}</span>
+                <span className={titleTextCss}>按时完成</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>16</span>
-                <span className={titleTextCss}>公司项目</span>
+                <span className={titleNumberCss}>{data?.secondOutFinish}</span>
+                <span className={titleTextCss}>逾期完成</span>
               </ChartsItem>
             </InnerWrap>
           </HeadRight>
@@ -151,17 +164,17 @@ const Profile = () => {
             <SecondTitle>我的动态</SecondTitle>
             <TimeLineWrap>
               <Timeline>
-                {[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-                  <Timeline.Item key={item}>
+                {lineData.map((item: any) => (
+                  <Timeline.Item key={item.id}>
                     <LineItem>
-                      <span>2022-06-06 15:30</span>
+                      <span>{item.created_at}</span>
                       <span style={{ color: 'rgba(40, 119, 255, 1)' }}>
-                        流转【需求】状态到【已实现】
+                        {item.content}
                       </span>
                     </LineItem>
                     <LineItem>
-                      <span>项目名称xxxx</span>
-                      <span>需求名称xxxx</span>
+                      <span>{item.feedable.project.name}</span>
+                      <span>{item.feedable.name}</span>
                     </LineItem>
                   </Timeline.Item>
                 ))}

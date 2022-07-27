@@ -12,7 +12,7 @@ import {
 import IconFont from './IconFont'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import moment from 'moment'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 
 const { Option } = Select
@@ -112,42 +112,42 @@ interface Props {
 }
 
 const TableFilter = (props: Props) => {
-  const [list, setList] = useState(props.list)
-  const [basicsList, setBasicsList] = useState(props.basicsList)
-  const [specialList, setSpecialList] = useState(props.specialList)
+  const { list, basicsList, specialList } = props
   const [form] = Form.useForm()
+
   const onClearForm = async () => {
     form.resetFields()
   }
   const filterBasicsList = useMemo(() => {
-    const newKeys = list?.map(item => item.key)
-    const arr = basicsList?.filter(item => !newKeys.includes(item.key))
+    const newKeys = list?.map(item => item.content)
+    const arr = basicsList?.filter(item => !newKeys.includes(item.content))
     return arr
   }, [list, basicsList])
+
   const filterSpecialList = useMemo(() => {
-    const newKeys = list?.map(item => item.key)
-    const arr = specialList?.filter(item => !newKeys.includes(item.key))
+    const newKeys = list?.map(item => item.content)
+    const arr = specialList?.filter(item => !newKeys.includes(item.content))
     return arr
   }, [list, specialList])
 
-  // console.log(dayjs())
   const content = (
     <div>
       <Input.Search />
       <div>
         <Collapse>
           <Collapse.Panel header="基础字段" key="1">
-            {filterBasicsList?.map(i => <div key={i}>{i.name}</div>)}
+            {filterBasicsList?.map(i => <div key={i.id}>{i.title}</div>)}
           </Collapse.Panel>
           <Collapse.Panel header="人员和时间" key="2">
-            {filterSpecialList?.map(i => <div key={i}>{i.name}</div>)}
+            {filterSpecialList?.map(i => <div key={i.id}>{i.title}</div>)}
           </Collapse.Panel>
         </Collapse>
       </div>
     </div>
   )
   const delList = (key: string) => {
-    setList(list.filter((item, idx) => item.key !== key))
+
+    // setList(list.filter((item, idx) => item.key !== key))
   }
   const onChange: RangePickerProps['onChange'] = dates => {
     if (dates) {
@@ -167,6 +167,7 @@ const TableFilter = (props: Props) => {
 
     //
   }
+
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
@@ -184,8 +185,8 @@ const TableFilter = (props: Props) => {
                       showSearch
                     >
                       {i.children.map((v: any) => (
-                        <Option key={v} value={v.name}>
-                          {v.name}
+                        <Option key={v.id} value={v.id}>
+                          {v.content}
                         </Option>
                       ))}
                     </SelectWrap>
@@ -197,8 +198,8 @@ const TableFilter = (props: Props) => {
               )
             }
             return (
-              <SelectWrapBedeck key={i}>
-                <Form.Item name="time">
+              <SelectWrapBedeck key={i.key}>
+                <Form.Item name={i.key}>
                   <DatePicker.RangePicker
                     className={rangPicker}
                     getPopupContainer={node => node}

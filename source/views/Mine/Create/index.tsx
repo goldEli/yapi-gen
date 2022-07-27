@@ -1,52 +1,40 @@
-import React, { useState } from 'react'
-import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
+import React, { useEffect, useState } from 'react'
+import { useModel } from '@/models'
 import {
   StaffHeader,
   TabsItem,
   TabsHehavior,
   LabNumber,
   tabCss,
-  SwiperWrap,
 } from '@/components/StyleCommon'
 import Need from './components/Need'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import SwiperCard from '../components/SwiperCard'
+import MineSwiper from '../components/MineSwiper'
 
-const tabsList = [{ name: '创建需求', type: 2, path: 'need' }]
+const tabsList = [{ name: '已办需求', type: 2, path: 'need' }]
 
-const Create = () => {
-  const [swiperActive, setSwiperActive] = useState(1)
+const Finished = () => {
+  const [swiperData, setSwiperData] = useState([])
+  const [projectId, setProjectId] = useState()
+  const { getMineProjectList } = useModel('mine')
   const active = 2
-  const navigate = useNavigate()
+
+  const init = async () => {
+    const res = await getMineProjectList('create')
+    setSwiperData(res.data)
+  }
+  useEffect(() => {
+    init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getProjectId = (value: any) => {
+    setProjectId(value)
+  }
 
   return (
     <div>
       <StaffHeader>我创建的</StaffHeader>
-      <SwiperWrap>
-        <Swiper
-          spaceBetween={50}
-          freeMode
-          grabCursor
-          observer
-          observeParents
-          slidesPerView={6}
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(item => (
-            <SwiperSlide key={item}>
-              <SwiperSlide key={item}>
-                <SwiperCard
-                  tap={() => setSwiperActive(item)}
-                  show={swiperActive === item}
-                />
-              </SwiperSlide>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </SwiperWrap>
-
+      <MineSwiper data={swiperData} onTap={getProjectId} />
       <TabsHehavior>
         {tabsList.map(i => (
           <div key={i.type} className={tabCss}>
@@ -58,9 +46,9 @@ const Create = () => {
         ))}
       </TabsHehavior>
 
-      {active === 2 && <Need />}
+      {active === 2 && <Need id={projectId} />}
     </div>
   )
 }
 
-export default Create
+export default Finished

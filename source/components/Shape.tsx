@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Select, Button, Form, Input } from 'antd'
+import { useModel } from '@/models'
 
 const { Option } = Select
 import IconFont from '@/components/IconFont'
@@ -74,25 +75,52 @@ const shape = [
   { id: 4, name: '已关闭' },
 ]
 type ShapeProps = {
-  record: Record<string, number | string>
+  record: any
   hide(): void
-  tap(value: any, active: any): void
+  tap(value: any): void
 }
 
 export const ShapeContent = (props: ShapeProps) => {
-  const [form] = Form.useForm()
-  const { record, hide, tap } = props
-  const [active, setActive] = useState(record.level)
+  const {
+    record: {
+      id: myid,
+      project_id: projectId,
+      status: { id: activeID, can_changes: statusList },
+    },
+    hide,
+    tap,
+  } = props
 
+  const [form] = Form.useForm()
+  const { getProjectMember } = useModel('mine')
+  const [optionsList, setOptionsList] = useState([])
+
+  const init = async () => {
+    const res = await getProjectMember(projectId)
+    setOptionsList(res.data)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  const [active, setActive] = useState(activeID)
   const confirm = async () => {
     const res = await form.validateFields()
-    tap(res, active)
+    const value = {
+      projectId,
+      demandId: myid,
+      statusId: active,
+      userIds: res.username,
+      content: res.password,
+    }
+    tap(value)
     hide()
   }
   return (
     <Contain>
       <Left>
-        {shape.map(item => (
+        {statusList.map((item: any) => (
           <div onClick={() => setActive(item.id)} key={item.id}>
             <StyledShape
               style={{
@@ -101,9 +129,9 @@ export const ShapeContent = (props: ShapeProps) => {
                   item.id === active ? ' 1px solid rgba(40, 119, 255, 1)' : '',
               }}
             >
-              {item.name}
+              {item.content}
             </StyledShape>
-            {item.id === record?.level}
+            {/* {item.content} */}
           </div>
         ))}
       </Left>
@@ -118,10 +146,12 @@ export const ShapeContent = (props: ShapeProps) => {
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Select placeholder="请选择" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
+              <Select mode="multiple" placeholder="请选择" allowClear>
+                {optionsList.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
 

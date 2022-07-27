@@ -99,8 +99,6 @@ const PosterComponent = (props: Props) => {
     const { file } = option
     if (file instanceof File) {
       const result = await uploadFile(file, file.name, 'file')
-
-      // console.log(result)
     }
   }
 
