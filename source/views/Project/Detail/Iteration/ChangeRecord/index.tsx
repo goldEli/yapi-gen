@@ -36,12 +36,12 @@ const ChangeRecord = () => {
   const [dataList, setDataList] = useState<any>([])
   const [checkDetail, setCheckDetail] = useState<any>({})
 
-  const getList = async () => {
+  const getList = async (item?: any) => {
     const result = await getIterateChangeLog({
       iterateId,
       projectId,
-      pageSize: 10,
-      page: 1,
+      page: item ? item.page : 1,
+      pageSize: item ? item.size : 10,
       order: 'id',
       orderKey: 'asc',
     })
@@ -166,14 +166,12 @@ const ChangeRecord = () => {
     },
   ]
 
-  const onChangePage = () => {
-
-    //
+  const onChangePage = (page: number, size: number) => {
+    getList({ page, size })
   }
 
-  const onShowSizeChange = () => {
-
-    //
+  const onShowSizeChange = (page: number, size: number) => {
+    getList({ page, size })
   }
   return (
     <div>

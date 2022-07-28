@@ -33,6 +33,11 @@ const EditProject = (props: Props) => {
         await updateProject(data)
         message.success('编辑成功')
       } else {
+        if (!form.getFieldValue('isPublic')) {
+          form.setFieldsValue({
+            isPublic: 2,
+          })
+        }
         await addProject(form.getFieldsValue())
         message.success('创建成功')
       }

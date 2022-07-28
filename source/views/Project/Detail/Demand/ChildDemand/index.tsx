@@ -123,11 +123,11 @@ const ChildDemand = () => {
   const demandId = searchParams.get('demandId')
   const [dataList, setDataList] = useState<any>([])
 
-  const getList = async () => {
+  const getList = async (item?: any) => {
     const result = await getDemandList({
       projectId,
-      page: 1,
-      pageSize: 10,
+      page: item ? item.page : 1,
+      pageSize: item ? item.size : 10,
       order: 'asc',
       orderKey: 'id',
       parentId: demandId,
@@ -299,14 +299,12 @@ const ChildDemand = () => {
     },
   ]
 
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-
-    //
+  const onChangePage = (page: number, size: number) => {
+    getList({ page, size })
   }
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-
-    //
+  const onShowSizeChange = (page: number, size: number) => {
+    getList({ page, size })
   }
 
   const onChangeVisible = () => {

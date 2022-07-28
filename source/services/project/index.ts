@@ -154,7 +154,7 @@ export const getProjectMember: any = async (params: any) => {
 
 export const addMember: any = async (params: any) => {
   await http.post<any>('addProjectMember', {
-    project_id: params.projectId,
+    project_id: Number(params.projectId),
     user_group_id: params.userGroupId,
     user_ids: params.userIds,
   })

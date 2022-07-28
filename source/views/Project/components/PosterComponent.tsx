@@ -65,6 +65,14 @@ const AddUpload = styled.div({
   },
 })
 
+const PosterWrap = styled.img({
+  marginBottom: 8,
+  cursor: 'pointer',
+  width: 60,
+  height: 28,
+  borderRadius: 2,
+})
+
 interface Props {
   value?: any
   onChangeValue?(cover: string): void
@@ -74,6 +82,7 @@ const PosterComponent = (props: Props) => {
   const { coverList } = useModel('project')
   const [checkedPoster, setCheckedPoster] = useState(props.value || '')
   const { uploadFile } = useModel('cos')
+  const [posterList, setPosterList] = useState<any>([])
 
   const onUpdateValue = (path: string) => {
     setCheckedPoster(path)
@@ -99,6 +108,9 @@ const PosterComponent = (props: Props) => {
     const { file } = option
     if (file instanceof File) {
       const result = await uploadFile(file, file.name, 'file')
+      option.onSuccess?.(result)
+      const items = [result.url]
+      setPosterList([...posterList, ...items])
     }
   }
 
@@ -107,30 +119,30 @@ const PosterComponent = (props: Props) => {
       <ChooseTitle>请选择一个封面</ChooseTitle>
       <PosterGroup size={8}>
         {coverList.map((i: any) => (
-          <img
+          <PosterWrap
             key={i.id}
             onClick={() => onUpdateValue(i.path)}
-            style={{
-              marginBottom: 8,
-              cursor: 'pointer',
-              width: 60,
-              height: 28,
-              borderRadius: 2,
-            }}
             src={i.path}
             alt=""
           />
         ))}
       </PosterGroup>
       <ChooseTitle>自定义封面</ChooseTitle>
-      <Upload beforeUpload={onUploadBefore} customRequest={onUploadFileClick}>
-        <AddUpload>
-          <IconFont type="plus" />
-        </AddUpload>
-      </Upload>
-      <span style={{ fontSize: 12, fontWeight: 400, color: '#969799' }}>
+      <div>
+        {posterList.map((i: any) => <PosterWrap onClick={() => onUpdateValue(i)} key={i} src={i} alt="" />)}
+        <Upload
+          beforeUpload={onUploadBefore}
+          customRequest={onUploadFileClick}
+          showUploadList={false}
+        >
+          <AddUpload>
+            <IconFont type="plus" />
+          </AddUpload>
+        </Upload>
+      </div>
+      <div style={{ fontSize: 12, fontWeight: 400, color: '#969799' }}>
         图片格式支持jpg、png，大小为220*104px
-      </span>
+      </div>
     </div>
   )
 

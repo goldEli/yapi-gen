@@ -188,6 +188,8 @@ const EditDemand = (props: Props) => {
         attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
         userIds: demandInfo?.user?.map((i: any) => i.user.id),
       })
+    } else {
+      form.resetFields()
     }
   }, [demandInfo])
 
@@ -205,19 +207,22 @@ const EditDemand = (props: Props) => {
     if (props.isChild) {
       values.parentId = demandId || demandInfo?.id
     }
+
+    if (props.isIterateId) {
+      values.iterateId = props.isIterateId
+    }
+
     try {
       if (props.id) {
         await updateDemand({
           projectId,
           id: demandInfo.id,
           ...values,
-          iterateId: props.isIterateId || '',
         })
         message.success('编辑成功')
       } else {
         await addDemand({
           projectId,
-          iterateId: props.isIterateId || '',
           ...values,
         })
         message.success('创建成功')
@@ -255,13 +260,18 @@ const EditDemand = (props: Props) => {
     })
   }
 
+  const onCancel = () => {
+    props.onChangeVisible()
+    form.resetFields()
+  }
+
   return (
     <Modal
       visible={props.visible}
       width={740}
       footer={false}
       title={titleText()}
-      onCancel={props.onChangeVisible}
+      onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
     >
@@ -409,7 +419,7 @@ const EditDemand = (props: Props) => {
           完成并创建下一个
         </AddButtonWrap>
         <Space size={16}>
-          <Button onClick={props.onChangeVisible}>取消</Button>
+          <Button onClick={onCancel}>取消</Button>
           <Button type="primary" onClick={() => onSaveDemand()}>
             确认
           </Button>

@@ -6,9 +6,11 @@
 import IconFont from '@/components/IconFont'
 import Popconfirm from '@/components/Popconfirm'
 import styled from '@emotion/styled'
-import { Divider, Form, Input, Select, Space } from 'antd'
+import { Divider, Form, Input, message, Select, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -42,11 +44,42 @@ const PopoverFooter = styled(Space)({
 
 interface Props {
   hide?(): void
-  tap?(value: any, active: any): void
+  active?: any
 }
 
 const DemandBox = (props: Props) => {
   const [form] = Form.useForm()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
+  const { memberList } = useModel('project')
+  const { updateDemandStatus, getDemandInfo } = useModel('demand')
+
+  const onChangeStatus = async (value: any) => {
+    value.statusId = props.active
+    try {
+      await updateDemandStatus(value)
+      message.success('状态修改成功')
+      getDemandInfo({ projectId, id: demandId })
+      props.hide?.()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const confirm = async () => {
+    await form.validateFields()
+    const res = form.getFieldsValue()
+    const value = {
+      projectId,
+      demandId,
+      userIds: res.username,
+      content: res.password,
+    }
+    onChangeStatus(value)
+  }
+
   return (
     <DemandStatus title="">
       <div
@@ -56,8 +89,20 @@ const DemandBox = (props: Props) => {
         <IconFont type="close" />
       </div>
       <Form form={form} labelCol={{ span: 5 }}>
-        <Form.Item label="处理人" required>
-          <Select placeholder="请选择" />
+        <Form.Item
+          label="处理人"
+          name="username"
+          rules={[{ required: true, message: '' }]}
+        >
+          <Select mode="multiple" placeholder="请选择" allowClear>
+            {memberList?.map((i: any) => {
+              return (
+                <Select.Option key={i.id} value={i.id}>
+                  {i.name}
+                </Select.Option>
+              )
+            })}
+          </Select>
         </Form.Item>
         <Form.Item label="评论">
           <Input.TextArea
@@ -68,31 +113,31 @@ const DemandBox = (props: Props) => {
       </Form>
       <PopoverFooter size={16}>
         <Button onClick={() => props.hide?.()}>取消</Button>
-        <Button type="primary">确认</Button>
+        <Button type="primary" onClick={confirm}>
+          确认
+        </Button>
       </PopoverFooter>
     </DemandStatus>
   )
 }
 
 const DemandStatusBox = () => {
-  const { projectInfo } = useModel('project')
   const { demandInfo } = useModel('demand')
-
-  const statusList = projectInfo?.filterField?.filter(
-    (i: any) => i.content === 'status',
-  )[0]
+  const statusList = demandInfo?.status?.can_changes
+  const [active, setActive] = useState(0)
 
   return (
     <>
-      {statusList?.values?.map((i: any, index: number) => (
+      {statusList?.map((i: any, index: number) => (
         <Popconfirm
           key={i.name}
           content={({ onHide }: { onHide(): void }) => {
-            return <DemandBox tap={() => {}} hide={onHide} />
+            return <DemandBox active={active} hide={onHide} />
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <StatusWrap
+              onClick={() => setActive(i.id)}
               style={{
                 color: i.id === demandInfo?.status?.id ? '#2877ff' : '#969799',
                 border:
