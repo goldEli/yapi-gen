@@ -239,6 +239,15 @@ export const deleteInfoDemand: any = async (params: any) => {
   })
 }
 
+export const addInfoDemand: any = async (params: any) => {
+  await http.put<any>('addInfoDemand', {
+    project_id: params.projectId,
+    id: params.demandId,
+    target_id: params.targetId,
+    type: params.type,
+  })
+}
+
 export const updatePriority: any = async (params: any) => {
   await http.put<any>('updatePriority', {
     priority: params.priorityId,

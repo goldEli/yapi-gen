@@ -120,6 +120,7 @@ const WrapLeftBox = () => {
       <InfoItem>
         <Label>标签</Label>
         <TagComponent
+          canAdd
           addWrap={
             <AddWrap hasDash>
               <IconFont type="plus" />

@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import projectImg from '@/assets/projectImg.png'
 import IconFont from './IconFont'
 import { Dropdown, Menu } from 'antd'
+import { useState } from 'react'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -78,6 +79,8 @@ interface Props {
 }
 
 const ProjectCard = (props: Props) => {
+  const [isVisible, setIsVisible] = useState(false)
+
   const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
     props.onChangeOperation?.(type, item)
@@ -106,6 +109,11 @@ const ProjectCard = (props: Props) => {
     />
   )
 
+  const onMoreClick = (e: any) => {
+    e.stopPropagation()
+    setIsVisible(!isVisible)
+  }
+
   return (
     <Warp>
       <ImgWrap>
@@ -116,11 +124,15 @@ const ProjectCard = (props: Props) => {
         <NameWrap>{props.item.name}</NameWrap>
         <DropdownWrap
           overlay={() => menu(props.item)}
-          trigger={['hover']}
+          trigger={['click']}
           placement="bottomRight"
           getPopupContainer={node => node}
         >
-          <IconFont style={{ fontSize: 16, color: '#BBBDBF' }} type="more" />
+          <IconFont
+            onClick={e => onMoreClick(e)}
+            style={{ fontSize: 16, color: '#BBBDBF' }}
+            type="more"
+          />
         </DropdownWrap>
       </TextWarp>
     </Warp>

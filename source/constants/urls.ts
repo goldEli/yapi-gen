@@ -43,6 +43,7 @@ const urls = {
   updateDemand: '/b/story/update',
   deleteDemand: '/b/story/delete',
   deleteInfoDemand: '/b/story/update_operate/del',
+  addInfoDemand: '/b/story/update_operate/add',
   updatePriority: '/b/story/priority',
   getLoginDetail: '/b/userinfo',
   loginOut: '/b/logout',

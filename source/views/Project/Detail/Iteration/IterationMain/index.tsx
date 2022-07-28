@@ -11,33 +11,6 @@ import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 
-const list = [
-  {
-    id: '121212',
-    name: '需求标题名称',
-    demand: 8,
-    iteration: '敏捷版本V1.0',
-    priority: 0,
-    dealName: '何飞',
-    status: 0,
-    createTime: '2022-02-32',
-    endTime: '200-03-12',
-    startTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    name: '需求标题名称',
-    demand: 8,
-    iteration: '敏捷版本V1.0',
-    priority: 0,
-    dealName: '何飞',
-    status: 0,
-    createTime: '2022-02-32',
-    endTime: '200-03-12',
-    startTime: '200-03-12',
-  },
-]
-
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
 }))
@@ -65,7 +38,7 @@ const IterationMain = (props: Props) => {
         projectId,
         all: true,
         panel: true,
-        iterateIds: props.operationDetail.id,
+        iterateIds: [props.operationDetail.id],
       }
     } else {
       params = {
@@ -74,7 +47,7 @@ const IterationMain = (props: Props) => {
         pageSize: 10,
         order: 'asc',
         orderKey: 'id',
-        iterateIds: props.operationDetail.id,
+        iterateIds: [props.operationDetail.id],
       }
     }
     const result = await getDemandList(params)

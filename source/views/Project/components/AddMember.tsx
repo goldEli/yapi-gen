@@ -4,8 +4,8 @@ import styled from '@emotion/styled'
 import { Form, message, Modal, Select } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
-import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -43,10 +43,21 @@ interface Props {
 
 const AddMember = (props: Props) => {
   const [searchParams] = useSearchParams()
-  const { projectPermission, addMember, updateMember, memberList }
+  const { projectPermission, addMember, updateMember, setRefreshMember }
     = useModel('project')
+  const { getStaffList } = useModel('staff')
+  const [staffList, setStaffList] = useState<any>([])
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
+
+  const getList = async () => {
+    const result = await getStaffList({ all: 1 })
+    setStaffList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   const onConfirm = async () => {
     const values = form.getFieldsValue()
@@ -66,6 +77,7 @@ const AddMember = (props: Props) => {
       props.onChangeValue()
       props.onChangeUpdate()
       form.resetFields()
+      setRefreshMember(true)
     } catch (error) {
 
       //
@@ -93,15 +105,8 @@ const AddMember = (props: Props) => {
             mode="multiple"
             showSearch
             disabled={props.details?.id}
-          >
-            {memberList?.map((i: any) => {
-              return (
-                <Select.Option key={i.id} value={i.id}>
-                  {i.name}
-                </Select.Option>
-              )
-            })}
-          </ModalContent>
+            options={staffList}
+          />
         </Form.Item>
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>

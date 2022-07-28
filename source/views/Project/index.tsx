@@ -48,7 +48,7 @@ const Project = () => {
     self: true,
     searchValue: '',
     isPublic: 0,
-    all: '',
+    all: true,
     status: 0,
   }
 
@@ -94,6 +94,7 @@ const Project = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationDetail({})
+      getList(data)
     } catch (error) {
 
       //
@@ -109,6 +110,7 @@ const Project = () => {
       }
       message.success(item.status === 1 ? '结束成功' : '开启成功')
       setOperationDetail({})
+      getList(data)
     } catch (error) {
 
       //
@@ -126,6 +128,23 @@ const Project = () => {
     }
   }
 
+  const onChangeGrid = (val: boolean) => {
+    setIsGrid(val)
+    data.all = false
+    getList(data)
+  }
+
+  const onAddClick = () => {
+    setIsVisible(true)
+    setOperationDetail({})
+  }
+
+  const onChangePageNavigation = (item: any) => {
+    data.page = item.page
+    data.pageSize = item.size
+    getList(data)
+  }
+
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
       <DeleteConfirm
@@ -138,6 +157,7 @@ const Project = () => {
         visible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         details={operationDetail}
+        onUpdate={() => getList(data)}
       />
       <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
         <SearchWrap>
@@ -145,7 +165,7 @@ const Project = () => {
             placeholder="搜索项目或任务"
             text="创建项目"
             onChangeSearch={onChangeSearch}
-            onChangeVisible={() => setIsVisible(true)}
+            onChangeVisible={onAddClick}
           />
         </SearchWrap>
         <Filter
@@ -155,7 +175,7 @@ const Project = () => {
           isGrid={isGrid}
           activeType={activeType}
           onChangeSort={onChangeSort}
-          onChangeFormat={() => setIsGrid(!isGrid)}
+          onChangeFormat={onChangeGrid}
           onChangeHidden={onChangeHidden}
           onChangeType={onChangeType}
         />
@@ -166,11 +186,13 @@ const Project = () => {
             projectList={projectList}
             onChangeVisible={() => setIsVisible(true)}
             onChangeOperation={onChangeOperation}
+            onAddClear={() => setOperationDetail({})}
           />
         ) : (
           <MainTable
             onChangeOperation={onChangeOperation}
             projectList={projectList}
+            onChangePageNavigation={onChangePageNavigation}
           />
         )}
       </Content>

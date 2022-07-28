@@ -8,7 +8,7 @@ export const getProjectList: any = async (params: any) => {
     search: {
       self: params.self,
       keyword: params.searchValue,
-      is_public: params.isPublic,
+      is_public: Number(params.isPublic),
       status: Number(params.status) || '',
       all: params.all,
     },
@@ -18,7 +18,7 @@ export const getProjectList: any = async (params: any) => {
     order: params.order,
   })
   return {
-    currentPage: 1,
+    currentPage: params.page,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -73,10 +73,10 @@ export const getProjectInfo: any = async (params: any) => {
 
 export const addProject: any = async (params: any) => {
   await http.post<any>('addProject', {
-    is_public: params.isPublic,
+    is_public: params?.isPublic,
     name: params.name,
-    info: params.info,
-    cover: params.cover,
+    info: params?.info,
+    cover: params?.cover,
   })
 }
 

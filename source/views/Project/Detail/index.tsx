@@ -42,7 +42,7 @@ const Detail = () => {
   }, [])
   return (
     <Wrap>
-      <CommonOperation />
+      <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
       <Outlet />
     </Wrap>
   )

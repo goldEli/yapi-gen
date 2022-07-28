@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Modal, Form, Input, Select, Space, message } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import PosterComponent from './PosterComponent'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
+import { useEffect } from 'react'
 
 const Footer = styled(Space)({
   height: 56,
@@ -15,6 +17,7 @@ interface Props {
   visible: boolean
   onChangeVisible(): void
   details?: any
+  onUpdate?(): void
 }
 
 const EditProject = (props: Props) => {
@@ -22,6 +25,7 @@ const EditProject = (props: Props) => {
   const { addProject, updateProject } = useModel('project')
 
   const onConfirm = async () => {
+    await form.validateFields()
     try {
       if (props.details?.id) {
         const data = form.getFieldsValue()
@@ -34,6 +38,7 @@ const EditProject = (props: Props) => {
       }
       form.resetFields()
       props.onChangeVisible()
+      props.onUpdate?.()
     } catch (error) {
 
       //
@@ -46,6 +51,14 @@ const EditProject = (props: Props) => {
     })
   }
 
+  useEffect(() => {
+    if (props.details?.id) {
+      form.setFieldsValue(props?.details)
+    } else {
+      form.resetFields()
+    }
+  }, [props.details])
+
   return (
     <Modal
       width={420}
@@ -56,17 +69,29 @@ const EditProject = (props: Props) => {
       bodyStyle={{ padding: '16px 24px 0' }}
       destroyOnClose
     >
-      <Form form={form} layout="vertical" initialValues={props.details}>
-        <Form.Item label="项目封面" required name="cover">
+      <Form form={form} layout="vertical">
+        <Form.Item
+          label="项目封面"
+          rules={[{ required: true, message: '' }]}
+          name="cover"
+        >
           <PosterComponent
             value={props.details?.id ? props.details?.cover : ''}
             onChangeValue={cover => onChangePoster(cover)}
           />
         </Form.Item>
-        <Form.Item label="项目名称" required name="name">
+        <Form.Item
+          label="项目名称"
+          rules={[{ required: true, message: '' }]}
+          name="name"
+        >
           <Input maxLength={30} placeholder="请输入项目名称" />
         </Form.Item>
-        <Form.Item label="项目描述" name="info">
+        <Form.Item
+          label="项目描述"
+          name="info"
+          rules={[{ required: true, message: '' }]}
+        >
           <Input.TextArea
             maxLength={500}
             placeholder="请输入项目描述"
@@ -74,7 +99,7 @@ const EditProject = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label="公开/私有" name="isPublic">
-          <Select placeholder="请选择">
+          <Select placeholder="请选择" defaultValue={[2]}>
             <Select.Option value={2}>私有项目</Select.Option>
             <Select.Option value={1}>企业公开</Select.Option>
           </Select>

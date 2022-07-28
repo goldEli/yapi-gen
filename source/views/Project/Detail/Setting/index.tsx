@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
 import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'

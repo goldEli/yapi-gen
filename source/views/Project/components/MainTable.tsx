@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
@@ -10,6 +11,7 @@ import { useCallback } from 'react'
 interface Props {
   onChangeOperation(type: string, item: any): void
   projectList: any
+  onChangePageNavigation(item: any): void
 }
 
 const RowIconFont = styled(IconFont)({
@@ -166,14 +168,12 @@ const MainTable = (props: Props) => {
     },
   ]
 
-  const onChangePage = () => {
-
-    //
+  const onChangePage = (page: number, size: number) => {
+    props.onChangePageNavigation({ page, size })
   }
 
-  const onShowSizeChange = () => {
-
-    //
+  const onShowSizeChange = (page: number, size: number) => {
+    props.onChangePageNavigation({ page, size })
   }
 
   const onTableRow = useCallback((row: any) => {

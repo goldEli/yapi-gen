@@ -74,14 +74,15 @@ export const level = [
 type LevelProps = {
   record?: any
   onHide(): void
-  onTap(id: any): void
+  onTap?(id: any): void
+  onCurrentDetail?(item: any): void
 }
 
 export const LevelContent = (props: LevelProps) => {
   const { getPriOrStu } = useModel('mine')
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
-  const [showData, setShowData] = useState([])
+  const [showData, setShowData] = useState<any>([])
 
   const init = async () => {
     const res = await getPriOrStu({
@@ -100,8 +101,8 @@ export const LevelContent = (props: LevelProps) => {
       projectId: pid,
       id: storyID,
     }
-    onTap(data)
-
+    onTap?.(data)
+    props.onCurrentDetail?.(showData.filter((i: any) => i.id === value)[0])
     onHide()
   }
   return (

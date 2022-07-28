@@ -1,6 +1,5 @@
 import { Modal } from 'antd'
 import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import { useModel } from '@/models'
 
 const InfoItem = styled.div({
@@ -80,7 +79,7 @@ const ProjectInfo = (props: Props) => {
         </InfoItem>
         <InfoItem>
           <span>权限</span>
-          <div>{projectInfo.permission}</div>
+          <div>{projectInfo.isPublic === 1 ? '公开项目' : '私有项目'}</div>
         </InfoItem>
         <InfoItem>
           <span>需求</span>
