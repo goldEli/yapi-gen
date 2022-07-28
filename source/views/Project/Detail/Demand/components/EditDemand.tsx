@@ -147,6 +147,7 @@ const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
+  const [demandList, setDemandList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
@@ -157,9 +158,22 @@ const EditDemand = (props: Props) => {
     content: '中',
     id: 646,
   })
-  const { addDemand, getDemandInfo, demandInfo, updateDemand }
+  const { addDemand, getDemandInfo, demandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
+
+  const getList = async () => {
+    const result = await getDemandList({ projectId, all: true })
+    const arr = result.map((i: any) => ({
+      label: i.name,
+      value: i.id,
+    }))
+    setDemandList(arr)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   useEffect(() => {
     if (props?.id) {
@@ -167,6 +181,7 @@ const EditDemand = (props: Props) => {
     } else {
       form.resetFields()
     }
+    getList()
   }, [props.id])
 
   useEffect(() => {
@@ -322,6 +337,7 @@ const EditDemand = (props: Props) => {
               showArrow
               showSearch
               placeholder="请选择父需求"
+              options={demandList}
             />
           </Form.Item>
         </div>
