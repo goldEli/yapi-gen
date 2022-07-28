@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -13,6 +14,8 @@ import DemandStatus from '../../components/DemandStatus'
 import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import { message } from 'antd'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -81,8 +84,22 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const WrapLeftBox = () => {
-  const { demandInfo } = useModel('demand')
+const WrapLeftBox = (props: { onUpdate?(): void }) => {
+  const { demandInfo, updatePriority } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
+
+  const onChangeState = async (item: any) => {
+    try {
+      await updatePriority({ demandId, priorityId: item.priorityId })
+      message.success('优先级修改成功')
+      props.onUpdate?.()
+    } catch (error) {
+
+      //
+    }
+  }
 
   return (
     <WrapLeft>
@@ -131,6 +148,7 @@ const WrapLeftBox = () => {
       <InfoItem>
         <Label>附件</Label>
         <UploadAttach
+          canUpdate
           addWrap={
             <AddWrap>
               <IconFont type="plus" />
@@ -147,14 +165,28 @@ const WrapLeftBox = () => {
         <Label>优先级</Label>
         <Popconfirm
           content={({ onHide }: { onHide(): void }) => {
-            return <LevelContent onTap={() => {}} onHide={onHide} />
+            return (
+              <LevelContent
+                onTap={item => onChangeState(item)}
+                onHide={onHide}
+                record={{
+                  id: demandId,
+                  project_id: projectId,
+                }}
+              />
+            )
           }}
         >
           <div
             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
-            <IconFont style={{ fontSize: 16 }} type="knockdown" />
-            <span style={{ marginLeft: 8 }}>中</span>
+            <IconFont
+              style={{ fontSize: 16, color: demandInfo?.priority?.color }}
+              type={demandInfo?.priority?.icon}
+            />
+            <span style={{ marginLeft: 8 }}>
+              {demandInfo?.priority?.content}
+            </span>
           </div>
         </Popconfirm>
       </InfoItem>

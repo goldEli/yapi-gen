@@ -22,6 +22,10 @@ const DemandInfo = () => {
     getDemandInfo({ projectId, id: demandId })
   }, [])
 
+  const onUpdate = () => {
+    getDemandInfo({ projectId, id: demandId })
+  }
+
   return (
     <div
       style={{
@@ -31,7 +35,7 @@ const DemandInfo = () => {
         background: 'white',
       }}
     >
-      <WrapLeft />
+      <WrapLeft onUpdate={onUpdate} />
       <DividerWrap type="vertical" />
       <WrapRight />
     </div>

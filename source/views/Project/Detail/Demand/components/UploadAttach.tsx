@@ -4,15 +4,54 @@ import { useModel } from '@/models'
 import { message, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 interface Props {
   addWrap: React.ReactElement
   onChangeAttachment?(arr: any): void
+  defaultList?: any
+  canUpdate?: boolean
 }
 
 const UploadAttach = (props: Props) => {
   const { uploadFile } = useModel('cos')
+  const { addInfoDemand, getDemandInfo, deleteInfoDemand } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
   let arr: any[] = []
+
+  const onAddInfoAttach = async (url: any) => {
+    try {
+      await addInfoDemand({
+        projectId,
+        demandId,
+        type: 'attachment',
+        target: url,
+      })
+      message.success('添加成功')
+      getDemandInfo({ projectId, id: demandId })
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onDeleteInfoAttach = async (url: any) => {
+
+    // try {
+    //   await deleteInfoDemand({
+    //     projectId,
+    //     demandId,
+    //     type: 'attachment',
+    //     targetId: url,
+    //   })
+    //   message.success('添加成功')
+    //   getDemandInfo({ projectId, id: demandId })
+    // } catch (error) {
+    //   //
+    // }
+  }
 
   const downloadIamge = (src: string, name: string) => {
     let urls = ''
@@ -41,6 +80,9 @@ const UploadAttach = (props: Props) => {
       const items = [result.url]
       arr = [...arr, ...items]
       props.onChangeAttachment?.(arr)
+      if (props.canUpdate) {
+        onAddInfoAttach([result.url])
+      }
     }
   }
 
@@ -51,6 +93,9 @@ const UploadAttach = (props: Props) => {
   const onRemove = (file: any) => {
     const result = arr.filter(i => i !== file.response.url)
     props.onChangeAttachment?.(result)
+    if (props.canUpdate) {
+      onDeleteInfoAttach(result)
+    }
   }
 
   const uploadProps: UploadProps = {
@@ -69,6 +114,7 @@ const UploadAttach = (props: Props) => {
     showUploadList: {
       showDownloadIcon: true,
     },
+    defaultFileList: props.defaultList,
   }
 
   return <Upload {...uploadProps}>{props.addWrap}</Upload>

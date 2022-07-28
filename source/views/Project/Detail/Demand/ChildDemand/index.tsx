@@ -321,6 +321,7 @@ const ChildDemand = () => {
         onChangeVisible={onChangeVisible}
         isChild
         id={operationItem.id}
+        onUpdate={() => getList()}
       />
       <Operation>
         <ButtonWrap

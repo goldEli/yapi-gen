@@ -1,9 +1,10 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, Popover, Table } from 'antd'
+import { Dropdown, message, Popover, Table } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import { ShapeContent } from '@/components/Shape'
@@ -113,7 +114,7 @@ const StatusWrap = styled.div({
 
 const DemandCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
-  const { getDemandList } = useModel('demand')
+  const { getDemandList, updateDemandStatus } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const [dataList, setDataList] = useState<any>([])
@@ -129,7 +130,18 @@ const DemandCard = (props: Props) => {
 
   const onChildClick = () => {
     getList()
-    setIsVisible(true)
+    setIsVisible(!isVisible)
+  }
+
+  const onChangeStatus = async (value: any) => {
+    try {
+      await updateDemandStatus(value)
+      message.success('状态修改成功')
+      getList()
+    } catch (error) {
+
+      //
+    }
   }
 
   const columnsChild = [
@@ -173,12 +185,16 @@ const DemandCard = (props: Props) => {
             content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
-                  tap={() => {
-
-                    //
-                  }}
+                  tap={value => onChangeStatus(value)}
                   hide={onHide}
-                  record={record}
+                  record={{
+                    id: record.id,
+                    project_id: projectId,
+                    status: {
+                      id: record.status.id,
+                      can_changes: record.status.can_changes,
+                    },
+                  }}
                 />
               )
             }}

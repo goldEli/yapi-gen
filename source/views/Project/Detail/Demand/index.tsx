@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
@@ -112,12 +113,14 @@ const StatusWrap = styled.div({
 const DemandBox = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
-  const { getDemandInfo, demandInfo, deleteDemand } = useModel('demand')
+  const { getDemandInfo, demandInfo, deleteDemand, updateDemandStatus }
+    = useModel('demand')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -161,12 +164,27 @@ const DemandBox = () => {
     return <ChangeRecord />
   }
 
+  const onChangeStatus = async (value: any) => {
+    try {
+      await updateDemandStatus(value)
+      message.success('状态修改成功')
+      if (demandId) {
+        getDemandInfo({ projectId, id: demandId })
+      }
+    } catch (error) {
+
+      //
+    }
+  }
+
   const content = () => {
     if (!type) {
       return (
         <DemandMain
           onSetOperationItem={setOperationItem}
           onChangeVisible={(e: any) => moreClick(e)}
+          isUpdate={isUpdate}
+          onIsUpdate={() => setIsUpdate(false)}
         />
       )
     }
@@ -185,13 +203,19 @@ const DemandBox = () => {
               content={({ onHide }: { onHide(): void }) => {
                 return (
                   <ShapeContent
-                    tap={() => {}}
+                    tap={value => onChangeStatus(value)}
                     hide={onHide}
-                    record={{ level: 0 }}
+                    record={{
+                      id: demandInfo.id,
+                      project_id: projectId,
+                      status: {
+                        id: demandInfo.status.id,
+                        can_changes: demandInfo.status.can_changes,
+                      },
+                    }}
                   />
                 )
               }}
-              record={{ level: 0 }}
             >
               <StatusWrap
                 style={{
@@ -244,12 +268,20 @@ const DemandBox = () => {
     setOperationItem({})
   }
 
+  const onUpdate = () => {
+    if (demandId) {
+      getDemandInfo({ projectId, id: demandId })
+    }
+    setIsUpdate(true)
+  }
+
   return (
     <div>
       <EditDemand
         visible={isVisible}
         onChangeVisible={onChangeVisible}
         id={operationItem.id}
+        onUpdate={onUpdate}
       />
       {content()}
     </div>

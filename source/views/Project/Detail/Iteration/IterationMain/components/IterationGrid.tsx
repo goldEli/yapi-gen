@@ -2,7 +2,6 @@
 import styled from '@emotion/styled'
 import { Menu, Space } from 'antd'
 import DemandCard from '@/components/DemandCard'
-import projectImg from '@/assets/projectImg.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const Content = styled.div({
@@ -54,7 +53,7 @@ const IterationGrid = (props: Props) => {
   }
   return (
     <Content>
-      <Space size={20}>
+      <Space size={20} style={{ alignItems: 'flex-start' }}>
         {props.list?.map((i: any) => (
           <CardGroup key={i.name}>
             <Title>

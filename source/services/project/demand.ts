@@ -198,7 +198,7 @@ export const addDemand: any = async (params: any) => {
     iterate_id: params?.iterateId,
     parent_id: params?.parentId,
     priority: params?.priority,
-    users: params?.userIds,
+    user: params?.userIds,
     copysend: params?.copySendIds,
     tag: params?.tagIds,
     attachment: params?.attachments,
@@ -215,7 +215,7 @@ export const updateDemand: any = async (params: any) => {
     iterate_id: params.iterateId,
     parent_id: params.parentId,
     priority: params.priority,
-    users: params.userIds,
+    user: params.userIds,
     copysend: params.copySendIds,
     tag: params.tagIds,
     attachment: params.attachments,
@@ -241,9 +241,9 @@ export const deleteInfoDemand: any = async (params: any) => {
 
 export const addInfoDemand: any = async (params: any) => {
   await http.put<any>('addInfoDemand', {
-    project_id: params.projectId,
-    id: params.demandId,
-    target_id: params.targetId,
+    project_id: Number(params.projectId),
+    id: Number(params.demandId),
+    target: params.targetId,
     type: params.type,
   })
 }

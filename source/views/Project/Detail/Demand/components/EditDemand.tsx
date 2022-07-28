@@ -101,6 +101,8 @@ interface Props {
   onChangeVisible(): void
   id?: any
   isChild?: boolean
+  onUpdate?(): void
+  isIterateId?: any
 }
 
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
@@ -144,6 +146,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
+  const [attachList, setAttachList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
@@ -169,7 +172,9 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     if (demandInfo && props?.id) {
       form.setFieldsValue(demandInfo)
+      setPriorityDetail(demandInfo.priority)
       setHtml(demandInfo.info)
+      setAttachList(demandInfo?.attachment.map((i: any) => i.attachment))
       if (demandInfo?.expectedStart) {
         form.setFieldsValue({
           times: [
@@ -181,11 +186,12 @@ const EditDemand = (props: Props) => {
       form.setFieldsValue({
         copySendIds: demandInfo?.copySend?.map((i: any) => i.copysend.id),
         attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
+        userIds: demandInfo?.user?.map((i: any) => i.user.id),
       })
     }
   }, [demandInfo])
 
-  const onSaveDemand = async () => {
+  const onSaveDemand = async (hasNext?: number) => {
     const values = form.getFieldsValue()
     if (values.times && values.times[0]) {
       values.expectedStart = moment(values.times[0]).format('YYYY-MM-DD')
@@ -195,8 +201,9 @@ const EditDemand = (props: Props) => {
     }
 
     values.info = html
+
     if (props.isChild) {
-      values.parentId = demandId
+      values.parentId = demandId || demandInfo?.id
     }
     try {
       if (props.id) {
@@ -204,17 +211,24 @@ const EditDemand = (props: Props) => {
           projectId,
           id: demandInfo.id,
           ...values,
+          iterateId: props.isIterateId || '',
         })
         message.success('编辑成功')
       } else {
         await addDemand({
           projectId,
+          iterateId: props.isIterateId || '',
           ...values,
         })
         message.success('创建成功')
       }
       form.resetFields()
-      props.onChangeVisible()
+      setAttachList([])
+      setHtml('')
+      props.onUpdate?.()
+      if (!hasNext) {
+        props.onChangeVisible()
+      }
     } catch (error) {
 
       //
@@ -231,7 +245,7 @@ const EditDemand = (props: Props) => {
   const onCurrentDetail = (item: any) => {
     setPriorityDetail(item)
     form.setFieldsValue({
-      priority: item.priorityId,
+      priority: item.id,
     })
   }
 
@@ -317,23 +331,13 @@ const EditDemand = (props: Props) => {
             >
               <PriorityWrap>
                 <IconFont
-                  type={
-                    props?.id
-                      ? demandInfo?.priority?.icon
-                      : priorityDetail?.icon
-                  }
+                  type={priorityDetail?.icon}
                   style={{
                     fontSize: 16,
-                    color: props?.id
-                      ? `${demandInfo?.priority?.color}!important`
-                      : priorityDetail?.color,
+                    color: priorityDetail?.color,
                   }}
                 />
-                <div>
-                  {props?.id
-                    ? demandInfo?.priority?.content
-                    : priorityDetail?.content}
-                </div>
+                <div>{priorityDetail?.content}</div>
               </PriorityWrap>
             </PopConfirm>
           </Form.Item>
@@ -388,6 +392,7 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="attachment" />
           <Form.Item label="附件" name="attachments">
             <UploadAttach
+              defaultList={attachList}
               onChangeAttachment={onChangeAttachment}
               addWrap={
                 <AddWrap>
@@ -400,10 +405,12 @@ const EditDemand = (props: Props) => {
         </div>
       </FormWrap>
       <ModalFooter>
-        <AddButtonWrap>完成并创建下一个</AddButtonWrap>
+        <AddButtonWrap onClick={() => onSaveDemand(1)}>
+          完成并创建下一个
+        </AddButtonWrap>
         <Space size={16}>
           <Button onClick={props.onChangeVisible}>取消</Button>
-          <Button type="primary" onClick={onSaveDemand}>
+          <Button type="primary" onClick={() => onSaveDemand()}>
             确认
           </Button>
         </Space>

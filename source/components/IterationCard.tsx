@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
-import type React from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
@@ -72,12 +72,20 @@ const DetailWrap = styled.div({
 interface Props {
   item: any
   menu: React.ReactElement
-  onClickItem(): void
+  onClickTitle(): void
+  onClickItem?(): void
 }
 
 const IterationCard = (props: Props) => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const onClick = (e: any) => {
+    e.stopPropagation()
+    setIsVisible(!isVisible)
+  }
+
   return (
-    <CardWrap>
+    <CardWrap onClick={props.onClickItem}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Progress
           strokeColor="#43BA9A"
@@ -94,17 +102,18 @@ const IterationCard = (props: Props) => {
           <StatusTag>{props.item.status === 1 ? '开启中' : '已关闭'}</StatusTag>
         </InfoContent>
       </div>
-      <DetailWrap onClick={props.onClickItem}>
+      <DetailWrap onClick={props.onClickTitle}>
         <span>详情</span>
         <IconFont type="right" />
       </DetailWrap>
       <Dropdown
+        visible={isVisible}
         overlay={props.menu}
         placement="bottomRight"
-        trigger={['hover']}
+        trigger={['click']}
         getPopupContainer={node => node}
       >
-        <MoreWrap type="more" />
+        <MoreWrap onClick={onClick} type="more" />
       </Dropdown>
     </CardWrap>
   )
