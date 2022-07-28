@@ -63,6 +63,7 @@ const urls = {
   getMineFinishList: '/b/user/finish/story',
   getMineChartsList: '/b/user/overview/statistics',
   getMineCreacteList: '/b/user/create/story',
+  getPriOrStu: '/b/project/getconfig',
 }
 
 export default urls

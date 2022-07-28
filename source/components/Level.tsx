@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
+import { useModel } from '@/models'
 
 const flexCss = css`
   height: 32px;
@@ -71,29 +72,55 @@ export const level = [
 ]
 
 type LevelProps = {
-  record?: Record<string, number | string>
+  record?: any
   onHide(): void
   onTap(id: any): void
 }
 
 export const LevelContent = (props: LevelProps) => {
+  const { getPriOrStu } = useModel('mine')
   const { record, onHide, onTap } = props
+  const { project_id: pid, id: storyID } = record
+  const [showData, setShowData] = useState([])
+
+  const init = async () => {
+    const res = await getPriOrStu({
+      projectId: pid,
+      type: 'priority',
+    })
+    setShowData(res.data)
+  }
+  useEffect(() => {
+    init()
+  }, [record])
+
   const changeState = (value: any) => {
-    onTap(value.id)
+    const data = {
+      priorityId: value,
+      projectId: pid,
+      id: storyID,
+    }
+    onTap(data)
 
     onHide()
   }
   return (
     <Contain>
-      {level.map(item => (
+      {showData.map((item: any) => (
         <div
-          onClick={() => changeState(item)}
+          onClick={() => changeState(item.id)}
           className={flexCss}
           key={item.id}
         >
-          {item.icon}
-          <StyledShape>{item.name}</StyledShape>
-          {item.id === record?.level}
+          <IconFont
+            type={item.icon}
+            style={{
+              fontSize: 20,
+              marginRight: '10px',
+              color: item.color,
+            }}
+          />
+          <span>{item.content}</span>
         </div>
       ))}
     </Contain>

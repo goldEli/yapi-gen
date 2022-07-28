@@ -111,13 +111,48 @@ export const getUserFeedList: any = async (params: any) => {
   return response
 }
 
+// 获取优先级或者状态
+export const getPriOrStu: any = async (params: any) => {
+  const response = await http.get('getPriOrStu', {
+    project_id: params.projectId,
+    type: params.type,
+  })
+  return response
+}
+
 // 获取甘特图
 export const getMineGatte: any = async (params: any) => {
   const response = await http.get('getMineGatte', {
     start_time: params.startTime,
     end_time: params.endTime,
   })
-  return response
+  const handleData = (data: any) => {
+    return data.reduce((res: any, item: any, index: any) => {
+      const { children, ...rest } = item
+      children.forEach((child: any) => {
+        res.push({
+          ...rest,
+          ...child,
+          y: index,
+        })
+      })
+      return res
+    }, [])
+  }
+
+  const arr = handleData(response.data.list)
+  const arr2 = arr.map((item: any) => {
+    return {
+      start: item.created_at,
+      end: item.end_at,
+      beginTime: item.expected_start_at,
+      endTime: item.expected_end_at,
+      state: item.name,
+      y: item.y,
+    }
+  })
+
+  return arr2
 }
 
 // 获取状态下的成员列表
@@ -131,6 +166,7 @@ export const getProjectMember: any = async (params: any) => {
   return response
 }
 
+// 流转状态
 export const updateDemandStatus: any = async (params: any) => {
   await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
@@ -138,6 +174,15 @@ export const updateDemandStatus: any = async (params: any) => {
     status_id: params.statusId,
     content: params.content,
     user_ids: params.userIds,
+  })
+}
+
+// 修改优先级
+export const updatePriorityStatus: any = async (params: any) => {
+  await http.put<any>('updatePriority', {
+    project_id: params.projectId,
+    priority: params.priorityId,
+    id: params.id,
   })
 }
 

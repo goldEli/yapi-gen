@@ -3,6 +3,8 @@ import * as services from '@/services'
 
 export default () => {
   const {
+    getPriOrStu,
+    updatePriorityStatus,
     updateDemandStatus,
     getProjectMember,
     getSearchField,
@@ -18,6 +20,8 @@ export default () => {
   } = services.mine
 
   return {
+    getPriOrStu,
+    updatePriorityStatus,
     updateDemandStatus,
     getProjectMember,
     getSearchField,

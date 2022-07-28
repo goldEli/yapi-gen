@@ -7,8 +7,12 @@ import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
 import { Line } from '@ant-design/plots'
-import { Timeline } from 'antd'
+import { Timeline, DatePicker } from 'antd'
 import Gatte from './components/Gatte'
+import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const { RangePicker } = DatePicker
 
 const titleNumberCss = css`
   color: rgba(67, 186, 154, 1);
@@ -93,8 +97,9 @@ const GatteWrap = styled.div`
   padding: 0 16px;
 `
 const Profile = () => {
-  const { getMineChartsList, getUserFeedList } = useModel('mine')
+  const { getMineChartsList, getUserFeedList, getMineGatte } = useModel('mine')
   const [data, setData] = useState<any>({})
+  const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
   const init = async () => {
     const res = await getMineChartsList()
@@ -108,6 +113,20 @@ const Profile = () => {
 
     setLineData(res1.data)
   }
+  const onChange = async (
+    value: DatePickerProps['value'] | RangePickerProps['value'],
+    dateString: [string, string] | string,
+  ) => {
+    const res = await getMineGatte({
+      startTime: dateString[0],
+      endTime: dateString[1],
+
+      // startTime: '2022-07-01 00:00:00',
+      // endTime: '2022-07-31 23:59:59',
+    })
+    setGatteData(res)
+  }
+
   useEffect(() => {
     init()
   }, [])
@@ -185,7 +204,12 @@ const Profile = () => {
       </StyledWrap>
       <GatteWrap>
         <SecondTitle>需求甘特图</SecondTitle>
-        <Gatte />
+        <RangePicker
+          showTime={{ format: 'HH:mm' }}
+          format="YYYY-MM-DD HH:mm"
+          onChange={onChange}
+        />
+        <Gatte data={gatteData} />
       </GatteWrap>
     </>
   )

@@ -19,8 +19,13 @@ import TableFilter from '@/components/TableFilter'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
-  const { getMineNeedList, getField, getSearchField, updateDemandStatus }
-    = useModel('mine')
+  const {
+    getMineNeedList,
+    getField,
+    getSearchField,
+    updateDemandStatus,
+    updatePriorityStatus,
+  } = useModel('mine')
   const [listData, setListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
@@ -63,9 +68,13 @@ const Need = (props: any) => {
 
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
-    if (res.code === '00000') {
-      init()
-    }
+
+    init()
+  }
+  const updatePriority = async (res1: any) => {
+    const res = await updatePriorityStatus(res1)
+
+    init()
   }
 
   const columns = useDynamicColumns({
@@ -73,6 +82,7 @@ const Need = (props: any) => {
     order,
     updateOrderkey,
     updateStatus,
+    updatePriority,
   })
 
   const selectColum: any = useMemo(() => {

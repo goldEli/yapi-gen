@@ -5,7 +5,8 @@ import highchartsGantt from 'highcharts/modules/gantt'
 
 highchartsGantt(Highcharts)
 
-const Gatte = () => {
+const Gatte = (props: any) => {
+  const { data: res } = props
   Highcharts.setOptions({
     lang: {
       noData: '暂无数据',
@@ -84,71 +85,7 @@ const Gatte = () => {
     series: [
       {
         name: 'Project 1',
-        data: [
-          {
-            start: Date.UTC(2017, 10, 18, 8),
-            end: Date.UTC(2017, 10, 25, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 0,
-          },
-          {
-            start: Date.UTC(2017, 10, 20, 8),
-            end: Date.UTC(2017, 10, 24, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 1,
-          },
-          {
-            start: Date.UTC(2017, 10, 25, 16),
-            end: Date.UTC(2017, 10, 25, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 2,
-          },
-          {
-            start: Date.UTC(2017, 10, 20, 8),
-            end: Date.UTC(2017, 10, 24, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 3,
-          },
-          {
-            start: Date.UTC(2017, 10, 27, 8),
-            end: Date.UTC(2017, 11, 3, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 3,
-          },
-          {
-            start: Date.UTC(2017, 10, 27, 8),
-            end: Date.UTC(2017, 11, 3, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 3,
-          },
-          {
-            start: Date.UTC(2017, 10, 23, 8),
-            end: Date.UTC(2017, 11, 15, 16),
-            name: '需求名称',
-            beginTime: '2022-6-20',
-            endTime: '2022-6-20',
-            state: '实现zhong',
-            y: 4,
-          },
-        ],
+        data: res,
       },
     ],
     exporting: {
