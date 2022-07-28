@@ -1,10 +1,46 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import moment from 'moment'
 import * as http from '../tools/http'
 
 // 获取动态搜索段
 export const getSearchField: any = async (params: any) => {
+
+  // 成员列表
+  if (params === 0) {
+    return
+  }
+
+  const memberList = await http.get('getProjectMember', {
+    search: {
+      project_id: params,
+      all: true,
+    },
+  })
+
+  const filterMemberList = memberList.data.map((item: any) => {
+    return {
+      id: item.id,
+      content: item.name,
+    }
+  })
+
+  // 迭代列表
+  const iterateList = await http.get('getIterateList', {
+    search: {
+      project_id: params,
+      all: true,
+    },
+  })
+
+  const filterIterateList = iterateList.data.map((item: any) => {
+    return {
+      id: item.id,
+      content: item.name,
+    }
+  })
+
   const response = await http.get('getProjectInfo', {
     id: params,
   })
@@ -14,6 +50,20 @@ export const getSearchField: any = async (params: any) => {
   } = response.data
 
   const allList = filter_fidlds.map((item: any) => {
+    if (item.content === 'iterate_name') {
+      item.values = filterIterateList
+    }
+    if (
+      item.content === 'user_name'
+      || item.content === 'users_name'
+      || item.content === 'users_copysend_name'
+    ) {
+      item.values = filterMemberList
+    }
+    return item
+  })
+
+  const filterAllList = allList.map((item: any) => {
     if (item.title.includes('时间')) {
       return {
         id: item.id,
@@ -40,8 +90,10 @@ export const getSearchField: any = async (params: any) => {
   const filterSpecialList = filter_fidlds.filter(
     (item: any) => item.is_default_filter !== 1,
   )
+
+  // eslint-disable-next-line consistent-return
   return {
-    allList,
+    filterAllList,
     filterBasicsList,
     filterSpecialList,
   }
@@ -192,11 +244,18 @@ export const getMineNoFinishList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params?.status,
-      tag: params?.tag,
-      user_id: params?.userId,
-      users_name: params?.usersName,
-      users_copysend_name: params?.usersCopysendName,
+      status: params.searchGroups.statusId,
+      priority: params.searchGroups.priorityId,
+      iterate_name: params.searchGroups.iterateId,
+      tag: params.searchGroups.tagId,
+      user_name: params.searchGroups.userId,
+      users_name: params.searchGroups.usersnameId,
+      users_copysend_name: params.searchGroups.usersCopysendNameId,
+      created_at: params.searchGroups.createdAtId,
+      expected_start_at: params.searchGroups.expectedStartAtId,
+      expected_end_at: params.searchGroups.expectedendat,
+      updated_at: params.searchGroups.updatedat,
+      finish_at: params.searchGroups.finishAt,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -215,11 +274,18 @@ export const getMineCreacteList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params?.status,
-      tag: params?.tag,
-      user_id: params?.userId,
-      users_name: params?.usersName,
-      users_copysend_name: params?.usersCopysendName,
+      status: params.searchGroups.statusId,
+      priority: params.searchGroups.priorityId,
+      iterate_name: params.searchGroups.iterateId,
+      tag: params.searchGroups.tagId,
+      user_name: params.searchGroups.userId,
+      users_name: params.searchGroups.usersnameId,
+      users_copysend_name: params.searchGroups.usersCopysendNameId,
+      created_at: params.searchGroups.createdAtId,
+      expected_start_at: params.searchGroups.expectedStartAtId,
+      expected_end_at: params.searchGroups.expectedendat,
+      updated_at: params.searchGroups.updatedat,
+      finish_at: params.searchGroups.finishAt,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -235,11 +301,18 @@ export const getMineFinishList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params?.status,
-      tag: params?.tag,
-      user_id: params?.userId,
-      users_name: params?.usersName,
-      users_copysend_name: params?.usersCopysendName,
+      status: params.searchGroups.statusId,
+      priority: params.searchGroups.priorityId,
+      iterate_name: params.searchGroups.iterateId,
+      tag: params.searchGroups.tagId,
+      user_name: params.searchGroups.userId,
+      users_name: params.searchGroups.usersnameId,
+      users_copysend_name: params.searchGroups.usersCopysendNameId,
+      created_at: params.searchGroups.createdAtId,
+      expected_start_at: params.searchGroups.expectedStartAtId,
+      expected_end_at: params.searchGroups.expectedendat,
+      updated_at: params.searchGroups.updatedat,
+      finish_at: params.searchGroups.finishAt,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -253,16 +326,24 @@ export const getMineFinishList: any = async (params: any) => {
 }
 
 // 获取我的抄送列表
+// eslint-disable-next-line complexity
 export const getMineNeedList: any = async (params: any) => {
   const response = await http.get('getMineNeedList', {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params?.status,
-      tag: params?.tag,
-      user_id: params?.userId,
-      users_name: params?.usersName,
-      users_copysend_name: params?.usersCopysendName,
+      status: params.searchGroups.statusId,
+      priority: params.searchGroups.priorityId,
+      iterate_name: params.searchGroups.iterateId,
+      tag: params.searchGroups.tagId,
+      user_name: params.searchGroups.userId,
+      users_name: params.searchGroups.usersnameId,
+      users_copysend_name: params.searchGroups.usersCopysendNameId,
+      created_at: params.searchGroups.createdAtId,
+      expected_start_at: params.searchGroups.expectedStartAtId,
+      expected_end_at: params.searchGroups.expectedendat,
+      updated_at: params.searchGroups.updatedat,
+      finish_at: params.searchGroups.finishAt,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,

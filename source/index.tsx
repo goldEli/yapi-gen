@@ -10,13 +10,11 @@ import './style.less'
 log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
-      <Provider>
-        <Routes />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
+    <Provider>
+      <Routes />
+    </Provider>
+  </BrowserRouter>,
 )
 
 log.print(VERSION)

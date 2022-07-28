@@ -32,7 +32,7 @@ client.config({
       return {
         code: Number(data.code),
         data: data.data,
-        message: data.message,
+        message: data.msg,
       }
     },
   ],

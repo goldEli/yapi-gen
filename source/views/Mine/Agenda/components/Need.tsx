@@ -16,6 +16,7 @@ import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
+import moment from 'moment'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
@@ -42,6 +43,36 @@ const Need = (props: any) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [searchGroups, setSearchGroups] = useState<any>({
+    statusId: [],
+    priorityId: [],
+    iterateId: [],
+    tagId: [],
+    userId: [],
+    usersnameId: [],
+    usersCopysendNameId: [],
+    createdAtId: [],
+    expectedStartAtId: [],
+    expectedendat: [],
+    updatedat: [],
+    finishAt: [],
+  })
+  const onSearch = (e: any) => {
+    setSearchGroups({
+      statusId: e.status,
+      priorityId: e.priority,
+      iterateId: e.iterate_name,
+      tagId: e.tag,
+      userId: e.user_name,
+      usersnameId: e.users_name,
+      usersCopysendNameId: e.users_copysend_name,
+      createdAtId: e.created_at,
+      expectedStartAtId: e.expected_start_at,
+      expectedendat: e.expected_end_at,
+      updatedat: e.updated_at,
+      finishAt: e.finish_at,
+    })
+  }
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const updateOrderkey = (key: any, order: any) => {
     setOrderKey(key)
@@ -51,11 +82,7 @@ const Need = (props: any) => {
     const res = await getMineNeedList({
       projectId: props.id,
       keyword,
-      status: '',
-      tag: '',
-      userId: '',
-      usersName: '',
-      usersCopysendName: '',
+      searchGroups,
       order,
       orderkey: orderKey,
       page,
@@ -108,7 +135,7 @@ const Need = (props: any) => {
   const getSearchKey = async () => {
     const res = await getSearchField(props.id)
 
-    setSearchList(res.allList)
+    setSearchList(res.filterAllList)
     setFilterBasicsList(res.filterBasicsList)
     setFilterSpecialList(res.filterSpecialList)
   }
@@ -124,9 +151,12 @@ const Need = (props: any) => {
   }
 
   useEffect(() => {
+
+    // console.log(searchGroups)
+
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, pagesize, keyword, orderKey, order, props.id])
+  }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
   useEffect(() => {
     getSearchKey()
   }, [props.id])
@@ -201,6 +231,7 @@ const Need = (props: any) => {
       {isShowSearch && props.id !== 0
         ? (
             <TableFilter
+              onSearch={onSearch}
               list={searchList}
               basicsList={filterBasicsList}
               specialList={filterSpecialList}

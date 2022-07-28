@@ -17,9 +17,15 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 
+// eslint-disable-next-line complexity
 const Need = (props: any) => {
-  const { getMineCreacteList, getField, getSearchField, updateDemandStatus }
-    = useModel('mine')
+  const {
+    getMineCreacteList,
+    getField,
+    getSearchField,
+    updateDemandStatus,
+    updatePriorityStatus,
+  } = useModel('mine')
   const [listData, setListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
@@ -30,6 +36,7 @@ const Need = (props: any) => {
   const [order, setOrder] = useState<any>(3)
   const [keyword, setKeyword] = useState<string>('')
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [isShowSearch, setIsShowSearch] = useState<boolean>(false)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [searchList, setSearchList] = useState<any[]>([])
@@ -58,17 +65,24 @@ const Need = (props: any) => {
     setListData(res.list)
     setTotal(res.pager.total)
   }
+
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
-    if (res.code === '00000') {
-      init()
-    }
+
+    init()
   }
+  const updatePriority = async (res1: any) => {
+    const res = await updatePriorityStatus(res1)
+
+    init()
+  }
+
   const columns = useDynamicColumns({
     orderKey,
     order,
     updateOrderkey,
     updateStatus,
+    updatePriority,
   })
 
   const selectColum: any = useMemo(() => {
@@ -84,7 +98,7 @@ const Need = (props: any) => {
     return newList
   }, [titleList, columns])
   const getShowkey = async () => {
-    const res2 = await getField(props.id || 0)
+    const res2 = await getField(props.id)
 
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
@@ -92,7 +106,7 @@ const Need = (props: any) => {
     setTitleList2(res2.titleList2)
   }
   const getSearchKey = async () => {
-    const res = await getSearchField(props.id || 0)
+    const res = await getSearchField(props.id)
 
     setSearchList(res.allList)
     setFilterBasicsList(res.filterBasicsList)
@@ -108,6 +122,7 @@ const Need = (props: any) => {
   const onPressEnter = (e: any) => {
     setKeyword(e.target.value)
   }
+
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,9 +177,15 @@ const Need = (props: any) => {
           />
         </div>
         <div style={{ marginRight: '40px', display: 'flex' }}>
-          <SetButton>
-            <IconFont type="filter" style={{ fontSize: 20 }} />
-          </SetButton>
+          {props.id !== 0 && (
+            <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+              <IconFont
+                type="filter"
+                style={{ fontSize: 20, color: isShowSearch ? '' : '' }}
+              />
+            </SetButton>
+          )}
+
           <Dropdown overlay={menu} placement="bottomLeft">
             <SetButton>
               <IconFont
@@ -177,11 +198,16 @@ const Need = (props: any) => {
         </div>
       </Hehavior>
 
-      <TableFilter
-        list={searchList}
-        basicsList={filterBasicsList}
-        specialList={filterSpecialList}
-      />
+      {isShowSearch && props.id !== 0
+        ? (
+            <TableFilter
+              list={searchList}
+              basicsList={filterBasicsList}
+              specialList={filterSpecialList}
+            />
+          )
+        : null}
+
       <StaffTableWrap>
         <StyledTable
           rowKey="key"

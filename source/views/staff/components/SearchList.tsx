@@ -111,7 +111,6 @@ const SearchList = (props: Props) => {
 
   const confirm = async () => {
     const value = await form.validateFields()
-
     props.onSearch(value)
   }
   return (
@@ -121,6 +120,7 @@ const SearchList = (props: Props) => {
           <SelectWrapBedeck>
             <Form.Item name="department">
               <SelectWrap
+                onBlur={confirm}
                 label="部门"
                 mode="multiple"
                 style={{ width: '100%' }}
@@ -138,6 +138,7 @@ const SearchList = (props: Props) => {
           <SelectWrapBedeck>
             <Form.Item name="position">
               <SelectWrap
+                onBlur={confirm}
                 label="职位"
                 mode="multiple"
                 style={{ width: '100%' }}
@@ -155,6 +156,7 @@ const SearchList = (props: Props) => {
           <SelectWrapBedeck>
             <Form.Item name="userGroup">
               <SelectWrap
+                onBlur={confirm}
                 label="权限组"
                 mode="multiple"
                 style={{ width: '100%' }}
@@ -171,7 +173,6 @@ const SearchList = (props: Props) => {
           </SelectWrapBedeck>
 
           <ClearForm onClick={onClearForm}>清除条件</ClearForm>
-          <Button onClick={confirm}>搜索</Button>
         </FormWrap>
       </Wrap>
     </SearchLine>

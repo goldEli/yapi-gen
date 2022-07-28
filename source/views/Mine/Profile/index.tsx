@@ -204,11 +204,7 @@ const Profile = () => {
       </StyledWrap>
       <GatteWrap>
         <SecondTitle>需求甘特图</SecondTitle>
-        <RangePicker
-          showTime={{ format: 'HH:mm' }}
-          format="YYYY-MM-DD HH:mm"
-          onChange={onChange}
-        />
+        <RangePicker format="YYYY-MM-DD" onChange={onChange} />
         <Gatte data={gatteData} />
       </GatteWrap>
     </>
