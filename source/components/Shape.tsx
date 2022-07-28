@@ -124,9 +124,12 @@ export const ShapeContent = (props: ShapeProps) => {
           <div onClick={() => setActive(item.id)} key={item.id}>
             <StyledShape
               style={{
-                color: item.id === active ? 'rgba(40, 119, 255, 1)' : '',
+                color:
+                  item.id === active ? 'rgba(40, 119, 255, 1)' : item.color,
                 border:
-                  item.id === active ? ' 1px solid rgba(40, 119, 255, 1)' : '',
+                  item.id === active
+                    ? ' 1px solid rgba(40, 119, 255, 1)'
+                    : `1px solid ${item.color}`,
               }}
             >
               {item.content}

@@ -10,7 +10,7 @@ import {
   StyledTable,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Pagination } from 'antd'
+import { Button, Dropdown, Menu, message, Pagination } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -96,7 +96,10 @@ const Need = (props: any) => {
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
 
-    init()
+    if (res.code === 0) {
+      message.success('状态流转成功')
+      init()
+    }
   }
   const updatePriority = async (res1: any) => {
     const res = await updatePriorityStatus(res1)

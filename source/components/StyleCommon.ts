@@ -256,8 +256,26 @@ const TextBlueWrap = styled.div`
 const HightChartsWrap = styled.div`
   height: 350px;
 `
+const StyledShape = styled.div<{ color: any }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 1px 8px 1px 8px;
+  width: 60px;
+  height: 25px;
+  background: rgba(255, 255, 255, 1);
+  background-blend-mode: normal;
+  border: 1px solid rgba(235, 237, 240, 1);
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid rgba(40, 119, 255, 1);
+  border-color: ${({ color }) => color};
+  color: ${({ color }) => color};
+`
 
 export {
+  StyledShape,
   HightChartsWrap,
   TextWrap,
   TextBlueWrap,

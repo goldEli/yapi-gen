@@ -220,22 +220,24 @@ export const getProjectMember: any = async (params: any) => {
 
 // 流转状态
 export const updateDemandStatus: any = async (params: any) => {
-  await http.put<any>('updateDemandStatus', {
+  const res = await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.demandId,
     status_id: params.statusId,
     content: params.content,
     user_ids: params.userIds,
   })
+  return res
 }
 
 // 修改优先级
 export const updatePriorityStatus: any = async (params: any) => {
-  await http.put<any>('updatePriority', {
+  const res = await http.put<any>('updatePriority', {
     project_id: params.projectId,
     priority: params.priorityId,
     id: params.id,
   })
+  return res
 }
 
 // 获取我的待办列表
