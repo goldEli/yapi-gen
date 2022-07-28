@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -7,12 +8,14 @@ import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
 import ChangeRecord from './ChangeRecord'
 import ChildDemand from './ChildDemand'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button } from 'antd'
+import { Space, Button, message } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
+import { useModel } from '@/models'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -106,19 +109,49 @@ const StatusWrap = styled.div({
   cursor: 'pointer',
 })
 
-const statusList = [
-  { id: 0, name: '规划中', color: '#2877ff' },
-  { id: 1, name: '实现中', color: '#2877ff' },
-  { id: 2, name: '已实现', color: '#2877ff' },
-  { id: 3, name: '已关闭', color: '#2877ff' },
-]
-
 const DemandBox = () => {
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDelVisible, setIsDelVisible] = useState(false)
+  const [operationItem, setOperationItem] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
+  const { getDemandInfo, demandInfo, deleteDemand } = useModel('demand')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (demandId) {
+      getDemandInfo({ projectId, id: demandId })
+    }
+  }, [])
+
+  const onChangeIdx = (val: string) => {
+    navigate(`/Detail/Demand?type=${val}&id=${projectId}&demandId=${demandId}`)
+  }
+
+  const moreClick = (e: any) => {
+    e.stopPropagation()
+    setIsVisible(!isVisible)
+  }
+
+  const onEdit = () => {
+    setIsVisible(!isVisible)
+    setOperationItem(demandInfo)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({ projectId, id: demandInfo.id })
+      message.success('删除成功')
+      setIsDelVisible(false)
+      navigate(-1)
+    } catch (error) {
+
+      //
+    }
+  }
+
   const childContent = () => {
     if (type === 'info') {
       return <DemandInfo />
@@ -127,23 +160,27 @@ const DemandBox = () => {
     }
     return <ChangeRecord />
   }
-  const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Demand?type=${val}&id=${projectId}`)
-  }
 
-  const moreClick = (e: any) => {
-    e.stopPropagation()
-    setVisible(!visible)
-  }
   const content = () => {
     if (!type) {
-      return <DemandMain onChangeVisible={(e: any) => moreClick(e)} />
+      return (
+        <DemandMain
+          onSetOperationItem={setOperationItem}
+          onChangeVisible={(e: any) => moreClick(e)}
+        />
+      )
     }
     return (
       <>
+        <DeleteConfirm
+          text="确认要删除当前需求？"
+          isVisible={isDelVisible}
+          onChangeVisible={() => setIsDelVisible(!isDelVisible)}
+          onConfirm={onDeleteConfirm}
+        />
         <DemandInfoWrap>
           <NameWrap>
-            <span>【ID466897】需求名称xxxxxx</span>
+            <span>{demandInfo?.name}</span>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
                 return (
@@ -158,19 +195,19 @@ const DemandBox = () => {
             >
               <StatusWrap
                 style={{
-                  color: statusList[0].color,
-                  border: `1px solid ${statusList[0].color}`,
+                  color: demandInfo?.status?.color,
+                  border: `1px solid ${demandInfo?.status?.color}`,
                 }}
               >
-                {statusList[0].name}
+                {demandInfo?.status?.content}
               </StatusWrap>
             </PopConfirm>
           </NameWrap>
           <Space size={16}>
-            <Button type="primary" onClick={() => setVisible(!visible)}>
+            <Button type="primary" onClick={onEdit}>
               编辑
             </Button>
-            <Button>删除</Button>
+            <Button onClick={() => setIsDelVisible(true)}>删除</Button>
           </Space>
         </DemandInfoWrap>
         <ContentWrap>
@@ -186,7 +223,7 @@ const DemandBox = () => {
               activeIdx={type === 'child'}
             >
               <span>子需求</span>
-              <div>6</div>
+              <div>{demandInfo?.childCount}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
@@ -202,11 +239,17 @@ const DemandBox = () => {
     )
   }
 
+  const onChangeVisible = () => {
+    setIsVisible(!isVisible)
+    setOperationItem({})
+  }
+
   return (
     <div>
       <EditDemand
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        id={operationItem.id}
       />
       {content()}
     </div>

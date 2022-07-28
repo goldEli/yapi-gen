@@ -63,31 +63,6 @@ const statusList = [
   { id: 3, name: '已关闭', color: '#2877ff' },
 ]
 
-const List = [
-  {
-    id: '121212',
-    name: '项目名称',
-    priority: 2,
-    iteration: '敏捷版本V1.0',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-    demand: 8,
-  },
-  {
-    id: '121212',
-    name: '项目名称',
-    priority: 2,
-    iteration: '敏捷版本V1.0',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-    demand: 8,
-  },
-]
-
 const priorityList = [
   { name: '高', type: 'tall', color: '#ff5c5e' },
   { name: '中', type: 'middle', color: '#fa9746' },

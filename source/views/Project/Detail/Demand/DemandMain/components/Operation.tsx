@@ -27,6 +27,7 @@ interface Props {
   isGrid: boolean
   onChangeGrid(val: boolean): void
   onChangeVisible?(e?: any): void
+  onSearch(val: string): void
 }
 
 export const plainOptions = [
@@ -60,9 +61,8 @@ const Operation = (props: Props) => {
     'tanke',
   ])
 
-  const onChangeSearch = () => {
-
-    //
+  const onChangeSearch = (val: string) => {
+    props.onSearch(val)
   }
 
   const getCheckList = (

@@ -3,15 +3,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from 'react'
-import { Pagination, Dropdown, Table } from 'antd'
+import { Pagination, Dropdown, Table, Menu, Popover } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { OmitText } from '@star-yun/ui'
+import { useModel } from '@/models'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -66,28 +67,26 @@ const TableBox = styled(TableWrap)({
 })
 
 interface Props {
-  menu: React.ReactElement
   data: any
+  onChangeVisible(e: any, item: any): void
+  onDelete(item: any): void
 }
 
-const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
-]
+const ChildDemandTable = (props: { value: any; row: any }) => {
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const [isVisible, setIsVisible] = useState(false)
+  const [dataList, setDataList] = useState<any>([])
+  const { getDemandList } = useModel('demand')
 
-const DemandTable = (props: Props) => {
-  const navigate = useNavigate()
-
-  const onChangePage = () => {
-
-    //
-  }
-
-  const onShowSizeChange = () => {
-
-    //
+  const onChildClick = async () => {
+    const result = await getDemandList({
+      projectId,
+      all: true,
+      parentId: props.row.id,
+    })
+    setDataList(result)
+    setIsVisible(true)
   }
 
   const columnsChild = [
@@ -146,16 +145,82 @@ const DemandTable = (props: Props) => {
     },
   ]
 
+  return (
+    <Popover
+      visible={isVisible}
+      placement="bottom"
+      trigger="click"
+      content={
+        <Table
+          rowKey="id"
+          pagination={false}
+          columns={columnsChild}
+          dataSource={dataList}
+        />
+      }
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
+        onClick={onChildClick}
+      >
+        <IconFont
+          type="apartment"
+          style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+        />
+        <span style={{ color: '#323233', fontSize: 16 }}>{props.value}</span>
+      </div>
+    </Popover>
+  )
+}
+
+const DemandTable = (props: Props) => {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+
+  const onChangePage = () => {
+
+    //
+  }
+
+  const onShowSizeChange = () => {
+
+    //
+  }
+
+  const onClickItem = (item: any) => {
+    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+  }
+
+  const menu = (item: any) => (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={e => props.onChangeVisible(e, item)}>编辑</div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={() => props.onDelete(item)}>删除</div>,
+        },
+      ]}
+    />
+  )
+
   const columns = [
     {
       title: 'ID',
       dataIndex: 'id',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Dropdown
-              overlay={props.menu}
-              trigger={['hover']}
+              overlay={menu(record)}
+              trigger={['click']}
               placement="bottomRight"
               getPopupContainer={node => node}
             >
@@ -169,11 +234,11 @@ const DemandTable = (props: Props) => {
     {
       title: '标题',
       dataIndex: 'name',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <div
             style={{ cursor: 'pointer' }}
-            onClick={() => navigate('/Detail/Demand?type=info')}
+            onClick={() => onClickItem(record)}
           >
             <OmitText width={200}>{text}</OmitText>
           </div>
@@ -184,22 +249,7 @@ const DemandTable = (props: Props) => {
       title: '需求数',
       dataIndex: 'demand',
       render: (text: string, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <Table
-                  pagination={false}
-                  columns={columnsChild}
-                  dataSource={props.data?.list}
-                />
-              )
-            }}
-            record={record}
-          >
-            <div style={{ cursor: 'pointer' }}>{text}</div>
-          </PopConfirm>
-        )
+        return <ChildDemandTable value={text} row={record} />
       },
       sorter: {
         compare: (a: any, b: any) => a.demand - b.demand,
@@ -297,6 +347,7 @@ const DemandTable = (props: Props) => {
       },
     },
   ]
+
   return (
     <Content>
       <TableBox

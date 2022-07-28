@@ -6,13 +6,16 @@ import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import EditDemand from '../components/EditDemand'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import { OmitText } from '@star-yun/ui'
 
 const Operation = styled.div({
   display: 'flex',
@@ -94,29 +97,6 @@ const priorityList = [
   { name: '极低', type: 'knockdown', color: '#bbbdbf' },
 ]
 
-const list = [
-  {
-    id: '121212',
-    name: '项目名称',
-    priority: 2,
-    iteration: '敏捷版本V1.0',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    name: '项目名称',
-    priority: 2,
-    iteration: '敏捷版本V1.0',
-    createName: '何飞',
-    status: 0,
-    time: '2022-02-32',
-    endTime: '200-03-12',
-  },
-]
-
 export const plainOptions = [
   { label: 'id', value: 'name' },
   { label: 'id1', value: 'age' },
@@ -134,8 +114,30 @@ export const plainOptions2 = [
 ]
 
 const ChildDemand = () => {
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [settingState, setSettingState] = useState(false)
+  const [operationItem, setOperationItem] = useState<any>({})
+  const { getDemandList } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
+  const [dataList, setDataList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getDemandList({
+      projectId,
+      page: 1,
+      pageSize: 10,
+      order: 'asc',
+      orderKey: 'id',
+      parentId: demandId,
+    })
+    setDataList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
@@ -156,12 +158,17 @@ const ChildDemand = () => {
     setTitleList2(list2)
   }
 
-  const menu = (
+  const onEdit = (item: any) => {
+    setIsVisible(!isVisible)
+    setOperationItem(item)
+  }
+
+  const menu = (item: any) => (
     <Menu
       items={[
         {
           key: '1',
-          label: <div onClick={() => setVisible(true)}>编辑</div>,
+          label: <div onClick={() => onEdit(item)}>编辑</div>,
         },
         {
           key: '3',
@@ -190,8 +197,8 @@ const ChildDemand = () => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Dropdown
-              overlay={menu}
-              trigger={['hover']}
+              overlay={menu(record)}
+              trigger={['click']}
               placement="bottomRight"
               getPopupContainer={node => node}
             >
@@ -205,11 +212,14 @@ const ChildDemand = () => {
     {
       title: '标题',
       dataIndex: 'name',
+      render: (text: string, record: any) => {
+        return <OmitText width={200}>{text}</OmitText>
+      },
     },
     {
       title: '优先级',
       dataIndex: 'priority',
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -225,13 +235,13 @@ const ChildDemand = () => {
           >
             <PriorityWrap>
               <IconFont
-                type={priorityList[Number(text)].type}
+                type={text.icon}
                 style={{
                   fontSize: 16,
-                  color: priorityList[Number(text)].color,
+                  color: text.color,
                 }}
               />
-              <div>{priorityList[Number(text)].name}</div>
+              <div>{text.content}</div>
             </PriorityWrap>
           </PopConfirm>
         )
@@ -247,7 +257,7 @@ const ChildDemand = () => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: number, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -257,23 +267,14 @@ const ChildDemand = () => {
             }}
             record={record}
           >
-            <StatusWrap
-              style={{
-                color: statusList.filter(i => i.id === text)[0].color,
-                border: `1px solid ${
-                  statusList.filter(i => i.id === text)[0].color
-                }`,
-              }}
-            >
-              {statusList.filter(i => i.id === text)[0].name}
-            </StatusWrap>
+            <StatusWrap color={text.color}>{text.content}</StatusWrap>
           </PopConfirm>
         )
       },
     },
     {
       title: '处理人',
-      dataIndex: 'createName',
+      dataIndex: 'dealName',
     },
     {
       title: '创建时间',
@@ -284,14 +285,14 @@ const ChildDemand = () => {
     },
     {
       title: '预计开始时间',
-      dataIndex: 'time',
+      dataIndex: 'expectedStart',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
       title: '预计结束时间',
-      dataIndex: 'endTime',
+      dataIndex: 'expectedEnd',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
@@ -307,15 +308,23 @@ const ChildDemand = () => {
 
     //
   }
+
+  const onChangeVisible = () => {
+    setIsVisible(!isVisible)
+    setOperationItem({})
+  }
+
   return (
     <div>
       <EditDemand
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        isChild
+        id={operationItem.id}
       />
       <Operation>
         <ButtonWrap
-          onClick={() => setVisible(true)}
+          onClick={() => setIsVisible(true)}
           icon={<IconFont type="plus" />}
         >
           添加子需求
@@ -327,7 +336,7 @@ const ChildDemand = () => {
       <TableBox
         rowKey="id"
         columns={columns}
-        dataSource={list}
+        dataSource={dataList?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -335,10 +344,10 @@ const ChildDemand = () => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={dataList?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={dataList?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

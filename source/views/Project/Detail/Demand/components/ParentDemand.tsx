@@ -9,7 +9,7 @@ import IconFont from '@/components/IconFont'
 const DemandCheckedItem = styled.div({
   height: 22,
   lineHeight: '22px',
-  padding: '0 8px',
+  padding: '0 8px 0 0',
   fontSize: 12,
   position: 'relative',
   color: '#323233',
@@ -86,7 +86,7 @@ interface Props {
 }
 
 const ParentDemand = (props: Props) => {
-  const [demandGroup, setDemandGroup] = useState([{ name: '已确认' }])
+  const [demandGroup, setDemandGroup] = useState([])
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
   const colorStatus = (
     <Space
@@ -104,7 +104,7 @@ const ParentDemand = (props: Props) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <DemandCheckedItem>
-        {demandGroup.map(i => (
+        {demandGroup.map((i: any) => (
           <div
             key={i.name}
             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}

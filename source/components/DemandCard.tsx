@@ -3,10 +3,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, Table } from 'antd'
+import { Dropdown, Popover, Table } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import { ShapeContent } from '@/components/Shape'
+import { useModel } from '@/models'
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 interface Props {
   item: any
@@ -109,6 +112,26 @@ const StatusWrap = styled.div({
 })
 
 const DemandCard = (props: Props) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const { getDemandList } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const [dataList, setDataList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getDemandList({
+      projectId,
+      all: true,
+      parentId: props.item?.id,
+    })
+    setDataList(result)
+  }
+
+  const onChildClick = () => {
+    getList()
+    setIsVisible(true)
+  }
+
   const columnsChild = [
     {
       title: '项目名称',
@@ -161,7 +184,7 @@ const DemandCard = (props: Props) => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
+            <StatusWrap color={text?.color}>{text?.content}</StatusWrap>
           </PopConfirm>
         )
       },
@@ -175,16 +198,16 @@ const DemandCard = (props: Props) => {
   return (
     <div>
       <Wrap>
-        <WrapBorder style={{ background: props.item.priority.color }} />
+        <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
           <div style={{ cursor: 'pointer' }} onClick={props.onClickItem}>
             <OmitText width={200}>{props.item.name}</OmitText>
           </div>
           <AvatarWrap>
             <NameGroup>
-              {props.item.userName
-                .slice(0, 3)
-                .map((item: any, index: number) => (
+              {props.item?.userName
+                ?.slice(0, 3)
+                ?.map((item: any, index: number) => (
                   <div
                     className="box"
                     key={item}
@@ -197,26 +220,22 @@ const DemandCard = (props: Props) => {
                 ))}
               <div
                 className="more"
-                hidden={props.item.userName.length - 3 <= 0}
+                hidden={props.item?.userName?.length - 3 <= 0}
               >
-                +{props.item.userName.length - 3}
+                +{props.item?.userName?.length - 3}
               </div>
             </NameGroup>
-            <PopConfirm
-              content={({ onHide }: { onHide(): void }) => {
-                return (
-                  <Table
-                    rowKey="id"
-                    pagination={false}
-                    columns={columnsChild}
-                    dataSource={[props.item]}
-                  />
-                )
-              }}
-              record={
-                props.item as unknown as
-                  | Record<string, string | number>
-                  | undefined
+            <Popover
+              visible={isVisible}
+              placement="bottom"
+              trigger="click"
+              content={
+                <Table
+                  rowKey="id"
+                  pagination={false}
+                  columns={columnsChild}
+                  dataSource={dataList}
+                />
               }
             >
               <div
@@ -225,16 +244,17 @@ const DemandCard = (props: Props) => {
                   alignItems: 'center',
                   cursor: 'pointer',
                 }}
+                onClick={onChildClick}
               >
                 <IconFont
                   type="apartment"
                   style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
                 />
                 <span style={{ color: '#323233', fontSize: 16 }}>
-                  {props.item.childCount}
+                  {props.item?.childCount}
                 </span>
               </div>
-            </PopConfirm>
+            </Popover>
           </AvatarWrap>
         </MainWrap>
         <Dropdown

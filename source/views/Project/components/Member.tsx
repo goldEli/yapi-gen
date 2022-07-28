@@ -8,6 +8,7 @@ import AddMember from './AddMember'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
 
 interface Props {
   visible: boolean
@@ -77,8 +78,12 @@ const Member = (props: Props) => {
   const [form] = Form.useForm()
 
   const getList = async () => {
-    const params = form.getFieldsValue()
-    const result = await getProjectMember(params)
+    const values = form.getFieldsValue()
+    const result = await getProjectMember({
+      projectId: props.projectId,
+      all: true,
+      ...values,
+    })
     setMemberList(result)
   }
 
@@ -123,10 +128,7 @@ const Member = (props: Props) => {
           >
             添加成员
           </ButtonWrap>
-          <Form
-            form={form}
-            initialValues={{ all: true, projectId: props.projectId }}
-          >
+          <Form form={form}>
             <Form.Item noStyle label="searchValue">
               <Input
                 style={{ marginTop: 16 }}

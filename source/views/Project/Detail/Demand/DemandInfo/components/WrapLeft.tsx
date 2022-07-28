@@ -5,7 +5,6 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import posterImg from '@/assets/poster.png'
 import IconFont from '@/components/IconFont'
 import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
@@ -168,7 +167,9 @@ const WrapLeftBox = () => {
       </InfoItem>
       <InfoItem>
         <Label>抄送人</Label>
-        <TextWrap>{demandInfo?.user}</TextWrap>
+        <TextWrap>
+          {demandInfo?.user?.map((i: any) => i.user.name).join('、')}
+        </TextWrap>
       </InfoItem>
     </WrapLeft>
   )

@@ -2,13 +2,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Pagination, Dropdown } from 'antd'
+import { Pagination, Dropdown, Popover, Table, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useModel } from '@/models'
+import { OmitText } from '@star-yun/ui'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -59,8 +63,9 @@ const TableBox = styled(TableWrap)({
 })
 
 interface Props {
-  menu: React.ReactElement
-  List: any[]
+  data: any
+  onChangeVisible(e: any, item: any): void
+  onDelete(item: any): void
 }
 
 const statusList = [
@@ -77,7 +82,135 @@ const priorityList = [
   { name: '极低', type: 'knockdown', color: '#bbbdbf' },
 ]
 
+const ChildDemandTable = (props: { value: any; row: any }) => {
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const [isVisible, setIsVisible] = useState(false)
+  const [dataList, setDataList] = useState<any>([])
+  const { getDemandList } = useModel('demand')
+
+  const onChildClick = async () => {
+    const result = await getDemandList({
+      projectId,
+      all: true,
+      parentId: props.row.id,
+    })
+    setDataList(result)
+    setIsVisible(true)
+  }
+
+  const columnsChild = [
+    {
+      title: '项目名称',
+      dataIndex: 'name',
+      render: (text: string) => {
+        return <OmitText width={180}>{text}</OmitText>
+      },
+    },
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      sorter: {
+        compare: (a: any, b: any) => a.demand - b.demand,
+      },
+    },
+    {
+      title: '需求名称',
+      dataIndex: 'name',
+      render: (text: string) => {
+        return <OmitText width={180}>{text}</OmitText>
+      },
+      sorter: {
+        compare: (a: any, b: any) => a.iteration - b.iteration,
+      },
+    },
+    {
+      title: '迭代',
+      dataIndex: 'iteration',
+      sorter: {
+        compare: (a: any, b: any) => a.progress - b.progress,
+      },
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      render: (text: any, record: any) => {
+        return (
+          <PopConfirm
+            content={({ onHide }: { onHide(): void }) => {
+              return (
+                <ShapeContent tap={() => {}} hide={onHide} record={record} />
+              )
+            }}
+            record={record}
+          >
+            <StatusWrap color={text.color}>{text.content}</StatusWrap>
+          </PopConfirm>
+        )
+      },
+    },
+    {
+      title: '创建人',
+      dataIndex: 'dealName',
+    },
+  ]
+
+  return (
+    <Popover
+      visible={isVisible}
+      placement="bottom"
+      trigger="click"
+      content={
+        <Table
+          rowKey="id"
+          pagination={false}
+          columns={columnsChild}
+          dataSource={dataList}
+        />
+      }
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
+        onClick={onChildClick}
+      >
+        <IconFont
+          type="apartment"
+          style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+        />
+        <span style={{ color: '#323233', fontSize: 16 }}>{props.value}</span>
+      </div>
+    </Popover>
+  )
+}
+
 const IterationTable = (props: Props) => {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+
+  const onClickItem = (item: any) => {
+    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+  }
+
+  const menu = (item: any) => (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: <div onClick={e => props.onChangeVisible(e, item)}>编辑</div>,
+        },
+        {
+          key: '2',
+          label: <div onClick={() => props.onDelete(item)}>删除</div>,
+        },
+      ]}
+    />
+  )
+
   const onChangePage = () => {
 
     //
@@ -87,16 +220,17 @@ const IterationTable = (props: Props) => {
 
     //
   }
+
   const columns = [
     {
       title: 'ID',
       dataIndex: 'id',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Dropdown
-              overlay={props.menu}
-              trigger={['hover']}
+              overlay={menu(record)}
+              trigger={['click']}
               placement="bottomRight"
               getPopupContainer={node => node}
             >
@@ -110,10 +244,23 @@ const IterationTable = (props: Props) => {
     {
       title: '标题',
       dataIndex: 'name',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={() => onClickItem(record)}
+          >
+            <OmitText width={200}>{text}</OmitText>
+          </div>
+        )
+      },
     },
     {
       title: '需求数',
       dataIndex: 'demand',
+      render: (text: string, record: any) => {
+        return <ChildDemandTable value={text} row={record} />
+      },
       sorter: {
         compare: (a: any, b: any) => a.demand - b.demand,
       },
@@ -121,7 +268,7 @@ const IterationTable = (props: Props) => {
     {
       title: '优先级',
       dataIndex: 'priority',
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
@@ -137,13 +284,13 @@ const IterationTable = (props: Props) => {
           >
             <PriorityWrap>
               <IconFont
-                type={priorityList[0].type}
+                type={text.icon}
                 style={{
                   fontSize: 16,
-                  color: priorityList[0].color,
+                  color: text.color,
                 }}
               />
-              <div>{priorityList[0].name}</div>
+              <div>{text.content}</div>
             </PriorityWrap>
           </PopConfirm>
         )
@@ -162,26 +309,24 @@ const IterationTable = (props: Props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render: (text: number, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
               return (
-                <ShapeContent tap={() => {}} hide={onHide} record={record} />
+                <ShapeContent
+                  tap={() => {
+
+                    //
+                  }}
+                  hide={onHide}
+                  record={record}
+                />
               )
             }}
             record={record}
           >
-            <StatusWrap
-              style={{
-                color: statusList.filter(i => i.id === text)[0].color,
-                border: `1px solid ${
-                  statusList.filter(i => i.id === text)[0].color
-                }`,
-              }}
-            >
-              {statusList.filter(i => i.id === text)[0].name}
-            </StatusWrap>
+            <StatusWrap color={text.color}>{text.content}</StatusWrap>
           </PopConfirm>
         )
       },
@@ -192,32 +337,33 @@ const IterationTable = (props: Props) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'time',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
       title: '预计开始时间',
-      dataIndex: 'startTime',
+      dataIndex: 'expectedStart',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
       title: '预计结束时间',
-      dataIndex: 'endTime',
+      dataIndex: 'expectedEnd',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
   ]
+
   return (
     <Content>
       <TableBox
         rowKey="id"
         columns={columns}
-        dataSource={props.List}
+        dataSource={props.data?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
         showSorterTooltip={false}
@@ -225,10 +371,10 @@ const IterationTable = (props: Props) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={props.data?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={200}
+          total={props.data?.total}
           showTotal={total => `Total ${total} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

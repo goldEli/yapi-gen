@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -7,6 +8,7 @@ import Popconfirm from '@/components/Popconfirm'
 import styled from '@emotion/styled'
 import { Divider, Form, Input, Select, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { useModel } from '@/models'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -37,13 +39,6 @@ const PopoverFooter = styled(Space)({
   marginTop: 36,
   justifyContent: 'flex-end',
 })
-
-const statusList = [
-  { name: '规划中' },
-  { name: '实现中' },
-  { name: '已实现' },
-  { name: '已关闭' },
-]
 
 interface Props {
   hide?(): void
@@ -80,9 +75,16 @@ const DemandBox = (props: Props) => {
 }
 
 const DemandStatusBox = () => {
+  const { projectInfo } = useModel('project')
+  const { demandInfo } = useModel('demand')
+
+  const statusList = projectInfo?.filterField?.filter(
+    (i: any) => i.content === 'status',
+  )[0]
+
   return (
     <>
-      {statusList.map((i, index) => (
+      {statusList?.values?.map((i: any, index: number) => (
         <Popconfirm
           key={i.name}
           content={({ onHide }: { onHide(): void }) => {
@@ -90,13 +92,24 @@ const DemandStatusBox = () => {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <StatusWrap>{i.name}</StatusWrap>
+            <StatusWrap
+              style={{
+                color: i.id === demandInfo?.status?.id ? '#2877ff' : '#969799',
+                border:
+                  i.id === demandInfo?.status?.id
+                    ? '1px solid #2877ff'
+                    : '1px solid #EBEDF0',
+              }}
+            >
+              {i.content}
+            </StatusWrap>
             <Divider
               style={{
                 width: 48,
                 margin: '0 8px',
                 minWidth: 'auto',
-                display: index === statusList.length - 1 ? 'none' : 'block',
+                display:
+                  index === statusList?.values?.length - 1 ? 'none' : 'block',
               }}
               dashed
             />

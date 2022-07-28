@@ -125,6 +125,7 @@ const IterationWrap = () => {
     if (!type) {
       return (
         <IterationMain
+          operationDetail={operationDetail}
           onChangeVisible={() => setVisible(!visible)}
           onChangeOperation={item => onChangeOperation(item)}
         />

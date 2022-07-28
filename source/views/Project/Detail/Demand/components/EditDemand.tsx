@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -12,7 +13,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import TagComponent from './TagComponent'
 import UploadAttach from './UploadAttach'
 import Editor from '@/components/Editor'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
@@ -104,6 +105,8 @@ const priorityList = [
 interface Props {
   visible: boolean
   onChangeVisible(): void
+  id?: any
+  isChild?: boolean
 }
 
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
@@ -149,11 +152,39 @@ const EditDemand = (props: Props) => {
   const [html, setHtml] = useState('')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+  const demandId = searchParams.get('demandId')
   const { memberList } = useModel('project')
-  const { addDemand } = useModel('demand')
+  const { addDemand, getDemandInfo, demandInfo, updateDemand }
+    = useModel('demand')
   const { selectIterate } = useModel('iterate')
 
-  const onAddDemand = async () => {
+  useEffect(() => {
+    if (props?.id) {
+      getDemandInfo({ projectId, id: props?.id })
+    } else {
+      form.resetFields()
+    }
+  }, [props.id])
+
+  useEffect(() => {
+    if (demandInfo && props?.id) {
+      form.setFieldsValue(demandInfo)
+      setHtml(demandInfo.info)
+      if (demandInfo?.expectedStart) {
+        form.setFieldsValue({
+          times: [
+            moment(demandInfo.expectedStart),
+            moment(demandInfo.expectedEnd),
+          ],
+        })
+      }
+      form.setFieldsValue({
+        copySendIds: demandInfo?.copySend?.map((i: any) => i.copysend.id),
+      })
+    }
+  }, [demandInfo])
+
+  const onSaveDemand = async () => {
     const values = form.getFieldsValue()
     if (values.times && values.times[0]) {
       values.expectedStart = moment(values.times[0]).format('YYYY-MM-DD')
@@ -163,12 +194,24 @@ const EditDemand = (props: Props) => {
     }
 
     values.info = html
+    if (props.isChild) {
+      values.parentId = demandId
+    }
     try {
-      await addDemand({
-        projectId,
-        ...values,
-      })
-      message.success('创建成功')
+      if (props.id) {
+        await updateDemand({
+          projectId,
+          id: demandInfo.id,
+          ...values,
+        })
+        message.success('编辑成功')
+      } else {
+        await addDemand({
+          projectId,
+          ...values,
+        })
+        message.success('创建成功')
+      }
       form.resetFields()
       props.onChangeVisible()
     } catch (error) {
@@ -177,14 +220,22 @@ const EditDemand = (props: Props) => {
     }
   }
 
+  const titleText = () => {
+    if (props?.id) {
+      return props.isChild ? '编辑子需求' : '编辑需求'
+    }
+    return props.isChild ? '创建子需求' : '创建需求'
+  }
+
   return (
     <Modal
       visible={props.visible}
       width={740}
       footer={false}
-      title="创建需求"
+      title={titleText()}
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px' }}
+      destroyOnClose
     >
       <FormWrap form={form} labelCol={{ span: 5 }}>
         <div style={{ display: 'flex' }}>
@@ -321,7 +372,7 @@ const EditDemand = (props: Props) => {
         <AddButtonWrap>完成并创建下一个</AddButtonWrap>
         <Space size={16}>
           <Button>取消</Button>
-          <Button type="primary" onClick={onAddDemand}>
+          <Button type="primary" onClick={onSaveDemand}>
             确认
           </Button>
         </Space>
