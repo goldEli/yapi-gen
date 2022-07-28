@@ -299,7 +299,7 @@ const ProjectSet = () => {
       setIsDelete(false)
       setOperationDetail({})
       message.success('删除成功')
-      init()
+      init(true)
     } catch (error) {
 
       //

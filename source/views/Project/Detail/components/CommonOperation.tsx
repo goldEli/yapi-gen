@@ -92,7 +92,11 @@ const MenuItems = styled.div({
   },
 })
 
-const CommonOperation = () => {
+interface Props {
+  onUpdate?(): void
+}
+
+const CommonOperation = (props: Props) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
@@ -147,6 +151,7 @@ const CommonOperation = () => {
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
         details={projectInfo}
+        onUpdate={props.onUpdate}
       />
       <ProjectInfoModal
         visible={infoVisible}

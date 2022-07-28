@@ -5,10 +5,11 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Space, Modal } from 'antd'
+import { Popover, Space, Modal, message } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -48,8 +49,8 @@ const StatusTag = styled.div({
 interface Props {
   isGrid: boolean
   onChangeGrid(val: boolean): void
-  onChangeVisible?(): void
   onChangeIsShowLeft?(): void
+  onIsUpdateList?(val: boolean): void
 }
 
 export const plainOptions = [
@@ -72,7 +73,10 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   const [settingState, setSettingState] = useState(false)
   const [visible, setVisible] = useState(false)
-  const { iterateInfo } = useModel('iterate')
+  const { iterateInfo, updateIterateStatus, getIterateInfo }
+    = useModel('iterate')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
 
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'name',
@@ -93,13 +97,34 @@ const Operation = (props: Props) => {
     setTitleList2(list2)
   }
 
+  const onChangeStatus = async (val: number) => {
+    if (val !== iterateInfo.status) {
+      try {
+        await updateIterateStatus({
+          projectId,
+          id: iterateInfo.id,
+          status: val === 1,
+        })
+        message.success('修改成功')
+        getIterateInfo({ projectId, id: iterateInfo?.id })
+        props.onIsUpdateList?.(true)
+      } catch (error) {
+
+        //
+      }
+    }
+  }
+
   const changeStatus = (
     <Space
       size={8}
       style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
     >
-      <StatusTag>开启中</StatusTag>
-      <StatusTag style={{ color: '#969799', background: '#F2F2F4' }}>
+      <StatusTag onClick={() => onChangeStatus(1)}>开启中</StatusTag>
+      <StatusTag
+        onClick={() => onChangeStatus(2)}
+        style={{ color: '#969799', background: '#F2F2F4' }}
+      >
         已结束
       </StatusTag>
     </Space>
@@ -113,6 +138,7 @@ const Operation = (props: Props) => {
         onCancel={() => setVisible(false)}
         title="迭代目标"
         footer={false}
+        destroyOnClose
       >
         <div
           dangerouslySetInnerHTML={{

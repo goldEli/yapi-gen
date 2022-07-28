@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Form, Input } from 'antd'
+import { Drawer, Input } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import AddMember from './AddMember'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
-import { useSearchParams } from 'react-router-dom'
 
 interface Props {
   visible: boolean
@@ -72,19 +71,19 @@ const ListItem = styled.div({
 })
 
 const Member = (props: Props) => {
-  const { getProjectMember } = useModel('project')
+  const { getProjectMember, refreshMember, setRefreshMember }
+    = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
-  const [form] = Form.useForm()
 
-  const getList = async () => {
-    const values = form.getFieldsValue()
+  const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
       all: true,
-      ...values,
+      searchValue: val,
     })
     setMemberList(result)
+    setRefreshMember(false)
   }
 
   useEffect(() => {
@@ -93,8 +92,14 @@ const Member = (props: Props) => {
     }
   }, [props.visible])
 
-  const onChangeSearch = () => {
-    getList()
+  useEffect(() => {
+    if (refreshMember) {
+      getList()
+    }
+  }, [refreshMember])
+
+  const onChangeSearch = (e: any) => {
+    getList(e.target.value)
   }
 
   return (
@@ -128,22 +133,18 @@ const Member = (props: Props) => {
           >
             添加成员
           </ButtonWrap>
-          <Form form={form}>
-            <Form.Item noStyle label="searchValue">
-              <Input
-                style={{ marginTop: 16 }}
-                onPressEnter={onChangeSearch}
-                suffix={
-                  <IconFont
-                    type="search"
-                    style={{ color: '#BBBDBF', fontSize: 16 }}
-                  />
-                }
-                placeholder="搜索成员"
-                allowClear
+          <Input
+            style={{ marginTop: 16 }}
+            onPressEnter={onChangeSearch}
+            suffix={
+              <IconFont
+                type="search"
+                style={{ color: '#BBBDBF', fontSize: 16 }}
               />
-            </Form.Item>
-          </Form>
+            }
+            placeholder="搜索成员"
+            allowClear
+          />
         </div>
         <ListWrap>
           {memberList?.map((i: any) => (

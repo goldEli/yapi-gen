@@ -12,19 +12,22 @@ import { message } from 'antd'
 interface Props {
   onChangeVisible(e: any): void
   onSetOperationItem(item: any): void
+  isUpdate?: boolean
+  onIsUpdate?(): void
 }
 
 const DemandMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(true)
   const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [deleteId, setDeleteId] = useState(0)
   const [dataList, setDataList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { getDemandList, deleteDemand } = useModel('demand')
 
-  const getList = async (state: boolean, val: string) => {
+  const getList = async (state: boolean, val: string, item?: any) => {
     let params = {}
     if (state) {
       params = {
@@ -36,8 +39,8 @@ const DemandMain = (props: Props) => {
     } else {
       params = {
         projectId,
-        page: 1,
-        pageSize: 10,
+        page: item ? item?.page : 1,
+        pageSize: item ? item?.size : 10,
         order: 'asc',
         orderKey: 'id',
         searchValue: val,
@@ -45,16 +48,23 @@ const DemandMain = (props: Props) => {
     }
     const result = await getDemandList(params)
     setDataList(result)
+    props.onIsUpdate?.()
   }
 
   useEffect(() => {
-    getList(isGrid, searchVal)
+    getList(isGrid, searchVal, pageObj)
   }, [])
+
+  useEffect(() => {
+    if (props.isUpdate) {
+      getList(isGrid, searchVal, pageObj)
+    }
+  }, [props.isUpdate])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val, searchVal)
+    getList(val, searchVal, pageObj)
   }
 
   const onChangeOperation = (e: any, item: any) => {
@@ -73,7 +83,7 @@ const DemandMain = (props: Props) => {
       message.success('删除成功')
       setIsVisible(false)
       setDeleteId(0)
-      getList(isGrid, searchVal)
+      getList(isGrid, searchVal, pageObj)
     } catch (error) {
 
       //
@@ -82,7 +92,16 @@ const DemandMain = (props: Props) => {
 
   const onSearch = (val: string) => {
     setSearchVal(val)
-    getList(isGrid, val)
+    getList(isGrid, val, pageObj)
+  }
+
+  const onChangePageNavigation = (item: any) => {
+    setPageObj(item)
+    getList(isGrid, searchVal, item)
+  }
+
+  const onChangeRow = () => {
+    getList(isGrid, searchVal, pageObj)
   }
 
   return (
@@ -110,6 +129,8 @@ const DemandMain = (props: Props) => {
           onChangeVisible={onChangeOperation}
           onDelete={onDelete}
           data={dataList}
+          onChangePageNavigation={onChangePageNavigation}
+          onChangeRow={onChangeRow}
         />
       )}
     </div>

@@ -8,6 +8,7 @@ interface Props {
   onChangeOperation(type: string, id: number): void
   onChangeVisible(): void
   projectList: any
+  onAddClear?(): void
 }
 
 const SpaceWrap = styled(Space)({
@@ -35,6 +36,11 @@ const MainGrid = (props: Props) => {
     navigate(`/Detail/Demand?id=${item.id}`)
   }
 
+  const onAddClick = () => {
+    props.onChangeVisible()
+    props.onAddClear?.()
+  }
+
   return (
     <SpaceWrap size={32}>
       {props.projectList.list?.map((item: any) => (
@@ -45,7 +51,7 @@ const MainGrid = (props: Props) => {
           />
         </div>
       ))}
-      <AddProject onClick={props.onChangeVisible}>
+      <AddProject onClick={onAddClick}>
         <IconFont
           style={{ color: '#969799', fontSize: 24, marginBottom: 16 }}
           type="plus"

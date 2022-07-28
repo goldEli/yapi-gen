@@ -89,12 +89,19 @@ const CardItem = styled.div({
 
 const ProjectInfo = () => {
   const [visible, setVisible] = useState(false)
-  const { projectInfo } = useModel('project')
+  const { projectInfo, getProjectInfo } = useModel('project')
+
+  const onUpdate = () => {
+    getProjectInfo({ projectId: projectInfo.id })
+  }
+
   return (
     <div style={{ padding: 16 }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
+        details={projectInfo}
+        onUpdate={onUpdate}
       />
       <Wrap>
         <InfoLeft>

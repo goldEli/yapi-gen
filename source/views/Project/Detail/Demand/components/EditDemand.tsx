@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
@@ -95,18 +96,13 @@ const AddButtonWrap = styled.div({
   cursor: 'pointer',
 })
 
-const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
-]
-
 interface Props {
   visible: boolean
   onChangeVisible(): void
   id?: any
   isChild?: boolean
+  onUpdate?(): void
+  isIterateId?: any
 }
 
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
@@ -150,10 +146,17 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
+  const [attachList, setAttachList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { memberList } = useModel('project')
+  const [priorityDetail, setPriorityDetail] = useState<any>({
+    icon: 'middle',
+    color: '#2F7EFD',
+    content: '中',
+    id: 646,
+  })
   const { addDemand, getDemandInfo, demandInfo, updateDemand }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
@@ -169,7 +172,9 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     if (demandInfo && props?.id) {
       form.setFieldsValue(demandInfo)
+      setPriorityDetail(demandInfo.priority)
       setHtml(demandInfo.info)
+      setAttachList(demandInfo?.attachment.map((i: any) => i.attachment))
       if (demandInfo?.expectedStart) {
         form.setFieldsValue({
           times: [
@@ -180,11 +185,13 @@ const EditDemand = (props: Props) => {
       }
       form.setFieldsValue({
         copySendIds: demandInfo?.copySend?.map((i: any) => i.copysend.id),
+        attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
+        userIds: demandInfo?.user?.map((i: any) => i.user.id),
       })
     }
   }, [demandInfo])
 
-  const onSaveDemand = async () => {
+  const onSaveDemand = async (hasNext?: number) => {
     const values = form.getFieldsValue()
     if (values.times && values.times[0]) {
       values.expectedStart = moment(values.times[0]).format('YYYY-MM-DD')
@@ -194,8 +201,9 @@ const EditDemand = (props: Props) => {
     }
 
     values.info = html
+
     if (props.isChild) {
-      values.parentId = demandId
+      values.parentId = demandId || demandInfo?.id
     }
     try {
       if (props.id) {
@@ -203,17 +211,24 @@ const EditDemand = (props: Props) => {
           projectId,
           id: demandInfo.id,
           ...values,
+          iterateId: props.isIterateId || '',
         })
         message.success('编辑成功')
       } else {
         await addDemand({
           projectId,
+          iterateId: props.isIterateId || '',
           ...values,
         })
         message.success('创建成功')
       }
       form.resetFields()
-      props.onChangeVisible()
+      setAttachList([])
+      setHtml('')
+      props.onUpdate?.()
+      if (!hasNext) {
+        props.onChangeVisible()
+      }
     } catch (error) {
 
       //
@@ -225,6 +240,19 @@ const EditDemand = (props: Props) => {
       return props.isChild ? '编辑子需求' : '编辑需求'
     }
     return props.isChild ? '创建子需求' : '创建需求'
+  }
+
+  const onCurrentDetail = (item: any) => {
+    setPriorityDetail(item)
+    form.setFieldsValue({
+      priority: item.id,
+    })
+  }
+
+  const onChangeAttachment = (arr: any) => {
+    form.setFieldsValue({
+      attachments: arr,
+    })
   }
 
   return (
@@ -292,18 +320,24 @@ const EditDemand = (props: Props) => {
           <Form.Item label="优先级" name="priority">
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
-                return <LevelContent onTap={() => {}} onHide={onHide} />
+                return (
+                  <LevelContent
+                    onHide={onHide}
+                    record={{ project_id: projectId }}
+                    onCurrentDetail={onCurrentDetail}
+                  />
+                )
               }}
             >
               <PriorityWrap>
                 <IconFont
-                  type={priorityList[0].type}
+                  type={priorityDetail?.icon}
                   style={{
                     fontSize: 16,
-                    color: `${priorityList[0].color}!important`,
+                    color: priorityDetail?.color,
                   }}
                 />
-                <div>{priorityList[0].name}</div>
+                <div>{priorityDetail?.content}</div>
               </PriorityWrap>
             </PopConfirm>
           </Form.Item>
@@ -358,6 +392,8 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="attachment" />
           <Form.Item label="附件" name="attachments">
             <UploadAttach
+              defaultList={attachList}
+              onChangeAttachment={onChangeAttachment}
               addWrap={
                 <AddWrap>
                   <IconFont type="plus" />
@@ -369,10 +405,12 @@ const EditDemand = (props: Props) => {
         </div>
       </FormWrap>
       <ModalFooter>
-        <AddButtonWrap>完成并创建下一个</AddButtonWrap>
+        <AddButtonWrap onClick={() => onSaveDemand(1)}>
+          完成并创建下一个
+        </AddButtonWrap>
         <Space size={16}>
-          <Button>取消</Button>
-          <Button type="primary" onClick={onSaveDemand}>
+          <Button onClick={props.onChangeVisible}>取消</Button>
+          <Button type="primary" onClick={() => onSaveDemand()}>
             确认
           </Button>
         </Space>

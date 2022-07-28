@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable no-empty-function */
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
@@ -66,33 +65,45 @@ const TagItem = styled.div({
 interface TagProps {
   onChangeList(val: []): void
   tap?(value: any, active: any): void
+  canAdd?: boolean
 }
 
 const TagBox = (props: TagProps) => {
   const { tagList } = useModel('project')
   const [value, setValue] = useState('')
+
+  const onCreateTag = () => {
+
+    //
+  }
+
   return (
     <TagWrap title="">
       <div style={{ padding: '16px 16px 4px 16px' }}>
         <Input.Search value={value} onChange={e => setValue(e.target.value)} />
       </div>
       {tagList
-        .filter((k: any) => k.name.includes(value))
+        .filter((k: any) => k.name?.includes(value))
         .map((i: any) => (
           <TagItem key={i.name}>
             <div style={{ background: i.color }} />
             <span>{i.name}</span>
           </TagItem>
         ))}
-      <TagItem hidden={!value}>
-        <span>创建【创建新标签】标签</span>
-      </TagItem>
+      {props.canAdd ? (
+        <TagItem hidden={!value}>
+          <span onClick={onCreateTag}>创建【创建新标签】标签</span>
+        </TagItem>
+      )
+        : ''
+      }
     </TagWrap>
   )
 }
 
 interface Props {
   addWrap: React.ReactElement
+  canAdd?: boolean
 }
 
 const TagComponent = (props: Props) => {
@@ -113,24 +124,40 @@ const TagComponent = (props: Props) => {
   )
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <TagCheckedItem>
-        {tagGroup.map((i: any) => (
-          <div key={i.name} style={{ cursor: 'pointer', alignItems: 'center' }}>
-            <Popover placement="bottom" trigger="click" content={colorStatus}>
-              {i.name}
-            </Popover>
-            <IconFont
-              className="icon"
-              style={{ position: 'absolute', right: -6, top: -6 }}
-              type="close-circle"
-            />
-          </div>
-        ))}
-      </TagCheckedItem>
+      {tagGroup.length ? (
+        <TagCheckedItem>
+          {tagGroup.map((i: any) => (
+            <div
+              key={i.name}
+              style={{ cursor: 'pointer', alignItems: 'center' }}
+            >
+              <Popover placement="bottom" trigger="click" content={colorStatus}>
+                {i.name}
+              </Popover>
+              <IconFont
+                className="icon"
+                style={{ position: 'absolute', right: -6, top: -6 }}
+                type="close-circle"
+              />
+            </div>
+          ))}
+        </TagCheckedItem>
+      )
+        : ''
+      }
       <Popover
         placement="bottom"
         trigger="click"
-        content={<TagBox tap={() => {}} onChangeList={setTagGroup} />}
+        content={
+          <TagBox
+            tap={() => {
+
+              //
+            }}
+            onChangeList={setTagGroup}
+            canAdd={props.canAdd}
+          />
+        }
         getPopupContainer={node => node}
       >
         {props.addWrap}

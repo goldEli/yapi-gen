@@ -10,33 +10,7 @@ import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
-
-const list = [
-  {
-    id: '121212',
-    name: '需求标题名称',
-    demand: 8,
-    iteration: '敏捷版本V1.0',
-    priority: 0,
-    dealName: '何飞',
-    status: 0,
-    createTime: '2022-02-32',
-    endTime: '200-03-12',
-    startTime: '200-03-12',
-  },
-  {
-    id: '121212',
-    name: '需求标题名称',
-    demand: 8,
-    iteration: '敏捷版本V1.0',
-    priority: 0,
-    dealName: '何飞',
-    status: 0,
-    createTime: '2022-02-32',
-    endTime: '200-03-12',
-    startTime: '200-03-12',
-  },
-]
+import EditDemand from '../../Demand/components/EditDemand'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
@@ -50,31 +24,35 @@ interface Props {
 
 const IterationMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(true)
+  const [isDemandVisible, setIsDemandVisible] = useState(false)
+  const [isUpdateList, setIsUpdateList] = useState(false)
+  const [demandItem, setDemandItem] = useState<any>({})
   const [isShowLeft, setIsShowLeft] = useState(true)
   const [dataList, setDataList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(false)
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const projectId = searchParams.get('id')
-  const { getDemandList, deleteDemand } = useModel('demand')
+  const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const [deleteId, setDeleteId] = useState(0)
 
-  const getList = async (state: boolean) => {
+  const getList = async (state: boolean, item?: any) => {
     let params = {}
     if (state) {
       params = {
         projectId,
         all: true,
         panel: true,
-        iterateIds: props.operationDetail.id,
+        iterateIds: [props.operationDetail.id],
       }
     } else {
       params = {
         projectId,
-        page: 1,
-        pageSize: 10,
+        page: item ? item?.page : 1,
+        pageSize: item ? item?.size : 10,
         order: 'asc',
         orderKey: 'id',
-        iterateIds: props.operationDetail.id,
+        iterateIds: [props.operationDetail.id],
       }
     }
     const result = await getDemandList(params)
@@ -82,19 +60,21 @@ const IterationMain = (props: Props) => {
   }
 
   useEffect(() => {
-    getList(isGrid)
+    if (props.operationDetail?.id) {
+      getList(isGrid, pageObj)
+    }
   }, [props.operationDetail])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val)
+    getList(val, pageObj)
   }
 
   const onChangeOperation = (e: any, item: any) => {
-
-    // props.onSetOperationItem(item)
-    // props.onChangeVisible(e)
+    setDemandItem(item)
+    setIsDemandVisible(true)
+    getDemandInfo({ projectId, id: item.id })
   }
 
   const onDelete = (item: any) => {
@@ -108,14 +88,36 @@ const IterationMain = (props: Props) => {
       message.success('删除成功')
       setIsVisible(false)
       setDeleteId(0)
-      getList(isGrid)
+      getList(isGrid, pageObj)
     } catch (error) {
 
       //
     }
   }
+
+  const onChangePageNavigation = (item: any) => {
+    setPageObj(item)
+    getList(isGrid, item)
+  }
+
+  const onChangeRow = () => {
+    getList(isGrid, pageObj)
+  }
+
+  const onChangeVisible = () => {
+    setIsDemandVisible(!isDemandVisible)
+    setDemandItem({})
+  }
+
   return (
     <div style={{ display: 'flex' }}>
+      <EditDemand
+        visible={isDemandVisible}
+        onChangeVisible={onChangeVisible}
+        id={demandItem?.id}
+        onUpdate={onChangeRow}
+        isIterateId={props.operationDetail?.id}
+      />
       <DeleteConfirm
         text="确认要删除当前需求？"
         isVisible={isVisible}
@@ -126,13 +128,15 @@ const IterationMain = (props: Props) => {
         isShowLeft={isShowLeft}
         onChangeVisible={props.onChangeVisible}
         onChangeOperation={props.onChangeOperation}
+        isUpdateList={isUpdateList}
+        onIsUpdateList={setIsUpdateList}
       />
       <Right isShowLeft={isShowLeft}>
         <Operation
           isGrid={isGrid}
           onChangeGrid={val => onChangeGrid(val)}
-          onChangeVisible={props.onChangeVisible}
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+          onIsUpdateList={setIsUpdateList}
         />
         {isGrid ? (
           <IterationGrid
@@ -145,6 +149,8 @@ const IterationMain = (props: Props) => {
             onChangeVisible={onChangeOperation}
             onDelete={onDelete}
             data={dataList}
+            onChangePageNavigation={onChangePageNavigation}
+            onChangeRow={onChangeRow}
           />
         )}
       </Right>

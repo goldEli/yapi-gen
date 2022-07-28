@@ -71,7 +71,7 @@ interface Props {
   isGrid: boolean
   activeType: number
   onChangeSort(val: string): void
-  onChangeFormat(): void
+  onChangeFormat(val: boolean): void
   onChangeHidden(val: boolean): void
   onChangeType(val: number): void
   show: boolean
@@ -134,12 +134,12 @@ const Filter = (props: Props) => {
         <Divider style={{ height: 20 }} type="vertical" />
         <Space size={12}>
           <IconfontWrap
-            onClick={props.onChangeFormat}
+            onClick={() => props.onChangeFormat(true)}
             active={props.isGrid}
             type="app-store"
           />
           <IconfontWrap
-            onClick={props.onChangeFormat}
+            onClick={() => props.onChangeFormat(false)}
             active={!props.isGrid}
             type="unorderedlist"
           />

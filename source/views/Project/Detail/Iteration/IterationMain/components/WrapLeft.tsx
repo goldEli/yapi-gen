@@ -12,7 +12,6 @@ import {
   Form,
   Input,
   DatePicker,
-  Checkbox,
   Menu,
   message,
   Radio,
@@ -86,6 +85,8 @@ interface Props {
   isShowLeft: boolean
   onChangeVisible(): void
   onChangeOperation(item: any): void
+  isUpdateList?: boolean
+  onIsUpdateList?(val: boolean): void
 }
 
 const sortList = [
@@ -137,15 +138,18 @@ const WrapLeft = (props: Props) => {
     const result = await getIterateList(params)
     setDataList(result)
     props.onChangeOperation(result?.list[0])
+    props.onIsUpdateList?.(false)
   }
 
   useEffect(() => {
     getList()
-  }, [])
+  }, [currentSort])
 
   useEffect(() => {
-    getList()
-  }, [currentSort])
+    if (props.isUpdateList) {
+      getList()
+    }
+  }, [props.isUpdateList])
 
   const options = [
     { label: '开启', value: 1 },
@@ -213,12 +217,14 @@ const WrapLeft = (props: Props) => {
     </div>
   )
 
-  const onChangeEdit = (item: any) => {
+  const onChangeEdit = (e: any, item: any) => {
+    e.stopPropagation()
     props.onChangeOperation(item)
     props.onChangeVisible()
   }
 
-  const onChangeEnd = async (item: any) => {
+  const onChangeEnd = async (e: any, item: any) => {
+    e.stopPropagation()
     try {
       await updateIterateStatus({
         projectId,
@@ -233,7 +239,8 @@ const WrapLeft = (props: Props) => {
     }
   }
 
-  const onChangeDelete = (item: any) => {
+  const onChangeDelete = (e: any, item: any) => {
+    e.stopPropagation()
     setIsDeleteId(item.id)
     setIsVisible(true)
   }
@@ -258,26 +265,34 @@ const WrapLeft = (props: Props) => {
       items={[
         {
           key: '1',
-          label: <div onClick={() => onChangeEdit(item)}>编辑</div>,
+          label: <div onClick={e => onChangeEdit(e, item)}>编辑</div>,
         },
         {
           key: '2',
           label: (
-            <div onClick={() => onChangeEnd(item)}>
+            <div onClick={e => onChangeEnd(e, item)}>
               {item.status === 1 ? '关闭' : '开启'}
             </div>
           ),
         },
         {
           key: '3',
-          label: <div onClick={() => onChangeDelete(item)}> 删除 </div>,
+          label: <div onClick={e => onChangeDelete(e, item)}> 删除 </div>,
         },
       ]}
     />
   )
 
-  const onClickItem = (item: any) => {
+  const onClickTitle = (item: any) => {
     navigate(`/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`)
+  }
+
+  const onClickItem = (item: any) => {
+    props.onChangeOperation(item)
+  }
+
+  const onChangeClick = () => {
+    props.onChangeVisible()
   }
 
   return (
@@ -289,7 +304,7 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        <AddButton text="创建迭代" onChangeClick={props.onChangeVisible} />
+        <AddButton text="创建迭代" onChangeClick={onChangeClick} />
         <Space size={20}>
           <Popover
             trigger="click"
@@ -316,6 +331,7 @@ const WrapLeft = (props: Props) => {
           menu={menu(item)}
           key={item.id}
           item={item}
+          onClickTitle={() => onClickTitle(item)}
           onClickItem={() => onClickItem(item)}
         />
       ))}

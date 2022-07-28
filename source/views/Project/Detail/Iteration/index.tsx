@@ -8,8 +8,9 @@ import Demand from './Demand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button } from 'antd'
+import { Space, Button, message } from 'antd'
 import { useModel } from '@/models'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -92,14 +93,16 @@ const Item = styled.div<{ activeIdx: boolean }>(
 )
 
 const IterationWrap = () => {
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
   const navigate = useNavigate()
   const iterateId = searchParams.get('iterateId')
-  const { getIterateInfo, iterateInfo } = useModel('iterate')
+  const { getIterateInfo, iterateInfo, deleteIterate } = useModel('iterate')
+  const [isDelete, setIsDelete] = useState(false)
+  const [deleteId, setDeleteId] = useState(0)
 
   const childContent = () => {
     if (type === 'info') {
@@ -109,6 +112,12 @@ const IterationWrap = () => {
     }
     return <ChangeRecord />
   }
+
+  useEffect(() => {
+    if (iterateId) {
+      getIterateInfo({ projectId, id: iterateId })
+    }
+  }, [])
 
   const onChangeIdx = (val: string) => {
     navigate(
@@ -121,28 +130,46 @@ const IterationWrap = () => {
     getIterateInfo({ projectId, id: item?.id })
   }
 
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteIterate({ projectId, id: iterateId })
+      message.success('删除成功')
+      setIsDelete(false)
+      setDeleteId(0)
+    } catch (error) {
+
+      //
+    }
+  }
+
   const content = () => {
     if (!type) {
       return (
         <IterationMain
           operationDetail={operationDetail}
-          onChangeVisible={() => setVisible(!visible)}
+          onChangeVisible={() => setIsVisible(!isVisible)}
           onChangeOperation={item => onChangeOperation(item)}
         />
       )
     }
     return (
       <>
+        <DeleteConfirm
+          text="确认删除该迭代？"
+          isVisible={isDelete}
+          onChangeVisible={() => setIsDelete(!isDelete)}
+          onConfirm={onDeleteConfirm}
+        />
         <DemandInfoWrap>
           <NameWrap>
             <span>{iterateInfo.name}</span>
             <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
           </NameWrap>
           <Space size={16}>
-            <Button type="primary" onClick={() => setVisible(!visible)}>
+            <Button type="primary" onClick={() => setIsVisible(!isVisible)}>
               编辑
             </Button>
-            <Button>删除</Button>
+            <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
           </Space>
         </DemandInfoWrap>
         <ContentWrap>
@@ -174,11 +201,15 @@ const IterationWrap = () => {
     )
   }
 
+  const onChangeVisible = () => {
+    setIsVisible(!isVisible)
+  }
+
   return (
     <div>
       <EditIteration
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
         details={iterateId ? iterateInfo : operationDetail}
       />
       {content()}

@@ -20,6 +20,7 @@ export default () => {
     updateDemand,
     deleteDemand,
     deleteInfoDemand,
+    addInfoDemand,
     updatePriority,
   } = services.demand
 
@@ -37,5 +38,6 @@ export default () => {
     deleteDemand,
     deleteInfoDemand,
     updatePriority,
+    addInfoDemand,
   }
 }

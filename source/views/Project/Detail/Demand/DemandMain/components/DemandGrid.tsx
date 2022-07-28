@@ -55,7 +55,7 @@ const DemandGrid = (props: Props) => {
   }
   return (
     <Content>
-      <Space size={20}>
+      <Space size={20} style={{ alignItems: 'flex-start' }}>
         {props.list?.map((i: any) => (
           <CardGroup key={i.name}>
             <Title>
