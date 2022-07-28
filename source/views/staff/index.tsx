@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Pagination } from 'antd'
+import { Button, Dropdown, Menu, message, Pagination } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -53,12 +53,12 @@ const Staff = () => {
   const [staffPersonalVisible, setStaffPersonalVisible]
     = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
+    'nickname',
     'name',
+    'gender',
     'email',
     'phone',
     'department_name',
-    'gender',
-    'nickname',
     'position_name',
     'project_num',
     'role_name',
@@ -92,7 +92,9 @@ const Staff = () => {
   }
   const closeStaffPersonal = async (e: any) => {
     const res = await updateStaff(e)
+
     if (res.code === 0) {
+      message.success(res.message)
       getStaffListData()
       setStaffPersonalVisible(false)
     }

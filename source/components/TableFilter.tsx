@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import {
@@ -10,7 +11,6 @@ import {
   Collapse,
 } from 'antd'
 import IconFont from './IconFont'
-import type { RangePickerProps } from 'antd/es/date-picker'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
@@ -38,7 +38,15 @@ const FormWrap = styled(Form)({
     margin: 0,
   },
 })
-
+const TimeWrap = styled(DatePicker.RangePicker)<{ label: string }>`
+  &::before {
+    content: '${({ label }) => label}';
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 16px;
+    margin-left: 10px;
+  }
+`
 const SelectWrap = styled(Select)<{ label: string }>`
   & .ant-select-selector::before {
     content: '${({ label }) => label}';
@@ -102,31 +110,24 @@ const SelectWrapBedeck = styled.div`
     visibility: visible;
   }
 `
-interface Props {
-  list: any[]
-  basicsList?: any[]
-  specialList?: any[]
-  keys?: string[]
-  onChangeForm?(value: any): void
-  showForm?: boolean
-}
 
-const TableFilter = (props: Props) => {
+const TableFilter = (props: any) => {
   const { list, basicsList, specialList } = props
   const [form] = Form.useForm()
 
-  const onClearForm = async () => {
-    form.resetFields()
-  }
   const filterBasicsList = useMemo(() => {
-    const newKeys = list?.map(item => item.content)
-    const arr = basicsList?.filter(item => !newKeys.includes(item.content))
+    const newKeys = list?.map((item: { content: any }) => item.content)
+    const arr = basicsList?.filter(
+      (item: any) => !newKeys.includes(item.content),
+    )
     return arr
   }, [list, basicsList])
 
   const filterSpecialList = useMemo(() => {
-    const newKeys = list?.map(item => item.content)
-    const arr = specialList?.filter(item => !newKeys.includes(item.content))
+    const newKeys = list?.map((item: { content: any }) => item.content)
+    const arr = specialList?.filter(
+      (item: any) => !newKeys.includes(item.content),
+    )
     return arr
   }, [list, specialList])
 
@@ -136,10 +137,10 @@ const TableFilter = (props: Props) => {
       <div>
         <Collapse>
           <Collapse.Panel header="基础字段" key="1">
-            {filterBasicsList?.map(i => <div key={i.id}>{i.title}</div>)}
+            {filterBasicsList?.map((i: any) => <div key={i.id}>{i.title}</div>)}
           </Collapse.Panel>
           <Collapse.Panel header="人员和时间" key="2">
-            {filterSpecialList?.map(i => <div key={i.id}>{i.title}</div>)}
+            {filterSpecialList?.map((i: any) => <div key={i.id}>{i.title}</div>)}
           </Collapse.Panel>
         </Collapse>
       </div>
@@ -149,35 +150,37 @@ const TableFilter = (props: Props) => {
 
     // setList(list.filter((item, idx) => item.key !== key))
   }
-  const onChange: RangePickerProps['onChange'] = dates => {
-    if (dates) {
 
-      //
-    } else {
-
-      //
-    }
-  }
-  const handleChange = (value: string[]) => {
-
-    //
-  }
   const confirm = async () => {
-    const value = await form.validateFields()
+    const value = await form.getFieldsValue()
+    const res = JSON.parse(JSON.stringify(value))
+    for (const item in value) {
+      if (item.includes('_at') && res[item]?.length === 2) {
+        res[item][0] = moment(res[item][0]).format('YYYY-MM-DD')
+        res[item][1] = moment(res[item][1]).format('YYYY-MM-DD')
+      }
+    }
+
+    props.onSearch(res)
 
     //
+  }
+  const onClearForm = async () => {
+    form.resetFields()
+    confirm()
   }
 
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
-          {list?.map((i, index) => {
+          {list?.map((i: any) => {
             if (i.type === 'select') {
               return (
                 <SelectWrapBedeck>
                   <Form.Item name={i.key}>
                     <SelectWrap
+                      onBlur={confirm}
                       label={i.name}
                       mode="multiple"
                       style={{ width: '100%' }}
@@ -200,10 +203,11 @@ const TableFilter = (props: Props) => {
             return (
               <SelectWrapBedeck key={i.key}>
                 <Form.Item name={i.key}>
-                  <DatePicker.RangePicker
+                  <TimeWrap
+                    onBlur={confirm}
+                    label={i.name}
                     className={rangPicker}
                     getPopupContainer={node => node}
-                    onChange={onChange}
                     ranges={{
                       最近一周: [
                         moment(new Date()).startOf('days')
@@ -244,7 +248,6 @@ const TableFilter = (props: Props) => {
             <Button icon={<IconFont type="plus" />} />
           </Popover>
           <ClearForm onClick={onClearForm}>清除条件</ClearForm>
-          <Button onClick={confirm}>搜索</Button>
         </FormWrap>
       </Wrap>
     </SearchLine>

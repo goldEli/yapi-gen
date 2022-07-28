@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
@@ -114,13 +113,22 @@ const LanguageLine = styled.div`
 `
 
 export const Panel = (props: { visible: boolean }) => {
-  const { loginOut, userInfo } = useModel('user')
-  const navigate = useNavigate()
+  const { loginOut, getUserDetail } = useModel('user')
+
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
   const [languageMode, setLanguageMode] = useState(1)
+  const [userData, setUserData] = useState<any>({})
+
+  const init = async () => {
+    const res = await getUserDetail()
+    setUserData(res)
+  }
+  useEffect(() => {
+    init()
+  }, [])
 
   const changeLanguageMode = (value: number) => {
     setLanguageMode(value)
@@ -157,14 +165,14 @@ export const Panel = (props: { visible: boolean }) => {
     <Box>
       <PanelHeader>
         <PanelHeaderFirst>
-          <SetHead>何飞</SetHead>
+          <SetHead>{userData?.name}</SetHead>
           <NanmeAndPhone>
-            <span>何飞（何飞）</span>
-            <span>188****8688</span>
+            <span>{userData?.name}</span>
+            <span>{userData?.phone}</span>
           </NanmeAndPhone>
         </PanelHeaderFirst>
         <PanelHeaderSecond>
-          <div>成都定星科技有限公司</div>
+          <div>{userData?.company_name}</div>
           <Tooltip placement="top" title="切换企业">
             <div
               onClick={() => setCompanyModalVisible(true)}

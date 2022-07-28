@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
 import sideLogo from '@/assets/side_logo.svg'
+import { useModel } from '@/models'
 
 const SideWrap = styled.div`
   display: flex;
@@ -109,6 +110,8 @@ const activeCss = css`
 `
 
 export const Side = () => {
+  const [userData, setUserData] = useState<any>({})
+  const { getUserDetail } = useModel('user')
   const location = useLocation()
   const { pathname } = location
   const nowPath
@@ -119,7 +122,14 @@ export const Side = () => {
   const onNavigation = (path: string) => {
     navigate(path)
   }
+  const init = async () => {
+    const res = await getUserDetail()
 
+    setUserData(res)
+  }
+  useEffect(() => {
+    init()
+  }, [])
   const allEach = getMenu().map(item => (
     <SideEach
       className={nowPath === item.path ? activeCss : ''}
@@ -151,7 +161,7 @@ export const Side = () => {
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>设置</span>
         </SideEach>
-        <SetHead onClick={controlPanelVisible}>何飞</SetHead>
+        <SetHead onClick={controlPanelVisible}>{userData?.name}</SetHead>
       </SideFooter>
       <Panel visible={panelVisible} />
     </SideWrap>

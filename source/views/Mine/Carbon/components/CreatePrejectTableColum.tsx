@@ -129,34 +129,24 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">优先级</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-        index: number,
-      ) => {
+      render: (text: any, record: Record<string, string | number>) => {
         return (
           <div className={flexCss}>
             <div className={flexCss}>
-              {level.map(item => {
-                if (text === item.id) {
-                  return (
-                    <div className={flexCss} key={item.id}>
-                      {item.icon}
-                      <span style={{ margin: '0px 16px 0px 10px' }}>
-                        {item.name}
-                      </span>
-                    </div>
-                  )
-                }
-              })}
+              <IconFont
+                type={text.icon}
+                style={{
+                  fontSize: 20,
+                  marginRight: '10px',
+                  color: text.color,
+                }}
+              />
+              <span>{text.content}</span>
             </div>
             <Pop
               content={({ onHide }: { onHide(): void }) => (
                 <LevelContent
-                  onTap={() => {
-
-                    //
-                  }}
+                  onTap={state.updatePriority}
                   onHide={onHide}
                   record={record}
                 />

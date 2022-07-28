@@ -14,7 +14,7 @@ const tabsList = [{ name: '已办需求', type: 2, path: 'need' }]
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])
-  const [projectId, setProjectId] = useState()
+  const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
   const active = 2
 
