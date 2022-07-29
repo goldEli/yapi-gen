@@ -29,7 +29,7 @@ const urls = {
   editIterate: '/b/iterate/update',
   deleteIterate: '/b/iterate/del',
   getIterateInfo: '/b/iterate/getInfo',
-  getIterateChangeLog: '/b/iterate/changelog',
+  getIterateChangeLog: '/b/iterate/getChangelog',
   updateIterateStatus: '/b/iterate/status',
   iterateStatistics: '/b/iterate/getStatistics',
   updateDemandStatus: '/b/story/update_status',

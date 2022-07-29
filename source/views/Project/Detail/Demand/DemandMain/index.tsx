@@ -27,7 +27,7 @@ const DemandMain = (props: Props) => {
   const projectId = searchParams.get('id')
   const { getDemandList, deleteDemand } = useModel('demand')
   const [settingState, setSettingState] = useState(false)
-  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
   const getList = async (
     state: boolean,

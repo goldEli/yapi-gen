@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
@@ -17,6 +18,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { OmitText } from '@star-yun/ui'
 import EditDemand from '../../Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import Sort from '@/components/Sort'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -60,32 +62,53 @@ const TableBox = styled(TableWrap)({
   },
 })
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const ChildDemandTable = (props: { value: any; row: any }) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const { getDemandList, updateDemandStatus } = useModel('demand')
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
-  const getList = async () => {
+  const getList = async (item: any) => {
     const result = await getDemandList({
       projectId,
       all: true,
       parentId: props.row.id,
+      order: item.value,
+      orderKey: item.key,
     })
     setDataList(result)
   }
 
   const onChildClick = async () => {
-    getList()
+    getList(order)
     setIsVisible(!isVisible)
+  }
+
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
       message.success('状态修改成功')
-      getList()
+      getList(order)
     } catch (error) {
 
       //
@@ -101,31 +124,58 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       },
     },
     {
-      title: 'ID',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目ID
+        </NewSort>
+      ),
       dataIndex: 'id',
-      sorter: {
-        compare: (a: any, b: any) => a.demand - b.demand,
-      },
     },
     {
-      title: '需求名称',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          需求名称
+        </NewSort>
+      ),
       dataIndex: 'name',
       render: (text: string) => {
         return <OmitText width={180}>{text}</OmitText>
       },
-      sorter: {
-        compare: (a: any, b: any) => a.iteration - b.iteration,
-      },
     },
     {
-      title: '迭代',
+      title: (
+        <NewSort
+          fixedKey="iterate_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          迭代
+        </NewSort>
+      ),
       dataIndex: 'iteration',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
     {
-      title: '状态',
+      title: (
+        <NewSort
+          fixedKey="status"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          状态
+        </NewSort>
+      ),
       dataIndex: 'status',
       render: (text: any, record: any) => {
         return (
@@ -154,7 +204,16 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       },
     },
     {
-      title: '创建人',
+      title: (
+        <NewSort
+          fixedKey="user_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          创建人
+        </NewSort>
+      ),
       dataIndex: 'dealName',
     },
   ]
@@ -204,29 +263,32 @@ const DemandWrap = () => {
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
-  const getList = async (item?: any) => {
+  const getList = async (item?: any, orderVal?: any) => {
     const result = await getDemandList({
       projectId,
       iterateIds: [iterateId],
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
+      order: orderVal.value,
+      orderKey: orderVal.key,
     })
     setDataList(result)
   }
 
   useEffect(() => {
-    getList()
+    getList(pageObj, order)
   }, [])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size })
+    getList({ page, size }, order)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size })
+    getList({ page, size }, order)
   }
 
   const onClickRow = (item: any) => {
@@ -254,6 +316,11 @@ const DemandWrap = () => {
     />
   )
 
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
+  }
+
   const onClickItem = (item: any) => {
     navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
@@ -262,7 +329,7 @@ const DemandWrap = () => {
     try {
       await updatePriority({ demandId: item.id, priorityId: item.priorityId })
       message.success('优先级修改成功')
-      getList(pageObj)
+      getList(pageObj, order)
     } catch (error) {
 
       //
@@ -273,7 +340,7 @@ const DemandWrap = () => {
     try {
       await updateDemandStatus(value)
       message.success('状态修改成功')
-      getList(pageObj)
+      getList(pageObj, order)
     } catch (error) {
 
       //
@@ -282,7 +349,16 @@ const DemandWrap = () => {
 
   const columns = [
     {
-      title: 'ID',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          ID
+        </NewSort>
+      ),
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
@@ -301,7 +377,16 @@ const DemandWrap = () => {
       },
     },
     {
-      title: '标题',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          标题
+        </NewSort>
+      ),
       dataIndex: 'name',
       render: (text: string, record: any) => {
         return (
@@ -315,14 +400,32 @@ const DemandWrap = () => {
       },
     },
     {
-      title: '子需求',
+      title: (
+        <NewSort
+          fixedKey="child_story_count"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          子需求
+        </NewSort>
+      ),
       dataIndex: 'demand',
       render: (text: string, record: any) => {
         return <ChildDemandTable value={text} row={record} />
       },
     },
     {
-      title: '优先级',
+      title: (
+        <NewSort
+          fixedKey="priority"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          优先级
+        </NewSort>
+      ),
       dataIndex: 'priority',
       render: (text: any, record: any) => {
         return (
@@ -351,16 +454,31 @@ const DemandWrap = () => {
           </PopConfirm>
         )
       },
-      sorter: {
-        compare: (a: any, b: any) => a.priority - b.priority,
-      },
     },
     {
-      title: '迭代',
+      title: (
+        <NewSort
+          fixedKey="iterate_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          迭代
+        </NewSort>
+      ),
       dataIndex: 'iteration',
     },
     {
-      title: '状态',
+      title: (
+        <NewSort
+          fixedKey="status"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          状态
+        </NewSort>
+      ),
       dataIndex: 'status',
       render: (text: any, record: any) => {
         return (
@@ -389,29 +507,56 @@ const DemandWrap = () => {
       },
     },
     {
-      title: '处理人',
+      title: (
+        <NewSort
+          fixedKey="users_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          处理人
+        </NewSort>
+      ),
       dataIndex: 'dealName',
     },
     {
-      title: '创建时间',
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          创建时间
+        </NewSort>
+      ),
       dataIndex: 'time',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
     {
-      title: '预计开始时间',
+      title: (
+        <NewSort
+          fixedKey="expected_start_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          预计开始时间
+        </NewSort>
+      ),
       dataIndex: 'expectedStart',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
     {
-      title: '预计结束时间',
+      title: (
+        <NewSort
+          fixedKey="expected_end_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          预计结束时间
+        </NewSort>
+      ),
       dataIndex: 'expectedEnd',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
   ]
 
@@ -426,7 +571,7 @@ const DemandWrap = () => {
       message.success('删除成功')
       setIsVisible(false)
       setDeleteId(0)
-      getList(pageObj)
+      getList(pageObj, order)
     } catch (error) {
 
       //

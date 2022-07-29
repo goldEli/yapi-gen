@@ -254,7 +254,7 @@ const DemandBox = () => {
               activeIdx={type === 'record'}
             >
               <span>变更记录</span>
-              <div>12</div>
+              <div>{demandInfo?.changeCount}</div>
             </Item>
           </MainWrap>
           {childContent()}

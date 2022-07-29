@@ -70,6 +70,17 @@ const ListItem = styled.div({
   },
 })
 
+const NameWrap = styled.div({
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  marginRight: 8,
+  textAlign: 'center',
+  lineHeight: '32px',
+  background: '#A4ACF5',
+  color: 'white',
+})
+
 const Member = (props: Props) => {
   const { getProjectMember, refreshMember, setRefreshMember }
     = useModel('project')
@@ -150,7 +161,13 @@ const Member = (props: Props) => {
           {memberList?.map((i: any) => (
             <ListItem key={i.id}>
               <div className="avatarBox">
-                <img src={i.avatar} alt="" />
+                {i.avatar
+                  ? <img src={i.avatar} alt="" />
+                  : (
+                      <NameWrap>
+                        {i.name.slice(i.name.length - 2, i.name.length)}
+                      </NameWrap>
+                    )}
                 <div>
                   <span>{i.name}</span>
                   <span>{i.roleName}</span>

@@ -43,7 +43,7 @@ const Operation = (props: Props) => {
         <SearchComponent
           onChangeVisible={(e: any) => props.onChangeVisible?.(e)}
           onChangeSearch={onChangeSearch}
-          placeholder="搜索项目或任务"
+          placeholder="搜索名称或ID"
           text="创建需求"
         />
         <OperationGroup

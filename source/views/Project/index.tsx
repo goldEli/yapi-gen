@@ -28,7 +28,6 @@ const Content = styled.div({
 
 const Project = () => {
   const [isGrid, setIsGrid] = useState(true)
-  const [sort, setSort] = useState('name')
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
@@ -36,6 +35,7 @@ const Project = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
+  const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const {
     getProjectList,
     projectList,
@@ -50,13 +50,13 @@ const Project = () => {
     isTable: boolean,
     isDisable: boolean,
     val: string,
-    sortVal: string,
+    sortVal: any,
     pageVal: any,
   ) => {
     const params: any = {
       searchValue: val,
-      orderKey: sortVal,
-      order: 'asc',
+      orderKey: sortVal.key,
+      order: sortVal.value,
       status: isDisable ? 1 : 0,
       self: active !== 1,
     }
@@ -74,28 +74,35 @@ const Project = () => {
   }
 
   useEffect(() => {
-    getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
+    getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
     getProjectCoverList()
   }, [])
 
   const onChangeType = (type: number) => {
     setActiveType(type)
-    getList(type, isGrid, isHidden, searchVal, sort, pageObj)
+    getList(type, isGrid, isHidden, searchVal, order, pageObj)
   }
 
   const onChangeHidden = (hidden: boolean) => {
     setIsHidden(hidden)
-    getList(activeType, isGrid, hidden, searchVal, sort, pageObj)
+    getList(activeType, isGrid, hidden, searchVal, order, pageObj)
   }
 
-  const onChangeSort = (value: string) => {
-    setSort(value)
-    getList(activeType, isGrid, isHidden, searchVal, value, pageObj)
+  const onChangeSort = (str: string) => {
+    setOrder({ value: 'asc', key: str })
+    getList(
+      activeType,
+      isGrid,
+      isHidden,
+      searchVal,
+      { value: 'asc', key: str },
+      pageObj,
+    )
   }
 
   const onChangeSearch = (value: string) => {
     setSearchVal(value)
-    getList(activeType, isGrid, isHidden, value, sort, pageObj)
+    getList(activeType, isGrid, isHidden, value, order, pageObj)
   }
 
   const onDeleteConfirm = async () => {
@@ -104,7 +111,7 @@ const Project = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationDetail({})
-      getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
+      getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
     } catch (error) {
 
       //
@@ -120,7 +127,7 @@ const Project = () => {
       }
       message.success(item.status === 1 ? '结束成功' : '开启成功')
       setOperationDetail({})
-      getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
+      getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
     } catch (error) {
 
       //
@@ -143,7 +150,7 @@ const Project = () => {
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    getList(activeType, val, isHidden, searchVal, sort, pageObj)
+    getList(activeType, val, isHidden, searchVal, order, pageObj)
   }
 
   const onAddClick = () => {
@@ -156,10 +163,15 @@ const Project = () => {
       page: item.page,
       size: item.size,
     })
-    getList(activeType, isGrid, isHidden, searchVal, sort, {
+    getList(activeType, isGrid, isHidden, searchVal, order, {
       page: item.page,
       size: item.size,
     })
+  }
+
+  const onUpdateOrderKey = (item: any) => {
+    setOrder(item)
+    getList(activeType, isGrid, isHidden, searchVal, item, pageObj)
   }
 
   return (
@@ -174,7 +186,7 @@ const Project = () => {
         visible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         details={operationDetail}
-        onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
+        onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
         }
       />
       <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
@@ -189,7 +201,7 @@ const Project = () => {
         <Filter
           show
           total={projectList.list?.length}
-          sort={sort}
+          sort={order.key}
           isGrid={isGrid}
           activeType={activeType}
           onChangeSort={onChangeSort}
@@ -212,6 +224,8 @@ const Project = () => {
             }
             projectList={projectList}
             onChangePageNavigation={onChangePageNavigation}
+            onUpdateOrderKey={onUpdateOrderKey}
+            order={order}
           />
         )}
       </Content>

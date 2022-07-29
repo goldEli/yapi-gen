@@ -80,7 +80,7 @@ const NameGroup = styled.div({
     fontSize: 12,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     whiteSpace: 'nowrap',
   },
   '.more': {
@@ -230,7 +230,7 @@ const DemandCard = (props: Props) => {
                     style={{ marginLeft: index ? -10 : 0, zIndex: index }}
                   >
                     <div className="item" style={{ background: '#A4ACF5' }}>
-                      {item}
+                      {item.slice(item.length - 2, item.length)}
                     </div>
                   </div>
                 ))}

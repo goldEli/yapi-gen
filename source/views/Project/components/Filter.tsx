@@ -87,7 +87,9 @@ const Filter = (props: Props) => {
         },
         {
           key: 'created_at',
-          label: <div onClick={() => props.onChangeSort('time')}>创建时间</div>,
+          label:
+            <div onClick={() => props.onChangeSort('created_at')}>创建时间</div>
+          ,
         },
       ]}
     />
