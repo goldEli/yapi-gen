@@ -37,6 +37,7 @@ export const getDemandInfo: any = async (params: any) => {
     user: response.data.user,
     createdTime: response.data.created_at,
     status: response.data.status,
+    parentId: response.data.parent_id,
   }
 }
 
@@ -232,8 +233,8 @@ export const deleteDemand: any = async (params: any) => {
 
 export const deleteInfoDemand: any = async (params: any) => {
   await http.put<any>('deleteInfoDemand', {
-    project_id: params.projectId,
-    id: params.demandId,
+    project_id: Number(params.projectId),
+    id: Number(params.demandId),
     target_id: params.targetId,
     type: params.type,
   })

@@ -36,12 +36,12 @@ const ChangeRecord = () => {
   const [checkDetail, setCheckDetail] = useState<any>({})
   const [visible, setVisible] = useState(false)
 
-  const getList = async () => {
+  const getList = async (item?: any) => {
     const result = await getDemandChangeLog({
       demandId,
       projectId,
-      pageSize: 10,
-      page: 1,
+      page: item ? item.page : 1,
+      pageSize: item ? item.size : 10,
       order: 'id',
       orderKey: 'asc',
     })
@@ -165,14 +165,12 @@ const ChangeRecord = () => {
       },
     },
   ]
-  const onChangePage = (page: React.SetStateAction<number>, size: any) => {
-
-    //
+  const onChangePage = (page: number, size: number) => {
+    getList({ page, size })
   }
 
-  const onShowSizeChange = (current: number, pageSize: number) => {
-
-    //
+  const onShowSizeChange = (page: number, size: number) => {
+    getList({ page, size })
   }
   return (
     <div>

@@ -74,17 +74,32 @@ const Project = () => {
 
   const onChangeHidden = (hidden: boolean) => {
     data.status = hidden ? 1 : 0
+    if (activeType === 1) {
+      data.isPublic = 1
+    } else {
+      data.self = true
+    }
     getList(data)
   }
 
   const onChangeSort = (value: string) => {
     setSort(value)
     data.orderKey = value
+    if (activeType === 1) {
+      data.isPublic = 1
+    } else {
+      data.self = true
+    }
     getList(data)
   }
 
   const onChangeSearch = (value: string) => {
     data.searchValue = value
+    if (activeType === 1) {
+      data.isPublic = 1
+    } else {
+      data.self = true
+    }
     getList(data)
   }
 
@@ -94,6 +109,11 @@ const Project = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationDetail({})
+      if (activeType === 1) {
+        data.isPublic = 1
+      } else {
+        data.self = true
+      }
       getList(data)
     } catch (error) {
 
@@ -110,6 +130,11 @@ const Project = () => {
       }
       message.success(item.status === 1 ? '结束成功' : '开启成功')
       setOperationDetail({})
+      if (activeType === 1) {
+        data.isPublic = 1
+      } else {
+        data.self = true
+      }
       getList(data)
     } catch (error) {
 
@@ -131,6 +156,11 @@ const Project = () => {
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     data.all = false
+    if (activeType === 1) {
+      data.isPublic = 1
+    } else {
+      data.self = true
+    }
     getList(data)
   }
 
@@ -142,6 +172,11 @@ const Project = () => {
   const onChangePageNavigation = (item: any) => {
     data.page = item.page
     data.pageSize = item.size
+    if (activeType === 1) {
+      data.isPublic = 1
+    } else {
+      data.self = true
+    }
     getList(data)
   }
 

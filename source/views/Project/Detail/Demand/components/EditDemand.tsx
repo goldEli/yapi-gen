@@ -147,6 +147,7 @@ const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
+  const [demandList, setDemandList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
@@ -157,9 +158,22 @@ const EditDemand = (props: Props) => {
     content: '中',
     id: 646,
   })
-  const { addDemand, getDemandInfo, demandInfo, updateDemand }
+  const { addDemand, getDemandInfo, demandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
+
+  const getList = async () => {
+    const result = await getDemandList({ projectId, all: true })
+    const arr = result.map((i: any) => ({
+      label: i.name,
+      value: i.id,
+    }))
+    setDemandList(arr)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   useEffect(() => {
     if (props?.id) {
@@ -167,6 +181,7 @@ const EditDemand = (props: Props) => {
     } else {
       form.resetFields()
     }
+    getList()
   }, [props.id])
 
   useEffect(() => {
@@ -188,6 +203,8 @@ const EditDemand = (props: Props) => {
         attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
         userIds: demandInfo?.user?.map((i: any) => i.user.id),
       })
+    } else {
+      form.resetFields()
     }
   }, [demandInfo])
 
@@ -205,19 +222,22 @@ const EditDemand = (props: Props) => {
     if (props.isChild) {
       values.parentId = demandId || demandInfo?.id
     }
+
+    if (props.isIterateId) {
+      values.iterateId = props.isIterateId
+    }
+
     try {
       if (props.id) {
         await updateDemand({
           projectId,
           id: demandInfo.id,
           ...values,
-          iterateId: props.isIterateId || '',
         })
         message.success('编辑成功')
       } else {
         await addDemand({
           projectId,
-          iterateId: props.isIterateId || '',
           ...values,
         })
         message.success('创建成功')
@@ -255,13 +275,18 @@ const EditDemand = (props: Props) => {
     })
   }
 
+  const onCancel = () => {
+    props.onChangeVisible()
+    form.resetFields()
+  }
+
   return (
     <Modal
       visible={props.visible}
       width={740}
       footer={false}
       title={titleText()}
-      onCancel={props.onChangeVisible}
+      onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
     >
@@ -312,6 +337,7 @@ const EditDemand = (props: Props) => {
               showArrow
               showSearch
               placeholder="请选择父需求"
+              options={demandList}
             />
           </Form.Item>
         </div>
@@ -409,7 +435,7 @@ const EditDemand = (props: Props) => {
           完成并创建下一个
         </AddButtonWrap>
         <Space size={16}>
-          <Button onClick={props.onChangeVisible}>取消</Button>
+          <Button onClick={onCancel}>取消</Button>
           <Button type="primary" onClick={() => onSaveDemand()}>
             确认
           </Button>

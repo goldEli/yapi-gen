@@ -2,9 +2,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Input, Popover, Space } from 'antd'
-import { useState } from 'react'
+import { Input, message, Popover, Select, Space } from 'antd'
+import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
 
 const DemandCheckedItem = styled.div({
   height: 22,
@@ -15,9 +17,12 @@ const DemandCheckedItem = styled.div({
   color: '#323233',
   boxSizing: 'border-box',
   borderRadius: 6,
+  display: 'flex',
+  alignItems: 'center',
   '.icon': {
     visibility: 'hidden',
     marginLeft: 8,
+    cursor: 'pointer',
   },
   '&:hover': {
     '.icon': {
@@ -31,52 +36,75 @@ const DemandWrap = styled.div({
   flexDirection: 'column',
 })
 
-const DemandItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  cursor: 'pointer',
-  paddingLeft: 16,
-  div: {
-    height: 16,
-    width: 16,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  span: {
-    color: '#646566',
-    fontSize: 14,
-  },
-  '&:hover': {
-    background: '#F0F4FA',
+const DemandItem = styled.div<{ isActive?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: 32,
+    cursor: 'pointer',
+    paddingLeft: 16,
+    div: {
+      height: 16,
+      width: 16,
+      borderRadius: 4,
+      marginRight: 8,
+    },
     span: {
-      color: '#2877ff',
+      color: '#646566',
+      fontSize: 14,
+    },
+    '&:hover': {
+      background: '#F0F4FA',
+      span: {
+        color: '#2877ff',
+      },
     },
   },
-})
+  ({ isActive }) => ({
+    background: isActive ? '#F0F4FA' : 'white',
+  }),
+)
 
 interface DemandProps {
-  onChangeList(val: []): void
-  tap?(value: any, active: any): void
+  tap?(item: any): void
 }
 
 const TagBox = (props: DemandProps) => {
+  const { getDemandList, demandInfo } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+  const [demandList, setDemandList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getDemandList({ projectId, all: true })
+    const arr = result.map((i: any) => ({
+      label: i.name,
+      value: i.id,
+    }))
+    setDemandList(arr)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
   const [value, setValue] = useState('')
-  const DemandList = [
-    { name: '有风险', color: 'red' },
-    { name: '等待转测', color: 'green' },
-  ]
   return (
     <DemandWrap title="">
       <div style={{ padding: '16px 16px 4px 16px' }}>
-        <Input.Search value={value} onChange={e => setValue(e.target.value)} />
+        <Input.Search onPressEnter={(e: any) => setValue(e.target.value)} />
       </div>
-      {DemandList.filter(k => k.name.includes(value)).map(i => (
-        <DemandItem key={i.name}>
-          <div style={{ background: i.color }} />
-          <span>{i.name}</span>
-        </DemandItem>
-      ))}
+      {demandList
+        ?.filter((k: any) => String(k.label).includes(value))
+        ?.map((i: any) => (
+          <DemandItem
+            onClick={() => props.tap?.(i)}
+            isActive={i.value === demandInfo.parentId}
+            key={i.value}
+          >
+            {i.label}
+          </DemandItem>
+        ))}
     </DemandWrap>
   )
 }
@@ -86,56 +114,60 @@ interface Props {
 }
 
 const ParentDemand = (props: Props) => {
-  const [demandGroup, setDemandGroup] = useState([])
-  const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
-  const colorStatus = (
-    <Space
-      style={{ display: 'flex', alignItems: 'center', padding: 16 }}
-      size={8}
-    >
-      {colorList.map(i => (
-        <div
-          key={i}
-          style={{ background: i, height: 16, width: 16, borderRadius: 4 }}
-        />
-      ))}
-    </Space>
-  )
+  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand }
+    = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+
+  const onChangeParent = async (item: any) => {
+    try {
+      await addInfoDemand({
+        projectId,
+        demandId: demandInfo?.id,
+        type: 'parent',
+        targetId: [item.value],
+      })
+      message.success('添加成功')
+      getDemandInfo({ projectId, id: demandInfo?.id })
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onDeleteInfoDemand = async () => {
+    try {
+      await deleteInfoDemand({
+        projectId,
+        demandId: demandInfo?.id,
+        type: 'parent',
+        targetId: demandInfo?.parentId,
+      })
+      message.success('删除成功')
+      getDemandInfo({ projectId, id: demandInfo?.id })
+    } catch (error) {
+
+      //
+    }
+  }
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <DemandCheckedItem>
-        {demandGroup.map((i: any) => (
-          <div
-            key={i.name}
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-          >
-            <Popover placement="bottom" trigger="click" content={colorStatus}>
-              {i.name}
-            </Popover>
-            <IconFont className="icon" type="close" />
-          </div>
-        ))}
+      <DemandCheckedItem
+        onClick={onDeleteInfoDemand}
+        hidden={!demandInfo?.parentId}
+      >
+        <div>{demandInfo?.parentName}</div>
+        <IconFont className="icon" type="close-circle-fill" />
       </DemandCheckedItem>
-      {demandGroup.length
-        ? ''
-        : (
-            <Popover
-              placement="bottom"
-              trigger="click"
-              content={
-                <TagBox
-                  tap={() => {
-
-                    //
-                  }}
-                  onChangeList={setDemandGroup}
-                />
-              }
-              getPopupContainer={node => node}
-            >
-              {props.addWrap}
-            </Popover>
-          )}
+      <Popover
+        placement="bottom"
+        trigger="click"
+        content={<TagBox tap={onChangeParent} />}
+        getPopupContainer={node => node}
+      >
+        <div hidden={demandInfo?.parentId}>{props.addWrap}</div>
+      </Popover>
     </div>
   )
 }

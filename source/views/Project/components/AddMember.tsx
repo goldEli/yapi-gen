@@ -43,8 +43,13 @@ interface Props {
 
 const AddMember = (props: Props) => {
   const [searchParams] = useSearchParams()
-  const { projectPermission, addMember, updateMember, setRefreshMember }
-    = useModel('project')
+  const {
+    projectPermission,
+    addMember,
+    updateMember,
+    setRefreshMember,
+    getMemberList,
+  } = useModel('project')
   const { getStaffList } = useModel('staff')
   const [staffList, setStaffList] = useState<any>([])
   const projectId = searchParams.get('id')
@@ -78,6 +83,7 @@ const AddMember = (props: Props) => {
       props.onChangeUpdate()
       form.resetFields()
       setRefreshMember(true)
+      getMemberList({ all: true, projectId })
     } catch (error) {
 
       //
