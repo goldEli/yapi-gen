@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useModel } from '@/models'
-import {
-  StaffHeader,
-  TabsItem,
-  TabsHehavior,
-  LabNumber,
-  tabCss,
-} from '@/components/StyleCommon'
+import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
-
-const tabsList = [{ name: '创建需求', type: 2, path: 'need' }]
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
-  const active = 2
 
   const init = async () => {
-    const res = await getMineProjectList('create')
+    const res = await getMineProjectList('copysend')
     setSwiperData(res.data)
   }
   useEffect(() => {
@@ -35,18 +26,7 @@ const Finished = () => {
     <div>
       <StaffHeader>我的创建</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
-      <TabsHehavior>
-        {tabsList.map(i => (
-          <div key={i.type} className={tabCss}>
-            <TabsItem isActive={active === i.type}>
-              <div>{i.name}</div>
-            </TabsItem>
-            <LabNumber isActive={active === i.type}>5</LabNumber>
-          </div>
-        ))}
-      </TabsHehavior>
-
-      {active === 2 && <Need id={projectId} />}
+      <Need id={projectId} />
     </div>
   )
 }

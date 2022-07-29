@@ -212,7 +212,7 @@ const Staff = () => {
       <SearchList onSearch={onSearch} />
       <StaffTableWrap>
         <StyledTable
-          rowKey="key"
+          rowKey="id"
           columns={selectColum}
           dataSource={listData}
           pagination={false}
