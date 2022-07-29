@@ -63,9 +63,9 @@ const Project = () => {
 
   const onChangeType = (type: number) => {
     setActiveType(type)
-
     if (type === 1) {
       data.isPublic = 1
+      data.self = false
     } else {
       data.self = true
     }
