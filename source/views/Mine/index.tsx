@@ -135,10 +135,14 @@ const MineBox = () => {
       <Main>
         <Outlet />
       </Main>
-      <QuicklyCreate
-        visible={quickCreateVisible}
-        onChangeVisible={() => setQuickCreateVisible(false)}
-      />
+      {quickCreateVisible
+        ? (
+            <QuicklyCreate
+              visible={quickCreateVisible}
+              onChangeVisible={() => setQuickCreateVisible(false)}
+            />
+          )
+        : null}
     </Wrap>
   )
 }

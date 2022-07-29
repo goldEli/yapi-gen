@@ -65,6 +65,7 @@ const urls = {
   getMineChartsList: '/b/user/overview/statistics',
   getMineCreacteList: '/b/user/create/story',
   getPriOrStu: '/b/project/getconfig',
+  addQuicklyCreate: '/b/user/fast/create',
 }
 
 export default urls

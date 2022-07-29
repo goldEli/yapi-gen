@@ -1,7 +1,6 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import moment from 'moment'
 import * as http from '../tools/http'
 
 // 获取动态搜索段
@@ -385,4 +384,68 @@ export const getMineChartsList: any = async () => {
     secondFinish: abeyance.finish_count,
     secondOutFinish: abeyance.expired_finish_count,
   }
+}
+
+// 表单区域
+
+// 获取项目列表
+
+export const getProjectList: any = async (params: any) => {
+  const response: any = await http.get<any>('getProjectList', {
+    search: {
+      self: params.self,
+      all: params.all,
+    },
+  })
+  return response
+}
+
+// 获取标签列表
+export const getTagList: any = async (params: any) => {
+  const response: any = await http.get<any>('getTagList', {
+    project_id: params.projectId,
+  })
+  return response.data
+}
+
+// 获取迭代列表
+export const getIterateList: any = async (params: any) => {
+  const response: any = await http.get<any>('getIterateList', {
+    search: {
+      project_id: params.projectId,
+      all: params.all,
+    },
+  })
+
+  return response.data
+}
+
+// 获取成员列表
+export const getPeopleList: any = async (params: any) => {
+  const response: any = await http.get<any>('getProjectMember', {
+    search: {
+      project_id: params.projectId,
+      all: params.all,
+    },
+  })
+  return response.data
+}
+
+// 获取成员列表
+export const addQuicklyCreate: any = async (params: any) => {
+  const response: any = await http.get<any>('addQuicklyCreate', {
+    project_id: params.projectId,
+    name: params.name,
+    info: params.info,
+    expected_start_at: params.expectedStart,
+    expected_end_at: params.expectedEnd,
+    iterate_id: params.iterate_id,
+    parent_id: params.parentId,
+    priority: params.priority,
+    users: params.users,
+    copysend: params.copysend,
+    tag: params.tag,
+    attachment: params.attachments,
+  })
+  return response
 }

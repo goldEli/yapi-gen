@@ -140,7 +140,7 @@ const Need = (props: any) => {
     }
     if (key && type === 1) {
       const res = await getSearchField(props.id)
-      const addList = res.filterAllList.filter(
+      const addList = res?.filterAllList.filter(
         (item: any) => item.content === key,
       )
 
@@ -150,11 +150,11 @@ const Need = (props: any) => {
     }
 
     const res = await getSearchField(props.id)
-    const arr = res.filterAllList.filter((item: any) => item.isDefault === 1)
+    const arr = res?.filterAllList.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(res.filterBasicsList)
-    setFilterSpecialList(res.filterSpecialList)
+    setFilterBasicsList(res?.filterBasicsList)
+    setFilterSpecialList(res?.filterSpecialList)
   }
 
   const onChangePage = (newPage: any) => {
@@ -256,7 +256,7 @@ const Need = (props: any) => {
 
       <StaffTableWrap>
         <StyledTable
-          rowKey="key"
+          rowKey="id"
           columns={selectColum}
           dataSource={listData}
           pagination={false}

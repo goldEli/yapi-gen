@@ -1,8 +1,12 @@
-import { useState } from 'react'
 import * as services from '@/services'
 
 export default () => {
   const {
+    addQuicklyCreate,
+    getPeopleList,
+    getIterateList,
+    getTagList,
+    getProjectList,
     getPriOrStu,
     updatePriorityStatus,
     updateDemandStatus,
@@ -20,6 +24,11 @@ export default () => {
   } = services.mine
 
   return {
+    addQuicklyCreate,
+    getPeopleList,
+    getIterateList,
+    getTagList,
+    getProjectList,
     getPriOrStu,
     updatePriorityStatus,
     updateDemandStatus,
