@@ -68,10 +68,21 @@ const PriorityWrap = styled.div({
     fontSize: 14,
     marginLeft: 8,
   },
-  '.anticon': {
+  '.icon': {
+    marginLeft: 8,
+    visibility: 'hidden',
+    fontSize: 16,
+    color: '#2877ff',
+  },
+  '.priorityIcon': {
     fontSize: 16,
     svg: {
       margin: '0!important',
+    },
+  },
+  '&: hover': {
+    '.icon': {
+      visibility: 'visible',
     },
   },
 })
@@ -154,12 +165,7 @@ const EditDemand = (props: Props) => {
   const projectId = searchParams.get('id') || props.preId
   const demandId = searchParams.get('demandId')
   const { memberList } = useModel('project')
-  const [priorityDetail, setPriorityDetail] = useState<any>({
-    icon: 'middle',
-    color: '#2F7EFD',
-    content: '中',
-    id: 646,
-  })
+  const [priorityDetail, setPriorityDetail] = useState<any>({})
   const { addDemand, getDemandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
@@ -361,13 +367,17 @@ const EditDemand = (props: Props) => {
             >
               <PriorityWrap>
                 <IconFont
+                  className="priorityIcon"
                   type={priorityDetail?.icon}
                   style={{
                     fontSize: 16,
                     color: priorityDetail?.color,
                   }}
                 />
-                <div>{priorityDetail?.content}</div>
+                <div>
+                  <span>{priorityDetail?.content || '--'}</span>
+                  <IconFont className="icon" type="down-icon" />
+                </div>
               </PriorityWrap>
             </PopConfirm>
           </Form.Item>

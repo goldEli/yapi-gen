@@ -38,8 +38,19 @@ const PriorityWrap = styled.div({
     fontSize: 14,
     marginLeft: 8,
   },
-  '.anticon': {
+  '.icon': {
+    marginLeft: 8,
+    visibility: 'hidden',
     fontSize: 16,
+    color: '#2877ff',
+  },
+  '.priorityIcon': {
+    fontSize: 16,
+  },
+  '&: hover': {
+    '.icon': {
+      visibility: 'visible',
+    },
   },
 })
 
@@ -167,13 +178,17 @@ export const useDynamicColumns = (state: any) => {
           >
             <PriorityWrap>
               <IconFont
+                className="priorityIcon"
                 type={text.icon}
                 style={{
                   fontSize: 16,
                   color: text.color,
                 }}
               />
-              <div>{text.content}</div>
+              <div>
+                <span>{text.content || '--'}</span>
+                <IconFont className="icon" type="down-icon" />
+              </div>
             </PriorityWrap>
           </PopConfirm>
         )

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable operator-linebreak */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -5,6 +6,33 @@ import urls, { type UrlKeys } from '@/constants/urls'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
+
+const { userAgent } = window.navigator
+const getSystem = () => {
+  if (userAgent.indexOf('Window') > 0) {
+    return 'Windows'
+  } else if (userAgent.indexOf('Mac OS X') > 0) {
+    return 'Mac '
+  } else if (userAgent.indexOf('Linux') > 0) {
+    return 'Linux'
+  }
+  return 'Other'
+}
+
+const browser = () => {
+  if (userAgent.indexOf('MSIE') >= 0) {
+    return 'Ie'
+  } else if (userAgent.indexOf('Firefox') >= 0) {
+    return 'Firefox'
+  } else if (userAgent.indexOf('Chrome') >= 0) {
+    return 'Chrome'
+  } else if (userAgent.indexOf('Opera') >= 0) {
+    return 'Opera'
+  } else if (userAgent.indexOf('Safari') >= 0) {
+    return 'Safari'
+  }
+  return 'Other'
+}
 
 client.config({
   base: import.meta.env.__API_BASE_URL__,
@@ -15,8 +43,8 @@ client.config({
     options => {
       options.headers.Authorization =
         localStorage.getItem('token') || '410f0b691d6fe02772df3c60e1612b65'
-      options.headers.System = 'win10'
-      options.headers.Client = 'chrome'
+      options.headers.System = getSystem()
+      options.headers.Client = browser()
       options.payload = JSON.stringify(options.payload)
     },
   ],

@@ -12,6 +12,7 @@ import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import Sort from '@/components/Sort'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -108,6 +109,19 @@ const NameWrap = styled.span({
   marginLeft: 32,
 })
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const ProjectMember = () => {
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(true)
@@ -121,13 +135,14 @@ const ProjectMember = () => {
   const { getPositionSelectList } = useModel('staff')
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
-  const getList = async () => {
+  const getList = async (orderVal?: any) => {
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
       projectId,
-      orderKey: 'created_at',
-      order: 'desc',
+      order: orderVal.value,
+      orderKey: orderVal.key,
       ...values,
     })
     setMemberList(result)
@@ -143,13 +158,13 @@ const ProjectMember = () => {
   }
 
   useEffect(() => {
-    getList()
+    getList(order)
     getJobList()
   }, [])
 
   const onChangePage = (page: number) => {
     form.setFieldsValue({ page })
-    getList()
+    getList(order)
   }
 
   const onShowSizeChange = (_current: number, size: number) => {
@@ -157,7 +172,7 @@ const ProjectMember = () => {
       pageSize: size,
       page: 1,
     })
-    getList()
+    getList(order)
   }
 
   const onOperationMember = (item: any, type: string) => {
@@ -175,7 +190,7 @@ const ProjectMember = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationItem({})
-      getList()
+      getList(order)
     } catch (error) {
 
       //
@@ -184,16 +199,16 @@ const ProjectMember = () => {
 
   const onReset = () => {
     form.resetFields()
-    getList()
+    getList(order)
   }
 
   const onValuesChange = () => {
-    getList()
+    getList(order)
   }
 
   const onChangeSearch = (val: string) => {
     form.setFieldsValue({ searchValue: val })
-    getList()
+    getList(order)
   }
 
   const menu = (item: any) => (
@@ -213,16 +228,30 @@ const ProjectMember = () => {
     />
   )
 
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
   const columns = [
     {
-      title: '昵称',
+      title: (
+        <NewSort
+          fixedKey="nickname"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          昵称
+        </NewSort>
+      ),
       dataIndex: 'nickname',
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Dropdown
               overlay={() => menu(record)}
-              trigger={['hover']}
+              trigger={['click']}
               placement="bottom"
               getPopupContainer={node => node}
             >
@@ -252,30 +281,84 @@ const ProjectMember = () => {
       },
     },
     {
-      title: '真实姓名',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          真实姓名
+        </NewSort>
+      ),
       dataIndex: 'name',
     },
     {
-      title: '性别',
+      title: (
+        <NewSort
+          fixedKey="gender"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          性别
+        </NewSort>
+      ),
       dataIndex: 'gender',
       render: (text: number) => {
         return <span>{text === 1 ? '男' : '女'}</span>
       },
     },
     {
-      title: '部门',
+      title: (
+        <NewSort
+          fixedKey="department_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          部门
+        </NewSort>
+      ),
       dataIndex: 'departmentName',
     },
     {
-      title: '职位',
+      title: (
+        <NewSort
+          fixedKey="position_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          职位
+        </NewSort>
+      ),
       dataIndex: 'positionName',
     },
     {
-      title: '项目权限',
+      title: (
+        <NewSort
+          fixedKey="role_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目权限
+        </NewSort>
+      ),
       dataIndex: 'roleName',
     },
     {
-      title: '加入时间',
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          加入时间
+        </NewSort>
+      ),
       dataIndex: 'joinTime',
     },
   ]

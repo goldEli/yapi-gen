@@ -8,6 +8,7 @@ import { css } from '@emotion/css'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
+import Sort from '@/components/Sort'
 
 const Header = styled.div({
   height: 'auto',
@@ -95,6 +96,19 @@ const typeList = [
   { label: '删除', value: 'DELETE' },
 ]
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const Operation = () => {
   const { getOperateLogs } = useModel('setting')
   const { userInfo } = useModel('user')
@@ -102,8 +116,9 @@ const Operation = () => {
   const [dataList, setDataList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
-  const getList = async () => {
+  const getList = async (orderVal?: any) => {
     const values = await form.getFieldsValue()
     const clear = message.loading('加载中')
     if (values.times) {
@@ -118,8 +133,8 @@ const Operation = () => {
     }
     try {
       const result = await getOperateLogs({
-        orderKey: 'created_at',
-        order: 'desc',
+        order: orderVal.value,
+        orderKey: orderVal.key,
         userId: userInfo.id,
         ...values,
       })
@@ -135,28 +150,69 @@ const Operation = () => {
   }
 
   useEffect(() => {
-    getList()
+    getList(order)
     getStaff()
   }, [])
 
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
   const columns = [
     {
-      title: '操作人',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          操作人
+        </NewSort>
+      ),
       dataIndex: 'name',
     },
     {
-      title: '操作时间',
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          操作时间
+        </NewSort>
+      ),
       dataIndex: 'time',
     },
     {
-      title: '操作类型',
+      title: (
+        <NewSort
+          fixedKey="method"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          操作类型
+        </NewSort>
+      ),
       dataIndex: 'type',
       render: (text: string) => {
         return <div>{typeList.filter(i => i.value === text)[0].label}</div>
       },
     },
     {
-      title: '操作详情',
+      title: (
+        <NewSort
+          fixedKey="content"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          操作详情
+        </NewSort>
+      ),
       dataIndex: 'info',
     },
   ]
@@ -172,12 +228,12 @@ const Operation = () => {
     if (!Reflect.has(changedValues, 'page')) {
       form.setFieldsValue({ page: 1 })
     }
-    getList()
+    getList(order)
   }
 
   const onReset = () => {
     form.resetFields()
-    getList()
+    getList(order)
   }
 
   return (

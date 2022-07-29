@@ -84,6 +84,21 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
+const DownPriority = styled.div({
+  marginLeft: 8,
+  '.icon': {
+    marginLeft: 8,
+    visibility: 'hidden',
+    fontSize: 16,
+    color: '#2877ff',
+  },
+  '&: hover': {
+    '.icon': {
+      visibility: 'visible',
+    },
+  },
+})
+
 const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const { demandInfo, updatePriority } = useModel('demand')
   const [searchParams] = useSearchParams()
@@ -184,9 +199,10 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
               style={{ fontSize: 16, color: demandInfo?.priority?.color }}
               type={demandInfo?.priority?.icon}
             />
-            <span style={{ marginLeft: 8 }}>
-              {demandInfo?.priority?.content}
-            </span>
+            <DownPriority>
+              <span>{demandInfo?.priority?.content || '--'}</span>
+              <IconFont className="icon" type="down-icon" />
+            </DownPriority>
           </div>
         </Popconfirm>
       </InfoItem>

@@ -7,6 +7,7 @@ import { css } from '@emotion/css'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
+import Sort from '@/components/Sort'
 
 const Header = styled.div({
   height: 'auto',
@@ -104,6 +105,19 @@ const StatusWrap = styled.div({
   },
 })
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const LoginLog = () => {
   const { getLoginLogs } = useModel('setting')
   const { userInfo } = useModel('user')
@@ -111,8 +125,9 @@ const LoginLog = () => {
   const [dataList, setDataList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
-  const getList = async () => {
+  const getList = async (orderVal?: any) => {
     const values = await form.getFieldsValue()
     const clear = message.loading('加载中')
     if (values.times) {
@@ -127,8 +142,8 @@ const LoginLog = () => {
     }
     try {
       const result = await getLoginLogs({
-        orderKey: 'created_at',
-        order: 'desc',
+        order: orderVal.value,
+        orderKey: orderVal.key,
         userId: userInfo.id,
         ...values,
       })
@@ -144,41 +159,118 @@ const LoginLog = () => {
   }
 
   useEffect(() => {
-    getList()
+    getList(order)
     getStaff()
   }, [])
 
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
   const columns = [
     {
-      title: '序号',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          序号
+        </NewSort>
+      ),
       dataIndex: 'id',
     },
     {
-      title: '登录用户',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          登录用户
+        </NewSort>
+      ),
       dataIndex: 'username',
     },
     {
-      title: '昵称',
+      title: (
+        <NewSort
+          fixedKey="nickname"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          昵称
+        </NewSort>
+      ),
       dataIndex: 'nickname',
     },
     {
-      title: '登录时间',
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          登录时间
+        </NewSort>
+      ),
       dataIndex: 'time',
     },
     {
-      title: '登录IP',
+      title: (
+        <NewSort
+          fixedKey="ip"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          登录IP
+        </NewSort>
+      ),
       dataIndex: 'loginIp',
     },
     {
-      title: '客户端',
+      title: (
+        <NewSort
+          fixedKey="client"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          客户端
+        </NewSort>
+      ),
       dataIndex: 'client',
     },
     {
-      title: '系统',
+      title: (
+        <NewSort
+          fixedKey="system"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          系统
+        </NewSort>
+      ),
       dataIndex: 'system',
     },
     {
-      title: '登录状态',
+      title: (
+        <NewSort
+          fixedKey="login_status"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          登录状态
+        </NewSort>
+      ),
       dataIndex: 'status',
       render: (text: number) => {
         return (
@@ -202,12 +294,12 @@ const LoginLog = () => {
     if (!Reflect.has(changedValues, 'page')) {
       form.setFieldsValue({ page: 1 })
     }
-    getList()
+    getList(order)
   }
 
   const onReset = () => {
     form.resetFields()
-    getList()
+    getList(order)
   }
   return (
     <Form

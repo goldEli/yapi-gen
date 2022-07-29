@@ -14,6 +14,7 @@ import { useDynamicColumns } from './CreatePrejectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const Operation = styled.div({
   display: 'flex',
@@ -56,9 +57,11 @@ const TableBox = styled(TableWrap)({
 
 const ChildDemand = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [deleteId, setDeleteId] = useState(0)
+  const [isDelete, setIsDelete] = useState(false)
   const [settingState, setSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const { getDemandList, updatePriority, updateDemandStatus }
+  const { getDemandList, updatePriority, updateDemandStatus, deleteDemand }
     = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
@@ -68,7 +71,7 @@ const ChildDemand = () => {
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
 
@@ -130,12 +133,12 @@ const ChildDemand = () => {
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size })
+    getList({ page, size }, order)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size })
+    getList({ page, size }, order)
   }
 
   const onChangeVisible = () => {
@@ -150,7 +153,7 @@ const ChildDemand = () => {
         priorityId: item.priorityId,
       })
       message.success('优先级修改成功')
-      getList(pageObj)
+      getList(pageObj, order)
       getList()
     } catch (error) {
 
@@ -162,14 +165,30 @@ const ChildDemand = () => {
     try {
       await updateDemandStatus(value)
       message.success('状态修改成功')
-      getList(pageObj)
+      getList(pageObj, order)
     } catch (error) {
 
       //
     }
   }
 
-  const onDelete = (item: any) => {}
+  const onDelete = (item: any) => {
+    setDeleteId(item.id)
+    setIsDelete(true)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({ projectId, id: deleteId })
+      message.success('删除成功')
+      setIsDelete(false)
+      setDeleteId(0)
+      getList(pageObj, order)
+    } catch (error) {
+
+      //
+    }
+  }
 
   const rowIconFont = () => {
     return <RowIconFont type="more" />
@@ -208,6 +227,12 @@ const ChildDemand = () => {
         isChild
         id={operationItem.id}
         onUpdate={() => getList(pageObj, order)}
+      />
+      <DeleteConfirm
+        text="确认要删除当前子需求？"
+        isVisible={isDelete}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
       />
       <Operation>
         <ButtonWrap
