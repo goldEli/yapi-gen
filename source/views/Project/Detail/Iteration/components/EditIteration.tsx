@@ -68,14 +68,17 @@ const EditIteration = (props: Props) => {
   const { addIterate, updateIterate } = useModel('iterate')
 
   useEffect(() => {
-    setHtml(props.details?.info)
-    if (props.details?.createdTime) {
-      form.setFieldsValue({
-        time: [
-          moment(props.details.createdTime),
-          moment(props.details.endTime),
-        ],
-      })
+    form.resetFields()
+    if (props.details?.id) {
+      setHtml(props.details?.info)
+      if (props.details?.createdTime || props.details?.startTime) {
+        form.setFieldsValue({
+          time: [
+            moment(props.details.createdTime || props.details?.startTime),
+            moment(props.details.endTime),
+          ],
+        })
+      }
     }
   }, [props.details])
 
@@ -105,13 +108,19 @@ const EditIteration = (props: Props) => {
     }
   }
 
+  const onCancel = () => {
+    props.onChangeVisible()
+    form.resetFields()
+    setHtml('')
+  }
+
   return (
     <Modal
       visible={props.visible}
       width={740}
       footer={false}
       title={props.details?.id ? '编辑迭代' : '创建迭代'}
-      onCancel={props.onChangeVisible}
+      onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
     >
@@ -140,7 +149,7 @@ const EditIteration = (props: Props) => {
         </div>
       </FormWrap>
       <ModalFooter size={16}>
-        <Button onClick={props.onChangeVisible}>取消</Button>
+        <Button onClick={onCancel}>取消</Button>
         <Button type="primary" onClick={onConfirm}>
           确认
         </Button>

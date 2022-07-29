@@ -51,6 +51,7 @@ interface Props {
   onChangeGrid(val: boolean): void
   onChangeIsShowLeft?(): void
   onIsUpdateList?(val: boolean): void
+  currentDetail?: any
 }
 
 export const plainOptions = [
@@ -73,8 +74,7 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   const [settingState, setSettingState] = useState(false)
   const [visible, setVisible] = useState(false)
-  const { iterateInfo, updateIterateStatus, getIterateInfo }
-    = useModel('iterate')
+  const { updateIterateStatus, getIterateInfo } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
 
@@ -98,15 +98,15 @@ const Operation = (props: Props) => {
   }
 
   const onChangeStatus = async (val: number) => {
-    if (val !== iterateInfo.status) {
+    if (val !== props.currentDetail?.status) {
       try {
         await updateIterateStatus({
           projectId,
-          id: iterateInfo.id,
+          id: props.currentDetail?.id,
           status: val === 1,
         })
         message.success('修改成功')
-        getIterateInfo({ projectId, id: iterateInfo?.id })
+        getIterateInfo({ projectId, id: props?.currentDetail?.id })
         props.onIsUpdateList?.(true)
       } catch (error) {
 
@@ -142,7 +142,7 @@ const Operation = (props: Props) => {
       >
         <div
           dangerouslySetInnerHTML={{
-            __html: iterateInfo?.info,
+            __html: props.currentDetail?.info,
           }}
         />
       </Modal>
@@ -159,10 +159,10 @@ const Operation = (props: Props) => {
             }}
           />
           <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
-            {iterateInfo?.name}
+            {props.currentDetail?.name}
           </span>
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
-            {iterateInfo?.startTime}-{iterateInfo?.endTime}
+            {props.currentDetail?.startTime}-{props.currentDetail?.endTime}
           </span>
           <Popover
             placement="bottom"
@@ -170,7 +170,7 @@ const Operation = (props: Props) => {
             getPopupContainer={node => node}
           >
             <StatusTag>
-              {iterateInfo?.status === 1 ? '开启中' : '已结束'}
+              {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
               <IconFont
                 type="down-icon"
                 style={{ fontSize: 12, marginLeft: 4 }}

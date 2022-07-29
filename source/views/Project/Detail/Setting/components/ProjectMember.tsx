@@ -309,6 +309,7 @@ const ProjectMember = () => {
                   placeholder="所有"
                   showSearch
                   options={jobList}
+                  optionFilterProp="label"
                 />
               </Form.Item>
             </SelectWrapBedeck>
@@ -321,6 +322,7 @@ const ProjectMember = () => {
                   placeholder="所有"
                   showSearch
                   options={projectPermission}
+                  optionFilterProp="label"
                 />
               </Form.Item>
             </SelectWrapBedeck>

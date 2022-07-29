@@ -72,7 +72,7 @@ const DetailWrap = styled.div({
 interface Props {
   item: any
   menu: React.ReactElement
-  onClickTitle(): void
+  onClickInfo(): void
   onClickItem?(): void
 }
 
@@ -102,7 +102,7 @@ const IterationCard = (props: Props) => {
           <StatusTag>{props.item.status === 1 ? '开启中' : '已关闭'}</StatusTag>
         </InfoContent>
       </div>
-      <DetailWrap onClick={props.onClickTitle}>
+      <DetailWrap onClick={props.onClickInfo}>
         <span>详情</span>
         <IconFont type="right" />
       </DetailWrap>
