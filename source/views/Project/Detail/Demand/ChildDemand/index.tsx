@@ -1,17 +1,19 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
-import { Button, Menu, Dropdown, Pagination } from 'antd'
+import { Button, Menu, Dropdown, Pagination, message } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import EditDemand from '../components/EditDemand'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import { useDynamicColumns } from './components/CreatePrejectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -83,100 +85,68 @@ const TableBox = styled(TableWrap)({
   },
 })
 
-const statusList = [
-  { id: 0, name: '规划中', color: '#2877ff' },
-  { id: 1, name: '实现中', color: '#2877ff' },
-  { id: 2, name: '已实现', color: '#2877ff' },
-  { id: 3, name: '已关闭', color: '#2877ff' },
-]
-
-const priorityList = [
-  { name: '高', type: 'tall', color: '#ff5c5e' },
-  { name: '中', type: 'middle', color: '#fa9746' },
-  { name: '低', type: 'low', color: '#43ba9a' },
-  { name: '极低', type: 'knockdown', color: '#bbbdbf' },
-]
-
-export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
-]
-
-export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
-]
-
 const ChildDemand = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [settingState, setSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const { getDemandList } = useModel('demand')
+  const { getDemandList, updatePriority, updateDemandStatus }
+    = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const [dataList, setDataList] = useState<any>([])
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
+  const { projectInfo } = useModel('project')
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
 
-  const getList = async (item?: any) => {
+  const getShowkey = () => {
+    setPlainOptions(projectInfo?.plainOptions || [])
+    setPlainOptions2(projectInfo?.plainOptions2 || [])
+    setTitleList(projectInfo?.titleList || [])
+    setTitleList2(projectInfo?.titleList2 || [])
+  }
+
+  const getList = async (item?: any, orderItem?: any) => {
     const result = await getDemandList({
       projectId,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
-      order: 'asc',
-      orderKey: 'id',
+      order: orderItem.value,
+      orderKey: orderItem.key,
       parentId: demandId,
     })
     setDataList(result)
   }
 
   useEffect(() => {
-    getList()
+    getList(pageObj, order)
   }, [])
 
-  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
-    'name',
-    'age',
-    'address',
-  ])
-  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
-    'feiji',
-    'dapao',
-    'tanke',
-  ])
+  useEffect(() => {
+    getShowkey()
+  }, [projectInfo])
 
   const getCheckList = (
-    keys: CheckboxValueType[],
+    list: CheckboxValueType[],
     list2: CheckboxValueType[],
   ) => {
-    setTitleList(keys)
+    setTitleList(list)
     setTitleList2(list2)
   }
 
-  const onEdit = (item: any) => {
-    setIsVisible(!isVisible)
+  const onEdit = (e: any, item: any) => {
+    setIsVisible(true)
     setOperationItem(item)
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={() => onEdit(item)}>编辑</div>,
-        },
-        {
-          key: '3',
-          label: <div>删除</div>,
-        },
-      ]}
-    />
-  )
+  const updateOrderkey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
+  }
 
   const setMenu = (
     <Menu
@@ -189,128 +159,77 @@ const ChildDemand = () => {
     />
   )
 
-  const columns = [
-    {
-      title: '项目ID',
-      dataIndex: 'id',
-      render: (text: string, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Dropdown
-              overlay={menu(record)}
-              trigger={['click']}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-            >
-              <RowIconFont type="more" />
-            </Dropdown>
-            <div style={{ marginLeft: 32 }}>{text}</div>
-          </div>
-        )
-      },
-    },
-    {
-      title: '标题',
-      dataIndex: 'name',
-      render: (text: string, record: any) => {
-        return <OmitText width={200}>{text}</OmitText>
-      },
-    },
-    {
-      title: '优先级',
-      dataIndex: 'priority',
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <LevelContent
-                  onTap={() => {}}
-                  onHide={onHide}
-                  record={record}
-                />
-              )
-            }}
-            record={record}
-          >
-            <PriorityWrap>
-              <IconFont
-                type={text.icon}
-                style={{
-                  fontSize: 16,
-                  color: text.color,
-                }}
-              />
-              <div>{text.content}</div>
-            </PriorityWrap>
-          </PopConfirm>
-        )
-      },
-      sorter: {
-        compare: (a: any, b: any) => a.priority - b.priority,
-      },
-    },
-    {
-      title: '迭代',
-      dataIndex: 'iteration',
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent tap={() => {}} hide={onHide} record={record} />
-              )
-            }}
-            record={record}
-          >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: '处理人',
-      dataIndex: 'dealName',
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'time',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-    {
-      title: '预计开始时间',
-      dataIndex: 'expectedStart',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-    {
-      title: '预计结束时间',
-      dataIndex: 'expectedEnd',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-  ]
-
   const onChangePage = (page: number, size: number) => {
+    setPageObj({ page, size })
     getList({ page, size })
   }
 
   const onShowSizeChange = (page: number, size: number) => {
+    setPageObj({ page, size })
     getList({ page, size })
   }
 
   const onChangeVisible = () => {
-    setIsVisible(!isVisible)
+    setIsVisible(false)
     setOperationItem({})
   }
+
+  const onChangeState = async (item: any) => {
+    try {
+      await updatePriority({
+        demandId: item.id,
+        priorityId: item.priorityId,
+      })
+      message.success('优先级修改成功')
+      getList(pageObj)
+      getList()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onChangeStatus = async (value: any) => {
+    try {
+      await updateDemandStatus(value)
+      message.success('状态修改成功')
+      getList(pageObj)
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onDelete = (item: any) => {}
+
+  const rowIconFont = () => {
+    return <RowIconFont type="more" />
+  }
+
+  const columns = useDynamicColumns({
+    projectId,
+    orderKey: order.key,
+    order: order.value,
+    updateOrderkey,
+    onChangeStatus,
+    onChangeState,
+    onEdit,
+    onDelete,
+    rowIconFont,
+  })
+
+  const selectColum: any = useMemo(() => {
+    const arr = [...titleList, ...titleList2]
+    const newList = []
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < columns.length; j++) {
+        if (arr[i] === columns[j].key) {
+          newList.push(columns[j])
+        }
+      }
+    }
+    return newList
+  }, [titleList, titleList2, columns])
 
   return (
     <div>
@@ -319,7 +238,7 @@ const ChildDemand = () => {
         onChangeVisible={onChangeVisible}
         isChild
         id={operationItem.id}
-        onUpdate={() => getList()}
+        onUpdate={() => getList(pageObj, order)}
       />
       <Operation>
         <ButtonWrap
@@ -334,7 +253,7 @@ const ChildDemand = () => {
       </Operation>
       <TableBox
         rowKey="id"
-        columns={columns}
+        columns={selectColum}
         dataSource={dataList?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
@@ -354,15 +273,17 @@ const ChildDemand = () => {
           hideOnSinglePage
         />
       </PaginationWrap>
-      <OptionalFeld
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        checkList={titleList}
-        checkList2={titleList2}
-        isVisible={settingState}
-        onClose={() => setSettingState(false)}
-        getCheckList={getCheckList}
-      />
+      {settingState ? (
+        <OptionalFeld
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          checkList={titleList}
+          checkList2={titleList2}
+          isVisible={settingState}
+          onClose={() => setSettingState(false)}
+          getCheckList={getCheckList}
+        />
+      ) : null}
     </div>
   )
 }

@@ -17,7 +17,7 @@ interface Props {
 }
 
 const DemandMain = (props: Props) => {
-  const [isGrid, setIsGrid] = useState(true)
+  const [isGrid, setIsGrid] = useState(false)
   const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
@@ -26,8 +26,15 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { getDemandList, deleteDemand } = useModel('demand')
+  const [settingState, setSettingState] = useState(false)
+  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
 
-  const getList = async (state: boolean, val: string, item?: any) => {
+  const getList = async (
+    state: boolean,
+    val: string,
+    item?: any,
+    orderItem?: any,
+  ) => {
     let params = {}
     if (state) {
       params = {
@@ -39,10 +46,10 @@ const DemandMain = (props: Props) => {
     } else {
       params = {
         projectId,
-        page: item ? item?.page : 1,
-        pageSize: item ? item?.size : 10,
-        order: 'asc',
-        orderKey: 'id',
+        page: item.page,
+        pageSize: item.size,
+        order: orderItem.value,
+        orderKey: orderItem.key,
         searchValue: val,
       }
     }
@@ -52,19 +59,19 @@ const DemandMain = (props: Props) => {
   }
 
   useEffect(() => {
-    getList(isGrid, searchVal, pageObj)
+    getList(isGrid, searchVal, pageObj, order)
   }, [])
 
   useEffect(() => {
     if (props.isUpdate) {
-      getList(isGrid, searchVal, pageObj)
+      getList(isGrid, searchVal, pageObj, order)
     }
   }, [props.isUpdate])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val, searchVal, pageObj)
+    getList(val, searchVal, pageObj, order)
   }
 
   const onChangeOperation = (e: any, item: any) => {
@@ -83,7 +90,7 @@ const DemandMain = (props: Props) => {
       message.success('删除成功')
       setIsVisible(false)
       setDeleteId(0)
-      getList(isGrid, searchVal, pageObj)
+      getList(isGrid, searchVal, pageObj, order)
     } catch (error) {
 
       //
@@ -92,16 +99,21 @@ const DemandMain = (props: Props) => {
 
   const onSearch = (val: string) => {
     setSearchVal(val)
-    getList(isGrid, val, pageObj)
+    getList(isGrid, val, pageObj, order)
   }
 
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
-    getList(isGrid, searchVal, item)
+    getList(isGrid, searchVal, item, order)
   }
 
   const onChangeRow = () => {
-    getList(isGrid, searchVal, pageObj)
+    getList(isGrid, searchVal, pageObj, order)
+  }
+
+  const onChangeOrder = (item: any) => {
+    setOrder(item)
+    getList(isGrid, searchVal, pageObj, item)
   }
 
   return (
@@ -117,6 +129,8 @@ const DemandMain = (props: Props) => {
         onChangeGrid={val => onChangeGrid(val)}
         onChangeVisible={(e: any) => props.onChangeVisible(e)}
         onSearch={onSearch}
+        settingState={settingState}
+        onChangeSetting={setSettingState}
       />
       {isGrid ? (
         <DemandGrid
@@ -131,6 +145,9 @@ const DemandMain = (props: Props) => {
           data={dataList}
           onChangePageNavigation={onChangePageNavigation}
           onChangeRow={onChangeRow}
+          settingState={settingState}
+          onChangeSetting={setSettingState}
+          onChangeOrder={onChangeOrder}
         />
       )}
     </div>

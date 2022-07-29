@@ -28,50 +28,17 @@ interface Props {
   onChangeGrid(val: boolean): void
   onChangeVisible?(e?: any): void
   onSearch(val: string): void
+  settingState: boolean
+  onChangeSetting(val: boolean): void
 }
-
-export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
-]
-
-export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
-]
 
 const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
-  const [settingState, setSettingState] = useState(false)
-
-  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
-    'name',
-    'age',
-    'address',
-  ])
-  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
-    'feiji',
-    'dapao',
-    'tanke',
-  ])
 
   const onChangeSearch = (val: string) => {
     props.onSearch(val)
   }
 
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-  }
   return (
     <StickyWrap>
       <OperationWrap>
@@ -86,20 +53,11 @@ const Operation = (props: Props) => {
           onChangeGrid={props.onChangeGrid}
           isGrid={props.isGrid}
           filterState={filterState}
-          settingState={settingState}
-          onChangeSetting={() => setSettingState(!settingState)}
+          settingState={props.settingState}
+          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
         />
       </OperationWrap>
       <TableFilter showForm={filterState} list={[]} />
-      <OptionalFeld
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        checkList={titleList}
-        checkList2={titleList2}
-        isVisible={settingState}
-        onClose={() => setSettingState(false)}
-        getCheckList={getCheckList}
-      />
     </StickyWrap>
   )
 }

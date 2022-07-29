@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 
 interface Props {
-  onChangeOperation(type: string, id: number): void
+  onChangeOperation(type: string, id: number, e?: any): void
   onChangeVisible(): void
   projectList: any
   onAddClear?(): void
