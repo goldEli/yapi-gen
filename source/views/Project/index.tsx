@@ -76,6 +76,7 @@ const Project = () => {
     data.status = hidden ? 1 : 0
     if (activeType === 1) {
       data.isPublic = 1
+      data.self = false
     } else {
       data.self = true
     }
@@ -87,6 +88,7 @@ const Project = () => {
     data.orderKey = value
     if (activeType === 1) {
       data.isPublic = 1
+      data.self = false
     } else {
       data.self = true
     }
@@ -97,6 +99,7 @@ const Project = () => {
     data.searchValue = value
     if (activeType === 1) {
       data.isPublic = 1
+      data.self = false
     } else {
       data.self = true
     }
@@ -111,6 +114,7 @@ const Project = () => {
       setOperationDetail({})
       if (activeType === 1) {
         data.isPublic = 1
+        data.self = false
       } else {
         data.self = true
       }
@@ -132,6 +136,7 @@ const Project = () => {
       setOperationDetail({})
       if (activeType === 1) {
         data.isPublic = 1
+        data.self = false
       } else {
         data.self = true
       }
@@ -158,6 +163,7 @@ const Project = () => {
     data.all = false
     if (activeType === 1) {
       data.isPublic = 1
+      data.self = false
     } else {
       data.self = true
     }
@@ -174,6 +180,7 @@ const Project = () => {
     data.pageSize = item.size
     if (activeType === 1) {
       data.isPublic = 1
+      data.self = false
     } else {
       data.self = true
     }
