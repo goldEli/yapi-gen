@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -11,9 +12,12 @@ import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useModel } from '@/models'
 import { OmitText } from '@star-yun/ui'
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { useDynamicColumns } from './CreatePrejectTableColum'
+import { OptionalFeld } from '@/components/OptionalFeld'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -69,6 +73,9 @@ interface Props {
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(): void
+  settingState: boolean
+  onChangeSetting(val: boolean): void
+  onChangeOrder?(item: any): void
 }
 
 const ChildDemandTable = (props: { value: any; row: any }) => {
@@ -207,6 +214,32 @@ const IterationTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { updatePriority, updateDemandStatus } = useModel('demand')
+  const { projectInfo } = useModel('project')
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [orderKey, setOrderKey] = useState<any>('id')
+  const [order, setOrder] = useState<any>('asc')
+
+  const getShowkey = () => {
+    setPlainOptions(projectInfo?.plainOptions || [])
+    setPlainOptions2(projectInfo?.plainOptions2 || [])
+    setTitleList(projectInfo?.titleList || [])
+    setTitleList2(projectInfo?.titleList2 || [])
+  }
+
+  useEffect(() => {
+    getShowkey()
+  }, [projectInfo])
+
+  const getCheckList = (
+    list: CheckboxValueType[],
+    list2: CheckboxValueType[],
+  ) => {
+    setTitleList(list)
+    setTitleList2(list2)
+  }
 
   const onClickItem = (item: any) => {
     navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
@@ -219,21 +252,6 @@ const IterationTable = (props: Props) => {
   const onShowSizeChange = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
   }
-
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => props.onChangeVisible(e, item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: <div onClick={() => props.onDelete(item)}>删除</div>,
-        },
-      ]}
-    />
-  )
 
   const onChangeState = async (item: any) => {
     try {
@@ -257,152 +275,60 @@ const IterationTable = (props: Props) => {
     }
   }
 
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      render: (text: string, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Dropdown
-              overlay={menu(record)}
-              trigger={['click']}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-            >
-              <RowIconFont type="more" />
-            </Dropdown>
-            <div style={{ marginLeft: 32 }}>{text}</div>
-          </div>
-        )
-      },
-    },
-    {
-      title: '标题',
-      dataIndex: 'name',
-      render: (text: string, record: any) => {
-        return (
-          <div
-            style={{ cursor: 'pointer' }}
-            onClick={() => onClickItem(record)}
-          >
-            <OmitText width={200}>{text}</OmitText>
-          </div>
-        )
-      },
-    },
-    {
-      title: '需求数',
-      dataIndex: 'demand',
-      render: (text: string, record: any) => {
-        return <ChildDemandTable value={text} row={record} />
-      },
-      sorter: {
-        compare: (a: any, b: any) => a.demand - b.demand,
-      },
-    },
-    {
-      title: '优先级',
-      dataIndex: 'priority',
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <LevelContent
-                  onTap={item => onChangeState(item)}
-                  onHide={onHide}
-                  record={{ project_id: projectId, id: record.id }}
-                />
-              )
-            }}
-            record={record}
-          >
-            <PriorityWrap>
-              <IconFont
-                type={text.icon}
-                style={{
-                  fontSize: 16,
-                  color: text.color,
-                }}
-              />
-              <div>{text.content}</div>
-            </PriorityWrap>
-          </PopConfirm>
-        )
-      },
-      sorter: {
-        compare: (a: any, b: any) => a.iteration - b.iteration,
-      },
-    },
-    {
-      title: '迭代',
-      dataIndex: 'iteration',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={value => onChangeStatus(value)}
-                  hide={onHide}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              )
-            }}
-            record={record}
-          >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: '处理人',
-      dataIndex: 'dealName',
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'time',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-    {
-      title: '预计开始时间',
-      dataIndex: 'expectedStart',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-    {
-      title: '预计结束时间',
-      dataIndex: 'expectedEnd',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
-    },
-  ]
+  const updateOrderkey = (key: any, val: any) => {
+    setOrderKey(key)
+    setOrder(val)
+    props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
+  const onPropsChangeVisible = (e: any, item: any) => {
+    props.onChangeVisible(e, item)
+  }
+
+  const onPropsChangeDelete = (item: any) => {
+    props.onDelete(item)
+  }
+
+  const childeContent = (text: any, record: any) => {
+    return <ChildDemandTable value={text} row={record} />
+  }
+
+  const rowIconFont = () => {
+    return <RowIconFont type="more" />
+  }
+
+  const columns = useDynamicColumns({
+    projectId,
+    orderKey,
+    order,
+    updateOrderkey,
+    onChangeStatus,
+    onChangeState,
+    onClickItem,
+    onPropsChangeVisible,
+    onPropsChangeDelete,
+    childeContent,
+    rowIconFont,
+  })
+
+  const selectColum: any = useMemo(() => {
+    const arr = [...titleList, ...titleList2]
+    const newList = []
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < columns.length; j++) {
+        if (arr[i] === columns[j].key) {
+          newList.push(columns[j])
+        }
+      }
+    }
+    return newList
+  }, [titleList, titleList2, columns])
 
   return (
     <Content>
       <TableBox
         rowKey="id"
-        columns={columns}
+        columns={selectColum}
         dataSource={props.data?.list}
         pagination={false}
         scroll={{ x: 'max-content' }}
@@ -422,6 +348,17 @@ const IterationTable = (props: Props) => {
           hideOnSinglePage
         />
       </PaginationWrap>
+      {props.settingState ? (
+        <OptionalFeld
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          checkList={titleList}
+          checkList2={titleList2}
+          isVisible={props.settingState}
+          onClose={() => props.onChangeSetting(false)}
+          getCheckList={getCheckList}
+        />
+      ) : null}
     </Content>
   )
 }

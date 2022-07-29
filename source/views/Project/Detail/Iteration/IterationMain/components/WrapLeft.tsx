@@ -84,9 +84,10 @@ const SortItem = styled.div<{ isActive: boolean }>(
 interface Props {
   isShowLeft: boolean
   onChangeVisible(): void
-  onChangeOperation(item: any): void
+  onCurrentDetail(item: any): void
   isUpdateList?: boolean
   onIsUpdateList?(val: boolean): void
+  onChangeOperation?(val: any): void
 }
 
 const sortList = [
@@ -137,7 +138,7 @@ const WrapLeft = (props: Props) => {
     }
     const result = await getIterateList(params)
     setDataList(result)
-    props.onChangeOperation(result?.list[0])
+    props.onCurrentDetail(result?.list[0])
     props.onIsUpdateList?.(false)
   }
 
@@ -219,7 +220,7 @@ const WrapLeft = (props: Props) => {
 
   const onChangeEdit = (e: any, item: any) => {
     e.stopPropagation()
-    props.onChangeOperation(item)
+    props.onChangeOperation?.(item)
     props.onChangeVisible()
   }
 
@@ -283,16 +284,17 @@ const WrapLeft = (props: Props) => {
     />
   )
 
-  const onClickTitle = (item: any) => {
+  const onClickInfo = (item: any) => {
     navigate(`/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`)
   }
 
   const onClickItem = (item: any) => {
-    props.onChangeOperation(item)
+    props.onCurrentDetail(item)
   }
 
   const onChangeClick = () => {
     props.onChangeVisible()
+    props.onChangeOperation?.({})
   }
 
   return (
@@ -331,7 +333,7 @@ const WrapLeft = (props: Props) => {
           menu={menu(item)}
           key={item.id}
           item={item}
-          onClickTitle={() => onClickTitle(item)}
+          onClickInfo={() => onClickInfo(item)}
           onClickItem={() => onClickItem(item)}
         />
       ))}

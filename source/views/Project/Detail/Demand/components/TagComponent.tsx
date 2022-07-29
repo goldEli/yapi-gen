@@ -202,18 +202,18 @@ const TagComponent = (props: Props) => {
   )
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Popover
+        visible={isChooseColor}
+        placement="bottom"
+        trigger="click"
+        content={colorStatus}
+      >
+        <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
+      </Popover>
       <div
         hidden={!checkedTags?.length}
         style={{ display: 'flex', alignItems: 'center' }}
       >
-        <Popover
-          visible={isChooseColor}
-          placement="bottom"
-          trigger="click"
-          content={colorStatus}
-        >
-          <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
-        </Popover>
         {checkedTags?.reverse()?.map((i: any) => (
           <TagCheckedItem
             key={i.id}

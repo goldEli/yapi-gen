@@ -8,7 +8,7 @@ export const getProjectList: any = async (params: any) => {
     search: {
       self: params.self,
       keyword: params.searchValue,
-      is_public: Number(params.isPublic),
+      is_public: params?.isPublic ? Number(params.isPublic) : '',
       status: Number(params.status) || '',
       all: params.all,
     },
@@ -17,6 +17,28 @@ export const getProjectList: any = async (params: any) => {
     orderkey: params.orderKey,
     order: params.order,
   })
+
+  if (params.all) {
+    return {
+      total: response.data.length,
+      list: response.data.map((i: any) => ({
+        id: i.id,
+        status: i.status,
+        cover: i.cover,
+        name: i.name,
+        memberCount: i.member_count,
+        storyCount: i.story_count,
+        iterateCount: i.iterate_count,
+        progress: Number(i.progress) * 100,
+        createdTime: i.created_at,
+        endTime: i.stop_at,
+        createName: i.user_name,
+        info: i.info,
+        isPublic: i.is_public,
+      })),
+    }
+  }
+
   return {
     currentPage: params.page,
     total: response.data.pager.total,
@@ -54,6 +76,43 @@ export const getProjectInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params.projectId,
   })
+
+  const plainOptions = response.data.storyConfig.display_fidlds
+    .filter((item: { group_name: string }) => item.group_name === '基本字段')
+    .map((item: { title: any; content: any; is_default_display: any }) => {
+      return {
+        label: item.title,
+        value: item.content,
+        is_default_display: item.is_default_display,
+      }
+    })
+
+  const plainOptions2 = response.data.storyConfig.display_fidlds
+    .filter(
+      (item: { group_name: string }) => item.group_name === '人员与时间字段',
+    )
+    .map((item: { is_default_display: any; title: any; content: any }) => {
+      return {
+        label: item.title,
+        value: item.content,
+        is_default_display: item.is_default_display,
+      }
+    })
+
+  const titleList: any[] = []
+  plainOptions
+    .filter((item: any) => item.is_default_display === 1)
+    .forEach((item: { title: any; value: any }) => {
+      titleList.push(item.value)
+    })
+
+  const titleList2: any[] = []
+  plainOptions2
+    .filter((item: any) => item.is_default_display === 1)
+    .forEach((item: { title: any; value: any }) => {
+      titleList2.push(item.value)
+    })
+
   return {
     cover: response.data.cover,
     name: response.data.name,
@@ -66,8 +125,10 @@ export const getProjectInfo: any = async (params: any) => {
     memberCount: response.data.member_count,
     endTime: response.data.stop_at,
     isPublic: response.data.is_public,
-    filterField: response.data.storyConfig.filter_fidlds,
-    showField: response.data.storyConfig.display_fidlds,
+    plainOptions,
+    plainOptions2,
+    titleList,
+    titleList2,
   }
 }
 

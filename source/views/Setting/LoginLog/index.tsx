@@ -121,8 +121,8 @@ const LoginLog = () => {
           ? values.times[0].format('YYYY-MM-DD')
           : '',
         moment(values.times[0]).unix() === 1893427200
-          ? values.times[1].format('YYYY-MM-DD')
-          : '',
+          ? ''
+          : values.times[1].format('YYYY-MM-DD'),
       ]
     }
     try {
@@ -232,6 +232,7 @@ const LoginLog = () => {
                 placeholder="所有"
                 showSearch
                 options={staffList}
+                optionFilterProp="label"
               />
             </Form.Item>
           </SelectWrapBedeck>

@@ -94,6 +94,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
 
 const IterationWrap = () => {
   const [isVisible, setIsVisible] = useState(false)
+  // const [isAdd, setIsAdd] = useState(true)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
@@ -102,7 +103,6 @@ const IterationWrap = () => {
   const iterateId = searchParams.get('iterateId')
   const { getIterateInfo, iterateInfo, deleteIterate } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
-  const [deleteId, setDeleteId] = useState(0)
 
   const childContent = () => {
     if (type === 'info') {
@@ -127,7 +127,9 @@ const IterationWrap = () => {
 
   const onChangeOperation = (item: any) => {
     setOperationDetail(item)
-    getIterateInfo({ projectId, id: item?.id })
+    if (item.id) {
+      getIterateInfo({ projectId, id: item?.id })
+    }
   }
 
   const onDeleteConfirm = async () => {
@@ -135,23 +137,27 @@ const IterationWrap = () => {
       await deleteIterate({ projectId, id: iterateId })
       message.success('删除成功')
       setIsDelete(false)
-      setDeleteId(0)
+      navigate(`/Detail/Iteration?id=${projectId}`)
     } catch (error) {
 
       //
     }
   }
 
+  const onChangeVisible = () => {
+    setIsVisible(!isVisible)
+  }
+
   const content = () => {
     if (!type) {
       return (
         <IterationMain
-          operationDetail={operationDetail}
           onChangeVisible={() => setIsVisible(!isVisible)}
           onChangeOperation={item => onChangeOperation(item)}
         />
       )
     }
+
     return (
       <>
         <DeleteConfirm
@@ -199,10 +205,6 @@ const IterationWrap = () => {
         </ContentWrap>
       </>
     )
-  }
-
-  const onChangeVisible = () => {
-    setIsVisible(!isVisible)
   }
 
   return (

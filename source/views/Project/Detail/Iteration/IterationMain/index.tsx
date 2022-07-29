@@ -19,7 +19,6 @@ const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
 interface Props {
   onChangeVisible(): void
   onChangeOperation(item: any): void
-  operationDetail: any
 }
 
 const IterationMain = (props: Props) => {
@@ -33,8 +32,12 @@ const IterationMain = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const projectId = searchParams.get('id')
+  const iterateId = searchParams.get('iterateId')
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const [deleteId, setDeleteId] = useState(0)
+  const [currentDetail, setCurrentDetail] = useState<any>({})
+  const [settingState, setSettingState] = useState(false)
+  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
 
   const getList = async (state: boolean, item?: any) => {
     let params = {}
@@ -43,16 +46,16 @@ const IterationMain = (props: Props) => {
         projectId,
         all: true,
         panel: true,
-        iterateIds: [props.operationDetail.id],
+        iterateIds: [currentDetail.id],
       }
     } else {
       params = {
         projectId,
         page: item ? item?.page : 1,
         pageSize: item ? item?.size : 10,
-        order: 'asc',
-        orderKey: 'id',
-        iterateIds: [props.operationDetail.id],
+        order: order.value,
+        orderKey: order.key,
+        iterateIds: [currentDetail.id],
       }
     }
     const result = await getDemandList(params)
@@ -60,10 +63,10 @@ const IterationMain = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.operationDetail?.id) {
+    if (currentDetail?.id) {
       getList(isGrid, pageObj)
     }
-  }, [props.operationDetail])
+  }, [currentDetail])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
@@ -109,6 +112,11 @@ const IterationMain = (props: Props) => {
     setDemandItem({})
   }
 
+  const onChangeOrder = (item: any) => {
+    setOrder(item)
+    getList(isGrid, pageObj)
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       <EditDemand
@@ -116,7 +124,7 @@ const IterationMain = (props: Props) => {
         onChangeVisible={onChangeVisible}
         id={demandItem?.id}
         onUpdate={onChangeRow}
-        isIterateId={props.operationDetail?.id}
+        isIterateId={iterateId}
       />
       <DeleteConfirm
         text="确认要删除当前需求？"
@@ -127,9 +135,10 @@ const IterationMain = (props: Props) => {
       <WrapLeft
         isShowLeft={isShowLeft}
         onChangeVisible={props.onChangeVisible}
-        onChangeOperation={props.onChangeOperation}
+        onCurrentDetail={setCurrentDetail}
         isUpdateList={isUpdateList}
         onIsUpdateList={setIsUpdateList}
+        onChangeOperation={props.onChangeOperation}
       />
       <Right isShowLeft={isShowLeft}>
         <Operation
@@ -137,6 +146,9 @@ const IterationMain = (props: Props) => {
           onChangeGrid={val => onChangeGrid(val)}
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
           onIsUpdateList={setIsUpdateList}
+          currentDetail={currentDetail}
+          settingState={settingState}
+          onChangeSetting={setSettingState}
         />
         {isGrid ? (
           <IterationGrid
@@ -151,6 +163,9 @@ const IterationMain = (props: Props) => {
             data={dataList}
             onChangePageNavigation={onChangePageNavigation}
             onChangeRow={onChangeRow}
+            settingState={settingState}
+            onChangeSetting={setSettingState}
+            onChangeOrder={onChangeOrder}
           />
         )}
       </Right>

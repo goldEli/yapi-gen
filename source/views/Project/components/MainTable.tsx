@@ -6,10 +6,10 @@ import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 interface Props {
-  onChangeOperation(type: string, item: any): void
+  onChangeOperation(type: string, item: any, e: any): void
   projectList: any
   onChangePageNavigation(item: any): void
 }
@@ -50,16 +50,44 @@ const StatusWrap = styled.div({
   },
 })
 
+interface MoreProps {
+  menu: React.ReactElement
+  text: string
+}
+
+const MoreContent = (props: MoreProps) => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const onChangeVisible = (e: any) => {
+    e.stopPropagation()
+    setIsVisible(!isVisible)
+  }
+
+  return (
+    <MoreWrap>
+      <Dropdown
+        visible={isVisible}
+        overlay={props.menu}
+        trigger={['click']}
+        placement="bottomRight"
+        getPopupContainer={node => node}
+      >
+        <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
+      </Dropdown>
+      <div style={{ marginLeft: 32 }}>{props.text}</div>
+    </MoreWrap>
+  )
+}
+
 const MainTable = (props: Props) => {
   const navigate = useNavigate()
-
   const menu = (record: any) => (
     <Menu
       items={[
         {
           key: '1',
           label: (
-            <div onClick={() => props.onChangeOperation?.('edit', record)}>
+            <div onClick={e => props.onChangeOperation?.('edit', record, e)}>
               编辑
             </div>
           ),
@@ -67,7 +95,7 @@ const MainTable = (props: Props) => {
         {
           key: '2',
           label: (
-            <div onClick={() => props.onChangeOperation?.('end', record)}>
+            <div onClick={e => props.onChangeOperation?.('end', record, e)}>
               {record.status === 1 ? '结束' : '开启'}
             </div>
           ),
@@ -75,7 +103,7 @@ const MainTable = (props: Props) => {
         {
           key: '3',
           label: (
-            <div onClick={() => props.onChangeOperation?.('delete', record)}>
+            <div onClick={e => props.onChangeOperation?.('delete', record, e)}>
               删除
             </div>
           ),
@@ -83,25 +111,12 @@ const MainTable = (props: Props) => {
       ]}
     />
   )
-
   const columns = [
     {
       title: '项目ID',
       dataIndex: 'id',
       render: (text: string, record: any) => {
-        return (
-          <MoreWrap>
-            <Dropdown
-              overlay={() => menu(record)}
-              trigger={['hover']}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-            >
-              <RowIconFont type="more" />
-            </Dropdown>
-            <div style={{ marginLeft: 32 }}>{text}</div>
-          </MoreWrap>
-        )
+        return <MoreContent menu={menu(record)} text={text} />
       },
     },
     {

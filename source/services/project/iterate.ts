@@ -122,7 +122,7 @@ export const getIterateStatistics: any = async (params: any) => {
     burnDownChart: response.data.burnDownChart,
     storyStatusChart: response.data.storyStatusChart.map((i: any) => ({
       type: i.content,
-      sales: i.sort,
+      count: i.story_count,
     })),
   }
 }

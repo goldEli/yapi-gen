@@ -1,5 +1,7 @@
+/* eslint-disable max-params */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-len */
 import styled from '@emotion/styled'
 import SearchComponent from '@/components/SearchComponent'
 import Filter from './components/Filter'
@@ -28,6 +30,9 @@ const Project = () => {
   const [isGrid, setIsGrid] = useState(true)
   const [sort, setSort] = useState('name')
   const [activeType, setActiveType] = useState(0)
+  const [isHidden, setIsHidden] = useState(false)
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
@@ -40,67 +45,57 @@ const Project = () => {
     openProject,
   } = useModel('project')
 
-  const data = {
-    pageSize: 10,
-    page: 1,
-    orderKey: 'name',
-    order: 'asc',
-    self: true,
-    searchValue: '',
-    isPublic: 0,
-    all: true,
-    status: 0,
-  }
-
-  const getList = (params: any) => {
+  const getList = (
+    active: number,
+    isTable: boolean,
+    isDisable: boolean,
+    val: string,
+    sortVal: string,
+    pageVal: any,
+  ) => {
+    const params: any = {
+      searchValue: val,
+      orderKey: sortVal,
+      order: 'asc',
+      status: isDisable ? 1 : 0,
+      self: active !== 1,
+    }
+    if (isTable) {
+      params.all = true
+    }
+    if (!isTable) {
+      params.page = pageVal.page
+      params.pageSize = pageVal.size
+    }
+    if (active) {
+      params.isPublic = 1
+    }
     getProjectList(params)
   }
 
   useEffect(() => {
-    getList(data)
+    getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
     getProjectCoverList()
   }, [])
 
   const onChangeType = (type: number) => {
     setActiveType(type)
-
-    if (type === 1) {
-      data.isPublic = 1
-    } else {
-      data.self = true
-    }
-    getList(data)
+    getList(type, isGrid, isHidden, searchVal, sort, pageObj)
   }
 
   const onChangeHidden = (hidden: boolean) => {
-    data.status = hidden ? 1 : 0
-    if (activeType === 1) {
-      data.isPublic = 1
-    } else {
-      data.self = true
-    }
-    getList(data)
+    setIsHidden(hidden)
+    getList(activeType, isGrid, hidden, searchVal, sort, pageObj)
   }
 
   const onChangeSort = (value: string) => {
     setSort(value)
-    data.orderKey = value
-    if (activeType === 1) {
-      data.isPublic = 1
-    } else {
-      data.self = true
-    }
-    getList(data)
+    getList(activeType, isGrid, isHidden, searchVal, value, pageObj)
   }
 
   const onChangeSearch = (value: string) => {
-    data.searchValue = value
-    if (activeType === 1) {
-      data.isPublic = 1
-    } else {
-      data.self = true
-    }
-    getList(data)
+    setSearchVal(value)
+    getList(activeType, isGrid, isHidden, value, sort, pageObj)
   }
 
   const onDeleteConfirm = async () => {
@@ -109,12 +104,7 @@ const Project = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationDetail({})
-      if (activeType === 1) {
-        data.isPublic = 1
-      } else {
-        data.self = true
-      }
-      getList(data)
+      getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
     } catch (error) {
 
       //
@@ -130,19 +120,17 @@ const Project = () => {
       }
       message.success(item.status === 1 ? '结束成功' : '开启成功')
       setOperationDetail({})
-      if (activeType === 1) {
-        data.isPublic = 1
-      } else {
-        data.self = true
-      }
-      getList(data)
+      getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
     } catch (error) {
 
       //
     }
   }
 
-  const onChangeOperation = (type: string, item: any) => {
+  const onChangeOperation = (type: string, item: any, e?: any) => {
+    if (e) {
+      e.stopPropagation()
+    }
     setOperationDetail(item)
     if (type === 'delete') {
       setIsDelete(true)
@@ -155,13 +143,7 @@ const Project = () => {
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    data.all = false
-    if (activeType === 1) {
-      data.isPublic = 1
-    } else {
-      data.self = true
-    }
-    getList(data)
+    getList(activeType, val, isHidden, searchVal, sort, pageObj)
   }
 
   const onAddClick = () => {
@@ -170,14 +152,14 @@ const Project = () => {
   }
 
   const onChangePageNavigation = (item: any) => {
-    data.page = item.page
-    data.pageSize = item.size
-    if (activeType === 1) {
-      data.isPublic = 1
-    } else {
-      data.self = true
-    }
-    getList(data)
+    setPageObj({
+      page: item.page,
+      size: item.size,
+    })
+    getList(activeType, isGrid, isHidden, searchVal, sort, {
+      page: item.page,
+      size: item.size,
+    })
   }
 
   return (
@@ -192,7 +174,8 @@ const Project = () => {
         visible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         details={operationDetail}
-        onUpdate={() => getList(data)}
+        onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, sort, pageObj)
+        }
       />
       <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
         <SearchWrap>
@@ -225,7 +208,8 @@ const Project = () => {
           />
         ) : (
           <MainTable
-            onChangeOperation={onChangeOperation}
+            onChangeOperation={(e, type, item) => onChangeOperation(e, type, item)
+            }
             projectList={projectList}
             onChangePageNavigation={onChangePageNavigation}
           />

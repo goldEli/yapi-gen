@@ -427,6 +427,7 @@ const Permission = () => {
               ))}
             </MainWrap>
             <Button
+              hidden={activeDetail.type === 1}
               style={{ width: 'fit-content', marginTop: 16 }}
               type="primary"
               onClick={onSavePermission}

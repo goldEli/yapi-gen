@@ -121,6 +121,10 @@ export const getDemandList: any = async (params: any) => {
         userIds: i.user_id,
         iterateId: i.iterate_id,
         parentId: i.parent_id,
+        finishTime: i.finish_at,
+        updatedTime: i.updated_at,
+        usersCopySendName: i.users_copysend_name,
+        userName: i.user_name,
       })),
     }
   }
