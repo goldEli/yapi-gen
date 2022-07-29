@@ -245,30 +245,35 @@ export const updatePriorityStatus: any = async (params: any) => {
 export const getMineNoFinishList: any = async (params: any) => {
   const response = await http.get('getMineNoFinishList', {
     search: {
-      project_id: params.projectId,
+      project_id: params?.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups.statusId,
-      priority: params.searchGroups.priorityId,
-      iterate_name: params.searchGroups.iterateId,
-      tag: params.searchGroups.tagId,
-      user_name: params.searchGroups.userId,
-      users_name: params.searchGroups.usersnameId,
-      users_copysend_name: params.searchGroups.usersCopysendNameId,
-      created_at: params.searchGroups.createdAtId,
-      expected_start_at: params.searchGroups.expectedStartAtId,
-      expected_end_at: params.searchGroups.expectedendat,
-      updated_at: params.searchGroups.updatedat,
-      finish_at: params.searchGroups.finishAt,
-      panel_date: false,
+      status: params?.searchGroups?.statusId,
+      priority: params?.searchGroups?.priorityId,
+      iterate_name: params?.searchGroups?.iterateId,
+      tag: params?.searchGroups?.tagId,
+      user_name: params?.searchGroups?.userId,
+      users_name: params?.searchGroups?.usersnameId,
+      users_copysend_name: params?.searchGroups?.usersCopysendNameId,
+      created_at: params?.searchGroups?.createdAtId,
+      expected_start_at: params?.searchGroups?.expectedStartAtId,
+      expected_end_at: params?.searchGroups?.expectedendat,
+      updated_at: params?.searchGroups?.updatedat,
+      finish_at: params?.searchGroups?.finishAt,
+      panel_date: params?.panelDate,
+      all: params?.all,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
     page: params.page,
     pagesize: params.pagesize,
   })
-  return {
-    list: response.data.list,
-    pager: response.data.pager,
+  if (params?.all) {
+    return response.data
+  } else {
+    return {
+      list: response.data.list,
+      pager: response.data.pager,
+    }
   }
 }
 

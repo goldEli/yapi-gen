@@ -34,9 +34,11 @@ const Need = (props: any) => {
   } = useModel('mine')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isMany, setIsMany] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>([])
+  const [manyListData, setManyListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [page, setPage] = useState<number>(1)
@@ -88,18 +90,29 @@ const Need = (props: any) => {
     setOrder(order)
   }
   const init = async () => {
-    const res = await getMineNoFinishList({
-      projectId: props.id,
-      keyword,
-      searchGroups,
-      order,
-      orderkey: orderKey,
-      page,
-      pagesize,
-    })
+    if (isMany) {
+      const res = await getMineNoFinishList({
+        all: isMany,
+        panelDate: isMany,
+      })
 
-    setListData(res.list)
-    setTotal(res.pager.total)
+      setManyListData(res)
+    }
+
+    if (!isMany) {
+      const res = await getMineNoFinishList({
+        projectId: props.id,
+        keyword,
+        searchGroups,
+        order,
+        orderkey: orderKey,
+        page,
+        pagesize,
+      })
+
+      setListData(res.list)
+      setTotal(res.pager.total)
+    }
   }
 
   const updateStatus = async (res1: any) => {
@@ -192,7 +205,7 @@ const Need = (props: any) => {
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
+  }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups, isMany])
   useEffect(() => {
     getSearchKey()
   }, [props.id])
@@ -271,6 +284,16 @@ const Need = (props: any) => {
           />
         </div>
         <div style={{ marginRight: '40px', display: 'flex' }}>
+          <SetButton
+            onClick={() => {
+              setIsMany(!isMany)
+            }}
+          >
+            <IconFont
+              type="database"
+              style={{ fontSize: 20, color: isShowSearch ? '' : '' }}
+            />
+          </SetButton>
           {props.id !== 0 && (
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
               <IconFont
@@ -305,13 +328,30 @@ const Need = (props: any) => {
         : null}
 
       <StaffTableWrap>
-        <StyledTable
-          rowKey="id"
-          columns={selectColum}
-          dataSource={listData}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
+        {!isMany && (
+          <StyledTable
+            rowKey="id"
+            columns={selectColum}
+            dataSource={listData}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        )}
+        {isMany
+          ? manyListData?.map((item: any, index: any) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index}>
+              <div>{item.status_name}</div>
+              <StyledTable
+                rowKey="id"
+                columns={selectColum}
+                dataSource={item.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+              />
+            </div>
+          ))
+          : null}
       </StaffTableWrap>
       <PaginationWrap>
         <Pagination
