@@ -3,8 +3,6 @@ import SearchComponent from '@/components/SearchComponent'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
-import { OptionalFeld } from '@/components/OptionalFeld'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 const OperationWrap = styled.div({
   minHeight: 52,

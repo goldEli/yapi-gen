@@ -6,8 +6,6 @@ import TableFilter from '@/components/TableFilter'
 import { useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal, message } from 'antd'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 
@@ -52,23 +50,9 @@ interface Props {
   onChangeIsShowLeft?(): void
   onIsUpdateList?(val: boolean): void
   currentDetail?: any
+  settingState: boolean
+  onChangeSetting(val: boolean): void
 }
-
-export const plainOptions = [
-  { label: 'id', value: 'name' },
-  { label: 'id1', value: 'age' },
-  { label: 'id2', value: 'address' },
-  { label: 'id3', value: 'address1' },
-  { label: 'id4', value: 'address2' },
-]
-
-export const plainOptions2 = [
-  { label: '飞机', value: 'feiji' },
-  { label: '大炮', value: 'dapao' },
-  { label: '坦克', value: 'tanke' },
-  { label: '直升机', value: 'zhishengji' },
-  { label: '战舰', value: 'zhanjian' },
-]
 
 const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
@@ -77,25 +61,6 @@ const Operation = (props: Props) => {
   const { updateIterateStatus, getIterateInfo } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-
-  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
-    'name',
-    'age',
-    'address',
-  ])
-  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
-    'feiji',
-    'dapao',
-    'tanke',
-  ])
-
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-  }
 
   const onChangeStatus = async (val: number) => {
     if (val !== props.currentDetail?.status) {
@@ -193,20 +158,11 @@ const Operation = (props: Props) => {
           onChangeGrid={props.onChangeGrid}
           isGrid={props.isGrid}
           filterState={filterState}
-          settingState={settingState}
-          onChangeSetting={() => setSettingState(!settingState)}
+          settingState={props.settingState}
+          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
         />
       </OperationWrap>
       <TableFilter showForm={filterState} list={[]} />
-      <OptionalFeld
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        checkList={titleList}
-        checkList2={titleList2}
-        isVisible={settingState}
-        onClose={() => setSettingState(false)}
-        getCheckList={getCheckList}
-      />
     </StickyWrap>
   )
 }

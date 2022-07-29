@@ -36,6 +36,8 @@ const IterationMain = (props: Props) => {
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
+  const [settingState, setSettingState] = useState(false)
+  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
 
   const getList = async (state: boolean, item?: any) => {
     let params = {}
@@ -60,11 +62,11 @@ const IterationMain = (props: Props) => {
     setDataList(result)
   }
 
-  // useEffect(() => {
-  //   if (props.operationDetail?.id) {
-  //     getList(isGrid, pageObj)
-  //   }
-  // }, [props.operationDetail])
+  useEffect(() => {
+    if (currentDetail?.id) {
+      getList(isGrid, pageObj)
+    }
+  }, [currentDetail])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
@@ -110,6 +112,11 @@ const IterationMain = (props: Props) => {
     setDemandItem({})
   }
 
+  const onChangeOrder = (item: any) => {
+    setOrder(item)
+    getList(isGrid, pageObj)
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       <EditDemand
@@ -140,6 +147,8 @@ const IterationMain = (props: Props) => {
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
           onIsUpdateList={setIsUpdateList}
           currentDetail={currentDetail}
+          settingState={settingState}
+          onChangeSetting={setSettingState}
         />
         {isGrid ? (
           <IterationGrid
@@ -154,6 +163,9 @@ const IterationMain = (props: Props) => {
             data={dataList}
             onChangePageNavigation={onChangePageNavigation}
             onChangeRow={onChangeRow}
+            settingState={settingState}
+            onChangeSetting={setSettingState}
+            onChangeOrder={onChangeOrder}
           />
         )}
       </Right>
