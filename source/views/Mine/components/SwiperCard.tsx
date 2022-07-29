@@ -56,6 +56,7 @@ const ImgWrap = styled.div<{ show?: boolean }>(
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    overflow: 'hidden',
 
     // filter: 'brightness(70%)',
     img: {

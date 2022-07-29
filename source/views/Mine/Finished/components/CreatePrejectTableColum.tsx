@@ -8,29 +8,14 @@ import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { ShowWrap } from '@/components/StyleCommon'
+import { ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 
 const flexCss = css`
   display: flex;
   align-items: center;
 `
-const StyledShape = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  padding: 1px 8px 1px 8px;
-  width: 60px;
-  height: 25px;
-  background: rgba(255, 255, 255, 1);
-  background-blend-mode: normal;
-  border: 1px solid rgba(235, 237, 240, 1);
-  border-radius: 6px;
-  text-align: center;
-  border: 1px solid rgba(40, 119, 255, 1);
-  color: rgba(40, 119, 255, 1);
-`
+
 const SetHead = styled.div`
   margin-left: 32px;
   margin-right: 12px;
@@ -189,7 +174,7 @@ export const useDynamicColumns = (state: any) => {
             }}
             record={record}
           >
-            <StyledShape>{text.content}</StyledShape>
+            <StyledShape color={text.color}>{text.content}</StyledShape>
           </Pop>
         )
       },
