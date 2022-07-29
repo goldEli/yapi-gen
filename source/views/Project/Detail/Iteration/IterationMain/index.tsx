@@ -19,6 +19,8 @@ const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
 interface Props {
   onChangeVisible(): void
   onChangeOperation(item: any): void
+  updateState: boolean
+  onChangeIsUpdate(val: boolean): void
 }
 
 const IterationMain = (props: Props) => {
@@ -61,6 +63,10 @@ const IterationMain = (props: Props) => {
     const result = await getDemandList(params)
     setDataList(result)
   }
+
+  useEffect(() => {
+    setIsUpdateList(props.updateState)
+  }, [props.updateState])
 
   useEffect(() => {
     if (currentDetail?.id) {
@@ -117,6 +123,11 @@ const IterationMain = (props: Props) => {
     getList(isGrid, pageObj)
   }
 
+  const onChangeIsUpdate = (val: boolean) => {
+    setIsUpdateList(val)
+    props.onChangeIsUpdate(false)
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       <EditDemand
@@ -137,7 +148,7 @@ const IterationMain = (props: Props) => {
         onChangeVisible={props.onChangeVisible}
         onCurrentDetail={setCurrentDetail}
         isUpdateList={isUpdateList}
-        onIsUpdateList={setIsUpdateList}
+        onIsUpdateList={onChangeIsUpdate}
         onChangeOperation={props.onChangeOperation}
       />
       <Right isShowLeft={isShowLeft}>

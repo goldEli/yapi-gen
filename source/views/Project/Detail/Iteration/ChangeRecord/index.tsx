@@ -10,6 +10,7 @@ import styled from '@emotion/styled'
 import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+import Sort from '@/components/Sort'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -27,6 +28,19 @@ const TitleWrap = styled(Space)({
   marginBottom: 24,
 })
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const ChangeRecord = () => {
   const { getIterateChangeLog } = useModel('iterate')
   const [visible, setVisible] = useState(false)
@@ -35,21 +49,23 @@ const ChangeRecord = () => {
   const projectId = searchParams.get('id')
   const [dataList, setDataList] = useState<any>([])
   const [checkDetail, setCheckDetail] = useState<any>({})
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
 
-  const getList = async (item?: any) => {
+  const getList = async (item?: any, orderVal?: any) => {
     const result = await getIterateChangeLog({
       iterateId,
       projectId,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
-      order: 'id',
-      orderKey: 'asc',
+      order: orderVal.value,
+      orderKey: orderVal.key,
     })
     setDataList(result)
   }
 
   useEffect(() => {
-    getList()
+    getList(pageObj, order)
   }, [])
 
   const onClickCheck = (item: any) => {
@@ -67,28 +83,78 @@ const ChangeRecord = () => {
     }
   }
 
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
+  }
+
   const columns = [
     {
-      title: '序号',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          序号
+        </NewSort>
+      ),
       dataIndex: 'id',
     },
     {
-      title: '变更时间',
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          变更时间
+        </NewSort>
+      ),
       dataIndex: 'updateTime',
     },
     {
-      title: '变更人',
+      title: (
+        <NewSort
+          fixedKey="user_id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          变更人
+        </NewSort>
+      ),
       dataIndex: 'userName',
     },
     {
-      title: '变更类型',
+      title: (
+        <NewSort
+          fixedKey="change_log_type"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          变更类型
+        </NewSort>
+      ),
       dataIndex: 'type',
       render: (text: any) => {
         return <div>{text.content}</div>
       },
     },
     {
-      title: '变更字段',
+      title: (
+        <NewSort
+          fixedKey="fields"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          变更字段
+        </NewSort>
+      ),
       dataIndex: 'fields',
       render: (text: []) => {
         return (
@@ -105,7 +171,16 @@ const ChangeRecord = () => {
       },
     },
     {
-      title: '变更前',
+      title: (
+        <NewSort
+          fixedKey="before"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          变更前
+        </NewSort>
+      ),
       dataIndex: 'beforeField',
       render: (text: any, record: any) => {
         return (
@@ -135,7 +210,16 @@ const ChangeRecord = () => {
       },
     },
     {
-      title: '变更后',
+      title: (
+        <NewSort
+          fixedKey="after"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          变更后
+        </NewSort>
+      ),
       dataIndex: 'afterField',
       render: (text: any, record: any) => {
         return (
@@ -167,11 +251,13 @@ const ChangeRecord = () => {
   ]
 
   const onChangePage = (page: number, size: number) => {
-    getList({ page, size })
+    setPageObj({ page, size })
+    getList({ page, size }, order)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
-    getList({ page, size })
+    setPageObj({ page, size })
+    getList({ page, size }, order)
   }
   return (
     <div>

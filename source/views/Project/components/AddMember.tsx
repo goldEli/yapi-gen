@@ -65,6 +65,15 @@ const AddMember = (props: Props) => {
   }, [])
 
   const onConfirm = async () => {
+    if (!form.getFieldValue('userIds')) {
+      message.warning('成员不能为空！')
+      return
+    }
+
+    if (!form.getFieldValue('userGroupId')) {
+      message.warning('权限不能为空！')
+      return
+    }
     const values = form.getFieldsValue()
     const params = {
       projectId,
@@ -105,13 +114,18 @@ const AddMember = (props: Props) => {
         <IconFont onClick={props.onChangeValue} type="close" />
       </ModalHeader>
       <Form form={form} initialValues={props.details}>
-        <Form.Item name="userIds" noStyle>
+        <Form.Item
+          name="userIds"
+          noStyle
+          rules={[{ required: true, message: '' }]}
+        >
           <ModalContent
             showArrow={false}
             mode="multiple"
             showSearch
             disabled={props.details?.id}
             options={staffList}
+            optionFilterProp="label"
           />
         </Form.Item>
         <ModalFooter>
@@ -119,7 +133,11 @@ const AddMember = (props: Props) => {
             <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
               加入权限组
             </span>
-            <Form.Item name="userGroupId" noStyle>
+            <Form.Item
+              name="userGroupId"
+              noStyle
+              rules={[{ required: true, message: '' }]}
+            >
               <Select
                 placeholder="请选择权限组"
                 getPopupContainer={node => node}
@@ -127,6 +145,7 @@ const AddMember = (props: Props) => {
                 options={projectPermission}
                 showSearch
                 showArrow
+                optionFilterProp="label"
               />
             </Form.Item>
           </div>

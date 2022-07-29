@@ -94,7 +94,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
 
 const IterationWrap = () => {
   const [isVisible, setIsVisible] = useState(false)
-  // const [isAdd, setIsAdd] = useState(true)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
@@ -103,6 +102,7 @@ const IterationWrap = () => {
   const iterateId = searchParams.get('iterateId')
   const { getIterateInfo, iterateInfo, deleteIterate } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
+  const [updateState, setUpdateState] = useState(false)
 
   const childContent = () => {
     if (type === 'info') {
@@ -154,6 +154,8 @@ const IterationWrap = () => {
         <IterationMain
           onChangeVisible={() => setIsVisible(!isVisible)}
           onChangeOperation={item => onChangeOperation(item)}
+          updateState={updateState}
+          onChangeIsUpdate={setUpdateState}
         />
       )
     }
@@ -213,6 +215,7 @@ const IterationWrap = () => {
         visible={isVisible}
         onChangeVisible={onChangeVisible}
         details={iterateId ? iterateInfo : operationDetail}
+        onUpdate={setUpdateState}
       />
       {content()}
     </div>

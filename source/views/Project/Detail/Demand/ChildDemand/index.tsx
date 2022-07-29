@@ -9,15 +9,11 @@ import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
 import EditDemand from '../components/EditDemand'
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import PopConfirm from '@/components/Popconfirm'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { OmitText } from '@star-yun/ui'
 
 const Operation = styled.div({
   display: 'flex',
@@ -31,33 +27,6 @@ const Operation = styled.div({
 const ButtonWrap = styled(Button)({
   color: '#2877ff',
   border: '1px solid #2877FF',
-})
-
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
-
-const PriorityWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.anticon': {
-    fontSize: 16,
-  },
 })
 
 const IconFontWrap = styled(IconFont)<{ active?: boolean }>(

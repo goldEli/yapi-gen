@@ -286,6 +286,7 @@ const WrapLeft = (props: Props) => {
 
   const onClickInfo = (item: any) => {
     navigate(`/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`)
+    props.onChangeOperation?.(item)
   }
 
   const onClickItem = (item: any) => {

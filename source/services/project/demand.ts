@@ -38,6 +38,7 @@ export const getDemandInfo: any = async (params: any) => {
     createdTime: response.data.created_at,
     status: response.data.status,
     parentId: response.data.parent_id,
+    changeCount: response.data.app_changelog_count,
   }
 }
 

@@ -7,11 +7,14 @@ import { Menu, Dropdown, Pagination } from 'antd'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
+import Sort from '@/components/Sort'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
   projectList: any
   onChangePageNavigation(item: any): void
+  onUpdateOrderKey(item: any): void
+  order: any
 }
 
 const RowIconFont = styled(IconFont)({
@@ -79,6 +82,19 @@ const MoreContent = (props: MoreProps) => {
   )
 }
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const MainTable = (props: Props) => {
   const navigate = useNavigate()
   const menu = (record: any) => (
@@ -111,58 +127,132 @@ const MainTable = (props: Props) => {
       ]}
     />
   )
+
+  const onUpdateOrderKey = (key: any, val: any) => {
+    props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
   const columns = [
     {
-      title: '项目ID',
       dataIndex: 'id',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目ID
+        </NewSort>
+      ),
       render: (text: string, record: any) => {
         return <MoreContent menu={menu(record)} text={text} />
       },
     },
     {
-      title: '图片',
+      title: (
+        <NewSort
+          fixedKey="cover"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          图片
+        </NewSort>
+      ),
       dataIndex: 'cover',
       render: (text: string) => <img style={{ width: 60, height: 28, borderRadius: 2 }} src={text} />
       ,
     },
     {
-      title: '项目名称',
       dataIndex: 'name',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目名称
+        </NewSort>
+      ),
     },
     {
-      title: '项目人数',
+      title: (
+        <NewSort
+          fixedKey="member_count"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目人数
+        </NewSort>
+      ),
       dataIndex: 'memberCount',
-      sorter: {
-        compare: (a: any, b: any) => a.memberCount - b.memberCount,
-      },
     },
     {
-      title: '需求数',
+      title: (
+        <NewSort
+          fixedKey="story_count"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          需求数
+        </NewSort>
+      ),
       dataIndex: 'storyCount',
-      sorter: {
-        compare: (a: any, b: any) => a.storyCount - b.storyCount,
-      },
     },
     {
-      title: '迭代数',
+      title: (
+        <NewSort
+          fixedKey="iterate_count"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          迭代数
+        </NewSort>
+      ),
       dataIndex: 'iterateCount',
-      sorter: {
-        compare: (a: any, b: any) => a.iterateCount - b.iterateCount,
-      },
     },
     {
-      title: '项目进度',
+      title: (
+        <NewSort
+          fixedKey="progress"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目进度
+        </NewSort>
+      ),
       dataIndex: 'progress',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
     {
-      title: '创建人',
+      title: (
+        <NewSort
+          fixedKey="user_name"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          创建人
+        </NewSort>
+      ),
       dataIndex: 'createName',
     },
     {
-      title: '状态',
+      title: (
+        <NewSort
+          fixedKey="status"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          状态
+        </NewSort>
+      ),
       dataIndex: 'status',
       render: (text: number) => {
         return (
@@ -174,11 +264,29 @@ const MainTable = (props: Props) => {
       },
     },
     {
-      title: '创建时间',
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          创建时间
+        </NewSort>
+      ),
       dataIndex: 'createdTime',
     },
     {
-      title: '结束时间',
+      title: (
+        <NewSort
+          fixedKey="stop_at"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          结束时间
+        </NewSort>
+      ),
       dataIndex: 'endTime',
     },
   ]

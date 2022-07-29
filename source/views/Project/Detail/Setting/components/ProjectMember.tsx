@@ -1,5 +1,7 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
@@ -93,6 +95,18 @@ const SelectWrap = styled(Select)`
     outline: none !important;
   }
 `
+
+const NameWrap = styled.span({
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  marginRight: 8,
+  textAlign: 'center',
+  lineHeight: '32px',
+  background: '#A4ACF5',
+  color: 'white',
+  marginLeft: 32,
+})
 
 const ProjectMember = () => {
   const [searchParams] = useSearchParams()
@@ -214,15 +228,22 @@ const ProjectMember = () => {
             >
               <RowIconFont type="more" />
             </Dropdown>
-            <img
-              src={record.avatar}
-              style={{
-                marginLeft: 32,
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-              }}
-            />
+            {record.avatar ? (
+              <img
+                src={record.avatar}
+                alt=""
+                style={{
+                  marginLeft: 32,
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                }}
+              />
+            ) : (
+              <NameWrap>
+                {record.name.slice(record.name.length - 2, record.name.length)}
+              </NameWrap>
+            )}
             <span style={{ marginLeft: 12, color: '#323233', fontSize: 14 }}>
               {text}
             </span>

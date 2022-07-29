@@ -58,6 +58,7 @@ interface Props {
   visible: boolean
   onChangeVisible(): void
   details?: any
+  onUpdate?(val: boolean): void
 }
 
 const EditIteration = (props: Props) => {
@@ -83,6 +84,7 @@ const EditIteration = (props: Props) => {
   }, [props.details])
 
   const onConfirm = async () => {
+    await form.validateFields()
     const values = form.getFieldsValue()
     values.info = html
     try {
@@ -102,6 +104,7 @@ const EditIteration = (props: Props) => {
       }
       props.onChangeVisible()
       form.resetFields()
+      props.onUpdate?.(true)
     } catch (error) {
 
       //
@@ -131,13 +134,21 @@ const EditIteration = (props: Props) => {
       >
         <div style={{ display: 'flex' }}>
           <IconFont type="interation" />
-          <Form.Item label="迭代名称" required name="name">
+          <Form.Item
+            label="迭代名称"
+            rules={[{ required: true, message: '' }]}
+            name="name"
+          >
             <Input placeholder="请输入产品简称+计划发布版本号" />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont type="carryout" />
-          <Form.Item label="迭代时间" required name="time">
+          <Form.Item
+            label="迭代时间"
+            rules={[{ required: true, message: '' }]}
+            name="time"
+          >
             <DatePicker.RangePicker style={{ width: '100%' }} />
           </Form.Item>
         </div>
