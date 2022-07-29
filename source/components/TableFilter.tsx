@@ -131,26 +131,14 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, specialList])
 
-  const content = (
-    <div>
-      <Input.Search />
-      <div>
-        <Collapse>
-          <Collapse.Panel header="基础字段" key="1">
-            {filterBasicsList?.map((i: any) => <div key={i.id}>{i.title}</div>)}
-          </Collapse.Panel>
-          <Collapse.Panel header="人员和时间" key="2">
-            {filterSpecialList?.map((i: any) => <div key={i.id}>{i.title}</div>)}
-          </Collapse.Panel>
-        </Collapse>
-      </div>
-    </div>
-  )
   const delList = (key: string) => {
+    props.onFilter(key, 0)
 
     // setList(list.filter((item, idx) => item.key !== key))
   }
-
+  const addList = (key: string) => {
+    props.onFilter(key, 1)
+  }
   const confirm = async () => {
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
@@ -169,7 +157,29 @@ const TableFilter = (props: any) => {
     form.resetFields()
     confirm()
   }
-
+  const content = (
+    <div>
+      <Input.Search />
+      <div>
+        <Collapse>
+          <Collapse.Panel header="基础字段" key="1">
+            {filterBasicsList?.map((i: any) => (
+              <div onClick={() => addList(i.content)} key={i.id}>
+                {i.title}
+              </div>
+            ))}
+          </Collapse.Panel>
+          <Collapse.Panel header="人员和时间" key="2">
+            {filterSpecialList?.map((i: any) => (
+              <div onClick={() => addList(i.content)} key={i.id}>
+                {i.title}
+              </div>
+            ))}
+          </Collapse.Panel>
+        </Collapse>
+      </div>
+    </div>
+  )
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
@@ -194,7 +204,7 @@ const TableFilter = (props: any) => {
                       ))}
                     </SelectWrap>
                   </Form.Item>
-                  <DelButton onClick={() => delList(i.key)}>
+                  <DelButton onClick={() => delList(i.content)}>
                     <IconFont type="close" style={{ fontSize: '12px' }} />
                   </DelButton>
                 </SelectWrapBedeck>

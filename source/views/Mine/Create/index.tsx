@@ -10,7 +10,7 @@ import {
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 
-const tabsList = [{ name: '已办需求', type: 2, path: 'need' }]
+const tabsList = [{ name: '创建需求', type: 2, path: 'need' }]
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])
@@ -33,7 +33,7 @@ const Finished = () => {
 
   return (
     <div>
-      <StaffHeader>我创建的</StaffHeader>
+      <StaffHeader>我的创建</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <TabsHehavior>
         {tabsList.map(i => (

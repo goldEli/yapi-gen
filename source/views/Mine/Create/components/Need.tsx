@@ -5,12 +5,11 @@ import {
   PaginationWrap,
   StaffTableWrap,
   MyInput,
-  SearchLine,
   SetButton,
   StyledTable,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Pagination } from 'antd'
+import { Button, Dropdown, Menu, message, Pagination } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -42,6 +41,36 @@ const Need = (props: any) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [searchGroups, setSearchGroups] = useState<any>({
+    statusId: [],
+    priorityId: [],
+    iterateId: [],
+    tagId: [],
+    userId: [],
+    usersnameId: [],
+    usersCopysendNameId: [],
+    createdAtId: [],
+    expectedStartAtId: [],
+    expectedendat: [],
+    updatedat: [],
+    finishAt: [],
+  })
+  const onSearch = (e: any) => {
+    setSearchGroups({
+      statusId: e.status,
+      priorityId: e.priority,
+      iterateId: e.iterate_name,
+      tagId: e.tag,
+      userId: e.user_name,
+      usersnameId: e.users_name,
+      usersCopysendNameId: e.users_copysend_name,
+      createdAtId: e.created_at,
+      expectedStartAtId: e.expected_start_at,
+      expectedendat: e.expected_end_at,
+      updatedat: e.updated_at,
+      finishAt: e.finish_at,
+    })
+  }
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const updateOrderkey = (key: any, order: any) => {
     setOrderKey(key)
@@ -51,11 +80,7 @@ const Need = (props: any) => {
     const res = await getMineCreacteList({
       projectId: props.id,
       keyword,
-      status: '',
-      tag: '',
-      userId: '',
-      usersName: '',
-      usersCopysendName: '',
+      searchGroups,
       order,
       orderkey: orderKey,
       page,
@@ -69,7 +94,10 @@ const Need = (props: any) => {
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
 
-    init()
+    if (res.code === 0) {
+      message.success('状态流转成功')
+      init()
+    }
   }
   const updatePriority = async (res1: any) => {
     const res = await updatePriorityStatus(res1)
@@ -105,10 +133,26 @@ const Need = (props: any) => {
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
   }
-  const getSearchKey = async () => {
-    const res = await getSearchField(props.id)
+  const getSearchKey = async (key?: any, type?: number) => {
+    if (key && type === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && type === 1) {
+      const res = await getSearchField(props.id)
+      const addList = res.filterAllList.filter(
+        (item: any) => item.content === key,
+      )
 
-    setSearchList(res.allList)
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+
+    const res = await getSearchField(props.id)
+    const arr = res.filterAllList.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
     setFilterBasicsList(res.filterBasicsList)
     setFilterSpecialList(res.filterSpecialList)
   }
@@ -126,7 +170,7 @@ const Need = (props: any) => {
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, pagesize, keyword, orderKey, order, props.id])
+  }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
   useEffect(() => {
     getSearchKey()
   }, [props.id])
@@ -201,6 +245,8 @@ const Need = (props: any) => {
       {isShowSearch && props.id !== 0
         ? (
             <TableFilter
+              onFilter={getSearchKey}
+              onSearch={onSearch}
               list={searchList}
               basicsList={filterBasicsList}
               specialList={filterSpecialList}

@@ -10,7 +10,7 @@ import {
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 
-const tabsList = [{ name: '已办需求', type: 2, path: 'need' }]
+const tabsList = [{ name: '待办需求', type: 2, path: 'need' }]
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])

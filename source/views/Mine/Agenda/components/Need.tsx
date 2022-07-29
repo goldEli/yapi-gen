@@ -5,7 +5,6 @@ import {
   PaginationWrap,
   StaffTableWrap,
   MyInput,
-  SearchLine,
   SetButton,
   StyledTable,
 } from '@/components/StyleCommon'
@@ -16,7 +15,6 @@ import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import moment from 'moment'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
@@ -135,10 +133,26 @@ const Need = (props: any) => {
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
   }
-  const getSearchKey = async () => {
-    const res = await getSearchField(props.id)
+  const getSearchKey = async (key?: any, type?: number) => {
+    if (key && type === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && type === 1) {
+      const res = await getSearchField(props.id)
+      const addList = res.filterAllList.filter(
+        (item: any) => item.content === key,
+      )
 
-    setSearchList(res.filterAllList)
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+
+    const res = await getSearchField(props.id)
+    const arr = res.filterAllList.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
     setFilterBasicsList(res.filterBasicsList)
     setFilterSpecialList(res.filterSpecialList)
   }
@@ -154,9 +168,6 @@ const Need = (props: any) => {
   }
 
   useEffect(() => {
-
-    // console.log(searchGroups)
-
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
@@ -234,6 +245,7 @@ const Need = (props: any) => {
       {isShowSearch && props.id !== 0
         ? (
             <TableFilter
+              onFilter={getSearchKey}
               onSearch={onSearch}
               list={searchList}
               basicsList={filterBasicsList}

@@ -72,6 +72,7 @@ export const getSearchField: any = async (params: any) => {
         content: item.content,
         children: item.values,
         type: 'time',
+        isDefault: item.is_default_filter,
       }
     } else {
       return {
@@ -81,6 +82,7 @@ export const getSearchField: any = async (params: any) => {
         content: item.content,
         children: item.values,
         type: 'select',
+        isDefault: item.is_default_filter,
       }
     }
   })
