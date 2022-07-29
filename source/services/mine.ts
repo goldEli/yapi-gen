@@ -259,6 +259,7 @@ export const getMineNoFinishList: any = async (params: any) => {
       expected_end_at: params.searchGroups.expectedendat,
       updated_at: params.searchGroups.updatedat,
       finish_at: params.searchGroups.finishAt,
+      panel_date: false,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,

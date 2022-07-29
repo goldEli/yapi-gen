@@ -58,21 +58,11 @@ export const useDynamicColumns = (state: any) => {
             items={[
               {
                 key: '1',
-                label: (
-                  <span
-                    onClick={() => state.controlStaffPersonalVisible(record)}
-                  >
-                    设置
-                  </span>
-                ),
+                label: <span onClick={() => state.showEdit(record)}>编辑</span>,
               },
               {
                 key: '2',
-                label: <span>编辑</span>,
-              },
-              {
-                key: '3',
-                label: <span>删除</span>,
+                label: <span onClick={() => state.showDel(record)}>删除</span>,
               },
             ]}
           />

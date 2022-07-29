@@ -7,6 +7,7 @@ export default () => {
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     setDemandInfo(result)
+    return result
   }
 
   const {

@@ -103,6 +103,7 @@ interface Props {
   isChild?: boolean
   onUpdate?(): void
   isIterateId?: any
+  preId?: any
 }
 
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
@@ -148,8 +149,9 @@ const EditDemand = (props: Props) => {
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
+  const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const projectId = searchParams.get('id') || props.preId
   const demandId = searchParams.get('demandId')
   const { memberList } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({
@@ -158,7 +160,7 @@ const EditDemand = (props: Props) => {
     content: '中',
     id: 646,
   })
-  const { addDemand, getDemandInfo, demandInfo, updateDemand, getDemandList }
+  const { addDemand, getDemandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
 
@@ -177,7 +179,9 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.id) {
-      getDemandInfo({ projectId, id: props?.id })
+      getDemandInfo({ projectId, id: props?.id }).then(res => {
+        setDemandInfo(res)
+      })
     } else {
       form.resetFields()
     }

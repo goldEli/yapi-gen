@@ -7,6 +7,10 @@ import {
   MyInput,
   SetButton,
   StyledTable,
+  tabCss,
+  TabsHehavior,
+  TabsItem,
+  LabNumber,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, message, Pagination } from 'antd'
@@ -15,9 +19,12 @@ import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
+import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
+  const { deleteDemand } = useModel('demand')
   const {
     getMineCreacteList,
     getField,
@@ -25,6 +32,10 @@ const Need = (props: any) => {
     updateDemandStatus,
     updatePriorityStatus,
   } = useModel('mine')
+  const [isDelVisible, setIsDelVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [operationItem, setOperationItem] = useState<any>()
+  const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
@@ -104,13 +115,24 @@ const Need = (props: any) => {
 
     init()
   }
-
+  const showEdit = (e: any) => {
+    setProjectId(e.project_id)
+    setOperationItem(e.id)
+    setIsVisible(true)
+  }
+  const showDel = (e: any) => {
+    setProjectId(e.project_id)
+    setOperationItem(e.id)
+    setIsDelVisible(true)
+  }
   const columns = useDynamicColumns({
     orderKey,
     order,
     updateOrderkey,
     updateStatus,
     updatePriority,
+    showEdit,
+    showDel,
   })
 
   const selectColum: any = useMemo(() => {
@@ -150,7 +172,7 @@ const Need = (props: any) => {
     }
 
     const res = await getSearchField(props.id)
-    const arr = res?.filterAllList.filter((item: any) => item.isDefault === 1)
+    const arr = res?.filterAllList?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
     setFilterBasicsList(res?.filterBasicsList)
@@ -194,6 +216,26 @@ const Need = (props: any) => {
     setTitleList2(list2)
   }
 
+  const onChangeVisible = () => {
+    setIsVisible(false)
+  }
+
+  const onUpdate = () => {
+    init()
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({ projectId, id: operationItem })
+      message.success('删除成功')
+      setIsDelVisible(false)
+      init()
+    } catch (error) {
+
+      //
+    }
+  }
+
   const menu = (
     <Menu
       items={[
@@ -206,6 +248,14 @@ const Need = (props: any) => {
   )
   return (
     <>
+      <TabsHehavior>
+        <div className={tabCss}>
+          <TabsItem isActive>
+            <div>创建需求</div>
+          </TabsItem>
+          <LabNumber isActive>{total ?? 0}</LabNumber>
+        </div>
+      </TabsHehavior>
       <Hehavior>
         <div>
           <MyInput
@@ -290,6 +340,23 @@ const Need = (props: any) => {
             />
           )
         : null}
+      {isVisible
+        ? (
+            <EditDemand
+              visible={isVisible}
+              onChangeVisible={onChangeVisible}
+              id={operationItem}
+              preId={projectId}
+              onUpdate={onUpdate}
+            />
+          )
+        : null}
+      <DeleteConfirm
+        text="确认要删除当前需求？"
+        isVisible={isDelVisible}
+        onChangeVisible={() => setIsDelVisible(!isDelVisible)}
+        onConfirm={onDeleteConfirm}
+      />
     </>
   )
 }
