@@ -46,16 +46,16 @@ const IterationMain = (props: Props) => {
         projectId,
         all: true,
         panel: true,
-        iterateIds: [iterateId],
+        iterateIds: [currentDetail.id],
       }
     } else {
       params = {
         projectId,
         page: item ? item?.page : 1,
         pageSize: item ? item?.size : 10,
-        order: 'asc',
-        orderKey: 'id',
-        iterateIds: [iterateId],
+        order: order.value,
+        orderKey: order.key,
+        iterateIds: [currentDetail.id],
       }
     }
     const result = await getDemandList(params)

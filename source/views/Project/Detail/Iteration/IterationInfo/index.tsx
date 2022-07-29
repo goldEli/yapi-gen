@@ -123,7 +123,7 @@ const DemoColumn = (props: { data: any }) => {
   const config = {
     data: props.data,
     xField: 'type',
-    yField: 'sales',
+    yField: 'count',
     xAxis: {
       label: {
         autoHide: true,
