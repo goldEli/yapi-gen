@@ -29,6 +29,7 @@ interface Props {
   onChangeVisible?(e?: any): void
   onChangeSearch?(val: string): void
   placeholder: string
+  isPermission?: boolean
 }
 
 const SearchComponent = (props: Props) => (

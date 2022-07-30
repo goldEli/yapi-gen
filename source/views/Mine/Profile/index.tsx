@@ -10,6 +10,8 @@ import { Line } from '@ant-design/plots'
 import { Timeline, DatePicker } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { RangePicker } = DatePicker
@@ -98,6 +100,7 @@ const GatteWrap = styled.div`
 `
 const Profile = () => {
   const { getMineChartsList, getUserFeedList, getMineGatte } = useModel('mine')
+  const { userInfo } = useModel('user')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -132,7 +135,9 @@ const Profile = () => {
   }, [])
 
   return (
-    <>
+    <PermissionWrap
+      auth={getIsPermission(userInfo?.company_permissions, 'b/user/overview')}
+    >
       <StyledWrap>
         <Head>
           <HeadLeft>
@@ -207,7 +212,7 @@ const Profile = () => {
         <RangePicker format="YYYY-MM-DD" onChange={onChange} />
         <Gatte data={gatteData} />
       </GatteWrap>
-    </>
+    </PermissionWrap>
   )
 }
 

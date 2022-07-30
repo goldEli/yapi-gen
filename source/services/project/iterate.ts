@@ -32,7 +32,7 @@ export const getIterateList: any = async (params: any) => {
 
 export const addIterate: any = async (params: any) => {
   await http.post<any>('addIterate', {
-    name: params.name,
+    name: params.iterationName,
     info: params.info,
     start_at: moment(params.time[0]).format('YYYY-MM-DD'),
     end_at: moment(params.time[1]).format('YYYY-MM-DD'),
@@ -42,7 +42,7 @@ export const addIterate: any = async (params: any) => {
 
 export const updateIterate: any = async (params: any) => {
   await http.patch<any>('editIterate', {
-    name: params.name,
+    name: params.iterationName,
     info: params.info,
     project_id: params.projectId,
     id: params.id,

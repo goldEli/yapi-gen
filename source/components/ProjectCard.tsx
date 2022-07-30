@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
@@ -5,6 +6,8 @@ import projectImg from '@/assets/projectImg.png'
 import IconFont from './IconFont'
 import { Dropdown, Menu } from 'antd'
 import { useState } from 'react'
+import { getIsPermission } from '@/tools'
+import { useModel } from '@/models'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -80,34 +83,53 @@ interface Props {
 
 const ProjectCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
+  const { userInfo } = useModel('user')
 
   const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
     props.onChangeOperation?.(type, item)
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={e => onClickMenu(e, 'end', item)}>
-              {item.status === 1 ? '结束' : '开启'}
-            </div>
-          ),
-        },
-        {
-          key: '3',
-          label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickMenu(e, 'end', item)}>
+            {item.status === 1 ? '结束' : '开启'}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
+      },
+    ]
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/delete')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+
+    if (item.status === 1) {
+      if (getIsPermission(userInfo?.company_permissions, 'b/project/stop')) {
+        menuItems = menuItems.filter((i: any) => i.key !== '2')
+      }
+    }
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/start')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onMoreClick = (e: any) => {
     e.stopPropagation()

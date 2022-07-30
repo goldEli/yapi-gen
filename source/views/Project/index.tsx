@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { message } from 'antd'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -44,6 +46,7 @@ const Project = () => {
     stopProject,
     openProject,
   } = useModel('project')
+  const { userInfo } = useModel('user')
 
   const getList = (
     active: number,
@@ -176,59 +179,67 @@ const Project = () => {
 
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
-      <DeleteConfirm
-        text="确认删除该项目？"
-        isVisible={isDelete}
-        onChangeVisible={() => setIsDelete(!isDelete)}
-        onConfirm={onDeleteConfirm}
-      />
-      <EditProject
-        visible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
-        details={operationDetail}
-        onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
-        }
-      />
-      <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
-        <SearchWrap>
-          <SearchComponent
-            placeholder="搜索项目或任务"
-            text="创建项目"
-            onChangeSearch={onChangeSearch}
-            onChangeVisible={onAddClick}
-          />
-        </SearchWrap>
-        <Filter
-          show
-          total={projectList.list?.length}
-          sort={order.key}
-          isGrid={isGrid}
-          activeType={activeType}
-          onChangeSort={onChangeSort}
-          onChangeFormat={onChangeGrid}
-          onChangeHidden={onChangeHidden}
-          onChangeType={onChangeType}
+      <PermissionWrap
+        auth={getIsPermission(userInfo?.company_permissions, 'b/project/get')}
+      >
+        <DeleteConfirm
+          text="确认删除该项目？"
+          isVisible={isDelete}
+          onChangeVisible={() => setIsDelete(!isDelete)}
+          onConfirm={onDeleteConfirm}
         />
-      </div>
-      <Content>
-        {isGrid ? (
-          <MainGrid
-            projectList={projectList}
-            onChangeVisible={() => setIsVisible(true)}
-            onChangeOperation={onChangeOperation}
-            onAddClear={() => setOperationDetail({})}
+        <EditProject
+          visible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          details={operationDetail}
+          onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+          }
+        />
+        <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
+          <SearchWrap>
+            <SearchComponent
+              placeholder="搜索项目或任务"
+              text="创建项目"
+              onChangeSearch={onChangeSearch}
+              onChangeVisible={onAddClick}
+              isPermission={getIsPermission(
+                userInfo?.company_permissions,
+                'b/project/save',
+              )}
+            />
+          </SearchWrap>
+          <Filter
+            show
+            total={projectList.list?.length}
+            sort={order.key}
+            isGrid={isGrid}
+            activeType={activeType}
+            onChangeSort={onChangeSort}
+            onChangeFormat={onChangeGrid}
+            onChangeHidden={onChangeHidden}
+            onChangeType={onChangeType}
           />
-        ) : (
-          <MainTable
-            onChangeOperation={(e, type, item) => onChangeOperation(e, type, item)
-            }
-            projectList={projectList}
-            onChangePageNavigation={onChangePageNavigation}
-            onUpdateOrderKey={onUpdateOrderKey}
-            order={order}
-          />
-        )}
-      </Content>
+        </div>
+        <Content>
+          {isGrid ? (
+            <MainGrid
+              projectList={projectList}
+              onChangeVisible={() => setIsVisible(true)}
+              onChangeOperation={onChangeOperation}
+              onAddClear={() => setOperationDetail({})}
+            />
+          ) : (
+            <MainTable
+              onChangeOperation={(e, type, item) => onChangeOperation(e, type, item)
+              }
+              projectList={projectList}
+              onChangePageNavigation={onChangePageNavigation}
+              onUpdateOrderKey={onUpdateOrderKey}
+              order={order}
+            />
+          )}
+        </Content>
+      </PermissionWrap>
     </div>
   )
 }

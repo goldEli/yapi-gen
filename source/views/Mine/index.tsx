@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
@@ -5,6 +6,8 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { type } from 'os'
 import QuicklyCreate from './components/QuicklyCreate'
+import { getIsPermission } from '@/tools'
+import { useModel } from '@/models'
 
 const buttonCss = css``
 
@@ -65,39 +68,13 @@ type MenuList = {
   name: string
   path: string
 }
-const menuList = [
-  {
-    id: 1,
-    name: '我的概况',
-    path: '',
-  },
-  {
-    id: 2,
-    name: '我的待办',
-    path: 'carbon',
-  },
-  {
-    id: 3,
-    name: '我创建的',
-    path: 'create',
-  },
-  {
-    id: 4,
-    name: '我的已办',
-    path: 'finished',
-  },
-  {
-    id: 5,
-    name: '抄送我的',
-    path: 'agenda',
-  },
-]
 
 const MineBox = () => {
   const { pathname } = useLocation()
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
+  const { userInfo } = useModel('user')
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
@@ -105,27 +82,79 @@ const MineBox = () => {
   const controlquickCreateVisible = () => {
     setQuickCreateVisible(true)
   }
+
+  const menuList = [
+    {
+      id: 1,
+      name: '我的概况',
+      path: '',
+      isPermission: getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/overview',
+      ),
+    },
+    {
+      id: 2,
+      name: '我的待办',
+      path: 'carbon',
+      isPermission: getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/abeyance/story',
+      ),
+    },
+    {
+      id: 3,
+      name: '我创建的',
+      path: 'create',
+      isPermission: getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/create/story',
+      ),
+    },
+    {
+      id: 4,
+      name: '我的已办',
+      path: 'finished',
+      isPermission: false,
+    },
+    {
+      id: 5,
+      name: '抄送我的',
+      path: 'agenda',
+      isPermission: getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/copysend/story',
+      ),
+    },
+  ]
+
   return (
     <Wrap>
       <Side>
-        <AddButton onClick={controlquickCreateVisible}>
-          <IconFont
-            style={{
-              marginRight: 8,
-              fontSize: 14,
-              fontWeight: 400,
-              color: 'white',
-            }}
-            type="plus"
-          />
-          <span>快速创建</span>
-        </AddButton>
+        {getIsPermission(
+          userInfo?.company_permissions,
+          'b/user/fast/create',
+        ) ? null : (
+            <AddButton onClick={controlquickCreateVisible}>
+              <IconFont
+                style={{
+                  marginRight: 8,
+                  fontSize: 14,
+                  fontWeight: 400,
+                  color: 'white',
+                }}
+                type="plus"
+              />
+              <span>快速创建</span>
+            </AddButton>
+          )}
         <Menu>
           {menuList.map(item => (
             <div
               onClick={() => changeActive(item)}
               key={item.id}
               className={nowPath === item.path ? menuItemColor : menuItem}
+              hidden={item.isPermission}
             >
               {item.name}
             </div>
@@ -135,14 +164,12 @@ const MineBox = () => {
       <Main>
         <Outlet />
       </Main>
-      {quickCreateVisible
-        ? (
-            <QuicklyCreate
-              visible={quickCreateVisible}
-              onChangeVisible={() => setQuickCreateVisible(false)}
-            />
-          )
-        : null}
+      {quickCreateVisible ? (
+        <QuicklyCreate
+          visible={quickCreateVisible}
+          onChangeVisible={() => setQuickCreateVisible(false)}
+        />
+      ) : null}
     </Wrap>
   )
 }

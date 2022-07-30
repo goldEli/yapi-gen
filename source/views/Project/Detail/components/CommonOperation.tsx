@@ -9,6 +9,7 @@ import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
+import { getIsPermission } from '@/tools'
 
 const OperationTop = styled.div({
   height: 64,
@@ -103,6 +104,7 @@ const CommonOperation = (props: Props) => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const { projectInfo } = useModel('project')
+  const { userInfo } = useModel('user')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
 
@@ -172,6 +174,10 @@ const CommonOperation = (props: Props) => {
           <ImgWrap src={projectInfo.cover} />
           <OmitText width={152}>{projectInfo.name}</OmitText>
           <IconFont
+            hidden={getIsPermission(
+              userInfo?.company_permissions,
+              'b/project/update',
+            )}
             style={{ color: '#323233', fontSize: 16, marginLeft: 8 }}
             type="edit-square"
             onClick={() => setVisible(true)}

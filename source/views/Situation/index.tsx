@@ -9,6 +9,8 @@ import Staff from './components/Staff'
 import Need from './components/Need'
 import Iteration from './components/Iteration'
 import { useModel } from '@/models'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -55,7 +57,7 @@ const Situation = () => {
   }, [])
 
   return (
-    <>
+    <div>
       <Head>
         <span>公司概况</span>
         <PanelHeaderSecond>
@@ -73,17 +75,25 @@ const Situation = () => {
           </Tooltip>
         </PanelHeaderSecond>
       </Head>
-      <Wrap>
-        <Project data={generalData?.project} />
-        <Staff data={generalData?.user} />
-        <Need data={generalData?.need} />
-        <Iteration data={generalData?.iterate} />
-      </Wrap>
+      <PermissionWrap
+        auth={getIsPermission(
+          userData?.company_permissions,
+          'b/company/statistics',
+        )}
+      >
+        <Wrap>
+          <Project data={generalData?.project} />
+          <Staff data={generalData?.user} />
+          <Need data={generalData?.need} />
+          <Iteration data={generalData?.iterate} />
+        </Wrap>
+      </PermissionWrap>
+
       <CompanyModal
         visible={companyModalVisible}
         onChangeState={() => setCompanyModalVisible(!companyModalVisible)}
       />
-    </>
+    </div>
   )
 }
 

@@ -3,11 +3,14 @@ import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
+  const { userInfo } = useModel('user')
 
   const init = async () => {
     const res = await getMineProjectList('copysend')
@@ -23,11 +26,16 @@ const Finished = () => {
   }
 
   return (
-    <div>
+    <PermissionWrap
+      auth={getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/create/story',
+      )}
+    >
       <StaffHeader>我的创建</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <Need id={projectId} />
-    </div>
+    </PermissionWrap>
   )
 }
 

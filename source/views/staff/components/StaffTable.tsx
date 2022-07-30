@@ -5,6 +5,8 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ShowWrap } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
+import { getIsPermission } from '@/tools'
+import { useModel } from '@/models'
 
 const flexCss = css`
   display: flex;
@@ -28,6 +30,7 @@ const SetHead = styled.div`
 `
 
 export const useDynamicColumns = (state: any) => {
+  const { userInfo } = useModel('user')
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -67,13 +70,20 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div className={flexCss}>
             <ShowWrap>
-              <Dropdown overlay={menu} placement="bottomLeft">
-                <IconFont
-                  type="more
+              <div
+                hidden={getIsPermission(
+                  userInfo?.company_permissions,
+                  'b/user/update',
+                )}
+              >
+                <Dropdown overlay={menu} placement="bottomLeft">
+                  <IconFont
+                    type="more
               "
-                  style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
-                />
-              </Dropdown>
+                    style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+                  />
+                </Dropdown>
+              </div>
             </ShowWrap>
             <SetHead>{text}</SetHead>
             <span>{text}</span>

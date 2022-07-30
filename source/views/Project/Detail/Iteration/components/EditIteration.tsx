@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Modal, Form, Input, DatePicker, Space, message } from 'antd'
@@ -57,7 +58,7 @@ const ModalFooter = styled(Space)({
 interface Props {
   visible: boolean
   onChangeVisible(): void
-  details?: any
+  id?: any
   onUpdate?(val: boolean): void
 }
 
@@ -66,32 +67,39 @@ const EditIteration = (props: Props) => {
   const [searchParams] = useSearchParams()
   const [html, setHtml] = useState('')
   const projectId = searchParams.get('id')
-  const { addIterate, updateIterate } = useModel('iterate')
+  const { addIterate, updateIterate, getIterateInfo, iterateInfo }
+    = useModel('iterate')
 
   useEffect(() => {
-    form.resetFields()
-    if (props.details?.id) {
-      setHtml(props.details?.info)
-      if (props.details?.createdTime || props.details?.startTime) {
+    if (props.id) {
+      getIterateInfo({ projectId, id: props.id })
+    }
+  }, [props.id])
+
+  useEffect(() => {
+    if (props.id && iterateInfo) {
+      setHtml(iterateInfo?.info)
+      form.setFieldsValue({ iterationName: iterateInfo.name })
+      if (iterateInfo?.createdTime || iterateInfo?.startTime) {
         form.setFieldsValue({
           time: [
-            moment(props.details.createdTime || props.details?.startTime),
-            moment(props.details.endTime),
+            moment(iterateInfo.createdTime || iterateInfo?.startTime),
+            moment(iterateInfo.endTime),
           ],
         })
       }
     }
-  }, [props.details])
+  }, [iterateInfo])
 
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
     values.info = html
     try {
-      if (props.details?.id) {
+      if (props?.id) {
         await updateIterate({
           projectId,
-          id: props.details?.id,
+          id: props?.id,
           ...values,
         })
         message.success('编辑成功')
@@ -105,6 +113,7 @@ const EditIteration = (props: Props) => {
       props.onChangeVisible()
       form.resetFields()
       props.onUpdate?.(true)
+      setHtml('')
     } catch (error) {
 
       //
@@ -122,22 +131,18 @@ const EditIteration = (props: Props) => {
       visible={props.visible}
       width={740}
       footer={false}
-      title={props.details?.id ? '编辑迭代' : '创建迭代'}
+      title={props?.id ? '编辑迭代' : '创建迭代'}
       onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
     >
-      <FormWrap
-        form={form}
-        labelCol={{ span: 5 }}
-        initialValues={props.details}
-      >
+      <FormWrap form={form} labelCol={{ span: 5 }} initialValues={iterateInfo}>
         <div style={{ display: 'flex' }}>
           <IconFont type="interation" />
           <Form.Item
             label="迭代名称"
             rules={[{ required: true, message: '' }]}
-            name="name"
+            name="iterationName"
           >
             <Input placeholder="请输入产品简称+计划发布版本号" />
           </Form.Item>

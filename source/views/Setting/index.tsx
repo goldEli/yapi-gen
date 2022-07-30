@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
+import { getIsPermission } from '@/tools'
 
 const Wrap = styled.div({
   height: '100%',
@@ -60,9 +61,12 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       color: '#323233',
     },
     '&:hover': {
-      background: '#F0F4FA',
-      borderRight: '3px solid #2877FF',
-      color: '#2877FF',
+      div: {
+        color: '#2877FF',
+      },
+      svg: {
+        color: '#2877FF',
+      },
     },
   },
   ({ isActive }) => ({
@@ -85,13 +89,6 @@ const CompanyImg = styled.img({
   padding: '0 16px',
 })
 
-const sideList = [
-  { name: '公司信息', icon: 'file-text', path: '' },
-  { name: '权限管理', icon: 'safety-certificate', path: 'permission' },
-  { name: '操作日志', icon: 'file-protect', path: 'operation' },
-  { name: '登录日志', icon: 'solution', path: 'loginLog' },
-]
-
 interface MenuList {
   icon: string
   name: string
@@ -103,6 +100,7 @@ const Setting = () => {
   const navigate = useNavigate()
   const { getCompanyInfo, companyInfo } = useModel('setting')
   const nowPath = pathname.split('/')[2] || ''
+  const { userInfo } = useModel('user')
 
   useEffect(() => {
     getCompanyInfo()
@@ -111,6 +109,37 @@ const Setting = () => {
   const onChangeActive = (value: MenuList) => {
     navigate(value.path)
   }
+
+  const sideList = [
+    { name: '公司信息', icon: 'file-text', path: '', isHidden: false },
+    {
+      name: '权限管理',
+      icon: 'safety-certificate',
+      path: 'permission',
+      isHidden: getIsPermission(
+        userInfo?.company_permissions,
+        'b/company/role',
+      ),
+    },
+    {
+      name: '操作日志',
+      icon: 'file-protect',
+      path: 'operation',
+      isHidden: getIsPermission(
+        userInfo?.company_permissions,
+        'b/company/operate_logs',
+      ),
+    },
+    {
+      name: '登录日志',
+      icon: 'solution',
+      path: 'loginLog',
+      isHidden: getIsPermission(
+        userInfo?.company_permissions,
+        'b/company/login_logs',
+      ),
+    },
+  ]
 
   return (
     <Wrap>
@@ -122,6 +151,7 @@ const Setting = () => {
               onClick={() => onChangeActive(item)}
               key={item.name}
               isActive={nowPath === item.path}
+              hidden={item.isHidden}
             >
               <IconFont type={item.icon} />
               <div>{item.name}</div>

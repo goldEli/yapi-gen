@@ -144,15 +144,23 @@ const IterationWrap = () => {
     }
   }
 
-  const onChangeVisible = () => {
+  const onChangeVisible = (val?: any) => {
     setIsVisible(!isVisible)
+    if (val) {
+      setOperationDetail({})
+    }
+  }
+
+  const onChangeEditVisible = () => {
+    setIsVisible(!isVisible)
+    setOperationDetail(iterateInfo)
   }
 
   const content = () => {
     if (!type) {
       return (
         <IterationMain
-          onChangeVisible={() => setIsVisible(!isVisible)}
+          onChangeVisible={onChangeVisible}
           onChangeOperation={item => onChangeOperation(item)}
           updateState={updateState}
           onChangeIsUpdate={setUpdateState}
@@ -174,7 +182,7 @@ const IterationWrap = () => {
             <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
           </NameWrap>
           <Space size={16}>
-            <Button type="primary" onClick={() => setIsVisible(!isVisible)}>
+            <Button type="primary" onClick={onChangeEditVisible}>
               编辑
             </Button>
             <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
@@ -213,8 +221,8 @@ const IterationWrap = () => {
     <div>
       <EditIteration
         visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        details={iterateId ? iterateInfo : operationDetail}
+        onChangeVisible={() => onChangeVisible('clear')}
+        id={operationDetail.id}
         onUpdate={setUpdateState}
       />
       {content()}

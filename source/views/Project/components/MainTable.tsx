@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
@@ -6,8 +7,10 @@ import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
+import { useModel } from '@/models'
+import { getIsPermission } from '@/tools'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -97,36 +100,56 @@ const NewSort = (sortProps: any) => {
 
 const MainTable = (props: Props) => {
   const navigate = useNavigate()
-  const menu = (record: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <div onClick={e => props.onChangeOperation?.('edit', record, e)}>
-              编辑
-            </div>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={e => props.onChangeOperation?.('end', record, e)}>
-              {record.status === 1 ? '结束' : '开启'}
-            </div>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <div onClick={e => props.onChangeOperation?.('delete', record, e)}>
-              删除
-            </div>
-          ),
-        },
-      ]}
-    />
-  )
+  const { userInfo } = useModel('user')
+
+  const menu = (record: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: (
+          <div onClick={e => props.onChangeOperation?.('edit', record, e)}>
+            编辑
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => props.onChangeOperation?.('end', record, e)}>
+            {record.status === 1 ? '结束' : '开启'}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <div onClick={e => props.onChangeOperation?.('delete', record, e)}>
+            删除
+          </div>
+        ),
+      },
+    ]
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/delete')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+
+    if (record.status === 1) {
+      if (getIsPermission(userInfo?.company_permissions, 'b/project/stop')) {
+        menuItems = menuItems.filter((i: any) => i.key !== '2')
+      }
+    }
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/start')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })

@@ -17,6 +17,8 @@ import {
   StyledTable,
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 const Reset = styled.div`
   width: 60px;
@@ -33,6 +35,7 @@ const Reset = styled.div`
 
 const Staff = () => {
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
+  const { userInfo } = useModel('user')
   const [isShow, setIsShow] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
@@ -171,7 +174,9 @@ const Staff = () => {
   )
 
   return (
-    <>
+    <PermissionWrap
+      auth={getIsPermission(userInfo?.company_permissions, 'b/user/list')}
+    >
       <StaffHeader>公司员工</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
@@ -256,7 +261,7 @@ const Staff = () => {
             />
           )
         : null}
-    </>
+    </PermissionWrap>
   )
 }
 

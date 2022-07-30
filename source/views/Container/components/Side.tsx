@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -52,36 +53,9 @@ type MenuType = {
   title: string
   icon: React.ReactElement
   path: string
+  isHidden: boolean
 }
-const getMenu = () => {
-  const menu: MenuType[] = [
-    {
-      key: '/organization',
-      title: '概况',
-      icon: <IconFont type="survey" style={{ fontSize: 20 }} />,
-      path: '',
-    },
-    {
-      key: '/organization',
-      title: '项目',
-      icon: <IconFont type="project" style={{ fontSize: 20 }} />,
-      path: '/Project',
-    },
-    {
-      key: '/organization',
-      title: '我的',
-      icon: <IconFont type="my" style={{ fontSize: 20 }} />,
-      path: '/mine',
-    },
-    {
-      key: '/organization',
-      title: '员工',
-      icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
-      path: '/staff',
-    },
-  ]
-  return menu
-}
+
 const SideEach = styled.div`
   cursor: pointer;
   border-radius: 8px;
@@ -124,17 +98,57 @@ export const Side = () => {
   }
   const init = async () => {
     const res = await getUserDetail()
-
     setUserData(res)
   }
+
   useEffect(() => {
     init()
   }, [])
+
+  const getIsPermission = (value: string) => {
+    return !userData?.company_permissions?.filter((i: any) => String(i.group_name).includes(value)).length
+  }
+
+  const getMenu = () => {
+    const menu: MenuType[] = [
+      {
+        key: '/organization',
+        title: '概况',
+        icon: <IconFont type="survey" style={{ fontSize: 20 }} />,
+        path: '',
+        isHidden: getIsPermission('概况'),
+      },
+      {
+        key: '/organization',
+        title: '项目',
+        icon: <IconFont type="project" style={{ fontSize: 20 }} />,
+        path: '/Project',
+        isHidden: getIsPermission('项目'),
+      },
+      {
+        key: '/organization',
+        title: '我的',
+        icon: <IconFont type="my" style={{ fontSize: 20 }} />,
+        path: '/mine',
+        isHidden: getIsPermission('我的'),
+      },
+      {
+        key: '/organization',
+        title: '员工',
+        icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
+        path: '/staff',
+        isHidden: getIsPermission('员工'),
+      },
+    ]
+    return menu
+  }
+
   const allEach = getMenu().map(item => (
     <SideEach
       className={nowPath === item.path ? activeCss : ''}
       key={item.path}
       onClick={() => onNavigation(item.path)}
+      hidden={item.isHidden}
     >
       {item.icon}
       {item.title}
@@ -155,8 +169,7 @@ export const Side = () => {
       <SideFooter>
         <SideEach
           onClick={() => navigate('/Setting')}
-
-          // className={'/' + nowPath === item.path ? activeCss : ''}
+          hidden={getIsPermission('公司管理')}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>设置</span>

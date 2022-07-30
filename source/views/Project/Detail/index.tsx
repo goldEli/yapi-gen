@@ -18,10 +18,25 @@ const Detail = () => {
     setProjectPermission,
     getMemberList,
     getTagList,
+    getPermission,
+    setUsePermission,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
+  const { userInfo } = useModel('user')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+
+  const getUsePermissionList = async (list: any) => {
+    const result = await getPermission({
+      projectId,
+      roleId: list?.find((i: any) => i.label === userInfo?.group_name).value,
+    })
+    let arr: any[] = []
+    result.list?.forEach((element: any) => {
+      arr = [...arr, ...element.children]
+    })
+    setUsePermission(arr)
+  }
 
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
@@ -30,6 +45,7 @@ const Detail = () => {
       value: i.id,
     }))
     setProjectPermission(arr)
+    getUsePermissionList(arr)
   }
 
   useEffect(() => {
@@ -40,6 +56,7 @@ const Detail = () => {
     getTagList({ projectId })
     getIterateSelectList({ projectId })
   }, [])
+
   return (
     <Wrap>
       <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
