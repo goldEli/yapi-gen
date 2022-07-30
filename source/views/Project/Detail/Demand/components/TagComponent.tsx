@@ -108,13 +108,16 @@ const TagBox = (props: TagProps) => {
           <span>{i.content}</span>
         </TagItem>
       ))}
-      {props.canAdd ? (
+      <TagItem hidden={!value}>
+        <span onClick={onCreateTag}>创建【创建新标签】标签</span>
+      </TagItem>
+      {/* {props.canAdd ? (
         <TagItem hidden={!value}>
           <span onClick={onCreateTag}>创建【创建新标签】标签</span>
         </TagItem>
-      )
-        : ''
-      }
+      ) : (
+        ''
+      )} */}
     </TagWrap>
   )
 }
@@ -200,6 +203,7 @@ const TagComponent = (props: Props) => {
       ))}
     </Space>
   )
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Popover

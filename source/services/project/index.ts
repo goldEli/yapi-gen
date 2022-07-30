@@ -113,6 +113,13 @@ export const getProjectInfo: any = async (params: any) => {
       titleList2.push(item.value)
     })
 
+  const filterBasicsList = response.data.storyConfig.filter_fidlds.filter(
+    (item: any) => item.is_default_filter === 1,
+  )
+  const filterSpecialList = response.data.storyConfig.filter_fidlds.filter(
+    (item: any) => item.is_default_filter !== 1,
+  )
+
   return {
     cover: response.data.cover,
     name: response.data.name,
@@ -129,6 +136,9 @@ export const getProjectInfo: any = async (params: any) => {
     plainOptions2,
     titleList,
     titleList2,
+    filterBasicsList,
+    filterSpecialList,
+    filterFelid: response.data.storyConfig.filter_fidlds,
   }
 }
 

@@ -18,7 +18,7 @@ interface Props {
 
 const DemandMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(false)
-  const [searchVal, setSearchVal] = useState('')
+  const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [deleteId, setDeleteId] = useState(0)
@@ -31,7 +31,7 @@ const DemandMain = (props: Props) => {
 
   const getList = async (
     state: boolean,
-    val: string,
+    searchParamsObj: any,
     item?: any,
     orderItem?: any,
   ) => {
@@ -41,7 +41,19 @@ const DemandMain = (props: Props) => {
         projectId,
         all: true,
         panel: true,
-        searchValue: val,
+        searchValue: searchParamsObj.searchValue,
+        statusIds: searchParamsObj.statusId,
+        iterateIds: searchParamsObj.iterateId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
       }
     } else {
       params = {
@@ -50,7 +62,19 @@ const DemandMain = (props: Props) => {
         pageSize: item.size,
         order: orderItem.value,
         orderKey: orderItem.key,
-        searchValue: val,
+        searchValue: searchParamsObj.searchValue,
+        statusIds: searchParamsObj.statusId,
+        iterateIds: searchParamsObj.iterateId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
       }
     }
     const result = await getDemandList(params)
@@ -59,19 +83,19 @@ const DemandMain = (props: Props) => {
   }
 
   useEffect(() => {
-    getList(isGrid, searchVal, pageObj, order)
+    getList(isGrid, searchItems, pageObj, order)
   }, [])
 
   useEffect(() => {
     if (props.isUpdate) {
-      getList(isGrid, searchVal, pageObj, order)
+      getList(isGrid, searchItems, pageObj, order)
     }
   }, [props.isUpdate])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val, searchVal, pageObj, order)
+    getList(val, searchItems, pageObj, order)
   }
 
   const onChangeOperation = (e: any, item: any) => {
@@ -90,30 +114,30 @@ const DemandMain = (props: Props) => {
       message.success('删除成功')
       setIsVisible(false)
       setDeleteId(0)
-      getList(isGrid, searchVal, pageObj, order)
+      getList(isGrid, searchItems, pageObj, order)
     } catch (error) {
 
       //
     }
   }
 
-  const onSearch = (val: string) => {
-    setSearchVal(val)
-    getList(isGrid, val, pageObj, order)
+  const onSearch = (params: string) => {
+    setSearchItems(params)
+    getList(isGrid, params, pageObj, order)
   }
 
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
-    getList(isGrid, searchVal, item, order)
+    getList(isGrid, searchItems, item, order)
   }
 
   const onChangeRow = () => {
-    getList(isGrid, searchVal, pageObj, order)
+    getList(isGrid, searchItems, pageObj, order)
   }
 
   const onChangeOrder = (item: any) => {
     setOrder(item)
-    getList(isGrid, searchVal, pageObj, item)
+    getList(isGrid, searchItems, pageObj, item)
   }
 
   return (

@@ -3,7 +3,7 @@
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal, message } from 'antd'
 import { useModel } from '@/models'
@@ -52,15 +52,33 @@ interface Props {
   currentDetail?: any
   settingState: boolean
   onChangeSetting(val: boolean): void
+  onSearch(params: any): void
 }
 
 const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
-  const [settingState, setSettingState] = useState(false)
   const [visible, setVisible] = useState(false)
   const { updateIterateStatus, getIterateInfo } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+  const { filterAll, projectInfo } = useModel('project')
+  const [searchList, setSearchList] = useState<any[]>([])
+  const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
+  const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [searchGroups, setSearchGroups] = useState<any>({
+    statusId: [],
+    priorityId: [],
+    iterateId: [],
+    tagId: [],
+    userId: [],
+    usersnameId: [],
+    usersCopysendNameId: [],
+    createdAtId: [],
+    expectedStartAtId: [],
+    expectedendat: [],
+    updatedat: [],
+    finishAt: [],
+  })
 
   const onChangeStatus = async (val: number) => {
     if (val !== props.currentDetail?.status) {
@@ -94,6 +112,49 @@ const Operation = (props: Props) => {
       </StatusTag>
     </Space>
   )
+
+  const onFilterSearch = (e: any) => {
+    const params = {
+      statusId: e.status,
+      priorityId: e.priority,
+      iterateId: e.iterate_name,
+      tagId: e.tag,
+      userId: e.user_name,
+      usersnameId: e.users_name,
+      usersCopysendNameId: e.users_copysend_name,
+      createdAtId: e.created_at,
+      expectedStartAtId: e.expected_start_at,
+      expectedendat: e.expected_end_at,
+      updatedat: e.updated_at,
+      finishAt: e.finish_at,
+    }
+    setSearchGroups(params)
+    props.onSearch(params)
+  }
+
+  const getSearchKey = async (key?: any, type?: number) => {
+    if (key && type === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && type === 1) {
+      const addList = filterAll?.filter((item: any) => item.content === key)
+
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+
+    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+  }
+
+  useEffect(() => {
+    getSearchKey()
+  }, [projectInfo, filterAll])
 
   return (
     <StickyWrap>
@@ -162,7 +223,18 @@ const Operation = (props: Props) => {
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
         />
       </OperationWrap>
-      <TableFilter showForm={filterState} list={[]} />
+      {filterState
+        ? null
+        : (
+            <TableFilter
+              onFilter={getSearchKey}
+              onSearch={onFilterSearch}
+              list={searchList}
+              basicsList={filterBasicsList}
+              specialList={filterSpecialList}
+              isIteration
+            />
+          )}
     </StickyWrap>
   )
 }

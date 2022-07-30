@@ -18,25 +18,13 @@ const Detail = () => {
     setProjectPermission,
     getMemberList,
     getTagList,
-    getPermission,
-    setUsePermission,
+    memberList,
+    projectInfo,
+    setFilterAll,
   } = useModel('project')
-  const { getIterateSelectList } = useModel('iterate')
-  const { userInfo } = useModel('user')
+  const { getIterateSelectList, selectIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-
-  const getUsePermissionList = async (list: any) => {
-    const result = await getPermission({
-      projectId,
-      roleId: list?.find((i: any) => i.label === userInfo?.group_name).value,
-    })
-    let arr: any[] = []
-    result.list?.forEach((element: any) => {
-      arr = [...arr, ...element.children]
-    })
-    setUsePermission(arr)
-  }
 
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
@@ -45,7 +33,6 @@ const Detail = () => {
       value: i.id,
     }))
     setProjectPermission(arr)
-    getUsePermissionList(arr)
   }
 
   useEffect(() => {
@@ -54,8 +41,60 @@ const Detail = () => {
     getPermissionList()
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
-    getIterateSelectList({ projectId })
+    getIterateSelectList({ projectId, all: true })
   }, [])
+
+  useEffect(() => {
+    const allList = projectInfo.filterFelid?.map((item: any) => {
+      if (item.content === 'iterate_name') {
+        item.values = selectIterate.list?.map((i: any) => {
+          return {
+            id: i.id,
+            content: i.name,
+          }
+        })
+      }
+      if (
+        item.content === 'user_name'
+        || item.content === 'users_name'
+        || item.content === 'users_copysend_name'
+      ) {
+        item.values = memberList?.map((k: any) => {
+          return {
+            id: k.id,
+            content: k.name,
+          }
+        })
+      }
+      return item
+    })
+
+    const filterAllList = allList?.map((item: any) => {
+      if (item.title.includes('时间')) {
+        return {
+          id: item.id,
+          name: item.title,
+          key: item.content,
+          content: item.content,
+          children: item.values,
+          type: 'time',
+          isDefault: item.is_default_filter,
+        }
+      }
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: 'select',
+        isDefault: item.is_default_filter,
+      }
+
+    })
+
+    setFilterAll(filterAllList)
+  }, [memberList, selectIterate, projectInfo])
 
   return (
     <Wrap>

@@ -114,38 +114,42 @@ const CommonOperation = (props: Props) => {
     { name: '设置', type: 'Setting' },
   ]
 
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: 1,
-          label: (
-            <MenuItems onClick={() => setInfoVisible(true)}>
-              <div>项目信息</div>
-            </MenuItems>
-          ),
-        },
-        {
-          key: 2,
-          label: (
-            <MenuItems onClick={() => setVisible(true)}>
-              <div>编辑项目</div>
-            </MenuItems>
-          ),
-        },
-        {
-          key: 3,
-          label: (
-            <MenuItems
-              onClick={() => navigate(`/Detail/Setting?id=${projectId}`)}
-            >
-              <div>项目设置</div>
-            </MenuItems>
-          ),
-        },
-      ]}
-    />
-  )
+  const menu = () => {
+    let menuItems = [
+      {
+        key: 1,
+        label: (
+          <MenuItems onClick={() => setInfoVisible(true)}>
+            <div>项目信息</div>
+          </MenuItems>
+        ),
+      },
+      {
+        key: 2,
+        label: (
+          <MenuItems onClick={() => setVisible(true)}>
+            <div>编辑项目</div>
+          </MenuItems>
+        ),
+      },
+      {
+        key: 3,
+        label: (
+          <MenuItems
+            onClick={() => navigate(`/Detail/Setting?id=${projectId}`)}
+          >
+            <div>项目设置</div>
+          </MenuItems>
+        ),
+      },
+    ]
+
+    if (getIsPermission(userInfo?.company_permissions, 'b/project/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== 2)
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>

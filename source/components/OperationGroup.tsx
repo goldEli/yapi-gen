@@ -64,11 +64,16 @@ const OperationGroup = (props: Props) => {
         type="filter"
         onClick={props.onChangeFilter}
       />
-      <DividerWrap type="vertical" />
 
-      <Dropdown overlay={menu}>
-        <IconFontWrap active={props.settingState} type="settings" />
-      </Dropdown>
+      {props.isGrid ? null : <DividerWrap type="vertical" />}
+
+      {props.isGrid
+        ? null
+        : (
+            <Dropdown overlay={menu}>
+              <IconFontWrap active={props.settingState} type="settings" />
+            </Dropdown>
+          )}
     </SpaceWrap>
   )
 }

@@ -40,8 +40,8 @@ const IterationMain = (props: Props) => {
   const [currentDetail, setCurrentDetail] = useState<any>({})
   const [settingState, setSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
-
-  const getList = async (state: boolean, item?: any) => {
+  const [searchItems, setSearchItems] = useState({})
+  const getList = async (state: boolean, item: any, searchParamsObj: any) => {
     let params = {}
     if (state) {
       params = {
@@ -49,6 +49,17 @@ const IterationMain = (props: Props) => {
         all: true,
         panel: true,
         iterateIds: [currentDetail.id],
+        statusIds: searchParamsObj.statusId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
       }
     } else {
       params = {
@@ -58,6 +69,17 @@ const IterationMain = (props: Props) => {
         order: order.value,
         orderKey: order.key,
         iterateIds: [currentDetail.id],
+        statusIds: searchParamsObj.statusId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
       }
     }
     const result = await getDemandList(params)
@@ -70,14 +92,14 @@ const IterationMain = (props: Props) => {
 
   useEffect(() => {
     if (currentDetail?.id) {
-      getList(isGrid, pageObj)
+      getList(isGrid, pageObj, searchItems)
     }
   }, [currentDetail])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val, pageObj)
+    getList(val, pageObj, searchItems)
   }
 
   const onChangeOperation = (e: any, item: any) => {
@@ -97,7 +119,7 @@ const IterationMain = (props: Props) => {
       message.success('删除成功')
       setIsVisible(false)
       setDeleteId(0)
-      getList(isGrid, pageObj)
+      getList(isGrid, pageObj, searchItems)
     } catch (error) {
 
       //
@@ -106,11 +128,11 @@ const IterationMain = (props: Props) => {
 
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
-    getList(isGrid, item)
+    getList(isGrid, item, searchItems)
   }
 
   const onChangeRow = () => {
-    getList(isGrid, pageObj)
+    getList(isGrid, pageObj, searchItems)
   }
 
   const onChangeVisible = () => {
@@ -120,12 +142,17 @@ const IterationMain = (props: Props) => {
 
   const onChangeOrder = (item: any) => {
     setOrder(item)
-    getList(isGrid, pageObj)
+    getList(isGrid, pageObj, searchItems)
   }
 
   const onChangeIsUpdate = (val: boolean) => {
     setIsUpdateList(val)
     props.onChangeIsUpdate(false)
+  }
+
+  const onSearch = (params: string) => {
+    setSearchItems(params)
+    getList(isGrid, pageObj, params)
   }
 
   return (
@@ -160,6 +187,7 @@ const IterationMain = (props: Props) => {
           currentDetail={currentDetail}
           settingState={settingState}
           onChangeSetting={setSettingState}
+          onSearch={onSearch}
         />
         {isGrid ? (
           <IterationGrid

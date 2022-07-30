@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-len */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
@@ -144,14 +145,16 @@ const TableFilter = (props: any) => {
     const res = JSON.parse(JSON.stringify(value))
     for (const item in value) {
       if (item.includes('_at') && res[item]?.length === 2) {
-        res[item][0] = moment(res[item][0]).format('YYYY-MM-DD')
-        res[item][1] = moment(res[item][1]).format('YYYY-MM-DD')
+        res[item][0] = moment(res[item][0]).unix()
+          ? moment(res[item][0]).format('YYYY-MM-DD')
+          : ''
+        res[item][1]
+          = moment(res[item][1]).unix() === 1893427200
+            ? ''
+            : moment(res[item][1]).format('YYYY-MM-DD')
       }
     }
-
     props.onSearch(res)
-
-    //
   }
   const onClearForm = async () => {
     form.resetFields()
@@ -163,11 +166,13 @@ const TableFilter = (props: any) => {
       <div>
         <Collapse>
           <Collapse.Panel header="基础字段" key="1">
-            {filterBasicsList?.map((i: any) => (
-              <div onClick={() => addList(i.content)} key={i.id}>
-                {i.title}
-              </div>
-            ))}
+            {filterBasicsList
+              ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+              ?.map((i: any) => (
+                <div onClick={() => addList(i.content)} key={i.id}>
+                  {i.title}
+                </div>
+              ))}
           </Collapse.Panel>
           <Collapse.Panel header="人员和时间" key="2">
             {filterSpecialList?.map((i: any) => (
@@ -180,79 +185,84 @@ const TableFilter = (props: any) => {
       </div>
     </div>
   )
+
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
-        <FormWrap form={form}>
-          {list?.map((i: any) => {
-            if (i.type === 'select') {
+        <FormWrap form={form} onValuesChange={confirm}>
+          {list
+            ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+            ?.map((i: any) => {
+              if (i.type === 'select') {
+                return (
+                  <SelectWrapBedeck key={i.key}>
+                    <Form.Item name={i.key}>
+                      <SelectWrap
+                        label={i.name}
+                        mode="multiple"
+                        style={{ width: '100%' }}
+                        placeholder="所有"
+                        showSearch
+                      >
+                        {i.children.map((v: any) => (
+                          <Option key={v.id} value={v.id}>
+                            {v.content}
+                          </Option>
+                        ))}
+                      </SelectWrap>
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )
+              }
               return (
-                <SelectWrapBedeck>
+                <SelectWrapBedeck key={i.key}>
                   <Form.Item name={i.key}>
-                    <SelectWrap
-                      onBlur={confirm}
+                    <TimeWrap
                       label={i.name}
-                      mode="multiple"
-                      style={{ width: '100%' }}
-                      placeholder="所有"
-                      showSearch
-                    >
-                      {i.children.map((v: any) => (
-                        <Option key={v.id} value={v.id}>
-                          {v.content}
-                        </Option>
-                      ))}
-                    </SelectWrap>
+                      className={rangPicker}
+                      getPopupContainer={node => node}
+                      format={(times: moment.Moment) => {
+                        if (times.unix() === 0 || times.unix() === 1893427200) {
+                          return '空'
+                        }
+                        return times.format('YYYY-MM-DD')
+                      }}
+                      ranges={{
+                        最近一周: [
+                          moment(new Date())
+                            .startOf('days')
+                            .subtract(6, 'days'),
+                          moment(new Date()).endOf('days'),
+                        ],
+                        最近一月: [
+                          moment(new Date())
+                            .startOf('months')
+                            .subtract(1, 'months'),
+                          moment(new Date()).endOf('days'),
+                        ],
+                        最近三月: [
+                          moment(new Date())
+                            .startOf('months')
+                            .subtract(3, 'months'),
+                          moment(new Date()).endOf('days'),
+                        ],
+                        今天开始: [
+                          moment(new Date()).startOf('days'),
+                          moment(1893427200 * 1000),
+                        ],
+                        今天截止: [moment(0), moment(new Date()).endOf('days')],
+                      }}
+                    />
                   </Form.Item>
-                  <DelButton onClick={() => delList(i.content)}>
+                  <DelButton onClick={() => delList(i.key)}>
                     <IconFont type="close" style={{ fontSize: '12px' }} />
                   </DelButton>
                 </SelectWrapBedeck>
               )
-            }
-            return (
-              <SelectWrapBedeck key={i.key}>
-                <Form.Item name={i.key}>
-                  <TimeWrap
-                    onBlur={confirm}
-                    label={i.name}
-                    className={rangPicker}
-                    getPopupContainer={node => node}
-                    ranges={{
-                      最近一周: [
-                        moment(new Date()).startOf('days')
-                          .subtract(6, 'days'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      最近一月: [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(1, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      最近三月: [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(3, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      今天开始: [
-                        moment(new Date()).startOf('days'),
-                        moment.min(),
-                      ],
-                      今天截止: [
-                        moment.max(),
-                        moment(new Date()).endOf('days'),
-                      ],
-                    }}
-                  />
-                </Form.Item>
-                <DelButton onClick={() => delList(i.key)}>
-                  <IconFont type="close" style={{ fontSize: '12px' }} />
-                </DelButton>
-              </SelectWrapBedeck>
-            )
-          })}
+            })}
 
           <Popover placement="bottom" content={content} trigger={['click']}>
             <Button icon={<IconFont type="plus" />} />
