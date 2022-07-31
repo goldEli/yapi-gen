@@ -102,7 +102,7 @@ const IterationWrap = () => {
   const iterateId = searchParams.get('iterateId')
   const { getIterateInfo, iterateInfo, deleteIterate } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
-  const [updateState, setUpdateState] = useState(false)
+  const [isUpdateState, setIsUpdateState] = useState(false)
 
   const childContent = () => {
     if (type === 'info') {
@@ -162,8 +162,8 @@ const IterationWrap = () => {
         <IterationMain
           onChangeVisible={onChangeVisible}
           onChangeOperation={item => onChangeOperation(item)}
-          updateState={updateState}
-          onChangeIsUpdate={setUpdateState}
+          updateState={isUpdateState}
+          onChangeIsUpdate={setIsUpdateState}
         />
       )
     }
@@ -223,7 +223,7 @@ const IterationWrap = () => {
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
         id={operationDetail.id}
-        onUpdate={setUpdateState}
+        onUpdate={setIsUpdateState}
       />
       {content()}
     </div>

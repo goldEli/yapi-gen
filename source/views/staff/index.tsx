@@ -53,7 +53,7 @@ const Staff = () => {
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [staffPersonalVisible, setStaffPersonalVisible]
+  const [isStaffPersonalVisible, setIsStaffPersonalVisible]
     = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'nickname',
@@ -91,7 +91,7 @@ const Staff = () => {
   }
   const controlStaffPersonalVisible = (e: any) => {
     setEditData(e)
-    setStaffPersonalVisible(true)
+    setIsStaffPersonalVisible(true)
   }
   const closeStaffPersonal = async (e: any) => {
     const res = await updateStaff(e)
@@ -99,7 +99,7 @@ const Staff = () => {
     if (res.code === 0) {
       message.success(res.message)
       getStaffListData()
-      setStaffPersonalVisible(false)
+      setIsStaffPersonalVisible(false)
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -249,13 +249,13 @@ const Staff = () => {
         onClose={close2}
         getCheckList={getCheckList}
       />
-      {staffPersonalVisible
+      {isStaffPersonalVisible
         ? (
             <StaffPersonal
               data={editData}
-              isVisible={staffPersonalVisible}
+              isVisible={isStaffPersonalVisible}
               onClose={() => {
-                setStaffPersonalVisible(false)
+                setIsStaffPersonalVisible(false)
               }}
               onConfirm={closeStaffPersonal}
             />

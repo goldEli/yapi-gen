@@ -65,21 +65,6 @@ const Operation = (props: Props) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
-  const [searchGroups, setSearchGroups] = useState<any>({
-    statusId: [],
-    priorityId: [],
-    iterateId: [],
-    tagId: [],
-    userId: [],
-    usersnameId: [],
-    usersCopysendNameId: [],
-    createdAtId: [],
-    expectedStartAtId: [],
-    expectedendat: [],
-    updatedat: [],
-    finishAt: [],
-  })
-
   const onChangeStatus = async (val: number) => {
     if (val !== props.currentDetail?.status) {
       try {
@@ -128,7 +113,6 @@ const Operation = (props: Props) => {
       updatedat: e.updated_at,
       finishAt: e.finish_at,
     }
-    setSearchGroups(params)
     props.onSearch(params)
   }
 

@@ -38,7 +38,7 @@ const IterationMain = (props: Props) => {
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
-  const [settingState, setSettingState] = useState(false)
+  const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
   const [searchItems, setSearchItems] = useState({})
   const getList = async (state: boolean, item: any, searchParamsObj: any) => {
@@ -185,8 +185,8 @@ const IterationMain = (props: Props) => {
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
           onIsUpdateList={setIsUpdateList}
           currentDetail={currentDetail}
-          settingState={settingState}
-          onChangeSetting={setSettingState}
+          settingState={isSettingState}
+          onChangeSetting={setIsSettingState}
           onSearch={onSearch}
         />
         {isGrid ? (
@@ -202,8 +202,8 @@ const IterationMain = (props: Props) => {
             data={dataList}
             onChangePageNavigation={onChangePageNavigation}
             onChangeRow={onChangeRow}
-            settingState={settingState}
-            onChangeSetting={setSettingState}
+            settingState={isSettingState}
+            onChangeSetting={setIsSettingState}
             onChangeOrder={onChangeOrder}
           />
         )}

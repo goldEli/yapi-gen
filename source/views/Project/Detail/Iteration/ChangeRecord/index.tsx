@@ -43,7 +43,7 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const { getIterateChangeLog } = useModel('iterate')
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const iterateId = searchParams.get('iterateId')
   const projectId = searchParams.get('id')
@@ -70,7 +70,7 @@ const ChangeRecord = () => {
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
-    setVisible(true)
+    setIsVisible(true)
   }
 
   const fieldContent = (item: any, i: string) => {
@@ -262,11 +262,11 @@ const ChangeRecord = () => {
   return (
     <div>
       <Modal
-        visible={visible}
+        visible={isVisible}
         title="变更详情"
         footer={false}
         width={1080}
-        onCancel={() => setVisible(false)}
+        onCancel={() => setIsVisible(false)}
         bodyStyle={{ padding: '8px 24px 24px' }}
         destroyOnClose
       >

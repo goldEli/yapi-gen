@@ -88,7 +88,7 @@ const CardItem = styled.div({
 })
 
 const ProjectInfo = () => {
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const { projectInfo, getProjectInfo } = useModel('project')
 
   const onUpdate = () => {
@@ -98,8 +98,8 @@ const ProjectInfo = () => {
   return (
     <div style={{ padding: 16 }}>
       <EditProject
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
+        visible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
         details={projectInfo}
         onUpdate={onUpdate}
       />
@@ -114,7 +114,7 @@ const ProjectInfo = () => {
           >
             <OmitText width={340}>{projectInfo.name}</OmitText>
             <IconFont
-              onClick={() => setVisible(true)}
+              onClick={() => setIsVisible(true)}
               style={{
                 marginLeft: 24,
                 cursor: 'pointer',
