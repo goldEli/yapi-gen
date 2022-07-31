@@ -107,7 +107,7 @@ const WrapLeft = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isFilter, setIsFilter] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
-  const [currentSort, setCurrentSort] = useState(sortList[0])
+  const [currentSort, setCurrentSort] = useState(sortList[1])
   const [dataList, setDataList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')

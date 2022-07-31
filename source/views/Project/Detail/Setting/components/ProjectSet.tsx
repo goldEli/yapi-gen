@@ -347,6 +347,7 @@ const ProjectSet = () => {
         </ModalHeader>
         <div style={{ margin: '24px 0' }}>
           <Input
+            maxLength={10}
             value={addValue}
             onChange={e => setAddValue(e.target.value)}
             placeholder="请输入权限组名称"

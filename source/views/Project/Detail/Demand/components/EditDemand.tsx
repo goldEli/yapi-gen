@@ -5,7 +5,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, DatePicker, Select, Space, message } from 'antd'
+import {
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Space,
+  message,
+  type InputRef,
+} from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -14,7 +23,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import TagComponent from './TagComponent'
 import UploadAttach from './UploadAttach'
 import Editor from '@/components/Editor'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
@@ -169,6 +178,7 @@ const EditDemand = (props: Props) => {
   const { addDemand, getDemandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
+  const inputRef = useRef<InputRef>(null)
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -182,6 +192,14 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     getList()
   }, [])
+
+  // useEffect(() => {
+  //   if (props.visible && inputRef) {
+  //     inputRef.current?.focus({
+  //       cursor: 'end',
+  //     })
+  //   }
+  // }, [props.visible, inputRef])
 
   useEffect(() => {
     if (props?.id) {
@@ -219,6 +237,7 @@ const EditDemand = (props: Props) => {
   }, [demandInfo])
 
   const onSaveDemand = async (hasNext?: number) => {
+    await form.validateFields()
     const values = form.getFieldsValue()
     if (values.times && values.times[0]) {
       values.expectedStart = moment(values.times[0]).format('YYYY-MM-DD')
@@ -308,8 +327,16 @@ const EditDemand = (props: Props) => {
       <FormWrap form={form} labelCol={{ span: 5 }}>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
-          <Form.Item label="需求名称" required name="name">
-            <Input placeholder="请输入需求名称" />
+          <Form.Item
+            label="需求名称"
+            name="name"
+            rules={[{ required: true, message: '' }]}
+          >
+            <Input
+              ref={inputRef}
+              placeholder="请输入需求名称"
+              maxLength={100}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -320,7 +347,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="user" />
-          <Form.Item label="处理人" required name="userIds">
+          <Form.Item label="处理人" name="userIds">
             <Select
               style={{ width: '100%' }}
               showArrow
@@ -391,13 +418,15 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="interation" />
           <Form.Item label="迭代" name="iterateId">
             <Select placeholder="请选择" showSearch showArrow>
-              {selectIterate?.list?.map((i: any) => {
-                return (
-                  <Select.Option key={i.id} value={i.id}>
-                    {i.name}
-                  </Select.Option>
-                )
-              })}
+              {selectIterate?.list
+                ?.filter((k: any) => k.status === 1)
+                ?.map((i: any) => {
+                  return (
+                    <Select.Option key={i.id} value={i.id}>
+                      {i.name}
+                    </Select.Option>
+                  )
+                })}
             </Select>
           </Form.Item>
         </div>

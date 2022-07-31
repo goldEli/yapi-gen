@@ -144,7 +144,10 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="iterationName"
           >
-            <Input placeholder="请输入产品简称+计划发布版本号" />
+            <Input
+              maxLength={100}
+              placeholder="请输入产品简称+计划发布版本号"
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
