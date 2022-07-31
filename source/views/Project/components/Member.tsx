@@ -82,7 +82,7 @@ const NameWrap = styled.div({
 })
 
 const Member = (props: Props) => {
-  const { getProjectMember, refreshMember, setRefreshMember }
+  const { getProjectMember, isRefreshMember, setIsRefreshMember }
     = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
@@ -94,7 +94,7 @@ const Member = (props: Props) => {
       searchValue: val,
     })
     setMemberList(result)
-    setRefreshMember(false)
+    setIsRefreshMember(false)
   }
 
   useEffect(() => {
@@ -104,10 +104,10 @@ const Member = (props: Props) => {
   }, [props.visible])
 
   useEffect(() => {
-    if (refreshMember) {
+    if (isRefreshMember) {
       getList()
     }
-  }, [refreshMember])
+  }, [isRefreshMember])
 
   const onChangeSearch = (e: any) => {
     getList(e.target.value)

@@ -8,7 +8,7 @@ export default () => {
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
-  const [refreshMember, setRefreshMember] = useState(false)
+  const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [filterAll, setFilterAll] = useState<any>([])
 
   const getProjectList = async (params: any) => {
@@ -82,8 +82,8 @@ export default () => {
     projectPermission,
     getMemberList,
     memberList,
-    setRefreshMember,
-    refreshMember,
+    setIsRefreshMember,
+    isRefreshMember,
     setFilterAll,
     filterAll,
   }

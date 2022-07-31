@@ -47,7 +47,7 @@ const AddMember = (props: Props) => {
     projectPermission,
     addMember,
     updateMember,
-    setRefreshMember,
+    setIsRefreshMember,
     getMemberList,
   } = useModel('project')
   const { getStaffList } = useModel('staff')
@@ -91,7 +91,7 @@ const AddMember = (props: Props) => {
       props.onChangeValue()
       props.onChangeUpdate()
       form.resetFields()
-      setRefreshMember(true)
+      setIsRefreshMember(true)
       getMemberList({ all: true, projectId })
     } catch (error) {
 

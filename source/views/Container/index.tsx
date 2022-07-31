@@ -20,12 +20,12 @@ const Main = styled.div`
 `
 
 export const Container = () => {
-  const [nextVisible, setNextVisible] = useState(false)
+  const [isNextVisible, setIsNextVisible] = useState(false)
   const { getLoginDetail } = useModel('user')
 
   const init = async () => {
     const res = await getLoginDetail()
-    setNextVisible(res.data.admin_first_login)
+    setIsNextVisible(res.data.admin_first_login)
   }
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const Container = () => {
       <Main>
         <Outlet />
       </Main>
-      <Next visible={nextVisible} close={() => setNextVisible(false)} />
+      <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
     </Wrap>
   )
 }
