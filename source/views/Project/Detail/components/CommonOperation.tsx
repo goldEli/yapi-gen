@@ -100,7 +100,7 @@ interface Props {
 const CommonOperation = (props: Props) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const { projectInfo } = useModel('project')
@@ -127,7 +127,7 @@ const CommonOperation = (props: Props) => {
       {
         key: 2,
         label: (
-          <MenuItems onClick={() => setVisible(true)}>
+          <MenuItems onClick={() => setIsVisible(true)}>
             <div>编辑项目</div>
           </MenuItems>
         ),
@@ -154,8 +154,8 @@ const CommonOperation = (props: Props) => {
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
       <EditProject
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
+        visible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
         details={projectInfo}
         onUpdate={props.onUpdate}
       />
@@ -184,7 +184,7 @@ const CommonOperation = (props: Props) => {
             )}
             style={{ color: '#323233', fontSize: 16, marginLeft: 8 }}
             type="edit-square"
-            onClick={() => setVisible(true)}
+            onClick={() => setIsVisible(true)}
           />
         </ProjectInfo>
         <Tabs size={60}>

@@ -279,10 +279,15 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  const onChangeAttachment = (arr: any) => {
+  const onChangeAttachment = (result: any) => {
+    result.path = result.url
     form.setFieldsValue({
-      attachments: arr,
+      attachments: [
+        ...form.getFieldValue('attachments') || [],
+        ...[result.url],
+      ],
     })
+    setAttachList([...attachList, ...[result]])
   }
 
   const onCancel = () => {

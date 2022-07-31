@@ -59,7 +59,7 @@ const ChildDemand = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
   const [isDelete, setIsDelete] = useState(false)
-  const [settingState, setSettingState] = useState(false)
+  const [isSettingState, setIsSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const { getDemandList, updatePriority, updateDemandStatus, deleteDemand }
     = useModel('demand')
@@ -125,7 +125,9 @@ const ChildDemand = () => {
       items={[
         {
           key: '1',
-          label: <div onClick={() => setSettingState(true)}>设置显示字段</div>,
+          label:
+            <div onClick={() => setIsSettingState(true)}>设置显示字段</div>
+          ,
         },
       ]}
     />
@@ -267,14 +269,14 @@ const ChildDemand = () => {
           hideOnSinglePage
         />
       </PaginationWrap>
-      {settingState ? (
+      {isSettingState ? (
         <OptionalFeld
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
           checkList={titleList}
           checkList2={titleList2}
-          isVisible={settingState}
-          onClose={() => setSettingState(false)}
+          isVisible={isSettingState}
+          onClose={() => setIsSettingState(false)}
           getCheckList={getCheckList}
         />
       ) : null}

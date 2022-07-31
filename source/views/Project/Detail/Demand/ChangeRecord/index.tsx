@@ -48,7 +48,7 @@ const ChangeRecord = () => {
   const projectId = searchParams.get('id')
   const [dataList, setDataList] = useState<any>([])
   const [checkDetail, setCheckDetail] = useState<any>({})
-  const [visible, setVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
 
@@ -70,7 +70,7 @@ const ChangeRecord = () => {
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
-    setVisible(true)
+    setIsVisible(true)
   }
 
   const fieldContent = (item: any, i: string) => {
@@ -261,11 +261,11 @@ const ChangeRecord = () => {
   return (
     <div>
       <Modal
-        visible={visible}
+        visible={isVisible}
         title="变更详情"
         footer={false}
         width={1080}
-        onCancel={() => setVisible(false)}
+        onCancel={() => setIsVisible(false)}
         bodyStyle={{ padding: '8px 24px 24px' }}
         destroyOnClose
       >

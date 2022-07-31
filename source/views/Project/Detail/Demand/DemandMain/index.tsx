@@ -26,7 +26,7 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { getDemandList, deleteDemand } = useModel('demand')
-  const [settingState, setSettingState] = useState(false)
+  const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
 
   const getList = async (
@@ -153,8 +153,8 @@ const DemandMain = (props: Props) => {
         onChangeGrid={val => onChangeGrid(val)}
         onChangeVisible={(e: any) => props.onChangeVisible(e)}
         onSearch={onSearch}
-        settingState={settingState}
-        onChangeSetting={setSettingState}
+        settingState={isSettingState}
+        onChangeSetting={setIsSettingState}
       />
       {isGrid ? (
         <DemandGrid
@@ -169,8 +169,8 @@ const DemandMain = (props: Props) => {
           data={dataList}
           onChangePageNavigation={onChangePageNavigation}
           onChangeRow={onChangeRow}
-          settingState={settingState}
-          onChangeSetting={setSettingState}
+          settingState={isSettingState}
+          onChangeSetting={setIsSettingState}
           onChangeOrder={onChangeOrder}
         />
       )}
