@@ -70,12 +70,25 @@ interface TagProps {
   canAdd?: boolean
   isClear: boolean
   onChangeIsClear(val: boolean): void
+  onChangeIsOpen(val: boolean): void
 }
 
 const TagBox = (props: TagProps) => {
   const { tagList } = useModel('project')
+  const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
   const [value, setValue] = useState('')
-  const [arr, setArr] = useState<any>(tagList)
+  const [arr, setArr] = useState<any>([])
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
+
+  useEffect(() => {
+    const checkedList = demandInfo?.tag?.map((i: any) => i.tag)
+    setArr(
+      tagList?.filter(
+        (i: any) => !checkedList?.find((k: any) => k.id === i.id),
+      ),
+    )
+  }, [tagList, demandInfo])
 
   const onCreateTag = () => {
     props.tap?.(value)
@@ -93,6 +106,23 @@ const TagBox = (props: TagProps) => {
     setArr(tagList.filter((i: any) => i?.content?.includes(val)))
   }
 
+  const onHasTagAdd = async (item: any) => {
+    try {
+      await addInfoDemand({
+        projectId,
+        demandId: demandInfo?.id,
+        type: 'tag',
+        targetId: [{ name: item.content, color: item.color }],
+      })
+      message.success('添加成功')
+      getDemandInfo({ projectId, id: demandInfo?.id })
+      props.onChangeIsOpen(false)
+    } catch (error) {
+
+      //
+    }
+  }
+
   return (
     <TagWrap title="">
       <div style={{ padding: '16px 16px 4px 16px' }}>
@@ -103,21 +133,18 @@ const TagBox = (props: TagProps) => {
         />
       </div>
       {arr.map((i: any) => (
-        <TagItem key={i.id}>
+        <TagItem key={i.id} onClick={() => onHasTagAdd(i)}>
           <div style={{ background: i.color }} />
           <span>{i.content}</span>
         </TagItem>
       ))}
-      <TagItem hidden={!value}>
-        <span onClick={onCreateTag}>创建【创建新标签】标签</span>
-      </TagItem>
-      {/* {props.canAdd ? (
+      {props.canAdd ? (
         <TagItem hidden={!value}>
           <span onClick={onCreateTag}>创建【创建新标签】标签</span>
         </TagItem>
-      ) : (
-        ''
-      )} */}
+      )
+        : ''
+      }
     </TagWrap>
   )
 }
@@ -221,13 +248,23 @@ const TagComponent = (props: Props) => {
         {checkedTags?.reverse()?.map((i: any) => (
           <TagCheckedItem
             key={i.id}
-            style={{ cursor: 'pointer', alignItems: 'center' }}
+            style={{
+              cursor: 'pointer',
+              alignItems: 'center',
+              color: i.color,
+              border: `1px solid ${i.color}`,
+            }}
           >
             <div>{i.content}</div>
             <IconFont
               className="icon"
-              style={{ position: 'absolute', right: -6, top: -6 }}
-              type="close-circle"
+              style={{
+                position: 'absolute',
+                right: -6,
+                top: -6,
+                color: '#969799',
+              }}
+              type="close-circle-fill"
               onClick={() => onDeleteInfoDemand(i)}
             />
           </TagCheckedItem>
@@ -243,6 +280,7 @@ const TagComponent = (props: Props) => {
             tap={onAddDemandTags}
             canAdd={props.canAdd}
             onChangeIsClear={setIsClear}
+            onChangeIsOpen={setIsOpen}
           />
         }
         getPopupContainer={node => node}
