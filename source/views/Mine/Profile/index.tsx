@@ -11,7 +11,7 @@ import { Timeline, DatePicker } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { RangePicker } = DatePicker

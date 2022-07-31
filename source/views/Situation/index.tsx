@@ -10,7 +10,7 @@ import Need from './components/Need'
 import Iteration from './components/Iteration'
 import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`

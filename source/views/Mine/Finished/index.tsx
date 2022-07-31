@@ -4,7 +4,7 @@ import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])

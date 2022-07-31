@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ShowWrap } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 
 const flexCss = css`

@@ -9,7 +9,7 @@ import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 const OperationTop = styled.div({
   height: 64,

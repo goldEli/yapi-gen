@@ -6,7 +6,7 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { type } from 'os'
 import QuicklyCreate from './components/QuicklyCreate'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 
 const buttonCss = css``

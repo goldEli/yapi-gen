@@ -6,7 +6,7 @@ import projectImg from '@/assets/projectImg.png'
 import IconFont from './IconFont'
 import { Dropdown, Menu } from 'antd'
 import { useState } from 'react'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 
 const DropdownWrap = styled(Dropdown)({

@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 const Wrap = styled.div({
   height: '100%',

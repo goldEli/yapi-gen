@@ -18,7 +18,7 @@ import {
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 const Reset = styled.div`
   width: 60px;

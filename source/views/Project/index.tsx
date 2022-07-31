@@ -13,7 +13,7 @@ import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { message } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 const SearchWrap = styled.div({
   height: 64,

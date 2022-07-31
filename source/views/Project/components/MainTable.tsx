@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useModel } from '@/models'
-import { getIsPermission } from '@/tools'
+import { getIsPermission } from '@/tools/index'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
