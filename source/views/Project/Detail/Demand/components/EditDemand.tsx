@@ -217,7 +217,12 @@ const EditDemand = (props: Props) => {
       form.setFieldsValue(demandInfo)
       setPriorityDetail(demandInfo.priority)
       setHtml(demandInfo.info)
-      setAttachList(demandInfo?.attachment.map((i: any) => i.attachment))
+      setAttachList(
+        demandInfo?.attachment.map((i: any) => ({
+          path: i.attachment.path,
+          id: i.id,
+        })),
+      )
       if (demandInfo?.expectedStart) {
         form.setFieldsValue({
           times: [
@@ -298,15 +303,24 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  const onChangeAttachment = (result: any) => {
-    result.path = result.url
-    form.setFieldsValue({
-      attachments: [
-        ...form.getFieldValue('attachments') || [],
-        ...[result.url],
-      ],
-    })
-    setAttachList([...attachList, ...[result]])
+  const onChangeAttachment = (result: any, type: string) => {
+    if (type === 'add') {
+      result.path = result.url
+      form.setFieldsValue({
+        attachments: [
+          ...form.getFieldValue('attachments') || [],
+          ...[result.url],
+        ],
+      })
+      setAttachList([...attachList, ...[result]])
+    } else {
+      const arr = attachList
+      const comResult = arr.filter((i: any) => i.id !== result.uid)
+      form.setFieldsValue({
+        attachments: comResult,
+      })
+      setAttachList(comResult)
+    }
   }
 
   const onCancel = () => {

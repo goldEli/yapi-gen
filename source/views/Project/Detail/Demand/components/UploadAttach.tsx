@@ -15,7 +15,7 @@ const Warp = styled(Upload)({
 
 interface Props {
   addWrap: React.ReactElement
-  onChangeAttachment?(arr: any): void
+  onChangeAttachment?(arr: any, type: string): void
   defaultList?: any
   canUpdate?: boolean
 }
@@ -33,7 +33,7 @@ const UploadAttach = (props: Props) => {
     const array: any[] = []
     props.defaultList?.forEach((element: any) => {
       const obj = {
-        name: element.path.split('/file/')[1],
+        name: String(element.path).split('/file/')[1],
         url: element.path,
         uid: element.id,
         status: 'done',
@@ -106,7 +106,7 @@ const UploadAttach = (props: Props) => {
       if (props.canUpdate) {
         onAddInfoAttach([result.url])
       } else {
-        props.onChangeAttachment?.(result)
+        props.onChangeAttachment?.(result, 'add')
       }
     }
   }
@@ -116,10 +116,10 @@ const UploadAttach = (props: Props) => {
   }
 
   const onRemove = (file: any) => {
-    const result = arr.filter(i => i !== file.response.url)
-    props.onChangeAttachment?.(result)
     if (props.canUpdate) {
       onDeleteInfoAttach(file)
+    } else {
+      props.onChangeAttachment?.(file, 'delete')
     }
   }
 
