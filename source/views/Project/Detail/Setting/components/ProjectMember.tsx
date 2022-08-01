@@ -401,6 +401,16 @@ const ProjectMember = () => {
     },
   ]
 
+  const onChangeUpdate = () => {
+    setOperationItem({})
+    getList(order, pageObj)
+  }
+
+  const onChangeValue = () => {
+    setOperationItem({})
+    setIsAddVisible(!isAddVisible)
+  }
+
   return (
     <PermissionWrap
       auth={
@@ -416,14 +426,14 @@ const ProjectMember = () => {
         />
         <AddMember
           value={isAddVisible}
-          onChangeValue={() => setIsAddVisible(!isAddVisible)}
+          onChangeValue={onChangeValue}
           details={operationItem}
-          onChangeUpdate={() => getList()}
+          onChangeUpdate={onChangeUpdate}
         />
         <Header>
           <HeaderTop>
             <SearchComponent
-              onChangeVisible={() => setIsAddVisible(!isAddVisible)}
+              onChangeVisible={onChangeValue}
               text="添加成员"
               placeholder="输入昵称姓名"
               onChangeSearch={onChangeSearch}
