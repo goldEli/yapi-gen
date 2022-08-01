@@ -12,6 +12,7 @@ import { Space, Button, message } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools/index'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -106,6 +107,15 @@ const IterationWrap = () => {
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo } = useModel('project')
 
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/del',
+  )
+
   const childContent = () => {
     if (type === 'info') {
       return <IterationInfo />
@@ -184,10 +194,17 @@ const IterationWrap = () => {
             <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
           </NameWrap>
           <Space size={16}>
-            <Button type="primary" onClick={onChangeEditVisible}>
-              编辑
-            </Button>
-            <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
+            {hasEdit
+              ? null
+              : (
+                  <Button type="primary" onClick={onChangeEditVisible}>
+                编辑
+                  </Button>
+                )}
+            {hasDel
+              ? null
+              : <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
+            }
           </Space>
         </DemandInfoWrap>
         <ContentWrap>

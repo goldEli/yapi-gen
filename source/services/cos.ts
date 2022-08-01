@@ -29,9 +29,9 @@ export const formatFileSize = (val: number) => {
 
 const getCosSign = async (): Promise<any> => {
   const response = await http.post<any, any>('getCosSign', {
-    accessToken: 'aFjZCHViLrnYwqBCHQTyPPhiciLGnuuJ',
-    app_id: 13,
-    bucket_id: 6,
+    accessToken: import.meta.env.__COS_SIGN_ACCESS_TOKEN__,
+    app_id: import.meta.env.__COS_SIGN_APP_ID__,
+    bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
   })
   if (response.code !== 1) {
     throw new Error(response.msg)

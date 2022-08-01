@@ -174,7 +174,7 @@ const EditDemand = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id') || props.preId
   const demandId = searchParams.get('demandId')
-  const { memberList } = useModel('project')
+  const { memberList, projectInfo } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const { addDemand, getDemandInfo, updateDemand, getDemandList }
     = useModel('demand')
@@ -497,7 +497,14 @@ const EditDemand = (props: Props) => {
             />
           </Form.Item>
         </div>
-        <div style={{ display: 'flex' }}>
+        <div
+          style={{ display: 'flex' }}
+          hidden={
+            !projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length
+          }
+        >
           <IconFont className="labelIcon" type="attachment" />
           <Form.Item label="附件" name="attachments">
             <UploadAttach

@@ -23,6 +23,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
+import { getIsPermission } from '@/tools/index'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -113,6 +114,27 @@ const WrapLeft = (props: Props) => {
   const projectId = searchParams.get('id')
   const { getIterateList, updateIterateStatus, deleteIterate }
     = useModel('iterate')
+  const { projectInfo } = useModel('project')
+  const hasAdd = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/store',
+  )
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/del',
+  )
+  const hasChangeStatus = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/status',
+  )
+  const hasFilter = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/get',
+  )
 
   const getList = async () => {
     const values = form.getFieldsValue()
@@ -261,28 +283,39 @@ const WrapLeft = (props: Props) => {
     }
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => onChangeEdit(e, item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={e => onChangeEnd(e, item)}>
-              {item.status === 1 ? '关闭' : '开启'}
-            </div>
-          ),
-        },
-        {
-          key: '3',
-          label: <div onClick={e => onChangeDelete(e, item)}> 删除 </div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={e => onChangeEdit(e, item)}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onChangeEnd(e, item)}>
+            {item.status === 1 ? '关闭' : '开启'}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: <div onClick={e => onChangeDelete(e, item)}> 删除 </div>,
+      },
+    ]
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasChangeStatus) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
@@ -307,7 +340,10 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        <AddButton text="创建迭代" onChangeClick={onChangeClick} />
+        {hasAdd
+          ? null
+          : <AddButton text="创建迭代" onChangeClick={onChangeClick} />
+        }
         <Space size={20}>
           <Popover
             trigger="click"
@@ -317,16 +353,24 @@ const WrapLeft = (props: Props) => {
           >
             <IconWrap type="sort" />
           </Popover>
-          <Divider style={{ margin: 0, height: 20 }} type="vertical" />
-          <Popover
-            trigger="click"
-            placement="bottomRight"
-            content={filterContent}
-            getPopupContainer={node => node}
-            visible={isFilter}
-          >
-            <IconWrap onClick={() => setIsFilter(true)} type="filter" />
-          </Popover>
+          {hasFilter
+            ? null
+            : <Divider style={{ margin: 0, height: 20 }} type="vertical" />
+          }
+
+          {hasFilter
+            ? null
+            : (
+                <Popover
+                  trigger="click"
+                  placement="bottomRight"
+                  content={filterContent}
+                  getPopupContainer={node => node}
+                  visible={isFilter}
+                >
+                  <IconWrap onClick={() => setIsFilter(true)} type="filter" />
+                </Popover>
+              )}
         </Space>
       </TopWrap>
       {dataList.list?.map((item: any) => (

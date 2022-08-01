@@ -11,7 +11,6 @@ export default () => {
   }
   const getUserDetail = async () => {
     const result = await services.user.getUserDetail()
-
     setUserInfo(result)
   }
 
