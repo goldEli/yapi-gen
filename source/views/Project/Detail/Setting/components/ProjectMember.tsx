@@ -13,6 +13,8 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -130,12 +132,25 @@ const ProjectMember = () => {
   const [operationItem, setOperationItem] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
   const [jobList, setJobList] = useState<any>([])
-  const { getProjectMember, deleteMember, projectPermission }
+  const { getProjectMember, deleteMember, projectPermission, projectInfo }
     = useModel('project')
   const { getPositionSelectList } = useModel('staff')
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+
+  const hasAdd = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/project/member/save',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/project/member/delete',
+  )
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/project/member/update',
+  )
 
   const getList = async (orderVal?: any) => {
     const values = await form.getFieldsValue()
@@ -211,22 +226,28 @@ const ProjectMember = () => {
     getList(order)
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label:
-            <div onClick={() => onOperationMember(item, 'edit')}>编辑</div>
-          ,
-        },
-        {
-          key: '2',
-          label: <div onClick={() => onOperationMember(item, 'del')}>移除</div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={() => onOperationMember(item, 'edit')}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: <div onClick={() => onOperationMember(item, 'del')}>移除</div>,
+      },
+    ]
+
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
@@ -249,14 +270,16 @@ const ProjectMember = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Dropdown
-              overlay={() => menu(record)}
-              trigger={['click']}
-              placement="bottom"
-              getPopupContainer={node => node}
-            >
-              <RowIconFont type="more" />
-            </Dropdown>
+            {hasDel && hasEdit ? null : (
+              <Dropdown
+                overlay={() => menu(record)}
+                trigger={['click']}
+                placement="bottom"
+                getPopupContainer={node => node}
+              >
+                <RowIconFont type="more" />
+              </Dropdown>
+            )}
             {record.avatar ? (
               <img
                 src={record.avatar}
@@ -364,106 +387,115 @@ const ProjectMember = () => {
   ]
 
   return (
-    <Wrap>
-      <DeleteConfirm
-        text="确认要删除当前成员？"
-        isVisible={isDelete}
-        onChangeVisible={() => setIsDelete(!isDelete)}
-        onConfirm={onDeleteConfirm}
-      />
-      <AddMember
-        value={isAddVisible}
-        onChangeValue={() => setIsAddVisible(!isAddVisible)}
-        details={operationItem}
-        onChangeUpdate={() => getList()}
-      />
-      <Header>
-        <HeaderTop>
-          <SearchComponent
-            onChangeVisible={() => setIsAddVisible(!isAddVisible)}
-            text="添加成员"
-            placeholder="输入昵称姓名"
-            onChangeSearch={onChangeSearch}
-          />
-          <IconFont
-            style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
-            type="filter"
-            onClick={() => setIsVisible(!isVisible)}
-          />
-        </HeaderTop>
-        <FilterWrap
-          hidden={isVisible}
-          form={form}
-          onValuesChange={onValuesChange}
-          initialValues={{
-            pageSize: 10,
-            page: 1,
-          }}
-        >
-          <SearchWrap>
-            <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '12px' }}>职位</span>
-              <Form.Item name="page" />
-              <Form.Item name="pageSize" />
-              <Form.Item name="searchValue" />
-              <Form.Item name="jobIds" noStyle>
-                <SelectWrap
-                  mode="multiple"
-                  style={{ width: '100%' }}
-                  placeholder="所有"
-                  showSearch
-                  options={jobList}
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-            </SelectWrapBedeck>
-            <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '12px' }}>权限组</span>
-              <Form.Item name="userGroupIds" noStyle>
-                <SelectWrap
-                  mode="multiple"
-                  style={{ width: '100%' }}
-                  placeholder="所有"
-                  showSearch
-                  options={projectPermission}
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-            </SelectWrapBedeck>
-            <div
-              style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
-              onClick={onReset}
-            >
-              清除条件
-            </div>
-          </SearchWrap>
-        </FilterWrap>
-      </Header>
-      <Content>
-        <TableBox
-          rowKey="id"
-          columns={columns}
-          dataSource={memberList?.list}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-          showSorterTooltip={false}
+    <PermissionWrap
+      auth={
+        projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length
+      }
+    >
+      <Wrap>
+        <DeleteConfirm
+          text="确认要删除当前成员？"
+          isVisible={isDelete}
+          onChangeVisible={() => setIsDelete(!isDelete)}
+          onConfirm={onDeleteConfirm}
         />
-        <PaginationWrap>
-          <Pagination
-            defaultCurrent={1}
-            current={memberList?.currentPage}
-            showSizeChanger
-            showQuickJumper
-            total={memberList?.total}
-            showTotal={total => `Total ${total} items`}
-            pageSizeOptions={['10', '20', '50']}
-            onChange={onChangePage}
-            onShowSizeChange={onShowSizeChange}
-            hideOnSinglePage
+        <AddMember
+          value={isAddVisible}
+          onChangeValue={() => setIsAddVisible(!isAddVisible)}
+          details={operationItem}
+          onChangeUpdate={() => getList()}
+        />
+        <Header>
+          <HeaderTop>
+            <SearchComponent
+              onChangeVisible={() => setIsAddVisible(!isAddVisible)}
+              text="添加成员"
+              placeholder="输入昵称姓名"
+              onChangeSearch={onChangeSearch}
+              isPermission={hasAdd}
+            />
+            <IconFont
+              style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
+              type="filter"
+              onClick={() => setIsVisible(!isVisible)}
+            />
+          </HeaderTop>
+          <FilterWrap
+            hidden={isVisible}
+            form={form}
+            onValuesChange={onValuesChange}
+            initialValues={{
+              pageSize: 10,
+              page: 1,
+            }}
+          >
+            <SearchWrap>
+              <SelectWrapBedeck>
+                <span style={{ margin: '0 16px', fontSize: '12px' }}>职位</span>
+                <Form.Item name="page" />
+                <Form.Item name="pageSize" />
+                <Form.Item name="searchValue" />
+                <Form.Item name="jobIds" noStyle>
+                  <SelectWrap
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="所有"
+                    showSearch
+                    options={jobList}
+                    optionFilterProp="label"
+                  />
+                </Form.Item>
+              </SelectWrapBedeck>
+              <SelectWrapBedeck>
+                <span style={{ margin: '0 16px', fontSize: '12px' }}>
+                  权限组
+                </span>
+                <Form.Item name="userGroupIds" noStyle>
+                  <SelectWrap
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="所有"
+                    showSearch
+                    options={projectPermission}
+                    optionFilterProp="label"
+                  />
+                </Form.Item>
+              </SelectWrapBedeck>
+              <div
+                style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
+                onClick={onReset}
+              >
+                清除条件
+              </div>
+            </SearchWrap>
+          </FilterWrap>
+        </Header>
+        <Content>
+          <TableBox
+            rowKey="id"
+            columns={columns}
+            dataSource={memberList?.list}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+            showSorterTooltip={false}
           />
-        </PaginationWrap>
-      </Content>
-    </Wrap>
+          <PaginationWrap>
+            <Pagination
+              defaultCurrent={1}
+              current={memberList?.currentPage}
+              showSizeChanger
+              showQuickJumper
+              total={memberList?.total}
+              showTotal={total => `Total ${total} items`}
+              pageSizeOptions={['10', '20', '50']}
+              onChange={onChangePage}
+              onShowSizeChange={onShowSizeChange}
+              hideOnSinglePage
+            />
+          </PaginationWrap>
+        </Content>
+      </Wrap>
+    </PermissionWrap>
   )
 }
 

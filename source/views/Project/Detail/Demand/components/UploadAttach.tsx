@@ -26,6 +26,7 @@ const UploadAttach = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
+  const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
   let arr: any[] = []
 
@@ -137,7 +138,9 @@ const UploadAttach = (props: Props) => {
       format: percent => percent && `${parseFloat(percent.toFixed(2))}%`,
     },
     showUploadList: {
-      showDownloadIcon: true,
+      showDownloadIcon: projectInfo?.projectPermissions?.filter(
+        (i: any) => i.name === '附件下载',
+      ).length,
     },
   }
 

@@ -32,20 +32,6 @@ const StatusWrap = styled.div({
   cursor: 'pointer',
 })
 
-const PriorityWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.anticon': {
-    fontSize: 16,
-  },
-})
-
 const Content = styled.div({
   padding: 24,
   background: '#F5F7FA',

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import styled from '@emotion/styled'
@@ -8,6 +9,7 @@ import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal, message } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+import { getIsPermission } from '@/tools/index'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -65,6 +67,11 @@ const Operation = (props: Props) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const hasChangeStatus = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/status',
+  )
+
   const onChangeStatus = async (val: number) => {
     if (val !== props.currentDetail?.status) {
       try {
@@ -174,11 +181,7 @@ const Operation = (props: Props) => {
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             {props.currentDetail?.startTime}-{props.currentDetail?.endTime}
           </span>
-          <Popover
-            placement="bottom"
-            content={changeStatus}
-            getPopupContainer={node => node}
-          >
+          {hasChangeStatus ? (
             <StatusTag>
               {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
               <IconFont
@@ -186,7 +189,22 @@ const Operation = (props: Props) => {
                 style={{ fontSize: 12, marginLeft: 4 }}
               />
             </StatusTag>
-          </Popover>
+          ) : (
+            <Popover
+              placement="bottom"
+              content={changeStatus}
+              getPopupContainer={node => node}
+            >
+              <StatusTag>
+                {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+                <IconFont
+                  type="down-icon"
+                  style={{ fontSize: 12, marginLeft: 4 }}
+                />
+              </StatusTag>
+            </Popover>
+          )}
+
           <IconFont
             onClick={() => setVisible(true)}
             type="detail"
@@ -207,18 +225,16 @@ const Operation = (props: Props) => {
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
         />
       </OperationWrap>
-      {filterState
-        ? null
-        : (
-            <TableFilter
-              onFilter={getSearchKey}
-              onSearch={onFilterSearch}
-              list={searchList}
-              basicsList={filterBasicsList}
-              specialList={filterSpecialList}
-              isIteration
-            />
-          )}
+      {filterState ? null : (
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onFilterSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+          isIteration
+        />
+      )}
     </StickyWrap>
   )
 }

@@ -104,6 +104,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
+  const { projectInfo } = useModel('project')
 
   const onChangeState = async (item: any) => {
     try {
@@ -160,7 +161,13 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
           }
         />
       </InfoItem>
-      <InfoItem>
+      <InfoItem
+        hidden={
+          !projectInfo?.projectPermissions?.filter(
+            (i: any) => i.name === '附件上传',
+          ).length
+        }
+      >
         <Label>附件</Label>
         <UploadAttach
           defaultList={demandInfo?.attachment?.map((i: any) => ({

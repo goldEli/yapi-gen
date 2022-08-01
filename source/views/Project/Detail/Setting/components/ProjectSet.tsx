@@ -10,6 +10,8 @@ import { useModel } from '@/models'
 import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools'
 
 const Warp = styled.div({
   padding: 16,
@@ -203,6 +205,7 @@ const ProjectSet = () => {
     addPermission,
     updatePermission,
     deletePermission,
+    projectInfo,
   } = useModel('project')
 
   const getPermissionList = async (id: number) => {
@@ -322,111 +325,115 @@ const ProjectSet = () => {
   )
 
   return (
-    <div style={{ height: '100%' }}>
-      <DeleteConfirm
-        isVisible={isDelete}
-        text="确认要删除该分组？"
-        onChangeVisible={() => setIsDelete(!isDelete)}
-        onConfirm={onDeleteConfirm}
-      />
-      <Modal
-        footer={false}
-        visible={isVisible}
-        title={false}
-        closable={false}
-        bodyStyle={{ padding: '16px 24px' }}
-        width={420}
-      >
-        <ModalHeader>
-          <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>
-          <IconFont
-            onClick={onClose}
-            style={{ cursor: 'pointer' }}
-            type="close"
-          />
-        </ModalHeader>
-        <div style={{ margin: '24px 0' }}>
-          <Input
-            maxLength={10}
-            value={addValue}
-            onChange={e => setAddValue(e.target.value)}
-            placeholder="请输入权限组名称"
-          />
-        </div>
-        <ModalFooter size={16}>
-          <Button onClick={onClose}>取消</Button>
-          <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
-            确认
-          </Button>
-        </ModalFooter>
-      </Modal>
-      <Warp>
-        <SetMain>
-          <SetLeft>
-            <Title style={{ marginLeft: 24 }}>用户组</Title>
-            <MenuItems>
-              {dataList?.map((item: any) => (
-                <MenuItem
-                  key={item.id}
-                  onClick={() => onChangeTabs(item)}
-                  isActive={item.id === activeDetail.id}
-                >
-                  <div className="name">{item.name}</div>
-                  <span className="subName">
-                    {item.type === 1 ? '系统权限组' : '自定义权限组'}
-                  </span>
-                  <Dropdown
-                    overlay={() => menu(item)}
-                    placement="bottomRight"
-                    trigger={['hover']}
-                    getPopupContainer={node => node}
-                  >
-                    <IconWrap type="more" hidden={item.type === 1} />
-                  </Dropdown>
-                </MenuItem>
-              ))}
-            </MenuItems>
-            <div
-              style={{
-                textAlign: 'center',
-                cursor: 'pointer',
-                color: '#2877FF',
-              }}
-              onClick={() => setIsVisible(true)}
-            >
-              <IconFont type="plus" />
-              <span>添加用户组</span>
-            </div>
-          </SetLeft>
-          <SetRight>
-            <Title>{activeDetail.name}</Title>
-            <TitleGroup>
-              <CheckboxWrap>全选</CheckboxWrap>
-              <OperationWrap>操作对象</OperationWrap>
-              <span>权限</span>
-            </TitleGroup>
-            <MainWrap>
-              {permissionList.list?.map((i: any) => (
-                <PermissionItem
-                  key={i.id}
-                  item={i}
-                  onChange={setSelectKeys}
-                  value={selectKeys}
-                />
-              ))}
-            </MainWrap>
-            <Button
-              hidden={activeDetail.type === 1}
-              style={{ width: 'fit-content', marginTop: 16 }}
-              type="primary"
-              onClick={onSavePermission}
-            >
-              保存
+    <PermissionWrap
+      auth={getIsPermission(projectInfo?.projectPermissions, 'b/project/role')}
+    >
+      <div style={{ height: '100%' }}>
+        <DeleteConfirm
+          isVisible={isDelete}
+          text="确认要删除该分组？"
+          onChangeVisible={() => setIsDelete(!isDelete)}
+          onConfirm={onDeleteConfirm}
+        />
+        <Modal
+          footer={false}
+          visible={isVisible}
+          title={false}
+          closable={false}
+          bodyStyle={{ padding: '16px 24px' }}
+          width={420}
+        >
+          <ModalHeader>
+            <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>
+            <IconFont
+              onClick={onClose}
+              style={{ cursor: 'pointer' }}
+              type="close"
+            />
+          </ModalHeader>
+          <div style={{ margin: '24px 0' }}>
+            <Input
+              maxLength={10}
+              value={addValue}
+              onChange={e => setAddValue(e.target.value)}
+              placeholder="请输入权限组名称"
+            />
+          </div>
+          <ModalFooter size={16}>
+            <Button onClick={onClose}>取消</Button>
+            <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
+              确认
             </Button>
-          </SetRight>
-        </SetMain>
-      </Warp>
-    </div>
+          </ModalFooter>
+        </Modal>
+        <Warp>
+          <SetMain>
+            <SetLeft>
+              <Title style={{ marginLeft: 24 }}>用户组</Title>
+              <MenuItems>
+                {dataList?.map((item: any) => (
+                  <MenuItem
+                    key={item.id}
+                    onClick={() => onChangeTabs(item)}
+                    isActive={item.id === activeDetail.id}
+                  >
+                    <div className="name">{item.name}</div>
+                    <span className="subName">
+                      {item.type === 1 ? '系统权限组' : '自定义权限组'}
+                    </span>
+                    <Dropdown
+                      overlay={() => menu(item)}
+                      placement="bottomRight"
+                      trigger={['hover']}
+                      getPopupContainer={node => node}
+                    >
+                      <IconWrap type="more" hidden={item.type === 1} />
+                    </Dropdown>
+                  </MenuItem>
+                ))}
+              </MenuItems>
+              <div
+                style={{
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  color: '#2877FF',
+                }}
+                onClick={() => setIsVisible(true)}
+              >
+                <IconFont type="plus" />
+                <span>添加用户组</span>
+              </div>
+            </SetLeft>
+            <SetRight>
+              <Title>{activeDetail.name}</Title>
+              <TitleGroup>
+                <CheckboxWrap>全选</CheckboxWrap>
+                <OperationWrap>操作对象</OperationWrap>
+                <span>权限</span>
+              </TitleGroup>
+              <MainWrap>
+                {permissionList.list?.map((i: any) => (
+                  <PermissionItem
+                    key={i.id}
+                    item={i}
+                    onChange={setSelectKeys}
+                    value={selectKeys}
+                  />
+                ))}
+              </MainWrap>
+              <Button
+                hidden={activeDetail.type === 1}
+                style={{ width: 'fit-content', marginTop: 16 }}
+                type="primary"
+                onClick={onSavePermission}
+              >
+                保存
+              </Button>
+            </SetRight>
+          </SetMain>
+        </Warp>
+      </div>
+    </PermissionWrap>
   )
 }
 
