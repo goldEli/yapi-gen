@@ -144,6 +144,7 @@ export const Panel = () => {
   }
   const toLoginOut = () => {
     loginOut()
+    loginOut()
   }
 
   return (
