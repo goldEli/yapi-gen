@@ -180,7 +180,14 @@ const Staff = () => {
       <StaffHeader>公司员工</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset onClick={() => refreshStaff()}>刷新</Reset>
+          <Reset
+            onClick={() => {
+              refreshStaff()
+              location.reload()
+            }}
+          >
+            刷新
+          </Reset>
           <MyInput
             suffix={
               <IconFont
