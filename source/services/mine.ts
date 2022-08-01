@@ -302,7 +302,10 @@ export const getMineCreacteList: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
-  return response
+  return {
+    list: response.data.list,
+    pager: response.data.pager,
+  }
 }
 
 // 获取我的已办列表
