@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
@@ -103,18 +104,23 @@ const ModalFooter = styled.div({
   justifyContent: 'space-between',
 })
 
-const AddButtonWrap = styled.div({
-  height: 32,
-  boxSizing: 'border-box',
-  borderRadius: 6,
-  border: '1px solid #2877FF',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: '#2877FF',
-  padding: '0 16px',
-  cursor: 'pointer',
-})
+const AddButtonWrap = styled.div<{ isEdit?: boolean }>(
+  {
+    height: 32,
+    boxSizing: 'border-box',
+    borderRadius: 6,
+    border: '1px solid #2877FF',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#2877FF',
+    padding: '0 16px',
+    cursor: 'pointer',
+  },
+  ({ isEdit }) => ({
+    visibility: isEdit ? 'hidden' : 'visible',
+  }),
+)
 
 interface Props {
   visible: boolean
@@ -521,7 +527,7 @@ const EditDemand = (props: Props) => {
         </div>
       </FormWrap>
       <ModalFooter>
-        <AddButtonWrap onClick={() => onSaveDemand(1)}>
+        <AddButtonWrap isEdit={props?.id} onClick={() => onSaveDemand(1)}>
           完成并创建下一个
         </AddButtonWrap>
         <Space size={16}>
