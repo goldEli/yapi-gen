@@ -11,10 +11,17 @@ import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import moment from 'moment'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { RangePicker } = DatePicker
 
+const titleWrap = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+`
 const titleNumberCss = css`
   color: rgba(67, 186, 154, 1);
   font-size: 24px;
@@ -114,6 +121,16 @@ const Profile = () => {
     })
 
     setLineData(res1.data)
+    const res2 = await getMineGatte({
+      startTime: moment().startOf('month')
+        .format('YYYY-MM-DD'),
+      endTime: moment().endOf('month')
+        .format('YYYY-MM-DD'),
+
+      // startTime: '2022-07-01 00:00:00',
+      // endTime: '2022-07-31 23:59:59',
+    })
+    setGatteData(res2)
   }
   const onChange = async (
     value: DatePickerProps['value'] | RangePickerProps['value'],
@@ -126,6 +143,7 @@ const Profile = () => {
       // startTime: '2022-07-01 00:00:00',
       // endTime: '2022-07-31 23:59:59',
     })
+
     setGatteData(res)
   }
 
@@ -208,9 +226,11 @@ const Profile = () => {
         </Center>
       </StyledWrap>
       <GatteWrap>
-        <SecondTitle>需求甘特图</SecondTitle>
-        <RangePicker format="YYYY-MM-DD" onChange={onChange} />
-        <Gatte data={gatteData} />
+        <div className={titleWrap}>
+          <SecondTitle>需求甘特图</SecondTitle>
+          <RangePicker format="YYYY-MM-DD" onChange={onChange} />
+        </div>
+        {gatteData.length > 1 && <Gatte data={gatteData} />}
       </GatteWrap>
     </PermissionWrap>
   )
