@@ -12,6 +12,17 @@ export const loginOut: any = async () => {
   return response
 }
 
+export const login = async () => {
+  const ticket = new URLSearchParams(location.search).get('ticket')
+
+  const response = await http.put(
+    'https://dev.staryuntech.com/api/auth/checkTicket',
+    { ticket },
+  )
+
+  localStorage.setItem('token', response.data.token)
+}
+
 export const getTicket = (toHome?: boolean) => {
   const url = new URL(import.meta.env.__SSO_ORIGIN__)
   url.searchParams.set('type', '0')
@@ -20,6 +31,7 @@ export const getTicket = (toHome?: boolean) => {
     toHome || location.pathname === '/' ? location.href : location.href,
   )
   url.searchParams.set('language', localStorage.getItem('language') || 'zh')
+
   location.href = url.href
 }
 

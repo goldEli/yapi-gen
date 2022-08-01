@@ -29,7 +29,7 @@ const FooterWrap = styled(Space)({
 })
 
 const CompanyModal = (props: Props) => {
-  const { getCompanyList, updateCompany, getUserDetail } = useModel('user')
+  const { getCompanyList, updateCompany, userInfo } = useModel('user')
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
   const [companyParams, setCompanyParams] = useState({
@@ -38,9 +38,8 @@ const CompanyModal = (props: Props) => {
   })
 
   const init = async () => {
-    const res = await getUserDetail()
     const res2 = await getCompanyList()
-    setActiveId(res.company_id)
+    setActiveId(userInfo.company_id)
     setCompanyList(res2.data)
   }
   useEffect(() => {

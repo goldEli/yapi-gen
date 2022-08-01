@@ -85,8 +85,7 @@ const activeCss = css`
 `
 
 export const Side = () => {
-  const [userData, setUserData] = useState<any>({})
-  const { getUserDetail } = useModel('user')
+  const { userInfo } = useModel('user')
   const location = useLocation()
   const { pathname } = location
   const nowPath
@@ -97,17 +96,9 @@ export const Side = () => {
   const onNavigation = (path: string) => {
     navigate(path)
   }
-  const init = async () => {
-    const res = await getUserDetail()
-    setUserData(res)
-  }
-
-  useEffect(() => {
-    init()
-  }, [])
 
   const getIsPermission = (value: string) => {
-    return !userData?.company_permissions?.filter((i: any) => String(i.group_name).includes(value)).length
+    return !userInfo?.company_permissions?.filter((i: any) => String(i.group_name).includes(value)).length
   }
 
   const getMenu = () => {
@@ -176,7 +167,7 @@ export const Side = () => {
           <span>设置</span>
         </SideEach>
         <Popover placement="rightTop" trigger="click" content={<Panel />}>
-          <SetHead onClick={controlPanelVisible}>{userData?.name}</SetHead>
+          <SetHead onClick={controlPanelVisible}>{userInfo?.name}</SetHead>
         </Popover>
       </SideFooter>
     </SideWrap>

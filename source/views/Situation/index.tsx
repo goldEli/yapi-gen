@@ -40,14 +40,10 @@ const Head = styled.div`
 `
 
 const Situation = () => {
-  const { getGlobalGeneral, getUserDetail } = useModel('user')
+  const { getGlobalGeneral, userInfo } = useModel('user')
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
-  const [userData, setUserData] = useState<any>({})
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {
-    const res1 = await getUserDetail()
-
-    setUserData(res1)
     const res = await getGlobalGeneral()
 
     setGeneralData(res)
@@ -61,7 +57,7 @@ const Situation = () => {
       <Head>
         <span>公司概况</span>
         <PanelHeaderSecond>
-          <div>{userData?.company_name}</div>
+          <div>{userInfo?.company_name}</div>
           <Tooltip placement="top" title="切换企业">
             <div
               onClick={() => setCompanyModalVisible(true)}
@@ -77,7 +73,7 @@ const Situation = () => {
       </Head>
       <PermissionWrap
         auth={getIsPermission(
-          userData?.company_permissions,
+          userInfo?.company_permissions,
           'b/company/statistics',
         )}
       >

@@ -109,22 +109,13 @@ const LanguageLine = styled.div`
 `
 
 export const Panel = () => {
-  const { loginOut, getUserDetail } = useModel('user')
+  const { loginOut, userInfo } = useModel('user')
 
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
   const [languageMode, setLanguageMode] = useState(1)
-  const [userData, setUserData] = useState<any>({})
-
-  const init = async () => {
-    const res = await getUserDetail()
-    setUserData(res)
-  }
-  useEffect(() => {
-    init()
-  }, [])
 
   const changeLanguageMode = (value: number) => {
     setLanguageMode(value)
@@ -159,14 +150,14 @@ export const Panel = () => {
     <Box>
       <PanelHeader>
         <PanelHeaderFirst>
-          <SetHead>{userData?.name}</SetHead>
+          <SetHead>{userInfo?.name}</SetHead>
           <NanmeAndPhone>
-            <span>{userData?.name}</span>
-            <span>{userData?.phone}</span>
+            <span>{userInfo?.name}</span>
+            <span>{userInfo?.phone}</span>
           </NanmeAndPhone>
         </PanelHeaderFirst>
         <PanelHeaderSecond>
-          <div>{userData?.company_name}</div>
+          <div>{userInfo?.company_name}</div>
           <Tooltip placement="top" title="切换企业">
             <div
               onClick={() => setCompanyModalVisible(true)}

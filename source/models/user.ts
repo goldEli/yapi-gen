@@ -8,12 +8,11 @@ export default () => {
   const getLoginDetail = async () => {
     const result = await services.user.getLoginDetail()
     setLoginInfo(result.data)
-    return result
   }
   const getUserDetail = async () => {
     const result = await services.user.getUserDetail()
-    setUserInfo(result)
-    return result
+
+    setUserInfo(result.data)
   }
 
   const {
@@ -22,9 +21,11 @@ export default () => {
     getGlobalGeneral,
     updateCompany,
     getTicket,
+    login,
   } = services.user
 
   return {
+    login,
     getTicket,
     loginInfo,
     userInfo,

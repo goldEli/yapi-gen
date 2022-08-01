@@ -42,8 +42,7 @@ client.config({
   },
   requestInterceptors: [
     options => {
-      options.headers.Authorization =
-        localStorage.getItem('token') || 'a6699553ccfc5660da85d0646be43e59'
+      options.headers.Authorization = localStorage.getItem('token') || ''
       options.headers.System = getSystem()
       options.headers.Client = browser()
       options.payload = JSON.stringify(options.payload)
@@ -54,14 +53,16 @@ client.config({
       return JSON.parse((response as { body: string }).body)
     },
     (data: any) => {
-      if (data.code === 'A0203' || data.code === 'A0202') {
+      if (data.code === 'A0204' || data.code === 'A0203') {
         localStorage.removeItem('token')
         getTicket()
+        return
       }
       if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
         message.error(data.message)
         throw new Error(data.code)
       }
+      // eslint-disable-next-line consistent-return
       return {
         code: Number(data.code),
         data: data.data,
