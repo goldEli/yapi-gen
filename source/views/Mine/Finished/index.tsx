@@ -26,7 +26,12 @@ const Finished = () => {
   }
 
   return (
-    <PermissionWrap auth>
+    <PermissionWrap
+      auth={getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/finish/story',
+      )}
+    >
       <StaffHeader>我的已办</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <Need id={projectId} />
