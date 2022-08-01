@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
@@ -13,7 +13,7 @@ const Finished = () => {
   const { userInfo } = useModel('user')
 
   const init = async () => {
-    const res = await getMineProjectList('copysend')
+    const res = await getMineProjectList('create')
     setSwiperData(res.data)
   }
   useEffect(() => {
@@ -29,10 +29,10 @@ const Finished = () => {
     <PermissionWrap
       auth={getIsPermission(
         userInfo?.company_permissions,
-        'b/user/create/story',
+        'b/user/copysend/story',
       )}
     >
-      <StaffHeader>我的创建</StaffHeader>
+      <StaffHeader>抄送我的</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <Need id={projectId} />
     </PermissionWrap>
