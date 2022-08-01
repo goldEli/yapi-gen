@@ -86,9 +86,9 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChildDemandTable = (props: { value: any; row: any }) => {
+export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const projectId = searchParams.get('id') || props.id
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const { getDemandList, updateDemandStatus } = useModel('demand')

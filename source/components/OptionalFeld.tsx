@@ -107,13 +107,15 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       <CheckedItem key={item.value}>
         <IconFont style={{ fontSize: 12, marginRight: '8px' }} type="move" />
         <span>{item.label}</span>
-        <ShowWrap style={{ marginLeft: 'auto' }}>
-          <IconFont
-            style={{ fontSize: 12 }}
-            type="close"
-            onClick={() => del(item.value)}
-          />
-        </ShowWrap>
+        {item.value !== 'name' && (
+          <ShowWrap style={{ marginLeft: 'auto' }}>
+            <IconFont
+              style={{ fontSize: 12 }}
+              type="close"
+              onClick={() => del(item.value)}
+            />
+          </ShowWrap>
+        )}
       </CheckedItem>
     ))
   }, [checkList, checkList2, plainOptions, plainOptions2])

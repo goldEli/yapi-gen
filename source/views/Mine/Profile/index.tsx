@@ -110,6 +110,7 @@ const Profile = () => {
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
+  const navigate = useNavigate()
   const init = async () => {
     const res = await getMineChartsList()
 
@@ -210,7 +211,14 @@ const Profile = () => {
                   <Timeline.Item key={item.id}>
                     <LineItem>
                       <span>{item.created_at}</span>
-                      <span style={{ color: 'rgba(40, 119, 255, 1)' }}>
+                      <span
+                        onClick={() => {
+                          navigate(
+                            `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
+                          )
+                        }}
+                        style={{ color: '#3338a5', cursor: 'pointer' }}
+                      >
                         {item.content}
                       </span>
                     </LineItem>
