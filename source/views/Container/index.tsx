@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
 import { useModel } from '@/models'
+import { login } from '@/services/user'
 
 const Wrap = styled.div`
   display: flex;
@@ -21,11 +22,19 @@ const Main = styled.div`
 
 export const Container = () => {
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const { getLoginDetail } = useModel('user')
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const { loginInfo, getLoginDetail, getUserDetail, login } = useModel('user')
 
   const init = async () => {
-    const res = await getLoginDetail()
-    setIsNextVisible(res.data.admin_first_login)
+    if (!localStorage.getItem('token')) {
+      await login()
+    }
+
+    await getLoginDetail()
+    await getUserDetail()
+
+    // console.log(loginInfo)
+    setIsNextVisible(loginInfo.admin_first_login)
   }
 
   useEffect(() => {
