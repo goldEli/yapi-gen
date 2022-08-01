@@ -1,21 +1,27 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
-import { Line } from '@ant-design/plots'
 import { Timeline, DatePicker } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import moment from 'moment'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { RangePicker } = DatePicker
 
+const titleWrap = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+`
 const titleNumberCss = css`
   color: rgba(67, 186, 154, 1);
   font-size: 24px;
@@ -104,6 +110,7 @@ const Profile = () => {
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
+  const navigate = useNavigate()
   const init = async () => {
     const res = await getMineChartsList()
 
@@ -115,6 +122,16 @@ const Profile = () => {
     })
 
     setLineData(res1.data)
+    const res2 = await getMineGatte({
+      startTime: moment().startOf('month')
+        .format('YYYY-MM-DD'),
+      endTime: moment().endOf('month')
+        .format('YYYY-MM-DD'),
+
+      // startTime: '2022-07-01 00:00:00',
+      // endTime: '2022-07-31 23:59:59',
+    })
+    setGatteData(res2)
   }
   const onChange = async (
     value: DatePickerProps['value'] | RangePickerProps['value'],
@@ -127,11 +144,13 @@ const Profile = () => {
       // startTime: '2022-07-01 00:00:00',
       // endTime: '2022-07-31 23:59:59',
     })
+
     setGatteData(res)
   }
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -192,7 +211,14 @@ const Profile = () => {
                   <Timeline.Item key={item.id}>
                     <LineItem>
                       <span>{item.created_at}</span>
-                      <span style={{ color: 'rgba(40, 119, 255, 1)' }}>
+                      <span
+                        onClick={() => {
+                          navigate(
+                            `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
+                          )
+                        }}
+                        style={{ color: '#3338a5', cursor: 'pointer' }}
+                      >
                         {item.content}
                       </span>
                     </LineItem>
@@ -208,9 +234,11 @@ const Profile = () => {
         </Center>
       </StyledWrap>
       <GatteWrap>
-        <SecondTitle>需求甘特图</SecondTitle>
-        <RangePicker format="YYYY-MM-DD" onChange={onChange} />
-        <Gatte data={gatteData} />
+        <div className={titleWrap}>
+          <SecondTitle>需求甘特图</SecondTitle>
+          <RangePicker format="YYYY-MM-DD" onChange={onChange} />
+        </div>
+        {gatteData.length > 1 && <Gatte data={gatteData} />}
       </GatteWrap>
     </PermissionWrap>
   )

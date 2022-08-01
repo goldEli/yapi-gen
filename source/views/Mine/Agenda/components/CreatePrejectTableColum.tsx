@@ -10,6 +10,8 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
+import { useNavigate } from 'react-router-dom'
+import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
 
 const flexCss = css`
   display: flex;
@@ -33,6 +35,7 @@ const SetHead = styled.div`
 `
 
 export const useDynamicColumns = (state: any) => {
+  const navigate = useNavigate()
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -52,7 +55,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
-      render: (text: any, record: any, index: any) => {
+      render: (text: any, record: any) => {
         const menu = (
           <Menu
             items={[
@@ -96,13 +99,29 @@ export const useDynamicColumns = (state: any) => {
         text: string | number,
         record: Record<string, string | number>,
       ) => {
-        return <div onClick={() => state.showModal2(record)}>{text}</div>
+        return (
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              navigate(
+                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
+              )
+            }}
+          >
+            {text}
+          </div>
+        )
       },
     },
     {
       title: <NewSort fixedKey="child_story_count">子需求</NewSort>,
       dataIndex: 'child_story_count',
       key: 'child_story_count',
+      render: (text: string, record: any) => {
+        return (
+          <ChildDemandTable id={record.project_id} value={text} row={record} />
+        )
+      },
     },
     {
       title: <NewSort fixedKey="priority">优先级</NewSort>,

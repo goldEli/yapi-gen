@@ -55,6 +55,9 @@ const CompanyModal = (props: Props) => {
   }
   const confirm = () => {
     props.onChangeState()
+    if (activeId === userInfo.company_id) {
+      return
+    }
     updateCompany(companyParams)
   }
   return (

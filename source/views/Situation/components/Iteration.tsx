@@ -1,7 +1,3 @@
-import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,

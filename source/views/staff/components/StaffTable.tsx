@@ -86,9 +86,17 @@ export const useDynamicColumns = (state: any) => {
               </div>
             </ShowWrap>
             <SetHead>{text}</SetHead>
-            <span>{text}</span>
+            <span>{record.nickname}</span>
           </div>
         )
+      },
+    },
+    {
+      title: <NewSort fixedKey="name">真实姓名</NewSort>,
+      dataIndex: 'name',
+      key: 'name',
+      render: (text: string | number) => {
+        return <div>{text}</div>
       },
     },
     {

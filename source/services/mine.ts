@@ -200,7 +200,8 @@ export const getMineGatte: any = async (params: any) => {
       end: item.end_at,
       beginTime: item.expected_start_at,
       endTime: item.expected_end_at,
-      state: item.name,
+      name: item.name,
+      state: item.status_name,
       y: item.y,
     }
   })

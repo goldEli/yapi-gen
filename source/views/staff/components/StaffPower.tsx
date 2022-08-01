@@ -44,7 +44,7 @@ export const StaffPersonal = (props: {
   data: any
   isVisible: boolean
   onClose(): void
-  onConfirm(info: { userId: string, roleId: string }): void
+  onConfirm(info: { userId: string; roleId: string }): void
 }) => {
   const { data } = props
   const [roleOptions, setRoleOptions] = useState([])
@@ -63,6 +63,7 @@ export const StaffPersonal = (props: {
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleChange = (value: any) => {

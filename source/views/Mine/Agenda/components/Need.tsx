@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Hehavior,
   PaginationWrap,
@@ -111,7 +110,7 @@ const Need = (props: any) => {
     }
   }
   const updatePriority = async (res1: any) => {
-    const res = await updatePriorityStatus(res1)
+    await updatePriorityStatus(res1)
 
     init()
   }
@@ -146,6 +145,7 @@ const Need = (props: any) => {
       }
     }
     return newList
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
   const getShowkey = async () => {
     const res2 = await getField(props.id)
@@ -195,10 +195,12 @@ const Need = (props: any) => {
   }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
   useEffect(() => {
     getSearchKey()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
 
   useEffect(() => {
     getShowkey()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const showModal = () => {

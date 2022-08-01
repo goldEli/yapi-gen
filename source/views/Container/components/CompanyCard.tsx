@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import projectImg from '@/assets/projectImg.png'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -101,7 +101,7 @@ const CompanyCard = (props: Props) => {
   return (
     <Warp
       show={props.show}
-      onClick={e => {
+      onClick={(e: any) => {
         if (props.tap) {
           props.tap()
         }

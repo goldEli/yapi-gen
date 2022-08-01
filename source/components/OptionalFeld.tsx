@@ -50,9 +50,9 @@ const ItemWrap = styled.div`
 `
 type OptionalFeldProps = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  plainOptions: { label: string, value: string, is_default_display?: number }[]
+  plainOptions: { label: string; value: string; is_default_display?: number }[]
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  plainOptions2: { label: string, value: string, is_default_display?: number }[]
+  plainOptions2: { label: string; value: string; is_default_display?: number }[]
   checkList: CheckboxValueType[]
   checkList2: CheckboxValueType[]
   getCheckList(
@@ -96,7 +96,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const allList = useMemo(() => {
     const arr = [...checkList, ...checkList2]
     const arr2 = [...plainOptions, ...plainOptions2]
-    const all = arr2.reduce((res: { label: string, value: string }[], item) => {
+    const all = arr2.reduce((res: { label: string; value: string }[], item) => {
       if (arr.includes(item.value)) {
         res.push(item)
       }
@@ -107,13 +107,15 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       <CheckedItem key={item.value}>
         <IconFont style={{ fontSize: 12, marginRight: '8px' }} type="move" />
         <span>{item.label}</span>
-        <ShowWrap style={{ marginLeft: 'auto' }}>
-          <IconFont
-            style={{ fontSize: 12 }}
-            type="close"
-            onClick={() => del(item.value)}
-          />
-        </ShowWrap>
+        {item.value !== 'name' && (
+          <ShowWrap style={{ marginLeft: 'auto' }}>
+            <IconFont
+              style={{ fontSize: 12 }}
+              type="close"
+              onClick={() => del(item.value)}
+            />
+          </ShowWrap>
+        )}
       </CheckedItem>
     ))
   }, [checkList, checkList2, plainOptions, plainOptions2])
@@ -131,7 +133,11 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
             <div className={text}>基本字段</div>
             <CheckboxGroup value={checkList} onChange={onChange}>
               {plainOptions.map(item => (
-                <Checkbox key={item.label} value={item.value}>
+                <Checkbox
+                  disabled={item.value === 'name'}
+                  key={item.label}
+                  value={item.value}
+                >
                   {item.label}
                 </Checkbox>
               ))}
