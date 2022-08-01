@@ -168,6 +168,7 @@ const EditDemand = (props: Props) => {
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
+  const [tagList, setTagList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
@@ -328,6 +329,24 @@ const EditDemand = (props: Props) => {
     form.resetFields()
   }
 
+  const onChangeTag = (result: any, type: string) => {
+    if (type === 'add') {
+      form.setFieldsValue({
+        tagIds: [...form.getFieldValue('tagIds') || [], ...[result]],
+      })
+      setTagList([...tagList, ...[result]])
+    } else {
+      const arr = tagList
+      const comResult = arr.filter(
+        (i: any) => !(i.name === result.content && i.color === result.color),
+      )
+      form.setFieldsValue({
+        tagIds: comResult,
+      })
+      setTagList(comResult)
+    }
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -468,6 +487,8 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label="标签" name="tagIds">
             <TagComponent
+              defaultList={tagList}
+              onChangeTag={onChangeTag}
               addWrap={
                 <AddWrap hasDash>
                   <IconFont type="plus" />
