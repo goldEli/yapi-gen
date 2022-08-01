@@ -129,7 +129,9 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       </InfoItem>
       <InfoItem>
         <Label>处理人</Label>
-        <TextWrap>{demandInfo?.name}</TextWrap>
+        <TextWrap>
+          {demandInfo?.user?.map((i: any) => i.user.name).join('、')}
+        </TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>创建人</Label>
@@ -228,7 +230,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       <InfoItem>
         <Label>抄送人</Label>
         <TextWrap>
-          {demandInfo?.user?.map((i: any) => i.user.name).join('、')}
+          {demandInfo?.copySend?.map((i: any) => i.copySend.name).join('、')}
         </TextWrap>
       </InfoItem>
     </WrapLeft>

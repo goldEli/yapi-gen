@@ -132,12 +132,18 @@ const ProjectMember = () => {
   const [operationItem, setOperationItem] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
   const [jobList, setJobList] = useState<any>([])
-  const { getProjectMember, deleteMember, projectPermission, projectInfo }
-    = useModel('project')
+  const {
+    getProjectMember,
+    deleteMember,
+    projectPermission,
+    projectInfo,
+    isRefreshMember,
+  } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
   const projectId = searchParams.get('id')
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -152,12 +158,14 @@ const ProjectMember = () => {
     'b/project/member/update',
   )
 
-  const getList = async (orderVal?: any) => {
+  const getList = async (orderVal?: any, pagePrams?: any) => {
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
       projectId,
       order: orderVal.value,
       orderKey: orderVal.key,
+      page: pagePrams?.page,
+      pageSize: pagePrams?.size,
       ...values,
     })
     setMemberList(result)
@@ -173,21 +181,28 @@ const ProjectMember = () => {
   }
 
   useEffect(() => {
-    getList(order)
+    getList(order, pageObj)
     getJobList()
   }, [])
 
-  const onChangePage = (page: number) => {
-    form.setFieldsValue({ page })
-    getList(order)
+  useEffect(() => {
+    if (isRefreshMember) {
+      getList(order, pageObj)
+    }
+  }, [isRefreshMember])
+
+  const onChangePage = (page: number, size: number) => {
+    setPageObj({ page, size })
+    getList(order, { page, size })
   }
 
-  const onShowSizeChange = (_current: number, size: number) => {
+  const onShowSizeChange = (current: number, size: number) => {
     form.setFieldsValue({
       pageSize: size,
       page: 1,
     })
-    getList(order)
+    setPageObj({ page: current, size })
+    getList(order, { page: current, size })
   }
 
   const onOperationMember = (item: any, type: string) => {
@@ -205,7 +220,7 @@ const ProjectMember = () => {
       message.success('删除成功')
       setIsDelete(false)
       setOperationItem({})
-      getList(order)
+      getList(order, pageObj)
     } catch (error) {
 
       //
@@ -214,16 +229,16 @@ const ProjectMember = () => {
 
   const onReset = () => {
     form.resetFields()
-    getList(order)
+    getList(order, pageObj)
   }
 
   const onValuesChange = () => {
-    getList(order)
+    getList(order, pageObj)
   }
 
   const onChangeSearch = (val: string) => {
     form.setFieldsValue({ searchValue: val })
-    getList(order)
+    getList(order, pageObj)
   }
 
   const menu = (item: any) => {
@@ -251,7 +266,7 @@ const ProjectMember = () => {
 
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList({ value: val === 2 ? 'desc' : 'asc', key })
+    getList({ value: val === 2 ? 'desc' : 'asc', key }, pageObj)
   }
 
   const columns = [
@@ -389,7 +404,7 @@ const ProjectMember = () => {
   return (
     <PermissionWrap
       auth={
-        projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length
+        !projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length
       }
     >
       <Wrap>
@@ -424,16 +439,10 @@ const ProjectMember = () => {
             hidden={isVisible}
             form={form}
             onValuesChange={onValuesChange}
-            initialValues={{
-              pageSize: 10,
-              page: 1,
-            }}
           >
             <SearchWrap>
               <SelectWrapBedeck>
                 <span style={{ margin: '0 16px', fontSize: '12px' }}>职位</span>
-                <Form.Item name="page" />
-                <Form.Item name="pageSize" />
                 <Form.Item name="searchValue" />
                 <Form.Item name="jobIds" noStyle>
                   <SelectWrap
@@ -490,7 +499,6 @@ const ProjectMember = () => {
               pageSizeOptions={['10', '20', '50']}
               onChange={onChangePage}
               onShowSizeChange={onShowSizeChange}
-              hideOnSinglePage
             />
           </PaginationWrap>
         </Content>

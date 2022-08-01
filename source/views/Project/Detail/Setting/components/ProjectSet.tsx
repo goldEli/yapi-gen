@@ -384,7 +384,7 @@ const ProjectSet = () => {
                     <Dropdown
                       overlay={() => menu(item)}
                       placement="bottomRight"
-                      trigger={['hover']}
+                      trigger={['click']}
                       getPopupContainer={node => node}
                     >
                       <IconWrap type="more" hidden={item.type === 1} />

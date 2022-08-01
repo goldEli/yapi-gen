@@ -163,11 +163,17 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
     },
   ]
 
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
+  }
+
   return (
     <Popover
+      key={isVisible.toString()}
       visible={isVisible}
       placement="bottom"
       trigger="click"
+      onVisibleChange={onVisibleChange}
       content={
         <Table
           rowKey="id"
@@ -331,7 +337,6 @@ const IterationTable = (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
       {props.settingState ? (
