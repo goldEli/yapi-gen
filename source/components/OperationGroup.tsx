@@ -2,6 +2,8 @@
 import { Divider, Space, Dropdown, Menu } from 'antd'
 import IconFont from './IconFont'
 import styled from '@emotion/styled'
+import { useModel } from '@/models'
+import { getIsPermission } from '@/tools/index'
 
 interface Props {
   onChangeFilter?(): void
@@ -34,6 +36,13 @@ const DividerWrap = styled(Divider)({
 })
 
 const OperationGroup = (props: Props) => {
+  const { projectInfo } = useModel('project')
+
+  const showFilter = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/get',
+  )
+
   const menu = (
     <Menu
       items={[
@@ -58,12 +67,18 @@ const OperationGroup = (props: Props) => {
         active={!props.isGrid}
         type="unorderedlist"
       />
-      <DividerWrap type="vertical" />
-      <IconFontWrap
-        active={!props.filterState}
-        type="filter"
-        onClick={props.onChangeFilter}
-      />
+
+      {showFilter ? null : <DividerWrap type="vertical" />}
+
+      {showFilter
+        ? null
+        : (
+            <IconFontWrap
+              active={!props.filterState}
+              type="filter"
+              onClick={props.onChangeFilter}
+            />
+          )}
 
       {props.isGrid ? null : <DividerWrap type="vertical" />}
 

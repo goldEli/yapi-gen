@@ -117,7 +117,7 @@ const MineBox = () => {
       path: 'finished',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
-        'b/user/create/story',
+        'b/user/finish/story',
       ),
     },
     {

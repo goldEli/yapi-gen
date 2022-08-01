@@ -11,6 +11,7 @@ import styled from '@emotion/styled'
 import { Space, Button, message } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -103,6 +104,7 @@ const IterationWrap = () => {
   const { getIterateInfo, iterateInfo, deleteIterate } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
+  const { projectInfo } = useModel('project')
 
   const childContent = () => {
     if (type === 'info') {
@@ -218,7 +220,13 @@ const IterationWrap = () => {
   }
 
   return (
-    <div>
+    <PermissionWrap
+      auth={
+        !projectInfo.projectPermissions?.filter(
+          (i: any) => i.group_name === '迭代',
+        ).length
+      }
+    >
       <EditIteration
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
@@ -226,7 +234,7 @@ const IterationWrap = () => {
         onUpdate={setIsUpdateState}
       />
       {content()}
-    </div>
+    </PermissionWrap>
   )
 }
 

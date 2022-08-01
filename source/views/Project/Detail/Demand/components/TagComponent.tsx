@@ -71,6 +71,8 @@ interface TagProps {
   isClear: boolean
   onChangeIsClear(val: boolean): void
   onChangeIsOpen(val: boolean): void
+  onChangeTag?(arr: any, type: string): void
+  checkedTags: any
 }
 
 const TagBox = (props: TagProps) => {
@@ -82,13 +84,14 @@ const TagBox = (props: TagProps) => {
   const projectId = searchParams.get('id')
 
   useEffect(() => {
-    const checkedList = demandInfo?.tag?.map((i: any) => i.tag)
     setArr(
       tagList?.filter(
-        (i: any) => !checkedList?.find((k: any) => k.id === i.id),
+        (i: any) => !props.checkedTags?.find(
+          (k: any) => k.content === i.content && i.color === k.color,
+        ),
       ),
     )
-  }, [tagList, demandInfo])
+  }, [tagList, props.checkedTags])
 
   const onCreateTag = () => {
     props.tap?.(value)
@@ -107,19 +110,24 @@ const TagBox = (props: TagProps) => {
   }
 
   const onHasTagAdd = async (item: any) => {
-    try {
-      await addInfoDemand({
-        projectId,
-        demandId: demandInfo?.id,
-        type: 'tag',
-        targetId: [{ name: item.content, color: item.color }],
-      })
-      message.success('添加成功')
-      getDemandInfo({ projectId, id: demandInfo?.id })
-      props.onChangeIsOpen(false)
-    } catch (error) {
+    if (props.canAdd) {
+      try {
+        await addInfoDemand({
+          projectId,
+          demandId: demandInfo?.id,
+          type: 'tag',
+          targetId: [{ name: item.content, color: item.color }],
+        })
+        message.success('添加成功')
+        getDemandInfo({ projectId, id: demandInfo?.id })
+        props.onChangeIsOpen(false)
+      } catch (error) {
 
-      //
+        //
+      }
+    } else {
+      props.onChangeTag?.({ name: item.content, color: item.color }, 'add')
+      props.onChangeIsOpen(false)
     }
   }
 
@@ -138,13 +146,9 @@ const TagBox = (props: TagProps) => {
           <span>{i.content}</span>
         </TagItem>
       ))}
-      {props.canAdd ? (
-        <TagItem hidden={!value}>
-          <span onClick={onCreateTag}>创建【创建新标签】标签</span>
-        </TagItem>
-      )
-        : ''
-      }
+      <TagItem hidden={!value}>
+        <span onClick={onCreateTag}>创建【创建新标签】标签</span>
+      </TagItem>
     </TagWrap>
   )
 }
@@ -152,6 +156,8 @@ const TagBox = (props: TagProps) => {
 interface Props {
   addWrap: React.ReactElement
   canAdd?: boolean
+  onChangeTag?(arr: any, type: string): void
+  defaultList?: any
 }
 
 const TagComponent = (props: Props) => {
@@ -164,11 +170,16 @@ const TagComponent = (props: Props) => {
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const checkedTags = demandInfo?.tag?.map((i: any) => ({
-    id: i.id,
-    color: i.tag?.color,
-    content: i.tag?.content,
-  }))
+  const checkedTags = props.canAdd
+    ? demandInfo?.tag?.map((i: any) => ({
+      id: i.id,
+      color: i.tag?.color,
+      content: i.tag?.content,
+    }))
+    : props.defaultList?.map((i: any) => ({
+      color: i?.color,
+      content: i?.name,
+    }))
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
 
   const onAddDemandTags = (value: any) => {
@@ -198,19 +209,26 @@ const TagComponent = (props: Props) => {
   }
 
   const onDeleteInfoDemand = async (item: any) => {
-    try {
-      await deleteInfoDemand({
-        projectId,
-        demandId: demandInfo?.id,
-        type: 'tag',
-        targetId: item.id,
-      })
-      message.success('删除成功')
-      getDemandInfo({ projectId, id: demandInfo?.id })
-      getTagList({ projectId })
-    } catch (error) {
+    if (props.canAdd) {
+      try {
+        await deleteInfoDemand({
+          projectId,
+          demandId: demandInfo?.id,
+          type: 'tag',
+          targetId: item.id,
+        })
+        message.success('删除成功')
+        getDemandInfo({ projectId, id: demandInfo?.id })
+        getTagList({ projectId })
+      } catch (error) {
 
-      //
+        //
+      }
+    } else {
+      props.onChangeTag?.(
+        { content: item.content, color: item.color },
+        'delete',
+      )
     }
   }
 
@@ -285,6 +303,8 @@ const TagComponent = (props: Props) => {
             canAdd={props.canAdd}
             onChangeIsClear={setIsClear}
             onChangeIsOpen={setIsOpen}
+            onChangeTag={props.onChangeTag}
+            checkedTags={checkedTags}
           />
         }
         getPopupContainer={node => node}

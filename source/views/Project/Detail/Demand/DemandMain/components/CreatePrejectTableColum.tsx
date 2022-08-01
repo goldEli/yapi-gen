@@ -11,6 +11,8 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
+import { useModel } from '@/models'
+import { getIsPermission } from '@/tools/index'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -55,6 +57,7 @@ const PriorityWrap = styled.div({
 })
 
 export const useDynamicColumns = (state: any) => {
+  const { projectInfo } = useModel('project')
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -68,24 +71,30 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label:
-            <div onClick={e => state.onPropsChangeVisible(e, item)}>编辑</div>
-          ,
-        },
-        {
-          key: '2',
-          label:
-            <div onClick={() => state.onPropsChangeDelete(item)}>删除</div>
-          ,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label:
+          <div onClick={e => state.onPropsChangeVisible(e, item)}>编辑</div>
+        ,
+      },
+      {
+        key: '2',
+        label: <div onClick={() => state.onPropsChangeDelete(item)}>删除</div>,
+      },
+    ]
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   return [
     {

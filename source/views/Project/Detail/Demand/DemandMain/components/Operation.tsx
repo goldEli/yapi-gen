@@ -4,8 +4,8 @@ import SearchComponent from '@/components/SearchComponent'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
+import { getIsPermission } from '@/tools/index'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -116,6 +116,10 @@ const Operation = (props: Props) => {
           onChangeSearch={onChangeSearch}
           placeholder="搜索名称或ID"
           text="创建需求"
+          isPermission={getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/story/save',
+          )}
         />
         <OperationGroup
           onChangeFilter={() => setFilterState(!filterState)}

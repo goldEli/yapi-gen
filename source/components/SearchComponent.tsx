@@ -34,10 +34,14 @@ interface Props {
 
 const SearchComponent = (props: Props) => (
   <Space size={24}>
-    <AddButton
-      text={props.text}
-      onChangeClick={(e: any) => props.onChangeVisible?.(e)}
-    />
+    {props.isPermission
+      ? null
+      : (
+          <AddButton
+            text={props.text}
+            onChangeClick={(e: any) => props.onChangeVisible?.(e)}
+          />
+        )}
     <MyInput
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={
