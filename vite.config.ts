@@ -15,8 +15,6 @@ export default defineConfig(config => {
       }),
     ],
     define: {
-      'process.env.NODE_ENV':
-        config.mode === 'development' ? '"development"' : '"production"',
       VERSION: JSON.stringify(profile.version),
     },
     resolve: {
