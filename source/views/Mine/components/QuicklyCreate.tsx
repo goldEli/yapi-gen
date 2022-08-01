@@ -267,15 +267,24 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  const onChangeAttachment = (result: any) => {
-    result.path = result.url
-    form.setFieldsValue({
-      attachments: [
-        ...form.getFieldValue('attachments') || [],
-        ...[result.url],
-      ],
-    })
-    setAttachList([...attachList, ...[result]])
+  const onChangeAttachment = (result: any, type: string) => {
+    if (type === 'add') {
+      result.path = result.url
+      form.setFieldsValue({
+        attachments: [
+          ...form.getFieldValue('attachments') || [],
+          ...[result.url],
+        ],
+      })
+      setAttachList([...attachList, ...[result]])
+    } else {
+      const arr = attachList
+      const comResult = arr.filter((i: any) => i.id !== result.uid)
+      form.setFieldsValue({
+        attachments: comResult,
+      })
+      setAttachList(comResult)
+    }
   }
 
   const onCancel = () => {

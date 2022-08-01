@@ -163,7 +163,10 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       <InfoItem>
         <Label>附件</Label>
         <UploadAttach
-          defaultList={demandInfo?.attachment?.map((i: any) => i.attachment)}
+          defaultList={demandInfo?.attachment?.map((i: any) => ({
+            path: i.attachment.path,
+            id: i.id,
+          }))}
           canUpdate
           addWrap={
             <AddWrap>

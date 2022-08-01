@@ -43,7 +43,7 @@ client.config({
   requestInterceptors: [
     options => {
       options.headers.Authorization =
-        localStorage.getItem('token') || '8e2e944977381b1156d40c5903cde511'
+        localStorage.getItem('token') || 'a6699553ccfc5660da85d0646be43e59'
       options.headers.System = getSystem()
       options.headers.Client = browser()
       options.payload = JSON.stringify(options.payload)
