@@ -280,7 +280,7 @@ const Need = (props: any) => {
             </SetButton>
           )}
 
-          <Dropdown overlay={menu} placement="bottomLeft">
+          <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
             <SetButton>
               <IconFont
                 type="set-default

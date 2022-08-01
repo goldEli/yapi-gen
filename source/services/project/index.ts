@@ -139,6 +139,7 @@ export const getProjectInfo: any = async (params: any) => {
     filterBasicsList,
     filterSpecialList,
     filterFelid: response.data.storyConfig.filter_fidlds,
+    projectPermissions: response.data.company_permissions,
   }
 }
 

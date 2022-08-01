@@ -34,10 +34,6 @@ const languageText = css`
   margin-right: 8px;
 `
 const Box = styled.div`
-  z-index: 2;
-  position: fixed;
-  bottom: 5px;
-  left: 90px;
   width: 220px;
   height: 230px;
   background: rgba(255, 255, 255, 1);
@@ -112,7 +108,7 @@ const LanguageLine = styled.div`
   }
 `
 
-export const Panel = (props: { visible: boolean }) => {
+export const Panel = () => {
   const { loginOut, getUserDetail } = useModel('user')
 
   const [personalModalVisible, setPersonalModalVisible]
@@ -158,9 +154,7 @@ export const Panel = (props: { visible: boolean }) => {
   const toLoginOut = () => {
     loginOut()
   }
-  if (!props.visible) {
-    return null
-  }
+
   return (
     <Box>
       <PanelHeader>

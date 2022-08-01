@@ -17,6 +17,7 @@ import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -119,6 +120,7 @@ const DemandBox = () => {
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
+  const { projectInfo } = useModel('project')
   const { getDemandInfo, demandInfo, deleteDemand, updateDemandStatus }
     = useModel('demand')
   const navigate = useNavigate()
@@ -276,7 +278,13 @@ const DemandBox = () => {
   }
 
   return (
-    <div>
+    <PermissionWrap
+      auth={
+        !projectInfo.projectPermissions?.filter(
+          (i: any) => i.group_name === '需求',
+        ).length
+      }
+    >
       <EditDemand
         visible={isVisible}
         onChangeVisible={onChangeVisible}
@@ -284,7 +292,7 @@ const DemandBox = () => {
         onUpdate={onUpdate}
       />
       {content()}
-    </div>
+    </PermissionWrap>
   )
 }
 
