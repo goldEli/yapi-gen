@@ -13,7 +13,7 @@ const Finished = () => {
   const { userInfo } = useModel('user')
 
   const init = async () => {
-    const res = await getMineProjectList('copysend')
+    const res = await getMineProjectList('abeyance')
     setSwiperData(res.data)
   }
   useEffect(() => {
