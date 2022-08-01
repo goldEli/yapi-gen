@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -163,9 +164,9 @@ const IterationInfo = () => {
                 strokeColor="#43BA9A"
                 width={125}
                 type="circle"
-                percent={
-                  iterateInfo.finishCount / iterateInfo.storyCount * 100
-                }
+                percent={Math.trunc(
+                  iterateInfo?.finishCount / iterateInfo?.storyCount * 100,
+                )}
                 strokeWidth={16}
               />
               <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
@@ -175,7 +176,9 @@ const IterationInfo = () => {
             <SurveyBox style={{ alignItems: 'flex-start' }}>
               <span style={{ color: '#000', fontSize: 14 }}>需求</span>
               <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
-                {`${iterateInfo.finishCount} / ${iterateInfo.storyCount}`}
+                {`${iterateInfo?.finishCount || '--'} / ${
+                  iterateInfo?.storyCount || '--'
+                }`}
               </span>
             </SurveyBox>
           </SurveyContent>
