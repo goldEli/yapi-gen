@@ -80,6 +80,9 @@ const StaffTableWrap = styled.div`
   padding: 16px;
   background: #f5f7fa;
 `
+const StaffTableWrap2 = styled(StaffTableWrap)`
+  padding-top: 0;
+`
 const MyInput = styled(Input)`
   font-size: 14px;
   width: 240px;
@@ -275,6 +278,7 @@ const StyledShape = styled.div<{ color: any }>`
 `
 
 export {
+  StaffTableWrap2,
   StyledShape,
   HightChartsWrap,
   TextWrap,

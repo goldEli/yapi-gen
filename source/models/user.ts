@@ -16,10 +16,16 @@ export default () => {
     return result
   }
 
-  const { loginOut, getCompanyList, getGlobalGeneral, updateCompany }
-    = services.user
+  const {
+    loginOut,
+    getCompanyList,
+    getGlobalGeneral,
+    updateCompany,
+    getTicket,
+  } = services.user
 
   return {
+    getTicket,
     loginInfo,
     userInfo,
     getUserDetail,

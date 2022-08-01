@@ -11,6 +11,7 @@ import {
   TabsHehavior,
   TabsItem,
   LabNumber,
+  StaffTableWrap2,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, message, Pagination } from 'antd'
@@ -21,6 +22,15 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { css } from '@emotion/css'
+
+const tableTitle = css`
+  color: rgba(150, 151, 153, 1);
+  font-size: 14px;
+  height: 53px;
+  display: flex;
+  align-items: center;
+`
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
@@ -290,8 +300,18 @@ const Need = (props: any) => {
             }}
           >
             <IconFont
+              type="unorderedlist"
+              style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
+            />
+          </SetButton>
+          <SetButton
+            onClick={() => {
+              setIsMany(!isMany)
+            }}
+          >
+            <IconFont
               type="database"
-              style={{ fontSize: 20, color: isShowSearch ? '' : '' }}
+              style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
             />
           </SetButton>
           {props.id !== 0 && (
@@ -326,9 +346,8 @@ const Need = (props: any) => {
             />
           )
         : null}
-
-      <StaffTableWrap>
-        {!isMany && (
+      {!isMany && (
+        <StaffTableWrap>
           <StyledTable
             rowKey="id"
             columns={selectColum}
@@ -336,23 +355,27 @@ const Need = (props: any) => {
             pagination={false}
             scroll={{ x: 'max-content' }}
           />
-        )}
-        {isMany
-          ? manyListData?.map((item: any, index: any) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index}>
-              <div>{item.status_name}</div>
-              <StyledTable
-                rowKey="id"
-                columns={selectColum}
-                dataSource={item.list}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-              />
+        </StaffTableWrap>
+      )}
+
+      {isMany ? <StaffTableWrap2>
+        {manyListData?.map((item: any, index: any) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={index}>
+            <div className={tableTitle}>
+              {item.status_name}（{item.list.length}）
             </div>
-          ))
-          : null}
-      </StaffTableWrap>
+            <StyledTable
+              rowKey="id"
+              columns={selectColum}
+              dataSource={item.list}
+              pagination={false}
+              scroll={{ x: 'max-content' }}
+            />
+          </div>
+        ))}
+      </StaffTableWrap2> : null}
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

@@ -12,6 +12,17 @@ export const loginOut: any = async () => {
   return response
 }
 
+export const getTicket = (toHome?: boolean) => {
+  const url = new URL(import.meta.env.__SSO_ORIGIN__)
+  url.searchParams.set('type', '0')
+  url.searchParams.set(
+    'redirect',
+    toHome || location.pathname === '/' ? location.href : location.href,
+  )
+  url.searchParams.set('language', localStorage.getItem('language') || 'zh')
+  location.href = url.href
+}
+
 export const getUserDetail: any = async () => {
   const response = await http.get('getUserDetail')
 

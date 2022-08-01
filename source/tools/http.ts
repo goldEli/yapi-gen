@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable @typescript-eslint/naming-convention */
 import urls, { type UrlKeys } from '@/constants/urls'
+import { getTicket } from '@/services/user'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
@@ -53,6 +54,10 @@ client.config({
       return JSON.parse((response as { body: string }).body)
     },
     (data: any) => {
+      if (data.code === 'A0203' || data.code === 'A0202') {
+        localStorage.removeItem('token')
+        getTicket()
+      }
       if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
         message.error(data.message)
         throw new Error(data.code)

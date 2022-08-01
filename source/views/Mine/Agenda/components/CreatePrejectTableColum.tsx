@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-handler-names */
 import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
-import { level, LevelContent } from '@/components/Level'
+import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -70,7 +70,11 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div className={flexCss}>
             <ShowWrap>
-              <Dropdown overlay={menu} placement="bottomLeft">
+              <Dropdown
+                trigger={['click']}
+                overlay={menu}
+                placement="bottomLeft"
+              >
                 <IconFont
                   type="more
               "
@@ -106,33 +110,34 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       render: (text: any, record: Record<string, string | number>) => {
         return (
-          <div className={flexCss}>
-            <div className={flexCss}>
-              <IconFont
-                type={text.icon}
-                style={{
-                  fontSize: 20,
-                  marginRight: '10px',
-                  color: text.color,
-                }}
+          <Pop
+            content={({ onHide }: { onHide(): void }) => (
+              <LevelContent
+                onTap={state.updatePriority}
+                onHide={onHide}
+                record={record}
               />
-              <span>{text.content}</span>
-            </div>
-            <Pop
-              content={({ onHide }: { onHide(): void }) => (
-                <LevelContent
-                  onTap={state.updatePriority}
-                  onHide={onHide}
-                  record={record}
+            )}
+            record={record}
+          >
+            <div className={flexCss}>
+              <div className={flexCss}>
+                <IconFont
+                  type={text.icon}
+                  style={{
+                    fontSize: 20,
+                    marginRight: '10px',
+                    color: text.color,
+                  }}
                 />
-              )}
-              record={record}
-            >
+                <span>{text.content}</span>
+              </div>
+
               <ShowWrap>
                 <IconFont type="down-icon" />
               </ShowWrap>
-            </Pop>
-          </div>
+            </div>
+          </Pop>
         )
       },
     },

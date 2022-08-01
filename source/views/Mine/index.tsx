@@ -108,14 +108,17 @@ const MineBox = () => {
       path: 'create',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
-        'b/user/create/story',
+        'b/user/finish/story',
       ),
     },
     {
       id: 4,
       name: '我的已办',
       path: 'finished',
-      isPermission: false,
+      isPermission: getIsPermission(
+        userInfo?.company_permissions,
+        'b/user/create/story',
+      ),
     },
     {
       id: 5,

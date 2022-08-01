@@ -7,6 +7,7 @@ import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
 import sideLogo from '@/assets/side_logo.svg'
 import { useModel } from '@/models'
+import { Popover } from 'antd'
 
 const SideWrap = styled.div`
   display: flex;
@@ -174,9 +175,10 @@ export const Side = () => {
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>设置</span>
         </SideEach>
-        <SetHead onClick={controlPanelVisible}>{userData?.name}</SetHead>
+        <Popover placement="rightTop" trigger="click" content={<Panel />}>
+          <SetHead onClick={controlPanelVisible}>{userData?.name}</SetHead>
+        </Popover>
       </SideFooter>
-      <Panel visible={panelVisible} />
     </SideWrap>
   )
 }
