@@ -64,6 +64,12 @@ const AddMember = (props: Props) => {
     getList()
   }, [])
 
+  useEffect(() => {
+    if (props.details?.id) {
+      form.setFieldsValue(props.details)
+    }
+  }, [props.details])
+
   const onConfirm = async () => {
     if (!form.getFieldValue('userIds')) {
       message.warning('成员不能为空！')
@@ -99,6 +105,11 @@ const AddMember = (props: Props) => {
     }
   }
 
+  const onClose = () => {
+    form.resetFields()
+    props.onChangeValue()
+  }
+
   return (
     <Modal
       visible={props.value}
@@ -111,9 +122,9 @@ const AddMember = (props: Props) => {
     >
       <ModalHeader>
         <span>{props.details?.id ? '编辑项目成员' : '添加项目成员'}</span>
-        <IconFont onClick={props.onChangeValue} type="close" />
+        <IconFont onClick={onClose} type="close" />
       </ModalHeader>
-      <Form form={form} initialValues={props.details}>
+      <Form form={form}>
         <Form.Item
           name="userIds"
           noStyle
