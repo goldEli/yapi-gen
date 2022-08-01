@@ -101,6 +101,7 @@ const Need = (props: any) => {
   const init = async () => {
     if (isMany) {
       const res = await getMineNoFinishList({
+        projectId: props.id,
         all: isMany,
         panelDate: isMany,
       })

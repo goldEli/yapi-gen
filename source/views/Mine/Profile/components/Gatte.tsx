@@ -80,6 +80,7 @@ const Gatte = (props: any) => {
       },
     },
     tooltip: {
+      animation: false,
 
       // xDateFormat: '%e %b %Y, %H:%M',
     },

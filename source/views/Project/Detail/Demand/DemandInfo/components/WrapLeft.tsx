@@ -230,7 +230,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       <InfoItem>
         <Label>抄送人</Label>
         <TextWrap>
-          {demandInfo?.copySend?.map((i: any) => i.copySend.name).join('、')}
+          {demandInfo?.copySend?.map((i: any) => i.copySend?.name).join('、')}
         </TextWrap>
       </InfoItem>
     </WrapLeft>

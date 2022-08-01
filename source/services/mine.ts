@@ -440,7 +440,7 @@ export const getPeopleList: any = async (params: any) => {
 
 // 获取成员列表
 export const addQuicklyCreate: any = async (params: any) => {
-  const response: any = await http.get<any>('addQuicklyCreate', {
+  const response: any = await http.post<any>('addQuicklyCreate', {
     project_id: params.projectId,
     name: params.name,
     info: params.info,
