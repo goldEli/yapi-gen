@@ -13,7 +13,7 @@ export const loginOut: any = async () => {
 }
 
 export const getTicket = (toHome?: boolean) => {
-  const url = new URL(import.meta.env.__SSO_ORIGIN__)
+  const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
   url.searchParams.set(
     'redirect',
