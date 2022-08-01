@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable camelcase */
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from 'antd'
 import { createPortal } from 'react-dom'
 import { css } from '@emotion/css'
-import projectImg from '@/assets/projectImg.png'
 import guide_1 from '@/assets/guide_1.svg'
 import guide_2 from '@/assets/guide_2.svg'
 import guide_3 from '@/assets/guide_3.svg'
@@ -53,7 +52,7 @@ const Dialog = styled.div`
   transform: translate(-50%, -50%);
 `
 
-const Next = (props: { visible: boolean, close(): void }) => {
+const Next = (props: { visible: boolean; close(): void }) => {
   const [active, setActive] = useState(0)
   const inform = [
     {
@@ -83,6 +82,7 @@ const Next = (props: { visible: boolean, close(): void }) => {
         </div>
       </div>
     ))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
   const next = () => {

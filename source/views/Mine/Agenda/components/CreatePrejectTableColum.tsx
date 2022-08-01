@@ -52,7 +52,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
-      render: (text: any, record: any, index: any) => {
+      render: (text: any, record: any) => {
         const menu = (
           <Menu
             items={[

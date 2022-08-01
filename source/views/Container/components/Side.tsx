@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -160,6 +160,7 @@ export const Side = () => {
 
       <SideFooter>
         <SideEach
+          className={nowPath === '/Setting' ? activeCss : ''}
           onClick={() => navigate('/Setting')}
           hidden={getIsPermission('公司管理')}
         >

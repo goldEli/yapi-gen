@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
-import { Form, Select, Button } from 'antd'
+import { Form, Select } from 'antd'
 import { SearchLine } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 
@@ -107,6 +107,7 @@ const SearchList = (props: Props) => {
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const confirm = async () => {
@@ -120,7 +121,7 @@ const SearchList = (props: Props) => {
           <SelectWrapBedeck>
             <Form.Item name="department">
               <SelectWrap
-                onBlur={confirm}
+                onChange={confirm}
                 label="部门"
                 mode="multiple"
                 style={{ width: '100%' }}
@@ -138,7 +139,7 @@ const SearchList = (props: Props) => {
           <SelectWrapBedeck>
             <Form.Item name="position">
               <SelectWrap
-                onBlur={confirm}
+                onChange={confirm}
                 label="职位"
                 mode="multiple"
                 style={{ width: '100%' }}

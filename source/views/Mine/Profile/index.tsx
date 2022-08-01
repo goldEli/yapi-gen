@@ -1,12 +1,11 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
-import { Line } from '@ant-design/plots'
 import { Timeline, DatePicker } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
@@ -132,6 +131,7 @@ const Profile = () => {
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Modal, Spin } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'

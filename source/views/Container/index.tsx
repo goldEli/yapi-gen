@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
 import { useModel } from '@/models'
-import { login } from '@/services/user'
 
 const Wrap = styled.div`
   display: flex;
@@ -39,6 +38,7 @@ export const Container = () => {
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
