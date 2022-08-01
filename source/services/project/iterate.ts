@@ -69,11 +69,11 @@ export const getIterateInfo: any = async (params: any) => {
     id: response.data.id,
     info: response.data.info,
     status: response.data.status,
-    finishCount: response.data.story_finish_count,
-    storyCount: response.data.story_count,
+    finishCount: response.data.story_finish_count || 0,
+    storyCount: response.data.story_count || 0,
     startTime: response.data.start_at,
     endTime: response.data.end_at,
-    changeCount: response.data.app_changelog_count,
+    changeCount: response.data.app_changelog_count || 0,
   }
 }
 

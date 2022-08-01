@@ -331,6 +331,10 @@ const WrapLeft = (props: Props) => {
     props.onChangeOperation?.({})
   }
 
+  const onVisibleChange = (visible: any) => {
+    setIsFilter(visible)
+  }
+
   return (
     <Left isShowLeft={props.isShowLeft}>
       <DeleteConfirm
@@ -367,6 +371,7 @@ const WrapLeft = (props: Props) => {
                   content={filterContent}
                   getPopupContainer={node => node}
                   visible={isFilter}
+                  onVisibleChange={onVisibleChange}
                 >
                   <IconWrap onClick={() => setIsFilter(true)} type="filter" />
                 </Popover>

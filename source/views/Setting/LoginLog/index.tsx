@@ -396,7 +396,6 @@ const LoginLog = () => {
                     pageSizeOptions={[10, 20, 50]}
                     pageSize={form.getFieldValue('pageSize') || 10}
                     onShowSizeChange={onShowSizeChange}
-                    hideOnSinglePage
                   />
                 </Form.Item>
               )

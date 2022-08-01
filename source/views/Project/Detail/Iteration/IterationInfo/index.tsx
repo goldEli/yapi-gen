@@ -169,7 +169,7 @@ const IterationInfo = () => {
                 strokeWidth={16}
               />
               <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
-                {iterateInfo.startTime}-{iterateInfo.endTime}
+                {iterateInfo.startTime || '--'}-{iterateInfo.endTime || '--'}
               </div>
             </SurveyBox>
             <SurveyBox style={{ alignItems: 'flex-start' }}>

@@ -95,9 +95,8 @@ const IterationCard = (props: Props) => {
     'b/iterate/status',
   )
 
-  const onClick = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
   }
 
   return (
@@ -126,13 +125,15 @@ const IterationCard = (props: Props) => {
         ? null
         : (
             <Dropdown
+              key={isVisible.toString()}
               visible={isVisible}
               overlay={props.menu}
               placement="bottomRight"
-              trigger={['click']}
+              trigger={['hover']}
               getPopupContainer={node => node}
+              onVisibleChange={onVisibleChange}
             >
-              <MoreWrap onClick={onClick} type="more" />
+              <MoreWrap type="more" />
             </Dropdown>
           )}
     </CardWrap>

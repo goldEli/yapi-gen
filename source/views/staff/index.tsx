@@ -236,7 +236,6 @@ const Staff = () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
 

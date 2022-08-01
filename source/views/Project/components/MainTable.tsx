@@ -71,14 +71,20 @@ const MoreContent = (props: MoreProps) => {
     setIsVisible(!isVisible)
   }
 
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
+  }
+
   return (
     <MoreWrap>
       <Dropdown
+        key={isVisible.toString()}
         visible={isVisible}
         overlay={props.menu}
         trigger={['click']}
         placement="bottomRight"
         getPopupContainer={node => node}
+        onVisibleChange={onVisibleChange}
       >
         <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
       </Dropdown>
@@ -354,7 +360,6 @@ const MainTable = (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
     </div>

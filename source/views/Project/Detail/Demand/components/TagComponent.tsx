@@ -189,22 +189,35 @@ const TagComponent = (props: Props) => {
   }
 
   const onAddInfoDemand = async (value: any) => {
-    try {
-      await addInfoDemand({
-        projectId,
-        demandId: demandInfo?.id,
-        type: 'tag',
-        targetId: [{ name: newTag, color: value }],
-      })
-      message.success('添加成功')
-      getDemandInfo({ projectId, id: demandInfo?.id })
+    if (props.canAdd) {
+      try {
+        await addInfoDemand({
+          projectId,
+          demandId: demandInfo?.id,
+          type: 'tag',
+          targetId: [{ name: newTag, color: value }],
+        })
+        message.success('添加成功')
+        getDemandInfo({ projectId, id: demandInfo?.id })
+        setNewTag('')
+        setIsChooseColor(false)
+        getTagList({ projectId })
+        setIsClear(false)
+      } catch (error) {
+
+        //
+      }
+    } else {
+      if (
+        !props.defaultList?.filter(
+          (k: any) => k.name === newTag && k.color === value,
+        ).length
+      ) {
+        props.onChangeTag?.({ name: newTag, color: value }, 'add')
+      }
       setNewTag('')
       setIsChooseColor(false)
-      getTagList({ projectId })
       setIsClear(false)
-    } catch (error) {
-
-      //
     }
   }
 
@@ -253,6 +266,14 @@ const TagComponent = (props: Props) => {
     </Space>
   )
 
+  const onVisibleChange = (visible: any) => {
+    setIsChooseColor(visible)
+  }
+
+  const onVisibleOpenChange = (visible: any) => {
+    setIsOpen(visible)
+  }
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Popover
@@ -260,6 +281,7 @@ const TagComponent = (props: Props) => {
         placement="bottom"
         trigger="click"
         content={colorStatus}
+        onVisibleChange={onVisibleChange}
       >
         <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
       </Popover>
@@ -296,6 +318,7 @@ const TagComponent = (props: Props) => {
         visible={isOpen}
         placement="bottom"
         trigger="click"
+        onVisibleChange={onVisibleOpenChange}
         content={
           <TagBox
             isClear={isClear}
