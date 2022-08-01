@@ -277,8 +277,8 @@ const DemandTable = (props: Props) => {
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [orderKey, setOrderKey] = useState<any>('id')
-  const [order, setOrder] = useState<any>('asc')
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
