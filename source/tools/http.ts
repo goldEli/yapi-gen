@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 /* eslint-disable complexity */
 /* eslint-disable operator-linebreak */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
@@ -7,6 +8,7 @@ import { getTicket } from '@/services/user'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
+import { decrypt, encrypt } from './crypto'
 
 const { userAgent } = window.navigator
 const getSystem = () => {
@@ -35,29 +37,57 @@ const browser = () => {
   return 'Other'
 }
 
+const isCheckTicket = async (isPass: boolean) => {
+  if (isPass) {
+    return true
+  }
+  return new Promise(resolve => {
+    const timer = setInterval(() => {
+      const isCheckTicketValue = !!sessionStorage.getItem('IS_CHECK_TICKET')
+      if (!isCheckTicketValue) {
+        resolve(true)
+        clearInterval(timer)
+      }
+    })
+  })
+}
+
 client.config({
   base: import.meta.env.__API_BASE_URL__,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
   requestInterceptors: [
-    options => {
+    async options => {
+      await isCheckTicket(
+        options.url ===
+          `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
+          (options.extra as any)?.isLogin,
+      )
       options.headers.Authorization = localStorage.getItem('token') || ''
-
-      // options.headers.Authorization = '2670f852bf68a40a161159410f5d79ce'
       options.headers.System = getSystem()
       options.headers.Client = browser()
       options.payload = JSON.stringify(options.payload)
+      if (
+        options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
+      ) {
+        options.payload = encrypt(options.payload as string)
+      }
     },
   ],
   responseInterceptors: [
-    (response: any) => {
+    (response: any, options: any) => {
+      if (
+        options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
+      ) {
+        return JSON.parse(decrypt((response as { body: string }).body))
+      }
       return JSON.parse((response as { body: string }).body)
     },
     (data: any) => {
       if (data.code === 'A0204' || data.code === 'A0203') {
-        localStorage.removeItem('token')
-        getTicket()
+
+        // getTicket()
         return
       }
       if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
@@ -77,8 +107,9 @@ client.config({
 export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   key: UrlKeys,
   data?: any,
+  options?: any,
 ) => {
-  return client.get<SearchParams, Result>(urls[key], data)
+  return client.get<SearchParams, Result>(urls[key], data, options)
 }
 
 export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {

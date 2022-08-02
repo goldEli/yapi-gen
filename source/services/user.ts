@@ -3,32 +3,14 @@
 import { decrypt, encrypt } from '../tools/crypto'
 import * as http from '../tools/http'
 
-export const getLoginDetail: any = async () => {
-  const response = await http.get('getLoginDetail')
+export const getLoginDetail: any = async (isLogin?: boolean) => {
+  const response = await http.get('getLoginDetail', {}, { extra: { isLogin } })
   return response
 }
 
 export const loginOut: any = async () => {
   const response = await http.get('loginOut')
   return response
-}
-
-export const login = async () => {
-  const ticket: any = new URLSearchParams(location.search).get('ticket')
-  if (import.meta.env.MODE === 'development') {
-    const response = await http.put(
-      `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
-      { ticket },
-    )
-    localStorage.setItem('token', response.data.token)
-  } else {
-    const response = await http.put(
-      `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
-      encrypt(JSON.stringify({ ticket })),
-    )
-    const result = JSON.parse(decrypt(response))
-    localStorage.setItem('token', result.data.token)
-  }
 }
 
 export const getTicket = (toHome?: boolean) => {
@@ -47,6 +29,28 @@ export const getUserDetail: any = async () => {
   const response = await http.get('getUserDetail')
 
   return response.data
+}
+
+export const login = async () => {
+  const ticket: any = new URLSearchParams(location.search).get('ticket')
+  sessionStorage.setItem('IS_CHECK_TICKET', '1')
+  try {
+    const response = await http.put(
+      `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
+      { ticket },
+    )
+
+    localStorage.setItem('token', response.data.token)
+  } catch (error) {
+    await getTicket()
+  }
+  try {
+    await getLoginDetail(true)
+  } catch (error) {
+
+    //
+  }
+  sessionStorage.removeItem('IS_CHECK_TICKET')
 }
 
 export const getCompanyList: any = async () => {
