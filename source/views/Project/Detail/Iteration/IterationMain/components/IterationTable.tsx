@@ -9,7 +9,6 @@ import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
@@ -18,6 +17,7 @@ import { OmitText } from '@star-yun/ui'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import Sort from '@/components/Sort'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -30,20 +30,6 @@ const StatusWrap = styled.div({
   color: '#2877FF',
   width: 'fit-content',
   cursor: 'pointer',
-})
-
-const PriorityWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.anticon': {
-    fontSize: 16,
-  },
 })
 
 const Content = styled.div({
@@ -78,24 +64,40 @@ interface Props {
   onChangeOrder?(item: any): void
 }
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const ChildDemandTable = (props: { value: any; row: any }) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const { getDemandList, updateDemandStatus } = useModel('demand')
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
 
-  const getList = async () => {
+  const getList = async (item: any) => {
     const result = await getDemandList({
       projectId,
       all: true,
       parentId: props.row.id,
+      order: item.value,
+      orderKey: item.key,
     })
     setDataList(result)
   }
 
   const onChildClick = async () => {
-    getList()
+    getList(order)
     setIsVisible(!isVisible)
   }
 
@@ -103,11 +105,16 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
     try {
       await updateDemandStatus(value)
       message.success('状态修改成功')
-      getList()
+      getList(order)
     } catch (error) {
 
       //
     }
+  }
+
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
   const columnsChild = [
@@ -119,31 +126,58 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       },
     },
     {
-      title: 'ID',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          项目ID
+        </NewSort>
+      ),
       dataIndex: 'id',
-      sorter: {
-        compare: (a: any, b: any) => a.demand - b.demand,
-      },
     },
     {
-      title: '需求名称',
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          需求名称
+        </NewSort>
+      ),
       dataIndex: 'name',
       render: (text: string) => {
         return <OmitText width={180}>{text}</OmitText>
       },
-      sorter: {
-        compare: (a: any, b: any) => a.iteration - b.iteration,
-      },
     },
     {
-      title: '迭代',
+      title: (
+        <NewSort
+          fixedKey="iterate_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          迭代
+        </NewSort>
+      ),
       dataIndex: 'iteration',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
-      },
     },
     {
-      title: '状态',
+      title: (
+        <NewSort
+          fixedKey="status"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          状态
+        </NewSort>
+      ),
       dataIndex: 'status',
       render: (text: any, record: any) => {
         return (
@@ -172,16 +206,31 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       },
     },
     {
-      title: '创建人',
+      title: (
+        <NewSort
+          fixedKey="user_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          创建人
+        </NewSort>
+      ),
       dataIndex: 'dealName',
     },
   ]
 
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
+  }
+
   return (
     <Popover
+      key={isVisible.toString()}
       visible={isVisible}
       placement="bottom"
       trigger="click"
+      onVisibleChange={onVisibleChange}
       content={
         <Table
           rowKey="id"
@@ -219,8 +268,8 @@ const IterationTable = (props: Props) => {
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [orderKey, setOrderKey] = useState<any>('id')
-  const [order, setOrder] = useState<any>('asc')
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -345,7 +394,6 @@ const IterationTable = (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
       {props.settingState ? (

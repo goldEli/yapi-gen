@@ -23,6 +23,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
+import { getIsPermission } from '@/tools/index'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -32,6 +33,7 @@ const Left = styled.div<{ isShowLeft: boolean }>(
     padding: '0px 16px 10px',
     background: 'white',
     zIndex: 1,
+    height: 'calc(100vh - 64px)',
     '.ant-space-item': {
       display: 'flex',
     },
@@ -81,6 +83,15 @@ const SortItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
+const CardGroups = styled.div({
+  height: 'calc(100% - 52px)',
+  width: '100%',
+  overflowY: 'scroll',
+  '::-webkit-scrollbar': {
+    width: 0,
+  },
+})
+
 interface Props {
   isShowLeft: boolean
   onChangeVisible(): void
@@ -106,13 +117,40 @@ const WrapLeft = (props: Props) => {
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [isFilter, setIsFilter] = useState(false)
+  const [isSort, setIsSort] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [currentSort, setCurrentSort] = useState(sortList[1])
   const [dataList, setDataList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const { getIterateList, updateIterateStatus, deleteIterate }
-    = useModel('iterate')
+  const {
+    getIterateList,
+    updateIterateStatus,
+    deleteIterate,
+    setIsRefreshList,
+    isRefreshList,
+  } = useModel('iterate')
+  const { projectInfo } = useModel('project')
+  const hasAdd = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/store',
+  )
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/del',
+  )
+  const hasChangeStatus = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/status',
+  )
+  const hasFilter = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/get',
+  )
 
   const getList = async () => {
     const values = form.getFieldsValue()
@@ -140,11 +178,18 @@ const WrapLeft = (props: Props) => {
     setDataList(result)
     props.onCurrentDetail(result?.list[0])
     props.onIsUpdateList?.(false)
+    setIsRefreshList(false)
   }
 
   useEffect(() => {
     getList()
   }, [currentSort])
+
+  useEffect(() => {
+    if (isRefreshList) {
+      getList()
+    }
+  }, [isRefreshList])
 
   useEffect(() => {
     if (props.isUpdateList) {
@@ -170,13 +215,18 @@ const WrapLeft = (props: Props) => {
     setIsFilter(false)
   }
 
+  const onChangeSort = (item: any) => {
+    setIsSort(false)
+    setCurrentSort(item)
+  }
+
   const sortContent = (
     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
       {sortList.map(i => (
         <SortItem
           isActive={currentSort.name === i.name}
-          key={i.type}
-          onClick={() => setCurrentSort(i)}
+          key={`${i.type}_${i.key}`}
+          onClick={() => onChangeSort(i)}
         >
           {i.name}
         </SortItem>
@@ -197,7 +247,7 @@ const WrapLeft = (props: Props) => {
           <DatePicker.RangePicker />
         </Form.Item>
         <Form.Item label="状态" name="status">
-          <Radio.Group options={options} defaultValue={1} />
+          <Radio.Group options={options} />
         </Form.Item>
         <div
           style={{
@@ -261,28 +311,39 @@ const WrapLeft = (props: Props) => {
     }
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => onChangeEdit(e, item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={e => onChangeEnd(e, item)}>
-              {item.status === 1 ? '关闭' : '开启'}
-            </div>
-          ),
-        },
-        {
-          key: '3',
-          label: <div onClick={e => onChangeDelete(e, item)}> 删除 </div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={e => onChangeEdit(e, item)}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onChangeEnd(e, item)}>
+            {item.status === 1 ? '关闭' : '开启'}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: <div onClick={e => onChangeDelete(e, item)}> 删除 </div>,
+      },
+    ]
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasChangeStatus) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
@@ -298,6 +359,10 @@ const WrapLeft = (props: Props) => {
     props.onChangeOperation?.({})
   }
 
+  const onVisibleChange = (visible: any) => {
+    setIsFilter(visible)
+  }
+
   return (
     <Left isShowLeft={props.isShowLeft}>
       <DeleteConfirm
@@ -307,37 +372,53 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        <AddButton text="创建迭代" onChangeClick={onChangeClick} />
+        {hasAdd
+          ? null
+          : <AddButton text="创建迭代" onChangeClick={onChangeClick} />
+        }
         <Space size={20}>
           <Popover
+            visible={isSort}
             trigger="click"
             placement="bottom"
             content={sortContent}
             getPopupContainer={node => node}
+            onVisibleChange={(visible: boolean) => setIsSort(visible)}
           >
             <IconWrap type="sort" />
           </Popover>
-          <Divider style={{ margin: 0, height: 20 }} type="vertical" />
-          <Popover
-            trigger="click"
-            placement="bottomRight"
-            content={filterContent}
-            getPopupContainer={node => node}
-            visible={isFilter}
-          >
-            <IconWrap onClick={() => setIsFilter(true)} type="filter" />
-          </Popover>
+          {hasFilter
+            ? null
+            : <Divider style={{ margin: 0, height: 20 }} type="vertical" />
+          }
+
+          {hasFilter
+            ? null
+            : (
+                <Popover
+                  trigger="click"
+                  placement="bottomRight"
+                  content={filterContent}
+                  getPopupContainer={node => node}
+                  visible={isFilter}
+                  onVisibleChange={onVisibleChange}
+                >
+                  <IconWrap onClick={() => setIsFilter(true)} type="filter" />
+                </Popover>
+              )}
         </Space>
       </TopWrap>
-      {dataList.list?.map((item: any) => (
-        <IterationCard
-          menu={menu(item)}
-          key={item.id}
-          item={item}
-          onClickInfo={() => onClickInfo(item)}
-          onClickItem={() => onClickItem(item)}
-        />
-      ))}
+      <CardGroups>
+        {dataList.list?.map((item: any) => (
+          <IterationCard
+            menu={menu(item)}
+            key={item.id}
+            item={item}
+            onClickInfo={() => onClickInfo(item)}
+            onClickItem={() => onClickItem(item)}
+          />
+        ))}
+      </CardGroups>
     </Left>
   )
 }

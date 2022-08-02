@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable no-negated-condition */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -166,6 +167,7 @@ const EditDemand = (props: Props) => {
     id: 646,
   })
   const { getDemandList } = useModel('demand')
+  const { getProjectInfo } = useModel('project')
 
   const {
     getProjectList,
@@ -293,11 +295,17 @@ const EditDemand = (props: Props) => {
   }
   const selectPrejectName = (value: any) => {
     setPrejectId(value)
+    getProjectInfo({ projectId: value })
   }
   const clearProjectId = () => {
     setPrejectId('')
     form.resetFields()
   }
+
+  const onAdd = () => {
+    message.warning('请选择项目')
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -450,16 +458,23 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="attachment" />
           <Form.Item label="附件" name="attachments">
-            <UploadAttach
-              defaultList={attachList}
-              onChangeAttachment={onChangeAttachment}
-              addWrap={
-                <AddWrap>
-                  <IconFont type="plus" />
-                  <div>添加</div>
-                </AddWrap>
-              }
-            />
+            {!prejectId ? (
+              <AddWrap onClick={onAdd}>
+                <IconFont type="plus" />
+                <div>添加</div>
+              </AddWrap>
+            ) : (
+              <UploadAttach
+                defaultList={attachList}
+                onChangeAttachment={onChangeAttachment}
+                addWrap={
+                  <AddWrap>
+                    <IconFont type="plus" />
+                    <div>添加</div>
+                  </AddWrap>
+                }
+              />
+            )}
           </Form.Item>
         </div>
       </FormWrap>

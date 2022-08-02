@@ -1,16 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import highchartsGantt from 'highcharts/modules/gantt'
+import dayjs from 'dayjs'
 
 highchartsGantt(Highcharts)
 
 const Gatte = (props: any) => {
   const { data: res } = props
+
+  // console.log(res, 'gante数据')
+
   Highcharts.setOptions({
     lang: {
-      noData: '暂无数据',
-      weekdays: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      decimalPoint: '',
+      weekdays: [
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六',
+        '星期天',
+      ],
       months: [
         '一月',
         '儿月',
@@ -28,6 +41,20 @@ const Gatte = (props: any) => {
     },
   })
   const options = {
+    noData: {
+      align: 'center',
+    },
+    colors: [
+      '#2877ff',
+      '#AA4643',
+      '#89A54E',
+      '#80699B',
+      '#3D96AE',
+      '#fa9752',
+      '#92A8CD',
+      '#A47D7C',
+      '#B5CA92',
+    ],
     time: {
       useUTC: false,
     },
@@ -80,12 +107,16 @@ const Gatte = (props: any) => {
       },
     },
     tooltip: {
-
-      // xDateFormat: '%e %b %Y, %H:%M',
+      formatter(this: any): any {
+        return `<div>
+        开始时间: ${dayjs(this.point.start).format('YYYY-MM-DD HH:mm:ss')}<br/>
+        结束时间: ${dayjs(this.point.end).format('YYYY-MM-DD HH:mm:ss')}<br/>
+        </div>`
+      },
     },
     series: [
       {
-        name: 'Project 1',
+        name: '需求标题',
         data: res,
       },
     ],

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
+import { getIsPermission } from '@/tools'
+import { useModel } from '@/models'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -78,10 +80,23 @@ interface Props {
 
 const IterationCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
+  const { projectInfo } = useModel('project')
 
-  const onClick = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/del',
+  )
+  const hasChangeStatus = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/status',
+  )
+
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
   }
 
   return (
@@ -91,7 +106,9 @@ const IterationCard = (props: Props) => {
           strokeColor="#43BA9A"
           width={48}
           type="circle"
-          percent={props.item.finishCount / props.item.storyCount * 100}
+          percent={Math.trunc(
+            props.item.finishCount / props.item.storyCount * 100,
+          )}
           strokeWidth={8}
         />
         <InfoContent>
@@ -106,15 +123,21 @@ const IterationCard = (props: Props) => {
         <span>详情</span>
         <IconFont type="right" />
       </DetailWrap>
-      <Dropdown
-        visible={isVisible}
-        overlay={props.menu}
-        placement="bottomRight"
-        trigger={['click']}
-        getPopupContainer={node => node}
-      >
-        <MoreWrap onClick={onClick} type="more" />
-      </Dropdown>
+      {hasDel && hasEdit && hasChangeStatus
+        ? null
+        : (
+            <Dropdown
+              key={isVisible.toString()}
+              visible={isVisible}
+              overlay={props.menu}
+              placement="bottomRight"
+              trigger={['hover']}
+              getPopupContainer={node => node}
+              onVisibleChange={onVisibleChange}
+            >
+              <MoreWrap type="more" />
+            </Dropdown>
+          )}
     </CardWrap>
   )
 }

@@ -37,8 +37,9 @@ export const getDemandInfo: any = async (params: any) => {
     user: response.data.user,
     createdTime: response.data.created_at,
     status: response.data.status,
-    parentId: response.data.parent_id,
+    parentId: response.data.parent_id || '',
     changeCount: response.data.app_changelog_count,
+    iterateId: response.data.iterate_id || '',
   }
 }
 
@@ -204,7 +205,7 @@ export const addDemand: any = async (params: any) => {
     iterate_id: params?.iterateId,
     parent_id: params?.parentId,
     priority: params?.priority,
-    user: params?.userIds,
+    users: params?.userIds,
     copysend: params?.copySendIds,
     tag: params?.tagIds,
     attachment: params?.attachments,
@@ -221,7 +222,7 @@ export const updateDemand: any = async (params: any) => {
     iterate_id: params.iterateId,
     parent_id: params.parentId,
     priority: params.priority,
-    user: params.userIds,
+    users: params.userIds,
     copysend: params.copySendIds,
     tag: params.tagIds,
     attachment: params.attachments,

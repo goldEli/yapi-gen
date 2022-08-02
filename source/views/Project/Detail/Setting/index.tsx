@@ -81,25 +81,39 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
-const SideList = [
-  { name: '项目信息', icon: 'file-text', content: <ProjectInfo /> },
-  { name: '项目成员', icon: 'team', content: <ProjectMember /> },
-  { name: '项目权限组', icon: 'lock', content: <ProjectSet /> },
-]
-
 const Setting = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useModel('project')
   const activeTabs = Number(searchParams.get('type')) || 0
 
+  const SideList = [
+    {
+      name: '项目信息',
+      icon: 'file-text',
+      content: <ProjectInfo />,
+      isPermission: true,
+    },
+    {
+      name: '项目成员',
+      icon: 'team',
+      content: <ProjectMember />,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length,
+    },
+    {
+      name: '项目权限组',
+      icon: 'lock',
+      content: <ProjectSet />,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/role')).length,
+    },
+  ]
+
   return (
     <PermissionWrap
-      auth={
-        !projectInfo.projectPermissions?.filter(
-          (i: any) => i.group_name === '项目设置',
-        ).length
-      }
+      auth="项目设置"
+      hasWidth
+      permission={projectInfo.projectPermissions}
+      isType={1}
     >
       <Wrap>
         <Side>
@@ -111,6 +125,7 @@ const Setting = () => {
                 }
                 key={item.name}
                 isActive={index === activeTabs}
+                hidden={!item.isPermission}
               >
                 <IconFont type={item.icon} />
                 <div>{item.name}</div>

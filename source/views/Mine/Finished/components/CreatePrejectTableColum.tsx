@@ -3,13 +3,15 @@
 /* eslint-disable react/jsx-handler-names */
 import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
-import { level, LevelContent } from '@/components/Level'
+import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
+import { useNavigate } from 'react-router-dom'
+import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
 
 const flexCss = css`
   display: flex;
@@ -33,6 +35,7 @@ const SetHead = styled.div`
 `
 
 export const useDynamicColumns = (state: any) => {
+  const navigate = useNavigate()
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -52,7 +55,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
-      render: (text: any, record: any, index: any) => {
+      render: (text: any, record: any) => {
         const menu = (
           <Menu
             items={[
@@ -70,7 +73,11 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div className={flexCss}>
             <ShowWrap>
-              <Dropdown overlay={menu} placement="bottomLeft">
+              <Dropdown
+                trigger={['click']}
+                overlay={menu}
+                placement="bottomLeft"
+              >
                 <IconFont
                   type="more
               "
@@ -92,13 +99,29 @@ export const useDynamicColumns = (state: any) => {
         text: string | number,
         record: Record<string, string | number>,
       ) => {
-        return <div onClick={() => state.showModal2(record)}>{text}</div>
+        return (
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              navigate(
+                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
+              )
+            }}
+          >
+            {text}
+          </div>
+        )
       },
     },
     {
       title: <NewSort fixedKey="child_story_count">子需求</NewSort>,
       dataIndex: 'child_story_count',
       key: 'child_story_count',
+      render: (text: string, record: any) => {
+        return (
+          <ChildDemandTable id={record.project_id} value={text} row={record} />
+        )
+      },
     },
     {
       title: <NewSort fixedKey="priority">优先级</NewSort>,
@@ -106,33 +129,36 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       render: (text: any, record: Record<string, string | number>) => {
         return (
-          <div className={flexCss}>
-            <div className={flexCss}>
-              <IconFont
-                type={text.icon}
-                style={{
-                  fontSize: 20,
-                  marginRight: '10px',
-                  color: text.color,
-                }}
+          <Pop
+            content={({ onHide }: { onHide(): void }) => (
+              <LevelContent
+                onTap={state.updatePriority}
+                onHide={onHide}
+                record={record}
               />
-              <span>{text.content}</span>
-            </div>
-            <Pop
-              content={({ onHide }: { onHide(): void }) => (
-                <LevelContent
-                  onTap={state.updatePriority}
-                  onHide={onHide}
-                  record={record}
+            )}
+            record={record}
+          >
+            <div className={flexCss}>
+              <div className={flexCss}>
+                <IconFont
+                  type={text.icon}
+                  style={{
+                    fontSize: 20,
+                    marginRight: '10px',
+                    color: text.color,
+                  }}
                 />
-              )}
-              record={record}
-            >
+                <span style={{ marginRight: '5px' }}>
+                  {text.content || '--'}
+                </span>
+              </div>
+
               <ShowWrap>
-                <IconFont type="down-icon" />
+                <IconFont style={{ color: '#2877ff' }} type="down-icon" />
               </ShowWrap>
-            </Pop>
-          </div>
+            </div>
+          </Pop>
         )
       },
     },
@@ -175,12 +201,12 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
     },
     {
-      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      title: '处理人',
       dataIndex: 'users_name',
       key: 'users_name',
     },
     {
-      title: <NewSort fixedKey="users_copysend_name">抄送人</NewSort>,
+      title: '抄送人',
       dataIndex: 'users_copysend_name',
       key: 'users_copysend_name',
     },

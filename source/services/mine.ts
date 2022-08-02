@@ -196,11 +196,12 @@ export const getMineGatte: any = async (params: any) => {
   const arr = handleData(response.data.list)
   const arr2 = arr.map((item: any) => {
     return {
-      start: item.created_at,
-      end: item.end_at,
+      start: item.created_at * 1000,
+      end: item.end_at * 1000,
       beginTime: item.expected_start_at,
       endTime: item.expected_end_at,
-      state: item.name,
+      name: item.name,
+      state: item.status_name,
       y: item.y,
     }
   })
@@ -301,7 +302,10 @@ export const getMineCreacteList: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
-  return response
+  return {
+    list: response.data.list,
+    pager: response.data.pager,
+  }
 }
 
 // 获取我的已办列表
@@ -439,7 +443,7 @@ export const getPeopleList: any = async (params: any) => {
 
 // 获取成员列表
 export const addQuicklyCreate: any = async (params: any) => {
-  const response: any = await http.get<any>('addQuicklyCreate', {
+  const response: any = await http.post<any>('addQuicklyCreate', {
     project_id: params.projectId,
     name: params.name,
     info: params.info,

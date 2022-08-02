@@ -11,6 +11,8 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
+import { getIsPermission } from '@/tools/index'
+import { useModel } from '@/models'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -55,6 +57,16 @@ const PriorityWrap = styled.div({
 })
 
 export const useDynamicColumns = (state: any) => {
+  const { projectInfo } = useModel('project')
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/delete',
+  )
+
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -68,20 +80,28 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => state.onEdit(e, item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: <div onClick={() => state.onDelete(item)}>删除</div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={e => state.onEdit(e, item)}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: <div onClick={() => state.onDelete(item)}>删除</div>,
+      },
+    ]
+
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   return [
     {
@@ -93,14 +113,18 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Dropdown
-              overlay={menu(record)}
-              trigger={['click']}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-            >
-              {state.rowIconFont()}
-            </Dropdown>
+            {hasEdit && hasDel
+              ? null
+              : (
+                  <Dropdown
+                    overlay={menu(record)}
+                    trigger={['click']}
+                    placement="bottomRight"
+                    getPopupContainer={node => node}
+                  >
+                    {state.rowIconFont()}
+                  </Dropdown>
+                )}
             <div style={{ marginLeft: 32 }}>{text}</div>
           </div>
         )
@@ -211,7 +235,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
     },
     {
-      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      title: '处理人',
       dataIndex: 'dealName',
       key: 'users_name',
     },

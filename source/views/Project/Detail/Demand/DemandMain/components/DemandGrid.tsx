@@ -10,7 +10,7 @@ const Content = styled.div({
   padding: 24,
 
   // width: '100%',
-  // overflowY: 'auto',
+  // overflow: 'auto',
 })
 
 const CardGroup = styled.div({

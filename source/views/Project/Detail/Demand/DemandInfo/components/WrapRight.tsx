@@ -83,6 +83,7 @@ const TextareaWrap = styled.div({
   border: '1px solid #EBEDF0',
   padding: 16,
   textAlign: 'right',
+  marginBottom: 20,
   '.ant-input': {
     border: 'none',
     padding: 0,
@@ -102,7 +103,11 @@ const WrapRightBox = () => {
   const [addValue, setAddValue] = useState('')
   const { getCommentList, addComment, deleteComment } = useModel('demand')
   const { userInfo } = useModel('user')
+  const { projectInfo } = useModel('project')
   const [dataList, setDataList] = useState<any>([])
+  const isComment = !projectInfo?.projectPermissions?.filter(
+    (i: any) => i.identity === 'b/story/comment',
+  ).length
 
   const getList = async () => {
     const result = await getCommentList({
@@ -163,40 +168,50 @@ const WrapRightBox = () => {
         onConfirm={onDeleteConfirm}
       />
       <Title>评论</Title>
-      {dataList?.list?.map((item: any) => (
-        <CommentItem key={item.id}>
-          <img src={item.avatar} alt="" />
-          <TextWrap>
-            <div className="textTop">
-              <IconFont
-                type="close"
-                hidden={item.userId !== userInfo.id}
-                onClick={() => onDeleteComment(item)}
+      <div style={{ maxHeight: isComment ? 600 : 400, overflow: 'auto' }}>
+        {dataList?.list?.map((item: any) => (
+          <CommentItem key={item.id}>
+            <img src={item.avatar} alt="" />
+            <TextWrap>
+              <div className="textTop">
+                {isComment
+                  ? null
+                  : (
+                      <IconFont
+                        type="close"
+                        hidden={item.userId !== userInfo.id}
+                        onClick={() => onDeleteComment(item)}
+                      />
+                    )}
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span className="name">{item.name}</span>
+                  <span className="common">{item.statusContent}</span>
+                </div>
+                <div className="common" style={{ paddingRight: 30 }}>
+                  {item.createdTime}
+                </div>
+              </div>
+              <div className="content">{item.content}</div>
+            </TextWrap>
+          </CommentItem>
+        ))}
+      </div>
+      {isComment
+        ? null
+        : (
+            <TextareaWrap>
+              <Input.TextArea
+                placeholder="输入评论，按Enter快速发布"
+                autoSize={{ minRows: 5, maxRows: 5 }}
+                value={addValue}
+                onChange={(e: any) => setAddValue(e.target.value)}
+                onPressEnter={onPressEnter}
               />
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span className="name">{item.name}</span>
-                <span className="common">{item.statusContent}</span>
-              </div>
-              <div className="common" style={{ paddingRight: 30 }}>
-                {item.createdTime}
-              </div>
-            </div>
-            <div className="content">{item.content}</div>
-          </TextWrap>
-        </CommentItem>
-      ))}
-      <TextareaWrap>
-        <Input.TextArea
-          placeholder="输入评论，按Enter快速发布"
-          autoSize={{ minRows: 5, maxRows: 5 }}
-          value={addValue}
-          onChange={(e: any) => setAddValue(e.target.value)}
-          onPressEnter={onPressEnter}
-        />
-        <Button type="primary" onClick={() => onAddComment(addValue)}>
-          回复
-        </Button>
-      </TextareaWrap>
+              <Button type="primary" onClick={() => onAddComment(addValue)}>
+            回复
+              </Button>
+            </TextareaWrap>
+          )}
     </WrapRight>
   )
 }

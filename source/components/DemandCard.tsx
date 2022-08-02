@@ -11,6 +11,7 @@ import { ShapeContent } from '@/components/Shape'
 import { useModel } from '@/models'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { getIsPermission } from '@/tools'
 
 interface Props {
   item: any
@@ -115,9 +116,18 @@ const StatusWrap = styled.div({
 const DemandCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const { getDemandList, updateDemandStatus } = useModel('demand')
+  const { projectInfo } = useModel('project')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const [dataList, setDataList] = useState<any>([])
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/delete',
+  )
 
   const getList = async () => {
     const result = await getDemandList({
@@ -244,7 +254,7 @@ const DemandCard = (props: Props) => {
             <Popover
               visible={isVisible}
               placement="bottom"
-              trigger="click"
+              trigger="hover"
               content={
                 <Table
                   rowKey="id"
@@ -273,14 +283,18 @@ const DemandCard = (props: Props) => {
             </Popover>
           </AvatarWrap>
         </MainWrap>
-        <Dropdown
-          overlay={props.menu}
-          placement="bottomRight"
-          trigger={['click']}
-          getPopupContainer={node => node}
-        >
-          <MoreWrap type="more" />
-        </Dropdown>
+        {hasDel && hasEdit
+          ? null
+          : (
+              <Dropdown
+                overlay={props.menu}
+                placement="bottomRight"
+                trigger={['click']}
+                getPopupContainer={node => node}
+              >
+                <MoreWrap type="more" />
+              </Dropdown>
+            )}
       </Wrap>
     </div>
   )

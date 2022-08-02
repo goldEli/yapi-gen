@@ -4,6 +4,7 @@ import * as services from '@/services'
 export default () => {
   const [iterateInfo, setIterateInfo] = useState<any>({})
   const [selectIterate, setSelectIterate] = useState<any>([])
+  const [isRefreshList, setIsRefreshList] = useState<boolean>(false)
 
   const getIterateInfo = async (params: any) => {
     const result = await services.iterate.getIterateInfo(params)
@@ -37,5 +38,7 @@ export default () => {
     getIterateStatistics,
     getIterateSelectList,
     selectIterate,
+    setIsRefreshList,
+    isRefreshList,
   }
 }

@@ -1,5 +1,5 @@
+/* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Hehavior,
   PaginationWrap,
@@ -102,6 +102,7 @@ const Need = (props: any) => {
   const init = async () => {
     if (isMany) {
       const res = await getMineNoFinishList({
+        projectId: props.id,
         all: isMany,
         panelDate: isMany,
       })
@@ -318,7 +319,7 @@ const Need = (props: any) => {
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
               <IconFont
                 type="filter"
-                style={{ fontSize: 20, color: isShowSearch ? '' : '' }}
+                style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
               />
             </SetButton>
           )}
@@ -335,17 +336,15 @@ const Need = (props: any) => {
         </div>
       </Hehavior>
 
-      {isShowSearch && props.id !== 0
-        ? (
-            <TableFilter
-              onFilter={getSearchKey}
-              onSearch={onSearch}
-              list={searchList}
-              basicsList={filterBasicsList}
-              specialList={filterSpecialList}
-            />
-          )
-        : null}
+      {isShowSearch && props.id !== 0 ? (
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+        />
+      ) : null}
       {!isMany && (
         <StaffTableWrap>
           <StyledTable
@@ -363,16 +362,21 @@ const Need = (props: any) => {
           {manyListData?.map((item: any, index: any) => (
             // eslint-disable-next-line react/no-array-index-key
             <div key={index}>
-              <div className={tableTitle}>
-                {item.status_name}（{item.list.length}）
-              </div>
-              <StyledTable
-                rowKey="id"
-                columns={selectColum}
-                dataSource={item.list}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-              />
+              {item.list.length >= 1 && (
+                <div className={tableTitle}>
+                  {item.status_name}（{item.list.length}）
+                </div>
+              )}
+
+              {item.list.length >= 1 && (
+                <StyledTable
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={item.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                />
+              )}
             </div>
           ))}
         </StaffTableWrap2>
@@ -381,7 +385,7 @@ const Need = (props: any) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={page}
           showSizeChanger
           showQuickJumper
           total={total}
@@ -389,33 +393,28 @@ const Need = (props: any) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
-      {isModalVisible
-        ? (
-            <OptionalFeld
-              plainOptions={plainOptions}
-              plainOptions2={plainOptions2}
-              checkList={titleList}
-              checkList2={titleList2}
-              isVisible={isModalVisible}
-              onClose={close2}
-              getCheckList={getCheckList}
-            />
-          )
-        : null}
-      {isVisible
-        ? (
-            <EditDemand
-              visible={isVisible}
-              onChangeVisible={onChangeVisible}
-              id={operationItem}
-              preId={projectId}
-              onUpdate={onUpdate}
-            />
-          )
-        : null}
+      {isModalVisible ? (
+        <OptionalFeld
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          checkList={titleList}
+          checkList2={titleList2}
+          isVisible={isModalVisible}
+          onClose={close2}
+          getCheckList={getCheckList}
+        />
+      ) : null}
+      {isVisible ? (
+        <EditDemand
+          visible={isVisible}
+          onChangeVisible={onChangeVisible}
+          id={operationItem}
+          preId={projectId}
+          onUpdate={onUpdate}
+        />
+      ) : null}
       <DeleteConfirm
         text="确认要删除当前需求？"
         isVisible={isDelVisible}

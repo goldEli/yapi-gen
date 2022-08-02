@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import EditIteration from './components/EditIteration'
@@ -12,6 +13,7 @@ import { Space, Button, message } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
+import { getIsPermission } from '@/tools/index'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -106,6 +108,15 @@ const IterationWrap = () => {
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo } = useModel('project')
 
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/del',
+  )
+
   const childContent = () => {
     if (type === 'info') {
       return <IterationInfo />
@@ -184,10 +195,17 @@ const IterationWrap = () => {
             <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
           </NameWrap>
           <Space size={16}>
-            <Button type="primary" onClick={onChangeEditVisible}>
-              编辑
-            </Button>
-            <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
+            {hasEdit
+              ? null
+              : (
+                  <Button type="primary" onClick={onChangeEditVisible}>
+                编辑
+                  </Button>
+                )}
+            {hasDel
+              ? null
+              : <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
+            }
           </Space>
         </DemandInfoWrap>
         <ContentWrap>
@@ -203,14 +221,14 @@ const IterationWrap = () => {
               activeIdx={type === 'demand'}
             >
               <span>需求</span>
-              <div>{iterateInfo?.storyCount}</div>
+              <div>{iterateInfo?.storyCount || 0}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
               <span>变更记录</span>
-              <div>{iterateInfo?.changeCount}</div>
+              <div>{iterateInfo?.changeCount || 0}</div>
             </Item>
           </MainWrap>
           {childContent()}
@@ -221,11 +239,10 @@ const IterationWrap = () => {
 
   return (
     <PermissionWrap
-      auth={
-        !projectInfo.projectPermissions?.filter(
-          (i: any) => i.group_name === '迭代',
-        ).length
-      }
+      auth="迭代"
+      hasWidth
+      permission={projectInfo.projectPermissions}
+      isType={1}
     >
       <EditIteration
         visible={isVisible}

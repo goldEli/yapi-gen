@@ -229,11 +229,17 @@ const ChildDemandTable = (props: ChildeProps) => {
     },
   ]
 
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
+  }
+
   return (
     <Popover
+      key={isVisible.toString()}
       visible={isVisible}
       placement="bottom"
       trigger="click"
+      onVisibleChange={onVisibleChange}
       content={
         <Table
           rowKey="id"
@@ -271,8 +277,8 @@ const DemandTable = (props: Props) => {
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [orderKey, setOrderKey] = useState<any>('id')
-  const [order, setOrder] = useState<any>('asc')
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -397,7 +403,6 @@ const DemandTable = (props: Props) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
       {props.settingState ? (

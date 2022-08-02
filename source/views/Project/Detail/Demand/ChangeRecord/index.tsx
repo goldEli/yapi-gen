@@ -266,13 +266,19 @@ const ChangeRecord = () => {
         footer={false}
         width={1080}
         onCancel={() => setIsVisible(false)}
-        bodyStyle={{ padding: '8px 24px 24px' }}
+        bodyStyle={{
+          padding: '8px 24px 24px',
+        }}
         destroyOnClose
       >
-        <SpaceWrap size={32} style={{ display: 'flex', width: '100%' }}>
+        <SpaceWrap
+          size={32}
+          style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
+        >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更前</TitleWrap>
             <div
+              style={{ maxHeight: 400, overflow: 'auto' }}
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.beforeField?.info,
               }}
@@ -281,6 +287,7 @@ const ChangeRecord = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更后</TitleWrap>
             <div
+              style={{ maxHeight: 400, overflow: 'auto' }}
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.afterField?.info,
               }}
@@ -307,7 +314,6 @@ const ChangeRecord = () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
     </div>

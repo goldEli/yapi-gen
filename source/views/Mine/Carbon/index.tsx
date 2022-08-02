@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])
@@ -13,7 +12,7 @@ const Finished = () => {
   const { userInfo } = useModel('user')
 
   const init = async () => {
-    const res = await getMineProjectList('copysend')
+    const res = await getMineProjectList('abeyance')
     setSwiperData(res.data)
   }
   useEffect(() => {
@@ -27,10 +26,8 @@ const Finished = () => {
 
   return (
     <PermissionWrap
-      auth={getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/abeyance/story',
-      )}
+      auth="b/user/abeyance/story"
+      permission={userInfo?.company_permissions}
     >
       <StaffHeader>我的待办</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />

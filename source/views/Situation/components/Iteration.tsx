@@ -1,7 +1,3 @@
-import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
@@ -58,17 +54,17 @@ const Iteration = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total}</span>
+            <span className={title1Css}>{data?.total ?? 0}</span>
             <span className={title2Css}>创建迭代</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.open_count}</span>
+            <span className={title1Css}>{data?.open_count ?? 0}</span>
             <span className={title2Css}>开启迭代</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.end_count}</span>
+            <span className={title1Css}>{data?.end_count ?? 0}</span>
             <span className={title2Css}>关闭迭代</span>
           </ChartsItem>
         </HomeWrap>

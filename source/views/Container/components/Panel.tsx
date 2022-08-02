@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
@@ -7,6 +7,11 @@ import { Tooltip, Popover } from 'antd'
 import { Personal } from './Personal'
 import { useModel } from '@/models'
 
+const imgCss = css`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`
 const buttonCss = css`
   width: 24px;
   /* display: block; */
@@ -49,10 +54,10 @@ const SetHead = styled.div`
   text-align: center;
   border-radius: 50%;
   font-size: 12px;
-  background: rgba(40, 119, 255, 1);
+  background: #a4acf5;
   background-blend-mode: normal;
-  border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid rgba(40, 119, 255, 1);
+  /* border: 2px solid rgba(40, 119, 255, 0.16); */
+  border: 1px solid #f0f2fd;
   color: white;
   margin-right: 8px;
 `
@@ -109,22 +114,13 @@ const LanguageLine = styled.div`
 `
 
 export const Panel = () => {
-  const { loginOut, getUserDetail } = useModel('user')
+  const { loginOut, userInfo } = useModel('user')
 
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
   const [languageMode, setLanguageMode] = useState(1)
-  const [userData, setUserData] = useState<any>({})
-
-  const init = async () => {
-    const res = await getUserDetail()
-    setUserData(res)
-  }
-  useEffect(() => {
-    init()
-  }, [])
 
   const changeLanguageMode = (value: number) => {
     setLanguageMode(value)
@@ -153,20 +149,25 @@ export const Panel = () => {
   }
   const toLoginOut = () => {
     loginOut()
+    loginOut()
   }
 
   return (
     <Box>
       <PanelHeader>
         <PanelHeaderFirst>
-          <SetHead>{userData?.name}</SetHead>
+          {userInfo.avatar
+            ? <img className={imgCss} src={userInfo.avatar} />
+            : <SetHead>{userInfo?.name}</SetHead>
+          }
+
           <NanmeAndPhone>
-            <span>{userData?.name}</span>
-            <span>{userData?.phone}</span>
+            <span>{userInfo?.name}</span>
+            <span>{userInfo?.phone}</span>
           </NanmeAndPhone>
         </PanelHeaderFirst>
         <PanelHeaderSecond>
-          <div>{userData?.company_name}</div>
+          <div>{userInfo?.company_name}</div>
           <Tooltip placement="top" title="切换企业">
             <div
               onClick={() => setCompanyModalVisible(true)}

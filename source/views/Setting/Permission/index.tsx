@@ -244,6 +244,10 @@ const Permission = () => {
   }, [])
 
   const onSavePermission = async () => {
+    if (!selectKeys.length) {
+      message.warning('请选择需要添加的权限')
+      return
+    }
     try {
       await setRolePermission({
         roleId: activeDetail.id,

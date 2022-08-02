@@ -49,6 +49,7 @@ const AddMember = (props: Props) => {
     updateMember,
     setIsRefreshMember,
     getMemberList,
+    memberList,
   } = useModel('project')
   const { getStaffList } = useModel('staff')
   const [staffList, setStaffList] = useState<any>([])
@@ -63,6 +64,12 @@ const AddMember = (props: Props) => {
   useEffect(() => {
     getList()
   }, [])
+
+  useEffect(() => {
+    if (props.details?.id) {
+      form.setFieldsValue(props.details)
+    }
+  }, [props.details])
 
   const onConfirm = async () => {
     if (!form.getFieldValue('userIds')) {
@@ -99,6 +106,11 @@ const AddMember = (props: Props) => {
     }
   }
 
+  const onClose = () => {
+    form.resetFields()
+    props.onChangeValue()
+  }
+
   return (
     <Modal
       visible={props.value}
@@ -111,9 +123,9 @@ const AddMember = (props: Props) => {
     >
       <ModalHeader>
         <span>{props.details?.id ? '编辑项目成员' : '添加项目成员'}</span>
-        <IconFont onClick={props.onChangeValue} type="close" />
+        <IconFont onClick={onClose} type="close" />
       </ModalHeader>
-      <Form form={form} initialValues={props.details}>
+      <Form form={form}>
         <Form.Item
           name="userIds"
           noStyle
@@ -124,7 +136,9 @@ const AddMember = (props: Props) => {
             mode="multiple"
             showSearch
             disabled={props.details?.id}
-            options={staffList}
+            options={staffList?.filter(
+              (i: any) => !memberList?.find((k: any) => k.id === i.value),
+            )}
             optionFilterProp="label"
           />
         </Form.Item>

@@ -6,7 +6,7 @@ import SwiperCard from './SwiperCard'
 
 const SwiperCardMove = (props: any) => {
   const { data, onTap } = props
-  const [swiperActive, setSwiperActive] = useState(1)
+  const [swiperActive, setSwiperActive] = useState('all')
 
   return (
     <SwiperWrap>
@@ -23,10 +23,10 @@ const SwiperCardMove = (props: any) => {
             name="所有项目"
             avtar=""
             tap={() => {
-              setSwiperActive(1)
+              setSwiperActive('all')
               onTap(0)
             }}
-            show={swiperActive === 1}
+            show={swiperActive === 'all'}
           />
         </SwiperSlide>
         {data.map((item: any) => (

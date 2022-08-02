@@ -3,9 +3,14 @@ import styled from '@emotion/styled'
 import { Menu, Space } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { getIsPermission } from '@/tools/index'
+import { useModel } from '@/models'
 
 const Content = styled.div({
   padding: 24,
+  overflow: 'auto',
+
+  // minWidth: '1300px',
 })
 
 const CardGroup = styled.div({
@@ -32,21 +37,30 @@ const IterationGrid = (props: Props) => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+  const { projectInfo } = useModel('project')
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={e => props.onChangeVisible(e, item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: <div onClick={() => props.onDelete(item)}>删除</div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={e => props.onChangeVisible(e, item)}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: <div onClick={() => props.onDelete(item)}>删除</div>,
+      },
+    ]
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onClickItem = (item: any) => {
     navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)

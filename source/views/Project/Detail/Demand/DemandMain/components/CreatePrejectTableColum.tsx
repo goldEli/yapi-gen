@@ -58,6 +58,14 @@ const PriorityWrap = styled.div({
 
 export const useDynamicColumns = (state: any) => {
   const { projectInfo } = useModel('project')
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/delete',
+  )
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -85,11 +93,11 @@ export const useDynamicColumns = (state: any) => {
       },
     ]
 
-    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
+    if (hasEdit) {
       menuItems = menuItems.filter((i: any) => i.key !== '1')
     }
 
-    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
+    if (hasDel) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
@@ -106,14 +114,18 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Dropdown
-              overlay={menu(record)}
-              trigger={['click']}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-            >
-              {state.rowIconFont()}
-            </Dropdown>
+            {hasEdit && hasDel
+              ? null
+              : (
+                  <Dropdown
+                    overlay={menu(record)}
+                    trigger={['click']}
+                    placement="bottomRight"
+                    getPopupContainer={node => node}
+                  >
+                    {state.rowIconFont()}
+                  </Dropdown>
+                )}
             <div style={{ marginLeft: 32 }}>{text}</div>
           </div>
         )
@@ -228,12 +240,12 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
     },
     {
-      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      title: '处理人',
       dataIndex: 'dealName',
       key: 'users_name',
     },
     {
-      title: <NewSort fixedKey="users_copysend_name">抄送人</NewSort>,
+      title: '抄送人',
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
     },

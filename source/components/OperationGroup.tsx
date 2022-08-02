@@ -38,7 +38,7 @@ const DividerWrap = styled(Divider)({
 const OperationGroup = (props: Props) => {
   const { projectInfo } = useModel('project')
 
-  const showFilter = getIsPermission(
+  const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/get',
   )
@@ -68,9 +68,9 @@ const OperationGroup = (props: Props) => {
         type="unorderedlist"
       />
 
-      {showFilter ? null : <DividerWrap type="vertical" />}
+      {hasFilter ? null : <DividerWrap type="vertical" />}
 
-      {showFilter
+      {hasFilter
         ? null
         : (
             <IconFontWrap

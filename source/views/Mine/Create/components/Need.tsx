@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Hehavior,
   PaginationWrap,
@@ -111,7 +110,7 @@ const Need = (props: any) => {
     }
   }
   const updatePriority = async (res1: any) => {
-    const res = await updatePriorityStatus(res1)
+    await updatePriorityStatus(res1)
 
     init()
   }
@@ -146,6 +145,7 @@ const Need = (props: any) => {
       }
     }
     return newList
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
   const getShowkey = async () => {
     const res2 = await getField(props.id)
@@ -195,10 +195,12 @@ const Need = (props: any) => {
   }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
   useEffect(() => {
     getSearchKey()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
 
   useEffect(() => {
     getShowkey()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const showModal = () => {
@@ -275,12 +277,12 @@ const Need = (props: any) => {
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
               <IconFont
                 type="filter"
-                style={{ fontSize: 20, color: isShowSearch ? '' : '' }}
+                style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
               />
             </SetButton>
           )}
 
-          <Dropdown overlay={menu} placement="bottomLeft">
+          <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
             <SetButton>
               <IconFont
                 type="set-default
@@ -316,7 +318,7 @@ const Need = (props: any) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={page}
           showSizeChanger
           showQuickJumper
           total={total}
@@ -324,7 +326,6 @@ const Need = (props: any) => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
       {isModalVisible

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -9,6 +9,11 @@ import sideLogo from '@/assets/side_logo.svg'
 import { useModel } from '@/models'
 import { Popover } from 'antd'
 
+const imgCss = css`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`
 const SideWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,10 +48,10 @@ const SetHead = styled.div`
   text-align: center;
   border-radius: 50%;
   font-size: 12px;
-  background: rgba(40, 119, 255, 1);
+  background: #a4acf5;
   background-blend-mode: normal;
   border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid rgba(40, 119, 255, 1);
+  border: 1px solid #ffffff;
   color: white;
 `
 type MenuType = {
@@ -85,8 +90,7 @@ const activeCss = css`
 `
 
 export const Side = () => {
-  const [userData, setUserData] = useState<any>({})
-  const { getUserDetail } = useModel('user')
+  const { userInfo } = useModel('user')
   const location = useLocation()
   const { pathname } = location
   const nowPath
@@ -97,17 +101,9 @@ export const Side = () => {
   const onNavigation = (path: string) => {
     navigate(path)
   }
-  const init = async () => {
-    const res = await getUserDetail()
-    setUserData(res)
-  }
-
-  useEffect(() => {
-    init()
-  }, [])
 
   const getIsPermission = (value: string) => {
-    return !userData?.company_permissions?.filter((i: any) => String(i.group_name).includes(value)).length
+    return !userInfo?.company_permissions?.filter((i: any) => String(i.group_name).includes(value)).length
   }
 
   const getMenu = () => {
@@ -169,6 +165,7 @@ export const Side = () => {
 
       <SideFooter>
         <SideEach
+          className={nowPath === '/Setting' ? activeCss : ''}
           onClick={() => navigate('/Setting')}
           hidden={getIsPermission('公司管理')}
         >
@@ -176,7 +173,10 @@ export const Side = () => {
           <span>设置</span>
         </SideEach>
         <Popover placement="rightTop" trigger="click" content={<Panel />}>
-          <SetHead onClick={controlPanelVisible}>{userData?.name}</SetHead>
+          {userInfo.avatar
+            ? <img className={imgCss} src={userInfo.avatar} />
+            : <SetHead onClick={controlPanelVisible}>{userInfo?.name}</SetHead>
+          }
         </Popover>
       </SideFooter>
     </SideWrap>

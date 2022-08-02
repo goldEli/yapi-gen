@@ -1,15 +1,12 @@
 /* eslint-disable multiline-ternary */
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import { type } from 'os'
 import QuicklyCreate from './components/QuicklyCreate'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
-
-const buttonCss = css``
 
 const AddButton = styled.div({
   width: 112,
@@ -108,13 +105,15 @@ const MineBox = () => {
       path: 'create',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
-        'b/user/finish/story',
+        'b/user/create/story',
       ),
     },
     {
       id: 4,
       name: '我的已办',
       path: 'finished',
+
+      // isPermission: true,
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/finish/story',

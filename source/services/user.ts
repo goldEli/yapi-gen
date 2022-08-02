@@ -12,14 +12,26 @@ export const loginOut: any = async () => {
   return response
 }
 
+export const login = async () => {
+  const ticket = new URLSearchParams(location.search).get('ticket')
+
+  const response = await http.put(
+    'https://dev.staryuntech.com/api/auth/checkTicket',
+    { ticket },
+  )
+
+  localStorage.setItem('token', response.data.token)
+}
+
 export const getTicket = (toHome?: boolean) => {
-  const url = new URL(import.meta.env.__SSO_ORIGIN__)
+  const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
   url.searchParams.set(
     'redirect',
     toHome || location.pathname === '/' ? location.href : location.href,
   )
   url.searchParams.set('language', localStorage.getItem('language') || 'zh')
+
   location.href = url.href
 }
 
@@ -72,8 +84,8 @@ export const getGlobalGeneral: any = async () => {
 
     user: {
       total: response.data.user_statistics.user_total,
-      boyCount: response.data.user_statistics.user_count[1].count,
-      girlCount: response.data.user_statistics.user_count[0].count,
+      boyCount: response.data.user_statistics.user_count[1]?.count,
+      girlCount: response.data.user_statistics.user_count[0]?.count,
       chartsData: response.data.user_statistics.position_count.map(
         (item: { position_name: any; count: any }) => {
           return {

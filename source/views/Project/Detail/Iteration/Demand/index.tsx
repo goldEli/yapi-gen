@@ -19,6 +19,7 @@ import { OmitText } from '@star-yun/ui'
 import EditDemand from '../../Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
+import { getIsPermission } from '@/tools/index'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -86,9 +87,9 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChildDemandTable = (props: { value: any; row: any }) => {
+export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const projectId = searchParams.get('id') || props.id
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const { getDemandList, updateDemandStatus } = useModel('demand')
@@ -229,11 +230,17 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
     },
   ]
 
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
+  }
+
   return (
     <Popover
+      key={isVisible.toString()}
       visible={isVisible}
       placement="bottom"
       trigger="click"
+      onVisibleChange={onVisibleChange}
       content={
         <Table
           rowKey="id"
@@ -265,6 +272,7 @@ const DemandWrap = () => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const iterateId = searchParams.get('iterateId')
+  const { projectInfo } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand }
     = useModel('demand')
   const [isVisible, setIsVisible] = useState(false)
@@ -275,6 +283,14 @@ const DemandWrap = () => {
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/delete',
+  )
 
   const getList = async (item?: any, orderVal?: any) => {
     const result = await getDemandList({
@@ -312,20 +328,28 @@ const DemandWrap = () => {
     setIsDelete(true)
   }
 
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={() => onClickRow(item)}>编辑</div>,
-        },
-        {
-          key: '2',
-          label: <div onClick={() => onDelete(item)}>删除</div>,
-        },
-      ]}
-    />
-  )
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <div onClick={() => onClickRow(item)}>编辑</div>,
+      },
+      {
+        key: '2',
+        label: <div onClick={() => onDelete(item)}>删除</div>,
+      },
+    ]
+
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
@@ -374,14 +398,18 @@ const DemandWrap = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Dropdown
-              overlay={menu(record)}
-              trigger={['hover']}
-              placement="bottomRight"
-              getPopupContainer={node => node}
-            >
-              <RowIconFont type="more" />
-            </Dropdown>
+            {hasDel && hasEdit
+              ? null
+              : (
+                  <Dropdown
+                    overlay={menu(record)}
+                    trigger={['hover']}
+                    placement="bottomRight"
+                    getPopupContainer={node => node}
+                  >
+                    <RowIconFont type="more" />
+                  </Dropdown>
+                )}
             <div style={{ marginLeft: 32 }}>{text}</div>
           </div>
         )
@@ -626,7 +654,6 @@ const DemandWrap = () => {
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
-          hideOnSinglePage
         />
       </PaginationWrap>
     </div>

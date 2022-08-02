@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 
 const Left = styled.div`
   width: 120px;
-  height: 316px;
+  min-height: 316px;
   box-sizing: border-box;
   padding-top: 32px;
   display: flex;
@@ -21,12 +21,12 @@ const Right = styled.div`
   box-sizing: border-box;
   padding-left: 24px;
   width: 354px;
-  height: 316px;
+  min-height: 316px;
 `
 const Contain = styled.div`
   position: relative;
   width: 475px;
-  height: 316px;
+  min-height: 316px;
   display: flex;
 `
 const StyledShape = styled.div`
@@ -104,6 +104,11 @@ export const ShapeContent = (props: ShapeProps) => {
     init()
   }, [])
 
+  const onClear = () => {
+    hide()
+    form.resetFields()
+  }
+
   const [active, setActive] = useState(activeID)
   const confirm = async () => {
     const res = await form.validateFields()
@@ -115,8 +120,9 @@ export const ShapeContent = (props: ShapeProps) => {
       content: res.password,
     }
     tap(value)
-    hide()
+    onClear()
   }
+
   return (
     <Contain>
       <Left>
@@ -175,10 +181,10 @@ export const ShapeContent = (props: ShapeProps) => {
           >
             流转
           </Button>
-          <Button onClick={() => hide()}>取消</Button>
+          <Button onClick={() => onClear()}>取消</Button>
         </ButtonFooter>
       </Right>
-      <Close onClick={() => hide()}>
+      <Close onClick={() => onClear()}>
         <IconFont type="close" style={{ fontSize: 20 }} />
       </Close>
     </Contain>

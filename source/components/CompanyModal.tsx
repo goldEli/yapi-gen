@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
+import { data } from 'dom7'
 
 interface Props {
   onChangeState(): void
@@ -29,7 +30,7 @@ const FooterWrap = styled(Space)({
 })
 
 const CompanyModal = (props: Props) => {
-  const { getCompanyList, updateCompany, getUserDetail } = useModel('user')
+  const { getCompanyList, updateCompany, userInfo } = useModel('user')
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
   const [companyParams, setCompanyParams] = useState({
@@ -38,9 +39,8 @@ const CompanyModal = (props: Props) => {
   })
 
   const init = async () => {
-    const res = await getUserDetail()
     const res2 = await getCompanyList()
-    setActiveId(res.company_id)
+    setActiveId(userInfo.company_id)
     setCompanyList(res2.data)
   }
   useEffect(() => {
@@ -54,9 +54,16 @@ const CompanyModal = (props: Props) => {
       companyUserId: value.companyUserId,
     })
   }
-  const confirm = () => {
+  const confirm = async () => {
     props.onChangeState()
-    updateCompany(companyParams)
+    if (activeId === userInfo.company_id) {
+      return
+    }
+    const res = await updateCompany(companyParams)
+
+    if (res.data.code === 0) {
+      location.reload()
+    }
   }
   return (
     <Modal

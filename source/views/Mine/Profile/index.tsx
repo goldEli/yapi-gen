@@ -1,21 +1,35 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
-import { Line } from '@ant-design/plots'
-import { Timeline, DatePicker } from 'antd'
+import { Timeline, DatePicker, message } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import moment from 'moment'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { RangePicker } = DatePicker
-
+const Mygante = styled(Gatte)`
+  .highcharts-tick {
+    stroke: rgba(235, 237, 240, 1);
+  }
+  .highcharts-axis-line {
+    stroke: rgba(235, 237, 240, 1);
+  }
+`
+const titleWrap = css`
+  display: flex;
+  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+`
 const titleNumberCss = css`
   color: rgba(67, 186, 154, 1);
   font-size: 24px;
@@ -25,11 +39,11 @@ const titleNumberCss2 = css`
   font-size: 24px;
 `
 const titleNumberCss3 = css`
-  color: rgba(67, 186, 154, 1);
+  color: rgba(40, 119, 255, 1);
   font-size: 24px;
 `
 const titleTextCss = css`
-  color: rgba(40, 119, 255, 1);
+  color: rgba(100, 101, 102, 1);
   font-size: 12px;
 `
 const StyledWrap = styled.div`
@@ -89,7 +103,7 @@ const TimeLineWrap = styled.div`
   height: 300px;
 `
 const LineItem = styled.div`
-  width: 360px;
+  /* width: 360px; */
   display: flex;
   justify-content: space-between;
 `
@@ -104,6 +118,7 @@ const Profile = () => {
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
+  const navigate = useNavigate()
   const init = async () => {
     const res = await getMineChartsList()
 
@@ -115,6 +130,16 @@ const Profile = () => {
     })
 
     setLineData(res1.data)
+    const res2 = await getMineGatte({
+      startTime: moment().startOf('month')
+        .format('YYYY-MM-DD'),
+      endTime: moment().endOf('month')
+        .format('YYYY-MM-DD'),
+
+      // startTime: '2022-07-01 00:00:00',
+      // endTime: '2022-07-31 23:59:59',
+    })
+    setGatteData(res2)
   }
   const onChange = async (
     value: DatePickerProps['value'] | RangePickerProps['value'],
@@ -127,16 +152,30 @@ const Profile = () => {
       // startTime: '2022-07-01 00:00:00',
       // endTime: '2022-07-31 23:59:59',
     })
+
     setGatteData(res)
   }
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const onToDetail = (item: any) => {
+    if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
+      message.warning('该需求已被删除！')
+      return
+    }
+
+    navigate(
+      `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
+    )
+  }
 
   return (
     <PermissionWrap
-      auth={getIsPermission(userInfo?.company_permissions, 'b/user/overview')}
+      auth="b/user/overview"
+      permission={userInfo?.company_permissions}
     >
       <StyledWrap>
         <Head>
@@ -144,15 +183,15 @@ const Profile = () => {
             <SecondTitle>基本概况</SecondTitle>
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.firstP}</span>
+                <span className={titleNumberCss3}>{data?.firstP}</span>
                 <span className={titleTextCss}>累计参与项目</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.firstN}</span>
+                <span className={titleNumberCss3}>{data?.firstN}</span>
                 <span className={titleTextCss}>累计参与需求</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.firstD}</span>
+                <span className={titleNumberCss3}>{data?.firstD}</span>
                 <span className={titleTextCss}>累计参与迭代</span>
               </ChartsItem>
             </InnerWrap>
@@ -161,15 +200,15 @@ const Profile = () => {
             <SecondTitle>待办事项</SecondTitle>
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondAll}</span>
+                <span className={titleNumberCss3}>{data?.secondAll}</span>
                 <span className={titleTextCss}>总计</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondNoFinish}</span>
+                <span className={titleNumberCss3}>{data?.secondNoFinish}</span>
                 <span className={titleTextCss}>待办</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondTimeOut}</span>
+                <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
                 <span className={titleTextCss}>逾期</span>
               </ChartsItem>
               <ChartsItem>
@@ -177,7 +216,7 @@ const Profile = () => {
                 <span className={titleTextCss}>按时完成</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondOutFinish}</span>
+                <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
                 <span className={titleTextCss}>逾期完成</span>
               </ChartsItem>
             </InnerWrap>
@@ -192,13 +231,19 @@ const Profile = () => {
                   <Timeline.Item key={item.id}>
                     <LineItem>
                       <span>{item.created_at}</span>
-                      <span style={{ color: 'rgba(40, 119, 255, 1)' }}>
-                        {item.content}
-                      </span>
+                      <span>{item.content}</span>
                     </LineItem>
                     <LineItem>
                       <span>{item.feedable?.project.name}</span>
-                      <span>{item.feedable?.name}</span>
+                      <span
+                        onClick={() => onToDetail(item)}
+                        style={{
+                          color: 'rgba(40, 119, 255, 1)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {item.feedable?.name}
+                      </span>
                     </LineItem>
                   </Timeline.Item>
                 ))}
@@ -208,9 +253,26 @@ const Profile = () => {
         </Center>
       </StyledWrap>
       <GatteWrap>
-        <SecondTitle>需求甘特图</SecondTitle>
-        <RangePicker format="YYYY-MM-DD" onChange={onChange} />
-        <Gatte data={gatteData} />
+        <div>
+          <SecondTitle>需求甘特图</SecondTitle>
+          <div className={titleWrap}>
+            <RangePicker
+              defaultValue={[
+                moment(moment().startOf('month'), 'YYYY-MM-DD'),
+                moment(moment().endOf('month'), 'YYYY-MM-DD'),
+              ]}
+              format="YYYY-MM-DD"
+              allowClear={false}
+              onChange={onChange}
+            />
+          </div>
+        </div>
+        {gatteData.length >= 1 && <Mygante data={gatteData} />}
+        {gatteData.length < 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            暂无数据
+          </div>
+        )}
       </GatteWrap>
     </PermissionWrap>
   )
