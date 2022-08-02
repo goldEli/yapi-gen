@@ -106,7 +106,9 @@ const IterationCard = (props: Props) => {
           strokeColor="#43BA9A"
           width={48}
           type="circle"
-          percent={props.item.finishCount / props.item.storyCount * 100}
+          percent={Math.trunc(
+            props.item.finishCount / props.item.storyCount * 100,
+          )}
           strokeWidth={8}
         />
         <InfoContent>
