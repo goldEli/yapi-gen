@@ -112,6 +112,8 @@ const MineBox = () => {
       id: 4,
       name: '我的已办',
       path: 'finished',
+
+      // isPermission: true,
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/finish/story',

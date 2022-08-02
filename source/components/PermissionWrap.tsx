@@ -7,7 +7,8 @@ const Wrap = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: 'white',
-  flex: 1,
+  height: '100%',
+  width: '100%',
   borderRadius: 4,
 })
 

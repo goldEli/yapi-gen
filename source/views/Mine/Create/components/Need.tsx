@@ -277,7 +277,7 @@ const Need = (props: any) => {
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
               <IconFont
                 type="filter"
-                style={{ fontSize: 20, color: isShowSearch ? '' : '' }}
+                style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
               />
             </SetButton>
           )}
