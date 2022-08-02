@@ -263,7 +263,7 @@ const Profile = () => {
             />
           </div>
         </div>
-        {gatteData.length > 1 && <Gatte data={gatteData} />}
+        {gatteData.length >= 1 && <Gatte data={gatteData} />}
         {gatteData.length < 1 && <div>暂无数据</div>}
       </GatteWrap>
     </PermissionWrap>
