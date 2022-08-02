@@ -27,10 +27,14 @@ const Finished = () => {
 
   return (
     <PermissionWrap
-      auth={getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/copysend/story',
-      )}
+      auth={
+        userInfo?.company_permissions
+          ? getIsPermission(
+            userInfo?.company_permissions,
+            'b/user/copysend/story',
+          )
+          : false
+      }
     >
       <StaffHeader>我创建的</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />

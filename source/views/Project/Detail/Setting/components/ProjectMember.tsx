@@ -414,7 +414,9 @@ const ProjectMember = () => {
   return (
     <PermissionWrap
       auth={
-        !projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length
+        projectInfo?.projectPermissions
+          ? !projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length
+          : false
       }
     >
       <Wrap>

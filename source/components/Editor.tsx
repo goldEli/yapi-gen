@@ -1,7 +1,12 @@
 import '@wangeditor/editor/dist/css/style.css'
 import { useState, useEffect } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
-import type { IDomEditor, IEditorConfig } from '@wangeditor/editor'
+import type {
+  IDomEditor,
+  IEditorConfig,
+  IToolbarConfig,
+} from '@wangeditor/editor'
+import { useModel } from '@/models'
 
 interface Props {
   value: string
@@ -9,10 +14,82 @@ interface Props {
 }
 
 const EditorBox = (props: Props) => {
+  const customParseLinkUrl = (url: string): string => {
+    if (url.indexOf('http') !== 0) {
+      return `http://${url}`
+    }
+    return url
+  }
+  const { uploadFile } = useModel('cos')
+  const { userInfo } = useModel('user')
   const [editor, setEditor] = useState<IDomEditor | null>(null)
-  const toolbarConfig = {}
+  const toolbarConfig: Partial<IToolbarConfig> = {
+    toolbarKeys: [
+      'headerSelect',
+      'bold',
+      'italic',
+      'underline',
+      'color',
+      'bgColor',
+      'fontSize',
+      'fontFamily',
+      'indent',
+      'delIndent',
+      'insertLink',
+      'bulletedList',
+      'numberedList',
+      'uploadImage',
+      'justifyLeft',
+      'justifyRight',
+      'justifyCenter',
+      'justifyJustify',
+      'fullScreen',
+    ],
+  }
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: '请输入内容...',
+    hoverbarKeys: {
+      image: {
+        menuKeys: [
+          'imageWidth30',
+          'imageWidth50',
+          'imageWidth100',
+          'viewImageLink',
+          'deleteImage',
+        ],
+      },
+    },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    MENU_CONF: {
+      fontFamily: {
+        fontFamilyList: [
+          '宋体',
+          '黑体',
+          '楷体',
+          '幼圆',
+          'Arial',
+          'Arial Blank',
+          'Times New Roman',
+          'Verdana',
+        ],
+      },
+      uploadImage: {
+        async customUpload(
+          file: File,
+          insert: (url: string, alt: string, src: string) => void,
+        ) {
+          const uploadedFile = await uploadFile(
+            file,
+            userInfo?.username,
+            'richEditorFiles',
+          )
+          insert(uploadedFile.url, '', uploadedFile.url)
+        },
+      },
+      insertLink: {
+        parseLinkUrl: customParseLinkUrl,
+      },
+    },
   }
 
   useEffect(() => {

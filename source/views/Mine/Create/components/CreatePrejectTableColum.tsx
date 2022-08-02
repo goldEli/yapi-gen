@@ -201,12 +201,12 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
     },
     {
-      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      title: '处理人',
       dataIndex: 'users_name',
       key: 'users_name',
     },
     {
-      title: <NewSort fixedKey="users_copysend_name">抄送人</NewSort>,
+      title: '抄送人',
       dataIndex: 'users_copysend_name',
       key: 'users_copysend_name',
     },

@@ -109,7 +109,7 @@ export const useDynamicColumns = (state: any) => {
       ) => {
         return (
           <div onClick={() => state.showModal2(record)}>
-            {text === 2 ? '男' : '女'}
+            {text === 1 ? '男' : '女'}
           </div>
         )
       },

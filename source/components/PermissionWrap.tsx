@@ -10,6 +10,8 @@ const Wrap = styled.div({
   height: '100%',
   width: '100%',
   borderRadius: 4,
+
+  // height: '100%',
 })
 
 const PermissionWrap = ({

@@ -296,9 +296,11 @@ const DemandBox = () => {
   return (
     <PermissionWrap
       auth={
-        !projectInfo.projectPermissions?.filter(
-          (i: any) => i.group_name === '需求',
-        ).length
+        projectInfo.projectPermissions
+          ? !projectInfo.projectPermissions?.filter(
+              (i: any) => i.group_name === '需求',
+            ).length
+          : false
       }
     >
       <EditDemand

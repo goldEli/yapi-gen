@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 
 const Left = styled.div`
   width: 120px;
-  height: 316px;
+  min-height: 316px;
   box-sizing: border-box;
   padding-top: 32px;
   display: flex;
@@ -21,12 +21,12 @@ const Right = styled.div`
   box-sizing: border-box;
   padding-left: 24px;
   width: 354px;
-  height: 316px;
+  min-height: 316px;
 `
 const Contain = styled.div`
   position: relative;
   width: 475px;
-  height: 316px;
+  min-height: 316px;
   display: flex;
 `
 const StyledShape = styled.div`

@@ -254,7 +254,7 @@ const DemandCard = (props: Props) => {
             <Popover
               visible={isVisible}
               placement="bottom"
-              trigger="click"
+              trigger="hover"
               content={
                 <Table
                   rowKey="id"
