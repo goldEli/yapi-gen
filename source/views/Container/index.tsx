@@ -32,16 +32,15 @@ export const Container = () => {
 
     await getLoginDetail()
     await getUserDetail()
-
-    // console.log(loginInfo)
-    setIsNextVisible(loginInfo.admin_first_login)
   }
 
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  useEffect(() => {
+    setIsNextVisible(loginInfo.admin_first_login)
+  }, [loginInfo])
   return (
     <Wrap>
       <Side />
