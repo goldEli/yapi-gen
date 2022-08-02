@@ -148,10 +148,8 @@ export const Panel = () => {
     setLanguageModeVisible(newVisible)
   }
   const toLoginOut = () => {
-    login()
-
-    // loginOut()
-    // loginOut()
+    loginOut()
+    loginOut()
   }
 
   return (
