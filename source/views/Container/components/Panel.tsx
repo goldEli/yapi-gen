@@ -7,6 +7,11 @@ import { Tooltip, Popover } from 'antd'
 import { Personal } from './Personal'
 import { useModel } from '@/models'
 
+const imgCss = css`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`
 const buttonCss = css`
   width: 24px;
   /* display: block; */
@@ -49,10 +54,10 @@ const SetHead = styled.div`
   text-align: center;
   border-radius: 50%;
   font-size: 12px;
-  background: rgba(40, 119, 255, 1);
+  background: #a4acf5;
   background-blend-mode: normal;
-  border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid rgba(40, 119, 255, 1);
+  /* border: 2px solid rgba(40, 119, 255, 0.16); */
+  border: 1px solid #f0f2fd;
   color: white;
   margin-right: 8px;
 `
@@ -151,7 +156,11 @@ export const Panel = () => {
     <Box>
       <PanelHeader>
         <PanelHeaderFirst>
-          <SetHead>{userInfo?.name}</SetHead>
+          {userInfo.avatar
+            ? <img className={imgCss} src={userInfo.avatar} />
+            : <SetHead>{userInfo?.name}</SetHead>
+          }
+
           <NanmeAndPhone>
             <span>{userInfo?.name}</span>
             <span>{userInfo?.phone}</span>

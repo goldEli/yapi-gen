@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Modal, Spin } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import head from '@/assets/head.png'
+import head from '@/assets/logo.png'
 import { useModel } from '@/models'
 
 const PersonalHead = styled.div`
