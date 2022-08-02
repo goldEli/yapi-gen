@@ -47,6 +47,10 @@ const TimeWrap = styled(DatePicker.RangePicker)<{ label: string }>`
     margin-right: 16px;
     margin-left: 10px;
   }
+  .ant-picker-active-bar {
+    visibility: hidden;
+    /* left: 200px !important; */
+  }
 `
 const SelectWrap = styled(Select)<{ label: string }>`
   & .ant-select-selector::before {
@@ -57,7 +61,6 @@ const SelectWrap = styled(Select)<{ label: string }>`
   }
 
   .ant-select-selection-placeholder {
-    color: black;
     left: 65px;
   }
 
@@ -96,7 +99,7 @@ const DelButton = styled.div`
   height: 15px;
   visibility: hidden;
   &:hover {
-    background-color: blue;
+    background-color: #2877ff;
   }
 `
 const SelectWrapBedeck = styled.div`
@@ -200,7 +203,7 @@ const TableFilter = (props: any) => {
                         label={i.name}
                         mode="multiple"
                         style={{ width: '100%' }}
-                        placeholder="所有"
+                        placeholder="请选择"
                         showSearch
                         onChange={confirm}
                       >
