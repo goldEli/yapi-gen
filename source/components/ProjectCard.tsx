@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import projectImg from '@/assets/projectImg.png'
 import IconFont from './IconFont'
 import { Dropdown, Menu } from 'antd'
 import { useState } from 'react'

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react'
 import { Select, Button, Form, Input } from 'antd'
 import { useModel } from '@/models'
 
@@ -68,12 +69,7 @@ const Close = styled.span`
   right: 10px;
   top: 10px;
 `
-const shape = [
-  { id: 1, name: '规划中' },
-  { id: 2, name: '实现中' },
-  { id: 3, name: '已实现' },
-  { id: 4, name: '已关闭' },
-]
+
 type ShapeProps = {
   record: any
   hide(): void

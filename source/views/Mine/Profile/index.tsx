@@ -10,7 +10,6 @@ import { Timeline, DatePicker, message } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
 import moment from 'moment'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

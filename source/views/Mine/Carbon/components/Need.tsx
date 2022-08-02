@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -170,6 +171,7 @@ const Need = (props: any) => {
       }
     }
     return newList
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
   const getShowkey = async () => {
     const res2 = await getField(props.id)

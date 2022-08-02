@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
-import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 
 const Arrow = styled.span`

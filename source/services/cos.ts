@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable no-bitwise */

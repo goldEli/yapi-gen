@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
@@ -22,15 +22,6 @@ const Contain = styled.div`
   /* height: 136px; */
   display: flex;
   flex-direction: column;
-`
-const StyledShape = styled.div`
-  width: 120px;
-  height: 32px;
-  mix-blend-mode: normal;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 5px 16px 5px 16px;
 `
 
 export const level = [
@@ -93,6 +84,7 @@ export const LevelContent = (props: LevelProps) => {
   }
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record])
 
   const changeState = (value: any) => {
