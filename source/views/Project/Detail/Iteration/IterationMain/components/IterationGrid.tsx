@@ -8,6 +8,9 @@ import { useModel } from '@/models'
 
 const Content = styled.div({
   padding: 24,
+  overflow: 'auto',
+
+  // minWidth: '1300px',
 })
 
 const CardGroup = styled.div({
