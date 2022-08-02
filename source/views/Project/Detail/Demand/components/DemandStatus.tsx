@@ -53,6 +53,7 @@ const DemandBox = (props: Props) => {
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { memberList } = useModel('project')
+  const { userInfo } = useModel('user')
   const { updateDemandStatus, getDemandInfo } = useModel('demand')
 
   const onClear = () => {
@@ -100,13 +101,15 @@ const DemandBox = (props: Props) => {
           rules={[{ required: true, message: '' }]}
         >
           <Select mode="multiple" placeholder="请选择" allowClear>
-            {memberList?.map((i: any) => {
-              return (
-                <Select.Option key={i.id} value={i.id}>
-                  {i.name}
-                </Select.Option>
-              )
-            })}
+            {memberList
+              ?.filter((k: any) => k.name !== userInfo?.name)
+              ?.map((i: any) => {
+                return (
+                  <Select.Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Select.Option>
+                )
+              })}
           </Select>
         </Form.Item>
         <Form.Item label="评论" name="content">

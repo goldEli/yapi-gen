@@ -176,7 +176,9 @@ const WrapLeft = (props: Props) => {
     }
     const result = await getIterateList(params)
     setDataList(result)
-    props.onCurrentDetail(result?.list[0])
+    if (!isRefreshList) {
+      props.onCurrentDetail(result?.list[0])
+    }
     props.onIsUpdateList?.(false)
     setIsRefreshList(false)
   }

@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Form, message, Modal, Select } from 'antd'
@@ -72,7 +73,7 @@ const AddMember = (props: Props) => {
   }, [props.details])
 
   const onConfirm = async () => {
-    if (!form.getFieldValue('userIds')) {
+    if (!form.getFieldValue('name')) {
       message.warning('成员不能为空！')
       return
     }
@@ -82,9 +83,11 @@ const AddMember = (props: Props) => {
       return
     }
     const values = form.getFieldsValue()
+    const users = staffList?.filter((i: any) => values.name.find((k: any) => k === i.value))
     const params = {
       projectId,
-      ...values,
+      userGroupId: values.userGroupId,
+      userIds: users?.map((i: any) => i.value),
     }
     try {
       if (props.details?.id) {
@@ -127,7 +130,7 @@ const AddMember = (props: Props) => {
       </ModalHeader>
       <Form form={form}>
         <Form.Item
-          name="userIds"
+          name="name"
           noStyle
           rules={[{ required: true, message: '' }]}
         >

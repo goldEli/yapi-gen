@@ -177,7 +177,9 @@ const CommonOperation = (props: Props) => {
             type="left"
           />
           <ImgWrap src={projectInfo.cover} />
-          <OmitText width={152}>{projectInfo.name}</OmitText>
+          <OmitText width={152}>
+            <span onClick={() => setIsVisible(true)}>{projectInfo.name}</span>
+          </OmitText>
           <IconFont
             hidden={getIsPermission(
               userInfo?.company_permissions,
