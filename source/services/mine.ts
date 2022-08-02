@@ -196,8 +196,8 @@ export const getMineGatte: any = async (params: any) => {
   const arr = handleData(response.data.list)
   const arr2 = arr.map((item: any) => {
     return {
-      start: item.created_at,
-      end: item.end_at,
+      start: item.created_at * 1000,
+      end: item.end_at * 1000,
       beginTime: item.expected_start_at,
       endTime: item.expected_end_at,
       name: item.name,

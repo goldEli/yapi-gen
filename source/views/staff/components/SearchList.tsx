@@ -157,7 +157,7 @@ const SearchList = (props: Props) => {
           <SelectWrapBedeck>
             <Form.Item name="userGroup">
               <SelectWrap
-                onBlur={confirm}
+                onChange={confirm}
                 label="权限组"
                 mode="multiple"
                 style={{ width: '100%' }}

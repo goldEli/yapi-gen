@@ -135,7 +135,7 @@ export const useDynamicColumns = (state: any) => {
                   color: text.color,
                 }}
               />
-              <span>{text.content}</span>
+              <span style={{ marginRight: '5px' }}>{text.content || '--'}</span>
             </div>
             <Pop
               content={({ onHide }: { onHide(): void }) => (
@@ -148,7 +148,7 @@ export const useDynamicColumns = (state: any) => {
               record={record}
             >
               <ShowWrap>
-                <IconFont type="down-icon" />
+                <IconFont style={{ color: '#2877ff' }} type="down-icon" />
               </ShowWrap>
             </Pop>
           </div>

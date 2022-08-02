@@ -162,7 +162,6 @@ const TableFilter = (props: any) => {
   }
   const content = (
     <div>
-      <Input.Search />
       <div>
         <Collapse>
           <Collapse.Panel header="基础字段" key="1">
@@ -189,7 +188,7 @@ const TableFilter = (props: any) => {
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
-        <FormWrap form={form} onValuesChange={confirm}>
+        <FormWrap form={form}>
           {list
             ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
             ?.map((i: any) => {
@@ -203,6 +202,7 @@ const TableFilter = (props: any) => {
                         style={{ width: '100%' }}
                         placeholder="所有"
                         showSearch
+                        onChange={confirm}
                       >
                         {i.children.map((v: any) => (
                           <Option key={v.id} value={v.id}>
@@ -221,6 +221,7 @@ const TableFilter = (props: any) => {
                 <SelectWrapBedeck key={i.key}>
                   <Form.Item name={i.key}>
                     <TimeWrap
+                      onChange={confirm}
                       label={i.name}
                       className={rangPicker}
                       getPopupContainer={node => node}

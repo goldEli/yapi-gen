@@ -19,6 +19,7 @@ const { RangePicker } = DatePicker
 const titleWrap = css`
   display: flex;
   justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 16px;
 `
@@ -31,11 +32,11 @@ const titleNumberCss2 = css`
   font-size: 24px;
 `
 const titleNumberCss3 = css`
-  color: rgba(67, 186, 154, 1);
+  color: rgba(40, 119, 255, 1);
   font-size: 24px;
 `
 const titleTextCss = css`
-  color: rgba(40, 119, 255, 1);
+  color: rgba(100, 101, 102, 1);
   font-size: 12px;
 `
 const StyledWrap = styled.div`
@@ -95,7 +96,7 @@ const TimeLineWrap = styled.div`
   height: 300px;
 `
 const LineItem = styled.div`
-  width: 360px;
+  /* width: 360px; */
   display: flex;
   justify-content: space-between;
 `
@@ -167,15 +168,15 @@ const Profile = () => {
             <SecondTitle>基本概况</SecondTitle>
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.firstP}</span>
+                <span className={titleNumberCss3}>{data?.firstP}</span>
                 <span className={titleTextCss}>累计参与项目</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.firstN}</span>
+                <span className={titleNumberCss3}>{data?.firstN}</span>
                 <span className={titleTextCss}>累计参与需求</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.firstD}</span>
+                <span className={titleNumberCss3}>{data?.firstD}</span>
                 <span className={titleTextCss}>累计参与迭代</span>
               </ChartsItem>
             </InnerWrap>
@@ -184,15 +185,15 @@ const Profile = () => {
             <SecondTitle>待办事项</SecondTitle>
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondAll}</span>
+                <span className={titleNumberCss3}>{data?.secondAll}</span>
                 <span className={titleTextCss}>总计</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondNoFinish}</span>
+                <span className={titleNumberCss3}>{data?.secondNoFinish}</span>
                 <span className={titleTextCss}>待办</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondTimeOut}</span>
+                <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
                 <span className={titleTextCss}>逾期</span>
               </ChartsItem>
               <ChartsItem>
@@ -200,7 +201,7 @@ const Profile = () => {
                 <span className={titleTextCss}>按时完成</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss}>{data?.secondOutFinish}</span>
+                <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
                 <span className={titleTextCss}>逾期完成</span>
               </ChartsItem>
             </InnerWrap>
@@ -215,20 +216,23 @@ const Profile = () => {
                   <Timeline.Item key={item.id}>
                     <LineItem>
                       <span>{item.created_at}</span>
+                      <span>{item.content}</span>
+                    </LineItem>
+                    <LineItem>
+                      <span>{item.feedable?.project.name}</span>
                       <span
                         onClick={() => {
                           navigate(
                             `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
                           )
                         }}
-                        style={{ color: '#3338a5', cursor: 'pointer' }}
+                        style={{
+                          color: 'rgba(40, 119, 255, 1)',
+                          cursor: 'pointer',
+                        }}
                       >
-                        {item.content}
+                        {item.feedable?.name}
                       </span>
-                    </LineItem>
-                    <LineItem>
-                      <span>{item.feedable?.project.name}</span>
-                      <span>{item.feedable?.name}</span>
                     </LineItem>
                   </Timeline.Item>
                 ))}
@@ -238,11 +242,22 @@ const Profile = () => {
         </Center>
       </StyledWrap>
       <GatteWrap>
-        <div className={titleWrap}>
+        <div>
           <SecondTitle>需求甘特图</SecondTitle>
-          <RangePicker format="YYYY-MM-DD" onChange={onChange} />
+          <div className={titleWrap}>
+            <RangePicker
+              defaultValue={[
+                moment(moment().startOf('month'), 'YYYY-MM-DD'),
+                moment(moment().endOf('month'), 'YYYY-MM-DD'),
+              ]}
+              format="YYYY-MM-DD"
+              allowClear={false}
+              onChange={onChange}
+            />
+          </div>
         </div>
         {gatteData.length > 1 && <Gatte data={gatteData} />}
+        {gatteData.length < 1 && <div>暂无数据</div>}
       </GatteWrap>
     </PermissionWrap>
   )
