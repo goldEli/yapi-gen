@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { decrypt, encrypt } from '../tools/crypto'
 import * as http from '../tools/http'
 
 export const getLoginDetail: any = async () => {
@@ -13,14 +14,21 @@ export const loginOut: any = async () => {
 }
 
 export const login = async () => {
-  const ticket = new URLSearchParams(location.search).get('ticket')
-
-  const response = await http.put(
-    `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
-    { ticket },
-  )
-
-  localStorage.setItem('token', response.data.token)
+  const ticket: any = new URLSearchParams(location.search).get('ticket')
+  if (import.meta.env.MODE === 'development') {
+    const response = await http.put(
+      `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
+      { ticket },
+    )
+    localStorage.setItem('token', response.data.token)
+  } else {
+    const response = await http.put(
+      `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
+      encrypt(JSON.stringify({ ticket })),
+    )
+    const result = JSON.parse(decrypt(response))
+    localStorage.setItem('token', result.data.token)
+  }
 }
 
 export const getTicket = (toHome?: boolean) => {
