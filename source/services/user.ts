@@ -16,7 +16,7 @@ export const login = async () => {
   const ticket = new URLSearchParams(location.search).get('ticket')
 
   const response = await http.put(
-    'https://dev.staryuntech.com/api/auth/checkTicket',
+    `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`,
     { ticket },
   )
 
