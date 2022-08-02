@@ -330,11 +330,8 @@ const ProjectSet = () => {
 
   return (
     <PermissionWrap
-      auth={
-        projectInfo?.projectPermissions
-          ? getIsPermission(projectInfo?.projectPermissions, 'b/project/role')
-          : false
-      }
+      auth="b/project/role"
+      permission={projectInfo?.projectPermissions}
     >
       <div style={{ height: '100%' }}>
         <DeleteConfirm

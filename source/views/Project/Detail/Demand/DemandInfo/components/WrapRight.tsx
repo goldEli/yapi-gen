@@ -83,6 +83,7 @@ const TextareaWrap = styled.div({
   border: '1px solid #EBEDF0',
   padding: 16,
   textAlign: 'right',
+  marginBottom: 20,
   '.ant-input': {
     border: 'none',
     padding: 0,
@@ -167,32 +168,34 @@ const WrapRightBox = () => {
         onConfirm={onDeleteConfirm}
       />
       <Title>评论</Title>
-      {dataList?.list?.map((item: any) => (
-        <CommentItem key={item.id}>
-          <img src={item.avatar} alt="" />
-          <TextWrap>
-            <div className="textTop">
-              {isComment
-                ? null
-                : (
-                    <IconFont
-                      type="close"
-                      hidden={item.userId !== userInfo.id}
-                      onClick={() => onDeleteComment(item)}
-                    />
-                  )}
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span className="name">{item.name}</span>
-                <span className="common">{item.statusContent}</span>
+      <div style={{ maxHeight: isComment ? 600 : 400, overflow: 'auto' }}>
+        {dataList?.list?.map((item: any) => (
+          <CommentItem key={item.id}>
+            <img src={item.avatar} alt="" />
+            <TextWrap>
+              <div className="textTop">
+                {isComment
+                  ? null
+                  : (
+                      <IconFont
+                        type="close"
+                        hidden={item.userId !== userInfo.id}
+                        onClick={() => onDeleteComment(item)}
+                      />
+                    )}
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span className="name">{item.name}</span>
+                  <span className="common">{item.statusContent}</span>
+                </div>
+                <div className="common" style={{ paddingRight: 30 }}>
+                  {item.createdTime}
+                </div>
               </div>
-              <div className="common" style={{ paddingRight: 30 }}>
-                {item.createdTime}
-              </div>
-            </div>
-            <div className="content">{item.content}</div>
-          </TextWrap>
-        </CommentItem>
-      ))}
+              <div className="content">{item.content}</div>
+            </TextWrap>
+          </CommentItem>
+        ))}
+      </div>
       {isComment
         ? null
         : (

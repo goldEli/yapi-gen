@@ -104,6 +104,11 @@ export const ShapeContent = (props: ShapeProps) => {
     init()
   }, [])
 
+  const onClear = () => {
+    hide()
+    form.resetFields()
+  }
+
   const [active, setActive] = useState(activeID)
   const confirm = async () => {
     const res = await form.validateFields()
@@ -115,8 +120,9 @@ export const ShapeContent = (props: ShapeProps) => {
       content: res.password,
     }
     tap(value)
-    hide()
+    onClear()
   }
+
   return (
     <Contain>
       <Left>
@@ -175,10 +181,10 @@ export const ShapeContent = (props: ShapeProps) => {
           >
             流转
           </Button>
-          <Button onClick={() => hide()}>取消</Button>
+          <Button onClick={() => onClear()}>取消</Button>
         </ButtonFooter>
       </Right>
-      <Close onClick={() => hide()}>
+      <Close onClick={() => onClear()}>
         <IconFont type="close" style={{ fontSize: 20 }} />
       </Close>
     </Contain>

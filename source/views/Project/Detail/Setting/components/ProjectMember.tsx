@@ -413,11 +413,9 @@ const ProjectMember = () => {
 
   return (
     <PermissionWrap
-      auth={
-        projectInfo?.projectPermissions
-          ? !projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length
-          : false
-      }
+      auth="b/project/member"
+      permission={projectInfo.projectPermissions}
+      isType={2}
     >
       <Wrap>
         <DeleteConfirm

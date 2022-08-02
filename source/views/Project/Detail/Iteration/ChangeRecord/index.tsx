@@ -270,10 +270,14 @@ const ChangeRecord = () => {
         bodyStyle={{ padding: '8px 24px 24px' }}
         destroyOnClose
       >
-        <SpaceWrap size={32} style={{ display: 'flex' }}>
+        <SpaceWrap
+          size={32}
+          style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
+        >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更前</TitleWrap>
             <div
+              style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.beforeField?.info,
               }}
@@ -282,6 +286,7 @@ const ChangeRecord = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>变更后</TitleWrap>
             <div
+              style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.afterField?.info,
               }}

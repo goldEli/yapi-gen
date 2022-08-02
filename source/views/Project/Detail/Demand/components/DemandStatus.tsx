@@ -55,13 +55,18 @@ const DemandBox = (props: Props) => {
   const { memberList } = useModel('project')
   const { updateDemandStatus, getDemandInfo } = useModel('demand')
 
+  const onClear = () => {
+    props.hide?.()
+    form.resetFields()
+  }
+
   const onChangeStatus = async (value: any) => {
     value.statusId = props.active
     try {
       await updateDemandStatus(value)
       message.success('状态修改成功')
       getDemandInfo({ projectId, id: demandId })
-      props.hide?.()
+      onClear()
     } catch (error) {
 
       //
@@ -75,7 +80,7 @@ const DemandBox = (props: Props) => {
       projectId,
       demandId,
       userIds: res.username,
-      content: res.password,
+      content: res.content,
     }
     onChangeStatus(value)
   }
@@ -104,7 +109,7 @@ const DemandBox = (props: Props) => {
             })}
           </Select>
         </Form.Item>
-        <Form.Item label="评论">
+        <Form.Item label="评论" name="content">
           <Input.TextArea
             autoSize={{ minRows: 5, maxRows: 5 }}
             placeholder="请输入评论处理意见"
@@ -112,7 +117,7 @@ const DemandBox = (props: Props) => {
         </Form.Item>
       </Form>
       <PopoverFooter size={16}>
-        <Button onClick={() => props.hide?.()}>取消</Button>
+        <Button onClick={onClear}>取消</Button>
         <Button type="primary" onClick={confirm}>
           确认
         </Button>

@@ -182,11 +182,8 @@ const Staff = () => {
 
   return (
     <PermissionWrap
-      auth={
-        userInfo?.company_permissions
-          ? getIsPermission(userInfo?.company_permissions, 'b/user/list')
-          : false
-      }
+      auth="b/user/list"
+      permission={userInfo?.company_permissions}
     >
       <StaffHeader>公司员工</StaffHeader>
       <Hehavior>

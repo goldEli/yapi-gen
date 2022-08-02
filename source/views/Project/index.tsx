@@ -180,11 +180,8 @@ const Project = () => {
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
       <PermissionWrap
-        auth={
-          userInfo?.company_permissions
-            ? getIsPermission(userInfo?.company_permissions, 'b/project/get')
-            : false
-        }
+        auth="b/project/get"
+        permission={userInfo?.company_permissions}
       >
         <DeleteConfirm
           text="确认删除该项目？"
