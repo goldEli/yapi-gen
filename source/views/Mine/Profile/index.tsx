@@ -15,7 +15,14 @@ import moment from 'moment'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { RangePicker } = DatePicker
-
+const Mygante = styled(Gatte)`
+  .highcharts-tick {
+    stroke: rgba(235, 237, 240, 1);
+  }
+  .highcharts-axis-line {
+    stroke: rgba(235, 237, 240, 1);
+  }
+`
 const titleWrap = css`
   display: flex;
   justify-content: space-between;
@@ -263,8 +270,12 @@ const Profile = () => {
             />
           </div>
         </div>
-        {gatteData.length >= 1 && <Gatte data={gatteData} />}
-        {gatteData.length < 1 && <div>暂无数据</div>}
+        {gatteData.length >= 1 && <Mygante data={gatteData} />}
+        {gatteData.length < 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            暂无数据
+          </div>
+        )}
       </GatteWrap>
     </PermissionWrap>
   )
