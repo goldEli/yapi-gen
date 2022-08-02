@@ -14,6 +14,7 @@ import { getIsPermission } from '@/tools/index'
 const OperationTop = styled.div({
   height: 64,
   width: '100%',
+  minWidth: '1300px',
   background: 'white',
   display: 'flex',
   alignItems: 'center',
