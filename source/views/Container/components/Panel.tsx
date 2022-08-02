@@ -114,7 +114,7 @@ const LanguageLine = styled.div`
 `
 
 export const Panel = () => {
-  const { loginOut, login, userInfo } = useModel('user')
+  const { loginOut, userInfo } = useModel('user')
 
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)

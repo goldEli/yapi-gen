@@ -85,7 +85,15 @@ client.config({
       return JSON.parse((response as { body: string }).body)
     },
     (data: any) => {
-      if (data.code === 'A0204' || data.code === 'A0203') {
+      if (
+        data.code === 'A0204' ||
+        data.code === 'A0203' ||
+        data.code === 'A0202' ||
+        data.code === 'A0201' ||
+        data.code === 'A0200' ||
+        data.code === 'A0100' ||
+        data.code === 'A0001'
+      ) {
 
         // getTicket()
         return
