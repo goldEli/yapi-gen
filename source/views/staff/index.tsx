@@ -162,6 +162,13 @@ const Staff = () => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize, keyword, searchGroups, orderKey, order])
+  const rest = async () => {
+    const res = await refreshStaff()
+    if (res.code === 0) {
+      message.success('刷新成功')
+      init()
+    }
+  }
   const menu = (
     <Menu
       items={[
@@ -180,14 +187,7 @@ const Staff = () => {
       <StaffHeader>公司员工</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset
-            onClick={() => {
-              refreshStaff()
-              location.reload()
-            }}
-          >
-            刷新
-          </Reset>
+          <Reset onClick={rest}>刷新</Reset>
           <MyInput
             suffix={
               <IconFont

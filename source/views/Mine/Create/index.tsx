@@ -32,7 +32,7 @@ const Finished = () => {
         'b/user/copysend/story',
       )}
     >
-      <StaffHeader>抄送我的</StaffHeader>
+      <StaffHeader>我创建的</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <Need id={projectId} />
     </PermissionWrap>

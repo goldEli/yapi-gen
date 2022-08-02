@@ -253,7 +253,7 @@ const Need = (props: any) => {
       <TabsHehavior>
         <div className={tabCss}>
           <TabsItem isActive>
-            <div>抄送需求</div>
+            <div>创建需求</div>
           </TabsItem>
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>

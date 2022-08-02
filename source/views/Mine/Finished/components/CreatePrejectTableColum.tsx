@@ -149,11 +149,13 @@ export const useDynamicColumns = (state: any) => {
                     color: text.color,
                   }}
                 />
-                <span>{text.content}</span>
+                <span style={{ marginRight: '5px' }}>
+                  {text.content || '--'}
+                </span>
               </div>
 
               <ShowWrap>
-                <IconFont type="down-icon" />
+                <IconFont style={{ color: '#2877ff' }} type="down-icon" />
               </ShowWrap>
             </div>
           </Pop>
