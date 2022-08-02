@@ -10,6 +10,7 @@ const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
   flex: 1;
+  overflow: hidden;
 `
 
 const Main = styled.div`
