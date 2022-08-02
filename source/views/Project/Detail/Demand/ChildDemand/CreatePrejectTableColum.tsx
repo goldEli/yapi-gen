@@ -235,7 +235,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
     },
     {
-      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      title: '处理人',
       dataIndex: 'dealName',
       key: 'users_name',
     },

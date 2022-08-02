@@ -14,6 +14,8 @@ import EditDemand from '../../Demand/components/EditDemand'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
+  height: 'calc(100vh - 64px)',
+  overflowY: 'auto',
 }))
 
 interface Props {

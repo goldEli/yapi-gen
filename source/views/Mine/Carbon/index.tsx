@@ -27,10 +27,14 @@ const Finished = () => {
 
   return (
     <PermissionWrap
-      auth={getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/abeyance/story',
-      )}
+      auth={
+        userInfo?.company_permissions
+          ? getIsPermission(
+            userInfo?.company_permissions,
+            'b/user/abeyance/story',
+          )
+          : false
+      }
     >
       <StaffHeader>我的待办</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />

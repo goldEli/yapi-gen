@@ -155,7 +155,11 @@ const Profile = () => {
 
   return (
     <PermissionWrap
-      auth={getIsPermission(userInfo?.company_permissions, 'b/user/overview')}
+      auth={
+        userInfo?.company_permissions
+          ? getIsPermission(userInfo?.company_permissions, 'b/user/overview')
+          : false
+      }
     >
       <StyledWrap>
         <Head>

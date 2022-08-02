@@ -111,9 +111,11 @@ const Setting = () => {
   return (
     <PermissionWrap
       auth={
-        !projectInfo.projectPermissions?.filter(
-          (i: any) => i.group_name === '项目设置',
-        ).length
+        projectInfo.projectPermissions
+          ? !projectInfo.projectPermissions?.filter(
+              (i: any) => i.group_name === '项目设置',
+            ).length
+          : false
       }
     >
       <Wrap>

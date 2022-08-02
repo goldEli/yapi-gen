@@ -199,7 +199,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'users_name',
     },
     {
-      title: <NewSort fixedKey="users_copysend_name">抄送人</NewSort>,
+      title: '抄送人',
       dataIndex: 'users_copysend_name',
       key: 'users_copysend_name',
     },

@@ -9,6 +9,8 @@ const Wrap = styled.div({
   backgroundColor: 'white',
   flex: 1,
   borderRadius: 4,
+
+  // height: '100%',
 })
 
 const PermissionWrap = ({

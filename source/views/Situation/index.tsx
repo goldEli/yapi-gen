@@ -72,10 +72,14 @@ const Situation = () => {
         </PanelHeaderSecond>
       </Head>
       <PermissionWrap
-        auth={getIsPermission(
-          userInfo?.company_permissions,
-          'b/company/statistics',
-        )}
+        auth={
+          userInfo?.company_permissions
+            ? getIsPermission(
+              userInfo?.company_permissions,
+              'b/company/statistics',
+            )
+            : false
+        }
       >
         <Wrap>
           <Project data={generalData?.project} />

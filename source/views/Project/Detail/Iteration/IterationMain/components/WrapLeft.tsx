@@ -33,6 +33,7 @@ const Left = styled.div<{ isShowLeft: boolean }>(
     padding: '0px 16px 10px',
     background: 'white',
     zIndex: 1,
+    height: 'calc(100vh - 64px)',
     '.ant-space-item': {
       display: 'flex',
     },
@@ -81,6 +82,15 @@ const SortItem = styled.div<{ isActive: boolean }>(
     background: isActive ? '#F0F4FA' : 'white',
   }),
 )
+
+const CardGroups = styled.div({
+  height: 'calc(100% - 52px)',
+  width: '100%',
+  overflowY: 'scroll',
+  '::-webkit-scrollbar': {
+    width: 0,
+  },
+})
 
 interface Props {
   isShowLeft: boolean
@@ -378,15 +388,17 @@ const WrapLeft = (props: Props) => {
               )}
         </Space>
       </TopWrap>
-      {dataList.list?.map((item: any) => (
-        <IterationCard
-          menu={menu(item)}
-          key={item.id}
-          item={item}
-          onClickInfo={() => onClickInfo(item)}
-          onClickItem={() => onClickItem(item)}
-        />
-      ))}
+      <CardGroups>
+        {dataList.list?.map((item: any) => (
+          <IterationCard
+            menu={menu(item)}
+            key={item.id}
+            item={item}
+            onClickInfo={() => onClickInfo(item)}
+            onClickItem={() => onClickItem(item)}
+          />
+        ))}
+      </CardGroups>
     </Left>
   )
 }
