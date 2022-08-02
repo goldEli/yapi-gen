@@ -247,7 +247,7 @@ const WrapLeft = (props: Props) => {
           <DatePicker.RangePicker />
         </Form.Item>
         <Form.Item label="状态" name="status">
-          <Radio.Group options={options} defaultValue={1} />
+          <Radio.Group options={options} />
         </Form.Item>
         <div
           style={{

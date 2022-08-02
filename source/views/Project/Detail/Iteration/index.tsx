@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import EditIteration from './components/EditIteration'
@@ -220,14 +221,14 @@ const IterationWrap = () => {
               activeIdx={type === 'demand'}
             >
               <span>需求</span>
-              <div>{iterateInfo?.storyCount}</div>
+              <div>{iterateInfo?.storyCount || 0}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
               <span>变更记录</span>
-              <div>{iterateInfo?.changeCount}</div>
+              <div>{iterateInfo?.changeCount || 0}</div>
             </Item>
           </MainWrap>
           {childContent()}

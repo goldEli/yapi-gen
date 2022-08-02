@@ -49,6 +49,7 @@ const AddMember = (props: Props) => {
     updateMember,
     setIsRefreshMember,
     getMemberList,
+    memberList,
   } = useModel('project')
   const { getStaffList } = useModel('staff')
   const [staffList, setStaffList] = useState<any>([])
@@ -135,7 +136,9 @@ const AddMember = (props: Props) => {
             mode="multiple"
             showSearch
             disabled={props.details?.id}
-            options={staffList}
+            options={staffList?.filter(
+              (i: any) => !memberList?.find((k: any) => k.id === i.value),
+            )}
             optionFilterProp="label"
           />
         </Form.Item>

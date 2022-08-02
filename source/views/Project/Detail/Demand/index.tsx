@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty-function */
@@ -265,14 +266,14 @@ const DemandBox = () => {
               activeIdx={type === 'child'}
             >
               <span>子需求</span>
-              <div>{demandInfo?.childCount}</div>
+              <div>{demandInfo?.childCount || 0}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
               <span>变更记录</span>
-              <div>{demandInfo?.changeCount}</div>
+              <div>{demandInfo?.changeCount || 0}</div>
             </Item>
           </MainWrap>
           {childContent()}
