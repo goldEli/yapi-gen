@@ -117,13 +117,19 @@ const WrapLeft = (props: Props) => {
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [isFilter, setIsFilter] = useState(false)
+  const [isSort, setIsSort] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [currentSort, setCurrentSort] = useState(sortList[1])
   const [dataList, setDataList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const { getIterateList, updateIterateStatus, deleteIterate }
-    = useModel('iterate')
+  const {
+    getIterateList,
+    updateIterateStatus,
+    deleteIterate,
+    setIsRefreshList,
+    isRefreshList,
+  } = useModel('iterate')
   const { projectInfo } = useModel('project')
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -172,11 +178,18 @@ const WrapLeft = (props: Props) => {
     setDataList(result)
     props.onCurrentDetail(result?.list[0])
     props.onIsUpdateList?.(false)
+    setIsRefreshList(false)
   }
 
   useEffect(() => {
     getList()
   }, [currentSort])
+
+  useEffect(() => {
+    if (isRefreshList) {
+      getList()
+    }
+  }, [isRefreshList])
 
   useEffect(() => {
     if (props.isUpdateList) {
@@ -202,13 +215,18 @@ const WrapLeft = (props: Props) => {
     setIsFilter(false)
   }
 
+  const onChangeSort = (item: any) => {
+    setIsSort(false)
+    setCurrentSort(item)
+  }
+
   const sortContent = (
     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
       {sortList.map(i => (
         <SortItem
           isActive={currentSort.name === i.name}
-          key={i.type}
-          onClick={() => setCurrentSort(i)}
+          key={`${i.type}_${i.key}`}
+          onClick={() => onChangeSort(i)}
         >
           {i.name}
         </SortItem>
@@ -360,10 +378,12 @@ const WrapLeft = (props: Props) => {
         }
         <Space size={20}>
           <Popover
+            visible={isSort}
             trigger="click"
             placement="bottom"
             content={sortContent}
             getPopupContainer={node => node}
+            onVisibleChange={(visible: boolean) => setIsSort(visible)}
           >
             <IconWrap type="sort" />
           </Popover>

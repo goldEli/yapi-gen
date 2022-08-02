@@ -9,7 +9,7 @@ import { getIsPermission } from '@/tools/index'
 
 const OperationWrap = styled.div({
   minHeight: 52,
-  minWidth: '1300px',
+  minWidth: '800px',
   lineHeight: '52px',
   background: 'white',
   display: 'flex',

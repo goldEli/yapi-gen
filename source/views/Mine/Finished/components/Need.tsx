@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
   Hehavior,
@@ -294,17 +295,15 @@ const Need = (props: any) => {
         </div>
       </Hehavior>
 
-      {isShowSearch && props.id !== 0
-        ? (
-            <TableFilter
-              onFilter={getSearchKey}
-              onSearch={onSearch}
-              list={searchList}
-              basicsList={filterBasicsList}
-              specialList={filterSpecialList}
-            />
-          )
-        : null}
+      {isShowSearch && props.id !== 0 ? (
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+        />
+      ) : null}
 
       <StaffTableWrap>
         <StyledTable
@@ -318,7 +317,7 @@ const Need = (props: any) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={page}
           showSizeChanger
           showQuickJumper
           total={total}
@@ -328,30 +327,26 @@ const Need = (props: any) => {
           onShowSizeChange={onShowSizeChange}
         />
       </PaginationWrap>
-      {isModalVisible
-        ? (
-            <OptionalFeld
-              plainOptions={plainOptions}
-              plainOptions2={plainOptions2}
-              checkList={titleList}
-              checkList2={titleList2}
-              isVisible={isModalVisible}
-              onClose={close2}
-              getCheckList={getCheckList}
-            />
-          )
-        : null}
-      {isVisible
-        ? (
-            <EditDemand
-              visible={isVisible}
-              onChangeVisible={onChangeVisible}
-              id={operationItem}
-              preId={projectId}
-              onUpdate={onUpdate}
-            />
-          )
-        : null}
+      {isModalVisible ? (
+        <OptionalFeld
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          checkList={titleList}
+          checkList2={titleList2}
+          isVisible={isModalVisible}
+          onClose={close2}
+          getCheckList={getCheckList}
+        />
+      ) : null}
+      {isVisible ? (
+        <EditDemand
+          visible={isVisible}
+          onChangeVisible={onChangeVisible}
+          id={operationItem}
+          preId={projectId}
+          onUpdate={onUpdate}
+        />
+      ) : null}
       <DeleteConfirm
         text="确认要删除当前需求？"
         isVisible={isDelVisible}

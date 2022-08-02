@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
-import { Timeline, DatePicker } from 'antd'
+import { Timeline, DatePicker, message } from 'antd'
 import Gatte from './components/Gatte'
 import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -154,6 +154,17 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const onToDetail = (item: any) => {
+    if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
+      message.warning('该需求已被删除！')
+      return
+    }
+
+    navigate(
+      `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
+    )
+  }
+
   return (
     <PermissionWrap
       auth={
@@ -221,11 +232,7 @@ const Profile = () => {
                     <LineItem>
                       <span>{item.feedable?.project.name}</span>
                       <span
-                        onClick={() => {
-                          navigate(
-                            `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
-                          )
-                        }}
+                        onClick={() => onToDetail(item)}
                         style={{
                           color: 'rgba(40, 119, 255, 1)',
                           cursor: 'pointer',

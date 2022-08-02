@@ -38,6 +38,7 @@ const IterationMain = (props: Props) => {
   const projectId = searchParams.get('id')
   const iterateId = searchParams.get('iterateId')
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
+  const { setIsRefreshList } = useModel('iterate')
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
   const [isSettingState, setIsSettingState] = useState(false)
@@ -122,6 +123,7 @@ const IterationMain = (props: Props) => {
       setIsVisible(false)
       setDeleteId(0)
       getList(isGrid, pageObj, searchItems)
+      setIsRefreshList(true)
     } catch (error) {
 
       //
@@ -135,6 +137,7 @@ const IterationMain = (props: Props) => {
 
   const onChangeRow = () => {
     getList(isGrid, pageObj, searchItems)
+    setIsRefreshList(true)
   }
 
   const onChangeVisible = () => {

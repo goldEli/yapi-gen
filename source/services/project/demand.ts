@@ -222,7 +222,7 @@ export const updateDemand: any = async (params: any) => {
     iterate_id: params.iterateId,
     parent_id: params.parentId,
     priority: params.priority,
-    user: params.userIds,
+    users: params.userIds,
     copysend: params.copySendIds,
     tag: params.tagIds,
     attachment: params.attachments,

@@ -318,7 +318,7 @@ const Need = (props: any) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={1}
+          current={page}
           showSizeChanger
           showQuickJumper
           total={total}
