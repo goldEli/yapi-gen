@@ -239,14 +239,10 @@ const IterationWrap = () => {
 
   return (
     <PermissionWrap
-      auth={
-        projectInfo.projectPermissions
-          ? !projectInfo.projectPermissions?.filter(
-              (i: any) => i.group_name === '迭代',
-            ).length
-          : false
-      }
+      auth="迭代"
       hasWidth
+      permission={projectInfo.projectPermissions}
+      isType={1}
     >
       <EditIteration
         visible={isVisible}

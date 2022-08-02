@@ -4,7 +4,6 @@ import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
 
 const Finished = () => {
   const [swiperData, setSwiperData] = useState([])
@@ -27,14 +26,8 @@ const Finished = () => {
 
   return (
     <PermissionWrap
-      auth={
-        userInfo?.company_permissions
-          ? getIsPermission(
-            userInfo?.company_permissions,
-            'b/user/copysend/story',
-          )
-          : false
-      }
+      auth="b/user/copysend/story"
+      permission={userInfo?.company_permissions}
     >
       <StaffHeader>我的已办</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />

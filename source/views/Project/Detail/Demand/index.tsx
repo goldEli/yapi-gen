@@ -296,14 +296,10 @@ const DemandBox = () => {
 
   return (
     <PermissionWrap
-      auth={
-        projectInfo.projectPermissions
-          ? !projectInfo.projectPermissions?.filter(
-              (i: any) => i.group_name === '需求',
-            ).length
-          : false
-      }
+      auth="需求"
       hasWidth
+      permission={projectInfo.projectPermissions}
+      isType={1}
     >
       <EditDemand
         visible={isVisible}
