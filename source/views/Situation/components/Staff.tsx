@@ -54,17 +54,17 @@ const Staff = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total}</span>
+            <span className={title1Css}>{data?.total ?? 0}</span>
             <span className={title2Css}>公司成员</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.boyCount}</span>
+            <span className={title1Css}>{data?.boyCount ?? 0}</span>
             <span className={title2Css}>男</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.girlCount}</span>
+            <span className={title1Css}>{data?.girlCount ?? 0}</span>
             <span className={title2Css}>女</span>
           </ChartsItem>
         </HomeWrap>

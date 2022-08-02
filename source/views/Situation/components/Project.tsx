@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
@@ -55,25 +56,25 @@ const Project = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total}</span>
+            <span className={title1Css}>{data?.total ?? 0}</span>
             <span className={title2Css}>公司项目</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.open_count}</span>
+            <span className={title1Css}>{data?.open_count ?? 0}</span>
             <span className={title2Css}>开启项目</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.end_count}</span>
+            <span className={title1Css}>{data?.end_count ?? 0}</span>
             <span className={title2Css}>结束项目</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.private_count}</span>
+            <span className={title1Css}>{data?.private_count ?? 0}</span>
             <span className={title2Css}>私有项目</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.public_count}</span>
+            <span className={title1Css}>{data?.public_count ?? 0}</span>
             <span className={title2Css}>公开项目</span>
           </ChartsItem>
         </HomeWrap>

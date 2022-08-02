@@ -71,21 +71,21 @@ const Need = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total}</span>
+            <span className={title1Css}>{data?.total ?? 0}</span>
             <span className={title2Css}>创建需求</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.planningTotal}</span>
+            <span className={title1Css}>{data?.planningTotal ?? 0}</span>
             <span className={title2Css}>未开始</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.ongoingTotal}</span>
+            <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
             <span className={title2Css}>进行中</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>{data?.endTotal}</span>
+            <span className={title1Css}>{data?.endTotal ?? 0}</span>
             <span className={title2Css}>已结束</span>
           </ChartsItem>
         </HomeWrap>

@@ -84,8 +84,8 @@ export const getGlobalGeneral: any = async () => {
 
     user: {
       total: response.data.user_statistics.user_total,
-      boyCount: response.data.user_statistics.user_count[1].count,
-      girlCount: response.data.user_statistics.user_count[0].count,
+      boyCount: response.data.user_statistics.user_count[1]?.count,
+      girlCount: response.data.user_statistics.user_count[0]?.count,
       chartsData: response.data.user_statistics.position_count.map(
         (item: { position_name: any; count: any }) => {
           return {
