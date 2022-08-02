@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
-import { data } from 'dom7'
 
 interface Props {
   onChangeState(): void
@@ -45,6 +44,7 @@ const CompanyModal = (props: Props) => {
   }
   useEffect(() => {
     init()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const cutCompany = (value: any) => {

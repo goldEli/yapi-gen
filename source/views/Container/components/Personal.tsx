@@ -20,10 +20,6 @@ const Line = styled.div`
   color: rgba(100, 101, 102, 1);
   margin-top: 24px;
 `
-const RightLine = styled(Line)`
-  margin-top: 24px;
-  color: rgba(50, 50, 51, 1);
-`
 
 const Right = styled.div``
 const imgCss = css`
@@ -34,7 +30,8 @@ const imgCss = css`
 
 export const Personal = (props: { visible: boolean; close(): void }) => {
   const { userInfo } = useModel('user')
-  const [isShow, setIsShow] = useState<any>(false)
+  // eslint-disable-next-line react/hook-use-state
+  const [isShow] = useState<any>(false)
 
   const labelList = [
     {

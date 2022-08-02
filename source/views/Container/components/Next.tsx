@@ -10,14 +10,6 @@ import guide_2 from '@/assets/guide_2.svg'
 import guide_3 from '@/assets/guide_3.svg'
 import guide_4 from '@/assets/guide_4.svg'
 
-const textCss = css`
-  height: 100px;
-  box-sizing: border-box;
-  padding: 24px 183px;
-  color: rgba(0, 0, 0, 1);
-  font-size: 20px;
-  text-align: center;
-`
 const imgBoxCss = css`
   /* height: 448px; */
   box-sizing: border-box;

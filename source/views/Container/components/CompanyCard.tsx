@@ -101,7 +101,7 @@ const CompanyCard = (props: Props) => {
   return (
     <Warp
       show={props.show}
-      onClick={(e: any) => {
+      onClick={() => {
         if (props.tap) {
           props.tap()
         }

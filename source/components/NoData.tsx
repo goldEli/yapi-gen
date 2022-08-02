@@ -1,5 +1,3 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import empty from '@/assets/empty.svg'
 

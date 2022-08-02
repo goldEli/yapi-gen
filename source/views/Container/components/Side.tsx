@@ -37,10 +37,7 @@ const SideHeader = styled.div`
 const SideFooter = styled(SideHeader)`
   margin-bottom: 20px;
 `
-const Main = styled.div`
-  background: rgba(245, 247, 250, 1);
-  flex: 1;
-`
+
 const SetHead = styled.div`
   width: 32px;
   height: 32px;
