@@ -246,6 +246,7 @@ const IterationWrap = () => {
             ).length
           : false
       }
+      hasWidth
     >
       <EditIteration
         visible={isVisible}

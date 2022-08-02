@@ -15,15 +15,21 @@ const Wrap = styled.div({
 
 const PermissionWrap = ({
   auth,
+  hasWidth,
   children,
 }: {
   auth: boolean
+  hasWidth?: boolean
   children?: any
 }) => {
   if (!auth) {
     return children
   }
-  return <Wrap>暂无权限查看，请联系管理员</Wrap>
+  return (
+    <Wrap style={{ height: hasWidth ? 'calc(100% - 64px)' : '100%' }}>
+      暂无权限查看，请联系管理员
+    </Wrap>
+  )
 }
 
 export default PermissionWrap

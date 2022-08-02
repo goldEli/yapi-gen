@@ -117,6 +117,7 @@ const Setting = () => {
             ).length
           : false
       }
+      hasWidth
     >
       <Wrap>
         <Side>

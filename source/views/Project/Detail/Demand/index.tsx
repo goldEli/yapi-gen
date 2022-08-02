@@ -303,6 +303,7 @@ const DemandBox = () => {
             ).length
           : false
       }
+      hasWidth
     >
       <EditDemand
         visible={isVisible}
