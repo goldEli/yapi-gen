@@ -142,7 +142,7 @@ const Staff = () => {
     setTitleList(list)
     setTitleList2(list2)
   }
-  const onSearch = (e: any) => {
+  const onSearch = async (e: any) => {
     setSearchGroups({
       jobId: e.position,
       departmentId: e.department,
@@ -156,6 +156,7 @@ const Staff = () => {
     setPagesize(size)
   }
   const onPressEnter = (e: any) => {
+    setPage(1)
     setKeyword(e.target.value)
   }
   useEffect(() => {
@@ -222,7 +223,8 @@ const Staff = () => {
           </Dropdown>
         </div>
       </Hehavior>
-      <SearchList onSearch={onSearch} />
+      {isShow ? <SearchList onSearch={onSearch} /> : null}
+
       <StaffTableWrap>
         <StyledTable
           rowKey="id"

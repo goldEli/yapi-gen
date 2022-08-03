@@ -15,6 +15,8 @@ import {
 const DemoColumn = (props: any) => {
   const { data: res } = props
   const config = {
+    seriesField: 'type',
+    color: ['#5ad8a6', '#5b8ff9', '#f6bd16', '#75cbed', '#657798'],
     data: res,
     xField: 'type',
     yField: 'sales',

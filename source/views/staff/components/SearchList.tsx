@@ -173,7 +173,11 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
 
-          <ClearForm onClick={onClearForm}>清除条件</ClearForm>
+          <ClearForm onClick={onClearForm}>
+            <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
+              清除条件
+            </span>
+          </ClearForm>
         </FormWrap>
       </Wrap>
     </SearchLine>
