@@ -8,6 +8,7 @@ import { getTicket } from '@/services/user'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
+import { env } from 'process'
 import { decrypt, encrypt } from './crypto'
 
 const { userAgent } = window.navigator
@@ -71,7 +72,9 @@ client.config({
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
       ) {
-        options.payload = encrypt(options.payload as string)
+        if (import.meta.env.MODE !== 'development') {
+          options.payload = encrypt(options.payload as string)
+        }
       }
     },
   ],
@@ -80,7 +83,9 @@ client.config({
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
       ) {
-        return JSON.parse(decrypt((response as { body: string }).body))
+        if (import.meta.env.MODE !== 'development') {
+          return JSON.parse(decrypt((response as { body: string }).body))
+        }
       }
       return JSON.parse((response as { body: string }).body)
     },
