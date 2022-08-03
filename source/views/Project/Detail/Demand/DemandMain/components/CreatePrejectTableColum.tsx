@@ -119,7 +119,7 @@ export const useDynamicColumns = (state: any) => {
               : (
                   <Dropdown
                     overlay={menu(record)}
-                    trigger={['click']}
+                    trigger={['hover']}
                     placement="bottomRight"
                     getPopupContainer={node => node}
                   >

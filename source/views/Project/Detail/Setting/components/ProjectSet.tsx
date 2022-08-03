@@ -189,6 +189,7 @@ const PermissionItem = (props: ItemProps) => {
 
 const ProjectSet = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
   const [permissionList, setPermissionList] = useState<any>([])
   const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
@@ -387,10 +388,13 @@ const ProjectSet = () => {
                       {item.type === 1 ? '系统权限组' : '自定义权限组'}
                     </span>
                     <Dropdown
+                      key={isMoreVisible.toString()}
+                      visible={isMoreVisible}
                       overlay={() => menu(item)}
                       placement="bottomRight"
-                      trigger={['click']}
+                      trigger={['hover']}
                       getPopupContainer={node => node}
+                      onVisibleChange={visible => setIsMoreVisible(visible)}
                     >
                       <IconWrap type="more" hidden={item.type === 1} />
                     </Dropdown>
