@@ -61,8 +61,13 @@ const ChildDemand = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const { getDemandList, updatePriority, updateDemandStatus, deleteDemand }
-    = useModel('demand')
+  const {
+    getDemandList,
+    updatePriority,
+    updateDemandStatus,
+    deleteDemand,
+    getDemandInfo,
+  } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
@@ -115,6 +120,11 @@ const ChildDemand = () => {
     setOperationItem(item)
   }
 
+  const onUpdate = () => {
+    getDemandInfo({ projectId, id: demandId })
+    getList(pageObj, order)
+  }
+
   const updateOrderkey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
@@ -155,8 +165,7 @@ const ChildDemand = () => {
         priorityId: item.priorityId,
       })
       message.success('优先级修改成功')
-      getList(pageObj, order)
-      getList()
+      onUpdate()
     } catch (error) {
 
       //
@@ -167,7 +176,7 @@ const ChildDemand = () => {
     try {
       await updateDemandStatus(value)
       message.success('状态修改成功')
-      getList(pageObj, order)
+      onUpdate()
     } catch (error) {
 
       //
@@ -185,7 +194,7 @@ const ChildDemand = () => {
       message.success('删除成功')
       setIsDelete(false)
       setDeleteId(0)
-      getList(pageObj, order)
+      onUpdate()
     } catch (error) {
 
       //
@@ -228,7 +237,7 @@ const ChildDemand = () => {
         onChangeVisible={onChangeVisible}
         isChild
         id={operationItem.id}
-        onUpdate={() => getList(pageObj, order)}
+        onUpdate={onUpdate}
       />
       <DeleteConfirm
         text="确认要删除当前子需求？"

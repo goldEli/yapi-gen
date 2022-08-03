@@ -147,7 +147,7 @@ const TagBox = (props: TagProps) => {
         </TagItem>
       ))}
       <TagItem hidden={!value}>
-        <span onClick={onCreateTag}>创建【创建新标签】标签</span>
+        <span onClick={onCreateTag}>{`创建【${value}】标签`}</span>
       </TagItem>
     </TagWrap>
   )
@@ -158,7 +158,6 @@ interface Props {
   canAdd?: boolean
   onChangeTag?(arr: any, type: string): void
   defaultList?: any
-  isCreate?: boolean
 }
 
 const TagComponent = (props: Props) => {
@@ -171,16 +170,10 @@ const TagComponent = (props: Props) => {
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const checkedTags = props.isCreate
-    ? props.defaultList?.map((i: any) => ({
-      color: i?.color,
-      content: i?.name,
-    }))
-    : demandInfo?.tag?.map((i: any) => ({
-      id: i.id,
-      color: i.tag?.color,
-      content: i.tag?.content,
-    }))
+  const checkedTags = props.defaultList?.map((i: any) => ({
+    color: i?.color,
+    content: i?.name,
+  }))
 
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
 
@@ -275,6 +268,7 @@ const TagComponent = (props: Props) => {
 
   const onVisibleOpenChange = (visible: any) => {
     setIsOpen(visible)
+    setIsClear(true)
   }
 
   return (

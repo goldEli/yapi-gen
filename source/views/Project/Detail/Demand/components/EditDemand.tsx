@@ -233,6 +233,13 @@ const EditDemand = (props: Props) => {
           id: i.id,
         })),
       )
+      setTagList(
+        demandInfo?.tag?.map((i: any) => ({
+          id: i.id,
+          color: i.tag?.color,
+          content: i.tag?.content,
+        })),
+      )
       if (demandInfo?.expectedStart) {
         form.setFieldsValue({
           times: [
@@ -269,6 +276,10 @@ const EditDemand = (props: Props) => {
 
     if (props.isIterateId) {
       values.iterateId = props.isIterateId
+    }
+
+    if (values.priority?.id) {
+      values.priority = values.priority?.id
     }
 
     try {
@@ -340,6 +351,7 @@ const EditDemand = (props: Props) => {
     setAttachList([])
     setTagList([])
     setHtml('')
+    setPriorityDetail({})
   }
 
   const onChangeTag = (result: any, type: string) => {
@@ -431,7 +443,11 @@ const EditDemand = (props: Props) => {
               showArrow
               showSearch
               placeholder="请选择父需求"
-              options={demandList}
+              options={
+                props.isChild
+                  ? demandList?.filter((k: any) => k.value !== props?.id)
+                  : demandList
+              }
               getPopupContainer={node => node}
             />
           </Form.Item>
@@ -513,7 +529,6 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label="标签" name="tagIds">
             <TagComponent
-              isCreate={!props.id}
               defaultList={tagList}
               onChangeTag={onChangeTag}
               addWrap={
