@@ -7,6 +7,7 @@ import CompanyModal from '@/components/CompanyModal'
 import { Tooltip, Popover } from 'antd'
 import { Personal } from './Personal'
 import { useModel } from '@/models'
+import { getTicket } from '@/services/user'
 
 const imgCss = css`
   width: 40px;
@@ -150,7 +151,9 @@ export const Panel = () => {
   }
   const toLoginOut = () => {
     loginOut()
-    loginOut()
+    getTicket()
+
+    // loginOut()
   }
 
   return (

@@ -54,6 +54,7 @@ const SetHead = styled.div`
   color: white;
 `
 
+// eslint-disable-next-line complexity
 export const StaffPersonal = (props: {
   data: any
   isVisible: boolean
@@ -114,9 +115,9 @@ export const StaffPersonal = (props: {
           <Line>权限组</Line>
         </Left>
         <Right>
-          <RightLine>{data.phone}</RightLine>
-          <RightLine>{data.email}</RightLine>
-          <RightLine>{data.name}</RightLine>
+          <RightLine>{data.phone ? data.phone : '-'}</RightLine>
+          <RightLine>{data.email ? data.email : '-'}</RightLine>
+          <RightLine>{data.name ? data.name : '-'}</RightLine>
           <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
           <RightLine>
             <Select

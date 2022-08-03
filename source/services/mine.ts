@@ -178,6 +178,8 @@ export const getMineGatte: any = async (params: any) => {
   const response = await http.get('getMineGatte', {
     start_time: params.startTime,
     end_time: params.endTime,
+    page: params.page,
+    pagesize: params.pagesize,
   })
   const handleData = (data: any) => {
     return data.reduce((res: any, item: any, index: any) => {
@@ -206,7 +208,7 @@ export const getMineGatte: any = async (params: any) => {
     }
   })
 
-  return arr2
+  return { list: arr2, pager: response.data.pager }
 }
 
 // 获取状态下的成员列表
