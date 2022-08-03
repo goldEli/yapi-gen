@@ -89,7 +89,6 @@ export const ShapeContent = (props: ShapeProps) => {
 
   const [form] = Form.useForm()
   const { getProjectMember } = useModel('mine')
-  const { userInfo } = useModel('user')
   const [optionsList, setOptionsList] = useState([])
 
   const init = async () => {
@@ -153,13 +152,11 @@ export const ShapeContent = (props: ShapeProps) => {
               ]}
             >
               <Select mode="multiple" placeholder="请选择" allowClear>
-                {optionsList
-                  ?.filter((k: any) => k.name !== userInfo?.name)
-                  ?.map((item: any) => (
-                    <Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Option>
-                  ))}
+                {optionsList?.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
 

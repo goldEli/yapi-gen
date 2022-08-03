@@ -288,7 +288,7 @@ const ProjectMember = () => {
             {hasDel && hasEdit ? null : (
               <Dropdown
                 overlay={() => menu(record)}
-                trigger={['click']}
+                trigger={['hover']}
                 placement="bottom"
                 getPopupContainer={node => node}
               >

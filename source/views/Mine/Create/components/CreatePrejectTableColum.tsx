@@ -12,6 +12,7 @@ import { ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import { useNavigate } from 'react-router-dom'
 import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
+import { useState } from 'react'
 
 const flexCss = css`
   display: flex;
@@ -36,6 +37,7 @@ const SetHead = styled.div`
 
 export const useDynamicColumns = (state: any) => {
   const navigate = useNavigate()
+
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -48,6 +50,43 @@ export const useDynamicColumns = (state: any) => {
       </Sort>
     )
   }
+
+  const MoreWrap = (record: any) => {
+    const [isMoreVisible, setIsMoreVisible] = useState(false)
+    const menu = (
+      <Menu
+        items={[
+          {
+            key: '1',
+            label: <span onClick={() => state.showEdit(record)}>编辑</span>,
+          },
+          {
+            key: '2',
+            label: <span onClick={() => state.showDel(record)}>删除</span>,
+          },
+        ]}
+      />
+    )
+    return (
+      <ShowWrap>
+        <Dropdown
+          key={isMoreVisible.toString()}
+          visible={isMoreVisible}
+          onVisibleChange={visible => setIsMoreVisible(visible)}
+          trigger={['hover']}
+          overlay={menu}
+          placement="bottomLeft"
+          getPopupContainer={node => node}
+        >
+          <IconFont
+            type="more"
+            style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+          />
+        </Dropdown>
+      </ShowWrap>
+    )
+  }
+
   return [
     {
       width: 200,
@@ -56,35 +95,9 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'id',
       key: 'id',
       render: (text: any, record: any) => {
-        const menu = (
-          <Menu
-            items={[
-              {
-                key: '1',
-                label: <span onClick={() => state.showEdit(record)}>编辑</span>,
-              },
-              {
-                key: '2',
-                label: <span onClick={() => state.showDel(record)}>删除</span>,
-              },
-            ]}
-          />
-        )
         return (
           <div className={flexCss}>
-            <ShowWrap>
-              <Dropdown
-                trigger={['click']}
-                overlay={menu}
-                placement="bottomLeft"
-              >
-                <IconFont
-                  type="more
-              "
-                  style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
-                />
-              </Dropdown>
-            </ShowWrap>
+            <MoreWrap record={record} />
             <SetHead>{text}</SetHead>
             <span>{text}</span>
           </div>

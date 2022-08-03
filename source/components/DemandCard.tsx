@@ -115,6 +115,7 @@ const StatusWrap = styled.div({
 
 const DemandCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const { projectInfo } = useModel('project')
   const [searchParams] = useSearchParams()
@@ -252,9 +253,11 @@ const DemandCard = (props: Props) => {
               </div>
             </NameGroup>
             <Popover
+              key={isVisible.toString()}
               visible={isVisible}
               placement="bottom"
               trigger="hover"
+              onVisibleChange={visible => setIsVisible(visible)}
               content={
                 <Table
                   rowKey="id"
@@ -287,10 +290,13 @@ const DemandCard = (props: Props) => {
           ? null
           : (
               <Dropdown
+                key={isMoreVisible.toString()}
+                visible={isMoreVisible}
                 overlay={props.menu}
                 placement="bottomRight"
-                trigger={['click']}
+                trigger={['hover']}
                 getPopupContainer={node => node}
+                onVisibleChange={visible => setIsMoreVisible(visible)}
               >
                 <MoreWrap type="more" />
               </Dropdown>

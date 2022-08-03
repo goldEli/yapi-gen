@@ -81,7 +81,7 @@ const MoreContent = (props: MoreProps) => {
         key={isVisible.toString()}
         visible={isVisible}
         overlay={props.menu}
-        trigger={['click']}
+        trigger={['hover']}
         placement="bottomRight"
         getPopupContainer={node => node}
         onVisibleChange={onVisibleChange}

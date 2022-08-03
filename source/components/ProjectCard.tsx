@@ -82,6 +82,7 @@ interface Props {
 
 const ProjectCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { userInfo } = useModel('user')
 
   const onClickMenu = (e: any, type: string, item: any) => {
@@ -144,10 +145,13 @@ const ProjectCard = (props: Props) => {
       <TextWarp>
         <NameWrap>{props.item.name}</NameWrap>
         <DropdownWrap
+          key={isMoreVisible.toString()}
+          visible={isMoreVisible}
           overlay={() => menu(props.item)}
-          trigger={['click']}
+          trigger={['hover']}
           placement="bottomRight"
           getPopupContainer={node => node}
+          onVisibleChange={visible => setIsMoreVisible(visible)}
         >
           <IconFont
             onClick={e => onMoreClick(e)}

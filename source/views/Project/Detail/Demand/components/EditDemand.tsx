@@ -185,7 +185,6 @@ const EditDemand = (props: Props) => {
   const { addDemand, getDemandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
-  const { userInfo } = useModel('user')
   const inputRef = useRef<InputRef>(null)
 
   const getList = async () => {
@@ -395,15 +394,13 @@ const EditDemand = (props: Props) => {
               showSearch
               placeholder="请选择处理人"
             >
-              {memberList
-                ?.filter((k: any) => k.name !== userInfo?.name)
-                ?.map((i: any) => {
-                  return (
-                    <Select.Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Select.Option>
-                  )
-                })}
+              {memberList?.map((i: any) => {
+                return (
+                  <Select.Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Select.Option>
+                )
+              })}
             </Select>
           </Form.Item>
         </div>
