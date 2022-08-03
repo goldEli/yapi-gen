@@ -19,14 +19,12 @@ import IconFont from '@/components/IconFont'
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
 const Mygante = styled(Gatte)`
+  min-width: 1000px;
   .highcharts-tick {
-    stroke: rgba(235, 237, 240, 1);
+    stroke: red;
   }
   .highcharts-axis-line {
-    stroke: rgba(235, 237, 240, 1);
-  }
-  .highcharts-axis-title {
-    width: 100px !important;
+    stroke: red;
   }
 `
 const hov = css`
@@ -309,7 +307,11 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {gatteData.length >= 1 && <Mygante data={gatteData} />}
+        {gatteData.length >= 1 && (
+          <div style={{ minWidth: '1300px' }}>
+            <Mygante data={gatteData} />
+          </div>
+        )}
         {gatteData.length < 1 && (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             暂无数据
