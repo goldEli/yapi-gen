@@ -173,7 +173,7 @@ const EditDemand = (props: Props) => {
 
   const getPrejectName = async () => {
     const res = await getProjectList({
-      self: true,
+      self: 1,
       all: 1,
     })
     setPrejectList(res.data)
