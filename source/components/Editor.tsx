@@ -103,7 +103,7 @@ const EditorBox = (props: Props) => {
   }, [editor])
 
   const onChange = (e: any) => {
-    props.onChangeValue(e.getHtml())
+    props.onChangeValue(String(e.getHtml()).trim())
   }
 
   return (

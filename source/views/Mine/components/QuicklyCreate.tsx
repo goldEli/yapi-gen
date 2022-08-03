@@ -167,7 +167,6 @@ const EditDemand = (props: Props) => {
   })
   const { getDemandList } = useModel('demand')
   const { getProjectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
 
   const {
     getProjectList,
@@ -361,15 +360,13 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="id-card" />
           <Form.Item label="处理人" name="users">
             <Select mode="multiple" placeholder="请选择" allowClear>
-              {peopleList
-                ?.filter((k: any) => k.name !== userInfo?.name)
-                ?.map((i: any) => {
-                  return (
-                    <Select.Option key={i.value} value={i.value}>
-                      {i.label}
-                    </Select.Option>
-                  )
-                })}
+              {peopleList?.map((i: any) => {
+                return (
+                  <Select.Option key={i.value} value={i.value}>
+                    {i.label}
+                  </Select.Option>
+                )
+              })}
             </Select>
           </Form.Item>
         </div>

@@ -118,7 +118,7 @@ const ChangeRecord = () => {
     {
       title: (
         <NewSort
-          fixedKey="user_id"
+          fixedKey="user_name"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
