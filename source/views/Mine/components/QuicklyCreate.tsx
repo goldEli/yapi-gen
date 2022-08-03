@@ -253,6 +253,8 @@ const EditDemand = (props: Props) => {
     const res = await addQuicklyCreate(data)
     if (res.code === 0) {
       message.success('创建成功')
+      setAttachList([])
+      setTagList([])
       if (hasNext) {
         form.resetFields()
       } else {
@@ -285,6 +287,24 @@ const EditDemand = (props: Props) => {
         attachments: comResult,
       })
       setAttachList(comResult)
+    }
+  }
+
+  const onChangeTag = (result: any, type: string) => {
+    if (type === 'add') {
+      form.setFieldsValue({
+        tag: [...form.getFieldValue('tag') || [], ...[result]],
+      })
+      setTagList([...tagList, ...[result]])
+    } else {
+      const arr = tagList
+      const comResult = arr.filter(
+        (i: any) => !(i.name === result.content && i.color === result.color),
+      )
+      form.setFieldsValue({
+        tag: comResult,
+      })
+      setTagList(comResult)
     }
   }
 
@@ -449,6 +469,9 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label="标签" name="tag">
             <TagComponent
+              isCreate
+              defaultList={tagList}
+              onChangeTag={onChangeTag}
               addWrap={
                 <AddWrap hasDash>
                   <IconFont type="plus" />

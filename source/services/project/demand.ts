@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -61,8 +62,8 @@ export const getDemandList: any = async (params: any) => {
       users_name: params?.usersNameId,
       users_copysend_name: params?.copySendId,
       parent_id: params?.parentId,
-      all: params?.all,
-      panel: params?.panel,
+      all: params?.all ? 1 : 0,
+      panel: params?.panel ? 1 : 0,
     },
     pagesize: params?.pageSize,
     page: params?.page,

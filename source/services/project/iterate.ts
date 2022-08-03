@@ -11,7 +11,7 @@ export const getIterateList: any = async (params: any) => {
       created_at: params?.startTime,
       end_at: params?.endTime,
       status: params?.status,
-      all: true,
+      all: 1,
     },
     orderkey: params.orderKey,
     order: params.order,

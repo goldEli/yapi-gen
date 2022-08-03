@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable multiline-ternary */
+/* eslint-disable no-negated-condition */
 /* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -159,8 +162,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-        ? '1px dashed #969799'
-        : '1px solid white',
+      ? '1px dashed #969799'
+      : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -285,6 +288,7 @@ const EditDemand = (props: Props) => {
       }
       form.resetFields()
       setAttachList([])
+      setTagList([])
       setHtml('')
       props.onUpdate?.()
       if (!hasNext) {
@@ -353,6 +357,10 @@ const EditDemand = (props: Props) => {
     }
   }
 
+  const onAdd = () => {
+    message.warning('请选择项目')
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -360,7 +368,7 @@ const EditDemand = (props: Props) => {
       footer={false}
       title={titleText()}
       onCancel={onCancel}
-      bodyStyle={{ padding: '16px 24px' }}
+      bodyStyle={{ padding: '16px 24px', position: 'relative' }}
       destroyOnClose
       maskClosable={false}
     >
@@ -394,6 +402,7 @@ const EditDemand = (props: Props) => {
               mode="multiple"
               showSearch
               placeholder="请选择处理人"
+              getPopupContainer={node => node}
             >
               {memberList?.map((i: any) => {
                 return (
@@ -420,6 +429,7 @@ const EditDemand = (props: Props) => {
               showSearch
               placeholder="请选择父需求"
               options={demandList}
+              getPopupContainer={node => node}
             />
           </Form.Item>
         </div>
@@ -457,7 +467,12 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="interation" />
           <Form.Item label="迭代" name="iterateId">
-            <Select placeholder="请选择" showSearch showArrow>
+            <Select
+              placeholder="请选择"
+              showSearch
+              showArrow
+              getPopupContainer={node => node}
+            >
               {selectIterate?.list
                 ?.filter((k: any) => k.status === 1)
                 ?.map((i: any) => {
@@ -479,6 +494,7 @@ const EditDemand = (props: Props) => {
               mode="multiple"
               showSearch
               placeholder="请选择抄送人"
+              getPopupContainer={node => node}
             >
               {memberList?.map((i: any) => {
                 return (
@@ -494,6 +510,7 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label="标签" name="tagIds">
             <TagComponent
+              isCreate={!props.id}
               defaultList={tagList}
               onChangeTag={onChangeTag}
               addWrap={
@@ -504,26 +521,28 @@ const EditDemand = (props: Props) => {
             />
           </Form.Item>
         </div>
-        <div
-          style={{ display: 'flex' }}
-          hidden={
-            !projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length
-          }
-        >
+        <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="attachment" />
           <Form.Item label="附件" name="attachments">
-            <UploadAttach
-              defaultList={attachList}
-              onChangeAttachment={onChangeAttachment}
-              addWrap={
-                <AddWrap>
-                  <IconFont type="plus" />
-                  <div>添加</div>
-                </AddWrap>
-              }
-            />
+            {!projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length ? (
+              <AddWrap onClick={onAdd}>
+                <IconFont type="plus" />
+                <div>添加</div>
+              </AddWrap>
+            ) : (
+              <UploadAttach
+                defaultList={attachList}
+                onChangeAttachment={onChangeAttachment}
+                addWrap={
+                  <AddWrap>
+                    <IconFont type="plus" />
+                    <div>添加</div>
+                  </AddWrap>
+                }
+              />
+            )}
           </Form.Item>
         </div>
       </FormWrap>

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -6,11 +7,11 @@ import * as http from '@/tools/http'
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
-      self: params.self,
+      self: params.self ? 1 : 0,
       keyword: params.searchValue,
       is_public: params?.isPublic ? Number(params.isPublic) : '',
       status: Number(params.status) || '',
-      all: params.all,
+      all: params.all ? 1 : 0,
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -185,7 +186,7 @@ export const getProjectMember: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.searchValue,
-      all: params?.all,
+      all: params?.all ? 1 : 0,
       job_id: params?.jobIds,
       user_group_id: params?.userGroupIds,
     },

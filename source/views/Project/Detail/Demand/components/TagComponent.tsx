@@ -158,6 +158,7 @@ interface Props {
   canAdd?: boolean
   onChangeTag?(arr: any, type: string): void
   defaultList?: any
+  isCreate?: boolean
 }
 
 const TagComponent = (props: Props) => {
@@ -170,16 +171,17 @@ const TagComponent = (props: Props) => {
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const checkedTags = props.canAdd
-    ? demandInfo?.tag?.map((i: any) => ({
+  const checkedTags = props.isCreate
+    ? props.defaultList?.map((i: any) => ({
+      color: i?.color,
+      content: i?.name,
+    }))
+    : demandInfo?.tag?.map((i: any) => ({
       id: i.id,
       color: i.tag?.color,
       content: i.tag?.content,
     }))
-    : props.defaultList?.map((i: any) => ({
-      color: i?.color,
-      content: i?.name,
-    }))
+
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
 
   const onAddDemandTags = (value: any) => {
@@ -267,6 +269,7 @@ const TagComponent = (props: Props) => {
   )
 
   const onVisibleChange = (visible: any) => {
+    onAddInfoDemand('#969799')
     setIsChooseColor(visible)
   }
 
