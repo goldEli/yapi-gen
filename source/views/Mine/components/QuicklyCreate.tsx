@@ -159,12 +159,7 @@ const EditDemand = (props: Props) => {
   const [peopleList, setPeopleList] = useState<any>([])
   const [attachList, setAttachList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
-  const [priorityDetail, setPriorityDetail] = useState<any>({
-    icon: 'middle',
-    color: '#2F7EFD',
-    content: '中',
-    id: 646,
-  })
+  const [priorityDetail, setPriorityDetail] = useState<any>()
   const { getDemandList } = useModel('demand')
   const { getProjectInfo } = useModel('project')
 
@@ -178,7 +173,7 @@ const EditDemand = (props: Props) => {
 
   const getPrejectName = async () => {
     const res = await getProjectList({
-      self: true,
+      self: 1,
       all: 1,
     })
     setPrejectList(res.data)
@@ -198,8 +193,9 @@ const EditDemand = (props: Props) => {
     const result1 = await getTagList({ projectId: prejectId })
 
     const arr1 = result1?.map((i: any) => ({
-      label: i.content,
-      value: i.id,
+      id: i.id,
+      color: i.tag?.color,
+      name: i.tag?.content,
     }))
 
     const result2 = await getIterateList({ projectId: prejectId, all: 1 })
@@ -255,10 +251,11 @@ const EditDemand = (props: Props) => {
       message.success('创建成功')
       setAttachList([])
       setTagList([])
-      if (hasNext) {
-        form.resetFields()
-      } else {
+      setPriorityDetail({})
+      if (!hasNext) {
         props.onChangeVisible()
+
+        // form.resetFields()
       }
     }
   }
@@ -439,7 +436,7 @@ const EditDemand = (props: Props) => {
                     color: priorityDetail?.color,
                   }}
                 />
-                <div>{priorityDetail?.content}</div>
+                <div>{priorityDetail?.content || '--'}</div>
               </PriorityWrap>
             </PopConfirm>
           </Form.Item>

@@ -7,6 +7,7 @@ export const CustomModal = (props: any) => {
       onCancel={props.close()}
       title="显示字段配置"
       visible={props.visible}
+      destroyOnClose
     >
       <div style={{ display: 'flex' }}>{props.data2.age}</div>
     </Modal>

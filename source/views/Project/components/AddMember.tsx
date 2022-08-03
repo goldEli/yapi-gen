@@ -101,10 +101,11 @@ const AddMember = (props: Props) => {
       }
       props.onChangeValue()
       props.onChangeUpdate()
-      form.resetFields()
       setIsRefreshMember(true)
       getMemberList({ all: true, projectId })
       getProjectInfo({ projectId })
+
+      // form.resetFields()
     } catch (error) {
 
       //

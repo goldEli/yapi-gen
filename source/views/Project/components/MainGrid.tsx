@@ -58,16 +58,17 @@ const MainGrid = (props: Props) => {
           />
         </div>
       ))}
-      <AddProject onClick={onAddClick}>
-        <IconFont
-          style={{ color: '#969799', fontSize: 24, marginBottom: 16 }}
-          type="plus"
-        />
-        {isPermission
-          ? null
-          : <div style={{ color: '#646566', fontSize: 14 }}>创建项目</div>
-        }
-      </AddProject>
+      {isPermission
+        ? null
+        : (
+            <AddProject onClick={onAddClick}>
+              <IconFont
+                style={{ color: '#969799', fontSize: 24, marginBottom: 16 }}
+                type="plus"
+              />
+              <div style={{ color: '#646566', fontSize: 14 }}>创建项目</div>
+            </AddProject>
+          )}
     </SpaceWrap>
   )
 }

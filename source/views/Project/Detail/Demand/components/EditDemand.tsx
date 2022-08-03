@@ -237,7 +237,7 @@ const EditDemand = (props: Props) => {
         demandInfo?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
-          content: i.tag?.content,
+          name: i.tag?.content,
         })),
       )
       if (demandInfo?.expectedStart) {
@@ -297,13 +297,15 @@ const EditDemand = (props: Props) => {
         })
         message.success('创建成功')
       }
-      form.resetFields()
       setAttachList([])
       setTagList([])
       setHtml('')
+      setPriorityDetail({})
       props.onUpdate?.()
       if (!hasNext) {
         props.onChangeVisible()
+
+        // form.resetFields()
       }
     } catch (error) {
 

@@ -49,6 +49,7 @@ const DeleteConfirm = (props: Props) => {
       closable={false}
       width={420}
       maskClosable={false}
+      destroyOnClose
     >
       <ModalHeader>
         <Title>
