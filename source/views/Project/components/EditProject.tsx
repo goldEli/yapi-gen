@@ -41,7 +41,6 @@ const EditProject = (props: Props) => {
         await addProject(form.getFieldsValue())
         message.success('创建成功')
       }
-      form.resetFields()
       props.onChangeVisible()
       props.onUpdate?.()
     } catch (error) {

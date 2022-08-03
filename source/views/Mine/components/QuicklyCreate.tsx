@@ -314,6 +314,7 @@ const EditDemand = (props: Props) => {
     setAttachList([])
     setTagList([])
     setHtml('')
+    setPriorityDetail({})
   }
   const selectPrejectName = (value: any) => {
     setPrejectId(value)
@@ -472,7 +473,6 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label="标签" name="tag">
             <TagComponent
-              isCreate
               defaultList={tagList}
               onChangeTag={onChangeTag}
               addWrap={
