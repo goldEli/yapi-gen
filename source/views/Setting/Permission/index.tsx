@@ -155,6 +155,7 @@ interface ItemProps {
   item: any
   onChange?(value: CheckboxValueType[]): void
   value?: CheckboxValueType[]
+  activeDetail?: any
 }
 
 const PermissionItem = (props: ItemProps) => {
@@ -179,6 +180,7 @@ const PermissionItem = (props: ItemProps) => {
     <MainWrapItem>
       <CheckboxWrap>
         <Checkbox
+          disabled={props.activeDetail?.type === 1}
           indeterminate={
             keys.length > 0 && keys.length !== props.item.children.length
           }
@@ -195,6 +197,7 @@ const PermissionItem = (props: ItemProps) => {
           style={{ marginRight: 8 }}
           value={keys}
           onChange={onChange}
+          disabled={props.activeDetail?.type === 1}
         />
       </div>
     </MainWrapItem>
@@ -302,6 +305,7 @@ const Permission = () => {
   }
 
   const onChangeTabs = (item: any) => {
+    setSelectKeys([])
     setActiveDetail(item)
     getPermission(item.id)
   }
@@ -432,6 +436,7 @@ const Permission = () => {
                   item={i}
                   onChange={setSelectKeys}
                   value={selectKeys}
+                  activeDetail={activeDetail}
                 />
               ))}
             </MainWrap>

@@ -21,6 +21,10 @@ const routes = [
     element: <Container />,
     children: [
       {
+        path: '/demo',
+        element: lazy(() => import('@/views/demo')),
+      },
+      {
         path: '/staff',
         element: lazy(() => import('@/views/staff')),
       },

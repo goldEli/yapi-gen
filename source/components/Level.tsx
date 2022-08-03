@@ -24,44 +24,6 @@ const Contain = styled.div`
   flex-direction: column;
 `
 
-export const level = [
-  {
-    id: 1,
-    name: '极高',
-    icon: (
-      <IconFont
-        type="extremely-high"
-        style={{ color: '#ff5c5e', fontSize: 20 }}
-      />
-    ),
-  },
-  {
-    id: 2,
-    name: '高',
-    icon: <IconFont type="high" style={{ color: '#fa9746', fontSize: 20 }} />,
-  },
-  {
-    id: 3,
-    name: '中',
-    icon: <IconFont type="middle" style={{ color: '#2877ff', fontSize: 20 }} />,
-  },
-  {
-    id: 4,
-    name: '低',
-    icon: <IconFont type="low" style={{ color: '#43ba9a', fontSize: 20 }} />,
-  },
-  {
-    id: 5,
-    name: '极低',
-    icon: (
-      <IconFont
-        type="extremely-low"
-        style={{ color: '#bbbdbf', fontSize: 20 }}
-      />
-    ),
-  },
-]
-
 type LevelProps = {
   record?: any
   onHide(): void
