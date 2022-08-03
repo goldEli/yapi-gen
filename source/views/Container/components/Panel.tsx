@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -158,8 +159,11 @@ export const Panel = () => {
         <PanelHeaderFirst>
           {userInfo.avatar
             ? <img className={imgCss} src={userInfo.avatar} />
-            : <SetHead>{userInfo?.name}</SetHead>
-          }
+            : (
+                <SetHead>
+                  {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
+                </SetHead>
+              )}
 
           <NanmeAndPhone>
             <span>{userInfo?.name}</span>

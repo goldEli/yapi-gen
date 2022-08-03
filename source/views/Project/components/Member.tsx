@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -165,7 +166,7 @@ const Member = (props: Props) => {
                   ? <img src={i.avatar} alt="" />
                   : (
                       <NameWrap>
-                        {i.name.slice(i.name.length - 2, i.name.length)}
+                        {String(i.name.substring(0, 1)).toLocaleUpperCase()}
                       </NameWrap>
                     )}
                 <div>

@@ -51,6 +51,7 @@ const AddMember = (props: Props) => {
     setIsRefreshMember,
     getMemberList,
     memberList,
+    getProjectInfo,
   } = useModel('project')
   const { getStaffList } = useModel('staff')
   const [staffList, setStaffList] = useState<any>([])
@@ -103,6 +104,7 @@ const AddMember = (props: Props) => {
       form.resetFields()
       setIsRefreshMember(true)
       getMemberList({ all: true, projectId })
+      getProjectInfo({ projectId })
     } catch (error) {
 
       //

@@ -40,6 +40,20 @@ const imgCss = css`
   border-radius: 50%;
 `
 
+const SetHead = styled.div`
+  width: 104px;
+  height: 104px;
+  line-height: 104px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 32px;
+  background: #a4acf5;
+  background-blend-mode: normal;
+  border: 2px solid rgba(40, 119, 255, 0.16);
+  border: 1px solid white;
+  color: white;
+`
+
 export const StaffPersonal = (props: {
   data: any
   isVisible: boolean
@@ -54,6 +68,7 @@ export const StaffPersonal = (props: {
   })
 
   const { getRoleList } = useModel('staff')
+  const { userInfo } = useModel('user')
 
   const init = async () => {
     const res3 = await getRoleList()
@@ -82,7 +97,13 @@ export const StaffPersonal = (props: {
       visible={props.isVisible}
     >
       <PersonalHead>
-        <img className={imgCss} src={head} alt="" />
+        {data?.avatar
+          ? <img className={imgCss} src={userInfo?.avatar} alt="" />
+          : (
+              <SetHead>
+                {String(data?.name.substring(0, 1)).toLocaleUpperCase()}
+              </SetHead>
+            )}
       </PersonalHead>
       <PersonalFooter>
         <Left>

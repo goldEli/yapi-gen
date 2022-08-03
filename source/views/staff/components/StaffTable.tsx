@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-handler-names */
 import { Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -22,10 +23,10 @@ const SetHead = styled.div`
   text-align: center;
   border-radius: 50%;
   font-size: 12px;
-  background: rgba(40, 119, 255, 1);
+  background: #a4acf5;
   background-blend-mode: normal;
   border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid rgba(40, 119, 255, 1);
+  border: 1px solid white;
   color: white;
 `
 
@@ -85,7 +86,22 @@ export const useDynamicColumns = (state: any) => {
                 </Dropdown>
               </div>
             </ShowWrap>
-            <SetHead>{text}</SetHead>
+            {record.avatar ? (
+              <img
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  marginLeft: 32,
+                }}
+                src={record.avatar}
+                alt=""
+              />
+            ) : (
+              <SetHead>
+                {String(text.substring(0, 1)).toLocaleUpperCase()}
+              </SetHead>
+            )}
             <span>{record.nickname}</span>
           </div>
         )

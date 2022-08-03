@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 import { useState } from 'react'
 import styled from '@emotion/styled'
@@ -172,8 +173,11 @@ export const Side = () => {
         <Popover placement="rightTop" trigger="click" content={<Panel />}>
           {userInfo.avatar
             ? <img className={imgCss} src={userInfo.avatar} />
-            : <SetHead onClick={controlPanelVisible}>{userInfo?.name}</SetHead>
-          }
+            : (
+                <SetHead onClick={controlPanelVisible}>
+                  {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
+                </SetHead>
+              )}
         </Popover>
       </SideFooter>
     </SideWrap>
