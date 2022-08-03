@@ -97,6 +97,7 @@ export const StaffPersonal = (props: {
       title="配置权限"
       visible={props.isVisible}
       maskClosable={false}
+      destroyOnClose
     >
       <PersonalHead>
         {data?.avatar

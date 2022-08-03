@@ -55,6 +55,7 @@ const ProjectInfo = (props: Props) => {
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px' }}
       maskClosable={false}
+      destroyOnClose
     >
       <div>
         <PosterWrap>

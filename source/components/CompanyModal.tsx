@@ -74,6 +74,7 @@ const CompanyModal = (props: Props) => {
       footer={false}
       bodyStyle={{ padding: 16 }}
       maskClosable={false}
+      destroyOnClose
     >
       <ContentWrap>
         {companyList.map(i => (

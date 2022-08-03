@@ -268,16 +268,15 @@ const Permission = () => {
     try {
       if (operationDetail.id) {
         await updateRole({ name: addValue, id: operationDetail.id })
-        setAddValue('')
-        setOperationDetail({})
         message.success('编辑成功')
       } else {
         await addRole({ name: addValue })
-        setAddValue('')
         message.success('创建成功')
       }
       setIsVisible(false)
       init()
+      setAddValue('')
+      setOperationDetail({})
 
       //
     } catch (error) {
@@ -351,6 +350,7 @@ const Permission = () => {
         bodyStyle={{ padding: '16px 24px' }}
         width={420}
         maskClosable={false}
+        destroyOnClose
       >
         <ModalHeader>
           <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>

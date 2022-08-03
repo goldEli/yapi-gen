@@ -111,9 +111,10 @@ const EditIteration = (props: Props) => {
         message.success('创建成功')
       }
       props.onChangeVisible()
-      form.resetFields()
       props.onUpdate?.(true)
       setHtml('')
+
+      // form.resetFields()
     } catch (error) {
 
       //

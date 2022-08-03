@@ -262,17 +262,16 @@ const ProjectSet = () => {
           id: operationDetail.id,
           projectId,
         })
-        setAddValue('')
         setOperationDetail({})
         message.success('编辑成功')
       } else {
         await addPermission({ name: addValue, projectId })
-        setAddValue('')
         message.success('创建成功')
       }
       setIsVisible(false)
       init()
 
+      // setAddValue('')
       //
     } catch (error) {
 
@@ -349,6 +348,7 @@ const ProjectSet = () => {
           bodyStyle={{ padding: '16px 24px' }}
           width={420}
           maskClosable={false}
+          destroyOnClose
         >
           <ModalHeader>
             <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>
