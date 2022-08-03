@@ -70,40 +70,65 @@ const Gatte = (props: any) => {
         enabled: true,
         borderColor: 'rgba(0,0,0,0.3)',
         borderWidth: 1,
-        columns: [
-          {
-            title: {
-              text: '需求标题',
+        columns: (() => {
+          const state = res.some((item: any) => {
+            return item.beginTime === null
+          })
+          if (!state) {
+            return [
+              {
+                title: {
+                  text: '需求标题',
+                },
+                labels: {
+                  format: '{point.name}',
+                },
+              },
+              {
+                title: {
+                  text: '状态',
+                },
+                labels: {
+                  format: '{point.state}',
+                },
+              },
+            ]
+          }
+          return [
+            {
+              title: {
+                text: '需求标题',
+              },
+              labels: {
+                format: '{point.name}',
+              },
             },
-            labels: {
-              format: '{point.name}',
+            {
+              title: {
+                text: '预计开始时间',
+              },
+              labels: {
+                format: '{point.beginTime}',
+              },
             },
-          },
-          {
-            title: {
-              text: '预计开始时间',
+            {
+              title: {
+                text: '预计结束时间',
+              },
+              labels: {
+                format: '{point.endTime}',
+              },
             },
-            labels: {
-              format: '{point.beginTime}',
+            {
+              title: {
+                text: '状态',
+              },
+              labels: {
+                format: '{point.state}',
+              },
             },
-          },
-          {
-            title: {
-              text: '预计结束时间',
-            },
-            labels: {
-              format: '{point.endTime}',
-            },
-          },
-          {
-            title: {
-              text: '状态',
-            },
-            labels: {
-              format: '{point.state}',
-            },
-          },
-        ],
+          ]
+        })(),
       },
     },
     tooltip: {

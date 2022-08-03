@@ -25,6 +25,9 @@ const Mygante = styled(Gatte)`
   .highcharts-axis-line {
     stroke: rgba(235, 237, 240, 1);
   }
+  .highcharts-axis-title {
+    width: 100px !important;
+  }
 `
 const hov = css`
   &:hover {

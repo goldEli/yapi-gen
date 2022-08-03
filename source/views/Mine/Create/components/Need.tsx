@@ -115,13 +115,13 @@ const Need = (props: any) => {
     init()
   }
   const showEdit = (e: any) => {
-    setProjectId(e.project_id)
-    setOperationItem(e.id)
+    setProjectId(e.record.project_id)
+    setOperationItem(e.record.id)
     setIsVisible(true)
   }
   const showDel = (e: any) => {
-    setProjectId(e.project_id)
-    setOperationItem(e.id)
+    setProjectId(e.record.project_id)
+    setOperationItem(e.record.id)
     setIsDelVisible(true)
   }
   const columns = useDynamicColumns({
