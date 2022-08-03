@@ -101,7 +101,7 @@ export const StaffPersonal = (props: {
     >
       <PersonalHead>
         {data?.avatar
-          ? <img className={imgCss} src={userInfo?.avatar} alt="" />
+          ? <img className={imgCss} src={data?.avatar} alt="" />
           : (
               <SetHead>
                 {String(data?.name.substring(0, 1)).toLocaleUpperCase()}
@@ -123,7 +123,13 @@ export const StaffPersonal = (props: {
           <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
           <RightLine>
             <Select
-              defaultValue={data.user_group_id === 0 ? '' : data.user_group_id}
+              defaultValue={
+                roleOptions.some((item: any) => {
+                  return item.id !== data.user_group_id
+                })
+                  ? ''
+                  : data.user_group_id
+              }
               style={{ width: 120 }}
               onChange={handleChange}
             >

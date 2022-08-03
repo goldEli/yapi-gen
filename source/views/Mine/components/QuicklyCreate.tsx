@@ -174,7 +174,7 @@ const EditDemand = (props: Props) => {
   const getPrejectName = async () => {
     const res = await getProjectList({
       self: true,
-      all: true,
+      all: 1,
     })
     setPrejectList(res.data)
   }
@@ -184,7 +184,7 @@ const EditDemand = (props: Props) => {
   }, [])
 
   const getList = async () => {
-    const result = await getDemandList({ projectId: prejectId, all: true })
+    const result = await getDemandList({ projectId: prejectId, all: 1 })
     const arr = result.map((i: any) => ({
       label: i.name,
       value: i.id,
@@ -198,13 +198,13 @@ const EditDemand = (props: Props) => {
       name: i.tag?.content,
     }))
 
-    const result2 = await getIterateList({ projectId: prejectId, all: true })
+    const result2 = await getIterateList({ projectId: prejectId, all: 1 })
     const arr2 = result2?.map((i: any) => ({
       label: i.name,
       value: i.id,
     }))
 
-    const result3 = await getPeopleList({ projectId: prejectId, all: true })
+    const result3 = await getPeopleList({ projectId: prejectId, all: 1 })
     const arr3 = result3.map((i: any) => ({
       label: i.name,
       value: i.id,
