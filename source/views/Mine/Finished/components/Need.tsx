@@ -269,7 +269,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="请输入昵称姓名邮箱电话"
+            placeholder="请搜索需求名字或需求ID"
             allowClear
           />
         </div>

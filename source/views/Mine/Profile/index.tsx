@@ -1,19 +1,23 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
-import { ChartsItem, SecondTitle } from '@/components/StyleCommon'
-import { Timeline, DatePicker, message } from 'antd'
+import {
+  ChartsItem,
+  PaginationWrap,
+  SecondTitle,
+} from '@/components/StyleCommon'
+import { Timeline, message, Pagination } from 'antd'
 import Gatte from './components/Gatte'
-import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
+import IconFont from '@/components/IconFont'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const { RangePicker } = DatePicker
+
 const Mygante = styled(Gatte)`
   .highcharts-tick {
     stroke: rgba(235, 237, 240, 1);
@@ -22,12 +26,20 @@ const Mygante = styled(Gatte)`
     stroke: rgba(235, 237, 240, 1);
   }
 `
+const hov = css`
+  &:hover {
+    color: rgba(40, 119, 255, 1);
+  }
+`
 const titleWrap = css`
   display: flex;
   justify-content: space-between;
   justify-content: center;
   align-items: center;
   margin-bottom: 16px;
+`
+const timeChoose = css`
+  margin: 0 8px;
 `
 const titleNumberCss = css`
   color: rgba(67, 186, 154, 1);
@@ -117,48 +129,54 @@ const Profile = () => {
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
+  const [monthIndex, setMonthIndex] = useState<any>(moment().month())
+  const [page, setPage] = useState<number>(1)
+  const [pagesize, setPagesize] = useState<number>(10)
+  const [total, setTotal] = useState<number>()
   const navigate = useNavigate()
+
+  const changeMonth = async () => {
+    const res2 = await getMineGatte({
+      startTime: moment()
+        .startOf('month')
+        .month(monthIndex)
+        .format('YYYY-MM-DD'),
+      endTime: moment().endOf('month')
+        .month(monthIndex)
+        .format('YYYY-MM-DD'),
+      page,
+      pagesize,
+    })
+
+    setGatteData(res2.list)
+    setTotal(res2.pager.total)
+  }
   const init = async () => {
     const res = await getMineChartsList()
 
     setData(res)
     const res1 = await getUserFeedList({
       limit: '',
-      page: 1,
-      pagesize: 10,
     })
 
     setLineData(res1.data)
-    const res2 = await getMineGatte({
-      startTime: moment().startOf('month')
-        .format('YYYY-MM-DD'),
-      endTime: moment().endOf('month')
-        .format('YYYY-MM-DD'),
-
-      // startTime: '2022-07-01 00:00:00',
-      // endTime: '2022-07-31 23:59:59',
-    })
-    setGatteData(res2)
-  }
-  const onChange = async (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    dateString: [string, string] | string,
-  ) => {
-    const res = await getMineGatte({
-      startTime: dateString[0],
-      endTime: dateString[1],
-
-      // startTime: '2022-07-01 00:00:00',
-      // endTime: '2022-07-31 23:59:59',
-    })
-
-    setGatteData(res)
   }
 
   useEffect(() => {
     init()
+    changeMonth()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [monthIndex, page, pagesize])
+
+  const forMateMonth = useMemo(() => {
+    const newDate = moment()
+      .startOf('month')
+      .month(monthIndex)
+      .format('YYYY-MM-DD')
+      .split('-')
+
+    return ` ${newDate[0]}年${newDate[1]}月`
+  }, [monthIndex])
 
   const onToDetail = (item: any) => {
     if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
@@ -170,7 +188,18 @@ const Profile = () => {
       `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
     )
   }
-
+  const nextMonth = async () => {
+    setMonthIndex(monthIndex - 1)
+  }
+  const prevMonth = async () => {
+    setMonthIndex(monthIndex + 1)
+  }
+  const onChangePage = (newPage: any) => {
+    setPage(newPage)
+  }
+  const onShowSizeChange = (current: any, size: any) => {
+    setPagesize(size)
+  }
   return (
     <PermissionWrap
       auth="b/user/overview"
@@ -255,15 +284,26 @@ const Profile = () => {
         <div>
           <SecondTitle>需求甘特图</SecondTitle>
           <div className={titleWrap}>
-            <RangePicker
-              defaultValue={[
-                moment(moment().startOf('month'), 'YYYY-MM-DD'),
-                moment(moment().endOf('month'), 'YYYY-MM-DD'),
-              ]}
-              format="YYYY-MM-DD"
-              allowClear={false}
-              onChange={onChange}
-            />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span onClick={nextMonth}>
+                <IconFont
+                  className={hov}
+                  type="left
+              "
+                  style={{ fontSize: 15, cursor: 'pointer' }}
+                />
+              </span>
+
+              <span className={timeChoose}>{forMateMonth}</span>
+              <span onClick={prevMonth}>
+                <IconFont
+                  className={hov}
+                  type="right
+              "
+                  style={{ fontSize: 15, cursor: 'pointer' }}
+                />
+              </span>
+            </div>
           </div>
         </div>
         {gatteData.length >= 1 && <Mygante data={gatteData} />}
@@ -272,6 +312,20 @@ const Profile = () => {
             暂无数据
           </div>
         )}
+        <PaginationWrap>
+          <Pagination
+            defaultCurrent={1}
+            current={page}
+            showSizeChanger
+            hideOnSinglePage
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => `Total ${newTotal} items`}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
       </GatteWrap>
     </PermissionWrap>
   )
