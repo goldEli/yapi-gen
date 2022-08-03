@@ -311,6 +311,9 @@ const EditDemand = (props: Props) => {
   const onCancel = () => {
     props.onChangeVisible()
     form.resetFields()
+    setAttachList([])
+    setTagList([])
+    setHtml('')
   }
   const selectPrejectName = (value: any) => {
     setPrejectId(value)

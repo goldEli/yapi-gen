@@ -135,7 +135,7 @@ const DemandStatusBox = () => {
     <>
       {statusList?.map((i: any, index: number) => (
         <Popconfirm
-          key={i.name}
+          key={i.id}
           content={({ onHide }: { onHide(): void }) => {
             return <DemandBox active={active} hide={onHide} />
           }}

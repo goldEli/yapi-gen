@@ -150,7 +150,7 @@ export const getDemandChangeLog: any = async (params: any) => {
     list: response.data.list.map((i: any) => ({
       id: i.id,
       fields: i.fields,
-      userName: i.user_id,
+      userName: i.user_name,
       updateTime: i.created_at,
       type: i.change_log_type,
       beforeField: JSON.stringify(i.before) === '[]' ? {} : i.before,
@@ -197,10 +197,14 @@ export const deleteComment: any = async (params: any) => {
 }
 
 export const addDemand: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info
+  const info = element.innerText.trim()
+
   await http.post<any>('addDemand', {
     project_id: Number(params.projectId),
     name: params.name,
-    info: params?.info,
+    info,
     expected_start_at: params?.expectedStart,
     expected_end_at: params?.expectedEnd,
     iterate_id: params?.iterateId,
@@ -214,10 +218,14 @@ export const addDemand: any = async (params: any) => {
 }
 
 export const updateDemand: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info
+  const info = element.innerText.trim()
+
   await http.put<any>('updateDemand', {
     project_id: params.projectId,
     name: params.name,
-    info: params.info,
+    info,
     expected_start_at: params.expectedStart,
     expected_end_at: params.expectedEnd,
     iterate_id: params.iterateId,

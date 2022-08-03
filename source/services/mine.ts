@@ -445,10 +445,14 @@ export const getPeopleList: any = async (params: any) => {
 
 // 获取成员列表
 export const addQuicklyCreate: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info
+  const info = element.innerText.trim()
+
   const response: any = await http.post<any>('addQuicklyCreate', {
     project_id: params.projectId,
     name: params.name,
-    info: params.info,
+    info,
     expected_start_at: params.expectedStart,
     expected_end_at: params.expectedEnd,
     iterate_id: params.iterate_id,

@@ -199,7 +199,7 @@ const Project = () => {
         <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
           <SearchWrap>
             <SearchComponent
-              placeholder="搜索项目或任务"
+              placeholder="搜索项目或项目ID"
               text="创建项目"
               onChangeSearch={onChangeSearch}
               onChangeVisible={onAddClick}
