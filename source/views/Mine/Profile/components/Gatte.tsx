@@ -71,10 +71,10 @@ const Gatte = (props: any) => {
         borderColor: 'rgba(0,0,0,0.3)',
         borderWidth: 1,
         columns: (() => {
-          const state = res.some((item: any) => {
+          const state = res.every((item: any) => {
             return item.beginTime === null
           })
-          if (!state) {
+          if (state) {
             return [
               {
                 title: {
