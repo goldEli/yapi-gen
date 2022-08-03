@@ -14,7 +14,7 @@ export const getSearchField: any = async (params: any) => {
   const memberList = await http.get('getProjectMember', {
     search: {
       project_id: params,
-      all: true,
+      all: 1,
     },
   })
 
@@ -29,7 +29,7 @@ export const getSearchField: any = async (params: any) => {
   const iterateList = await http.get('getIterateList', {
     search: {
       project_id: params,
-      all: true,
+      all: 1,
     },
   })
 
@@ -216,7 +216,7 @@ export const getProjectMember: any = async (params: any) => {
   const response = await http.get('getProjectMember', {
     search: {
       project_id: params,
-      all: true,
+      all: 1,
     },
   })
   return response
