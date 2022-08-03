@@ -96,6 +96,7 @@ export const StaffPersonal = (props: {
       onCancel={() => props.onClose()}
       title="配置权限"
       visible={props.isVisible}
+      maskClosable={false}
     >
       <PersonalHead>
         {data?.avatar

@@ -156,6 +156,7 @@ const Operation = (props: Props) => {
         title="迭代目标"
         footer={false}
         destroyOnClose
+        maskClosable={false}
       >
         <div
           dangerouslySetInnerHTML={{

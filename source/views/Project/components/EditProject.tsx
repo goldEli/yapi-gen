@@ -73,6 +73,7 @@ const EditProject = (props: Props) => {
       onCancel={props.onChangeVisible}
       bodyStyle={{ padding: '16px 24px 0' }}
       destroyOnClose
+      maskClosable={false}
     >
       <Form form={form} layout="vertical">
         <Form.Item

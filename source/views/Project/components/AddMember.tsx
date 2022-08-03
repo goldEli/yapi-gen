@@ -125,6 +125,7 @@ const AddMember = (props: Props) => {
       width={700}
       closable={false}
       destroyOnClose
+      maskClosable={false}
     >
       <ModalHeader>
         <span>{props.details?.id ? '编辑项目成员' : '添加项目成员'}</span>

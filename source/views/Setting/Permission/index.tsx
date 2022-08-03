@@ -350,6 +350,7 @@ const Permission = () => {
         closable={false}
         bodyStyle={{ padding: '16px 24px' }}
         width={420}
+        maskClosable={false}
       >
         <ModalHeader>
           <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>

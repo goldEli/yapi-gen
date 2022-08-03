@@ -48,6 +48,7 @@ const DeleteConfirm = (props: Props) => {
       bodyStyle={{ padding: '16px 24px' }}
       closable={false}
       width={420}
+      maskClosable={false}
     >
       <ModalHeader>
         <Title>

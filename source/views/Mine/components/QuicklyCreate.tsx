@@ -314,6 +314,7 @@ const EditDemand = (props: Props) => {
       onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
+      maskClosable={false}
     >
       <FormWrap form={form} labelCol={{ span: 5 }}>
         <div style={{ display: 'flex' }}>

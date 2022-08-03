@@ -74,6 +74,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       onCancel={() => props.close()}
       title="个人资料"
       visible={props.visible}
+      maskClosable={false}
     >
       {isShow ? <Spin /> : null}
       {!isShow && (

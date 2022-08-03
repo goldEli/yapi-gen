@@ -269,6 +269,7 @@ const ChangeRecord = () => {
         onCancel={() => setIsVisible(false)}
         bodyStyle={{ padding: '8px 24px 24px' }}
         destroyOnClose
+        maskClosable={false}
       >
         <SpaceWrap
           size={32}

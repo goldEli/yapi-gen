@@ -127,6 +127,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       visible={props.isVisible}
       onCancel={props.onClose}
       onOk={handleOk}
+      maskClosable={false}
     >
       <Wrap>
         <Left>
