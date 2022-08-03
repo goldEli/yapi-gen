@@ -151,6 +151,7 @@ export const Panel = () => {
   }
   const toLoginOut = () => {
     loginOut()
+    localStorage.removeItem('token')
     getTicket()
 
     // loginOut()
