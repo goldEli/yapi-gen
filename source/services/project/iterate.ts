@@ -31,9 +31,13 @@ export const getIterateList: any = async (params: any) => {
 }
 
 export const addIterate: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info
+  const info = element.innerText.trim()
+
   await http.post<any>('addIterate', {
     name: params.iterationName,
-    info: params.info,
+    info,
     start_at: moment(params.time[0]).format('YYYY-MM-DD'),
     end_at: moment(params.time[1]).format('YYYY-MM-DD'),
     project_id: params.projectId,
@@ -41,9 +45,13 @@ export const addIterate: any = async (params: any) => {
 }
 
 export const updateIterate: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info
+  const info = element.innerText.trim()
+
   await http.patch<any>('editIterate', {
     name: params.iterationName,
-    info: params.info,
+    info,
     project_id: params.projectId,
     id: params.id,
     start_at: moment(params.time[0]).format('YYYY-MM-DD'),
@@ -95,7 +103,7 @@ export const getIterateChangeLog: any = async (params: any) => {
     list: response.data.list.map((i: any) => ({
       id: i.id,
       fields: i.fields,
-      userName: i.user_id,
+      userName: i.user_name,
       updateTime: i.created_at,
       type: i.change_log_type,
       beforeField: JSON.stringify(i.before) === '[]' ? {} : i.before,

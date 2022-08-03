@@ -113,7 +113,7 @@ const UploadAttach = (props: Props) => {
   }
 
   const onDownload = (file: any) => {
-    downloadIamge(file.response.url, file.response.name)
+    downloadIamge(file.url, file.name)
   }
 
   const onRemove = (file: any) => {
