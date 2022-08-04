@@ -340,7 +340,7 @@ const EditDemand = (props: Props) => {
       destroyOnClose
       maskClosable={false}
     >
-      <FormWrap form={form} labelCol={{ span: 5 }}>
+      <FormWrap form={form} labelCol={{ span: 3 }}>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item

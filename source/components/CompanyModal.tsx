@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onChangeState(): void
@@ -29,6 +30,7 @@ const FooterWrap = styled(Space)({
 })
 
 const CompanyModal = (props: Props) => {
+  const [t] = useTranslation()
   const { getCompanyList, updateCompany, userInfo } = useModel('user')
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
@@ -69,7 +71,7 @@ const CompanyModal = (props: Props) => {
     <Modal
       visible={props.visible}
       width={750}
-      title="公司切换"
+      title={t('components.changeCompany')}
       onCancel={props.onChangeState}
       footer={false}
       bodyStyle={{ padding: 16 }}
@@ -88,9 +90,9 @@ const CompanyModal = (props: Props) => {
         ))}
       </ContentWrap>
       <FooterWrap size={16}>
-        <Button onClick={props.onChangeState}>取消</Button>
+        <Button onClick={props.onChangeState}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={confirm}>
-          确定
+          {t('common.confirm')}
         </Button>
       </FooterWrap>
     </Modal>
