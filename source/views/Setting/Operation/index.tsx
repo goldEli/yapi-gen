@@ -91,12 +91,6 @@ const Content = styled.div({
   height: 'calc(100% - 64px)',
 })
 
-const typeList = [
-  { label: '新增', value: 'POST' },
-  { label: '编辑', value: 'PUT' },
-  { label: '删除', value: 'DELETE' },
-]
-
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -112,6 +106,11 @@ const NewSort = (sortProps: any) => {
 
 const Operation = () => {
   const [t] = useTranslation()
+  const typeList = [
+    { label: '新增', value: 'POST' },
+    { label: t('common.edit'), value: 'PUT' },
+    { label: t('common.del'), value: 'DELETE' },
+  ]
   const { getOperateLogs } = useModel('setting')
   const { userInfo } = useModel('user')
   const { getStaffList } = useModel('staff')
@@ -319,7 +318,7 @@ const Operation = () => {
             style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
             onClick={onReset}
           >
-            清除条件
+            {t('common.clearForm')}
           </div>
         </SearchWrap>
       </Header>

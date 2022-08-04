@@ -177,7 +177,7 @@ const SearchList = (props: Props) => {
 
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
-              清除条件
+              {t('common.clearForm')}
             </span>
           </ClearForm>
         </FormWrap>

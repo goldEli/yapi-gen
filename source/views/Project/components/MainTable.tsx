@@ -118,7 +118,7 @@ const MainTable = (props: Props) => {
         key: '1',
         label: (
           <div onClick={e => props.onChangeOperation?.('edit', record, e)}>
-            编辑
+            {t('common.edit')}
           </div>
         ),
       },
@@ -134,7 +134,7 @@ const MainTable = (props: Props) => {
         key: '3',
         label: (
           <div onClick={e => props.onChangeOperation?.('delete', record, e)}>
-            删除
+            {t('common.del')}
           </div>
         ),
       },
@@ -210,7 +210,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目名称
+          {t('common.projectName')}
         </NewSort>
       ),
       render: (text: string) => {

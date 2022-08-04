@@ -86,11 +86,15 @@ export const useDynamicColumns = (state: any) => {
     let menuItems = [
       {
         key: '1',
-        label: <div onClick={e => state.onEdit(e, item)}>编辑</div>,
+        label:
+          <div onClick={e => state.onEdit(e, item)}>{t('common.edit')}</div>
+        ,
       },
       {
         key: '2',
-        label: <div onClick={() => state.onDelete(item)}>删除</div>,
+        label:
+          <div onClick={() => state.onDelete(item)}>{t('common.del')}</div>
+        ,
       },
     ]
 

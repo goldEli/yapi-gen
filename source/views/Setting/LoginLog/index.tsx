@@ -371,7 +371,7 @@ const LoginLog = () => {
             style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
             onClick={onReset}
           >
-            清除条件
+            {t('common.clearForm')}
           </div>
         </SearchWrap>
       </Header>

@@ -188,14 +188,14 @@ const DemandCard = (props: Props) => {
       },
     },
     {
-      title: '迭代',
+      title: t('common.iterate'),
       dataIndex: 'iteration',
       sorter: {
         compare: (a: any, b: any) => a.progress - b.progress,
       },
     },
     {
-      title: '状态',
+      title: t('common.status'),
       dataIndex: 'status',
       render: (text: any, record: any) => {
         return (
@@ -224,7 +224,7 @@ const DemandCard = (props: Props) => {
       },
     },
     {
-      title: '创建人',
+      title: t('common.createName'),
       dataIndex: 'dealName',
     },
   ]

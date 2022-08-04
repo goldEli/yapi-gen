@@ -161,7 +161,7 @@ const TableFilter = (props: any) => {
     <div>
       <div>
         <Collapse>
-          <Collapse.Panel header="基础字段" key="1">
+          <Collapse.Panel header={t('common.basicFiled')} key="1">
             {filterBasicsList
               ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
               ?.map((i: any) => (
@@ -170,7 +170,7 @@ const TableFilter = (props: any) => {
                 </div>
               ))}
           </Collapse.Panel>
-          <Collapse.Panel header="人员和时间" key="2">
+          <Collapse.Panel header={t('common.personOrTime')} key="2">
             {filterSpecialList?.map((i: any) => (
               <div onClick={() => addList(i.content)} key={i.id}>
                 {i.title}
@@ -197,7 +197,7 @@ const TableFilter = (props: any) => {
                         label={i.name}
                         mode="multiple"
                         style={{ width: '100%' }}
-                        placeholder="请选择"
+                        placeholder={t('common.pleaseSelect')}
                         showSearch
                         onChange={confirm}
                       >
@@ -224,7 +224,7 @@ const TableFilter = (props: any) => {
                       getPopupContainer={node => node}
                       format={(times: moment.Moment) => {
                         if (times.unix() === 0 || times.unix() === 1893427200) {
-                          return '空'
+                          return t('common.null')
                         }
                         return times.format('YYYY-MM-DD')
                       }}
@@ -267,7 +267,7 @@ const TableFilter = (props: any) => {
           </Popover>
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
-              清除条件
+              {t('common.clearForm')}
             </span>
           </ClearForm>
         </FormWrap>

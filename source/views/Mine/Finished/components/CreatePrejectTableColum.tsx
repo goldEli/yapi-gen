@@ -59,11 +59,19 @@ export const useDynamicColumns = (state: any) => {
         items={[
           {
             key: '1',
-            label: <span onClick={() => state.showEdit(record)}>编辑</span>,
+            label: (
+              <span onClick={() => state.showEdit(record)}>
+                {t('common.edit')}
+              </span>
+            ),
           },
           {
             key: '2',
-            label: <span onClick={() => state.showDel(record)}>删除</span>,
+            label: (
+              <span onClick={() => state.showDel(record)}>
+                {t('common.del')}
+              </span>
+            ),
           },
         ]}
       />

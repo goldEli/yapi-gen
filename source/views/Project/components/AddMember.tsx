@@ -96,10 +96,10 @@ const AddMember = (props: Props) => {
       if (props.details?.id) {
         params.userIds = props.details?.id
         await updateMember(params)
-        message.success('编辑成功')
+        message.success(t('common.editSuccess'))
       } else {
         await addMember(params)
-        message.success('添加成功')
+        message.success(t('common.addSuccess'))
       }
       props.onChangeValue()
       props.onChangeUpdate()

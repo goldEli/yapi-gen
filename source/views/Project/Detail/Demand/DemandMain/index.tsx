@@ -113,7 +113,7 @@ const DemandMain = (props: Props) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)

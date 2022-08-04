@@ -132,7 +132,7 @@ const TagBox = (props: TagProps) => {
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
-        message.success('添加成功')
+        message.success(t('common.addSuccess'))
         getDemandInfo({ projectId, id: demandInfo?.id })
         props.onChangeIsOpen(false)
       } catch (error) {
@@ -207,7 +207,7 @@ const TagComponent = (props: Props) => {
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
-        message.success('添加成功')
+        message.success(t('common.addSuccess'))
         getDemandInfo({ projectId, id: demandInfo?.id })
         setNewTag('')
         setIsChooseColor(false)
@@ -240,7 +240,7 @@ const TagComponent = (props: Props) => {
           type: 'tag',
           targetId: item.id,
         })
-        message.success('删除成功')
+        message.success(t('common.deleteSuccess'))
         getDemandInfo({ projectId, id: demandInfo?.id })
         getTagList({ projectId })
       } catch (error) {

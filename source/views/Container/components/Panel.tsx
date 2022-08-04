@@ -200,7 +200,7 @@ export const Panel = () => {
         </PanelHeaderFirst>
         <PanelHeaderSecond>
           <div>{userInfo?.company_name}</div>
-          <Tooltip placement="top" title="切换企业">
+          <Tooltip placement="top" title={t('container.changeCompany')}>
             <div
               onClick={() => setCompanyModalVisible(true)}
               className={buttonCss}
@@ -221,11 +221,11 @@ export const Panel = () => {
           <Line>
             <div>
               <IconFont type="earth" style={{ fontSize: 15 }} />
-              <span className={lineText}>语言</span>
+              <span className={lineText}>{t('container.language')}</span>
             </div>
             <div>
               <span className={languageText}>
-                {languageMode === 1 ? '中文' : 'English'}
+                {languageMode === 1 ? t('container.chinese') : 'English'}
               </span>
 
               <IconFont type="right" style={{ fontSize: 12 }} />
@@ -236,7 +236,7 @@ export const Panel = () => {
         <Line onClick={() => setPersonalModalVisible(true)}>
           <div>
             <IconFont type="container" style={{ fontSize: 15 }} />
-            <span className={lineText}>个人资料</span>
+            <span className={lineText}>{t('container.personInfo')}</span>
           </div>
           <div>
             <IconFont type="right" style={{ fontSize: 12 }} />
@@ -245,7 +245,7 @@ export const Panel = () => {
         <Line>
           <div onClick={toLoginOut}>
             <IconFont type="login" style={{ fontSize: 15 }} />
-            <span className={lineText}>退出登录</span>
+            <span className={lineText}>{t('container.logout')}</span>
           </div>
         </Line>
       </PanelFooter>

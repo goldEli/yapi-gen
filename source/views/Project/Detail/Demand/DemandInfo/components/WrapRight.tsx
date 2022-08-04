@@ -133,7 +133,7 @@ const WrapRightBox = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteComment({ projectId, id: isDeleteId })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDeleteId(0)
       setIsVisible(false)
       getList()

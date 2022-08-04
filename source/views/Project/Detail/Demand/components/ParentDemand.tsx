@@ -129,7 +129,7 @@ const ParentDemand = (props: Props) => {
         type: 'parent',
         targetId: [item.value],
       })
-      message.success('添加成功')
+      message.success(t('common.addSuccess'))
       getDemandInfo({ projectId, id: demandInfo?.id })
     } catch (error) {
 
@@ -145,7 +145,7 @@ const ParentDemand = (props: Props) => {
         type: 'parent',
         targetId: demandInfo?.parentId,
       })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getDemandInfo({ projectId, id: demandInfo?.id })
     } catch (error) {
 

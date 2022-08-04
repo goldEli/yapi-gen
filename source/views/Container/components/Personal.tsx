@@ -37,35 +37,35 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
 
   const labelList = [
     {
-      label: '手机号',
+      label: t('common.phone'),
       value: userInfo.account,
     },
     {
-      label: '邮箱',
+      label: t('common.email'),
       value: userInfo.email,
     },
     {
-      label: '昵称',
+      label: t('common.nickname'),
       value: userInfo.nickname,
     },
     {
-      label: '姓名',
+      label: t('common.name'),
       value: userInfo.name,
     },
     {
-      label: '性别',
-      value: userInfo.gender === 1 ? '男' : '女',
+      label: t('common.sex'),
+      value: userInfo.gender === 1 ? t('common.male') : t('common.female'),
     },
     {
-      label: '所属部门',
+      label: t('container.department'),
       value: userInfo.department_name,
     },
     {
-      label: '职位',
+      label: t('common.job'),
       value: userInfo.position_name,
     },
     {
-      label: '权限组',
+      label: t('common.personInfo'),
       value: userInfo.group_name,
     },
   ]
@@ -74,7 +74,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       width={420}
       footer={null}
       onCancel={() => props.close()}
-      title="个人资料"
+      title={t('container.permissionGroup')}
       visible={props.visible}
       maskClosable={false}
       destroyOnClose

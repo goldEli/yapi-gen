@@ -130,7 +130,7 @@ const ChildDemandTable = (props: ChildeProps) => {
 
   const columnsChild = [
     {
-      title: '项目名称',
+      title: t('common.projectName'),
       dataIndex: 'name',
       render: (text: string) => {
         return <OmitText width={180}>{text}</OmitText>
@@ -157,7 +157,7 @@ const ChildDemandTable = (props: ChildeProps) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          需求名称
+          {t('common.demandName')}
         </NewSort>
       ),
       dataIndex: 'name',

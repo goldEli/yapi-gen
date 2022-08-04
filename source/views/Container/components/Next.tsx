@@ -50,19 +50,19 @@ const Next = (props: { visible: boolean; close(): void }) => {
   const [active, setActive] = useState(0)
   const inform = [
     {
-      text: 'IFUN敏捷系统将同步OA企业信息员工成员',
+      text: t('container.text1'),
       img: guide_1,
     },
     {
-      text: '请到设置-权限管理配置权限组系统提供了管理员、编辑者、参与者三个系统权限组还可自定义更多权限组',
+      text: t('container.text2'),
       img: guide_2,
     },
     {
-      text: '请在员工管理中配置用户权限',
+      text: t('container.text3'),
       img: guide_3,
     },
     {
-      text: '创建项目，开始项目管理',
+      text: t('container.text4'),
       img: guide_4,
     },
   ]
@@ -99,13 +99,15 @@ const Next = (props: { visible: boolean; close(): void }) => {
         {/* <header>头</header> */}
         {filterData}
         <footer className={footerCss}>
-          {active !== 0 && <Button onClick={prev}>上一步</Button>}
+          {active !== 0
+            && <Button onClick={prev}>{t('container.next')}</Button>
+          }
           {active !== inform.length - 1
-            && <Button onClick={next}>下一步</Button>
+            && <Button onClick={next}>{t('container.prev')}</Button>
           }
           {active === inform.length - 1 && (
             <Button onClick={() => props.close()} type="primary">
-              完成
+              {t('container.finish')}
             </Button>
           )}
         </footer>

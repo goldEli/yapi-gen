@@ -88,7 +88,7 @@ const Gatte = (props: any) => {
               },
               {
                 title: {
-                  text: '状态',
+                  text: t('common.status'),
                 },
                 labels: {
                   format: '{point.state}',
@@ -123,7 +123,7 @@ const Gatte = (props: any) => {
             },
             {
               title: {
-                text: '状态',
+                text: t('common.status'),
               },
               labels: {
                 format: '{point.state}',

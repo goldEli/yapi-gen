@@ -255,7 +255,7 @@ const Need = (props: any) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: operationItem })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
       init()
     } catch (error) {

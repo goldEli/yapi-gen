@@ -110,28 +110,28 @@ export const Side = () => {
     const menu: MenuType[] = [
       {
         key: '/organization',
-        title: '概况',
+        title: t('container.survey'),
         icon: <IconFont type="survey" style={{ fontSize: 20 }} />,
         path: '/Situation',
         isHidden: getIsPermission('概况'),
       },
       {
         key: '/organization',
-        title: '项目',
+        title: t('container.project'),
         icon: <IconFont type="project" style={{ fontSize: 20 }} />,
         path: '/Project',
         isHidden: getIsPermission('项目'),
       },
       {
         key: '/organization',
-        title: '我的',
+        title: t('container.mine'),
         icon: <IconFont type="my" style={{ fontSize: 20 }} />,
         path: '/mine',
         isHidden: getIsPermission('我的'),
       },
       {
         key: '/organization',
-        title: '员工',
+        title: t('container.staff'),
         icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
         path: '/staff',
         isHidden: getIsPermission('员工'),
@@ -170,7 +170,7 @@ export const Side = () => {
           hidden={getIsPermission('公司管理')}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
-          <span>设置</span>
+          <span>{t('container.setting')}</span>
         </SideEach>
         <Popover placement="rightTop" trigger="click" content={<Panel />}>
           {userInfo.avatar

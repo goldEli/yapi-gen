@@ -254,7 +254,7 @@ const WrapLeft = (props: Props) => {
         <Form.Item label="结束时间" name="endTime">
           <DatePicker.RangePicker />
         </Form.Item>
-        <Form.Item label="状态" name="status">
+        <Form.Item label={t('common.status')} name="status">
           <Radio.Group options={options} />
         </Form.Item>
         <div
@@ -266,7 +266,7 @@ const WrapLeft = (props: Props) => {
         >
           <div onClick={onReset}>清空</div>
           <Space size={16}>
-            <Button onClick={onClose}>取消</Button>
+            <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button type="primary" onClick={onConfirmFilter}>
               过滤
             </Button>
@@ -311,7 +311,7 @@ const WrapLeft = (props: Props) => {
         id: isDeleteId,
       })
       setIsVisible(false)
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getList()
     } catch (error) {
 
@@ -323,7 +323,9 @@ const WrapLeft = (props: Props) => {
     let menuItems = [
       {
         key: '1',
-        label: <div onClick={e => onChangeEdit(e, item)}>编辑</div>,
+        label:
+          <div onClick={e => onChangeEdit(e, item)}>{t('common.edit')}</div>
+        ,
       },
       {
         key: '2',
@@ -335,7 +337,9 @@ const WrapLeft = (props: Props) => {
       },
       {
         key: '3',
-        label: <div onClick={e => onChangeDelete(e, item)}> 删除 </div>,
+        label:
+          <div onClick={e => onChangeDelete(e, item)}>{t('common.del')} </div>
+        ,
       },
     ]
     if (hasEdit) {

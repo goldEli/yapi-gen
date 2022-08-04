@@ -33,7 +33,7 @@ const EditProject = (props: Props) => {
         const data = form.getFieldsValue()
         data.id = props.details?.id
         await updateProject(data)
-        message.success('编辑成功')
+        message.success(t('common.editSuccess'))
       } else {
         if (!form.getFieldValue('isPublic')) {
           form.setFieldsValue({
@@ -41,7 +41,7 @@ const EditProject = (props: Props) => {
           })
         }
         await addProject(form.getFieldsValue())
-        message.success('创建成功')
+        message.success(t('common.createSuccess'))
       }
       props.onChangeVisible()
       props.onUpdate?.()
@@ -88,7 +88,7 @@ const EditProject = (props: Props) => {
           />
         </Form.Item>
         <Form.Item
-          label="项目名称"
+          label={t('common.projectName')}
           rules={[{ required: true, message: '' }]}
           name="name"
         >
@@ -113,7 +113,7 @@ const EditProject = (props: Props) => {
         </Form.Item>
       </Form>
       <Footer size={16}>
-        <Button onClick={props.onChangeVisible}>取消</Button>
+        <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={onConfirm}>
           确认
         </Button>

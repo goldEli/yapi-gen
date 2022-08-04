@@ -104,13 +104,13 @@ const EditIteration = (props: Props) => {
           id: props?.id,
           ...values,
         })
-        message.success('编辑成功')
+        message.success(t('common.editSuccess'))
       } else {
         await addIterate({
           projectId,
           ...values,
         })
-        message.success('创建成功')
+        message.success(t('common.createSuccess'))
       }
       props.onChangeVisible()
       props.onUpdate?.(true)
@@ -144,7 +144,7 @@ const EditIteration = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont type="interation" />
           <Form.Item
-            label="迭代名称"
+            label={t('common.iterateName')}
             rules={[{ required: true, message: '' }]}
             name="iterationName"
           >
@@ -172,7 +172,7 @@ const EditIteration = (props: Props) => {
         </div>
       </FormWrap>
       <ModalFooter size={16}>
-        <Button onClick={onCancel}>取消</Button>
+        <Button onClick={onCancel}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={onConfirm}>
           确认
         </Button>

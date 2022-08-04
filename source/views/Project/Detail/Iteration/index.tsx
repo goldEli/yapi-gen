@@ -150,7 +150,7 @@ const IterationWrap = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteIterate({ projectId, id: iterateId })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       navigate(`/Detail/Iteration?id=${projectId}`)
     } catch (error) {
@@ -201,13 +201,16 @@ const IterationWrap = () => {
               ? null
               : (
                   <Button type="primary" onClick={onChangeEditVisible}>
-                编辑
+                    {t('common.edit')}
                   </Button>
                 )}
             {hasDel
               ? null
-              : <Button onClick={() => setIsDelete(!isDelete)}>删除</Button>
-            }
+              : (
+                  <Button onClick={() => setIsDelete(!isDelete)}>
+                    {t('common.del')}
+                  </Button>
+                )}
           </Space>
         </DemandInfoWrap>
         <ContentWrap>

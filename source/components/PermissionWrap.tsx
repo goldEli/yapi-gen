@@ -58,7 +58,7 @@ const PermissionWrap = ({
   return (
     <Wrap style={{ height: hasWidth ? 'calc(100vh - 64px)' : '100%' }}>
       <img src={empty} alt="" />
-      <div>暂无权限查看，请联系管理员</div>
+      <div>{t('common.noPermission')}</div>
     </Wrap>
   )
 }

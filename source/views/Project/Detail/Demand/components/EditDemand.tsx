@@ -291,13 +291,13 @@ const EditDemand = (props: Props) => {
           id: demandInfo.id,
           ...values,
         })
-        message.success('编辑成功')
+        message.success(t('common.editSuccess'))
       } else {
         await addDemand({
           projectId,
           ...values,
         })
-        message.success('创建成功')
+        message.success(t('common.createSuccess'))
       }
       setAttachList([])
       setTagList([])
@@ -395,7 +395,7 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
-            label="需求名称"
+            label={t('common.demandName')}
             name="name"
             rules={[{ required: true, message: '' }]}
           >
@@ -573,7 +573,7 @@ const EditDemand = (props: Props) => {
           完成并创建下一个
         </AddButtonWrap>
         <Space size={16}>
-          <Button onClick={onCancel}>取消</Button>
+          <Button onClick={onCancel}>{t('common.cancel')}</Button>
           <Button type="primary" onClick={() => onSaveDemand()}>
             确认
           </Button>

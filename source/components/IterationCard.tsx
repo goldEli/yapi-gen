@@ -128,11 +128,13 @@ const IterationCard = (props: Props) => {
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
-          <StatusTag>{props.item.status === 1 ? '开启中' : '已关闭'}</StatusTag>
+          <StatusTag>
+            {props.item.status === 1 ? t('common.opening') : t('common.Closed')}
+          </StatusTag>
         </InfoContent>
       </div>
       <DetailWrap onClick={props.onClickInfo}>
-        <span>详情</span>
+        <span>{t('common.info')}</span>
         <IconFont type="right" />
       </DetailWrap>
       {hasDel && hasEdit && hasChangeStatus

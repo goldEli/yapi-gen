@@ -193,7 +193,7 @@ const ChildDemand = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       setDeleteId(0)
       onUpdate()

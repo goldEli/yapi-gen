@@ -50,9 +50,11 @@ const OperationGroup = (props: Props) => {
       items={[
         {
           key: '1',
-          label:
-            <div onClick={() => props.onChangeSetting?.()}>设置显示字段</div>
-          ,
+          label: (
+            <div onClick={() => props.onChangeSetting?.()}>
+              {t('common.setField')}
+            </div>
+          ),
         },
       ]}
     />

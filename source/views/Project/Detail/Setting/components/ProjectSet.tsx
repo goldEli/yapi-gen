@@ -268,10 +268,10 @@ const ProjectSet = () => {
           projectId,
         })
         setOperationDetail({})
-        message.success('编辑成功')
+        message.success(t('common.editSuccess'))
       } else {
         await addPermission({ name: addValue, projectId })
-        message.success('创建成功')
+        message.success(t('common.createSuccess'))
       }
       setIsVisible(false)
       init()
@@ -311,7 +311,7 @@ const ProjectSet = () => {
       await deletePermission({ id: operationDetail.id })
       setIsDelete(false)
       setOperationDetail({})
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       init(true)
     } catch (error) {
 
@@ -324,11 +324,19 @@ const ProjectSet = () => {
       items={[
         {
           key: '1',
-          label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
+          label: (
+            <div onClick={e => onClickMenu(e, 'edit', item)}>
+              {t('common.edit')}
+            </div>
+          ),
         },
         {
           key: '2',
-          label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
+          label: (
+            <div onClick={e => onClickMenu(e, 'delete', item)}>
+              {t('common.del')}
+            </div>
+          ),
         },
       ]}
     />
@@ -373,7 +381,7 @@ const ProjectSet = () => {
             />
           </div>
           <ModalFooter size={16}>
-            <Button onClick={onClose}>取消</Button>
+            <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
               确认
             </Button>

@@ -131,7 +131,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
 
   const columnsChild = [
     {
-      title: '项目名称',
+      title: t('common.projectName'),
       dataIndex: 'name',
       render: (text: string) => {
         return <OmitText width={180}>{text}</OmitText>
@@ -158,7 +158,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          需求名称
+          {t('common.demandName')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -335,11 +335,11 @@ const DemandWrap = () => {
     let menuItems = [
       {
         key: '1',
-        label: <div onClick={() => onClickRow(item)}>编辑</div>,
+        label: <div onClick={() => onClickRow(item)}>{t('common.edit')}</div>,
       },
       {
         key: '2',
-        label: <div onClick={() => onDelete(item)}>删除</div>,
+        label: <div onClick={() => onDelete(item)}>{t('common.del')}</div>,
       },
     ]
 
@@ -613,7 +613,7 @@ const DemandWrap = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
       getList(pageObj, order)

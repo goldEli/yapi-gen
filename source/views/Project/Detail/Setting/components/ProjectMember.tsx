@@ -219,7 +219,7 @@ const ProjectMember = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteMember({ projectId, userId: operationItem.id })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       setOperationItem({})
       getList(order, pageObj)
@@ -247,7 +247,11 @@ const ProjectMember = () => {
     let menuItems = [
       {
         key: '1',
-        label: <div onClick={() => onOperationMember(item, 'edit')}>编辑</div>,
+        label: (
+          <div onClick={() => onOperationMember(item, 'edit')}>
+            {t('common.edit')}
+          </div>
+        ),
       },
       {
         key: '2',
@@ -486,7 +490,7 @@ const ProjectMember = () => {
                 style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
                 onClick={onReset}
               >
-                清除条件
+                {t('common.clearForm')}
               </div>
             </SearchWrap>
           </FilterWrap>

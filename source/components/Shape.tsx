@@ -147,13 +147,17 @@ export const ShapeContent = (props: ShapeProps) => {
           <Form form={form}>
             <Form.Item
               labelCol={{ span: 5 }}
-              label="处理人"
+              label={t('common.dealName')}
               name="username"
               rules={[
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Select mode="multiple" placeholder="请选择" allowClear>
+              <Select
+                mode="multiple"
+                placeholder={t('common.pleaseSelect')}
+                allowClear
+              >
                 {optionsList?.map((item: any) => (
                   <Option key={item.id} value={item.id}>
                     {item.name}
@@ -162,7 +166,11 @@ export const ShapeContent = (props: ShapeProps) => {
               </Select>
             </Form.Item>
 
-            <Form.Item labelCol={{ span: 5 }} label="评论" name="password">
+            <Form.Item
+              labelCol={{ span: 5 }}
+              label={t('common.comment')}
+              name="password"
+            >
               <Input.TextArea
                 maxLength={200}
                 style={{ maxHeight: '132px', minHeight: '132px' }}
@@ -177,9 +185,9 @@ export const ShapeContent = (props: ShapeProps) => {
             style={{ marginLeft: '16px' }}
             type="primary"
           >
-            流转
+            {t('common.circulation')}
           </Button>
-          <Button onClick={() => onClear()}>取消</Button>
+          <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
         </ButtonFooter>
       </Right>
       <Close onClick={() => onClear()}>

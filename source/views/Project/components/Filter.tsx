@@ -86,7 +86,11 @@ const Filter = (props: Props) => {
       items={[
         {
           key: 'name',
-          label: <div onClick={() => props.onChangeSort('name')}>项目名称</div>,
+          label: (
+            <div onClick={() => props.onChangeSort('name')}>
+              {t('common.projectName')}
+            </div>
+          ),
         },
         {
           key: 'created_at',
@@ -127,7 +131,7 @@ const Filter = (props: Props) => {
             style={{ display: 'flex', alignItems: 'center' }}
           >
             <MainTitle style={{ marginRight: 12 }}>
-              {props.sort === 'name' ? '项目名称' : '创建时间'}
+              {props.sort === 'name' ? t('common.projectName') : '创建时间'}
             </MainTitle>
             <Dropdown overlay={menu}>
               <IconfontWrap type="sort" />

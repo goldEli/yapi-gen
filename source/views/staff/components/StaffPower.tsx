@@ -146,9 +146,9 @@ export const StaffPersonal = (props: {
       </PersonalFooter>
       <Footer>
         <Button type="primary" onClick={onConfirm}>
-          确定
+          {t('common.confirm')}
         </Button>
-        <Button onClick={() => props.onClose()}>取消</Button>
+        <Button onClick={() => props.onClose()}>{t('common.cancel')}</Button>
       </Footer>
     </Modal>
   )

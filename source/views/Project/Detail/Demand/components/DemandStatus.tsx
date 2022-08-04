@@ -119,7 +119,7 @@ const DemandBox = (props: Props) => {
         </Form.Item>
       </Form>
       <PopoverFooter size={16}>
-        <Button onClick={onClear}>取消</Button>
+        <Button onClick={onClear}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={confirm}>
           确认
         </Button>

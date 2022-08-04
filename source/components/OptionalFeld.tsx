@@ -125,7 +125,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   return (
     <Modal
       width={800}
-      title="显示字段配置"
+      title={t('common.showFiled')}
       visible={props.isVisible}
       onCancel={props.onClose}
       onOk={handleOk}
@@ -135,7 +135,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       <Wrap>
         <Left>
           <ItemWrap>
-            <div className={text}>基本字段</div>
+            <div className={text}>{t('common.basicFiled')}</div>
             <CheckboxGroup value={checkList} onChange={onChange}>
               {plainOptions.map(item => (
                 <Checkbox
@@ -149,7 +149,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
             </CheckboxGroup>
           </ItemWrap>
           <ItemWrap>
-            <div className={text}>人员与时间字段</div>
+            <div className={text}>{t('common.personOrTime')}</div>
             <CheckboxGroup value={checkList2} onChange={onChange2}>
               {plainOptions2.map(item => (
                 <Checkbox key={item.label} value={item.value}>
@@ -160,7 +160,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
           </ItemWrap>
         </Left>
         <Right>
-          <div className={text}>当前选择字段</div>
+          <div className={text}>{t('common.currentFiled')}</div>
           {allList}
         </Right>
       </Wrap>

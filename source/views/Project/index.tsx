@@ -114,7 +114,7 @@ const Project = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteProject({ id: operationDetail.id })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       setOperationDetail({})
       getList(activeType, isGrid, isHidden, searchVal, order, pageObj)

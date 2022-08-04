@@ -253,7 +253,7 @@ const EditDemand = (props: Props) => {
     }
     const res = await addQuicklyCreate(data)
     if (res.code === 0) {
-      message.success('创建成功')
+      message.success(t('common.createSuccess'))
       setAttachList([])
       setTagList([])
       setPriorityDetail({})
@@ -385,7 +385,7 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label="需求名称"
+            label={t('common.demandName')}
             required
             name="name"
           >
@@ -528,7 +528,7 @@ const EditDemand = (props: Props) => {
           完成并创建下一个
         </AddButtonWrap>
         <Space size={16}>
-          <Button onClick={onCancel}>取消</Button>
+          <Button onClick={onCancel}>{t('common.cancel')}</Button>
           <Button type="primary" onClick={() => onSaveDemand()}>
             确认
           </Button>

@@ -99,19 +99,27 @@ const ProjectCard = (props: Props) => {
     let menuItems = [
       {
         key: '1',
-        label: <div onClick={e => onClickMenu(e, 'edit', item)}>编辑</div>,
+        label: (
+          <div onClick={e => onClickMenu(e, 'edit', item)}>
+            {t('common.edit')}
+          </div>
+        ),
       },
       {
         key: '2',
         label: (
           <div onClick={e => onClickMenu(e, 'end', item)}>
-            {item.status === 1 ? '结束' : '开启'}
+            {item.status === 1 ? t('common.stop') : t('common.open')}
           </div>
         ),
       },
       {
         key: '3',
-        label: <div onClick={e => onClickMenu(e, 'delete', item)}>删除</div>,
+        label: (
+          <div onClick={e => onClickMenu(e, 'delete', item)}>
+            {t('common.del')}
+          </div>
+        ),
       },
     ]
 

@@ -159,7 +159,7 @@ const DemandBox = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: demandInfo.id })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
       navigate(-1)
     } catch (error) {
@@ -245,13 +245,16 @@ const DemandBox = () => {
               ? null
               : (
                   <Button type="primary" onClick={onEdit}>
-                编辑
+                    {t('common.edit')}
                   </Button>
                 )}
             {isDelete
               ? null
-              : <Button onClick={() => setIsDelVisible(true)}>删除</Button>
-            }
+              : (
+                  <Button onClick={() => setIsDelVisible(true)}>
+                    {t('common.del')}
+                  </Button>
+                )}
           </Space>
         </DemandInfoWrap>
         <ContentWrap>

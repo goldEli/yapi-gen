@@ -54,7 +54,7 @@ const UploadAttach = (props: Props) => {
         type: 'attachment',
         targetId: url,
       })
-      message.success('添加成功')
+      message.success(t('common.addSuccess'))
       getDemandInfo({ projectId, id: demandId })
     } catch (error) {
 
@@ -70,7 +70,7 @@ const UploadAttach = (props: Props) => {
         type: 'attachment',
         targetId: file.uid,
       })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getDemandInfo({ projectId, id: demandId })
     } catch (error) {
 
