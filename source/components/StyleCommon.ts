@@ -12,6 +12,14 @@ const TableWrap = styled(Table)({
   },
 })
 
+const Loading = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const StylePagination = styled(Pagination)`
   margin-top: auto;
   align-self: end;
@@ -278,6 +286,7 @@ const StyledShape = styled.div<{ color: any }>`
 `
 
 export {
+  Loading,
   StaffTableWrap2,
   StyledShape,
   HightChartsWrap,

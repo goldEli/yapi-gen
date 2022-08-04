@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import Project from './components/Project'
-import { Tooltip } from 'antd'
+import { Spin, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
 import Staff from './components/Staff'
@@ -11,6 +11,7 @@ import Iteration from './components/Iteration'
 import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import { Loading } from '@/components/StyleCommon'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -52,43 +53,50 @@ const Situation = () => {
     init()
   }, [])
 
-  return (
-    <div>
-      <Head>
-        <span>公司概况</span>
-        <PanelHeaderSecond>
-          <div>{userInfo?.company_name}</div>
-          <Tooltip placement="top" title="切换企业">
-            <div
-              onClick={() => setCompanyModalVisible(true)}
-              className={buttonCss}
-            >
-              <IconFont
-                type="swap"
-                style={{ cursor: 'pointer', fontSize: 14 }}
-              />
-            </div>
-          </Tooltip>
-        </PanelHeaderSecond>
-      </Head>
-      <PermissionWrap
-        auth="b/company/statistics"
-        hasWidth
-        permission={userInfo?.company_permissions}
-      >
-        <Wrap>
-          <Project data={generalData?.project} />
-          <Staff data={generalData?.user} />
-          <Need data={generalData?.need} />
-          <Iteration data={generalData?.iterate} />
-        </Wrap>
-      </PermissionWrap>
+  if (generalData) {
+    return (
+      <div>
+        <Head>
+          <span>公司概况</span>
+          <PanelHeaderSecond>
+            <div>{userInfo?.company_name}</div>
+            <Tooltip placement="top" title="切换企业">
+              <div
+                onClick={() => setCompanyModalVisible(true)}
+                className={buttonCss}
+              >
+                <IconFont
+                  type="swap"
+                  style={{ cursor: 'pointer', fontSize: 14 }}
+                />
+              </div>
+            </Tooltip>
+          </PanelHeaderSecond>
+        </Head>
+        <PermissionWrap
+          auth="b/company/statistics"
+          hasWidth
+          permission={userInfo?.company_permissions}
+        >
+          <Wrap>
+            <Project data={generalData?.project} />
+            <Staff data={generalData?.user} />
+            <Need data={generalData?.need} />
+            <Iteration data={generalData?.iterate} />
+          </Wrap>
+        </PermissionWrap>
 
-      <CompanyModal
-        visible={companyModalVisible}
-        onChangeState={() => setCompanyModalVisible(!companyModalVisible)}
-      />
-    </div>
+        <CompanyModal
+          visible={companyModalVisible}
+          onChangeState={() => setCompanyModalVisible(!companyModalVisible)}
+        />
+      </div>
+    )
+  }
+  return (
+    <Loading>
+      <Spin size="large" />
+    </Loading>
   )
 }
 

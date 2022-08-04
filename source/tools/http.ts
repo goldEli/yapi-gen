@@ -91,6 +91,8 @@ client.config({
     },
     (data: any) => {
       if (
+
+        // data.code === '00000' ||
         data.code === 'A0204' ||
         data.code === 'A0203' ||
         data.code === 'A0202' ||
@@ -99,8 +101,11 @@ client.config({
         data.code === 'A0100' ||
         data.code === 'A0001'
       ) {
-        getTicket()
-        return
+        setTimeout(() => {
+          localStorage.removeItem('agileToken')
+          localStorage.removeItem('saveRouter')
+          getTicket()
+        }, 500)
       }
       if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
         message.error(data.message)
