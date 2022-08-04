@@ -5,6 +5,7 @@ import Routes from '@/routes'
 import log from '@jihe/secure-log'
 import 'antd/dist/antd.css'
 import './style.less'
+import '@/locals'
 
 log.init({ isDEV: import.meta.env.DEV })
 

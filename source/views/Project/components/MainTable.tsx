@@ -5,7 +5,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination } from 'antd'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -88,7 +88,7 @@ const MoreContent = (props: MoreProps) => {
       >
         <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
       </Dropdown>
-      <div style={{ marginLeft: 32 }}>{props.text}</div>
+      <ClickWrap style={{ marginLeft: 32 }}>{props.text}</ClickWrap>
     </MoreWrap>
   )
 }
@@ -192,8 +192,12 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'cover',
-      render: (text: string) => <img style={{ width: 60, height: 28, borderRadius: 2 }} src={text} />
-      ,
+      render: (text: string) => (
+        <img
+          style={{ width: 60, height: 28, borderRadius: 2, cursor: 'pointer' }}
+          src={text}
+        />
+      ),
     },
     {
       dataIndex: 'name',
@@ -207,6 +211,9 @@ const MainTable = (props: Props) => {
           项目名称
         </NewSort>
       ),
+      render: (text: string) => {
+        return <ClickWrap>{text}</ClickWrap>
+      },
     },
     {
       title: (

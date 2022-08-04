@@ -166,7 +166,7 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {text.map(i => <span key={i}>{i}</span>)}
+            {Object.values(text).map(i => <span key={i}>{i}</span>)}
           </div>
         )
       },
@@ -192,7 +192,7 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {record?.fields?.map((i: any) => (
+            {Object.keys(record?.fields)?.map((i: any) => (
               <span key={i}>
                 {i === 'info' ? (
                   <span
@@ -231,7 +231,7 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {record.fields.map((i: any) => (
+            {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
                 {i === 'info' ? (
                   <span

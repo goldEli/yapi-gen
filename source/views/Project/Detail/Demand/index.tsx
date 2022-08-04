@@ -84,12 +84,11 @@ const Item = styled.div<{ activeIdx: boolean }>(
       height: 20,
       padding: '0 6px',
       borderRadius: '50%',
-      color: '#969799',
-      background: '#F2F2F4',
-      '&: hover': {
-        color: '#2877FF',
-        background: '#F0F4FA',
-      },
+      color: '#2877FF',
+      background: '#F0F4FA',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   },
   ({ activeIdx }) => ({

@@ -3,6 +3,13 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input } from 'antd'
 
+const ClickWrap = styled.div({
+  cursor: 'pointer',
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
 const TableWrap = styled(Table)({
   '.ant-table-thead > tr > th:nth-child(1)': {
     paddingLeft: 64,
@@ -307,4 +314,5 @@ export {
   ChartsItem,
   ShowWrap,
   StyledTable,
+  ClickWrap,
 }

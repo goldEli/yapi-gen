@@ -139,10 +139,7 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => {
         return (
-          <div
-            style={{ cursor: 'pointer' }}
-            onClick={() => state.onClickItem(record)}
-          >
+          <div onClick={() => state.onClickItem(record)}>
             <OmitText width={200}>{text}</OmitText>
           </div>
         )

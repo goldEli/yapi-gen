@@ -15,25 +15,41 @@ const MoreWrap = styled(IconFont)({
   color: '#969799',
 })
 
-const CardWrap = styled.div({
-  padding: '0 8px',
+const DetailWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  height: 90,
-  borderRadius: 6,
-  background: 'white',
-  marginBottom: 8,
-  position: 'relative',
-  border: '1px solid #EBEDF0',
   cursor: 'pointer',
-  '&: hover': {
-    [MoreWrap.toString()]: {
-      display: 'block',
+  color: '#BBBDBF',
+  fontSize: 12,
+})
+
+const CardWrap = styled.div<{ active?: boolean }>(
+  {
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: 90,
+    borderRadius: 6,
+    background: 'white',
+    marginBottom: 8,
+    position: 'relative',
+    border: '1px solid #EBEDF0',
+    cursor: 'pointer',
+    '&: hover': {
+      [MoreWrap.toString()]: {
+        display: 'block',
+      },
     },
   },
-})
+  ({ active }) => ({
+    border: active ? '1px solid #2877ff' : '1px solid #EBEDF0',
+    [DetailWrap.toString()]: {
+      color: active ? '#2877ff' : '#BBBDBF',
+    },
+  }),
+)
 
 const InfoContent = styled.div({
   display: 'flex',
@@ -64,18 +80,12 @@ const StatusTag = styled.div({
   fontSize: 12,
 })
 
-const DetailWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  color: '#BBBDBF',
-})
-
 interface Props {
   item: any
   menu: React.ReactElement
   onClickInfo(): void
   onClickItem?(): void
+  isActive?: boolean
 }
 
 const IterationCard = (props: Props) => {
@@ -100,7 +110,7 @@ const IterationCard = (props: Props) => {
   }
 
   return (
-    <CardWrap onClick={props.onClickItem}>
+    <CardWrap onClick={props.onClickItem} active={props.isActive}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Progress
           strokeColor="#43BA9A"

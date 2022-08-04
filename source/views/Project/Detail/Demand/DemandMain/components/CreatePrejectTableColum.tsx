@@ -13,6 +13,7 @@ import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { ClickWrap } from '@/components/StyleCommon'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -24,6 +25,7 @@ const StatusWrap = styled.div<{ color?: string }>(
     justifyContent: 'center',
     width: 'fit-content',
     cursor: 'pointer',
+    background: 'white',
   },
   ({ color }) => ({
     color,
@@ -126,7 +128,12 @@ export const useDynamicColumns = (state: any) => {
                     {state.rowIconFont()}
                   </Dropdown>
                 )}
-            <div style={{ marginLeft: 32 }}>{text}</div>
+            <ClickWrap
+              onClick={() => state.onClickItem(record)}
+              style={{ marginLeft: 32 }}
+            >
+              {text}
+            </ClickWrap>
           </div>
         )
       },
@@ -140,12 +147,9 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => {
         return (
-          <div
-            style={{ cursor: 'pointer' }}
-            onClick={() => state.onClickItem(record)}
-          >
+          <ClickWrap onClick={() => state.onClickItem(record)}>
             <OmitText width={200}>{text}</OmitText>
-          </div>
+          </ClickWrap>
         )
       },
     },

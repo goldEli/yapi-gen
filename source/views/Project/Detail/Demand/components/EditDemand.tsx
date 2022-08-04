@@ -304,8 +304,8 @@ const EditDemand = (props: Props) => {
       props.onUpdate?.()
       if (!hasNext) {
         props.onChangeVisible()
-
-        // form.resetFields()
+      } else {
+        form.resetFields()
       }
     } catch (error) {
 

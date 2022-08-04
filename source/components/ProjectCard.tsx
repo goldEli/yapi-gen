@@ -57,13 +57,16 @@ const Warp = styled.div({
 })
 
 const NameWrap = styled.div({
-  width: '90%',
+  maxWidth: '90%',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   fontSize: 14,
   fontWeight: 400,
   color: 'black',
+  '&: hover': {
+    color: '#2877ff',
+  },
 })
 
 const TextWarp = styled.div({
@@ -148,7 +151,7 @@ const ProjectCard = (props: Props) => {
           key={isMoreVisible.toString()}
           visible={isMoreVisible}
           overlay={() => menu(props.item)}
-          trigger={['hover']}
+          trigger={['click']}
           placement="bottomRight"
           getPopupContainer={node => node}
           onVisibleChange={visible => setIsMoreVisible(visible)}

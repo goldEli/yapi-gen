@@ -16,7 +16,7 @@ const TagCheckedItem = styled.div<{ color?: string }>(
     position: 'relative',
     color: '#969799',
     marginRight: 8,
-    border: '1px solid #EBEDF0',
+    border: '1px solid #969799',
     boxSizing: 'border-box',
     borderRadius: 6,
     display: 'flex',
@@ -62,6 +62,18 @@ const TagItem = styled.div({
     span: {
       color: '#2877ff',
     },
+  },
+})
+
+const ColorWrap = styled.div({
+  height: 16,
+  width: 16,
+  borderRadius: 4,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  svg: {
+    color: 'white',
   },
 })
 
@@ -246,17 +258,13 @@ const TagComponent = (props: Props) => {
       size={8}
     >
       {colorList.map(i => (
-        <div
+        <ColorWrap
           onClick={() => onAddInfoDemand(i)}
           key={i}
-          style={{
-            background: i,
-            height: 16,
-            width: 16,
-            borderRadius: 4,
-            cursor: 'pointer',
-          }}
-        />
+          style={{ background: i }}
+        >
+          <IconFont hidden={i !== '#969799'} type="check" />
+        </ColorWrap>
       ))}
     </Space>
   )
