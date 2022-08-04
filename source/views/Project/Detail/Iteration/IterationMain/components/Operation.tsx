@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
@@ -196,13 +197,15 @@ const Operation = (props: Props) => {
               content={changeStatus}
               getPopupContainer={node => node}
             >
-              <StatusTag>
-                {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
-                <IconFont
-                  type="down-icon"
-                  style={{ fontSize: 12, marginLeft: 4 }}
-                />
-              </StatusTag>
+              {props.currentDetail ? (
+                <StatusTag>
+                  {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+                  <IconFont
+                    type="down-icon"
+                    style={{ fontSize: 12, marginLeft: 4 }}
+                  />
+                </StatusTag>
+              ) : null}
             </Popover>
           )}
 
