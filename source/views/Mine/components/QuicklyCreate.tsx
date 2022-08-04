@@ -223,7 +223,9 @@ const EditDemand = (props: Props) => {
   }, [prejectId])
 
   const onSaveDemand = async (hasNext?: number) => {
-    const formdata = await form.validateFields()
+    await form.validateFields()
+    const formdata = form.getFieldsValue()
+
     if (formdata.times && formdata.times[0]) {
       formdata.expectedStart = moment(formdata.times[0]).format('YYYY-MM-DD')
     }
@@ -252,10 +254,11 @@ const EditDemand = (props: Props) => {
       setAttachList([])
       setTagList([])
       setPriorityDetail({})
+
       if (!hasNext) {
         props.onChangeVisible()
-
-        // form.resetFields()
+      } else {
+        form.resetFields()
       }
     }
   }
@@ -340,7 +343,11 @@ const EditDemand = (props: Props) => {
       <FormWrap form={form} labelCol={{ span: 5 }}>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
-          <Form.Item label="创建项目" required name="projectId">
+          <Form.Item
+            label="创建项目"
+            rules={[{ required: true, message: '' }]}
+            name="projectId"
+          >
             <Select
               onSelect={selectPrejectName}
               placeholder="请选择"
@@ -360,7 +367,12 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
-          <Form.Item label="创建类型" required name="type">
+          <Form.Item
+            label="创建类型"
+            rules={[{ required: true, message: '' }]}
+            required
+            name="type"
+          >
             <Select placeholder="请选择" showArrow>
               <Select.Option value="need">需求</Select.Option>
             </Select>
@@ -368,7 +380,12 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
-          <Form.Item label="需求名称" required name="name">
+          <Form.Item
+            rules={[{ required: true, message: '' }]}
+            label="需求名称"
+            required
+            name="name"
+          >
             <Input placeholder="请输入需求名称" />
           </Form.Item>
         </div>
@@ -516,6 +533,7 @@ const EditDemand = (props: Props) => {
       </ModalFooter>
     </Modal>
   )
+  // eslint-disable-next-line max-lines
 }
 
 export default EditDemand

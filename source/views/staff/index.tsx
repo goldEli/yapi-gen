@@ -234,19 +234,15 @@ const Staff = () => {
       </Hehavior>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
       <div className={tableWrapP}>
-        {listData.length < 1
-          ? <NoData />
-          : (
-              <StaffTableWrap>
-                <StyledTable
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              </StaffTableWrap>
-            )}
+        <StaffTableWrap>
+          <StyledTable
+            rowKey="id"
+            columns={selectColum}
+            dataSource={listData}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        </StaffTableWrap>
 
         <PaginationWrap>
           <Pagination
