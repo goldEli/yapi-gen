@@ -153,10 +153,11 @@ export const Panel = () => {
   }
   const toLoginOut = async () => {
     try {
+      localStorage.removeItem('saveRouter')
       await loginOut()
       setTimeout(() => {
         localStorage.removeItem('agileToken')
-        localStorage.removeItem('saveRouter')
+
         getTicket()
       }, 100)
     } catch (error) {

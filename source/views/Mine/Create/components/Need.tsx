@@ -20,6 +20,7 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import NoData from '@/components/NoData'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
@@ -315,6 +316,7 @@ const Need = (props: any) => {
           scroll={{ x: 'max-content' }}
         />
       </StaffTableWrap>
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

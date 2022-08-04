@@ -104,8 +104,8 @@ const Need = (props: any) => {
     if (isMany) {
       const res = await getMineNoFinishList({
         projectId: props.id,
-        all: isMany,
-        panelDate: isMany,
+        all: isMany ? 1 : '',
+        panelDate: isMany ? 1 : '',
       })
 
       setManyListData(res)

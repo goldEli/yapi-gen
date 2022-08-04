@@ -21,6 +21,7 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import NoData from '@/components/NoData'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
@@ -99,7 +100,7 @@ const Need = (props: any) => {
     })
 
     setListData(res.list)
-    setTotal(res.pager.total)
+    setTotal(res?.pager?.total)
   }
 
   const updateStatus = async (res1: any) => {
@@ -304,23 +305,27 @@ const Need = (props: any) => {
           specialList={filterSpecialList}
         />
       ) : null}
+      {listData?.length < 1
+        ? <NoData />
+        : (
+            <StaffTableWrap>
+              <StyledTable
+                rowKey="id"
+                columns={selectColum}
+                dataSource={listData}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+              />
+            </StaffTableWrap>
+          )}
 
-      <StaffTableWrap>
-        <StyledTable
-          rowKey="id"
-          columns={selectColum}
-          dataSource={listData}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
-      </StaffTableWrap>
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
           current={page}
           showSizeChanger
           showQuickJumper
-          total={total}
+          total={total ?? 0}
           showTotal={newTotal => `Total ${newTotal} items`}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import projectImg from '@/assets/projectImg.png'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -16,8 +16,8 @@ const Triangle = styled.div`
   bottom: -30px;
   width: 0;
   height: 0;
-  border: 16px solid transparent;
-  border-bottom: 16px solid rgba(40, 119, 255, 1);
+  border: 9px solid transparent;
+  border-bottom: 14px solid rgba(40, 119, 255, 1);
 `
 const Warp = styled.div<{ show?: boolean }>(
   {
@@ -30,6 +30,7 @@ const Warp = styled.div<{ show?: boolean }>(
     cursor: 'pointer',
 
     '&: hover': {
+      transform: 'translate(0, -10%)',
       boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
       [DropdownWrap.toString()]: {
         display: 'block',
@@ -106,7 +107,11 @@ const SwiperCard = (props: {
       }}
     >
       <ImgWrap show={props.show}>
-        <img src={props.avtar ? props.avtar : projectImg} alt="" />
+        <img
+          style={{ borderRadius: ' 4px 4px 0px 0px ' }}
+          src={props.avtar ? props.avtar : projectImg}
+          alt=""
+        />
       </ImgWrap>
       <TextWarp>
         <NameWrap show={props.show}>{props.name}</NameWrap>
