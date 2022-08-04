@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import head from '@/assets/head.png'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 
@@ -61,6 +62,7 @@ export const StaffPersonal = (props: {
   onClose(): void
   onConfirm(info: { userId: string; roleId: string }): void
 }) => {
+  const [t] = useTranslation()
   const { data } = props
   const [roleOptions, setRoleOptions] = useState([])
   const [info, setInfo] = useState({

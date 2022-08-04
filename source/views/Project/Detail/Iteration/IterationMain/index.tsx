@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditDemand from '../../Demand/components/EditDemand'
+import { useTranslation } from 'react-i18next'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const IterationMain = (props: Props) => {
+  const [t] = useTranslation()
   const [isGrid, setIsGrid] = useState(true)
   const [isDemandVisible, setIsDemandVisible] = useState(false)
   const [isUpdateList, setIsUpdateList] = useState(false)

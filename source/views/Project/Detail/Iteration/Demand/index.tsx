@@ -20,6 +20,7 @@ import EditDemand from '../../Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -88,6 +89,7 @@ const NewSort = (sortProps: any) => {
 }
 
 export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id') || props.id
   const [isVisible, setIsVisible] = useState(false)
@@ -269,6 +271,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
 }
 
 const DemandWrap = () => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const iterateId = searchParams.get('iterateId')

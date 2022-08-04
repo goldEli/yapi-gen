@@ -90,7 +90,6 @@ const Detail = () => {
         type: 'select',
         isDefault: item.is_default_filter,
       }
-
     })
 
     setFilterAll(filterAllList)

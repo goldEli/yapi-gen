@@ -7,6 +7,7 @@ import type {
   IToolbarConfig,
 } from '@wangeditor/editor'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   value: string
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const EditorBox = (props: Props) => {
+  const [t] = useTranslation()
   const customParseLinkUrl = (url: string): string => {
     if (url.indexOf('http') !== 0) {
       return `http://${url}`

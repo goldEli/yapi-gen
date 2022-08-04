@@ -10,6 +10,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -63,6 +64,7 @@ interface Props {
 }
 
 const EditIteration = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const [html, setHtml] = useState('')

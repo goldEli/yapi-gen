@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const Header = styled.div({
   height: 64,
@@ -99,6 +100,7 @@ const CardWrap = styled.div({
 })
 
 const CompanyInfo = () => {
+  const [t] = useTranslation()
   const { companyInfo } = useModel('setting')
   return (
     <div style={{ height: '100%' }}>

@@ -7,6 +7,7 @@ import { IconFont } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
+import { useTranslation } from 'react-i18next'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -79,6 +80,7 @@ interface Props {
 }
 
 const PosterComponent = (props: Props) => {
+  const [t] = useTranslation()
   const { coverList } = useModel('project')
   const [checkedPoster, setCheckedPoster] = useState(props.value || '')
   const { uploadFile } = useModel('cos')

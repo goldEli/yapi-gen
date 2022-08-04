@@ -7,6 +7,7 @@ import ProjectSet from './components/ProjectSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -82,6 +83,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
 )
 
 const Setting = () => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useModel('project')

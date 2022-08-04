@@ -11,6 +11,7 @@ import Member from '../../components/Member'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { ClickWrap } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const OperationTop = styled.div({
   height: 64,
@@ -119,6 +120,7 @@ interface Props {
 }
 
 const CommonOperation = (props: Props) => {
+  const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)

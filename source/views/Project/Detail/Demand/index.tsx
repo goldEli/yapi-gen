@@ -20,6 +20,7 @@ import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -113,6 +114,7 @@ const StatusWrap = styled.div({
 })
 
 const DemandBox = () => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)

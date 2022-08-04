@@ -9,6 +9,7 @@ import guide_1 from '@/assets/guide_1.svg'
 import guide_2 from '@/assets/guide_2.svg'
 import guide_3 from '@/assets/guide_3.svg'
 import guide_4 from '@/assets/guide_4.svg'
+import { useTranslation } from 'react-i18next'
 
 const imgBoxCss = css`
   /* height: 448px; */
@@ -45,6 +46,7 @@ const Dialog = styled.div`
 `
 
 const Next = (props: { visible: boolean; close(): void }) => {
+  const [t] = useTranslation()
   const [active, setActive] = useState(0)
   const inform = [
     {

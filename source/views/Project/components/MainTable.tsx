@@ -11,6 +11,7 @@ import { useCallback, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -107,6 +108,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const MainTable = (props: Props) => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
 

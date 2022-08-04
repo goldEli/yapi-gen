@@ -8,6 +8,7 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 const CheckboxGroup = Checkbox.Group
 import styled from '@emotion/styled'
 import { ShowWrap } from './StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -65,6 +66,7 @@ type OptionalFeldProps = {
 }
 
 export const OptionalFeld = (props: OptionalFeldProps) => {
+  const [t] = useTranslation()
   const { plainOptions, plainOptions2 } = props
 
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(

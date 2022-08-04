@@ -6,6 +6,7 @@ import { Space } from 'antd'
 import EditProject from '@/views/Project/components/EditProject'
 import { useState } from 'react'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   padding: 24,
@@ -88,6 +89,7 @@ const CardItem = styled.div({
 })
 
 const ProjectInfo = () => {
+  const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const { projectInfo, getProjectInfo } = useModel('project')
 

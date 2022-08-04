@@ -11,8 +11,10 @@ import {
   title2Css,
   titleCss,
 } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const DemoColumn = (props: any) => {
+  const [t] = useTranslation()
   const { data: res } = props
   const config = {
     seriesField: 'type',
@@ -48,6 +50,7 @@ const DemoColumn = (props: any) => {
 }
 
 const Iteration = (props: any) => {
+  const [t] = useTranslation()
   const { data } = props
 
   return (

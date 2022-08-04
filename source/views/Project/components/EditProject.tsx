@@ -5,6 +5,7 @@ import PosterComponent from './PosterComponent'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Footer = styled(Space)({
   height: 56,
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const EditProject = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const { addProject, updateProject } = useModel('project')
 

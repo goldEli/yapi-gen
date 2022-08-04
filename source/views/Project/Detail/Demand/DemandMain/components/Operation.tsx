@@ -6,6 +6,7 @@ import TableFilter from '@/components/TableFilter'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -35,6 +36,7 @@ interface Props {
 }
 
 const Operation = (props: Props) => {
+  const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const { filterAll, projectInfo } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])

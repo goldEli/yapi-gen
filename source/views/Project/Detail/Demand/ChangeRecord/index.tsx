@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
+import { useTranslation } from 'react-i18next'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -43,6 +44,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const ChangeRecord = () => {
+  const [t] = useTranslation()
   const { getDemandChangeLog } = useModel('demand')
   const [searchParams] = useSearchParams()
   const demandId = searchParams.get('demandId')

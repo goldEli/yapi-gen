@@ -4,6 +4,7 @@ import IconFont from './IconFont'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onChangeFilter?(): void
@@ -36,6 +37,7 @@ const DividerWrap = styled(Divider)({
 })
 
 const OperationGroup = (props: Props) => {
+  const [t] = useTranslation()
   const { projectInfo } = useModel('project')
 
   const hasFilter = getIsPermission(

@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
 import { SearchLine } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 const Wrap = styled.div({
@@ -82,6 +83,7 @@ interface Props {
 }
 
 const SearchList = (props: Props) => {
+  const [t] = useTranslation()
   const { getDepartmentSelectList, getPositionSelectList, getRoleList }
     = useModel('staff')
   const [form] = Form.useForm()

@@ -9,6 +9,7 @@ import AddMember from './AddMember'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   visible: boolean
@@ -83,6 +84,7 @@ const NameWrap = styled.div({
 })
 
 const Member = (props: Props) => {
+  const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember }
     = useModel('project')
   const [isVisible, setIsVisible] = useState(false)

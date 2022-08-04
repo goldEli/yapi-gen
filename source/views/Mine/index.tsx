@@ -7,6 +7,7 @@ import IconFont from '@/components/IconFont'
 import QuicklyCreate from './components/QuicklyCreate'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const AddButton = styled.div({
   width: 112,
@@ -67,6 +68,7 @@ type MenuList = {
 }
 
 const MineBox = () => {
+  const [t] = useTranslation()
   const { pathname } = useLocation()
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)

@@ -24,6 +24,7 @@ import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -117,6 +118,7 @@ const sortList = [
 ]
 
 const WrapLeft = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)

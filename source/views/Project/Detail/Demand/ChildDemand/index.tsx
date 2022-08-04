@@ -15,6 +15,7 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useTranslation } from 'react-i18next'
 
 const Operation = styled.div({
   display: 'flex',
@@ -56,6 +57,7 @@ const TableBox = styled(TableWrap)({
 })
 
 const ChildDemand = () => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
   const [isDelete, setIsDelete] = useState(false)

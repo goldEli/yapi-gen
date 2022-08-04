@@ -4,8 +4,10 @@ import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
+import { useTranslation } from 'react-i18next'
 
 const Finished = () => {
+  const [t] = useTranslation()
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')

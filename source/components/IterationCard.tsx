@@ -6,6 +6,7 @@ import { Dropdown, Progress } from 'antd'
 import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -89,6 +90,7 @@ interface Props {
 }
 
 const IterationCard = (props: Props) => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const { projectInfo } = useModel('project')
 

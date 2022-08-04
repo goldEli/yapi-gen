@@ -1,6 +1,7 @@
 import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const InfoItem = styled.div({
   display: 'flex',
@@ -45,6 +46,7 @@ interface Props {
 }
 
 const ProjectInfo = (props: Props) => {
+  const [t] = useTranslation()
   const { projectInfo } = useModel('project')
   return (
     <Modal

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { message } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onChangeVisible(e: any): void
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const DemandMain = (props: Props) => {
+  const [t] = useTranslation()
   const [isGrid, setIsGrid] = useState(false)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)

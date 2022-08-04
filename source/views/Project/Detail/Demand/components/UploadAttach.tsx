@@ -6,6 +6,7 @@ import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const UploadAttach = (props: Props) => {
+  const [t] = useTranslation()
   const { uploadFile } = useModel('cos')
   const { addInfoDemand, getDemandInfo, deleteInfoDemand } = useModel('demand')
   const [searchParams] = useSearchParams()

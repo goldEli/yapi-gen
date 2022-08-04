@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -47,6 +48,7 @@ const AddProject = styled.div({
 })
 
 const MainGrid = (props: Props) => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
   const isPermission = getIsPermission(

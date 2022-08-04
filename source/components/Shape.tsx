@@ -6,6 +6,7 @@ import { useModel } from '@/models'
 const { Option } = Select
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
 
 const Left = styled.div`
   width: 120px;
@@ -77,6 +78,7 @@ type ShapeProps = {
 }
 
 export const ShapeContent = (props: ShapeProps) => {
+  const [t] = useTranslation()
   const {
     record: {
       id: myid,

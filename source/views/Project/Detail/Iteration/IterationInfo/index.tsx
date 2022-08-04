@@ -10,6 +10,7 @@ import { Line, Column } from '@ant-design/plots'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -86,6 +87,7 @@ const ChartWrap = styled.div({
 })
 
 const DemoLine = (props: { data: any }) => {
+  const [t] = useTranslation()
   let arr: any[] = []
   props.data?.date?.forEach((element: any, index: number) => {
     const items = [
@@ -138,6 +140,7 @@ const DemoColumn = (props: { data: any }) => {
 }
 
 const IterationInfo = () => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const iterateId = searchParams.get('iterateId')

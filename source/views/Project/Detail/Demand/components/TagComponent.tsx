@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const TagCheckedItem = styled.div<{ color?: string }>(
   {
@@ -88,6 +89,7 @@ interface TagProps {
 }
 
 const TagBox = (props: TagProps) => {
+  const [t] = useTranslation()
   const { tagList } = useModel('project')
   const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
   const [value, setValue] = useState('')
@@ -173,6 +175,7 @@ interface Props {
 }
 
 const TagComponent = (props: Props) => {
+  const [t] = useTranslation()
   const { getTagList } = useModel('project')
   const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand }
     = useModel('demand')

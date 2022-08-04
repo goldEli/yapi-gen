@@ -9,6 +9,7 @@ import { Panel } from './Panel'
 import sideLogo from '@/assets/side_logo.svg'
 import { useModel } from '@/models'
 import { Popover } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 const imgCss = css`
   width: 40px;
@@ -88,6 +89,7 @@ const activeCss = css`
 `
 
 export const Side = () => {
+  const [t] = useTranslation()
   const { userInfo } = useModel('user')
   const location = useLocation()
   const { pathname } = location

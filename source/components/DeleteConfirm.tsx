@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Modal, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import IconFont from './IconFont'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   isVisible: boolean
@@ -41,6 +42,7 @@ const ModalFooter = styled(Space)({
 })
 
 const DeleteConfirm = (props: Props) => {
+  const [t] = useTranslation()
   return (
     <Modal
       visible={props.isVisible}
@@ -55,7 +57,7 @@ const DeleteConfirm = (props: Props) => {
       <ModalHeader>
         <Title>
           <IconFont style={{ fontSize: 24 }} type="Warning" />
-          <div>{props.title ? props.title : '删除确认'}</div>
+          <div>{props.title ? props.title : t('common.deleteConfirm')}</div>
         </Title>
         <IconFont
           style={{ fontSize: 16, color: '#323233' }}
@@ -65,9 +67,9 @@ const DeleteConfirm = (props: Props) => {
       </ModalHeader>
       <ModalContent>{props.text}</ModalContent>
       <ModalFooter size={16}>
-        <Button onClick={props.onChangeVisible}>取消</Button>
+        <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={props.onConfirm}>
-          确认
+          {t('common.confirm')}
         </Button>
       </ModalFooter>
     </Modal>

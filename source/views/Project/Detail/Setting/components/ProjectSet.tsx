@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const Warp = styled.div({
   padding: 16,
@@ -191,6 +192,7 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const ProjectSet = () => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])

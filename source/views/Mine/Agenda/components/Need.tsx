@@ -21,9 +21,11 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
+  const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
   const {
     getMineNeedList,

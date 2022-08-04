@@ -9,6 +9,7 @@ import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
+import { useTranslation } from 'react-i18next'
 
 const Header = styled.div({
   height: 'auto',
@@ -110,6 +111,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const Operation = () => {
+  const [t] = useTranslation()
   const { getOperateLogs } = useModel('setting')
   const { userInfo } = useModel('user')
   const { getStaffList } = useModel('staff')

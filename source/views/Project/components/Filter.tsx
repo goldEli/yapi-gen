@@ -3,6 +3,7 @@
 import styled from '@emotion/styled'
 import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -79,6 +80,7 @@ interface Props {
 }
 
 const Filter = (props: Props) => {
+  const [t] = useTranslation()
   const menu = (
     <Menu
       items={[

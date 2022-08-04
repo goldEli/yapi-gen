@@ -13,6 +13,7 @@ import Sort from '@/components/Sort'
 import { useNavigate } from 'react-router-dom'
 import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const flexCss = css`
   display: flex;
@@ -52,6 +53,7 @@ export const useDynamicColumns = (state: any) => {
   }
 
   const MoreWrap = (record: any) => {
+    const [t] = useTranslation()
     const [isMoreVisible, setIsMoreVisible] = useState(false)
     const menu = (
       <Menu

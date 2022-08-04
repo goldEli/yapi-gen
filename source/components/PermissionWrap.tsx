@@ -3,6 +3,7 @@
 import styled from '@emotion/styled'
 import empty from '@/assets/empty.svg'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -36,6 +37,7 @@ const PermissionWrap = ({
   isType?: number
   children?: any
 }) => {
+  const [t] = useTranslation()
   if (permission && !isType) {
     if (!getIsPermission(permission, auth)) {
       return permission ? children : ''

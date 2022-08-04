@@ -7,6 +7,7 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useTranslation } from 'react-i18next'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -95,6 +96,7 @@ const TextareaWrap = styled.div({
 })
 
 const WrapRightBox = () => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')

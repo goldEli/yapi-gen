@@ -5,6 +5,7 @@ import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const Content = styled.div({
   padding: 24,
@@ -33,6 +34,7 @@ interface Props {
   onDelete(item: any): void
 }
 const DemandGrid = (props: Props) => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')

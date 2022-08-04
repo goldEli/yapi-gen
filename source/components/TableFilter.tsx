@@ -7,6 +7,7 @@ import IconFont from './IconFont'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 const Wrap = styled.div({
@@ -108,6 +109,7 @@ const SelectWrapBedeck = styled.div`
 `
 
 const TableFilter = (props: any) => {
+  const [t] = useTranslation()
   const { list, basicsList, specialList } = props
   const [form] = Form.useForm()
 

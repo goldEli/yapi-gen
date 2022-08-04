@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { Loading } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -41,6 +42,7 @@ const Head = styled.div`
 `
 
 const Situation = () => {
+  const [t] = useTranslation()
   const { getGlobalGeneral, userInfo } = useModel('user')
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [generalData, setGeneralData] = useState<any>()

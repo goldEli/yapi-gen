@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools'
 import { ClickWrap } from './StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   item: any
@@ -119,6 +120,7 @@ const StatusWrap = styled.div({
 })
 
 const DemandCard = (props: Props) => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { getDemandList, updateDemandStatus } = useModel('demand')
@@ -152,7 +154,7 @@ const DemandCard = (props: Props) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getList()
     } catch (error) {
 
@@ -162,7 +164,7 @@ const DemandCard = (props: Props) => {
 
   const columnsChild = [
     {
-      title: '项目名称',
+      title: t('common.projectName'),
       dataIndex: 'name',
       render: (text: string) => {
         return <OmitText width={180}>{text}</OmitText>
@@ -176,7 +178,7 @@ const DemandCard = (props: Props) => {
       },
     },
     {
-      title: '需求名称',
+      title: t('common.demandName'),
       dataIndex: 'name',
       render: (text: string) => {
         return <OmitText width={180}>{text}</OmitText>

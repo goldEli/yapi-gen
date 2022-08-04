@@ -18,6 +18,7 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import Sort from '@/components/Sort'
+import { useTranslation } from 'react-i18next'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -78,6 +79,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const ChildDemandTable = (props: { value: any; row: any }) => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const [isVisible, setIsVisible] = useState(false)
@@ -259,6 +261,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
 }
 
 const IterationTable = (props: Props) => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')

@@ -8,6 +8,7 @@ import { ShowWrap } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const flexCss = css`
   display: flex;
@@ -31,6 +32,7 @@ const SetHead = styled.div`
 `
 
 export const useDynamicColumns = (state: any) => {
+  const [t] = useTranslation()
   const { userInfo } = useModel('user')
   const NewSort = (props: any) => {
     return (

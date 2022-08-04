@@ -7,6 +7,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -43,6 +44,7 @@ interface Props {
 }
 
 const AddMember = (props: Props) => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const {
     projectPermission,

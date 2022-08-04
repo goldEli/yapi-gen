@@ -15,6 +15,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -125,6 +126,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const ProjectMember = () => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(true)
   const [isAddVisible, setIsAddVisible] = useState(false)

@@ -3,8 +3,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import { SwiperWrap } from '@/components/StyleCommon'
 import SwiperCard from './SwiperCard'
+import { useTranslation } from 'react-i18next'
 
 const SwiperCardMove = (props: any) => {
+  const [t] = useTranslation()
   const { data, onTap } = props
   const [swiperActive, setSwiperActive] = useState('all')
 

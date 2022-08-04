@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const DemandCheckedItem = styled.div({
   height: 22,
@@ -114,6 +115,7 @@ interface Props {
 }
 
 const ParentDemand = (props: Props) => {
+  const [t] = useTranslation()
   const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand }
     = useModel('demand')
   const [searchParams] = useSearchParams()

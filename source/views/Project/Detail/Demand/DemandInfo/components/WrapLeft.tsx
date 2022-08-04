@@ -17,6 +17,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { message } from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -101,6 +102,7 @@ const DownPriority = styled.div({
 })
 
 const WrapLeftBox = (props: { onUpdate?(): void }) => {
+  const [t] = useTranslation()
   const { demandInfo, updatePriority } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')

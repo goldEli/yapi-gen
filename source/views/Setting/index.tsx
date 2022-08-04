@@ -6,6 +6,7 @@ import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   height: '100%',
@@ -96,6 +97,7 @@ interface MenuList {
 }
 
 const Setting = () => {
+  const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { getCompanyInfo, companyInfo } = useModel('setting')

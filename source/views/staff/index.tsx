@@ -21,6 +21,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { css } from '@emotion/css'
+import { useTranslation } from 'react-i18next'
 
 const tableWrapP = css`
   display: flex;
@@ -42,6 +43,7 @@ const Reset = styled.div`
 `
 
 const Staff = () => {
+  const [t] = useTranslation()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo } = useModel('user')
   const [isShow, setIsShow] = useState<boolean>(true)

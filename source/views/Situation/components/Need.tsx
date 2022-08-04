@@ -14,8 +14,10 @@ import {
   title2Css,
   titleCss,
 } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const Need = (props: any) => {
+  const [t] = useTranslation()
   const { data } = props
 
   const options = {

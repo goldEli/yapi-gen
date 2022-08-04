@@ -14,6 +14,7 @@ import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { ClickWrap } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -59,6 +60,7 @@ const PriorityWrap = styled.div({
 })
 
 export const useDynamicColumns = (state: any) => {
+  const [t] = useTranslation()
   const { projectInfo } = useModel('project')
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,

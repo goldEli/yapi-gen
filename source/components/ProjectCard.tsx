@@ -7,6 +7,7 @@ import { Dropdown, Menu } from 'antd'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -84,6 +85,7 @@ interface Props {
 }
 
 const ProjectCard = (props: Props) => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { userInfo } = useModel('user')

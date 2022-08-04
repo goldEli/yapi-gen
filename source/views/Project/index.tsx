@@ -14,6 +14,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { message } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -29,6 +30,7 @@ const Content = styled.div({
 })
 
 const Project = () => {
+  const [t] = useTranslation()
   const [isGrid, setIsGrid] = useState(true)
   const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)

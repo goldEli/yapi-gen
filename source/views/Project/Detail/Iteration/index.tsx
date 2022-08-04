@@ -14,6 +14,7 @@ import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -96,6 +97,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
 )
 
 const IterationWrap = () => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()

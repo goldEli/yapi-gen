@@ -11,6 +11,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -48,6 +49,7 @@ interface Props {
 }
 
 const DemandBox = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')

@@ -24,6 +24,7 @@ import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { css } from '@emotion/css'
+import { useTranslation } from 'react-i18next'
 
 const tableTitle = css`
   color: rgba(150, 151, 153, 1);
@@ -35,6 +36,7 @@ const tableTitle = css`
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
+  const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
   const {
     getMineNoFinishList,

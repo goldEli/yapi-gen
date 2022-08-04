@@ -5,6 +5,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import head from '@/assets/logo.png'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ const imgCss = css`
 `
 
 export const Personal = (props: { visible: boolean; close(): void }) => {
+  const [t] = useTranslation()
   const { userInfo } = useModel('user')
   // eslint-disable-next-line react/hook-use-state
   const [isShow] = useState<any>(false)

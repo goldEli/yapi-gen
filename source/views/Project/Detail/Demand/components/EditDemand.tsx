@@ -31,6 +31,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   height: 600,
@@ -174,6 +175,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 )
 
 const EditDemand = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])

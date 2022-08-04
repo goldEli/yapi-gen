@@ -11,6 +11,7 @@ import { Popover, Space, Modal, message } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools/index'
+import { useTranslation } from 'react-i18next'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -59,6 +60,7 @@ interface Props {
 }
 
 const Operation = (props: Props) => {
+  const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
   const { updateIterateStatus, getIterateInfo } = useModel('iterate')

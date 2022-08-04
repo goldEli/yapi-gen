@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import empty from '@/assets/empty.svg'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -21,6 +22,7 @@ const Wrap = styled.div({
 })
 
 const NoData = () => {
+  const [t] = useTranslation()
   return (
     <Wrap>
       <img src={empty} alt="" />

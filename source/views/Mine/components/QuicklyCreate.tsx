@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-negated-condition */
 /* eslint-disable camelcase */
@@ -19,6 +20,7 @@ import { useModel } from '@/models'
 import moment from 'moment'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   height: 600,
@@ -150,6 +152,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 )
 
 const EditDemand = (props: Props) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [prejectId, setPrejectId] = useState<any>()

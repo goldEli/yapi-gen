@@ -16,6 +16,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -126,6 +127,7 @@ const GatteWrap = styled.div`
   padding: 0 16px;
 `
 const Profile = () => {
+  const [t] = useTranslation()
   const { getMineChartsList, getUserFeedList, getMineGatte } = useModel('mine')
   const { userInfo } = useModel('user')
   const [data, setData] = useState<any>({})

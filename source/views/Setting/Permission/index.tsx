@@ -10,6 +10,7 @@ import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useTranslation } from 'react-i18next'
 
 const Header = styled.div({
   height: 64,
@@ -205,6 +206,7 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const Permission = () => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])

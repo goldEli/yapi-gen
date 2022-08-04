@@ -4,10 +4,12 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import highchartsGantt from 'highcharts/modules/gantt'
 import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 
 highchartsGantt(Highcharts)
 
 const Gatte = (props: any) => {
+  const [t] = useTranslation()
   const { data: res } = props
 
   // console.log(res, 'gante数据')
