@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Pagination, Table, Popover, message } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
@@ -249,7 +249,7 @@ const ChildDemandTable = (props: ChildeProps) => {
         />
       }
     >
-      <div
+      <ClickWrap
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -257,12 +257,8 @@ const ChildDemandTable = (props: ChildeProps) => {
         }}
         onClick={onChildClick}
       >
-        <IconFont
-          type="apartment"
-          style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
-        />
-        <span style={{ color: '#323233', fontSize: 16 }}>{props.value}</span>
-      </div>
+        {props.value}
+      </ClickWrap>
     </Popover>
   )
 }

@@ -253,7 +253,7 @@ const ChildDemand = () => {
           添加子需求
         </ButtonWrap>
         <Dropdown overlay={setMenu}>
-          <IconFontWrap type="settings" />
+          <IconFontWrap active={isSettingState} type="settings" />
         </Dropdown>
       </Operation>
       <TableBox

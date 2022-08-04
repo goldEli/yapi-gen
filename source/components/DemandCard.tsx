@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools'
+import { ClickWrap } from './StyleCommon'
 
 interface Props {
   item: any
@@ -36,9 +37,13 @@ const Wrap = styled.div({
   background: 'white',
   borderRadius: 6,
   border: '1px solid #EBEDF0',
+  borderLeft: 'none',
   position: 'relative',
   marginTop: 16,
+  overflow: 'hidden',
   '&: hover': {
+    border: '1px solid #2877ff',
+    borderLeft: 'none',
     [MoreWrap.toString()]: {
       display: 'block',
     },
@@ -227,9 +232,9 @@ const DemandCard = (props: Props) => {
       <Wrap>
         <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
-          <div style={{ cursor: 'pointer' }} onClick={props.onClickItem}>
+          <ClickWrap onClick={props.onClickItem}>
             <OmitText width={200}>{props.item.name}</OmitText>
-          </div>
+          </ClickWrap>
           <AvatarWrap>
             <NameGroup>
               {props.item?.userName

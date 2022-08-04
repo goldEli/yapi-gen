@@ -115,7 +115,7 @@ const Operation = (props: Props) => {
         <SearchComponent
           onChangeVisible={(e: any) => props.onChangeVisible?.(e)}
           onChangeSearch={onChangeSearch}
-          placeholder="搜索名称或ID"
+          placeholder="搜索需求名称或需求ID"
           text="创建需求"
           isPermission={getIsPermission(
             projectInfo?.projectPermissions,

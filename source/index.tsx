@@ -17,6 +17,8 @@ export const Loading = styled.div`
   align-items: center;
 `
 
+import '@/locals'
+
 log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

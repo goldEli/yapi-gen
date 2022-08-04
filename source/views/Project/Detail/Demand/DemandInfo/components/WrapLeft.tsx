@@ -16,6 +16,7 @@ import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { message } from 'antd'
+import { useEffect, useState } from 'react'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -105,6 +106,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { projectInfo } = useModel('project')
+  const [tagList, setTagList] = useState<any>([])
 
   const onChangeState = async (item: any) => {
     try {
@@ -116,6 +118,16 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       //
     }
   }
+
+  useEffect(() => {
+    setTagList(
+      demandInfo?.tag?.map((i: any) => ({
+        id: i.id,
+        color: i.tag?.color,
+        name: i.tag?.content,
+      })),
+    )
+  }, [demandInfo])
 
   return (
     <WrapLeft>
@@ -155,6 +167,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       <InfoItem>
         <Label>标签</Label>
         <TagComponent
+          defaultList={tagList}
           canAdd
           addWrap={
             <AddWrap hasDash>

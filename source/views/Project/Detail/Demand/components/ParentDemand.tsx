@@ -157,8 +157,10 @@ const ParentDemand = (props: Props) => {
         onClick={onDeleteInfoDemand}
         hidden={!demandInfo?.parentId}
       >
-        <div>{demandInfo?.parentName}</div>
-        <IconFont className="icon" type="close-circle-fill" />
+        <div style={{ color: '#323233', fontSize: 14, cursor: 'pointer' }}>
+          {demandInfo?.parentName}
+          <IconFont className="icon" type="close" />
+        </div>
       </DemandCheckedItem>
       <Popover
         placement="bottom"

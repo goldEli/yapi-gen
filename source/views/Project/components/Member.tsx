@@ -154,7 +154,7 @@ const Member = (props: Props) => {
                 style={{ color: '#BBBDBF', fontSize: 16 }}
               />
             }
-            placeholder="搜索成员"
+            placeholder="搜索成员姓名或昵称"
             allowClear
           />
         </div>
@@ -170,7 +170,10 @@ const Member = (props: Props) => {
                       </NameWrap>
                     )}
                 <div>
-                  <span>{i.name}</span>
+                  <span>
+                    {i.name}
+                    {i.nickname ? `(${i.nickname})` : ''}
+                  </span>
                   <span>{i.roleName}</span>
                 </div>
               </div>

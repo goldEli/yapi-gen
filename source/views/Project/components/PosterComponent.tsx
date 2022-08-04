@@ -110,7 +110,7 @@ const PosterComponent = (props: Props) => {
       const result = await uploadFile(file, file.name, 'file')
       option.onSuccess?.(result)
       const items = [result.url]
-      setPosterList([...posterList, ...items])
+      setPosterList([items])
     }
   }
 
@@ -128,7 +128,7 @@ const PosterComponent = (props: Props) => {
         ))}
       </PosterGroup>
       <ChooseTitle>自定义封面</ChooseTitle>
-      <div>
+      <PosterGroup size={8}>
         {posterList.map((i: any) => <PosterWrap onClick={() => onUpdateValue(i)} key={i} src={i} alt="" />)}
         <Upload
           beforeUpload={onUploadBefore}
@@ -139,7 +139,7 @@ const PosterComponent = (props: Props) => {
             <IconFont type="plus" />
           </AddUpload>
         </Upload>
-      </div>
+      </PosterGroup>
       <div style={{ fontSize: 12, fontWeight: 400, color: '#969799' }}>
         图片格式支持jpg、png，大小为220*104px
       </div>

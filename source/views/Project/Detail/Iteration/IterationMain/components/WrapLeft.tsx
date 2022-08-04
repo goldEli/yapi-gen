@@ -60,6 +60,9 @@ const IconWrap = styled(IconFont)({
   fontSize: 20,
   color: '#969799',
   cursor: 'pointer',
+  '&: hover': {
+    color: '#2877ff',
+  },
 })
 
 const SortItem = styled.div<{ isActive: boolean }>(
@@ -99,6 +102,7 @@ interface Props {
   isUpdateList?: boolean
   onIsUpdateList?(val: boolean): void
   onChangeOperation?(val: any): void
+  currentDetail?: any
 }
 
 const sortList = [
@@ -418,6 +422,7 @@ const WrapLeft = (props: Props) => {
             item={item}
             onClickInfo={() => onClickInfo(item)}
             onClickItem={() => onClickItem(item)}
+            isActive={item.id === props.currentDetail?.id}
           />
         ))}
       </CardGroups>

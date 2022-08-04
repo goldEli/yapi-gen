@@ -181,7 +181,7 @@ const Operation = (props: Props) => {
             {props.currentDetail?.name}
           </span>
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
-            {props.currentDetail?.startTime}-{props.currentDetail?.endTime}
+            {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
           {hasChangeStatus ? (
             <StatusTag>

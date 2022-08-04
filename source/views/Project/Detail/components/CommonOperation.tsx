@@ -10,6 +10,7 @@ import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { ClickWrap } from '@/components/StyleCommon'
 
 const OperationTop = styled.div({
   height: 64,
@@ -48,16 +49,20 @@ const TabsItem = styled.div<{ isActive: boolean }>(
     flexDirection: 'column',
     justifyContent: 'center',
     cursor: 'pointer',
+    color: '#323233',
     div: {
       fontSize: 16,
       fontWeight: 400,
       height: 62,
       lineHeight: '62px',
     },
+    '&: hover': {
+      color: '#2877ff',
+    },
   },
   ({ isActive }) => ({
     div: {
-      color: String(isActive ? '#2877FF' : '#323233'),
+      color: String(isActive ? '#2877FF' : ''),
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
     },
   }),
@@ -81,6 +86,9 @@ const TopRightItem = styled.div({
     fontWeight: 400,
     marginLeft: 8,
   },
+  '&: hover': {
+    color: '#2877ff',
+  },
 })
 
 const MenuItems = styled.div({
@@ -91,6 +99,18 @@ const MenuItems = styled.div({
   div: {
     fontSize: 14,
     fontWeight: 400,
+  },
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
+const ClickIcon = styled(IconFont)({
+  color: '#323233',
+  fontSize: 16,
+  marginLeft: 8,
+  '&: hover': {
+    color: '#2877ff',
   },
 })
 
@@ -104,6 +124,7 @@ const CommonOperation = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
+  const [isShowMenu, setIsShowMenu] = useState(false)
   const { projectInfo } = useModel('project')
   const { userInfo } = useModel('user')
   const [searchParams] = useSearchParams()
@@ -112,7 +133,7 @@ const CommonOperation = (props: Props) => {
   const tabsList = [
     { name: '需求', type: 'Demand' },
     { name: '迭代', type: 'Iteration' },
-    { name: '设置', type: 'Setting' },
+    { name: '设置', type: 'Set' },
   ]
 
   const menu = () => {
@@ -178,14 +199,15 @@ const CommonOperation = (props: Props) => {
           />
           <ImgWrap src={projectInfo.cover} />
           <OmitText width={152}>
-            <span onClick={() => setIsVisible(true)}>{projectInfo.name}</span>
+            <ClickWrap onClick={() => setIsVisible(true)}>
+              {projectInfo.name}
+            </ClickWrap>
           </OmitText>
-          <IconFont
+          <ClickIcon
             hidden={getIsPermission(
               userInfo?.company_permissions,
               'b/project/update',
             )}
-            style={{ color: '#323233', fontSize: 16, marginLeft: 8 }}
             type="edit-square"
             onClick={() => setIsVisible(true)}
           />
@@ -206,10 +228,22 @@ const CommonOperation = (props: Props) => {
             <IconFont type="team" />
             <div>成员</div>
           </TopRightItem>
-          <Dropdown overlay={menu} placement="bottomRight">
-            <TopRightItem>
-              <IconFont type="menu" />
-              <div>菜单</div>
+          <Dropdown
+            key={isShowMenu.toString()}
+            visible={isShowMenu}
+            trigger={['click']}
+            overlay={menu}
+            placement="bottomRight"
+            onVisibleChange={state => setIsShowMenu(state)}
+          >
+            <TopRightItem onClick={() => setIsShowMenu(true)}>
+              <IconFont
+                style={{ color: isShowMenu ? '#2877ff' : '#000000' }}
+                type="menu"
+              />
+              <div style={{ color: isShowMenu ? '#2877ff' : '#000000' }}>
+                菜单
+              </div>
             </TopRightItem>
           </Dropdown>
         </TopRight>

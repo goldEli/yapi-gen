@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import ProjectCard from '@/components/ProjectCard'
 import styled from '@emotion/styled'
 import { Space } from 'antd'
@@ -29,6 +30,20 @@ const AddProject = styled.div({
   justifyContent: 'center',
   width: 220,
   cursor: 'pointer',
+  div: {
+    color: '#646566',
+  },
+  svg: {
+    color: '#969799',
+  },
+  '&: hover': {
+    div: {
+      color: '#2877ff',
+    },
+    svg: {
+      color: '#2877ff',
+    },
+  },
 })
 
 const MainGrid = (props: Props) => {
@@ -62,11 +77,8 @@ const MainGrid = (props: Props) => {
         ? null
         : (
             <AddProject onClick={onAddClick}>
-              <IconFont
-                style={{ color: '#969799', fontSize: 24, marginBottom: 16 }}
-                type="plus"
-              />
-              <div style={{ color: '#646566', fontSize: 14 }}>创建项目</div>
+              <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
+              <div style={{ fontSize: 14 }}>创建项目</div>
             </AddProject>
           )}
     </SpaceWrap>

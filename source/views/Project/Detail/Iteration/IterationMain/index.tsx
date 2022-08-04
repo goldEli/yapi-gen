@@ -182,6 +182,7 @@ const IterationMain = (props: Props) => {
         isUpdateList={isUpdateList}
         onIsUpdateList={onChangeIsUpdate}
         onChangeOperation={props.onChangeOperation}
+        currentDetail={currentDetail}
       />
       <Right isShowLeft={isShowLeft}>
         <Operation

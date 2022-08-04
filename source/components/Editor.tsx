@@ -27,22 +27,25 @@ const EditorBox = (props: Props) => {
     toolbarKeys: [
       'headerSelect',
       'bold',
-      'italic',
-      'underline',
+
+      // 'italic',
+      // 'underline',
       'color',
       'bgColor',
       'fontSize',
-      'fontFamily',
-      'indent',
-      'delIndent',
-      'insertLink',
+
+      // 'fontFamily',
+      // 'indent',
+      // 'delIndent',
+      // 'insertLink',
       'bulletedList',
       'numberedList',
       'uploadImage',
       'justifyLeft',
       'justifyRight',
       'justifyCenter',
-      'justifyJustify',
+
+      // 'justifyJustify',
       'fullScreen',
     ],
   }

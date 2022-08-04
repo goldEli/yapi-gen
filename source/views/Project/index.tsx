@@ -30,6 +30,7 @@ const Content = styled.div({
 
 const Project = () => {
   const [isGrid, setIsGrid] = useState(true)
+  const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
@@ -130,6 +131,7 @@ const Project = () => {
       }
       message.success(item.status === 1 ? '结束成功' : '开启成功')
       setOperationDetail({})
+      setIsStop(false)
       getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
     } catch (error) {
 
@@ -146,9 +148,15 @@ const Project = () => {
       setIsDelete(true)
     } else if (type === 'edit') {
       setIsVisible(true)
+    } else if (item.status === 1) {
+      setIsStop(true)
     } else {
       onEndOrOpen(item)
     }
+  }
+
+  const onStopProject = () => {
+    onEndOrOpen(operationDetail)
   }
 
   const onChangeGrid = (val: boolean) => {
@@ -179,6 +187,13 @@ const Project = () => {
 
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
+      <DeleteConfirm
+        title="确认结束该项目？"
+        text={`结束项目[${operationDetail?.name}]后，该项目将不能创建新的需求迭代，原有数据将保留。`}
+        isVisible={isStop}
+        onChangeVisible={() => setIsStop(!isStop)}
+        onConfirm={onStopProject}
+      />
       <PermissionWrap
         auth="b/project/get"
         permission={userInfo?.company_permissions}

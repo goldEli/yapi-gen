@@ -8,6 +8,7 @@ interface Props {
   text: string
   onChangeVisible(): void
   onConfirm(): void
+  title?: string
 }
 
 const ModalHeader = styled.div({
@@ -54,7 +55,7 @@ const DeleteConfirm = (props: Props) => {
       <ModalHeader>
         <Title>
           <IconFont style={{ fontSize: 24 }} type="Warning" />
-          <div>删除确认</div>
+          <div>{props.title ? props.title : '删除确认'}</div>
         </Title>
         <IconFont
           style={{ fontSize: 16, color: '#323233' }}
