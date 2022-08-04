@@ -154,8 +154,10 @@ export const Panel = () => {
   const toLoginOut = async () => {
     try {
       await loginOut()
-      navigate('/demo')
-      localStorage.removeItem('token')
+      setTimeout(() => {
+        localStorage.removeItem('agileToken')
+        getTicket()
+      }, 100)
     } catch (error) {
 
       //

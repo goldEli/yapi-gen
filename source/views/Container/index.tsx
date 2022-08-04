@@ -26,7 +26,7 @@ export const Container = () => {
   const { loginInfo, getLoginDetail, getUserDetail, login } = useModel('user')
 
   const init = async () => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('agileToken')) {
       await login()
     }
 

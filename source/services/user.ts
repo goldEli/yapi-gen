@@ -40,7 +40,7 @@ export const login = async () => {
       { ticket },
     )
 
-    localStorage.setItem('token', response.data.token)
+    localStorage.setItem('agileToken', response.data.token)
   } catch (error) {
     await getTicket()
   }

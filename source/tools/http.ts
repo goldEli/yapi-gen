@@ -65,7 +65,7 @@ client.config({
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
           (options.extra as any)?.isLogin,
       )
-      options.headers.Authorization = localStorage.getItem('token') || ''
+      options.headers.Authorization = localStorage.getItem('agileToken') || ''
       options.headers.System = getSystem()
       options.headers.Client = browser()
       options.payload = JSON.stringify(options.payload)

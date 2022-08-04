@@ -61,7 +61,14 @@
     "childDemand": "子需求",
     "confirmDelDemand": "确认要删除当前需求？",
     "pleaseSearchDemand": "请搜索需求名字或需求ID",
-    "pleaseProject": "请选择项目"
+    "pleaseProject": "请选择项目",
+    "pleaseDemandName": "请输入需求名称",
+    "estimatedTime": "预计时间",
+    "parentDemand": "父需求",
+    "pleaseParentDemand": "请选择父需求",
+    "attachment": "附件",
+    "finishToAdd": "完成并创建下一个",
+    "createDemand": "创建需求"
   },
   "components": {
     "changeCompany": "公司切换",
@@ -105,7 +112,10 @@
     "allProject": "所有项目",
     "quickCreate": "快速创建",
     "createProject": "创建项目",
-    "createType": "创建类型"
+    "createType": "创建类型",
+    "demandInfo": "需求描述",
+    "mineCreate": "我创建的",
+    "finishDemand": "已办需求"
   },
   "project": {},
   "setting": {
@@ -163,7 +173,6 @@
     "November": "十一月",
     "December": "十二月",
     "demandSurvey": "需求概况",
-    "createDemand": "创建需求",
     "notStarted": "未开始",
     "ongoing": "进行中",
     "end": "Ended",
