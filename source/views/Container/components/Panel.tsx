@@ -8,6 +8,7 @@ import { Tooltip, Popover } from 'antd'
 import { Personal } from './Personal'
 import { useModel } from '@/models'
 import { getTicket } from '@/services/user'
+import { useNavigate } from 'react-router-dom'
 
 const imgCss = css`
   width: 40px;
@@ -117,6 +118,7 @@ const LanguageLine = styled.div`
 
 export const Panel = () => {
   const { loginOut, userInfo } = useModel('user')
+  const navigate = useNavigate()
 
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)
@@ -149,13 +151,18 @@ export const Panel = () => {
   const handleVisibleChange = (newVisible: boolean) => {
     setLanguageModeVisible(newVisible)
   }
-  const toLoginOut = () => {
-    loginOut()
-    localStorage.removeItem('token')
-    localStorage.removeItem('saveRouter')
-    getTicket()
+  const toLoginOut = async () => {
+    try {
+      await loginOut()
+      setTimeout(() => {
+        localStorage.removeItem('agileToken')
+        localStorage.removeItem('saveRouter')
+        getTicket()
+      }, 100)
+    } catch (error) {
 
-    // loginOut()
+      //
+    }
   }
 
   return (
