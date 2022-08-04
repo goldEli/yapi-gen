@@ -152,6 +152,7 @@ export const Panel = () => {
   const toLoginOut = () => {
     loginOut()
     localStorage.removeItem('token')
+    localStorage.removeItem('saveRouter')
     getTicket()
 
     // loginOut()

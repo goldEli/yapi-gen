@@ -43,6 +43,7 @@ export const getStaffList: any = async (params: any) => {
           label: response.data.class_one_fields.project_num,
           value: 'project_num',
         },
+        { label: response.data.class_one_fields.status, value: 'status' },
         { label: response.data.class_one_fields.role_name, value: 'role_name' },
       ],
       plainOptions2: [

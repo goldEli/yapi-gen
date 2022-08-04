@@ -1,9 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
 import { useModel } from '@/models'
+// eslint-disable-next-line no-duplicate-imports
+import { useNavigate } from 'react-router-dom'
 
 const Wrap = styled.div`
   display: flex;
@@ -21,9 +28,11 @@ const Main = styled.div`
 `
 
 export const Container = () => {
+  const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const { loginInfo, getLoginDetail, getUserDetail, login } = useModel('user')
+  const { loginInfo, userInfo, getLoginDetail, getUserDetail, login }
+    = useModel('user')
 
   const init = async () => {
     if (!localStorage.getItem('token')) {
@@ -40,7 +49,34 @@ export const Container = () => {
   }, [])
   useEffect(() => {
     setIsNextVisible(loginInfo.admin_first_login)
-  }, [loginInfo])
+
+    const { company_permissions } = userInfo
+    localStorage.setItem('saveRouter', '1')
+    // eslint-disable-next-line complexity
+    if (!localStorage.getItem('saveRouter')) {
+      company_permissions?.forEach((element: any) => {
+        if (element.group_name.includes('概况')) {
+          navigate('/Situation')
+          return
+        }
+        if (element.group_name.includes('项目')) {
+          navigate('/Project')
+          return
+        }
+        if (element.group_name.includes('我的')) {
+          navigate('/mine')
+          return
+        }
+        if (element.group_name.includes('员工')) {
+          navigate('/staff')
+          return
+        }
+        if (element.group_name.includes('公司管理')) {
+          navigate('/Setting')
+        }
+      })
+    }
+  }, [loginInfo, userInfo])
   return (
     <Wrap>
       <Side />

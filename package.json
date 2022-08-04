@@ -99,7 +99,7 @@
       "eslint --fix"
     ],
     "*.{css,less}": [
-      "prettier --write",
+      "prettier -u --write",
       "stylelint --fix"
     ],
     "*.{md,json,json5,html,yml,yaml}": [

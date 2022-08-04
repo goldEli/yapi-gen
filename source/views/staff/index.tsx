@@ -65,6 +65,7 @@ const Staff = () => {
     'position_name',
     'project_num',
     'role_name',
+    'status',
   ])
   const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
     'created_at',
