@@ -51,27 +51,24 @@ export const Container = () => {
     setIsNextVisible(loginInfo.admin_first_login)
 
     const { company_permissions } = userInfo
-    localStorage.setItem('saveRouter', '1')
+
     // eslint-disable-next-line complexity
     if (!localStorage.getItem('saveRouter')) {
       company_permissions?.forEach((element: any) => {
         if (element.group_name.includes('概况')) {
-          navigate('/')
-          return
-        }
-        if (element.group_name.includes('项目')) {
+          localStorage.setItem('saveRouter', '1')
+          navigate('/Situation')
+        } else if (element.group_name.includes('项目')) {
+          localStorage.setItem('saveRouter', '1')
           navigate('/Project')
-          return
-        }
-        if (element.group_name.includes('我的')) {
+        } else if (element.group_name.includes('我的')) {
+          localStorage.setItem('saveRouter', '1')
           navigate('/mine')
-          return
-        }
-        if (element.group_name.includes('员工')) {
+        } else if (element.group_name.includes('员工')) {
+          localStorage.setItem('saveRouter', '1')
           navigate('/staff')
-          return
-        }
-        if (element.group_name.includes('公司管理')) {
+        } else if (element.group_name.includes('公司管理')) {
+          localStorage.setItem('saveRouter', '1')
           navigate('/Setting')
         }
       })

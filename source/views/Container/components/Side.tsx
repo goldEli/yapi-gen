@@ -110,7 +110,7 @@ export const Side = () => {
         key: '/organization',
         title: '概况',
         icon: <IconFont type="survey" style={{ fontSize: 20 }} />,
-        path: '',
+        path: '/Situation',
         isHidden: getIsPermission('概况'),
       },
       {

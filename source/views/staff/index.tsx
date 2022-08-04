@@ -19,7 +19,15 @@ import {
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
+import NoData from '@/components/NoData'
+import { css } from '@emotion/css'
 
+const tableWrapP = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* height:  800px; */
+`
 const Reset = styled.div`
   width: 60px;
   height: 32px;
@@ -225,30 +233,35 @@ const Staff = () => {
         </div>
       </Hehavior>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
+      <div className={tableWrapP}>
+        {listData.length < 1
+          ? <NoData />
+          : (
+              <StaffTableWrap>
+                <StyledTable
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={listData}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                />
+              </StaffTableWrap>
+            )}
 
-      <StaffTableWrap>
-        <StyledTable
-          rowKey="id"
-          columns={selectColum}
-          dataSource={listData}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
-      </StaffTableWrap>
-
-      <PaginationWrap>
-        <Pagination
-          pageSize={pagesize}
-          current={page}
-          showSizeChanger
-          showQuickJumper
-          total={total}
-          showTotal={newTotal => `Total ${newTotal} items`}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+        <PaginationWrap>
+          <Pagination
+            pageSize={pagesize}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => `Total ${newTotal} items`}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
+      </div>
 
       <OptionalFeld
         plainOptions={plainOptions}

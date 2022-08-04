@@ -10,11 +10,12 @@ import {
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
-import { Timeline, message, Pagination } from 'antd'
+import { Timeline, message, Pagination, Spin } from 'antd'
 import Gatte from './components/Gatte'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
+import NoData from '@/components/NoData'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -254,30 +255,34 @@ const Profile = () => {
         <Center>
           <CenterRight>
             <SecondTitle>我的动态</SecondTitle>
-            <TimeLineWrap>
-              <Timeline>
-                {lineData.map((item: any) => (
-                  <Timeline.Item key={item.id}>
-                    <LineItem>
-                      <span>{item.created_at}</span>
-                      <span>{item.content}</span>
-                    </LineItem>
-                    <LineItem>
-                      <span>{item.feedable?.project.name}</span>
-                      <span
-                        onClick={() => onToDetail(item)}
-                        style={{
-                          color: 'rgba(40, 119, 255, 1)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {item.feedable?.name}
-                      </span>
-                    </LineItem>
-                  </Timeline.Item>
-                ))}
-              </Timeline>
-            </TimeLineWrap>
+            {lineData.length < 1
+              ? <NoData />
+              : (
+                  <TimeLineWrap>
+                    <Timeline>
+                      {lineData.map((item: any) => (
+                        <Timeline.Item key={item.id}>
+                          <LineItem>
+                            <span>{item.created_at}</span>
+                            <span>{item.content}</span>
+                          </LineItem>
+                          <LineItem>
+                            <span>{item.feedable?.project.name}</span>
+                            <span
+                              onClick={() => onToDetail(item)}
+                              style={{
+                                color: 'rgba(40, 119, 255, 1)',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {item.feedable?.name}
+                            </span>
+                          </LineItem>
+                        </Timeline.Item>
+                      ))}
+                    </Timeline>
+                  </TimeLineWrap>
+                )}
           </CenterRight>
         </Center>
       </StyledWrap>
@@ -312,11 +317,7 @@ const Profile = () => {
             <Mygante data={gatteData} />
           </div>
         )}
-        {gatteData.length < 1 && (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            暂无数据
-          </div>
-        )}
+        {gatteData.length < 1 && <NoData />}
         <PaginationWrap>
           <Pagination
             defaultCurrent={1}
