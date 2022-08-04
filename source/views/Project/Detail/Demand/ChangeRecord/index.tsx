@@ -11,6 +11,7 @@ import { PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
+import { OmitText } from '@star-yun/ui'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -240,7 +241,7 @@ const ChangeRecord = () => {
                     {text[i]?.length ? '查看详情' : '--'}
                   </span>
                 )
-                  : <span>{fieldContent(text, i)}</span>
+                  : <OmitText width={300}>{fieldContent(text, i)}</OmitText>
                 }
               </span>
             ))}
