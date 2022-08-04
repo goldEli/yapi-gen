@@ -56,7 +56,7 @@ export const Container = () => {
     if (!localStorage.getItem('saveRouter')) {
       company_permissions?.forEach((element: any) => {
         if (element.group_name.includes('概况')) {
-          navigate('/Situation')
+          navigate('/')
           return
         }
         if (element.group_name.includes('项目')) {

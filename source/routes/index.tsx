@@ -73,7 +73,7 @@ const routes = [
         ],
       },
       {
-        path: '/Situation',
+        path: '/',
         element: lazy(() => import('@/views/Situation')),
       },
       {
