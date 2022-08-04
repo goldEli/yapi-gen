@@ -4,11 +4,13 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
-import { Tooltip, Popover } from 'antd'
+import { Tooltip, Popover, message } from 'antd'
 import { Personal } from './Personal'
 import { useModel } from '@/models'
 import { getTicket } from '@/services/user'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { changeLanguage, languages, type LocaleKeys } from '@/locals'
 
 const imgCss = css`
   width: 40px;
@@ -119,27 +121,40 @@ const LanguageLine = styled.div`
 export const Panel = () => {
   const { loginOut, userInfo } = useModel('user')
   const navigate = useNavigate()
-
+  const [t, i18n] = useTranslation()
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
   const [languageMode, setLanguageMode] = useState(1)
 
-  const changeLanguageMode = (value: number) => {
+  const changeLanguageMode = async (value: number, key: any) => {
+    const clear = message.loading(t('global.localsSwitching'), 0)
+    try {
+      await changeLanguage(key as LocaleKeys)
+
+      // await getAllConfig()
+      localStorage.setItem('language', key)
+
+      // setVisibleState(false)
+    } catch (error) {
+
+      //
+    }
     setLanguageMode(value)
     setLanguageModeVisible(false)
+    clear()
   }
 
   const content = (
     <div>
-      <LanguageLine onClick={() => changeLanguageMode(1)}>
-        <span> 中文 </span>
+      <LanguageLine onClick={() => changeLanguageMode(1, 'zh')}>
+        <span>{t('staff.companyStaff')}</span>
         {languageMode === 1
           && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
         }
       </LanguageLine>
-      <LanguageLine onClick={() => changeLanguageMode(2)}>
+      <LanguageLine onClick={() => changeLanguageMode(2, 'en')}>
         <span> English </span>
         {languageMode === 2
           && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
