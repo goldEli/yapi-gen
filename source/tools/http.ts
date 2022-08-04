@@ -99,8 +99,7 @@ client.config({
         data.code === 'A0100' ||
         data.code === 'A0001'
       ) {
-
-        // getTicket()
+        getTicket()
         return
       }
       if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
