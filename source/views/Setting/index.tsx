@@ -47,7 +47,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     height: 44,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingLeft: 65,
     cursor: 'pointer',
     boxSizing: 'border-box',
     div: {

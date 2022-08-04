@@ -67,7 +67,7 @@ const routes = [
             element: lazy(() => import('@/views/Project/Detail/Iteration')),
           },
           {
-            path: 'Setting',
+            path: 'Set',
             element: lazy(() => import('@/views/Project/Detail/Setting')),
           },
         ],
