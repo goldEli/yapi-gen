@@ -1,6 +1,8 @@
 {
   "common": {
     "tableTotal": "Total {{count}}",
+    "openSuccess": "Open successfully",
+    "endSuccess": "End successfully",
     "deleteSuccess": "Successfully deleted",
     "createSuccess": "Created successfully",
     "editSuccess": "Successfully edited",
@@ -94,7 +96,10 @@
     "Closed": "Closed",
     "opening1": "Opening",
     "permission": "Permission",
-    "pleaseChooseDeal": "Please select a handler"
+    "pleaseChooseDeal": "Please select a handler",
+    "add23": "add",
+    "finishCreate": " Finish and create the next one",
+    "confirm2": "Confirm"
   },
   "components": {
     "changeCompany": "Company Switch",
@@ -325,5 +330,10 @@
     "companyStaff": "Company Staff",
     "refresh": "Refresh",
     "pleaseKey": "Please enter your nickname, name, email and phone number"
+  },
+  "mark": {
+    "endP": "确认结束该项目？",
+    "delP": "确认删除该项目？",
+    "searchP": "搜索项目或项目ID"
   }
 }

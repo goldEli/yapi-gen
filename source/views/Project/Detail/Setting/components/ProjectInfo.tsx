@@ -145,7 +145,7 @@ const ProjectInfo = () => {
           </InfoItem>
           <InfoItem>
             <div>{t('project.projectStatus')}：</div>
-            <span>{projectInfo.status === 1 ? '开启' : '结束'}</span>
+            <span>{projectInfo.status === 1 ? t('common.open') : '结束'}</span>
           </InfoItem>
           <InfoItem>
             <div>{t('common.permission')}：</div>

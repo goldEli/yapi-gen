@@ -136,7 +136,9 @@ const Project = () => {
       } else {
         await openProject({ id: item.id })
       }
-      message.success(item.status === 1 ? '结束成功' : '开启成功')
+      message.success(
+        item.status === 1 ? t('common.endSuccess') : t('common.openSuccess'),
+      )
       setOperationDetail({})
       setIsStop(false)
       getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
@@ -197,7 +199,7 @@ const Project = () => {
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
       <DeleteConfirm
-        title="确认结束该项目？"
+        title={t('mark.endP')}
         text={`结束项目[${operationDetail?.name}]后，该项目将不能创建新的需求迭代，原有数据将保留。`}
         isVisible={isStop}
         onChangeVisible={() => setIsStop(!isStop)}
@@ -208,7 +210,7 @@ const Project = () => {
         permission={userInfo?.company_permissions}
       >
         <DeleteConfirm
-          text="确认删除该项目？"
+          text={t('mark.delP')}
           isVisible={isDelete}
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
@@ -223,7 +225,7 @@ const Project = () => {
         <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
           <SearchWrap>
             <SearchComponent
-              placeholder="搜索项目或项目ID"
+              placeholder={t('mark.searchP')}
               text={t('common.createProject')}
               onChangeSearch={onChangeSearch}
               onChangeVisible={onAddClick}

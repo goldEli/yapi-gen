@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
@@ -326,20 +327,23 @@ const Profile = () => {
           </div>
         )}
         {gatteData.length < 1 && <NoData />}
-        <PaginationWrap>
-          <Pagination
-            defaultCurrent={1}
-            current={page}
-            showSizeChanger
-            hideOnSinglePage
-            showQuickJumper
-            total={total}
-            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-            pageSizeOptions={['10', '20', '50']}
-            onChange={onChangePage}
-            onShowSizeChange={onShowSizeChange}
-          />
-        </PaginationWrap>
+
+        {gatteData.length >= 1 && (
+          <PaginationWrap>
+            <Pagination
+              defaultCurrent={1}
+              current={page}
+              showSizeChanger
+              showQuickJumper
+              total={total}
+              showTotal={newTotal => t('common.tableTotal', { count: newTotal })
+              }
+              pageSizeOptions={['10', '20', '50']}
+              onChange={onChangePage}
+              onShowSizeChange={onShowSizeChange}
+            />
+          </PaginationWrap>
+        )}
       </GatteWrap>
     </PermissionWrap>
   )

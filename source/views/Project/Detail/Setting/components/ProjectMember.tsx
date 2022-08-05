@@ -284,7 +284,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          昵称
+          {t('common.nickname')}
         </NewSort>
       ),
       dataIndex: 'nickname',
@@ -332,7 +332,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          真实姓名
+          {t('project.realName')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -345,7 +345,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          性别
+          {t('common.sex')}
         </NewSort>
       ),
       dataIndex: 'gender',
@@ -361,7 +361,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          部门
+          {t('common.department')}
         </NewSort>
       ),
       dataIndex: 'departmentName',
@@ -374,7 +374,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          职位
+          {t('common.job')}
         </NewSort>
       ),
       dataIndex: 'positionName',
@@ -387,7 +387,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目权限
+          {t('project.projectPermission')}
         </NewSort>
       ),
       dataIndex: 'roleName',
@@ -458,7 +458,9 @@ const ProjectMember = () => {
           >
             <SearchWrap>
               <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '12px' }}>职位</span>
+                <span style={{ margin: '0 16px', fontSize: '12px' }}>
+                  {t('common.job')}
+                </span>
                 <Form.Item name="searchValue" />
                 <Form.Item name="jobIds" noStyle>
                   <SelectWrap
@@ -473,7 +475,7 @@ const ProjectMember = () => {
               </SelectWrapBedeck>
               <SelectWrapBedeck>
                 <span style={{ margin: '0 16px', fontSize: '12px' }}>
-                  权限组
+                  {t('common.permissionGroup')}
                 </span>
                 <Form.Item name="userGroupIds" noStyle>
                   <SelectWrap

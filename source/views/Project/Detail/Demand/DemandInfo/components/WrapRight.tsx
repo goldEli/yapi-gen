@@ -210,7 +210,7 @@ const WrapRightBox = () => {
                 onPressEnter={onPressEnter}
               />
               <Button type="primary" onClick={() => onAddComment(addValue)}>
-            回复
+                {t('project.replay')}
               </Button>
             </TextareaWrap>
           )}

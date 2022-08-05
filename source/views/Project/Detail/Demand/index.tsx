@@ -209,7 +209,7 @@ const DemandBox = () => {
     return (
       <>
         <DeleteConfirm
-          text="确认要删除当前需求？"
+          text={t('common.confirmDelDemand')}
           isVisible={isDelVisible}
           onChangeVisible={() => setIsDelVisible(!isDelVisible)}
           onConfirm={onDeleteConfirm}
@@ -268,7 +268,7 @@ const DemandBox = () => {
               onClick={() => onChangeIdx('info')}
               activeIdx={type === 'info'}
             >
-              <span>详细信息</span>
+              <span>{t('project.detailInfo')}</span>
             </Item>
             <Item
               onClick={() => onChangeIdx('child')}
@@ -281,7 +281,7 @@ const DemandBox = () => {
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
-              <span>变更记录</span>
+              <span>{t('common.changeRecord')}</span>
               <div>{demandInfo?.changeCount || 0}</div>
             </Item>
           </MainWrap>

@@ -160,7 +160,7 @@ const IterationInfo = () => {
     <div>
       <TopWrap>
         <SurveyWrap>
-          <Title>概况</Title>
+          <Title>{t('container.survey')}</Title>
           <SurveyContent>
             <SurveyBox>
               <Progress
@@ -177,7 +177,9 @@ const IterationInfo = () => {
               </div>
             </SurveyBox>
             <SurveyBox style={{ alignItems: 'flex-start' }}>
-              <span style={{ color: '#000', fontSize: 14 }}>需求</span>
+              <span style={{ color: '#000', fontSize: 14 }}>
+                {t('common.demand')}
+              </span>
               <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
                 {`${iterateInfo?.finishCount || '--'} / ${
                   iterateInfo?.storyCount || '--'
@@ -187,19 +189,19 @@ const IterationInfo = () => {
           </SurveyContent>
         </SurveyWrap>
         <SurveyWrap>
-          <Title>迭代目标</Title>
+          <Title>{t('project.iterateTarget')}</Title>
           <TargetWrap dangerouslySetInnerHTML={{ __html: iterateInfo.info }} />
         </SurveyWrap>
       </TopWrap>
       <BottomWrap>
         <DiagramWrap>
-          <Title>燃尽图</Title>
+          <Title>{t('project.burnoutDiagram')}</Title>
           <ChartWrap>
             <DemoLine data={chartData?.burnDownChart || {}} />
           </ChartWrap>
         </DiagramWrap>
         <StatusWrap>
-          <Title>状态分布</Title>
+          <Title>{t('project.statusDistribution')} </Title>
           <ChartWrap>
             <DemoColumn data={chartData?.storyStatusChart || []} />
           </ChartWrap>

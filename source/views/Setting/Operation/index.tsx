@@ -169,7 +169,7 @@ const Operation = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          操作人
+          {t('setting.operationName')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -182,7 +182,7 @@ const Operation = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          操作时间
+          {t('setting.operationTime')}
         </NewSort>
       ),
       dataIndex: 'time',
@@ -195,7 +195,7 @@ const Operation = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          操作类型
+          {t('setting.operationType')}
         </NewSort>
       ),
       dataIndex: 'type',
@@ -211,7 +211,7 @@ const Operation = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          操作详情
+          {t('setting.operationInfo')}
         </NewSort>
       ),
       dataIndex: 'info',
@@ -248,10 +248,12 @@ const Operation = () => {
       }}
     >
       <Header>
-        <div className="label">操作日志</div>
+        <div className="label">{t('setting.operationLog')}</div>
         <SearchWrap>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作人</span>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('setting.operationName')}
+            </span>
             <Form.Item name="pageSize" />
             <Form.Item name="userIds" noStyle>
               <SelectWrap
@@ -265,7 +267,9 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作类型</span>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('setting.operationType')}
+            </span>
             <Form.Item name="types" noStyle>
               <SelectWrap
                 mode="multiple"
@@ -278,7 +282,9 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作时间</span>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('setting.operationTime')}
+            </span>
             <Form.Item name="times" noStyle>
               <DatePicker.RangePicker
                 className={rangPicker}

@@ -106,7 +106,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          序号
+          {t('common.serialNumber')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -119,7 +119,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更时间
+          {t('project.changeTime')}
         </NewSort>
       ),
       dataIndex: 'updateTime',
@@ -132,7 +132,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更人
+          {t('project.changeName')}
         </NewSort>
       ),
       dataIndex: 'userName',
@@ -145,7 +145,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更类型
+          {t('project.changeType')}
         </NewSort>
       ),
       dataIndex: 'type',
@@ -161,7 +161,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更字段
+          {t('project.changeFields')}
         </NewSort>
       ),
       dataIndex: 'fields',
@@ -226,7 +226,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更后
+          {t('project.changeAfter')}
         </NewSort>
       ),
       dataIndex: 'afterField',
@@ -285,7 +285,7 @@ const ChangeRecord = () => {
           style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>变更前</TitleWrap>
+            <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <div
               style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
@@ -294,7 +294,7 @@ const ChangeRecord = () => {
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>变更后</TitleWrap>
+            <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <div
               style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{

@@ -105,8 +105,12 @@ const Operation = (props: Props) => {
       <StatusTag isOpen onClick={() => onChangeStatus(1)}>
         {t('common.opening')}
       </StatusTag>
-      <StatusTag onClick={() => onChangeStatus(2)} isOpen={false}>
-        已结束
+      <StatusTag
+        isOpen={false}
+        onClick={() => onChangeStatus(2)}
+        style={{ color: '#969799', background: '#F2F2F4' }}
+      >
+        {t('common.ended')}
       </StatusTag>
     </Space>
   )
@@ -159,7 +163,7 @@ const Operation = (props: Props) => {
         width={548}
         visible={visible}
         onCancel={() => setVisible(false)}
-        title="迭代目标"
+        title={t('project.iterateTarget')}
         footer={false}
         destroyOnClose
         maskClosable={false}

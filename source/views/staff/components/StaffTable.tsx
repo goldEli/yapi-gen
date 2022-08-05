@@ -50,7 +50,7 @@ export const useDynamicColumns = (state: any) => {
     {
       width: 200,
       align: 'center',
-      title: '昵称',
+      title: t('common.nickname'),
       dataIndex: 'name',
       key: 'name',
       render: (text: any, record: any) => {
@@ -63,7 +63,7 @@ export const useDynamicColumns = (state: any) => {
                   <span
                     onClick={() => state.controlStaffPersonalVisible(record)}
                   >
-                    配置权限
+                    {t('staff.setPermission')}
                   </span>
                 ),
               },
@@ -110,7 +110,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="name">真实姓名</NewSort>,
+      title: <NewSort fixedKey="name">{t('project.realName')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
       render: (text: string | number) => {
@@ -118,7 +118,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="gender">性别</NewSort>,
+      title: <NewSort fixedKey="gender">{t('common.sex')}</NewSort>,
       dataIndex: 'gender',
       key: 'gender',
       render: (
@@ -133,27 +133,31 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="email">邮箱</NewSort>,
+      title: <NewSort fixedKey="email">{t('common.email')}</NewSort>,
       dataIndex: 'email',
       key: 'email',
     },
     {
-      title: <NewSort fixedKey="phone">手机</NewSort>,
+      title: <NewSort fixedKey="phone">{t('common.phone')}</NewSort>,
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      title: <NewSort fixedKey="department_name">部门</NewSort>,
+      title:
+        <NewSort fixedKey="department_name">{t('common.department')}</NewSort>
+      ,
       dataIndex: 'department_name',
       key: 'department_name',
     },
     {
-      title: <NewSort fixedKey="position_name">职位</NewSort>,
+      title: <NewSort fixedKey="position_name">{t('common.job')}</NewSort>,
       dataIndex: 'position_name',
       key: 'position_name',
     },
     {
-      title: <NewSort fixedKey="role_name">权限组</NewSort>,
+      title:
+        <NewSort fixedKey="role_name">{t('common.permissionGroup')}</NewSort>
+      ,
       dataIndex: 'role_name',
       key: 'role_name',
     },
@@ -173,7 +177,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="project_num">项目数</NewSort>,
+      title:
+        <NewSort fixedKey="project_num">{t('staff.projectCount')}</NewSort>
+      ,
       dataIndex: 'project_num',
       key: 'project_num',
     },

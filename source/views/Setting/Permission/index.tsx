@@ -251,7 +251,7 @@ const Permission = () => {
 
   const onSavePermission = async () => {
     if (!selectKeys.length) {
-      message.warning('请选择需要添加的权限')
+      message.warning(t('setting.pleasePermission'))
       return
     }
     try {
@@ -260,7 +260,7 @@ const Permission = () => {
         permissionIds: selectKeys,
       })
       getRolePermission({ roleId: activeDetail.id })
-      message.success('保存成功')
+      message.success(t('common.saveSuccess'))
 
       //
     } catch (error) {
@@ -352,7 +352,7 @@ const Permission = () => {
     <div style={{ height: '100%' }}>
       <DeleteConfirm
         isVisible={isDelete}
-        text="确认要删除该分组？"
+        text={t('setting.confirmGroup')}
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
@@ -367,7 +367,11 @@ const Permission = () => {
         destroyOnClose
       >
         <ModalHeader>
-          <span>{operationDetail.id ? '编辑权限组' : '创建权限组'}</span>
+          <span>
+            {operationDetail.id
+              ? t('setting.editPermission')
+              : t('setting.createPermission')}
+          </span>
           <IconFont
             onClick={onClose}
             style={{ cursor: 'pointer' }}
@@ -378,18 +382,18 @@ const Permission = () => {
           <Input
             value={addValue}
             onChange={e => setAddValue(e.target.value)}
-            placeholder="请输入权限组名称"
+            placeholder={t('setting.pleaseEnterName')}
           />
         </div>
         <ModalFooter size={16}>
           <Button onClick={onClose}>{t('common.cancel')}</Button>
           <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
-            确认
+            {t('common.confirm2')}
           </Button>
         </ModalFooter>
       </Modal>
       <Header>
-        <span>权限管理</span>
+        <span>{t('setting.permissionManagement')}</span>
       </Header>
       <Content>
         <SetMain>
@@ -404,7 +408,9 @@ const Permission = () => {
                 >
                   <div className="name">{item.name}</div>
                   <span className="subName">
-                    {item.type === 1 ? '系统权限组' : '自定义权限组'}
+                    {item.type === 1
+                      ? t('setting.systemGroup')
+                      : t('setting.customGroup')}
                   </span>
                   <Dropdown
                     key={isMoreVisible.toString()}
@@ -435,9 +441,9 @@ const Permission = () => {
           <SetRight>
             <Title>{activeDetail.name}</Title>
             <TitleGroup>
-              <CheckboxWrap>全选</CheckboxWrap>
-              <OperationWrap>操作对象</OperationWrap>
-              <span>权限</span>
+              <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
+              <OperationWrap>{t('setting.operationObject')}</OperationWrap>
+              <span>{t('common.permission')}</span>
             </TitleGroup>
             <MainWrap>
               {permission.list?.map((i: any) => (
@@ -456,7 +462,7 @@ const Permission = () => {
               type="primary"
               onClick={onSavePermission}
             >
-              保存
+              {t('common.save')}
             </Button>
           </SetRight>
         </SetMain>

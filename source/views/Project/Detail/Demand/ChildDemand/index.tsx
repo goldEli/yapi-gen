@@ -138,9 +138,11 @@ const ChildDemand = () => {
       items={[
         {
           key: '1',
-          label:
-            <div onClick={() => setIsSettingState(true)}>设置显示字段</div>
-          ,
+          label: (
+            <div onClick={() => setIsSettingState(true)}>
+              {t('common.setField')}
+            </div>
+          ),
         },
       ]}
     />
@@ -171,7 +173,7 @@ const ChildDemand = () => {
         demandId: item.id,
         priorityId: item.priorityId,
       })
-      message.success('优先级修改成功')
+      message.success(t('common.prioritySuccess'))
       onUpdate()
     } catch (error) {
 

@@ -374,7 +374,7 @@ const DemandWrap = () => {
   const onChangeState = async (item: any) => {
     try {
       await updatePriority({ demandId: item.id, priorityId: item.priorityId })
-      message.success('优先级修改成功')
+      message.success(t('common.prioritySuccess'))
       getList(pageObj, order)
     } catch (error) {
 

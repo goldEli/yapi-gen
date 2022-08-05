@@ -282,20 +282,20 @@ const IterationWrap = () => {
               onClick={() => onChangeIdx('info')}
               activeIdx={type === 'info'}
             >
-              <span>迭代概况</span>
+              <span>{t('common.iterateSurvey')}</span>
             </Item>
             <Item
               onClick={() => onChangeIdx('demand')}
               activeIdx={type === 'demand'}
             >
-              <span>需求</span>
+              <span>{t('common.demand')}</span>
               <div>{iterateInfo?.storyCount || 0}</div>
             </Item>
             <Item
               onClick={() => onChangeIdx('record')}
               activeIdx={type === 'record'}
             >
-              <span>变更记录</span>
+              <span>{t('common.changeRecord')}</span>
               <div>{iterateInfo?.changeCount || 0}</div>
             </Item>
           </MainWrap>

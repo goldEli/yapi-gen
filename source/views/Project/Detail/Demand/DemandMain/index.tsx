@@ -145,7 +145,7 @@ const DemandMain = (props: Props) => {
   return (
     <div>
       <DeleteConfirm
-        text="确认要删除当前需求？"
+        text={t('common.confirmDelDemand')}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}

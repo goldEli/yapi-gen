@@ -306,7 +306,7 @@ const DemandTable = (props: Props) => {
   const onChangeState = async (item: any) => {
     try {
       await updatePriority({ demandId: item.id, priorityId: item.priorityId })
-      message.success('优先级修改成功')
+      message.success(t('common.prioritySuccess'))
       props.onChangeRow?.()
     } catch (error) {
 

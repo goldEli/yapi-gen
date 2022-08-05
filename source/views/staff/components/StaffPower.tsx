@@ -96,7 +96,7 @@ export const StaffPersonal = (props: {
       width={420}
       footer={null}
       onCancel={() => props.onClose()}
-      title="配置权限"
+      title={t('staff.setPermission')}
       visible={props.isVisible}
       maskClosable={false}
       destroyOnClose
@@ -113,10 +113,10 @@ export const StaffPersonal = (props: {
       <PersonalFooter>
         <Left>
           <Line>手机号</Line>
-          <Line>邮箱</Line>
+          <Line>{t('common.email')}</Line>
           <Line>姓名</Line>
-          <Line>昵称</Line>
-          <Line>权限组</Line>
+          <Line>{t('common.nickname')}</Line>
+          <Line>{t('common.permissionGroup')}</Line>
         </Left>
         <Right>
           <RightLine>{data.phone ? data.phone : '-'}</RightLine>

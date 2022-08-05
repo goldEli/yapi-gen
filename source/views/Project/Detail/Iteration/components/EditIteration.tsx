@@ -136,7 +136,7 @@ const EditIteration = (props: Props) => {
       visible={props.visible}
       width={740}
       footer={false}
-      title={props?.id ? '编辑迭代' : '创建迭代'}
+      title={props?.id ? t('project.editIterate') : t('common.createIterate')}
       onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
@@ -168,7 +168,7 @@ const EditIteration = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont type="detail" />
-          <Form.Item label="迭代目标">
+          <Form.Item label={t('project.iterateTarget')}>
             <Editor value={html} onChangeValue={setHtml} />
           </Form.Item>
         </div>
@@ -176,7 +176,7 @@ const EditIteration = (props: Props) => {
       <ModalFooter size={16}>
         <Button onClick={onCancel}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={onConfirm}>
-          确认
+          {t('common.confirm2')}
         </Button>
       </ModalFooter>
     </Modal>
