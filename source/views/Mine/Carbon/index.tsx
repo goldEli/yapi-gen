@@ -37,7 +37,7 @@ const Finished = () => {
       auth="b/user/abeyance/story"
       permission={userInfo?.company_permissions}
     >
-      <StaffHeader>我的待办</StaffHeader>
+      <StaffHeader>{t('mine.mineNeedDeal')}</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <Need id={projectId} />
     </PermissionWrap>

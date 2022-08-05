@@ -85,7 +85,7 @@ const MineBox = () => {
   const menuList = [
     {
       id: 1,
-      name: '我的概况',
+      name: t('mine.mineSurvey'),
       path: '',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
@@ -94,7 +94,7 @@ const MineBox = () => {
     },
     {
       id: 2,
-      name: '我的待办',
+      name: t('mine.mineNeedDeal'),
       path: 'carbon',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
@@ -103,7 +103,7 @@ const MineBox = () => {
     },
     {
       id: 3,
-      name: '我创建的',
+      name: t('mine.mineCreate'),
       path: 'create',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
@@ -112,7 +112,7 @@ const MineBox = () => {
     },
     {
       id: 4,
-      name: '我的已办',
+      name: t('mine.mineFinish'),
       path: 'finished',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
@@ -121,7 +121,7 @@ const MineBox = () => {
     },
     {
       id: 5,
-      name: '抄送我的',
+      name: t('mine.copyMine'),
       path: 'agenda',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
@@ -147,7 +147,7 @@ const MineBox = () => {
                 }}
                 type="plus"
               />
-              <span>快速创建</span>
+              <span>{t('mine.quickCreate')}</span>
             </AddButton>
           )}
         <Menu>

@@ -189,7 +189,7 @@ const Staff = () => {
       items={[
         {
           key: '1',
-          label: <Button onClick={showModal}>设置显示字段</Button>,
+          label: <Button onClick={showModal}>{t('common.setField')}</Button>,
         },
       ]}
     />
@@ -202,10 +202,10 @@ const Staff = () => {
       auth="b/user/list"
       permission={userInfo?.company_permissions}
     >
-      <StaffHeader>公司员工</StaffHeader>
+      <StaffHeader>{t('staff.companyStaff')}</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset onClick={rest}>刷新</Reset>
+          <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <MyInput
             suffix={
               <IconFont
@@ -214,7 +214,7 @@ const Staff = () => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="请输入昵称姓名邮箱电话"
+            placeholder={t('staff.pleaseKey')}
             allowClear
           />
         </div>

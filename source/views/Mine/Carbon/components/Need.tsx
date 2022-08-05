@@ -279,7 +279,7 @@ const Need = (props: any) => {
       <TabsHehavior>
         <div className={tabCss}>
           <TabsItem isActive>
-            <div>待办需求</div>
+            <div>{t('mine.carbonDemand')}</div>
           </TabsItem>
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
@@ -294,7 +294,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="请搜索需求名字或需求ID"
+            placeholder={t('common.pleaseSearchDemand')}
             allowClear
           />
         </div>
@@ -420,7 +420,7 @@ const Need = (props: any) => {
         />
       ) : null}
       <DeleteConfirm
-        text="确认要删除当前需求？"
+        text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}

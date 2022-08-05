@@ -68,7 +68,9 @@ const EditProject = (props: Props) => {
   return (
     <Modal
       width={420}
-      title={props.details?.id ? '编辑项目' : '创建项目'}
+      title={
+        props.details?.id ? t('project.editProject') : t('common.createProject')
+      }
       visible={props.visible}
       footer={false}
       onCancel={props.onChangeVisible}

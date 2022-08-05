@@ -80,7 +80,7 @@ const MainGrid = (props: Props) => {
         : (
             <AddProject onClick={onAddClick}>
               <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
-              <div style={{ fontSize: 14 }}>创建项目</div>
+              <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
             </AddProject>
           )}
     </SpaceWrap>

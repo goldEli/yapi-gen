@@ -347,7 +347,7 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
-            label="创建项目"
+            label={t('common.createProject')}
             rules={[{ required: true, message: '' }]}
             name="projectId"
           >
