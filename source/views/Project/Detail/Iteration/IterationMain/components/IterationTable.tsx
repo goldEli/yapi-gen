@@ -393,7 +393,7 @@ const IterationTable = (props: Props) => {
           showSizeChanger
           showQuickJumper
           total={props.data?.total}
-          showTotal={total => `Total ${total} items`}
+          showTotal={total => t('common.tableTotal', { count: total })}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}

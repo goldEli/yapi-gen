@@ -1,5 +1,6 @@
 {
   "common": {
+    "tableTotal": "共{{count}}条",
     "deleteSuccess": "删除成功",
     "createSuccess": "创建成功",
     "editSuccess": "编辑成功",

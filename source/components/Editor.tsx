@@ -52,7 +52,7 @@ const EditorBox = (props: Props) => {
     ],
   }
   const editorConfig: Partial<IEditorConfig> = {
-    placeholder: t('common.pleaseContent'),
+    placeholder: t('components.pleaseContent'),
     hoverbarKeys: {
       image: {
         menuKeys: [

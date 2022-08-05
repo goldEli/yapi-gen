@@ -1,5 +1,6 @@
 {
   "common": {
+    "tableTotal": "Total {{count}}",
     "deleteSuccess": "Successfully deleted",
     "createSuccess": "Created successfully",
     "editSuccess": "Successfully edited",
