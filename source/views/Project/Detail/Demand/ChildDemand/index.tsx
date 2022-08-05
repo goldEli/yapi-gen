@@ -13,7 +13,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 
@@ -81,6 +81,7 @@ const ChildDemand = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const navigate = useNavigate()
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -144,6 +145,10 @@ const ChildDemand = () => {
       ]}
     />
   )
+
+  const onClickItem = (item: any) => {
+    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+  }
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -217,6 +222,7 @@ const ChildDemand = () => {
     onEdit,
     onDelete,
     rowIconFont,
+    onClickItem,
   })
 
   const selectColum: any = useMemo(() => {

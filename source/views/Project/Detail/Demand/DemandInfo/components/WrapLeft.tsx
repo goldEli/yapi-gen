@@ -156,6 +156,10 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <TextWrap>{demandInfo?.createdTime}</TextWrap>
       </InfoItem>
       <InfoItem>
+        <Label>完成时间</Label>
+        <TextWrap>{demandInfo?.finishTime || '--'}</TextWrap>
+      </InfoItem>
+      <InfoItem>
         <Label>父需求</Label>
         <ParentDemand
           addWrap={
