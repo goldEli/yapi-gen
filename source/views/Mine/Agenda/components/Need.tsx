@@ -256,7 +256,7 @@ const Need = (props: any) => {
       <TabsHehavior>
         <div className={tabCss}>
           <TabsItem isActive>
-            <div>{t('common.copyDemand')}</div>
+            <div>{t('mine.copyDemand')}</div>
           </TabsItem>
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>

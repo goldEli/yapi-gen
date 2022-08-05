@@ -156,7 +156,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <TextWrap>{demandInfo?.createdTime}</TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>完成时间</Label>
+        <Label>{t('common.finishTime')}</Label>
         <TextWrap>{demandInfo?.finishTime || '--'}</TextWrap>
       </InfoItem>
       <InfoItem>
@@ -171,7 +171,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         />
       </InfoItem>
       <InfoItem>
-        <Label>标签</Label>
+        <Label>{t('common.tag')}</Label>
         <TagComponent
           defaultList={tagList}
           canAdd
@@ -247,7 +247,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <TextWrap>{demandInfo?.expectedEnd}</TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>抄送人</Label>
+        <Label>{t('common.copySend')}</Label>
         <TextWrap>
           {demandInfo?.copySend?.map((i: any) => i.copySend?.name).join('、')}
         </TextWrap>

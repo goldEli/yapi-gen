@@ -475,7 +475,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="id-card" />
-          <Form.Item label="抄送人" name="copysend">
+          <Form.Item label={t('common.copySend')} name="copysend">
             <Select
               mode="multiple"
               disabled={!prejectId}

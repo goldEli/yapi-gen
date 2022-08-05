@@ -307,19 +307,16 @@ const Need = (props: any) => {
           specialList={filterSpecialList}
         />
       ) : null}
-      {listData?.length < 1
-        ? <NoData />
-        : (
-            <StaffTableWrap>
-              <StyledTable
-                rowKey="id"
-                columns={selectColum}
-                dataSource={listData}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-              />
-            </StaffTableWrap>
-          )}
+
+      <StaffTableWrap>
+        <StyledTable
+          rowKey="id"
+          columns={selectColum}
+          dataSource={listData}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+      </StaffTableWrap>
 
       <PaginationWrap>
         <Pagination

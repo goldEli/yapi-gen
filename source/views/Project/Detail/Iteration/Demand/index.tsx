@@ -585,7 +585,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          预计开始时间
+          {t('common.expectedStart')}
         </NewSort>
       ),
       dataIndex: 'expectedStart',
@@ -598,7 +598,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          预计结束时间
+          {t('common.expectedEnd')}
         </NewSort>
       ),
       dataIndex: 'expectedEnd',
