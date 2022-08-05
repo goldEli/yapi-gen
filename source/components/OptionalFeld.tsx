@@ -160,7 +160,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
           </ItemWrap>
         </Left>
         <Right>
-          <div className={text}>{t('common.currentFiled')}</div>
+          <div className={text}>{t('components.currentFiled')}</div>
           {allList}
         </Right>
       </Wrap>

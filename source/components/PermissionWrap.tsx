@@ -58,7 +58,7 @@ const PermissionWrap = ({
   return (
     <Wrap style={{ height: hasWidth ? 'calc(100vh - 64px)' : '100%' }}>
       <img src={empty} alt="" />
-      <div>{t('common.noPermission')}</div>
+      <div>{t('components.noPermission')}</div>
     </Wrap>
   )
 }

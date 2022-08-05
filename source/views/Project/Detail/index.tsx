@@ -21,6 +21,8 @@ const Detail = () => {
     memberList,
     projectInfo,
     setFilterAll,
+    setIsRefreshIterateList,
+    isRefreshIterateList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
@@ -35,14 +37,25 @@ const Detail = () => {
     setProjectPermission(arr)
   }
 
+  const getIterateList = async () => {
+    await getIterateSelectList({ projectId, all: true })
+    setIsRefreshIterateList(false)
+  }
+
   useEffect(() => {
     getProjectInfo({ projectId })
     getProjectCoverList()
     getPermissionList()
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
-    getIterateSelectList({ projectId, all: true })
+    getIterateList()
   }, [])
+
+  useEffect(() => {
+    if (isRefreshIterateList) {
+      getIterateList()
+    }
+  }, [isRefreshIterateList])
 
   useEffect(() => {
     const allList = projectInfo.filterFelid?.map((item: any) => {

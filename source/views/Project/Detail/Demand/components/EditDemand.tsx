@@ -236,7 +236,7 @@ const EditDemand = (props: Props) => {
         ? demandList?.filter((k: any) => k.value !== props?.id)
         : demandList,
     )
-  }, [props.isChild])
+  }, [])
 
   const getCommonUser = (arr: any) => {
     let res: any[] = []
@@ -347,6 +347,7 @@ const EditDemand = (props: Props) => {
       setTagList([])
       setHtml('')
       setPriorityDetail({})
+      getList()
       props.onUpdate?.()
       if (!hasNext) {
         props.onChangeVisible()

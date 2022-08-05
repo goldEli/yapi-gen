@@ -161,7 +161,7 @@ const TableFilter = (props: any) => {
     <div>
       <div>
         <Collapse>
-          <Collapse.Panel header={t('common.basicFiled')} key="1">
+          <Collapse.Panel header={t('components.basicFiled')} key="1">
             {filterBasicsList
               ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
               ?.map((i: any) => (
@@ -170,7 +170,7 @@ const TableFilter = (props: any) => {
                 </div>
               ))}
           </Collapse.Panel>
-          <Collapse.Panel header={t('common.personOrTime')} key="2">
+          <Collapse.Panel header={t('components.personOrTime')} key="2">
             {filterSpecialList?.map((i: any) => (
               <div onClick={() => addList(i.content)} key={i.id}>
                 {i.title}

@@ -4,7 +4,7 @@
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Menu, Dropdown, Pagination } from 'antd'
+import { Menu, Dropdown, Pagination, ConfigProvider } from 'antd'
 import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
