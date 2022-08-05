@@ -113,7 +113,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const onChangeState = async (item: any) => {
     try {
       await updatePriority({ demandId, priorityId: item.priorityId })
-      message.success('优先级修改成功')
+      message.success(t('common.prioritySuccess'))
       props.onUpdate?.()
     } catch (error) {
 
@@ -134,11 +134,11 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   return (
     <WrapLeft>
       <InfoItem>
-        <Label>需求状态</Label>
+        <Label>{t('project.demandStatus')}</Label>
         <DemandStatus />
       </InfoItem>
       <InfoItem>
-        <Label>需求描述</Label>
+        <Label>{t('mine.demandInfo')}</Label>
         <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
       </InfoItem>
       <InfoItem>
@@ -160,12 +160,12 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <TextWrap>{demandInfo?.finishTime || '--'}</TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>父需求</Label>
+        <Label>{t('common.parentDemand')}</Label>
         <ParentDemand
           addWrap={
             <AddWrap>
               <IconFont type="plus" />
-              <div>添加</div>
+              <div>{t('common.add23')}</div>
             </AddWrap>
           }
         />
@@ -189,7 +189,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
           ).length
         }
       >
-        <Label>附件</Label>
+        <Label>{t('common.attachment')}</Label>
         <UploadAttach
           defaultList={demandInfo?.attachment?.map((i: any) => ({
             path: i.attachment.path,
@@ -199,7 +199,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
           addWrap={
             <AddWrap>
               <IconFont type="plus" />
-              <div>添加</div>
+              <div>{t('common.add23')}</div>
             </AddWrap>
           }
         />

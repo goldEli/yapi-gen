@@ -371,13 +371,13 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
-            label="创建类型"
+            label={t('mine.createType')}
             rules={[{ required: true, message: '' }]}
             required
             name="type"
           >
             <Select placeholder="请选择" showArrow>
-              <Select.Option value="need">需求</Select.Option>
+              <Select.Option value="need">{t('common.demand')}</Select.Option>
             </Select>
           </Form.Item>
         </div>
@@ -394,7 +394,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="edit-square" />
-          <Form.Item label="需求描述" name="info">
+          <Form.Item label={t('mine.demandInfo')} name="info">
             <Editor value={html} onChangeValue={setHtml} />
           </Form.Item>
         </div>
@@ -414,13 +414,13 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
-          <Form.Item label="预计时间" name="times">
+          <Form.Item label={t('common.estimatedTime')} name="times">
             <DatePicker.RangePicker style={{ width: '100%' }} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="parent_id" />
-          <Form.Item label="父需求" name="parentId">
+          <Form.Item label={t('common.parentDemand')} name="parentId">
             <Select
               disabled={!prejectId}
               style={{ width: '100%' }}
@@ -488,7 +488,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="app-store-add" />
-          <Form.Item label="标签" name="tag">
+          <Form.Item label={t('common.tag')} name="tag">
             <TagComponent
               defaultList={tagList}
               onChangeTag={onChangeTag}
@@ -502,11 +502,11 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="attachment" />
-          <Form.Item label="附件" name="attachments">
+          <Form.Item label={t('common.attachment')} name="attachments">
             {!prejectId ? (
               <AddWrap onClick={onAdd}>
                 <IconFont type="plus" />
-                <div>添加</div>
+                <div>{t('common.add23')}</div>
               </AddWrap>
             ) : (
               <UploadAttach
@@ -515,7 +515,7 @@ const EditDemand = (props: Props) => {
                 addWrap={
                   <AddWrap>
                     <IconFont type="plus" />
-                    <div>添加</div>
+                    <div>{t('common.add23')}</div>
                   </AddWrap>
                 }
               />
@@ -525,12 +525,12 @@ const EditDemand = (props: Props) => {
       </FormWrap>
       <ModalFooter>
         <AddButtonWrap onClick={() => onSaveDemand(1)}>
-          完成并创建下一个
+          {t('common.finishCreate')}
         </AddButtonWrap>
         <Space size={16}>
           <Button onClick={onCancel}>{t('common.cancel')}</Button>
           <Button type="primary" onClick={() => onSaveDemand()}>
-            确认
+            {t('common.confirm2')}
           </Button>
         </Space>
       </ModalFooter>

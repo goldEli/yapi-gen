@@ -113,9 +113,14 @@ const Setting = () => {
   }
 
   const sideList = [
-    { name: '公司信息', icon: 'file-text', path: '', isHidden: false },
     {
-      name: '权限管理',
+      name: t('setting.companyInfo'),
+      icon: 'file-text',
+      path: '',
+      isHidden: false,
+    },
+    {
+      name: t('setting.permissionManagement'),
       icon: 'safety-certificate',
       path: 'permission',
       isHidden: getIsPermission(
@@ -124,7 +129,7 @@ const Setting = () => {
       ),
     },
     {
-      name: '操作日志',
+      name: t('setting.operationLog'),
       icon: 'file-protect',
       path: 'operation',
       isHidden: getIsPermission(
@@ -133,7 +138,7 @@ const Setting = () => {
       ),
     },
     {
-      name: '登录日志',
+      name: t('setting.loginLog'),
       icon: 'solution',
       path: 'loginLog',
       isHidden: getIsPermission(

@@ -206,7 +206,7 @@ const WrapLeft = (props: Props) => {
   }, [props.isUpdateList])
 
   const options = [
-    { label: '开启', value: 1 },
+    { label: t('common.open'), value: 1 },
     { label: '结束', value: 2 },
   ]
 
@@ -264,11 +264,11 @@ const WrapLeft = (props: Props) => {
             justifyContent: 'space-between',
           }}
         >
-          <div onClick={onReset}>清空</div>
+          <div onClick={onReset}>{t('common.clear1')}</div>
           <Space size={16}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button type="primary" onClick={onConfirmFilter}>
-              过滤
+              {t('common.filter')}
             </Button>
           </Space>
         </div>
@@ -331,7 +331,7 @@ const WrapLeft = (props: Props) => {
         key: '2',
         label: (
           <div onClick={e => onChangeEnd(e, item)}>
-            {item.status === 1 ? '关闭' : '开启'}
+            {item.status === 1 ? '关闭' : t('common.open')}
           </div>
         ),
       },
@@ -378,7 +378,7 @@ const WrapLeft = (props: Props) => {
   return (
     <Left isShowLeft={props.isShowLeft}>
       <DeleteConfirm
-        text="确认要删除当前迭代版本？"
+        text={t('project.confirmDelCurrentIterate')}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
@@ -386,8 +386,12 @@ const WrapLeft = (props: Props) => {
       <TopWrap>
         {hasAdd
           ? null
-          : <AddButton text="创建迭代" onChangeClick={onChangeClick} />
-        }
+          : (
+              <AddButton
+                text={t('common.createIterate')}
+                onChangeClick={onChangeClick}
+              />
+            )}
         <Space size={20}>
           <Popover
             visible={isSort}

@@ -105,7 +105,7 @@ const Operation = (props: Props) => {
         onClick={() => onChangeStatus(2)}
         style={{ color: '#969799', background: '#F2F2F4' }}
       >
-        已结束
+        {t('common.ended')}
       </StatusTag>
     </Space>
   )
@@ -158,7 +158,7 @@ const Operation = (props: Props) => {
         width={548}
         visible={visible}
         onCancel={() => setVisible(false)}
-        title="迭代目标"
+        title={t('project.iterateTarget')}
         footer={false}
         destroyOnClose
         maskClosable={false}

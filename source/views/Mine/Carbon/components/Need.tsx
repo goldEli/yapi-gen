@@ -269,7 +269,7 @@ const Need = (props: any) => {
       items={[
         {
           key: '1',
-          label: <Button onClick={showModal}>设置显示字段</Button>,
+          label: <Button onClick={showModal}>{t('common.setField')}</Button>,
         },
       ]}
     />

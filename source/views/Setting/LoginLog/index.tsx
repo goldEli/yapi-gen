@@ -179,7 +179,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          序号
+          {t('common.serialNumber')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -192,7 +192,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          登录用户
+          {t('setting.loginUser')}
         </NewSort>
       ),
       dataIndex: 'username',
@@ -205,7 +205,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          昵称
+          {t('common.nickname')}
         </NewSort>
       ),
       dataIndex: 'nickname',
@@ -218,7 +218,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          登录时间
+          {t('setting.loginTime')}
         </NewSort>
       ),
       dataIndex: 'time',
@@ -231,7 +231,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          登录IP
+          {t('setting.loginIp')}
         </NewSort>
       ),
       dataIndex: 'loginIp',
@@ -244,7 +244,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          客户端
+          {t('setting.client')}
         </NewSort>
       ),
       dataIndex: 'client',
@@ -257,7 +257,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          系统
+          {t('setting.system')}
         </NewSort>
       ),
       dataIndex: 'system',
@@ -270,7 +270,7 @@ const LoginLog = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          登录状态
+          {t('setting.loginStatus')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -278,7 +278,7 @@ const LoginLog = () => {
         return (
           <StatusWrap>
             <div style={{ background: text === 1 ? '#43BA9A' : '#FF5C5E' }} />
-            <span>{text === 1 ? '成功' : '失败'}</span>
+            <span>{text === 1 ? t('setting.success') : '失败'}</span>
           </StatusWrap>
         )
       },
@@ -314,10 +314,12 @@ const LoginLog = () => {
       }}
     >
       <Header>
-        <div className="label">登录日志</div>
+        <div className="label">{t('setting.loginLog')}</div>
         <SearchWrap>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>登录用户</span>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('setting.loginUser')}
+            </span>
             <Form.Item name="pageSize" />
             <Form.Item name="userIds" noStyle>
               <SelectWrap
@@ -331,7 +333,9 @@ const LoginLog = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>操作时间</span>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('setting.operationTime')}
+            </span>
             <Form.Item name="times" noStyle>
               <DatePicker.RangePicker
                 className={rangPicker}

@@ -555,7 +555,7 @@ const EditDemand = (props: Props) => {
             ).length ? (
               <AddWrap onClick={onAdd}>
                 <IconFont type="plus" />
-                <div>添加</div>
+                <div>{t('common.add23')}</div>
               </AddWrap>
             ) : (
               <UploadAttach
@@ -564,7 +564,7 @@ const EditDemand = (props: Props) => {
                 addWrap={
                   <AddWrap>
                     <IconFont type="plus" />
-                    <div>添加</div>
+                    <div>{t('common.add23')}</div>
                   </AddWrap>
                 }
               />
@@ -574,12 +574,12 @@ const EditDemand = (props: Props) => {
       </FormWrap>
       <ModalFooter>
         <AddButtonWrap isEdit={props?.id} onClick={() => onSaveDemand(1)}>
-          完成并创建下一个
+          {t('common.finishToAdd')}
         </AddButtonWrap>
         <Space size={16}>
           <Button onClick={onCancel}>{t('common.cancel')}</Button>
           <Button type="primary" onClick={() => onSaveDemand()}>
-            确认
+            {t('common.confirm2')}
           </Button>
         </Space>
       </ModalFooter>

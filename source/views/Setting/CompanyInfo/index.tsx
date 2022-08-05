@@ -105,7 +105,7 @@ const CompanyInfo = () => {
   return (
     <div style={{ height: '100%' }}>
       <Header>
-        <span>公司信息</span>
+        <span>{t('setting.companyInfo')}</span>
       </Header>
       <Content>
         <InfoWrap>
@@ -119,7 +119,7 @@ const CompanyInfo = () => {
             </TextWrap>
           </InfoTop>
           <InfoBottom>
-            <BottomTitle>企业数据</BottomTitle>
+            <BottomTitle>{t('setting.enterpriseData')}</BottomTitle>
             <div
               style={{
                 display: 'flex',
@@ -129,11 +129,11 @@ const CompanyInfo = () => {
             >
               <CardWrap>
                 <div>{companyInfo.projectCount}</div>
-                <span>当前项目</span>
+                <span>{t('setting.currentProject')}</span>
               </CardWrap>
               <CardWrap>
                 <div>{companyInfo.userCount}</div>
-                <span>公司员工</span>
+                <span>{t('setting.companyStaff')}</span>
               </CardWrap>
             </div>
           </InfoBottom>

@@ -39,6 +39,7 @@ const SelectWrap = styled(Select)<{ label: string }>`
 
   .ant-select-selection-placeholder {
     color: black;
+    visibility: hidden;
     left: 65px;
   }
 
@@ -124,7 +125,7 @@ const SearchList = (props: Props) => {
             <Form.Item name="department">
               <SelectWrap
                 onChange={confirm}
-                label="部门"
+                label={t('common.department')}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="所有"
@@ -142,7 +143,7 @@ const SearchList = (props: Props) => {
             <Form.Item name="position">
               <SelectWrap
                 onChange={confirm}
-                label="职位"
+                label={t('common.job')}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="所有"
@@ -160,7 +161,7 @@ const SearchList = (props: Props) => {
             <Form.Item name="userGroup">
               <SelectWrap
                 onChange={confirm}
-                label="权限组"
+                label={t('common.permissionGroup')}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="所有"

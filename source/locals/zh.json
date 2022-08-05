@@ -1,5 +1,7 @@
 {
   "common": {
+    "openSuccess": "开启成功",
+    "endSuccess": "结束成功",
     "deleteSuccess": "删除成功",
     "createSuccess": "创建成功",
     "editSuccess": "编辑成功",
@@ -51,6 +53,7 @@
     "save": "保存",
     "phone": "手机号",
     "email": "邮箱",
+    "phoneNum": "手机",
     "name": "姓名",
     "nickname": "昵称",
     "sex": "性别",
@@ -93,7 +96,10 @@
     "Closed": "已关闭",
     "opening1": "已开启",
     "permission": "权限",
-    "pleaseChooseDeal": "请选择处理人"
+    "pleaseChooseDeal": "请选择处理人",
+    "add23": "添加",
+    "finishCreate": "完成并创建下一个",
+    "confirm2": "确认"
   },
   "components": {
     "changeCompany": "公司切换",
@@ -324,5 +330,10 @@
     "companyStaff": "公司员工",
     "refresh": "刷新",
     "pleaseKey": "请输入昵称姓名邮箱电话"
+  },
+  "mark": {
+    "endP": "确认结束该项目？",
+    "delP": "确认删除该项目？",
+    "searchP": "搜索项目或项目ID"
   }
 }
