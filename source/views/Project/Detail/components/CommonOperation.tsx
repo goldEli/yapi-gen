@@ -159,9 +159,7 @@ const CommonOperation = (props: Props) => {
       {
         key: 3,
         label: (
-          <MenuItems
-            onClick={() => navigate(`/Detail/Setting?id=${projectId}`)}
-          >
+          <MenuItems onClick={() => navigate(`/Detail/Set?id=${projectId}`)}>
             <div>项目设置</div>
           </MenuItems>
         ),

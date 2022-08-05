@@ -14,6 +14,7 @@ import { OmitText } from '@star-yun/ui'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { ClickWrap } from '@/components/StyleCommon'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -145,9 +146,9 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => {
         return (
-          <div onClick={() => state.onClickItem(record)}>
+          <ClickWrap onClick={() => state.onClickItem(record)}>
             <OmitText width={200}>{text}</OmitText>
-          </div>
+          </ClickWrap>
         )
       },
     },

@@ -6,7 +6,6 @@ import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
-import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
@@ -111,33 +110,26 @@ const Setting = () => {
   ]
 
   return (
-    <PermissionWrap
-      auth="项目设置"
-      hasWidth
-      permission={projectInfo.projectPermissions}
-      isType={1}
-    >
-      <Wrap>
-        <Side>
-          <img src={projectInfo.cover} alt="" />
-          <MenuWrap>
-            {SideList.map((item, index) => (
-              <MenuItem
-                onClick={() => navigate(`/Detail/Setting?type=${index}&id=${projectInfo.id}`)
-                }
-                key={item.name}
-                isActive={index === activeTabs}
-                hidden={!item.isPermission}
-              >
-                <IconFont type={item.icon} />
-                <div>{item.name}</div>
-              </MenuItem>
-            ))}
-          </MenuWrap>
-        </Side>
-        <Content>{SideList[activeTabs].content}</Content>
-      </Wrap>
-    </PermissionWrap>
+    <Wrap>
+      <Side>
+        <img src={projectInfo.cover} alt="" />
+        <MenuWrap>
+          {SideList.map((item, index) => (
+            <MenuItem
+              onClick={() => navigate(`/Detail/Set?type=${index}&id=${projectInfo.id}`)
+              }
+              key={item.name}
+              isActive={index === activeTabs}
+              hidden={!item.isPermission}
+            >
+              <IconFont type={item.icon} />
+              <div>{item.name}</div>
+            </MenuItem>
+          ))}
+        </MenuWrap>
+      </Side>
+      <Content>{SideList[activeTabs].content}</Content>
+    </Wrap>
   )
 }
 
