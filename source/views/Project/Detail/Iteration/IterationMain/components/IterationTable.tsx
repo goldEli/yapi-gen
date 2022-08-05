@@ -106,7 +106,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getList(order)
     } catch (error) {
 
@@ -135,7 +135,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目ID
+          {t('project.projectId')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -177,7 +177,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          状态
+          {t('common.status')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -215,7 +215,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建人
+          {t('common.createName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
@@ -319,7 +319,7 @@ const IterationTable = (props: Props) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       props.onChangeRow?.()
     } catch (error) {
 

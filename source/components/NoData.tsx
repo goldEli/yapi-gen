@@ -26,7 +26,7 @@ const NoData = () => {
   return (
     <Wrap>
       <img src={empty} alt="" />
-      <div>{t('common.noData')}</div>
+      <div>{t('components.noData')}</div>
     </Wrap>
   )
 }

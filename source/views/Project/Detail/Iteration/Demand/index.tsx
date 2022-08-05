@@ -129,7 +129,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getList(order)
     } catch (error) {
 
@@ -153,7 +153,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目ID
+          {t('project.projectId')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -195,7 +195,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          状态
+          {t('common.status')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -233,7 +233,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建人
+          {t('common.createName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
@@ -385,7 +385,7 @@ const DemandWrap = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getList(pageObj, order)
     } catch (error) {
 
@@ -529,7 +529,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          状态
+          {t('common.status')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -567,7 +567,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          处理人
+          {t('common.dealName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
@@ -580,7 +580,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建时间
+          {t('common.createTime')}
         </NewSort>
       ),
       dataIndex: 'time',
@@ -593,7 +593,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          预计开始时间
+          {t('common.expectedStart')}
         </NewSort>
       ),
       dataIndex: 'expectedStart',
@@ -606,7 +606,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          预计结束时间
+          {t('common.expectedEnd')}
         </NewSort>
       ),
       dataIndex: 'expectedEnd',

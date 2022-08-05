@@ -36,18 +36,18 @@ const Need = (props: any) => {
     },
     xAxis: {
       categories: [
-        '一月',
-        '二月',
-        '三月',
-        '四月',
-        '五月',
-        '六月',
-        '七月',
-        '八月',
-        '九月',
-        '十月',
-        '十一月',
-        '十二月',
+        t('situation.January'),
+        t('situation.February'),
+        t('situation.March'),
+        t('situation.April'),
+        t('situation.May'),
+        t('situation.June'),
+        t('situation.July'),
+        t('situation.August'),
+        t('situation.September'),
+        t('situation.October'),
+        t('situation.November'),
+        t('situation.December'),
       ],
     },
     yAxis: {
@@ -69,30 +69,30 @@ const Need = (props: any) => {
 
   return (
     <ChartsWrap>
-      <div className={titleCss}>需求概况</div>
+      <div className={titleCss}>{t('situation.demandSurvey')}</div>
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.total ?? 0}</span>
-            <span className={title2Css}>创建需求</span>
+            <span className={title2Css}>{t('common.createDemand')}</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.planningTotal ?? 0}</span>
-            <span className={title2Css}>未开始</span>
+            <span className={title2Css}>{t('situation.notStarted')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
-            <span className={title2Css}>进行中</span>
+            <span className={title2Css}>{t('situation.ongoing')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.endTotal ?? 0}</span>
-            <span className={title2Css}>已结束</span>
+            <span className={title2Css}>{t('situation.end')}</span>
           </ChartsItem>
         </HomeWrap>
       </TextWrap>
-      <div className={chartsTitle}>需求累计图</div>
+      <div className={chartsTitle}>{t('situation.demandDiagram')}</div>
       <HightChartsWrap style={{ height: '300px' }}>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </HightChartsWrap>

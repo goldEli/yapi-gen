@@ -36,7 +36,7 @@ const IterationInfo = styled.div({
   alignItems: 'center',
 })
 
-const StatusTag = styled.div<{ isOpen: boolean }>(
+const StatusTag = styled.div<{ isOpen?: boolean }>(
   {
     height: 22,
     borderRadius: 6,
@@ -103,7 +103,7 @@ const Operation = (props: Props) => {
       style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
     >
       <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-        开启中
+        {t('common.opening')}
       </StatusTag>
       <StatusTag onClick={() => onChangeStatus(2)} isOpen={false}>
         已结束
@@ -191,6 +191,10 @@ const Operation = (props: Props) => {
           {hasChangeStatus ? (
             <StatusTag isOpen={props.currentDetail?.status === 1}>
               {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+              <IconFont
+                type="down-icon"
+                style={{ fontSize: 12, marginLeft: 4 }}
+              />
             </StatusTag>
           ) : (
             <Popover

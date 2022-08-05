@@ -37,7 +37,7 @@ const Finished = () => {
       auth="b/user/copysend/story"
       permission={userInfo?.company_permissions}
     >
-      <StaffHeader>抄送我的</StaffHeader>
+      <StaffHeader>{t('mine.copyMine')}</StaffHeader>
       <MineSwiper data={swiperData} onTap={getProjectId} />
       <Need id={projectId} />
     </PermissionWrap>

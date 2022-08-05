@@ -56,26 +56,26 @@ const Staff = (props: any) => {
   const { data } = props
   return (
     <ChartsWrap>
-      <div className={titleCss}>员工概况</div>
+      <div className={titleCss}>{t('situation.staffSurvey')}</div>
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.total ?? 0}</span>
-            <span className={title2Css}>公司成员</span>
+            <span className={title2Css}>{t('situation.companyStaff')}</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.boyCount ?? 0}</span>
-            <span className={title2Css}>男</span>
+            <span className={title2Css}>{t('common.male')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.girlCount ?? 0}</span>
-            <span className={title2Css}>女</span>
+            <span className={title2Css}>{t('common.female')}</span>
           </ChartsItem>
         </HomeWrap>
       </TextWrap>
-      <div className={chartsTitle}>职位人数分布</div>
+      <div className={chartsTitle}>{t('situation.jobProgress')}</div>
       <HightChartsWrap>
         <DemoColumn data={data?.chartsData} />
       </HightChartsWrap>

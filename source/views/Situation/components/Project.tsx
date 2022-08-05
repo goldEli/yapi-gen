@@ -57,34 +57,34 @@ const Project = (props: any) => {
 
   return (
     <ChartsWrap>
-      <div className={titleCss}>项目概况</div>
+      <div className={titleCss}>{t('situation.projectSurvey')}</div>
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.total ?? 0}</span>
-            <span className={title2Css}>公司项目</span>
+            <span className={title2Css}>{t('situation.companyProject')}</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.open_count ?? 0}</span>
-            <span className={title2Css}>开启项目</span>
+            <span className={title2Css}>{t('situation.openProject')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.end_count ?? 0}</span>
-            <span className={title2Css}>结束项目</span>
+            <span className={title2Css}>{t('situation.stopProject')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.private_count ?? 0}</span>
-            <span className={title2Css}>私有项目</span>
+            <span className={title2Css}>{t('common.privateProject')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.public_count ?? 0}</span>
-            <span className={title2Css}>公开项目</span>
+            <span className={title2Css}>{t('common.publicProject')}</span>
           </ChartsItem>
         </HomeWrap>
       </TextWrap>
-      <div className={chartsTitle}>项目进度分布</div>
+      <div className={chartsTitle}>{t('situation.companyProgress')}</div>
       <HightChartsWrap>
         <DemoColumn data={data?.chartsData} />
       </HightChartsWrap>

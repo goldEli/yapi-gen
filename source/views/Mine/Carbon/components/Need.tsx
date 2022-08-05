@@ -133,7 +133,7 @@ const Need = (props: any) => {
     const res = await updateDemandStatus(res1)
 
     if (res.code === 0) {
-      message.success('状态流转成功')
+      message.success(t('common.circulationSuccess'))
       init()
     }
   }
@@ -279,7 +279,7 @@ const Need = (props: any) => {
       <TabsHehavior>
         <div className={tabCss}>
           <TabsItem isActive>
-            <div>待办需求</div>
+            <div>{t('mine.carbonDemand')}</div>
           </TabsItem>
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
@@ -294,7 +294,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="输入需求名字或ID"
+            placeholder={t('common.pleaseSearchDemand')}
             allowClear
           />
         </div>
@@ -420,7 +420,7 @@ const Need = (props: any) => {
         />
       ) : null}
       <DeleteConfirm
-        text="确认要删除当前需求？"
+        text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}

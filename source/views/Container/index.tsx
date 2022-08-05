@@ -11,6 +11,7 @@ import Next from './components/Next'
 import { useModel } from '@/models'
 // eslint-disable-next-line no-duplicate-imports
 import { useNavigate } from 'react-router-dom'
+import { changeLanguage, languages, type LocaleKeys } from '@/locals'
 
 const Wrap = styled.div`
   display: flex;
@@ -44,6 +45,8 @@ export const Container = () => {
   }
 
   useEffect(() => {
+    const normalLang = localStorage.getItem('language') || 'zh'
+    changeLanguage(normalLang as LocaleKeys)
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

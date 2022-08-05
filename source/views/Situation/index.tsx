@@ -58,7 +58,7 @@ const Situation = () => {
     return (
       <div>
         <Head>
-          <span>公司概况</span>
+          <span>{t('situation.companySurvey')}</span>
           <PanelHeaderSecond>
             <div>{userInfo?.company_name}</div>
             <Tooltip placement="top" title="切换企业">

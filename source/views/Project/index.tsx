@@ -224,7 +224,7 @@ const Project = () => {
           <SearchWrap>
             <SearchComponent
               placeholder="搜索项目或项目ID"
-              text="创建项目"
+              text={t('common.createProject')}
               onChangeSearch={onChangeSearch}
               onChangeVisible={onAddClick}
               isPermission={getIsPermission(

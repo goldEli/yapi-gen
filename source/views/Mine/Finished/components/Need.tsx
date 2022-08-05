@@ -109,7 +109,7 @@ const Need = (props: any) => {
     const res = await updateDemandStatus(res1)
 
     if (res.code === 0) {
-      message.success('状态流转成功')
+      message.success(t('common.circulationSuccess'))
       init()
     }
   }
@@ -247,7 +247,7 @@ const Need = (props: any) => {
       items={[
         {
           key: '1',
-          label: <span onClick={showModal}>设置显示字段</span>,
+          label: <span onClick={showModal}>{t('common.setField')}</span>,
         },
       ]}
     />
@@ -257,7 +257,7 @@ const Need = (props: any) => {
       <TabsHehavior>
         <div className={tabCss}>
           <TabsItem isActive>
-            <div>已办需求</div>
+            <div>{t('mine.finishDemand')}</div>
           </TabsItem>
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
@@ -272,7 +272,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="输入需求名字或ID"
+            placeholder="请搜索需求名字或需求ID"
             allowClear
           />
         </div>
@@ -307,19 +307,16 @@ const Need = (props: any) => {
           specialList={filterSpecialList}
         />
       ) : null}
-      {listData?.length < 1
-        ? <NoData />
-        : (
-            <StaffTableWrap>
-              <StyledTable
-                rowKey="id"
-                columns={selectColum}
-                dataSource={listData}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-              />
-            </StaffTableWrap>
-          )}
+
+      <StaffTableWrap>
+        <StyledTable
+          rowKey="id"
+          columns={selectColum}
+          dataSource={listData}
+          pagination={false}
+          scroll={{ x: 'max-content' }}
+        />
+      </StaffTableWrap>
 
       <PaginationWrap>
         <Pagination
@@ -355,7 +352,7 @@ const Need = (props: any) => {
         />
       ) : null}
       <DeleteConfirm
-        text="确认要删除当前需求？"
+        text={t('common.confirmDelChildDemand')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}

@@ -159,7 +159,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="status">状态</NewSort>,
+      title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
       render: (text: any, record: any) => {
@@ -241,48 +241,54 @@ export const useDynamicColumns = (state: any) => {
       key: 'iterate_name',
     },
     {
-      title: <NewSort fixedKey="tag">标签</NewSort>,
+      title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
       key: 'tag',
     },
 
     {
-      title: <NewSort fixedKey="user_name">创建人</NewSort>,
+      title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
     },
     {
-      title: '处理人',
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
     },
     {
-      title: '抄送人',
+      title: t('common.copySend'),
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
     },
     {
-      title: <NewSort fixedKey="created_at">创建时间</NewSort>,
+      title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'time',
       key: 'created_at',
     },
     {
-      title: <NewSort fixedKey="expected_start_at">预计开始时间</NewSort>,
+      title: (
+        <NewSort fixedKey="expected_start_at">
+          {t('common.expectedStart')}
+        </NewSort>
+      ),
       dataIndex: 'expectedStart',
       key: 'expected_start_at',
     },
     {
-      title: <NewSort fixedKey="expected_end_at">预计结束时间</NewSort>,
+      title:
+        <NewSort fixedKey="expected_end_at">{t('common.expectedEnd')}</NewSort>
+      ,
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
     },
     {
-      title: <NewSort fixedKey="updated_at">最后修改时间</NewSort>,
+      title: <NewSort fixedKey="updated_at">{t('common.lastTime')}</NewSort>,
       dataIndex: 'updatedTime',
       key: 'updated_at',
     },
     {
-      title: <NewSort fixedKey="finish_at">完成时间</NewSort>,
+      title: <NewSort fixedKey="finish_at">{t('common.finishTime')}</NewSort>,
       dataIndex: 'finishTime',
       key: 'finish_at',
     },

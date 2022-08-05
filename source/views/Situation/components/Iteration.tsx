@@ -55,27 +55,27 @@ const Iteration = (props: any) => {
 
   return (
     <ChartsWrap>
-      <div className={titleCss}>迭代概况</div>
+      <div className={titleCss}>{t('common.iterateSurvey')}</div>
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.total ?? 0}</span>
-            <span className={title2Css}>创建迭代</span>
+            <span className={title2Css}>{t('common.createIterate')}</span>
           </ChartsItem>
         </TextBlueWrap>
         <HomeWrap>
           <ChartsItem>
             <span className={title1Css}>{data?.open_count ?? 0}</span>
-            <span className={title2Css}>开启迭代</span>
+            <span className={title2Css}>{t('situation.openIterate')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.end_count ?? 0}</span>
-            <span className={title2Css}>关闭迭代</span>
+            <span className={title2Css}>{t('situation.stopIterate')}</span>
           </ChartsItem>
         </HomeWrap>
       </TextWrap>
 
-      <div className={chartsTitle}>迭代进度分布</div>
+      <div className={chartsTitle}>{t('situation.iterateProgress')}</div>
       <HightChartsWrap>
         <DemoColumn data={data?.chartsData} />
       </HightChartsWrap>

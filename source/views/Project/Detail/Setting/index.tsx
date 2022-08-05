@@ -90,19 +90,19 @@ const Setting = () => {
 
   const SideList = [
     {
-      name: '项目信息',
+      name: t('project.projectInformation'),
       icon: 'file-text',
       content: <ProjectInfo />,
       isPermission: true,
     },
     {
-      name: '项目成员',
+      name: t('project.projectMember'),
       icon: 'team',
       content: <ProjectMember />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length,
     },
     {
-      name: '项目权限组',
+      name: t('project.projectPermissionGroup'),
       icon: 'lock',
       content: <ProjectSet />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/role')).length,

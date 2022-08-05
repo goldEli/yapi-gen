@@ -218,51 +218,51 @@ const Profile = () => {
       <StyledWrap>
         <Head>
           <HeadLeft>
-            <SecondTitle>基本概况</SecondTitle>
+            <SecondTitle>{t('mine.basicSurvey')}</SecondTitle>
             <InnerWrap>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.firstP}</span>
-                <span className={titleTextCss}>累计参与项目</span>
+                <span className={titleTextCss}>{t('mine.totalProject')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.firstN}</span>
-                <span className={titleTextCss}>累计参与需求</span>
+                <span className={titleTextCss}>{t('mine.totalDemand')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.firstD}</span>
-                <span className={titleTextCss}>累计参与迭代</span>
+                <span className={titleTextCss}>{t('mine.totalIterate')}</span>
               </ChartsItem>
             </InnerWrap>
           </HeadLeft>
           <HeadRight>
-            <SecondTitle>待办事项</SecondTitle>
+            <SecondTitle> {t('mine.backLog')}</SecondTitle>
             <InnerWrap>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.secondAll}</span>
-                <span className={titleTextCss}>总计</span>
+                <span className={titleTextCss}>{t('mine.total')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.secondNoFinish}</span>
-                <span className={titleTextCss}>待办</span>
+                <span className={titleTextCss}>{t('mine.needDeal')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
-                <span className={titleTextCss}>逾期</span>
+                <span className={titleTextCss}>{t('mine.overdue')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss}>{data?.secondFinish}</span>
-                <span className={titleTextCss}>按时完成</span>
+                <span className={titleTextCss}>{t('mine.finishOn')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
-                <span className={titleTextCss}>逾期完成</span>
+                <span className={titleTextCss}>{t('mine.finishOver')}</span>
               </ChartsItem>
             </InnerWrap>
           </HeadRight>
         </Head>
         <Center>
           <CenterRight>
-            <SecondTitle>我的动态</SecondTitle>
+            <SecondTitle>{t('mine.mineNews')}</SecondTitle>
             {lineData.length < 1
               ? <NoData />
               : (
@@ -296,7 +296,7 @@ const Profile = () => {
       </StyledWrap>
       <GatteWrap>
         <div>
-          <SecondTitle>需求甘特图</SecondTitle>
+          <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span onClick={nextMonth}>
