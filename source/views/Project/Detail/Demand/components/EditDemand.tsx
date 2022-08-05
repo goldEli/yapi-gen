@@ -458,7 +458,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
-          <Form.Item label="优先级" name="priority">
+          <Form.Item label={t('common.priority')} name="priority">
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
                 return (
@@ -489,7 +489,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="interation" />
-          <Form.Item label="迭代" name="iterateId">
+          <Form.Item label={t('common.iterate')} name="iterateId">
             <Select
               placeholder="请选择"
               showSearch

@@ -134,7 +134,7 @@ const CommonOperation = (props: Props) => {
 
   const tabsList = [
     { name: '需求', type: 'Demand' },
-    { name: '迭代', type: 'Iteration' },
+    { name: t('common.iterate'), type: 'Iteration' },
     { name: '设置', type: 'Set' },
   ]
 

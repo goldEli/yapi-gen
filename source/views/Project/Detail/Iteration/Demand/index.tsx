@@ -174,7 +174,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          迭代
+          {t('common.iterate')}
         </NewSort>
       ),
       dataIndex: 'iteration',
@@ -426,7 +426,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          标题
+          {t('common.title')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -449,7 +449,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          子需求
+          {t('common.childDemand')}
         </NewSort>
       ),
       dataIndex: 'demand',
@@ -465,7 +465,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          优先级
+          {t('common.priority')}
         </NewSort>
       ),
       dataIndex: 'priority',
@@ -508,7 +508,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          迭代
+          {t('common.iterate')}
         </NewSort>
       ),
       dataIndex: 'iteration',

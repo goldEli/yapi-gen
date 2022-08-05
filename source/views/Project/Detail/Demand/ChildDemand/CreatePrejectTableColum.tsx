@@ -138,7 +138,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="name">标题</NewSort>,
+      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
       render: (
@@ -183,7 +183,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="priority">优先级</NewSort>,
+      title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
       render: (text: any, record: Record<string, string | number>) => {
@@ -223,7 +223,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'child_story_count',
     },
     {
-      title: <NewSort fixedKey="iterate_name">迭代</NewSort>,
+      title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
       dataIndex: 'iteration',
       key: 'iterate_name',
     },

@@ -173,7 +173,7 @@ const ChildDemandTable = (props: ChildeProps) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          迭代
+          {t('common.iterate')}
         </NewSort>
       ),
       dataIndex: 'iteration',
