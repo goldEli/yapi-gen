@@ -41,23 +41,19 @@ const Sort = (props: any) => {
       <Text>{props.children}</Text>
       <Arrow>
         <IconFont
-          type="up-icon
-
-              "
+          type="tableUp"
           style={{
             color:
               order === 1 && nowKey === fixedKey ? 'rgba(40, 119, 255, 1)' : '',
-            fontSize: 12,
+            fontSize: 10,
           }}
         />
         <IconFont
-          type="down-icon
-
-              "
+          type="tableDown"
           style={{
             color:
               order === 2 && nowKey === fixedKey ? 'rgba(40, 119, 255, 1)' : '',
-            fontSize: 12,
+            fontSize: 10,
           }}
         />
       </Arrow>

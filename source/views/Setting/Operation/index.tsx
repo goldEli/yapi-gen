@@ -125,7 +125,7 @@ const Operation = () => {
       values.times = [
         moment(values.times[0]).unix()
           ? values.times[0].format('YYYY-MM-DD')
-          : '',
+          : '1970-01-01',
         moment(values.times[0]).unix() === 1893427200
           ? ''
           : values.times[1].format('YYYY-MM-DD'),
