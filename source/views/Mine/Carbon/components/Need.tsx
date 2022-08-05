@@ -138,7 +138,10 @@ const Need = (props: any) => {
     }
   }
   const updatePriority = async (res1: any) => {
-    await updatePriorityStatus(res1)
+    const res = await updatePriorityStatus(res1)
+    if (res.code === 0) {
+      message.success(t('common.circulationSuccess'))
+    }
 
     init()
   }
