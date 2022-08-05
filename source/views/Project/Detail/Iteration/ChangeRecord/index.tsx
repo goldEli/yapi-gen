@@ -207,7 +207,7 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    {text[i]?.length ? '查看详情' : '--'}
+                    {text[i]?.length ? t('project.checkInfo') : '--'}
                   </span>
                 )
                   : <span>{fieldContent(text, i)}</span>
@@ -246,7 +246,7 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    {text[i]?.length ? '查看详情' : '--'}
+                    {text[i]?.length ? t('project.checkInfo') : '--'}
                   </span>
                 )
                   : <OmitText width={300}>{fieldContent(text, i)}</OmitText>
@@ -272,7 +272,7 @@ const ChangeRecord = () => {
     <div>
       <Modal
         visible={isVisible}
-        title="变更详情"
+        title={t('project.changeInfo')}
         footer={false}
         width={1080}
         onCancel={() => setIsVisible(false)}

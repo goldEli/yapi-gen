@@ -336,7 +336,7 @@ const EditDemand = (props: Props) => {
   }
 
   const onAdd = () => {
-    message.warning('请选择项目')
+    message.warning(t('common.pleaseProject'))
   }
 
   return (
@@ -344,7 +344,7 @@ const EditDemand = (props: Props) => {
       visible={props.visible}
       width={740}
       footer={false}
-      title="快速创建"
+      title={t('mine.quickCreate')}
       onCancel={onCancel}
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
@@ -360,7 +360,7 @@ const EditDemand = (props: Props) => {
           >
             <Select
               onSelect={selectPrejectName}
-              placeholder="请选择"
+              placeholder={t('common.pleaseSelect')}
               allowClear
               showArrow
               onClear={clearProjectId}
@@ -383,7 +383,7 @@ const EditDemand = (props: Props) => {
             required
             name="type"
           >
-            <Select placeholder="请选择" showArrow>
+            <Select placeholder={t('common.pleaseSelect')} showArrow>
               <Select.Option value="need">{t('common.demand')}</Select.Option>
             </Select>
           </Form.Item>
@@ -396,7 +396,7 @@ const EditDemand = (props: Props) => {
             required
             name="name"
           >
-            <Input placeholder="请输入需求名称" />
+            <Input placeholder={t('common.pleaseDemandName')} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -408,7 +408,11 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="id-card" />
           <Form.Item label={t('common.dealName')} name="users">
-            <Select mode="multiple" placeholder="请选择" allowClear>
+            <Select
+              mode="multiple"
+              placeholder={t('common.pleaseSelect')}
+              allowClear
+            >
               {peopleList?.map((i: any) => {
                 return (
                   <Select.Option key={i.value} value={i.value}>
@@ -432,7 +436,7 @@ const EditDemand = (props: Props) => {
               disabled={!prejectId}
               style={{ width: '100%' }}
               showArrow
-              placeholder="请选择父需求"
+              placeholder={t('common.pleaseParentDemand')}
               options={demandList}
             />
           </Form.Item>
@@ -473,7 +477,7 @@ const EditDemand = (props: Props) => {
           <Form.Item label={t('common.iterate')} name="iterate_id">
             <Select
               disabled={!prejectId}
-              placeholder="请选择"
+              placeholder={t('common.pleaseSelect')}
               showSearch
               showArrow
               options={iterateList}
@@ -486,7 +490,7 @@ const EditDemand = (props: Props) => {
             <Select
               mode="multiple"
               disabled={!prejectId}
-              placeholder="请选择"
+              placeholder={t('common.pleaseSelect')}
               showSearch
               showArrow
               options={peopleList}

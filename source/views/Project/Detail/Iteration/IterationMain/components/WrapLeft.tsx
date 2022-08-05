@@ -106,19 +106,19 @@ interface Props {
   currentDetail?: any
 }
 
-const sortList = [
-  { name: '创建时间升序', type: 'asc', key: 'created_at' },
-  { name: '创建时间降序', type: 'desc', key: 'created_at' },
-  { name: '开始时间升序', type: 'asc', key: 'start_at' },
-  { name: '开始时间降序', type: 'desc', key: 'start_at' },
-  { name: '结束时间升序', type: 'asc', key: 'end_at' },
-  { name: '结束时间降序', type: 'desc', key: 'end_at' },
-  { name: '标题升序', type: 'asc', key: 'name' },
-  { name: '标题降序', type: 'desc', key: 'name' },
-]
-
 const WrapLeft = (props: Props) => {
   const [t] = useTranslation()
+  const sortList = [
+    { name: t('project.createAsc'), type: 'asc', key: 'created_at' },
+    { name: t('project.createDesc'), type: 'desc', key: 'created_at' },
+    { name: t('project.startAsc'), type: 'asc', key: 'start_at' },
+    { name: t('project.startDesc'), type: 'desc', key: 'start_at' },
+    { name: t('project.endAsc'), type: 'asc', key: 'end_at' },
+    { name: t('project.createDesc'), type: 'desc', key: 'end_at' },
+    { name: t('project.titleAsc'), type: 'asc', key: 'name' },
+    { name: t('project.titleDesc'), type: 'desc', key: 'name' },
+  ]
+
   const [form] = Form.useForm()
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
@@ -246,12 +246,12 @@ const WrapLeft = (props: Props) => {
     <div className="filterContent">
       <Form form={form} style={{ width: 260, padding: 24 }} layout="vertical">
         <Form.Item label={t('common.title')} name="name">
-          <Input placeholder="请输入标题" />
+          <Input placeholder={t('project.pleaseTitle')} />
         </Form.Item>
-        <Form.Item label="开始时间" name="startTime">
+        <Form.Item label={t('common.startTime')} name="startTime">
           <DatePicker.RangePicker />
         </Form.Item>
-        <Form.Item label="结束时间" name="endTime">
+        <Form.Item label={t('common.endTime')} name="endTime">
           <DatePicker.RangePicker />
         </Form.Item>
         <Form.Item label={t('common.status')} name="status">
@@ -290,7 +290,7 @@ const WrapLeft = (props: Props) => {
         id: item.id,
         status: item.status !== 1,
       })
-      message.success('更改状态成功')
+      message.success(t('mark.change'))
       getList()
     } catch (error) {
 
@@ -331,7 +331,7 @@ const WrapLeft = (props: Props) => {
         key: '2',
         label: (
           <div onClick={e => onChangeEnd(e, item)}>
-            {item.status === 1 ? '关闭' : t('common.open')}
+            {item.status === 1 ? t('common.close') : t('common.open')}
           </div>
         ),
       },

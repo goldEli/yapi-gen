@@ -1,5 +1,12 @@
 {
   "common": {
+    "close": "关闭",
+    "move": "移除",
+    "editS": "修改成功",
+    "job1": "在职",
+    "job2": "在职",
+    "start": "预计开始",
+    "end": "预计结束",
     "tableTotal": "共{{count}}条",
     "openSuccess": "开启成功",
     "endSuccess": "结束成功",
@@ -335,6 +342,13 @@
   "mark": {
     "endP": "确认结束该项目？",
     "delP": "确认删除该项目？",
-    "searchP": "搜索项目或项目ID"
+    "searchP": "搜索项目或项目ID",
+    "cd": "确认删除当前评论？",
+    "editCom": "输入评论，按Enter快速发布",
+    "editIterate": "确认删除该迭代?",
+    "level": "请输入产品简称+计划发布版本号",
+    "del": "确认删除该需求",
+    "delPeople": "确认要删除当前成员？",
+    "change": "更改状态成功"
   }
 }

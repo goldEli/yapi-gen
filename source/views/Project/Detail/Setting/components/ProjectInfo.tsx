@@ -145,11 +145,17 @@ const ProjectInfo = () => {
           </InfoItem>
           <InfoItem>
             <div>{t('project.projectStatus')}：</div>
-            <span>{projectInfo.status === 1 ? t('common.open') : '结束'}</span>
+            <span>
+              {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
+            </span>
           </InfoItem>
           <InfoItem>
             <div>{t('common.permission')}：</div>
-            <span>{projectInfo.isPublic === 1 ? '企业公开' : '私有项目'}</span>
+            <span>
+              {projectInfo.isPublic === 1
+                ? t('project.companyOpen')
+                : t('common.privateProject')}
+            </span>
           </InfoItem>
           <CardGroup size={24}>
             <CardItem>

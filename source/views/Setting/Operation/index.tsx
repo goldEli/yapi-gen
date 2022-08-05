@@ -259,7 +259,7 @@ const Operation = () => {
               <SelectWrap
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder="所有"
+                placeholder={t('common.all')}
                 showSearch
                 options={staffList}
                 optionFilterProp="label"
@@ -274,7 +274,7 @@ const Operation = () => {
               <SelectWrap
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder="所有"
+                placeholder={t('common.all')}
                 showSearch
                 options={typeList}
                 optionFilterProp="label"

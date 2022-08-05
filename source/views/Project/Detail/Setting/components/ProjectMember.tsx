@@ -350,7 +350,7 @@ const ProjectMember = () => {
       ),
       dataIndex: 'gender',
       render: (text: number) => {
-        return <span>{text === 1 ? '男' : '女'}</span>
+        return <span>{text === 1 ? t('common.male') : t('common.female')}</span>
       },
     },
     {
@@ -400,7 +400,7 @@ const ProjectMember = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          加入时间
+          {t('project.joinTime')}
         </NewSort>
       ),
       dataIndex: 'joinTime',
@@ -466,7 +466,7 @@ const ProjectMember = () => {
                   <SelectWrap
                     mode="multiple"
                     style={{ width: '100%' }}
-                    placeholder="所有"
+                    placeholder={t('common.all')}
                     showSearch
                     options={jobList}
                     optionFilterProp="label"
@@ -481,7 +481,7 @@ const ProjectMember = () => {
                   <SelectWrap
                     mode="multiple"
                     style={{ width: '100%' }}
-                    placeholder="所有"
+                    placeholder={t('common.all')}
                     showSearch
                     options={projectPermission}
                     optionFilterProp="label"

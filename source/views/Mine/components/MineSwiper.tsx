@@ -22,7 +22,7 @@ const SwiperCardMove = (props: any) => {
       >
         <SwiperSlide key={1}>
           <SwiperCard
-            name="所有项目"
+            name={t('mine.allProject')}
             avtar=""
             tap={() => {
               setSwiperActive('all')

@@ -239,11 +239,11 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         </Popconfirm>
       </InfoItem>
       <InfoItem>
-        <Label>预计开始</Label>
+        <Label>{t('common.start')}</Label>
         <TextWrap>{demandInfo?.expectedStart}</TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>预计结束</Label>
+        <Label>{t('common.end')}</Label>
         <TextWrap>{demandInfo?.expectedEnd}</TextWrap>
       </InfoItem>
       <InfoItem>

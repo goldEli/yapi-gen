@@ -272,7 +272,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="请搜索需求名字或需求ID"
+            placeholder={t('common.pleaseSearchDemand')}
             allowClear
           />
         </div>
