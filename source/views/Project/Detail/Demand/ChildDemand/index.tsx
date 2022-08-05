@@ -182,7 +182,7 @@ const ChildDemand = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       onUpdate()
     } catch (error) {
 

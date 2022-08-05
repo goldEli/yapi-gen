@@ -185,7 +185,7 @@ const DemandBox = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       if (demandId) {
         getDemandInfo({ projectId, id: demandId })
       }

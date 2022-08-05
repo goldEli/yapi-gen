@@ -400,7 +400,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="id-card" />
-          <Form.Item label="处理人" name="users">
+          <Form.Item label={t('common.dealName')} name="users">
             <Select mode="multiple" placeholder="请选择" allowClear>
               {peopleList?.map((i: any) => {
                 return (

@@ -194,7 +194,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'tag',
     },
     {
-      title: <NewSort fixedKey="status">状态</NewSort>,
+      title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
       render: (text: any, record: any) => {
@@ -222,7 +222,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
     },
     {
-      title: <NewSort fixedKey="users_name">处理人</NewSort>,
+      title: <NewSort fixedKey="users_name">{t('common.dealName')}</NewSort>,
       dataIndex: 'users_name',
       key: 'users_name',
     },

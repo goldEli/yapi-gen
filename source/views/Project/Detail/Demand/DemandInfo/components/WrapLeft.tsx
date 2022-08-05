@@ -142,7 +142,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
       </InfoItem>
       <InfoItem>
-        <Label>处理人</Label>
+        <Label>{t('common.dealName')}</Label>
         <TextWrap>
           {demandInfo?.user?.map((i: any) => i.user.name).join('、')}
         </TextWrap>

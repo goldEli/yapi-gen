@@ -108,7 +108,7 @@ const Need = (props: any) => {
     const res = await updateDemandStatus(res1)
 
     if (res.code === 0) {
-      message.success('状态流转成功')
+      message.success(t('common.circulationSuccess'))
       init()
     }
   }

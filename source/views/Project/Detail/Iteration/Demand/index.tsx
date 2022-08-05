@@ -121,7 +121,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getList(order)
     } catch (error) {
 
@@ -187,7 +187,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          状态
+          {t('common.status')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -377,7 +377,7 @@ const DemandWrap = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getList(pageObj, order)
     } catch (error) {
 
@@ -521,7 +521,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          状态
+          {t('common.status')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -559,7 +559,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          处理人
+          {t('common.dealName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
