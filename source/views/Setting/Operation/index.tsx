@@ -347,7 +347,8 @@ const Operation = () => {
                     showSizeChanger
                     showQuickJumper
                     total={dataList.total}
-                    showTotal={total => `Total ${total} items`}
+                    showTotal={total => t('common.tableTotal', { count: total })
+                    }
                     pageSizeOptions={[10, 20, 50]}
                     pageSize={form.getFieldValue('pageSize') || 10}
                     onShowSizeChange={onShowSizeChange}

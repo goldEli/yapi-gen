@@ -9,6 +9,7 @@
     "end": "Is expected to end",
     "openSuccess": "Open the success",
     "endSuccess": "End of success",
+    "tableTotal": "Total {{count}}",
     "deleteSuccess": "Successfully deleted",
     "createSuccess": "Created successfully",
     "editSuccess": "Successfully edited",

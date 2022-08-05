@@ -57,7 +57,7 @@ const DeleteConfirm = (props: Props) => {
       <ModalHeader>
         <Title>
           <IconFont style={{ fontSize: 24 }} type="Warning" />
-          <div>{props.title ? props.title : t('common.deleteConfirm')}</div>
+          <div>{props.title ? props.title : t('components.deleteConfirm')}</div>
         </Title>
         <IconFont
           style={{ fontSize: 16, color: '#323233' }}

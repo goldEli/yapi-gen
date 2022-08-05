@@ -71,6 +71,7 @@ const EditIteration = (props: Props) => {
   const projectId = searchParams.get('id')
   const { addIterate, updateIterate, getIterateInfo, iterateInfo }
     = useModel('iterate')
+  const { setIsRefreshIterateList } = useModel('project')
 
   useEffect(() => {
     if (props.id) {
@@ -115,6 +116,7 @@ const EditIteration = (props: Props) => {
       props.onChangeVisible()
       props.onUpdate?.(true)
       setHtml('')
+      setIsRefreshIterateList(true)
 
       // form.resetFields()
     } catch (error) {

@@ -106,7 +106,7 @@ export const useDynamicColumns = (state: any) => {
           <div className={flexCss}>
             <MoreWrap record={record} />
             {/* <SetHead>{text}</SetHead> */}
-            <ClickWrap style={{ marginLeft: '15px' }}>{text}</ClickWrap>
+            <ClickWrap style={{ marginLeft: '28px' }}>{text}</ClickWrap>
           </div>
         )
       },

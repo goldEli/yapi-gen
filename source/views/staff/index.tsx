@@ -265,7 +265,7 @@ const Staff = () => {
             showSizeChanger
             showQuickJumper
             total={total}
-            showTotal={newTotal => `Total ${newTotal} items`}
+            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
             pageSizeOptions={['10', '20', '50']}
             onChange={onChangePage}
             onShowSizeChange={onShowSizeChange}

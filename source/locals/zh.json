@@ -7,6 +7,7 @@
     "job2": "在职",
     "start": "预计开始",
     "end": "预计结束",
+    "tableTotal": "共{{count}}条",
     "openSuccess": "开启成功",
     "endSuccess": "结束成功",
     "deleteSuccess": "删除成功",
