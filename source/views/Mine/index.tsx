@@ -50,6 +50,11 @@ const menuItem = css`
   height: 44px;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  border-right: 3px solid white;
+  &:hover: {
+    color: #2877ff !important;
+  }
 `
 const menuItemColor = css`
   box-sizing: border-box;

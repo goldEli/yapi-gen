@@ -247,7 +247,7 @@ const Need = (props: any) => {
       items={[
         {
           key: '1',
-          label: <Button onClick={showModal}>设置显示字段</Button>,
+          label: <span onClick={showModal}>设置显示字段</span>,
         },
       ]}
     />
@@ -272,7 +272,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder="请搜索需求名字或需求ID"
+            placeholder="输入需求名字或ID"
             allowClear
           />
         </div>

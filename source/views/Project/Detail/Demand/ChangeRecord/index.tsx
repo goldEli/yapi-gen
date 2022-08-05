@@ -45,7 +45,7 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getDemandChangeLog } = useModel('demand')
+  const { getDemandChangeLog, demandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const demandId = searchParams.get('demandId')
   const projectId = searchParams.get('id')
@@ -71,6 +71,12 @@ const ChangeRecord = () => {
     getList(pageObj, order)
   }, [])
 
+  useEffect(() => {
+    if (demandInfo?.changeCount !== dataList?.total) {
+      getList(pageObj, order)
+    }
+  }, [demandInfo, dataList])
+
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
     setIsVisible(true)
@@ -79,8 +85,8 @@ const ChangeRecord = () => {
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
       return item[i]?.length ? item[i]?.map((k: any) => k.name) : '--'
-    } else if (i === 'attachment' || i === 'copysend') {
-      return item[i]?.length ? item[i].map((k: any) => k) : '--'
+    } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
+      return item[i]?.length ? item[i].join(',') : '--'
     } else {
       return item[i] || '--'
     }

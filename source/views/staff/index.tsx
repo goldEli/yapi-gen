@@ -31,16 +31,21 @@ const tableWrapP = css`
   /* height:  800px; */
 `
 const Reset = styled.div`
-  width: 60px;
   height: 32px;
-  background: rgba(40, 119, 255, 1);
-  background-blend-mode: normal;
+  background: white;
   border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 5px 16px 5px 16px;
-  margin-left: 24px;
+  margin-right: 16px;
+  border: 1px solid #d5d6d9ff;
+  color: #646566ff;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid rgba(40, 119, 255, 1);
+    color: rgba(40, 119, 255, 1);
+  }
 `
 
 const Staff = () => {
@@ -189,7 +194,7 @@ const Staff = () => {
       items={[
         {
           key: '1',
-          label: <Button onClick={showModal}>设置显示字段</Button>,
+          label: <span onClick={showModal}>设置显示字段</span>,
         },
       ]}
     />
@@ -205,7 +210,6 @@ const Staff = () => {
       <StaffHeader>公司员工</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset onClick={rest}>刷新</Reset>
           <MyInput
             suffix={
               <IconFont
@@ -219,6 +223,7 @@ const Staff = () => {
           />
         </div>
         <div style={{ marginRight: '40px', display: 'flex' }}>
+          <Reset onClick={rest}>刷新</Reset>
           <SetButton onClick={() => setIsShow(!isShow)}>
             <IconFont
               type="filter"

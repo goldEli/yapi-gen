@@ -36,17 +36,21 @@ const IterationInfo = styled.div({
   alignItems: 'center',
 })
 
-const StatusTag = styled.div({
-  height: 22,
-  borderRadius: 6,
-  textAlign: 'center',
-  lineHeight: '22px',
-  padding: '0 8px',
-  color: '#43BA9A',
-  fontSize: 12,
-  background: '#EDF7F4',
-  cursor: 'pointer',
-})
+const StatusTag = styled.div<{ isOpen: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+  },
+  ({ isOpen }) => ({
+    color: isOpen ? '#43BA9A' : '#969799',
+    background: isOpen ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
 
 interface Props {
   isGrid: boolean
@@ -98,11 +102,10 @@ const Operation = (props: Props) => {
       size={8}
       style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
     >
-      <StatusTag onClick={() => onChangeStatus(1)}>开启中</StatusTag>
-      <StatusTag
-        onClick={() => onChangeStatus(2)}
-        style={{ color: '#969799', background: '#F2F2F4' }}
-      >
+      <StatusTag isOpen onClick={() => onChangeStatus(1)}>
+        开启中
+      </StatusTag>
+      <StatusTag onClick={() => onChangeStatus(2)} isOpen={false}>
         已结束
       </StatusTag>
     </Space>
@@ -186,12 +189,8 @@ const Operation = (props: Props) => {
             {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
           {hasChangeStatus ? (
-            <StatusTag>
+            <StatusTag isOpen={props.currentDetail?.status === 1}>
               {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
-              <IconFont
-                type="down-icon"
-                style={{ fontSize: 12, marginLeft: 4 }}
-              />
             </StatusTag>
           ) : (
             <Popover
@@ -200,11 +199,18 @@ const Operation = (props: Props) => {
               getPopupContainer={node => node}
             >
               {props.currentDetail ? (
-                <StatusTag>
+                <StatusTag isOpen={props.currentDetail?.status === 1}>
                   {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
                   <IconFont
                     type="down-icon"
-                    style={{ fontSize: 12, marginLeft: 4 }}
+                    style={{
+                      fontSize: 12,
+                      marginLeft: 4,
+                      color:
+                        props.currentDetail?.status === 1
+                          ? '#43BA9A'
+                          : '#969799',
+                    }}
                   />
                 </StatusTag>
               ) : null}

@@ -39,6 +39,10 @@ const PriorityWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
+  height: 26,
+  padding: '0 6px',
+  width: 'fit-content',
+  borderRadius: 6,
   div: {
     color: '#323233',
     fontSize: 14,
@@ -52,8 +56,12 @@ const PriorityWrap = styled.div({
   },
   '.priorityIcon': {
     fontSize: 16,
+    svg: {
+      margin: '0!important',
+    },
   },
   '&: hover': {
+    background: 'rgba(240, 244, 250, 1)',
     '.icon': {
       visibility: 'visible',
     },

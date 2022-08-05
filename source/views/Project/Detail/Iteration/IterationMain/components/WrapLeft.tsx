@@ -268,7 +268,7 @@ const WrapLeft = (props: Props) => {
           <Space size={16}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button type="primary" onClick={onConfirmFilter}>
-              过滤
+              确定
             </Button>
           </Space>
         </div>

@@ -39,8 +39,12 @@ const CardWrap = styled.div<{ active?: boolean }>(
     border: '1px solid #EBEDF0',
     cursor: 'pointer',
     '&: hover': {
+      border: '1px solid #2877ff',
       [MoreWrap.toString()]: {
         display: 'block',
+      },
+      [DetailWrap.toString()]: {
+        color: '#2877ff',
       },
     },
   },
@@ -71,15 +75,19 @@ const TimeWrap = styled.div({
   lineHeight: '20px',
 })
 
-const StatusTag = styled.div({
-  height: 20,
-  borderRadius: 6,
-  padding: '0 8px',
-  color: '#43BA9A',
-  background: '#EDF7F4',
-  width: 'fit-content',
-  fontSize: 12,
-})
+const StatusTag = styled.div<{ isOpen: boolean }>(
+  {
+    height: 20,
+    borderRadius: 6,
+    padding: '0 8px',
+    width: 'fit-content',
+    fontSize: 12,
+  },
+  ({ isOpen }) => ({
+    color: isOpen ? '#43BA9A' : '#969799',
+    background: isOpen ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
 
 interface Props {
   item: any
@@ -128,7 +136,7 @@ const IterationCard = (props: Props) => {
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
-          <StatusTag>
+          <StatusTag isOpen={props.item.status === 1}>
             {props.item.status === 1 ? t('common.opening') : t('common.Closed')}
           </StatusTag>
         </InfoContent>

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -9,12 +10,13 @@ import Demand from './Demand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message } from 'antd'
+import { Space, Button, message, Popover } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import IconFont from '@/components/IconFont'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -32,20 +34,11 @@ const DemandInfoWrap = styled.div({
 const NameWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  span: {
+  '.name': {
     fontSize: 16,
     fontWeight: 400,
     color: 'black',
     marginRight: 8,
-  },
-  div: {
-    height: 22,
-    borderRadius: 6,
-    border: '1px solid #2877FF',
-    padding: '0 8px',
-    color: '#2877FF',
-    fontSize: 12,
-    fontWeight: 400,
   },
 })
 
@@ -80,12 +73,8 @@ const Item = styled.div<{ activeIdx: boolean }>(
       height: 20,
       padding: '0 6px',
       borderRadius: '50%',
-      color: '#969799',
-      background: '#F2F2F4',
-      '&: hover': {
-        color: '#2877FF',
-        background: '#F0F4FA',
-      },
+      color: '#2877FF',
+      background: '#F0F4FA',
     },
   },
   ({ activeIdx }) => ({
@@ -93,6 +82,22 @@ const Item = styled.div<{ activeIdx: boolean }>(
       color: activeIdx ? '#2877FF' : '#323233',
       borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
     },
+  }),
+)
+
+const StatusTag = styled.div<{ isOpen: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+  },
+  ({ isOpen }) => ({
+    color: isOpen ? '#43BA9A' : '#969799',
+    background: isOpen ? '#EDF7F4' : '#F2F2F4',
   }),
 )
 
@@ -105,10 +110,16 @@ const IterationWrap = () => {
   const projectId = searchParams.get('id')
   const navigate = useNavigate()
   const iterateId = searchParams.get('iterateId')
-  const { getIterateInfo, iterateInfo, deleteIterate } = useModel('iterate')
+  const { getIterateInfo, iterateInfo, deleteIterate, updateIterateStatus }
+    = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo } = useModel('project')
+
+  const hasChangeStatus = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/status',
+  )
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -171,6 +182,37 @@ const IterationWrap = () => {
     setOperationDetail(iterateInfo)
   }
 
+  const onChangeStatus = async (val: number) => {
+    if (val !== iterateInfo?.status) {
+      try {
+        await updateIterateStatus({
+          projectId,
+          id: iterateInfo?.id,
+          status: val === 1,
+        })
+        message.success('修改成功')
+        getIterateInfo({ projectId, id: iterateInfo?.id })
+      } catch (error) {
+
+        //
+      }
+    }
+  }
+
+  const changeStatus = (
+    <Space
+      size={8}
+      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    >
+      <StatusTag isOpen onClick={() => onChangeStatus(1)}>
+        开启中
+      </StatusTag>
+      <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
+        已结束
+      </StatusTag>
+    </Space>
+  )
+
   const content = () => {
     if (!type) {
       return (
@@ -193,24 +235,45 @@ const IterationWrap = () => {
         />
         <DemandInfoWrap>
           <NameWrap>
-            <span>{iterateInfo.name}</span>
-            <div>{iterateInfo.status === 1 ? '开启' : '关闭'}</div>
+            <span className="name">{iterateInfo.name}</span>
+            {hasChangeStatus ? (
+              <StatusTag isOpen={iterateInfo?.status === 1}>
+                {iterateInfo?.status === 1 ? '开启中' : '已结束'}
+              </StatusTag>
+            ) : (
+              <Popover
+                placement="bottom"
+                content={changeStatus}
+                getPopupContainer={node => node}
+              >
+                {iterateInfo ? (
+                  <StatusTag isOpen={iterateInfo?.status === 1}>
+                    {iterateInfo?.status === 1 ? '开启中' : '已结束'}
+                    <IconFont
+                      type="down-icon"
+                      style={{
+                        fontSize: 12,
+                        marginLeft: 4,
+                        color:
+                          iterateInfo?.status === 1 ? '#43BA9A' : '#969799',
+                      }}
+                    />
+                  </StatusTag>
+                ) : null}
+              </Popover>
+            )}
           </NameWrap>
           <Space size={16}>
-            {hasEdit
-              ? null
-              : (
-                  <Button type="primary" onClick={onChangeEditVisible}>
-                    {t('common.edit')}
-                  </Button>
-                )}
-            {hasDel
-              ? null
-              : (
-                  <Button onClick={() => setIsDelete(!isDelete)}>
-                    {t('common.del')}
-                  </Button>
-                )}
+            {hasEdit ? null : (
+              <Button type="primary" onClick={onChangeEditVisible}>
+                {t('common.edit')}
+              </Button>
+            )}
+            {hasDel ? null : (
+              <Button onClick={() => setIsDelete(!isDelete)}>
+                {t('common.del')}
+              </Button>
+            )}
           </Space>
         </DemandInfoWrap>
         <ContentWrap>

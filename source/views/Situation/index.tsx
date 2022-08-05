@@ -17,7 +17,7 @@ const buttonCss = css``
 const PanelHeaderSecond = styled.div`
   width: 160px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   font-size: 14px;
   display: flex;
@@ -68,7 +68,7 @@ const Situation = () => {
               >
                 <IconFont
                   type="swap"
-                  style={{ cursor: 'pointer', fontSize: 14 }}
+                  style={{ cursor: 'pointer', fontSize: 14, marginLeft: 8 }}
                 />
               </div>
             </Tooltip>

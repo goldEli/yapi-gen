@@ -77,6 +77,10 @@ const PriorityWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
+  height: 26,
+  padding: '0 6px',
+  width: 'fit-content',
+  borderRadius: 6,
   div: {
     color: '#323233',
     fontSize: 14,
@@ -95,6 +99,7 @@ const PriorityWrap = styled.div({
     },
   },
   '&: hover': {
+    background: 'rgba(240, 244, 250, 1)',
     '.icon': {
       visibility: 'visible',
     },
@@ -191,6 +196,7 @@ const EditDemand = (props: Props) => {
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<InputRef>(null)
+  const [parentList, setParentList] = useState<any>([])
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -225,6 +231,22 @@ const EditDemand = (props: Props) => {
   }, [props.id])
 
   useEffect(() => {
+    setParentList(
+      props.isChild
+        ? demandList?.filter((k: any) => k.value !== props?.id)
+        : demandList,
+    )
+  }, [props.isChild])
+
+  const getCommonUser = (arr: any) => {
+    let res: any[] = []
+    if (arr.length) {
+      res = memberList?.filter((i: any) => !arr.find((k: any) => k.id !== i.id))
+    }
+    return res.length ? res.map((i: any) => i.id) : []
+  }
+
+  useEffect(() => {
     if (demandInfo && props?.id) {
       form.setFieldsValue(demandInfo)
       setPriorityDetail(demandInfo.priority)
@@ -250,11 +272,33 @@ const EditDemand = (props: Props) => {
           ],
         })
       }
+
+      const parentArr = props.isChild
+        ? demandList?.filter((k: any) => k.value !== props?.id)
+        : demandList
+
       form.setFieldsValue({
-        copySendIds: demandInfo?.copySend?.map((i: any) => i.copysend.id),
+        copySendIds: getCommonUser(
+          demandInfo?.copySend?.map((i: any) => i.copysend),
+        ),
         attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
-        userIds: demandInfo?.user?.map((i: any) => i.user.id),
+        userIds: getCommonUser(demandInfo?.user?.map((i: any) => i.user)),
       })
+      if (
+        selectIterate?.list?.filter((i: any) => i.id === demandInfo?.iterateId)
+          .length
+      ) {
+        form.setFieldsValue({
+          iterateId: demandInfo?.iterateId,
+        })
+      }
+      if (
+        parentArr?.filter((i: any) => i.value === demandInfo?.parentId).length
+      ) {
+        form.setFieldsValue({
+          parentId: demandInfo?.parentId,
+        })
+      }
     } else {
       form.resetFields()
     }
@@ -451,12 +495,9 @@ const EditDemand = (props: Props) => {
               showArrow
               showSearch
               placeholder={t('common.pleaseParentDemand')}
-              options={
-                props.isChild
-                  ? demandList?.filter((k: any) => k.value !== props?.id)
-                  : demandList
-              }
+              options={parentList}
               getPopupContainer={node => node}
+              optionFilterProp="label"
             />
           </Form.Item>
         </div>

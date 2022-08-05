@@ -151,7 +151,7 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   }),
 )
 const LabNumber = styled.div<{ isActive: boolean }>`
-  margin-left: 4px;
+  margin-left: 12px;
   width: 20px;
   height: 18px;
   border-radius: 50%;
@@ -282,6 +282,7 @@ const StyledShape = styled.div<{ color: any }>`
   border: 1px solid rgba(40, 119, 255, 1);
   border-color: ${({ color }) => color};
   color: ${({ color }) => color};
+  cursor: pointer;
 `
 
 export {
