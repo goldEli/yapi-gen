@@ -66,7 +66,7 @@ const DemandBox = (props: Props) => {
     value.statusId = props.active
     try {
       await updateDemandStatus(value)
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getDemandInfo({ projectId, id: demandId })
       onClear()
     } catch (error) {
@@ -97,11 +97,15 @@ const DemandBox = (props: Props) => {
       </div>
       <Form form={form} labelCol={{ span: 5 }}>
         <Form.Item
-          label="处理人"
+          label={t('common.dealName')}
           name="username"
           rules={[{ required: true, message: '' }]}
         >
-          <Select mode="multiple" placeholder="请选择" allowClear>
+          <Select
+            mode="multiple"
+            placeholder={t('common.pleaseSelect')}
+            allowClear
+          >
             {memberList?.map((i: any) => {
               return (
                 <Select.Option key={i.id} value={i.id}>
@@ -111,17 +115,17 @@ const DemandBox = (props: Props) => {
             })}
           </Select>
         </Form.Item>
-        <Form.Item label="评论" name="content">
+        <Form.Item label={t('common.comment')} name="content">
           <Input.TextArea
             autoSize={{ minRows: 5, maxRows: 5 }}
-            placeholder="请输入评论处理意见"
+            placeholder={t('project.pleaseComment')}
           />
         </Form.Item>
       </Form>
       <PopoverFooter size={16}>
         <Button onClick={onClear}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={confirm}>
-          确认
+          {t('common.confirm')}
         </Button>
       </PopoverFooter>
     </DemandStatus>

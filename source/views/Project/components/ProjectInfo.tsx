@@ -51,7 +51,7 @@ const ProjectInfo = (props: Props) => {
   return (
     <Modal
       width={420}
-      title="项目信息"
+      title={t('project.projectInformation')}
       visible={props.visible}
       footer={false}
       onCancel={props.onChangeVisible}
@@ -66,35 +66,41 @@ const ProjectInfo = (props: Props) => {
           <span>{projectInfo.info}</span>
         </PosterWrap>
         <InfoItem>
-          <span>项目id</span>
+          <span>{t('project.projectId')}</span>
           <div>{projectInfo.id}</div>
         </InfoItem>
         <InfoItem>
-          <span>创建人</span>
+          <span>{t('common.createName')}</span>
           <div>{projectInfo.userName}</div>
         </InfoItem>
         <InfoItem>
-          <span>创建时间</span>
+          <span>{t('common.createTime')}</span>
           <div>{projectInfo.createTime}</div>
         </InfoItem>
         <InfoItem>
-          <span>项目状态</span>
-          <div>{projectInfo.status === 1 ? '开启' : '结束'}</div>
+          <span>{t('project.projectStatus')}</span>
+          <div>
+            {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
+          </div>
         </InfoItem>
         <InfoItem>
-          <span>权限</span>
-          <div>{projectInfo.isPublic === 1 ? '公开项目' : '私有项目'}</div>
+          <span>{t('common.permission')}</span>
+          <div>
+            {projectInfo.isPublic === 1
+              ? t('common.publicProject')
+              : t('common.privateProject')}
+          </div>
         </InfoItem>
         <InfoItem>
-          <span>需求</span>
+          <span>{t('common.demand')}</span>
           <div>{projectInfo.demandCount}</div>
         </InfoItem>
         <InfoItem>
-          <span>迭代版本</span>
+          <span>{t('project.iterateEdition')}</span>
           <div>{projectInfo.iterateCount}</div>
         </InfoItem>
         <InfoItem>
-          <span>项目成员</span>
+          <span>{t('project.projectMember')}</span>
           <div>{projectInfo.memberCount}</div>
         </InfoItem>
       </div>

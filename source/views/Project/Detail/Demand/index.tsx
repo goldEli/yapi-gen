@@ -274,7 +274,7 @@ const DemandBox = () => {
               onClick={() => onChangeIdx('child')}
               activeIdx={type === 'child'}
             >
-              <span>子需求</span>
+              <span>{t('common.childDemand')}</span>
               <div>{demandInfo?.childCount || 0}</div>
             </Item>
             <Item

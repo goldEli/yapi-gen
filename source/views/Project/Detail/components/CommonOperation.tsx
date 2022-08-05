@@ -133,9 +133,9 @@ const CommonOperation = (props: Props) => {
   const projectId = searchParams.get('id')
 
   const tabsList = [
-    { name: '需求', type: 'Demand' },
-    { name: '迭代', type: 'Iteration' },
-    { name: '设置', type: 'Set' },
+    { name: t('common.demand'), type: 'Demand' },
+    { name: t('common.iterate'), type: 'Iteration' },
+    { name: t('container.setting'), type: 'Set' },
   ]
 
   const menu = () => {
@@ -144,7 +144,7 @@ const CommonOperation = (props: Props) => {
         key: 1,
         label: (
           <MenuItems onClick={() => setInfoVisible(true)}>
-            <div>项目信息</div>
+            <div>{t('project.projectInformation')}</div>
           </MenuItems>
         ),
       },
@@ -152,7 +152,7 @@ const CommonOperation = (props: Props) => {
         key: 2,
         label: (
           <MenuItems onClick={() => setIsVisible(true)}>
-            <div>编辑项目</div>
+            <div>{t('project.editProject')}</div>
           </MenuItems>
         ),
       },
@@ -160,7 +160,7 @@ const CommonOperation = (props: Props) => {
         key: 3,
         label: (
           <MenuItems onClick={() => navigate(`/Detail/Set?id=${projectId}`)}>
-            <div>项目设置</div>
+            <div>{t('project.projectSet')}</div>
           </MenuItems>
         ),
       },
@@ -226,7 +226,7 @@ const CommonOperation = (props: Props) => {
         <TopRight size={20}>
           <TopRightItem onClick={() => setMemberVisible(true)}>
             <IconFont type="team" />
-            <div>成员</div>
+            <div>{t('project.member')}</div>
           </TopRightItem>
           <Dropdown
             key={isShowMenu.toString()}
@@ -242,7 +242,7 @@ const CommonOperation = (props: Props) => {
                 type="menu"
               />
               <div style={{ color: isShowMenu ? '#2877ff' : '#000000' }}>
-                菜单
+                {t('project.menu')}
               </div>
             </TopRightItem>
           </Dropdown>

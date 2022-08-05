@@ -89,7 +89,11 @@
     "clear1": "Clear",
     "filter": "Filter",
     "iterateSurvey": "Iterate Survey",
-    "changeRecord": "Change Record"
+    "changeRecord": "Change Record",
+    "Closed": "Closed",
+    "opening1": "Opening",
+    "permission": "Permission",
+    "pleaseChooseDeal": "Please select a handler"
   },
   "components": {
     "changeCompany": "Company Switch",
@@ -243,7 +247,8 @@
     "joinTime": "Join Time",
     "confirmDelMember": "Are you sure you want to delete the current member?",
     "pleaseNickname": "Enter nickname name",
-    "projectPermissionGroup": "Project Permission Group"
+    "projectPermissionGroup": "Project Permission Group",
+    "addChildDemand": "Add sub requirement"
   },
   "setting": {
     "companyInfo": "Company Info",

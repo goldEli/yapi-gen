@@ -205,11 +205,11 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         />
       </InfoItem>
       <InfoItem>
-        <Label>迭代</Label>
+        <Label>{t('common.iterate')}</Label>
         <TextWrap>{demandInfo?.iterateName}</TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>优先级</Label>
+        <Label>{t('common.priority')}</Label>
         <Popconfirm
           content={({ onHide }: { onHide(): void }) => {
             return (

@@ -248,7 +248,7 @@ const ChildDemand = () => {
         onUpdate={onUpdate}
       />
       <DeleteConfirm
-        text="确认要删除当前子需求？"
+        text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
@@ -258,7 +258,7 @@ const ChildDemand = () => {
           onClick={() => setIsVisible(true)}
           icon={<IconFont type="plus" />}
         >
-          添加子需求
+          {t('project.addChildDemand')}
         </ButtonWrap>
         <Dropdown overlay={setMenu}>
           <IconFontWrap active={isSettingState} type="settings" />

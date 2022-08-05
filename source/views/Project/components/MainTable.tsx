@@ -126,7 +126,7 @@ const MainTable = (props: Props) => {
         key: '2',
         label: (
           <div onClick={e => props.onChangeOperation?.('end', record, e)}>
-            {record.status === 1 ? '结束' : '开启'}
+            {record.status === 1 ? t('common.stop') : t('common.open')}
           </div>
         ),
       },
@@ -175,7 +175,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目ID
+          {t('project.projectId')}
         </NewSort>
       ),
       render: (text: string, record: any) => {
@@ -190,7 +190,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          图片
+          {t('project.img')}
         </NewSort>
       ),
       dataIndex: 'cover',
@@ -225,7 +225,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目人数
+          {t('project.projectCount')}
         </NewSort>
       ),
       dataIndex: 'memberCount',
@@ -238,7 +238,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          需求数
+          {t('project.demandCount')}
         </NewSort>
       ),
       dataIndex: 'storyCount',
@@ -251,7 +251,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          迭代数
+          {t('project.iterateCount')}
         </NewSort>
       ),
       dataIndex: 'iterateCount',
@@ -264,7 +264,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目进度
+          {t('project.projectProgress')}
         </NewSort>
       ),
       dataIndex: 'progress',
@@ -277,7 +277,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建人
+          {t('common.createName')}
         </NewSort>
       ),
       dataIndex: 'createName',
@@ -290,7 +290,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          状态
+          {t('common.status')}
         </NewSort>
       ),
       dataIndex: 'status',
@@ -298,7 +298,9 @@ const MainTable = (props: Props) => {
         return (
           <StatusWrap>
             <div style={{ background: text === 1 ? '#43BA9A' : '#BBBDBF' }} />
-            <span>{text === 1 ? '已开启' : '已关闭'}</span>
+            <span>
+              {text === 1 ? t('common.opening1') : t('common.Closed')}
+            </span>
           </StatusWrap>
         )
       },
@@ -311,7 +313,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建时间
+          {t('common.createTime')}
         </NewSort>
       ),
       dataIndex: 'createdTime',
@@ -324,7 +326,7 @@ const MainTable = (props: Props) => {
           order={props.order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          结束时间
+          {t('common.endTime')}
         </NewSort>
       ),
       dataIndex: 'endTime',

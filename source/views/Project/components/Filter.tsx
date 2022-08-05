@@ -94,9 +94,11 @@ const Filter = (props: Props) => {
         },
         {
           key: 'created_at',
-          label:
-            <div onClick={() => props.onChangeSort('created_at')}>创建时间</div>
-          ,
+          label: (
+            <div onClick={() => props.onChangeSort('created_at')}>
+              {t('common.createTime')}
+            </div>
+          ),
         },
       ]}
     />
@@ -109,13 +111,13 @@ const Filter = (props: Props) => {
             onClick={() => props.onChangeType(0)}
             idx={!props.activeType}
           >
-            我参与的项目
+            {t('project.mineJoin')}
           </TitleBox>
           <TitleBox
             onClick={() => props.onChangeType(1)}
             idx={props.activeType === 1}
           >
-            企业全部
+            {t('project.companyAll')}
           </TitleBox>
         </WrapLeft>
       ) : null}
@@ -124,14 +126,18 @@ const Filter = (props: Props) => {
         <Space size={12}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Checkbox onChange={e => props.onChangeHidden(e.target.checked)} />
-            <MainTitle style={{ marginLeft: 8 }}>隐藏结束项目</MainTitle>
+            <MainTitle style={{ marginLeft: 8 }}>
+              {t('project.hiddenProject')}
+            </MainTitle>
           </div>
           <div
             hidden={!props.isGrid}
             style={{ display: 'flex', alignItems: 'center' }}
           >
             <MainTitle style={{ marginRight: 12 }}>
-              {props.sort === 'name' ? t('common.projectName') : '创建时间'}
+              {props.sort === 'name'
+                ? t('common.projectName')
+                : t('common.createTime')}
             </MainTitle>
             <Dropdown overlay={menu}>
               <IconfontWrap type="sort" />
@@ -139,7 +145,7 @@ const Filter = (props: Props) => {
           </div>
         </Space>
         <Divider style={{ height: 20 }} type="vertical" />
-        <TotalText>共{props.total}个项目</TotalText>
+        <TotalText>{t('project.allProject', { count: props.total })}</TotalText>
         <Divider style={{ height: 20 }} type="vertical" />
         <Space size={12}>
           <IconfontWrap

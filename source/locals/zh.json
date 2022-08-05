@@ -89,7 +89,11 @@
     "clear1": "清空",
     "filter": "过滤",
     "iterateSurvey": "迭代概况",
-    "changeRecord": "变更记录"
+    "changeRecord": "变更记录",
+    "Closed": "已关闭",
+    "opening1": "已开启",
+    "permission": "权限",
+    "pleaseChooseDeal": "请选择处理人"
   },
   "components": {
     "changeCompany": "公司切换",
@@ -177,14 +181,14 @@
     "mineJoin": "我参与的项目",
     "companyAll": "企业全部",
     "hiddenProject": "隐藏结束项目",
-    "allProject": "共{count}个项目",
+    "allProject": "共{{count}}个项目",
     "projectId": "项目ID",
     "img": "图片",
     "projectCount": "项目人数",
     "demandCount": "需求数",
     "iterateCount": "迭代数",
     "projectProgress": "项目进度",
-    "projectMemberAll": "项目成员（{count}）",
+    "projectMemberAll": "项目成员（{{count}}）",
     "addMember1": "添加成员",
     "searchMember": "搜索成员姓名或昵称",
     "incorrectFormat": "格式不正确",
@@ -243,7 +247,8 @@
     "joinTime": "加入时间",
     "confirmDelMember": "确认要删除当前成员？",
     "pleaseNickname": "输入昵称姓名",
-    "projectPermissionGroup": "项目权限组"
+    "projectPermissionGroup": "项目权限组",
+    "addChildDemand": "添加子需求"
   },
   "setting": {
     "companyInfo": "公司信息",
