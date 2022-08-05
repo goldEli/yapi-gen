@@ -53,7 +53,7 @@ const EditProject = (props: Props) => {
 
   const onChangePoster = (value: string) => {
     form.setFieldsValue({
-      cover: value,
+      cover: value[0],
     })
   }
 
@@ -94,7 +94,7 @@ const EditProject = (props: Props) => {
           rules={[{ required: true, message: '' }]}
           name="name"
         >
-          <Input maxLength={30} placeholder={t('project.pleaseProjectName')} />
+          <Input maxLength={30} placeholder={t('common.pleaseProjectName')} />
         </Form.Item>
         <Form.Item
           label={t('project.projectInfo')}
@@ -110,7 +110,7 @@ const EditProject = (props: Props) => {
         <Form.Item label={t('project.isPublic')} name="isPublic">
           <Select placeholder={t('project.pleaseSelect')} defaultValue={[2]}>
             <Select.Option value={2}>
-              {t('project.privateProject')}
+              {t('common.privateProject')}
             </Select.Option>
             <Select.Option value={1}>{t('project.companyOpen')}</Select.Option>
           </Select>
@@ -119,7 +119,7 @@ const EditProject = (props: Props) => {
       <Footer size={16}>
         <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={onConfirm}>
-          {t('project.confirm')}
+          {t('common.confirm')}
         </Button>
       </Footer>
     </Modal>

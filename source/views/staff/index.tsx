@@ -210,7 +210,6 @@ const Staff = () => {
       <StaffHeader>{t('staff.companyStaff')}</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset onClick={rest}>刷新</Reset>
           <MyInput
             suffix={
               <IconFont
@@ -223,7 +222,9 @@ const Staff = () => {
             allowClear
           />
         </div>
-        <div style={{ marginRight: '40px', display: 'flex' }}>
+        <div
+          style={{ marginRight: '40px', display: 'flex', alignItems: 'center' }}
+        >
           <Reset onClick={rest}>刷新</Reset>
           <SetButton onClick={() => setIsShow(!isShow)}>
             <IconFont

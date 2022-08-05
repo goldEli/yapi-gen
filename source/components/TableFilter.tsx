@@ -144,10 +144,10 @@ const TableFilter = (props: any) => {
       if (item.includes('_at') && res[item]?.length === 2) {
         res[item][0] = moment(res[item][0]).unix()
           ? moment(res[item][0]).format('YYYY-MM-DD')
-          : ''
+          : '1970-01-01'
         res[item][1]
           = moment(res[item][1]).unix() === 1893427200
-            ? ''
+            ? '2030-01-01'
             : moment(res[item][1]).format('YYYY-MM-DD')
       }
     }
