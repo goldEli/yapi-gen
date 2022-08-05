@@ -66,6 +66,10 @@ const PriorityWrap = styled.div<{ status: any }>(
   {
     display: 'flex',
     alignItems: 'center',
+    height: 26,
+    padding: '0 6px',
+    width: 'fit-content',
+    borderRadius: 6,
     div: {
       color: '#323233',
       fontSize: 14,
@@ -76,6 +80,9 @@ const PriorityWrap = styled.div<{ status: any }>(
       svg: {
         margin: '0!important',
       },
+    },
+    '&: hover': {
+      background: 'rgba(240, 244, 250, 1)',
     },
   },
   ({ status }) => ({

@@ -38,9 +38,9 @@ export const getDemandInfo: any = async (params: any) => {
     user: response.data.user,
     createdTime: response.data.created_at,
     status: response.data.status,
-    parentId: response.data.parent_id || '',
+    parentId: response.data.parent_id || null,
     changeCount: response.data.app_changelog_count,
-    iterateId: response.data.iterate_id || '',
+    iterateId: response.data.iterate_id || null,
   }
 }
 

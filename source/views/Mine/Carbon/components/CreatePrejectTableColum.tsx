@@ -8,7 +8,7 @@ import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { ShowWrap, StyledShape } from '@/components/StyleCommon'
+import { ClickWrap, ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import { useNavigate } from 'react-router-dom'
 import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
@@ -105,7 +105,8 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div className={flexCss}>
             <MoreWrap record={record} />
-            <span style={{ marginLeft: '15px' }}>{text}</span>
+            {/* <SetHead>{text}</SetHead> */}
+            <ClickWrap style={{ marginLeft: '15px' }}>{text}</ClickWrap>
           </div>
         )
       },
@@ -119,8 +120,7 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => {
         return (
-          <div
-            style={{ cursor: 'pointer' }}
+          <ClickWrap
             onClick={() => {
               navigate(
                 `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
@@ -128,7 +128,7 @@ export const useDynamicColumns = (state: any) => {
             }}
           >
             {text}
-          </div>
+          </ClickWrap>
         )
       },
     },

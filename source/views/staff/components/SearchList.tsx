@@ -118,7 +118,7 @@ const SearchList = (props: Props) => {
     props.onSearch(value)
   }
   return (
-    <SearchLine>
+    <SearchLine style={{ padding: '0 0 0 24px' }}>
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>

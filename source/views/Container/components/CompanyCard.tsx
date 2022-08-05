@@ -60,8 +60,8 @@ const ImgWrap = styled.div<{ show?: boolean }>(
 
     // filter: 'brightness(70%)',
     img: {
-      maxWidth: '100%',
-      maxHeight: '100%',
+      width: '100%',
+      height: '100%',
     },
   },
 )

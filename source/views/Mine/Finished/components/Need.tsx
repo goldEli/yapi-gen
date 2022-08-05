@@ -247,7 +247,7 @@ const Need = (props: any) => {
       items={[
         {
           key: '1',
-          label: <Button onClick={showModal}>{t('common.setField')}</Button>,
+          label: <span onClick={showModal}>{t('common.setField')}</span>,
         },
       ]}
     />
@@ -272,7 +272,7 @@ const Need = (props: any) => {
               />
             }
             onPressEnter={onPressEnter}
-            placeholder={t('common.pleaseSearchDemand')}
+            placeholder="请搜索需求名字或需求ID"
             allowClear
           />
         </div>

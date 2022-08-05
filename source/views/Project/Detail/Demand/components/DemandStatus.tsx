@@ -164,8 +164,7 @@ const DemandStatusBox = () => {
                 width: 48,
                 margin: '0 8px',
                 minWidth: 'auto',
-                display:
-                  index === statusList?.values?.length - 1 ? 'none' : 'block',
+                display: index === statusList?.length - 1 ? 'none' : 'block',
               }}
               dashed
             />
