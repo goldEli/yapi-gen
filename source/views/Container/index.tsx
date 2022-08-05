@@ -27,6 +27,9 @@ const Main = styled.div`
   overflow: auto;
   /* min-width: 1360px; */
 `
+window.onbeforeunload = function () {
+  localStorage.removeItem('saveRouter')
+}
 
 export const Container = () => {
   const navigate = useNavigate()
