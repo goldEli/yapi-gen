@@ -128,11 +128,11 @@ const ProjectInfo = () => {
         </InfoLeft>
         <InfoRight>
           <InfoItem>
-            <div>项目ID</div>
+            <div>{t('project.projectId')}</div>
             <span>{projectInfo.id}</span>
           </InfoItem>
           <InfoItem>
-            <div>创建人：</div>
+            <div>{t('common.createName')}：</div>
             <span>{projectInfo.userName}</span>
           </InfoItem>
           <InfoItem>

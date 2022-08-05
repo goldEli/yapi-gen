@@ -145,7 +145,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目ID
+          {t('project.projectId')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -225,7 +225,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建人
+          {t('common.createName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
@@ -572,7 +572,7 @@ const DemandWrap = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建时间
+          {t('common.createTime')}
         </NewSort>
       ),
       dataIndex: 'time',

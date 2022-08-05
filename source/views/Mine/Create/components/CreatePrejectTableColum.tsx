@@ -223,7 +223,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="user_name">创建人</NewSort>,
+      title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'user_name',
       key: 'user_name',
     },
@@ -238,7 +238,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'users_copysend_name',
     },
     {
-      title: <NewSort fixedKey="created_at">创建时间</NewSort>,
+      title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
     },

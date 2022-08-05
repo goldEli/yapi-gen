@@ -178,7 +178,7 @@ export const useDynamicColumns = (state: any) => {
       key: 'project_num',
     },
     {
-      title: <NewSort fixedKey="created_at">创建时间</NewSort>,
+      title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
     },

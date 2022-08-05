@@ -135,7 +135,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          项目ID
+          {t('project.projectId')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -215,7 +215,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          创建人
+          {t('common.createName')}
         </NewSort>
       ),
       dataIndex: 'dealName',

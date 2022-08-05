@@ -148,11 +148,11 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         </TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>创建人</Label>
+        <Label>{t('common.createName')}</Label>
         <TextWrap>{demandInfo?.userName}</TextWrap>
       </InfoItem>
       <InfoItem>
-        <Label>创建时间</Label>
+        <Label>{t('common.createTime')}</Label>
         <TextWrap>{demandInfo?.createdTime}</TextWrap>
       </InfoItem>
       <InfoItem>

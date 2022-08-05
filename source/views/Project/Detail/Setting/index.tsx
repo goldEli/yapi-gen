@@ -90,7 +90,7 @@ const Setting = () => {
 
   const SideList = [
     {
-      name: '项目信息',
+      name: t('project.projectInformation'),
       icon: 'file-text',
       content: <ProjectInfo />,
       isPermission: true,
