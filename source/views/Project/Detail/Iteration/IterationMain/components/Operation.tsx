@@ -98,7 +98,9 @@ const Operation = (props: Props) => {
       size={8}
       style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
     >
-      <StatusTag onClick={() => onChangeStatus(1)}>开启中</StatusTag>
+      <StatusTag onClick={() => onChangeStatus(1)}>
+        {t('common.opening')}
+      </StatusTag>
       <StatusTag
         onClick={() => onChangeStatus(2)}
         style={{ color: '#969799', background: '#F2F2F4' }}
@@ -187,7 +189,9 @@ const Operation = (props: Props) => {
           </span>
           {hasChangeStatus ? (
             <StatusTag>
-              {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+              {props.currentDetail?.status === 1
+                ? t('common.opening')
+                : t('common.ended')}
               <IconFont
                 type="down-icon"
                 style={{ fontSize: 12, marginLeft: 4 }}
@@ -201,7 +205,9 @@ const Operation = (props: Props) => {
             >
               {props.currentDetail ? (
                 <StatusTag>
-                  {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+                  {props.currentDetail?.status === 1
+                    ? t('common.opening')
+                    : t('common.ended')}
                   <IconFont
                     type="down-icon"
                     style={{ fontSize: 12, marginLeft: 4 }}

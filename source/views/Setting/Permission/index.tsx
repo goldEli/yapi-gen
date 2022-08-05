@@ -394,7 +394,7 @@ const Permission = () => {
       <Content>
         <SetMain>
           <SetLeft>
-            <Title style={{ marginLeft: 24 }}>用户组</Title>
+            <Title style={{ marginLeft: 24 }}>{t('setting.userGroup')}</Title>
             <MenuItems>
               {dataList?.map((item: any) => (
                 <MenuItem
@@ -429,7 +429,7 @@ const Permission = () => {
               onClick={() => setIsVisible(true)}
             >
               <IconFont type="plus" />
-              <span>添加用户组</span>
+              <span>{t('setting.addUserGroup')}</span>
             </div>
           </SetLeft>
           <SetRight>
