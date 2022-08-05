@@ -5,6 +5,7 @@ import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
 
 const Finished = () => {
   const [t] = useTranslation()
@@ -12,10 +13,12 @@ const Finished = () => {
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
   const { userInfo } = useModel('user')
+  const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const init = async () => {
     const res = await getMineProjectList('create')
-    setSwiperData(res.data)
+    await setSwiperData(res.data)
+    setLoadingState(true)
   }
   useEffect(() => {
     init()
@@ -25,7 +28,9 @@ const Finished = () => {
   const getProjectId = (value: any) => {
     setProjectId(value)
   }
-
+  if (!loadingState) {
+    return <Loading />
+  }
   return (
     <PermissionWrap
       auth="b/user/copysend/story"

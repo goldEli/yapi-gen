@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import Project from './components/Project'
-import { Spin, Tooltip } from 'antd'
+import { Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
 import Staff from './components/Staff'
@@ -10,9 +10,8 @@ import Need from './components/Need'
 import Iteration from './components/Iteration'
 import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
-import { Loading } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -95,11 +94,7 @@ const Situation = () => {
       </div>
     )
   }
-  return (
-    <Loading>
-      <Spin size="large" />
-    </Loading>
-  )
+  return <Loading />
 }
 
 export default Situation

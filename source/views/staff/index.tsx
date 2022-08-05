@@ -22,6 +22,7 @@ import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
 
 const tableWrapP = css`
   display: flex;
@@ -47,6 +48,7 @@ const Staff = () => {
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo } = useModel('user')
   const [isShow, setIsShow] = useState<boolean>(true)
+  const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
@@ -95,7 +97,8 @@ const Staff = () => {
     setListData(res.list)
     setTotal(res.pager.total)
     setPlainOptions(res.plainOptions)
-    setPlainOptions2(res.plainOptions2)
+    await setPlainOptions2(res.plainOptions2)
+    setLoadingState(true)
   }
   const init = () => {
     getStaffListData()
@@ -191,7 +194,9 @@ const Staff = () => {
       ]}
     />
   )
-
+  if (!loadingState) {
+    return <Loading />
+  }
   return (
     <PermissionWrap
       auth="b/user/list"
@@ -235,6 +240,7 @@ const Staff = () => {
         </div>
       </Hehavior>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
+
       <div className={tableWrapP}>
         <StaffTableWrap>
           <StyledTable

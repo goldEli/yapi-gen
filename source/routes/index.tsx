@@ -1,6 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 import { Container } from '@/views/Container'
 import React from 'react'
+import Loading from '@/components/Loading'
 
 const lazy = (
   component: () => Promise<{
@@ -9,7 +10,7 @@ const lazy = (
 ) => {
   const LazyComponent = React.lazy(component)
   return (
-    <React.Suspense fallback="...">
+    <React.Suspense fallback={<Loading />}>
       <LazyComponent />
     </React.Suspense>
   )
