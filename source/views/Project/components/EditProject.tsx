@@ -68,7 +68,9 @@ const EditProject = (props: Props) => {
   return (
     <Modal
       width={420}
-      title={props.details?.id ? '编辑项目' : '创建项目'}
+      title={
+        props.details?.id ? t('project.editProject') : t('common.createProject')
+      }
       visible={props.visible}
       footer={false}
       onCancel={props.onChangeVisible}
@@ -78,7 +80,7 @@ const EditProject = (props: Props) => {
     >
       <Form form={form} layout="vertical">
         <Form.Item
-          label="项目封面"
+          label={t('project.projectPoster')}
           rules={[{ required: true, message: '' }]}
           name="cover"
         >
@@ -92,30 +94,32 @@ const EditProject = (props: Props) => {
           rules={[{ required: true, message: '' }]}
           name="name"
         >
-          <Input maxLength={30} placeholder="请输入项目名称" />
+          <Input maxLength={30} placeholder={t('project.pleaseProjectName')} />
         </Form.Item>
         <Form.Item
-          label="项目描述"
+          label={t('project.projectInfo')}
           name="info"
           rules={[{ required: true, message: '' }]}
         >
           <Input.TextArea
             maxLength={500}
-            placeholder="请输入项目描述"
+            placeholder={t('project.pleaseProjectInfo')}
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
         </Form.Item>
-        <Form.Item label="公开/私有" name="isPublic">
-          <Select placeholder="请选择" defaultValue={[2]}>
-            <Select.Option value={2}>私有项目</Select.Option>
-            <Select.Option value={1}>企业公开</Select.Option>
+        <Form.Item label={t('project.isPublic')} name="isPublic">
+          <Select placeholder={t('project.pleaseSelect')} defaultValue={[2]}>
+            <Select.Option value={2}>
+              {t('project.privateProject')}
+            </Select.Option>
+            <Select.Option value={1}>{t('project.companyOpen')}</Select.Option>
           </Select>
         </Form.Item>
       </Form>
       <Footer size={16}>
         <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={onConfirm}>
-          确认
+          {t('project.confirm')}
         </Button>
       </Footer>
     </Modal>

@@ -124,7 +124,7 @@ const Member = (props: Props) => {
         onChangeUpdate={() => getList()}
       />
       <DrawerWrap
-        title={`项目成员（${memberList?.length}）`}
+        title={t('project.projectMemberAll', { count: memberList?.length })}
         placement="right"
         onClose={props.onChangeVisible}
         visible={props.visible}
@@ -145,7 +145,7 @@ const Member = (props: Props) => {
               <IconFont type="plus" style={{ color: 'white', fontSize: 16 }} />
             }
           >
-            添加成员
+            {t('project.addMember1')}
           </ButtonWrap>
           <Input
             style={{ marginTop: 16 }}
@@ -156,7 +156,7 @@ const Member = (props: Props) => {
                 style={{ color: '#BBBDBF', fontSize: 16 }}
               />
             }
-            placeholder="搜索成员姓名或昵称"
+            placeholder={t('project.searchMember')}
             allowClear
           />
         </div>

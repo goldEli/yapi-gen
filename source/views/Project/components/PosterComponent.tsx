@@ -101,7 +101,7 @@ const PosterComponent = (props: Props) => {
     const acceptArr = ['jpg', 'png']
     const urlType = file.name.split('.')
     if (!acceptArr.includes(urlType[urlType.length - 1])) {
-      message.warning('格式不正确')
+      message.warning(t('project.incorrectFormat'))
       return Upload.LIST_IGNORE
     }
   }
@@ -118,7 +118,7 @@ const PosterComponent = (props: Props) => {
 
   const choosePoster = (
     <div style={{ width: 372, padding: 16 }}>
-      <ChooseTitle>请选择一个封面</ChooseTitle>
+      <ChooseTitle>{t('project.pleaseChoosePoster')}</ChooseTitle>
       <PosterGroup size={8}>
         {coverList.map((i: any) => (
           <PosterWrap
@@ -129,7 +129,7 @@ const PosterComponent = (props: Props) => {
           />
         ))}
       </PosterGroup>
-      <ChooseTitle>自定义封面</ChooseTitle>
+      <ChooseTitle>{t('project.customCover')}</ChooseTitle>
       <PosterGroup size={8}>
         {posterList.map((i: any) => <PosterWrap onClick={() => onUpdateValue(i)} key={i} src={i} alt="" />)}
         <Upload
@@ -143,7 +143,7 @@ const PosterComponent = (props: Props) => {
         </Upload>
       </PosterGroup>
       <div style={{ fontSize: 12, fontWeight: 400, color: '#969799' }}>
-        图片格式支持jpg、png，大小为220*104px
+        {t('project.formatText')}
       </div>
     </div>
   )
@@ -158,7 +158,7 @@ const PosterComponent = (props: Props) => {
         content={choosePoster}
         getPopupContainer={node => node}
       >
-        <ChangeWrap>修改图片</ChangeWrap>
+        <ChangeWrap>{t('project.editImg')}</ChangeWrap>
       </Popover>
     </div>
   )

@@ -317,9 +317,13 @@ const EditDemand = (props: Props) => {
 
   const titleText = () => {
     if (props?.id) {
-      return props.isChild ? '编辑子需求' : '编辑需求'
+      return props.isChild
+        ? t('project.editChildDemand')
+        : t('project.editDemand')
     }
-    return props.isChild ? '创建子需求' : '创建需求'
+    return props.isChild
+      ? t('common.createChildDemand')
+      : t('common.createDemand')
   }
 
   const onCurrentDetail = (item: any) => {
@@ -377,7 +381,7 @@ const EditDemand = (props: Props) => {
   }
 
   const onAdd = () => {
-    message.warning('请选择项目')
+    message.warning(t('common.pleaseProject'))
   }
 
   return (
@@ -401,26 +405,26 @@ const EditDemand = (props: Props) => {
           >
             <Input
               ref={inputRef}
-              placeholder="请输入需求名称"
+              placeholder={t('common.pleaseDemandName')}
               maxLength={100}
             />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="edit-square" />
-          <Form.Item label="需求描述" name="info">
+          <Form.Item label={t('mine.demandInfo')} name="info">
             <Editor value={html} onChangeValue={setHtml} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="user" />
-          <Form.Item label="处理人" name="userIds">
+          <Form.Item label={t('common.dealName')} name="userIds">
             <Select
               style={{ width: '100%' }}
               showArrow
               mode="multiple"
               showSearch
-              placeholder="请选择处理人"
+              placeholder={t('common.pleaseChooseDeal')}
               getPopupContainer={node => node}
             >
               {memberList?.map((i: any) => {
@@ -435,18 +439,18 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
-          <Form.Item label="预计时间" name="times">
+          <Form.Item label={t('common.estimatedTime')} name="times">
             <DatePicker.RangePicker style={{ width: '100%' }} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
-          <Form.Item label="父需求" name="parentId">
+          <Form.Item label={t('common.parentDemand')} name="parentId">
             <Select
               style={{ width: '100%' }}
               showArrow
               showSearch
-              placeholder="请选择父需求"
+              placeholder={t('common.pleaseParentDemand')}
               options={
                 props.isChild
                   ? demandList?.filter((k: any) => k.value !== props?.id)
@@ -491,7 +495,7 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="interation" />
           <Form.Item label={t('common.iterate')} name="iterateId">
             <Select
-              placeholder="请选择"
+              placeholder={t('common.pleaseSelect')}
               showSearch
               showArrow
               getPopupContainer={node => node}
@@ -510,13 +514,13 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="id-card" />
-          <Form.Item label="抄送人" name="copySendIds">
+          <Form.Item label={t('common.copySend')} name="copySendIds">
             <Select
               style={{ width: '100%' }}
               showArrow
               mode="multiple"
               showSearch
-              placeholder="请选择抄送人"
+              placeholder={t('common.pleaseChooseCopySend')}
               getPopupContainer={node => node}
             >
               {memberList?.map((i: any) => {
@@ -531,7 +535,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="app-store-add" />
-          <Form.Item label="标签" name="tagIds">
+          <Form.Item label={t('common.tag')} name="tagIds">
             <TagComponent
               defaultList={tagList}
               onChangeTag={onChangeTag}
@@ -545,7 +549,7 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="attachment" />
-          <Form.Item label="附件" name="attachments">
+          <Form.Item label={t('common.attachment')} name="attachments">
             {!projectInfo?.projectPermissions?.filter(
               (i: any) => i.name === '附件上传',
             ).length ? (

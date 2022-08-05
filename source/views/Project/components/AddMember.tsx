@@ -77,12 +77,12 @@ const AddMember = (props: Props) => {
 
   const onConfirm = async () => {
     if (!form.getFieldValue('name')) {
-      message.warning('成员不能为空！')
+      message.warning(t('project.memberNull'))
       return
     }
 
     if (!form.getFieldValue('userGroupId')) {
-      message.warning('权限不能为空！')
+      message.warning(t('project.permissionNull'))
       return
     }
     const values = form.getFieldsValue()
@@ -131,7 +131,9 @@ const AddMember = (props: Props) => {
       maskClosable={false}
     >
       <ModalHeader>
-        <span>{props.details?.id ? '编辑项目成员' : '添加项目成员'}</span>
+        <span>
+          {props.details?.id ? t('project.editMember') : t('project.addMember')}
+        </span>
         <IconFont onClick={onClose} type="close" />
       </ModalHeader>
       <Form form={form}>
@@ -154,7 +156,7 @@ const AddMember = (props: Props) => {
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
-              加入权限组
+              {t('project.joinPermission')}
             </span>
             <Form.Item
               name="userGroupId"
@@ -162,7 +164,7 @@ const AddMember = (props: Props) => {
               rules={[{ required: true, message: '' }]}
             >
               <Select
-                placeholder="请选择权限组"
+                placeholder={t('project.pleasePermission')}
                 getPopupContainer={node => node}
                 style={{ width: 192 }}
                 options={projectPermission}
@@ -173,7 +175,7 @@ const AddMember = (props: Props) => {
             </Form.Item>
           </div>
           <Button type="primary" onClick={onConfirm}>
-            导入成员
+            {t('project.joinMember')}
           </Button>
         </ModalFooter>
       </Form>

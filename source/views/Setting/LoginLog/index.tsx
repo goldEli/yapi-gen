@@ -131,7 +131,6 @@ const LoginLog = () => {
 
   const getList = async (orderVal?: any) => {
     const values = await form.getFieldsValue()
-    const clear = message.loading('加载中')
     if (values.times) {
       values.times = [
         moment(values.times[0]).unix()
@@ -151,7 +150,8 @@ const LoginLog = () => {
       })
       setDataList(result)
     } finally {
-      clear()
+
+      //
     }
   }
 

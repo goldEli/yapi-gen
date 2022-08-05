@@ -100,7 +100,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          序号
+          {t('common.serialNumber')}
         </NewSort>
       ),
       dataIndex: 'id',
@@ -113,7 +113,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更时间
+          {t('project.changeTime')}
         </NewSort>
       ),
       dataIndex: 'updateTime',
@@ -126,7 +126,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更人
+          {t('project.changeName')}
         </NewSort>
       ),
       dataIndex: 'userName',
@@ -139,7 +139,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更类型
+          {t('project.changeType')}
         </NewSort>
       ),
       dataIndex: 'type',
@@ -155,7 +155,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更字段
+          {t('project.changeFields')}
         </NewSort>
       ),
       dataIndex: 'fields',
@@ -181,7 +181,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更前
+          {t('project.changeBefore')}
         </NewSort>
       ),
       dataIndex: 'beforeField',
@@ -201,7 +201,7 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    {text[i]?.length ? '查看详情' : '--'}
+                    {text[i]?.length ? t('project.checkInfo') : '--'}
                   </span>
                 )
                   : <span>{fieldContent(text, i)}</span>
@@ -220,7 +220,7 @@ const ChangeRecord = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          变更后
+          {t('project.changeAfter')}
         </NewSort>
       ),
       dataIndex: 'afterField',
@@ -240,7 +240,7 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    {text[i]?.length ? '查看详情' : '--'}
+                    {text[i]?.length ? t('project.checkInfo') : '--'}
                   </span>
                 )
                   : <OmitText width={300}>{fieldContent(text, i)}</OmitText>
@@ -265,7 +265,7 @@ const ChangeRecord = () => {
     <div>
       <Modal
         visible={isVisible}
-        title="变更详情"
+        title={t('project.changeInfo')}
         footer={false}
         width={1080}
         onCancel={() => setIsVisible(false)}
@@ -280,7 +280,7 @@ const ChangeRecord = () => {
           style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>变更前</TitleWrap>
+            <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <div
               style={{ maxHeight: 400, overflow: 'auto' }}
               dangerouslySetInnerHTML={{
@@ -289,7 +289,7 @@ const ChangeRecord = () => {
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>变更后</TitleWrap>
+            <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <div
               style={{ maxHeight: 400, overflow: 'auto' }}
               dangerouslySetInnerHTML={{

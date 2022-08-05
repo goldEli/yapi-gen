@@ -121,7 +121,6 @@ const Operation = () => {
 
   const getList = async (orderVal?: any) => {
     const values = await form.getFieldsValue()
-    const clear = message.loading('加载中')
     if (values.times) {
       values.times = [
         moment(values.times[0]).unix()
@@ -141,7 +140,8 @@ const Operation = () => {
       })
       setDataList(result)
     } finally {
-      clear()
+
+      //
     }
   }
 
