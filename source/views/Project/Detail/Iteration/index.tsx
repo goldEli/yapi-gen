@@ -190,7 +190,7 @@ const IterationWrap = () => {
           id: iterateInfo?.id,
           status: val === 1,
         })
-        message.success('修改成功')
+        message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
       } catch (error) {
 
@@ -205,10 +205,10 @@ const IterationWrap = () => {
       style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
     >
       <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-        开启中
+        {t('common.opening')}
       </StatusTag>
       <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
-        已结束
+        {t('common.ended')}
       </StatusTag>
     </Space>
   )
@@ -228,7 +228,7 @@ const IterationWrap = () => {
     return (
       <>
         <DeleteConfirm
-          text="确认删除该迭代？"
+          text={t('mark.editIterate')}
           isVisible={isDelete}
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
@@ -238,7 +238,9 @@ const IterationWrap = () => {
             <span className="name">{iterateInfo.name}</span>
             {hasChangeStatus ? (
               <StatusTag isOpen={iterateInfo?.status === 1}>
-                {iterateInfo?.status === 1 ? '开启中' : '已结束'}
+                {iterateInfo?.status === 1
+                  ? t('common.opening')
+                  : t('common.ended')}
               </StatusTag>
             ) : (
               <Popover
@@ -248,7 +250,9 @@ const IterationWrap = () => {
               >
                 {iterateInfo ? (
                   <StatusTag isOpen={iterateInfo?.status === 1}>
-                    {iterateInfo?.status === 1 ? '开启中' : '已结束'}
+                    {iterateInfo?.status === 1
+                      ? t('common.opening')
+                      : t('common.ended')}
                     <IconFont
                       type="down-icon"
                       style={{

@@ -87,7 +87,7 @@ const Operation = (props: Props) => {
           id: props.currentDetail?.id,
           status: val === 1,
         })
-        message.success('修改成功')
+        message.success(t('common.editS'))
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
         props.onIsUpdateList?.(true)
       } catch (error) {
@@ -194,7 +194,9 @@ const Operation = (props: Props) => {
           </span>
           {hasChangeStatus ? (
             <StatusTag isOpen={props.currentDetail?.status === 1}>
-              {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+              {props.currentDetail?.status === 1
+                ? t('common.opening')
+                : t('common.ended')}
               <IconFont
                 type="down-icon"
                 style={{ fontSize: 12, marginLeft: 4 }}
@@ -208,7 +210,9 @@ const Operation = (props: Props) => {
             >
               {props.currentDetail ? (
                 <StatusTag isOpen={props.currentDetail?.status === 1}>
-                  {props.currentDetail?.status === 1 ? '开启中' : '已结束'}
+                  {props.currentDetail?.status === 1
+                    ? t('common.opening')
+                    : t('common.ended')}
                   <IconFont
                     type="down-icon"
                     style={{

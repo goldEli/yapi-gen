@@ -147,7 +147,7 @@ const WrapRightBox = () => {
     if (content.trim().length) {
       try {
         await addComment({ projectId, demandId, content: content.trim() })
-        message.success('回复成功')
+        message.success(t('project.replaySuccess'))
         setAddValue('')
         getList()
       } catch (error) {
@@ -164,12 +164,12 @@ const WrapRightBox = () => {
   return (
     <WrapRight>
       <DeleteConfirm
-        text="确认删除当前评论？"
+        text={t('mark.cd')}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <Title>评论</Title>
+      <Title>{t('common.comment')}</Title>
       <div style={{ maxHeight: isComment ? 600 : 400, overflow: 'auto' }}>
         {dataList?.list?.map((item: any) => (
           <CommentItem key={item.id}>
@@ -203,7 +203,7 @@ const WrapRightBox = () => {
         : (
             <TextareaWrap>
               <Input.TextArea
-                placeholder="输入评论，按Enter快速发布"
+                placeholder={t('mark.editCom')}
                 autoSize={{ minRows: 5, maxRows: 5 }}
                 value={addValue}
                 onChange={(e: any) => setAddValue(e.target.value)}

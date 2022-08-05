@@ -128,7 +128,7 @@ const SearchList = (props: Props) => {
                 label={t('common.department')}
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder="所有"
+                placeholder={t('common.all')}
                 showSearch
               >
                 {departmentOptions.map((item: any) => (
@@ -146,7 +146,7 @@ const SearchList = (props: Props) => {
                 label={t('common.job')}
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder="所有"
+                placeholder={t('common.all')}
                 showSearch
               >
                 {positionOptions.map((item: any) => (
@@ -164,7 +164,7 @@ const SearchList = (props: Props) => {
                 label={t('common.permissionGroup')}
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder="所有"
+                placeholder={t('common.all')}
                 showSearch
               >
                 {roleOptions.map((item: any) => (

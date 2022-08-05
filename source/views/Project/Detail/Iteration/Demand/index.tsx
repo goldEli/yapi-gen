@@ -634,7 +634,7 @@ const DemandWrap = () => {
   return (
     <div>
       <DeleteConfirm
-        text="确认删除该需求？"
+        text={t('mark.del')}
         isVisible={isDelete}
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}

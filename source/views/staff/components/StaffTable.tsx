@@ -127,7 +127,7 @@ export const useDynamicColumns = (state: any) => {
       ) => {
         return (
           <div onClick={() => state.showModal2(record)}>
-            {text === 1 ? '男' : '女'}
+            {text === 1 ? t('common.male') : t('common.female')}
           </div>
         )
       },
@@ -171,7 +171,7 @@ export const useDynamicColumns = (state: any) => {
       ) => {
         return (
           <div onClick={() => state.showModal2(record)}>
-            {text === 1 ? '在职' : '离职'}
+            {text === 1 ? t('common.job1') : t('common.job2')}
           </div>
         )
       },

@@ -1,5 +1,14 @@
 {
   "common": {
+    "close": "close",
+    "move": "remove",
+    "editS": "modify successfully",
+    "job1": "modify successfully",
+    "job2": "be on the job",
+    "start": "Is expected to start",
+    "end": "Is expected to end",
+    "openSuccess": "Open the success",
+    "endSuccess": "End of success",
     "deleteSuccess": "Successfully deleted",
     "createSuccess": "Created successfully",
     "editSuccess": "Successfully edited",
@@ -329,8 +338,15 @@
     "pleaseKey": "Please enter your nickname, name, email and phone number"
   },
   "mark": {
-    "endP": "确认结束该项目？",
-    "delP": "确认删除该项目？",
-    "searchP": "搜索项目或项目ID"
+    "endP": "Confirmed closure of the project?",
+    "delP": "Want to delete this item?",
+    "searchP": "Search for the project or project ID",
+    "cd": "Want to delete current comment?",
+    "editCom": "Enter a comment and press Enter to publish quickly",
+    "editIterate": "Want to delete the iteration?",
+    "level": "Please enter the product abbreviation + planned release number",
+    "del": "Confirm to delete the requirement",
+    "delPeople": "Are you sure you want to delete the current member?",
+    "change": "Status changed successfully"
   }
 }

@@ -61,7 +61,7 @@ const Situation = () => {
           <span>{t('situation.companySurvey')}</span>
           <PanelHeaderSecond>
             <div>{userInfo?.company_name}</div>
-            <Tooltip placement="top" title="切换企业">
+            <Tooltip placement="top" title={t('container.changeCompany')}>
               <div
                 onClick={() => setCompanyModalVisible(true)}
                 className={buttonCss}

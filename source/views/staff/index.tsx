@@ -185,7 +185,7 @@ const Staff = () => {
   const rest = async () => {
     const res = await refreshStaff()
     if (res.code === 0) {
-      message.success('刷新成功')
+      message.success(t('staff.refreshSuccess'))
       init()
     }
   }
@@ -210,7 +210,7 @@ const Staff = () => {
       <StaffHeader>{t('staff.companyStaff')}</StaffHeader>
       <Hehavior>
         <div style={{ display: 'flex' }}>
-          <Reset onClick={rest}>刷新</Reset>
+          <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <MyInput
             suffix={
               <IconFont
@@ -224,7 +224,7 @@ const Staff = () => {
           />
         </div>
         <div style={{ marginRight: '40px', display: 'flex' }}>
-          <Reset onClick={rest}>刷新</Reset>
+          <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <SetButton onClick={() => setIsShow(!isShow)}>
             <IconFont
               type="filter"

@@ -112,9 +112,9 @@ export const StaffPersonal = (props: {
       </PersonalHead>
       <PersonalFooter>
         <Left>
-          <Line>手机号</Line>
+          <Line>{t('common.phone')}</Line>
           <Line>{t('common.email')}</Line>
-          <Line>姓名</Line>
+          <Line>{t('common.name')}</Line>
           <Line>{t('common.nickname')}</Line>
           <Line>{t('common.permissionGroup')}</Line>
         </Left>
