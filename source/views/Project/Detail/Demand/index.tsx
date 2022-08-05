@@ -21,6 +21,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -119,6 +120,7 @@ const DemandBox = () => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
+  const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
   const type = searchParams.get('type')
   const projectId = searchParams.get('id')
@@ -135,11 +137,14 @@ const DemandBox = () => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
-
-  useEffect(() => {
+  const init = async () => {
     if (demandId) {
-      getDemandInfo({ projectId, id: demandId })
+      await getDemandInfo({ projectId, id: demandId })
     }
+    setLoadingState(true)
+  }
+  useEffect(() => {
+    init()
   }, [])
 
   const onChangeIdx = (val: string) => {
@@ -296,6 +301,9 @@ const DemandBox = () => {
       getDemandInfo({ projectId, id: demandId })
     }
     setIsUpdate(true)
+  }
+  if (!loadingState) {
+    return <Loading />
   }
 
   return (

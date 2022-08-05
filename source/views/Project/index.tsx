@@ -15,6 +15,7 @@ import { message } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -36,6 +37,7 @@ const Project = () => {
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -79,11 +81,14 @@ const Project = () => {
     getProjectList(params)
   }
 
-  useEffect(() => {
+  const init = async () => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
-    getProjectCoverList()
+    await getProjectCoverList()
+    setLoadingState(true)
+  }
+  useEffect(() => {
+    init()
   }, [])
-
   const onChangeType = (type: number) => {
     setActiveType(type)
     getList(type, isGrid, isHidden, searchVal, order, pageObj)
@@ -186,7 +191,9 @@ const Project = () => {
     setOrder(item)
     getList(activeType, isGrid, isHidden, searchVal, item, pageObj)
   }
-
+  if (!loadingState) {
+    return <Loading />
+  }
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
       <DeleteConfirm

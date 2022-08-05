@@ -17,6 +17,7 @@ import moment from 'moment'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -138,6 +139,7 @@ const Profile = () => {
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
   const navigate = useNavigate()
+  const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const changeMonth = async () => {
     const res2 = await getMineGatte({
@@ -153,7 +155,8 @@ const Profile = () => {
     })
 
     setGatteData(res2.list)
-    setTotal(res2.pager.total)
+    await setTotal(res2.pager.total)
+    setLoadingState(true)
   }
   const init = async () => {
     const res = await getMineChartsList()
@@ -203,6 +206,9 @@ const Profile = () => {
   }
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
+  }
+  if (!loadingState) {
+    return <Loading />
   }
   return (
     <PermissionWrap
