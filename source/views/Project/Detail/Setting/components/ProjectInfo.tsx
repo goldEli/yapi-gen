@@ -136,33 +136,33 @@ const ProjectInfo = () => {
             <span>{projectInfo.userName}</span>
           </InfoItem>
           <InfoItem>
-            <div>创建时间：</div>
+            <div>{t('common.createTime')}：</div>
             <span>{projectInfo.createTime}</span>
           </InfoItem>
           <InfoItem>
-            <div>结束时间：</div>
+            <div>{t('common.endTime')}：</div>
             <span>{projectInfo.endTime}</span>
           </InfoItem>
           <InfoItem>
-            <div>项目状态：</div>
+            <div>{t('project.projectStatus')}：</div>
             <span>{projectInfo.status === 1 ? '开启' : '结束'}</span>
           </InfoItem>
           <InfoItem>
-            <div>权限：</div>
+            <div>{t('common.permission')}：</div>
             <span>{projectInfo.isPublic === 1 ? '企业公开' : '私有项目'}</span>
           </InfoItem>
           <CardGroup size={24}>
             <CardItem>
               <div>{projectInfo.demandCount}</div>
-              <span>需求</span>
+              <span>{t('common.demand')}</span>
             </CardItem>
             <CardItem>
               <div>{projectInfo.iterateCount}</div>
-              <span>迭代版本</span>
+              <span>{t('project.iterateEdition')}</span>
             </CardItem>
             <CardItem>
               <div>{projectInfo.memberCount}</div>
-              <span>项目成员</span>
+              <span>{t('project.projectMember')}</span>
             </CardItem>
           </CardGroup>
         </InfoRight>

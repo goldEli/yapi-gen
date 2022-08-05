@@ -440,8 +440,8 @@ const ProjectMember = () => {
           <HeaderTop>
             <SearchComponent
               onChangeVisible={onChangeValue}
-              text="添加成员"
-              placeholder="输入昵称姓名"
+              text={t('project.addMember1')}
+              placeholder={t('project.pleaseNickname')}
               onChangeSearch={onChangeSearch}
               isPermission={hasAdd}
             />
