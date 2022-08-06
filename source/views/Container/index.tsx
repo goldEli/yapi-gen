@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -12,6 +13,7 @@ import { useModel } from '@/models'
 // eslint-disable-next-line no-duplicate-imports
 import { useNavigate } from 'react-router-dom'
 import { changeLanguage, languages, type LocaleKeys } from '@/locals'
+import NoPermission from './components/NoPermission'
 
 const Wrap = styled.div`
   display: flex;
@@ -45,8 +47,10 @@ export const Container = () => {
   }
 
   useEffect(() => {
-    const normalLang = localStorage.getItem('language') || 'zh'
-    changeLanguage(normalLang as LocaleKeys)
+    const language = (new URLSearchParams(location.search).get('language')
+      || 'zh') as 'zh' | 'en'
+    localStorage.setItem('language', language)
+    changeLanguage(language)
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -77,13 +81,20 @@ export const Container = () => {
       })
     }
   }, [loginInfo, userInfo])
+
   return (
-    <Wrap>
-      <Side />
-      <Main>
-        <Outlet />
-      </Main>
-      <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
-    </Wrap>
+    <div>
+      {userInfo?.company_permissions?.length ? (
+        <Wrap>
+          <Side />
+          <Main>
+            <Outlet />
+          </Main>
+          <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
+        </Wrap>
+      )
+        : <NoPermission />
+      }
+    </div>
   )
 }

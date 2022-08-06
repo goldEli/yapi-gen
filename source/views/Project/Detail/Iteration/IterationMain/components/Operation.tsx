@@ -14,6 +14,7 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 
 const OperationWrap = styled.div({
+  padding: '0 24px',
   minHeight: 52,
   minWidth: '1300px',
   lineHeight: '52px',
@@ -24,7 +25,8 @@ const OperationWrap = styled.div({
 })
 
 const StickyWrap = styled.div({
-  padding: '0 24px',
+
+  // padding: '0 24px',
   background: 'white',
   position: 'sticky',
   top: 0,

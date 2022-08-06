@@ -1,5 +1,6 @@
 {
   "common": {
+    "localsSwitching": "语言切换",
     "close": "关闭",
     "move": "移除",
     "editS": "修改成功",
@@ -110,6 +111,8 @@
     "confirm2": "确认"
   },
   "components": {
+    "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",
+    "toLogin": "返回登录",
     "changeCompany": "公司切换",
     "deleteConfirm": "删除确认",
     "pleaseContent": "请输入内容...",

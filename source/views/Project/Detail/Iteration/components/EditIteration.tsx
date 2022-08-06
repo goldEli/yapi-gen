@@ -142,7 +142,7 @@ const EditIteration = (props: Props) => {
       destroyOnClose
       maskClosable={false}
     >
-      <FormWrap form={form} labelCol={{ span: 3 }} initialValues={iterateInfo}>
+      <FormWrap form={form} labelCol={{ span: 4 }} initialValues={iterateInfo}>
         <div style={{ display: 'flex' }}>
           <IconFont type="interation" />
           <Form.Item

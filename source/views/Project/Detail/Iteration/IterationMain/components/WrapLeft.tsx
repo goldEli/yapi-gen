@@ -76,6 +76,7 @@ const SortItem = styled.div<{ isActive: boolean }>(
     fontSize: 14,
     cursor: 'pointer',
     marginTop: 4,
+    padding: '0 16px',
     '&:hover': {
       color: '#2877ff',
       background: '#F0F4FA',
@@ -207,7 +208,7 @@ const WrapLeft = (props: Props) => {
 
   const options = [
     { label: t('common.open'), value: 1 },
-    { label: '结束', value: 2 },
+    { label: t('common.stop'), value: 2 },
   ]
 
   const onConfirmFilter = () => {
@@ -229,7 +230,7 @@ const WrapLeft = (props: Props) => {
   }
 
   const sortContent = (
-    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 132 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 100 }}>
       {sortList.map(i => (
         <SortItem
           isActive={currentSort.name === i.name}

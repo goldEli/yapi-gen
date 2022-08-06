@@ -10,7 +10,6 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 
 const AddButton = styled.div({
-  width: 112,
   height: 32,
   padding: '0 16px',
   borderRadius: 6,

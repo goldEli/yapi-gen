@@ -129,7 +129,7 @@ export const Panel = () => {
   const [languageMode, setLanguageMode] = useState(1)
 
   const changeLanguageMode = async (value: number, key: any) => {
-    const clear = message.loading(t('global.localsSwitching'), 0)
+    const clear = message.loading(t('common.localsSwitching'), 0)
     try {
       await changeLanguage(key as LocaleKeys)
 

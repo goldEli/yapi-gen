@@ -125,7 +125,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   return (
     <Modal
       width={800}
-      title={t('common.showFiled')}
+      title={t('components.showFiled')}
       visible={props.isVisible}
       onCancel={props.onClose}
       onOk={handleOk}
@@ -135,7 +135,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       <Wrap>
         <Left>
           <ItemWrap>
-            <div className={text}>{t('common.basicFiled')}</div>
+            <div className={text}>{t('components.basicFiled')}</div>
             <CheckboxGroup value={checkList} onChange={onChange}>
               {plainOptions.map(item => (
                 <Checkbox
@@ -149,7 +149,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
             </CheckboxGroup>
           </ItemWrap>
           <ItemWrap>
-            <div className={text}>{t('common.personOrTime')}</div>
+            <div className={text}>{t('components.personOrTime')}</div>
             <CheckboxGroup value={checkList2} onChange={onChange2}>
               {plainOptions2.map(item => (
                 <Checkbox key={item.label} value={item.value}>

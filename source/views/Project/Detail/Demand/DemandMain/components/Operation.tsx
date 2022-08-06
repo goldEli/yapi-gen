@@ -16,10 +16,10 @@ const OperationWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  padding: '0 24px',
 })
 
 const StickyWrap = styled.div({
-  padding: '0 24px',
   background: 'white',
   position: 'sticky',
   top: 64,

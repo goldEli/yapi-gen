@@ -12,7 +12,8 @@ import { useTranslation } from 'react-i18next'
 const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
-  minHeight: 64,
+
+  // minHeight: 64,
   alignItems: 'center',
 })
 
