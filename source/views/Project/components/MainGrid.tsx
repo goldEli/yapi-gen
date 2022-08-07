@@ -47,6 +47,11 @@ const AddProject = styled.div({
   },
 })
 
+const DataWrap = styled.div({
+  height: '100%',
+  overflowX: 'auto',
+})
+
 const MainGrid = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
@@ -66,24 +71,27 @@ const MainGrid = (props: Props) => {
   }
 
   return (
-    <SpaceWrap size={32}>
-      {props.projectList.list?.map((item: any) => (
-        <div key={item.id} onClick={() => onToDetail(item)}>
-          <ProjectCard
-            item={item}
-            onChangeOperation={props.onChangeOperation}
-          />
-        </div>
-      ))}
-      {isPermission
-        ? null
-        : (
-            <AddProject onClick={onAddClick}>
-              <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
-              <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
-            </AddProject>
-          )}
-    </SpaceWrap>
+    <DataWrap>
+      <SpaceWrap size={32}>
+        {props.projectList.list?.map((item: any) => (
+          <div key={item.id} onClick={() => onToDetail(item)}>
+            <ProjectCard
+              item={item}
+              onChangeOperation={props.onChangeOperation}
+            />
+          </div>
+        ))}
+
+        {isPermission
+          ? null
+          : (
+              <AddProject onClick={onAddClick}>
+                <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
+                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
+              </AddProject>
+            )}
+      </SpaceWrap>
+    </DataWrap>
   )
 }
 

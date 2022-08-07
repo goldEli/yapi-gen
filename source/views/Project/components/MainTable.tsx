@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -12,6 +13,7 @@ import Sort from '@/components/Sort'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -55,6 +57,12 @@ const StatusWrap = styled.div({
     fontSize: 14,
     fontWeight: 400,
   },
+})
+
+const DataWrap = styled.div({
+  height: 'calc(100% - 64px)',
+  overflowX: 'auto',
+  background: 'white',
 })
 
 interface MoreProps {
@@ -350,16 +358,24 @@ const MainTable = (props: Props) => {
   }, [])
 
   return (
-    <div>
-      <TableBox
-        rowKey="id"
-        columns={columns}
-        dataSource={props.projectList?.list}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        showSorterTooltip={false}
-        onRow={onTableRow}
-      />
+    <div style={{ height: '100%' }}>
+      <DataWrap>
+        {!!props.projectList?.list
+          && (props.projectList?.list?.length > 0 ? (
+            <TableBox
+              rowKey="id"
+              columns={columns}
+              dataSource={props.projectList?.list}
+              pagination={false}
+              scroll={{ x: 'max-content' }}
+              showSorterTooltip={false}
+              onRow={onTableRow}
+            />
+          )
+            : <NoData />
+          )}
+      </DataWrap>
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

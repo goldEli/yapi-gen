@@ -65,7 +65,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       value: userInfo.position_name,
     },
     {
-      label: t('common.personInfo'),
+      label: t('common.permissionGroup'),
       value: userInfo.group_name,
     },
   ]
@@ -74,7 +74,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       width={420}
       footer={null}
       onCancel={() => props.close()}
-      title={t('container.permissionGroup')}
+      title={t('container.personInfo')}
       visible={props.visible}
       maskClosable={false}
       destroyOnClose

@@ -1,8 +1,11 @@
+/* eslint-disable no-undefined */
 import { useState } from 'react'
 import * as services from '@/services'
 
 export default () => {
-  const [projectList, setProjectList] = useState<any>([])
+  const [projectList, setProjectList] = useState<any>({
+    list: undefined,
+  })
   const [tagList, setTagList] = useState<any>([])
   const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])

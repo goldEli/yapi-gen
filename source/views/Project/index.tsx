@@ -11,7 +11,7 @@ import EditProject from './components/EditProject'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { message } from 'antd'
+import { message, Spin } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -26,8 +26,9 @@ const SearchWrap = styled.div({
 })
 
 const Content = styled.div({
-  padding: 16,
+  padding: '16px 16px 0 16px',
   background: '#F5F7FA',
+  height: 'calc(100% - 116px)',
 })
 
 const Project = () => {
@@ -52,8 +53,9 @@ const Project = () => {
     openProject,
   } = useModel('project')
   const { userInfo } = useModel('user')
+  const [isSpinning, setIsSpinning] = useState(false)
 
-  const getList = (
+  const getList = async (
     active: number,
     isTable: boolean,
     isDisable: boolean,
@@ -61,6 +63,7 @@ const Project = () => {
     sortVal: any,
     pageVal: any,
   ) => {
+    setIsSpinning(true)
     const params: any = {
       searchValue: val,
       orderKey: sortVal.key,
@@ -78,7 +81,8 @@ const Project = () => {
     if (active) {
       params.isPublic = 1
     }
-    getProjectList(params)
+    await getProjectList(params)
+    setIsSpinning(false)
   }
 
   const init = async () => {
@@ -248,23 +252,25 @@ const Project = () => {
           />
         </div>
         <Content>
-          {isGrid ? (
-            <MainGrid
-              projectList={projectList}
-              onChangeVisible={() => setIsVisible(true)}
-              onChangeOperation={onChangeOperation}
-              onAddClear={() => setOperationDetail({})}
-            />
-          ) : (
-            <MainTable
-              onChangeOperation={(e, type, item) => onChangeOperation(e, type, item)
-              }
-              projectList={projectList}
-              onChangePageNavigation={onChangePageNavigation}
-              onUpdateOrderKey={onUpdateOrderKey}
-              order={order}
-            />
-          )}
+          <Spin spinning={isSpinning}>
+            {isGrid ? (
+              <MainGrid
+                projectList={projectList}
+                onChangeVisible={() => setIsVisible(true)}
+                onChangeOperation={onChangeOperation}
+                onAddClear={() => setOperationDetail({})}
+              />
+            ) : (
+              <MainTable
+                onChangeOperation={(e, type, item) => onChangeOperation(e, type, item)
+                }
+                projectList={projectList}
+                onChangePageNavigation={onChangePageNavigation}
+                onUpdateOrderKey={onUpdateOrderKey}
+                order={order}
+              />
+            )}
+          </Spin>
         </Content>
       </PermissionWrap>
     </div>

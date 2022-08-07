@@ -1,7 +1,16 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Table, Select, DatePicker, Pagination, message, Form } from 'antd'
+import {
+  Table,
+  Select,
+  DatePicker,
+  Pagination,
+  message,
+  Form,
+  Spin,
+} from 'antd'
 import moment from 'moment'
 import { css } from '@emotion/css'
 import { PaginationWrap } from '@/components/StyleCommon'
@@ -9,6 +18,7 @@ import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const Header = styled.div({
   height: 'auto',
@@ -87,7 +97,13 @@ const rangPicker = css`
 const Content = styled.div({
   padding: 16,
   background: '#F5F7FA',
+  height: 'calc(100% - 128px)',
+})
+
+const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
+  background: 'white',
+  overflowX: 'auto',
 })
 
 const StatusWrap = styled.div({
@@ -128,8 +144,10 @@ const LoginLog = () => {
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const getList = async (orderVal?: any) => {
+    setIsSpinning(true)
     const values = await form.getFieldsValue()
     if (values.times) {
       values.times = [
@@ -149,6 +167,7 @@ const LoginLog = () => {
         ...values,
       })
       setDataList(result)
+      setIsSpinning(false)
     } finally {
 
       //
@@ -380,14 +399,24 @@ const LoginLog = () => {
         </SearchWrap>
       </Header>
       <Content>
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={dataList.list}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-          showSorterTooltip={false}
-        />
+        <DataWrap>
+          <Spin spinning={isSpinning}>
+            {!!dataList?.list
+              && (dataList?.list?.length > 0 ? (
+                <Table
+                  rowKey="id"
+                  columns={columns}
+                  dataSource={dataList.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                  showSorterTooltip={false}
+                />
+              )
+                : <NoData />
+              )}
+          </Spin>
+        </DataWrap>
+
         <PaginationWrap>
           <Form.Item noStyle dependencies={['pageSize']}>
             {() => {

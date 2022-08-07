@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Modal, Input, Menu, Dropdown, message } from 'antd'
+import {
+  Checkbox,
+  Space,
+  Modal,
+  Input,
+  Menu,
+  Dropdown,
+  message,
+  Spin,
+} from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -213,10 +222,13 @@ const ProjectSet = () => {
     deletePermission,
     projectInfo,
   } = useModel('project')
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const getPermissionList = async (id: number) => {
+    setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })
     setPermissionList(result)
+    setIsSpinning(false)
     let keys: any[] = []
     result.list.forEach((i: any) => {
       const a = i.children.filter((j: any) => j.checked)
@@ -226,11 +238,14 @@ const ProjectSet = () => {
   }
 
   const init = async (isInit?: boolean) => {
+    setIsSpinning(true)
     const result = await getProjectPermission({ projectId })
     setDataList(result.list)
     if (isInit) {
       setActiveDetail(result.list[0])
       getPermissionList(result.list[0].id)
+    } else {
+      setIsSpinning(false)
     }
   }
 
@@ -392,76 +407,80 @@ const ProjectSet = () => {
           </ModalFooter>
         </Modal>
         <Warp>
-          <SetMain>
-            <SetLeft>
-              <Title style={{ marginLeft: 24 }}>{t('setting.userGroup')}</Title>
-              <MenuItems>
-                {dataList?.map((item: any) => (
-                  <MenuItem
-                    key={item.id}
-                    onClick={() => onChangeTabs(item)}
-                    isActive={item.id === activeDetail.id}
-                  >
-                    <div className="name">{item.name}</div>
-                    <span className="subName">
-                      {item.type === 1
-                        ? t('setting.systemGroup')
-                        : t('setting.customGroup')}
-                    </span>
-                    <Dropdown
-                      key={isMoreVisible.toString()}
-                      visible={isMoreVisible}
-                      overlay={() => menu(item)}
-                      placement="bottomRight"
-                      trigger={['hover']}
-                      getPopupContainer={node => node}
-                      onVisibleChange={visible => setIsMoreVisible(visible)}
+          <Spin spinning={isSpinning}>
+            <SetMain>
+              <SetLeft>
+                <Title style={{ marginLeft: 24 }}>
+                  {t('setting.userGroup')}
+                </Title>
+                <MenuItems>
+                  {dataList?.map((item: any) => (
+                    <MenuItem
+                      key={item.id}
+                      onClick={() => onChangeTabs(item)}
+                      isActive={item.id === activeDetail.id}
                     >
-                      <IconWrap type="more" hidden={item.type === 1} />
-                    </Dropdown>
-                  </MenuItem>
-                ))}
-              </MenuItems>
-              <div
-                style={{
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  color: '#2877FF',
-                }}
-                onClick={() => setIsVisible(true)}
-              >
-                <IconFont type="plus" />
-                <span>{t('setting.addUserGroup')}</span>
-              </div>
-            </SetLeft>
-            <SetRight>
-              <Title>{activeDetail.name}</Title>
-              <TitleGroup>
-                <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
-                <OperationWrap>{t('setting.operationObject')}</OperationWrap>
-                <span>{t('common.permission')}</span>
-              </TitleGroup>
-              <MainWrap>
-                {permissionList.list?.map((i: any) => (
-                  <PermissionItem
-                    key={i.id}
-                    item={i}
-                    onChange={setSelectKeys}
-                    value={selectKeys}
-                    activeDetail={activeDetail}
-                  />
-                ))}
-              </MainWrap>
-              <Button
-                hidden={activeDetail.type === 1}
-                style={{ width: 'fit-content', marginTop: 16 }}
-                type="primary"
-                onClick={onSavePermission}
-              >
-                {t('common.save')}
-              </Button>
-            </SetRight>
-          </SetMain>
+                      <div className="name">{item.name}</div>
+                      <span className="subName">
+                        {item.type === 1
+                          ? t('setting.systemGroup')
+                          : t('setting.customGroup')}
+                      </span>
+                      <Dropdown
+                        key={isMoreVisible.toString()}
+                        visible={isMoreVisible}
+                        overlay={() => menu(item)}
+                        placement="bottomRight"
+                        trigger={['hover']}
+                        getPopupContainer={node => node}
+                        onVisibleChange={visible => setIsMoreVisible(visible)}
+                      >
+                        <IconWrap type="more" hidden={item.type === 1} />
+                      </Dropdown>
+                    </MenuItem>
+                  ))}
+                </MenuItems>
+                <div
+                  style={{
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    color: '#2877FF',
+                  }}
+                  onClick={() => setIsVisible(true)}
+                >
+                  <IconFont type="plus" />
+                  <span>{t('setting.addUserGroup')}</span>
+                </div>
+              </SetLeft>
+              <SetRight>
+                <Title>{activeDetail.name}</Title>
+                <TitleGroup>
+                  <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
+                  <OperationWrap>{t('setting.operationObject')}</OperationWrap>
+                  <span>{t('common.permission')}</span>
+                </TitleGroup>
+                <MainWrap>
+                  {permissionList.list?.map((i: any) => (
+                    <PermissionItem
+                      key={i.id}
+                      item={i}
+                      onChange={setSelectKeys}
+                      value={selectKeys}
+                      activeDetail={activeDetail}
+                    />
+                  ))}
+                </MainWrap>
+                <Button
+                  hidden={activeDetail.type === 1}
+                  style={{ width: 'fit-content', marginTop: 16 }}
+                  type="primary"
+                  onClick={onSavePermission}
+                >
+                  {t('common.save')}
+                </Button>
+              </SetRight>
+            </SetMain>
+          </Spin>
         </Warp>
       </div>
     </PermissionWrap>
