@@ -12,8 +12,15 @@ import Next from './components/Next'
 import { useModel } from '@/models'
 // eslint-disable-next-line no-duplicate-imports
 import { useNavigate } from 'react-router-dom'
-import { changeLanguage, languages, type LocaleKeys } from '@/locals'
+import {
+  changeLanguage,
+  languages,
+  loadedAntdLocals,
+  type LocaleKeys,
+} from '@/locals'
 import NoPermission from './components/NoPermission'
+import { useTranslation } from 'react-i18next'
+import { ConfigProvider } from 'antd'
 
 const Wrap = styled.div`
   display: flex;
@@ -39,6 +46,10 @@ export const Container = () => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const { loginInfo, userInfo, getLoginDetail, getUserDetail, login }
     = useModel('user')
+  const {
+    i18n: { language },
+  } = useTranslation()
+  const antdLocal = loadedAntdLocals[language]
 
   const init = async () => {
     if (!localStorage.getItem('agileToken')) {
@@ -50,13 +61,17 @@ export const Container = () => {
   }
 
   useEffect(() => {
-    const language = (new URLSearchParams(location.search).get('language')
-      || 'zh') as 'zh' | 'en'
-    localStorage.setItem('language', language)
-    changeLanguage(language)
+    const languageParams
+      = (localStorage.getItem('language') as 'zh' | 'en')
+      || ((new URLSearchParams(location.search).get('language') || 'zh') as
+        | 'zh'
+        | 'en')
+    localStorage.setItem('language', languageParams)
+    changeLanguage(languageParams)
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   useEffect(() => {
     setIsNextVisible(loginInfo.admin_first_login)
 
@@ -86,7 +101,7 @@ export const Container = () => {
   }, [loginInfo, userInfo])
 
   return (
-    <div>
+    <ConfigProvider locale={antdLocal}>
       {userInfo?.company_permissions?.length ? (
         <Wrap>
           <Side />
@@ -98,6 +113,6 @@ export const Container = () => {
       )
         : <NoPermission />
       }
-    </div>
+    </ConfigProvider>
   )
 }

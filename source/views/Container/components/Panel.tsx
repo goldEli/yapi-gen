@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 import { useState } from 'react'
 import styled from '@emotion/styled'
@@ -126,7 +127,9 @@ export const Panel = () => {
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
-  const [languageMode, setLanguageMode] = useState(1)
+  const [languageMode, setLanguageMode] = useState(
+    localStorage.getItem('language') === 'zh' ? 1 : 2,
+  )
 
   const changeLanguageMode = async (value: number, key: any) => {
     const clear = message.loading(t('common.localsSwitching'), 0)

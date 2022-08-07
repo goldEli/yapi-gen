@@ -18,6 +18,7 @@ export const getTicket = () => {
   url.searchParams.set('type', '0')
   url.searchParams.set('redirect', location.href)
   url.searchParams.set('language', localStorage.getItem('language') || 'zh')
+  localStorage.removeItem('language')
 
   location.href = url.href
 }

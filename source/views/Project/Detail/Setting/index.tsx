@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -41,12 +42,11 @@ const MenuWrap = styled.div({
   width: '100%',
 })
 
-const MenuItem = styled.div<{ isActive: boolean }>(
+const MenuItem = styled.div<{ isActive: boolean; language?: string }>(
   {
     width: '100%',
     height: 44,
     display: 'flex',
-    paddingLeft: 65,
     alignItems: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
@@ -69,9 +69,10 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       },
     },
   },
-  ({ isActive }) => ({
+  ({ isActive, language }) => ({
     borderRight: isActive ? '3px solid #2877FF' : '3px solid white',
     background: isActive ? '#F0F4FA' : 'white',
+    paddingLeft: language === 'zh' ? 65 : 40,
     div: {
       color: isActive ? '#2877FF' : '#323233',
     },
@@ -82,7 +83,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
 )
 
 const Setting = () => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useModel('project')
@@ -121,6 +122,7 @@ const Setting = () => {
               key={item.name}
               isActive={index === activeTabs}
               hidden={!item.isPermission}
+              language={i18n.language}
             >
               <IconFont type={item.icon} />
               <div>{item.name}</div>

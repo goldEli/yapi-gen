@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconFont from '@/components/IconFont'
@@ -42,13 +43,12 @@ const MenuWrap = styled.div({
   width: '100%',
 })
 
-const MenuItem = styled.div<{ isActive: boolean }>(
+const MenuItem = styled.div<{ isActive: boolean; language?: string }>(
   {
     width: '100%',
     height: 44,
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: 65,
     cursor: 'pointer',
     boxSizing: 'border-box',
     div: {
@@ -70,9 +70,10 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       },
     },
   },
-  ({ isActive }) => ({
+  ({ isActive, language }) => ({
     borderRight: isActive ? '3px solid #2877FF' : '3px solid white',
     background: isActive ? '#F0F4FA' : 'white',
+    paddingLeft: language === 'zh' ? 65 : 55,
     div: {
       color: isActive ? '#2877FF' : '#323233',
     },
