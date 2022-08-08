@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import SearchComponent from '@/components/SearchComponent'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -39,6 +39,7 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const { filterAll, projectInfo } = useModel('project')
+  const { setFilterHeight } = useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -58,6 +59,7 @@ const Operation = (props: Props) => {
     finishAt: [],
     searchValue: '',
   })
+  const stickyWrapDom = useRef<HTMLDivElement>(null)
 
   const onChangeSearch = (val: string) => {
     setSearchVal(val)
@@ -111,8 +113,15 @@ const Operation = (props: Props) => {
     getSearchKey()
   }, [projectInfo, filterAll])
 
+  const onChangeFilter = () => {
+    setFilterState(!filterState)
+    setTimeout(() => {
+      setFilterHeight(stickyWrapDom.current?.clientHeight)
+    }, 100)
+  }
+
   return (
-    <StickyWrap>
+    <StickyWrap ref={stickyWrapDom}>
       <OperationWrap>
         <SearchComponent
           onChangeVisible={(e: any) => props.onChangeVisible?.(e)}
@@ -125,7 +134,7 @@ const Operation = (props: Props) => {
           )}
         />
         <OperationGroup
-          onChangeFilter={() => setFilterState(!filterState)}
+          onChangeFilter={onChangeFilter}
           onChangeGrid={props.onChangeGrid}
           isGrid={props.isGrid}
           filterState={filterState}

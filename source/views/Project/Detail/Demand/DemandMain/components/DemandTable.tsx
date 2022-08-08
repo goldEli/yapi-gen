@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
-import { Pagination, Table, Popover, message } from 'antd'
+import { Pagination, Table, Popover, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -20,6 +20,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -38,9 +39,15 @@ const StatusWrap = styled.div<{ color?: string }>(
   }),
 )
 const Content = styled.div({
-  padding: 24,
+  padding: '16px 16px 0 16px',
   background: '#F5F7FA',
   height: 'auto',
+})
+
+const DataWrap = styled.div({
+  background: 'white',
+  overflowX: 'auto',
+  height: 'calc(100% - 64px)',
 })
 
 const RowIconFont = styled(IconFont)({
@@ -67,6 +74,7 @@ interface Props {
   settingState: boolean
   onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
+  isSpinning?: boolean
 }
 
 interface ChildeProps {
@@ -263,7 +271,8 @@ const DemandTable = (props: Props) => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const { updatePriority, updateDemandStatus } = useModel('demand')
+  const { updatePriority, updateDemandStatus, filterHeight }
+    = useModel('demand')
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -375,15 +384,25 @@ const DemandTable = (props: Props) => {
   }, [titleList, titleList2, columns])
 
   return (
-    <Content>
-      <TableBox
-        rowKey="id"
-        columns={selectColum}
-        dataSource={props.data?.list}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        showSorterTooltip={false}
-      />
+    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+      <DataWrap>
+        <Spin spinning={props?.isSpinning}>
+          {!!props.data?.list
+            && (props.data?.list?.length > 0 ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={props.data?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+                showSorterTooltip={false}
+              />
+            )
+              : <NoData />
+            )}
+        </Spin>
+      </DataWrap>
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

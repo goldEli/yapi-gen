@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+/* eslint-disable max-params */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Operation from './components/Operation'
@@ -24,19 +26,26 @@ const DemandMain = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [deleteId, setDeleteId] = useState(0)
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { getDemandList, deleteDemand } = useModel('demand')
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const getList = async (
     state: boolean,
     searchParamsObj: any,
     item?: any,
     orderItem?: any,
+    isInit?: boolean,
   ) => {
+    if (!isInit) {
+      setIsSpinning(true)
+    }
     let params = {}
     if (state) {
       params = {
@@ -81,11 +90,12 @@ const DemandMain = (props: Props) => {
     }
     const result = await getDemandList(params)
     setDataList(result)
+    setIsSpinning(false)
     props.onIsUpdate?.()
   }
 
   useEffect(() => {
-    getList(isGrid, searchItems, pageObj, order)
+    getList(isGrid, searchItems, pageObj, order, true)
   }, [])
 
   useEffect(() => {
@@ -143,7 +153,7 @@ const DemandMain = (props: Props) => {
   }
 
   return (
-    <div>
+    <div style={{ height: 'calc(100% - 64px)' }}>
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isVisible}
@@ -162,7 +172,8 @@ const DemandMain = (props: Props) => {
         <DemandGrid
           onChangeVisible={onChangeOperation}
           onDelete={onDelete}
-          list={dataList}
+          data={dataList}
+          isSpinning={isSpinning}
         />
       ) : (
         <DemandTable
@@ -174,6 +185,7 @@ const DemandMain = (props: Props) => {
           settingState={isSettingState}
           onChangeSetting={setIsSettingState}
           onChangeOrder={onChangeOrder}
+          isSpinning={isSpinning}
         />
       )}
     </div>

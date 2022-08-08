@@ -72,22 +72,24 @@ export const getDemandList: any = async (params: any) => {
   })
 
   if (params.all && params.panel) {
-    return response.data.map((k: any) => ({
-      count: k.count,
-      list: k.list.map((i: any) => ({
-        childCount: i.child_story_count,
-        id: i.id,
-        name: i.name,
-        userName: i.user_name.split(',') || [],
-        priority: i.priority,
-        status: i.status,
-        info: i.info,
-        userIds: i.user_id,
-        iterateId: i.iterate_id,
-        parentId: i.parent_id,
+    return {
+      list: response.data.map((k: any) => ({
+        count: k.count,
+        list: k.list.map((i: any) => ({
+          childCount: i.child_story_count,
+          id: i.id,
+          name: i.name,
+          userName: i.user_name.split(',') || [],
+          priority: i.priority,
+          status: i.status,
+          info: i.info,
+          userIds: i.user_id,
+          iterateId: i.iterate_id,
+          parentId: i.parent_id,
+        })),
+        name: k.status_name,
       })),
-      name: k.status_name,
-    }))
+    }
   } else if (params.all) {
     return response.data.map((i: any) => ({
       id: i.id,

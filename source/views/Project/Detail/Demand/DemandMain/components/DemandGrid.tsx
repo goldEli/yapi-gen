@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
 import { Menu, Space } from 'antd'
@@ -6,12 +7,20 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const Content = styled.div({
   padding: 24,
 
   // width: '100%',
   // overflow: 'auto',
+})
+
+const DataWrap = styled.div({
+  background: 'white',
+  overflowX: 'auto',
+  height: '100%',
+  width: '100%',
 })
 
 const CardGroup = styled.div({
@@ -29,9 +38,10 @@ const Title = styled.div({
 })
 
 interface Props {
-  list: any[]
+  data: any
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
+  isSpinning?: boolean
 }
 const DemandGrid = (props: Props) => {
   const [t] = useTranslation()
@@ -39,6 +49,7 @@ const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { projectInfo } = useModel('project')
+  const { filterHeight } = useModel('demand')
 
   const menu = (item: any) => {
     let menuItems = [
@@ -72,25 +83,33 @@ const DemandGrid = (props: Props) => {
   const onClickItem = (item: any) => {
     navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
+
   return (
-    <Content>
-      <Space size={20} style={{ alignItems: 'flex-start' }}>
-        {props.list?.map((i: any) => (
-          <CardGroup key={i.name}>
-            <Title>
-              {i.name}({i.count})
-            </Title>
-            {i.list?.map((k: any) => (
-              <DemandCard
-                key={k.id}
-                menu={menu(k)}
-                item={k}
-                onClickItem={() => onClickItem(k)}
-              />
-            ))}
-          </CardGroup>
-        ))}
-      </Space>
+    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+      <DataWrap>
+        {!!props?.data?.list
+          && (props?.data?.list?.length > 0 ? (
+            <Space size={20} style={{ alignItems: 'flex-start' }}>
+              {props?.data?.list?.map((i: any) => (
+                <CardGroup key={i.name}>
+                  <Title>
+                    {i.name}({i.count})
+                  </Title>
+                  {i.list?.map((k: any) => (
+                    <DemandCard
+                      key={k.id}
+                      menu={menu(k)}
+                      item={k}
+                      onClickItem={() => onClickItem(k)}
+                    />
+                  ))}
+                </CardGroup>
+              ))}
+            </Space>
+          )
+            : <NoData />
+          )}
+      </DataWrap>
     </Content>
   )
 }

@@ -76,7 +76,7 @@ const PosterWrap = styled.img({
 
 interface Props {
   value?: any
-  onChangeValue?(cover: string): void
+  onChangeValue?(cover: any): void
 }
 
 const PosterComponent = (props: Props) => {
@@ -86,14 +86,14 @@ const PosterComponent = (props: Props) => {
   const { uploadFile } = useModel('cos')
   const [posterList, setPosterList] = useState<any>([])
 
-  const onUpdateValue = (path: string) => {
+  const onUpdateValue = (path: any) => {
     setCheckedPoster(path)
     props.onChangeValue?.(path)
   }
 
   useEffect(() => {
     if (coverList.length && !props.value) {
-      onUpdateValue(coverList[0].path)
+      onUpdateValue([coverList[0].path])
     }
   }, [coverList])
 

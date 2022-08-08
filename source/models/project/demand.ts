@@ -3,6 +3,7 @@ import * as services from '@/services'
 
 export default () => {
   const [demandInfo, setDemandInfo] = useState<any>({})
+  const [filterHeight, setFilterHeight] = useState<any>(52)
 
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
@@ -40,5 +41,7 @@ export default () => {
     deleteInfoDemand,
     updatePriority,
     addInfoDemand,
+    setFilterHeight,
+    filterHeight,
   }
 }
