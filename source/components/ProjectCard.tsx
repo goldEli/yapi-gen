@@ -180,7 +180,7 @@ const ProjectCard = (props: Props) => {
             key={isMoreVisible.toString()}
             visible={isMoreVisible}
             overlay={() => menu(props.item)}
-            trigger={['click']}
+            trigger={['hover']}
             placement="bottomRight"
             getPopupContainer={node => node}
             onVisibleChange={visible => setIsMoreVisible(visible)}

@@ -37,7 +37,8 @@ const Side = styled.div`
   flex-shrink: 0;
 `
 const Main = styled.div`
-  flex: 1;
+  width: calc(100% - 220px);
+  overflow: auto;
 `
 const Menu = styled.div`
   width: 100%;

@@ -393,19 +393,21 @@ const Need = (props: any) => {
         </StaffTableWrap2>
       ) : null}
 
-      <PaginationWrap>
-        <Pagination
-          defaultCurrent={1}
-          current={page}
-          showSizeChanger
-          showQuickJumper
-          total={total}
-          showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+      {!isMany && (
+        <PaginationWrap>
+          <Pagination
+            defaultCurrent={1}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
+      )}
       {isModalVisible ? (
         <OptionalFeld
           plainOptions={plainOptions}

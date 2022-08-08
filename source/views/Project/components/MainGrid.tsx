@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import ProjectCard from '@/components/ProjectCard'
 import styled from '@emotion/styled'
@@ -7,6 +8,7 @@ import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -72,25 +74,30 @@ const MainGrid = (props: Props) => {
 
   return (
     <DataWrap>
-      <SpaceWrap size={32}>
-        {props.projectList.list?.map((item: any) => (
-          <div key={item.id} onClick={() => onToDetail(item)}>
-            <ProjectCard
-              item={item}
-              onChangeOperation={props.onChangeOperation}
-            />
-          </div>
-        ))}
+      {!props.projectList?.list && isPermission
+        ? <NoData />
+        : (
+            <SpaceWrap size={32}>
+              {props.projectList.list?.map((item: any) => (
+                <div key={item.id} onClick={() => onToDetail(item)}>
+                  <ProjectCard
+                    item={item}
+                    onChangeOperation={props.onChangeOperation}
+                  />
+                </div>
+              ))}
 
-        {isPermission
-          ? null
-          : (
-              <AddProject onClick={onAddClick}>
-                <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
-                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
-              </AddProject>
-            )}
-      </SpaceWrap>
+              {isPermission ? null : (
+                <AddProject onClick={onAddClick}>
+                  <IconFont
+                    style={{ fontSize: 24, marginBottom: 16 }}
+                    type="plus"
+                  />
+                  <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
+                </AddProject>
+              )}
+            </SpaceWrap>
+          )}
     </DataWrap>
   )
 }
