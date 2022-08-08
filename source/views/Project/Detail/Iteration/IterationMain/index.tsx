@@ -201,7 +201,7 @@ const IterationMain = (props: Props) => {
           <IterationGrid
             onChangeVisible={onChangeOperation}
             onDelete={onDelete}
-            list={dataList}
+            data={dataList}
           />
         ) : (
           <IterationTable

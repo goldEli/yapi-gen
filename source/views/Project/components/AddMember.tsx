@@ -158,6 +158,9 @@ const AddMember = (props: Props) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
               {t('project.joinPermission')}
+              <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
+                *
+              </span>
             </span>
             <Form.Item
               name="userGroupId"

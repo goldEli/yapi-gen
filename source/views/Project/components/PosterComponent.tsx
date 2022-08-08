@@ -93,7 +93,7 @@ const PosterComponent = (props: Props) => {
 
   useEffect(() => {
     if (coverList.length && !props.value) {
-      onUpdateValue([coverList[0].path])
+      onUpdateValue(coverList[0].path)
     }
   }, [coverList])
 
@@ -131,7 +131,14 @@ const PosterComponent = (props: Props) => {
       </PosterGroup>
       <ChooseTitle>{t('project.customCover')}</ChooseTitle>
       <PosterGroup size={8}>
-        {posterList.map((i: any) => <PosterWrap onClick={() => onUpdateValue(i)} key={i} src={i} alt="" />)}
+        {posterList.map((i: any) => (
+          <PosterWrap
+            onClick={() => onUpdateValue(i[0])}
+            key={i}
+            src={i}
+            alt=""
+          />
+        ))}
         <Upload
           beforeUpload={onUploadBefore}
           customRequest={onUploadFileClick}

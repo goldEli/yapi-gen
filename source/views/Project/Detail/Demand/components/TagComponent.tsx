@@ -161,7 +161,7 @@ const TagBox = (props: TagProps) => {
         </TagItem>
       ))}
       <TagItem hidden={!value}>
-        <span onClick={onCreateTag}>{`创建【${value}】标签`}</span>
+        <span onClick={onCreateTag}>{t('project.createTag', { value })}</span>
       </TagItem>
     </TagWrap>
   )

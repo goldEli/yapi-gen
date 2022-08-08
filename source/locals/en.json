@@ -229,7 +229,7 @@
     "pleaseComment": "Please enter comment processing comments",
     "editChildDemand": "Edit Child Demand",
     "editDemand": "Edit Demand",
-    "createTag": "Create a [{value}] tag",
+    "createTag": "Create 【{{value}}】 tag",
     "uploadMax": "The file supports up to 5G",
     "demandStatus": "Demand Status",
     "replaySuccess": "Replay Success",

@@ -230,7 +230,7 @@
     "pleaseComment": "请输入评论处理意见",
     "editChildDemand": "编辑子需求",
     "editDemand": "编辑需求",
-    "createTag": "创建【{value}】标签",
+    "createTag": "创建【{{value}}】标签",
     "uploadMax": "文件最大支持5G",
     "demandStatus": "需求状态",
     "replaySuccess": "回复成功",

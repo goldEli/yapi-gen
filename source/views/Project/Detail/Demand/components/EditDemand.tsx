@@ -205,6 +205,9 @@ const EditDemand = (props: Props) => {
       value: i.id,
     }))
     setDemandList(arr)
+    setParentList(
+      props.isChild ? arr?.filter((k: any) => k.value !== props?.id) : arr,
+    )
   }
 
   useEffect(() => {
@@ -229,14 +232,6 @@ const EditDemand = (props: Props) => {
     }
     getList()
   }, [props.id])
-
-  useEffect(() => {
-    setParentList(
-      props.isChild
-        ? demandList?.filter((k: any) => k.value !== props?.id)
-        : demandList,
-    )
-  }, [])
 
   const getCommonUser = (arr: any) => {
     let res: any[] = []

@@ -29,7 +29,7 @@ const Title = styled.div({
 })
 
 interface Props {
-  list: any[]
+  data: any
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
 }
@@ -73,10 +73,11 @@ const IterationGrid = (props: Props) => {
   const onClickItem = (item: any) => {
     navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
+
   return (
     <Content>
       <Space size={20} style={{ alignItems: 'flex-start' }}>
-        {props.list?.map((i: any) => (
+        {props.data?.list?.map((i: any) => (
           <CardGroup key={i.name}>
             <Title>
               {i.name}({i.count})
