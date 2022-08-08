@@ -276,6 +276,9 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
+      render: (text: string) => {
+        return <span>{`${text}%`}</span>
+      },
     },
     {
       title: (

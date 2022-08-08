@@ -211,6 +211,7 @@ const Staff = () => {
       <Hehavior>
         <div style={{ display: 'flex' }}>
           <MyInput
+            style={{ width: 292 }}
             suffix={
               <IconFont
                 type="search"

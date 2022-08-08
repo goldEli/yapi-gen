@@ -88,7 +88,7 @@ const PosterComponent = (props: Props) => {
 
   const onUpdateValue = (path: any) => {
     setCheckedPoster(path)
-    props.onChangeValue?.(path)
+    props.onChangeValue?.([path])
   }
 
   useEffect(() => {

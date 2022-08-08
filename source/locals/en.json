@@ -146,9 +146,9 @@
   },
   "mine": {
     "copyDemand": "CopySend Demand",
-    "copyMine": "CopySend me",
+    "copyMine": "CopySend",
     "carbonDemand": "To-Do Demand",
-    "mineCarbon": "My To Do",
+    "mineCarbon": "To Do",
     "allProject": "All Projects",
     "quickCreate": "Quick Create",
     "createType": "Create Type",
@@ -176,9 +176,9 @@
     "mineNews": "My News",
     "demandGatt": "Demand Gatt",
     "mineSurvey": "My Profile",
-    "mineNeedDeal": "My To Do",
-    "mineCreate": "Mine created",
-    "mineFinish": "Mine done"
+    "mineNeedDeal": "To Do",
+    "mineCreate": "Created",
+    "mineFinish": "Done"
   },
   "project": {
     "memberNull": "Member cannot be null!",
@@ -339,7 +339,7 @@
     "refreshSuccess": "Refresh Success",
     "companyStaff": "Company Staff",
     "refresh": "Refresh",
-    "pleaseKey": "Please enter your nickname, name, email and phone number"
+    "pleaseKey": "Enter nickname/name/phone/email"
   },
   "mark": {
     "endP": "Confirmed closure of the project?",
