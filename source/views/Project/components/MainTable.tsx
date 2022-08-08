@@ -119,6 +119,22 @@ const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
+  const hasEdit = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/update',
+  )
+  const hasDelete = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/delete',
+  )
+  const hasStop = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/stop',
+  )
+  const hasStart = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/start',
+  )
 
   const menu = (record: any) => {
     let menuItems = [
@@ -148,21 +164,21 @@ const MainTable = (props: Props) => {
       },
     ]
 
-    if (getIsPermission(userInfo?.company_permissions, 'b/project/update')) {
+    if (hasEdit) {
       menuItems = menuItems.filter((i: any) => i.key !== '1')
     }
 
-    if (getIsPermission(userInfo?.company_permissions, 'b/project/delete')) {
+    if (hasDelete) {
       menuItems = menuItems.filter((i: any) => i.key !== '3')
     }
 
     if (record.status === 1) {
-      if (getIsPermission(userInfo?.company_permissions, 'b/project/stop')) {
+      if (hasStop) {
         menuItems = menuItems.filter((i: any) => i.key !== '2')
       }
     }
 
-    if (getIsPermission(userInfo?.company_permissions, 'b/project/start')) {
+    if (hasStart) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
@@ -187,7 +203,13 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       render: (text: string, record: any) => {
-        return <MoreContent menu={menu(record)} text={text} />
+        return (
+          <div>
+            {!hasDelete && !hasEdit && !hasStart && !hasStop
+              ? <MoreContent menu={menu(record)} text={text} />
+              : null}
+          </div>
+        )
       },
     },
     {

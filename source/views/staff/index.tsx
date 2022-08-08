@@ -1,7 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+/* eslint-disable no-undefined */
+/* eslint-disable complexity */
+/* eslint-disable multiline-ternary */
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, message, Pagination } from 'antd'
+import { Button, Dropdown, Menu, message, Pagination, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -48,11 +51,18 @@ const Reset = styled.div`
   }
 `
 
+const DataWrap = styled.div({
+  background: 'white',
+  overflowX: 'auto',
+  height: '100%',
+})
+
 const Staff = () => {
   const [t] = useTranslation()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo } = useModel('user')
-  const [isShow, setIsShow] = useState<boolean>(true)
+  const [filterHeight, setFilterHeight] = useState<any>(116)
+  const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
@@ -63,13 +73,14 @@ const Staff = () => {
     departmentId: [],
     userGroupId: [],
   })
-  const [listData, setListData] = useState<any>([])
+  const [listData, setListData] = useState<any>(undefined)
   const [editData, setEditData] = useState<any>({})
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [isSpinning, setIsSpinning] = useState(false)
   const [isStaffPersonalVisible, setIsStaffPersonalVisible]
     = useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
@@ -89,6 +100,7 @@ const Staff = () => {
   ])
 
   const getStaffListData = async () => {
+    setIsSpinning(true)
     const res = await getStaffList({
       jobId: searchGroups.jobId,
       departmentId: searchGroups.departmentId,
@@ -100,6 +112,7 @@ const Staff = () => {
       pagesize,
     })
     setListData(res.list)
+    setIsSpinning(false)
     setTotal(res.pager.total)
     setPlainOptions(res.plainOptions)
     await setPlainOptions2(res.plainOptions2)
@@ -189,6 +202,14 @@ const Staff = () => {
       init()
     }
   }
+
+  const onChangeFilter = () => {
+    setIsShow(!isShow)
+    setTimeout(() => {
+      setFilterHeight(isShow ? 116 : 180)
+    }, 100)
+  }
+
   const menu = (
     <Menu
       items={[
@@ -227,7 +248,7 @@ const Staff = () => {
           style={{ marginRight: '40px', display: 'flex', alignItems: 'center' }}
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
-          <SetButton onClick={() => setIsShow(!isShow)}>
+          <SetButton onClick={onChangeFilter}>
             <IconFont
               type="filter"
               style={{
@@ -249,15 +270,27 @@ const Staff = () => {
       </Hehavior>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
 
-      <div className={tableWrapP}>
-        <StaffTableWrap>
-          <StyledTable
-            rowKey="id"
-            columns={selectColum}
-            dataSource={listData}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-          />
+      <div
+        className={tableWrapP}
+        style={{ height: `calc(100% - ${filterHeight}px)` }}
+      >
+        <StaffTableWrap style={{ height: '100%' }}>
+          <DataWrap>
+            <Spin spinning={isSpinning}>
+              {!!listData
+                && (listData?.length > 0 ? (
+                  <StyledTable
+                    rowKey="id"
+                    columns={selectColum}
+                    dataSource={listData}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                  />
+                )
+                  : <NoData />
+                )}
+            </Spin>
+          </DataWrap>
         </StaffTableWrap>
 
         <PaginationWrap>
@@ -284,18 +317,16 @@ const Staff = () => {
         onClose={close2}
         getCheckList={getCheckList}
       />
-      {isStaffPersonalVisible
-        ? (
-            <StaffPersonal
-              data={editData}
-              isVisible={isStaffPersonalVisible}
-              onClose={() => {
-                setIsStaffPersonalVisible(false)
-              }}
-              onConfirm={closeStaffPersonal}
-            />
-          )
-        : null}
+      {isStaffPersonalVisible ? (
+        <StaffPersonal
+          data={editData}
+          isVisible={isStaffPersonalVisible}
+          onClose={() => {
+            setIsStaffPersonalVisible(false)
+          }}
+          onConfirm={closeStaffPersonal}
+        />
+      ) : null}
     </PermissionWrap>
   )
 }

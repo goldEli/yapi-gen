@@ -101,7 +101,7 @@ const Content = styled.div({
 })
 
 const DataWrap = styled.div({
-  height: 'calc(100% - 64px)',
+  height: 'calc(100% - 48px)',
   background: 'white',
   overflowX: 'auto',
 })
