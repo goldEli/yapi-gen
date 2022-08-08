@@ -170,8 +170,8 @@ export const Panel = () => {
     setLanguageModeVisible(newVisible)
   }
   const toLoginOut = async () => {
+    sessionStorage.removeItem('saveRouter')
     try {
-      localStorage.removeItem('saveRouter')
       await loginOut()
       setTimeout(() => {
         localStorage.removeItem('agileToken')

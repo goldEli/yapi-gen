@@ -36,9 +36,6 @@ const Main = styled.div`
   overflow: auto;
   /* min-width: 1360px; */
 `
-window.onbeforeunload = function () {
-  localStorage.removeItem('saveRouter')
-}
 
 export const Container = () => {
   const navigate = useNavigate()
@@ -74,26 +71,24 @@ export const Container = () => {
 
   useEffect(() => {
     setIsNextVisible(loginInfo.admin_first_login)
-
     const { company_permissions } = userInfo
-
     // eslint-disable-next-line complexity
-    if (!localStorage.getItem('saveRouter')) {
+    if (!sessionStorage.getItem('saveRouter')) {
       company_permissions?.forEach((element: any) => {
         if (element.group_name.includes('概况')) {
-          localStorage.setItem('saveRouter', '1')
+          sessionStorage.setItem('saveRouter', '首次登录')
           navigate('/Situation')
         } else if (element.group_name.includes('项目')) {
-          localStorage.setItem('saveRouter', '1')
+          sessionStorage.setItem('saveRouter', '首次登录')
           navigate('/Project')
         } else if (element.group_name.includes('我的')) {
-          localStorage.setItem('saveRouter', '1')
+          sessionStorage.setItem('saveRouter', '首次登录')
           navigate('/mine')
         } else if (element.group_name.includes('员工')) {
-          localStorage.setItem('saveRouter', '1')
+          sessionStorage.setItem('saveRouter', '首次登录')
           navigate('/staff')
         } else if (element.group_name.includes('公司管理')) {
-          localStorage.setItem('saveRouter', '1')
+          sessionStorage.setItem('saveRouter', '首次登录')
           navigate('/Setting')
         }
       })

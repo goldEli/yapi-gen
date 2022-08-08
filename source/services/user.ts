@@ -31,6 +31,7 @@ export const getUserDetail: any = async () => {
 
 export const login = async () => {
   const ticket: any = new URLSearchParams(location.search).get('ticket')
+
   sessionStorage.setItem('IS_CHECK_TICKET', '1')
   try {
     const response = await http.put(
