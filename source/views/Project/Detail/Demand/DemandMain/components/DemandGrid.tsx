@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
-import { Menu, Space } from 'antd'
+import { Menu, Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -87,28 +87,30 @@ const DemandGrid = (props: Props) => {
   return (
     <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
       <DataWrap>
-        {!!props?.data?.list
-          && (props?.data?.list?.length > 0 ? (
-            <Space size={20} style={{ alignItems: 'flex-start' }}>
-              {props?.data?.list?.map((i: any) => (
-                <CardGroup key={i.name}>
-                  <Title>
-                    {i.name}({i.count})
-                  </Title>
-                  {i.list?.map((k: any) => (
-                    <DemandCard
-                      key={k.id}
-                      menu={menu(k)}
-                      item={k}
-                      onClickItem={() => onClickItem(k)}
-                    />
-                  ))}
-                </CardGroup>
-              ))}
-            </Space>
-          )
-            : <NoData />
-          )}
+        <Spin spinning={props?.isSpinning}>
+          {!!props?.data?.list
+            && (props?.data?.list?.length > 0 ? (
+              <Space size={20} style={{ alignItems: 'flex-start' }}>
+                {props?.data?.list?.map((i: any) => (
+                  <CardGroup key={i.name}>
+                    <Title>
+                      {i.name}({i.count})
+                    </Title>
+                    {i.list?.map((k: any) => (
+                      <DemandCard
+                        key={k.id}
+                        menu={menu(k)}
+                        item={k}
+                        onClickItem={() => onClickItem(k)}
+                      />
+                    ))}
+                  </CardGroup>
+                ))}
+              </Space>
+            )
+              : <NoData />
+            )}
+        </Spin>
       </DataWrap>
     </Content>
   )

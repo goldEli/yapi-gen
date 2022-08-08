@@ -1,17 +1,17 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
-import { Menu, Space } from 'antd'
+import { Menu, Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const Content = styled.div({
   padding: 24,
   overflow: 'auto',
-
-  // minWidth: '1300px',
 })
 
 const CardGroup = styled.div({
@@ -32,6 +32,7 @@ interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
+  isSpinning?: boolean
 }
 
 const IterationGrid = (props: Props) => {
@@ -40,6 +41,7 @@ const IterationGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { projectInfo } = useModel('project')
+  const { filterHeight } = useModel('iterate')
 
   const menu = (item: any) => {
     let menuItems = [
@@ -75,24 +77,31 @@ const IterationGrid = (props: Props) => {
   }
 
   return (
-    <Content>
-      <Space size={20} style={{ alignItems: 'flex-start' }}>
-        {props.data?.list?.map((i: any) => (
-          <CardGroup key={i.name}>
-            <Title>
-              {i.name}({i.count})
-            </Title>
-            {i.list?.map((k: any) => (
-              <DemandCard
-                key={k.id}
-                menu={menu(k)}
-                item={k}
-                onClickItem={() => onClickItem(k)}
-              />
-            ))}
-          </CardGroup>
-        ))}
-      </Space>
+    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+      <Spin spinning={props?.isSpinning}>
+        {!!props?.data?.list
+          && (props?.data?.list?.length > 0 ? (
+            <Space size={20} style={{ alignItems: 'flex-start' }}>
+              {props?.data?.list?.map((i: any) => (
+                <CardGroup key={i.name}>
+                  <Title>
+                    {i.name}({i.count})
+                  </Title>
+                  {i.list?.map((k: any) => (
+                    <DemandCard
+                      key={k.id}
+                      menu={menu(k)}
+                      item={k}
+                      onClickItem={() => onClickItem(k)}
+                    />
+                  ))}
+                </CardGroup>
+              ))}
+            </Space>
+          )
+            : <NoData />
+          )}
+      </Spin>
     </Content>
   )
 }

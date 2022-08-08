@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+/* eslint-disable max-lines */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -6,8 +8,8 @@ import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect } from 'react'
-import { Menu, Dropdown, Pagination, message, Select, Form } from 'antd'
+import { useState, useEffect, useRef } from 'react'
+import { Menu, Dropdown, Pagination, message, Select, Form, Spin } from 'antd'
 import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -16,14 +18,15 @@ import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const Wrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  height: '100%',
 })
 
 const Header = styled.div({
-  minHeight: 64,
   background: 'white',
   padding: '0 24px',
 })
@@ -112,6 +115,12 @@ const NameWrap = styled.span({
   marginLeft: 32,
 })
 
+const DataWrap = styled.div({
+  background: 'white',
+  overflowX: 'auto',
+  height: 'calc(100% - 48px)',
+})
+
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -132,7 +141,9 @@ const ProjectMember = () => {
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const [memberList, setMemberList] = useState<any>([])
+  const [memberList, setMemberList] = useState<any>({
+    list: undefined,
+  })
   const [jobList, setJobList] = useState<any>([])
   const {
     getProjectMember,
@@ -146,6 +157,9 @@ const ProjectMember = () => {
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const stickyWrapDom = useRef<HTMLDivElement>(null)
+  const [filterHeight, setFilterHeight] = useState<any>(64)
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -161,6 +175,7 @@ const ProjectMember = () => {
   )
 
   const getList = async (orderVal?: any, pagePrams?: any) => {
+    setIsSpinning(true)
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
       projectId,
@@ -171,6 +186,7 @@ const ProjectMember = () => {
       ...values,
     })
     setMemberList(result)
+    setIsSpinning(false)
   }
 
   const getJobList = async () => {
@@ -417,6 +433,13 @@ const ProjectMember = () => {
     setIsAddVisible(!isAddVisible)
   }
 
+  const onChangeFilter = () => {
+    setIsVisible(!isVisible)
+    setTimeout(() => {
+      setFilterHeight(stickyWrapDom.current?.clientHeight)
+    }, 100)
+  }
+
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -448,7 +471,7 @@ const ProjectMember = () => {
             <IconFont
               style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
               type="filter"
-              onClick={() => setIsVisible(!isVisible)}
+              onClick={onChangeFilter}
             />
           </HeaderTop>
           <FilterWrap
@@ -497,15 +520,25 @@ const ProjectMember = () => {
             </SearchWrap>
           </FilterWrap>
         </Header>
-        <Content>
-          <TableBox
-            rowKey="id"
-            columns={columns}
-            dataSource={memberList?.list}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-            showSorterTooltip={false}
-          />
+        <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+          <DataWrap>
+            <Spin spinning={isSpinning}>
+              {!!memberList?.list
+                && (memberList?.list?.length > 0 ? (
+                  <TableBox
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={memberList?.list}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                    showSorterTooltip={false}
+                  />
+                )
+                  : <NoData />
+                )}
+            </Spin>
+          </DataWrap>
+
           <PaginationWrap>
             <Pagination
               defaultCurrent={1}

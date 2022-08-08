@@ -1,10 +1,11 @@
+/* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
-import { Button, Menu, Dropdown, Pagination, message } from 'antd'
+import { Button, Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
@@ -16,6 +17,7 @@ import { useModel } from '@/models'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const Operation = styled.div({
   display: 'flex',
@@ -56,6 +58,12 @@ const TableBox = styled(TableWrap)({
   },
 })
 
+const DataWrap = styled.div({
+  height: 'calc(100% - 92px)',
+  background: 'white',
+  overflowX: 'auto',
+})
+
 const ChildDemand = () => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
@@ -73,7 +81,9 @@ const ChildDemand = () => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
@@ -82,6 +92,7 @@ const ChildDemand = () => {
   const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const navigate = useNavigate()
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -91,6 +102,7 @@ const ChildDemand = () => {
   }
 
   const getList = async (item?: any, orderItem?: any) => {
+    setIsSpinning(true)
     const result = await getDemandList({
       projectId,
       page: item ? item.page : 1,
@@ -100,6 +112,7 @@ const ChildDemand = () => {
       parentId: demandId,
     })
     setDataList(result)
+    setIsSpinning(false)
   }
 
   useEffect(() => {
@@ -241,7 +254,7 @@ const ChildDemand = () => {
   }, [titleList, titleList2, columns])
 
   return (
-    <div>
+    <div style={{ height: 'calc(100% - 50px)' }}>
       <EditDemand
         visible={isVisible}
         onChangeVisible={onChangeVisible}
@@ -266,14 +279,24 @@ const ChildDemand = () => {
           <IconFontWrap active={isSettingState} type="settings" />
         </Dropdown>
       </Operation>
-      <TableBox
-        rowKey="id"
-        columns={selectColum}
-        dataSource={dataList?.list}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        showSorterTooltip={false}
-      />
+      <DataWrap>
+        <Spin spinning={isSpinning}>
+          {!!dataList?.list
+            && (dataList?.list?.length > 0 ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={dataList?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+                showSorterTooltip={false}
+              />
+            )
+              : <NoData />
+            )}
+        </Spin>
+      </DataWrap>
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

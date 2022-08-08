@@ -1,10 +1,11 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Table, Pagination, Modal, Space } from 'antd'
+import { Table, Pagination, Modal, Space, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { PaginationWrap } from '@/components/StyleCommon'
@@ -13,6 +14,7 @@ import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -28,6 +30,12 @@ const TitleWrap = styled(Space)({
   color: '#323233',
   fontSize: 14,
   marginBottom: 24,
+})
+
+const DataWrap = styled.div({
+  height: 'calc(100% - 48px)',
+  background: 'white',
+  overflowX: 'auto',
 })
 
 const NewSort = (sortProps: any) => {
@@ -50,12 +58,16 @@ const ChangeRecord = () => {
   const [searchParams] = useSearchParams()
   const iterateId = searchParams.get('iterateId')
   const projectId = searchParams.get('id')
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const [checkDetail, setCheckDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const getList = async (item?: any, orderVal?: any) => {
+    setIsSpinning(true)
     const result = await getIterateChangeLog({
       iterateId,
       projectId,
@@ -65,6 +77,7 @@ const ChangeRecord = () => {
       orderKey: orderVal.key,
     })
     setDataList(result)
+    setIsSpinning(false)
   }
 
   useEffect(() => {
@@ -269,7 +282,7 @@ const ChangeRecord = () => {
     getList({ page, size }, order)
   }
   return (
-    <div>
+    <div style={{ height: 'calc(100% - 50px)' }}>
       <Modal
         visible={isVisible}
         title={t('project.changeInfo')}
@@ -304,14 +317,24 @@ const ChangeRecord = () => {
           </div>
         </SpaceWrap>
       </Modal>
-      <Table
-        rowKey="id"
-        columns={columns}
-        dataSource={dataList?.list}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        showSorterTooltip={false}
-      />
+      <DataWrap>
+        <Spin spinning={isSpinning}>
+          {!!dataList?.list
+            && (dataList?.list?.length > 0 ? (
+              <Table
+                rowKey="id"
+                columns={columns}
+                dataSource={dataList?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+                showSorterTooltip={false}
+              />
+            )
+              : <NoData />
+            )}
+        </Spin>
+      </DataWrap>
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

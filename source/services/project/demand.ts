@@ -24,8 +24,8 @@ export const getDemandInfo: any = async (params: any) => {
     name: response.data.name || '--',
     info: response.data.info || '--',
     priority: response.data.priority,
-    expectedStart: response.data.expected_start_at || '--',
-    expectedEnd: response.data.expected_end_at || '--',
+    expectedStart: response.data.expected_start_at,
+    expectedEnd: response.data.expected_end_at,
     finishTime: response.data.finish_at,
     demandCount: response.data.story_count,
     iterateName: response.data.iterate_name || '--',
@@ -36,7 +36,7 @@ export const getDemandInfo: any = async (params: any) => {
     tag: response.data.tag,
     copySend: response.data.copysend,
     user: response.data.user || '--',
-    createdTime: response.data.created_at || '--',
+    createdTime: response.data.created_at,
     status: response.data.status,
     parentId: response.data.parent_id || null,
     changeCount: response.data.app_changelog_count,
@@ -120,8 +120,8 @@ export const getDemandList: any = async (params: any) => {
         status: i.status,
         dealName: i.users_name || '--',
         time: i.created_at,
-        expectedStart: i.expected_start_at || '--',
-        expectedEnd: i.expected_end_at || '--',
+        expectedStart: i.expected_start_at,
+        expectedEnd: i.expected_end_at,
         info: i.info,
         userIds: i.user_id,
         iterateId: i.iterate_id,
@@ -201,7 +201,8 @@ export const deleteComment: any = async (params: any) => {
 export const addDemand: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
-  const info = element.innerText.trim()
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length ? params?.info : element.innerText.trim()
 
   await http.post<any>('addDemand', {
     project_id: Number(params.projectId),
@@ -222,7 +223,8 @@ export const addDemand: any = async (params: any) => {
 export const updateDemand: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
-  const info = element.innerText.trim()
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length ? params?.info : element.innerText.trim()
 
   await http.put<any>('updateDemand', {
     project_id: params.projectId,

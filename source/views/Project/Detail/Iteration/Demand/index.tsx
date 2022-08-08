@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -6,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { Menu, Dropdown, Pagination, message, Table, Popover } from 'antd'
+import { Menu, Dropdown, Pagination, message, Table, Popover, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
@@ -21,6 +22,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -83,6 +85,12 @@ const TableBox = styled(TableWrap)({
   },
 })
 
+const DataWrap = styled.div({
+  height: 'calc(100% - 40px)',
+  background: 'white',
+  overflowX: 'auto',
+})
+
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -139,13 +147,6 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
 
   const columnsChild = [
     {
-      title: t('common.projectName'),
-      dataIndex: 'name',
-      render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
-      },
-    },
-    {
       title: (
         <NewSort
           fixedKey="id"
@@ -153,7 +154,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('project.projectId')}
+          ID
         </NewSort>
       ),
       dataIndex: 'id',
@@ -288,12 +289,15 @@ const DemandWrap = () => {
     = useModel('demand')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const navigate = useNavigate()
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [isSpinning, setIsSpinning] = useState(false)
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -304,6 +308,7 @@ const DemandWrap = () => {
   )
 
   const getList = async (item?: any, orderVal?: any) => {
+    setIsSpinning(true)
     const result = await getDemandList({
       projectId,
       iterateIds: [iterateId],
@@ -313,6 +318,7 @@ const DemandWrap = () => {
       orderKey: orderVal.key,
     })
     setDataList(result)
+    setIsSpinning(false)
   }
 
   useEffect(() => {
@@ -632,7 +638,7 @@ const DemandWrap = () => {
   }
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <DeleteConfirm
         text={t('mark.del')}
         isVisible={isDelete}
@@ -646,14 +652,25 @@ const DemandWrap = () => {
         onUpdate={() => getList(pageObj)}
         isIterateId={iterateId}
       />
-      <TableBox
-        rowKey="id"
-        columns={columns}
-        dataSource={dataList?.list}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        showSorterTooltip={false}
-      />
+      <DataWrap>
+        <Spin spinning={isSpinning}>
+          {!!dataList?.list
+            && (dataList?.list?.length > 0
+              ? (
+                  <TableBox
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={dataList?.list}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                    showSorterTooltip={false}
+                  />
+                )
+              : <NoData />
+            )}
+        </Spin>
+      </DataWrap>
+
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

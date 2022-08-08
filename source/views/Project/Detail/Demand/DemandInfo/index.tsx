@@ -9,7 +9,15 @@ import { useEffect } from 'react'
 
 const DividerWrap = styled(Divider)({
   margin: '0 24px',
-  height: 'inherit',
+  height: '100%',
+})
+
+const Wrap = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: '0 24px',
+  background: 'white',
+  height: 'calc(100% - 50px)',
 })
 
 const DemandInfo = () => {
@@ -27,18 +35,11 @@ const DemandInfo = () => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '0 24px',
-        background: 'white',
-      }}
-    >
+    <Wrap>
       <WrapLeft onUpdate={onUpdate} />
       <DividerWrap type="vertical" />
       <WrapRight />
-    </div>
+    </Wrap>
   )
 }
 

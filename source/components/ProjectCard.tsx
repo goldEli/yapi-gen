@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -90,6 +91,23 @@ const ProjectCard = (props: Props) => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { userInfo } = useModel('user')
 
+  const hasEdit = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/update',
+  )
+  const hasDelete = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/delete',
+  )
+  const hasStop = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/stop',
+  )
+  const hasStart = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/start',
+  )
+
   const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
     props.onChangeOperation?.(type, item)
@@ -123,21 +141,21 @@ const ProjectCard = (props: Props) => {
       },
     ]
 
-    if (getIsPermission(userInfo?.company_permissions, 'b/project/update')) {
+    if (hasEdit) {
       menuItems = menuItems.filter((i: any) => i.key !== '1')
     }
 
-    if (getIsPermission(userInfo?.company_permissions, 'b/project/delete')) {
+    if (hasDelete) {
       menuItems = menuItems.filter((i: any) => i.key !== '3')
     }
 
     if (item.status === 1) {
-      if (getIsPermission(userInfo?.company_permissions, 'b/project/stop')) {
+      if (hasStop) {
         menuItems = menuItems.filter((i: any) => i.key !== '2')
       }
     }
 
-    if (getIsPermission(userInfo?.company_permissions, 'b/project/start')) {
+    if (hasStart) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
@@ -157,21 +175,23 @@ const ProjectCard = (props: Props) => {
       </ImgWrap>
       <TextWarp>
         <NameWrap>{props.item.name}</NameWrap>
-        <DropdownWrap
-          key={isMoreVisible.toString()}
-          visible={isMoreVisible}
-          overlay={() => menu(props.item)}
-          trigger={['click']}
-          placement="bottomRight"
-          getPopupContainer={node => node}
-          onVisibleChange={visible => setIsMoreVisible(visible)}
-        >
-          <IconFont
-            onClick={e => onMoreClick(e)}
-            style={{ fontSize: 16, color: '#BBBDBF' }}
-            type="more"
-          />
-        </DropdownWrap>
+        {!hasEdit && !hasDelete && !hasStart && !hasStop ? (
+          <DropdownWrap
+            key={isMoreVisible.toString()}
+            visible={isMoreVisible}
+            overlay={() => menu(props.item)}
+            trigger={['click']}
+            placement="bottomRight"
+            getPopupContainer={node => node}
+            onVisibleChange={visible => setIsMoreVisible(visible)}
+          >
+            <IconFont
+              onClick={e => onMoreClick(e)}
+              style={{ fontSize: 16, color: '#BBBDBF' }}
+              type="more"
+            />
+          </DropdownWrap>
+        ) : null}
       </TextWarp>
     </Warp>
   )

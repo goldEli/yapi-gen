@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 import Operation from './components/Operation'
@@ -33,7 +34,9 @@ const IterationMain = (props: Props) => {
   const [isUpdateList, setIsUpdateList] = useState(false)
   const [demandItem, setDemandItem] = useState<any>({})
   const [isShowLeft, setIsShowLeft] = useState(true)
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
@@ -46,7 +49,9 @@ const IterationMain = (props: Props) => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
   const [searchItems, setSearchItems] = useState({})
+  const [isSpinning, setIsSpinning] = useState(false)
   const getList = async (state: boolean, item: any, searchParamsObj: any) => {
+    setIsSpinning(true)
     let params = {}
     if (state) {
       params = {
@@ -89,6 +94,7 @@ const IterationMain = (props: Props) => {
     }
     const result = await getDemandList(params)
     setDataList(result)
+    setIsSpinning(false)
   }
 
   useEffect(() => {
@@ -97,13 +103,14 @@ const IterationMain = (props: Props) => {
 
   useEffect(() => {
     if (currentDetail?.id) {
+      setDataList({ list: undefined })
       getList(isGrid, pageObj, searchItems)
     }
   }, [currentDetail])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    setDataList([])
+    setDataList({ list: undefined })
     getList(val, pageObj, searchItems)
   }
 
@@ -159,7 +166,7 @@ const IterationMain = (props: Props) => {
 
   const onSearch = (params: string) => {
     setSearchItems(params)
-    getList(isGrid, pageObj, params)
+    getList(isGrid, pageObj, searchItems)
   }
 
   return (
@@ -202,6 +209,7 @@ const IterationMain = (props: Props) => {
             onChangeVisible={onChangeOperation}
             onDelete={onDelete}
             data={dataList}
+            isSpinning={isSpinning}
           />
         ) : (
           <IterationTable
@@ -213,6 +221,7 @@ const IterationMain = (props: Props) => {
             settingState={isSettingState}
             onChangeSetting={setIsSettingState}
             onChangeOrder={onChangeOrder}
+            isSpinning={isSpinning}
           />
         )}
       </Right>

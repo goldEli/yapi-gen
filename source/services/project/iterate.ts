@@ -33,7 +33,8 @@ export const getIterateList: any = async (params: any) => {
 export const addIterate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
-  const info = element.innerText.trim()
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length ? params?.info : element.innerText.trim()
 
   await http.post<any>('addIterate', {
     name: params.iterationName,
@@ -47,7 +48,8 @@ export const addIterate: any = async (params: any) => {
 export const updateIterate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
-  const info = element.innerText.trim()
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length ? params?.info : element.innerText.trim()
 
   await http.patch<any>('editIterate', {
     name: params.iterationName,

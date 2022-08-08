@@ -5,7 +5,7 @@
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal, message } from 'antd'
 import { useModel } from '@/models'
@@ -69,13 +69,15 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
-  const { updateIterateStatus, getIterateInfo } = useModel('iterate')
+  const { updateIterateStatus, getIterateInfo, setFilterHeight }
+    = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { filterAll, projectInfo } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const stickyWrapDom = useRef<HTMLDivElement>(null)
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/status',
@@ -159,8 +161,15 @@ const Operation = (props: Props) => {
     getSearchKey()
   }, [projectInfo, filterAll])
 
+  const onChangeFilter = () => {
+    setFilterState(!filterState)
+    setTimeout(() => {
+      setFilterHeight(stickyWrapDom.current?.clientHeight)
+    }, 100)
+  }
+
   return (
-    <StickyWrap>
+    <StickyWrap ref={stickyWrapDom}>
       <Modal
         width={548}
         visible={visible}
@@ -243,7 +252,7 @@ const Operation = (props: Props) => {
           />
         </IterationInfo>
         <OperationGroup
-          onChangeFilter={() => setFilterState(!filterState)}
+          onChangeFilter={onChangeFilter}
           onChangeGrid={props.onChangeGrid}
           isGrid={props.isGrid}
           filterState={filterState}

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Pagination, Dropdown, Popover, Table, Menu, message } from 'antd'
+import { Pagination, Dropdown, Popover, Table, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -19,6 +19,7 @@ import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -36,7 +37,6 @@ const StatusWrap = styled.div({
 const Content = styled.div({
   padding: 24,
   background: '#F5F7FA',
-  height: 'auto',
 })
 
 const RowIconFont = styled(IconFont)({
@@ -54,6 +54,12 @@ const TableBox = styled(TableWrap)({
   },
 })
 
+const DataWrap = styled.div({
+  background: 'white',
+  overflowX: 'auto',
+  height: 'calc(100% - 40px)',
+})
+
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
@@ -63,6 +69,7 @@ interface Props {
   settingState: boolean
   onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
+  isSpinning?: boolean
 }
 
 const NewSort = (sortProps: any) => {
@@ -273,6 +280,7 @@ const IterationTable = (props: Props) => {
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
+  const { filterHeight } = useModel('iterate')
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -377,15 +385,24 @@ const IterationTable = (props: Props) => {
   }, [titleList, titleList2, columns])
 
   return (
-    <Content>
-      <TableBox
-        rowKey="id"
-        columns={selectColum}
-        dataSource={props.data?.list}
-        pagination={false}
-        scroll={{ x: 'max-content' }}
-        showSorterTooltip={false}
-      />
+    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+      <DataWrap>
+        <Spin spinning={props?.isSpinning}>
+          {!!props.data?.list
+            && (props.data?.list?.length > 0 ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={props.data?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+                showSorterTooltip={false}
+              />
+            )
+              : <NoData />
+            )}
+        </Spin>
+      </DataWrap>
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}

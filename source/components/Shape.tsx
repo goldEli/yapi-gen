@@ -149,9 +149,7 @@ export const ShapeContent = (props: ShapeProps) => {
               labelCol={{ span: 5 }}
               label={t('common.dealName')}
               name="username"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
+              rules={[{ required: true, message: '' }]}
             >
               <Select
                 mode="multiple"

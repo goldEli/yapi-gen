@@ -85,12 +85,12 @@ const AddMember = (props: Props) => {
       message.warning(t('project.permissionNull'))
       return
     }
+
     const values = form.getFieldsValue()
-    const users = staffList?.filter((i: any) => values.name.find((k: any) => k === i.value))
-    const params = {
+
+    const params: any = {
       projectId,
       userGroupId: values.userGroupId,
-      userIds: users?.map((i: any) => i.value),
     }
     try {
       if (props.details?.id) {
@@ -98,6 +98,8 @@ const AddMember = (props: Props) => {
         await updateMember(params)
         message.success(t('common.editSuccess'))
       } else {
+        const users = staffList?.filter((i: any) => values.name.find((k: any) => k === i.value))
+        params.userIds = users?.map((i: any) => i.value)
         await addMember(params)
         message.success(t('common.addSuccess'))
       }
@@ -179,7 +181,7 @@ const AddMember = (props: Props) => {
             </Form.Item>
           </div>
           <Button type="primary" onClick={onConfirm}>
-            {t('project.joinMember')}
+            {t('common.confirm')}
           </Button>
         </ModalFooter>
       </Form>

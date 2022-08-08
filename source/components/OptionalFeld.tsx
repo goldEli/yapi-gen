@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
-import { Checkbox, Modal } from 'antd'
+import { Checkbox, Modal, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -137,25 +137,29 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
           <ItemWrap>
             <div className={text}>{t('components.basicFiled')}</div>
             <CheckboxGroup value={checkList} onChange={onChange}>
-              {plainOptions.map(item => (
-                <Checkbox
-                  disabled={item.value === 'name'}
-                  key={item.label}
-                  value={item.value}
-                >
-                  {item.label}
-                </Checkbox>
-              ))}
+              <Space style={{ flexWrap: 'wrap' }}>
+                {plainOptions.map(item => (
+                  <Checkbox
+                    disabled={item.value === 'name'}
+                    key={item.label}
+                    value={item.value}
+                  >
+                    {item.label}
+                  </Checkbox>
+                ))}
+              </Space>
             </CheckboxGroup>
           </ItemWrap>
           <ItemWrap>
             <div className={text}>{t('components.personOrTime')}</div>
             <CheckboxGroup value={checkList2} onChange={onChange2}>
-              {plainOptions2.map(item => (
-                <Checkbox key={item.label} value={item.value}>
-                  {item.label}
-                </Checkbox>
-              ))}
+              <Space style={{ flexWrap: 'wrap' }}>
+                {plainOptions2.map(item => (
+                  <Checkbox key={item.label} value={item.value}>
+                    {item.label}
+                  </Checkbox>
+                ))}
+              </Space>
             </CheckboxGroup>
           </ItemWrap>
         </Left>

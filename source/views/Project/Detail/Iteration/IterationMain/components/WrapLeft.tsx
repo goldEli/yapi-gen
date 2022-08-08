@@ -1,7 +1,10 @@
+/* eslint-disable multiline-ternary */
+/* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
+/* eslint-disable complexity */
 import AddButton from '@/components/AddButton'
 import IterationCard from '@/components/IterationCard'
 import IconFont from '@/components/IconFont'
@@ -15,6 +18,7 @@ import {
   Menu,
   message,
   Radio,
+  Spin,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -25,6 +29,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -127,7 +132,9 @@ const WrapLeft = (props: Props) => {
   const [isSort, setIsSort] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [currentSort, setCurrentSort] = useState(sortList[1])
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const {
@@ -138,6 +145,7 @@ const WrapLeft = (props: Props) => {
     isRefreshList,
   } = useModel('iterate')
   const { projectInfo } = useModel('project')
+  const [isSpinning, setIsSpinning] = useState(false)
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/store',
@@ -160,6 +168,7 @@ const WrapLeft = (props: Props) => {
   )
 
   const getList = async () => {
+    setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
       values.startTime = [
@@ -183,6 +192,7 @@ const WrapLeft = (props: Props) => {
     }
     const result = await getIterateList(params)
     setDataList(result)
+    setIsSpinning(false)
     if (!isRefreshList) {
       props.onCurrentDetail(result?.list[0])
     }
@@ -385,14 +395,12 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        {hasAdd
-          ? null
-          : (
-              <AddButton
-                text={t('common.createIterate')}
-                onChangeClick={onChangeClick}
-              />
-            )}
+        {hasAdd ? null : (
+          <AddButton
+            text={t('common.createIterate')}
+            onChangeClick={onChangeClick}
+          />
+        )}
         <Space size={20}>
           <Popover
             visible={isSort}
@@ -404,38 +412,44 @@ const WrapLeft = (props: Props) => {
           >
             <IconWrap type="sort" />
           </Popover>
-          {hasFilter
-            ? null
+          {hasFilter ? null
             : <Divider style={{ margin: 0, height: 20 }} type="vertical" />
           }
 
-          {hasFilter
-            ? null
-            : (
-                <Popover
-                  trigger="click"
-                  placement="bottomRight"
-                  content={filterContent}
-                  getPopupContainer={node => node}
-                  visible={isFilter}
-                  onVisibleChange={onVisibleChange}
-                >
-                  <IconWrap onClick={() => setIsFilter(true)} type="filter" />
-                </Popover>
-              )}
+          {hasFilter ? null : (
+            <Popover
+              trigger="click"
+              placement="bottomRight"
+              content={filterContent}
+              getPopupContainer={node => node}
+              visible={isFilter}
+              onVisibleChange={onVisibleChange}
+            >
+              <IconWrap onClick={() => setIsFilter(true)} type="filter" />
+            </Popover>
+          )}
         </Space>
       </TopWrap>
       <CardGroups>
-        {dataList.list?.map((item: any) => (
-          <IterationCard
-            menu={menu(item)}
-            key={item.id}
-            item={item}
-            onClickInfo={() => onClickInfo(item)}
-            onClickItem={() => onClickItem(item)}
-            isActive={item.id === props.currentDetail?.id}
-          />
-        ))}
+        <Spin spinning={isSpinning}>
+          {!!dataList?.list
+            && (dataList?.list?.length > 0 ? (
+              <div>
+                {dataList.list?.map((item: any) => (
+                  <IterationCard
+                    menu={menu(item)}
+                    key={item.id}
+                    item={item}
+                    onClickInfo={() => onClickInfo(item)}
+                    onClickItem={() => onClickItem(item)}
+                    isActive={item.id === props.currentDetail?.id}
+                  />
+                ))}
+              </div>
+            )
+              : <NoData />
+            )}
+        </Spin>
       </CardGroups>
     </Left>
   )

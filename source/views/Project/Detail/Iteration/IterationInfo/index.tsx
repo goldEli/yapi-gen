@@ -5,7 +5,7 @@
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import styled from '@emotion/styled'
-import { Progress } from 'antd'
+import { Progress, Spin } from 'antd'
 import { Line, Column } from '@ant-design/plots'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
@@ -86,6 +86,11 @@ const ChartWrap = styled.div({
   marginTop: 24,
 })
 
+const Wrap = styled.div({
+  overflow: 'auto',
+  height: 'calc(100% - 50px)',
+})
+
 const DemoLine = (props: { data: any }) => {
   const [t] = useTranslation()
   let arr: any[] = []
@@ -146,10 +151,13 @@ const IterationInfo = () => {
   const iterateId = searchParams.get('iterateId')
   const { iterateInfo, getIterateStatistics } = useModel('iterate')
   const [chartData, setChartData] = useState<any>({})
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const getData = async () => {
+    setIsSpinning(true)
     const result = await getIterateStatistics({ projectId, id: iterateId })
     setChartData(result)
+    setIsSpinning(false)
   }
 
   useEffect(() => {
@@ -157,57 +165,61 @@ const IterationInfo = () => {
   }, [])
 
   return (
-    <div>
-      <TopWrap>
-        <SurveyWrap>
-          <Title>{t('container.survey')}</Title>
-          <SurveyContent>
-            <SurveyBox>
-              <Progress
-                strokeColor="#43BA9A"
-                width={125}
-                type="circle"
-                percent={Math.trunc(
-                  iterateInfo?.finishCount / iterateInfo?.storyCount * 100,
-                )}
-                strokeWidth={16}
-              />
-              <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
-                {iterateInfo.startTime || '--'}-{iterateInfo.endTime || '--'}
-              </div>
-            </SurveyBox>
-            <SurveyBox style={{ alignItems: 'flex-start' }}>
-              <span style={{ color: '#000', fontSize: 14 }}>
-                {t('common.demand')}
-              </span>
-              <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
-                {`${iterateInfo?.finishCount || '--'} / ${
-                  iterateInfo?.storyCount || '--'
-                }`}
-              </span>
-            </SurveyBox>
-          </SurveyContent>
-        </SurveyWrap>
-        <SurveyWrap>
-          <Title>{t('project.iterateTarget')}</Title>
-          <TargetWrap dangerouslySetInnerHTML={{ __html: iterateInfo.info }} />
-        </SurveyWrap>
-      </TopWrap>
-      <BottomWrap>
-        <DiagramWrap>
-          <Title>{t('project.burnoutDiagram')}</Title>
-          <ChartWrap>
-            <DemoLine data={chartData?.burnDownChart || {}} />
-          </ChartWrap>
-        </DiagramWrap>
-        <StatusWrap>
-          <Title>{t('project.statusDistribution')} </Title>
-          <ChartWrap>
-            <DemoColumn data={chartData?.storyStatusChart || []} />
-          </ChartWrap>
-        </StatusWrap>
-      </BottomWrap>
-    </div>
+    <Wrap>
+      <Spin spinning={isSpinning}>
+        <TopWrap>
+          <SurveyWrap>
+            <Title>{t('container.survey')}</Title>
+            <SurveyContent>
+              <SurveyBox>
+                <Progress
+                  strokeColor="#43BA9A"
+                  width={125}
+                  type="circle"
+                  percent={Math.trunc(
+                    iterateInfo?.finishCount / iterateInfo?.storyCount * 100,
+                  )}
+                  strokeWidth={16}
+                />
+                <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
+                  {iterateInfo.startTime || '--'}-{iterateInfo.endTime || '--'}
+                </div>
+              </SurveyBox>
+              <SurveyBox style={{ alignItems: 'flex-start' }}>
+                <span style={{ color: '#000', fontSize: 14 }}>
+                  {t('common.demand')}
+                </span>
+                <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
+                  {`${iterateInfo?.finishCount || '--'} / ${
+                    iterateInfo?.storyCount || '--'
+                  }`}
+                </span>
+              </SurveyBox>
+            </SurveyContent>
+          </SurveyWrap>
+          <SurveyWrap>
+            <Title>{t('project.iterateTarget')}</Title>
+            <TargetWrap
+              dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
+            />
+          </SurveyWrap>
+        </TopWrap>
+        <BottomWrap>
+          <DiagramWrap>
+            <Title>{t('project.burnoutDiagram')}</Title>
+            <ChartWrap>
+              <DemoLine data={chartData?.burnDownChart || {}} />
+            </ChartWrap>
+          </DiagramWrap>
+          <StatusWrap>
+            <Title>{t('project.statusDistribution')} </Title>
+            <ChartWrap>
+              <DemoColumn data={chartData?.storyStatusChart || []} />
+            </ChartWrap>
+          </StatusWrap>
+        </BottomWrap>
+      </Spin>
+    </Wrap>
   )
 }
 

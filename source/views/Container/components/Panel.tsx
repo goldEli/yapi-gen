@@ -152,7 +152,7 @@ export const Panel = () => {
   const content = (
     <div>
       <LanguageLine onClick={() => changeLanguageMode(1, 'zh')}>
-        <span>{t('container.chinese')}</span>
+        <span>中文</span>
         {languageMode === 1
           && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
         }
@@ -228,7 +228,7 @@ export const Panel = () => {
             </div>
             <div>
               <span className={languageText}>
-                {languageMode === 1 ? t('container.chinese') : 'English'}
+                {languageMode === 1 ? '中文' : 'English'}
               </span>
 
               <IconFont type="right" style={{ fontSize: 12 }} />

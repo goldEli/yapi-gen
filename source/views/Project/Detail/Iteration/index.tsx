@@ -46,6 +46,7 @@ const ContentWrap = styled.div({
   padding: 24,
   display: 'flex',
   flexDirection: 'column',
+  height: 'calc(100% - 128px)',
 })
 
 const MainWrap = styled(Space)({
