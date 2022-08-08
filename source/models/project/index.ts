@@ -92,5 +92,6 @@ export default () => {
     filterAll,
     setIsRefreshIterateList,
     isRefreshIterateList,
+    setProjectInfo,
   }
 }

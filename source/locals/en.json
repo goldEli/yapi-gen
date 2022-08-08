@@ -210,7 +210,7 @@
     "incorrectFormat": "Incorrect format",
     "pleaseChoosePoster": "Please choose a cover",
     "customCover": "Custom Cover",
-    "formatText": "The image format supports jpg, png, and the size is 220*104px",
+    "formatText": "The image format supports JPG and PNG, and the recommended size is 220 * 104px",
     "editImg": "Edit image",
     "projectInformation": "Project Information",
     "projectStatus": "Project Status",

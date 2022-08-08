@@ -16,7 +16,7 @@ const flexCss = css`
 `
 
 const SetHead = styled.div`
-  margin-left: 32px;
+  // margin-left: 32px;
   margin-right: 12px;
   width: 32px;
   height: 32px;
@@ -49,7 +49,6 @@ export const useDynamicColumns = (state: any) => {
   return [
     {
       width: 200,
-      align: 'center',
       title: t('common.nickname'),
       dataIndex: 'name',
       key: 'name',
@@ -72,7 +71,7 @@ export const useDynamicColumns = (state: any) => {
         )
         return (
           <div className={flexCss}>
-            <ShowWrap>
+            <ShowWrap style={{ marginRight: 32 }}>
               <div
                 hidden={getIsPermission(
                   userInfo?.company_permissions,
@@ -83,7 +82,7 @@ export const useDynamicColumns = (state: any) => {
                   <IconFont
                     type="more
               "
-                    style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+                    style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 16 }}
                   />
                 </Dropdown>
               </div>
@@ -94,7 +93,6 @@ export const useDynamicColumns = (state: any) => {
                   width: 32,
                   height: 32,
                   borderRadius: '50%',
-                  marginLeft: 32,
                 }}
                 src={record.avatar}
                 alt=""

@@ -127,7 +127,7 @@ const CommonOperation = (props: Props) => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
-  const { projectInfo } = useModel('project')
+  const { projectInfo, setProjectInfo } = useModel('project')
   const { userInfo } = useModel('user')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
@@ -173,6 +173,13 @@ const CommonOperation = (props: Props) => {
     return <Menu items={menuItems} />
   }
 
+  const onToProject = () => {
+    navigate('/Project')
+    setTimeout(() => {
+      setProjectInfo({})
+    }, 100)
+  }
+
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
       <EditProject
@@ -193,7 +200,7 @@ const CommonOperation = (props: Props) => {
       <OperationTop>
         <ProjectInfo>
           <IconFont
-            onClick={() => navigate('/Project')}
+            onClick={onToProject}
             style={{ color: '#969799', fontSize: 16, marginRight: 16 }}
             type="left"
           />

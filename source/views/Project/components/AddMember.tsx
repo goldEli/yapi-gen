@@ -106,8 +106,9 @@ const AddMember = (props: Props) => {
       setIsRefreshMember(true)
       getMemberList({ all: true, projectId })
       getProjectInfo({ projectId })
-
-      // form.resetFields()
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
     } catch (error) {
 
       //

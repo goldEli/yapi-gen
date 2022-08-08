@@ -360,7 +360,7 @@ const Need = (props: any) => {
           )
         : null}
       <DeleteConfirm
-        text={t('common.confirmDelChildDemand')}
+        text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
