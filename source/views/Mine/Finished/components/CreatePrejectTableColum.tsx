@@ -89,7 +89,7 @@ export const useDynamicColumns = (state: any) => {
         >
           <IconFont
             type="more"
-            style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 20 }}
+            style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 16 }}
           />
         </Dropdown>
       </ShowWrap>

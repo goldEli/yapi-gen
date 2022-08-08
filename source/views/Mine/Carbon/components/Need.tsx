@@ -38,6 +38,7 @@ const tableTitle = css`
 const Need = (props: any) => {
   const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
+  const { getIterateSelectList } = useModel('iterate')
   const {
     getMineNoFinishList,
     getField,
@@ -145,9 +146,12 @@ const Need = (props: any) => {
 
     init()
   }
-  const showEdit = (e: any) => {
+  const showEdit = async (e: any) => {
     setProjectId(e.record.project_id)
     setOperationItem(e.record.id)
+
+    await getIterateSelectList({ projectId: e.record.project_id, all: true })
+
     setIsVisible(true)
   }
   const showDel = (e: any) => {
