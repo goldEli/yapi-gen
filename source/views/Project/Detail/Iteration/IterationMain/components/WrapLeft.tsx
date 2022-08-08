@@ -115,7 +115,7 @@ const WrapLeft = (props: Props) => {
     { name: t('project.startAsc'), type: 'asc', key: 'start_at' },
     { name: t('project.startDesc'), type: 'desc', key: 'start_at' },
     { name: t('project.endAsc'), type: 'asc', key: 'end_at' },
-    { name: t('project.createDesc'), type: 'desc', key: 'end_at' },
+    { name: t('project.endDesc'), type: 'desc', key: 'end_at' },
     { name: t('project.titleAsc'), type: 'asc', key: 'name' },
     { name: t('project.titleDesc'), type: 'desc', key: 'name' },
   ]
