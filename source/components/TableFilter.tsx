@@ -264,7 +264,10 @@ const TableFilter = (props: any) => {
             })}
 
           <Popover placement="bottom" content={content} trigger={['click']}>
-            <Button icon={<IconFont type="plus" />} />
+            <Button
+              style={{ background: 'white', border: '1px solid #d5d6d9' }}
+              icon={<IconFont type="plus" />}
+            />
           </Popover>
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>

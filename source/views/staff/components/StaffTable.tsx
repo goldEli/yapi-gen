@@ -50,8 +50,8 @@ export const useDynamicColumns = (state: any) => {
     {
       width: 200,
       title: t('common.nickname'),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'nickname',
+      key: 'nickname',
       render: (text: any, record: any) => {
         const menu = (
           <Menu
@@ -99,15 +99,16 @@ export const useDynamicColumns = (state: any) => {
               />
             ) : (
               <SetHead>
-                {String(text.substring(0, 1)).toLocaleUpperCase()}
+                {String(record.name.substring(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
-            <span>{record.nickname}</span>
+            <span>{text}</span>
           </div>
         )
       },
     },
     {
+      width: 200,
       title: <NewSort fixedKey="name">{t('project.realName')}</NewSort>,
       dataIndex: 'name',
       key: 'name',

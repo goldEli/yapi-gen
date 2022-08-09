@@ -13,7 +13,7 @@ import {
   LabNumber,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, message, Pagination } from 'antd'
+import { Button, Dropdown, Menu, message, Pagination, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -284,20 +284,20 @@ const Need = (props: any) => {
         <div style={{ marginRight: '40px', display: 'flex' }}>
           {props.id !== 0 && (
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <IconFont
-                type="filter"
-                style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
-              />
+              <Tooltip title={t('common.filter')}>
+                <IconFont
+                  type="filter"
+                  style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
+                />
+              </Tooltip>
             </SetButton>
           )}
 
-          <Dropdown trigger={['hover']} overlay={menu} placement="bottomLeft">
+          <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
             <SetButton>
-              <IconFont
-                type="set-default
-              "
-                style={{ fontSize: 20 }}
-              />
+              <Tooltip title={t('common.tableFieldSet')}>
+                <IconFont type="set-default" style={{ fontSize: 20 }} />
+              </Tooltip>
             </SetButton>
           </Dropdown>
         </div>

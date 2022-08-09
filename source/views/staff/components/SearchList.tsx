@@ -29,52 +29,33 @@ const FormWrap = styled(Form)({
   },
 })
 
-const SelectWrap = styled(Select)<{ label: string }>`
-  & .ant-select-selector::before {
-    content: '${({ label }) => label}';
-    display: inline-block;
-    margin-right: 16px;
-    margin-left: 10px;
-  }
-
+const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
     color: black;
-    visibility: hidden;
-    left: 65px;
   }
-
   .ant-select-selector {
-    min-width: 186px;
-  }
-`
-
-const DelButton = styled.div`
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #9b9daa;
-  position: absolute;
-  right: -7px;
-  top: -7px;
-  width: 15px;
-  height: 15px;
-  visibility: hidden;
-  &:hover {
-    background-color: blue;
+    min-width: 160px;
+    border: none !important;
+    outline: none !important;
   }
 `
 const SelectWrapBedeck = styled.div`
+  height: 32px;
+  margin-right: 16px;
   position: relative;
   height: 32px;
+  border: 1px solid rgba(235, 237, 240, 1);
   display: flex;
   align-items: center;
+  border-radius: 6px;
   span {
     white-space: nowrap;
   }
-  &:hover ${DelButton.toString()} {
-    visibility: visible;
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-picker {
+    border: none;
   }
 `
 interface Props {
@@ -122,14 +103,17 @@ const SearchList = (props: Props) => {
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('common.department')}
+            </span>
             <Form.Item name="department">
               <SelectWrap
                 onChange={confirm}
-                label={t('common.department')}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
+                optionFilterProp="label"
               >
                 {departmentOptions.map((item: any) => (
                   <Option key={item.id} value={item.id}>
@@ -140,14 +124,17 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('common.job')}
+            </span>
             <Form.Item name="position">
               <SelectWrap
                 onChange={confirm}
-                label={t('common.job')}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
+                optionFilterProp="label"
               >
                 {positionOptions.map((item: any) => (
                   <Option key={item.id} value={item.id}>
@@ -158,14 +145,17 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+              {t('common.permissionGroup')}
+            </span>
             <Form.Item name="userGroup">
               <SelectWrap
                 onChange={confirm}
-                label={t('common.permissionGroup')}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
+                optionFilterProp="label"
               >
                 {roleOptions.map((item: any) => (
                   <Option key={item.id} value={item.id}>

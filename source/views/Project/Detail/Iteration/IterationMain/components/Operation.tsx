@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -179,11 +180,17 @@ const Operation = (props: Props) => {
         destroyOnClose
         maskClosable={false}
       >
-        <div
-          dangerouslySetInnerHTML={{
-            __html: props.currentDetail?.info,
-          }}
-        />
+        <div style={{ height: 436, overflow: 'auto' }}>
+          {props.currentDetail?.info ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: props.currentDetail?.info,
+              }}
+            />
+          )
+            : <NoData />
+          }
+        </div>
       </Modal>
       <OperationWrap>
         <IterationInfo>

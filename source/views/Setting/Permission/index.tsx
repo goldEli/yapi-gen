@@ -62,7 +62,7 @@ const SetLeft = styled.div({
 const SetRight = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  marginLeft: 24,
+  padding: '0 24px',
   width: 'calc(100% - 184px)',
 })
 
@@ -447,6 +447,8 @@ const Permission = () => {
                   textAlign: 'center',
                   cursor: 'pointer',
                   color: '#2877FF',
+                  height: 58,
+                  lineHeight: '58px',
                 }}
                 onClick={() => setIsVisible(true)}
               >

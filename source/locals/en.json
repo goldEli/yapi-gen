@@ -1,5 +1,17 @@
 {
   "common": {
+    "tableFieldSet": "Setting",
+    "timeList": "Deadline list",
+    "sort": "Sort",
+    "board": "Bulletin board",
+    "list": "List",
+    "thumbnail": "Thumbnail",
+    "searchProject": "Enter search items",
+    "selectType": "Please select type",
+    "searchDeal": "Enter search processor",
+    "chooseProject": "Select item",
+    "chooseType": "Select type:",
+    "search": "Search",
     "localsSwitching": "Language switching",
     "close": "Close",
     "move": "Remove",
@@ -297,7 +309,8 @@
     "addUserGroup": "Add User Group",
     "all": "Select All",
     "permission": "Permission",
-    "operationObject": "Operation Object"
+    "operationObject": "Operation Object",
+    "editPermission1": "Edit permission"
   },
   "situation": {
     "category": "Category",

@@ -1,10 +1,11 @@
 import { Button, Modal, Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import head from '@/assets/head.png'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import exp from 'constants'
+import { useSearchParams } from 'react-router-dom'
 
 const { Option } = Select
 
@@ -56,27 +57,30 @@ const SetHead = styled.div`
 `
 
 // eslint-disable-next-line complexity
-export const StaffPersonal = (props: {
+const SetPermissionWrap = (props: {
   data: any
   isVisible: boolean
   onClose(): void
-  onConfirm(info: { userId: string; roleId: string }): void
+  onConfirm(roleId: string): void
 }) => {
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('id')
   const [t] = useTranslation()
   const { data } = props
   const [roleOptions, setRoleOptions] = useState([])
-  const [info, setInfo] = useState({
-    roleId: data.user_group_id,
-    userId: data.id,
-  })
-
-  const { getRoleList } = useModel('staff')
-  const { userInfo } = useModel('user')
+  const [infoId, setInfoId] = useState<any>(0)
+  const { getProjectPermission } = useModel('project')
 
   const init = async () => {
-    const res3 = await getRoleList()
-
-    setRoleOptions(res3.data)
+    const result = await getProjectPermission({ projectId })
+    setRoleOptions(result.list)
+    setInfoId(
+      result.list.filter((item: any) => {
+        return item.id === data.userGroupId
+      }).length
+        ? data.userGroupId
+        : '',
+    )
   }
 
   useEffect(() => {
@@ -85,10 +89,11 @@ export const StaffPersonal = (props: {
   }, [])
 
   const handleChange = (value: any) => {
-    setInfo({ userId: data.id, roleId: value })
+    setInfoId(value)
   }
+
   const onConfirm = () => {
-    props.onConfirm(info)
+    props.onConfirm(infoId)
   }
 
   return (
@@ -96,7 +101,7 @@ export const StaffPersonal = (props: {
       width={420}
       footer={null}
       onCancel={() => props.onClose()}
-      title={t('staff.setPermission')}
+      title={t('setting.editPermission1')}
       visible={props.isVisible}
       maskClosable={false}
       destroyOnClose
@@ -106,7 +111,7 @@ export const StaffPersonal = (props: {
           ? <img className={imgCss} src={data?.avatar} alt="" />
           : (
               <SetHead>
-                {String(data?.name.substring(0, 1)).toLocaleUpperCase()}
+                {String(data?.name?.substring(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
       </PersonalHead>
@@ -119,19 +124,13 @@ export const StaffPersonal = (props: {
           <Line>{t('common.permissionGroup')}</Line>
         </Left>
         <Right>
-          <RightLine>{data.phone ? data.phone : '-'}</RightLine>
-          <RightLine>{data.email ? data.email : '-'}</RightLine>
-          <RightLine>{data.name ? data.name : '-'}</RightLine>
-          <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
+          <RightLine>{data.phone ? data.phone : '--'}</RightLine>
+          <RightLine>{data.email ? data.email : '--'}</RightLine>
+          <RightLine>{data.name ? data.name : '--'}</RightLine>
+          <RightLine>{data.nickname ? data.nickname : '--'}</RightLine>
           <RightLine>
             <Select
-              defaultValue={
-                roleOptions.some((item: any) => {
-                  return item.id !== data.user_group_id
-                })
-                  ? ''
-                  : data.user_group_id
-              }
+              value={infoId}
               style={{ width: 120 }}
               onChange={handleChange}
               getPopupContainer={node => node}
@@ -154,3 +153,5 @@ export const StaffPersonal = (props: {
     </Modal>
   )
 }
+
+export default SetPermissionWrap

@@ -65,6 +65,18 @@ const DataWrap = styled.div({
   background: 'white',
 })
 
+const ImgWrap = styled.img({
+  width: 60,
+  height: 28,
+  borderRadius: 2,
+  boxSizing: 'border-box',
+  border: '1px solid white',
+  cursor: 'pointer',
+  '&: hover': {
+    border: '1px solid #2877ff',
+  },
+})
+
 interface MoreProps {
   menu: React.ReactElement
   text: string
@@ -224,12 +236,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'cover',
-      render: (text: string) => (
-        <img
-          style={{ width: 60, height: 28, borderRadius: 2, cursor: 'pointer' }}
-          src={text}
-        />
-      ),
+      render: (text: string) => <ImgWrap src={text} />,
     },
     {
       dataIndex: 'name',
@@ -299,7 +306,7 @@ const MainTable = (props: Props) => {
       ),
       dataIndex: 'progress',
       render: (text: string) => {
-        return <span>{`${text}%`}</span>
+        return <span>{`${Number(text) * 100}%`}</span>
       },
     },
     {

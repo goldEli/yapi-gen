@@ -133,6 +133,7 @@ export const getProjectInfo: any = async (params: any) => {
     memberCount: response.data.member_count,
     endTime: response.data.stop_at,
     isPublic: response.data.is_public,
+    status: response.data.status,
     plainOptions,
     plainOptions2,
     titleList,
@@ -220,6 +221,8 @@ export const getProjectMember: any = async (params: any) => {
         joinTime: i.created_at,
         userGroupId: i.user_group_id,
         userIds: i.id,
+        phone: i.phone,
+        email: i.email,
       })),
     }
   }

@@ -19,6 +19,7 @@ import {
   message,
   Radio,
   Spin,
+  Tooltip,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -275,11 +276,16 @@ const WrapLeft = (props: Props) => {
             justifyContent: 'space-between',
           }}
         >
-          <div onClick={onReset}>{t('common.clear1')}</div>
+          <div
+            style={{ color: '#2877ff', cursor: 'pointer' }}
+            onClick={onReset}
+          >
+            {t('common.clear1')}
+          </div>
           <Space size={16}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button type="primary" onClick={onConfirmFilter}>
-              {t('common.filter')}
+              {t('common.search')}
             </Button>
           </Space>
         </div>
@@ -410,7 +416,9 @@ const WrapLeft = (props: Props) => {
             getPopupContainer={node => node}
             onVisibleChange={(visible: boolean) => setIsSort(visible)}
           >
-            <IconWrap type="sort" />
+            <Tooltip title={t('common.sort')}>
+              <IconWrap type="sort" />
+            </Tooltip>
           </Popover>
           {hasFilter ? null
             : <Divider style={{ margin: 0, height: 20 }} type="vertical" />
@@ -425,7 +433,9 @@ const WrapLeft = (props: Props) => {
               visible={isFilter}
               onVisibleChange={onVisibleChange}
             >
-              <IconWrap onClick={() => setIsFilter(true)} type="filter" />
+              <Tooltip title={t('common.filter')}>
+                <IconWrap type="filter" />
+              </Tooltip>
             </Popover>
           )}
         </Space>

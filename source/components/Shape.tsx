@@ -128,12 +128,11 @@ export const ShapeContent = (props: ShapeProps) => {
           <div onClick={() => setActive(item.id)} key={item.id}>
             <StyledShape
               style={{
-                color:
-                  item.id === active ? 'rgba(40, 119, 255, 1)' : item.color,
+                color: item.id === active ? '#2877ff' : '#969799',
                 border:
                   item.id === active
-                    ? ' 1px solid rgba(40, 119, 255, 1)'
-                    : `1px solid ${item.color}`,
+                    ? '1px solid #2877ff'
+                    : '1px solid #EBEDF0',
               }}
             >
               {item.content}
@@ -172,6 +171,7 @@ export const ShapeContent = (props: ShapeProps) => {
               <Input.TextArea
                 maxLength={200}
                 style={{ maxHeight: '132px', minHeight: '132px' }}
+                placeholder={t('project.pleaseComment')}
               />
             </Form.Item>
           </Form>
@@ -189,7 +189,7 @@ export const ShapeContent = (props: ShapeProps) => {
         </ButtonFooter>
       </Right>
       <Close onClick={() => onClear()}>
-        <IconFont type="close" style={{ fontSize: 20 }} />
+        <IconFont type="close" style={{ fontSize: 16, cursor: 'pointer' }} />
       </Close>
     </Contain>
   )

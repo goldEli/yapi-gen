@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-len */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -98,7 +99,7 @@ const ProjectInfo = () => {
   }
 
   return (
-    <div style={{ padding: 16 }}>
+    <div style={{ padding: 16, height: '100%' }}>
       <EditProject
         visible={visible}
         onChangeVisible={() => setVisible(!visible)}
@@ -124,7 +125,7 @@ const ProjectInfo = () => {
               type="edit-square"
             />
           </div>
-          <SubText>{projectInfo.info}</SubText>
+          <SubText>{projectInfo.info || '--'}</SubText>
         </InfoLeft>
         <InfoRight>
           <InfoItem>
@@ -133,15 +134,15 @@ const ProjectInfo = () => {
           </InfoItem>
           <InfoItem>
             <div>{t('common.createName')}：</div>
-            <span>{projectInfo.userName}</span>
+            <span>{projectInfo.userName || '--'}</span>
           </InfoItem>
           <InfoItem>
             <div>{t('common.createTime')}：</div>
-            <span>{projectInfo.createTime}</span>
+            <span>{projectInfo.createTime || '--'}</span>
           </InfoItem>
           <InfoItem>
             <div>{t('common.endTime')}：</div>
-            <span>{projectInfo.endTime}</span>
+            <span>{projectInfo.endTime || '--'}</span>
           </InfoItem>
           <InfoItem>
             <div>{t('project.projectStatus')}：</div>
@@ -159,15 +160,15 @@ const ProjectInfo = () => {
           </InfoItem>
           <CardGroup size={24}>
             <CardItem>
-              <div>{projectInfo.demandCount}</div>
+              <div>{projectInfo.demandCount || 0}</div>
               <span>{t('common.demand')}</span>
             </CardItem>
             <CardItem>
-              <div>{projectInfo.iterateCount}</div>
+              <div>{projectInfo.iterateCount || 0}</div>
               <span>{t('project.iterateEdition')}</span>
             </CardItem>
             <CardItem>
-              <div>{projectInfo.memberCount}</div>
+              <div>{projectInfo.memberCount || 0}</div>
               <span>{t('project.projectMember')}</span>
             </CardItem>
           </CardGroup>

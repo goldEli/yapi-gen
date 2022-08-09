@@ -19,6 +19,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import SetPermissionWrap from './SetPermission'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -151,6 +152,9 @@ const ProjectMember = () => {
     projectPermission,
     projectInfo,
     isRefreshMember,
+    updateMember,
+    getProjectInfo,
+    getMemberList,
   } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
   const projectId = searchParams.get('id')
@@ -160,6 +164,7 @@ const ProjectMember = () => {
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
+  const [isEditVisible, setIsEditVisible] = useState(false)
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -228,7 +233,7 @@ const ProjectMember = () => {
     if (type === 'del') {
       setIsDelete(true)
     } else {
-      setIsAddVisible(true)
+      setIsEditVisible(true)
     }
   }
 
@@ -271,7 +276,11 @@ const ProjectMember = () => {
       },
       {
         key: '2',
-        label: <div onClick={() => onOperationMember(item, 'del')}>移除</div>,
+        label: (
+          <div onClick={() => onOperationMember(item, 'del')}>
+            {t('common.move')}
+          </div>
+        ),
       },
     ]
 
@@ -440,6 +449,26 @@ const ProjectMember = () => {
     }, 100)
   }
 
+  const onConfirmEdit = async (roleId: any) => {
+    const params: any = {
+      projectId,
+      userGroupId: roleId,
+      userIds: operationItem?.id,
+    }
+    try {
+      await updateMember(params)
+      message.success(t('common.editSuccess'))
+      setOperationItem({})
+      onChangeUpdate()
+      getMemberList({ all: true, projectId })
+      getProjectInfo({ projectId })
+      setIsEditVisible(false)
+    } catch (error) {
+
+      //
+    }
+  }
+
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -447,6 +476,16 @@ const ProjectMember = () => {
       isType={2}
     >
       <Wrap>
+        {isEditVisible ? (
+          <SetPermissionWrap
+            data={operationItem}
+            isVisible={isEditVisible}
+            onClose={() => {
+              setIsEditVisible(false)
+            }}
+            onConfirm={onConfirmEdit}
+          />
+        ) : null}
         <DeleteConfirm
           text="确认要删除当前成员？"
           isVisible={isDelete}

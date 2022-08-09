@@ -1,5 +1,17 @@
 {
   "common": {
+    "tableFieldSet": "设置",
+    "timeList": "截止时间列表",
+    "sort": "排序",
+    "board": "看板",
+    "list": "列表",
+    "thumbnail": "缩略图",
+    "searchProject": "输入搜索项目",
+    "selectType": "请选择类型",
+    "searchDeal": "输入搜索处理人",
+    "chooseProject": "选择项目",
+    "chooseType": "选择类型",
+    "search": "查询",
     "localsSwitching": "语言切换",
     "close": "关闭",
     "move": "移除",
@@ -298,7 +310,8 @@
     "addUserGroup": "添加用户组",
     "all": "全选",
     "permission": "权限",
-    "operationObject": "操作对象"
+    "operationObject": "操作对象",
+    "editPermission1": "编辑权限"
   },
   "situation": {
     "category": "类别",

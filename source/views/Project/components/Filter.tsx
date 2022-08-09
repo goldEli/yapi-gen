@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
+import { Space, Checkbox, Divider, Dropdown, Menu, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 
@@ -140,7 +140,7 @@ const Filter = (props: Props) => {
                 : t('common.createTime')}
             </MainTitle>
             <Dropdown overlay={menu}>
-              <IconfontWrap type="sort" />
+              <IconfontWrap style={{ color: '#2877ff' }} type="sort" />
             </Dropdown>
           </div>
         </Space>
@@ -148,16 +148,20 @@ const Filter = (props: Props) => {
         <TotalText>{t('project.allProject', { count: props.total })}</TotalText>
         <Divider style={{ height: 20 }} type="vertical" />
         <Space size={12}>
-          <IconfontWrap
-            onClick={() => props.onChangeFormat(true)}
-            active={props.isGrid}
-            type="app-store"
-          />
-          <IconfontWrap
-            onClick={() => props.onChangeFormat(false)}
-            active={!props.isGrid}
-            type="unorderedlist"
-          />
+          <Tooltip title={t('common.thumbnail')}>
+            <IconfontWrap
+              onClick={() => props.onChangeFormat(true)}
+              active={props.isGrid}
+              type="app-store"
+            />
+          </Tooltip>
+          <Tooltip title={t('common.list')}>
+            <IconfontWrap
+              onClick={() => props.onChangeFormat(false)}
+              active={!props.isGrid}
+              type="unorderedlist"
+            />
+          </Tooltip>
         </Space>
       </WrapRight>
     </Wrap>

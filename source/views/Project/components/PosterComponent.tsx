@@ -8,6 +8,7 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useTranslation } from 'react-i18next'
+import { values } from 'lodash'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -74,6 +75,25 @@ const PosterWrap = styled.img({
   borderRadius: 2,
 })
 
+const PosterCard = styled.div({
+  width: 60,
+  height: 28,
+  borderRadius: 2,
+  position: 'relative',
+  overflow: 'hidden',
+  div: {
+    height: '100%',
+    width: '100%',
+    zIndex: 2,
+    background: 'rgba(0,0,0,0.6)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+  },
+})
+
 interface Props {
   value?: any
   onChangeValue?(cover: any): void
@@ -121,12 +141,19 @@ const PosterComponent = (props: Props) => {
       <ChooseTitle>{t('project.pleaseChoosePoster')}</ChooseTitle>
       <PosterGroup size={8}>
         {coverList.map((i: any) => (
-          <PosterWrap
-            key={i.id}
-            onClick={() => onUpdateValue(i.path)}
-            src={i.path}
-            alt=""
-          />
+          <PosterCard key={i.id}>
+            <PosterWrap
+              onClick={() => onUpdateValue(i.path)}
+              src={i.path}
+              alt=""
+            />
+            <div hidden={props.value !== i.path}>
+              <IconFont
+                type="check-circle"
+                style={{ fontSize: 16, color: 'white' }}
+              />
+            </div>
+          </PosterCard>
         ))}
       </PosterGroup>
       <ChooseTitle>{t('project.customCover')}</ChooseTitle>

@@ -69,40 +69,35 @@ const AddMember = (props: Props) => {
     getList()
   }, [])
 
-  useEffect(() => {
-    if (props.details?.id) {
-      form.setFieldsValue(props.details)
-    }
-  }, [props.details])
+  // useEffect(() => {
+  //   if (props.details?.id) {
+  //     form.setFieldsValue(props.details)
+  //   }
+  // }, [props.details])
 
   const onConfirm = async () => {
+    const values = form.getFieldsValue()
     if (!form.getFieldValue('name')) {
       message.warning(t('project.memberNull'))
       return
     }
+    let { userGroupId } = values
 
     if (!form.getFieldValue('userGroupId')) {
-      message.warning(t('project.permissionNull'))
-      return
+      userGroupId = projectPermission?.filter(
+        (i: any) => i.label === '参与者',
+      )[0]?.value
     }
-
-    const values = form.getFieldsValue()
 
     const params: any = {
       projectId,
-      userGroupId: values.userGroupId,
+      userGroupId,
     }
     try {
-      if (props.details?.id) {
-        params.userIds = props.details?.id
-        await updateMember(params)
-        message.success(t('common.editSuccess'))
-      } else {
-        const users = staffList?.filter((i: any) => values.name.find((k: any) => k === i.value))
-        params.userIds = users?.map((i: any) => i.value)
-        await addMember(params)
-        message.success(t('common.addSuccess'))
-      }
+      const users = staffList?.filter((i: any) => values.name.find((k: any) => k === i.value))
+      params.userIds = users?.map((i: any) => i.value)
+      await addMember(params)
+      message.success(t('common.addSuccess'))
       props.onChangeValue()
       props.onChangeUpdate()
       setIsRefreshMember(true)
@@ -177,6 +172,10 @@ const AddMember = (props: Props) => {
                 showSearch
                 showArrow
                 optionFilterProp="label"
+                defaultValue={
+                  projectPermission?.filter((i: any) => i.label === '参与者')[0]
+                    ?.value
+                }
               />
             </Form.Item>
           </div>

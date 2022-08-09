@@ -26,6 +26,7 @@ const buttonCss = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   &:hover {
     width: 24px;
     /* display: block; */
@@ -89,6 +90,7 @@ const NanmeAndPhone = styled.div`
   font-size: 12px;
   display: flex;
   flex-direction: column;
+  margin-left: 8px;
 `
 const PanelFooter = styled.div`
   display: flex;

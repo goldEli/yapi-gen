@@ -34,9 +34,6 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
-  height: 600,
-  overflowY: 'auto',
-  overflowX: 'hidden',
   '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -180,7 +177,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 )
 
 const EditDemand = (props: Props) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
@@ -427,7 +424,7 @@ const EditDemand = (props: Props) => {
   return (
     <Modal
       visible={props.visible}
-      width={740}
+      width={524}
       footer={false}
       title={titleText()}
       onCancel={onCancel}
@@ -435,7 +432,7 @@ const EditDemand = (props: Props) => {
       destroyOnClose
       maskClosable={false}
     >
-      <FormWrap form={form} labelCol={{ span: 4 }}>
+      <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
@@ -464,8 +461,9 @@ const EditDemand = (props: Props) => {
               showArrow
               mode="multiple"
               showSearch
-              placeholder={t('common.pleaseChooseDeal')}
+              placeholder={t('common.searchDeal')}
               getPopupContainer={node => node}
+              allowClear
             >
               {memberList?.map((i: any) => {
                 return (
@@ -480,7 +478,7 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.estimatedTime')} name="times">
-            <DatePicker.RangePicker style={{ width: '100%' }} />
+            <DatePicker.RangePicker style={{ width: '100%' }} allowClear />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -494,6 +492,7 @@ const EditDemand = (props: Props) => {
               options={parentList}
               getPopupContainer={node => node}
               optionFilterProp="label"
+              allowClear
             />
           </Form.Item>
         </div>
@@ -536,17 +535,15 @@ const EditDemand = (props: Props) => {
               showSearch
               showArrow
               getPopupContainer={node => node}
-            >
-              {selectIterate?.list
+              allowClear
+              optionFilterProp="label"
+              options={selectIterate?.list
                 ?.filter((k: any) => k.status === 1)
-                ?.map((i: any) => {
-                  return (
-                    <Select.Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Select.Option>
-                  )
-                })}
-            </Select>
+                ?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

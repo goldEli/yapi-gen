@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 
@@ -10,6 +11,7 @@ const Wrap = styled.div<{ show: boolean }>`
   height: 50px;
   display: flex;
   align-items: center;
+  cursor: pointer;
   ${Arrow} {
     visibility: ${({ show }) => show ? 'visible' : 'hidden'};
   }
@@ -38,14 +40,16 @@ const Sort = (props: any) => {
       }}
       show={nowKey === fixedKey}
     >
-      <Text>{props.children}</Text>
+      <Text style={{ color: nowKey === fixedKey ? '#2877ff' : '' }}>
+        {props.children}
+      </Text>
       <Arrow>
         <IconFont
           type="tableUp"
           style={{
             color:
               order === 1 && nowKey === fixedKey ? 'rgba(40, 119, 255, 1)' : '',
-            fontSize: 10,
+            fontSize: 8,
           }}
         />
         <IconFont
@@ -53,7 +57,7 @@ const Sort = (props: any) => {
           style={{
             color:
               order === 2 && nowKey === fixedKey ? 'rgba(40, 119, 255, 1)' : '',
-            fontSize: 10,
+            fontSize: 8,
           }}
         />
       </Arrow>

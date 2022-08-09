@@ -4,7 +4,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, message, Pagination, Spin } from 'antd'
+import {
+  Button,
+  Dropdown,
+  Menu,
+  message,
+  Pagination,
+  Spin,
+  Tooltip,
+} from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -249,21 +257,21 @@ const Staff = () => {
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <SetButton onClick={onChangeFilter}>
-            <IconFont
-              type="filter"
-              style={{
-                fontSize: 20,
-                color: isShow ? 'rgba(40, 119, 255, 1)' : '',
-              }}
-            />
-          </SetButton>
-          <Dropdown overlay={menu} placement="bottomLeft">
-            <SetButton>
+            <Tooltip title={t('common.filter')}>
               <IconFont
-                type="set-default
-              "
-                style={{ fontSize: 20 }}
+                type="filter"
+                style={{
+                  fontSize: 20,
+                  color: isShow ? 'rgba(40, 119, 255, 1)' : '',
+                }}
               />
+            </Tooltip>
+          </SetButton>
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <SetButton>
+              <Tooltip title={t('common.tableFieldSet')}>
+                <IconFont type="set-default" style={{ fontSize: 20 }} />
+              </Tooltip>
             </SetButton>
           </Dropdown>
         </div>

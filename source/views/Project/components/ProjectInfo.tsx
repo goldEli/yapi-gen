@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
@@ -63,7 +64,7 @@ const ProjectInfo = (props: Props) => {
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
           <div>{projectInfo.name}</div>
-          <span>{projectInfo.info}</span>
+          <span>{projectInfo.info || '--'}</span>
         </PosterWrap>
         <InfoItem>
           <span>{t('project.projectId')}</span>
@@ -71,11 +72,11 @@ const ProjectInfo = (props: Props) => {
         </InfoItem>
         <InfoItem>
           <span>{t('common.createName')}</span>
-          <div>{projectInfo.userName}</div>
+          <div>{projectInfo.userName || '--'}</div>
         </InfoItem>
         <InfoItem>
           <span>{t('common.createTime')}</span>
-          <div>{projectInfo.createTime}</div>
+          <div>{projectInfo.createTime || '--'}</div>
         </InfoItem>
         <InfoItem>
           <span>{t('project.projectStatus')}</span>
@@ -93,15 +94,15 @@ const ProjectInfo = (props: Props) => {
         </InfoItem>
         <InfoItem>
           <span>{t('common.demand')}</span>
-          <div>{projectInfo.demandCount}</div>
+          <div>{projectInfo.demandCount || 0}</div>
         </InfoItem>
         <InfoItem>
           <span>{t('project.iterateEdition')}</span>
-          <div>{projectInfo.iterateCount}</div>
+          <div>{projectInfo.iterateCount || 0}</div>
         </InfoItem>
         <InfoItem>
           <span>{t('project.projectMember')}</span>
-          <div>{projectInfo.memberCount}</div>
+          <div>{projectInfo.memberCount || 0}</div>
         </InfoItem>
       </div>
     </Modal>

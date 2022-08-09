@@ -23,9 +23,6 @@ import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
-  height: 600,
-  overflowY: 'auto',
-  overflowX: 'hidden',
   '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -62,34 +59,38 @@ const FormWrap = styled(Form)({
   },
 })
 
-const PriorityWrap = styled.div<{ status: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    height: 26,
-    padding: '0 6px',
-    width: 'fit-content',
-    borderRadius: 6,
-    div: {
-      color: '#323233',
-      fontSize: 14,
-      marginLeft: 8,
-    },
-    '.anticon': {
-      fontSize: 16,
-      svg: {
-        margin: '0!important',
-      },
-    },
-    '&: hover': {
-      background: 'rgba(240, 244, 250, 1)',
+const PriorityWrap = styled.div<{ status: any }>({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  height: 26,
+  padding: '0 6px',
+  width: 'fit-content',
+  borderRadius: 6,
+  div: {
+    color: '#323233',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  '.icon': {
+    marginLeft: 8,
+    visibility: 'hidden',
+    fontSize: 16,
+    color: '#2877ff',
+  },
+  '.priorityIcon': {
+    fontSize: 16,
+    svg: {
+      margin: '0!important',
     },
   },
-  ({ status }) => ({
-    cursor: String(status ? 'poister' : 'not-allowed'),
-    pointerEvents: status ? 'auto' : 'none',
-  }),
-)
+  '&: hover': {
+    background: 'rgba(240, 244, 250, 1)',
+    '.icon': {
+      visibility: 'visible',
+    },
+  },
+})
 
 const ModalFooter = styled.div({
   width: '100%',
@@ -159,7 +160,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
 )
 
 const EditDemand = (props: Props) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
   const [html, setHtml] = useState('')
   const [prejectId, setPrejectId] = useState<any>()
@@ -342,7 +343,7 @@ const EditDemand = (props: Props) => {
   return (
     <Modal
       visible={props.visible}
-      width={740}
+      width={524}
       footer={false}
       title={t('mine.quickCreate')}
       onCancel={onCancel}
@@ -350,40 +351,42 @@ const EditDemand = (props: Props) => {
       destroyOnClose
       maskClosable={false}
     >
-      <FormWrap form={form} labelCol={{ span: 4 }}>
+      <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
-            label={t('common.createProject')}
+            label={t('common.chooseProject')}
             rules={[{ required: true, message: '' }]}
             name="projectId"
           >
             <Select
               onSelect={selectPrejectName}
-              placeholder={t('common.pleaseSelect')}
+              placeholder={t('common.searchProject')}
               allowClear
               showArrow
               onClear={clearProjectId}
-            >
-              {prejectList?.map((i: any) => {
-                return (
-                  <Select.Option key={i.id} value={i.id}>
-                    {i.name}
-                  </Select.Option>
-                )
-              })}
-            </Select>
+              optionFilterProp="label"
+              showSearch
+              options={prejectList?.map((k: any) => ({
+                label: k.name,
+                value: k.id,
+              }))}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
-            label={t('mine.createType')}
+            label={t('common.chooseType')}
             rules={[{ required: true, message: '' }]}
             required
             name="type"
           >
-            <Select placeholder={t('common.pleaseSelect')} showArrow>
+            <Select
+              placeholder={t('common.selectType')}
+              showArrow
+              optionFilterProp="label"
+            >
               <Select.Option value="need">{t('common.demand')}</Select.Option>
             </Select>
           </Form.Item>
@@ -410,17 +413,13 @@ const EditDemand = (props: Props) => {
           <Form.Item label={t('common.dealName')} name="users">
             <Select
               mode="multiple"
-              placeholder={t('common.pleaseSelect')}
+              placeholder={t('common.searchDeal')}
               allowClear
-            >
-              {peopleList?.map((i: any) => {
-                return (
-                  <Select.Option key={i.value} value={i.value}>
-                    {i.label}
-                  </Select.Option>
-                )
-              })}
-            </Select>
+              disabled={!prejectId}
+              options={peopleList}
+              optionFilterProp="label"
+              showSearch
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -430,7 +429,7 @@ const EditDemand = (props: Props) => {
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="parent_id" />
+          <IconFont className="labelIcon" type="apartment" />
           <Form.Item label={t('common.parentDemand')} name="parentId">
             <Select
               disabled={!prejectId}
@@ -448,28 +447,36 @@ const EditDemand = (props: Props) => {
         >
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.priority')} name="priority">
-            <PopConfirm
-              content={({ onHide }: { onHide(): void }) => {
-                return (
-                  <LevelContent
-                    onHide={onHide}
-                    record={{ project_id: prejectId }}
-                    onCurrentDetail={onCurrentDetail}
+            {prejectId ? (
+              <PopConfirm
+                content={({ onHide }: { onHide(): void }) => {
+                  return (
+                    <LevelContent
+                      onHide={onHide}
+                      record={{ project_id: prejectId }}
+                      onCurrentDetail={onCurrentDetail}
+                    />
+                  )
+                }}
+              >
+                <PriorityWrap status={prejectId}>
+                  <IconFont
+                    className="priorityIcon"
+                    type={priorityDetail?.icon}
+                    style={{
+                      fontSize: 16,
+                      color: priorityDetail?.color,
+                    }}
                   />
-                )
-              }}
-            >
-              <PriorityWrap status={prejectId}>
-                <IconFont
-                  type={priorityDetail?.icon}
-                  style={{
-                    fontSize: 16,
-                    color: priorityDetail?.color,
-                  }}
-                />
-                <div>{priorityDetail?.content || '--'}</div>
-              </PriorityWrap>
-            </PopConfirm>
+                  <div>
+                    <span>{priorityDetail?.content || '--'}</span>
+                    <IconFont className="icon" type="down-icon" />
+                  </div>
+                </PriorityWrap>
+              </PopConfirm>
+            )
+              : '--'
+            }
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

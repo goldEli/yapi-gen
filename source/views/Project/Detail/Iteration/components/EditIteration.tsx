@@ -64,7 +64,7 @@ interface Props {
 }
 
 const EditIteration = (props: Props) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const [html, setHtml] = useState('')
@@ -134,7 +134,7 @@ const EditIteration = (props: Props) => {
   return (
     <Modal
       visible={props.visible}
-      width={740}
+      width={524}
       footer={false}
       title={props?.id ? t('project.editIterate') : t('common.createIterate')}
       onCancel={onCancel}
@@ -142,7 +142,11 @@ const EditIteration = (props: Props) => {
       destroyOnClose
       maskClosable={false}
     >
-      <FormWrap form={form} labelCol={{ span: 4 }} initialValues={iterateInfo}>
+      <FormWrap
+        form={form}
+        labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
+        initialValues={iterateInfo}
+      >
         <div style={{ display: 'flex' }}>
           <IconFont type="interation" />
           <Form.Item

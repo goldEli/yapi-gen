@@ -74,23 +74,33 @@ const TopRight = styled(Space)({
   right: 24,
 })
 
-const TopRightItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  color: 'black',
-  cursor: 'pointer',
-  '.anticon': {
-    fontSize: 20,
+const TopRightItem = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    color: 'black',
+    cursor: 'pointer',
+    '.anticon': {
+      fontSize: 20,
+    },
+    div: {
+      fontSize: 14,
+      fontWeight: 400,
+      marginLeft: 8,
+    },
+    '&: hover': {
+      color: '#2877ff!important',
+    },
   },
-  div: {
-    fontSize: 14,
-    fontWeight: 400,
-    marginLeft: 8,
-  },
-  '&: hover': {
-    color: '#2877ff',
-  },
-})
+  ({ isShow }) => ({
+    '.anticon': {
+      color: isShow ? '#2877ff' : '',
+    },
+    div: {
+      color: isShow ? '#2877ff' : '',
+    },
+  }),
+)
 
 const MenuItems = styled.div({
   display: 'flex',
@@ -124,6 +134,7 @@ const CommonOperation = (props: Props) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
+  const [isColor, setIsColor] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
@@ -138,12 +149,23 @@ const CommonOperation = (props: Props) => {
     { name: t('container.setting'), type: 'Set' },
   ]
 
+  const onMenuClick = (type?: string) => {
+    setIsShowMenu(false)
+    if (type === 'info') {
+      setInfoVisible(true)
+    } else if (type === 'edit') {
+      setIsVisible(true)
+    } else {
+      navigate(`/Detail/Set?id=${projectId}`)
+    }
+  }
+
   const menu = () => {
     let menuItems = [
       {
         key: 1,
         label: (
-          <MenuItems onClick={() => setInfoVisible(true)}>
+          <MenuItems onClick={() => onMenuClick('info')}>
             <div>{t('project.projectInformation')}</div>
           </MenuItems>
         ),
@@ -151,7 +173,7 @@ const CommonOperation = (props: Props) => {
       {
         key: 2,
         label: (
-          <MenuItems onClick={() => setIsVisible(true)}>
+          <MenuItems onClick={() => onMenuClick('edit')}>
             <div>{t('project.editProject')}</div>
           </MenuItems>
         ),
@@ -159,7 +181,7 @@ const CommonOperation = (props: Props) => {
       {
         key: 3,
         label: (
-          <MenuItems onClick={() => navigate(`/Detail/Set?id=${projectId}`)}>
+          <MenuItems onClick={() => onMenuClick()}>
             <div>{t('project.projectSet')}</div>
           </MenuItems>
         ),
@@ -180,17 +202,31 @@ const CommonOperation = (props: Props) => {
     }, 100)
   }
 
+  const onClickMenu = (state: boolean) => {
+    setIsShowMenu(state)
+    setIsColor(state)
+  }
+
+  const onClickProjectInfo = (state: boolean) => {
+    setInfoVisible(state)
+    setIsColor(state)
+  }
+
+  const onClickEdit = (state: boolean) => {
+    setIsVisible(state)
+    setIsColor(state)
+  }
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
       <EditProject
         visible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
+        onChangeVisible={() => onClickEdit(false)}
         details={projectInfo}
         onUpdate={props.onUpdate}
       />
       <ProjectInfoModal
         visible={infoVisible}
-        onChangeVisible={() => setInfoVisible(!infoVisible)}
+        onChangeVisible={() => onClickProjectInfo(false)}
       />
       <Member
         visible={memberVisible}
@@ -241,16 +277,11 @@ const CommonOperation = (props: Props) => {
             trigger={['click']}
             overlay={menu}
             placement="bottomRight"
-            onVisibleChange={state => setIsShowMenu(state)}
+            onVisibleChange={state => onClickMenu(state)}
           >
-            <TopRightItem onClick={() => setIsShowMenu(true)}>
-              <IconFont
-                style={{ color: isShowMenu ? '#2877ff' : '#000000' }}
-                type="menu"
-              />
-              <div style={{ color: isShowMenu ? '#2877ff' : '#000000' }}>
-                {t('project.menu')}
-              </div>
+            <TopRightItem onClick={() => onClickMenu(true)} isShow={isColor}>
+              <IconFont type="menu" />
+              <div>{t('project.menu')}</div>
             </TopRightItem>
           </Dropdown>
         </TopRight>

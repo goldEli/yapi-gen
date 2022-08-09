@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Divider, Space, Dropdown, Menu } from 'antd'
+import { Divider, Space, Dropdown, Menu, Tooltip } from 'antd'
 import IconFont from './IconFont'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
@@ -61,27 +61,33 @@ const OperationGroup = (props: Props) => {
   )
   return (
     <SpaceWrap size={16}>
-      <IconFontWrap
-        onClick={() => props.onChangeGrid?.(true)}
-        active={props.isGrid}
-        type="layout"
-      />
-      <IconFontWrap
-        onClick={() => props.onChangeGrid?.(false)}
-        active={!props.isGrid}
-        type="unorderedlist"
-      />
+      <Tooltip title={t('common.board')}>
+        <IconFontWrap
+          onClick={() => props.onChangeGrid?.(true)}
+          active={props.isGrid}
+          type="layout"
+        />
+      </Tooltip>
+      <Tooltip title={t('common.list')}>
+        <IconFontWrap
+          onClick={() => props.onChangeGrid?.(false)}
+          active={!props.isGrid}
+          type="unorderedlist"
+        />
+      </Tooltip>
 
       {hasFilter ? null : <DividerWrap type="vertical" />}
 
       {hasFilter
         ? null
         : (
-            <IconFontWrap
-              active={!props.filterState}
-              type="filter"
-              onClick={props.onChangeFilter}
-            />
+            <Tooltip title={t('common.filter')}>
+              <IconFontWrap
+                active={!props.filterState}
+                type="filter"
+                onClick={props.onChangeFilter}
+              />
+            </Tooltip>
           )}
 
       {props.isGrid ? null : <DividerWrap type="vertical" />}
@@ -89,8 +95,10 @@ const OperationGroup = (props: Props) => {
       {props.isGrid
         ? null
         : (
-            <Dropdown overlay={menu}>
-              <IconFontWrap active={props.settingState} type="settings" />
+            <Dropdown overlay={menu} trigger={['click']}>
+              <Tooltip title={t('common.tableFieldSet')}>
+                <IconFontWrap active={props.settingState} type="settings" />
+              </Tooltip>
             </Dropdown>
           )}
     </SpaceWrap>

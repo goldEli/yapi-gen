@@ -15,7 +15,7 @@ import {
   StaffTableWrap2,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, message, Pagination } from 'antd'
+import { Button, Dropdown, Menu, message, Pagination, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -276,7 +276,7 @@ const Need = (props: any) => {
       items={[
         {
           key: '1',
-          label: <Button onClick={showModal}>{t('common.setField')}</Button>,
+          label: <span onClick={showModal}>{t('common.setField')}</span>,
         },
       ]}
     />
@@ -311,37 +311,41 @@ const Need = (props: any) => {
               setIsMany(!isMany)
             }}
           >
-            <IconFont
-              type="unorderedlist"
-              style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-            />
+            <Tooltip title={t('common.list')}>
+              <IconFont
+                type="unorderedlist"
+                style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
+              />
+            </Tooltip>
           </SetButton>
           <SetButton
             onClick={() => {
               setIsMany(!isMany)
             }}
           >
-            <IconFont
-              type="database"
-              style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
-            />
+            <Tooltip title={t('common.timeList')}>
+              <IconFont
+                type="database"
+                style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
+              />
+            </Tooltip>
           </SetButton>
           {props.id !== 0 && (
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <IconFont
-                type="filter"
-                style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
-              />
+              <Tooltip title={t('common.filter')}>
+                <IconFont
+                  type="filter"
+                  style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
+                />
+              </Tooltip>
             </SetButton>
           )}
 
-          <Dropdown overlay={menu} placement="bottomLeft">
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <SetButton>
-              <IconFont
-                type="set-default
-              "
-                style={{ fontSize: 20 }}
-              />
+              <Tooltip title={t('common.tableFieldSet')}>
+                <IconFont type="set-default" style={{ fontSize: 20 }} />
+              </Tooltip>
             </SetButton>
           </Dropdown>
         </div>
