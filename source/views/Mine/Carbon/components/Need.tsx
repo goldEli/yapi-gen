@@ -184,12 +184,12 @@ const Need = (props: any) => {
   }, [titleList, columns])
   const getShowkey = async () => {
     const res2 = await getField(props.id)
-
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
   }
+
   const getSearchKey = async (key?: any, type?: number) => {
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))

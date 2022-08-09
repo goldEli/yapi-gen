@@ -520,7 +520,7 @@ const EditDemand = (props: Props) => {
                   }}
                 />
                 <div>
-                  <span>{priorityDetail?.content || '--'}</span>
+                  <span>{priorityDetail?.content_txt || '--'}</span>
                   <IconFont className="icon" type="down-icon" />
                 </div>
               </PriorityWrap>

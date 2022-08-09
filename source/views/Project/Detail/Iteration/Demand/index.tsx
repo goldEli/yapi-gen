@@ -502,7 +502,7 @@ const DemandWrap = () => {
                 }}
               />
               <div>
-                <span>{text.content || '--'}</span>
+                <span>{text.content_txt || '--'}</span>
                 <IconFont className="icon" type="down-icon" />
               </div>
             </PriorityWrap>
@@ -556,7 +556,7 @@ const DemandWrap = () => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
+            <StatusWrap color={text.color}>{text.content_txt}</StatusWrap>
           </PopConfirm>
         )
       },

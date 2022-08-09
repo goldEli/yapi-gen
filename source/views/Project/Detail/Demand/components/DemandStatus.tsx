@@ -95,7 +95,7 @@ const DemandBox = (props: Props) => {
       >
         <IconFont type="close" />
       </div>
-      <Form form={form} labelCol={{ span: 5 }}>
+      <Form form={form} labelCol={{ span: 6 }}>
         <Form.Item
           label={t('common.dealName')}
           name="username"
@@ -157,7 +157,7 @@ const DemandStatusBox = () => {
                     : '1px solid #EBEDF0',
               }}
             >
-              {i.content}
+              {i.content_txt}
             </StatusWrap>
             <Divider
               style={{

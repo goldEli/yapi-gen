@@ -233,7 +233,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
               type={demandInfo?.priority?.icon}
             />
             <DownPriority>
-              <span>{demandInfo?.priority?.content || '--'}</span>
+              <span>{demandInfo?.priority?.content_txt || '--'}</span>
               <IconFont className="icon" type="down-icon" />
             </DownPriority>
           </div>

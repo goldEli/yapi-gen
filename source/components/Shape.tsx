@@ -38,7 +38,7 @@ const StyledShape = styled.div`
   justify-content: center;
   font-size: 12px;
   padding: 1px 8px 1px 8px;
-  width: 60px;
+  min-width: 60px;
   height: 25px;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
@@ -135,7 +135,7 @@ export const ShapeContent = (props: ShapeProps) => {
                     : '1px solid #EBEDF0',
               }}
             >
-              {item.content}
+              {item.content_txt}
             </StyledShape>
             {/* {item.content} */}
           </div>

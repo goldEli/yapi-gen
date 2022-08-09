@@ -80,25 +80,41 @@ export const getProjectInfo: any = async (params: any) => {
 
   const plainOptions = response.data.storyConfig.display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '基本字段')
-    .map((item: { title: any; content: any; is_default_display: any }) => {
-      return {
-        label: item.title,
-        value: item.content,
-        is_default_display: item.is_default_display,
-      }
-    })
+    .map(
+      (item: {
+        title: any
+        content: any
+        is_default_display: any
+        content_txt: any
+      }) => {
+        return {
+          label: item.title,
+          value: item.content,
+          is_default_display: item.is_default_display,
+          labelTxt: item.content_txt,
+        }
+      },
+    )
 
   const plainOptions2 = response.data.storyConfig.display_fidlds
     .filter(
       (item: { group_name: string }) => item.group_name === '人员与时间字段',
     )
-    .map((item: { is_default_display: any; title: any; content: any }) => {
-      return {
-        label: item.title,
-        value: item.content,
-        is_default_display: item.is_default_display,
-      }
-    })
+    .map(
+      (item: {
+        is_default_display: any
+        title: any
+        content: any
+        content_txt: any
+      }) => {
+        return {
+          label: item.title,
+          value: item.content,
+          is_default_display: item.is_default_display,
+          labelTxt: item.content_txt,
+        }
+      },
+    )
 
   const titleList: any[] = []
   plainOptions
@@ -258,7 +274,7 @@ export const getProjectPermission: any = async (params: any) => {
   return {
     list: response.data.map((i: any) => ({
       id: i.id,
-      name: i.name,
+      name: i.content_txt || i.name,
       type: i.type,
     })),
   }
@@ -291,9 +307,9 @@ export const getPermission: any = async (params: any) => {
   })
   return {
     list: response.data.map((i: any) => ({
-      name: i.group_name,
+      name: i.group_content_txt,
       children: i.permissions.map((k: any) => ({
-        label: k.name,
+        label: k.group_content_txt,
         value: k.id,
         checked: k.checked,
       })),

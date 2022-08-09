@@ -31,6 +31,12 @@ const Operation = styled.div({
 const ButtonWrap = styled(Button)({
   color: '#2877ff',
   border: '1px solid #2877FF',
+  background: 'none',
+  '&: hover': {
+    color: '#2877ff',
+    border: '1px solid #2877FF',
+    background: 'none',
+  },
 })
 
 const IconFontWrap = styled(IconFont)<{ active?: boolean }>(

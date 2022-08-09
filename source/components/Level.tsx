@@ -7,7 +7,7 @@ import { ClickWrap } from './StyleCommon'
 
 const flexCss = css`
   height: 32px;
-  width: 120px;
+  min-width: 120px;
   box-sizing: border-box;
   padding: 0px 16px;
   display: flex;
@@ -19,7 +19,7 @@ const flexCss = css`
 `
 const Contain = styled.div`
   padding: 10px 0;
-  width: 120px;
+  min-width: 120px;
   /* height: 136px; */
   display: flex;
   flex-direction: column;
@@ -76,7 +76,7 @@ export const LevelContent = (props: LevelProps) => {
               color: item.color,
             }}
           />
-          <span>{item.content}</span>
+          <span>{item.content_txt}</span>
         </ClickWrap>
       ))}
     </Contain>

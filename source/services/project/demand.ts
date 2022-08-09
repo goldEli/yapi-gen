@@ -130,6 +130,7 @@ export const getDemandList: any = async (params: any) => {
         updatedTime: i.updated_at,
         usersCopySendName: i.users_copysend_name,
         userName: i.user_name,
+        tag: i.tag,
       })),
     }
   }

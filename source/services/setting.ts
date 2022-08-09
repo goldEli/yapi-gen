@@ -73,7 +73,7 @@ export const getRoleList: any = async () => {
   return {
     list: response.data.map((i: any) => ({
       id: i.id,
-      name: i.name,
+      name: i.content_txt || i.name,
       type: i.type,
     })),
   }
@@ -85,9 +85,9 @@ export const getRolePermission: any = async (params: any) => {
   })
   return {
     list: response.data.map((i: any) => ({
-      name: i.group_name,
+      name: i.group_content_txt,
       children: i.permissions.map((k: any) => ({
-        label: k.name,
+        label: k.content_txt,
         value: k.id,
         checked: k.checked,
       })),

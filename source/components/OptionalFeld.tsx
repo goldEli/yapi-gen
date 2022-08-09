@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
 import { Checkbox, Modal, Space } from 'antd'
@@ -52,9 +53,19 @@ const ItemWrap = styled.div`
 `
 type OptionalFeldProps = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  plainOptions: { label: string; value: string; is_default_display?: number }[]
+  plainOptions: {
+    labelTxt: string
+    label: string
+    value: string
+    is_default_display?: number
+  }[]
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  plainOptions2: { label: string; value: string; is_default_display?: number }[]
+  plainOptions2: {
+    labelTxt: string
+    label: string
+    value: string
+    is_default_display?: number
+  }[]
   checkList: CheckboxValueType[]
   checkList2: CheckboxValueType[]
   getCheckList(
@@ -99,17 +110,20 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const allList = useMemo(() => {
     const arr = [...checkList, ...checkList2]
     const arr2 = [...plainOptions, ...plainOptions2]
-    const all = arr2.reduce((res: { label: string; value: string }[], item) => {
-      if (arr.includes(item.value)) {
-        res.push(item)
-      }
-      return res
-    }, [])
+    const all = arr2.reduce(
+      (res: { labelTxt: string; label: string; value: string }[], item) => {
+        if (arr.includes(item.value)) {
+          res.push(item)
+        }
+        return res
+      },
+      [],
+    )
 
     return all.map(item => (
       <CheckedItem key={item.value}>
         <IconFont style={{ fontSize: 12, marginRight: '8px' }} type="move" />
-        <span>{item.label}</span>
+        <span>{item.labelTxt}</span>
         {item.value !== 'name' && (
           <ShowWrap style={{ marginLeft: 'auto' }}>
             <IconFont
@@ -122,6 +136,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       </CheckedItem>
     ))
   }, [checkList, checkList2, plainOptions, plainOptions2])
+
   return (
     <Modal
       width={800}
@@ -144,7 +159,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                     key={item.label}
                     value={item.value}
                   >
-                    {item.label}
+                    {item.labelTxt}
                   </Checkbox>
                 ))}
               </Space>
@@ -156,7 +171,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               <Space style={{ flexWrap: 'wrap' }}>
                 {plainOptions2.map(item => (
                   <Checkbox key={item.label} value={item.value}>
-                    {item.label}
+                    {item.labelTxt}
                   </Checkbox>
                 ))}
               </Space>

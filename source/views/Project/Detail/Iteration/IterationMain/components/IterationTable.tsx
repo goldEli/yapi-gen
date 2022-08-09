@@ -209,7 +209,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
+            <StatusWrap color={text.color}>{text.content_txt}</StatusWrap>
           </PopConfirm>
         )
       },

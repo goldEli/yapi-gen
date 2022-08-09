@@ -124,7 +124,7 @@ const NewSort = (sortProps: any) => {
 const Operation = () => {
   const [t] = useTranslation()
   const typeList = [
-    { label: '新增', value: 'POST' },
+    { label: t('common.add'), value: 'POST' },
     { label: t('common.edit'), value: 'PUT' },
     { label: t('common.del'), value: 'DELETE' },
   ]
