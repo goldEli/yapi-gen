@@ -84,7 +84,7 @@
     "comment": "Comment",
     "childDemand": "Sub-requirement",
     "confirmDelDemand": "Are you sure you want to delete the current demand?",
-    "pleaseSearchDemand": "Please search for demand name or demand ID",
+    "pleaseSearchDemand": "Title/demand ID",
     "pleaseProject": "Please select a project",
     "pleaseDemandName": "Please enter a demand name",
     "estimatedTime": "Estimated Time",
