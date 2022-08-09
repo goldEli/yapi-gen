@@ -1,5 +1,6 @@
 {
   "common": {
+    "searchOrCreate": "搜索或创建标签",
     "tableFieldSet": "设置",
     "timeList": "截止时间列表",
     "sort": "排序",
@@ -17,7 +18,7 @@
     "move": "移除",
     "editS": "修改成功",
     "job1": "在职",
-    "job2": "在职",
+    "job2": "离职",
     "start": "预计开始",
     "end": "预计结束",
     "tableTotal": "共{{count}}条",

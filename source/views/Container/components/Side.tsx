@@ -173,13 +173,17 @@ export const Side = () => {
           <span>{t('container.setting')}</span>
         </SideEach>
         <Popover placement="rightTop" trigger="click" content={<Panel />}>
-          {userInfo.avatar
-            ? <img className={imgCss} src={userInfo.avatar} />
-            : (
-                <SetHead onClick={controlPanelVisible}>
-                  {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
-                </SetHead>
-              )}
+          {userInfo.avatar ? (
+            <img
+              style={{ cursor: 'pointer' }}
+              className={imgCss}
+              src={userInfo.avatar}
+            />
+          ) : (
+            <SetHead onClick={controlPanelVisible}>
+              {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
+            </SetHead>
+          )}
         </Popover>
       </SideFooter>
     </SideWrap>

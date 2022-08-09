@@ -78,6 +78,25 @@ const ColorWrap = styled.div({
   },
 })
 
+const SearchInput = styled(Input)`
+  font-size: 14px;
+  width: 240px;
+  height: 32px;
+  background: rgba(245, 246, 247, 1);
+  background-blend-mode: normal;
+  mix-blend-mode: normal;
+  display: flex;
+  justify-content: flex-start;
+
+  padding: 5px 12px 5px 12px;
+  border: none;
+  input {
+    background: rgba(245, 246, 247, 1);
+    &::placeholder {
+      font-size: 14px;
+    }
+  }
+`
 interface TagProps {
   tap?(value: any): void
   canAdd?: boolean
@@ -148,18 +167,28 @@ const TagBox = (props: TagProps) => {
   return (
     <TagWrap title="">
       <div style={{ padding: '16px 16px 4px 16px' }}>
-        <Input.Search
-          value={value}
-          onChange={e => setValue(e.target.value)}
+        <SearchInput
           onPressEnter={(e: any) => onPressEnter(e.target.value)}
+          onChange={e => setValue(e.target.value)}
+          suffix={
+            <IconFont
+              type="search"
+              style={{ color: '#BBBDBF', fontSize: 16 }}
+            />
+          }
+          allowClear
+          value={value}
+          placeholder={t('common.searchOrCreate')}
         />
       </div>
-      {arr.map((i: any) => (
-        <TagItem key={i.id} onClick={() => onHasTagAdd(i)}>
-          <div style={{ background: i.color }} />
-          <span>{i.content}</span>
-        </TagItem>
-      ))}
+      <div style={{ maxHeight: 200, overflow: 'auto' }}>
+        {arr.map((i: any) => (
+          <TagItem key={i.id} onClick={() => onHasTagAdd(i)}>
+            <div style={{ background: i.color }} />
+            <span>{i.content}</span>
+          </TagItem>
+        ))}
+      </div>
       <TagItem hidden={!value}>
         <span onClick={onCreateTag}>{t('project.createTag', { value })}</span>
       </TagItem>

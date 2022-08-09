@@ -20,7 +20,7 @@ import {
 } from '@/locals'
 import NoPermission from './components/NoPermission'
 import { useTranslation } from 'react-i18next'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, message } from 'antd'
 
 const Wrap = styled.div`
   display: flex;
@@ -47,6 +47,9 @@ export const Container = () => {
     i18n: { language },
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
+  message.config({
+    duration: 1.5,
+  })
 
   const init = async () => {
     if (!localStorage.getItem('agileToken')) {
