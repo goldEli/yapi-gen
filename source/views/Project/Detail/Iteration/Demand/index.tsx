@@ -9,7 +9,7 @@
 import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination, message, Table, Popover, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
@@ -269,11 +269,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         }}
         onClick={onChildClick}
       >
-        <IconFont
-          type="apartment"
-          style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
-        />
-        <span style={{ color: '#323233', fontSize: 16 }}>{props.value}</span>
+        <ClickWrap style={{ fontSize: 16 }}>{props.value}</ClickWrap>
       </div>
     </Popover>
   )
