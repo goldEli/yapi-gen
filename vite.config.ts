@@ -15,7 +15,7 @@ export default defineConfig(config => {
       }),
     ],
     define: {
-      VERSION: JSON.stringify(profile.version),
+      __VERSION__: JSON.stringify(profile.version),
     },
     resolve: {
       alias: {

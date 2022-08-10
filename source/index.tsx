@@ -27,4 +27,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </BrowserRouter>,
 )
 
-log.print(VERSION)
+log.print(__VERSION__)
