@@ -36,7 +36,7 @@ const DemoColumn = (props: any) => {
     },
   }
   if (res) {
-    return <Column {...config} />
+    return <Column {...(config as any)} />
   }
   return null
 }
