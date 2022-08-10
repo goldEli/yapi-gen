@@ -210,13 +210,12 @@ const TableFilter = (props: any) => {
                         placeholder={t('common.pleaseSelect')}
                         showSearch
                         onChange={confirm}
-                      >
-                        {i.children.map((v: any) => (
-                          <Option key={v.id} value={v.id}>
-                            {v.content_txt}
-                          </Option>
-                        ))}
-                      </SelectWrap>
+                        optionFilterProp="label"
+                        options={i.children.map((v: any) => ({
+                          label: v.content_txt,
+                          value: v.id,
+                        }))}
+                      />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
                       <IconFont type="close" style={{ fontSize: '12px' }} />
