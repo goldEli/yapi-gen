@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
@@ -8,24 +9,43 @@ import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { useEffect, useState } from 'react'
 
 const Content = styled.div({
   padding: 24,
   overflow: 'auto',
 })
 
-const CardGroup = styled.div({
+const StatusItemsWrap = styled.div({
+  width: 316,
+  height: '100%',
+  background: 'white',
+  padding: '0 24px 16px 24px',
+  borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  padding: '16px 24px',
-  background: 'white',
-  borderRadius: 6,
+  overflowY: 'auto',
+})
+
+const SpaceWrap = styled(Space)({
+  display: 'flex',
+  alignItems: 'flex-start',
+  height: '100%',
+  '.ant-space-item': {
+    height: '100%',
+  },
 })
 
 const Title = styled.div({
   fontSize: 14,
   fontWeight: 400,
   color: 'black',
+  position: 'sticky',
+  top: 0,
+  background: 'white',
+  paddingTop: 16,
+  zIndex: 2,
+  width: '100%',
 })
 
 interface Props {
@@ -42,6 +62,14 @@ const IterationGrid = (props: Props) => {
   const projectId = searchParams.get('id')
   const { projectInfo } = useModel('project')
   const { filterHeight } = useModel('iterate')
+  const [basicStatus, setBasicStatus] = useState<any>([])
+
+  useEffect(() => {
+    setBasicStatus(
+      projectInfo?.filterFelid.filter((i: any) => i.title === '状态')[0]
+        ?.values,
+    )
+  }, [projectInfo])
 
   const menu = (item: any) => {
     let menuItems = [
@@ -79,28 +107,34 @@ const IterationGrid = (props: Props) => {
   return (
     <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
       <Spin spinning={props?.isSpinning}>
-        {!!props?.data?.list
-          && (props?.data?.list?.length > 0 ? (
-            <Space size={20} style={{ alignItems: 'flex-start' }}>
-              {props?.data?.list?.map((i: any) => (
-                <CardGroup key={i.name}>
-                  <Title>
-                    {i.name}({i.count})
-                  </Title>
-                  {i.list?.map((k: any) => (
+        <SpaceWrap size={20}>
+          {basicStatus?.map((k: any) => (
+            <StatusItemsWrap key={k.id}>
+              <Title>
+                {k.content_txt}(
+                {
+                  props?.data?.list?.filter((item: any) => item.id === k.id)[0]
+                    ?.count
+                }
+                )
+              </Title>
+              {props?.data?.list?.filter((item: any) => item.id === k.id)[0]
+                ?.list?.length
+                ? props?.data?.list
+                  ?.filter((item: any) => item.id === k.id)[0]
+                  ?.list?.map((i: any) => (
                     <DemandCard
-                      key={k.id}
-                      menu={menu(k)}
-                      item={k}
-                      onClickItem={() => onClickItem(k)}
+                      key={i.id}
+                      menu={menu(i)}
+                      item={i}
+                      onClickItem={() => onClickItem(i)}
                     />
-                  ))}
-                </CardGroup>
-              ))}
-            </Space>
-          )
-            : <NoData />
-          )}
+                  ))
+                : <NoData />
+              }
+            </StatusItemsWrap>
+          ))}
+        </SpaceWrap>
       </Spin>
     </Content>
   )

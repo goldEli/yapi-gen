@@ -33,7 +33,7 @@ const MoreWrap = styled(IconFont)({
 })
 
 const Wrap = styled.div({
-  width: 268,
+  width: '100%',
   height: 90,
   background: 'white',
   borderRadius: 6,

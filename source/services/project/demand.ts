@@ -87,7 +87,8 @@ export const getDemandList: any = async (params: any) => {
           iterateId: i.iterate_id,
           parentId: i.parent_id,
         })),
-        name: k.status_name,
+        name: k.content_txt,
+        id: k.status_id,
       })),
     }
   } else if (params.all) {
