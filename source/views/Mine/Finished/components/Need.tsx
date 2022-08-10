@@ -337,7 +337,7 @@ const Need = (props: any) => {
         />
       </StaffTableWrap>
 
-      <PaginationWrap>
+      <PaginationWrap style={{ position: 'fixed', bottom: 0, right: 16 }}>
         <Pagination
           defaultCurrent={1}
           current={page}

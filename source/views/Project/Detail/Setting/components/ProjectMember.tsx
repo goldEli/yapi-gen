@@ -526,6 +526,7 @@ const ProjectMember = () => {
                 <Form.Item name="searchValue" />
                 <Form.Item name="jobIds" noStyle>
                   <SelectWrap
+                    showArrow
                     mode="multiple"
                     style={{ width: '100%' }}
                     placeholder={t('common.all')}
@@ -541,6 +542,7 @@ const ProjectMember = () => {
                 </span>
                 <Form.Item name="userGroupIds" noStyle>
                   <SelectWrap
+                    showArrow
                     mode="multiple"
                     style={{ width: '100%' }}
                     placeholder={t('common.all')}

@@ -104,10 +104,11 @@ const UploadAttach = (props: Props) => {
     if (file instanceof File) {
       const result: any = await uploadFile(file, file.name, 'file')
       option.onSuccess?.(result)
-      const items = [decodeURIComponent(result.url)]
+      result.url = decodeURIComponent(result.url)
+      const items = [result.url]
       arr = [...arr, ...items]
       if (props.canUpdate) {
-        onAddInfoAttach([decodeURIComponent(result.url)])
+        onAddInfoAttach([result.url])
       } else {
         props.onChangeAttachment?.(result, 'add')
       }

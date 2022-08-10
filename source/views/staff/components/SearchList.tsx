@@ -108,19 +108,18 @@ const SearchList = (props: Props) => {
             </span>
             <Form.Item name="department">
               <SelectWrap
+                showArrow
                 onChange={confirm}
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
-              >
-                {departmentOptions.map((item: any) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </SelectWrap>
+                options={departmentOptions.map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+              />
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
@@ -135,13 +134,12 @@ const SearchList = (props: Props) => {
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
-              >
-                {positionOptions.map((item: any) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </SelectWrap>
+                showArrow
+                options={positionOptions.map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+              />
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
@@ -156,13 +154,12 @@ const SearchList = (props: Props) => {
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
-              >
-                {roleOptions.map((item: any) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </SelectWrap>
+                showArrow
+                options={roleOptions.map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+              />
             </Form.Item>
           </SelectWrapBedeck>
 

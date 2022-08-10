@@ -205,6 +205,7 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item name={i.key}>
                       <SelectWrap
+                        showArrow
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder={t('common.pleaseSelect')}

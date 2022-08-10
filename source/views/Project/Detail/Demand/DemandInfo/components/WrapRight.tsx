@@ -2,6 +2,7 @@
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import { Input, Button, message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -11,6 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { OmitText } from '@star-yun/ui'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -100,6 +102,22 @@ const TextareaWrap = styled.div({
   },
 })
 
+const SetHead = styled.div`
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 12px;
+  background: #a4acf5;
+  background-blend-mode: normal;
+  /* border: 2px solid rgba(40, 119, 255, 0.16); */
+  border: 1px solid #f0f2fd;
+  color: white;
+  margin-right: 8px;
+  margin-top: 24;
+`
+
 const WrapRightBox = () => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -183,7 +201,13 @@ const WrapRightBox = () => {
             <div>
               {dataList?.list?.map((item: any) => (
                 <CommentItem key={item.id}>
-                  <img src={item.avatar} alt="" />
+                  {item.avatar
+                    ? <img src={item.avatar} alt="" />
+                    : (
+                        <SetHead>
+                          {String(item.name?.substring(0, 1)).toLocaleUpperCase()}
+                        </SetHead>
+                      )}
                   <TextWrap>
                     <div className="textTop">
                       {isComment ? null : (
@@ -195,7 +219,9 @@ const WrapRightBox = () => {
                       )}
                       <div style={{ display: 'flex', alignItems: 'center' }}>
                         <span className="name">{item.name}</span>
-                        <span className="common">{item.statusContent}</span>
+                        <span className="common">
+                          <OmitText width={160}>{item.statusContent}</OmitText>
+                        </span>
                       </div>
                       <div className="common" style={{ paddingRight: 30 }}>
                         {item.createdTime}

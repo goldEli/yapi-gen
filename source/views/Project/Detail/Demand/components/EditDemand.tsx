@@ -384,7 +384,7 @@ const EditDemand = (props: Props) => {
       const arr = attachList
       const comResult = arr.filter((i: any) => i.id !== result.uid)
       form.setFieldsValue({
-        attachments: comResult,
+        attachments: comResult.map((i: any) => i.url),
       })
       setAttachList(comResult)
     }

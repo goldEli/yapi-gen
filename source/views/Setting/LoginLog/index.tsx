@@ -342,6 +342,7 @@ const LoginLog = () => {
             <Form.Item name="pageSize" />
             <Form.Item name="userIds" noStyle>
               <SelectWrap
+                showArrow
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}

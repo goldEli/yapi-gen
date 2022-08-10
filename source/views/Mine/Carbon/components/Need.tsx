@@ -45,6 +45,7 @@ const Need = (props: any) => {
     getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
+    setIsListMany,
   } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -295,6 +296,12 @@ const Need = (props: any) => {
       ]}
     />
   )
+
+  const onChangeMany = (state: boolean) => {
+    setIsMany(state)
+    setIsListMany(state)
+  }
+
   return (
     <>
       <TabsHehavior>
@@ -322,7 +329,7 @@ const Need = (props: any) => {
         <div style={{ marginRight: '40px', display: 'flex' }}>
           <SetButton
             onClick={() => {
-              setIsMany(!isMany)
+              onChangeMany(false)
             }}
           >
             <Tooltip title={t('common.list')}>
@@ -334,7 +341,7 @@ const Need = (props: any) => {
           </SetButton>
           <SetButton
             onClick={() => {
-              setIsMany(!isMany)
+              onChangeMany(true)
             }}
           >
             <Tooltip title={t('common.timeList')}>
@@ -412,7 +419,7 @@ const Need = (props: any) => {
       ) : null}
 
       {!isMany && (
-        <PaginationWrap>
+        <PaginationWrap style={{ position: 'fixed', bottom: 0, right: 16 }}>
           <Pagination
             defaultCurrent={1}
             current={page}
