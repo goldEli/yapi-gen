@@ -396,12 +396,14 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        {hasAdd ? null : (
-          <AddButton
-            text={t('common.createIterate')}
-            onChangeClick={onChangeClick}
-          />
-        )}
+        {hasAdd
+          ? <div />
+          : (
+              <AddButton
+                text={t('common.createIterate')}
+                onChangeClick={onChangeClick}
+              />
+            )}
         <Space size={20}>
           <Popover
             visible={isSort}

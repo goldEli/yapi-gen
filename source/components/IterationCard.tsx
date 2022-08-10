@@ -66,6 +66,10 @@ const TitleWrap = styled.div({
   fontSize: 14,
   fontWeight: 'bold',
   color: 'black',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  maxWidth: 130,
 })
 
 const TimeWrap = styled.div({
