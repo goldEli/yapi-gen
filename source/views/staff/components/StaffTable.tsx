@@ -103,11 +103,17 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="email">{t('common.email')}</NewSort>,
       dataIndex: 'email',
       key: 'email',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="phone">{t('common.phone')}</NewSort>,
       dataIndex: 'phone',
       key: 'phone',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title:
@@ -115,11 +121,17 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'department_name',
       key: 'department_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="position_name">{t('common.job')}</NewSort>,
       dataIndex: 'position_name',
       key: 'position_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title:
@@ -127,6 +139,9 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'role_name',
       key: 'role_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="project_num">{t('common.status')}</NewSort>,
@@ -149,11 +164,17 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'project_num',
       key: 'project_num',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 }

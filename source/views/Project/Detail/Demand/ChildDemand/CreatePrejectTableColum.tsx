@@ -166,27 +166,42 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'demand',
       key: 'child_story_count',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
       dataIndex: 'iteration',
       key: 'iterate_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
       key: 'tag',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
 
     {
       title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title:
@@ -194,11 +209,17 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'time',
       key: 'created_at',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -208,6 +229,9 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedStart',
       key: 'expected_start_at',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title:
@@ -215,16 +239,25 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="updated_at">{t('common.lastTime')}</NewSort>,
       dataIndex: 'updatedTime',
       key: 'updated_at',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: <NewSort fixedKey="finish_at">{t('common.finishTime')}</NewSort>,
       dataIndex: 'finishTime',
       key: 'finish_at',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 }

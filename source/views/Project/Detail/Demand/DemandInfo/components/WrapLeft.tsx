@@ -241,11 +241,11 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       </InfoItem>
       <InfoItem>
         <Label>{t('common.start')}</Label>
-        <TextWrap>{demandInfo?.expectedStart}</TextWrap>
+        <TextWrap>{demandInfo?.expectedStart || '--'}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>{t('common.end')}</Label>
-        <TextWrap>{demandInfo?.expectedEnd}</TextWrap>
+        <TextWrap>{demandInfo?.expectedEnd || '--'}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>{t('common.copySend')}</Label>

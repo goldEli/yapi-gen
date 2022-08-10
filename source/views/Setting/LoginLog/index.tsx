@@ -203,6 +203,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'id',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -216,6 +219,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'username',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -229,6 +235,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'nickname',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -242,6 +251,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'time',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -255,6 +267,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'loginIp',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -268,6 +283,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'client',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -281,6 +299,9 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'system',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (

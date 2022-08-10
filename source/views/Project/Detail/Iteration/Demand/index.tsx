@@ -530,6 +530,9 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -581,6 +584,9 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'dealName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -594,6 +600,9 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'time',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -607,6 +616,9 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'expectedStart',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -620,6 +632,9 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'expectedEnd',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 

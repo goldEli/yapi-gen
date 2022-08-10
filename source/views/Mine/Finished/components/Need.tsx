@@ -40,6 +40,9 @@ const TableBox = styled(TableWrap)({
     [RowIconFont.toString()]: {
       visibility: 'visible',
     },
+    [ShowWrap.toString()]: {
+      visibility: 'visible',
+    },
   },
 })
 

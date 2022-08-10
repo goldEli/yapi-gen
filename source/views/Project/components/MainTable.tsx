@@ -370,6 +370,9 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'endTime',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 

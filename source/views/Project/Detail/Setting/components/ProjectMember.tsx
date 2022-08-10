@@ -361,6 +361,9 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'name',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -390,6 +393,9 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'departmentName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -403,6 +409,9 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'positionName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -416,6 +425,9 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'roleName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -429,6 +441,9 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'joinTime',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 
