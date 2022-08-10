@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-lonely-if */
 /* eslint-disable require-atomic-updates */
 /* eslint-disable complexity */
 /* eslint-disable operator-linebreak */
@@ -10,6 +12,7 @@ import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
 import { env } from 'process'
 import { decrypt, encrypt } from './crypto'
+import { decryptPhp, encryptPhp } from './cryptoPhp'
 
 const { userAgent } = window.navigator
 const getSystem = () => {
@@ -76,8 +79,13 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           options.payload = encrypt(options.payload as string)
         }
-
-        // options.payload = encrypt(options.payload as string)
+      } else {
+        if (
+          import.meta.env.MODE !== 'development' &&
+          JSON.stringify(options.search) != '{}'
+        ) {
+          options.search = { p: encryptPhp(JSON.stringify(options.search)) }
+        }
       }
     },
   ],
@@ -89,8 +97,10 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           return JSON.parse(decrypt((response as { body: string }).body))
         }
-
-        // return JSON.parse(decrypt((response as { body: string }).body))
+      } else if (import.meta.env.MODE !== 'development') {
+        return JSON.parse(
+          decryptPhp(JSON.parse((response as { body: string }).body).p),
+        )
       }
       return JSON.parse((response as { body: string }).body)
     },
