@@ -84,6 +84,7 @@ const ChildDemand = () => {
     deleteDemand,
     getDemandInfo,
   } = useModel('demand')
+  const { isRefresh, setIsRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
@@ -119,11 +120,18 @@ const ChildDemand = () => {
     })
     setDataList(result)
     setIsSpinning(false)
+    setIsRefresh(false)
   }
 
   useEffect(() => {
     getList(pageObj, order)
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getList(pageObj, order)
+    }
+  }, [isRefresh])
 
   useEffect(() => {
     getShowkey()

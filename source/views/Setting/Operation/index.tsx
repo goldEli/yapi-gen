@@ -69,7 +69,7 @@ const SelectWrapBedeck = styled.div`
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
-    color: black;
+    color: rgba(187, 189, 191, 1);
   }
   .ant-select-selector {
     min-width: 200px;

@@ -46,22 +46,22 @@ const TimeWrap = styled(DatePicker.RangePicker)<{ label: string }>`
     /* left: 200px !important; */
   }
 `
-const SelectWrap = styled(Select)<{ label: string }>`
-  & .ant-select-selector::before {
-    content: '${({ label }) => label}';
-    display: inline-block;
-    margin-right: 16px;
-    margin-left: 10px;
+
+const SelectWrap = styled(Select)`
+  .ant-select-selection-placeholder {
+    color: black;
+  }
+  .ant-select-selector {
+    min-width: 140px;
+    border: none !important;
+    outline: none !important;
   }
 
   .ant-select-selection-placeholder {
-    left: 65px;
-  }
-
-  .ant-select-selector {
-    min-width: 186px;
+    color: rgba(187, 189, 191, 1);
   }
 `
+
 const rangPicker = css`
   .ant-picker-panel-container {
     display: flex;
@@ -96,16 +96,23 @@ const DelButton = styled.div`
     background-color: #2877ff;
   }
 `
+
 const SelectWrapBedeck = styled.div`
+  height: 32px;
   position: relative;
   height: 32px;
+  border: 1px solid rgba(235, 237, 240, 1);
   display: flex;
   align-items: center;
+  border-radius: 6px;
   span {
     white-space: nowrap;
   }
-  &:hover ${DelButton.toString()} {
-    visibility: visible;
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-picker {
+    border: none;
   }
 `
 
@@ -193,9 +200,11 @@ const TableFilter = (props: any) => {
               if (i.type === 'select') {
                 return (
                   <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
                     <Form.Item name={i.key}>
                       <SelectWrap
-                        label={i.name}
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder={t('common.pleaseSelect')}
@@ -204,7 +213,7 @@ const TableFilter = (props: any) => {
                       >
                         {i.children.map((v: any) => (
                           <Option key={v.id} value={v.id}>
-                            {v.content}
+                            {v.content_txt}
                           </Option>
                         ))}
                       </SelectWrap>
@@ -218,9 +227,11 @@ const TableFilter = (props: any) => {
               return (
                 <SelectWrapBedeck key={i.key}>
                   <Form.Item name={i.key}>
-                    <TimeWrap
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <DatePicker.RangePicker
                       onChange={confirm}
-                      label={i.name}
                       className={rangPicker}
                       getPopupContainer={node => node}
                       format={(times: moment.Moment) => {

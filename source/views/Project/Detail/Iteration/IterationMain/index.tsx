@@ -44,6 +44,7 @@ const IterationMain = (props: Props) => {
   const iterateId = searchParams.get('iterateId')
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const { setIsRefreshList } = useModel('iterate')
+  const { isRefresh, setIsRefresh } = useModel('user')
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
   const [isSettingState, setIsSettingState] = useState(false)
@@ -95,11 +96,18 @@ const IterationMain = (props: Props) => {
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
+    setIsRefresh(false)
   }
 
   useEffect(() => {
     setIsUpdateList(props.updateState)
   }, [props.updateState])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getList(isGrid, pageObj, searchItems)
+    }
+  }, [isRefresh])
 
   useEffect(() => {
     if (currentDetail?.id) {

@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import exp from 'constants'
 import { useSearchParams } from 'react-router-dom'
 
 const { Option } = Select

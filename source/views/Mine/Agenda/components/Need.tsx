@@ -35,6 +35,7 @@ const Need = (props: any) => {
     updateDemandStatus,
     updatePriorityStatus,
   } = useModel('mine')
+  const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
@@ -162,6 +163,7 @@ const Need = (props: any) => {
     setPlainOptions2(res2.plainOptions2)
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
+    setIsRefresh(false)
   }
   const getSearchKey = async (key?: any, type?: number) => {
     if (key && type === 0) {
@@ -185,6 +187,7 @@ const Need = (props: any) => {
     setSearchList(arr)
     setFilterBasicsList(res?.filterBasicsList)
     setFilterSpecialList(res?.filterSpecialList)
+    setIsRefresh(false)
   }
 
   const onChangePage = (newPage: any) => {
@@ -210,6 +213,17 @@ const Need = (props: any) => {
     getShowkey()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      init()
+      getShowkey()
+      if (props?.id) {
+        getSearchKey()
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRefresh])
 
   const showModal = () => {
     setIsModalVisible(true)

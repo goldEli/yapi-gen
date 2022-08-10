@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
 import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
@@ -27,6 +29,7 @@ const Detail = () => {
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+  const { isRefresh } = useModel('user')
 
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
@@ -52,6 +55,13 @@ const Detail = () => {
   }, [])
 
   useEffect(() => {
+    if (isRefresh) {
+      getProjectInfo({ projectId })
+      getPermissionList()
+    }
+  }, [isRefresh])
+
+  useEffect(() => {
     if (isRefreshIterateList) {
       getIterateList()
     }
@@ -64,6 +74,7 @@ const Detail = () => {
           return {
             id: i.id,
             content: i.name,
+            content_txt: i.name,
           }
         })
       }
@@ -76,6 +87,7 @@ const Detail = () => {
           return {
             id: k.id,
             content: k.name,
+            content_txt: k.name,
           }
         })
       }
@@ -92,6 +104,7 @@ const Detail = () => {
           children: item.values,
           type: 'time',
           isDefault: item.is_default_filter,
+          contentTxt: item.content_txt,
         }
       }
       return {
@@ -102,6 +115,7 @@ const Detail = () => {
         children: item.values,
         type: 'select',
         isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
       }
     })
 

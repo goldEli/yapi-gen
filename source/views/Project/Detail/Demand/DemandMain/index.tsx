@@ -32,6 +32,7 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { getDemandList, deleteDemand } = useModel('demand')
+  const { isRefresh, setIsRefresh } = useModel('user')
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
@@ -92,11 +93,18 @@ const DemandMain = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     props.onIsUpdate?.()
+    setIsRefresh(false)
   }
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getList(isGrid, searchItems, pageObj, order, true)
+    }
+  }, [isRefresh])
 
   useEffect(() => {
     if (props.isUpdate) {

@@ -283,6 +283,7 @@ const DemandWrap = () => {
   const { projectInfo } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand }
     = useModel('demand')
+  const { isRefresh, setIsRefresh } = useModel('user')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -315,11 +316,18 @@ const DemandWrap = () => {
     })
     setDataList(result)
     setIsSpinning(false)
+    setIsRefresh(false)
   }
 
   useEffect(() => {
     getList(pageObj, order)
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getList(pageObj, order)
+    }
+  }, [isRefresh])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })

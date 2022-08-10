@@ -25,10 +25,18 @@ const DemandInfo = () => {
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { getDemandInfo } = useModel('demand')
+  const { isRefresh, setIsRefresh } = useModel('user')
 
   useEffect(() => {
     getDemandInfo({ projectId, id: demandId })
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getDemandInfo({ projectId, id: demandId })
+      setIsRefresh(false)
+    }
+  }, [isRefresh])
 
   const onUpdate = () => {
     getDemandInfo({ projectId, id: demandId })

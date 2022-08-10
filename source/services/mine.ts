@@ -22,6 +22,7 @@ export const getSearchField: any = async (params: any) => {
     return {
       id: item.id,
       content: item.name,
+      content_txt: item.name,
     }
   })
 
@@ -37,6 +38,7 @@ export const getSearchField: any = async (params: any) => {
     return {
       id: item.id,
       content: item.name,
+      content_txt: item.name,
     }
   })
 
@@ -72,6 +74,7 @@ export const getSearchField: any = async (params: any) => {
         children: item.values,
         type: 'time',
         isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
       }
     } else {
       return {
@@ -82,6 +85,7 @@ export const getSearchField: any = async (params: any) => {
         children: item.values,
         type: 'select',
         isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
       }
     }
   })

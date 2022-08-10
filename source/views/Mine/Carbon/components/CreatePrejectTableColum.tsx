@@ -162,7 +162,9 @@ export const useDynamicColumns = (state: any) => {
                   color: text.color,
                 }}
               />
-              <span style={{ marginRight: '5px' }}>{text.content || '--'}</span>
+              <span style={{ marginRight: '5px' }}>
+                {text.content_txt || '--'}
+              </span>
             </div>
             <Pop
               content={({ onHide }: { onHide(): void }) => (
@@ -210,7 +212,7 @@ export const useDynamicColumns = (state: any) => {
             }}
             record={record}
           >
-            <StyledShape color={text.color}>{text.content}</StyledShape>
+            <StyledShape color={text.color}>{text.content_txt}</StyledShape>
           </Pop>
         )
       },

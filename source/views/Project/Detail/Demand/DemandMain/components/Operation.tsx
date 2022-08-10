@@ -96,12 +96,10 @@ const Operation = (props: Props) => {
     }
     if (key && type === 1) {
       const addList = filterAll?.filter((item: any) => item.content === key)
-
       setSearchList([...searchList, ...addList])
 
       return
     }
-
     const arr = filterAll?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
@@ -119,6 +117,8 @@ const Operation = (props: Props) => {
       setFilterHeight(stickyWrapDom.current?.clientHeight)
     }, 100)
   }
+
+  // console.log(filterBasicsList, '===', filterSpecialList, ' ---', searchList)
 
   return (
     <StickyWrap ref={stickyWrapDom}>

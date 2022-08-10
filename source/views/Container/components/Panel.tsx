@@ -122,7 +122,7 @@ const LanguageLine = styled.div`
 `
 
 export const Panel = () => {
-  const { loginOut, userInfo } = useModel('user')
+  const { loginOut, userInfo, setIsRefresh } = useModel('user')
   const navigate = useNavigate()
   const [t, i18n] = useTranslation()
   const [personalModalVisible, setPersonalModalVisible]
@@ -149,6 +149,9 @@ export const Panel = () => {
     setLanguageMode(value)
     setLanguageModeVisible(false)
     clear()
+    setTimeout(() => {
+      setIsRefresh(true)
+    }, 100)
   }
 
   const content = (

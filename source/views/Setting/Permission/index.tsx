@@ -234,6 +234,7 @@ const Permission = () => {
     deleteRole,
   } = useModel('setting')
   const [isSpinning, setIsSpinning] = useState(false)
+  const { isRefresh, setIsRefresh } = useModel('user')
 
   const getPermission = async (id: number) => {
     setIsSpinning(true)
@@ -246,6 +247,7 @@ const Permission = () => {
       keys = [...keys, ...a.map((k: any) => k.value)]
     })
     setSelectKeys(keys)
+    setIsRefresh(false)
   }
 
   const init = async (isInit?: boolean) => {
@@ -263,6 +265,12 @@ const Permission = () => {
   useEffect(() => {
     init(true)
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      init(true)
+    }
+  }, [isRefresh])
 
   const onSavePermission = async () => {
     if (!selectKeys.length) {

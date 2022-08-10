@@ -223,6 +223,7 @@ const ProjectSet = () => {
     projectInfo,
   } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
+  const { isRefresh, setIsRefresh } = useModel('user')
 
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
@@ -247,11 +248,18 @@ const ProjectSet = () => {
     } else {
       setIsSpinning(false)
     }
+    setIsRefresh(false)
   }
 
   useEffect(() => {
     init(true)
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      init(true)
+    }
+  }, [isRefresh])
 
   const onSavePermission = async () => {
     if (!selectKeys.length) {
@@ -445,6 +453,8 @@ const ProjectSet = () => {
                     textAlign: 'center',
                     cursor: 'pointer',
                     color: '#2877FF',
+                    height: 58,
+                    lineHeight: '58px',
                   }}
                   onClick={() => setIsVisible(true)}
                 >
