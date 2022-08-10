@@ -21,9 +21,6 @@ const OperationWrap = styled.div({
 
 const StickyWrap = styled.div({
   background: 'white',
-  position: 'sticky',
-  top: 64,
-  zIndex: 9,
 })
 
 interface Props {

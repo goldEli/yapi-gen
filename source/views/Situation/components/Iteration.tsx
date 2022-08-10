@@ -23,23 +23,15 @@ const DemoColumn = (props: any) => {
     xField: 'type',
     yField: 'sales',
     label: {
+      position: 'top',
       style: {
-        fill: '#FFFFFF',
-        opacity: 0.6,
+        fill: '#000',
       },
     },
     xAxis: {
       label: {
         autoHide: true,
         autoRotate: false,
-      },
-    },
-    meta: {
-      type: {
-        alias: '类别',
-      },
-      sales: {
-        alias: '数量',
       },
     },
   }

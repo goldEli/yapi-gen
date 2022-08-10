@@ -226,31 +226,29 @@ const Project = () => {
           onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
           }
         />
-        <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
-          <SearchWrap>
-            <SearchComponent
-              placeholder={t('mark.searchP')}
-              text={t('common.createProject')}
-              onChangeSearch={onChangeSearch}
-              onChangeVisible={onAddClick}
-              isPermission={getIsPermission(
-                userInfo?.company_permissions,
-                'b/project/save',
-              )}
-            />
-          </SearchWrap>
-          <Filter
-            show
-            total={projectList.list?.length}
-            sort={order.key}
-            isGrid={isGrid}
-            activeType={activeType}
-            onChangeSort={onChangeSort}
-            onChangeFormat={onChangeGrid}
-            onChangeHidden={onChangeHidden}
-            onChangeType={onChangeType}
+        <SearchWrap>
+          <SearchComponent
+            placeholder={t('mark.searchP')}
+            text={t('common.createProject')}
+            onChangeSearch={onChangeSearch}
+            onChangeVisible={onAddClick}
+            isPermission={getIsPermission(
+              userInfo?.company_permissions,
+              'b/project/save',
+            )}
           />
-        </div>
+        </SearchWrap>
+        <Filter
+          show
+          total={projectList.list?.length}
+          sort={order.key}
+          isGrid={isGrid}
+          activeType={activeType}
+          onChangeSort={onChangeSort}
+          onChangeFormat={onChangeGrid}
+          onChangeHidden={onChangeHidden}
+          onChangeType={onChangeType}
+        />
         <Content>
           <Spin spinning={isSpinning}>
             {isGrid ? (

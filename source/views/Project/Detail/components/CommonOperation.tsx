@@ -217,7 +217,7 @@ const CommonOperation = (props: Props) => {
     setIsColor(state)
   }
   return (
-    <div style={{ position: 'sticky', top: 0, zIndex: 9 }}>
+    <div>
       <EditProject
         visible={isVisible}
         onChangeVisible={() => onClickEdit(false)}

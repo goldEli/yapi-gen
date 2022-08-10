@@ -39,7 +39,6 @@ const Left = styled.div<{ isShowLeft: boolean }>(
     borderRight: '1px solid #EBEDF0',
     padding: '0px 16px 10px',
     background: 'white',
-    zIndex: 1,
     height: 'calc(100vh - 64px)',
     '.ant-space-item': {
       display: 'flex',
@@ -54,10 +53,6 @@ const TopWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-
-  // position: 'sticky',
-  // top: 64,
-  // zIndex: 2,
   height: 52,
   background: 'white',
   marginBottom: 8,
