@@ -29,27 +29,59 @@ export const getStaffList: any = async (params: any) => {
         {
           label: response.data.class_one_fields.department_name,
           value: 'department_name',
+          labelTxt: response.data.class_one_fields.department_name,
         },
-        { label: response.data.class_one_fields.email, value: 'email' },
-        { label: response.data.class_one_fields.gender, value: 'gender' },
-        { label: response.data.class_one_fields.name, value: 'name' },
-        { label: response.data.class_one_fields.nickname, value: 'nickname' },
-        { label: response.data.class_one_fields.phone, value: 'phone' },
+        {
+          label: response.data.class_one_fields.email,
+          value: 'email',
+          labelTxt: response.data.class_one_fields.email,
+        },
+        {
+          label: response.data.class_one_fields.gender,
+          value: 'gender',
+          labelTxt: response.data.class_one_fields.gender,
+        },
+        {
+          label: response.data.class_one_fields.name,
+          value: 'name',
+          labelTxt: response.data.class_one_fields.name,
+        },
+        {
+          label: response.data.class_one_fields.nickname,
+          value: 'nickname',
+          labelTxt: response.data.class_one_fields.nickname,
+        },
+        {
+          label: response.data.class_one_fields.phone,
+          value: 'phone',
+          labelTxt: response.data.class_one_fields.phone,
+        },
         {
           label: response.data.class_one_fields.position_name,
           value: 'position_name',
+          labelTxt: response.data.class_one_fields.position_name,
         },
         {
           label: response.data.class_one_fields.project_num,
           value: 'project_num',
+          labelTxt: response.data.class_one_fields.project_num,
         },
-        { label: response.data.class_one_fields.status, value: 'status' },
-        { label: response.data.class_one_fields.role_name, value: 'role_name' },
+        {
+          label: response.data.class_one_fields.status,
+          value: 'status',
+          labelTxt: response.data.class_one_fields.status,
+        },
+        {
+          label: response.data.class_one_fields.role_name,
+          value: 'role_name',
+          labelTxt: response.data.class_one_fields.role_name,
+        },
       ],
       plainOptions2: [
         {
           label: response.data.class_two_fields.create_time,
           value: 'created_at',
+          labelTxt: response.data.class_two_fields.create_time,
         },
       ],
       list: response.data.list,

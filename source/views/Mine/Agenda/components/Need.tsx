@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -11,6 +12,8 @@ import {
   TabsHehavior,
   TabsItem,
   LabNumber,
+  ShowWrap,
+  TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Dropdown, Menu, message, Pagination, Tooltip } from 'antd'
@@ -22,6 +25,63 @@ import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
+import styled from '@emotion/styled'
+
+const RowIconFont = styled(IconFont)({
+  visibility: 'hidden',
+  fontSize: 16,
+  cursor: 'pointer',
+  color: '#2877ff',
+})
+
+const TableBox = styled(TableWrap)({
+  '.ant-table-row:hover': {
+    [RowIconFont.toString()]: {
+      visibility: 'visible',
+    },
+  },
+})
+
+interface MoreWrapProps {
+  record: any
+  onShowEdit(): void
+  onShowDel(): void
+}
+
+const MoreWrap = (props: MoreWrapProps) => {
+  const [t] = useTranslation()
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const menu = (
+    <Menu
+      style={{ minWidth: 56 }}
+      items={[
+        {
+          key: '1',
+          label: <span onClick={props.onShowEdit}>{t('common.edit')}</span>,
+        },
+        {
+          key: '2',
+          label: <span onClick={props.onShowDel}>{t('common.del')}</span>,
+        },
+      ]}
+    />
+  )
+  return (
+    <ShowWrap>
+      <Dropdown
+        key={isMoreVisible.toString()}
+        visible={isMoreVisible}
+        onVisibleChange={visible => setIsMoreVisible(visible)}
+        trigger={['hover']}
+        overlay={menu}
+        placement="bottomLeft"
+        getPopupContainer={node => node}
+      >
+        <RowIconFont type="more" />
+      </Dropdown>
+    </ShowWrap>
+  )
+}
 
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
@@ -122,15 +182,15 @@ const Need = (props: any) => {
 
     init()
   }
-  const showEdit = async (e: any) => {
-    setProjectId(e.record.project_id)
-    setOperationItem(e.record.id)
-    await getIterateSelectList({ projectId: e.record.project_id, all: true })
+  const showEdit = async (record: any) => {
+    setProjectId(record.project_id)
+    setOperationItem(record.id)
+    await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
-  const showDel = (e: any) => {
-    setProjectId(e.record.project_id)
-    setOperationItem(e.record.id)
+  const showDel = (record: any) => {
+    setProjectId(record.project_id)
+    setOperationItem(record.id)
     setIsDelVisible(true)
   }
   const columns = useDynamicColumns({
@@ -153,7 +213,21 @@ const Need = (props: any) => {
         }
       }
     }
-    return newList
+    const arrList = [
+      {
+        width: 40,
+        render: (text: any, record: any) => {
+          return (
+            <MoreWrap
+              record={record}
+              onShowEdit={() => showEdit(record)}
+              onShowDel={() => showDel(record)}
+            />
+          )
+        },
+      },
+    ]
+    return [...arrList, ...newList]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
   const getShowkey = async () => {
@@ -327,7 +401,7 @@ const Need = (props: any) => {
       ) : null}
 
       <StaffTableWrap>
-        <StyledTable
+        <TableBox
           rowKey="id"
           columns={selectColum}
           dataSource={listData}

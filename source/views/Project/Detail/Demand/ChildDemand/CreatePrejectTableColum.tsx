@@ -3,7 +3,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
-import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
@@ -11,7 +10,6 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { ClickWrap } from '@/components/StyleCommon'
@@ -61,14 +59,6 @@ const PriorityWrap = styled.div({
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { projectInfo } = useModel('project')
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
 
   const NewSort = (props: any) => {
     return (
@@ -83,59 +73,12 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label:
-          <div onClick={e => state.onEdit(e, item)}>{t('common.edit')}</div>
-        ,
-      },
-      {
-        key: '2',
-        label:
-          <div onClick={() => state.onDelete(item)}>{t('common.del')}</div>
-        ,
-      },
-    ]
-
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu items={menuItems} />
-  }
-
   return [
     {
-      width: 200,
-      align: 'center',
+      width: 160,
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
-      render: (text: any, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {hasEdit && hasDel
-              ? null
-              : (
-                  <Dropdown
-                    overlay={menu(record)}
-                    trigger={['hover']}
-                    placement="bottomRight"
-                    getPopupContainer={node => node}
-                  >
-                    {state.rowIconFont()}
-                  </Dropdown>
-                )}
-            <div style={{ marginLeft: 32 }}>{text}</div>
-          </div>
-        )
-      },
     },
     {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,

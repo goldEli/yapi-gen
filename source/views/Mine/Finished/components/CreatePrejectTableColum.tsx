@@ -1,39 +1,20 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
-import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
-import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ClickWrap, ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import { useNavigate } from 'react-router-dom'
 import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const flexCss = css`
   display: flex;
   align-items: center;
-`
-
-const SetHead = styled.div`
-  margin-left: 32px;
-  margin-right: 12px;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
-  border-radius: 50%;
-  font-size: 12px;
-  background: rgba(40, 119, 255, 1);
-  background-blend-mode: normal;
-  border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid rgba(40, 119, 255, 1);
-  color: white;
 `
 
 export const useDynamicColumns = (state: any) => {
@@ -52,65 +33,14 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
-  const MoreWrap = (record: any) => {
-    const [isMoreVisible, setIsMoreVisible] = useState(false)
-    const menu = (
-      <Menu
-        items={[
-          {
-            key: '1',
-            label: (
-              <span onClick={() => state.showEdit(record)}>
-                {t('common.edit')}
-              </span>
-            ),
-          },
-          {
-            key: '2',
-            label: (
-              <span onClick={() => state.showDel(record)}>
-                {t('common.del')}
-              </span>
-            ),
-          },
-        ]}
-      />
-    )
-    return (
-      <ShowWrap>
-        <Dropdown
-          key={isMoreVisible.toString()}
-          visible={isMoreVisible}
-          onVisibleChange={visible => setIsMoreVisible(visible)}
-          trigger={['hover']}
-          overlay={menu}
-          placement="bottomLeft"
-          getPopupContainer={node => node}
-        >
-          <IconFont
-            type="more"
-            style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 16 }}
-          />
-        </Dropdown>
-      </ShowWrap>
-    )
-  }
-
   return [
     {
-      width: 200,
-      align: 'center',
+      width: 160,
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
       render: (text: any, record: any) => {
-        return (
-          <div className={flexCss}>
-            <MoreWrap record={record} />
-            {/* <SetHead>{text}</SetHead> */}
-            <ClickWrap style={{ marginLeft: '28px' }}>{text}</ClickWrap>
-          </div>
-        )
+        return <ClickWrap>{text}</ClickWrap>
       },
     },
     {

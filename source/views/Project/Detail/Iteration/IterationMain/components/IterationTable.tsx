@@ -20,6 +20,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { getIsPermission } from '@/tools'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -371,6 +372,44 @@ const IterationTable = (props: Props) => {
     rowIconFont,
   })
 
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/delete',
+  )
+
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onPropsChangeVisible(e, item)}>
+            {t('common.edit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label:
+          <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
+        ,
+      },
+    ]
+
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu style={{ minWidth: 56 }} items={menuItems} />
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = [...titleList, ...titleList2]
     const newList = []
@@ -381,7 +420,28 @@ const IterationTable = (props: Props) => {
         }
       }
     }
-    return newList
+    const arrList = [
+      {
+        width: 40,
+        render: (text: any, record: any) => {
+          return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {hasEdit && hasDel ? null : (
+                <Dropdown
+                  overlay={menu(record)}
+                  trigger={['hover']}
+                  placement="bottomLeft"
+                  getPopupContainer={node => node}
+                >
+                  {rowIconFont()}
+                </Dropdown>
+              )}
+            </div>
+          )
+        },
+      },
+    ]
+    return [...arrList, ...newList]
   }, [titleList, titleList2, columns])
 
   return (

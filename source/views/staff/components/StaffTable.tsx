@@ -48,45 +48,13 @@ export const useDynamicColumns = (state: any) => {
   }
   return [
     {
-      width: 200,
+      width: 140,
       title: t('common.nickname'),
       dataIndex: 'nickname',
       key: 'nickname',
       render: (text: any, record: any) => {
-        const menu = (
-          <Menu
-            items={[
-              {
-                key: '1',
-                label: (
-                  <span
-                    onClick={() => state.controlStaffPersonalVisible(record)}
-                  >
-                    {t('staff.setPermission')}
-                  </span>
-                ),
-              },
-            ]}
-          />
-        )
         return (
           <div className={flexCss}>
-            <ShowWrap style={{ marginRight: 32 }}>
-              <div
-                hidden={getIsPermission(
-                  userInfo?.company_permissions,
-                  'b/user/update',
-                )}
-              >
-                <Dropdown overlay={menu} placement="bottomLeft">
-                  <IconFont
-                    type="more
-              "
-                    style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 16 }}
-                  />
-                </Dropdown>
-              </div>
-            </ShowWrap>
             {record.avatar ? (
               <img
                 style={{

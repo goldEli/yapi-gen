@@ -1,18 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import {
-  Button,
-  Dropdown,
-  Menu,
-  message,
-  Pagination,
-  Spin,
-  Tooltip,
-} from 'antd'
+import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -25,7 +18,7 @@ import {
   StaffTableWrap,
   MyInput,
   SetButton,
-  StyledTable,
+  TableWrap,
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -65,10 +58,25 @@ const DataWrap = styled.div({
   height: '100%',
 })
 
+const RowIconFont = styled(IconFont)({
+  visibility: 'hidden',
+  fontSize: 16,
+  cursor: 'pointer',
+  color: '#2877ff',
+})
+
+const TableBox = styled(TableWrap)({
+  '.ant-table-row:hover': {
+    [RowIconFont.toString()]: {
+      visibility: 'visible',
+    },
+  },
+})
+
 const Staff = () => {
   const [t] = useTranslation()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
-  const { userInfo } = useModel('user')
+  const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
@@ -125,10 +133,19 @@ const Staff = () => {
     setPlainOptions(res.plainOptions)
     await setPlainOptions2(res.plainOptions2)
     setLoadingState(true)
+    setIsRefresh(false)
   }
+
   const init = () => {
     getStaffListData()
   }
+
+  useEffect(() => {
+    if (isRefresh) {
+      init()
+    }
+  }, [isRefresh])
+
   const controlStaffPersonalVisible = (e: any) => {
     setEditData(e)
     setIsStaffPersonalVisible(true)
@@ -155,6 +172,21 @@ const Staff = () => {
     updateOrderkey,
   })
 
+  const menuTable = (record: any) => (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: (
+            <span onClick={() => controlStaffPersonalVisible(record)}>
+              {t('staff.setPermission')}
+            </span>
+          ),
+        },
+      ]}
+    />
+  )
+
   const selectColum: any = useMemo(() => {
     const arr = [...titleList, ...titleList2]
     const newList = []
@@ -165,7 +197,26 @@ const Staff = () => {
         }
       }
     }
-    return newList
+    const arrList = [
+      {
+        width: 40,
+        render: (text: any, record: any) => {
+          return (
+            <div
+              hidden={getIsPermission(
+                userInfo?.company_permissions,
+                'b/user/update',
+              )}
+            >
+              <Dropdown overlay={menuTable(record)} placement="bottomLeft">
+                <RowIconFont type="more" />
+              </Dropdown>
+            </div>
+          )
+        },
+      },
+    ]
+    return [...arrList, ...newList]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {
@@ -287,7 +338,7 @@ const Staff = () => {
             <Spin spinning={isSpinning}>
               {!!listData
                 && (listData?.length > 0 ? (
-                  <StyledTable
+                  <TableBox
                     rowKey="id"
                     columns={selectColum}
                     dataSource={listData}

@@ -52,65 +52,14 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
-  const MoreWrap = (record: any) => {
-    const [isMoreVisible, setIsMoreVisible] = useState(false)
-    const menu = (
-      <Menu
-        items={[
-          {
-            key: '1',
-            label: (
-              <span onClick={() => state.showEdit(record)}>
-                {t('common.edit')}
-              </span>
-            ),
-          },
-          {
-            key: '2',
-            label: (
-              <span onClick={() => state.showDel(record)}>
-                {t('common.del')}
-              </span>
-            ),
-          },
-        ]}
-      />
-    )
-    return (
-      <ShowWrap>
-        <Dropdown
-          key={isMoreVisible.toString()}
-          visible={isMoreVisible}
-          onVisibleChange={visible => setIsMoreVisible(visible)}
-          trigger={['hover']}
-          overlay={menu}
-          placement="bottomLeft"
-          getPopupContainer={node => node}
-        >
-          <IconFont
-            type="more"
-            style={{ color: 'rgba(40, 119, 255, 1)', fontSize: 16 }}
-          />
-        </Dropdown>
-      </ShowWrap>
-    )
-  }
-
   return [
     {
-      width: 200,
-      align: 'center',
+      width: 140,
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
       render: (text: any, record: any) => {
-        return (
-          <div className={flexCss}>
-            <MoreWrap record={record} />
-            {/* <SetHead>{text}</SetHead> */}
-            <ClickWrap style={{ marginLeft: '28px' }}>{text}</ClickWrap>
-          </div>
-        )
+        return <ClickWrap>{text}</ClickWrap>
       },
     },
     {

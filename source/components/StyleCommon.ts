@@ -11,9 +11,13 @@ const ClickWrap = styled.div({
 })
 
 const TableWrap = styled(Table)({
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
+
+  // '.ant-table-thead > tr > th:nth-child(1)': {
+  //   paddingLeft: 64,
+  // },
+  // '.ant-table-tbody > tr > td:nth-child(1)': {
+  //   paddingLeft: 64,
+  // },
   '.ant-table table': {
     paddingBottom: 10,
   },
