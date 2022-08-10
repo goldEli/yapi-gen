@@ -64,7 +64,7 @@ const Gatte = (props: any) => {
       enabled: false,
     },
     xAxis: {
-      tickPixelInterval: 170,
+      tickPixelInterval: 570,
     },
     yAxis: {
       type: 'category',
