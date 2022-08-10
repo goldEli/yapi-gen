@@ -19,6 +19,7 @@ import { useModel } from '@/models'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import RangePicker from '@/components/RangePicker'
 
 const Header = styled.div({
   height: 'auto',
@@ -318,6 +319,12 @@ const LoginLog = () => {
     getList(order)
   }
 
+  const onChangePicker = (_values: any) => {
+    form.setFieldsValue({
+      times: _values,
+    })
+  }
+
   const onReset = () => {
     form.resetFields()
     getList(order)
@@ -357,37 +364,8 @@ const LoginLog = () => {
               {t('setting.operationTime')}
             </span>
             <Form.Item name="times" noStyle>
-              <DatePicker.RangePicker
-                className={rangPicker}
-                getPopupContainer={node => node}
-                format={(times: moment.Moment) => {
-                  if (times.unix() === 0 || times.unix() === 1893427200) {
-                    return '空'
-                  }
-                  return times.format('YYYY-MM-DD')
-                }}
-                ranges={{
-                  最近一周: [
-                    moment(new Date()).startOf('days')
-                      .subtract(6, 'days'),
-                    moment(new Date()).endOf('days'),
-                  ],
-                  最近一月: [
-                    moment(new Date()).startOf('months')
-                      .subtract(1, 'months'),
-                    moment(new Date()).endOf('days'),
-                  ],
-                  最近三月: [
-                    moment(new Date()).startOf('months')
-                      .subtract(3, 'months'),
-                    moment(new Date()).endOf('days'),
-                  ],
-                  今天开始: [
-                    moment(new Date()).startOf('days'),
-                    moment(1893427200 * 1000),
-                  ],
-                  今天截止: [moment(0), moment(new Date()).endOf('days')],
-                }}
+              <RangePicker
+                onChange={(_values: any) => onChangePicker(_values)}
               />
             </Form.Item>
           </SelectWrapBedeck>

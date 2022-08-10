@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
+import RangePicker from '@/components/RangePicker'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -131,6 +132,12 @@ const EditIteration = (props: Props) => {
     setHtml('')
   }
 
+  const onChangePicker = (_values: any) => {
+    form.setFieldsValue({
+      time: _values,
+    })
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -164,7 +171,7 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="time"
           >
-            <DatePicker.RangePicker style={{ width: '100%' }} />
+            <RangePicker onChange={(_values: any) => onChangePicker(_values)} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

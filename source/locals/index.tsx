@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next'
 import zh from '@/locals/zh.json'
 import antdZh from 'antd/lib/locale/zh_CN'
 import type { Locale } from 'antd/lib/locale-provider'
+import 'moment/dist/locale/zh-cn'
 
 const locals = {
   zh: () => import('@/locals/zh.json'),

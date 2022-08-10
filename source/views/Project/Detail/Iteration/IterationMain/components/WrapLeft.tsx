@@ -31,6 +31,7 @@ import moment from 'moment'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import RangePicker from '@/components/RangePicker'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -219,20 +220,34 @@ const WrapLeft = (props: Props) => {
 
   const onConfirmFilter = () => {
     getList()
+    setIsFilter(false)
   }
 
   const onReset = () => {
     form.resetFields()
+    getList()
+    setIsFilter(false)
   }
 
   const onClose = () => {
-    form.resetFields()
     setIsFilter(false)
   }
 
   const onChangeSort = (item: any) => {
     setIsSort(false)
     setCurrentSort(item)
+  }
+
+  const onChangePicker = (_values: any) => {
+    form.setFieldsValue({
+      startTime: _values,
+    })
+  }
+
+  const onChangePickerEnd = (_values: any) => {
+    form.setFieldsValue({
+      endTime: _values,
+    })
   }
 
   const sortContent = (
@@ -256,10 +271,12 @@ const WrapLeft = (props: Props) => {
           <Input placeholder={t('project.pleaseTitle')} />
         </Form.Item>
         <Form.Item label={t('common.startTime')} name="startTime">
-          <DatePicker.RangePicker />
+          <RangePicker onChange={(_values: any) => onChangePicker(_values)} />
         </Form.Item>
         <Form.Item label={t('common.endTime')} name="endTime">
-          <DatePicker.RangePicker />
+          <RangePicker
+            onChange={(_values: any) => onChangePickerEnd(_values)}
+          />
         </Form.Item>
         <Form.Item label={t('common.status')} name="status">
           <Radio.Group options={options} />

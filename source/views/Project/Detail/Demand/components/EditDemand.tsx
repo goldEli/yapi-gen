@@ -32,6 +32,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
+import RangePicker from '@/components/RangePicker'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -421,6 +422,12 @@ const EditDemand = (props: Props) => {
     message.warning(t('common.pleaseProject'))
   }
 
+  const onChangePicker = (_values: any) => {
+    form.setFieldsValue({
+      times: _values,
+    })
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -478,7 +485,7 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.estimatedTime')} name="times">
-            <DatePicker.RangePicker style={{ width: '100%' }} allowClear />
+            <RangePicker onChange={(_values: any) => onChangePicker(_values)} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

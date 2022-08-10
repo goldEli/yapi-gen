@@ -21,6 +21,7 @@ import moment from 'moment'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import { useTranslation } from 'react-i18next'
+import RangePicker from '@/components/RangePicker'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -340,6 +341,12 @@ const EditDemand = (props: Props) => {
     message.warning(t('common.pleaseProject'))
   }
 
+  const onChangePicker = (_values: any) => {
+    form.setFieldsValue({
+      times: _values,
+    })
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -425,7 +432,7 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.estimatedTime')} name="times">
-            <DatePicker.RangePicker style={{ width: '100%' }} />
+            <RangePicker onChange={(_values: any) => onChangePicker(_values)} />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
