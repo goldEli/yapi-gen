@@ -76,6 +76,8 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           options.payload = encrypt(options.payload as string)
         }
+
+        // options.payload = encrypt(options.payload as string)
       }
     },
   ],
@@ -87,6 +89,8 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           return JSON.parse(decrypt((response as { body: string }).body))
         }
+
+        // return JSON.parse(decrypt((response as { body: string }).body))
       }
       return JSON.parse((response as { body: string }).body)
     },

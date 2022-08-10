@@ -308,12 +308,7 @@ const DemandBox = () => {
   }
 
   return (
-    <PermissionWrap
-      auth="需求"
-      hasWidth
-      permission={projectInfo.projectPermissions}
-      isType={1}
-    >
+    <div style={{ height: 'calc(100% - 64px)' }}>
       <EditDemand
         visible={isVisible}
         onChangeVisible={onChangeVisible}
@@ -321,7 +316,7 @@ const DemandBox = () => {
         onUpdate={onUpdate}
       />
       {content()}
-    </PermissionWrap>
+    </div>
   )
 }
 

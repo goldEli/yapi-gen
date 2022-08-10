@@ -309,7 +309,7 @@ export const getPermission: any = async (params: any) => {
     list: response.data.map((i: any) => ({
       name: i.group_content_txt,
       children: i.permissions.map((k: any) => ({
-        label: k.group_content_txt,
+        label: k.content_txt,
         value: k.id,
         checked: k.checked,
       })),

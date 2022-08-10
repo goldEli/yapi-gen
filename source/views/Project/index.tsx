@@ -204,7 +204,7 @@ const Project = () => {
     <div style={{ height: '100%', overflow: 'auto' }}>
       <DeleteConfirm
         title={t('mark.endP')}
-        text={`结束项目[${operationDetail?.name}]后，该项目将不能创建新的需求迭代，原有数据将保留。`}
+        text={t('common.stopProjectToast', { name: operationDetail?.name })}
         isVisible={isStop}
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}

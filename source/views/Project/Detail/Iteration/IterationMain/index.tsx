@@ -104,7 +104,7 @@ const IterationMain = (props: Props) => {
   }, [props.updateState])
 
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh && currentDetail) {
       getList(isGrid, pageObj, searchItems)
     }
   }, [isRefresh])

@@ -161,7 +161,7 @@ const DemandMain = (props: Props) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 64px)' }}>
+    <div style={{ height: '100%' }}>
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isVisible}

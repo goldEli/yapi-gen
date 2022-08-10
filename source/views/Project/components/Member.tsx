@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { getIsPermission } from '@/tools'
 
 interface Props {
   visible: boolean
@@ -85,7 +86,7 @@ const NameWrap = styled.div({
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { getProjectMember, isRefreshMember, setIsRefreshMember }
+  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo }
     = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
@@ -138,15 +139,24 @@ const Member = (props: Props) => {
             background: 'white',
           }}
         >
-          <ButtonWrap
-            type="primary"
-            onClick={() => setIsVisible(true)}
-            icon={
-              <IconFont type="plus" style={{ color: 'white', fontSize: 16 }} />
-            }
-          >
-            {t('project.addMember1')}
-          </ButtonWrap>
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/project/member/save',
+          ) ? null : (
+              <ButtonWrap
+                type="primary"
+                onClick={() => setIsVisible(true)}
+                icon={
+                  <IconFont
+                    type="plus"
+                    style={{ color: 'white', fontSize: 16 }}
+                  />
+                }
+              >
+                {t('project.addMember1')}
+              </ButtonWrap>
+            )}
+
           <Input
             style={{ marginTop: 16 }}
             onPressEnter={onChangeSearch}

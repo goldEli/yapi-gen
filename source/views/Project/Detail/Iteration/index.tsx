@@ -311,12 +311,7 @@ const IterationWrap = () => {
   }
 
   return (
-    <PermissionWrap
-      auth="迭代"
-      hasWidth
-      permission={projectInfo.projectPermissions}
-      isType={1}
-    >
+    <div>
       <EditIteration
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
@@ -324,7 +319,7 @@ const IterationWrap = () => {
         onUpdate={setIsUpdateState}
       />
       {content()}
-    </PermissionWrap>
+    </div>
   )
 }
 
