@@ -61,6 +61,7 @@ export const useDynamicColumns = (state: any) => {
                   width: 32,
                   height: 32,
                   borderRadius: '50%',
+                  objectFit: 'cover',
                 }}
                 src={record.avatar}
                 alt=""
