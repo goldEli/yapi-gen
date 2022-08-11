@@ -93,5 +93,6 @@ export default () => {
     setIsRefreshIterateList,
     isRefreshIterateList,
     setProjectInfo,
+    setTagList,
   }
 }

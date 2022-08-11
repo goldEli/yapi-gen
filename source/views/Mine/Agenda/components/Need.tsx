@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
@@ -26,6 +27,7 @@ import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
+import NoData from '@/components/NoData'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -103,7 +105,9 @@ const Need = (props: any) => {
   const [isVisible, setIsVisible] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
-  const [listData, setListData] = useState<any>([])
+  const [listData, setListData] = useState<any>({
+    list: undefined,
+  })
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [page, setPage] = useState<number>(1)
@@ -165,7 +169,7 @@ const Need = (props: any) => {
       pagesize,
     })
 
-    setListData(res.list)
+    setListData(res)
     setTotal(res.pager.total)
   }
 
@@ -404,13 +408,17 @@ const Need = (props: any) => {
       ) : null}
 
       <StaffTableWrap>
-        <TableBox
-          rowKey="id"
-          columns={selectColum}
-          dataSource={listData}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
+        {!!listData?.list && listData?.list?.length ? (
+          <TableBox
+            rowKey="id"
+            columns={selectColum}
+            dataSource={listData?.list}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        )
+          : <NoData />
+        }
       </StaffTableWrap>
       <PaginationWrap style={{ position: 'fixed', bottom: 0, right: 16 }}>
         <Pagination

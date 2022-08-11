@@ -127,6 +127,7 @@ const TagBox = (props: DemandProps) => {
       </div>
       <MaxWrap>
         {demandList
+          ?.filter((item: any) => item.value !== demandInfo?.id)
           ?.filter((k: any) => String(k.label).includes(value))
           ?.map((i: any) => (
             <DemandItem

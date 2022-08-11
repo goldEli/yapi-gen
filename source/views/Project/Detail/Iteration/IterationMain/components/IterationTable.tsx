@@ -129,13 +129,6 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
 
   const columnsChild = [
     {
-      title: t('common.projectName'),
-      dataIndex: 'name',
-      render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
-      },
-    },
-    {
       title: (
         <NewSort
           fixedKey="id"
@@ -143,7 +136,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('project.projectId')}
+          ID
         </NewSort>
       ),
       dataIndex: 'id',

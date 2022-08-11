@@ -166,14 +166,14 @@ const EditDemand = (props: Props) => {
   const [html, setHtml] = useState('')
   const [prejectId, setPrejectId] = useState<any>()
   const [prejectList, setPrejectList] = useState<any>([])
-  const [tagList, setTagList] = useState<any>([])
+  const [tagListAll, setTagListAll] = useState<any>([])
   const [iterateList, setIterateList] = useState<any>([])
   const [peopleList, setPeopleList] = useState<any>([])
   const [attachList, setAttachList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>()
   const { getDemandList } = useModel('demand')
-  const { getProjectInfo } = useModel('project')
+  const { getProjectInfo, setTagList } = useModel('project')
 
   const {
     getProjectList,
@@ -206,8 +206,8 @@ const EditDemand = (props: Props) => {
 
     const arr1 = result1?.map((i: any) => ({
       id: i.id,
-      color: i.tag?.color,
-      name: i.tag?.content,
+      color: i.color,
+      content: i.content_txt,
     }))
 
     const result2 = await getIterateList({ projectId: prejectId, all: 1 })
@@ -221,7 +221,6 @@ const EditDemand = (props: Props) => {
       label: i.name,
       value: i.id,
     }))
-
     setTagList(arr1)
     setIterateList(arr2)
     setPeopleList(arr3)
@@ -264,7 +263,7 @@ const EditDemand = (props: Props) => {
     if (res.code === 0) {
       message.success(t('common.createSuccess'))
       setAttachList([])
-      setTagList([])
+      setTagListAll([])
       setPriorityDetail({})
 
       if (!hasNext) {
@@ -307,16 +306,16 @@ const EditDemand = (props: Props) => {
       form.setFieldsValue({
         tag: [...form.getFieldValue('tag') || [], ...[result]],
       })
-      setTagList([...tagList, ...[result]])
+      setTagListAll([...tagListAll, ...[result]])
     } else {
-      const arr = tagList
+      const arr = tagListAll
       const comResult = arr.filter(
         (i: any) => !(i.name === result.content && i.color === result.color),
       )
       form.setFieldsValue({
         tag: comResult,
       })
-      setTagList(comResult)
+      setTagListAll(comResult)
     }
   }
 
@@ -324,7 +323,7 @@ const EditDemand = (props: Props) => {
     props.onChangeVisible()
     form.resetFields()
     setAttachList([])
-    setTagList([])
+    setTagListAll([])
     setHtml('')
     setPriorityDetail({})
   }
@@ -373,6 +372,7 @@ const EditDemand = (props: Props) => {
               showArrow
               onClear={clearProjectId}
               optionFilterProp="label"
+              getPopupContainer={node => node}
               showSearch
               options={prejectList?.map((k: any) => ({
                 label: k.name,
@@ -393,6 +393,7 @@ const EditDemand = (props: Props) => {
               placeholder={t('common.selectType')}
               showArrow
               optionFilterProp="label"
+              getPopupContainer={node => node}
             >
               <Select.Option value="need">{t('common.demand')}</Select.Option>
             </Select>
@@ -426,6 +427,7 @@ const EditDemand = (props: Props) => {
               options={peopleList}
               optionFilterProp="label"
               showSearch
+              getPopupContainer={node => node}
             />
           </Form.Item>
         </div>
@@ -444,6 +446,10 @@ const EditDemand = (props: Props) => {
               showArrow
               placeholder={t('common.pleaseParentDemand')}
               options={demandList}
+              showSearch
+              getPopupContainer={node => node}
+              optionFilterProp="label"
+              allowClear
             />
           </Form.Item>
         </div>
@@ -495,6 +501,9 @@ const EditDemand = (props: Props) => {
               showSearch
               showArrow
               options={iterateList}
+              getPopupContainer={node => node}
+              optionFilterProp="label"
+              allowClear
             />
           </Form.Item>
         </div>
@@ -508,6 +517,8 @@ const EditDemand = (props: Props) => {
               showSearch
               showArrow
               options={peopleList}
+              getPopupContainer={node => node}
+              optionFilterProp="label"
             />
           </Form.Item>
         </div>
@@ -515,7 +526,7 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label={t('common.tag')} name="tag">
             <TagComponent
-              defaultList={tagList}
+              defaultList={tagListAll}
               onChangeTag={onChangeTag}
               addWrap={
                 <AddWrap hasDash>

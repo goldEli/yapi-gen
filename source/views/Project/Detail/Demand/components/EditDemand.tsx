@@ -344,6 +344,9 @@ const EditDemand = (props: Props) => {
       props.onUpdate?.()
       if (!hasNext) {
         props.onChangeVisible()
+        setTimeout(() => {
+          form.resetFields()
+        }, 100)
       } else {
         form.resetFields()
       }
@@ -471,15 +474,12 @@ const EditDemand = (props: Props) => {
               placeholder={t('common.searchDeal')}
               getPopupContainer={node => node}
               allowClear
-            >
-              {memberList?.map((i: any) => {
-                return (
-                  <Select.Option key={i.id} value={i.id}>
-                    {i.name}
-                  </Select.Option>
-                )
-              })}
-            </Select>
+              optionFilterProp="label"
+              options={memberList?.map((i: any) => ({
+                label: i.name,
+                value: i.id,
+              }))}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -567,15 +567,12 @@ const EditDemand = (props: Props) => {
               showSearch
               placeholder={t('common.pleaseChooseCopySend')}
               getPopupContainer={node => node}
-            >
-              {memberList?.map((i: any) => {
-                return (
-                  <Select.Option key={i.id} value={i.id}>
-                    {i.name}
-                  </Select.Option>
-                )
-              })}
-            </Select>
+              optionFilterProp="label"
+              options={memberList?.map((i: any) => ({
+                label: i.name,
+                value: i.id,
+              }))}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

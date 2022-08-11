@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
@@ -29,6 +31,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
+import NoData from '@/components/NoData'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -116,7 +119,9 @@ const Need = (props: any) => {
   const [isMany, setIsMany] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
-  const [listData, setListData] = useState<any>([])
+  const [listData, setListData] = useState<any>({
+    list: undefined,
+  })
   const [manyListData, setManyListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
@@ -190,7 +195,7 @@ const Need = (props: any) => {
         pagesize,
       })
 
-      setListData(res.list)
+      setListData(res)
       setTotal(res.pager.total)
     }
   }
@@ -458,13 +463,17 @@ const Need = (props: any) => {
       ) : null}
       {!isMany && (
         <StaffTableWrap>
-          <TableBox
-            rowKey="id"
-            columns={selectColum}
-            dataSource={listData}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-          />
+          {!!listData?.list && listData?.list?.length ? (
+            <TableBox
+              rowKey="id"
+              columns={selectColum}
+              dataSource={listData?.list}
+              pagination={false}
+              scroll={{ x: 'max-content' }}
+            />
+          )
+            : <NoData />
+          }
         </StaffTableWrap>
       )}
 

@@ -118,8 +118,9 @@ const EditIteration = (props: Props) => {
       props.onUpdate?.(true)
       setHtml('')
       setIsRefreshIterateList(true)
-
-      // form.resetFields()
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
     } catch (error) {
 
       //

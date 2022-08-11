@@ -85,10 +85,11 @@ const MineBox = () => {
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
-  const { isListMany } = useModel('mine')
+  const { isListMany, setIsListMany } = useModel('mine')
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
+    setIsListMany(false)
   }
   const controlquickCreateVisible = () => {
     setQuickCreateVisible(true)
@@ -175,7 +176,7 @@ const MineBox = () => {
           ))}
         </Menu>
       </Side>
-      <Main isListMany>
+      <Main isListMany={isListMany}>
         <Outlet />
       </Main>
       {quickCreateVisible ? (

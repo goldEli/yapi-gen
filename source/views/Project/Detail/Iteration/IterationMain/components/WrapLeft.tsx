@@ -107,6 +107,7 @@ interface Props {
   onIsUpdateList?(val: boolean): void
   onChangeOperation?(val: any): void
   currentDetail?: any
+  updateState?: boolean
 }
 
 const WrapLeft = (props: Props) => {
@@ -208,10 +209,10 @@ const WrapLeft = (props: Props) => {
   }, [isRefreshList])
 
   useEffect(() => {
-    if (props.isUpdateList) {
+    if (props.isUpdateList || props.updateState) {
       getList()
     }
-  }, [props.isUpdateList])
+  }, [props.isUpdateList, props.updateState])
 
   const options = [
     { label: t('common.open'), value: 1 },

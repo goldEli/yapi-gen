@@ -135,13 +135,13 @@ export const StaffPersonal = (props: {
               style={{ width: 120 }}
               onChange={handleChange}
               getPopupContainer={node => node}
-            >
-              {roleOptions.map((item: any) => (
-                <Option key={item.id} value={item.id}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
+              showSearch
+              optionFilterProp="label"
+              options={roleOptions.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+            />
           </RightLine>
         </Right>
       </PersonalFooter>

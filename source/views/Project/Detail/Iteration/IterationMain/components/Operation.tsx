@@ -110,7 +110,7 @@ const Operation = (props: Props) => {
         onClick={() => onChangeStatus(2)}
         style={{ color: '#969799', background: '#F2F2F4' }}
       >
-        {t('common.ended')}
+        {t('common.Closed')}
       </StatusTag>
     </Space>
   )
@@ -210,7 +210,7 @@ const Operation = (props: Props) => {
             <StatusTag isOpen={props.currentDetail?.status === 1}>
               {props.currentDetail?.status === 1
                 ? t('common.opening')
-                : t('common.ended')}
+                : t('common.Closed')}
               <IconFont
                 type="down-icon"
                 style={{ fontSize: 12, marginLeft: 4 }}
@@ -226,7 +226,7 @@ const Operation = (props: Props) => {
                 <StatusTag isOpen={props.currentDetail?.status === 1}>
                   {props.currentDetail?.status === 1
                     ? t('common.opening')
-                    : t('common.ended')}
+                    : t('common.Closed')}
                   <IconFont
                     type="down-icon"
                     style={{

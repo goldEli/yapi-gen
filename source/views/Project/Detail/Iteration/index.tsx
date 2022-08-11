@@ -205,7 +205,7 @@ const IterationWrap = () => {
         {t('common.opening')}
       </StatusTag>
       <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
-        {t('common.ended')}
+        {t('common.Closed')}
       </StatusTag>
     </Space>
   )
@@ -237,7 +237,7 @@ const IterationWrap = () => {
               <StatusTag isOpen={iterateInfo?.status === 1}>
                 {iterateInfo?.status === 1
                   ? t('common.opening')
-                  : t('common.ended')}
+                  : t('common.Closed')}
               </StatusTag>
             ) : (
               <Popover
@@ -249,7 +249,7 @@ const IterationWrap = () => {
                   <StatusTag isOpen={iterateInfo?.status === 1}>
                     {iterateInfo?.status === 1
                       ? t('common.opening')
-                      : t('common.ended')}
+                      : t('common.Closed')}
                     <IconFont
                       type="down-icon"
                       style={{

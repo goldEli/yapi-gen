@@ -38,15 +38,15 @@ const PermissionWrap = ({
   children?: any
 }) => {
   const [t] = useTranslation()
-  if (permission.length && !isType) {
+  if (permission?.length && !isType) {
     if (!getIsPermission(permission, auth)) {
       return permission ? children : ''
     }
-  } else if (permission.length && isType === 1) {
+  } else if (permission?.length && isType === 1) {
     return permission?.filter((i: any) => i.group_name === auth).length
       ? children
       : ''
-  } else if (permission.length && isType === 2) {
+  } else if (permission?.length && isType === 2) {
     return permission?.filter((i: any) => String(i.identity).includes(auth))
       .length
       ? children

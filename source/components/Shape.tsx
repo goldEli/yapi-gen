@@ -154,13 +154,12 @@ export const ShapeContent = (props: ShapeProps) => {
                 mode="multiple"
                 placeholder={t('common.pleaseSelect')}
                 allowClear
-              >
-                {optionsList?.map((item: any) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>
+                options={optionsList?.map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+                optionFilterProp="label"
+              />
             </Form.Item>
 
             <Form.Item

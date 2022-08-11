@@ -97,16 +97,23 @@ const IterationMain = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     setIsRefresh(false)
+    props.onChangeIsUpdate(false)
   }
 
   useEffect(() => {
     if (currentDetail?.id) {
-      if (isRefresh || props.updateState || currentDetail?.id) {
+      if (isRefresh || currentDetail?.id) {
         setDataList({ list: undefined })
         getList(isGrid, pageObj, searchItems)
       }
     }
-  }, [currentDetail, isRefresh, props.updateState])
+  }, [currentDetail, isRefresh])
+
+  useEffect(() => {
+    if (props.updateState) {
+      getList(isGrid, pageObj, searchItems)
+    }
+  }, [props.updateState])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
@@ -192,6 +199,7 @@ const IterationMain = (props: Props) => {
         onIsUpdateList={onChangeIsUpdate}
         onChangeOperation={props.onChangeOperation}
         currentDetail={currentDetail}
+        updateState={props.updateState}
       />
       <Right isShowLeft={isShowLeft}>
         <Operation

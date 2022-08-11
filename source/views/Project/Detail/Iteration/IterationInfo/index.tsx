@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -199,9 +200,14 @@ const IterationInfo = () => {
           </SurveyWrap>
           <SurveyWrap>
             <Title>{t('project.iterateTarget')}</Title>
-            <TargetWrap
-              dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
-            />
+            {iterateInfo?.info
+              ? (
+                  <TargetWrap
+                    dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
+                  />
+                )
+              : <NoData />
+            }
           </SurveyWrap>
         </TopWrap>
         <BottomWrap>

@@ -105,15 +105,12 @@ const DemandBox = (props: Props) => {
             mode="multiple"
             placeholder={t('common.pleaseSelect')}
             allowClear
-          >
-            {memberList?.map((i: any) => {
-              return (
-                <Select.Option key={i.id} value={i.id}>
-                  {i.name}
-                </Select.Option>
-              )
-            })}
-          </Select>
+            optionFilterProp="label"
+            options={memberList?.map((i: any) => ({
+              label: i.name,
+              value: i.id,
+            }))}
+          />
         </Form.Item>
         <Form.Item label={t('common.comment')} name="content">
           <Input.TextArea
