@@ -16,12 +16,12 @@ const TagCheckedItem = styled.div<{ color?: string }>(
     fontSize: 12,
     position: 'relative',
     color: '#969799',
-    marginRight: 8,
     border: '1px solid #969799',
     boxSizing: 'border-box',
     borderRadius: 6,
     display: 'flex',
     alignItems: 'center',
+    margin: '4px 8px 4px 0 ',
     '.icon': {
       display: 'none',
     },
@@ -217,6 +217,7 @@ const TagComponent = (props: Props) => {
   const checkedTags = props.defaultList?.map((i: any) => ({
     color: i?.color,
     content: i?.name,
+    id: i.id,
   }))
 
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
@@ -312,7 +313,14 @@ const TagComponent = (props: Props) => {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',
+        flexWrap: 'wrap',
+      }}
+    >
       <Popover
         visible={isChooseColor}
         placement="bottom"
@@ -322,35 +330,36 @@ const TagComponent = (props: Props) => {
       >
         <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
       </Popover>
-      <div
-        hidden={!checkedTags?.length}
-        style={{ display: 'flex', alignItems: 'center' }}
-      >
-        {checkedTags?.reverse()?.map((i: any) => (
-          <TagCheckedItem
-            key={i.id}
+      {/* <div style={{ display: 'flex', alignItems: 'center' }}> */}
+      {/* <div
+          hidden={!checkedTags?.length}
+          style={{ display: 'flex', alignItems: 'center' }}
+        > */}
+      {checkedTags?.reverse()?.map((i: any) => (
+        <TagCheckedItem
+          key={i.id}
+          style={{
+            cursor: 'pointer',
+            alignItems: 'center',
+            color: i.color,
+            border: `1px solid ${i.color}`,
+          }}
+        >
+          <div>{i.content}</div>
+          <IconFont
+            className="icon"
             style={{
-              cursor: 'pointer',
-              alignItems: 'center',
-              color: i.color,
-              border: `1px solid ${i.color}`,
+              position: 'absolute',
+              right: -6,
+              top: -6,
+              color: '#969799',
             }}
-          >
-            <div>{i.content}</div>
-            <IconFont
-              className="icon"
-              style={{
-                position: 'absolute',
-                right: -6,
-                top: -6,
-                color: '#969799',
-              }}
-              type="close-circle-fill"
-              onClick={() => onDeleteInfoDemand(i)}
-            />
-          </TagCheckedItem>
-        ))}
-      </div>
+            type="close-circle-fill"
+            onClick={() => onDeleteInfoDemand(i)}
+          />
+        </TagCheckedItem>
+      ))}
+      {/* </div> */}
       <Popover
         visible={isOpen}
         placement="bottom"
@@ -372,6 +381,8 @@ const TagComponent = (props: Props) => {
         <div onClick={() => setIsOpen(!isOpen)}>{props.addWrap}</div>
       </Popover>
     </div>
+
+  // </div>
   )
 }
 
