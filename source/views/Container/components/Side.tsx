@@ -52,6 +52,7 @@ const SetHead = styled.div`
   border: 2px solid rgba(40, 119, 255, 0.16);
   border: 1px solid #ffffff;
   color: white;
+  cursor: pointer;
 `
 type MenuType = {
   key: string

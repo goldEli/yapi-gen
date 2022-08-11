@@ -288,13 +288,13 @@ export const addPermission: any = async (params: any) => {
 }
 
 export const deletePermission: any = async (params: any) => {
-  await http.delete<any>(`/b/project/role/${params.id}`, {
+  await http.delete<any>(`/b/company/role/${params.id}`, {
     project_id: params.projectId,
   })
 }
 
 export const updatePermission: any = async (params: any) => {
-  await http.put<any>(`/b/project/role/${params.id}`, {
+  await http.put<any>(`/b/company/role/${params.id}`, {
     name: params.name,
     project_id: params.projectId,
   })
