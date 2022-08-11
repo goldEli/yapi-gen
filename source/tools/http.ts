@@ -83,8 +83,10 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           if (JSON.stringify(options.search) !== '{}') {
             options.search = { p: encryptPhp(JSON.stringify(options.search)) }
-          } else if (options.payload !== 'null') {
-            options.payload = { p: encryptPhp(options.payload as string) }
+          } else if (options.payload !== 'null' && options.payload !== '{}') {
+            options.payload = JSON.stringify({
+              p: encryptPhp(options.payload as string),
+            })
           }
         }
       }

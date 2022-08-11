@@ -25,6 +25,9 @@ const DrawerWrap = styled(Drawer)({
   '.ant-drawer-close': {
     margin: 0,
   },
+  '.ant-drawer-header': {
+    borderBottom: 'none!important',
+  },
   '.ant-drawer-header-title': {
     width: '100%',
     display: 'flex',

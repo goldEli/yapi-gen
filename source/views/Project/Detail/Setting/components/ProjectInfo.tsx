@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
 /* eslint-disable max-len */
 import styled from '@emotion/styled'
@@ -8,6 +9,7 @@ import EditProject from '@/views/Project/components/EditProject'
 import { useState } from 'react'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { getIsPermission } from '@/tools'
 
 const Wrap = styled.div({
   padding: 24,
@@ -89,10 +91,20 @@ const CardItem = styled.div({
   },
 })
 
+const ClickIcon = styled(IconFont)({
+  color: '#323233',
+  fontSize: 16,
+  marginLeft: 8,
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
 const ProjectInfo = () => {
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const { projectInfo, getProjectInfo } = useModel('project')
+  const { userInfo } = useModel('user')
 
   const onUpdate = () => {
     getProjectInfo({ projectId: projectInfo.id })
@@ -116,7 +128,11 @@ const ProjectInfo = () => {
             }}
           >
             <OmitText width={340}>{projectInfo.name}</OmitText>
-            <IconFont
+            <ClickIcon
+              hidden={getIsPermission(
+                userInfo?.company_permissions,
+                'b/project/update',
+              )}
               onClick={() => setVisible(true)}
               style={{
                 marginLeft: 24,

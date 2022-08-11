@@ -331,7 +331,7 @@ const ProjectSet = () => {
 
   const onDeleteConfirm = async () => {
     try {
-      await deletePermission({ id: operationDetail.id })
+      await deletePermission({ id: operationDetail.id, projectId })
       setIsDelete(false)
       setOperationDetail({})
       message.success(t('common.deleteSuccess'))
