@@ -37,6 +37,13 @@ const DemandWrap = styled.div({
   flexDirection: 'column',
 })
 
+const MaxWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 240,
+  overflow: 'auto',
+})
+
 const DemandItem = styled.div<{ isActive?: boolean }>(
   {
     display: 'flex',
@@ -44,16 +51,6 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
     height: 32,
     cursor: 'pointer',
     paddingLeft: 16,
-    div: {
-      height: 16,
-      width: 16,
-      borderRadius: 4,
-      marginRight: 8,
-    },
-    span: {
-      color: '#646566',
-      fontSize: 14,
-    },
     '&:hover': {
       background: '#F0F4FA',
       span: {
@@ -66,11 +63,32 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
   }),
 )
 
+const SearchInput = styled(Input)`
+  font-size: 14px;
+  width: 240px;
+  height: 32px;
+  background: rgba(245, 246, 247, 1);
+  background-blend-mode: normal;
+  mix-blend-mode: normal;
+  display: flex;
+  justify-content: flex-start;
+
+  padding: 5px 12px 5px 12px;
+  border: none;
+  input {
+    background: rgba(245, 246, 247, 1);
+    &::placeholder {
+      font-size: 14px;
+    }
+  }
+`
+
 interface DemandProps {
   tap?(item: any): void
 }
 
 const TagBox = (props: DemandProps) => {
+  const [t] = useTranslation()
   const { getDemandList, demandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
@@ -91,21 +109,35 @@ const TagBox = (props: DemandProps) => {
 
   const [value, setValue] = useState('')
   return (
-    <DemandWrap title="">
+    <DemandWrap>
       <div style={{ padding: '16px 16px 4px 16px' }}>
-        <Input.Search onPressEnter={(e: any) => setValue(e.target.value)} />
+        <SearchInput
+          onPressEnter={(e: any) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
+          suffix={
+            <IconFont
+              type="search"
+              style={{ color: '#BBBDBF', fontSize: 16 }}
+            />
+          }
+          allowClear
+          value={value}
+          placeholder={t('common.searchParent')}
+        />
       </div>
-      {demandList
-        ?.filter((k: any) => String(k.label).includes(value))
-        ?.map((i: any) => (
-          <DemandItem
-            onClick={() => props.tap?.(i)}
-            isActive={i.value === demandInfo.parentId}
-            key={i.value}
-          >
-            {i.label}
-          </DemandItem>
-        ))}
+      <MaxWrap>
+        {demandList
+          ?.filter((k: any) => String(k.label).includes(value))
+          ?.map((i: any) => (
+            <DemandItem
+              onClick={() => props.tap?.(i)}
+              isActive={i.value === demandInfo.parentId}
+              key={i.value}
+            >
+              {i.label}
+            </DemandItem>
+          ))}
+      </MaxWrap>
     </DemandWrap>
   )
 }
