@@ -112,7 +112,6 @@ const MoreContent = (props: MoreProps) => {
       >
         <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
       </Dropdown>
-      <ClickWrap style={{ marginLeft: 32 }}>{props.text}</ClickWrap>
     </MoreWrap>
   )
 }
@@ -219,10 +218,11 @@ const MainTable = (props: Props) => {
       ),
       render: (text: string, record: any) => {
         return (
-          <div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             {!hasDelete && !hasEdit && !hasStart && !hasStop
               ? <MoreContent menu={menu(record)} text={text} />
               : null}
+            <ClickWrap style={{ marginLeft: 32 }}>{text}</ClickWrap>
           </div>
         )
       },

@@ -65,6 +65,7 @@ const ChangeRecord = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
   const [isSpinning, setIsSpinning] = useState(false)
+  const { isRefresh, setIsRefresh } = useModel('user')
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -78,11 +79,18 @@ const ChangeRecord = () => {
     })
     setDataList(result)
     setIsSpinning(false)
+    setIsRefresh(false)
   }
 
   useEffect(() => {
     getList(pageObj, order)
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getList(pageObj, order)
+    }
+  }, [isRefresh])
 
   useEffect(() => {
     if (demandInfo?.changeCount !== dataList?.total) {
@@ -163,7 +171,7 @@ const ChangeRecord = () => {
       ),
       dataIndex: 'type',
       render: (text: any) => {
-        return <div>{text.content}</div>
+        return <div>{text.content_txt}</div>
       },
     },
     {
