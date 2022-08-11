@@ -496,7 +496,11 @@ const EditDemand = (props: Props) => {
               showArrow
               showSearch
               placeholder={t('common.pleaseParentDemand')}
-              options={parentList}
+              options={
+                props?.id
+                  ? parentList?.filter((i: any) => i.value !== demandInfo?.id)
+                  : parentList
+              }
               getPopupContainer={node => node}
               optionFilterProp="label"
               allowClear
