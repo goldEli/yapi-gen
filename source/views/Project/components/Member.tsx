@@ -19,14 +19,16 @@ interface Props {
 }
 
 const DrawerWrap = styled(Drawer)({
-  '.ant-drawer-header-title': {
-    direction: 'rtl',
-  },
   '.ant-drawer-title': {
     flex: 'initial',
   },
   '.ant-drawer-close': {
     margin: 0,
+  },
+  '.ant-drawer-header-title': {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
 })
 
@@ -129,7 +131,7 @@ const Member = (props: Props) => {
         placement="right"
         onClose={props.onChangeVisible}
         visible={props.visible}
-        headerStyle={{ padding: 16 }}
+        headerStyle={{ padding: 16, direction: 'rtl' }}
         bodyStyle={{ padding: 0 }}
         width={320}
       >

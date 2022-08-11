@@ -29,7 +29,7 @@ interface Props {
 
 const IterationMain = (props: Props) => {
   const [t] = useTranslation()
-  const [isGrid, setIsGrid] = useState(true)
+  const [isGrid, setIsGrid] = useState(false)
   const [isDemandVisible, setIsDemandVisible] = useState(false)
   const [isUpdateList, setIsUpdateList] = useState(false)
   const [demandItem, setDemandItem] = useState<any>({})
@@ -100,21 +100,13 @@ const IterationMain = (props: Props) => {
   }
 
   useEffect(() => {
-    setIsUpdateList(props.updateState)
-  }, [props.updateState])
-
-  useEffect(() => {
-    if (isRefresh && currentDetail) {
-      getList(isGrid, pageObj, searchItems)
-    }
-  }, [isRefresh])
-
-  useEffect(() => {
     if (currentDetail?.id) {
-      setDataList({ list: undefined })
-      getList(isGrid, pageObj, searchItems)
+      if (isRefresh || props.updateState || currentDetail?.id) {
+        setDataList({ list: undefined })
+        getList(isGrid, pageObj, searchItems)
+      }
     }
-  }, [currentDetail])
+  }, [currentDetail, isRefresh, props.updateState])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)

@@ -42,7 +42,7 @@ const ContentWrap = styled.div({
   padding: 24,
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 128px)',
+  height: 'calc(100% - 64px)',
 })
 
 const MainWrap = styled(Space)({
@@ -223,7 +223,7 @@ const IterationWrap = () => {
     }
 
     return (
-      <>
+      <div style={{ height: '100%' }}>
         <DeleteConfirm
           text={t('mark.editIterate')}
           isVisible={isDelete}
@@ -302,12 +302,12 @@ const IterationWrap = () => {
           </MainWrap>
           {childContent()}
         </ContentWrap>
-      </>
+      </div>
     )
   }
 
   return (
-    <div>
+    <div style={{ height: 'calc(100% - 64px)' }}>
       <EditIteration
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}

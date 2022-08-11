@@ -281,7 +281,7 @@ const IterationTable = (props: Props) => {
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
-  const { filterHeight } = useModel('iterate')
+  const { filterHeightIterate } = useModel('iterate')
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -445,7 +445,7 @@ const IterationTable = (props: Props) => {
   }, [titleList, titleList2, columns])
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+    <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list

@@ -65,7 +65,7 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
-  const { updateIterateStatus, getIterateInfo, setFilterHeight }
+  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
     = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
@@ -159,9 +159,10 @@ const Operation = (props: Props) => {
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
+
     setTimeout(() => {
-      setFilterHeight(stickyWrapDom.current?.clientHeight)
-    }, 100)
+      setFilterHeightIterate(stickyWrapDom.current?.clientHeight)
+    }, 50)
   }
 
   return (

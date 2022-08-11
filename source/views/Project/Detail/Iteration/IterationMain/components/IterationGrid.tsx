@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
@@ -61,15 +63,35 @@ const IterationGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const { projectInfo } = useModel('project')
-  const { filterHeight } = useModel('iterate')
+  const { filterHeightIterate } = useModel('iterate')
   const [basicStatus, setBasicStatus] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({})
+
+  const getBasicStatus = () => {
+    const arr = projectInfo?.filterFelid?.filter(
+      (i: any) => i.title === '状态',
+    )[0]?.values
+    setBasicStatus(arr)
+    setDataList(
+      arr?.map((i: any) => ({
+        list: undefined,
+      })),
+    )
+  }
 
   useEffect(() => {
-    setBasicStatus(
-      projectInfo?.filterFelid?.filter((i: any) => i.title === '状态')[0]
-        ?.values,
-    )
-  }, [projectInfo])
+    if (props.data?.list) {
+      setDataList(
+        props.data?.list?.map((i: any) => ({
+          list: i.list,
+          count: i.count,
+          id: i.id,
+        })),
+      )
+    } else {
+      getBasicStatus()
+    }
+  }, [props.data, projectInfo])
 
   const menu = (item: any) => {
     let menuItems = [
@@ -105,33 +127,30 @@ const IterationGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+    <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
       <Spin spinning={props?.isSpinning}>
         <SpaceWrap size={20}>
           {basicStatus?.map((k: any) => (
             <StatusItemsWrap key={k.id}>
               <Title>
                 {k.content_txt}(
-                {
-                  props?.data?.list?.filter((item: any) => item.id === k.id)[0]
-                    ?.count
-                }
-                )
+                {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
               </Title>
-              {props?.data?.list?.filter((item: any) => item.id === k.id)[0]
-                ?.list?.length
-                ? props?.data?.list
-                  ?.filter((item: any) => item.id === k.id)[0]
-                  ?.list?.map((i: any) => (
-                    <DemandCard
-                      key={i.id}
-                      menu={menu(i)}
-                      item={i}
-                      onClickItem={() => onClickItem(i)}
-                    />
-                  ))
-                : <NoData />
-              }
+              {!!dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                && (dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                  .length > 0
+                  ? dataList
+                    ?.filter((item: any) => item.id === k.id)[0]
+                    ?.list?.map((i: any) => (
+                      <DemandCard
+                        key={i.id}
+                        menu={menu(i)}
+                        item={i}
+                        onClickItem={() => onClickItem(i)}
+                      />
+                    ))
+                 : <NoData />
+                )}
             </StatusItemsWrap>
           ))}
         </SpaceWrap>

@@ -140,6 +140,8 @@ const CommonOperation = (props: Props) => {
   const [isShowMenu, setIsShowMenu] = useState(false)
   const { projectInfo, setProjectInfo } = useModel('project')
   const { userInfo } = useModel('user')
+  const { setFilterHeight } = useModel('demand')
+  const { setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
 
@@ -216,6 +218,13 @@ const CommonOperation = (props: Props) => {
     setIsVisible(state)
     setIsColor(state)
   }
+
+  const onToModel = (i: any) => {
+    navigate(`/Detail/${i.type}?id=${projectId}`)
+    setFilterHeight(52)
+    setFilterHeightIterate(52)
+  }
+
   return (
     <div>
       <EditProject
@@ -258,7 +267,7 @@ const CommonOperation = (props: Props) => {
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
-              onClick={() => navigate(`/Detail/${i.type}?id=${projectId}`)}
+              onClick={() => onToModel(i)}
               key={i.type}
               isActive={pathname.includes(i.type)}
             >

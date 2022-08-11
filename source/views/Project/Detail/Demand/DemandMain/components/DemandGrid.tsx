@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
@@ -67,13 +69,31 @@ const DemandGrid = (props: Props) => {
   const { projectInfo } = useModel('project')
   const { filterHeight } = useModel('demand')
   const [basicStatus, setBasicStatus] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({})
 
   useEffect(() => {
-    setBasicStatus(
-      projectInfo?.filterFelid?.filter((i: any) => i.title === '状态')[0]
-        ?.values,
+    const arr = projectInfo?.filterFelid?.filter(
+      (i: any) => i.title === '状态',
+    )[0]?.values
+    setBasicStatus(arr)
+    setDataList(
+      arr?.map((i: any) => ({
+        list: undefined,
+      })),
     )
   }, [projectInfo])
+
+  useEffect(() => {
+    if (props.data?.list) {
+      setDataList(
+        props.data?.list?.map((i: any) => ({
+          list: i.list,
+          count: i.count,
+          id: i.id,
+        })),
+      )
+    }
+  }, [props.data])
 
   const menu = (item: any) => {
     let menuItems = [
@@ -117,27 +137,23 @@ const DemandGrid = (props: Props) => {
               <StatusItemsWrap key={k.id}>
                 <Title>
                   {k.content_txt}(
-                  {
-                    props?.data?.list?.filter(
-                      (item: any) => item.id === k.id,
-                    )[0]?.count
-                  }
-                  )
+                  {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
                 </Title>
-                {props?.data?.list?.filter((item: any) => item.id === k.id)[0]
-                  ?.list?.length
-                  ? props?.data?.list
-                    ?.filter((item: any) => item.id === k.id)[0]
-                    ?.list?.map((i: any) => (
-                      <DemandCard
-                        key={i.id}
-                        menu={menu(i)}
-                        item={i}
-                        onClickItem={() => onClickItem(i)}
-                      />
-                    ))
-                  : <NoData />
-                }
+                {!!dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                  && (dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                    .length > 0
+                    ? dataList
+                      ?.filter((item: any) => item.id === k.id)[0]
+                      ?.list?.map((i: any) => (
+                        <DemandCard
+                          key={i.id}
+                          menu={menu(i)}
+                          item={i}
+                          onClickItem={() => onClickItem(i)}
+                        />
+                      ))
+                   : <NoData />
+                  )}
               </StatusItemsWrap>
             ))}
           </SpaceWrap>
