@@ -140,21 +140,26 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       </InfoItem>
       <InfoItem>
         <Label>{t('mine.demandInfo')}</Label>
-        <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
+        {demandInfo?.info
+          ? <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
+          : <TextWrap>--</TextWrap>
+        }
       </InfoItem>
       <InfoItem>
         <Label>{t('common.dealName')}</Label>
         <TextWrap>
-          {demandInfo?.user?.map((i: any) => i.user.name).join('、')}
+          {demandInfo?.user?.length
+            ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
+            : '--'}
         </TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>{t('common.createName')}</Label>
-        <TextWrap>{demandInfo?.userName}</TextWrap>
+        <TextWrap>{demandInfo?.userName || '--'}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>{t('common.createTime')}</Label>
-        <TextWrap>{demandInfo?.createdTime}</TextWrap>
+        <TextWrap>{demandInfo?.createdTime || '--'}</TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>{t('common.finishTime')}</Label>

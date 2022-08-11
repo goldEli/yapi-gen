@@ -213,6 +213,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
                 <ShapeContent
                   tap={value => onChangeStatus(value)}
                   hide={onHide}
+                  row={record}
                   record={{
                     id: record.id,
                     project_id: projectId,
@@ -566,6 +567,7 @@ const DemandWrap = () => {
                 <ShapeContent
                   tap={value => onChangeStatus(value)}
                   hide={onHide}
+                  row={record}
                   record={{
                     id: record.id,
                     project_id: projectId,

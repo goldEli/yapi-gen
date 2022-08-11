@@ -33,7 +33,6 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
-import { filter } from 'lodash'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -208,20 +207,15 @@ const EditDemand = (props: Props) => {
       label: i.name,
       value: i.id,
     }))
-    const resultArr = arr.filter((i: any) => i.value !== demandInfo?.id)
-    const newArr = resultArr?.filter(
+    const newArr = arr?.filter(
       (k: any) => !props?.list?.some((j: any) => k.value === j.id),
     )
     setDemandList(newArr)
+    form.setFieldsValue({
+      parentId: newArr?.filter((i: any) => i.value === Number(demandId))[0]
+        ?.label,
+    })
   }
-
-  // useEffect(() => {
-  //   getList()
-  // }, [props?.list])
-
-  // useEffect(() => {
-  //   console.log(props?.list, parentList, '===============')
-  // }, [props?.list])
 
   // useEffect(() => {
   //   if (!props.visible) {
@@ -282,27 +276,14 @@ const EditDemand = (props: Props) => {
         iterateId: result?.iterateId,
       })
     }
-
-    // if (parentArr?.filter((i: any) => i.value === result?.parentId).length) {
-    //   form.setFieldsValue({
-    //     parentId: result?.parentId,
-    //   })
-    // }
-    form.setFieldsValue({
-      parentId: result?.id,
-    })
-    getList()
   }
 
   useEffect(() => {
     if (props?.id) {
       getDemandInfo()
-    } else {
-      form.resetFields()
     }
-
-    // getList()
-  }, [props.id])
+    getList()
+  }, [props.id, props?.list])
 
   const onSaveDemand = async (hasNext?: number) => {
     await form.validateFields()
@@ -316,8 +297,8 @@ const EditDemand = (props: Props) => {
 
     values.info = html
 
-    if (props.isChild) {
-      values.parentId = demandId || demandChildInfo?.id
+    if (typeof form.getFieldsValue().parentId === 'string') {
+      values.parentId = demandId
     }
 
     if (props.isIterateId) {

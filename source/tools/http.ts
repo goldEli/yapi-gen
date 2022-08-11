@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
 /* eslint-disable no-lonely-if */
 /* eslint-disable require-atomic-updates */
@@ -86,6 +87,8 @@ client.config({
           } else if (
             options.payload !== 'null' &&
             options.payload !== null &&
+            options.payload !== 'undefined' &&
+            options.payload !== undefined &&
             options.payload !== '{}'
           ) {
             options.payload = JSON.stringify({

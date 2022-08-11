@@ -55,7 +55,13 @@ const DemandBox = (props: Props) => {
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { memberList } = useModel('project')
-  const { updateDemandStatus, getDemandInfo } = useModel('demand')
+  const { updateDemandStatus, getDemandInfo, demandInfo, setIsRefreshComment }
+    = useModel('demand')
+  const statusList = demandInfo?.status?.can_changes
+  const activeContent
+    = statusList?.filter((i: any) => i.id === props.active)[0]?.content
+    !== '规划中'
+  const hasDealName = demandInfo?.user?.length
 
   const onClear = () => {
     props.hide?.()
@@ -85,6 +91,7 @@ const DemandBox = (props: Props) => {
       content: res.content,
     }
     onChangeStatus(value)
+    setIsRefreshComment(true)
   }
 
   return (
@@ -99,7 +106,12 @@ const DemandBox = (props: Props) => {
         <Form.Item
           label={t('common.dealName')}
           name="username"
-          rules={[{ required: true, message: '' }]}
+          rules={[
+            {
+              required: activeContent || !activeContent && hasDealName,
+              message: '',
+            },
+          ]}
         >
           <Select
             mode="multiple"

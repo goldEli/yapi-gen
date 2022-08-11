@@ -221,7 +221,8 @@ const MainTable = (props: Props) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {!hasDelete && !hasEdit && !hasStart && !hasStop
               ? <MoreContent menu={menu(record)} text={text} />
-              : null}
+              : <div style={{ width: 16 }} />
+            }
             <ClickWrap style={{ marginLeft: 32 }}>{text}</ClickWrap>
           </div>
         )

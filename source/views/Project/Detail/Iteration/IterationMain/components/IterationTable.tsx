@@ -193,6 +193,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
                 <ShapeContent
                   tap={value => onChangeStatus(value)}
                   hide={onHide}
+                  row={record}
                   record={{
                     id: record.id,
                     project_id: projectId,

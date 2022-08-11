@@ -165,6 +165,7 @@ export const useDynamicColumns = (state: any) => {
                   tap={state.updateStatus}
                   hide={onHide}
                   record={record}
+                  row={record}
                 />
               )
             }}

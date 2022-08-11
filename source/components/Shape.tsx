@@ -75,6 +75,7 @@ type ShapeProps = {
   record: any
   hide(): void
   tap(value: any): void
+  row?: any
 }
 
 export const ShapeContent = (props: ShapeProps) => {
@@ -87,6 +88,7 @@ export const ShapeContent = (props: ShapeProps) => {
     },
     hide,
     tap,
+    row,
   } = props
 
   const [form] = Form.useForm()
@@ -108,6 +110,9 @@ export const ShapeContent = (props: ShapeProps) => {
   }
 
   const [active, setActive] = useState(activeID)
+  const activeContent
+    = statusList?.filter((i: any) => i.id === active)[0]?.content !== '规划中'
+  const hasDealName = props.row?.dealName === '--'
   const confirm = async () => {
     const res = await form.validateFields()
     const value = {
@@ -148,7 +153,12 @@ export const ShapeContent = (props: ShapeProps) => {
               labelCol={{ span: 5 }}
               label={t('common.dealName')}
               name="username"
-              rules={[{ required: true, message: '' }]}
+              rules={[
+                {
+                  required: activeContent || !activeContent && !hasDealName,
+                  message: '',
+                },
+              ]}
             >
               <Select
                 mode="multiple"

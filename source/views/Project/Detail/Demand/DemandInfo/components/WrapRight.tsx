@@ -13,6 +13,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
+import cos from '@/models/cos'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -126,7 +127,13 @@ const WrapRightBox = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [addValue, setAddValue] = useState('')
-  const { getCommentList, addComment, deleteComment } = useModel('demand')
+  const {
+    getCommentList,
+    addComment,
+    deleteComment,
+    isRefreshComment,
+    setIsRefreshComment,
+  } = useModel('demand')
   const { userInfo } = useModel('user')
   const { projectInfo } = useModel('project')
   const [dataList, setDataList] = useState<any>({
@@ -144,11 +151,18 @@ const WrapRightBox = () => {
       pageSize: 999,
     })
     setDataList(result)
+    setIsRefreshComment(false)
   }
 
   useEffect(() => {
     getList()
   }, [])
+
+  useEffect(() => {
+    if (isRefreshComment) {
+      getList()
+    }
+  }, [isRefreshComment])
 
   const onDeleteComment = (item: any) => {
     setIsVisible(true)

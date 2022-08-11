@@ -224,6 +224,7 @@ const DemandBox = () => {
                   <ShapeContent
                     tap={value => onChangeStatus(value)}
                     hide={onHide}
+                    row={demandInfo}
                     record={{
                       id: demandInfo.id,
                       project_id: projectId,
