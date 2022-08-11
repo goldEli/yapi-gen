@@ -80,7 +80,7 @@ const Gatte = (props: any) => {
             return [
               {
                 title: {
-                  text: '需求标题',
+                  text: t('mine.demandTitle'),
                 },
                 labels: {
                   format: '{point.name}',
@@ -99,7 +99,7 @@ const Gatte = (props: any) => {
           return [
             {
               title: {
-                text: '需求标题',
+                text: t('mine.demandTitle'),
               },
               labels: {
                 format: '{point.name}',
@@ -107,7 +107,7 @@ const Gatte = (props: any) => {
             },
             {
               title: {
-                text: '预计开始时间',
+                text: t('common.expectedStart'),
               },
               labels: {
                 format: '{point.beginTime}',
@@ -115,7 +115,7 @@ const Gatte = (props: any) => {
             },
             {
               title: {
-                text: '预计结束时间',
+                text: t('common.expectedEnd'),
               },
               labels: {
                 format: '{point.endTime}',
@@ -143,7 +143,7 @@ const Gatte = (props: any) => {
     },
     series: [
       {
-        name: '需求标题',
+        name: t('mine.demandTitle'),
         data: res,
       },
     ],
