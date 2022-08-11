@@ -27,6 +27,7 @@ import NoData from '@/components/NoData'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import { debounce } from 'lodash'
 
 const tableWrapP = css`
   display: flex;
@@ -254,13 +255,20 @@ const Staff = () => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize, keyword, searchGroups, orderKey, order])
-  const rest = async () => {
-    const res = await refreshStaff()
-    if (res.code === 0) {
-      message.success(t('staff.refreshSuccess'))
-      init()
-    }
-  }
+  const rest = debounce(
+    async () => {
+      const res = await refreshStaff()
+      if (res.code === 0) {
+        message.success(t('staff.refreshSuccess'))
+        init()
+      }
+    },
+    1000,
+    {
+      leading: true,
+      trailing: true,
+    },
+  )
 
   const onChangeFilter = () => {
     setIsShow(!isShow)
