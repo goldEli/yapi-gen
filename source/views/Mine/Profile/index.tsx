@@ -129,7 +129,7 @@ const GatteWrap = styled.div`
   padding: 0 16px;
 `
 const Profile = () => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const { getMineChartsList, getUserFeedList, getMineGatte } = useModel('mine')
   const { userInfo } = useModel('user')
   const [data, setData] = useState<any>({})
@@ -183,12 +183,14 @@ const Profile = () => {
       .format('YYYY-MM-DD')
       .split('-')
 
-    return ` ${newDate[0]}年${newDate[1]}月`
+    return i18n.language === 'zh'
+      ? `${newDate[0]}年${newDate[1]}月`
+      : `${newDate[0]} - ${newDate[1]}`
   }, [monthIndex])
 
   const onToDetail = (item: any) => {
     if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
-      message.warning('该需求已被删除！')
+      message.warning(t('common.demandDeleteEd'))
       return
     }
 

@@ -330,6 +330,7 @@ const ChildDemand = () => {
           isChild
           id={operationItem.id}
           onUpdate={onUpdate}
+          list={dataList?.list}
         />
       ) : null}
       <DeleteConfirm

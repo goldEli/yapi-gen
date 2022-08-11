@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
@@ -234,13 +235,15 @@ export const updateDemand: any = async (params: any) => {
     info,
     expected_start_at: params.expectedStart,
     expected_end_at: params.expectedEnd,
-    iterate_id: params.iterateId?.length ? params.iterateId : null,
-    parent_id: params.parentId?.length ? params.parentId : null,
-    priority: params.priority?.length ? params.priority : null,
-    users: params.userIds?.length ? params.userIds : null,
-    copysend: params.copySendIds?.length ? params.copySendIds : null,
-    tag: params.tagIds?.length ? params.tagIds : null,
-    attachment: params.attachments?.length ? params.attachments : null,
+    iterate_id:
+      JSON.stringify(params.iterateId) !== '[]' ? params.iterateId : null,
+    parent_id:
+      JSON.stringify(params.parentId) !== '[]' ? params.parentId : null,
+    priority: JSON.stringify(params.priority) !== '[]' ? params.priority : null,
+    users: params.userIds,
+    copysend: params.copySendIds,
+    tag: params.tagIds,
+    attachment: params.attachments,
     id: params.id,
   })
 }

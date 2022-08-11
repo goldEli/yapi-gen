@@ -186,7 +186,6 @@ const EditDemand = (props: Props) => {
   const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id') || props.preId
-  const demandId = searchParams.get('demandId')
   const { memberList, projectInfo } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const { addDemand, getDemandInfo, updateDemand, getDemandList }
@@ -200,6 +199,7 @@ const EditDemand = (props: Props) => {
     const arr = result.map((i: any) => ({
       label: i.name,
       value: i.id,
+      parentId: i.parentId,
     }))
     setDemandList(arr)
     setParentList(arr)
@@ -488,7 +488,11 @@ const EditDemand = (props: Props) => {
               placeholder={t('common.pleaseParentDemand')}
               options={
                 props?.id
-                  ? parentList?.filter((i: any) => i.value !== demandInfo?.id)
+                  ? parentList?.filter(
+                      (k: any) => k.value !== props?.id
+                        && k.parentId !== props?.id
+                        && k.parentId !== demandInfo?.parentId,
+                    )
                   : parentList
               }
               getPopupContainer={node => node}

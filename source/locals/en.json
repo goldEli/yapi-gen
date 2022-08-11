@@ -361,7 +361,7 @@
   "mark": {
     "endP": "Confirmed closure of the project?",
     "delP": "Want to delete this item?",
-    "searchP": "Search for the project or project ID",
+    "searchP": "Project/project ID",
     "cd": "Want to delete current comment?",
     "editCom": "Enter a comment and press Enter to publish quickly",
     "editIterate": "Want to delete the iteration?",
