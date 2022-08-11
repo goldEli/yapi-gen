@@ -11,6 +11,11 @@ export default () => {
     return result
   }
 
+  const getDemandChildInfo = async (params: any) => {
+    const result = await services.demand.getDemandInfo(params)
+    return result
+  }
+
   const {
     updateDemandStatus,
     getDemandList,
@@ -43,5 +48,6 @@ export default () => {
     addInfoDemand,
     setFilterHeight,
     filterHeight,
+    getDemandChildInfo,
   }
 }

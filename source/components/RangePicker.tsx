@@ -24,12 +24,14 @@ const rangPicker = css`
 interface Props {
   onChange(values: any): void
   isWidth?: boolean
+  value?: any
 }
 
 const RangePicker = (props: Props) => {
   const [t, i18n] = useTranslation()
   return (
     <DatePicker.RangePicker
+      value={props.value}
       allowClear
       style={{ width: props.isWidth ? '' : '100%' }}
       onChange={props.onChange}

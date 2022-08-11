@@ -78,6 +78,9 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  '.ant-table-thead > tr > th:nth-child(1)': {
+    paddingLeft: 64,
+  },
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',
@@ -109,7 +112,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id') || props.id
   const [isVisible, setIsVisible] = useState(false)
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
 
@@ -121,7 +126,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       order: item.value,
       orderKey: item.key,
     })
-    setDataList(result)
+    setDataList({ list: result })
   }
 
   const onChildClick = async () => {
@@ -253,12 +258,19 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <Table
-          rowKey="id"
-          pagination={false}
-          columns={columnsChild}
-          dataSource={dataList}
-        />
+        <div style={{ minWidth: 500, maxHeight: 400 }}>
+          {!!dataList?.list && dataList?.list.length
+            ? (
+                <Table
+                  rowKey="id"
+                  pagination={false}
+                  columns={columnsChild}
+                  dataSource={dataList?.list}
+                />
+              )
+            : <NoData />
+          }
+        </div>
       }
     >
       <div

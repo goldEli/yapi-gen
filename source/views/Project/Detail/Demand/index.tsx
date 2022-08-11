@@ -242,7 +242,7 @@ const DemandBox = () => {
                   border: `1px solid ${demandInfo?.status?.color}`,
                 }}
               >
-                {demandInfo?.status?.content}
+                {demandInfo?.status?.content_txt}
               </StatusWrap>
             </PopConfirm>
           </NameWrap>

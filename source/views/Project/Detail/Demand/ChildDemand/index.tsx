@@ -9,7 +9,6 @@ import { Button, Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
-import EditDemand from '../components/EditDemand'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -19,6 +18,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission } from '@/tools'
+import EditChildDemand from './EditChildDemand'
 
 const Operation = styled.div({
   display: 'flex',
@@ -147,8 +147,8 @@ const ChildDemand = () => {
   }
 
   const onEdit = (e: any, item: any) => {
-    setIsVisible(true)
     setOperationItem(item)
+    setIsVisible(true)
   }
 
   const onUpdate = () => {
@@ -323,13 +323,15 @@ const ChildDemand = () => {
 
   return (
     <div style={{ height: 'calc(100% - 50px)' }}>
-      <EditDemand
-        visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        isChild
-        id={operationItem.id}
-        onUpdate={onUpdate}
-      />
+      {isVisible ? (
+        <EditChildDemand
+          visible={isVisible}
+          onChangeVisible={onChangeVisible}
+          isChild
+          id={operationItem.id}
+          onUpdate={onUpdate}
+        />
+      ) : null}
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}

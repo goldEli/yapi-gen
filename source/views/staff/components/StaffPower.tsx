@@ -138,7 +138,7 @@ export const StaffPersonal = (props: {
               showSearch
               optionFilterProp="label"
               options={roleOptions.map((item: any) => ({
-                label: item.name,
+                label: item.content_txt,
                 value: item.id,
               }))}
             />

@@ -24,8 +24,8 @@ import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import TagComponent from './TagComponent'
-import UploadAttach from './UploadAttach'
+import TagComponent from './../components/TagComponent'
+import UploadAttach from './../components/UploadAttach'
 import Editor from '@/components/Editor'
 import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
@@ -133,6 +133,7 @@ interface Props {
   visible: boolean
   onChangeVisible(): void
   id?: any
+  isChild?: boolean
   onUpdate?(): void
   isIterateId?: any
   preId?: any
@@ -189,7 +190,7 @@ const EditDemand = (props: Props) => {
   const demandId = searchParams.get('demandId')
   const { memberList, projectInfo } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
-  const { addDemand, getDemandInfo, updateDemand, getDemandList }
+  const { addDemand, getDemandChildInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<InputRef>(null)
@@ -202,12 +203,18 @@ const EditDemand = (props: Props) => {
       value: i.id,
     }))
     setDemandList(arr)
-    setParentList(arr)
+    setParentList(arr?.filter((k: any) => k.value !== props?.id))
   }
 
   useEffect(() => {
     getList()
   }, [])
+
+  useEffect(() => {
+    if (!props.visible) {
+      form.resetFields()
+    }
+  }, [props.visible])
 
   // useEffect(() => {
   //   if (props.visible && inputRef) {
@@ -219,7 +226,7 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.id) {
-      getDemandInfo({ projectId, id: props?.id }).then(res => {
+      getDemandChildInfo({ projectId, id: props?.id }).then(res => {
         setDemandInfo(res)
       })
     } else {
@@ -237,7 +244,7 @@ const EditDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    if (demandInfo && props?.id) {
+    if (demandInfo) {
       form.setFieldsValue(demandInfo)
       setPriorityDetail(demandInfo.priority)
       setHtml(demandInfo.info)
@@ -263,7 +270,9 @@ const EditDemand = (props: Props) => {
         })
       }
 
-      const parentArr = demandList
+      const parentArr = props.isChild
+        ? demandList?.filter((k: any) => k.value !== props?.id)
+        : demandList
 
       form.setFieldsValue({
         copySendIds: getCommonUser(
@@ -289,6 +298,10 @@ const EditDemand = (props: Props) => {
       }
     } else {
       form.resetFields()
+
+      form.setFieldsValue({
+        parentId: demandId,
+      })
     }
   }, [demandInfo])
 
@@ -303,6 +316,10 @@ const EditDemand = (props: Props) => {
     }
 
     values.info = html
+
+    if (props.isChild) {
+      values.parentId = demandId || demandInfo?.id
+    }
 
     if (props.isIterateId) {
       values.iterateId = props.isIterateId
@@ -349,9 +366,13 @@ const EditDemand = (props: Props) => {
 
   const titleText = () => {
     if (props?.id) {
-      return t('project.editDemand')
+      return props.isChild
+        ? t('project.editChildDemand')
+        : t('project.editDemand')
     }
-    return t('common.createDemand')
+    return props.isChild
+      ? t('common.createChildDemand')
+      : t('common.createDemand')
   }
 
   const onCurrentDetail = (item: any) => {

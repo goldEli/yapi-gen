@@ -172,7 +172,10 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="time"
           >
-            <RangePicker onChange={(_values: any) => onChangePicker(_values)} />
+            <RangePicker
+              value={form.getFieldValue('time')}
+              onChange={(_values: any) => onChangePicker(_values)}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

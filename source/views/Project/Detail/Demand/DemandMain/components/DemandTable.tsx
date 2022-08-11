@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
@@ -101,7 +102,9 @@ const ChildDemandTable = (props: ChildeProps) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const [isVisible, setIsVisible] = useState(false)
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
 
@@ -113,7 +116,7 @@ const ChildDemandTable = (props: ChildeProps) => {
       order: item.value,
       orderKey: item.key,
     })
-    setDataList(result)
+    setDataList({ list: result })
   }
 
   const onChildClick = async () => {
@@ -245,12 +248,18 @@ const ChildDemandTable = (props: ChildeProps) => {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <Table
-          rowKey="id"
-          pagination={false}
-          columns={columnsChild}
-          dataSource={dataList}
-        />
+        <div style={{ minWidth: 500, maxHeight: 400 }}>
+          {!!dataList?.list && dataList?.list.length ? (
+            <Table
+              rowKey="id"
+              pagination={false}
+              columns={columnsChild}
+              dataSource={dataList?.list}
+            />
+          )
+            : <NoData />
+          }
+        </div>
       }
     >
       <ClickWrap

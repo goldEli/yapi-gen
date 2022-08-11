@@ -100,12 +100,12 @@ const DemoLine = (props: { data: any }) => {
       {
         date: element,
         value: props.data.actual_last_count[index],
-        category: '实际剩余',
+        category: t('project.actualSurplus'),
       },
       {
         date: element,
         value: props.data.predict_last_count[index],
-        category: '预计剩余',
+        category: t('project.estimatedSurplus'),
       },
     ]
     arr = [...arr, ...items]
@@ -191,8 +191,8 @@ const IterationInfo = () => {
                   {t('common.demand')}
                 </span>
                 <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
-                  {`${iterateInfo?.finishCount || '--'} / ${
-                    iterateInfo?.storyCount || '--'
+                  {`${iterateInfo?.finishCount || 0} / ${
+                    iterateInfo?.storyCount || 0
                   }`}
                 </span>
               </SurveyBox>

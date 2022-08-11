@@ -31,6 +31,9 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  '.ant-table-thead > tr > th:nth-child(1)': {
+    paddingLeft: 64,
+  },
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',

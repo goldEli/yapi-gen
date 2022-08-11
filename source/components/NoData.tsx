@@ -11,6 +11,7 @@ const Wrap = styled.div({
   height: '100%',
   width: '100%',
   borderRadius: 4,
+  padding: 16,
   img: {
     width: 240,
     marginBottom: 35,
