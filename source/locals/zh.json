@@ -316,6 +316,7 @@
     "editPermission1": "编辑权限"
   },
   "situation": {
+    "progress": "进度",
     "category": "类别",
     "number": "数量",
     "openIterate": "开启迭代",

@@ -315,6 +315,7 @@
     "editPermission1": "Edit permission"
   },
   "situation": {
+    "progress": "Progress",
     "category": "Category",
     "number": "Number",
     "openIterate": "Open Iterate",
