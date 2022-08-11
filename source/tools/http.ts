@@ -79,7 +79,7 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           options.payload = encrypt(options.payload as string)
         }
-      } else {
+      } else if (options.url !== import.meta.env.__COS_SIGN_URL__) {
         if (import.meta.env.MODE !== 'development') {
           if (JSON.stringify(options.search) !== '{}') {
             options.search = { p: encryptPhp(JSON.stringify(options.search)) }
@@ -98,7 +98,10 @@ client.config({
         if (import.meta.env.MODE !== 'development') {
           return JSON.parse(decrypt((response as { body: string }).body))
         }
-      } else if (import.meta.env.MODE !== 'development') {
+      } else if (
+        import.meta.env.MODE !== 'development' &&
+        options.url !== import.meta.env.__COS_SIGN_URL__
+      ) {
         return JSON.parse(
           decryptPhp(JSON.parse((response as { body: string }).body).p),
         )
