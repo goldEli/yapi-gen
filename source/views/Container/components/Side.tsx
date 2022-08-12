@@ -15,6 +15,7 @@ const imgCss = css`
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 `
 const SideWrap = styled.div`
   display: flex;
@@ -169,7 +170,6 @@ export const Side = () => {
         <SideEach
           className={nowPath === '/Setting' ? activeCss : ''}
           onClick={() => navigate('/Setting')}
-          hidden={getIsPermission('公司管理')}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>{t('container.setting')}</span>
