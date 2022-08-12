@@ -206,7 +206,11 @@ export const addDemand: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
   const hasImg = Array.from(element.getElementsByTagName('img'))
-  const info = hasImg.length ? params?.info : element.innerText.trim()
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+      ? ''
+      : element.innerHTML
 
   await http.post<any>('addDemand', {
     project_id: Number(params.projectId),
@@ -228,7 +232,11 @@ export const updateDemand: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
   const hasImg = Array.from(element.getElementsByTagName('img'))
-  const info = hasImg.length ? params?.info : element.innerText.trim()
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+      ? ''
+      : element.innerHTML
 
   await http.put<any>('updateDemand', {
     project_id: params.projectId,

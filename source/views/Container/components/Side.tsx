@@ -170,7 +170,6 @@ export const Side = () => {
         <SideEach
           className={nowPath === '/Setting' ? activeCss : ''}
           onClick={() => navigate('/Setting')}
-          hidden={getIsPermission('公司管理')}
         >
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>{t('container.setting')}</span>

@@ -34,7 +34,11 @@ export const addIterate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
   const hasImg = Array.from(element.getElementsByTagName('img'))
-  const info = hasImg.length ? params?.info : element.innerText.trim()
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+      ? ''
+      : element.innerHTML
 
   await http.post<any>('addIterate', {
     name: params.iterationName,
@@ -49,7 +53,11 @@ export const updateIterate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
   const hasImg = Array.from(element.getElementsByTagName('img'))
-  const info = hasImg.length ? params?.info : element.innerText.trim()
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+      ? ''
+      : element.innerHTML
 
   await http.patch<any>('editIterate', {
     name: params.iterationName,
