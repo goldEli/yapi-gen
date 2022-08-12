@@ -153,6 +153,9 @@ const ChildDemandTable = (props: ChildeProps) => {
         </NewSort>
       ),
       dataIndex: 'id',
+      render: (text: string) => {
+        return <ClickWrap>{text}</ClickWrap>
+      },
     },
     {
       title: (
@@ -167,7 +170,11 @@ const ChildDemandTable = (props: ChildeProps) => {
       ),
       dataIndex: 'name',
       render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
+        return (
+          <OmitText width={180}>
+            <ClickWrap>{text}</ClickWrap>
+          </OmitText>
+        )
       },
     },
     {
@@ -182,6 +189,9 @@ const ChildDemandTable = (props: ChildeProps) => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -225,15 +235,18 @@ const ChildDemandTable = (props: ChildeProps) => {
     {
       title: (
         <NewSort
-          fixedKey="user_name"
+          fixedKey="users_name"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.createName')}
+          {t('common.dealName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 

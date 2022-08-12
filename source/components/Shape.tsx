@@ -88,7 +88,6 @@ export const ShapeContent = (props: ShapeProps) => {
     },
     hide,
     tap,
-    row,
   } = props
 
   const [form] = Form.useForm()
@@ -101,8 +100,19 @@ export const ShapeContent = (props: ShapeProps) => {
   }
 
   useEffect(() => {
+
+    // console.log(1111)
     init()
   }, [])
+
+  useEffect(() => {
+
+    // console.log(props?.row, 111, optionsList)
+    const arr = optionsList?.filter((k: any) => props.row?.dealName?.split(',')?.some((j: any) => k.name === j))
+    form.setFieldsValue({
+      username: arr?.map((k: any) => k.id),
+    })
+  }, [optionsList, props?.row])
 
   const onClear = () => {
     hide()

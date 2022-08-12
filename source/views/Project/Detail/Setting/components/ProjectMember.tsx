@@ -213,7 +213,7 @@ const ProjectMember = () => {
 
   useEffect(() => {
     if (isRefreshMember) {
-      getList(order, pageObj)
+      getList(order, { page: 1, size: pageObj.size })
     }
   }, [isRefreshMember])
 
@@ -255,16 +255,16 @@ const ProjectMember = () => {
 
   const onReset = () => {
     form.resetFields()
-    getList(order, pageObj)
+    getList(order, { page: 1, size: pageObj.size })
   }
 
   const onValuesChange = () => {
-    getList(order, pageObj)
+    getList(order, { page: 1, size: pageObj.size })
   }
 
   const onChangeSearch = (val: string) => {
     form.setFieldsValue({ searchValue: val })
-    getList(order, pageObj)
+    getList(order, { page: 1, size: pageObj.size })
   }
 
   const menu = (item: any) => {
@@ -300,7 +300,10 @@ const ProjectMember = () => {
 
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList({ value: val === 2 ? 'desc' : 'asc', key }, pageObj)
+    getList(
+      { value: val === 2 ? 'desc' : 'asc', key },
+      { page: 1, size: pageObj.size },
+    )
   }
 
   const columns = [

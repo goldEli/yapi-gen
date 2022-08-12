@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next'
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
   overflow: 'auto',
+  paddingBottom: 24,
 })
 
 const InfoItem = styled.div({

@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
@@ -7,7 +8,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Pagination, Dropdown, Popover, Table, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
@@ -72,6 +73,7 @@ interface Props {
   onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
+  hasId: any
 }
 
 const NewSort = (sortProps: any) => {
@@ -143,6 +145,9 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         </NewSort>
       ),
       dataIndex: 'id',
+      render: (text: string) => {
+        return <ClickWrap>{text}</ClickWrap>
+      },
     },
     {
       title: (
@@ -157,7 +162,11 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       ),
       dataIndex: 'name',
       render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
+        return (
+          <OmitText width={180}>
+            <ClickWrap>{text}</ClickWrap>
+          </OmitText>
+        )
       },
     },
     {
@@ -172,6 +181,9 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -215,15 +227,18 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
     {
       title: (
         <NewSort
-          fixedKey="user_name"
+          fixedKey="users_name"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.createName')}
+          {t('common.dealName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 
@@ -451,19 +466,22 @@ const IterationTable = (props: Props) => {
     <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
-          {!!props.data?.list
-            && (props.data?.list?.length > 0 ? (
-              <TableBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={props.data?.list}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-                showSorterTooltip={false}
-              />
-            )
-              : <NoData />
-            )}
+          {typeof props?.hasId !== 'object'
+            ? <NoData />
+            : props.data?.list
+              ? props.data?.list?.length > 0 ? (
+                <TableBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={props.data?.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                  showSorterTooltip={false}
+                />
+              )
+                : <NoData />
+
+              : null}
         </Spin>
       </DataWrap>
       <PaginationWrap>

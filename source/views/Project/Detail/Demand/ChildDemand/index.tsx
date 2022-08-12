@@ -130,7 +130,7 @@ const ChildDemand = () => {
 
   useEffect(() => {
     if (isRefresh) {
-      getList(pageObj, order)
+      getList({ page: 1, size: pageObj.size }, order)
     }
   }, [isRefresh])
 
@@ -158,7 +158,10 @@ const ChildDemand = () => {
 
   const updateOrderkey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
+    getList(
+      { page: 1, size: pageObj.size },
+      { value: val === 2 ? 'desc' : 'asc', key },
+    )
   }
 
   const setMenu = (

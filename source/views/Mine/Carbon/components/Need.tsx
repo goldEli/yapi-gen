@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -20,7 +21,15 @@ import {
   TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, message, Pagination, Tooltip } from 'antd'
+import {
+  Button,
+  Dropdown,
+  Menu,
+  message,
+  Pagination,
+  Spin,
+  Tooltip,
+} from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -138,6 +147,7 @@ const Need = (props: any) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -173,7 +183,8 @@ const Need = (props: any) => {
     setOrderKey(key)
     setOrder(order)
   }
-  const init = async () => {
+  const init = async (pageNumber?: any) => {
+    setIsSpin(true)
     if (isMany) {
       const res = await getMineNoFinishList({
         projectId: props.id,
@@ -182,6 +193,7 @@ const Need = (props: any) => {
       })
 
       setManyListData(res)
+      setIsSpin(false)
     }
 
     if (!isMany) {
@@ -191,12 +203,13 @@ const Need = (props: any) => {
         searchGroups,
         order,
         orderkey: orderKey,
-        page,
+        page: pageNumber ? pageNumber : page,
         pagesize,
       })
 
       setListData(res)
       setTotal(res.pager.total)
+      setIsSpin(false)
     }
   }
 
@@ -311,7 +324,14 @@ const Need = (props: any) => {
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups, isMany])
+  }, [page, pagesize])
+
+  useEffect(() => {
+    setPage(1)
+    init(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword, orderKey, order, props.id, searchGroups, isMany])
+
   useEffect(() => {
     getSearchKey()
   }, [props.id])
@@ -462,44 +482,48 @@ const Need = (props: any) => {
         />
       ) : null}
       {!isMany && (
-        <StaffTableWrap>
-          {!!listData?.list && listData?.list?.length ? (
-            <TableBox
-              rowKey="id"
-              columns={selectColum}
-              dataSource={listData?.list}
-              pagination={false}
-              scroll={{ x: 'max-content' }}
-            />
-          )
-            : <NoData />
-          }
-        </StaffTableWrap>
+        <Spin spinning={isSpin}>
+          <StaffTableWrap>
+            {!!listData?.list && listData?.list?.length ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={listData?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+              />
+            )
+              : <NoData />
+            }
+          </StaffTableWrap>
+        </Spin>
       )}
 
       {isMany ? (
-        <StaffTableWrap2>
-          {manyListData?.map((item: any, index: any) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index}>
-              {item.list.length >= 1 && (
-                <div className={tableTitle}>
-                  {item.status_name}（{item.list.length}）
-                </div>
-              )}
+        <Spin spinning={isSpin}>
+          <StaffTableWrap2>
+            {manyListData?.map((item: any, index: any) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={index}>
+                {item.list.length >= 1 && (
+                  <div className={tableTitle}>
+                    {item.status_name}（{item.list.length}）
+                  </div>
+                )}
 
-              {item.list.length >= 1 && (
-                <StyledTable
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={item.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              )}
-            </div>
-          ))}
-        </StaffTableWrap2>
+                {item.list.length >= 1 && (
+                  <StyledTable
+                    rowKey="id"
+                    columns={selectColum}
+                    dataSource={item.list}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                  />
+                )}
+              </div>
+            ))}
+          </StaffTableWrap2>
+        </Spin>
       ) : null}
 
       {!isMany && (

@@ -163,6 +163,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'id',
+      render: (text: string) => {
+        return <ClickWrap>{text}</ClickWrap>
+      },
     },
     {
       title: (
@@ -177,7 +180,11 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       ),
       dataIndex: 'name',
       render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
+        return (
+          <OmitText width={180}>
+            <ClickWrap>{text}</ClickWrap>
+          </OmitText>
+        )
       },
     },
     {
@@ -192,6 +199,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -235,15 +245,18 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
     {
       title: (
         <NewSort
-          fixedKey="user_name"
+          fixedKey="users_name"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.createName')}
+          {t('common.dealName')}
         </NewSort>
       ),
       dataIndex: 'dealName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 
@@ -338,7 +351,7 @@ const DemandWrap = () => {
 
   useEffect(() => {
     if (isRefresh) {
-      getList(pageObj, order)
+      getList({ page: 1, size: pageObj.size }, order)
     }
   }, [isRefresh])
 
@@ -387,7 +400,10 @@ const DemandWrap = () => {
 
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(pageObj, { value: val === 2 ? 'desc' : 'asc', key })
+    getList(
+      { page: 1, size: pageObj.size },
+      { value: val === 2 ? 'desc' : 'asc', key },
+    )
   }
 
   const onClickItem = (item: any) => {

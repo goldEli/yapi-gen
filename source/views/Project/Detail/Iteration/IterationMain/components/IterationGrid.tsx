@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -55,6 +56,7 @@ interface Props {
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   isSpinning?: boolean
+  hasId: any
 }
 
 const IterationGrid = (props: Props) => {
@@ -136,8 +138,11 @@ const IterationGrid = (props: Props) => {
                 {k.content_txt}(
                 {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
               </Title>
-              {!!dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                && (dataList?.filter((item: any) => item.id === k.id)[0]?.list
+              {typeof props?.hasId !== 'object'
+                ? <NoData />
+               : dataList?.filter((item: any) => item.id === k.id)[0]
+                  ?.list
+                ? dataList?.filter((item: any) => item.id === k.id)[0]?.list
                   .length > 0
                   ? dataList
                     ?.filter((item: any) => item.id === k.id)[0]
@@ -150,7 +155,8 @@ const IterationGrid = (props: Props) => {
                       />
                     ))
                  : <NoData />
-                )}
+
+               : null}
             </StatusItemsWrap>
           ))}
         </SpaceWrap>

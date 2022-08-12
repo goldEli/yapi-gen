@@ -149,17 +149,6 @@ const TableFilter = (props: any) => {
   const confirm = async () => {
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
-    for (const item in value) {
-      if (item.includes('_at') && res[item]?.length === 2) {
-        res[item][0] = moment(res[item][0]).unix()
-          ? moment(res[item][0]).format('YYYY-MM-DD')
-          : '1970-01-01'
-        res[item][1]
-          = moment(res[item][1]).unix() === 1893427200
-            ? '2030-01-01'
-            : moment(res[item][1]).format('YYYY-MM-DD')
-      }
-    }
     props.onSearch(res)
   }
   const onClearForm = async () => {
@@ -190,6 +179,22 @@ const TableFilter = (props: any) => {
       </div>
     </div>
   )
+
+  const onChangeTime = (key: any, dates: any) => {
+    if (dates) {
+      form.setFieldsValue({
+        [key]: [
+          moment(dates[0]).unix()
+            ? moment(dates[0]).format('YYYY-MM-DD')
+            : '1970-01-01',
+          moment(dates[1]).unix() === 1893427200
+            ? '2030-01-01'
+            : moment(dates[1]).format('YYYY-MM-DD'),
+        ],
+      })
+    }
+    confirm()
+  }
 
   return (
     <SearchLine>
@@ -232,7 +237,7 @@ const TableFilter = (props: any) => {
                       {i.contentTxt}
                     </span>
                     <DatePicker.RangePicker
-                      onChange={confirm}
+                      onChange={dates => onChangeTime(i.key, dates)}
                       className={rangPicker}
                       getPopupContainer={node => node}
                       format={(times: moment.Moment) => {
