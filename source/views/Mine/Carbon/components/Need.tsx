@@ -60,6 +60,13 @@ const TableBox = styled(TableWrap)({
   },
 })
 
+const LoadingSpin = styled(Spin)({
+  minHeight: 300,
+  '.ant-spin-nested-loading, .ant-spin-container': {
+    height: 'initial!important',
+  },
+})
+
 const tableTitle = css`
   color: rgba(150, 151, 153, 1);
   font-size: 14px;
@@ -483,50 +490,54 @@ const Need = (props: any) => {
         />
       ) : null}
       {!isMany && (
-        <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
-          <StaffTableWrap>
-            {listData?.list
-              ? listData?.list?.length ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              )
-                : <NoData />
-
-              : null}
-          </StaffTableWrap>
-        </Spin>
-      )}
-
-      {isMany ? (
-        <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
-          <StaffTableWrap2>
-            {manyListData?.map((item: any, index: any) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={index}>
-                {item.list.length >= 1 && (
-                  <div className={tableTitle}>
-                    {item.status_name}（{item.list.length}）
-                  </div>
-                )}
-
-                {item.list.length >= 1 && (
+        <div>
+          <LoadingSpin spinning={isSpin}>
+            <StaffTableWrap>
+              {listData?.list
+                ? listData?.list?.length ? (
                   <TableBox
                     rowKey="id"
                     columns={selectColum}
-                    dataSource={item.list}
+                    dataSource={listData?.list}
                     pagination={false}
                     scroll={{ x: 'max-content' }}
                   />
-                )}
-              </div>
-            ))}
-          </StaffTableWrap2>
-        </Spin>
+                )
+                  : <NoData />
+
+                : null}
+            </StaffTableWrap>
+          </LoadingSpin>
+        </div>
+      )}
+
+      {isMany ? (
+        <div>
+          <LoadingSpin spinning={isSpin}>
+            <StaffTableWrap2>
+              {manyListData?.map((item: any, index: any) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <div key={index}>
+                  {item.list.length >= 1 && (
+                    <div className={tableTitle}>
+                      {item.status_name}（{item.list.length}）
+                    </div>
+                  )}
+
+                  {item.list.length >= 1 && (
+                    <TableBox
+                      rowKey="id"
+                      columns={selectColum}
+                      dataSource={item.list}
+                      pagination={false}
+                      scroll={{ x: 'max-content' }}
+                    />
+                  )}
+                </div>
+              ))}
+            </StaffTableWrap2>
+          </LoadingSpin>
+        </div>
       ) : null}
 
       {!isMany && (

@@ -55,6 +55,13 @@ const TableBox = styled(TableWrap)({
   },
 })
 
+const LoadingSpin = styled(Spin)({
+  minHeight: 300,
+  '.ant-spin-container': {
+    height: 'initial!important',
+  },
+})
+
 interface MoreWrapProps {
   record: any
   onShowEdit(): void
@@ -426,23 +433,25 @@ const Need = (props: any) => {
         />
       ) : null}
 
-      <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
-        <StaffTableWrap>
-          {listData?.list
-            ? listData?.list?.length ? (
-              <TableBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={listData?.list}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-              />
-            )
-              : <NoData />
+      <div>
+        <LoadingSpin spinning={isSpin}>
+          <StaffTableWrap>
+            {listData?.list
+              ? listData?.list?.length ? (
+                <TableBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={listData?.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                />
+              )
+                : <NoData />
 
-            : null}
-        </StaffTableWrap>
-      </Spin>
+              : null}
+          </StaffTableWrap>
+        </LoadingSpin>
+      </div>
 
       <PaginationWrap style={{ position: 'fixed', bottom: 0, right: 16 }}>
         <Pagination
