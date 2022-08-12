@@ -48,7 +48,7 @@ export const Container = () => {
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
   message.config({
-    duration: 1.5,
+    duration: 0.8,
   })
 
   const init = async () => {

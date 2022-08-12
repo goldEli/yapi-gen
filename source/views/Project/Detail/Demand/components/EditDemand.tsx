@@ -191,7 +191,7 @@ const EditDemand = (props: Props) => {
   const { addDemand, getDemandInfo, updateDemand, getDemandList }
     = useModel('demand')
   const { selectIterate } = useModel('iterate')
-  const inputRef = useRef<InputRef>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
 
   const getList = async () => {
@@ -208,14 +208,6 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     getList()
   }, [])
-
-  // useEffect(() => {
-  //   if (props.visible && inputRef) {
-  //     inputRef.current?.focus({
-  //       cursor: 'end',
-  //     })
-  //   }
-  // }, [props.visible, inputRef])
 
   useEffect(() => {
     if (props?.id) {
@@ -254,11 +246,11 @@ const EditDemand = (props: Props) => {
           name: i.tag?.content,
         })),
       )
-      if (demandInfo?.expectedStart) {
+      if (demandInfo?.expectedStart || demandInfo?.expectedEnd) {
         form.setFieldsValue({
           times: [
-            moment(demandInfo.expectedStart),
-            moment(demandInfo.expectedEnd),
+            moment(demandInfo.expectedStart || 0),
+            moment(demandInfo.expectedEnd || 1893427200),
           ],
         })
       }
@@ -418,6 +410,14 @@ const EditDemand = (props: Props) => {
     })
   }
 
+  useEffect(() => {
+    if (props.visible) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 200)
+    }
+  }, [props.visible])
+
   return (
     <Modal
       visible={props.visible}
@@ -438,9 +438,10 @@ const EditDemand = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <Input
-              ref={inputRef}
+              ref={inputRef as any}
               placeholder={t('common.pleaseDemandName')}
               maxLength={100}
+              autoFocus
             />
           </Form.Item>
         </div>

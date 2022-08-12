@@ -92,11 +92,11 @@ const ChangeRecord = () => {
     getList(pageObj, order)
   }, [])
 
-  useEffect(() => {
-    if (iterateInfo?.changeCount !== dataList?.total) {
-      getList({ page: 1, size: pageObj.size }, order)
-    }
-  }, [iterateInfo, dataList])
+  // useEffect(() => {
+  //   if (iterateInfo?.changeCount !== dataList?.total) {
+  //     // getList({ page: 1, size: pageObj.size }, order)
+  //   }
+  // }, [iterateInfo, dataList])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
@@ -292,6 +292,7 @@ const ChangeRecord = () => {
     setPageObj({ page, size })
     getList({ page, size }, order)
   }
+
   return (
     <div style={{ height: 'calc(100% - 50px)' }}>
       <Modal

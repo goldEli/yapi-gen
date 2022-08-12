@@ -106,8 +106,6 @@ export const ShapeContent = (props: ShapeProps) => {
   }, [])
 
   useEffect(() => {
-
-    // console.log(props?.row, 111, optionsList)
     const arr = optionsList?.filter((k: any) => props.row?.dealName?.split(',')?.some((j: any) => k.name === j))
     form.setFieldsValue({
       username: arr?.map((k: any) => k.id),

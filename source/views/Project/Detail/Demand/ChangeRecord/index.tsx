@@ -92,11 +92,11 @@ const ChangeRecord = () => {
     }
   }, [isRefresh])
 
-  useEffect(() => {
-    if (demandInfo?.changeCount !== dataList?.total) {
-      getList({ page: 1, size: pageObj.size }, order)
-    }
-  }, [demandInfo, dataList])
+  // useEffect(() => {
+  //   if (demandInfo?.changeCount !== dataList?.total) {
+  //     getList({ page: 1, size: pageObj.size }, order)
+  //   }
+  // }, [demandInfo, dataList])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)

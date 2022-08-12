@@ -87,8 +87,8 @@ const EditIteration = (props: Props) => {
       if (iterateInfo?.createdTime || iterateInfo?.startTime) {
         form.setFieldsValue({
           time: [
-            moment(iterateInfo.createdTime || iterateInfo?.startTime),
-            moment(iterateInfo.endTime),
+            moment(iterateInfo.createdTime || iterateInfo?.startTime || 0),
+            moment(iterateInfo.endTime || 1893427200),
           ],
         })
       }
@@ -118,6 +118,7 @@ const EditIteration = (props: Props) => {
       props.onUpdate?.(true)
       setHtml('')
       setIsRefreshIterateList(true)
+      getIterateInfo({ projectId, id: props.id })
       setTimeout(() => {
         form.resetFields()
       }, 100)
