@@ -15,6 +15,7 @@ const imgCss = css`
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 `
 const SideWrap = styled.div`
   display: flex;
