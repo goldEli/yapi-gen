@@ -1,12 +1,14 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
+// eslint-disable-next-line @typescript-eslint/no-shadow
 import { useModel } from '@/models'
-import { message, Upload, type UploadProps } from 'antd'
+import { message, Progress, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import type { Task } from 'cos-js-sdk-v5'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -30,8 +32,9 @@ const UploadAttach = (props: Props) => {
   const demandId = searchParams.get('demandId')
   const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
+  const [percentShow, setPercentShow] = useState<boolean>(false)
+  const [percentVal, setPercentVal] = useState<any>()
   let arr: any[] = []
-
   useEffect(() => {
     const array: any[] = []
     props.defaultList?.forEach((element: any) => {
@@ -91,14 +94,33 @@ const UploadAttach = (props: Props) => {
       })
     })
   }
-
   const onUploadBefore = (file: any) => {
     if (file.size / 1024 > 5242880) {
       message.warning('文件最大支持5G')
       return Upload.LIST_IGNORE
     }
   }
+  const { cos } = useModel('cos')
 
+  const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
+    setPercentShow(true)
+    const fileSpeed = list[list.length - 1].percent
+    const num = fileSpeed === 0 ? fileSpeed : (fileSpeed * 100).toFixed(2)
+    if (list[list.length - 1].state === 'success') {
+      setPercentVal(100)
+      setTimeout(() => {
+        setPercentShow(false)
+      }, 3000)
+    } else {
+      setPercentVal(num)
+    }
+  }, [])
+  useEffect(() => {
+    cos.on('list-update', onTasksUpdate)
+    return () => {
+      cos.off('list-update', onTasksUpdate)
+    }
+  }, [])
   const onUploadFileClick = async (option: UploadRequestOption) => {
     const { file } = option
     if (file instanceof File) {
@@ -129,9 +151,6 @@ const UploadAttach = (props: Props) => {
 
   const uploadProps: UploadProps = {
     beforeUpload: onUploadBefore,
-    customRequest: onUploadFileClick,
-    onDownload,
-    onRemove,
     progress: {
       strokeColor: {
         '0%': '#108ee9',
@@ -140,6 +159,9 @@ const UploadAttach = (props: Props) => {
       strokeWidth: 3,
       format: percent => percent && `${parseFloat(percent.toFixed(2))}%`,
     },
+    customRequest: onUploadFileClick,
+    onDownload,
+    onRemove,
     showUploadList: {
       showDownloadIcon: projectInfo?.projectPermissions?.filter(
         (i: any) => i.name === '附件下载',
@@ -148,9 +170,16 @@ const UploadAttach = (props: Props) => {
   }
 
   return (
-    <Warp {...uploadProps} fileList={fileList}>
-      {props.addWrap}
-    </Warp>
+    <div className="123">
+      <Warp {...uploadProps} fileList={fileList}>
+        {props.addWrap}
+      </Warp>
+      <Progress
+        percent={percentVal}
+        size="small"
+        style={{ display: percentShow ? 'block' : 'none' }}
+      />
+    </div>
   )
 }
 
