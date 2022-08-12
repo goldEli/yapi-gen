@@ -127,8 +127,13 @@ const DemandBox = () => {
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { projectInfo } = useModel('project')
-  const { getDemandInfo, demandInfo, deleteDemand, updateDemandStatus }
-    = useModel('demand')
+  const {
+    getDemandInfo,
+    demandInfo,
+    deleteDemand,
+    updateDemandStatus,
+    setIsShowProgress,
+  } = useModel('demand')
   const navigate = useNavigate()
   const isEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -158,6 +163,7 @@ const DemandBox = () => {
   }
 
   const onEdit = () => {
+    setIsShowProgress(true)
     setIsVisible(!isVisible)
     setOperationItem(demandInfo)
   }

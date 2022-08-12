@@ -8,7 +8,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, DatePicker, Select, Space, message } from 'antd'
+import {
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Space,
+  message,
+  Progress,
+} from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -172,7 +181,7 @@ const EditDemand = (props: Props) => {
   const [attachList, setAttachList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>()
-  const { getDemandList } = useModel('demand')
+  const { getDemandList, percentVal, percentShow } = useModel('demand')
   const { getProjectInfo, setTagList } = useModel('project')
 
   const {
@@ -344,6 +353,16 @@ const EditDemand = (props: Props) => {
     form.setFieldsValue({
       times: _values,
     })
+  }
+
+  const Children = (item: any) => {
+    return (
+      <Progress
+        percent={percentVal}
+        size="small"
+        style={{ display: percentShow ? 'block' : 'none' }}
+      />
+    )
   }
 
   return (
@@ -546,6 +565,7 @@ const EditDemand = (props: Props) => {
               </AddWrap>
             ) : (
               <UploadAttach
+                child={<Children />}
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 addWrap={

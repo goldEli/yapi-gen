@@ -18,6 +18,7 @@ import {
   Space,
   message,
   type InputRef,
+  Progress,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -188,8 +189,15 @@ const EditDemand = (props: Props) => {
   const projectId = searchParams.get('id') || props.preId
   const { memberList, projectInfo } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
-  const { addDemand, getDemandInfo, updateDemand, getDemandList }
-    = useModel('demand')
+  const {
+    addDemand,
+    getDemandInfo,
+    updateDemand,
+    getDemandList,
+    setIsShowProgress,
+    percentShow,
+    percentVal,
+  } = useModel('demand')
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
@@ -374,6 +382,7 @@ const EditDemand = (props: Props) => {
   }
 
   const onCancel = () => {
+    setIsShowProgress(false)
     props.onChangeVisible()
     form.resetFields()
     setAttachList([])
@@ -417,6 +426,16 @@ const EditDemand = (props: Props) => {
       }, 200)
     }
   }, [props.visible])
+
+  const Children = (item: any) => {
+    return (
+      <Progress
+        percent={percentVal}
+        size="small"
+        style={{ display: percentShow ? 'block' : 'none' }}
+      />
+    )
+  }
 
   return (
     <Modal
@@ -596,6 +615,7 @@ const EditDemand = (props: Props) => {
               </AddWrap>
             ) : (
               <UploadAttach
+                child={<Children />}
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 addWrap={

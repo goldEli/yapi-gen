@@ -8,7 +8,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import Editor from '@/components/Editor'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
@@ -73,6 +73,7 @@ const EditIteration = (props: Props) => {
   const { addIterate, updateIterate, getIterateInfo, iterateInfo }
     = useModel('iterate')
   const { setIsRefreshIterateList } = useModel('project')
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (props.id) {
@@ -140,6 +141,14 @@ const EditIteration = (props: Props) => {
     })
   }
 
+  useEffect(() => {
+    if (props.visible) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 200)
+    }
+  }, [props.visible])
+
   return (
     <Modal
       visible={props.visible}
@@ -163,7 +172,12 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="iterationName"
           >
-            <Input maxLength={100} placeholder={t('mark.level')} />
+            <Input
+              maxLength={100}
+              ref={inputRef as any}
+              autoFocus
+              placeholder={t('mark.level')}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

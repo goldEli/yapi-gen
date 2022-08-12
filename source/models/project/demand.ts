@@ -5,7 +5,9 @@ export default () => {
   const [demandInfo, setDemandInfo] = useState<any>({})
   const [filterHeight, setFilterHeight] = useState<any>(52)
   const [isRefreshComment, setIsRefreshComment] = useState(false)
-
+  const [isShowProgress, setIsShowProgress] = useState(false)
+  const [percentShow, setPercentShow] = useState<boolean>(false)
+  const [percentVal, setPercentVal] = useState<any>()
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     setDemandInfo(result)
@@ -52,5 +54,11 @@ export default () => {
     getDemandChildInfo,
     setIsRefreshComment,
     isRefreshComment,
+    setIsShowProgress,
+    isShowProgress,
+    percentShow,
+    setPercentShow,
+    percentVal,
+    setPercentVal,
   }
 }

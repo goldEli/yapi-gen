@@ -15,7 +15,7 @@ import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message } from 'antd'
+import { message, Progress } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -105,7 +105,13 @@ const DownPriority = styled.div({
 
 const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
-  const { demandInfo, updatePriority } = useModel('demand')
+  const {
+    demandInfo,
+    updatePriority,
+    isShowProgress,
+    percentShow,
+    percentVal,
+  } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
@@ -132,6 +138,16 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       })),
     )
   }, [demandInfo])
+
+  const Children = (item: any) => {
+    return (
+      <Progress
+        percent={percentVal}
+        size="small"
+        style={{ display: percentShow ? 'block' : 'none' }}
+      />
+    )
+  }
 
   return (
     <WrapLeft>
@@ -209,6 +225,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
               <div>{t('common.add23')}</div>
             </AddWrap>
           }
+          child={isShowProgress ? null : <Children />}
         />
       </InfoItem>
       <InfoItem>

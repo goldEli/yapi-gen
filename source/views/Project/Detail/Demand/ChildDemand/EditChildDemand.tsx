@@ -18,6 +18,7 @@ import {
   Space,
   message,
   type InputRef,
+  Progress,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -197,6 +198,8 @@ const EditDemand = (props: Props) => {
     updateDemand,
     getDemandList,
     demandInfo,
+    percentShow,
+    percentVal,
   } = useModel('demand')
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<InputRef>(null)
@@ -419,6 +422,16 @@ const EditDemand = (props: Props) => {
     })
   }
 
+  const Children = (item: any) => {
+    return (
+      <Progress
+        percent={percentVal}
+        size="small"
+        style={{ display: percentShow ? 'block' : 'none' }}
+      />
+    )
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -588,6 +601,7 @@ const EditDemand = (props: Props) => {
               </AddWrap>
             ) : (
               <UploadAttach
+                child={<Children />}
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 addWrap={

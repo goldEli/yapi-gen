@@ -21,19 +21,24 @@ interface Props {
   onChangeAttachment?(arr: any, type: string): void
   defaultList?: any
   canUpdate?: boolean
+  child?: any
 }
 
 const UploadAttach = (props: Props) => {
   const [t] = useTranslation()
   const { uploadFile, cos } = useModel('cos')
-  const { addInfoDemand, getDemandInfo, deleteInfoDemand } = useModel('demand')
+  const {
+    addInfoDemand,
+    getDemandInfo,
+    deleteInfoDemand,
+    setPercentShow,
+    setPercentVal,
+  } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
   const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
-  const [percentShow, setPercentShow] = useState<boolean>(false)
-  const [percentVal, setPercentVal] = useState<any>()
   let arr: any[] = []
   useEffect(() => {
     const array: any[] = []
@@ -173,11 +178,12 @@ const UploadAttach = (props: Props) => {
       <Warp {...uploadProps} fileList={fileList}>
         {props.addWrap}
       </Warp>
-      <Progress
+      {props.child}
+      {/* <Progress
         percent={percentVal}
         size="small"
         style={{ display: percentShow ? 'block' : 'none' }}
-      />
+      /> */}
     </div>
   )
 }
