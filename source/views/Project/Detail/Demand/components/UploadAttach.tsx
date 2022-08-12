@@ -102,15 +102,15 @@ const UploadAttach = (props: Props) => {
   }
 
   const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
-    setPercentShow(true)
     const fileSpeed = list[list.length - 1].percent
     const num = fileSpeed === 0 ? fileSpeed : (fileSpeed * 100).toFixed(2)
     if (list[list.length - 1].state === 'success') {
       setPercentVal(100)
       setTimeout(() => {
         setPercentShow(false)
-      }, 3000)
+      }, 1000)
     } else {
+      setPercentShow(true)
       setPercentVal(num)
     }
   }, [])
