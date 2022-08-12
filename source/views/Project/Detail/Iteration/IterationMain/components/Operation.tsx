@@ -17,7 +17,6 @@ import NoData from '@/components/NoData'
 const OperationWrap = styled.div({
   padding: '0 24px',
   minHeight: 52,
-  minWidth: '1300px',
   lineHeight: '52px',
   background: 'white',
   display: 'flex',

@@ -17,6 +17,7 @@ const imgCss = css`
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 `
 const buttonCss = css`
   width: 24px;

@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  minWidth: '1300px',
   justifyContent: 'space-between',
   height: 52,
   background: 'white',
