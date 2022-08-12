@@ -25,7 +25,7 @@ interface Props {
 
 const UploadAttach = (props: Props) => {
   const [t] = useTranslation()
-  const { uploadFile } = useModel('cos')
+  const { uploadFile, cos } = useModel('cos')
   const { addInfoDemand, getDemandInfo, deleteInfoDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
@@ -100,7 +100,6 @@ const UploadAttach = (props: Props) => {
       return Upload.LIST_IGNORE
     }
   }
-  const { cos } = useModel('cos')
 
   const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
     setPercentShow(true)
