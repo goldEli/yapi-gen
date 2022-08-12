@@ -426,19 +426,21 @@ const Need = (props: any) => {
         />
       ) : null}
 
-      <Spin spinning={isSpin}>
+      <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
         <StaffTableWrap>
-          {!!listData?.list && listData?.list?.length ? (
-            <TableBox
-              rowKey="id"
-              columns={selectColum}
-              dataSource={listData?.list}
-              pagination={false}
-              scroll={{ x: 'max-content' }}
-            />
-          )
-            : <NoData />
-          }
+          {listData?.list
+            ? listData?.list?.length ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={listData?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+              />
+            )
+              : <NoData />
+
+            : null}
         </StaffTableWrap>
       </Spin>
 

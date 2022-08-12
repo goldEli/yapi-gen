@@ -427,7 +427,7 @@ const Need = (props: any) => {
           )
         : null}
 
-      <Spin spinning={isSpin}>
+      <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
         <StaffTableWrap>
           {listData?.list
             ? listData?.list?.length

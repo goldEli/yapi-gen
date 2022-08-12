@@ -277,6 +277,7 @@ const Need = (props: any) => {
     return [...arrList, ...newList]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
+
   const getShowkey = async () => {
     const res2 = await getField(props.id)
     setPlainOptions(res2.plainOptions)
@@ -482,25 +483,27 @@ const Need = (props: any) => {
         />
       ) : null}
       {!isMany && (
-        <Spin spinning={isSpin}>
+        <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
           <StaffTableWrap>
-            {!!listData?.list && listData?.list?.length ? (
-              <TableBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={listData?.list}
-                pagination={false}
-                scroll={{ x: 'max-content' }}
-              />
-            )
-              : <NoData />
-            }
+            {listData?.list
+              ? listData?.list?.length ? (
+                <TableBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={listData?.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                />
+              )
+                : <NoData />
+
+              : null}
           </StaffTableWrap>
         </Spin>
       )}
 
       {isMany ? (
-        <Spin spinning={isSpin}>
+        <Spin spinning={isSpin} style={{ minHeight: 300, height: 'initial' }}>
           <StaffTableWrap2>
             {manyListData?.map((item: any, index: any) => (
               // eslint-disable-next-line react/no-array-index-key
@@ -512,7 +515,7 @@ const Need = (props: any) => {
                 )}
 
                 {item.list.length >= 1 && (
-                  <StyledTable
+                  <TableBox
                     rowKey="id"
                     columns={selectColum}
                     dataSource={item.list}
