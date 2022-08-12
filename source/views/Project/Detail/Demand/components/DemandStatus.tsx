@@ -91,7 +91,9 @@ const DemandBox = (props: Props) => {
       content: res.content,
     }
     onChangeStatus(value)
-    setIsRefreshComment(true)
+    setTimeout(() => {
+      setIsRefreshComment(true)
+    }, 100)
   }
 
   return (

@@ -17,7 +17,15 @@ import {
   TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, message, Pagination, Tooltip } from 'antd'
+import {
+  Button,
+  Dropdown,
+  Menu,
+  message,
+  Pagination,
+  Spin,
+  Tooltip,
+} from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './CreatePrejectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -101,6 +109,7 @@ const Need = (props: any) => {
     updatePriorityStatus,
   } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
+  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
@@ -158,19 +167,21 @@ const Need = (props: any) => {
     setOrderKey(key)
     setOrder(order)
   }
-  const init = async () => {
+  const init = async (pageNumber?: any) => {
+    setIsSpin(true)
     const res = await getMineFinishList({
       projectId: props.id,
       keyword,
       searchGroups,
       order,
       orderkey: orderKey,
-      page,
+      page: pageNumber ? pageNumber : page,
       pagesize,
     })
 
     setListData(res)
     setTotal(res?.pager?.total)
+    setIsSpin(false)
   }
 
   const updateStatus = async (res1: any) => {
@@ -284,7 +295,15 @@ const Need = (props: any) => {
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, pagesize, keyword, orderKey, order, props.id, searchGroups])
+  }, [page, pagesize])
+
+  useEffect(() => {
+    setPage(1)
+    setPage(1)
+    init(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword, orderKey, order, props.id, searchGroups])
+
   useEffect(() => {
     getSearchKey()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -407,19 +426,21 @@ const Need = (props: any) => {
         />
       ) : null}
 
-      <StaffTableWrap>
-        {!!listData?.list && listData?.list?.length ? (
-          <TableBox
-            rowKey="id"
-            columns={selectColum}
-            dataSource={listData?.list}
-            pagination={false}
-            scroll={{ x: 'max-content' }}
-          />
-        )
-          : <NoData />
-        }
-      </StaffTableWrap>
+      <Spin spinning={isSpin}>
+        <StaffTableWrap>
+          {!!listData?.list && listData?.list?.length ? (
+            <TableBox
+              rowKey="id"
+              columns={selectColum}
+              dataSource={listData?.list}
+              pagination={false}
+              scroll={{ x: 'max-content' }}
+            />
+          )
+            : <NoData />
+          }
+        </StaffTableWrap>
+      </Spin>
 
       <PaginationWrap style={{ position: 'fixed', bottom: 0, right: 16 }}>
         <Pagination

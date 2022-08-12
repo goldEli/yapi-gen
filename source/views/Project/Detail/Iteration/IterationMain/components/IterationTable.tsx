@@ -227,12 +227,12 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
     {
       title: (
         <NewSort
-          fixedKey="user_name"
+          fixedKey="users_name"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('common.createName')}
+          {t('common.dealName')}
         </NewSort>
       ),
       dataIndex: 'dealName',

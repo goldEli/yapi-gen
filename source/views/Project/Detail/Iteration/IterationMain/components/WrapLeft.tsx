@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -191,8 +192,13 @@ const WrapLeft = (props: Props) => {
     const result = await getIterateList(params)
     setDataList(result)
     setIsSpinning(false)
-    if (!isRefreshList) {
+    if (!props.isUpdateList) {
       props.onCurrentDetail(result?.list[0])
+    } else {
+      const current = props?.currentDetail?.id
+      props.onCurrentDetail(
+        result?.list?.filter((k: any) => k.id === current)[0],
+      )
     }
     props.onIsUpdateList?.(false)
     setIsRefreshList(false)

@@ -103,6 +103,7 @@ const EditProject = (props: Props) => {
         >
           <Input.TextArea
             maxLength={500}
+            showCount
             placeholder={t('project.pleaseProjectInfo')}
             autoSize={{ minRows: 3, maxRows: 5 }}
           />

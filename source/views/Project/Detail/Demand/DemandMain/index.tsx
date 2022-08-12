@@ -102,7 +102,7 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     if (isRefresh) {
-      getList(isGrid, searchItems, pageObj, order, true)
+      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
     }
   }, [isRefresh])
 
@@ -115,7 +115,7 @@ const DemandMain = (props: Props) => {
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList([])
-    getList(val, searchItems, pageObj, order)
+    getList(val, searchItems, { page: 1, size: pageObj.size }, order)
   }
 
   const onChangeOperation = (e: any, item: any) => {
@@ -143,7 +143,7 @@ const DemandMain = (props: Props) => {
 
   const onSearch = (params: string) => {
     setSearchItems(params)
-    getList(isGrid, params, pageObj, order)
+    getList(isGrid, params, { page: 1, size: pageObj.size }, order)
   }
 
   const onChangePageNavigation = (item: any) => {
@@ -157,7 +157,7 @@ const DemandMain = (props: Props) => {
 
   const onChangeOrder = (item: any) => {
     setOrder(item)
-    getList(isGrid, searchItems, pageObj, item)
+    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, item)
   }
 
   return (

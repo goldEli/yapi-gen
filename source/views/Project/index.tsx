@@ -95,12 +95,18 @@ const Project = () => {
   }, [])
   const onChangeType = (type: number) => {
     setActiveType(type)
-    getList(type, isGrid, isHidden, searchVal, order, pageObj)
+    getList(type, isGrid, isHidden, searchVal, order, {
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onChangeHidden = (hidden: boolean) => {
     setIsHidden(hidden)
-    getList(activeType, isGrid, hidden, searchVal, order, pageObj)
+    getList(activeType, isGrid, hidden, searchVal, order, {
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onChangeSort = (str: string) => {
@@ -111,13 +117,16 @@ const Project = () => {
       isHidden,
       searchVal,
       { value: 'asc', key: str },
-      pageObj,
+      { page: 1, size: pageObj.size },
     )
   }
 
   const onChangeSearch = (value: string) => {
     setSearchVal(value)
-    getList(activeType, isGrid, isHidden, value, order, pageObj)
+    getList(activeType, isGrid, isHidden, value, order, {
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onDeleteConfirm = async () => {
@@ -174,7 +183,10 @@ const Project = () => {
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    getList(activeType, val, isHidden, searchVal, order, pageObj)
+    getList(activeType, val, isHidden, searchVal, order, {
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onAddClick = () => {
@@ -195,7 +207,10 @@ const Project = () => {
 
   const onUpdateOrderKey = (item: any) => {
     setOrder(item)
-    getList(activeType, isGrid, isHidden, searchVal, item, pageObj)
+    getList(activeType, isGrid, isHidden, searchVal, item, {
+      page: 1,
+      size: pageObj.size,
+    })
   }
   if (!loadingState) {
     return <Loading />

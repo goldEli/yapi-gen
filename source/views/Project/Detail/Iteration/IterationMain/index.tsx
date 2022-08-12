@@ -104,7 +104,7 @@ const IterationMain = (props: Props) => {
     if (currentDetail?.id) {
       if (isRefresh || currentDetail?.id) {
         setDataList({ list: undefined })
-        getList(isGrid, pageObj, searchItems)
+        getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
       }
     }
   }, [currentDetail, isRefresh])
@@ -112,7 +112,7 @@ const IterationMain = (props: Props) => {
   useEffect(() => {
     if (props.updateState && currentDetail?.id) {
       setDataList({ list: undefined })
-      getList(isGrid, pageObj, searchItems)
+      getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
     }
   }, [props.updateState, currentDetail])
 
@@ -121,7 +121,7 @@ const IterationMain = (props: Props) => {
     setDataList({ list: undefined })
     if (currentDetail?.id) {
       setDataList({ list: undefined })
-      getList(val, pageObj, searchItems)
+      getList(val, { page: 1, size: pageObj.size }, searchItems)
     }
   }
 
@@ -171,7 +171,7 @@ const IterationMain = (props: Props) => {
   const onChangeOrder = (item: any) => {
     setOrder(item)
     setDataList({ list: undefined })
-    getList(isGrid, pageObj, searchItems)
+    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
   const onChangeIsUpdate = (val: boolean) => {
@@ -182,7 +182,7 @@ const IterationMain = (props: Props) => {
   const onSearch = (params: string) => {
     setSearchItems(params)
     setDataList({ list: undefined })
-    getList(isGrid, pageObj, searchItems)
+    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
   return (

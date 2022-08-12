@@ -108,6 +108,7 @@ export const getDemandList: any = async (params: any) => {
       userIds: i.user_id,
       iterateId: i.iterate_id,
       parentId: i.parent_id,
+      userName: i.user_name,
     }))
   } else {
     return {

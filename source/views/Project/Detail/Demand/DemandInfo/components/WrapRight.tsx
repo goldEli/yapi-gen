@@ -151,7 +151,9 @@ const WrapRightBox = () => {
       pageSize: 999,
     })
     setDataList(result)
-    setIsRefreshComment(false)
+    setTimeout(() => {
+      setIsRefreshComment(false)
+    }, 100)
   }
 
   useEffect(() => {
