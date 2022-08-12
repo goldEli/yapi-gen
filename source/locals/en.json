@@ -368,6 +368,7 @@
     "level": "Please enter the product abbreviation + planned release number",
     "del": "Confirm to delete the requirement",
     "delPeople": "Are you sure you want to delete the current member?",
-    "change": "Status changed successfully"
+    "change": "Status changed successfully",
+    "waring": "no special characters"
   }
 }

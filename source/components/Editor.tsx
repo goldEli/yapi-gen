@@ -150,7 +150,7 @@ const EditorBox = (props: Props) => {
         value={props.value}
         onCreated={setEditor}
         onChange={onChange}
-        mode="default"
+        mode="simple"
         key={key}
         style={{ height: 132, overflowY: 'hidden' }}
       />

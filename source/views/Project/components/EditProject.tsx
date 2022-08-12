@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Modal, Form, Input, Select, Space, message } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -91,7 +92,17 @@ const EditProject = (props: Props) => {
         </Form.Item>
         <Form.Item
           label={t('common.projectName')}
-          rules={[{ required: true, message: '' }]}
+          rules={[
+            { required: true, message: '' },
+            {
+              // eslint-disable-next-line prefer-regex-literals
+              pattern: new RegExp(
+                /^[\u4e00-\u9fa5_a-zA-Z0-9_(_（_)_）_,_，_:_：_—_\-_/_\n]+$/,
+                'g',
+              ),
+              message: t('mark.waring'),
+            },
+          ]}
           name="name"
         >
           <Input maxLength={30} placeholder={t('common.pleaseProjectName')} />
