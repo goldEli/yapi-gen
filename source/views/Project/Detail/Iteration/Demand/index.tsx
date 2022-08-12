@@ -163,6 +163,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'id',
+      render: (text: string) => {
+        return <ClickWrap>{text}</ClickWrap>
+      },
     },
     {
       title: (
@@ -177,7 +180,11 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       ),
       dataIndex: 'name',
       render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
+        return (
+          <OmitText width={180}>
+            <ClickWrap>{text}</ClickWrap>
+          </OmitText>
+        )
       },
     },
     {
@@ -192,6 +199,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
     {
       title: (
@@ -244,6 +254,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'dealName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 

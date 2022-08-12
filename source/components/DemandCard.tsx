@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-literals */
@@ -14,6 +15,8 @@ import { useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools'
 import { ClickWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
+import Sort from './Sort'
+import NoData from './NoData'
 
 interface Props {
   item: any
@@ -119,6 +122,19 @@ const StatusWrap = styled.div({
   cursor: 'pointer',
 })
 
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
@@ -127,7 +143,10 @@ const DemandCard = (props: Props) => {
   const { projectInfo } = useModel('project')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>({
+    list: undefined,
+  })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -137,17 +156,24 @@ const DemandCard = (props: Props) => {
     'b/story/delete',
   )
 
-  const getList = async () => {
+  const getList = async (item: any) => {
     const result = await getDemandList({
       projectId,
       all: true,
       parentId: props.item?.id,
+      order: item.value,
+      orderKey: item.key,
     })
-    setDataList(result)
+    setDataList({ list: result })
+  }
+
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    getList(order)
   }
 
   const onChildClick = () => {
-    getList()
+    getList(order)
     setIsVisible(!isVisible)
   }
 
@@ -155,7 +181,7 @@ const DemandCard = (props: Props) => {
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
-      getList()
+      getList(order)
     } catch (error) {
 
       //
@@ -164,38 +190,68 @@ const DemandCard = (props: Props) => {
 
   const columnsChild = [
     {
-      title: t('common.projectName'),
-      dataIndex: 'name',
-      render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
-      },
-    },
-    {
-      title: 'ID',
+      title: (
+        <NewSort
+          fixedKey="id"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          ID
+        </NewSort>
+      ),
       dataIndex: 'id',
-      sorter: {
-        compare: (a: any, b: any) => a.demand - b.demand,
+      render: (text: string) => {
+        return <ClickWrap>{text}</ClickWrap>
       },
     },
     {
-      title: t('common.demandName'),
+      title: (
+        <NewSort
+          fixedKey="name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.demandName')}
+        </NewSort>
+      ),
       dataIndex: 'name',
       render: (text: string) => {
-        return <OmitText width={180}>{text}</OmitText>
-      },
-      sorter: {
-        compare: (a: any, b: any) => a.iteration - b.iteration,
+        return (
+          <OmitText width={180}>
+            <ClickWrap>{text}</ClickWrap>
+          </OmitText>
+        )
       },
     },
     {
-      title: t('common.iterate'),
+      title: (
+        <NewSort
+          fixedKey="iterate_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.iterate')}
+        </NewSort>
+      ),
       dataIndex: 'iteration',
-      sorter: {
-        compare: (a: any, b: any) => a.progress - b.progress,
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
       },
     },
     {
-      title: t('common.status'),
+      title: (
+        <NewSort
+          fixedKey="status"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.status')}
+        </NewSort>
+      ),
       dataIndex: 'status',
       render: (text: any, record: any) => {
         return (
@@ -219,14 +275,26 @@ const DemandCard = (props: Props) => {
             }}
             record={record}
           >
-            <StatusWrap color={text?.color}>{text?.content}</StatusWrap>
+            <StatusWrap color={text.color}>{text.content_txt}</StatusWrap>
           </PopConfirm>
         )
       },
     },
     {
-      title: t('common.createName'),
+      title: (
+        <NewSort
+          fixedKey="user_name"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.createName')}
+        </NewSort>
+      ),
       dataIndex: 'dealName',
+      render: (text: string) => {
+        return <span>{text || '--'}</span>
+      },
     },
   ]
 
@@ -249,7 +317,7 @@ const DemandCard = (props: Props) => {
                     style={{ marginLeft: index ? -10 : 0, zIndex: index }}
                   >
                     <div className="item" style={{ background: '#A4ACF5' }}>
-                      {item.slice(item.length - 2, item.length)}
+                      {String(item.slice(0, 1)).toLocaleUpperCase()}
                     </div>
                   </div>
                 ))}
@@ -267,12 +335,19 @@ const DemandCard = (props: Props) => {
               trigger="hover"
               onVisibleChange={visible => setIsVisible(visible)}
               content={
-                <Table
-                  rowKey="id"
-                  pagination={false}
-                  columns={columnsChild}
-                  dataSource={dataList}
-                />
+                <div style={{ minWidth: 500, maxHeight: 400 }}>
+                  {!!dataList?.list && dataList?.list.length
+                    ? (
+                        <Table
+                          rowKey="id"
+                          pagination={false}
+                          columns={columnsChild}
+                          dataSource={dataList?.list}
+                        />
+                      )
+                    : <NoData />
+                  }
+                </div>
               }
             >
               <div

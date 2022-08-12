@@ -30,6 +30,7 @@ const imgCSS = css`
   width: 80px;
   height: 106px;
   margin-bottom: 50px;
+  object-fit: cover;
 `
 const SideHeader = styled.div`
   display: flex;

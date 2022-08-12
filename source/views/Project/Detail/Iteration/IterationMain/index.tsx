@@ -59,7 +59,7 @@ const IterationMain = (props: Props) => {
         projectId,
         all: true,
         panel: true,
-        iterateIds: [currentDetail.id],
+        iterateIds: [currentDetail?.id],
         statusIds: searchParamsObj.statusId,
         priorityIds: searchParamsObj.priorityId,
         userId: searchParamsObj.userId,
@@ -79,7 +79,7 @@ const IterationMain = (props: Props) => {
         pageSize: item ? item?.size : 10,
         order: order.value,
         orderKey: order.key,
-        iterateIds: [currentDetail.id],
+        iterateIds: [currentDetail?.id],
         statusIds: searchParamsObj.statusId,
         priorityIds: searchParamsObj.priorityId,
         userId: searchParamsObj.userId,
@@ -110,15 +110,19 @@ const IterationMain = (props: Props) => {
   }, [currentDetail, isRefresh])
 
   useEffect(() => {
-    if (props.updateState) {
+    if (props.updateState && currentDetail?.id) {
+      setDataList({ list: undefined })
       getList(isGrid, pageObj, searchItems)
     }
-  }, [props.updateState])
+  }, [props.updateState, currentDetail])
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
     setDataList({ list: undefined })
-    getList(val, pageObj, searchItems)
+    if (currentDetail?.id) {
+      setDataList({ list: undefined })
+      getList(val, pageObj, searchItems)
+    }
   }
 
   const onChangeOperation = (e: any, item: any) => {
@@ -138,6 +142,7 @@ const IterationMain = (props: Props) => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
+      setDataList({ list: undefined })
       getList(isGrid, pageObj, searchItems)
       setIsRefreshList(true)
     } catch (error) {
@@ -148,10 +153,12 @@ const IterationMain = (props: Props) => {
 
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
+    setDataList({ list: undefined })
     getList(isGrid, item, searchItems)
   }
 
   const onChangeRow = () => {
+    setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
     setIsRefreshList(true)
   }
@@ -163,6 +170,7 @@ const IterationMain = (props: Props) => {
 
   const onChangeOrder = (item: any) => {
     setOrder(item)
+    setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
   }
 
@@ -173,6 +181,7 @@ const IterationMain = (props: Props) => {
 
   const onSearch = (params: string) => {
     setSearchItems(params)
+    setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
   }
 
@@ -218,6 +227,7 @@ const IterationMain = (props: Props) => {
             onDelete={onDelete}
             data={dataList}
             isSpinning={isSpinning}
+            hasId={currentDetail}
           />
         ) : (
           <IterationTable
@@ -230,6 +240,7 @@ const IterationMain = (props: Props) => {
             onChangeSetting={setIsSettingState}
             onChangeOrder={onChangeOrder}
             isSpinning={isSpinning}
+            hasId={currentDetail}
           />
         )}
       </Right>
