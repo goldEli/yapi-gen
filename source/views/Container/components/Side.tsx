@@ -26,6 +26,9 @@ const SideWrap = styled.div`
   background-blend-mode: normal;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1;
+  position: fixed;
+  left: 0;
+  height: 100vh;
 `
 const imgCSS = css`
   width: 80px;
@@ -143,9 +146,16 @@ export const Side = () => {
     return menu
   }
 
+  const getClassName = (path: string) => {
+    if (path === '/Project') {
+      return nowPath === '/Project' || nowPath === '/Detail' ? activeCss : ''
+    }
+    return nowPath === path ? activeCss : ''
+  }
+
   const allEach = getMenu().map(item => (
     <SideEach
-      className={nowPath === item.path ? activeCss : ''}
+      className={getClassName(item.path)}
       key={item.path}
       onClick={() => onNavigation(item.path)}
       hidden={item.isHidden}

@@ -300,7 +300,7 @@ const Profile = () => {
           </CenterRight>
         </Center>
       </StyledWrap>
-      <GatteWrap>
+      <GatteWrap style={{ height: 'calc(100vh - 400px)' }}>
         <div>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
@@ -326,12 +326,12 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {gatteData.length >= 1 && (
-          <div style={{ minWidth: '1300px' }}>
-            <Mygante data={gatteData} />
+        {gatteData.length >= 1 && <Mygante data={gatteData} />}
+        {gatteData.length < 1 && (
+          <div style={{ height: 'calc(100% - 80px)' }}>
+            <NoData />
           </div>
         )}
-        {gatteData.length < 1 && <NoData />}
 
         {gatteData.length >= 1 && (
           <PaginationWrap>

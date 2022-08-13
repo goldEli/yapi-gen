@@ -27,14 +27,14 @@ const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
   flex: 1;
-  overflow: hidden;
+  overflow-x: auto;
 `
 
 const Main = styled.div`
   background: rgba(245, 247, 250, 1);
   flex: 1;
-  overflow: auto;
-  /* min-width: 1360px; */
+  min-width: 1440px;
+  padding-left: 80px;
 `
 
 export const Container = () => {
