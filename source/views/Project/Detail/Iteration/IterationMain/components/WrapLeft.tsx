@@ -29,7 +29,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
@@ -395,7 +395,9 @@ const WrapLeft = (props: Props) => {
 
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
-    navigate(`/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`)
+    openDetail(
+      `/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`,
+    )
   }
 
   const onClickItem = (item: any) => {

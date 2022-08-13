@@ -19,7 +19,7 @@ import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, openDetail } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 
@@ -156,7 +156,9 @@ const DemandBox = () => {
   }, [])
 
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Demand?type=${val}&id=${projectId}&demandId=${demandId}`)
+    openDetail(
+      `/Detail/Demand?type=${val}&id=${projectId}&demandId=${demandId}`,
+    )
   }
 
   const moreClick = (e: any) => {

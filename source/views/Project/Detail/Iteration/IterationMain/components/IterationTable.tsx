@@ -22,7 +22,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, openDetail } from '@/tools'
 
 const StatusWrap = styled.div({
   height: 22,
@@ -132,6 +132,10 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
     getList({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
+  const onToDetail = (item: any) => {
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+  }
+
   const columnsChild = [
     {
       title: (
@@ -147,7 +151,10 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isClose={record.status?.content === '已关闭'}>
+          <ClickWrap
+            onClick={() => onToDetail(record)}
+            isClose={record.status?.content === '已关闭'}
+          >
             {text}
           </ClickWrap>
         )
@@ -168,7 +175,11 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       render: (text: string, record: any) => {
         return (
           <OmitText width={180}>
-            <ClickWrap isName isClose={record.status?.content === '已关闭'}>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isName
+              isClose={record.status?.content === '已关闭'}
+            >
               {text}
             </ClickWrap>
           </OmitText>
@@ -331,7 +342,7 @@ const IterationTable = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
 
   const onChangePage = (page: number, size: number) => {

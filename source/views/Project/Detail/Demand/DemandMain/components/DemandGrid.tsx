@@ -8,7 +8,7 @@ import { Menu, Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
@@ -125,7 +125,7 @@ const DemandGrid = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
 
   return (

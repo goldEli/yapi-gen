@@ -128,11 +128,13 @@ const IterationCard = (props: Props) => {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Progress
           strokeColor="#43BA9A"
+          style={{ color: '#43BA9A' }}
           width={48}
           type="circle"
           percent={Math.trunc(
             props.item.finishCount / props.item.storyCount * 100,
           )}
+          format={percent => percent === 100 ? '100%' : `${percent}%`}
           strokeWidth={8}
         />
         <InfoContent>

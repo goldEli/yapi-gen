@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
+import { openDetail } from '@/tools'
 
 const flexCss = css`
   display: flex;
@@ -56,7 +57,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <ClickWrap
             onClick={() => {
-              navigate(
+              openDetail(
                 `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
               )
             }}

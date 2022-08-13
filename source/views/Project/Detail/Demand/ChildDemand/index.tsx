@@ -17,7 +17,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, openDetail } from '@/tools'
 import EditChildDemand from './EditChildDemand'
 
 const Operation = styled.div({
@@ -180,7 +180,7 @@ const ChildDemand = () => {
   )
 
   const onClickItem = (item: any) => {
-    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
 
   const onChangePage = (page: number, size: number) => {

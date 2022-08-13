@@ -20,7 +20,7 @@ import { OmitText } from '@star-yun/ui'
 import EditDemand from '../../Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 
@@ -150,6 +150,10 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
     }
   }
 
+  const onToDetail = (item: any) => {
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+  }
+
   const columnsChild = [
     {
       title: (
@@ -165,7 +169,10 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isClose={record.status?.content === '已关闭'}>
+          <ClickWrap
+            onClick={() => onToDetail(record)}
+            isClose={record.status?.content === '已关闭'}
+          >
             {text}
           </ClickWrap>
         )
@@ -186,7 +193,11 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       render: (text: string, record: any) => {
         return (
           <OmitText width={180}>
-            <ClickWrap isName isClose={record.status?.content === '已关闭'}>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isName
+              isClose={record.status?.content === '已关闭'}
+            >
               {text}
             </ClickWrap>
           </OmitText>
@@ -417,7 +428,7 @@ const DemandWrap = () => {
   }
 
   const onClickItem = (item: any) => {
-    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
 
   const onChangeState = async (item: any) => {

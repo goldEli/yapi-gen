@@ -342,7 +342,7 @@ const DemandCard = (props: Props) => {
               key={isVisible.toString()}
               visible={isVisible}
               placement="bottom"
-              trigger="hover"
+              trigger="click"
               onVisibleChange={visible => setIsVisible(visible)}
               content={
                 <div style={{ minWidth: 500, maxHeight: 400 }}>

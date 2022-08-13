@@ -19,6 +19,7 @@ import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import { openDetail } from '@/tools'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -196,7 +197,7 @@ const Profile = () => {
       return
     }
 
-    navigate(
+    openDetail(
       `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
     )
   }

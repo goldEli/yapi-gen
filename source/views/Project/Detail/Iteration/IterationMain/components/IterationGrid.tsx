@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import { Menu, Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, openDetail } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -125,7 +125,7 @@ const IterationGrid = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    navigate(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
   }
 
   return (
@@ -140,8 +140,7 @@ const IterationGrid = (props: Props) => {
               </Title>
               {typeof props?.hasId !== 'object'
                 ? <NoData />
-               : dataList?.filter((item: any) => item.id === k.id)[0]
-                  ?.list
+               : dataList?.filter((item: any) => item.id === k.id)[0]?.list
                 ? dataList?.filter((item: any) => item.id === k.id)[0]?.list
                   .length > 0
                   ? dataList

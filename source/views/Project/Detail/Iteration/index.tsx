@@ -14,7 +14,7 @@ import { Space, Button, message, Popover } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 
@@ -149,7 +149,7 @@ const IterationWrap = () => {
   }, [])
 
   const onChangeIdx = (val: string) => {
-    navigate(
+    openDetail(
       `/Detail/Iteration?type=${val}&id=${projectId}&iterateId=${iterateId}`,
     )
   }
