@@ -223,7 +223,9 @@ const MainTable = (props: Props) => {
               ? <MoreContent menu={menu(record)} text={text} />
               : <div style={{ width: 16 }} />
             }
-            <ClickWrap style={{ marginLeft: 32 }}>{text}</ClickWrap>
+            <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
+              {text}
+            </ClickWrap>
           </div>
         )
       },
@@ -254,8 +256,12 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
-      render: (text: string) => {
-        return <ClickWrap>{text}</ClickWrap>
+      render: (text: string, record: any) => {
+        return (
+          <ClickWrap isName isClose={record.status === 2}>
+            {text}
+          </ClickWrap>
+        )
       },
     },
     {
