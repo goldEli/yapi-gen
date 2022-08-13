@@ -133,6 +133,7 @@ const DemandBox = () => {
     deleteDemand,
     updateDemandStatus,
     setIsShowProgress,
+    setFilterHeight,
   } = useModel('demand')
   const navigate = useNavigate()
   const isEdit = getIsPermission(
@@ -151,6 +152,7 @@ const DemandBox = () => {
   }
   useEffect(() => {
     init()
+    setFilterHeight(52)
   }, [])
 
   const onChangeIdx = (val: string) => {

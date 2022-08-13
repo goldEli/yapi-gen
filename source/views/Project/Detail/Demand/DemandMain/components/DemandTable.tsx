@@ -153,8 +153,12 @@ const ChildDemandTable = (props: ChildeProps) => {
         </NewSort>
       ),
       dataIndex: 'id',
-      render: (text: string) => {
-        return <ClickWrap>{text}</ClickWrap>
+      render: (text: string, record: any) => {
+        return (
+          <ClickWrap isClose={record.status?.content === '已关闭'}>
+            {text}
+          </ClickWrap>
+        )
       },
     },
     {
@@ -169,10 +173,12 @@ const ChildDemandTable = (props: ChildeProps) => {
         </NewSort>
       ),
       dataIndex: 'name',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <OmitText width={180}>
-            <ClickWrap>{text}</ClickWrap>
+            <ClickWrap isName isClose={record.status?.content === '已关闭'}>
+              {text}
+            </ClickWrap>
           </OmitText>
         )
       },
@@ -227,7 +233,11 @@ const ChildDemandTable = (props: ChildeProps) => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content_txt}</StatusWrap>
+            <StatusWrap
+              style={{ color: text.color, border: `1px solid ${text.color}` }}
+            >
+              {text.content_txt}
+            </StatusWrap>
           </PopConfirm>
         )
       },

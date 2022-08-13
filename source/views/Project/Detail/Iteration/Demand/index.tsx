@@ -163,8 +163,12 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'id',
-      render: (text: string) => {
-        return <ClickWrap>{text}</ClickWrap>
+      render: (text: string, record: any) => {
+        return (
+          <ClickWrap isClose={record.status?.content === '已关闭'}>
+            {text}
+          </ClickWrap>
+        )
       },
     },
     {
@@ -179,10 +183,12 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'name',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <OmitText width={180}>
-            <ClickWrap>{text}</ClickWrap>
+            <ClickWrap isName isClose={record.status?.content === '已关闭'}>
+              {text}
+            </ClickWrap>
           </OmitText>
         )
       },
@@ -237,7 +243,11 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content}</StatusWrap>
+            <StatusWrap
+              style={{ color: text.color, border: `1px solid ${text.color}` }}
+            >
+              {text.content_txt}
+            </StatusWrap>
           </PopConfirm>
         )
       },
@@ -460,7 +470,10 @@ const DemandWrap = () => {
                     <RowIconFont type="more" />
                   </Dropdown>
                 )}
-            <div style={{ marginLeft: 32 }}>{text}</div>
+
+            <ClickWrap isClose={record.status?.content === '已关闭'}>
+              {text}
+            </ClickWrap>
           </div>
         )
       },
@@ -477,14 +490,15 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'name',
-      render: (text: string, record: any) => {
+      render: (text: string | number, record: any) => {
         return (
-          <div
-            style={{ cursor: 'pointer' }}
+          <ClickWrap
+            isName
+            isClose={record.status?.content === '已关闭'}
             onClick={() => onClickItem(record)}
           >
             <OmitText width={200}>{text}</OmitText>
-          </div>
+          </ClickWrap>
         )
       },
     },

@@ -107,8 +107,13 @@ const IterationWrap = () => {
   const projectId = searchParams.get('id')
   const navigate = useNavigate()
   const iterateId = searchParams.get('iterateId')
-  const { getIterateInfo, iterateInfo, deleteIterate, updateIterateStatus }
-    = useModel('iterate')
+  const {
+    getIterateInfo,
+    iterateInfo,
+    deleteIterate,
+    updateIterateStatus,
+    setFilterHeightIterate,
+  } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo } = useModel('project')
@@ -137,6 +142,7 @@ const IterationWrap = () => {
   }
 
   useEffect(() => {
+    setFilterHeightIterate(52)
     if (iterateId) {
       getIterateInfo({ projectId, id: iterateId })
     }

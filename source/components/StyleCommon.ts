@@ -3,12 +3,18 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input } from 'antd'
 
-const ClickWrap = styled.div({
-  cursor: 'pointer',
-  '&: hover': {
-    color: '#2877ff',
+const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+  {
+    cursor: 'pointer',
+    '&: hover': {
+      color: '#2877ff',
+    },
   },
-})
+  ({ isClose, isName }) => ({
+    color: isClose ? '#969799' : '',
+    textDecoration: isName && isClose ? 'line-through' : '',
+  }),
+)
 
 const TableWrap = styled(Table)({
 

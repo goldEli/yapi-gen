@@ -79,17 +79,25 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
+      render: (text: string, record: any) => {
+        return (
+          <ClickWrap isClose={record.status?.content === '已关闭'}>
+            {text}
+          </ClickWrap>
+        )
+      },
     },
     {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-      ) => {
+      render: (text: string | number, record: any) => {
         return (
-          <ClickWrap onClick={() => state.onClickItem(record)}>
+          <ClickWrap
+            isName
+            isClose={record.status?.content === '已关闭'}
+            onClick={() => state.onClickItem(record)}
+          >
             <OmitText width={200}>{text}</OmitText>
           </ClickWrap>
         )

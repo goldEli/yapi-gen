@@ -11,6 +11,7 @@ import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
+import { ClickWrap } from '@/components/StyleCommon'
 
 const StatusWrap = styled.div<{ color?: string }>(
   {
@@ -76,22 +77,27 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
+      render: (text: string, record: any) => {
+        return (
+          <ClickWrap isClose={record.status?.content === '已关闭'}>
+            {text}
+          </ClickWrap>
+        )
+      },
     },
     {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-      ) => {
+      render: (text: string | number, record: any) => {
         return (
-          <div
-            style={{ cursor: 'pointer' }}
+          <ClickWrap
+            isName
+            isClose={record.status?.content === '已关闭'}
             onClick={() => state.onClickItem(record)}
           >
             <OmitText width={200}>{text}</OmitText>
-          </div>
+          </ClickWrap>
         )
       },
     },
