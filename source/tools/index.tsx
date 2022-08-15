@@ -3,7 +3,10 @@ function getIsPermission(arr: any, value: string) {
 }
 
 function openDetail(url: string) {
-  window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}${url}`)
+  if (import.meta.env.MODE !== 'production') {
+    window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}${url}`)
+  }
+  window.open(`${window.origin}${url}`)
 }
 
 export { getIsPermission, openDetail }
