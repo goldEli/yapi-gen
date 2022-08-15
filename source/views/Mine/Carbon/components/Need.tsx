@@ -518,21 +518,25 @@ const Need = (props: any) => {
               {manyListData?.map((item: any, index: any) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <div key={index}>
-                  {item.list.length >= 1 && (
-                    <div className={tableTitle}>
-                      {item.status_name}（{item.list.length}）
-                    </div>
-                  )}
+                  {/* {item.list.length >= 1 && ( */}
+                  <div className={tableTitle}>
+                    {item.status_name}（{item.list.length}）
+                  </div>
+                  {/* )} */}
 
-                  {item.list.length >= 1 && (
-                    <TableBox
-                      rowKey="id"
-                      columns={selectColum}
-                      dataSource={item.list}
-                      pagination={false}
-                      scroll={{ x: 'max-content' }}
-                    />
-                  )}
+                  {item.list
+                    ? item?.list?.length ? (
+                      <TableBox
+                        rowKey="id"
+                        columns={selectColum}
+                        dataSource={item.list}
+                        pagination={false}
+                        scroll={{ x: 'max-content' }}
+                      />
+                    )
+                      : <NoData />
+
+                    : null}
                 </div>
               ))}
             </StaffTableWrap2>

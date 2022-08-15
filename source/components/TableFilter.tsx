@@ -117,6 +117,50 @@ const SelectWrapBedeck = styled.div`
   }
 `
 
+const CollapseDiv = styled.div({
+  height: 28,
+  fontSize: 12,
+  lineHeight: '28px',
+  cursor: 'pointer',
+  padding: '0 16px',
+  '&: hover': {
+    background: '#F0F4FA',
+    color: '#2877ff',
+  },
+})
+
+const CollapseWrap = styled(Collapse)({
+  border: 'none',
+  backgroundColor: 'white',
+  '.ant-collapse-item': {
+    border: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    width: '100%',
+  },
+  '.ant-collapse-item > .ant-collapse-header': {
+    height: 32,
+    width: '100%',
+    lineHeight: '32px',
+    padding: '0 16px',
+    direction: 'rtl',
+    display: 'flex',
+    justifyContent: 'space-between',
+    color: 'rgba(187, 189, 191, 1)',
+    '.ant-collapse-arrow': {
+      margin: '0 0 0 8px',
+    },
+  },
+  '.ant-collapse-content': {
+    width: '100%',
+    padding: '8px 0',
+    '.ant-collapse-content-box': {
+      padding: 0,
+    },
+  },
+})
+
 const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
   const { list, basicsList, specialList } = props
@@ -156,28 +200,24 @@ const TableFilter = (props: any) => {
     confirm()
   }
   const content = (
-    <div>
-      <div>
-        <Collapse>
-          <Collapse.Panel header={t('components.basicFiled')} key="1">
-            {filterBasicsList
-              ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
-              ?.map((i: any) => (
-                <div onClick={() => addList(i.content)} key={i.id}>
-                  {i.content_txt}
-                </div>
-              ))}
-          </Collapse.Panel>
-          <Collapse.Panel header={t('components.personOrTime')} key="2">
-            {filterSpecialList?.map((i: any) => (
-              <div onClick={() => addList(i.content)} key={i.id}>
-                {i.content_txt}
-              </div>
-            ))}
-          </Collapse.Panel>
-        </Collapse>
-      </div>
-    </div>
+    <CollapseWrap defaultActiveKey={['2']}>
+      <Collapse.Panel header={t('components.basicFiled')} key="1">
+        {filterBasicsList
+          ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+          ?.map((i: any) => (
+            <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+              {i.content_txt}
+            </CollapseDiv>
+          ))}
+      </Collapse.Panel>
+      <Collapse.Panel header={t('components.personOrTime')} key="2">
+        {filterSpecialList?.map((i: any) => (
+          <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+            {i.content_txt}
+          </CollapseDiv>
+        ))}
+      </Collapse.Panel>
+    </CollapseWrap>
   )
 
   const onChangeTime = (key: any, dates: any) => {

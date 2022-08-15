@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import ProjectCard from '@/components/ProjectCard'
@@ -9,6 +11,7 @@ import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { useEffect, useState } from 'react'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -74,30 +77,36 @@ const MainGrid = (props: Props) => {
 
   return (
     <DataWrap>
-      {!props.projectList?.list && isPermission
-        ? <NoData />
-        : (
-            <SpaceWrap size={32}>
-              {props.projectList.list?.map((item: any) => (
-                <div key={item.id} onClick={() => onToDetail(item)}>
-                  <ProjectCard
-                    item={item}
-                    onChangeOperation={props.onChangeOperation}
-                  />
-                </div>
-              ))}
+      {!!props.projectList?.list
+        && (props.projectList?.list?.length > 0 ? (
+          <SpaceWrap size={32}>
+            {props.projectList.list?.map((item: any) => (
+              <div key={item.id} onClick={() => onToDetail(item)}>
+                <ProjectCard
+                  item={item}
+                  onChangeOperation={props.onChangeOperation}
+                />
+              </div>
+            ))}
 
-              {isPermission ? null : (
-                <AddProject onClick={onAddClick}>
-                  <IconFont
-                    style={{ fontSize: 24, marginBottom: 16 }}
-                    type="plus"
-                  />
-                  <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
-                </AddProject>
-              )}
-            </SpaceWrap>
-          )}
+            {isPermission ? null : (
+              <AddProject onClick={onAddClick}>
+                <IconFont
+                  style={{ fontSize: 24, marginBottom: 16 }}
+                  type="plus"
+                />
+                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
+              </AddProject>
+            )}
+          </SpaceWrap>
+        ) : isPermission
+          ? <NoData />
+          : (
+              <AddProject onClick={onAddClick}>
+                <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
+                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
+              </AddProject>
+            ))}
     </DataWrap>
   )
 }

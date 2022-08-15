@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -268,20 +269,20 @@ export const updatePriorityStatus: any = async (params: any) => {
 export const getMineNoFinishList: any = async (params: any) => {
   const response = await http.get('getMineNoFinishList', {
     search: {
-      project_id: params.projectId,
+      project_id: params?.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups.statusId,
-      priority: params.searchGroups.priorityId,
-      iterate_id: params.searchGroups.iterateId,
-      tag: params.searchGroups.tagId,
-      user_id: params.searchGroups.userId,
-      users_name: params.searchGroups.usersnameId,
-      users_copysend_name: params.searchGroups.usersCopysendNameId,
-      created_at: params.searchGroups.createdAtId,
-      expected_start_at: params.searchGroups.expectedStartAtId,
-      expected_end_at: params.searchGroups.expectedendat,
-      updated_at: params.searchGroups.updatedat,
-      finish_at: params.searchGroups.finishAt,
+      status: params.searchGroups?.statusId,
+      priority: params.searchGroups?.priorityId,
+      iterate_id: params.searchGroups?.iterateId,
+      tag: params.searchGroups?.tagId,
+      user_id: params.searchGroups?.userId,
+      users_name: params.searchGroups?.usersnameId,
+      users_copysend_name: params.searchGroups?.usersCopysendNameId,
+      created_at: params.searchGroups?.createdAtId,
+      expected_start_at: params.searchGroups?.expectedStartAtId,
+      expected_end_at: params.searchGroups?.expectedendat,
+      updated_at: params.searchGroups?.updatedat,
+      finish_at: params.searchGroups?.finishAt,
       panel_date: params?.panelDate,
       all: params?.all,
     },
@@ -291,10 +292,92 @@ export const getMineNoFinishList: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   if (params?.all) {
-    return response.data
+    return response.data?.map((k: any) => ({
+      status_name: k.status_name,
+      count: k.count,
+      list: response.data.list
+        ? response.data.list?.map((i: any) => ({
+          id: i.id,
+          name: i.name,
+          demand: i.child_story_count,
+          priority: i.priority,
+          iteration: i.iterate_name || '--',
+          status: i.status,
+          dealName: i.users_name || '--',
+          time: i.created_at,
+          expectedStart: i.expected_start_at,
+          expectedEnd: i.expected_end_at,
+          info: i.info,
+          userIds: i.user_id,
+          iterateId: i.iterate_id,
+          parentId: i.parent_id,
+          finishTime: i.finish_at,
+          updatedTime: i.updated_at,
+          usersCopySendName: i.users_copysend_name,
+          userName: i.user_name,
+          tag: i.tag,
+          project_id: i.project_id,
+        }))
+        : [],
+    }))
   } else {
     return {
-      list: response.data.list.map((i: any) => ({
+      list: response.data?.list
+        ? response.data.list.map((i: any) => ({
+          id: i.id,
+          name: i.name,
+          demand: i.child_story_count,
+          priority: i.priority,
+          iteration: i.iterate_name || '--',
+          status: i.status,
+          dealName: i.users_name || '--',
+          time: i.created_at,
+          expectedStart: i.expected_start_at,
+          expectedEnd: i.expected_end_at,
+          info: i.info,
+          userIds: i.user_id,
+          iterateId: i.iterate_id,
+          parentId: i.parent_id,
+          finishTime: i.finish_at,
+          updatedTime: i.updated_at,
+          usersCopySendName: i.users_copysend_name,
+          userName: i.user_name,
+          tag: i.tag,
+          project_id: i.project_id,
+        }))
+        : [],
+      pager: response.data.pager,
+    }
+  }
+}
+
+// 我的创建列表
+export const getMineCreacteList: any = async (params: any) => {
+  const response = await http.get('getMineCreacteList', {
+    search: {
+      project_id: params.projectId,
+      keyword: params?.keyword,
+      status: params.searchGroups?.statusId,
+      priority: params.searchGroups?.priorityId,
+      iterate_id: params.searchGroups?.iterateId,
+      tag: params.searchGroups?.tagId,
+      user_id: params.searchGroups?.userId,
+      users_name: params.searchGroups?.usersnameId,
+      users_copysend_name: params.searchGroups?.usersCopysendNameId,
+      created_at: params.searchGroups?.createdAtId,
+      expected_start_at: params.searchGroups?.expectedStartAtId,
+      expected_end_at: params.searchGroups?.expectedendat,
+      updated_at: params.searchGroups?.updatedat,
+      finish_at: params.searchGroups?.finishAt,
+    },
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+    orderkey: params.orderkey,
+    page: params.page,
+    pagesize: params.pagesize,
+  })
+  return {
+    list: response.data?.list
+      ? response.data.list.map((i: any) => ({
         id: i.id,
         name: i.name,
         demand: i.child_story_count,
@@ -315,59 +398,8 @@ export const getMineNoFinishList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
-      })),
-      pager: response.data.pager,
-    }
-  }
-}
-
-// 我的创建列表
-export const getMineCreacteList: any = async (params: any) => {
-  const response = await http.get('getMineCreacteList', {
-    search: {
-      project_id: params.projectId,
-      keyword: params?.keyword,
-      status: params.searchGroups.statusId,
-      priority: params.searchGroups.priorityId,
-      iterate_id: params.searchGroups.iterateId,
-      tag: params.searchGroups.tagId,
-      user_id: params.searchGroups.userId,
-      users_name: params.searchGroups.usersnameId,
-      users_copysend_name: params.searchGroups.usersCopysendNameId,
-      created_at: params.searchGroups.createdAtId,
-      expected_start_at: params.searchGroups.expectedStartAtId,
-      expected_end_at: params.searchGroups.expectedendat,
-      updated_at: params.searchGroups.updatedat,
-      finish_at: params.searchGroups.finishAt,
-    },
-    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
-    orderkey: params.orderkey,
-    page: params.page,
-    pagesize: params.pagesize,
-  })
-  return {
-    list: response.data.list.map((i: any) => ({
-      id: i.id,
-      name: i.name,
-      demand: i.child_story_count,
-      priority: i.priority,
-      iteration: i.iterate_name || '--',
-      status: i.status,
-      dealName: i.users_name || '--',
-      time: i.created_at,
-      expectedStart: i.expected_start_at,
-      expectedEnd: i.expected_end_at,
-      info: i.info,
-      userIds: i.user_id,
-      iterateId: i.iterate_id,
-      parentId: i.parent_id,
-      finishTime: i.finish_at,
-      updatedTime: i.updated_at,
-      usersCopySendName: i.users_copysend_name,
-      userName: i.user_name,
-      tag: i.tag,
-      project_id: i.project_id,
-    })),
+      }))
+      : [],
     pager: response.data.pager,
   }
 }
@@ -378,18 +410,18 @@ export const getMineFinishList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups.statusId,
-      priority: params.searchGroups.priorityId,
-      iterate_id: params.searchGroups.iterateId,
-      tag: params.searchGroups.tagId,
-      user_id: params.searchGroups.userId,
-      users_name: params.searchGroups.usersnameId,
-      users_copysend_name: params.searchGroups.usersCopysendNameId,
-      created_at: params.searchGroups.createdAtId,
-      expected_start_at: params.searchGroups.expectedStartAtId,
-      expected_end_at: params.searchGroups.expectedendat,
-      updated_at: params.searchGroups.updatedat,
-      finish_at: params.searchGroups.finishAt,
+      status: params.searchGroups?.statusId,
+      priority: params.searchGroups?.priorityId,
+      iterate_id: params.searchGroups?.iterateId,
+      tag: params.searchGroups?.tagId,
+      user_id: params.searchGroups?.userId,
+      users_name: params.searchGroups?.usersnameId,
+      users_copysend_name: params.searchGroups?.usersCopysendNameId,
+      created_at: params.searchGroups?.createdAtId,
+      expected_start_at: params.searchGroups?.expectedStartAtId,
+      expected_end_at: params.searchGroups?.expectedendat,
+      updated_at: params.searchGroups?.updatedat,
+      finish_at: params.searchGroups?.finishAt,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -397,28 +429,30 @@ export const getMineFinishList: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   return {
-    list: response.data.list.map((i: any) => ({
-      id: i.id,
-      name: i.name,
-      demand: i.child_story_count,
-      priority: i.priority,
-      iteration: i.iterate_name || '--',
-      status: i.status,
-      dealName: i.users_name || '--',
-      time: i.created_at,
-      expectedStart: i.expected_start_at,
-      expectedEnd: i.expected_end_at,
-      info: i.info,
-      userIds: i.user_id,
-      iterateId: i.iterate_id,
-      parentId: i.parent_id,
-      finishTime: i.finish_at,
-      updatedTime: i.updated_at,
-      usersCopySendName: i.users_copysend_name,
-      userName: i.user_name,
-      tag: i.tag,
-      project_id: i.project_id,
-    })),
+    list: response.data?.list
+      ? response.data?.list?.map((i: any) => ({
+        id: i.id,
+        name: i.name,
+        demand: i.child_story_count,
+        priority: i.priority,
+        iteration: i.iterate_name || '--',
+        status: i.status,
+        dealName: i.users_name || '--',
+        time: i.created_at,
+        expectedStart: i.expected_start_at,
+        expectedEnd: i.expected_end_at,
+        info: i.info,
+        userIds: i.user_id,
+        iterateId: i.iterate_id,
+        parentId: i.parent_id,
+        finishTime: i.finish_at,
+        updatedTime: i.updated_at,
+        usersCopySendName: i.users_copysend_name,
+        userName: i.user_name,
+        tag: i.tag,
+        project_id: i.project_id,
+      }))
+      : [],
     pager: response.data.pager,
   }
 }
@@ -430,18 +464,18 @@ export const getMineNeedList: any = async (params: any) => {
     search: {
       project_id: params.projectId,
       keyword: params?.keyword,
-      status: params.searchGroups.statusId,
-      priority: params.searchGroups.priorityId,
-      iterate_id: params.searchGroups.iterateId,
-      tag: params.searchGroups.tagId,
-      user_id: params.searchGroups.userId,
-      users_name: params.searchGroups.usersnameId,
-      users_copysend_name: params.searchGroups.usersCopysendNameId,
-      created_at: params.searchGroups.createdAtId,
-      expected_start_at: params.searchGroups.expectedStartAtId,
-      expected_end_at: params.searchGroups.expectedendat,
-      updated_at: params.searchGroups.updatedat,
-      finish_at: params.searchGroups.finishAt,
+      status: params.searchGroups?.statusId,
+      priority: params.searchGroups?.priorityId,
+      iterate_id: params.searchGroups?.iterateId,
+      tag: params.searchGroups?.tagId,
+      user_id: params.searchGroups?.userId,
+      users_name: params.searchGroups?.usersnameId,
+      users_copysend_name: params.searchGroups?.usersCopysendNameId,
+      created_at: params.searchGroups?.createdAtId,
+      expected_start_at: params.searchGroups?.expectedStartAtId,
+      expected_end_at: params.searchGroups?.expectedendat,
+      updated_at: params.searchGroups?.updatedat,
+      finish_at: params.searchGroups?.finishAt,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -449,28 +483,30 @@ export const getMineNeedList: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   return {
-    list: response.data.list.map((i: any) => ({
-      id: i.id,
-      name: i.name,
-      demand: i.child_story_count,
-      priority: i.priority,
-      iteration: i.iterate_name || '--',
-      status: i.status,
-      dealName: i.users_name || '--',
-      time: i.created_at,
-      expectedStart: i.expected_start_at,
-      expectedEnd: i.expected_end_at,
-      info: i.info,
-      userIds: i.user_id,
-      iterateId: i.iterate_id,
-      parentId: i.parent_id,
-      finishTime: i.finish_at,
-      updatedTime: i.updated_at,
-      usersCopySendName: i.users_copysend_name,
-      userName: i.user_name,
-      tag: i.tag,
-      project_id: i.project_id,
-    })),
+    list: response.data?.list
+      ? response.data.list.map((i: any) => ({
+        id: i.id,
+        name: i.name,
+        demand: i.child_story_count,
+        priority: i.priority,
+        iteration: i.iterate_name || '--',
+        status: i.status,
+        dealName: i.users_name || '--',
+        time: i.created_at,
+        expectedStart: i.expected_start_at,
+        expectedEnd: i.expected_end_at,
+        info: i.info,
+        userIds: i.user_id,
+        iterateId: i.iterate_id,
+        parentId: i.parent_id,
+        finishTime: i.finish_at,
+        updatedTime: i.updated_at,
+        usersCopySendName: i.users_copysend_name,
+        userName: i.user_name,
+        tag: i.tag,
+        project_id: i.project_id,
+      }))
+      : [],
     pager: response.data.pager,
   }
 }
