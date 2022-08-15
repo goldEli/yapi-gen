@@ -78,29 +78,25 @@ client.config({
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
       ) {
-
-        // if (import.meta.env.MODE !== 'development') {
-        options.payload = encrypt(options.payload as string)
-
-        // }
-      } else if (options.url !== import.meta.env.__COS_SIGN_URL__) {
-
-        // if (import.meta.env.MODE !== 'development') {
-        if (JSON.stringify(options.search) !== '{}') {
-          options.search = { p: encryptPhp(JSON.stringify(options.search)) }
-        } else if (
-          options.payload !== 'null' &&
-          options.payload !== null &&
-          options.payload !== 'undefined' &&
-          options.payload !== undefined &&
-          options.payload !== '{}'
-        ) {
-          options.payload = JSON.stringify({
-            p: encryptPhp(options.payload as string),
-          })
+        if (import.meta.env.MODE !== 'development') {
+          options.payload = encrypt(options.payload as string)
         }
-
-        // }
+      } else if (options.url !== import.meta.env.__COS_SIGN_URL__) {
+        if (import.meta.env.MODE !== 'development') {
+          if (JSON.stringify(options.search) !== '{}') {
+            options.search = { p: encryptPhp(JSON.stringify(options.search)) }
+          } else if (
+            options.payload !== 'null' &&
+            options.payload !== null &&
+            options.payload !== 'undefined' &&
+            options.payload !== undefined &&
+            options.payload !== '{}'
+          ) {
+            options.payload = JSON.stringify({
+              p: encryptPhp(options.payload as string),
+            })
+          }
+        }
       }
     },
   ],
@@ -109,14 +105,11 @@ client.config({
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
       ) {
-
-        // if (import.meta.env.MODE !== 'development') {
-        return JSON.parse(decrypt((response as { body: string }).body))
-
-        // }
+        if (import.meta.env.MODE !== 'development') {
+          return JSON.parse(decrypt((response as { body: string }).body))
+        }
       } else if (
-
-        // import.meta.env.MODE !== 'development' &&
+        import.meta.env.MODE !== 'development' &&
         options.url !== import.meta.env.__COS_SIGN_URL__
       ) {
         return JSON.parse(
