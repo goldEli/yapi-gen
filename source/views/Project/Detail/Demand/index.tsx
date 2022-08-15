@@ -156,9 +156,7 @@ const DemandBox = () => {
   }, [])
 
   const onChangeIdx = (val: string) => {
-    openDetail(
-      `/Detail/Demand?type=${val}&id=${projectId}&demandId=${demandId}`,
-    )
+    navigate(`/Detail/Demand?type=${val}&id=${projectId}&demandId=${demandId}`)
   }
 
   const moreClick = (e: any) => {

@@ -43,7 +43,14 @@ export const useDynamicColumns = (state: any) => {
       key: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isClose={record.status?.content === '已关闭'}>
+          <ClickWrap
+            onClick={() => {
+              openDetail(
+                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
+              )
+            }}
+            isClose={record.status?.content === '已关闭'}
+          >
             {text}
           </ClickWrap>
         )

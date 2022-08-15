@@ -482,7 +482,10 @@ const DemandWrap = () => {
                   </Dropdown>
                 )}
 
-            <ClickWrap isClose={record.status?.content === '已关闭'}>
+            <ClickWrap
+              onClick={() => onClickItem(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
               {text}
             </ClickWrap>
           </div>

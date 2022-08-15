@@ -456,7 +456,7 @@ const WrapLeft = (props: Props) => {
               visible={isFilter}
               onVisibleChange={onVisibleChange}
             >
-              <Tooltip title={t('common.filter')}>
+              <Tooltip title={t('common.search')}>
                 <IconWrap type="filter" />
               </Tooltip>
             </Popover>

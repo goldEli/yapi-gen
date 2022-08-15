@@ -12,7 +12,7 @@ import { ShapeContent } from '@/components/Shape'
 import { useModel } from '@/models'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, openDetail } from '@/tools'
 import { ClickWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import Sort from './Sort'
@@ -203,7 +203,14 @@ const DemandCard = (props: Props) => {
       dataIndex: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isClose={record.status?.content === '已关闭'}>
+          <ClickWrap
+            onClick={() => {
+              openDetail(
+                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
+              )
+            }}
+            isClose={record.status?.content === '已关闭'}
+          >
             {text}
           </ClickWrap>
         )
@@ -224,7 +231,15 @@ const DemandCard = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <OmitText width={180}>
-            <ClickWrap isName isClose={record.status?.content === '已关闭'}>
+            <ClickWrap
+              onClick={() => {
+                openDetail(
+                  `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
+                )
+              }}
+              isName
+              isClose={record.status?.content === '已关闭'}
+            >
               {text}
             </ClickWrap>
           </OmitText>

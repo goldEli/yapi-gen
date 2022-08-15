@@ -149,7 +149,7 @@ const IterationWrap = () => {
   }, [])
 
   const onChangeIdx = (val: string) => {
-    openDetail(
+    navigate(
       `/Detail/Iteration?type=${val}&id=${projectId}&iterateId=${iterateId}`,
     )
   }
