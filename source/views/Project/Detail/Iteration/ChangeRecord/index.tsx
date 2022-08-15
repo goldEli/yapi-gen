@@ -105,7 +105,9 @@ const ChangeRecord = () => {
 
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
-      return item[i]?.length ? item[i]?.map((k: any) => k.name) : '--'
+      return item[i]?.length
+        ? item[i]?.map((k: any) => k.name).join('、')
+        : '--'
     } else if (i === 'attachment' || i === 'copysend') {
       return item[i]?.length ? item[i].map((k: any) => k) : '--'
     } else {

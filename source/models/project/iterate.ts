@@ -5,6 +5,7 @@ export default () => {
   const [iterateInfo, setIterateInfo] = useState<any>({})
   const [selectIterate, setSelectIterate] = useState<any>([])
   const [isRefreshList, setIsRefreshList] = useState<boolean>(false)
+  const [isUpdateList, setIsUpdateList] = useState(false)
   const [filterHeightIterate, setFilterHeightIterate] = useState<any>(52)
 
   const getIterateInfo = async (params: any) => {
@@ -43,5 +44,7 @@ export default () => {
     isRefreshList,
     setFilterHeightIterate,
     filterHeightIterate,
+    setIsUpdateList,
+    isUpdateList,
   }
 }

@@ -142,6 +142,7 @@ const WrapLeft = (props: Props) => {
     deleteIterate,
     setIsRefreshList,
     isRefreshList,
+    isUpdateList,
   } = useModel('iterate')
   const { projectInfo } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
@@ -166,7 +167,7 @@ const WrapLeft = (props: Props) => {
     'b/iterate/get',
   )
 
-  const getList = async () => {
+  const getList = async (obj?: any) => {
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
@@ -192,16 +193,18 @@ const WrapLeft = (props: Props) => {
     const result = await getIterateList(params)
     setDataList(result)
     setIsSpinning(false)
-    if (!props.isUpdateList) {
+    props.onIsUpdateList?.(false)
+    setIsRefreshList(false)
+    if (obj) {
+      props.onCurrentDetail(result?.list[0])
+    } else if (!props.currentDetail?.id) {
       props.onCurrentDetail(result?.list[0])
     } else {
-      const current = props?.currentDetail?.id
+      const current = props.currentDetail?.id
       props.onCurrentDetail(
         result?.list?.filter((k: any) => k.id === current)[0],
       )
     }
-    props.onIsUpdateList?.(false)
-    setIsRefreshList(false)
   }
 
   useEffect(() => {
@@ -215,10 +218,10 @@ const WrapLeft = (props: Props) => {
   }, [isRefreshList])
 
   useEffect(() => {
-    if (props.isUpdateList || props.updateState) {
+    if (isUpdateList || props.updateState) {
       getList()
     }
-  }, [props.isUpdateList, props.updateState])
+  }, [isUpdateList, props.updateState])
 
   const options = [
     { label: t('common.open'), value: 1 },
@@ -348,7 +351,9 @@ const WrapLeft = (props: Props) => {
       })
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
-      getList()
+
+      // props.onChangeOperation?.({})
+      getList({})
     } catch (error) {
 
       //

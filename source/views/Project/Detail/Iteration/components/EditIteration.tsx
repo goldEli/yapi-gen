@@ -70,8 +70,13 @@ const EditIteration = (props: Props) => {
   const [searchParams] = useSearchParams()
   const [html, setHtml] = useState('')
   const projectId = searchParams.get('id')
-  const { addIterate, updateIterate, getIterateInfo, iterateInfo }
-    = useModel('iterate')
+  const {
+    addIterate,
+    updateIterate,
+    getIterateInfo,
+    iterateInfo,
+    setIsUpdateList,
+  } = useModel('iterate')
   const { setIsRefreshIterateList } = useModel('project')
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -119,7 +124,10 @@ const EditIteration = (props: Props) => {
       props.onUpdate?.(true)
       setHtml('')
       setIsRefreshIterateList(true)
-      getIterateInfo({ projectId, id: props.id })
+      if (props.id) {
+        getIterateInfo({ projectId, id: props.id })
+      }
+      setIsUpdateList(true)
       setTimeout(() => {
         form.resetFields()
       }, 100)

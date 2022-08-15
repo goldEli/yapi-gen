@@ -295,8 +295,8 @@ export const getMineNoFinishList: any = async (params: any) => {
     return response.data?.map((k: any) => ({
       status_name: k.status_name,
       count: k.count,
-      list: response.data.list
-        ? response.data.list?.map((i: any) => ({
+      list: k.list
+        ? k.list?.map((i: any) => ({
           id: i.id,
           name: i.name,
           demand: i.child_story_count,

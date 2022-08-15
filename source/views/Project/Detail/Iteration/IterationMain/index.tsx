@@ -31,7 +31,6 @@ const IterationMain = (props: Props) => {
   const [t] = useTranslation()
   const [isGrid, setIsGrid] = useState(false)
   const [isDemandVisible, setIsDemandVisible] = useState(false)
-  const [isUpdateList, setIsUpdateList] = useState(false)
   const [demandItem, setDemandItem] = useState<any>({})
   const [isShowLeft, setIsShowLeft] = useState(true)
   const [dataList, setDataList] = useState<any>({
@@ -43,7 +42,7 @@ const IterationMain = (props: Props) => {
   const projectId = searchParams.get('id')
   const iterateId = searchParams.get('iterateId')
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
-  const { setIsRefreshList } = useModel('iterate')
+  const { setIsRefreshList, setIsUpdateList } = useModel('iterate')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
@@ -97,6 +96,7 @@ const IterationMain = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     setIsRefresh(false)
+    setIsUpdateList(false)
     props.onChangeIsUpdate(false)
   }
 
@@ -175,7 +175,6 @@ const IterationMain = (props: Props) => {
   }
 
   const onChangeIsUpdate = (val: boolean) => {
-    setIsUpdateList(val)
     props.onChangeIsUpdate(false)
   }
 
@@ -204,7 +203,6 @@ const IterationMain = (props: Props) => {
         isShowLeft={isShowLeft}
         onChangeVisible={props.onChangeVisible}
         onCurrentDetail={setCurrentDetail}
-        isUpdateList={isUpdateList}
         onIsUpdateList={onChangeIsUpdate}
         onChangeOperation={props.onChangeOperation}
         currentDetail={currentDetail}
