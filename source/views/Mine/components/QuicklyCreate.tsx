@@ -454,7 +454,10 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.estimatedTime')} name="times">
-            <RangePicker onChange={(_values: any) => onChangePicker(_values)} />
+            <RangePicker
+              isShowQuick={false}
+              onChange={(_values: any) => onChangePicker(_values)}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

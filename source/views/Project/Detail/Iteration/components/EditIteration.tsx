@@ -196,6 +196,7 @@ const EditIteration = (props: Props) => {
             name="time"
           >
             <RangePicker
+              isShowQuick={false}
               value={form.getFieldValue('time')}
               onChange={(_values: any) => onChangePicker(_values)}
             />

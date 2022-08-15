@@ -342,7 +342,7 @@ const DemandCard = (props: Props) => {
                     style={{ marginLeft: index ? -10 : 0, zIndex: index }}
                   >
                     <div className="item" style={{ background: '#A4ACF5' }}>
-                      {String(item.slice(0, 1)).toLocaleUpperCase()}
+                      {String(item.trim().slice(0, 1)).toLocaleUpperCase()}
                     </div>
                   </div>
                 ))}

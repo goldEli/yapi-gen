@@ -219,7 +219,7 @@ const NoPermission = () => {
           />
         ) : (
           <SetHead>
-            {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
+            {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
           </SetHead>
         )}
         <NameWrap>{userInfo?.name}</NameWrap>

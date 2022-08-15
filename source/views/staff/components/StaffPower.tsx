@@ -105,7 +105,7 @@ export const StaffPersonal = (props: {
           ? <img className={imgCss} src={data?.avatar} alt="" />
           : (
               <SetHead>
-                {String(data?.name.substring(0, 1)).toLocaleUpperCase()}
+                {String(data?.name.trim().slice(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
       </PersonalHead>

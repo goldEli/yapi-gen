@@ -221,7 +221,9 @@ const WrapRightBox = () => {
                     ? <img src={item.avatar} alt="" />
                     : (
                         <SetHead>
-                          {String(item.name?.substring(0, 1)).toLocaleUpperCase()}
+                          {String(
+                            item.name?.trim().slice(0, 1),
+                          ).toLocaleUpperCase()}
                         </SetHead>
                       )}
                   <TextWrap>

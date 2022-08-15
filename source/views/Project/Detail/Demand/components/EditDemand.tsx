@@ -506,6 +506,7 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.estimatedTime')} name="times">
             <RangePicker
+              isShowQuick={false}
               value={form.getFieldValue('times')}
               onChange={(_values: any) => onChangePicker(_values)}
             />

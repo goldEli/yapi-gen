@@ -68,7 +68,7 @@ export const useDynamicColumns = (state: any) => {
               />
             ) : (
               <SetHead>
-                {String(record.name.substring(0, 1)).toLocaleUpperCase()}
+                {String(record.name.trim().slice(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
             <span>{text}</span>

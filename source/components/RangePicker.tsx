@@ -25,10 +25,16 @@ interface Props {
   onChange(values: any): void
   isWidth?: boolean
   value?: any
+  isShowQuick?: boolean
 }
 
 const RangePicker = (props: Props) => {
   const [t, i18n] = useTranslation()
+
+  const onHandleData = (time: any) => {
+    return time.unix() < 0 || time.unix() > 1893427200
+  }
+
   return (
     <DatePicker.RangePicker
       value={props.value}
@@ -43,52 +49,55 @@ const RangePicker = (props: Props) => {
         }
         return times.format('YYYY-MM-DD')
       }}
+      disabledDate={onHandleData}
       ranges={
-        i18n.language === 'zh'
-          ? {
-              最近一周: [
-                moment(new Date()).startOf('days')
-                  .subtract(6, 'days'),
-                moment(new Date()).endOf('days'),
-              ],
-              最近一月: [
-                moment(new Date()).startOf('months')
-                  .subtract(1, 'months'),
-                moment(new Date()).endOf('days'),
-              ],
-              最近三月: [
-                moment(new Date()).startOf('months')
-                  .subtract(3, 'months'),
-                moment(new Date()).endOf('days'),
-              ],
-              今天开始: [
-                moment(new Date()).startOf('days'),
-                moment(1893427200 * 1000),
-              ],
-              今天截止: [moment(0), moment(new Date()).endOf('days')],
-            }
-          : {
-              'Last Week': [
-                moment(new Date()).startOf('days')
-                  .subtract(6, 'days'),
-                moment(new Date()).endOf('days'),
-              ],
-              'Last Month': [
-                moment(new Date()).startOf('months')
-                  .subtract(1, 'months'),
-                moment(new Date()).endOf('days'),
-              ],
-              'Last March': [
-                moment(new Date()).startOf('months')
-                  .subtract(3, 'months'),
-                moment(new Date()).endOf('days'),
-              ],
-              'Start today': [
-                moment(new Date()).startOf('days'),
-                moment(1893427200 * 1000),
-              ],
-              'Due today': [moment(0), moment(new Date()).endOf('days')],
-            }
+        props.isShowQuick
+          ? i18n.language === 'zh'
+            ? {
+                最近一周: [
+                  moment(new Date()).startOf('days')
+                    .subtract(6, 'days'),
+                  moment(new Date()).endOf('days'),
+                ],
+                最近一月: [
+                  moment(new Date()).startOf('months')
+                    .subtract(1, 'months'),
+                  moment(new Date()).endOf('days'),
+                ],
+                最近三月: [
+                  moment(new Date()).startOf('months')
+                    .subtract(3, 'months'),
+                  moment(new Date()).endOf('days'),
+                ],
+                今天开始: [
+                  moment(new Date()).startOf('days'),
+                  moment(1893427200 * 1000),
+                ],
+                今天截止: [moment(0), moment(new Date()).endOf('days')],
+              }
+            : {
+                'Last Week': [
+                  moment(new Date()).startOf('days')
+                    .subtract(6, 'days'),
+                  moment(new Date()).endOf('days'),
+                ],
+                'Last Month': [
+                  moment(new Date()).startOf('months')
+                    .subtract(1, 'months'),
+                  moment(new Date()).endOf('days'),
+                ],
+                'Last March': [
+                  moment(new Date()).startOf('months')
+                    .subtract(3, 'months'),
+                  moment(new Date()).endOf('days'),
+                ],
+                'Start today': [
+                  moment(new Date()).startOf('days'),
+                  moment(1893427200 * 1000),
+                ],
+                'Due today': [moment(0), moment(new Date()).endOf('days')],
+              }
+          : {}
       }
     />
   )

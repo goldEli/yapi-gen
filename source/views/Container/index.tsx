@@ -41,8 +41,14 @@ export const Container = () => {
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const { loginInfo, userInfo, getLoginDetail, getUserDetail, login }
-    = useModel('user')
+  const {
+    loginInfo,
+    userInfo,
+    getLoginDetail,
+    getUserDetail,
+    login,
+    setLoginInfo,
+  } = useModel('user')
   const {
     i18n: { language },
   } = useTranslation()
@@ -52,11 +58,14 @@ export const Container = () => {
   })
 
   const init = async () => {
-    if (!localStorage.getItem('agileToken')) {
-      await login()
+    if (localStorage.getItem('agileToken')) {
+      await getLoginDetail()
+    } else {
+      const data = await login()
+      setLoginInfo(data.data)
     }
 
-    await getLoginDetail()
+    // await getLoginDetail()
     await getUserDetail()
   }
 
@@ -68,6 +77,8 @@ export const Container = () => {
         | 'en')
     localStorage.setItem('language', languageParams)
     changeLanguage(languageParams)
+
+    // console.error(123123)
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

@@ -193,7 +193,7 @@ export const Side = () => {
             />
           ) : (
             <SetHead onClick={controlPanelVisible}>
-              {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
+              {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
             </SetHead>
           )}
         </Popover>

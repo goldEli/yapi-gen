@@ -106,7 +106,7 @@ const ChangeRecord = () => {
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
       return item[i]?.length
-        ? item[i]?.map((k: any) => k.name).join('、')
+        ? item[i]?.map((k: any) => k?.name).join('、')
         : '--'
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
       return item[i]?.length ? item[i].join(',') : '--'
@@ -235,9 +235,11 @@ const ChangeRecord = () => {
                   >
                     {text[i]?.length ? t('project.checkInfo') : '--'}
                   </span>
-                )
-                  : <span>{fieldContent(text, i)}</span>
-                }
+                ) : (
+                  <OmitText width={300}>
+                    <span>{text ? fieldContent(text, i) : '--'}</span>
+                  </OmitText>
+                )}
               </span>
             ))}
           </div>
@@ -274,9 +276,11 @@ const ChangeRecord = () => {
                   >
                     {text[i]?.length ? t('project.checkInfo') : '--'}
                   </span>
-                )
-                  : <OmitText width={300}>{fieldContent(text, i)}</OmitText>
-                }
+                ) : (
+                  <OmitText width={300}>
+                    <span>{text ? fieldContent(text, i) : '--'}</span>
+                  </OmitText>
+                )}
               </span>
             ))}
           </div>

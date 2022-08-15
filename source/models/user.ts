@@ -31,6 +31,7 @@ export default () => {
     userInfo,
     getUserDetail,
     loginOut,
+    setLoginInfo,
     getLoginDetail,
     getCompanyList,
     updateCompany,

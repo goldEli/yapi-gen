@@ -114,7 +114,7 @@ const DemandMain = (props: Props) => {
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    setDataList([])
+    setDataList({ list: undefined })
     getList(val, searchItems, { page: 1, size: pageObj.size }, order)
   }
 

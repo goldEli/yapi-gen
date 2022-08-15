@@ -183,7 +183,7 @@ const Member = (props: Props) => {
                   ? <img src={i.avatar} alt="" />
                   : (
                       <NameWrap>
-                        {String(i.name.substring(0, 1)).toLocaleUpperCase()}
+                        {String(i.name.trim().slice(0, 1)).toLocaleUpperCase()}
                       </NameWrap>
                     )}
                 <div>

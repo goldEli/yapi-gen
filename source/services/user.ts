@@ -43,13 +43,16 @@ export const login = async () => {
   } catch (error) {
     await getTicket()
   }
+  let data
   try {
-    await getLoginDetail(true)
+    data = await getLoginDetail(true)
   } catch (error) {
 
     //
   }
   sessionStorage.removeItem('IS_CHECK_TICKET')
+
+  return data
 }
 
 export const getCompanyList: any = async () => {

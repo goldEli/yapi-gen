@@ -81,7 +81,7 @@ const DemandGrid = (props: Props) => {
         list: undefined,
       })),
     )
-  }, [projectInfo])
+  }, [])
 
   useEffect(() => {
     if (props.data?.list) {

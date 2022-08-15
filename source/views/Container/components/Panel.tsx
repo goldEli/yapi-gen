@@ -1,5 +1,6 @@
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
+/* eslint-disable max-len */
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -198,7 +199,7 @@ export const Panel = () => {
             ? <img className={imgCss} src={userInfo.avatar} />
             : (
                 <SetHead>
-                  {String(userInfo?.name?.substring(0, 1)).toLocaleUpperCase()}
+                  {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
                 </SetHead>
               )}
 

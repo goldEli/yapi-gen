@@ -215,6 +215,7 @@ const Project = () => {
   if (!loadingState) {
     return <Loading />
   }
+
   return (
     <div style={{ height: '100%', overflow: 'auto' }}>
       <DeleteConfirm
