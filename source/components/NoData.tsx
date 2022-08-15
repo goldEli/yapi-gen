@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import empty from '@/assets/empty.svg'
+import empty from '/empty.svg'
 import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({

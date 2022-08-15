@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as services from '@/services'
-import normalCompany from '@/assets/normalCompany.svg'
+import normalCompany from '/normalCompany.svg'
 
 export default () => {
   const [companyInfo, setCompanyInfo] = useState<any>({})

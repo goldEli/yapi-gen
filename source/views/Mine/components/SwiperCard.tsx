@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import projectImg from '@/assets/projectImg.png'
+import projectImg from '/projectImg.png'
 import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({

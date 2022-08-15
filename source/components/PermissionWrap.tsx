@@ -1,7 +1,7 @@
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
-import empty from '@/assets/empty.svg'
+import empty from '/empty.svg'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 

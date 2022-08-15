@@ -194,6 +194,7 @@ const SwiperWrap = styled.div`
   & .swiper-wrapper {
     max-width: 1400px;
     width: 100%;
+    display: flex;
   }
   & .swiper-slide {
     width: auto !important;
