@@ -38,6 +38,7 @@ export default () => {
   const getMemberList = async (params: any) => {
     const result = await services.project.getProjectMember(params)
     setMemberList(result)
+    return result
   }
 
   const {

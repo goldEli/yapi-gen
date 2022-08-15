@@ -42,6 +42,7 @@ export const getDemandInfo: any = async (params: any) => {
     parentId: response.data.parent_id || null,
     changeCount: response.data.app_changelog_count,
     iterateId: response.data.iterate_id || null,
+    projectId: response.data.project_id,
   }
 }
 

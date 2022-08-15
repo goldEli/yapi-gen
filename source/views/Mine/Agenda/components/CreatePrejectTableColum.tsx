@@ -94,7 +94,7 @@ export const useDynamicColumns = (state: any) => {
           {t('common.childDemand')}
         </NewSort>
       ),
-      dataIndex: 'child_story_count',
+      dataIndex: 'demand',
       key: 'child_story_count',
       render: (text: string, record: any) => {
         return (
@@ -108,42 +108,41 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       render: (text: any, record: Record<string, string | number>) => {
         return (
-          <Pop
-            content={({ onHide }: { onHide(): void }) => (
-              <LevelContent
-                onTap={state.updatePriority}
-                onHide={onHide}
-                record={record}
+          <div className={flexCss}>
+            <div className={flexCss}>
+              <IconFont
+                type={text.icon}
+                style={{
+                  fontSize: 20,
+                  marginRight: '10px',
+                  color: text.color,
+                }}
               />
-            )}
-            record={record}
-          >
-            <div className={flexCss} style={{ cursor: 'pointer' }}>
-              <div className={flexCss}>
-                <IconFont
-                  type={text.icon}
-                  style={{
-                    fontSize: 20,
-                    marginRight: '10px',
-                    color: text.color,
-                  }}
+              <span style={{ marginRight: '5px' }}>
+                {text.content_txt || '--'}
+              </span>
+            </div>
+            <Pop
+              content={({ onHide }: { onHide(): void }) => (
+                <LevelContent
+                  onTap={state.updatePriority}
+                  onHide={onHide}
+                  record={record}
                 />
-                <span style={{ marginRight: '5px' }}>
-                  {text.content_txt || '--'}
-                </span>
-              </div>
-
+              )}
+              record={record}
+            >
               <ShowWrap>
                 <IconFont style={{ color: '#2877ff' }} type="down-icon" />
               </ShowWrap>
-            </div>
-          </Pop>
+            </Pop>
+          </div>
         )
       },
     },
     {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
-      dataIndex: 'iterate_name',
+      dataIndex: 'iteration',
       key: 'iterate_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -183,15 +182,15 @@ export const useDynamicColumns = (state: any) => {
     },
     {
       title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
-      dataIndex: 'user_name',
+      dataIndex: 'userName',
       key: 'user_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title: t('common.dealName'),
-      dataIndex: 'users_name',
+      title: <NewSort fixedKey="users_name">{t('common.dealName')}</NewSort>,
+      dataIndex: 'dealName',
       key: 'users_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -199,7 +198,7 @@ export const useDynamicColumns = (state: any) => {
     },
     {
       title: t('common.copySend'),
-      dataIndex: 'users_copysend_name',
+      dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -207,7 +206,7 @@ export const useDynamicColumns = (state: any) => {
     },
     {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
-      dataIndex: 'created_at',
+      dataIndex: 'time',
       key: 'created_at',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -219,7 +218,7 @@ export const useDynamicColumns = (state: any) => {
           {t('common.expectedStart')}
         </NewSort>
       ),
-      dataIndex: 'expected_start_at',
+      dataIndex: 'expectedStart',
       key: 'expected_start_at',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -229,7 +228,7 @@ export const useDynamicColumns = (state: any) => {
       title:
         <NewSort fixedKey="expected_end_at">{t('common.expectedEnd')}</NewSort>
       ,
-      dataIndex: 'expected_end_at',
+      dataIndex: 'expectedEnd',
       key: 'expected_end_at',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -237,7 +236,7 @@ export const useDynamicColumns = (state: any) => {
     },
     {
       title: <NewSort fixedKey="updated_at">{t('common.lastTime')}</NewSort>,
-      dataIndex: 'updated_at',
+      dataIndex: 'updatedTime',
       key: 'updated_at',
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -245,7 +244,7 @@ export const useDynamicColumns = (state: any) => {
     },
     {
       title: <NewSort fixedKey="finish_at">{t('common.finishTime')}</NewSort>,
-      dataIndex: 'finish_at',
+      dataIndex: 'finishTime',
       key: 'finish_at',
       render: (text: string) => {
         return <span>{text || '--'}</span>

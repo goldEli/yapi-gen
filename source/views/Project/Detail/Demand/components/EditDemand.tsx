@@ -187,7 +187,8 @@ const EditDemand = (props: Props) => {
   const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id') || props.preId
-  const { memberList, projectInfo } = useModel('project')
+  const { memberList, projectInfo, getMemberList, getProjectInfo }
+    = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const {
     addDemand,
@@ -201,6 +202,7 @@ const EditDemand = (props: Props) => {
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
+  const [isShow, setIsShow] = useState(false)
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -217,48 +219,44 @@ const EditDemand = (props: Props) => {
     getList()
   }, [])
 
-  useEffect(() => {
-    if (props?.id) {
-      getDemandInfo({ projectId, id: props?.id }).then(res => {
-        setDemandInfo(res)
-      })
-    } else {
-      form.resetFields()
-    }
-    getList()
-  }, [props.id])
-
-  const getCommonUser = (arr: any) => {
+  const getCommonUser = (arr: any, memberArr: any) => {
     let res: any[] = []
     if (arr.length) {
-      res = memberList?.filter((i: any) => !arr.find((k: any) => k.id !== i.id))
+      res = memberArr?.filter((i: any) => arr.some((k: any) => k.id === i.id))
     }
     return res.length ? res.map((i: any) => i.id) : []
   }
 
-  useEffect(() => {
-    if (demandInfo && props?.id) {
-      form.setFieldsValue(demandInfo)
-      setPriorityDetail(demandInfo.priority)
-      setHtml(demandInfo.info)
+  const getInfo = async () => {
+    const res = await getDemandInfo({ projectId, id: props?.id })
+    setDemandInfo(res)
+    getProjectInfo({ projectId: res.projectId })
+    const memberArr = await getMemberList({
+      all: true,
+      projectId: res.projectId,
+    })
+    if (res) {
+      form.setFieldsValue(res)
+      setPriorityDetail(res.priority)
+      setHtml(res.info)
       setAttachList(
-        demandInfo?.attachment.map((i: any) => ({
+        res?.attachment.map((i: any) => ({
           path: i.attachment.path,
           id: i.id,
         })),
       )
       setTagList(
-        demandInfo?.tag?.map((i: any) => ({
+        res?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       )
-      if (demandInfo?.expectedStart || demandInfo?.expectedEnd) {
+      if (res?.expectedStart || res?.expectedEnd) {
         form.setFieldsValue({
           times: [
-            moment(demandInfo.expectedStart || 0),
-            moment(demandInfo.expectedEnd || 1893427200),
+            moment(res.expectedStart || 0),
+            moment(res.expectedEnd || 1893427200),
           ],
         })
       }
@@ -267,30 +265,45 @@ const EditDemand = (props: Props) => {
 
       form.setFieldsValue({
         copySendIds: getCommonUser(
-          demandInfo?.copySend?.map((i: any) => i.copysend),
+          res?.copySend?.map((i: any) => i.copysend),
+          memberArr,
         ),
-        attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
-        userIds: getCommonUser(demandInfo?.user?.map((i: any) => i.user)),
+        attachments: res?.attachment.map((i: any) => i.attachment.path),
+        userIds: getCommonUser(
+          res?.user?.map((i: any) => i.user),
+          memberArr,
+        ),
+        tagIds: res?.tag?.map((i: any) => ({
+          id: i.id,
+          color: i.tag?.color,
+          name: i.tag?.content,
+        })),
       })
       if (
-        selectIterate?.list?.filter((i: any) => i.id === demandInfo?.iterateId)
-          .length
+        selectIterate?.list?.filter((i: any) => i.id === res?.iterateId).length
       ) {
         form.setFieldsValue({
-          iterateId: demandInfo?.iterateId,
+          iterateId: res?.iterateId,
         })
       }
-      if (
-        parentArr?.filter((i: any) => i.value === demandInfo?.parentId).length
-      ) {
+      if (parentArr?.filter((i: any) => i.value === res?.parentId).length) {
         form.setFieldsValue({
-          parentId: demandInfo?.parentId,
+          parentId: res?.parentId,
         })
       }
     } else {
       form.resetFields()
     }
-  }, [demandInfo])
+  }
+
+  useEffect(() => {
+    if (props?.id) {
+      getInfo()
+    } else {
+      form.resetFields()
+    }
+    getList()
+  }, [props.id])
 
   const onSaveDemand = async (hasNext?: number) => {
     await form.validateFields()
@@ -615,7 +628,8 @@ const EditDemand = (props: Props) => {
               </AddWrap>
             ) : (
               <UploadAttach
-                child={<Children />}
+                child={isShow ? <Children /> : ''}
+                onChangeShow={setIsShow}
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 addWrap={

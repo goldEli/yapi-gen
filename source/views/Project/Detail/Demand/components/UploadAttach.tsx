@@ -22,6 +22,7 @@ interface Props {
   defaultList?: any
   canUpdate?: boolean
   child?: any
+  onChangeShow?(state: boolean): void
 }
 
 const UploadAttach = (props: Props) => {
@@ -101,7 +102,7 @@ const UploadAttach = (props: Props) => {
   }
   const onUploadBefore = (file: any) => {
     if (file.size / 1024 > 5242880) {
-      message.warning('文件最大支持5G')
+      message.warning(t('project.uploadMax'))
       return Upload.LIST_IGNORE
     }
   }
@@ -113,21 +114,25 @@ const UploadAttach = (props: Props) => {
       setPercentVal(100)
       setTimeout(() => {
         setPercentShow(false)
+        props?.onChangeShow?.(false)
       }, 1000)
     } else {
       setPercentShow(true)
       setPercentVal(num)
     }
   }, [])
+
   useEffect(() => {
     cos.on('list-update', onTasksUpdate)
     return () => {
       cos.off('list-update', onTasksUpdate)
     }
   }, [])
+
   const onUploadFileClick = async (option: UploadRequestOption) => {
     const { file } = option
     if (file instanceof File) {
+      props?.onChangeShow?.(true)
       const result: any = await uploadFile(file, file.name, 'file')
       option.onSuccess?.(result)
       result.url = decodeURIComponent(result.url)
@@ -155,14 +160,6 @@ const UploadAttach = (props: Props) => {
 
   const uploadProps: UploadProps = {
     beforeUpload: onUploadBefore,
-    progress: {
-      strokeColor: {
-        '0%': '#108ee9',
-        '100%': '#87d068',
-      },
-      strokeWidth: 3,
-      format: percent => percent && `${parseFloat(percent.toFixed(2))}%`,
-    },
     customRequest: onUploadFileClick,
     onDownload,
     onRemove,
@@ -179,11 +176,6 @@ const UploadAttach = (props: Props) => {
         {props.addWrap}
       </Warp>
       {props.child}
-      {/* <Progress
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
-      /> */}
     </div>
   )
 }

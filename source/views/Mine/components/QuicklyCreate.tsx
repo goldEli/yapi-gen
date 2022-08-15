@@ -183,6 +183,7 @@ const EditDemand = (props: Props) => {
   const [priorityDetail, setPriorityDetail] = useState<any>()
   const { getDemandList, percentVal, percentShow } = useModel('demand')
   const { getProjectInfo, setTagList } = useModel('project')
+  const [isShow, setIsShow] = useState(false)
 
   const {
     getProjectList,
@@ -565,7 +566,8 @@ const EditDemand = (props: Props) => {
               </AddWrap>
             ) : (
               <UploadAttach
-                child={<Children />}
+                child={isShow ? <Children /> : ''}
+                onChangeShow={setIsShow}
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 addWrap={
