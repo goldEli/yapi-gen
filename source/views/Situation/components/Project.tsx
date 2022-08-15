@@ -24,7 +24,7 @@ const DemoColumn = (props: any) => {
     data: res,
     xField: 'type',
     yField: 'sales',
-    appendPadding: 80,
+    appendPadding: 20,
     label: {
       position: 'top',
       style: {
