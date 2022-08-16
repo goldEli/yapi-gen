@@ -154,7 +154,7 @@ const SearchList = (props: Props) => {
                 optionFilterProp="label"
                 showArrow
                 options={roleOptions.map((item: any) => ({
-                  label: item.name,
+                  label: item.content_txt,
                   value: item.id,
                 }))}
               />
