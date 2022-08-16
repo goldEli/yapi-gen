@@ -47,6 +47,9 @@ const CardWrap = styled.div<{ active?: boolean }>(
         color: '#2877ff',
       },
     },
+    '.ant-progress-circle.ant-progress-status-success .ant-progress-text': {
+      color: 'black',
+    },
   },
   ({ active }) => ({
     border: active ? '1px solid #2877ff' : '1px solid #EBEDF0',

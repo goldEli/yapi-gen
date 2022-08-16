@@ -28,7 +28,6 @@ const Warp = styled.div<{ show?: boolean }>(
     height: 104,
     width: 160,
     cursor: 'pointer',
-
     '&: hover': {
       transform: 'translate(0, -10%)',
       boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
@@ -40,7 +39,7 @@ const Warp = styled.div<{ show?: boolean }>(
   ({ show }) => ({
     transform: show ? 'translate(0, -10%)' : '',
     boxShadow: show ? ' 0px 2px 8px rgba(170, 193, 227, 1)' : '',
-    border: show ? '  1px solid rgba(235, 237, 240, 1)' : '',
+    border: show ? '' : '1px solid rgba(235, 237, 240, 1)',
     [Triangle.toString()]: {
       visibility: show ? 'visible' : 'hidden',
     },
@@ -89,6 +88,8 @@ const TextWarp = styled.div({
   padding: '0 16px',
   height: 40,
   background: 'white',
+  borderBottomLeftRadius: 4,
+  borderBottomRightRadius: 4,
 })
 
 const SwiperCard = (props: {

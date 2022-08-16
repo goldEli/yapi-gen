@@ -160,7 +160,9 @@ const Situation = () => {
     return (
       <div>
         <Head>
-          <span>{t('situation.companySurvey')}</span>
+          <span style={{ fontSize: 16, fontWeight: 'bold' }}>
+            {t('situation.companySurvey')}
+          </span>
           <PanelHeaderSecond>
             <div>{userInfo?.company_name}</div>
             <Tooltip placement="top" title={t('container.changeCompany')}>

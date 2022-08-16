@@ -106,6 +106,7 @@ const Line = styled.div`
   align-items: center;
   height: 32px;
   padding: 0 16px;
+  cursor: pointer;
   &:hover {
     background-color: #f0f4fa;
   }
@@ -118,6 +119,7 @@ const LanguageLine = styled.div`
   height: 32px;
   box-sizing: border-box;
   padding: 0 16px;
+  cursor: pointer;
   &:hover {
     background-color: #f0f4fa;
   }
@@ -227,6 +229,7 @@ export const Panel = () => {
           content={content}
           trigger="click"
           placement="rightTop"
+          getPopupContainer={node => node}
         >
           <Line>
             <div>

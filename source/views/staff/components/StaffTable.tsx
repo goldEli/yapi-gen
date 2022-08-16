@@ -9,6 +9,7 @@ import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { OmitText } from '@star-yun/ui'
 
 const flexCss = css`
   display: flex;
@@ -62,16 +63,17 @@ export const useDynamicColumns = (state: any) => {
                   height: 32,
                   borderRadius: '50%',
                   objectFit: 'cover',
+                  marginRight: 8,
                 }}
                 src={record.avatar}
                 alt=""
               />
             ) : (
-              <SetHead>
+              <SetHead style={{ marginRight: 8 }}>
                 {String(record.name.trim().slice(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
-            <span>{text}</span>
+            <OmitText width={100}>{text}</OmitText>
           </div>
         )
       },

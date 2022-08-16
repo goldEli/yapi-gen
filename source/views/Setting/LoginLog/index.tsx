@@ -319,7 +319,9 @@ const LoginLog = () => {
         return (
           <StatusWrap>
             <div style={{ background: text === 1 ? '#43BA9A' : '#FF5C5E' }} />
-            <span>{text === 1 ? t('setting.success') : '失败'}</span>
+            <span>
+              {text === 1 ? t('setting.success') : t('setting.failed')}
+            </span>
           </StatusWrap>
         )
       },

@@ -23,7 +23,7 @@ const footerCss = css`
   box-sizing: border-box;
   padding-right: 53px;
   align-items: center;
-  gap: 10px;
+  gap: 24px;
 `
 const Container = styled.div`
   z-index: 10;
@@ -44,6 +44,35 @@ const Dialog = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
 `
+
+const ButtonWrap = styled.div({
+  height: 30,
+  width: 68,
+  borderRadius: 6,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: 'white',
+  fontSize: 12,
+  fontWeight: 400,
+  background: '#2877ff',
+  cursor: 'pointer',
+})
+
+const ButtonWrapBorder = styled.div({
+  height: 30,
+  width: 68,
+  borderRadius: 6,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#2877ff',
+  fontSize: 12,
+  fontWeight: 400,
+  background: 'white',
+  cursor: 'pointer',
+  border: '1px solid #2877ff',
+})
 
 const Next = (props: { visible: boolean; close(): void }) => {
   const [t] = useTranslation()
@@ -99,16 +128,18 @@ const Next = (props: { visible: boolean; close(): void }) => {
         {/* <header>头</header> */}
         {filterData}
         <footer className={footerCss}>
-          {active !== 0
-            && <Button onClick={prev}>{t('container.next')}</Button>
-          }
+          {active !== 0 && (
+            <ButtonWrapBorder onClick={prev}>
+              {t('container.next')}
+            </ButtonWrapBorder>
+          )}
           {active !== inform.length - 1
-            && <Button onClick={next}>{t('container.prev')}</Button>
+            && <ButtonWrap onClick={next}>{t('container.prev')}</ButtonWrap>
           }
           {active === inform.length - 1 && (
-            <Button onClick={() => props.close()} type="primary">
+            <ButtonWrap onClick={() => props.close()}>
               {t('container.finish')}
-            </Button>
+            </ButtonWrap>
           )}
         </footer>
       </Dialog>

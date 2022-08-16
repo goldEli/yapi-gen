@@ -1,5 +1,6 @@
 {
   "common": {
+    "collapseMenu": "Collapse menu",
     "searchParent": "Search parent requirements",
     "stopProjectToast": "After the project [{{name}}] is completed, the project will not be able to create new requirements iterations, and the original data will be retained.",
     "searchOrCreate": "Search or create labels",

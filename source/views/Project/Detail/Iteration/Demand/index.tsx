@@ -625,7 +625,11 @@ const DemandWrap = () => {
             }}
             record={record}
           >
-            <StatusWrap color={text.color}>{text.content_txt}</StatusWrap>
+            <StatusWrap
+              style={{ color: text.color, border: `1px solid ${text.color}` }}
+            >
+              {text.content_txt}
+            </StatusWrap>
           </PopConfirm>
         )
       },

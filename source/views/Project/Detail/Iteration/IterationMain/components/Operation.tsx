@@ -7,7 +7,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Space, Modal, message } from 'antd'
+import { Popover, Space, Modal, message, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission } from '@/tools/index'
@@ -189,16 +189,18 @@ const Operation = (props: Props) => {
       </Modal>
       <OperationWrap>
         <IterationInfo>
-          <IconFont
-            onClick={props.onChangeIsShowLeft}
-            type="indent"
-            style={{
-              fontSize: 16,
-              color: 'black',
-              cursor: 'pointer',
-              marginRight: 8,
-            }}
-          />
+          <Tooltip title={t('common.collapseMenu')}>
+            <IconFont
+              onClick={props.onChangeIsShowLeft}
+              type="indent"
+              style={{
+                fontSize: 20,
+                color: 'black',
+                cursor: 'pointer',
+                marginRight: 8,
+              }}
+            />
+          </Tooltip>
           <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
             {props.currentDetail?.name}
           </span>
@@ -242,16 +244,18 @@ const Operation = (props: Props) => {
             </Popover>
           )}
 
-          <IconFont
-            onClick={() => setVisible(true)}
-            type="detail"
-            style={{
-              fontSize: 16,
-              color: '#969799',
-              cursor: 'pointer',
-              marginLeft: 8,
-            }}
-          />
+          <Tooltip title={t('project.iterateTarget')}>
+            <IconFont
+              onClick={() => setVisible(true)}
+              type="detail"
+              style={{
+                fontSize: 20,
+                color: '#969799',
+                cursor: 'pointer',
+                marginLeft: 8,
+              }}
+            />
+          </Tooltip>
         </IterationInfo>
         <OperationGroup
           onChangeFilter={onChangeFilter}

@@ -17,7 +17,6 @@ const ClearForm = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  marginLeft: 16,
 })
 
 const FormWrap = styled(Form)({
@@ -41,7 +40,6 @@ const SelectWrap = styled(Select)`
 `
 const SelectWrapBedeck = styled.div`
   height: 32px;
-  margin-right: 16px;
   position: relative;
   height: 32px;
   border: 1px solid rgba(235, 237, 240, 1);

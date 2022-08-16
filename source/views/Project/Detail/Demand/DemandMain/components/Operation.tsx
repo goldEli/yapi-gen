@@ -115,8 +115,6 @@ const Operation = (props: Props) => {
     }, 100)
   }
 
-  // console.log(filterBasicsList, '===', filterSpecialList, ' ---', searchList)
-
   return (
     <StickyWrap ref={stickyWrapDom}>
       <OperationWrap>

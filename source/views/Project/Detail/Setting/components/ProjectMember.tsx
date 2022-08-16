@@ -508,7 +508,7 @@ const ProjectMember = () => {
           />
         ) : null}
         <DeleteConfirm
-          text="确认要删除当前成员？"
+          text={t('mark.delPeople')}
           isVisible={isDelete}
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}

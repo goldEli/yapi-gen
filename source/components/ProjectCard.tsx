@@ -49,6 +49,9 @@ const Warp = styled.div({
     boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
     [DropdownWrap.toString()]: {
       display: 'block',
+      svg: {
+        color: '#2877ff',
+      },
     },
     [ImgWrap.toString()]: {
       div: {

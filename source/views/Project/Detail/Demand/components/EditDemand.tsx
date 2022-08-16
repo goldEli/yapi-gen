@@ -174,6 +174,17 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     '.anticon ': {
       marginRight: hasDash ? 0 : 4,
     },
+    '&: hover': {
+      border: hasDash ? '1px dashed #2877ff' : '',
+      '.anticon': {
+        svg: {
+          color: '#2877ff',
+        },
+      },
+      div: {
+        color: '#2877ff',
+      },
+    },
   }),
 )
 

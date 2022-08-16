@@ -22,12 +22,19 @@ const Side = styled.div({
   width: 220,
   background: 'white',
   height: '100%',
+})
+
+const ImgWrap = styled.div({
+  width: '100%',
+  height: 88,
+  marginBottom: 32,
+  borderRadius: 6,
+  padding: '0 16px',
+  overflow: 'hidden',
   img: {
     width: '100%',
-    height: 88,
-    marginBottom: 32,
+    height: '100%',
     borderRadius: 6,
-    padding: '0 16px',
   },
 })
 
@@ -113,7 +120,9 @@ const Setting = () => {
   return (
     <Wrap>
       <Side>
-        <img src={projectInfo.cover} alt="" />
+        <ImgWrap>
+          <img src={projectInfo.cover} alt="" />
+        </ImgWrap>
         <MenuWrap>
           {SideList.map((item, index) => (
             <MenuItem

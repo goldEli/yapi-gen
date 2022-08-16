@@ -22,7 +22,6 @@ const ClearForm = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  marginLeft: 16,
 })
 
 const FormWrap = styled(Form)({

@@ -46,7 +46,7 @@ const CommentItem = styled.div({
 })
 
 const TextWrap = styled.div({
-  width: '100%',
+  width: 'calc(100% - 48px)',
   display: 'flex',
   flexDirection: 'column',
   '.textTop': {

@@ -272,7 +272,7 @@ const TextWrap = styled.div`
 const TextBlueWrap = styled.div`
   width: 104px;
   height: 104px;
-  background: rgba(205, 221, 253, 1);
+  background: rgba(205, 221, 253, 0.3);
   background-blend-mode: normal;
   border-radius: 6px;
   display: flex;
