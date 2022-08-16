@@ -1,5 +1,7 @@
 {
   "common": {
+    "confirmToast": "确认提示",
+    "isConfirmLogout": "确定要退出登录吗？",
     "collapseMenu": "折叠菜单",
     "searchParent": "搜索父需求",
     "stopProjectToast": "结束项目{{name}}后，该项目将不能创建新的需求迭代，原有数据将保留。",

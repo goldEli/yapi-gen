@@ -15,7 +15,7 @@ const MyInput = styled(Input)`
   justify-content: flex-start;
 
   padding: 5px 12px 5px 12px;
-  border: none;
+  border: 1px solid white;
   input {
     background: rgba(245, 246, 247, 1);
     &::placeholder {

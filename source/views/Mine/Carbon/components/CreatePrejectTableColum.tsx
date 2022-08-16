@@ -20,6 +20,7 @@ import { openDetail } from '@/tools'
 const flexCss = css`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 
 export const useDynamicColumns = (state: any) => {
@@ -98,35 +99,35 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       render: (text: any, record: Record<string, string | number>) => {
         return (
-          <div className={flexCss}>
-            <div className={flexCss}>
-              <IconFont
-                type={text.icon}
-                style={{
-                  fontSize: 20,
-                  marginRight: '10px',
-                  color: text.color,
-                }}
+          <Pop
+            content={({ onHide }: { onHide(): void }) => (
+              <LevelContent
+                onTap={state.updatePriority}
+                onHide={onHide}
+                record={record}
               />
-              <span style={{ marginRight: '5px' }}>
-                {text.content_txt || '--'}
-              </span>
-            </div>
-            <Pop
-              content={({ onHide }: { onHide(): void }) => (
-                <LevelContent
-                  onTap={state.updatePriority}
-                  onHide={onHide}
-                  record={record}
+            )}
+            record={record}
+          >
+            <div className={flexCss}>
+              <div className={flexCss}>
+                <IconFont
+                  type={text.icon}
+                  style={{
+                    fontSize: 16,
+                    marginRight: '8px',
+                    color: text.color,
+                  }}
                 />
-              )}
-              record={record}
-            >
+                <span style={{ marginRight: '5px' }}>
+                  {text.content_txt || '--'}
+                </span>
+              </div>
               <ShowWrap>
                 <IconFont style={{ color: '#2877ff' }} type="down-icon" />
               </ShowWrap>
-            </Pop>
-          </div>
+            </div>
+          </Pop>
         )
       },
     },

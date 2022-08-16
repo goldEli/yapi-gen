@@ -13,6 +13,8 @@ import { getTicket } from '@/services/user'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { changeLanguage, languages, type LocaleKeys } from '@/locals'
+import { OmitText } from '@star-yun/ui'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const imgCss = css`
   width: 40px;
@@ -93,6 +95,7 @@ const NanmeAndPhone = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 8px;
+  width: calc(100% - 48px);
 `
 const PanelFooter = styled.div`
   display: flex;
@@ -125,7 +128,11 @@ const LanguageLine = styled.div`
   }
 `
 
-export const Panel = () => {
+interface Props {
+  onChange?(): void
+}
+
+export const Panel = (props: Props) => {
   const { loginOut, userInfo, setIsRefresh } = useModel('user')
   const navigate = useNavigate()
   const [t, i18n] = useTranslation()
@@ -133,6 +140,7 @@ export const Panel = () => {
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
+  const [isConfirmLogout, setIsConfirmLogout] = useState(false)
   const [languageMode, setLanguageMode] = useState(
     localStorage.getItem('language') === 'zh' ? 1 : 2,
   )
@@ -156,6 +164,7 @@ export const Panel = () => {
     setTimeout(() => {
       setIsRefresh(true)
     }, 100)
+    props.onChange?.()
   }
 
   const content = (
@@ -193,8 +202,30 @@ export const Panel = () => {
     }
   }
 
+  const onConfirm = () => {
+    toLoginOut()
+  }
+
+  const onSetVisible = (type: any) => {
+    if (type === 1) {
+      setPersonalModalVisible(true)
+    } else if (type === 2) {
+      setIsConfirmLogout(true)
+    } else if (type === 3) {
+      setCompanyModalVisible(true)
+    }
+    props.onChange?.()
+  }
+
   return (
     <Box>
+      <DeleteConfirm
+        title={t('common.confirmToast')}
+        text={t('common.isConfirmLogout')}
+        isVisible={isConfirmLogout}
+        onChangeVisible={() => setIsConfirmLogout(!isConfirmLogout)}
+        onConfirm={onConfirm}
+      />
       <PanelHeader>
         <PanelHeaderFirst>
           {userInfo.avatar
@@ -206,17 +237,16 @@ export const Panel = () => {
               )}
 
           <NanmeAndPhone>
-            <span>{userInfo?.name}</span>
+            <Tooltip title={userInfo?.name}>
+              <OmitText width={120}>{userInfo?.name}</OmitText>
+            </Tooltip>
             <span>{userInfo?.phone}</span>
           </NanmeAndPhone>
         </PanelHeaderFirst>
         <PanelHeaderSecond>
           <div>{userInfo?.company_name}</div>
           <Tooltip placement="top" title={t('container.changeCompany')}>
-            <div
-              onClick={() => setCompanyModalVisible(true)}
-              className={buttonCss}
-            >
+            <div onClick={() => onSetVisible(3)} className={buttonCss}>
               <IconFont type="swap" style={{ fontSize: 20 }} />
             </div>
           </Tooltip>
@@ -246,7 +276,7 @@ export const Panel = () => {
           </Line>
         </Popover>
 
-        <Line onClick={() => setPersonalModalVisible(true)}>
+        <Line onClick={() => onSetVisible(1)}>
           <div>
             <IconFont type="container" style={{ fontSize: 15 }} />
             <span className={lineText}>{t('container.personInfo')}</span>
@@ -256,7 +286,7 @@ export const Panel = () => {
           </div>
         </Line>
         <Line>
-          <div onClick={toLoginOut}>
+          <div onClick={() => onSetVisible(2)}>
             <IconFont type="login" style={{ fontSize: 15 }} />
             <span className={lineText}>{t('container.logout')}</span>
           </div>

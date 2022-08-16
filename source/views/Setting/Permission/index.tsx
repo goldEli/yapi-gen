@@ -46,7 +46,7 @@ const SetMain = styled.div({
   padding: '24px 0',
   background: 'white',
   borderRadius: 6,
-  height: '100%',
+  minHeight: '100%',
   width: '100%',
   display: 'flex',
 })
@@ -250,7 +250,7 @@ const Permission = () => {
     setIsRefresh(false)
   }
 
-  const init = async (isInit?: boolean) => {
+  const init = async (isInit?: boolean, str?: string) => {
     setIsSpinning(true)
     const result = await getRoleList()
     setDataList(result.list)
@@ -259,6 +259,10 @@ const Permission = () => {
       getPermission(result.list[0].id)
     } else {
       setIsSpinning(false)
+    }
+    if (str) {
+      setActiveDetail(result?.list?.filter((i: any) => i.id === str)[0])
+      getPermission(result?.list?.filter((i: any) => i.id === str)[0]?.id)
     }
   }
 
@@ -293,16 +297,17 @@ const Permission = () => {
   }
 
   const onSaveGroup = async () => {
+    let result
     try {
       if (operationDetail.id) {
         await updateRole({ name: addValue, id: operationDetail.id })
         message.success(t('common.editSuccess'))
       } else {
-        await addRole({ name: addValue })
+        result = await addRole({ name: addValue })
         message.success(t('common.createSuccess'))
       }
       setIsVisible(false)
-      init()
+      init(false, result?.data?.id)
       setAddValue('')
       setOperationDetail({})
 

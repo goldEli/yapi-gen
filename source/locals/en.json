@@ -1,5 +1,7 @@
 {
   "common": {
+    "confirmToast": "Confirmation prompt",
+    "isConfirmLogout": "Are you sure you want to log out?",
     "collapseMenu": "Collapse menu",
     "searchParent": "Search parent requirements",
     "stopProjectToast": "After the project [{{name}}] is completed, the project will not be able to create new requirements iterations, and the original data will be retained.",

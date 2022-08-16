@@ -133,6 +133,7 @@ const PosterComponent = (props: Props) => {
       option.onSuccess?.(result)
       const items = [result.url]
       setPosterList([items])
+      onUpdateValue(result.url)
     }
   }
 

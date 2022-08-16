@@ -103,9 +103,11 @@ export const setRolePermission: any = async (params: any) => {
 }
 
 export const addRole: any = async (params: any) => {
-  await http.post<any>('addRole', {
+  const response = await http.post<any>('addRole', {
     name: params.name,
   })
+
+  return response
 }
 
 export const deleteRole: any = async (params: any) => {

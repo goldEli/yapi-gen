@@ -184,7 +184,12 @@ export const Side = () => {
           <IconFont type="set-default" style={{ fontSize: 20 }} />
           <span>{t('container.setting')}</span>
         </SideEach>
-        <Popover placement="rightTop" trigger="click" content={<Panel />}>
+        <Popover
+          visible={panelVisible}
+          placement="rightTop"
+          trigger="click"
+          content={<Panel onChange={() => setPanelVisible(false)} />}
+        >
           {userInfo.avatar ? (
             <img
               style={{ cursor: 'pointer' }}
