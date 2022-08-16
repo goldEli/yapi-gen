@@ -32,7 +32,7 @@ const SetMain = styled.div({
   padding: '24px 0',
   background: 'white',
   borderRadius: 6,
-  height: '100%',
+  minHeight: '100%',
   width: '100%',
   display: 'flex',
 })
@@ -238,7 +238,7 @@ const ProjectSet = () => {
     setSelectKeys(keys)
   }
 
-  const init = async (isInit?: boolean) => {
+  const init = async (isInit?: boolean, str?: string) => {
     setIsSpinning(true)
     const result = await getProjectPermission({ projectId })
     setDataList(result.list)
@@ -247,6 +247,10 @@ const ProjectSet = () => {
       getPermissionList(result.list[0].id)
     } else {
       setIsSpinning(false)
+    }
+    if (str) {
+      setActiveDetail(result?.list?.filter((i: any) => i.id === str)[0])
+      getPermissionList(result?.list?.filter((i: any) => i.id === str)[0])
     }
     setIsRefresh(false)
   }
@@ -283,6 +287,7 @@ const ProjectSet = () => {
   }
 
   const onSaveGroup = async () => {
+    let result
     try {
       if (operationDetail.id) {
         await updatePermission({
@@ -293,14 +298,12 @@ const ProjectSet = () => {
         setOperationDetail({})
         message.success(t('common.editSuccess'))
       } else {
-        await addPermission({ name: addValue, projectId })
+        result = await addPermission({ name: addValue, projectId })
         message.success(t('common.createSuccess'))
       }
       setIsVisible(false)
-      init()
-
-      // setAddValue('')
-      //
+      init(false, result?.data?.id)
+      setAddValue('')
     } catch (error) {
 
       //

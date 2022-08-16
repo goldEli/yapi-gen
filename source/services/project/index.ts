@@ -281,10 +281,11 @@ export const getProjectPermission: any = async (params: any) => {
 }
 
 export const addPermission: any = async (params: any) => {
-  await http.post<any>('addPermission', {
+  const response = await http.post<any>('addPermission', {
     name: params.name,
     project_id: params.projectId,
   })
+  return response
 }
 
 export const deletePermission: any = async (params: any) => {
