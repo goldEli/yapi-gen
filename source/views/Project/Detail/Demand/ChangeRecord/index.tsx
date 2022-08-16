@@ -233,7 +233,11 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    {text[i]?.length ? t('project.checkInfo') : '--'}
+                    {text
+                      ? text[i]?.length
+                        ? t('project.checkInfo')
+                        : '--'
+                      : '--'}
                   </span>
                 ) : (
                   <OmitText width={300}>
@@ -274,7 +278,11 @@ const ChangeRecord = () => {
                     style={{ cursor: 'pointer', color: '#2877ff' }}
                     onClick={() => onClickCheck(record)}
                   >
-                    {text[i]?.length ? t('project.checkInfo') : '--'}
+                    {text
+                      ? text[i]?.length
+                        ? t('project.checkInfo')
+                        : '--'
+                      : '--'}
                   </span>
                 ) : (
                   <OmitText width={300}>
