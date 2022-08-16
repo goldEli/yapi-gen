@@ -47,7 +47,7 @@ const CompanyModal = (props: Props) => {
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [userInfo])
 
   const cutCompany = (value: any) => {
     setActiveId(value.id)
