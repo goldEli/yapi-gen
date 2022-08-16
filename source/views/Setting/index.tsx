@@ -22,13 +22,14 @@ const Side = styled.div({
   width: 220,
   background: 'white',
   height: '100%',
-  img: {
-    width: '100%',
-    height: 88,
-    marginBottom: 32,
-    borderRadius: 6,
-    padding: '0 16px',
-  },
+
+  // img: {
+  //   width: '100%',
+  //   height: 88,
+  //   marginBottom: 32,
+  //   borderRadius: 6,
+  //   padding: '0 16px',
+  // },
 })
 
 const Content = styled.div({
@@ -84,11 +85,10 @@ const MenuItem = styled.div<{ isActive: boolean; language?: string }>(
 )
 
 const CompanyImg = styled.img({
-  width: '100%',
+  width: 'calc(100% - 32px)',
   height: 88,
   marginBottom: 32,
   borderRadius: 6,
-  padding: '0 16px',
 })
 
 interface MenuList {

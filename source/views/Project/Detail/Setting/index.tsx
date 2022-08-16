@@ -25,7 +25,7 @@ const Side = styled.div({
 })
 
 const ImgWrap = styled.div({
-  width: '100%',
+  width: 'calc(100% - 32px)',
   height: 88,
   marginBottom: 32,
   borderRadius: 6,
