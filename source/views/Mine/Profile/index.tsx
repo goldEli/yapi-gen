@@ -100,7 +100,7 @@ const CenterRight = styled.div`
 `
 const InnerWrap = styled.div`
   margin-top: 16px;
-  height: 88px;
+  min-height: 88px;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
   border: 1px solid rgba(235, 237, 240, 1);
@@ -109,6 +109,7 @@ const InnerWrap = styled.div`
   box-sizing: border-box;
   padding: 16px 24px 16px 24px;
   border-radius: 6px;
+  text-align: center;
 `
 
 const TimeLineWrap = styled.div`
@@ -243,23 +244,23 @@ const Profile = () => {
           <HeadRight>
             <SecondTitle> {t('mine.backLog')}</SecondTitle>
             <InnerWrap>
-              <ChartsItem>
+              <ChartsItem style={{ width: '20%' }}>
                 <span className={titleNumberCss3}>{data?.secondAll}</span>
                 <span className={titleTextCss}>{t('mine.total')}</span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem style={{ width: '20%' }}>
                 <span className={titleNumberCss3}>{data?.secondNoFinish}</span>
                 <span className={titleTextCss}>{t('mine.needDeal')}</span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem style={{ width: '20%' }}>
                 <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
                 <span className={titleTextCss}>{t('mine.overdue')}</span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem style={{ width: '20%' }}>
                 <span className={titleNumberCss}>{data?.secondFinish}</span>
                 <span className={titleTextCss}>{t('mine.finishOn')}</span>
               </ChartsItem>
-              <ChartsItem>
+              <ChartsItem style={{ width: '20%' }}>
                 <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
                 <span className={titleTextCss}>{t('mine.finishOver')}</span>
               </ChartsItem>

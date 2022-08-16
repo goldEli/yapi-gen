@@ -78,6 +78,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       visible={props.visible}
       maskClosable={false}
       destroyOnClose
+      keyboard={false}
     >
       {isShow ? <Spin /> : null}
       {!isShow && (

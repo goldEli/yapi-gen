@@ -318,6 +318,7 @@ const ChangeRecord = () => {
         }}
         destroyOnClose
         maskClosable={false}
+        keyboard={false}
       >
         <SpaceWrap
           size={32}

@@ -167,6 +167,7 @@ const EditIteration = (props: Props) => {
       bodyStyle={{ padding: '16px 24px' }}
       destroyOnClose
       maskClosable={false}
+      keyboard={false}
     >
       <FormWrap
         form={form}

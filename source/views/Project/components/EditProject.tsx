@@ -78,6 +78,7 @@ const EditProject = (props: Props) => {
       bodyStyle={{ padding: '16px 24px 0' }}
       destroyOnClose
       maskClosable={false}
+      keyboard={false}
     >
       <Form form={form} layout="vertical">
         <Form.Item

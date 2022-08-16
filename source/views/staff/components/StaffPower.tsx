@@ -99,6 +99,7 @@ export const StaffPersonal = (props: {
       visible={props.isVisible}
       maskClosable={false}
       destroyOnClose
+      keyboard={false}
     >
       <PersonalHead>
         {data?.avatar

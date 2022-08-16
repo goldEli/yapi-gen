@@ -318,6 +318,7 @@ const ChangeRecord = () => {
         bodyStyle={{ padding: '8px 24px 24px' }}
         destroyOnClose
         maskClosable={false}
+        keyboard={false}
       >
         <SpaceWrap
           size={32}

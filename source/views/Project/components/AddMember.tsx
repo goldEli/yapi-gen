@@ -127,6 +127,7 @@ const AddMember = (props: Props) => {
       closable={false}
       destroyOnClose
       maskClosable={false}
+      keyboard={false}
     >
       <ModalHeader>
         <span>

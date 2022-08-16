@@ -59,6 +59,7 @@ const ProjectInfo = (props: Props) => {
       bodyStyle={{ padding: '16px 24px' }}
       maskClosable={false}
       destroyOnClose
+      keyboard={false}
     >
       <div>
         <PosterWrap>

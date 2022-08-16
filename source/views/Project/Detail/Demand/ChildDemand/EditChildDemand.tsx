@@ -454,6 +454,7 @@ const EditDemand = (props: Props) => {
       bodyStyle={{ padding: '16px 24px', position: 'relative' }}
       destroyOnClose
       maskClosable={false}
+      keyboard={false}
     >
       <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
         <div style={{ display: 'flex' }}>

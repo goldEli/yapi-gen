@@ -389,6 +389,7 @@ const ProjectSet = () => {
           width={420}
           maskClosable={false}
           destroyOnClose
+          keyboard={false}
         >
           <ModalHeader>
             <span>

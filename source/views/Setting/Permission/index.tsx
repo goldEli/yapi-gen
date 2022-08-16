@@ -393,6 +393,7 @@ const Permission = () => {
         width={420}
         maskClosable={false}
         destroyOnClose
+        keyboard={false}
       >
         <ModalHeader>
           <span>

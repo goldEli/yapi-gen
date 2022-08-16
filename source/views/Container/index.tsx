@@ -58,14 +58,11 @@ export const Container = () => {
   })
 
   const init = async () => {
-    if (localStorage.getItem('agileToken')) {
-      await getLoginDetail()
-    } else {
+    if (!localStorage.getItem('agileToken')) {
       const data = await login()
       setLoginInfo(data.data)
     }
 
-    // await getLoginDetail()
     await getUserDetail()
   }
 
@@ -78,7 +75,6 @@ export const Container = () => {
     localStorage.setItem('language', languageParams)
     changeLanguage(languageParams)
 
-    // console.error(123123)
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

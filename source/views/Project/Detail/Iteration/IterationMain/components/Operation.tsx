@@ -178,6 +178,7 @@ const Operation = (props: Props) => {
         footer={false}
         destroyOnClose
         maskClosable={false}
+        keyboard={false}
       >
         <div style={{ height: 436, overflow: 'auto' }}>
           {props.currentDetail?.info ? (

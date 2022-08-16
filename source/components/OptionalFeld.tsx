@@ -146,6 +146,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       onOk={handleOk}
       maskClosable={false}
       destroyOnClose
+      keyboard={false}
     >
       <Wrap>
         <Left>
