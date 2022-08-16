@@ -189,6 +189,7 @@ export const Side = () => {
           placement="rightTop"
           trigger="click"
           content={<Panel onChange={() => setPanelVisible(false)} />}
+          onVisibleChange={visible => setPanelVisible(visible)}
         >
           {userInfo.avatar ? (
             <img

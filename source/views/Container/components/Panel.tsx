@@ -168,7 +168,7 @@ export const Panel = (props: Props) => {
   }
 
   const content = (
-    <div>
+    <div style={{ borderRadius: 6, overflow: 'hidden' }}>
       <LanguageLine onClick={() => changeLanguageMode(1, 'zh')}>
         <span>中文</span>
         {languageMode === 1
