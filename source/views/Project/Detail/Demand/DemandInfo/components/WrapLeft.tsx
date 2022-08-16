@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
@@ -99,20 +100,24 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const DownPriority = styled.div({
-  marginLeft: 8,
-  '.icon': {
+const DownPriority = styled.div<{ isShow?: boolean }>(
+  {
     marginLeft: 8,
-    visibility: 'hidden',
-    fontSize: 16,
-    color: '#2877ff',
-  },
-  '&: hover': {
     '.icon': {
-      visibility: 'visible',
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 16,
+      color: '#2877ff',
     },
   },
-})
+  ({ isShow }) => ({
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
 
 const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
@@ -128,6 +133,10 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const demandId = searchParams.get('demandId')
   const { projectInfo } = useModel('project')
   const [tagList, setTagList] = useState<any>([])
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const onChangeState = async (item: any) => {
     try {
@@ -247,7 +256,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <Label>{t('common.priority')}</Label>
         <Popconfirm
           content={({ onHide }: { onHide(): void }) => {
-            return (
+            return isCanEdit ? (
               <LevelContent
                 onTap={item => onChangeState(item)}
                 onHide={onHide}
@@ -256,17 +265,21 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
                   project_id: projectId,
                 }}
               />
-            )
+            ) : null
           }}
         >
           <div
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            style={{
+              cursor: isCanEdit ? 'pointer' : 'inherit',
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
             <IconFont
               style={{ fontSize: 16, color: demandInfo?.priority?.color }}
               type={demandInfo?.priority?.icon}
             />
-            <DownPriority>
+            <DownPriority isShow={isCanEdit}>
               <span>{demandInfo?.priority?.content_txt || '--'}</span>
               <IconFont className="icon" type="down-icon" />
             </DownPriority>

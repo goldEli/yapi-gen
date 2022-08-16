@@ -220,6 +220,12 @@ const TagComponent = (props: Props) => {
     id: i.id,
   }))
 
+  const { projectInfo } = useModel('project')
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
+
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
 
   const onAddDemandTags = (value: any) => {
@@ -330,59 +336,55 @@ const TagComponent = (props: Props) => {
       >
         <TagCheckedItem hidden={!newTag}>{newTag}</TagCheckedItem>
       </Popover>
-      {/* <div style={{ display: 'flex', alignItems: 'center' }}> */}
-      {/* <div
-          hidden={!checkedTags?.length}
-          style={{ display: 'flex', alignItems: 'center' }}
-        > */}
       {checkedTags?.reverse()?.map((i: any) => (
         <TagCheckedItem
           key={i.id}
           style={{
-            cursor: 'pointer',
+            cursor: isCanEdit ? 'pointer' : 'inherit',
             alignItems: 'center',
             color: i.color,
             border: `1px solid ${i.color}`,
           }}
         >
           <div>{i.content}</div>
-          <IconFont
-            className="icon"
-            style={{
-              position: 'absolute',
-              right: -6,
-              top: -6,
-              color: '#969799',
-            }}
-            type="close-circle-fill"
-            onClick={() => onDeleteInfoDemand(i)}
-          />
+          {isCanEdit ? (
+            <IconFont
+              className="icon"
+              style={{
+                position: 'absolute',
+                right: -6,
+                top: -6,
+                color: '#969799',
+              }}
+              type="close-circle-fill"
+              onClick={() => onDeleteInfoDemand(i)}
+            />
+          ) : null}
         </TagCheckedItem>
       ))}
-      {/* </div> */}
-      <Popover
-        visible={isOpen}
-        placement="bottom"
-        trigger="click"
-        onVisibleChange={onVisibleOpenChange}
-        content={
-          <TagBox
-            isClear={isClear}
-            tap={onAddDemandTags}
-            canAdd={props.canAdd}
-            onChangeIsClear={setIsClear}
-            onChangeIsOpen={setIsOpen}
-            onChangeTag={props.onChangeTag}
-            checkedTags={checkedTags}
-          />
-        }
-        getPopupContainer={node => node}
-      >
-        <div onClick={() => setIsOpen(!isOpen)}>{props.addWrap}</div>
-      </Popover>
+      {isCanEdit ? (
+        <Popover
+          visible={isOpen}
+          placement="bottom"
+          trigger="click"
+          onVisibleChange={onVisibleOpenChange}
+          content={
+            <TagBox
+              isClear={isClear}
+              tap={onAddDemandTags}
+              canAdd={props.canAdd}
+              onChangeIsClear={setIsClear}
+              onChangeIsOpen={setIsOpen}
+              onChangeTag={props.onChangeTag}
+              checkedTags={checkedTags}
+            />
+          }
+          getPopupContainer={node => node}
+        >
+          <div onClick={() => setIsOpen(!isOpen)}>{props.addWrap}</div>
+        </Popover>
+      ) : null}
     </div>
-
-  // </div>
   )
 }
 

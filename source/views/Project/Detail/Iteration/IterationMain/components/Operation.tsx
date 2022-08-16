@@ -31,6 +31,8 @@ const StickyWrap = styled.div({
 const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
+
+  // position: 'relative',
 })
 
 const StatusTag = styled.div<{ isOpen?: boolean }>(
@@ -65,6 +67,7 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
+  const [isShow, setIsShow] = useState(false)
   const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
     = useModel('iterate')
   const [searchParams] = useSearchParams()
@@ -191,6 +194,11 @@ const Operation = (props: Props) => {
       <OperationWrap>
         <IterationInfo>
           <Tooltip
+            style={{ position: 'relative' }}
+            key={isShow.toString()}
+            visible={isShow}
+            onVisibleChange={isShow1 => setIsShow(isShow1)}
+            getPopupContainer={node => node}
             title={
               props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
             }

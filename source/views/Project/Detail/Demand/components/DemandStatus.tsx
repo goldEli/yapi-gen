@@ -147,6 +147,11 @@ const DemandStatusBox = () => {
   const { demandInfo } = useModel('demand')
   const statusList = demandInfo?.status?.can_changes
   const [active, setActive] = useState(0)
+  const { projectInfo } = useModel('project')
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   return (
     <>
@@ -154,7 +159,9 @@ const DemandStatusBox = () => {
         <Popconfirm
           key={i.id}
           content={({ onHide }: { onHide(): void }) => {
-            return <DemandBox active={active} hide={onHide} />
+            return isCanEdit
+              ? <DemandBox active={active} hide={onHide} />
+              : null
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -166,6 +173,7 @@ const DemandStatusBox = () => {
                   i.id === demandInfo?.status?.id
                     ? '1px solid #2877ff'
                     : '1px solid #EBEDF0',
+                cursor: isCanEdit ? 'pointer' : 'inherit',
               }}
             >
               {i.content_txt}

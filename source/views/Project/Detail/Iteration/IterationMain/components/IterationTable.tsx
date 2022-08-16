@@ -24,18 +24,22 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, openDetail } from '@/tools'
 
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
+const StatusWrap = styled.div<{ isShow?: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #2877FF',
+    color: '#2877FF',
+    width: 'fit-content',
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+  }),
+)
 
 const Content = styled.div({
   padding: 24,
@@ -99,6 +103,11 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const { projectInfo } = useModel('project')
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const getList = async (item: any) => {
     const result = await getDemandList({
@@ -218,7 +227,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return (
+              return isCanEdit ? (
                 <ShapeContent
                   tap={value => onChangeStatus(value)}
                   hide={onHide}
@@ -232,11 +241,12 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
                     },
                   }}
                 />
-              )
+              ) : null
             }}
             record={record}
           >
             <StatusWrap
+              isShow={isCanEdit}
               style={{ color: text.color, border: `1px solid ${text.color}` }}
             >
               {text.content_txt}

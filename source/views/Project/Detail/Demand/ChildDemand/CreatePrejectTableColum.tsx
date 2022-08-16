@@ -14,7 +14,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { ClickWrap } from '@/components/StyleCommon'
 
-const StatusWrap = styled.div<{ color?: string }>(
+const StatusWrap = styled.div<{ isShow?: boolean }>(
   {
     height: 22,
     borderRadius: 6,
@@ -24,41 +24,49 @@ const StatusWrap = styled.div<{ color?: string }>(
     justifyContent: 'center',
     width: 'fit-content',
     cursor: 'pointer',
+    background: 'white',
   },
-  ({ color }) => ({
-    color,
-    border: `1px solid ${color}`,
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
   }),
 )
 
-const PriorityWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.icon': {
-    marginLeft: 8,
-    visibility: 'hidden',
-    fontSize: 16,
-    color: '#2877ff',
-  },
-  '.priorityIcon': {
-    fontSize: 16,
-  },
-  '&: hover': {
+const PriorityWrap = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: '#323233',
+      fontSize: 14,
+      marginLeft: 8,
+    },
     '.icon': {
-      visibility: 'visible',
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 16,
+      color: '#2877ff',
+    },
+    '.priorityIcon': {
+      fontSize: 16,
     },
   },
-})
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { projectInfo } = useModel('project')
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const NewSort = (props: any) => {
     return (
@@ -114,25 +122,28 @@ export const useDynamicColumns = (state: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={value => state.onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: state.projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              )
+              return isCanEdit
+                ? (
+                    <ShapeContent
+                      tap={value => state.onChangeStatus(value)}
+                      hide={onHide}
+                      row={record}
+                      record={{
+                        id: record.id,
+                        project_id: state.projectId,
+                        status: {
+                          id: record.status.id,
+                          can_changes: record.status.can_changes,
+                        },
+                      }}
+                    />
+                  )
+                : null
             }}
             record={record}
           >
             <StatusWrap
+              isShow={isCanEdit}
               style={{ color: text.color, border: `1px solid ${text.color}` }}
             >
               {text.content_txt}
@@ -149,17 +160,19 @@ export const useDynamicColumns = (state: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return (
-                <LevelContent
-                  onTap={item => state.onChangeState(item)}
-                  onHide={onHide}
-                  record={{ project_id: state.projectId, id: record.id }}
-                />
-              )
+              return isCanEdit
+                ? (
+                    <LevelContent
+                      onTap={item => state.onChangeState(item)}
+                      onHide={onHide}
+                      record={{ project_id: state.projectId, id: record.id }}
+                    />
+                  )
+                : null
             }}
             record={record}
           >
-            <PriorityWrap>
+            <PriorityWrap isShow={isCanEdit}>
               <IconFont
                 type={text.icon}
                 style={{

@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable multiline-ternary */
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -153,6 +155,11 @@ const ParentDemand = (props: Props) => {
     = useModel('demand')
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
+  const { projectInfo } = useModel('project')
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const onChangeParent = async (item: any) => {
     try {
@@ -189,22 +196,30 @@ const ParentDemand = (props: Props) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <DemandCheckedItem
-        onClick={onDeleteInfoDemand}
+        onClick={isCanEdit ? onDeleteInfoDemand : void 0}
         hidden={!demandInfo?.parentId}
       >
-        <div style={{ color: '#323233', fontSize: 14, cursor: 'pointer' }}>
+        <div
+          style={{
+            color: '#323233',
+            fontSize: 14,
+            cursor: isCanEdit ? 'pointer' : 'inherit',
+          }}
+        >
           {demandInfo?.parentName}
-          <IconFont className="icon" type="close" />
+          {isCanEdit ? <IconFont className="icon" type="close" /> : null}
         </div>
       </DemandCheckedItem>
-      <Popover
-        placement="bottom"
-        trigger="click"
-        content={<TagBox tap={onChangeParent} />}
-        getPopupContainer={node => node}
-      >
-        <div hidden={demandInfo?.parentId}>{props.addWrap}</div>
-      </Popover>
+      {isCanEdit ? (
+        <Popover
+          placement="bottom"
+          trigger="click"
+          content={<TagBox tap={onChangeParent} />}
+          getPopupContainer={node => node}
+        >
+          <div hidden={demandInfo?.parentId}>{props.addWrap}</div>
+        </Popover>
+      ) : null}
     </div>
   )
 }

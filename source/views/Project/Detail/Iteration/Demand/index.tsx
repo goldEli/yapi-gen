@@ -24,51 +24,59 @@ import { getIsPermission, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
+const StatusWrap = styled.div<{ isShow?: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #2877FF',
+    color: '#2877FF',
+    width: 'fit-content',
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+  }),
+)
 
-const PriorityWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  height: 26,
-  padding: '0 6px',
-  width: 'fit-content',
-  borderRadius: 6,
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.icon': {
-    marginLeft: 8,
-    visibility: 'hidden',
-    fontSize: 16,
-    color: '#2877ff',
-  },
-  '.priorityIcon': {
-    fontSize: 16,
-    svg: {
-      margin: '0!important',
+const PriorityWrap = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    height: 26,
+    padding: '0 6px',
+    width: 'fit-content',
+    borderRadius: 6,
+    div: {
+      color: '#323233',
+      fontSize: 14,
+      marginLeft: 8,
     },
-  },
-  '&: hover': {
-    background: 'rgba(240, 244, 250, 1)',
     '.icon': {
-      visibility: 'visible',
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 16,
+      color: '#2877ff',
+    },
+    '.priorityIcon': {
+      fontSize: 16,
+      svg: {
+        margin: '0!important',
+      },
     },
   },
-})
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -117,6 +125,11 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const { projectInfo } = useModel('project')
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const getList = async (item: any) => {
     const result = await getDemandList({
@@ -236,25 +249,28 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={value => onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              )
+              return isCanEdit
+                ? (
+                    <ShapeContent
+                      tap={value => onChangeStatus(value)}
+                      hide={onHide}
+                      row={record}
+                      record={{
+                        id: record.id,
+                        project_id: projectId,
+                        status: {
+                          id: record.status.id,
+                          can_changes: record.status.can_changes,
+                        },
+                      }}
+                    />
+                  )
+                : null
             }}
             record={record}
           >
             <StatusWrap
+              isShow={isCanEdit}
               style={{ color: text.color, border: `1px solid ${text.color}` }}
             >
               {text.content_txt}
@@ -350,6 +366,10 @@ const DemandWrap = () => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -470,7 +490,7 @@ const DemandWrap = () => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {hasDel && hasEdit
-              ? null
+              ? <div style={{ width: 16 }} />
               : (
                   <Dropdown
                     overlay={menu(record)}
@@ -485,6 +505,7 @@ const DemandWrap = () => {
             <ClickWrap
               onClick={() => onClickItem(record)}
               isClose={record.status?.content === '已关闭'}
+              style={{ marginLeft: 32 }}
             >
               {text}
             </ClickWrap>
@@ -548,17 +569,19 @@ const DemandWrap = () => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return (
-                <LevelContent
-                  onTap={item => onChangeState(item)}
-                  onHide={onHide}
-                  record={{ project_id: projectId, id: record.id }}
-                />
-              )
+              return isCanEdit
+                ? (
+                    <LevelContent
+                      onTap={item => onChangeState(item)}
+                      onHide={onHide}
+                      record={{ project_id: projectId, id: record.id }}
+                    />
+                  )
+                : null
             }}
             record={record}
           >
-            <PriorityWrap>
+            <PriorityWrap isShow={isCanEdit}>
               <IconFont
                 type={text.icon}
                 style={{
@@ -607,25 +630,28 @@ const DemandWrap = () => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={value => onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              )
+              return isCanEdit
+                ? (
+                    <ShapeContent
+                      tap={value => onChangeStatus(value)}
+                      hide={onHide}
+                      row={record}
+                      record={{
+                        id: record.id,
+                        project_id: projectId,
+                        status: {
+                          id: record.status.id,
+                          can_changes: record.status.can_changes,
+                        },
+                      }}
+                    />
+                  )
+                : null
             }}
             record={record}
           >
             <StatusWrap
+              isShow={isCanEdit}
               style={{ color: text.color, border: `1px solid ${text.color}` }}
             >
               {text.content_txt}

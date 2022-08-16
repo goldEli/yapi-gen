@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -343,12 +344,17 @@ const ChildDemand = () => {
         onConfirm={onDeleteConfirm}
       />
       <Operation>
-        <ButtonWrap
-          onClick={() => setIsVisible(true)}
-          icon={<IconFont type="plus" />}
-        >
-          {t('project.addChildDemand')}
-        </ButtonWrap>
+        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save')
+          ? <div />
+          : (
+              <ButtonWrap
+                onClick={() => setIsVisible(true)}
+                icon={<IconFont type="plus" />}
+              >
+                {t('project.addChildDemand')}
+              </ButtonWrap>
+            )}
+
         <Dropdown overlay={setMenu}>
           <IconFontWrap active={isSettingState} type="settings" />
         </Dropdown>
