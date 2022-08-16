@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -99,18 +100,22 @@ const Item = styled.div<{ activeIdx: boolean }>(
   }),
 )
 
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
+const StatusWrap = styled.div<{ isShow?: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #2877FF',
+    color: '#2877FF',
+    width: 'fit-content',
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+  }),
+)
 
 const DemandBox = () => {
   const [t] = useTranslation()
@@ -141,6 +146,11 @@ const DemandBox = () => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
+
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
@@ -225,7 +235,7 @@ const DemandBox = () => {
             <span>{demandInfo?.name}</span>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
-                return (
+                return isCanEdit ? (
                   <ShapeContent
                     tap={value => onChangeStatus(value)}
                     hide={onHide}
@@ -239,10 +249,11 @@ const DemandBox = () => {
                       },
                     }}
                   />
-                )
+                ) : null
               }}
             >
               <StatusWrap
+                isShow={isCanEdit}
                 style={{
                   color: demandInfo?.status?.color,
                   border: `1px solid ${demandInfo?.status?.color}`,
@@ -253,20 +264,16 @@ const DemandBox = () => {
             </PopConfirm>
           </NameWrap>
           <Space size={16}>
-            {isEdit
-              ? null
-              : (
-                  <Button type="primary" onClick={onEdit}>
-                    {t('common.edit')}
-                  </Button>
-                )}
-            {isDelete
-              ? null
-              : (
-                  <Button onClick={() => setIsDelVisible(true)}>
-                    {t('common.del')}
-                  </Button>
-                )}
+            {isEdit ? null : (
+              <Button type="primary" onClick={onEdit}>
+                {t('common.edit')}
+              </Button>
+            )}
+            {isDelete ? null : (
+              <Button onClick={() => setIsDelVisible(true)}>
+                {t('common.del')}
+              </Button>
+            )}
           </Space>
         </DemandInfoWrap>
         <ContentWrap>
