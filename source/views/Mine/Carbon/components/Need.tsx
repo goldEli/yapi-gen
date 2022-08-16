@@ -461,7 +461,7 @@ const Need = (props: any) => {
           </SetButton>
           {props.id !== 0 && (
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <Tooltip title={t('common.filter')}>
+              <Tooltip title={t('common.search')}>
                 <IconFont
                   type="filter"
                   style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}

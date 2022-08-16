@@ -81,7 +81,7 @@ const OperationGroup = (props: Props) => {
       {hasFilter
         ? null
         : (
-            <Tooltip title={t('common.filter')}>
+            <Tooltip title={t('common.search')}>
               <IconFontWrap
                 active={!props.filterState}
                 type="filter"

@@ -403,7 +403,7 @@ const Need = (props: any) => {
         <div style={{ marginRight: '40px', display: 'flex' }}>
           {props.id !== 0 && (
             <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <Tooltip title={t('common.filter')}>
+              <Tooltip title={t('common.search')}>
                 <IconFont
                   type="filter"
                   style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}

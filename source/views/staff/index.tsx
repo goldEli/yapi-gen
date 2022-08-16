@@ -323,7 +323,7 @@ const Staff = () => {
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <SetButton onClick={onChangeFilter}>
-            <Tooltip title={t('common.filter')}>
+            <Tooltip title={t('common.search')}>
               <IconFont
                 type="filter"
                 style={{

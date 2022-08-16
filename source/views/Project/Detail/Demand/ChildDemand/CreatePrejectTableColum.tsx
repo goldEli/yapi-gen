@@ -177,9 +177,11 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
-        <NewSort fixedKey="child_story_count">{t('common.demand')}</NewSort>
-      ,
+      title: (
+        <NewSort fixedKey="child_story_count">
+          {t('common.childDemand')}
+        </NewSort>
+      ),
       dataIndex: 'demand',
       key: 'child_story_count',
       render: (text: string) => {
