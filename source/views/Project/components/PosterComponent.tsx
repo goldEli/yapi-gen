@@ -49,6 +49,20 @@ const PosterGroup = styled(Space)({
   flexWrap: 'wrap',
   marginBottom: 8,
 })
+
+const SelfWrap = styled.div({
+  background: 'rgba(0,0,0,0.6)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  top: 0,
+  zIndex: 1,
+  borderRadius: 2,
+  width: 60,
+  height: 28,
+})
+
 const AddUpload = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -160,12 +174,23 @@ const PosterComponent = (props: Props) => {
       <ChooseTitle>{t('project.customCover')}</ChooseTitle>
       <PosterGroup size={8}>
         {posterList.map((i: any) => (
-          <PosterWrap
-            onClick={() => onUpdateValue(i[0])}
+          <div
             key={i}
-            src={i}
-            alt=""
-          />
+            style={{
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <PosterWrap onClick={() => onUpdateValue(i[0])} src={i} alt="" />
+            <SelfWrap hidden={props.value !== i[0]}>
+              <IconFont
+                type="check-circle"
+                style={{ fontSize: 16, color: 'white' }}
+              />
+            </SelfWrap>
+          </div>
         ))}
         <Upload
           beforeUpload={onUploadBefore}

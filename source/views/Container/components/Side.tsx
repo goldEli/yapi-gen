@@ -195,6 +195,7 @@ export const Side = () => {
               style={{ cursor: 'pointer' }}
               className={imgCss}
               src={userInfo.avatar}
+              onClick={controlPanelVisible}
             />
           ) : (
             <SetHead onClick={controlPanelVisible}>
