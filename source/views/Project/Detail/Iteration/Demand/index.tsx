@@ -47,7 +47,6 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
     alignItems: 'center',
     cursor: 'pointer',
     height: 26,
-    padding: '0 6px',
     width: 'fit-content',
     borderRadius: 6,
     div: {
