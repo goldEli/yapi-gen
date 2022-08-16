@@ -27,23 +27,26 @@ const Title = styled.div({
   color: 'black',
 })
 
-const CommentItem = styled.div({
-  display: 'flex',
-  justifyContent: 'flex-start',
-  marginTop: 24,
-  '&: hover': {
-    '.anticon': {
-      display: 'block!important',
-      cursor: 'pointer',
+const CommentItem = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginTop: 24,
+    img: {
+      width: 32,
+      height: 32,
+      borderRadius: '50%',
+      marginRight: 12,
     },
   },
-  img: {
-    width: 32,
-    height: 32,
-    borderRadius: '50%',
-    marginRight: 12,
-  },
-})
+  ({ isShow }) => ({
+    '&: hover': {
+      '.anticon': {
+        display: isShow ? 'block!important' : 'none',
+      },
+    },
+  }),
+)
 
 const TextWrap = styled.div({
   width: 'calc(100% - 48px)',
@@ -216,7 +219,7 @@ const WrapRightBox = () => {
           && (dataList?.list?.length > 0 ? (
             <div>
               {dataList?.list?.map((item: any) => (
-                <CommentItem key={item.id}>
+                <CommentItem key={item.id} isShow={item.userId === userInfo.id}>
                   {item.avatar
                     ? <img src={item.avatar} alt="" />
                     : (
@@ -231,7 +234,6 @@ const WrapRightBox = () => {
                       {isComment ? null : (
                         <IconFont
                           type="close"
-                          hidden={item.userId !== userInfo.id}
                           onClick={() => onDeleteComment(item)}
                         />
                       )}

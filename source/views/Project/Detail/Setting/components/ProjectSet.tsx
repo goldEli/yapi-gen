@@ -404,6 +404,7 @@ const ProjectSet = () => {
           </ModalHeader>
           <div style={{ margin: '24px 0' }}>
             <Input
+              autoComplete="off"
               maxLength={10}
               value={addValue}
               onChange={e => setAddValue(e.target.value)}

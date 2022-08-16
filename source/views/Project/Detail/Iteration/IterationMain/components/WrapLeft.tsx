@@ -278,7 +278,7 @@ const WrapLeft = (props: Props) => {
     <div className="filterContent">
       <Form form={form} style={{ width: 260, padding: 24 }} layout="vertical">
         <Form.Item label={t('common.title')} name="name">
-          <Input placeholder={t('project.pleaseTitle')} />
+          <Input autoComplete="off" placeholder={t('project.pleaseTitle')} />
         </Form.Item>
         <Form.Item label={t('common.startTime')} name="startTime">
           <RangePicker onChange={(_values: any) => onChangePicker(_values)} />

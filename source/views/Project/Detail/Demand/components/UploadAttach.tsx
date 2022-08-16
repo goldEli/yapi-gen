@@ -101,6 +101,11 @@ const UploadAttach = (props: Props) => {
     })
   }
   const onUploadBefore = (file: any) => {
+    if (props?.defaultList.length >= 20) {
+      message.warning(t('common.limitToast'))
+      return Upload.LIST_IGNORE
+    }
+
     if (file.size / 1024 > 5242880) {
       message.warning(t('project.uploadMax'))
       return Upload.LIST_IGNORE

@@ -163,6 +163,7 @@ const Member = (props: Props) => {
             )}
 
           <Input
+            autoComplete="off"
             style={{ marginTop: 16 }}
             onPressEnter={onChangeSearch}
             suffix={

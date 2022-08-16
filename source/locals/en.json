@@ -1,5 +1,7 @@
 {
   "common": {
+    "limitToast": "Up to 20 can be uploaded",
+    "openMenu": "Expand menu",
     "confirmToast": "Confirmation prompt",
     "isConfirmLogout": "Are you sure you want to log out?",
     "collapseMenu": "Collapse menu",

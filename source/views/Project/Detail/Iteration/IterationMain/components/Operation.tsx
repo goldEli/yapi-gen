@@ -58,6 +58,7 @@ interface Props {
   settingState: boolean
   onChangeSetting(val: boolean): void
   onSearch(params: any): void
+  isShowLeft?: boolean
 }
 
 const Operation = (props: Props) => {
@@ -189,7 +190,11 @@ const Operation = (props: Props) => {
       </Modal>
       <OperationWrap>
         <IterationInfo>
-          <Tooltip title={t('common.collapseMenu')}>
+          <Tooltip
+            title={
+              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
+            }
+          >
             <IconFont
               onClick={props.onChangeIsShowLeft}
               type="indent"
@@ -207,42 +212,43 @@ const Operation = (props: Props) => {
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
-          {hasChangeStatus ? (
-            <StatusTag isOpen={props.currentDetail?.status === 1}>
-              {props.currentDetail?.status === 1
-                ? t('common.opening')
-                : t('common.Closed')}
-              <IconFont
-                type="down-icon"
-                style={{ fontSize: 12, marginLeft: 4 }}
-              />
-            </StatusTag>
-          ) : (
-            <Popover
-              placement="bottom"
-              content={changeStatus}
-              getPopupContainer={node => node}
-            >
-              {props.currentDetail ? (
-                <StatusTag isOpen={props.currentDetail?.status === 1}>
-                  {props.currentDetail?.status === 1
-                    ? t('common.opening')
-                    : t('common.Closed')}
-                  <IconFont
-                    type="down-icon"
-                    style={{
-                      fontSize: 12,
-                      marginLeft: 4,
-                      color:
+          {hasChangeStatus
+            ? props.currentDetail?.id ? (
+              <StatusTag
+                style={{ cursor: 'inherit' }}
+                isOpen={props.currentDetail?.status === 1}
+              >
+                {props.currentDetail?.status === 1
+                  ? t('common.opening')
+                  : t('common.Closed')}
+              </StatusTag>
+            ) : null
+            : (
+                <Popover
+                  placement="bottom"
+                  content={changeStatus}
+                  getPopupContainer={node => node}
+                >
+                  {props.currentDetail ? (
+                    <StatusTag isOpen={props.currentDetail?.status === 1}>
+                      {props.currentDetail?.status === 1
+                        ? t('common.opening')
+                        : t('common.Closed')}
+                      <IconFont
+                        type="down-icon"
+                        style={{
+                          fontSize: 12,
+                          marginLeft: 4,
+                          color:
                         props.currentDetail?.status === 1
                           ? '#43BA9A'
                           : '#969799',
-                    }}
-                  />
-                </StatusTag>
-              ) : null}
-            </Popover>
-          )}
+                        }}
+                      />
+                    </StatusTag>
+                  ) : null}
+                </Popover>
+              )}
 
           <Tooltip title={t('project.iterateTarget')}>
             <IconFont

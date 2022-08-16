@@ -218,6 +218,7 @@ const IterationMain = (props: Props) => {
           settingState={isSettingState}
           onChangeSetting={setIsSettingState}
           onSearch={onSearch}
+          isShowLeft={isShowLeft}
         />
         {isGrid ? (
           <IterationGrid

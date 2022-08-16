@@ -54,7 +54,7 @@ const DemandBox = (props: Props) => {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('id')
   const demandId = searchParams.get('demandId')
-  const { memberList } = useModel('project')
+  const { memberList, projectInfo } = useModel('project')
   const { updateDemandStatus, getDemandInfo, demandInfo, setIsRefreshComment }
     = useModel('demand')
   const statusList = demandInfo?.status?.can_changes

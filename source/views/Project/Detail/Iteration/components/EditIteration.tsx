@@ -181,6 +181,7 @@ const EditIteration = (props: Props) => {
             name="iterationName"
           >
             <Input
+              autoComplete="off"
               maxLength={100}
               ref={inputRef as any}
               autoFocus

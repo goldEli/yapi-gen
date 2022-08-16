@@ -1,5 +1,7 @@
 {
   "common": {
+    "limitToast": "最多只能上传20个",
+    "openMenu": "展开菜单",
     "confirmToast": "确认提示",
     "isConfirmLogout": "确定要退出登录吗？",
     "collapseMenu": "折叠菜单",

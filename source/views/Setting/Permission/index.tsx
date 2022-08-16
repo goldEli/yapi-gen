@@ -408,6 +408,7 @@ const Permission = () => {
         </ModalHeader>
         <div style={{ margin: '24px 0' }}>
           <Input
+            autoComplete="off"
             value={addValue}
             onChange={e => setAddValue(e.target.value)}
             placeholder={t('setting.pleaseEnterName')}

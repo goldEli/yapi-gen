@@ -464,6 +464,7 @@ const EditDemand = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <Input
+              autoComplete="off"
               ref={inputRef}
               placeholder={t('common.pleaseDemandName')}
               maxLength={100}

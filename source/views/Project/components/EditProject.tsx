@@ -105,7 +105,11 @@ const EditProject = (props: Props) => {
           ]}
           name="name"
         >
-          <Input maxLength={30} placeholder={t('common.pleaseProjectName')} />
+          <Input
+            autoComplete="off"
+            maxLength={30}
+            placeholder={t('common.pleaseProjectName')}
+          />
         </Form.Item>
         <Form.Item
           label={t('project.projectInfo')}

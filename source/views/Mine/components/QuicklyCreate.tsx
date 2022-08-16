@@ -349,12 +349,21 @@ const EditDemand = (props: Props) => {
     setPriorityDetail({})
   }
   const selectPrejectName = (value: any) => {
+    form.resetFields(['parentId', 'iterate_id'])
+    form.setFieldsValue({
+      users: [],
+      copysend: [],
+    })
     setPrejectId(value)
     getProjectInfo({ projectId: value })
   }
   const clearProjectId = () => {
     setPrejectId('')
-    form.resetFields()
+    form.resetFields(['parentId', 'iterate_id'])
+    form.setFieldsValue({
+      users: [],
+      copysend: [],
+    })
   }
 
   const onAdd = () => {
@@ -438,7 +447,10 @@ const EditDemand = (props: Props) => {
             required
             name="name"
           >
-            <Input placeholder={t('common.pleaseDemandName')} />
+            <Input
+              autoComplete="off"
+              placeholder={t('common.pleaseDemandName')}
+            />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
@@ -494,36 +506,32 @@ const EditDemand = (props: Props) => {
         >
           <IconFont className="labelIcon" type="carryout" />
           <Form.Item label={t('common.priority')} name="priority">
-            {prejectId ? (
-              <PopConfirm
-                content={({ onHide }: { onHide(): void }) => {
-                  return (
-                    <LevelContent
-                      onHide={onHide}
-                      record={{ project_id: prejectId }}
-                      onCurrentDetail={onCurrentDetail}
-                    />
-                  )
-                }}
-              >
-                <PriorityWrap status={prejectId}>
-                  <IconFont
-                    className="priorityIcon"
-                    type={priorityDetail?.icon}
-                    style={{
-                      fontSize: 16,
-                      color: priorityDetail?.color,
-                    }}
+            <PopConfirm
+              content={({ onHide }: { onHide(): void }) => {
+                return (
+                  <LevelContent
+                    onHide={onHide}
+                    record={{ project_id: prejectId }}
+                    onCurrentDetail={onCurrentDetail}
                   />
-                  <div>
-                    <span>{priorityDetail?.content || '--'}</span>
-                    <IconFont className="icon" type="down-icon" />
-                  </div>
-                </PriorityWrap>
-              </PopConfirm>
-            )
-              : '--'
-            }
+                )
+              }}
+            >
+              <PriorityWrap status={prejectId}>
+                <IconFont
+                  className="priorityIcon"
+                  type={priorityDetail?.icon}
+                  style={{
+                    fontSize: 16,
+                    color: priorityDetail?.color,
+                  }}
+                />
+                <div>
+                  <span>{priorityDetail?.content || '--'}</span>
+                  <IconFont className="icon" type="down-icon" />
+                </div>
+              </PriorityWrap>
+            </PopConfirm>
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
