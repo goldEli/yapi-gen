@@ -16,6 +16,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import { decryptPhp } from '@/tools/cryptoPhp'
 
 const SearchWrap = styled.div({
   height: 64,

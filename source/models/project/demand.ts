@@ -8,6 +8,7 @@ export default () => {
   const [isShowProgress, setIsShowProgress] = useState(false)
   const [percentShow, setPercentShow] = useState<boolean>(false)
   const [percentVal, setPercentVal] = useState<any>()
+  const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     setDemandInfo(result)
@@ -60,5 +61,7 @@ export default () => {
     setPercentShow,
     percentVal,
     setPercentVal,
+    uploadStatus,
+    setUploadStatus,
   }
 }

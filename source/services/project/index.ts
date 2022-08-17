@@ -276,6 +276,7 @@ export const getProjectPermission: any = async (params: any) => {
       id: i.id,
       name: i.content_txt || i.name,
       type: i.type,
+      label: i.name,
     })),
   }
 }

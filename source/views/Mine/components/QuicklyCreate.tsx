@@ -192,7 +192,8 @@ const EditDemand = (props: Props) => {
   const [attachList, setAttachList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>()
-  const { getDemandList, percentVal, percentShow } = useModel('demand')
+  const { getDemandList, percentVal, percentShow, uploadStatus }
+    = useModel('demand')
   const { getProjectInfo, setTagList } = useModel('project')
   const [isShow, setIsShow] = useState(false)
 
@@ -379,6 +380,7 @@ const EditDemand = (props: Props) => {
   const Children = (item: any) => {
     return (
       <Progress
+        status={uploadStatus}
         percent={percentVal}
         size="small"
         style={{ display: percentShow ? 'block' : 'none' }}

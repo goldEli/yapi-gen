@@ -87,7 +87,7 @@ const AddMember = (props: Props) => {
 
     if (!form.getFieldValue('userGroupId')) {
       userGroupId = projectPermission?.filter(
-        (i: any) => i.label === '参与者',
+        (i: any) => i.tagLabel === '参与者',
       )[0]?.value
     }
 
@@ -176,8 +176,9 @@ const AddMember = (props: Props) => {
                 showArrow
                 optionFilterProp="label"
                 defaultValue={
-                  projectPermission?.filter((i: any) => i.label === '参与者')[0]
-                    ?.value
+                  projectPermission?.filter(
+                    (i: any) => i.tagLabel === '参与者',
+                  )[0]?.value
                 }
               />
             </Form.Item>

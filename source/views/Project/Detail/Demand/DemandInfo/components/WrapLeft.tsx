@@ -128,6 +128,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     isShowProgress,
     percentShow,
     percentVal,
+    uploadStatus,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -164,6 +165,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const Children = (item: any) => {
     return (
       <Progress
+        status={uploadStatus}
         percent={percentVal}
         size="small"
         style={{ display: percentShow ? 'block' : 'none' }}

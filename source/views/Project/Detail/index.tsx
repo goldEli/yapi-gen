@@ -39,6 +39,7 @@ const Detail = () => {
     const arr = result.list?.map((i: any) => ({
       label: i.name,
       value: i.id,
+      tagLabel: i.label,
     }))
     setProjectPermission(arr)
   }

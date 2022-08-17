@@ -214,6 +214,7 @@ const EditDemand = (props: Props) => {
     demandInfo,
     percentShow,
     percentVal,
+    uploadStatus,
   } = useModel('demand')
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<InputRef>(null)
@@ -439,6 +440,7 @@ const EditDemand = (props: Props) => {
   const Children = (item: any) => {
     return (
       <Progress
+        status={uploadStatus}
         percent={percentVal}
         size="small"
         style={{ display: percentShow ? 'block' : 'none' }}

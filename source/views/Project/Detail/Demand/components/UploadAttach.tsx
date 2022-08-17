@@ -35,6 +35,7 @@ const UploadAttach = (props: Props) => {
     deleteInfoDemand,
     setPercentShow,
     setPercentVal,
+    setUploadStatus,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -117,11 +118,13 @@ const UploadAttach = (props: Props) => {
   const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
     const fileSpeed = list[list.length - 1].percent
     const num = fileSpeed === 0 ? fileSpeed : (fileSpeed * 100).toFixed(2)
+    setUploadStatus(list[list.length - 1].state)
     if (list[list.length - 1].state === 'success') {
       setPercentVal(100)
       setTimeout(() => {
         setPercentShow(false)
         props?.onChangeShow?.(false)
+        setUploadStatus('normal')
       }, 1000)
     } else {
       setPercentShow(true)
