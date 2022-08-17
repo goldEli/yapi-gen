@@ -5,6 +5,7 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const { Option } = Select
 
@@ -63,7 +64,8 @@ const SetPermissionWrap = (props: {
   onConfirm(roleId: string): void
 }) => {
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const [t] = useTranslation()
   const { data } = props
   const [roleOptions, setRoleOptions] = useState([])

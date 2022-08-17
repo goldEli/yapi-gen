@@ -20,7 +20,7 @@ import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 
 const Warp = styled.div({
@@ -212,7 +212,8 @@ const ProjectSet = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [isDelete, setIsDelete] = useState(false)
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const {
     getProjectPermission,
     getPermission,

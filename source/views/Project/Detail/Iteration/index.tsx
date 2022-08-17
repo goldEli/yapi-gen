@@ -14,9 +14,10 @@ import { Space, Button, message, Popover } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission, openDetail } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -103,10 +104,11 @@ const IterationWrap = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
-  const type = searchParams.get('type')
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { type } = paramsData
   const navigate = useNavigate()
-  const iterateId = searchParams.get('iterateId')
+  const { iterateId } = paramsData
   const {
     getIterateInfo,
     iterateInfo,
@@ -149,9 +151,10 @@ const IterationWrap = () => {
   }, [])
 
   const onChangeIdx = (val: string) => {
-    navigate(
-      `/Detail/Iteration?type=${val}&id=${projectId}&iterateId=${iterateId}`,
+    const params = encryptPhp(
+      JSON.stringify({ type: val, id: projectId, iterateId }),
     )
+    navigate(`/Detail/Iteration?data=${params}`)
   }
 
   const onChangeOperation = (item: any) => {
@@ -166,7 +169,8 @@ const IterationWrap = () => {
       await deleteIterate({ projectId, id: iterateId })
       message.success(t('common.deleteSuccess'))
       setIsDelete(false)
-      navigate(`/Detail/Iteration?id=${projectId}`)
+      const params = encryptPhp(JSON.stringify({ id: projectId }))
+      navigate(`/Detail/Iteration?data=${params}`)
     } catch (error) {
 
       //

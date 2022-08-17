@@ -20,6 +20,7 @@ import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { openDetail } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -198,9 +199,15 @@ const Profile = () => {
       return
     }
 
-    openDetail(
-      `/Detail/Demand?type=info&id=${item.feedable.project_id}&demandId=${item.feedable_id}`,
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: item.feedable.project_id,
+        demandId: item.feedable_id,
+      }),
     )
+
+    openDetail(`/Detail/Demand?data=${params}`)
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)

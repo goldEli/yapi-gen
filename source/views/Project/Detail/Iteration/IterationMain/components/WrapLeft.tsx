@@ -29,10 +29,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
-import { getIsPermission, openDetail } from '@/tools/index'
+import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -135,7 +136,8 @@ const WrapLeft = (props: Props) => {
     list: undefined,
   })
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const {
     getIterateList,
     updateIterateStatus,
@@ -400,9 +402,11 @@ const WrapLeft = (props: Props) => {
 
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
-    openDetail(
-      `/Detail/Iteration?type=info&id=${projectId}&iterateId=${item.id}`,
+
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, iterateId: item.id }),
     )
+    openDetail(`/Detail/Iteration?data=${params}`)
   }
 
   const onClickItem = (item: any) => {

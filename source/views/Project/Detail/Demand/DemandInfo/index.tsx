@@ -6,6 +6,7 @@ import WrapLeft from './components/WrapLeft'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
+import { getParamsData } from '@/tools'
 
 const DividerWrap = styled(Divider)({
   margin: '0 24px',
@@ -22,8 +23,9 @@ const Wrap = styled.div({
 
 const DemandInfo = () => {
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { demandId } = paramsData
   const { getDemandInfo } = useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
 

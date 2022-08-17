@@ -15,6 +15,7 @@ import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { getParamsData } from '@/tools'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -56,8 +57,9 @@ const ChangeRecord = () => {
   const { getIterateChangeLog, iterateInfo } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
-  const iterateId = searchParams.get('iterateId')
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { iterateId } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })

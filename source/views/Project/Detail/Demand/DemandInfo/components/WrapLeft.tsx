@@ -19,6 +19,7 @@ import { useSearchParams } from 'react-router-dom'
 import { message, Progress } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -129,8 +130,9 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     percentVal,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { demandId } = paramsData
   const { projectInfo } = useModel('project')
   const [tagList, setTagList] = useState<any>([])
   const isCanEdit
@@ -140,7 +142,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
 
   const onChangeState = async (item: any) => {
     try {
-      await updatePriority({ demandId, priorityId: item.priorityId })
+      await updatePriority({ demandId, priorityId: item.priorityId, projectId })
       message.success(t('common.prioritySuccess'))
       props.onUpdate?.()
     } catch (error) {

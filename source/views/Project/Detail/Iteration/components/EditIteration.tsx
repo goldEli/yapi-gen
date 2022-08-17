@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
+import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)({
   '.anticon': {
@@ -69,7 +70,8 @@ const EditIteration = (props: Props) => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const [html, setHtml] = useState('')
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const {
     addIterate,
     updateIterate,

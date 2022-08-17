@@ -18,8 +18,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, openDetail } from '@/tools'
+import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import EditChildDemand from './EditChildDemand'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Operation = styled.div({
   display: 'flex',
@@ -88,8 +89,9 @@ const ChildDemand = () => {
   } = useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { demandId } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -181,7 +183,10 @@ const ChildDemand = () => {
   )
 
   const onClickItem = (item: any) => {
-    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const onChangePage = (page: number, size: number) => {
@@ -204,6 +209,7 @@ const ChildDemand = () => {
       await updatePriority({
         demandId: item.id,
         priorityId: item.priorityId,
+        projectId,
       })
       message.success(t('common.prioritySuccess'))
       onUpdate()

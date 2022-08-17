@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 interface Props {
   onChangeVisible(e: any): void
@@ -30,7 +31,8 @@ const DemandMain = (props: Props) => {
     list: undefined,
   })
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { getDemandList, deleteDemand } = useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isSettingState, setIsSettingState] = useState(false)

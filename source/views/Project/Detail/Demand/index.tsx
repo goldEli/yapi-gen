@@ -20,9 +20,10 @@ import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission, openDetail } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -125,9 +126,10 @@ const DemandBox = () => {
   const [operationItem, setOperationItem] = useState<any>({})
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
-  const type = searchParams.get('type')
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { type } = paramsData
+  const { demandId } = paramsData
   const { projectInfo } = useModel('project')
   const {
     getDemandInfo,
@@ -163,7 +165,10 @@ const DemandBox = () => {
   }, [])
 
   const onChangeIdx = (val: string) => {
-    navigate(`/Detail/Demand?type=${val}&id=${projectId}&demandId=${demandId}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: val, id: projectId, demandId }),
+    )
+    navigate(`/Detail/Demand?data=${params}`)
   }
 
   const moreClick = (e: any) => {

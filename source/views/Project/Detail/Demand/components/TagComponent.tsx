@@ -7,6 +7,7 @@ import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 const TagCheckedItem = styled.div<{ color?: string }>(
   {
@@ -114,7 +115,8 @@ const TagBox = (props: TagProps) => {
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
 
   useEffect(() => {
     setArr(
@@ -213,7 +215,8 @@ const TagComponent = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const checkedTags = props.defaultList?.map((i: any) => ({
     color: i?.color,
     content: i?.name,

@@ -20,9 +20,10 @@ import { OmitText } from '@star-yun/ui'
 import EditDemand from '../../Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
-import { getIsPermission, openDetail } from '@/tools/index'
+import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const StatusWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -117,7 +118,8 @@ const NewSort = (sortProps: any) => {
 export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id') || props.id
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id || props.id
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
@@ -163,7 +165,10 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   }
 
   const onToDetail = (item: any) => {
-    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const columnsChild = [
@@ -340,8 +345,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
 const DemandWrap = () => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const iterateId = searchParams.get('iterateId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { iterateId } = paramsData
   const { projectInfo } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand }
     = useModel('demand')
@@ -447,12 +453,19 @@ const DemandWrap = () => {
   }
 
   const onClickItem = (item: any) => {
-    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const onChangeState = async (item: any) => {
     try {
-      await updatePriority({ demandId: item.id, priorityId: item.priorityId })
+      await updatePriority({
+        demandId: item.id,
+        priorityId: item.priorityId,
+        projectId,
+      })
       message.success(t('common.prioritySuccess'))
       getList(pageObj, order)
     } catch (error) {

@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -52,8 +53,9 @@ const DemandBox = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { demandId } = paramsData
   const { memberList, projectInfo } = useModel('project')
   const { updateDemandStatus, getDemandInfo, demandInfo, setIsRefreshComment }
     = useModel('demand')

@@ -7,6 +7,7 @@ import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { decryptPhp } from '@/tools/cryptoPhp'
+import { getParamsData } from '@/tools'
 
 const Wrap = styled.div({
   height: '100%',
@@ -29,7 +30,8 @@ const Detail = () => {
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { isRefresh } = useModel('user')
 
   const getPermissionList = async () => {

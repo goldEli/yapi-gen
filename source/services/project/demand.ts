@@ -287,5 +287,6 @@ export const updatePriority: any = async (params: any) => {
   await http.put<any>('updatePriority', {
     priority: params.priorityId,
     id: params.demandId,
+    project_id: params.projectId,
   })
 }

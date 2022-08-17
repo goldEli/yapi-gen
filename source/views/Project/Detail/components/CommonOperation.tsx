@@ -9,9 +9,10 @@ import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import { ClickWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const OperationTop = styled.div({
   height: 64,
@@ -143,7 +144,8 @@ const CommonOperation = (props: Props) => {
   const { setFilterHeight } = useModel('demand')
   const { setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
 
   const tabsList = [
     { name: t('common.demand'), type: 'Demand' },
@@ -158,7 +160,8 @@ const CommonOperation = (props: Props) => {
     } else if (type === 'edit') {
       setIsVisible(true)
     } else {
-      navigate(`/Detail/Set?id=${projectId}`)
+      const params = encryptPhp(JSON.stringify({ id: projectId }))
+      navigate(`/Detail/Set?data=${params}`)
     }
   }
 
@@ -220,7 +223,8 @@ const CommonOperation = (props: Props) => {
   }
 
   const onToModel = (i: any) => {
-    navigate(`/Detail/${i.type}?id=${projectId}`)
+    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    navigate(`/Detail/${i.type}?data=${params}`)
     setFilterHeight(52)
     setFilterHeightIterate(52)
   }

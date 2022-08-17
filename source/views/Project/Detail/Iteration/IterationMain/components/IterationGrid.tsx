@@ -8,11 +8,12 @@ import styled from '@emotion/styled'
 import { Menu, Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { getIsPermission, openDetail } from '@/tools/index'
+import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
   padding: 24,
@@ -63,7 +64,8 @@ const IterationGrid = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { projectInfo } = useModel('project')
   const { filterHeightIterate } = useModel('iterate')
   const [basicStatus, setBasicStatus] = useState<any>([])
@@ -125,7 +127,10 @@ const IterationGrid = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   return (

@@ -8,6 +8,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -57,7 +58,8 @@ const AddMember = (props: Props) => {
   } = useModel('project')
   const { getStaffList } = useModel('staff')
   const [staffList, setStaffList] = useState<any>([])
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const [form] = Form.useForm()
 
   const getList = async () => {

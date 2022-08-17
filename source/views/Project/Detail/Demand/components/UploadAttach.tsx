@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
+import { getParamsData } from '@/tools'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -36,8 +37,9 @@ const UploadAttach = (props: Props) => {
     setPercentVal,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { demandId } = paramsData
   const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
   let arr: any[] = []

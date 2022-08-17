@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { getParamsData } from '@/tools'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -148,8 +149,9 @@ const DemoColumn = (props: { data: any }) => {
 const IterationInfo = () => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const iterateId = searchParams.get('iterateId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { iterateId } = paramsData
   const { iterateInfo, getIterateStatistics } = useModel('iterate')
   const [chartData, setChartData] = useState<any>({})
   const [isSpinning, setIsSpinning] = useState(false)

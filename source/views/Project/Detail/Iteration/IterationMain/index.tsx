@@ -13,6 +13,7 @@ import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditDemand from '../../Demand/components/EditDemand'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
@@ -39,8 +40,9 @@ const IterationMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
-  const projectId = searchParams.get('id')
-  const iterateId = searchParams.get('iterateId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { iterateId } = paramsData
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const { setIsRefreshList, setIsUpdateList } = useModel('iterate')
   const { isRefresh, setIsRefresh } = useModel('user')

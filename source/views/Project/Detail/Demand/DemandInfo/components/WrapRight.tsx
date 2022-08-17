@@ -13,6 +13,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
+import { getParamsData } from '@/tools'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -124,8 +125,9 @@ const SetHead = styled.div`
 const WrapRightBox = () => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { demandId } = paramsData
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [addValue, setAddValue] = useState('')

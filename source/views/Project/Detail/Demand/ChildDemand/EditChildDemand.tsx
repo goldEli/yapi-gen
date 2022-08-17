@@ -34,6 +34,7 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
+import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -199,8 +200,9 @@ const EditDemand = (props: Props) => {
   const [demandList, setDemandList] = useState<any>([])
   const [demandChildInfo, setDemandChildInfo] = useState<any>()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id') || props.preId
-  const demandId = searchParams.get('demandId')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id || props.preId
+  const { demandId } = paramsData
   const { memberList, projectInfo } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const [isShow, setIsShow] = useState(false)

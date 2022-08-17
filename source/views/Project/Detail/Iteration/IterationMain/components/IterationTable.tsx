@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
@@ -22,7 +23,8 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, openDetail } from '@/tools'
+import { getIsPermission, getParamsData, openDetail } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const StatusWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -96,7 +98,8 @@ const NewSort = (sortProps: any) => {
 const ChildDemandTable = (props: { value: any; row: any }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
@@ -142,7 +145,10 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
   }
 
   const onToDetail = (item: any) => {
-    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const columnsChild = [
@@ -321,7 +327,8 @@ const IterationTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { updatePriority, updateDemandStatus } = useModel('demand')
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
@@ -352,7 +359,10 @@ const IterationTable = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    openDetail(`/Detail/Demand?type=info&id=${projectId}&demandId=${item.id}`)
+    const params = encryptPhp(
+      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const onChangePage = (page: number, size: number) => {
@@ -365,7 +375,11 @@ const IterationTable = (props: Props) => {
 
   const onChangeState = async (item: any) => {
     try {
-      await updatePriority({ demandId: item.id, priorityId: item.priorityId })
+      await updatePriority({
+        demandId: item.id,
+        priorityId: item.priorityId,
+        projectId,
+      })
       message.success(t('common.prioritySuccess'))
       props.onChangeRow?.()
     } catch (error) {

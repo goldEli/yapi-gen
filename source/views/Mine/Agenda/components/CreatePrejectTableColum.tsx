@@ -16,6 +16,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const flexCss = css`
   display: flex;
@@ -42,6 +43,18 @@ const SetHead = styled.div`
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+
+  const onToDetail = (item: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: item.project_id,
+        demandId: item.id,
+      }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
+  }
+
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -64,11 +77,7 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string, record: any) => {
         return (
           <ClickWrap
-            onClick={() => {
-              openDetail(
-                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
-              )
-            }}
+            onClick={() => onToDetail(record)}
             isClose={record.status?.content === '已关闭'}
           >
             {text}
@@ -83,11 +92,7 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <ClickWrap
-            onClick={() => {
-              openDetail(
-                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
-              )
-            }}
+            onClick={() => onToDetail(record)}
             isName
             isClose={record.status?.content === '已关闭'}
           >

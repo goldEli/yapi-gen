@@ -8,6 +8,8 @@ import ProjectSet from './components/ProjectSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { getParamsData } from '@/tools'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -94,7 +96,8 @@ const Setting = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useModel('project')
-  const activeTabs = Number(searchParams.get('type')) || 0
+  const paramsData = getParamsData(searchParams)
+  const activeTabs = Number(paramsData.type) || 0
 
   const SideList = [
     {
@@ -117,6 +120,13 @@ const Setting = () => {
     },
   ]
 
+  const onToInfo = (index: any) => {
+    const params = encryptPhp(
+      JSON.stringify({ type: index, id: projectInfo.id }),
+    )
+    navigate(`/Detail/Set?data=${params}`)
+  }
+
   return (
     <Wrap>
       <Side>
@@ -126,8 +136,7 @@ const Setting = () => {
         <MenuWrap>
           {SideList.map((item, index) => (
             <MenuItem
-              onClick={() => navigate(`/Detail/Set?type=${index}&id=${projectInfo.id}`)
-              }
+              onClick={() => onToInfo(index)}
               key={item.name}
               isActive={index === activeTabs}
               hidden={!item.isPermission}

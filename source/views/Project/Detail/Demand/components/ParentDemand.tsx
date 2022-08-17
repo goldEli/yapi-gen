@@ -10,6 +10,7 @@ import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
 
 const DemandCheckedItem = styled.div({
   height: 22,
@@ -93,7 +94,8 @@ const TagBox = (props: DemandProps) => {
   const [t] = useTranslation()
   const { getDemandList, demandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const [demandList, setDemandList] = useState<any>([])
 
   const getList = async () => {
@@ -154,7 +156,8 @@ const ParentDemand = (props: Props) => {
   const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand }
     = useModel('demand')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { projectInfo } = useModel('project')
   const isCanEdit
     = projectInfo.projectPermissions?.length > 0

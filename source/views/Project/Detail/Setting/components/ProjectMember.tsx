@@ -16,7 +16,7 @@ import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
@@ -160,7 +160,8 @@ const ProjectMember = () => {
     getMemberList,
   } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })

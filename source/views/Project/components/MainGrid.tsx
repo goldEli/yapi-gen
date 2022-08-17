@@ -12,6 +12,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -67,7 +68,8 @@ const MainGrid = (props: Props) => {
   )
 
   const onToDetail = (item: any) => {
-    navigate(`/Detail/Demand?id=${item.id}`)
+    const params = encryptPhp(JSON.stringify({ id: item.id }))
+    navigate(`/Detail/Demand?data=${params}`)
   }
 
   const onAddClick = () => {

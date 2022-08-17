@@ -10,7 +10,7 @@ import { IconFont } from '@staryuntech/ant-pro'
 import { Popover, Space, Modal, message, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 
@@ -71,7 +71,8 @@ const Operation = (props: Props) => {
   const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
     = useModel('iterate')
   const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { filterAll, projectInfo } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])

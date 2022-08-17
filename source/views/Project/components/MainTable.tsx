@@ -14,6 +14,7 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -397,7 +398,8 @@ const MainTable = (props: Props) => {
   const onTableRow = useCallback((row: any) => {
     return {
       onClick: () => {
-        navigate(`/Detail/Demand?id=${row.id}`)
+        const params = encryptPhp(JSON.stringify({ id: row.id }))
+        navigate(`/Detail/Demand?data=${params}`)
       },
     }
   }, [])
