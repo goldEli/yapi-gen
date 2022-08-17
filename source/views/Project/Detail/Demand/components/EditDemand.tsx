@@ -326,8 +326,6 @@ const EditDemand = (props: Props) => {
       values.expectedEnd = moment(values.times[1]).format('YYYY-MM-DD')
     }
 
-    values.info = html
-
     if (props.isIterateId) {
       values.iterateId = props.isIterateId
     }
@@ -399,7 +397,7 @@ const EditDemand = (props: Props) => {
       const arr = attachList
       const comResult = arr.filter((i: any) => i.id !== result.uid)
       form.setFieldsValue({
-        attachments: comResult.map((i: any) => i.url),
+        attachments: comResult.map((i: any) => i.path),
       })
       setAttachList(comResult)
     }
@@ -493,7 +491,7 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="edit-square" />
           <Form.Item label={t('mine.demandInfo')} name="info">
-            <Editor value={html} onChangeValue={setHtml} />
+            <Editor />
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>

@@ -6,14 +6,20 @@ import {
   type IEditorConfig,
   type IToolbarConfig,
   i18nChangeLanguage,
+  i18nAddResources,
+  Boot,
 } from '@wangeditor/editor'
+import fullscreenMenu from './Editor/fullscreen'
+import cancelfullscreenMenu from './Editor/cancelFullscreen'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
+import styled from '@emotion/styled'
 
 interface Props {
-  value: string
-  onChangeValue(value: string): void
+  value?: string
+  onChange?(value: string): void
+  onChangeValue?(value: string): void
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -39,9 +45,41 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     'justifyCenter',
 
     // 'justifyJustify',
-    'fullScreen',
+    // 'fullScreen',
+    'customFullScreen',
   ],
 }
+
+Boot.registerParseElemHtml({
+  selector: 'v-start',
+  parseElemHtml: () => ({ type: 'v-start', children: [] }),
+})
+
+Boot.registerParseElemHtml({
+  selector: 'v-end',
+  parseElemHtml: () => ({ type: 'v-end', children: [] }),
+})
+
+Boot.registerMenu(fullscreenMenu)
+Boot.registerMenu(cancelfullscreenMenu)
+
+i18nAddResources('en', {
+  fontSize: {
+    'default': 'Font size',
+  },
+  fontFamily: {
+    'default': 'Font family',
+  },
+})
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ebedf0;
+  border-radius: 6px;
+  z-index: 100;
+  height: 172px;
+`
 
 const EditorBox = (props: Props) => {
   const [t, i18n] = useTranslation()
@@ -59,17 +97,18 @@ const EditorBox = (props: Props) => {
 
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: t('components.pleaseContent'),
-    hoverbarKeys: {
-      image: {
-        menuKeys: [
-          'imageWidth30',
-          'imageWidth50',
-          'imageWidth100',
-          'viewImageLink',
-          'deleteImage',
-        ],
-      },
-    },
+
+    // hoverbarKeys: {
+    //   image: {
+    //     menuKeys: [
+    //       'imageWidth30',
+    //       'imageWidth50',
+    //       'imageWidth100',
+    //       'viewImageLink',
+    //       'deleteImage',
+    //     ],
+    //   },
+    // },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     MENU_CONF: {
       fontFamily: {
@@ -102,6 +141,24 @@ const EditorBox = (props: Props) => {
       },
     },
   }
+
+  editorConfig.customPaste = (
+    e: IDomEditor,
+    event: ClipboardEvent,
+  ): boolean => {
+    const text = event?.clipboardData?.getData('text/plain')
+
+    // 获取粘贴的纯文本
+    if (text) {
+      e.insertText(text)
+
+      // 阻止默认的粘贴行为
+      event.preventDefault()
+      return false
+    }
+    return true
+  }
+
   const changeEditor = (bool = false, editorMenuKey?: string) => {
     setEditor(null)
     if (!bool) {
@@ -134,11 +191,12 @@ const EditorBox = (props: Props) => {
 
   const onChange = (e: any) => {
     i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
-    props.onChangeValue(e.getHtml())
+    props.onChangeValue?.(e.getHtml())
+    props.onChange?.(e.getHtml())
   }
 
   return (
-    <div style={{ border: '1px solid #EBEDF0', zIndex: 100, borderRadius: 6 }}>
+    <Wrap id="editorWrap">
       <Toolbar
         key={key}
         editor={editor}
@@ -148,13 +206,13 @@ const EditorBox = (props: Props) => {
       <Editor
         defaultConfig={editorConfig}
         value={props.value}
-        onCreated={setEditor}
+        onCreated={(e: IDomEditor) => setEditor(e)}
         onChange={onChange}
         mode="simple"
         key={key}
-        style={{ height: 132, overflowY: 'hidden' }}
+        style={{ flex: 1, overflowY: 'hidden' }}
       />
-    </div>
+    </Wrap>
   )
 }
 

@@ -7,6 +7,8 @@ import antdZh from 'antd/lib/locale/zh_CN'
 import type { Locale } from 'antd/lib/locale-provider'
 import 'moment/dist/locale/zh-cn'
 
+let currentLanguage = 'zh'
+
 const locals = {
   zh: () => import('@/locals/zh.json'),
   en: () => import('@/locals/en.json'),
@@ -71,10 +73,18 @@ const changeLanguage = async (language: LocaleKeys) => {
   ])
 
   i18n.changeLanguage(language)
+  currentLanguage = language
+  dayjs.locale(language.includes('zh') ? 'zh-cn' : language)
 
   return allLocals
 }
 
 dayjs.locale('zh-cn')
 
-export { type LocaleKeys, languages, loadedAntdLocals, changeLanguage }
+export {
+  type LocaleKeys,
+  languages,
+  loadedAntdLocals,
+  changeLanguage,
+  currentLanguage,
+}
