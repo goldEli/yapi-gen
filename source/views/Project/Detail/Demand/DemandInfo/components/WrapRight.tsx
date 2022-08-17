@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { Input, Button, message } from 'antd'
+import { Input, Button, message, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -13,7 +13,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
-import cos from '@/models/cos'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -238,9 +237,17 @@ const WrapRightBox = () => {
                         />
                       )}
                       <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span className="name">{item.name}</span>
+                        <span className="name">
+                          <Tooltip title={item.name}>
+                            <OmitText width={100}>{item.name}</OmitText>
+                          </Tooltip>
+                        </span>
                         <span className="common">
-                          <OmitText width={160}>{item.statusContent}</OmitText>
+                          <Tooltip title={item.statusContent}>
+                            <OmitText width={108}>
+                              {item.statusContent}
+                            </OmitText>
+                          </Tooltip>
                         </span>
                       </div>
                       <div className="common" style={{ paddingRight: 30 }}>
