@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable max-lines */
 /* eslint-disable camelcase */
@@ -118,8 +119,14 @@ const NewSort = (sortProps: any) => {
 export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id || props.id
+  let projectId: any
+  if (props.id) {
+    projectId = props.id
+  } else {
+    const paramsData = getParamsData(searchParams)
+    projectId = paramsData.id || props.id
+  }
+
   const [isVisible, setIsVisible] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,

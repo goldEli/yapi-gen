@@ -106,6 +106,7 @@ interface TagProps {
   onChangeIsOpen(val: boolean): void
   onChangeTag?(arr: any, type: string): void
   checkedTags: any
+  id?: any
 }
 
 const TagBox = (props: TagProps) => {
@@ -115,8 +116,13 @@ const TagBox = (props: TagProps) => {
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  let projectId: any
+  if (props?.id) {
+    projectId = props?.id
+  } else {
+    const paramsData = getParamsData(searchParams)
+    projectId = paramsData.id
+  }
 
   useEffect(() => {
     setArr(
@@ -203,6 +209,8 @@ interface Props {
   canAdd?: boolean
   onChangeTag?(arr: any, type: string): void
   defaultList?: any
+  id?: any
+  isQuick?: boolean
 }
 
 const TagComponent = (props: Props) => {
@@ -215,8 +223,13 @@ const TagComponent = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  let projectId: any
+  if (props?.id) {
+    projectId = props?.id
+  } else {
+    const paramsData = getParamsData(searchParams)
+    projectId = paramsData.id
+  }
   const checkedTags = props.defaultList?.map((i: any) => ({
     color: i?.color,
     content: i?.name,
@@ -343,14 +356,14 @@ const TagComponent = (props: Props) => {
         <TagCheckedItem
           key={i.id}
           style={{
-            cursor: isCanEdit ? 'pointer' : 'inherit',
+            cursor: isCanEdit || props?.isQuick ? 'pointer' : 'inherit',
             alignItems: 'center',
             color: i.color,
             border: `1px solid ${i.color}`,
           }}
         >
           <div>{i.content}</div>
-          {isCanEdit ? (
+          {isCanEdit || props?.isQuick ? (
             <IconFont
               className="icon"
               style={{
@@ -365,7 +378,7 @@ const TagComponent = (props: Props) => {
           ) : null}
         </TagCheckedItem>
       ))}
-      {isCanEdit ? (
+      {props?.isQuick || isCanEdit ? (
         <Popover
           visible={isOpen}
           placement="bottom"
@@ -380,6 +393,7 @@ const TagComponent = (props: Props) => {
               onChangeIsOpen={setIsOpen}
               onChangeTag={props.onChangeTag}
               checkedTags={checkedTags}
+              id={props?.id}
             />
           }
           getPopupContainer={node => node}

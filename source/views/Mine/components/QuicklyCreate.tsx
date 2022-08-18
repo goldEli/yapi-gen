@@ -571,6 +571,8 @@ const EditDemand = (props: Props) => {
           <IconFont className="labelIcon" type="app-store-add" />
           <Form.Item label={t('common.tag')} name="tag">
             <TagComponent
+              isQuick
+              id={prejectId}
               defaultList={tagListAll}
               onChangeTag={onChangeTag}
               addWrap={
@@ -584,25 +586,19 @@ const EditDemand = (props: Props) => {
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="attachment" />
           <Form.Item label={t('common.attachment')} name="attachments">
-            {!prejectId ? (
-              <AddWrap onClick={onAdd}>
-                <IconFont type="plus" />
-                <div>{t('common.add23')}</div>
-              </AddWrap>
-            ) : (
-              <UploadAttach
-                child={isShow ? <Children /> : ''}
-                onChangeShow={setIsShow}
-                defaultList={attachList}
-                onChangeAttachment={onChangeAttachment}
-                addWrap={
-                  <AddWrap>
-                    <IconFont type="plus" />
-                    <div>{t('common.add23')}</div>
-                  </AddWrap>
-                }
-              />
-            )}
+            <UploadAttach
+              id={prejectId}
+              child={isShow ? <Children /> : ''}
+              onChangeShow={setIsShow}
+              defaultList={attachList}
+              onChangeAttachment={onChangeAttachment}
+              addWrap={
+                <AddWrap>
+                  <IconFont type="plus" />
+                  <div>{t('common.add23')}</div>
+                </AddWrap>
+              }
+            />
           </Form.Item>
         </div>
       </FormWrap>

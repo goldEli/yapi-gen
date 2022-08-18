@@ -24,6 +24,7 @@ interface Props {
   canUpdate?: boolean
   child?: any
   onChangeShow?(state: boolean): void
+  id?: any
 }
 
 const UploadAttach = (props: Props) => {
@@ -38,9 +39,15 @@ const UploadAttach = (props: Props) => {
     setUploadStatus,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { demandId } = paramsData
+  let projectId: any
+  let demandId: any
+  if (props?.id) {
+    projectId = props?.id
+  } else {
+    const paramsData = getParamsData(searchParams)
+    projectId = paramsData.id
+    demandId = paramsData.demandId
+  }
   const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
   let arr: any[] = []
