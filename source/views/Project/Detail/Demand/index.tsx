@@ -14,7 +14,7 @@ import ChildDemand from './ChildDemand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message } from 'antd'
+import { Space, Button, message, Tooltip } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
@@ -24,6 +24,7 @@ import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { OmitText } from '@star-yun/ui'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -37,20 +38,11 @@ const DemandInfoWrap = styled.div({
 const NameWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  span: {
+  '.demandName': {
     fontSize: 16,
     fontWeight: 400,
     color: 'black',
     marginRight: 8,
-  },
-  div: {
-    height: 22,
-    borderRadius: 6,
-    border: '1px solid #2877FF',
-    padding: '0 8px',
-    color: '#2877FF',
-    fontSize: 12,
-    fontWeight: 400,
   },
 })
 
@@ -237,7 +229,11 @@ const DemandBox = () => {
         />
         <DemandInfoWrap>
           <NameWrap>
-            <span>{demandInfo?.name}</span>
+            <Tooltip title={demandInfo?.name}>
+              <OmitText width={600}>
+                <span className="demandName">{demandInfo?.name}</span>
+              </OmitText>
+            </Tooltip>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
                 return isCanEdit ? (
@@ -327,12 +323,14 @@ const DemandBox = () => {
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>
-      <EditDemand
-        visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        id={operationItem.id}
-        onUpdate={onUpdate}
-      />
+      {isVisible ? (
+        <EditDemand
+          visible={isVisible}
+          onChangeVisible={onChangeVisible}
+          id={operationItem.id}
+          onUpdate={onUpdate}
+        />
+      ) : null}
       {content()}
     </div>
   )

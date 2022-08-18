@@ -222,6 +222,7 @@ const Operation = () => {
         </NewSort>
       ),
       dataIndex: 'type',
+      width: 200,
       render: (text: string) => {
         return <div>{typeList.filter(i => i.value === text)[0].label}</div>
       },
@@ -342,6 +343,7 @@ const Operation = () => {
                   pagination={false}
                   scroll={{ x: 'max-content' }}
                   showSorterTooltip={false}
+                  sticky
                 />
               )
                 : <NoData />

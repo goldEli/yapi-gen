@@ -414,8 +414,10 @@ const WrapLeft = (props: Props) => {
   }
 
   const onChangeClick = () => {
-    props.onChangeVisible()
     props.onChangeOperation?.({})
+    setTimeout(() => {
+      props.onChangeVisible()
+    }, 100)
   }
 
   const onVisibleChange = (visible: any) => {

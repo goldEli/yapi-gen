@@ -231,12 +231,16 @@ const CommonOperation = (props: Props) => {
 
   return (
     <div>
-      <EditProject
-        visible={isVisible}
-        onChangeVisible={() => onClickEdit(false)}
-        details={projectInfo}
-        onUpdate={props.onUpdate}
-      />
+      {isVisible
+        ? (
+            <EditProject
+              visible={isVisible}
+              onChangeVisible={() => onClickEdit(false)}
+              details={projectInfo}
+              onUpdate={props.onUpdate}
+            />
+          )
+        : null}
       <ProjectInfoModal
         visible={infoVisible}
         onChangeVisible={() => onClickProjectInfo(false)}

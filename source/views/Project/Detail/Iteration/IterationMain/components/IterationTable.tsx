@@ -164,6 +164,7 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         </NewSort>
       ),
       dataIndex: 'id',
+      width: 100,
       render: (text: string, record: any) => {
         return (
           <ClickWrap
@@ -187,9 +188,10 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         </NewSort>
       ),
       dataIndex: 'name',
+      width: 160,
       render: (text: string, record: any) => {
         return (
-          <OmitText width={180}>
+          <OmitText width={160}>
             <ClickWrap
               onClick={() => onToDetail(record)}
               isName
@@ -213,8 +215,9 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      width: 100,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <OmitText width={100}>{text || '--'}</OmitText>
       },
     },
     {
@@ -273,8 +276,9 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
         </NewSort>
       ),
       dataIndex: 'dealName',
+      width: 120,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <OmitText width={120}>{text || '--'}</OmitText>
       },
     },
   ]
@@ -291,13 +295,14 @@ const ChildDemandTable = (props: { value: any; row: any }) => {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ minWidth: 500, maxHeight: 400 }}>
+        <div style={{ maxWidth: 600, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"
               pagination={false}
               columns={columnsChild}
               dataSource={dataList?.list}
+              sticky
             />
           )
             : <NoData />
@@ -522,6 +527,7 @@ const IterationTable = (props: Props) => {
                   pagination={false}
                   scroll={{ x: 'max-content' }}
                   showSorterTooltip={false}
+                  sticky
                 />
               )
                 : <NoData />

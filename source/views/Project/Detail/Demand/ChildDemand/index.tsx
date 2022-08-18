@@ -376,6 +376,7 @@ const ChildDemand = () => {
                 pagination={false}
                 scroll={{ x: 'max-content' }}
                 showSorterTooltip={false}
+                sticky
               />
             )
               : <NoData />

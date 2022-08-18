@@ -191,6 +191,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'id',
+      width: 100,
       render: (text: string, record: any) => {
         return (
           <ClickWrap
@@ -214,9 +215,10 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'name',
+      width: 160,
       render: (text: string, record: any) => {
         return (
-          <OmitText width={180}>
+          <OmitText width={160}>
             <ClickWrap
               onClick={() => onToDetail(record)}
               isName
@@ -240,8 +242,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      width: 100,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <OmitText width={100}>{text || '--'}</OmitText>
       },
     },
     {
@@ -302,8 +305,9 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'dealName',
+      width: 120,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <OmitText width={120}>{text || '--'}</OmitText>
       },
     },
   ]
@@ -320,7 +324,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ minWidth: 500, maxHeight: 400 }}>
+        <div style={{ maxWidth: 600, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length
             ? (
                 <Table
@@ -328,6 +332,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
                   pagination={false}
                   columns={columnsChild}
                   dataSource={dataList?.list}
+                  sticky
                 />
               )
             : <NoData />
@@ -544,6 +549,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'name',
+      width: 160,
       render: (text: string | number, record: any) => {
         return (
           <ClickWrap
@@ -551,7 +557,7 @@ const DemandWrap = () => {
             isClose={record.status?.content === '已关闭'}
             onClick={() => onClickItem(record)}
           >
-            <OmitText width={200}>{text}</OmitText>
+            <OmitText width={160}>{text}</OmitText>
           </ClickWrap>
         )
       },
@@ -568,6 +574,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'demand',
+      width: 200,
       render: (text: string, record: any) => {
         return <ChildDemandTable value={text} row={record} />
       },
@@ -584,6 +591,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'priority',
+      width: 180,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
@@ -629,8 +637,9 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'iteration',
+      width: 120,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <OmitText width={120}>{text || '--'}</OmitText>
       },
     },
     {
@@ -691,6 +700,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'dealName',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -707,6 +717,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'time',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -723,6 +734,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'expectedStart',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -739,6 +751,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'expectedEnd',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -771,13 +784,17 @@ const DemandWrap = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      <EditDemand
-        visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        id={demandItem?.id}
-        onUpdate={() => getList(pageObj)}
-        isIterateId={iterateId}
-      />
+      {isVisible
+        ? (
+            <EditDemand
+              visible={isVisible}
+              onChangeVisible={onChangeVisible}
+              id={demandItem?.id}
+              onUpdate={() => getList(pageObj)}
+              isIterateId={iterateId}
+            />
+          )
+        : null}
       <DataWrap>
         <Spin spinning={isSpinning}>
           {!!dataList?.list
@@ -790,6 +807,7 @@ const DemandWrap = () => {
                     pagination={false}
                     scroll={{ x: 'max-content' }}
                     showSorterTooltip={false}
+                    sticky
                   />
                 )
               : <NoData />

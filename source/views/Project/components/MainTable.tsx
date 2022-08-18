@@ -15,6 +15,7 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { OmitText } from '@star-yun/ui'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -217,6 +218,7 @@ const MainTable = (props: Props) => {
           {t('project.projectId')}
         </NewSort>
       ),
+      width: 160,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -257,10 +259,11 @@ const MainTable = (props: Props) => {
           {t('common.projectName')}
         </NewSort>
       ),
+      width: 200,
       render: (text: string, record: any) => {
         return (
           <ClickWrap isName isClose={record.status === 2}>
-            {text}
+            <OmitText width={160}>{text}</OmitText>
           </ClickWrap>
         )
       },
@@ -277,6 +280,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'memberCount',
+      width: 160,
     },
     {
       title: (
@@ -290,6 +294,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'storyCount',
+      width: 160,
     },
     {
       title: (
@@ -303,6 +308,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'iterateCount',
+      width: 160,
     },
     {
       title: (
@@ -316,6 +322,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'progress',
+      width: 160,
       render: (text: string) => {
         return <span>{`${Number(text) * 100}%`}</span>
       },
@@ -332,6 +339,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'createName',
+      width: 160,
     },
     {
       title: (
@@ -368,6 +376,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'createdTime',
+      width: 180,
     },
     {
       title: (
@@ -381,6 +390,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'endTime',
+      width: 180,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -417,6 +427,7 @@ const MainTable = (props: Props) => {
               scroll={{ x: 'max-content' }}
               showSorterTooltip={false}
               onRow={onTableRow}
+              sticky
             />
           )
             : <NoData />

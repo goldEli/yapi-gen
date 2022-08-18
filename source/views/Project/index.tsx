@@ -236,13 +236,15 @@ const Project = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        <EditProject
-          visible={isVisible}
-          onChangeVisible={() => setIsVisible(!isVisible)}
-          details={operationDetail}
-          onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
-          }
-        />
+        {isVisible ? (
+          <EditProject
+            visible={isVisible}
+            onChangeVisible={() => setIsVisible(!isVisible)}
+            details={operationDetail}
+            onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+            }
+          />
+        ) : null}
         <SearchWrap>
           <SearchComponent
             placeholder={t('mark.searchP')}

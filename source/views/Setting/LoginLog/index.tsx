@@ -203,6 +203,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'id',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -219,6 +220,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'username',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -235,6 +237,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'nickname',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -315,6 +318,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'status',
+      width: 160,
       render: (text: number) => {
         return (
           <StatusWrap>
@@ -412,6 +416,7 @@ const LoginLog = () => {
                   pagination={false}
                   scroll={{ x: 'max-content' }}
                   showSorterTooltip={false}
+                  sticky
                 />
               )
                 : <NoData />

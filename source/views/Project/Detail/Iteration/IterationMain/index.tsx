@@ -188,13 +188,16 @@ const IterationMain = (props: Props) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <EditDemand
-        visible={isDemandVisible}
-        onChangeVisible={onChangeVisible}
-        id={demandItem?.id}
-        onUpdate={onChangeRow}
-        isIterateId={iterateId}
-      />
+      {isDemandVisible ? (
+        <EditDemand
+          visible={isDemandVisible}
+          onChangeVisible={onChangeVisible}
+          id={demandItem?.id}
+          onUpdate={onChangeRow}
+          isIterateId={iterateId}
+        />
+      ) : null}
+
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isVisible}

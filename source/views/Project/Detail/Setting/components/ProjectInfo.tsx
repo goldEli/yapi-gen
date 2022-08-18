@@ -112,12 +112,17 @@ const ProjectInfo = () => {
 
   return (
     <div style={{ padding: 16, height: '100%' }}>
-      <EditProject
-        visible={visible}
-        onChangeVisible={() => setVisible(!visible)}
-        details={projectInfo}
-        onUpdate={onUpdate}
-      />
+      {visible
+        ? (
+            <EditProject
+              visible={visible}
+              onChangeVisible={() => setVisible(!visible)}
+              details={projectInfo}
+              onUpdate={onUpdate}
+            />
+          )
+        : null}
+
       <Wrap>
         <InfoLeft>
           <img src={projectInfo.cover} alt="" />

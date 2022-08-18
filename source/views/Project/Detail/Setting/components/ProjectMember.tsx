@@ -248,6 +248,7 @@ const ProjectMember = () => {
       setIsDelete(false)
       setOperationItem({})
       getList(order, pageObj)
+      getMemberList({ all: true, projectId })
     } catch (error) {
 
       //
@@ -384,6 +385,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'gender',
+      width: 120,
       render: (text: number) => {
         return <span>{text === 1 ? t('common.male') : t('common.female')}</span>
       },
@@ -416,6 +418,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'positionName',
+      width: 120,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -432,6 +435,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'roleName',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -595,6 +599,7 @@ const ProjectMember = () => {
                     pagination={false}
                     scroll={{ x: 'max-content' }}
                     showSorterTooltip={false}
+                    sticky
                   />
                 )
                   : <NoData />

@@ -11,7 +11,7 @@ import {
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
-import { Timeline, message, Pagination, Spin } from 'antd'
+import { Timeline, message, Pagination, Spin, Tooltip } from 'antd'
 import Gatte from './components/Gatte'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { OmitText } from '@star-yun/ui'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -289,16 +290,24 @@ const Profile = () => {
                             <span>{item.content}</span>
                           </LineItem>
                           <LineItem>
-                            <span>{item.feedable?.project.name}</span>
-                            <span
-                              onClick={() => onToDetail(item)}
-                              style={{
-                                color: 'rgba(40, 119, 255, 1)',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              {item.feedable?.name}
-                            </span>
+                            <Tooltip title={item.feedable?.project.name}>
+                              <OmitText width={200}>
+                                {item.feedable?.project.name}
+                              </OmitText>
+                            </Tooltip>
+                            <Tooltip title={item.feedable?.project.name}>
+                              <OmitText width={300}>
+                                <span
+                                  onClick={() => onToDetail(item)}
+                                  style={{
+                                    color: 'rgba(40, 119, 255, 1)',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  {item.feedable?.name}
+                                </span>
+                              </OmitText>
+                            </Tooltip>
                           </LineItem>
                         </Timeline.Item>
                       ))}

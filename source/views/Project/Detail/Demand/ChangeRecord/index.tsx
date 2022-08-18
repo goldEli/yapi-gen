@@ -138,6 +138,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'id',
+      width: 160,
     },
     {
       title: (
@@ -164,6 +165,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'userName',
+      width: 160,
     },
     {
       title: (
@@ -193,6 +195,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'fields',
+      width: 160,
       render: (text: []) => {
         return (
           <div
@@ -219,6 +222,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'beforeField',
+      width: 200,
       render: (text: any, record: any) => {
         return (
           <div
@@ -264,6 +268,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'afterField',
+      width: 200,
       render: (text: any, record: any) => {
         return (
           <div
@@ -298,6 +303,7 @@ const ChangeRecord = () => {
       },
     },
   ]
+
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
     getList({ page, size }, order)
@@ -357,6 +363,7 @@ const ChangeRecord = () => {
                 pagination={false}
                 scroll={{ x: 'max-content' }}
                 showSorterTooltip={false}
+                sticky
               />
             )
               : <NoData />
