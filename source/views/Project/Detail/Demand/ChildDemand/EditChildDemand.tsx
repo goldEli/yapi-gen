@@ -273,7 +273,7 @@ const EditDemand = (props: Props) => {
   const getCommonUser = (arr: any) => {
     let res: any[] = []
     if (arr.length) {
-      res = memberList?.filter((i: any) => !arr.find((k: any) => k.id !== i.id))
+      res = memberList?.filter((i: any) => arr.some((k: any) => k.id === i.id))
     }
     return res.length ? res.map((i: any) => i.id) : []
   }
