@@ -198,8 +198,14 @@ const EditDemand = (props: Props) => {
   const [demandList, setDemandList] = useState<any>([])
   const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id || props.preId
+  let projectId: any
+  if (props?.preId) {
+    projectId = props.preId
+  } else {
+    const paramsData = getParamsData(searchParams)
+    projectId = paramsData.id
+  }
+
   const { memberList, projectInfo, getMemberList, getProjectInfo }
     = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
