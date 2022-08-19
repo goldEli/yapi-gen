@@ -6,6 +6,12 @@ import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import styled from '@emotion/styled'
+
+const MainWrap = styled.div({
+  height: 'calc(100% - 64px)',
+  overflow: 'auto',
+})
 
 const Finished = () => {
   const [t] = useTranslation()
@@ -38,8 +44,10 @@ const Finished = () => {
       permission={userInfo?.company_permissions}
     >
       <StaffHeader>{t('mine.mineNeedDeal')}</StaffHeader>
-      <MineSwiper data={swiperData} onTap={getProjectId} />
-      <Need id={projectId} />
+      <MainWrap>
+        <MineSwiper data={swiperData} onTap={getProjectId} />
+        <Need id={projectId} />
+      </MainWrap>
     </PermissionWrap>
   )
 }

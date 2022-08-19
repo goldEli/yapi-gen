@@ -127,7 +127,6 @@ const Need = (props: any) => {
     getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
-    setIsListMany,
   } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -407,7 +406,6 @@ const Need = (props: any) => {
 
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
-    setIsListMany(state)
   }
 
   return (
@@ -545,7 +543,7 @@ const Need = (props: any) => {
       ) : null}
 
       {!isMany && (
-        <PaginationWrap style={{ position: 'fixed', bottom: 0, right: 16 }}>
+        <PaginationWrap>
           <Pagination
             defaultCurrent={1}
             current={page}

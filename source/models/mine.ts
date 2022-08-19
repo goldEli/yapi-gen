@@ -2,8 +2,6 @@ import * as services from '@/services'
 import { useState } from 'react'
 
 export default () => {
-  const [isListMany, setIsListMany] = useState(false)
-
   const {
     addQuicklyCreate,
     getPeopleList,
@@ -46,7 +44,5 @@ export default () => {
     getMineProjectList,
     getMineChartsList,
     getMineCreacteList,
-    isListMany,
-    setIsListMany,
   }
 }

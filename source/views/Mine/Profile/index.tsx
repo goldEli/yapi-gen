@@ -134,8 +134,7 @@ const GatteWrap = styled.div`
 `
 const Profile = () => {
   const [t, i18n] = useTranslation()
-  const { getMineChartsList, getUserFeedList, getMineGatte, setIsListMany }
-    = useModel('mine')
+  const { getMineChartsList, getUserFeedList, getMineGatte } = useModel('mine')
   const { userInfo } = useModel('user')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
@@ -178,7 +177,6 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-    setIsListMany(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthIndex, page, pagesize])
 

@@ -36,15 +36,10 @@ const Side = styled.div`
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
 `
-const Main = styled.div<{ isListMany?: boolean }>(
-  {
-    width: 'calc(100% - 220px)',
-    overflow: 'auto',
-  },
-  ({ isListMany }) => ({
-    height: isListMany ? '100%' : 'calc(100% - 64px)',
-  }),
-)
+const Main = styled.div({
+  width: 'calc(100% - 220px)',
+  overflow: 'auto',
+})
 
 const Menu = styled.div`
   width: 100%;
@@ -85,11 +80,9 @@ const MineBox = () => {
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
-  const { isListMany, setIsListMany } = useModel('mine')
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
-    setIsListMany(false)
   }
   const controlquickCreateVisible = () => {
     setQuickCreateVisible(true)
@@ -176,7 +169,7 @@ const MineBox = () => {
           ))}
         </Menu>
       </Side>
-      <Main isListMany={isListMany}>
+      <Main>
         <Outlet />
       </Main>
       {quickCreateVisible ? (
