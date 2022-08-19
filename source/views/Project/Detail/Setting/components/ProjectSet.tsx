@@ -222,6 +222,7 @@ const ProjectSet = () => {
     updatePermission,
     deletePermission,
     projectInfo,
+    getProjectInfo,
   } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
@@ -279,8 +280,7 @@ const ProjectSet = () => {
       })
       getPermissionList(activeDetail.id)
       message.success(t('common.saveSuccess'))
-
-      //
+      getProjectInfo({ projectId })
     } catch (error) {
 
       //

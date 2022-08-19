@@ -27,7 +27,7 @@ const Header = styled.div({
   lineHeight: '64px',
   position: 'sticky',
   top: 0,
-  zIndex: 2,
+  zIndex: 1,
   '.label': {
     fontSize: 16,
     fontWeight: 400,

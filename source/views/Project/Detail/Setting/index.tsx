@@ -24,6 +24,8 @@ const Side = styled.div({
   width: 220,
   background: 'white',
   height: '100%',
+  boxShadow: '0px 4px 6px rgb(0 0 0 / 10%)',
+  zIndex: 2,
 })
 
 const ImgWrap = styled.div({

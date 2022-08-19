@@ -30,12 +30,14 @@ const PermissionWrap = ({
   permission,
   isType,
   children,
+  isPadding,
 }: {
   auth: any
   hasWidth?: boolean
   permission?: any
   isType?: number
   children?: any
+  isPadding?: boolean
 }) => {
   const [t] = useTranslation()
   if (permission?.length && !isType) {

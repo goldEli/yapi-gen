@@ -22,14 +22,8 @@ const Side = styled.div({
   width: 220,
   background: 'white',
   height: '100%',
-
-  // img: {
-  //   width: '100%',
-  //   height: 88,
-  //   marginBottom: 32,
-  //   borderRadius: 6,
-  //   padding: '0 16px',
-  // },
+  zIndex: 2,
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
 })
 
 const Content = styled.div({

@@ -12,7 +12,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Menu, Dropdown, Pagination, message, Select, Form, Spin } from 'antd'
 import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -37,6 +37,7 @@ const HeaderTop = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  zIndex: 1,
 })
 
 const Content = styled.div({
@@ -140,6 +141,7 @@ const NewSort = (sortProps: any) => {
 
 const ProjectMember = () => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(true)
   const [isAddVisible, setIsAddVisible] = useState(false)
@@ -160,6 +162,7 @@ const ProjectMember = () => {
     getMemberList,
   } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
+  const { userInfo } = useModel('user')
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
@@ -247,8 +250,12 @@ const ProjectMember = () => {
       message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       setOperationItem({})
-      getList(order, pageObj)
-      getMemberList({ all: true, projectId })
+      if (operationItem.id === userInfo?.id) {
+        navigate('/Project')
+      } else {
+        getList(order, pageObj)
+        getMemberList({ all: true, projectId })
+      }
     } catch (error) {
 
       //
@@ -500,6 +507,7 @@ const ProjectMember = () => {
       auth="b/project/member"
       permission={projectInfo.projectPermissions}
       isType={2}
+      isPadding
     >
       <Wrap>
         {isEditVisible ? (

@@ -25,7 +25,7 @@ const SideWrap = styled.div`
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  z-index: 3;
   position: fixed;
   left: 0;
   height: 100vh;

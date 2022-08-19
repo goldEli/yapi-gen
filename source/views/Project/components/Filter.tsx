@@ -19,12 +19,29 @@ const WrapLeft = styled(Space)({
   alignItems: 'center',
 })
 
+const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
+  {
+    color: '#969799',
+    fontSize: 20,
+    cursor: 'pointer',
+  },
+  ({ active }) => ({
+    color: active ? '#2877FF' : '#969799',
+  }),
+)
+
 const WrapRight = styled.div({
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
   '.ant-space-item': {
     display: 'flex',
     alignItems: 'center',
+  },
+  '&: hover': {
+    [IconfontWrap.toString()]: {
+      color: '#2877ff',
+    },
   },
 })
 
@@ -40,17 +57,6 @@ const TitleBox = styled.div<{ idx: boolean }>(
   ({ idx }) => ({
     borderBottom: idx ? '2px solid #2877FF' : '2px solid white',
     color: idx ? '#2877FF' : '#323233',
-  }),
-)
-
-const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    color: '#969799',
-    fontSize: 20,
-    cursor: 'pointer',
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
   }),
 )
 
@@ -138,8 +144,8 @@ const Filter = (props: Props) => {
                 ? t('common.projectName')
                 : t('common.createTime')}
             </MainTitle>
-            <Dropdown overlay={menu}>
-              <IconfontWrap style={{ color: '#2877ff' }} type="sort" />
+            <Dropdown overlay={menu} getPopupContainer={node => node}>
+              <IconfontWrap type="sort" />
             </Dropdown>
           </div>
         </Space>

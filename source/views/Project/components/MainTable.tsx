@@ -70,17 +70,23 @@ const DataWrap = styled.div({
   background: 'white',
 })
 
-const ImgWrap = styled.img({
-  width: 60,
-  height: 28,
-  borderRadius: 2,
-  boxSizing: 'border-box',
-  border: '1px solid white',
-  cursor: 'pointer',
-  '&: hover': {
-    border: '1px solid #2877ff',
+const ImgWrap = styled.div<{ url?: string }>(
+  {
+    width: 60,
+    height: 28,
+    borderRadius: 2,
+    boxSizing: 'border-box',
+    border: '1px solid white',
+    cursor: 'pointer',
+    backgroundSize: 'cover',
+    '&: hover': {
+      border: '1px solid #2877ff',
+    },
   },
-})
+  ({ url }) => ({
+    backgroundImage: `url(${url})`,
+  }),
+)
 
 interface MoreProps {
   menu: React.ReactElement
@@ -245,7 +251,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'cover',
-      render: (text: string) => <ImgWrap src={text} />,
+      render: (text: string) => <ImgWrap url={text} />,
     },
     {
       dataIndex: 'name',

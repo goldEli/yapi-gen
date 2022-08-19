@@ -164,7 +164,7 @@ const PosterComponent = (props: Props) => {
             />
             <div hidden={props.value !== i.path}>
               <IconFont
-                type="check-circle"
+                type="checked-poster"
                 style={{ fontSize: 16, color: 'white' }}
               />
             </div>
@@ -186,7 +186,7 @@ const PosterComponent = (props: Props) => {
             <PosterWrap onClick={() => onUpdateValue(i[0])} src={i} alt="" />
             <SelfWrap hidden={props.value !== i[0]}>
               <IconFont
-                type="check-circle"
+                type="checked-poster"
                 style={{ fontSize: 16, color: 'white' }}
               />
             </SelfWrap>
