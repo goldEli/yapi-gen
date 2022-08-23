@@ -232,6 +232,7 @@ const EditDemand = (props: Props) => {
     getIterateList,
     getPeopleList,
     addQuicklyCreate,
+    setIsUpdateCreate,
   } = useModel('mine')
 
   const getPrejectName = async () => {
@@ -316,7 +317,7 @@ const EditDemand = (props: Props) => {
       setAttachList([])
       setTagListAll([])
       setPriorityDetail({})
-
+      setIsUpdateCreate(true)
       if (!hasNext) {
         props.onChangeVisible()
       } else {

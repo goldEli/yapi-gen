@@ -114,6 +114,8 @@ const Need = (props: any) => {
     getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
+    isUpdateCreate,
+    setIsUpdateCreate,
   } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -189,7 +191,14 @@ const Need = (props: any) => {
     setListData(res)
     setTotal(res.pager.total)
     setIsSpin(false)
+    setIsUpdateCreate(false)
   }
+
+  useEffect(() => {
+    if (isUpdateCreate) {
+      init()
+    }
+  }, [isUpdateCreate])
 
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)

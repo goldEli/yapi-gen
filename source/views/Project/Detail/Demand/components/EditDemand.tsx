@@ -17,7 +17,6 @@ import {
   Select,
   Space,
   message,
-  type InputRef,
   Progress,
 } from 'antd'
 import IconFont from '@/components/IconFont'

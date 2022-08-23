@@ -17,7 +17,6 @@ import {
   Select,
   Space,
   message,
-  type InputRef,
   Progress,
 } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -246,7 +245,7 @@ const EditDemand = (props: Props) => {
     uploadStatus,
   } = useModel('demand')
   const { selectIterate } = useModel('iterate')
-  const inputRef = useRef<InputRef>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -264,12 +263,6 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  // useEffect(() => {
-  //   if (!props.visible) {
-  //     form.resetFields()
-  //   }
-  // }, [props.visible])
-
   const getCommonUser = (arr: any) => {
     let res: any[] = []
     if (arr.length) {
@@ -277,14 +270,6 @@ const EditDemand = (props: Props) => {
     }
     return res.length ? res.map((i: any) => i.id) : []
   }
-
-  // useEffect(() => {
-  //   if (props.visible && inputRef) {
-  //     inputRef.current?.focus({
-  //       cursor: 'end',
-  //     })
-  //   }
-  // }, [props.visible, inputRef])
 
   const getDemandInfo = async () => {
     const result = await getDemandChildInfo({ projectId, id: props?.id })
@@ -466,6 +451,14 @@ const EditDemand = (props: Props) => {
     })
   }
 
+  useEffect(() => {
+    if (props.visible) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 200)
+    }
+  }, [props.visible])
+
   const Children = (item: any) => {
     return (
       <ProgressWrap
@@ -499,9 +492,10 @@ const EditDemand = (props: Props) => {
           >
             <Input
               autoComplete="off"
-              ref={inputRef}
+              ref={inputRef as any}
               placeholder={t('common.pleaseDemandName')}
               maxLength={100}
+              autoFocus
             />
           </Form.Item>
         </div>
