@@ -131,7 +131,7 @@ const EditorBox = (props: Props) => {
           const uploadedFile = await uploadFile(
             file,
             userInfo?.username,
-            'richEditorFiles',
+            `richEditorFiles_${new Date().getTime()}`,
           )
           insert(uploadedFile.url, '', uploadedFile.url)
         },
