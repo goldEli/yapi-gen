@@ -1,5 +1,6 @@
 {
   "common": {
+    "notCheckInfo": "没有权限查看当前需求详情！",
     "limitToast": "最多只能上传20个",
     "openMenu": "展开菜单",
     "confirmToast": "确认提示",

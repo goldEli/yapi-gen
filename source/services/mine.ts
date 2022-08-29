@@ -505,6 +505,7 @@ export const getMineNeedList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
+        project: i.project,
       }))
       : [],
     pager: response.data.pager,

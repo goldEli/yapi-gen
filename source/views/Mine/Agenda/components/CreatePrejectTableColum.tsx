@@ -1,22 +1,19 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
-import { Dropdown, Menu } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
-import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ClickWrap, ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
-import { useNavigate } from 'react-router-dom'
 import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { message } from 'antd'
 
 const flexCss = css`
   display: flex;
@@ -24,25 +21,8 @@ const flexCss = css`
   cursor: pointer;
 `
 
-const SetHead = styled.div`
-  margin-left: 32px;
-  margin-right: 12px;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
-  border-radius: 50%;
-  font-size: 12px;
-  background: rgba(40, 119, 255, 1);
-  background-blend-mode: normal;
-  border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid rgba(40, 119, 255, 1);
-  color: white;
-`
-
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(
@@ -52,7 +32,11 @@ export const useDynamicColumns = (state: any) => {
         demandId: item.id,
       }),
     )
-    openDetail(`/Detail/Demand?data=${params}`)
+    if (item.project?.is_public !== 1 && !item.project?.user_ismember) {
+      message.warning(t('common.notCheckInfo'))
+    } else {
+      openDetail(`/Detail/Demand?data=${params}`)
+    }
   }
 
   const NewSort = (props: any) => {
