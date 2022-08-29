@@ -134,7 +134,13 @@ const GatteWrap = styled.div`
 `
 const Profile = () => {
   const [t, i18n] = useTranslation()
-  const { getMineChartsList, getUserFeedList, getMineGatte } = useModel('mine')
+  const {
+    getMineChartsList,
+    getUserFeedList,
+    getMineGatte,
+    isUpdateCreate,
+    setIsUpdateCreate,
+  } = useModel('mine')
   const { userInfo } = useModel('user')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
@@ -163,16 +169,26 @@ const Profile = () => {
     await setTotal(res2.pager.total)
     setLoadingState(true)
   }
-  const init = async () => {
-    const res = await getMineChartsList()
 
-    setData(res)
+  const getFeedList = async () => {
     const res1 = await getUserFeedList({
       limit: '',
     })
 
     setLineData(res1.data)
+    setIsUpdateCreate(false)
   }
+
+  const init = async () => {
+    const res = await getMineChartsList()
+
+    setData(res)
+    getFeedList()
+  }
+
+  useEffect(() => {
+    getFeedList()
+  }, [isUpdateCreate])
 
   useEffect(() => {
     init()
