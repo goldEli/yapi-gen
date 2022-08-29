@@ -24,7 +24,7 @@ import { LevelContent } from '@/components/Level'
 import PopConfirm from '@/components/Popconfirm'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import Editor from '@/components/Editor'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import moment from 'moment'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
@@ -221,6 +221,7 @@ const EditDemand = (props: Props) => {
   const [attachList, setAttachList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>()
+  const inputRef = useRef<HTMLInputElement>(null)
   const { getDemandList, percentVal, percentShow, uploadStatus }
     = useModel('demand')
   const { getProjectInfo, setTagList } = useModel('project')
@@ -234,6 +235,14 @@ const EditDemand = (props: Props) => {
     addQuicklyCreate,
     setIsUpdateCreate,
   } = useModel('mine')
+
+  useEffect(() => {
+    if (props.visible) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 200)
+    }
+  }, [props.visible])
 
   const getPrejectName = async () => {
     const res = await getProjectList({
@@ -482,7 +491,9 @@ const EditDemand = (props: Props) => {
           >
             <Input
               autoComplete="off"
+              ref={inputRef as any}
               placeholder={t('common.pleaseDemandName')}
+              autoFocus
             />
           </Form.Item>
         </div>
