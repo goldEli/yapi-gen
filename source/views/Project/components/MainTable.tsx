@@ -251,6 +251,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'cover',
+      width: 120,
       render: (text: string) => <ImgWrap url={text} />,
     },
     {
@@ -359,6 +360,7 @@ const MainTable = (props: Props) => {
         </NewSort>
       ),
       dataIndex: 'status',
+      width: 160,
       render: (text: number) => {
         return (
           <StatusWrap>

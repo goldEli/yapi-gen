@@ -119,6 +119,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
+      width: 160,
       render: (text: any, record: any) => {
         return (
           <PopConfirm

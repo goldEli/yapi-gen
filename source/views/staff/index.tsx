@@ -359,6 +359,7 @@ const Staff = () => {
                     dataSource={listData}
                     pagination={false}
                     scroll={{ x: 'max-content' }}
+                    sticky
                   />
                 )
                   : <NoData />

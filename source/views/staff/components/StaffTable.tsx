@@ -91,6 +91,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="gender">{t('common.sex')}</NewSort>,
       dataIndex: 'gender',
       key: 'gender',
+      width: 120,
       render: (
         text: string | number,
         record: Record<string, string | number>,
@@ -106,6 +107,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="email">{t('common.email')}</NewSort>,
       dataIndex: 'email',
       key: 'email',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -114,6 +116,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="phone">{t('common.phone')}</NewSort>,
       dataIndex: 'phone',
       key: 'phone',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -124,6 +127,7 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'department_name',
       key: 'department_name',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -132,6 +136,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="position_name">{t('common.job')}</NewSort>,
       dataIndex: 'position_name',
       key: 'position_name',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -142,6 +147,7 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'role_name',
       key: 'role_name',
+      width: 140,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -150,6 +156,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
+      width: 160,
       render: (
         text: string | number,
         record: Record<string, string | number>,
@@ -167,6 +174,7 @@ export const useDynamicColumns = (state: any) => {
       ,
       dataIndex: 'project_num',
       key: 'project_num',
+      width: 120,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -175,6 +183,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

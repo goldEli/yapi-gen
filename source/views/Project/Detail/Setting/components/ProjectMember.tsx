@@ -328,6 +328,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'nickname',
+      width: 240,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -376,6 +377,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'name',
+      width: 180,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -409,6 +411,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'departmentName',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -459,6 +462,7 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'joinTime',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

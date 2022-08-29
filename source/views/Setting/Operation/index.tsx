@@ -196,6 +196,7 @@ const Operation = () => {
         </NewSort>
       ),
       dataIndex: 'name',
+      width: 160,
     },
     {
       title: (
@@ -209,6 +210,7 @@ const Operation = () => {
         </NewSort>
       ),
       dataIndex: 'time',
+      width: 200,
     },
     {
       title: (
@@ -239,6 +241,7 @@ const Operation = () => {
         </NewSort>
       ),
       dataIndex: 'info',
+      width: 200,
     },
   ]
 

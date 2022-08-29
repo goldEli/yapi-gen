@@ -259,6 +259,7 @@ export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         </NewSort>
       ),
       dataIndex: 'status',
+      width: 160,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
@@ -510,6 +511,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'id',
+      width: 180,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -654,6 +656,7 @@ const DemandWrap = () => {
         </NewSort>
       ),
       dataIndex: 'status',
+      width: 160,
       render: (text: any, record: any) => {
         return (
           <PopConfirm

@@ -254,6 +254,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'time',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -270,6 +271,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'loginIp',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -286,6 +288,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'client',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -302,6 +305,7 @@ const LoginLog = () => {
         </NewSort>
       ),
       dataIndex: 'system',
+      width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

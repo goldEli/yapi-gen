@@ -152,6 +152,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'updateTime',
+      width: 200,
     },
     {
       title: (
@@ -179,6 +180,7 @@ const ChangeRecord = () => {
         </NewSort>
       ),
       dataIndex: 'type',
+      width: 160,
       render: (text: any) => {
         return <div>{text.content_txt}</div>
       },
