@@ -19,7 +19,6 @@ import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
@@ -179,7 +178,8 @@ const DemandBox = () => {
       await deleteDemand({ projectId, id: demandInfo.id })
       message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
-      navigate(-1)
+      const params = encryptPhp(JSON.stringify({ id: projectId, demandId }))
+      navigate(`/Detail/Demand?data=${params}`)
     } catch (error) {
 
       //
