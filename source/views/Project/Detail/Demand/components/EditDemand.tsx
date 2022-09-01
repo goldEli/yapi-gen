@@ -367,6 +367,10 @@ const EditDemand = (props: Props) => {
       values.iterateId = props.isIterateId
     }
 
+    if (values.priority?.id) {
+      values.priority = values.priority?.id
+    }
+
     try {
       if (props.id) {
         await updateDemand({
@@ -412,7 +416,7 @@ const EditDemand = (props: Props) => {
   const onCurrentDetail = (item: any) => {
     setPriorityDetail(item)
     form.setFieldsValue({
-      priority: item.id,
+      priority: item,
     })
   }
 
