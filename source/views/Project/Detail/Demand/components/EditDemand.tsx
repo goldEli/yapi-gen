@@ -367,10 +367,6 @@ const EditDemand = (props: Props) => {
       values.iterateId = props.isIterateId
     }
 
-    if (values.priority?.id) {
-      values.priority = values.priority?.id
-    }
-
     try {
       if (props.id) {
         await updateDemand({

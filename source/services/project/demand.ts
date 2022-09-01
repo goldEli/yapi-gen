@@ -254,7 +254,7 @@ export const updateDemand: any = async (params: any) => {
         ? params.parentId
         : null,
     priority:
-      JSON.stringify(params.priority) !== '[]' && params.parentId
+      JSON.stringify(params.priority) !== '[]' && params.priority
         ? params.priority
         : null,
     users: params.userIds,
