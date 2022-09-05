@@ -8,7 +8,7 @@ import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import { ClickWrap, ShowWrap, StyledShape } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
-import { ChildDemandTable } from '@/views/Project/Detail/Iteration/Demand'
+import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
@@ -32,8 +32,12 @@ export const useDynamicColumns = (state: any) => {
         demandId: item.id,
       }),
     )
-    if (item.project?.is_public !== 1 && !item.project?.user_ismember) {
-      message.warning(t('common.notCheckInfo'))
+    if (state.showOpen) {
+      if (item.project?.is_public !== 1 && !item.project?.user_ismember) {
+        message.warning(t('common.notCheckInfo'))
+      } else {
+        openDetail(`/Detail/Demand?data=${params}`)
+      }
     } else {
       openDetail(`/Detail/Demand?data=${params}`)
     }

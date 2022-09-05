@@ -11,7 +11,7 @@ import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useDynamicColumns } from './CreatePrejectTableColum'
+import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -259,8 +259,6 @@ const ChildDemand = () => {
     updateOrderkey,
     onChangeStatus,
     onChangeState,
-    onEdit,
-    onDelete,
     rowIconFont,
     onClickItem,
   })

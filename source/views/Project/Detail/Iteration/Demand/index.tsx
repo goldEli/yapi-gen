@@ -1,83 +1,21 @@
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable max-lines */
-/* eslint-disable camelcase */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-empty-function */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { Menu, Dropdown, Pagination, message, Table, Popover, Spin } from 'antd'
+import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import PopConfirm from '@/components/Popconfirm'
+import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { useEffect, useMemo, useState } from 'react'
 import { useModel } from '@/models'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { OmitText } from '@star-yun/ui'
+import { useSearchParams } from 'react-router-dom'
 import EditDemand from '../../Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import Sort from '@/components/Sort'
 import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
-
-const StatusWrap = styled.div<{ isShow?: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid #2877FF',
-    color: '#2877FF',
-    width: 'fit-content',
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-  }),
-)
-
-const PriorityWrap = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    height: 26,
-    width: 'fit-content',
-    borderRadius: 6,
-    div: {
-      color: '#323233',
-      fontSize: 14,
-      marginLeft: 8,
-    },
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 16,
-      color: '#2877ff',
-    },
-    '.priorityIcon': {
-      fontSize: 16,
-      svg: {
-        margin: '0!important',
-      },
-    },
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-    '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
-      },
-    },
-  }),
-)
+import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import ChildDemandTable from '@/components/ChildDemandTable'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -103,258 +41,6 @@ const DataWrap = styled.div({
   overflowX: 'auto',
 })
 
-const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order === 'asc' ? 1 : 2}
-    >
-      {sortProps.children}
-    </Sort>
-  )
-}
-
-export const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
-  const [t] = useTranslation()
-  const [searchParams] = useSearchParams()
-  let projectId: any
-  if (props.id) {
-    projectId = props.id
-  } else {
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id || props.id
-  }
-
-  const [isVisible, setIsVisible] = useState(false)
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
-  const { getDemandList, updateDemandStatus } = useModel('demand')
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo } = useModel('project')
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
-
-  const getList = async (item: any) => {
-    const result = await getDemandList({
-      projectId,
-      all: true,
-      parentId: props.row.id,
-      order: item.value,
-      orderKey: item.key,
-    })
-    setDataList({ list: result })
-  }
-
-  const onChildClick = async () => {
-    getList(order)
-    setIsVisible(!isVisible)
-  }
-
-  const onUpdateOrderKey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList({ value: val === 2 ? 'desc' : 'asc', key })
-  }
-
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getList(order)
-    } catch (error) {
-
-      //
-    }
-  }
-
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/Detail/Demand?data=${params}`)
-  }
-
-  const columnsChild = [
-    {
-      title: (
-        <NewSort
-          fixedKey="id"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          ID
-        </NewSort>
-      ),
-      dataIndex: 'id',
-      width: 100,
-      render: (text: string, record: any) => {
-        return (
-          <ClickWrap
-            onClick={() => onToDetail(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.demandName')}
-        </NewSort>
-      ),
-      dataIndex: 'name',
-      width: 160,
-      render: (text: string, record: any) => {
-        return (
-          <OmitText width={160}>
-            <ClickWrap
-              onClick={() => onToDetail(record)}
-              isName
-              isClose={record.status?.content === '已关闭'}
-            >
-              {text}
-            </ClickWrap>
-          </OmitText>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="iterate_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.iterate')}
-        </NewSort>
-      ),
-      dataIndex: 'iteration',
-      width: 100,
-      render: (text: string) => {
-        return <OmitText width={100}>{text || '--'}</OmitText>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="status"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.status')}
-        </NewSort>
-      ),
-      dataIndex: 'status',
-      width: 160,
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit
-                ? (
-                    <ShapeContent
-                      tap={value => onChangeStatus(value)}
-                      hide={onHide}
-                      row={record}
-                      record={{
-                        id: record.id,
-                        project_id: projectId,
-                        status: {
-                          id: record.status.id,
-                          can_changes: record.status.can_changes,
-                        },
-                      }}
-                    />
-                  )
-                : null
-            }}
-            record={record}
-          >
-            <StatusWrap
-              isShow={isCanEdit}
-              style={{ color: text.color, border: `1px solid ${text.color}` }}
-            >
-              {text.content_txt}
-            </StatusWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="users_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.dealName')}
-        </NewSort>
-      ),
-      dataIndex: 'dealName',
-      width: 120,
-      render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
-      },
-    },
-  ]
-
-  const onVisibleChange = (visible: any) => {
-    setIsVisible(visible)
-  }
-
-  return (
-    <Popover
-      key={isVisible.toString()}
-      visible={isVisible}
-      placement="bottom"
-      trigger="click"
-      onVisibleChange={onVisibleChange}
-      content={
-        <div style={{ maxWidth: 600, maxHeight: 310, overflow: 'auto' }}>
-          {!!dataList?.list && dataList?.list.length
-            ? (
-                <Table
-                  rowKey="id"
-                  pagination={false}
-                  columns={columnsChild}
-                  dataSource={dataList?.list}
-                  sticky
-                />
-              )
-            : <NoData />
-          }
-        </div>
-      }
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          cursor: 'pointer',
-        }}
-        onClick={onChildClick}
-      >
-        <ClickWrap style={{ fontSize: 16 }}>{props.value}</ClickWrap>
-      </div>
-    </Popover>
-  )
-}
-
 const DemandWrap = () => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -370,12 +56,13 @@ const DemandWrap = () => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const navigate = useNavigate()
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -384,10 +71,11 @@ const DemandWrap = () => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+
+  const getShowkey = () => {
+    setTitleList(projectInfo?.titleList || [])
+    setTitleList2(projectInfo?.titleList2 || [])
+  }
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -407,6 +95,10 @@ const DemandWrap = () => {
   useEffect(() => {
     getList(pageObj, order)
   }, [])
+
+  useEffect(() => {
+    getShowkey()
+  }, [projectInfo])
 
   useEffect(() => {
     if (isRefresh) {
@@ -454,7 +146,7 @@ const DemandWrap = () => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
-    return <Menu items={menuItems} />
+    return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
   const onUpdateOrderKey = (key: any, val: any) => {
@@ -498,268 +190,26 @@ const DemandWrap = () => {
     }
   }
 
-  const columns = [
-    {
-      title: (
-        <NewSort
-          fixedKey="id"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          ID
-        </NewSort>
-      ),
-      dataIndex: 'id',
-      width: 180,
-      render: (text: string, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {hasDel && hasEdit
-              ? <div style={{ width: 16 }} />
-              : (
-                  <Dropdown
-                    overlay={menu(record)}
-                    trigger={['hover']}
-                    placement="bottomRight"
-                    getPopupContainer={node => node}
-                  >
-                    <RowIconFont type="more" />
-                  </Dropdown>
-                )}
+  const childeContent = (text: any, record: any) => {
+    return <ChildDemandTable value={text} row={record} />
+  }
 
-            <ClickWrap
-              onClick={() => onClickItem(record)}
-              isClose={record.status?.content === '已关闭'}
-              style={{ marginLeft: 32 }}
-            >
-              {text}
-            </ClickWrap>
-          </div>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.title')}
-        </NewSort>
-      ),
-      dataIndex: 'name',
-      width: 160,
-      render: (text: string | number, record: any) => {
-        return (
-          <ClickWrap
-            isName
-            isClose={record.status?.content === '已关闭'}
-            onClick={() => onClickItem(record)}
-          >
-            <OmitText width={160}>{text}</OmitText>
-          </ClickWrap>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="child_story_count"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.childDemand')}
-        </NewSort>
-      ),
-      dataIndex: 'demand',
-      width: 200,
-      render: (text: string, record: any) => {
-        return <ChildDemandTable value={text} row={record} />
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="priority"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.priority')}
-        </NewSort>
-      ),
-      dataIndex: 'priority',
-      width: 180,
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit
-                ? (
-                    <LevelContent
-                      onTap={item => onChangeState(item)}
-                      onHide={onHide}
-                      record={{ project_id: projectId, id: record.id }}
-                    />
-                  )
-                : null
-            }}
-            record={record}
-          >
-            <PriorityWrap isShow={isCanEdit}>
-              <IconFont
-                type={text.icon}
-                style={{
-                  fontSize: 16,
-                  color: text.color,
-                }}
-              />
-              <div>
-                <span>{text.content_txt || '--'}</span>
-                <IconFont className="icon" type="down-icon" />
-              </div>
-            </PriorityWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="iterate_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.iterate')}
-        </NewSort>
-      ),
-      dataIndex: 'iteration',
-      width: 120,
-      render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="status"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.status')}
-        </NewSort>
-      ),
-      dataIndex: 'status',
-      width: 160,
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit
-                ? (
-                    <ShapeContent
-                      tap={value => onChangeStatus(value)}
-                      hide={onHide}
-                      row={record}
-                      record={{
-                        id: record.id,
-                        project_id: projectId,
-                        status: {
-                          id: record.status.id,
-                          can_changes: record.status.can_changes,
-                        },
-                      }}
-                    />
-                  )
-                : null
-            }}
-            record={record}
-          >
-            <StatusWrap
-              isShow={isCanEdit}
-              style={{ color: text.color, border: `1px solid ${text.color}` }}
-            >
-              {text.content_txt}
-            </StatusWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="users_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.dealName')}
-        </NewSort>
-      ),
-      dataIndex: 'dealName',
-      width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="created_at"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.createTime')}
-        </NewSort>
-      ),
-      dataIndex: 'time',
-      width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="expected_start_at"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.expectedStart')}
-        </NewSort>
-      ),
-      dataIndex: 'expectedStart',
-      width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="expected_end_at"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.expectedEnd')}
-        </NewSort>
-      ),
-      dataIndex: 'expectedEnd',
-      width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-  ]
+  const rowIconFont = () => {
+    return <RowIconFont type="more" />
+  }
+
+  const columns = useDynamicColumns({
+    projectId,
+    orderKey: order.key,
+    order: order.value,
+    onUpdateOrderKey,
+    onChangeStatus,
+    onChangeState,
+    onClickItem,
+    childeContent,
+    rowIconFont,
+    showChildCOntent: true,
+  })
 
   const onChangeVisible = () => {
     setIsVisible(!isVisible)
@@ -779,6 +229,40 @@ const DemandWrap = () => {
     }
   }
 
+  const selectColum: any = useMemo(() => {
+    const arr: any = [...titleList, ...titleList2]
+    const newList = []
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < columns.length; j++) {
+        if (arr[i] === columns[j].key) {
+          newList.push(columns[j])
+        }
+      }
+    }
+    const arrList = [
+      {
+        width: 40,
+        render: (text: any, record: any) => {
+          return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {hasEdit && hasDel ? null : (
+                <Dropdown
+                  overlay={menu(record)}
+                  trigger={['hover']}
+                  placement="bottomLeft"
+                  getPopupContainer={node => node}
+                >
+                  {rowIconFont()}
+                </Dropdown>
+              )}
+            </div>
+          )
+        },
+      },
+    ]
+    return [...arrList, ...newList]
+  }, [titleList, titleList2, columns])
+
   return (
     <div style={{ height: '100%' }}>
       <DeleteConfirm
@@ -787,32 +271,29 @@ const DemandWrap = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      {isVisible
-        ? (
-            <EditDemand
-              visible={isVisible}
-              onChangeVisible={onChangeVisible}
-              id={demandItem?.id}
-              onUpdate={() => getList(pageObj)}
-              isIterateId={iterateId}
-            />
-          )
-        : null}
+      {isVisible ? (
+        <EditDemand
+          visible={isVisible}
+          onChangeVisible={onChangeVisible}
+          id={demandItem?.id}
+          onUpdate={() => getList(pageObj)}
+          isIterateId={iterateId}
+        />
+      ) : null}
       <DataWrap>
         <Spin spinning={isSpinning}>
           {!!dataList?.list
-            && (dataList?.list?.length > 0
-              ? (
-                  <TableBox
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={dataList?.list}
-                    pagination={false}
-                    scroll={{ x: 'max-content' }}
-                    showSorterTooltip={false}
-                    sticky
-                  />
-                )
+            && (dataList?.list?.length > 0 ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={dataList?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+                showSorterTooltip={false}
+                sticky
+              />
+            )
               : <NoData />
             )}
         </Spin>

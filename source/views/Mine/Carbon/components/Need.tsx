@@ -31,7 +31,7 @@ import {
   Tooltip,
 } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from './CreatePrejectTableColum'
+import { useDynamicColumns } from './../../components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
@@ -261,8 +261,6 @@ const Need = (props: any) => {
     updateOrderkey,
     updateStatus,
     updatePriority,
-    showEdit,
-    showDel,
   })
 
   const selectColum: any = useMemo(() => {
