@@ -33,7 +33,6 @@ const tableWrapP = css`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* height:  800px; */
 `
 const Reset = styled.div`
   height: 32px;

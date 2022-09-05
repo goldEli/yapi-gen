@@ -11,7 +11,6 @@ import {
   StaffTableWrap,
   MyInput,
   SetButton,
-  StyledTable,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -21,15 +20,7 @@ import {
   TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import {
-  Button,
-  Dropdown,
-  Menu,
-  message,
-  Pagination,
-  Spin,
-  Tooltip,
-} from 'antd'
+import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './../../components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -523,11 +514,9 @@ const Need = (props: any) => {
               {manyListData?.map((item: any, index: any) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <div key={index}>
-                  {/* {item.list.length >= 1 && ( */}
                   <div className={tableTitle}>
                     {item.status_name}（{item.list.length}）
                   </div>
-                  {/* )} */}
 
                   {item.list
                     ? item?.list?.length ? (

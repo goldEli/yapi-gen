@@ -50,7 +50,6 @@ const AddMember = (props: Props) => {
   const {
     projectPermission,
     addMember,
-    updateMember,
     setIsRefreshMember,
     getMemberList,
     memberList,
@@ -70,12 +69,6 @@ const AddMember = (props: Props) => {
   useEffect(() => {
     getList()
   }, [])
-
-  // useEffect(() => {
-  //   if (props.details?.id) {
-  //     form.setFieldsValue(props.details)
-  //   }
-  // }, [props.details])
 
   const onConfirm = async () => {
     const values = form.getFieldsValue()

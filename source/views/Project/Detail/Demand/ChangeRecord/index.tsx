@@ -54,7 +54,7 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getDemandChangeLog, demandInfo } = useModel('demand')
+  const { getDemandChangeLog } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -93,12 +93,6 @@ const ChangeRecord = () => {
       getList({ page: 1, size: pageObj.size }, order)
     }
   }, [isRefresh])
-
-  // useEffect(() => {
-  //   if (demandInfo?.changeCount !== dataList?.total) {
-  //     getList({ page: 1, size: pageObj.size }, order)
-  //   }
-  // }, [demandInfo, dataList])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)

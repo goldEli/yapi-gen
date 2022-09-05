@@ -1,12 +1,8 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-handler-names */
-import { Dropdown, Menu } from 'antd'
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { ShowWrap } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
-import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
@@ -34,7 +30,6 @@ const SetHead = styled.div`
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
   const NewSort = (props: any) => {
     return (
       <Sort

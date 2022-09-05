@@ -10,9 +10,8 @@ import { Tooltip, Popover, message } from 'antd'
 import { Personal } from './Personal'
 import { useModel } from '@/models'
 import { getTicket } from '@/services/user'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { changeLanguage, languages, type LocaleKeys } from '@/locals'
+import { changeLanguage, type LocaleKeys } from '@/locals'
 import { OmitText } from '@star-yun/ui'
 import DeleteConfirm from '@/components/DeleteConfirm'
 
@@ -24,7 +23,6 @@ const imgCss = css`
 `
 const buttonCss = css`
   width: 24px;
-  /* display: block; */
   border-radius: 50%;
   height: 24px;
   display: flex;
@@ -33,7 +31,6 @@ const buttonCss = css`
   cursor: pointer;
   &:hover {
     width: 24px;
-    /* display: block; */
     border-radius: 50%;
     height: 24px;
     background: rgba(240, 244, 250, 1);
@@ -67,7 +64,6 @@ const SetHead = styled.div`
   font-size: 12px;
   background: #a4acf5;
   background-blend-mode: normal;
-  /* border: 2px solid rgba(40, 119, 255, 0.16); */
   border: 1px solid #f0f2fd;
   color: white;
   margin-right: 8px;
@@ -90,7 +86,7 @@ const PanelHeaderSecond = styled.div`
   font-size: 12px;
   display: flex;
 `
-const NanmeAndPhone = styled.div`
+const NameAndPhone = styled.div`
   font-size: 12px;
   display: flex;
   flex-direction: column;
@@ -134,8 +130,7 @@ interface Props {
 
 export const Panel = (props: Props) => {
   const { loginOut, userInfo, setIsRefresh } = useModel('user')
-  const navigate = useNavigate()
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const [personalModalVisible, setPersonalModalVisible]
     = useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
@@ -149,11 +144,7 @@ export const Panel = (props: Props) => {
     const clear = message.loading(t('common.localsSwitching'), 0)
     try {
       await changeLanguage(key as LocaleKeys)
-
-      // await getAllConfig()
       localStorage.setItem('language', key)
-
-      // setVisibleState(false)
     } catch (error) {
 
       //
@@ -236,12 +227,12 @@ export const Panel = (props: Props) => {
                 </SetHead>
               )}
 
-          <NanmeAndPhone>
+          <NameAndPhone>
             <Tooltip title={userInfo?.name}>
               <OmitText width={120}>{userInfo?.name}</OmitText>
             </Tooltip>
             <span>{userInfo?.phone}</span>
-          </NanmeAndPhone>
+          </NameAndPhone>
         </PanelHeaderFirst>
         <PanelHeaderSecond>
           <div>{userInfo?.company_name}</div>

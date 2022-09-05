@@ -15,7 +15,6 @@ import {
   Popover,
   Form,
   Input,
-  DatePicker,
   Menu,
   message,
   Radio,
@@ -126,7 +125,6 @@ const WrapLeft = (props: Props) => {
   ]
 
   const [form] = Form.useForm()
-  const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [isFilter, setIsFilter] = useState(false)
   const [isSort, setIsSort] = useState(false)
@@ -353,8 +351,6 @@ const WrapLeft = (props: Props) => {
       })
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
-
-      // props.onChangeOperation?.({})
       getList({})
     } catch (error) {
 

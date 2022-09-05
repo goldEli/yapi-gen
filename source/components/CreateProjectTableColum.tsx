@@ -10,27 +10,10 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { ClickWrap } from '@/components/StyleCommon'
+import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
-
-const StatusWrap = styled.div<{ isShow?: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 'fit-content',
-    cursor: 'pointer',
-    background: 'white',
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-  }),
-)
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {

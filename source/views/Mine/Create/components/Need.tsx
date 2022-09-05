@@ -8,7 +8,6 @@ import {
   StaffTableWrap,
   MyInput,
   SetButton,
-  StyledTable,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -17,15 +16,7 @@ import {
   TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import {
-  Button,
-  Dropdown,
-  Menu,
-  message,
-  Pagination,
-  Spin,
-  Tooltip,
-} from 'antd'
+import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './../../components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'

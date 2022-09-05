@@ -9,16 +9,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  Modal,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Space,
-  message,
-  Progress,
-} from 'antd'
+import { Modal, Form, Input, Select, Space, message, Progress } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -34,6 +25,7 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
+import { PriorityWrap } from '@/components/StyleCommon'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -69,39 +61,6 @@ const FormWrap = styled(Form)({
   },
   '.ant-form-item-control-input': {
     minHeight: 'inherit',
-  },
-})
-
-const PriorityWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  height: 26,
-  padding: '0 6px',
-  width: 'fit-content',
-  borderRadius: 6,
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.icon': {
-    marginLeft: 8,
-    visibility: 'hidden',
-    fontSize: 16,
-    color: '#2877ff',
-  },
-  '.priorityIcon': {
-    fontSize: 16,
-    svg: {
-      margin: '0!important',
-    },
-  },
-  '&: hover': {
-    background: 'rgba(240, 244, 250, 1)',
-    '.icon': {
-      visibility: 'visible',
-    },
   },
 })
 
@@ -239,7 +198,6 @@ const EditDemand = (props: Props) => {
     getDemandChildInfo,
     updateDemand,
     getDemandList,
-    demandInfo,
     percentShow,
     percentVal,
     uploadStatus,

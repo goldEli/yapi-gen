@@ -12,12 +12,7 @@ import Next from './components/Next'
 import { useModel } from '@/models'
 // eslint-disable-next-line no-duplicate-imports
 import { useNavigate } from 'react-router-dom'
-import {
-  changeLanguage,
-  languages,
-  loadedAntdLocals,
-  type LocaleKeys,
-} from '@/locals'
+import { changeLanguage, loadedAntdLocals } from '@/locals'
 import NoPermission from './components/NoPermission'
 import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
@@ -41,14 +36,8 @@ export const Container = () => {
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const {
-    loginInfo,
-    userInfo,
-    getLoginDetail,
-    getUserDetail,
-    login,
-    setLoginInfo,
-  } = useModel('user')
+  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo }
+    = useModel('user')
   const {
     i18n: { language },
   } = useTranslation()

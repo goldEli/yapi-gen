@@ -176,7 +176,7 @@ const IterationMain = (props: Props) => {
     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
-  const onChangeIsUpdate = (val: boolean) => {
+  const onChangeIsUpdate = () => {
     props.onChangeIsUpdate(false)
   }
 

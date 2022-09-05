@@ -20,7 +20,7 @@ import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 
 const Warp = styled.div({

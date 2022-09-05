@@ -6,7 +6,6 @@ import { SearchLine } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
   minHeight: 64,

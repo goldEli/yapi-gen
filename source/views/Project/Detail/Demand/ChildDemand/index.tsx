@@ -102,7 +102,6 @@ const ChildDemand = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
-  const navigate = useNavigate()
   const [isSpinning, setIsSpinning] = useState(false)
 
   const getShowkey = () => {

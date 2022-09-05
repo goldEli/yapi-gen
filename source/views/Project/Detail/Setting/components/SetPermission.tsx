@@ -7,8 +7,6 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 
-const { Option } = Select
-
 const PersonalHead = styled.div`
   display: flex;
   justify-content: center;

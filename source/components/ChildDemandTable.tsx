@@ -12,29 +12,11 @@ import { useModel } from '@/models'
 import { message, Popover, Table } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
-import { ClickWrap } from '@/components/StyleCommon'
+import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
-import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import { ShapeContent } from '@/components/Shape'
-
-const StatusWrap = styled.div<{ isShow?: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid #2877FF',
-    color: '#2877FF',
-    width: 'fit-content',
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-  }),
-)
 
 const NewSort = (sortProps: any) => {
   return (

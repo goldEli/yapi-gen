@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 import { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { Button } from 'antd'
 import { createPortal } from 'react-dom'
 import { css } from '@emotion/css'
 import guide_1 from '/guide_1.svg'
@@ -12,9 +11,7 @@ import guide_4 from '/guide_4.svg'
 import { useTranslation } from 'react-i18next'
 
 const imgBoxCss = css`
-  /* height: 448px; */
   box-sizing: border-box;
-  /* padding: 0px 0px 65px 0px; */
 `
 const footerCss = css`
   display: flex;
@@ -36,7 +33,6 @@ const Container = styled.div`
 `
 const Dialog = styled.div`
   width: 900px;
-  /* height: 600px; */
   background: rgba(245, 246, 247, 1);
   position: absolute;
   border-radius: 6px;
@@ -99,7 +95,6 @@ const Next = (props: { visible: boolean; close(): void }) => {
     const filterActive = inform.filter((item, index) => index === active)
     return filterActive.map(item => (
       <div key={item.text}>
-        {/* <div className={textCss}>{item.text}</div> */}
         <div className={imgBoxCss}>
           <img src={item.img} alt="12" />
         </div>
@@ -125,7 +120,6 @@ const Next = (props: { visible: boolean; close(): void }) => {
   return createPortal(
     <Container>
       <Dialog>
-        {/* <header>头</header> */}
         {filterData}
         <footer className={footerCss}>
           {active !== 0 && (

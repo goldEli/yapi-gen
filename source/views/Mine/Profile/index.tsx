@@ -11,7 +11,7 @@ import {
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
-import { Timeline, message, Pagination, Spin, Tooltip } from 'antd'
+import { Timeline, message, Pagination, Tooltip } from 'antd'
 import Gatte from './components/Gatte'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
@@ -149,7 +149,6 @@ const Profile = () => {
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
-  const navigate = useNavigate()
   const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const changeMonth = async () => {

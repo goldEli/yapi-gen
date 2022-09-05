@@ -6,7 +6,6 @@ import styled from '@emotion/styled'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
-import { decryptPhp } from '@/tools/cryptoPhp'
 import { getParamsData } from '@/tools'
 
 const Wrap = styled.div({
