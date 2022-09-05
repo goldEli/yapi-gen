@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
-import ChildDemandTable from '@/components/ChildDemandTable'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -190,10 +189,6 @@ const DemandWrap = () => {
     }
   }
 
-  const childeContent = (text: any, record: any) => {
-    return <ChildDemandTable value={text} row={record} />
-  }
-
   const rowIconFont = () => {
     return <RowIconFont type="more" />
   }
@@ -206,7 +201,6 @@ const DemandWrap = () => {
     onChangeStatus,
     onChangeState,
     onClickItem,
-    childeContent,
     rowIconFont,
     showChildCOntent: true,
   })

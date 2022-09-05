@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import ChildDemandTable from '@/components/ChildDemandTable'
 
 const Content = styled.div({
   padding: 24,
@@ -145,10 +144,6 @@ const IterationTable = (props: Props) => {
     props.onDelete(item)
   }
 
-  const childeContent = (text: any, record: any) => {
-    return <ChildDemandTable value={text} row={record} />
-  }
-
   const rowIconFont = () => {
     return <RowIconFont type="more" />
   }
@@ -161,7 +156,6 @@ const IterationTable = (props: Props) => {
     onChangeStatus,
     onChangeState,
     onClickItem,
-    childeContent,
     rowIconFont,
     showChildCOntent: true,
   })

@@ -13,6 +13,7 @@ import { OmitText } from '@star-yun/ui'
 import { ClickWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
+import ChildDemandTable from '@/components/ChildDemandTable'
 
 const StatusWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -203,7 +204,7 @@ export const useDynamicColumns = (state: any) => {
       width: 200,
       render: (text: string, record: any) => {
         return state.showChildCOntent
-          ? state.childeContent(text, record)
+          ? <ChildDemandTable value={text} row={record} />
           : <span>{text || '--'}</span>
 
       },
