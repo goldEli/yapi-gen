@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
+/* eslint-disable max-len */
 import { useState } from 'react'
 import { Modal, Spin } from 'antd'
 import { css } from '@emotion/css'
@@ -27,6 +28,20 @@ const imgCss = css`
   width: 104px;
   height: 104px;
   border-radius: 50%;
+`
+
+const SetHead = styled.div`
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  line-height: 104px;
+  text-align: center;
+  font-size: 32px;
+  background: #a4acf5;
+  background-blend-mode: normal;
+  border: 1px solid #f0f2fd;
+  color: white;
+  margin-right: 8px;
 `
 
 export const Personal = (props: { visible: boolean; close(): void }) => {
@@ -84,11 +99,13 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       {!isShow && (
         <>
           <PersonalHead>
-            <img
-              className={imgCss}
-              src={userInfo.avatar ? userInfo.avatar : head}
-              alt=""
-            />
+            {userInfo.avatar
+              ? <img className={imgCss} src={userInfo.avatar} />
+              : (
+                  <SetHead>
+                    {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+                  </SetHead>
+                )}
           </PersonalHead>
           <PersonalFooter>
             <Left>

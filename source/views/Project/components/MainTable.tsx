@@ -74,7 +74,7 @@ const ImgWrap = styled.div<{ url?: string }>(
   {
     width: 60,
     height: 28,
-    borderRadius: 2,
+    borderRadius: 4,
     boxSizing: 'border-box',
     border: '1px solid white',
     cursor: 'pointer',

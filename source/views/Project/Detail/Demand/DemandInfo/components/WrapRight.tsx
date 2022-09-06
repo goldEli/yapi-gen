@@ -112,7 +112,7 @@ const SetHead = styled.div`
   line-height: 40px;
   text-align: center;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
   /* border: 2px solid rgba(40, 119, 255, 0.16); */

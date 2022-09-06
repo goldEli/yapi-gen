@@ -126,11 +126,14 @@ const LineItem = styled.div`
   /* width: 360px; */
   display: flex;
   justify-content: space-between;
+  font-size: 12px;
+  color: #646566;
 `
 const GatteWrap = styled.div`
-  background: #f5f7fa;
+  background: white;
   box-sizing: border-box;
-  padding: 0 16px;
+  margin: 0 16px;
+  border-radius: 6px;
 `
 const Profile = () => {
   const [t, i18n] = useTranslation()
@@ -332,7 +335,7 @@ const Profile = () => {
         </Center>
       </StyledWrap>
       <GatteWrap style={{ height: 'calc(100vh - 400px)' }}>
-        <div>
+        <div style={{ padding: '28px 24px 0' }}>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -359,7 +362,7 @@ const Profile = () => {
         </div>
         {gatteData.length >= 1 && <Mygante data={gatteData} />}
         {gatteData.length < 1 && (
-          <div style={{ height: 'calc(100% - 80px)' }}>
+          <div style={{ height: 'calc(100% - 136px)' }}>
             <NoData />
           </div>
         )}

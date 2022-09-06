@@ -13,11 +13,11 @@ const Triangle = styled.div`
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
-  bottom: -30px;
+  bottom: -26px;
   width: 0;
   height: 0;
-  border: 9px solid transparent;
-  border-bottom: 14px solid rgba(40, 119, 255, 1);
+  border: 8px solid transparent;
+  border-bottom: 10px solid rgba(40, 119, 255, 1);
 `
 const Warp = styled.div<{ show?: boolean }>(
   {
@@ -29,7 +29,7 @@ const Warp = styled.div<{ show?: boolean }>(
     width: 160,
     cursor: 'pointer',
     '&: hover': {
-      transform: 'translate(0, -10%)',
+      transform: 'translate(0, -6%)',
       boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
       [DropdownWrap.toString()]: {
         display: 'block',
@@ -37,7 +37,7 @@ const Warp = styled.div<{ show?: boolean }>(
     },
   },
   ({ show }) => ({
-    transform: show ? 'translate(0, -10%)' : '',
+    transform: show ? 'translate(0, -6%)' : '',
     boxShadow: show ? ' 0px 2px 8px rgba(170, 193, 227, 1)' : '',
     border: show ? '' : '1px solid rgba(235, 237, 240, 1)',
     [Triangle.toString()]: {
@@ -46,9 +46,10 @@ const Warp = styled.div<{ show?: boolean }>(
   }),
 )
 
-const ImgWrap = styled.div<{ show?: boolean }>(
-  ({ show }) => ({
+const ImgWrap = styled.div<{ show?: boolean; address?: any }>(
+  ({ show, address }) => ({
     filter: String(show ? 'brightness(70%)' : ''),
+    backgroundImage: `url(${address})`,
   }),
   {
     height: 104,
@@ -57,12 +58,8 @@ const ImgWrap = styled.div<{ show?: boolean }>(
     justifyContent: 'center',
     width: '100%',
     overflow: 'hidden',
-
-    // filter: 'brightness(70%)',
-    img: {
-      width: '100%',
-      height: '100%',
-    },
+    borderRadius: '4px 4px 0 0 ',
+    backgroundSize: 'cover',
   },
 )
 
@@ -107,13 +104,10 @@ const SwiperCard = (props: {
         }
       }}
     >
-      <ImgWrap show={props.show}>
-        <img
-          style={{ borderRadius: ' 4px 4px 0px 0px ' }}
-          src={props.avtar ? props.avtar : projectImg}
-          alt=""
-        />
-      </ImgWrap>
+      <ImgWrap
+        show={props.show}
+        address={props.avtar ? props.avtar : projectImg}
+      />
       <TextWarp>
         <NameWrap show={props.show}>{props.name}</NameWrap>
       </TextWarp>

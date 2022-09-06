@@ -106,7 +106,7 @@ export const Container = () => {
   }, [loginInfo, userInfo])
 
   return (
-    <ConfigProvider locale={antdLocal}>
+    <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
       {userInfo?.company_permissions?.length ? (
         <Wrap>
           <Side />

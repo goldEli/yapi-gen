@@ -29,6 +29,9 @@ const StatusItemsWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'auto',
+  '::-webkit-scrollbar': {
+    display: 'none',
+  },
 })
 
 const SpaceWrap = styled(Space)({

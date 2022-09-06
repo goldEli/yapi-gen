@@ -67,7 +67,7 @@ const InfoContent = styled.div({
 
 const TitleWrap = styled.div({
   fontSize: 14,
-  fontWeight: 'bold',
+  fontWeight: '400',
   color: 'black',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
@@ -134,11 +134,12 @@ const IterationCard = (props: Props) => {
           style={{ color: '#43BA9A' }}
           width={48}
           type="circle"
+          strokeLinecap="butt"
           percent={Math.trunc(
             props.item.finishCount / props.item.storyCount * 100,
           )}
           format={percent => percent === 100 ? '100%' : `${percent}%`}
-          strokeWidth={8}
+          strokeWidth={13}
         />
         <InfoContent>
           <TitleWrap>{props.item.name}</TitleWrap>

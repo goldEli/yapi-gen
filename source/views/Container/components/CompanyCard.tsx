@@ -38,8 +38,8 @@ const Warp = styled.div<{ show?: boolean }>(
   },
   ({ show }) => ({
     border: show
-      ? '2px solid rgba(40, 119, 255, 1);'
-      : ' 2px solid rgba(235, 237, 240, 1)',
+      ? '1px solid rgba(40, 119, 255, 1);'
+      : ' 1px solid rgba(235, 237, 240, 1)',
     [Triangle.toString()]: {
       visibility: show ? 'visible' : 'hidden',
     },
@@ -57,8 +57,6 @@ const ImgWrap = styled.div<{ show?: boolean }>(
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-
-    // filter: 'brightness(70%)',
     img: {
       width: '100%',
       height: '100%',
@@ -108,11 +106,7 @@ const CompanyCard = (props: Props) => {
       }}
     >
       <ImgWrap show={props.show}>
-        <img
-          style={{ borderRadius: '  6px 6px 0 0' }}
-          src={props.logo ? props.logo : projectImg}
-          alt=""
-        />
+        <img src={props.logo ? props.logo : projectImg} alt="" />
       </ImgWrap>
       <TextWarp>
         <NameWrap show={props.show}>{props.name}</NameWrap>

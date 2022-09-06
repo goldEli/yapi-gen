@@ -41,14 +41,16 @@ const TagCheckedItem = styled.div<{ color?: string }>(
 const TagWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  padding: '16px 0',
+  maxWidth: 400,
 })
 
 const TagItem = styled.div({
   display: 'flex',
   alignItems: 'center',
-  height: 32,
+  minHeight: '32px',
   cursor: 'pointer',
-  paddingLeft: 16,
+  padding: '0 16px',
   div: {
     height: 16,
     width: 16,
@@ -81,7 +83,7 @@ const ColorWrap = styled.div({
 
 const SearchInput = styled(Input)`
   font-size: 14px;
-  width: 240px;
+  min-width: 240px;
   height: 32px;
   background: rgba(245, 246, 247, 1);
   background-blend-mode: normal;
@@ -174,7 +176,7 @@ const TagBox = (props: TagProps) => {
 
   return (
     <TagWrap title="">
-      <div style={{ padding: '16px 16px 4px 16px' }}>
+      <div style={{ padding: '0px 16px' }}>
         <SearchInput
           onPressEnter={(e: any) => onPressEnter(e.target.value)}
           onChange={e => setValue(e.target.value)}
@@ -189,7 +191,7 @@ const TagBox = (props: TagProps) => {
           placeholder={t('common.searchOrCreate')}
         />
       </div>
-      <div style={{ maxHeight: 200, overflow: 'auto' }}>
+      <div style={{ maxHeight: 200, overflow: 'auto', marginTop: 4 }}>
         {arr.map((i: any) => (
           <TagItem key={i.id} onClick={() => onHasTagAdd(i)}>
             <div style={{ background: i.color }} />

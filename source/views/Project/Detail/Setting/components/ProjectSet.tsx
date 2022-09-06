@@ -449,7 +449,11 @@ const ProjectSet = () => {
                         getPopupContainer={node => node}
                         onVisibleChange={visible => setIsMoreVisible(visible)}
                       >
-                        <IconWrap type="more" hidden={item.type === 1} />
+                        <IconWrap
+                          type="more"
+                          hidden={item.type === 1}
+                          style={{ color: '#2877ff', fontSize: 16 }}
+                        />
                       </Dropdown>
                     </MenuItem>
                   ))}
