@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
@@ -5,6 +6,7 @@ import IconFont from '@/components/IconFont'
 import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
+import DemandSet from './DemandSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
@@ -112,13 +114,21 @@ const Setting = () => {
       name: t('project.projectMember'),
       icon: 'team',
       content: <ProjectMember />,
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/member')).length,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/member')).length,
     },
     {
       name: t('project.projectPermissionGroup'),
       icon: 'lock',
       content: <ProjectSet />,
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) => String(i.identity).includes('b/project/role')).length,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/role')).length,
+    },
+    {
+      name: '需求设置',
+      icon: 'settings',
+      content: <DemandSet />,
+      isPermission: true,
     },
   ]
 
