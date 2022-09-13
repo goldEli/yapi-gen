@@ -1,6 +1,6 @@
-/* eslint-disable camelcase */
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable array-callback-return */
+/* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
 import { ShapeContent } from '@/components/Shape'
@@ -10,26 +10,10 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { useModel } from '@/models'
+import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { ClickWrap } from '@/components/StyleCommon'
-
-const StatusWrap = styled.div<{ isShow?: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 'fit-content',
-    cursor: 'pointer',
-    background: 'white',
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
-  }),
-)
+import { useModel } from '@/models'
+import ChildDemandTable from '@/components/ChildDemandTable'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -83,7 +67,7 @@ export const useDynamicColumns = (state: any) => {
 
   return [
     {
-      width: 160,
+      width: 200,
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
@@ -102,7 +86,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 200,
+      width: 240,
       render: (text: string | number, record: any) => {
         return (
           <ClickWrap
@@ -124,29 +108,30 @@ export const useDynamicColumns = (state: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit
-                ? (
-                    <ShapeContent
-                      tap={value => state.onChangeStatus(value)}
-                      hide={onHide}
-                      row={record}
-                      record={{
-                        id: record.id,
-                        project_id: state.projectId,
-                        status: {
-                          id: record.status.id,
-                          can_changes: record.status.can_changes,
-                        },
-                      }}
-                    />
-                  )
-                : null
+              return isCanEdit ? (
+                <ShapeContent
+                  tap={value => state.onChangeStatus(value)}
+                  hide={onHide}
+                  row={record}
+                  record={{
+                    id: record.id,
+                    project_id: state.projectId,
+                    status: {
+                      id: record.status.id,
+                      can_changes: record.status.can_changes,
+                    },
+                  }}
+                />
+              ) : null
             }}
             record={record}
           >
             <StatusWrap
               isShow={isCanEdit}
-              style={{ color: text.color, border: `1px solid ${text.color}` }}
+              style={{
+                color: text.color,
+                border: `1px solid ${text.color}`,
+              }}
             >
               {text.content_txt}
             </StatusWrap>
@@ -163,20 +148,19 @@ export const useDynamicColumns = (state: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit
-                ? (
-                    <LevelContent
-                      onTap={item => state.onChangeState(item)}
-                      onHide={onHide}
-                      record={{ project_id: state.projectId, id: record.id }}
-                    />
-                  )
-                : null
+              return isCanEdit ? (
+                <LevelContent
+                  onTap={item => state.onChangeState(item)}
+                  onHide={onHide}
+                  record={{ project_id: state.projectId, id: record.id }}
+                />
+              ) : null
             }}
             record={record}
           >
             <PriorityWrap isShow={isCanEdit}>
               <IconFont
+                className="priorityIcon"
                 type={text.icon}
                 style={{
                   fontSize: 16,
@@ -201,8 +185,11 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'demand',
       key: 'child_story_count',
       width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return state.showChildCOntent
+          ? <ChildDemandTable value={text} row={record} />
+          : <span>{text || '--'}</span>
+
       },
     },
     {
@@ -237,15 +224,13 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
-      width: 180,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title:
-        <NewSort fixedKey="users_copysend_name">{t('common.copySend')}</NewSort>
-      ,
+      title: t('common.copySend'),
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
       width: 200,

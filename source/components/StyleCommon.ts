@@ -29,31 +29,6 @@ const TableWrap = styled(Table)({
   },
 })
 
-const StylePagination = styled(Pagination)`
-  margin-top: auto;
-  align-self: end;
-  padding: 8px 0;
-  .ant-pagination-prev button,
-  .ant-pagination-next button {
-    border: none;
-  }
-  .ant-pagination-item {
-    border-radius: 32px;
-    border: none;
-  }
-  .ant-pagination-item:hover {
-    background: #f0f4fa;
-    a {
-      color: #2877ff !important;
-    }
-  }
-  .ant-pagination-item-active {
-    background: #2877ff;
-    a {
-      color: #ffffff !important;
-    }
-  }
-`
 const StaffHeader = styled.div`
   color: rgba(0, 0, 0, 1);
   font-weight: 400;
@@ -301,8 +276,59 @@ const StyledShape = styled.div<{ color: any }>`
   color: ${({ color }) => color};
   cursor: pointer;
 `
+const StatusWrap = styled.div<{ isShow?: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #2877FF',
+    color: '#2877FF',
+    width: 'fit-content',
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+  }),
+)
+
+const PriorityWrap = styled.div<{ status?: any }>({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  height: 26,
+  padding: '0 6px',
+  width: 'fit-content',
+  borderRadius: 6,
+  div: {
+    color: '#323233',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  '.icon': {
+    marginLeft: 8,
+    visibility: 'hidden',
+    fontSize: 16,
+    color: '#2877ff',
+  },
+  '.priorityIcon': {
+    fontSize: 16,
+    svg: {
+      margin: '0!important',
+    },
+  },
+  '&: hover': {
+    background: 'rgba(240, 244, 250, 1)',
+    '.icon': {
+      visibility: 'visible',
+    },
+  },
+})
 
 export {
+  PriorityWrap,
+  StatusWrap,
   StaffTableWrap2,
   StyledShape,
   HightChartsWrap,
@@ -310,7 +336,6 @@ export {
   TextBlueWrap,
   SecondTitle,
   TableWrap,
-  StylePagination,
   StaffHeader,
   Hehavior,
   PaginationWrap,

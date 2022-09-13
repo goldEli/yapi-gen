@@ -54,7 +54,7 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getIterateChangeLog, iterateInfo } = useModel('iterate')
+  const { getIterateChangeLog } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -93,12 +93,6 @@ const ChangeRecord = () => {
   useEffect(() => {
     getList(pageObj, order)
   }, [])
-
-  // useEffect(() => {
-  //   if (iterateInfo?.changeCount !== dataList?.total) {
-  //     // getList({ page: 1, size: pageObj.size }, order)
-  //   }
-  // }, [iterateInfo, dataList])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)

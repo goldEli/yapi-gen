@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
+import { StatusWrap } from '@/components/StyleCommon'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -89,23 +90,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
       color: activeIdx ? '#2877FF' : '#323233',
       borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
     },
-  }),
-)
-
-const StatusWrap = styled.div<{ isShow?: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid #2877FF',
-    color: '#2877FF',
-    width: 'fit-content',
-  },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
   }),
 )
 

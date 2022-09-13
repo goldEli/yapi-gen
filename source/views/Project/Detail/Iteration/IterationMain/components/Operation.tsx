@@ -31,8 +31,6 @@ const StickyWrap = styled.div({
 const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
-
-  // position: 'relative',
 })
 
 const StatusTag = styled.div<{ isOpen?: boolean }>(

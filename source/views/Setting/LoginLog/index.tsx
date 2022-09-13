@@ -2,15 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import {
-  Table,
-  Select,
-  DatePicker,
-  Pagination,
-  message,
-  Form,
-  Spin,
-} from 'antd'
+import { Table, Select, Pagination, Form, Spin } from 'antd'
 import moment from 'moment'
 import { css } from '@emotion/css'
 import { PaginationWrap } from '@/components/StyleCommon'
@@ -74,24 +66,6 @@ const SelectWrap = styled(Select)`
     min-width: 200px;
     border: none !important;
     outline: none !important;
-  }
-`
-
-const rangPicker = css`
-  .ant-picker-panel-container {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  .ant-picker-footer {
-    min-width: inherit;
-    width: max-content;
-  }
-  .ant-picker-ranges {
-    display: flex;
-    flex-direction: column;
-  }
-  .ant-tag {
-    margin-right: 0;
   }
 `
 

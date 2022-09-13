@@ -8,16 +8,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  Modal,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Space,
-  message,
-  Progress,
-} from 'antd'
+import { Modal, Form, Input, Select, Space, message, Progress } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -31,6 +22,7 @@ import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
+import { PriorityWrap } from '@/components/StyleCommon'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -66,39 +58,6 @@ const FormWrap = styled(Form)({
   },
   '.ant-form-item-control-input': {
     minHeight: 'inherit',
-  },
-})
-
-const PriorityWrap = styled.div<{ status: any }>({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  height: 26,
-  padding: '0 6px',
-  width: 'fit-content',
-  borderRadius: 6,
-  div: {
-    color: '#323233',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.icon': {
-    marginLeft: 8,
-    visibility: 'hidden',
-    fontSize: 16,
-    color: '#2877ff',
-  },
-  '.priorityIcon': {
-    fontSize: 16,
-    svg: {
-      margin: '0!important',
-    },
-  },
-  '&: hover': {
-    background: 'rgba(240, 244, 250, 1)',
-    '.icon': {
-      visibility: 'visible',
-    },
   },
 })
 
@@ -404,10 +363,6 @@ const EditDemand = (props: Props) => {
       users: [],
       copysend: [],
     })
-  }
-
-  const onAdd = () => {
-    message.warning(t('common.pleaseProject'))
   }
 
   const onChangePicker = (_values: any) => {

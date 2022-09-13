@@ -8,7 +8,6 @@ import {
   StaffTableWrap,
   MyInput,
   SetButton,
-  StyledTable,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -17,17 +16,9 @@ import {
   TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import {
-  Button,
-  Dropdown,
-  Menu,
-  message,
-  Pagination,
-  Spin,
-  Tooltip,
-} from 'antd'
+import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from './CreatePrejectTableColum'
+import { useDynamicColumns } from './../../components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
@@ -233,8 +224,7 @@ const Need = (props: any) => {
     updateOrderkey,
     updateStatus,
     updatePriority,
-    showEdit,
-    showDel,
+    showOpen: true,
   })
 
   const selectColum: any = useMemo(() => {

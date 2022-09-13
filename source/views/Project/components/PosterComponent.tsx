@@ -8,7 +8,6 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useTranslation } from 'react-i18next'
-import { values } from 'lodash'
 
 const ImgWrap = styled.div({
   borderRadius: 6,

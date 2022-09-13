@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { useModel } from '@/models'
-import { message, Progress, Upload, type UploadProps } from 'antd'
+import { message, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'

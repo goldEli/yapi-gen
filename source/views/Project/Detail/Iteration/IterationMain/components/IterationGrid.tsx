@@ -65,7 +65,6 @@ interface Props {
 
 const IterationGrid = (props: Props) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

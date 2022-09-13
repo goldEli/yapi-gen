@@ -16,7 +16,6 @@ import Loading from '@/components/Loading'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
-  // width: 160px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
