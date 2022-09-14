@@ -14,6 +14,11 @@ export default () => {
   const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [filterAll, setFilterAll] = useState<any>([])
   const [isRefreshIterateList, setIsRefreshIterateList] = useState<any>(false)
+  const colorList = [
+    { key: '#43BA9A', bgColor: '#EDF7F4' },
+    { key: '#969799', bgColor: '#EBEDF0' },
+    { key: '#FA9746', bgColor: '#FCF3EB' },
+  ]
 
   const getProjectList = async (params: any) => {
     const result = await services.project.getProjectList(params)
@@ -95,5 +100,6 @@ export default () => {
     isRefreshIterateList,
     setProjectInfo,
     setTagList,
+    colorList,
   }
 }

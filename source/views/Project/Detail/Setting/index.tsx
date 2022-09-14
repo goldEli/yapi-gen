@@ -134,7 +134,11 @@ const Setting = () => {
 
   const onToInfo = (index: any) => {
     const params = encryptPhp(
-      JSON.stringify({ type: index, id: projectInfo.id }),
+      JSON.stringify({
+        type: index,
+        id: projectInfo.id,
+        pageIdx: index === 3 ? 'main' : '',
+      }),
     )
     navigate(`/Detail/Set?data=${params}`)
   }
