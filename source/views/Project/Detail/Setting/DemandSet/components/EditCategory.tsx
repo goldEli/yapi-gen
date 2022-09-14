@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
 import { Input, Form, Popover, Space } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -19,7 +20,7 @@ const ChooseColorWrap = styled.div<{ color?: string }>(
     cursor: 'pointer',
   },
   ({ color }) => ({
-    background: color,
+    background: color ? color : '#969799',
   }),
 )
 
@@ -52,17 +53,22 @@ const ViewWrap = styled.div<{ color: string; bgColor: string }>(
   }),
 )
 
+const colorList = [
+  { key: '#43BA9A', bgColor: '#EDF7F4' },
+  { key: '#969799', bgColor: '#EBEDF0' },
+  { key: '#FA9746', bgColor: '#FCF3EB' },
+]
+
 interface ChooseColorProps {
-  value?: any
+  color?: any
   onChange?(value?: string): void
+  onChangeValue?(value?: string): void
 }
 
 const ChooseColor = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
-  const [normalColor, setNormalColor] = useState(props?.value || '#969799')
-  const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
   const onChangeColor = (val: string) => {
-    setNormalColor(val)
+    props?.onChangeValue?.(val)
     props?.onChange?.(val)
   }
   const colorStatus = (
@@ -72,11 +78,11 @@ const ChooseColor = (props: ChooseColorProps) => {
     >
       {colorList.map(i => (
         <ColorWrap
-          key={i}
-          style={{ background: i }}
-          onClick={() => onChangeColor(i)}
+          key={i.key}
+          style={{ background: i.key }}
+          onClick={() => onChangeColor(i.key)}
         >
-          <IconFont hidden={i !== normalColor} type="check" />
+          <IconFont hidden={i.key !== props?.color} type="check" />
         </ColorWrap>
       ))}
     </Space>
@@ -93,7 +99,7 @@ const ChooseColor = (props: ChooseColorProps) => {
       onVisibleChange={onVisibleChange}
     >
       <ChooseColorWrap
-        color={normalColor}
+        color={props?.color}
         onClick={() => setIsChooseColor(true)}
       />
     </Popover>
@@ -108,15 +114,37 @@ interface EditorProps {
 }
 
 const EditorCategory = (props: EditorProps) => {
+  const [name, setName] = useState('')
+  let normalColor: any = props?.item?.color || '#969799'
   const [form] = Form.useForm()
-  const onConfirm = () => {
 
-    // console.log(form.getFieldsValue())
+  useEffect(() => {
+    form.setFieldsValue(props?.item)
+  }, [props?.item])
+
+  const onConfirm = () => {
+    if (!form.getFieldValue('color')) {
+      form.setFieldsValue({
+        color: '#969799',
+      })
+    }
     props.onConfirm(form.getFieldsValue())
   }
+
   const onClose = () => {
     props.onClose()
-    form.resetFields()
+    setTimeout(() => {
+      form.resetFields()
+      setName('')
+      normalColor = '#969799'
+    }, 100)
+  }
+
+  const onChangeValue = (val: string | undefined) => {
+    normalColor = val
+    form.setFieldsValue({
+      color: val,
+    })
   }
   return (
     <CommonModal
@@ -133,18 +161,24 @@ const EditorCategory = (props: EditorProps) => {
             maxLength={20}
             placeholder="请输入中英文字符限20个字符"
             allowClear
+            onChange={e => setName(e.target.value)}
           />
         </Form.Item>
         <Form.Item label="选择颜色" name="color">
-          <ChooseColor value={props?.item?.color} />
+          <ChooseColor
+            color={normalColor}
+            onChangeValue={val => onChangeValue(val)}
+          />
         </Form.Item>
         <Form.Item label="预览效果">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ViewWrap
-              color={form.getFieldValue('color') || '#969799'}
-              bgColor="#EBEDF0"
+              color={normalColor}
+              bgColor={
+                colorList?.filter(i => i.key === normalColor)[0]?.bgColor
+              }
             >
-              {form.getFieldValue('name') ? form.getFieldValue('name') : '无'}
+              {name || '无'}
             </ViewWrap>
             <span>需求名称XXXX</span>
           </div>

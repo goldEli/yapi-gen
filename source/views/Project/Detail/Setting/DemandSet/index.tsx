@@ -129,13 +129,9 @@ const IconFontWrap = styled(IconFont)({
   },
 })
 
-const SetTitle = () => {
-  return <SetTitleWrap>需求设置</SetTitleWrap>
-}
-
 interface MoreWrapProps {
   row: any
-  onChange(): void
+  onChange(row: any): void
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -153,7 +149,7 @@ const MoreWrap = (props: MoreWrapProps) => {
     } else if (type === 'delete' && !props?.row?.hasDemand) {
       setIsDelete(true)
     } else {
-      props?.onChange()
+      props?.onChange(props?.row)
     }
   }
 
@@ -252,6 +248,7 @@ interface CardGroupProps {
 
 const CardGroup = (props: CardGroupProps) => {
   const [isEdit, setIsEdit] = useState(false)
+  const [editRow, setEditRow] = useState<any>({})
 
   const onChange = (checked: boolean, row: any) => {
 
@@ -261,14 +258,27 @@ const CardGroup = (props: CardGroupProps) => {
   const onConfirm = async () => {
 
     // 调用编辑接口
+    setEditRow({})
   }
 
+  const onClose = () => {
+    setIsEdit(false)
+    setTimeout(() => {
+      setEditRow({})
+    }, 100)
+  }
+
+  const onChangeMore = (row: any) => {
+    setEditRow(row)
+    setIsEdit(true)
+  }
   return (
     <>
       <EditCategory
         isVisible={isEdit}
-        onClose={() => setIsEdit(false)}
+        onClose={onClose}
         onConfirm={onConfirm}
+        item={editRow}
       />
       <CardGroupWrap>
         {props?.list.map((item: any) => (
@@ -282,7 +292,7 @@ const CardGroup = (props: CardGroupProps) => {
                   defaultChecked={item.isDisable}
                   onChange={checked => onChange(checked, item)}
                 />
-                <MoreWrap onChange={() => setIsEdit(true)} row={item} />
+                <MoreWrap onChange={row => onChangeMore(row)} row={item} />
               </div>
             </CategoryCardHead>
             <DivWrap>工作流设置</DivWrap>
@@ -314,7 +324,6 @@ const DemandSet = () => {
       {
         name: '软件需求',
         color: '#43BA9A',
-        bgColor: '#EDF7F4',
         isDisable: true,
         id: 1,
         hasDemand: 2,
@@ -322,7 +331,6 @@ const DemandSet = () => {
       {
         name: '开发需求',
         color: '#43BA9A',
-        bgColor: '#EDF7F4',
         isDisable: true,
         id: 2,
         hasDemand: 2,
@@ -330,7 +338,6 @@ const DemandSet = () => {
       {
         name: '美术组的修改图片需求美术组的修改图片需求',
         color: '#FA9746',
-        bgColor: '#FCF3EB',
         isDisable: false,
         id: 3,
         hasDemand: 0,
@@ -338,7 +345,6 @@ const DemandSet = () => {
       {
         name: '软件需求',
         color: '#43BA9A',
-        bgColor: '#EDF7F4',
         isDisable: true,
         id: 4,
         hasDemand: 2,
@@ -348,7 +354,7 @@ const DemandSet = () => {
 
   return (
     <Wrap>
-      <SetTitle />
+      <SetTitleWrap>需求设置</SetTitleWrap>
       <ContentWrap>
         <ModeWrap style={{ marginBottom: 72 }}>
           <LabelWrap style={{ marginBottom: 24 }}>
