@@ -6,6 +6,8 @@ import Main from './Main'
 import Workflow from './Workflow'
 import FieldSet from './FieldSet'
 import { getParamsData } from '@/tools'
+import PermissionWrap from '@/components/PermissionWrap'
+import { useModel } from '@/models'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -24,8 +26,16 @@ const DemandSet = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const pageIdx = paramsData.pageIdx || 'main'
+  const { projectInfo } = useModel('project')
 
-  return <Wrap>{contentList.filter(i => i.key === pageIdx)[0]?.content}</Wrap>
+  return (
+    <PermissionWrap
+      auth="b/project/story_config"
+      permission={projectInfo?.projectPermissions}
+    >
+      <Wrap>{contentList.filter(i => i.key === pageIdx)[0]?.content}</Wrap>
+    </PermissionWrap>
+  )
 }
 
 export default DemandSet

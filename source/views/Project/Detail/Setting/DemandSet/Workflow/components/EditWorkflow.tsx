@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import ChooseColor from '../../components/ChooseColor'
 import { useModel } from '@/models'
+import { ViewWrap } from '@/components/StyleCommon'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -27,24 +28,6 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
   ({ color, bgColor }) => ({
     background: bgColor,
     color,
-  }),
-)
-
-const ViewWrap = styled.div<{ color: string }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    marginRight: 8,
-    lineHeight: '20px',
-    fontSize: 12,
-    fontWeight: 400,
-    width: 'fit-content',
-    background: 'white',
-  },
-  ({ color }) => ({
-    color,
-    border: `1px solid ${color}`,
   }),
 )
 

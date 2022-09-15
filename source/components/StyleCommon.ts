@@ -3,6 +3,41 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input } from 'antd'
 
+const ViewWrap = styled.div<{ color: string }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '20px',
+    fontSize: 12,
+    fontWeight: 400,
+    width: 'fit-content',
+    background: 'white',
+  },
+  ({ color }) => ({
+    color,
+    border: `1px solid ${color}`,
+  }),
+)
+
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '22px',
+    fontSize: 12,
+    fontWeight: 400,
+    marginLeft: 8,
+  },
+  ({ color, bgColor }) => ({
+    background: bgColor,
+    color,
+  }),
+)
+
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
     cursor: 'pointer',
@@ -358,4 +393,6 @@ export {
   ShowWrap,
   StyledTable,
   ClickWrap,
+  CategoryWrap,
+  ViewWrap,
 }

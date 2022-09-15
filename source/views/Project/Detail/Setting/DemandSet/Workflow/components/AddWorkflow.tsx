@@ -1,11 +1,26 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable multiline-ternary */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import CommonModal from '@/components/CommonModal'
 import { Input, Space, Table } from 'antd'
 import ChooseColor from '../../components/ChooseColor'
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
+import { ViewWrap } from '@/components/StyleCommon'
+
+const TableWrap = styled(Table)({
+  maxHeight: 400,
+  overflowY: 'auto',
+  '.ant-checkbox-wrapper': {
+    marginLeft: 8,
+  },
+  '.ant-table-cell': {
+    position: 'relative',
+  },
+})
 
 const TableTitle = styled.div({
   marginTop: 8,
@@ -35,24 +50,6 @@ const TextWrap = styled.div({
   cursor: 'pointer',
 })
 
-const ViewWrap = styled.div<{ color: string }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    padding: '0 8px',
-    marginRight: 8,
-    lineHeight: '20px',
-    fontSize: 12,
-    fontWeight: 400,
-    width: 'fit-content',
-    background: 'white',
-  },
-  ({ color }) => ({
-    color,
-    border: `1px solid ${color}`,
-  }),
-)
-
 const data = [
   {
     key: '1',
@@ -61,7 +58,7 @@ const data = [
     remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
     endStatus: false,
     startStatus: true,
-    index: 0,
+    id: 0,
     hasDemand: 3,
     hasCategory: [
       {
@@ -87,7 +84,7 @@ const data = [
     remark: '说明文字',
     endStatus: true,
     startStatus: false,
-    index: 1,
+    id: 1,
     hasDemand: 0,
     hasCategory: [
       {
@@ -106,7 +103,7 @@ const data = [
     remark: '说明文字内容说',
     endStatus: true,
     startStatus: false,
-    index: 2,
+    id: 2,
     hasDemand: 3,
     hasCategory: [
       {
@@ -135,19 +132,98 @@ const AddWrap = () => {
   )
 }
 
-const AddActiveWrap = () => {
+interface AddActiveWrapProps {
+  onClose?(): void
+  onConfirm?(obj: any): void
+  hasMargin?: boolean
+  item?: any
+}
+
+const AddActiveWrap = (props: AddActiveWrapProps) => {
+  const [value, setValue] = useState<any>('')
+  const [normalColor, setNormalColor] = useState<any>('#969799')
+
+  useEffect(() => {
+    if (props?.item?.id) {
+      setValue(props?.item.name)
+      setNormalColor(props?.item.color)
+    }
+  }, [props?.item])
+
+  const onClose = () => {
+    setValue('')
+    setNormalColor('#969799')
+    props?.onClose?.()
+  }
+
+  const onConfirm = () => {
+    setValue('')
+    setNormalColor('#969799')
+    props?.onConfirm?.({ name: value, color: normalColor })
+    props?.onClose?.()
+  }
+
+  const onChangeValue = (val: string | undefined) => {
+    setNormalColor(val)
+  }
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', margin: '10px 0' }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        margin: props?.hasMargin ? '10px 0' : 0,
+      }}
+    >
       <Input
-        style={{ width: 196, marginRight: 16 }}
+        style={{
+          width: 196,
+          margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
+        }}
         placeholder="请输入状态名称"
         allowClear
+        onChange={e => setValue(e.target.value)}
+        value={value}
       />
-      <ChooseColor />
-      <TextWrap style={{ margin: '0 16px 0 24px', color: '#2877ff' }}>
+      <ChooseColor
+        color={normalColor}
+        onChangeValue={val => onChangeValue(val)}
+      />
+      <TextWrap
+        style={{ margin: '0 16px 0 24px', color: '#2877ff' }}
+        onClick={onConfirm}
+      >
         完成
       </TextWrap>
-      <TextWrap style={{ color: '#646566' }}>取消</TextWrap>
+      <TextWrap style={{ color: '#646566' }} onClick={onClose}>
+        取消
+      </TextWrap>
+    </div>
+  )
+}
+
+interface ChangeTableNameProps {
+  record: any
+  text: string
+  operationObj: any
+  onClose?(): void
+  onConfirm?(obj: any): void
+}
+
+const ChangeTableName = (props: ChangeTableNameProps) => {
+  return (
+    <div>
+      {props?.operationObj?.id === props?.record?.id ? (
+        <div style={{ position: 'absolute', zIndex: 2, top: 10, width: 680 }}>
+          <AddActiveWrap
+            hasMargin={false}
+            onClose={props?.onClose}
+            onConfirm={props?.onConfirm}
+            item={props?.operationObj}
+          />
+        </div>
+      ) : null}
+      <ViewWrap color={props?.record?.color}>{props?.text}</ViewWrap>
     </div>
   )
 }
@@ -155,56 +231,37 @@ const AddActiveWrap = () => {
 const AddWorkflow = (props: Props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [isAdd, setIsAdd] = useState(false)
+  const [dataList, setDataList] = useState(data)
+  const [operationObj, setOperationObj] = useState<any>({})
+
   const onConfirm = () => {
 
     // console.log(form.getFieldsValue(), 'form.getFieldsValue()')
+    props?.onUpdate?.()
   }
 
   const onClose = () => {
     props?.onClose()
+    setIsAdd(false)
+    setSelectedRowKeys([])
   }
 
-  const columns = [
-    {
-      width: 252,
-      title: '',
-      dataIndex: 'name',
-      render: (text: any, record: any) => <ViewWrap color={record?.color}>{text}</ViewWrap>
-      ,
-    },
-    {
-      width: 314,
-      title: '',
-      dataIndex: 'hasCategory',
-      render: (text: any) => (
-        <OmitText width={300}>
-          {text.map((i: any) => i.name).join('、')}
-        </OmitText>
-      ),
-    },
-    {
-      title: '',
-      dataIndex: 'action',
-      render: (text: string, record: any) => (
-        <Space size={16}>
-          <span
-            style={{ color: '#2877ff', cursor: 'pointer' }}
+  const onAddConfirm = (obj: any) => {
 
-            // onClick={() => onClickOperation(record, 'edit')}
-          >
-            编辑
-          </span>
-          <span
-            style={{ color: '#2877ff', cursor: 'pointer' }}
+    // console.log(obj, '====')
+    // 调用添加状态的接口
+  }
 
-            // onClick={() => onClickOperation(record, 'del')}
-          >
-            删除
-          </span>
-        </Space>
-      ),
-    },
-  ]
+  const onChangeName = (obj: any) => {
+    const idx = dataList.findIndex(i => i.id === operationObj.id)
+    const arr = dataList
+    arr[idx].color = obj.color
+    arr[idx].name = obj.name
+    setDataList(arr)
+    setOperationObj({})
+
+    // 调用编辑状态的接口
+  }
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
 
@@ -216,6 +273,74 @@ const AddWorkflow = (props: Props) => {
     selectedRowKeys,
     onChange: onSelectChange,
   }
+
+  const onAddDel = (row: any) => {
+    const arr = dataList.filter(i => i.id !== row.id)
+    setDataList(arr)
+  }
+
+  const onAddEdit = (row: any) => {
+    setOperationObj(row)
+  }
+
+  const columns = [
+    {
+      width: 244,
+      title: '',
+      dataIndex: 'name',
+      render: (text: any, record: any) => (
+        <ChangeTableName
+          record={record}
+          text={text}
+          operationObj={operationObj}
+          onClose={() => setOperationObj({})}
+          onConfirm={obj => onChangeName(obj)}
+        />
+      ),
+    },
+    {
+      width: 314,
+      title: '',
+      dataIndex: 'hasCategory',
+      render: (text: any, record: any) => (
+        <>
+          {operationObj?.id === record.id
+            ? ''
+            : (
+                <OmitText width={300}>
+                  {text ? text.map((i: any) => i.name).join('、') : '--'}
+                </OmitText>
+              )}
+        </>
+      ),
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      render: (text: string, record: any) => (
+        <>
+          {operationObj?.id === record.id
+            ? ''
+            : (
+                <Space size={16}>
+                  <span
+                    style={{ color: '#2877ff', cursor: 'pointer' }}
+                    onClick={() => onAddEdit(record)}
+                  >
+                编辑
+                  </span>
+                  <span
+                    style={{ color: '#2877ff', cursor: 'pointer' }}
+                    onClick={() => onAddDel(record)}
+                  >
+                删除
+                  </span>
+                </Space>
+              )}
+        </>
+      ),
+    },
+  ]
 
   return (
     <CommonModal
@@ -230,19 +355,24 @@ const AddWorkflow = (props: Props) => {
         <span style={{ width: '45%' }}>应用的需求类别</span>
         <span style={{ width: '15%' }}>操作</span>
       </TableTitle>
-      {isAdd ? <AddActiveWrap /> : null}
+      {isAdd ? (
+        <AddActiveWrap
+          onClose={() => setIsAdd(false)}
+          onConfirm={obj => onAddConfirm(obj)}
+        />
+      ) : null}
       {!isAdd && (
         <div onClick={() => setIsAdd(true)}>
           <AddWrap />
         </div>
       )}
-      <Table
+      <TableWrap
         rowSelection={rowSelection}
-        dataSource={data}
+        dataSource={dataList}
         columns={columns}
         showHeader={false}
         pagination={false}
-        rowKey="index"
+        rowKey="id"
       />
     </CommonModal>
   )

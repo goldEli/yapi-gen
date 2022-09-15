@@ -128,7 +128,8 @@ const Setting = () => {
       name: '需求设置',
       icon: 'settings',
       content: <DemandSet />,
-      isPermission: true,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/story_config')).length,
     },
   ]
 
