@@ -13,12 +13,12 @@ import {
   Divider,
   Switch,
   Button,
-  Dropdown,
   Menu,
   Popover,
   Input,
 } from 'antd'
 import { useState } from 'react'
+import { NameWrap } from '@/components/StyleCommon'
 
 const LabelWrap = styled.div({
   color: '#323233',
@@ -58,21 +58,6 @@ const TextWrap = styled.div({
   fontSize: 12,
   color: '#969799',
   fontWeight: 400,
-})
-
-const NameWrap = styled.div({
-  width: 32,
-  height: 32,
-  borderRadius: 16,
-  background: '#A4ACF5',
-  color: 'white',
-  fontSize: 12,
-  fontWeight: 400,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: 4,
-  overflow: 'hidden',
 })
 
 const PersonWrap = styled.div({
@@ -198,156 +183,161 @@ const SetConfig = (props: Props) => {
       onConfirm={onConfirm}
       width={784}
     >
-      <ItemWrap style={{ marginTop: 8 }}>
-        <LabelWrap>当前流转</LabelWrap>
-        <ItemWrap>
-          <StatusWrap>规划中</StatusWrap>
-          <Divider
-            type="vertical"
-            style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
-          />
-          <StatusWrap>已完成</StatusWrap>
-        </ItemWrap>
-      </ItemWrap>
-      <ItemWrap style={{ marginTop: 32 }}>
-        <ItemWrap
-          style={{ cursor: 'pointer' }}
-          onClick={() => setIsShowPermission(false)}
-        >
-          <IconFont
-            type="tableDown"
-            style={{ fontSize: 12, color: '#646566', marginRight: 8 }}
-          />
-          <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
-            流转操作权限
-          </span>
-        </ItemWrap>
-      </ItemWrap>
-      {isShowPermission && (
-        <div>
-          <TextWrap>
-            配置状态流转用户权限，只有有权限的用户才允许做此流转。如果为空则默认所有人有权限。
-          </TextWrap>
-          <ItemWrap style={{ marginTop: 16 }}>
-            <LabelWrap>用户组</LabelWrap>
-            <Select style={{ width: 186 }} />
-          </ItemWrap>
-          <ItemWrap style={{ marginTop: 24 }}>
-            <LabelWrap>人员字段</LabelWrap>
-            <Select style={{ width: 186 }} />
-          </ItemWrap>
-          <ItemWrap style={{ marginTop: 24 }}>
-            <LabelWrap>其他用户</LabelWrap>
-            <Select style={{ width: 186 }} />
-          </ItemWrap>
-          <ItemWrap style={{ marginTop: 24 }}>
-            <LabelWrap>流转审核</LabelWrap>
-            <Switch
-              defaultChecked={isSwitch}
-              onChange={checked => setIsSwitch(checked)}
+      <div style={{ maxHeight: 584, overflowY: 'auto' }}>
+        <ItemWrap style={{ marginTop: 8 }}>
+          <LabelWrap>当前流转</LabelWrap>
+          <ItemWrap>
+            <StatusWrap>规划中</StatusWrap>
+            <Divider
+              type="vertical"
+              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
             />
+            <StatusWrap>已完成</StatusWrap>
           </ItemWrap>
-          <TextWrap>开启审核后，需审核人同意后才可流转到下一状态</TextWrap>
-          {isSwitch && (
-            <Wrap>
-              <Radio.Group
-                onChange={onRadioChange}
-                value={radioValue}
-                style={{ marginTop: 8 }}
-              >
-                <Radio value={1}>固定审核流程</Radio>
-                <Radio value={2}>用户指定审核人</Radio>
-              </Radio.Group>
-              <Timeline>
-                <Timeline.Item>
-                  <ItemWrap>
-                    <span>审核人</span>
-                    <Popover
-                      key={isShowSelect.toString()}
-                      visible={isShowSelect}
-                      placement="bottom"
-                      trigger="hover"
-                      onVisibleChange={visible => setIsShowSelect(visible)}
-                      content={
-                        <Menu>
-                          <Menu.Item key={1}>依次审核</Menu.Item>
-                          <Menu.Item key={2}>与逻辑审核</Menu.Item>
-                          <Menu.Item key={3}>或逻辑审核</Menu.Item>
-                        </Menu>
-                      }
-                      getPopupContainer={node => node}
-                    >
-                      依次审核
-                    </Popover>
-                  </ItemWrap>
-                  <ItemWrap style={{ alignItems: 'flex-start' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <NameWrap>张三</NameWrap>
-                      <span>张三</span>
-                    </div>
-                    <Popover
-                      key={isOpen.toString()}
-                      visible={isOpen}
-                      placement="bottom"
-                      trigger="click"
-                      onVisibleChange={visible => setIsOpen(visible)}
-                      content={<ChoosePerson />}
-                      getPopupContainer={node => node}
-                    >
-                      <AddWrap>
-                        <IconFont type="plus" onClick={() => setIsOpen(true)} />
-                      </AddWrap>
-                    </Popover>
-                  </ItemWrap>
-                </Timeline.Item>
-                <Timeline.Item>
-                  <div style={{ color: '#2877ff', cursor: 'pointer' }}>
-                    添加审核
-                  </div>
-                </Timeline.Item>
-              </Timeline>
-            </Wrap>
-          )}
-        </div>
-      )}
-      <ItemWrap style={{ marginTop: 32 }}>
-        <ItemWrap
-          style={{ cursor: 'pointer' }}
-          onClick={() => setIsShowField(false)}
-        >
-          <IconFont
-            type="tableDown"
-            style={{ fontSize: 12, color: '#646566', marginRight: 8 }}
-          />
-          <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
-            流转填写字段
-          </span>
         </ItemWrap>
-      </ItemWrap>
-      {isShowField && (
-        <div>
-          <TextWrap>
-            配置状态流转过程中需要额外填写的字段，可以设置是否必填和默认值。
-          </TextWrap>
-          <Button
-            style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 16 }}
-            icon={<IconFont type="plus" />}
+        <ItemWrap style={{ marginTop: 32 }}>
+          <ItemWrap
+            style={{ cursor: 'pointer' }}
+            onClick={() => setIsShowPermission(false)}
           >
-            添加字段
-          </Button>
-          <Table
-            pagination={false}
-            dataSource={data}
-            columns={columns}
-            rowKey="id"
-            sticky
-            style={{ marginTop: 16 }}
-          />
-          <TextWrap>
-            注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
-          </TextWrap>
-        </div>
-      )}
+            <IconFont
+              type="tableDown"
+              style={{ fontSize: 12, color: '#646566', marginRight: 8 }}
+            />
+            <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
+              流转操作权限
+            </span>
+          </ItemWrap>
+        </ItemWrap>
+        {isShowPermission && (
+          <div>
+            <TextWrap>
+              配置状态流转用户权限，只有有权限的用户才允许做此流转。如果为空则默认所有人有权限。
+            </TextWrap>
+            <ItemWrap style={{ marginTop: 16 }}>
+              <LabelWrap>用户组</LabelWrap>
+              <Select style={{ width: 186 }} />
+            </ItemWrap>
+            <ItemWrap style={{ marginTop: 24 }}>
+              <LabelWrap>人员字段</LabelWrap>
+              <Select style={{ width: 186 }} />
+            </ItemWrap>
+            <ItemWrap style={{ marginTop: 24 }}>
+              <LabelWrap>其他用户</LabelWrap>
+              <Select style={{ width: 186 }} />
+            </ItemWrap>
+            <ItemWrap style={{ marginTop: 24 }}>
+              <LabelWrap>流转审核</LabelWrap>
+              <Switch
+                defaultChecked={isSwitch}
+                onChange={checked => setIsSwitch(checked)}
+              />
+            </ItemWrap>
+            <TextWrap>开启审核后，需审核人同意后才可流转到下一状态</TextWrap>
+            {isSwitch && (
+              <Wrap>
+                <Radio.Group
+                  onChange={onRadioChange}
+                  value={radioValue}
+                  style={{ marginTop: 8 }}
+                >
+                  <Radio value={1}>固定审核流程</Radio>
+                  <Radio value={2}>用户指定审核人</Radio>
+                </Radio.Group>
+                <Timeline>
+                  <Timeline.Item>
+                    <ItemWrap>
+                      <span>审核人</span>
+                      <Popover
+                        key={isShowSelect.toString()}
+                        visible={isShowSelect}
+                        placement="bottom"
+                        trigger="hover"
+                        onVisibleChange={visible => setIsShowSelect(visible)}
+                        content={
+                          <Menu>
+                            <Menu.Item key={1}>依次审核</Menu.Item>
+                            <Menu.Item key={2}>与逻辑审核</Menu.Item>
+                            <Menu.Item key={3}>或逻辑审核</Menu.Item>
+                          </Menu>
+                        }
+                        getPopupContainer={node => node}
+                      >
+                        依次审核
+                      </Popover>
+                    </ItemWrap>
+                    <ItemWrap style={{ alignItems: 'flex-start' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <NameWrap>张三</NameWrap>
+                        <span>张三</span>
+                      </div>
+                      <Popover
+                        key={isOpen.toString()}
+                        visible={isOpen}
+                        placement="bottom"
+                        trigger="click"
+                        onVisibleChange={visible => setIsOpen(visible)}
+                        content={<ChoosePerson />}
+                        getPopupContainer={node => node}
+                      >
+                        <AddWrap>
+                          <IconFont
+                            type="plus"
+                            onClick={() => setIsOpen(true)}
+                          />
+                        </AddWrap>
+                      </Popover>
+                    </ItemWrap>
+                  </Timeline.Item>
+                  <Timeline.Item>
+                    <div style={{ color: '#2877ff', cursor: 'pointer' }}>
+                      添加审核
+                    </div>
+                  </Timeline.Item>
+                </Timeline>
+              </Wrap>
+            )}
+          </div>
+        )}
+        <ItemWrap style={{ marginTop: 32 }}>
+          <ItemWrap
+            style={{ cursor: 'pointer' }}
+            onClick={() => setIsShowField(false)}
+          >
+            <IconFont
+              type="tableDown"
+              style={{ fontSize: 12, color: '#646566', marginRight: 8 }}
+            />
+            <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
+              流转填写字段
+            </span>
+          </ItemWrap>
+        </ItemWrap>
+        {isShowField && (
+          <div>
+            <TextWrap>
+              配置状态流转过程中需要额外填写的字段，可以设置是否必填和默认值。
+            </TextWrap>
+            <Button
+              style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 16 }}
+              icon={<IconFont type="plus" />}
+            >
+              添加字段
+            </Button>
+            <Table
+              pagination={false}
+              dataSource={data}
+              columns={columns}
+              rowKey="id"
+              sticky
+              style={{ marginTop: 16 }}
+            />
+            <TextWrap>
+              注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+            </TextWrap>
+          </div>
+        )}
+      </div>
     </CommonModal>
   )
 }

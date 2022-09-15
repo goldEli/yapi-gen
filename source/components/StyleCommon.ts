@@ -3,6 +3,21 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input } from 'antd'
 
+const NameWrap = styled.div({
+  width: 32,
+  height: 32,
+  borderRadius: 16,
+  background: '#A4ACF5',
+  color: 'white',
+  fontSize: 12,
+  fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 4,
+  overflow: 'hidden',
+})
+
 const ViewWrap = styled.div<{ color: string }>(
   {
     height: 22,
@@ -395,4 +410,5 @@ export {
   ClickWrap,
   CategoryWrap,
   ViewWrap,
+  NameWrap,
 }

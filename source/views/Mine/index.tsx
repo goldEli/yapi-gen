@@ -134,6 +134,12 @@ const MineBox = () => {
         'b/user/copysend/story',
       ),
     },
+    {
+      id: 6,
+      name: '我的审核',
+      path: 'examine',
+      isPermission: false,
+    },
   ]
 
   return (

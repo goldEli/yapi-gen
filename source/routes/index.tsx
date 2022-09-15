@@ -46,6 +46,10 @@ const routes = [
             element: lazy(() => import('@/views/Mine/Finished')),
           },
           {
+            path: 'examine',
+            element: lazy(() => import('@/views/Mine/Examine')),
+          },
+          {
             path: '',
             element: lazy(() => import('@/views/Mine/Profile')),
           },

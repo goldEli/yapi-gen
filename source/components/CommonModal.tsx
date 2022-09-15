@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import { Modal, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
@@ -30,6 +31,7 @@ interface ModalProps {
   children?: any
   onConfirm?(): void
   confirmText?: string
+  hasFooter?: any
 }
 
 const CommonModal = (props: ModalProps) => {
@@ -56,12 +58,16 @@ const CommonModal = (props: ModalProps) => {
         />
       </ModalHeader>
       <div>{props?.children}</div>
-      <ModalFooter size={16}>
-        <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-        <Button onClick={props?.onConfirm} type="primary">
-          {t('common.confirm2')}
-        </Button>
-      </ModalFooter>
+      {props?.hasFooter
+        ? props?.hasFooter
+        : (
+            <ModalFooter size={16}>
+              <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
+              <Button onClick={props?.onConfirm} type="primary">
+                {t('common.confirm2')}
+              </Button>
+            </ModalFooter>
+          )}
     </Modal>
   )
 }
