@@ -172,7 +172,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       style={{
         display: 'flex',
         alignItems: 'center',
-        margin: props?.hasMargin ? '10px 0' : 0,
+        margin: props?.hasMargin ? '10px 0' : '0',
       }}
     >
       <Input
@@ -216,7 +216,6 @@ const ChangeTableName = (props: ChangeTableNameProps) => {
       {props?.operationObj?.id === props?.record?.id ? (
         <div style={{ position: 'absolute', zIndex: 2, top: 10, width: 680 }}>
           <AddActiveWrap
-            hasMargin={false}
             onClose={props?.onClose}
             onConfirm={props?.onConfirm}
             item={props?.operationObj}
@@ -357,6 +356,7 @@ const AddWorkflow = (props: Props) => {
       </TableTitle>
       {isAdd ? (
         <AddActiveWrap
+          hasMargin
           onClose={() => setIsAdd(false)}
           onConfirm={obj => onAddConfirm(obj)}
         />

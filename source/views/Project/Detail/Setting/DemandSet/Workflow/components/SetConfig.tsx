@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -13,7 +14,6 @@ import {
   Divider,
   Switch,
   Button,
-  Menu,
   Popover,
   Input,
 } from 'antd'
@@ -60,21 +60,69 @@ const TextWrap = styled.div({
   fontWeight: 400,
 })
 
+const PersonItemWrap = styled.div({
+  height: 44,
+  lineHeight: '44px',
+  fontSize: 14,
+  color: '#323233',
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  padding: '0 16px',
+  '&: hover': {
+    background: '#F0F4FA',
+  },
+})
+
 const PersonWrap = styled.div({
   maxHeight: 200,
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
+  marginTop: 8,
 })
 
 const AddWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   height: 32,
   width: 32,
   boxSizing: 'border-box',
   cursor: 'pointer',
   borderRadius: 16,
+  border: '1px dashed #969799',
+  marginLeft: 40,
+})
+
+const TimelineWrap = styled(Timeline)({
+  marginTop: 16,
+  '.ant-timeline-item-last > .ant-timeline-item-content': {
+    minHeight: 'auto',
+  },
+  '.ant-timeline-item-last': {
+    paddingBottom: 0,
+  },
+})
+
+const MenuItemWrap = styled.span({
+  display: 'inline-block',
+  cursor: 'pointer',
+  height: 32,
+  padding: '0 16px',
+  lineHeight: '32px',
+  '&:hover': {
+    color: '#2877ff',
+    background: '#F0F4FA',
+  },
+})
+
+const MenuWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  fontSize: 14,
+  color: '#646566',
 })
 
 interface Props {
@@ -97,17 +145,25 @@ const personList = [
 const ChoosePerson = () => {
   const [value, setValue] = useState('')
   return (
-    <>
-      <Input
-        placeholder="请输入关键字"
-        onChange={e => setValue(e.target.value)}
-      />
+    <div style={{ padding: '16px 0' }}>
+      <div style={{ padding: '0 16px' }}>
+        <Input
+          style={{ height: 32 }}
+          placeholder="请输入关键字"
+          onChange={e => setValue(e.target.value)}
+        />
+      </div>
       <PersonWrap>
         {personList
           ?.filter(k => k.name.includes(value))
-          ?.map(i => <div key={i.id}>{i.name}</div>)}
+          ?.map(i => (
+            <PersonItemWrap key={i.id}>
+              <NameWrap style={{ margin: '0 8px 0 0' }}>张</NameWrap>
+              {i.name}
+            </PersonItemWrap>
+          ))}
       </PersonWrap>
-    </>
+    </div>
   )
 }
 
@@ -244,7 +300,7 @@ const SetConfig = (props: Props) => {
                   <Radio value={1}>固定审核流程</Radio>
                   <Radio value={2}>用户指定审核人</Radio>
                 </Radio.Group>
-                <Timeline>
+                <TimelineWrap>
                   <Timeline.Item>
                     <ItemWrap>
                       <span>审核人</span>
@@ -255,18 +311,42 @@ const SetConfig = (props: Props) => {
                         trigger="hover"
                         onVisibleChange={visible => setIsShowSelect(visible)}
                         content={
-                          <Menu>
-                            <Menu.Item key={1}>依次审核</Menu.Item>
-                            <Menu.Item key={2}>与逻辑审核</Menu.Item>
-                            <Menu.Item key={3}>或逻辑审核</Menu.Item>
-                          </Menu>
+                          <MenuWrap>
+                            <MenuItemWrap key={1}>依次审核</MenuItemWrap>
+                            <MenuItemWrap key={2}>与逻辑审核</MenuItemWrap>
+                            <MenuItemWrap key={3}>或逻辑审核</MenuItemWrap>
+                          </MenuWrap>
                         }
                         getPopupContainer={node => node}
                       >
-                        依次审核
+                        <div
+                          style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <span
+                            style={{
+                              marginLeft: 32,
+                              color: isShowSelect ? '#2877ff' : '##323233',
+                            }}
+                          >
+                            依次审核
+                          </span>
+                          <IconFont
+                            style={{
+                              marginLeft: 8,
+                              color: isShowSelect ? '#2877ff' : '##323233',
+                            }}
+                            type={isShowSelect ? 'up' : 'down'}
+                          />
+                        </div>
                       </Popover>
                     </ItemWrap>
-                    <ItemWrap style={{ alignItems: 'flex-start' }}>
+                    <ItemWrap
+                      style={{ alignItems: 'flex-start', marginTop: 8 }}
+                    >
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <NameWrap>张三</NameWrap>
                         <span>张三</span>
@@ -274,7 +354,7 @@ const SetConfig = (props: Props) => {
                       <Popover
                         key={isOpen.toString()}
                         visible={isOpen}
-                        placement="bottom"
+                        placement="bottomRight"
                         trigger="click"
                         onVisibleChange={visible => setIsOpen(visible)}
                         content={<ChoosePerson />}
@@ -284,17 +364,24 @@ const SetConfig = (props: Props) => {
                           <IconFont
                             type="plus"
                             onClick={() => setIsOpen(true)}
+                            style={{ color: '#969799', fontSize: 16 }}
                           />
                         </AddWrap>
                       </Popover>
                     </ItemWrap>
                   </Timeline.Item>
                   <Timeline.Item>
-                    <div style={{ color: '#2877ff', cursor: 'pointer' }}>
+                    <div
+                      style={{
+                        color: '#2877ff',
+                        cursor: 'pointer',
+                        width: 'fit-content',
+                      }}
+                    >
                       添加审核
                     </div>
                   </Timeline.Item>
-                </Timeline>
+                </TimelineWrap>
               </Wrap>
             )}
           </div>
