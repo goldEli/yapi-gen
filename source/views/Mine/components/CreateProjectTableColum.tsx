@@ -14,6 +14,7 @@ import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { message } from 'antd'
+import review from '/review.png'
 
 const flexCss = css`
   display: flex;
@@ -41,6 +42,10 @@ export const useDynamicColumns = (state: any) => {
     } else {
       openDetail(`/Detail/Demand?data=${params}`)
     }
+  }
+
+  const onExamine = () => {
+    message.warning('该需求正在审核中，现在不能流转操作')
   }
 
   const NewSort = (props: any) => {
@@ -79,13 +84,22 @@ export const useDynamicColumns = (state: any) => {
       key: 'name',
       render: (text: string | number, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => onToDetail(record)}
-            isName
-            isClose={record.status?.content === '已关闭'}
-          >
-            <OmitText width={200}>{text}</OmitText>
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              style={{
+                height: 46,
+                lineHeight: '46px',
+                minWidth: 46,
+                background: record.isExamine ? `url(${review}) no-repeat` : '',
+                backgroundSize: 'contain',
+              }}
+              isName
+              isClose={record.status?.content === '已关闭'}
+              onClick={() => state.onClickItem(record)}
+            >
+              <OmitText width={200}>{text}</OmitText>
+            </ClickWrap>
+          </div>
         )
       },
     },
@@ -165,18 +179,25 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={state.updateStatus}
-                  hide={onHide}
-                  record={record}
-                  row={record}
-                />
-              )
+              return record.isExamine
+                ? null
+                : (
+                    <ShapeContent
+                      tap={state.updateStatus}
+                      hide={onHide}
+                      record={record}
+                      row={record}
+                    />
+                  )
             }}
             record={record}
           >
-            <StyledShape color={text.color}>{text.content_txt}</StyledShape>
+            <StyledShape
+              onClick={record.isExamine ? onExamine : void 0}
+              color={text.color}
+            >
+              {text.content_txt}
+            </StyledShape>
           </Pop>
         )
       },

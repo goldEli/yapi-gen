@@ -198,7 +198,7 @@ const SetConfig = (props: Props) => {
         <ItemWrap style={{ marginTop: 32 }}>
           <ItemWrap
             style={{ cursor: 'pointer' }}
-            onClick={() => setIsShowPermission(false)}
+            onClick={() => setIsShowPermission(!isShowPermission)}
           >
             <IconFont
               type="tableDown"
@@ -302,7 +302,7 @@ const SetConfig = (props: Props) => {
         <ItemWrap style={{ marginTop: 32 }}>
           <ItemWrap
             style={{ cursor: 'pointer' }}
-            onClick={() => setIsShowField(false)}
+            onClick={() => setIsShowField(!isShowField)}
           >
             <IconFont
               type="tableDown"

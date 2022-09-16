@@ -25,6 +25,7 @@ import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import { StatusWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -58,6 +59,7 @@ const MainWrap = styled(Space)({
   paddingLeft: 24,
   background: 'white',
   width: '100%',
+  position: 'relative',
 })
 
 const Item = styled.div<{ activeIdx: boolean }>(
@@ -192,6 +194,10 @@ const DemandBox = () => {
     }
   }
 
+  const onExamine = () => {
+    message.warning('该需求正在审核中，现在不能流转操作')
+  }
+
   const content = () => {
     if (!type) {
       return (
@@ -220,7 +226,7 @@ const DemandBox = () => {
             </Tooltip>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
-                return isCanEdit ? (
+                return isCanEdit && !demandInfo?.isExamine ? (
                   <ShapeContent
                     tap={value => onChangeStatus(value)}
                     hide={onHide}
@@ -238,7 +244,8 @@ const DemandBox = () => {
               }}
             >
               <StatusWrap
-                isShow={isCanEdit}
+                onClick={demandInfo?.isExamine ? onExamine : void 0}
+                isShow={isCanEdit || demandInfo?.isExamine}
                 style={{
                   color: demandInfo?.status?.color,
                   border: `1px solid ${demandInfo?.status?.color}`,
@@ -283,6 +290,17 @@ const DemandBox = () => {
               <span>{t('common.changeRecord')}</span>
               <div>{demandInfo?.changeCount || 0}</div>
             </Item>
+            {demandInfo?.isExamine ? (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 80,
+                  position: 'absolute',
+                  top: 22,
+                  right: 496,
+                }}
+              />
+            ) : null}
           </MainWrap>
           {childContent()}
         </ContentWrap>

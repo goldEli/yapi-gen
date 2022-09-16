@@ -155,20 +155,28 @@ const DemandStatusBox = () => {
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
+  const onChangeIdx = (id: any) => {
+    if (demandInfo?.isExamine) {
+      message.warning('该需求正在审核中，现在不能流转操作')
+    } else {
+      setActive(id)
+    }
+  }
+
   return (
     <>
       {statusList?.map((i: any, index: number) => (
         <Popconfirm
           key={i.id}
           content={({ onHide }: { onHide(): void }) => {
-            return isCanEdit
+            return isCanEdit && !demandInfo?.isExamine
               ? <DemandBox active={active} hide={onHide} />
               : null
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <StatusWrap
-              onClick={() => setActive(i.id)}
+              onClick={() => onChangeIdx(i.id)}
               style={{
                 color: i.id === demandInfo?.status?.id ? '#2877ff' : '#969799',
                 border:

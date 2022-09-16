@@ -43,6 +43,7 @@ export const getDemandInfo: any = async (params: any) => {
     changeCount: response.data.app_changelog_count,
     iterateId: response.data.iterate_id || null,
     projectId: response.data.project_id,
+    isExamine: true,
   }
 }
 
@@ -88,6 +89,7 @@ export const getDemandList: any = async (params: any) => {
           userIds: i.user_id,
           iterateId: i.iterate_id,
           parentId: i.parent_id,
+          isExamine: true,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -110,6 +112,7 @@ export const getDemandList: any = async (params: any) => {
       iterateId: i.iterate_id,
       parentId: i.parent_id,
       userName: i.user_name,
+      isExamine: true,
     }))
   } else {
     return {
@@ -135,6 +138,7 @@ export const getDemandList: any = async (params: any) => {
         usersCopySendName: i.users_copysend_name,
         userName: i.user_name,
         tag: i.tag,
+        isExamine: true,
       })),
     }
   }

@@ -14,6 +14,8 @@ import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
+import review from '/review.png'
+import { message } from 'antd'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -65,6 +67,10 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
+  const onExamine = () => {
+    message.warning('该需求正在审核中，现在不能流转操作')
+  }
+
   return [
     {
       width: 200,
@@ -89,13 +95,22 @@ export const useDynamicColumns = (state: any) => {
       width: 240,
       render: (text: string | number, record: any) => {
         return (
-          <ClickWrap
-            isName
-            isClose={record.status?.content === '已关闭'}
-            onClick={() => state.onClickItem(record)}
-          >
-            <OmitText width={200}>{text}</OmitText>
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              style={{
+                height: 46,
+                lineHeight: '46px',
+                minWidth: 46,
+                background: record.isExamine ? `url(${review}) no-repeat` : '',
+                backgroundSize: 'contain',
+              }}
+              isName
+              isClose={record.status?.content === '已关闭'}
+              onClick={() => state.onClickItem(record)}
+            >
+              <OmitText width={200}>{text}</OmitText>
+            </ClickWrap>
+          </div>
         )
       },
     },
@@ -108,7 +123,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit ? (
+              return isCanEdit && !record.isExamine ? (
                 <ShapeContent
                   tap={value => state.onChangeStatus(value)}
                   hide={onHide}
@@ -127,7 +142,8 @@ export const useDynamicColumns = (state: any) => {
             record={record}
           >
             <StatusWrap
-              isShow={isCanEdit}
+              onClick={record.isExamine ? onExamine : void 0}
+              isShow={isCanEdit || record.isExamine}
               style={{
                 color: text.color,
                 border: `1px solid ${text.color}`,

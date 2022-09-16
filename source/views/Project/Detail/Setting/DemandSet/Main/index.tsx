@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Switch, Form, Select } from 'antd'
+import { Button, Dropdown, Menu, Switch, Form, Select, message } from 'antd'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
@@ -247,7 +247,7 @@ const MoreWrap = (props: MoreWrapProps) => {
 }
 
 interface CardGroupProps {
-  list: []
+  list: any[]
   onClickTo(): void
 }
 
@@ -257,6 +257,10 @@ const CardGroup = (props: CardGroupProps) => {
 
   const onChange = (checked: boolean, row: any) => {
 
+    // if (!checked && props?.list.length === 1) {
+    //   message.warning('至少保证有一个需求类别是开启状')
+    //   return
+    // }
     // console.log(`switch to ${checked}`, row)
   }
 
