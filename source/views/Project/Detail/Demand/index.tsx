@@ -26,6 +26,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import { StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import Circulation from './Circulation'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -177,8 +178,10 @@ const DemandBox = () => {
       return <DemandInfo />
     } else if (type === 'child') {
       return <ChildDemand />
+    } else if (type === 'record') {
+      return <ChangeRecord />
     }
-    return <ChangeRecord />
+    return <Circulation />
   }
 
   const onChangeStatus = async (value: any) => {
@@ -290,14 +293,20 @@ const DemandBox = () => {
               <span>{t('common.changeRecord')}</span>
               <div>{demandInfo?.changeCount || 0}</div>
             </Item>
-            {demandInfo?.isExamine ? (
+            <Item
+              onClick={() => onChangeIdx('circulation')}
+              activeIdx={type === 'circulation'}
+            >
+              <span>流转记录</span>
+            </Item>
+            {demandInfo?.isExamine && type === 'info' ? (
               <IconFont
                 type="review"
                 style={{
                   fontSize: 80,
                   position: 'absolute',
                   top: 22,
-                  right: 496,
+                  right: 530,
                 }}
               />
             ) : null}
