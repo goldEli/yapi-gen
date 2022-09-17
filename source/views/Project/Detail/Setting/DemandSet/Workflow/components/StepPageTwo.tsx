@@ -40,6 +40,12 @@ const statusList = [
 const StepPageTwo = () => {
   const [dataList, setDataList] = useState<any>(data)
   const [isVisible, setIsVisible] = useState(false)
+
+  const onUpdate = () => {
+
+    // 更新列表
+  }
+
   const setColumns: any = useMemo(() => {
     const arr = [
       {
@@ -72,7 +78,11 @@ const StepPageTwo = () => {
 
   return (
     <>
-      <SetConfig isVisible={isVisible} />
+      <SetConfig
+        isVisible={isVisible}
+        onClose={() => setIsVisible(false)}
+        onUpdate={onUpdate}
+      />
       <TableWrap>
         <Table
           pagination={false}

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.0.1",
+  "version": "2.1.0",
   "scripts": {
     "start": "vite",
     "build:development": "npm run lint && vite build --mode development",

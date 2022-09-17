@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -14,11 +15,9 @@ import {
   Divider,
   Switch,
   Button,
-  Popover,
-  Input,
 } from 'antd'
-import { useState } from 'react'
-import { NameWrap } from '@/components/StyleCommon'
+import { createRef, useState } from 'react'
+import ExamineItem from './ExamineItem'
 
 const LabelWrap = styled.div({
   color: '#323233',
@@ -60,41 +59,6 @@ const TextWrap = styled.div({
   fontWeight: 400,
 })
 
-const PersonItemWrap = styled.div({
-  height: 44,
-  lineHeight: '44px',
-  fontSize: 14,
-  color: '#323233',
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  padding: '0 16px',
-  '&: hover': {
-    background: '#F0F4FA',
-  },
-})
-
-const PersonWrap = styled.div({
-  maxHeight: 200,
-  overflowY: 'auto',
-  display: 'flex',
-  flexDirection: 'column',
-  marginTop: 8,
-})
-
-const AddWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 32,
-  width: 32,
-  boxSizing: 'border-box',
-  cursor: 'pointer',
-  borderRadius: 16,
-  border: '1px dashed #969799',
-  marginLeft: 40,
-})
-
 const TimelineWrap = styled(Timeline)({
   marginTop: 16,
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -105,28 +69,10 @@ const TimelineWrap = styled(Timeline)({
   },
 })
 
-const MenuItemWrap = styled.span({
-  display: 'inline-block',
-  cursor: 'pointer',
-  height: 32,
-  padding: '0 16px',
-  lineHeight: '32px',
-  '&:hover': {
-    color: '#2877ff',
-    background: '#F0F4FA',
-  },
-})
-
-const MenuWrap = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  fontSize: 14,
-  color: '#646566',
-})
-
 interface Props {
   isVisible: boolean
+  onClose(): void
+  onUpdate(): void
 }
 
 const data = [
@@ -134,55 +80,31 @@ const data = [
   { name: '评论', key: 'remark', type: 'select' },
 ]
 
-const personList = [
-  { name: '张三', id: 1 },
-  { name: '哈哈哈', id: 2 },
-  { name: '问问', id: 3 },
-  { name: '站和人', id: 4 },
-  { name: '里斯', id: 5 },
-]
-
-const ChoosePerson = () => {
-  const [value, setValue] = useState('')
-  return (
-    <div style={{ padding: '16px 0' }}>
-      <div style={{ padding: '0 16px' }}>
-        <Input
-          style={{ height: 32 }}
-          placeholder="请输入关键字"
-          onChange={e => setValue(e.target.value)}
-        />
-      </div>
-      <PersonWrap>
-        {personList
-          ?.filter(k => k.name.includes(value))
-          ?.map(i => (
-            <PersonItemWrap key={i.id}>
-              <NameWrap style={{ margin: '0 8px 0 0' }}>张</NameWrap>
-              {i.name}
-            </PersonItemWrap>
-          ))}
-      </PersonWrap>
-    </div>
-  )
-}
-
 const SetConfig = (props: Props) => {
   const [isShowPermission, setIsShowPermission] = useState(true)
   const [isSwitch, setIsSwitch] = useState(false)
   const [isShowField, setIsShowField] = useState(true)
   const [radioValue, setRadioValue] = useState(1)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isShowSelect, setIsShowSelect] = useState(false)
+  const ChildRef: any = createRef()
+
+  const onReset = () => {
+    setRadioValue(1)
+    setIsShowField(true)
+    setIsSwitch(false)
+    setIsShowPermission(true)
+    ChildRef?.current?.reset()
+  }
 
   const onClose = () => {
 
     //
+    props?.onClose()
+    onReset()
   }
 
   const onConfirm = () => {
 
-    //
+    // 记得获取审核人数据
   }
 
   const columns = [
@@ -190,7 +112,12 @@ const SetConfig = (props: Props) => {
       title: '',
       dataIndex: 'sort',
       width: 30,
-      render: () => <IconFont type="move" />,
+      render: (text: string, record: any) => {
+        return record.key === 'name' || record.key === 'remark'
+          ? ''
+          : <IconFont type="move" />
+
+      },
     },
     {
       title: '字段名称',
@@ -202,7 +129,15 @@ const SetConfig = (props: Props) => {
       title: '默认值类型',
       width: 160,
       dataIndex: 'remark',
-      render: (text: any) => <Select style={{ width: 148 }} />,
+      render: (text: any) => (
+        <Select
+          style={{ width: 148 }}
+          options={[
+            { label: '字段值', value: 'field' },
+            { label: '固定值', value: 'fixed' },
+          ]}
+        />
+      ),
     },
     {
       title: '默认值/默认值字段',
@@ -214,14 +149,19 @@ const SetConfig = (props: Props) => {
       title: '是否必填',
       width: 100,
       dataIndex: 'endStatus',
+      align: 'center',
       render: (text: any) => <Checkbox />,
     },
     {
       title: '操作',
       width: 60,
       dataIndex: 'action',
-      render: (text: string, record: any) => <span style={{ color: '#2877ff', cursor: 'pointer' }}>删除</span>
-      ,
+      render: (text: string, record: any) => {
+        return record.key === 'name' || record.key === 'remark'
+          ? ''
+          : <span style={{ color: '#2877ff', cursor: 'pointer' }}>删除</span>
+
+      },
     },
   ]
 
@@ -300,88 +240,22 @@ const SetConfig = (props: Props) => {
                   <Radio value={1}>固定审核流程</Radio>
                   <Radio value={2}>用户指定审核人</Radio>
                 </Radio.Group>
-                <TimelineWrap>
-                  <Timeline.Item>
-                    <ItemWrap>
-                      <span>审核人</span>
-                      <Popover
-                        key={isShowSelect.toString()}
-                        visible={isShowSelect}
-                        placement="bottom"
-                        trigger="hover"
-                        onVisibleChange={visible => setIsShowSelect(visible)}
-                        content={
-                          <MenuWrap>
-                            <MenuItemWrap key={1}>依次审核</MenuItemWrap>
-                            <MenuItemWrap key={2}>与逻辑审核</MenuItemWrap>
-                            <MenuItemWrap key={3}>或逻辑审核</MenuItemWrap>
-                          </MenuWrap>
-                        }
-                        getPopupContainer={node => node}
+                {radioValue === 1 ? (
+                  <TimelineWrap>
+                    <ExamineItem onRef={ChildRef} />
+                    <Timeline.Item>
+                      <div
+                        style={{
+                          color: '#2877ff',
+                          cursor: 'pointer',
+                          width: 'fit-content',
+                        }}
                       >
-                        <div
-                          style={{
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <span
-                            style={{
-                              marginLeft: 32,
-                              color: isShowSelect ? '#2877ff' : '##323233',
-                            }}
-                          >
-                            依次审核
-                          </span>
-                          <IconFont
-                            style={{
-                              marginLeft: 8,
-                              color: isShowSelect ? '#2877ff' : '##323233',
-                            }}
-                            type={isShowSelect ? 'up' : 'down'}
-                          />
-                        </div>
-                      </Popover>
-                    </ItemWrap>
-                    <ItemWrap
-                      style={{ alignItems: 'flex-start', marginTop: 8 }}
-                    >
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <NameWrap>张三</NameWrap>
-                        <span>张三</span>
+                        添加审核
                       </div>
-                      <Popover
-                        key={isOpen.toString()}
-                        visible={isOpen}
-                        placement="bottomRight"
-                        trigger="click"
-                        onVisibleChange={visible => setIsOpen(visible)}
-                        content={<ChoosePerson />}
-                        getPopupContainer={node => node}
-                      >
-                        <AddWrap>
-                          <IconFont
-                            type="plus"
-                            onClick={() => setIsOpen(true)}
-                            style={{ color: '#969799', fontSize: 16 }}
-                          />
-                        </AddWrap>
-                      </Popover>
-                    </ItemWrap>
-                  </Timeline.Item>
-                  <Timeline.Item>
-                    <div
-                      style={{
-                        color: '#2877ff',
-                        cursor: 'pointer',
-                        width: 'fit-content',
-                      }}
-                    >
-                      添加审核
-                    </div>
-                  </Timeline.Item>
-                </TimelineWrap>
+                    </Timeline.Item>
+                  </TimelineWrap>
+                ) : null}
               </Wrap>
             )}
           </div>
@@ -414,7 +288,7 @@ const SetConfig = (props: Props) => {
             <Table
               pagination={false}
               dataSource={data}
-              columns={columns}
+              columns={columns as any}
               rowKey="id"
               sticky
               style={{ marginTop: 16 }}

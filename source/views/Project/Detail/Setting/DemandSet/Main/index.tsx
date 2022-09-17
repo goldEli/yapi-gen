@@ -254,6 +254,7 @@ interface CardGroupProps {
 const CardGroup = (props: CardGroupProps) => {
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
+  const { colorList } = useModel('project')
 
   const onChange = (checked: boolean, row: any) => {
 
@@ -293,7 +294,12 @@ const CardGroup = (props: CardGroupProps) => {
         {props?.list.map((item: any) => (
           <CategoryCard key={item.id}>
             <CategoryCardHead>
-              <CategoryName bgColor={item.bgColor} color={item.color}>
+              <CategoryName
+                bgColor={
+                  colorList?.filter(k => k.key === item.color)[0]?.bgColor
+                }
+                color={item.color}
+              >
                 <OmitText width={150}>{item.name}</OmitText>
               </CategoryName>
               <div style={{ display: 'flex', alignItems: 'center' }}>
