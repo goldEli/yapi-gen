@@ -5,7 +5,7 @@
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Menu, Dropdown, Pagination } from 'antd'
+import { Menu, Dropdown, Pagination, Progress } from 'antd'
 import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
@@ -329,7 +329,18 @@ const MainTable = (props: Props) => {
       dataIndex: 'progress',
       width: 160,
       render: (text: string) => {
-        return <span>{`${Number(text) * 100}%`}</span>
+        return (
+          <Progress
+            strokeColor="#43BA9A"
+            style={{ color: '#43BA9A' }}
+            width={38}
+            type="circle"
+            strokeLinecap="butt"
+            percent={Number(text) * 100}
+            format={percent => percent === 100 ? '100%' : `${percent}%`}
+            strokeWidth={8}
+          />
+        )
       },
     },
     {

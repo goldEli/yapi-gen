@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable multiline-ternary */
 import styled from '@emotion/styled'
 import SearchComponent from '@/components/SearchComponent'
@@ -7,6 +8,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import IconFont from '@/components/IconFont'
+import { Button, Divider, Popover, Space, Tooltip } from 'antd'
+import AddButton from '@/components/AddButton'
+import { MyInput } from '@/components/StyleCommon'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -23,6 +28,28 @@ const StickyWrap = styled.div({
   background: 'white',
 })
 
+const DividerWrap = styled(Divider)({
+  height: 20,
+  margin: '0 16px 0 24px',
+})
+
+const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+    marginRight: 8,
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
+  }),
+)
+
 interface Props {
   isGrid: boolean
   onChangeGrid(val: boolean): void
@@ -30,10 +57,13 @@ interface Props {
   onSearch(params: any): void
   settingState: boolean
   onChangeSetting(val: boolean): void
+  onChangeIsShowLeft?(): void
+  isShowLeft?: boolean
 }
 
 const Operation = (props: Props) => {
   const [t] = useTranslation()
+  const [isShow, setIsShow] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const { filterAll, projectInfo } = useModel('project')
   const { setFilterHeight } = useModel('demand')
@@ -115,27 +145,89 @@ const Operation = (props: Props) => {
     }, 100)
   }
 
+  const onChangeCategory = () => {
+
+    //
+  }
+
+  const changeStatus = (
+    <Space
+      size={8}
+      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    >
+      <StatusTag color="#43BA9A" bgColor="#EDF7F4" onClick={onChangeCategory}>
+        开发需求
+      </StatusTag>
+    </Space>
+  )
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <OperationWrap>
-        <SearchComponent
-          onChangeVisible={(e: any) => props.onChangeVisible?.(e)}
-          onChangeSearch={onChangeSearch}
-          placeholder={t('common.pleaseSearchDemand')}
-          text={t('common.createDemand')}
-          isPermission={getIsPermission(
+        <Space size={8}>
+          <Tooltip
+            style={{ position: 'relative' }}
+            key={isShow.toString()}
+            visible={isShow}
+            onVisibleChange={isShow1 => setIsShow(isShow1)}
+            getPopupContainer={node => node}
+            title={
+              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
+            }
+          >
+            <IconFont
+              onClick={props.onChangeIsShowLeft}
+              type="indent"
+              style={{
+                fontSize: 20,
+                color: 'black',
+                cursor: 'pointer',
+                marginRight: 8,
+              }}
+            />
+          </Tooltip>
+          {getIsPermission(
             projectInfo?.projectPermissions,
             'b/story/save',
+          ) ? null : (
+            <Popover
+              content={changeStatus}
+              placement="bottom"
+              getPopupContainer={node => node}
+            >
+              <Button
+                type="primary"
+                icon={<IconFont type="plus" />}
+                onClick={(e: any) => props.onChangeVisible?.(e)}
+              >
+                {t('common.createDemand')}
+              </Button>
+            </Popover>
           )}
-        />
-        <OperationGroup
-          onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
-          isGrid={props.isGrid}
-          filterState={filterState}
-          settingState={props.settingState}
-          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-        />
+        </Space>
+
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <MyInput
+            onPressEnter={(e: any) => onChangeSearch?.(e.target.value)}
+            suffix={
+              <IconFont
+                type="search"
+                style={{ color: '#BBBDBF', fontSize: 16 }}
+              />
+            }
+            placeholder={t('common.pleaseSearchDemand')}
+            allowClear
+          />
+          <DividerWrap type="vertical" />
+          <OperationGroup
+            onChangeFilter={onChangeFilter}
+            onChangeGrid={props.onChangeGrid}
+            isGrid={props.isGrid}
+            filterState={filterState}
+            settingState={props.settingState}
+            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          />
+        </div>
       </OperationWrap>
       {filterState ? null : (
         <TableFilter

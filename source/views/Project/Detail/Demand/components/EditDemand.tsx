@@ -25,7 +25,8 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
-import { PriorityWrap } from '@/components/StyleCommon'
+import { PriorityWrap, SliderWrap } from '@/components/StyleCommon'
+import DemandProgress from '@/components/DemandProgress'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -470,6 +471,22 @@ const EditDemand = (props: Props) => {
     >
       <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
         <div style={{ display: 'flex' }}>
+          <IconFont className="labelIcon" type="category" />
+          <Form.Item
+            label="需求类别"
+            name="category"
+            rules={[{ required: true, message: '' }]}
+          >
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              showSearch
+              placeholder="请选择需求类别"
+              getPopupContainer={node => node}
+            />
+          </Form.Item>
+        </div>
+        <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
             label={t('common.demandName')}
@@ -485,6 +502,23 @@ const EditDemand = (props: Props) => {
             />
           </Form.Item>
         </div>
+        {props?.id ? (
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="plan" />
+            <Form.Item label="需求进度" name="progress">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <SliderWrap
+                  style={{ width: 330 }}
+                  defaultValue={30}
+                  tipFormatter={(value: any) => `${value}%`}
+                />
+                <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
+                  30%
+                </span>
+              </div>
+            </Form.Item>
+          </div>
+        ) : null}
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="edit-square" />
           <Form.Item label={t('mine.demandInfo')} name="info">
@@ -517,6 +551,20 @@ const EditDemand = (props: Props) => {
               isShowQuick={false}
               value={form.getFieldValue('times')}
               onChange={(_values: any) => onChangePicker(_values)}
+            />
+          </Form.Item>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <IconFont className="labelIcon" type="gold" />
+          <Form.Item label="需求分类" name="assort">
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              showSearch
+              placeholder="请选择需求分类"
+              getPopupContainer={node => node}
+              optionFilterProp="label"
+              allowClear
             />
           </Form.Item>
         </div>

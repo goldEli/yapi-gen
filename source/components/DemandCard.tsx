@@ -13,10 +13,11 @@ import { useModel } from '@/models'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, openDetail } from '@/tools'
-import { ClickWrap } from './StyleCommon'
+import { CategoryWrap, ClickWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import Sort from './Sort'
 import NoData from './NoData'
+import ChildDemandTable from '@/components/ChildDemandTable'
 
 interface Props {
   item: any
@@ -37,7 +38,7 @@ const MoreWrap = styled(IconFont)({
 
 const Wrap = styled.div({
   width: '100%',
-  height: 90,
+  height: 126,
   background: 'white',
   borderRadius: 6,
   border: '1px solid #EBEDF0',
@@ -65,7 +66,7 @@ const WrapBorder = styled.div({
 const MainWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  padding: '12px 16px 12px 20px',
+  padding: 16,
 })
 
 const AvatarWrap = styled.div({
@@ -328,6 +329,13 @@ const DemandCard = (props: Props) => {
       <Wrap>
         <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
+          <CategoryWrap
+            color="#43BA9A"
+            bgColor="#EDF7F4"
+            style={{ margin: '0 0 8px 0', width: 'fit-content' }}
+          >
+            软件需求
+          </CategoryWrap>
           <ClickWrap onClick={props.onClickItem}>
             <OmitText width={200}>{props.item.name}</OmitText>
           </ClickWrap>
@@ -353,45 +361,11 @@ const DemandCard = (props: Props) => {
                 +{props.item?.userName?.length - 3}
               </div>
             </NameGroup>
-            <Popover
-              key={isVisible.toString()}
-              visible={isVisible}
-              placement="bottom"
-              trigger="click"
-              onVisibleChange={visible => setIsVisible(visible)}
-              content={
-                <div style={{ minWidth: 500, maxHeight: 400 }}>
-                  {!!dataList?.list && dataList?.list.length
-                    ? (
-                        <Table
-                          rowKey="id"
-                          pagination={false}
-                          columns={columnsChild}
-                          dataSource={dataList?.list}
-                        />
-                      )
-                    : <NoData />
-                  }
-                </div>
-              }
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onClick={onChildClick}
-              >
-                <IconFont
-                  type="apartment"
-                  style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
-                />
-                <span style={{ color: '#323233', fontSize: 16 }}>
-                  {props.item?.childCount}
-                </span>
-              </div>
-            </Popover>
+            <ChildDemandTable
+              value={props.item?.childCount}
+              row={props.item}
+              hasIcon
+            />
           </AvatarWrap>
         </MainWrap>
         {hasDel && hasEdit

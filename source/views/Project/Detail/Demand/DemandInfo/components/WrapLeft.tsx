@@ -20,6 +20,7 @@ import { message, Progress } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import { SliderWrap } from '@/components/StyleCommon'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -101,9 +102,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const DownPriority = styled.div<{ isShow?: boolean }>(
+const DownPriority = styled.div<{ isShow?: boolean; isMargin?: boolean }>(
   {
-    marginLeft: 8,
     '.icon': {
       marginLeft: 8,
       visibility: 'hidden',
@@ -111,7 +111,8 @@ const DownPriority = styled.div<{ isShow?: boolean }>(
       color: '#2877ff',
     },
   },
-  ({ isShow }) => ({
+  ({ isShow, isMargin }) => ({
+    marginLeft: isMargin ? 8 : 0,
     '&: hover': {
       '.icon': {
         visibility: isShow ? 'visible' : 'hidden',
@@ -209,6 +210,19 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <DemandStatus />
       </InfoItem>
       <InfoItem>
+        <Label>需求进度</Label>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <SliderWrap
+            style={{ width: 320 }}
+            defaultValue={30}
+            tipFormatter={(value: any) => `${value}%`}
+          />
+          <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
+            30%
+          </span>
+        </div>
+      </InfoItem>
+      <InfoItem>
         <Label>{t('mine.demandInfo')}</Label>
         {demandInfo?.info
           ? <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
@@ -286,6 +300,27 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <TextWrap>{demandInfo?.iterateName}</TextWrap>
       </InfoItem>
       <InfoItem>
+        <Label>需求分类</Label>
+        <Popconfirm
+          content={({ onHide }: { onHide(): void }) => {
+            return isCanEdit ? 1212 : null
+          }}
+        >
+          <div
+            style={{
+              cursor: isCanEdit ? 'pointer' : 'inherit',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <DownPriority isShow={isCanEdit}>
+              <span>未分类</span>
+              <IconFont className="icon" type="down-icon" />
+            </DownPriority>
+          </div>
+        </Popconfirm>
+      </InfoItem>
+      <InfoItem>
         <Label>{t('common.priority')}</Label>
         <Popconfirm
           content={({ onHide }: { onHide(): void }) => {
@@ -312,7 +347,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
               style={{ fontSize: 16, color: demandInfo?.priority?.color }}
               type={demandInfo?.priority?.icon}
             />
-            <DownPriority isShow={isCanEdit}>
+            <DownPriority isShow={isCanEdit} isMargin>
               <span>{demandInfo?.priority?.content_txt || '--'}</span>
               <IconFont className="icon" type="down-icon" />
             </DownPriority>

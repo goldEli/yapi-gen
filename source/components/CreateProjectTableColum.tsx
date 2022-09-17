@@ -10,12 +10,12 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
+import { CategoryWrap, ClickWrap, StatusWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
-import review from '/review.png'
 import { message } from 'antd'
+import DemandProgress from './DemandProgress'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -96,19 +96,33 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CategoryWrap
+              color="#43BA9A"
+              bgColor="#EDF7F4"
+              style={{ marginLeft: 0 }}
+            >
+              软件需求
+            </CategoryWrap>
             <ClickWrap
               style={{
+                position: 'relative',
                 height: 46,
                 lineHeight: '46px',
-                minWidth: 46,
-                background: record.isExamine ? `url(${review}) no-repeat` : '',
-                backgroundSize: 'contain',
               }}
               isName
               isClose={record.status?.content === '已关闭'}
               onClick={() => state.onClickItem(record)}
             >
               <OmitText width={200}>{text}</OmitText>
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                  position: 'absolute',
+                  left: -20,
+                  top: 0,
+                }}
+              />
             </ClickWrap>
           </div>
         )
@@ -243,6 +257,15 @@ export const useDynamicColumns = (state: any) => {
       width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
+      },
+    },
+    {
+      title: <NewSort fixedKey="users_name">需求进度</NewSort>,
+      dataIndex: 'progress',
+      key: 'progress',
+      width: 80,
+      render: (text: string, record: any) => {
+        return <DemandProgress value={60} row={record} />
       },
     },
     {

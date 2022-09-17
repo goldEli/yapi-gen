@@ -6,7 +6,12 @@ import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
-import { ClickWrap, ShowWrap, StyledShape } from '@/components/StyleCommon'
+import {
+  ClickWrap,
+  ShowWrap,
+  StyledShape,
+  CategoryWrap,
+} from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
@@ -15,6 +20,7 @@ import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { message } from 'antd'
 import review from '/review.png'
+import DemandProgress from '@/components/DemandProgress'
 
 const flexCss = css`
   display: flex;
@@ -85,19 +91,33 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CategoryWrap
+              color="#43BA9A"
+              bgColor="#EDF7F4"
+              style={{ marginLeft: 0 }}
+            >
+              软件需求
+            </CategoryWrap>
             <ClickWrap
               style={{
+                position: 'relative',
                 height: 46,
                 lineHeight: '46px',
-                minWidth: 46,
-                background: record.isExamine ? `url(${review}) no-repeat` : '',
-                backgroundSize: 'contain',
               }}
               isName
               isClose={record.status?.content === '已关闭'}
               onClick={() => state.onClickItem(record)}
             >
               <OmitText width={200}>{text}</OmitText>
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                  position: 'absolute',
+                  left: -20,
+                  top: 0,
+                }}
+              />
             </ClickWrap>
           </div>
         )
@@ -211,11 +231,20 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="users_name">{t('common.dealName')}</NewSort>,
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
+      },
+    },
+    {
+      title: <NewSort fixedKey="users_name">需求进度</NewSort>,
+      dataIndex: 'progress',
+      key: 'progress',
+      width: 80,
+      render: (text: string, record: any) => {
+        return <DemandProgress value={60} row={record} />
       },
     },
     {

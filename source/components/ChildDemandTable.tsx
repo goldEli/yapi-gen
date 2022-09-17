@@ -17,6 +17,7 @@ import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
 import { ShapeContent } from '@/components/Shape'
+import IconFont from './IconFont'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -31,7 +32,12 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
+const ChildDemandTable = (props: {
+  value: any
+  row: any
+  id?: any
+  hasIcon?: boolean
+}) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   let projectId: any
@@ -259,6 +265,12 @@ const ChildDemandTable = (props: { value: any; row: any; id?: any }) => {
         }}
         onClick={onChildClick}
       >
+        {props?.hasIcon ? (
+          <IconFont
+            type="apartment"
+            style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+          />
+        ) : null}
         {props.value}
       </ClickWrap>
     </Popover>

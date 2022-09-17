@@ -12,6 +12,14 @@ import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import styled from '@emotion/styled'
+import WrapLeft from './components/WrapLeft'
+
+const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
+  width: isShowLeft ? 'calc(100% - 300px)' : '100%',
+  height: 'calc(100vh - 64px)',
+  overflowY: 'auto',
+}))
 
 interface Props {
   onChangeVisible(e: any): void
@@ -38,6 +46,7 @@ const DemandMain = (props: Props) => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
+  const [isShowLeft, setIsShowLeft] = useState(false)
 
   const getList = async (
     state: boolean,
@@ -163,41 +172,46 @@ const DemandMain = (props: Props) => {
   }
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', display: 'flex' }}>
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <Operation
-        isGrid={isGrid}
-        onChangeGrid={val => onChangeGrid(val)}
-        onChangeVisible={(e: any) => props.onChangeVisible(e)}
-        onSearch={onSearch}
-        settingState={isSettingState}
-        onChangeSetting={setIsSettingState}
-      />
-      {isGrid ? (
-        <DemandGrid
-          onChangeVisible={onChangeOperation}
-          onDelete={onDelete}
-          data={dataList}
-          isSpinning={isSpinning}
-        />
-      ) : (
-        <DemandTable
-          onChangeVisible={onChangeOperation}
-          onDelete={onDelete}
-          data={dataList}
-          onChangePageNavigation={onChangePageNavigation}
-          onChangeRow={onChangeRow}
+      <WrapLeft isShowLeft={isShowLeft} />
+      <Right isShowLeft={isShowLeft}>
+        <Operation
+          isGrid={isGrid}
+          onChangeGrid={val => onChangeGrid(val)}
+          onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+          onChangeVisible={(e: any) => props.onChangeVisible(e)}
+          onSearch={onSearch}
           settingState={isSettingState}
           onChangeSetting={setIsSettingState}
-          onChangeOrder={onChangeOrder}
-          isSpinning={isSpinning}
+          isShowLeft={isShowLeft}
         />
-      )}
+        {isGrid ? (
+          <DemandGrid
+            onChangeVisible={onChangeOperation}
+            onDelete={onDelete}
+            data={dataList}
+            isSpinning={isSpinning}
+          />
+        ) : (
+          <DemandTable
+            onChangeVisible={onChangeOperation}
+            onDelete={onDelete}
+            data={dataList}
+            onChangePageNavigation={onChangePageNavigation}
+            onChangeRow={onChangeRow}
+            settingState={isSettingState}
+            onChangeSetting={setIsSettingState}
+            onChangeOrder={onChangeOrder}
+            isSpinning={isSpinning}
+          />
+        )}
+      </Right>
     </div>
   )
 }

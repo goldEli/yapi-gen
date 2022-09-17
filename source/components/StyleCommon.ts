@@ -1,7 +1,39 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Pagination, Input } from 'antd'
+import { Table, Pagination, Input, Slider } from 'antd'
+
+const ProgressWrap = styled.div({
+  background: 'white',
+  padding: '16px 24px',
+  borderRadius: 6,
+})
+
+const SliderWrap = styled(Slider)({
+  margin: '0!important',
+  '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
+    height: '8px!important',
+  },
+  '.ant-slider-rail': {
+    backgroundColor: '#F2F2F4!important',
+    borderRadius: 10,
+  },
+  '.ant-slider-track': {
+    backgroundColor: '#43BA9A!important',
+  },
+  '.ant-slider-handle': {
+    width: 20,
+    height: 20,
+    border: '1px solid #EBEDF0!important',
+    marginTop: -7,
+    '&: hover': {
+      border: '1px solid #2877FF!important',
+    },
+  },
+  '.ant-slider-handle:focus': {
+    boxShadow: 'none',
+  },
+})
 
 const NameWrap = styled.div({
   width: 32,
@@ -411,4 +443,6 @@ export {
   CategoryWrap,
   ViewWrap,
   NameWrap,
+  SliderWrap,
+  ProgressWrap,
 }

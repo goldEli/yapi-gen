@@ -14,7 +14,7 @@ import ChildDemand from './ChildDemand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Tooltip } from 'antd'
+import { Space, Button, message, Tooltip, Popover } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
-import { StatusWrap } from '@/components/StyleCommon'
+import { CategoryWrap, StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 
@@ -96,8 +96,26 @@ const Item = styled.div<{ activeIdx: boolean }>(
   }),
 )
 
+const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+    marginRight: 8,
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
+  }),
+)
+
 const DemandBox = () => {
   const [t] = useTranslation()
+  const [isShowCategory, setIsShowCategory] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
@@ -201,6 +219,23 @@ const DemandBox = () => {
     message.warning('该需求正在审核中，现在不能流转操作')
   }
 
+  const onChangeCategory = () => {
+
+    // 弹出需求类别框
+    setIsShowCategory(true)
+  }
+
+  const changeStatus = (
+    <Space
+      size={8}
+      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    >
+      <StatusTag color="#43BA9A" bgColor="#EDF7F4" onClick={onChangeCategory}>
+        开发需求
+      </StatusTag>
+    </Space>
+  )
+
   const content = () => {
     if (!type) {
       return (
@@ -222,6 +257,23 @@ const DemandBox = () => {
         />
         <DemandInfoWrap>
           <NameWrap>
+            <Popover
+              placement="bottom"
+              content={changeStatus}
+              getPopupContainer={node => node}
+            >
+              <StatusTag color="#43BA9A" bgColor="#EDF7F4">
+                <>软件开发</>
+                <IconFont
+                  type="down-icon"
+                  style={{
+                    fontSize: 12,
+                    marginLeft: 4,
+                    color: '43BA9A',
+                  }}
+                />
+              </StatusTag>
+            </Popover>
             <Tooltip title={demandInfo?.name}>
               <OmitText width={600}>
                 <span className="demandName">{demandInfo?.name}</span>
