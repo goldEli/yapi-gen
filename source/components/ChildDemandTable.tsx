@@ -18,6 +18,7 @@ import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
 import { ShapeContent } from '@/components/Shape'
 import IconFont from './IconFont'
+import DemandProgress from './DemandProgress'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -209,6 +210,15 @@ const ChildDemandTable = (props: {
             </StatusWrap>
           </PopConfirm>
         )
+      },
+    },
+    {
+      title: <NewSort fixedKey="users_name">需求进度</NewSort>,
+      dataIndex: 'progress',
+      key: 'progress',
+      width: 80,
+      render: (text: string, record: any) => {
+        return <DemandProgress value={60} row={record} />
       },
     },
     {
