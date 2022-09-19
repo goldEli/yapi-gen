@@ -17,15 +17,30 @@ import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { message, Progress } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { SliderWrap } from '@/components/StyleCommon'
+import Viewer from 'react-viewer'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
   overflow: 'auto',
   paddingBottom: 24,
+})
+
+const TextWrapEditor = styled.div({
+  color: '#323233',
+  fontSize: 14,
+  display: 'flex',
+  flexDirection: 'column',
+  img: {
+    maxWidth: '20%',
+    cursor: 'pointer',
+  },
+  p: {
+    marginBottom: '0px!important',
+  },
 })
 
 const InfoItem = styled.div({
@@ -171,6 +186,13 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
+  const textWrapEditor = useRef<HTMLInputElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
+
   const onChangeState = async (item: any) => {
     try {
       await updatePriority({ demandId, priorityId: item.priorityId, projectId })
@@ -181,6 +203,31 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       //
     }
   }
+
+  const onGetViewPicture = (e: any) => {
+    if (e.path[0].nodeName === 'IMG') {
+      const params: any = {}
+      const oPics = textWrapEditor?.current?.getElementsByTagName('img')
+      params.imageArray = []
+      if (oPics) {
+        for (const element of oPics) {
+          params.imageArray.push({ src: element.src })
+        }
+        for (let i = 0; i < oPics.length; i++) {
+          if (e.path[0].src === params.imageArray[i].url) {
+            params.index = i
+          }
+        }
+      }
+      setIsVisible(true)
+      setPictureList(params)
+    }
+  }
+
+  useEffect(() => {
+    textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
+    return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
+  })
 
   useEffect(() => {
     setTagList(
@@ -205,6 +252,16 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
 
   return (
     <WrapLeft>
+      {isVisible ? (
+        <Viewer
+          zIndex={99}
+          visible={isVisible}
+          images={pictureList?.imageArray}
+          activeIndex={pictureList?.index}
+          onClose={() => setIsVisible(false)}
+        />
+      ) : null}
+
       <InfoItem>
         <Label>{t('project.demandStatus')}</Label>
         <DemandStatus />
@@ -224,8 +281,12 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       </InfoItem>
       <InfoItem>
         <Label>{t('mine.demandInfo')}</Label>
-        {demandInfo?.info
-          ? <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
+        {demandInfo?.info ? (
+          <TextWrapEditor
+            ref={textWrapEditor}
+            dangerouslySetInnerHTML={{ __html: demandInfo?.info }}
+          />
+        )
           : <TextWrap>--</TextWrap>
         }
       </InfoItem>

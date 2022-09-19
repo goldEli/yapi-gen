@@ -78,7 +78,10 @@ const Wrap = styled.div`
   border: 1px solid #ebedf0;
   border-radius: 6px;
   z-index: 100;
-  height: 172px;
+  /* height: 172px; */
+  .w-e-text-container [data-slate-editor] p {
+    margin: 0;
+  }
 `
 
 const EditorBox = (props: Props) => {
