@@ -13,6 +13,7 @@ import {
 } from '@/components/StyleCommon'
 import { Timeline, message, Pagination, Tooltip } from 'antd'
 import Gatte from './components/Gatte'
+import Gantt from './components/Gantt'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
@@ -25,7 +26,7 @@ import { OmitText } from '@star-yun/ui'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
-const Mygante = styled(Gatte)`
+const Mygante = styled(Gantt)`
   min-width: 1000px;
   .highcharts-tick {
     stroke: red;
@@ -333,7 +334,7 @@ const Profile = () => {
           </CenterRight>
         </Center>
       </StyledWrap>
-      <GatteWrap style={{ height: 'calc(100vh - 400px)' }}>
+      <GatteWrap style={{ height: 'calc(100vh - 464px)' }}>
         <div style={{ padding: '28px 24px 0' }}>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
@@ -359,30 +360,30 @@ const Profile = () => {
             </div>
           </div>
         </div>
+        {/* {gatteData.length >= 1 && <Mygante data={gatteData} />} */}
         {gatteData.length >= 1 && <Mygante data={gatteData} />}
         {gatteData.length < 1 && (
           <div style={{ height: 'calc(100% - 136px)' }}>
             <NoData />
           </div>
         )}
-
-        {gatteData.length >= 1 && (
-          <PaginationWrap>
-            <Pagination
-              defaultCurrent={1}
-              current={page}
-              showSizeChanger
-              showQuickJumper
-              total={total}
-              showTotal={newTotal => t('common.tableTotal', { count: newTotal })
-              }
-              pageSizeOptions={['10', '20', '50']}
-              onChange={onChangePage}
-              onShowSizeChange={onShowSizeChange}
-            />
-          </PaginationWrap>
-        )}
       </GatteWrap>
+
+      {gatteData.length >= 1 && (
+        <PaginationWrap>
+          <Pagination
+            defaultCurrent={1}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
+      )}
     </PermissionWrap>
   )
 }

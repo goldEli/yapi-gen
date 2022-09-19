@@ -453,7 +453,7 @@ const Need = (props: any) => {
         </LoadingSpin>
       </div>
 
-      <PaginationWrap>
+      <PaginationWrap style={{ paddingRight: 24 }}>
         <Pagination
           defaultCurrent={1}
           current={page}

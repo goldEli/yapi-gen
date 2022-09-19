@@ -437,6 +437,18 @@ const EditDemand = (props: Props) => {
           </Form.Item>
         </div>
         <div style={{ display: 'flex' }}>
+          <IconFont className="labelIcon" type="category" />
+          <Form.Item label="需求类别" name="category">
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              showSearch
+              placeholder="请选择需求类别"
+              getPopupContainer={node => node}
+            />
+          </Form.Item>
+        </div>
+        <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="apartment" />
           <Form.Item
             rules={[{ required: true, message: '' }]}
@@ -479,6 +491,20 @@ const EditDemand = (props: Props) => {
             <RangePicker
               isShowQuick={false}
               onChange={(_values: any) => onChangePicker(_values)}
+            />
+          </Form.Item>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <IconFont className="labelIcon" type="gold" />
+          <Form.Item label="需求分类" name="assort">
+            <Select
+              style={{ width: '100%' }}
+              showArrow
+              showSearch
+              placeholder="请选择需求分类"
+              getPopupContainer={node => node}
+              optionFilterProp="label"
+              allowClear
             />
           </Form.Item>
         </div>

@@ -75,6 +75,28 @@ const routes = [
             path: 'Set',
             element: lazy(() => import('@/views/Project/Detail/Setting')),
           },
+          {
+            path: 'MemberInfo',
+            element: lazy(() => import('@/views/MemberInfo')),
+            children: [
+              {
+                path: 'carbon',
+                element: lazy(() => import('@/views/MemberInfo/Carbon')),
+              },
+              {
+                path: 'create',
+                element: lazy(() => import('@/views/MemberInfo/Create')),
+              },
+              {
+                path: 'finished',
+                element: lazy(() => import('@/views/MemberInfo/Finished')),
+              },
+              {
+                path: 'profile',
+                element: lazy(() => import('@/views/MemberInfo/Profile')),
+              },
+            ],
+          },
         ],
       },
       {
@@ -100,6 +122,28 @@ const routes = [
           {
             path: 'loginLog',
             element: lazy(() => import('@/views/Setting/LoginLog')),
+          },
+        ],
+      },
+      {
+        path: 'MemberInfo',
+        element: lazy(() => import('@/views/MemberInfo')),
+        children: [
+          {
+            path: 'carbon',
+            element: lazy(() => import('@/views/MemberInfo/Carbon')),
+          },
+          {
+            path: 'create',
+            element: lazy(() => import('@/views/MemberInfo/Create')),
+          },
+          {
+            path: 'finished',
+            element: lazy(() => import('@/views/MemberInfo/Finished')),
+          },
+          {
+            path: 'profile',
+            element: lazy(() => import('@/views/MemberInfo/Profile')),
           },
         ],
       },

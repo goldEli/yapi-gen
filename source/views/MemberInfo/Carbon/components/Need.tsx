@@ -1,5 +1,9 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable complexity */
+/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -12,6 +16,7 @@ import {
   TabsHehavior,
   TabsItem,
   LabNumber,
+  StaffTableWrap2,
   ShowWrap,
   TableWrap,
 } from '@/components/StyleCommon'
@@ -24,6 +29,7 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
@@ -48,8 +54,23 @@ const TableBox = styled(TableWrap)({
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
-  '.ant-spin-container': {
+  '.ant-spin-nested-loading, .ant-spin-container': {
     height: 'initial!important',
+  },
+})
+
+const TableTitle = styled.div({
+  color: '#323233',
+  fontSize: '16px',
+  height: '53px',
+  display: 'flex',
+  alignItems: 'center',
+  marginLeft: '16px',
+  fontWeight: '500',
+  span: {
+    borderLeft: '3px solid #2877ff',
+    paddingLeft: 6,
+    lineHeight: '20px',
   },
 })
 
@@ -100,7 +121,7 @@ const Need = (props: any) => {
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
   const {
-    getMineNeedList,
+    getMineNoFinishList,
     getField,
     getSearchField,
     updateDemandStatus,
@@ -111,11 +132,13 @@ const Need = (props: any) => {
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isMany, setIsMany] = useState(!!props?.isMember)
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
+  const [manyListData, setManyListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [page, setPage] = useState<number>(1)
@@ -169,19 +192,32 @@ const Need = (props: any) => {
   }
   const init = async (pageNumber?: any) => {
     setIsSpin(true)
-    const res = await getMineNeedList({
-      projectId: props.id,
-      keyword,
-      searchGroups,
-      order,
-      orderkey: orderKey,
-      page: pageNumber ? pageNumber : page,
-      pagesize,
-    })
+    if (isMany) {
+      const res = await getMineNoFinishList({
+        projectId: props.id,
+        all: isMany ? 1 : '',
+        panelDate: isMany ? 1 : '',
+      })
 
-    setListData(res)
-    setTotal(res.pager.total)
-    setIsSpin(false)
+      setManyListData(res)
+      setIsSpin(false)
+    }
+
+    if (!isMany) {
+      const res = await getMineNoFinishList({
+        projectId: props.id,
+        keyword,
+        searchGroups,
+        order,
+        orderkey: orderKey,
+        page: pageNumber ? pageNumber : page,
+        pagesize,
+      })
+
+      setListData(res)
+      setTotal(res.pager.total)
+      setIsSpin(false)
+    }
     setIsUpdateCreate(false)
   }
 
@@ -224,7 +260,6 @@ const Need = (props: any) => {
     updateOrderkey,
     updateStatus,
     updatePriority,
-    showOpen: true,
   })
 
   const selectColum: any = useMemo(() => {
@@ -254,15 +289,16 @@ const Need = (props: any) => {
     return [...arrList, ...newList]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
+
   const getShowkey = async () => {
     const res2 = await getField(props.id)
-
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
     setIsRefresh(false)
   }
+
   const getSearchKey = async (key?: any, type?: number) => {
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
@@ -307,16 +343,14 @@ const Need = (props: any) => {
     setPage(1)
     init(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, orderKey, order, props.id, searchGroups])
+  }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
     getSearchKey()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
 
   useEffect(() => {
     getShowkey()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -375,94 +409,179 @@ const Need = (props: any) => {
       ]}
     />
   )
+
+  const onChangeMany = (state: boolean) => {
+    setIsMany(state)
+  }
+
   return (
     <>
-      <TabsHehavior>
-        <div className={tabCss}>
-          <TabsItem isActive>
-            <div>{t('mine.copyDemand')}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
-      </TabsHehavior>
-      <Hehavior>
-        <div>
-          <MyInput
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
-            placeholder={t('common.pleaseSearchDemand')}
-            allowClear
-          />
-        </div>
-        <div style={{ marginRight: '40px', display: 'flex' }}>
-          {props.id !== 0 && (
-            <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <Tooltip title={t('common.search')}>
+      <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+        <TabsHehavior>
+          <div className={tabCss}>
+            <TabsItem isActive>
+              <div>{t('mine.carbonDemand')}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
+          </div>
+        </TabsHehavior>
+        <Hehavior>
+          <div>
+            <MyInput
+              suffix={
                 <IconFont
-                  type="filter"
-                  style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
+                  type="search"
+                  style={{ color: '#BBBDBF', fontSize: 20 }}
                 />
-              </Tooltip>
-            </SetButton>
-          )}
+              }
+              onPressEnter={onPressEnter}
+              placeholder={t('common.pleaseSearchDemand')}
+              allowClear
+            />
+          </div>
+          <div style={{ marginRight: '40px', display: 'flex' }}>
+            {props?.isMember ? null : (
+              <>
+                <SetButton
+                  onClick={() => {
+                    onChangeMany(false)
+                  }}
+                >
+                  <Tooltip title={t('common.list')}>
+                    <IconFont
+                      type="unorderedlist"
+                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
+                    />
+                  </Tooltip>
+                </SetButton>
+                <SetButton
+                  onClick={() => {
+                    onChangeMany(true)
+                  }}
+                >
+                  <Tooltip title={t('common.timeList')}>
+                    <IconFont
+                      type="database"
+                      style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
+                    />
+                  </Tooltip>
+                </SetButton>
+              </>
+            )}
 
-          <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
-            <SetButton>
-              <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="set-default" style={{ fontSize: 20 }} />
-              </Tooltip>
-            </SetButton>
-          </Dropdown>
-        </div>
-      </Hehavior>
+            {props.id !== 0 && (
+              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+                <Tooltip title={t('common.search')}>
+                  <IconFont
+                    type="filter"
+                    style={{
+                      fontSize: 20,
+                      color: isShowSearch ? '#2877ff' : '',
+                    }}
+                  />
+                </Tooltip>
+              </SetButton>
+            )}
+
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+              <SetButton>
+                <Tooltip title={t('common.tableFieldSet')}>
+                  <IconFont type="set-default" style={{ fontSize: 20 }} />
+                </Tooltip>
+              </SetButton>
+            </Dropdown>
+          </div>
+        </Hehavior>
+      </div>
 
       {isShowSearch && props.id !== 0 ? (
-        <TableFilter
-          onFilter={getSearchKey}
-          onSearch={onSearch}
-          list={searchList}
-          basicsList={filterBasicsList}
-          specialList={filterSpecialList}
-        />
+        <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+          <TableFilter
+            onFilter={getSearchKey}
+            onSearch={onSearch}
+            list={searchList}
+            basicsList={filterBasicsList}
+            specialList={filterSpecialList}
+          />
+        </div>
+      ) : null}
+      {!isMany && (
+        <div>
+          <LoadingSpin spinning={isSpin}>
+            <StaffTableWrap>
+              {listData?.list
+                ? listData?.list?.length ? (
+                  <TableBox
+                    rowKey="id"
+                    columns={selectColum}
+                    dataSource={listData?.list}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                  />
+                )
+                  : <NoData />
+
+                : null}
+            </StaffTableWrap>
+          </LoadingSpin>
+        </div>
+      )}
+
+      {isMany ? (
+        <div>
+          <LoadingSpin spinning={isSpin}>
+            <StaffTableWrap2>
+              {manyListData?.map((item: any, index: any) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <div
+                  key={index}
+                  style={{
+                    background: 'white',
+                    borderRadius: 6,
+                    marginTop: 16,
+                  }}
+                >
+                  <TableTitle>
+                    <span>
+                      {item.status_name}（{item.list.length}）
+                    </span>
+                  </TableTitle>
+
+                  {item.list
+                    ? item?.list?.length ? (
+                      <TableBox
+                        rowKey="id"
+                        columns={selectColum}
+                        dataSource={item.list}
+                        pagination={false}
+                        scroll={{ x: 'max-content' }}
+                      />
+                    )
+                      : <NoData />
+
+                    : null}
+                </div>
+              ))}
+            </StaffTableWrap2>
+          </LoadingSpin>
+        </div>
       ) : null}
 
-      <div>
-        <LoadingSpin spinning={isSpin}>
-          <StaffTableWrap>
-            {listData?.list
-              ? listData?.list?.length ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              )
-                : <NoData />
-
-              : null}
-          </StaffTableWrap>
-        </LoadingSpin>
-      </div>
-      <PaginationWrap style={{ paddingRight: 24 }}>
-        <Pagination
-          defaultCurrent={1}
-          current={page}
-          showSizeChanger
-          showQuickJumper
-          total={total}
-          showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+      {!isMany && (
+        <PaginationWrap style={{ paddingRight: 24 }}>
+          <Pagination
+            defaultCurrent={1}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
+      )}
       {isModalVisible ? (
         <OptionalFeld
           plainOptions={plainOptions}

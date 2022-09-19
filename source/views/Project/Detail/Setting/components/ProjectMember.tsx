@@ -20,6 +20,7 @@ import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -315,6 +316,13 @@ const ProjectMember = () => {
     )
   }
 
+  const onToDetail = (row: any) => {
+    const params = encryptPhp(
+      JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
+    )
+    navigate(`/Detail/MemberInfo/profile?data=${params}`)
+  }
+
   const columns = [
     {
       title: (
@@ -465,6 +473,21 @@ const ProjectMember = () => {
       width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
+      },
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      width: 120,
+      render: (text: string, record: any) => {
+        return (
+          <span
+            onClick={() => onToDetail(record)}
+            style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+          >
+            查看详情
+          </span>
+        )
       },
     },
   ]

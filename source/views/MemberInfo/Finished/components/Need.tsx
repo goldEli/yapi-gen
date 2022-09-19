@@ -24,9 +24,9 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import NoData from '@/components/NoData'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -100,15 +100,14 @@ const Need = (props: any) => {
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
   const {
-    getMineNeedList,
+    getMineFinishList,
     getField,
     getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
-    isUpdateCreate,
-    setIsUpdateCreate,
   } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
+  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
@@ -131,7 +130,6 @@ const Need = (props: any) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
-  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -169,7 +167,7 @@ const Need = (props: any) => {
   }
   const init = async (pageNumber?: any) => {
     setIsSpin(true)
-    const res = await getMineNeedList({
+    const res = await getMineFinishList({
       projectId: props.id,
       keyword,
       searchGroups,
@@ -180,16 +178,9 @@ const Need = (props: any) => {
     })
 
     setListData(res)
-    setTotal(res.pager.total)
+    setTotal(res?.pager?.total)
     setIsSpin(false)
-    setIsUpdateCreate(false)
   }
-
-  useEffect(() => {
-    if (isUpdateCreate) {
-      init()
-    }
-  }, [isUpdateCreate])
 
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
@@ -224,7 +215,6 @@ const Need = (props: any) => {
     updateOrderkey,
     updateStatus,
     updatePriority,
-    showOpen: true,
   })
 
   const selectColum: any = useMemo(() => {
@@ -305,6 +295,7 @@ const Need = (props: any) => {
 
   useEffect(() => {
     setPage(1)
+    setPage(1)
     init(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups])
@@ -377,58 +368,65 @@ const Need = (props: any) => {
   )
   return (
     <>
-      <TabsHehavior>
-        <div className={tabCss}>
-          <TabsItem isActive>
-            <div>{t('mine.copyDemand')}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
-      </TabsHehavior>
-      <Hehavior>
-        <div>
-          <MyInput
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
-            placeholder={t('common.pleaseSearchDemand')}
-            allowClear
-          />
-        </div>
-        <div style={{ marginRight: '40px', display: 'flex' }}>
-          {props.id !== 0 && (
-            <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <Tooltip title={t('common.search')}>
+      <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+        <TabsHehavior>
+          <div className={tabCss}>
+            <TabsItem isActive>
+              <div>{t('mine.finishDemand')}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
+          </div>
+        </TabsHehavior>
+        <Hehavior>
+          <div>
+            <MyInput
+              suffix={
                 <IconFont
-                  type="filter"
-                  style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
+                  type="search"
+                  style={{ color: '#BBBDBF', fontSize: 20 }}
                 />
-              </Tooltip>
-            </SetButton>
-          )}
+              }
+              onPressEnter={onPressEnter}
+              placeholder={t('common.pleaseSearchDemand')}
+              allowClear
+            />
+          </div>
+          <div style={{ marginRight: '40px', display: 'flex' }}>
+            {props.id !== 0 && (
+              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+                <Tooltip title={t('common.search')}>
+                  <IconFont
+                    type="filter"
+                    style={{
+                      fontSize: 20,
+                      color: isShowSearch ? '#2877ff' : '',
+                    }}
+                  />
+                </Tooltip>
+              </SetButton>
+            )}
 
-          <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
-            <SetButton>
-              <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="set-default" style={{ fontSize: 20 }} />
-              </Tooltip>
-            </SetButton>
-          </Dropdown>
-        </div>
-      </Hehavior>
+            <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
+              <SetButton>
+                <Tooltip title={t('common.tableFieldSet')}>
+                  <IconFont type="set-default" style={{ fontSize: 20 }} />
+                </Tooltip>
+              </SetButton>
+            </Dropdown>
+          </div>
+        </Hehavior>
+      </div>
 
       {isShowSearch && props.id !== 0 ? (
-        <TableFilter
-          onFilter={getSearchKey}
-          onSearch={onSearch}
-          list={searchList}
-          basicsList={filterBasicsList}
-          specialList={filterSpecialList}
-        />
+        <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+          <TableFilter
+            onFilter={getSearchKey}
+            onSearch={onSearch}
+            list={searchList}
+            basicsList={filterBasicsList}
+            specialList={filterSpecialList}
+          />
+        </div>
       ) : null}
 
       <div>
@@ -450,13 +448,14 @@ const Need = (props: any) => {
           </StaffTableWrap>
         </LoadingSpin>
       </div>
+
       <PaginationWrap style={{ paddingRight: 24 }}>
         <Pagination
           defaultCurrent={1}
           current={page}
           showSizeChanger
           showQuickJumper
-          total={total}
+          total={total ?? 0}
           showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

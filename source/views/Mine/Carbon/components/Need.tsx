@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-undefined */
@@ -58,13 +59,20 @@ const LoadingSpin = styled(Spin)({
   },
 })
 
-const tableTitle = css`
-  color: rgba(150, 151, 153, 1);
-  font-size: 14px;
-  height: 53px;
-  display: flex;
-  align-items: center;
-`
+const TableTitle = styled.div({
+  color: '#323233',
+  fontSize: '16px',
+  height: '53px',
+  display: 'flex',
+  alignItems: 'center',
+  marginLeft: '16px',
+  fontWeight: '500',
+  span: {
+    borderLeft: '3px solid #2877ff',
+    paddingLeft: 6,
+    lineHeight: '20px',
+  },
+})
 
 interface MoreWrapProps {
   record: any
@@ -513,10 +521,19 @@ const Need = (props: any) => {
             <StaffTableWrap2>
               {manyListData?.map((item: any, index: any) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <div key={index}>
-                  <div className={tableTitle}>
-                    {item.status_name}（{item.list.length}）
-                  </div>
+                <div
+                  key={index}
+                  style={{
+                    background: 'white',
+                    borderRadius: 6,
+                    marginTop: 16,
+                  }}
+                >
+                  <TableTitle>
+                    <span>
+                      {item.status_name}（{item.list.length}）
+                    </span>
+                  </TableTitle>
 
                   {item.list
                     ? item?.list?.length ? (
@@ -539,7 +556,7 @@ const Need = (props: any) => {
       ) : null}
 
       {!isMany && (
-        <PaginationWrap>
+        <PaginationWrap style={{ paddingRight: 24 }}>
           <Pagination
             defaultCurrent={1}
             current={page}

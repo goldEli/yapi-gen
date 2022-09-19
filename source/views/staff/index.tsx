@@ -28,6 +28,8 @@ import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
 
 const tableWrapP = css`
   display: flex;
@@ -75,6 +77,7 @@ const TableBox = styled(TableWrap)({
 
 const Staff = () => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
@@ -187,6 +190,13 @@ const Staff = () => {
     />
   )
 
+  const onToDetail = (row: any) => {
+    const params = encryptPhp(
+      JSON.stringify({ id: '', isMember: false, userId: row.id }),
+    )
+    navigate(`/MemberInfo/profile?data=${params}`)
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = [...titleList, ...titleList2]
     const newList = []
@@ -216,7 +226,24 @@ const Staff = () => {
         },
       },
     ]
-    return [...arrList, ...newList]
+    const lastList = [
+      {
+        title: '操作',
+        dataIndex: 'action',
+        width: 120,
+        render: (text: string, record: any) => {
+          return (
+            <span
+              onClick={() => onToDetail(record)}
+              style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+            >
+              查看详情
+            </span>
+          )
+        },
+      },
+    ]
+    return [...arrList, ...newList, ...lastList]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {

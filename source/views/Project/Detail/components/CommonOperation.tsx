@@ -148,9 +148,13 @@ const CommonOperation = (props: Props) => {
   const projectId = paramsData.id
 
   const tabsList = [
-    { name: t('common.demand'), type: 'Demand' },
-    { name: t('common.iterate'), type: 'Iteration' },
-    { name: t('container.setting'), type: 'Set' },
+    { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
+    { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
+    {
+      name: t('container.setting'),
+      type: 'Set',
+      hasPath: ['Set', 'MemberInfo'],
+    },
   ]
 
   const onMenuClick = (type?: string) => {
@@ -277,7 +281,9 @@ const CommonOperation = (props: Props) => {
             <TabsItem
               onClick={() => onToModel(i)}
               key={i.type}
-              isActive={pathname.includes(i.type)}
+              isActive={
+                i.hasPath?.filter(k => pathname.includes(k))?.length > 0
+              }
             >
               <div>{i.name}</div>
             </TabsItem>

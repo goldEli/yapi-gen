@@ -472,11 +472,7 @@ const EditDemand = (props: Props) => {
       <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="category" />
-          <Form.Item
-            label="需求类别"
-            name="category"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="需求类别" name="category">
             <Select
               style={{ width: '100%' }}
               showArrow

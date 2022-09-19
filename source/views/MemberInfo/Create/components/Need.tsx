@@ -1,6 +1,7 @@
+/* eslint-disable multiline-ternary */
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
   Hehavior,
@@ -24,9 +25,9 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import NoData from '@/components/NoData'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -100,7 +101,7 @@ const Need = (props: any) => {
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
   const {
-    getMineNeedList,
+    getMineCreacteList,
     getField,
     getSearchField,
     updateDemandStatus,
@@ -125,13 +126,13 @@ const Need = (props: any) => {
   const [order, setOrder] = useState<any>(3)
   const [keyword, setKeyword] = useState<string>('')
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
-  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -169,7 +170,7 @@ const Need = (props: any) => {
   }
   const init = async (pageNumber?: any) => {
     setIsSpin(true)
-    const res = await getMineNeedList({
+    const res = await getMineCreacteList({
       projectId: props.id,
       keyword,
       searchGroups,
@@ -224,7 +225,6 @@ const Need = (props: any) => {
     updateOrderkey,
     updateStatus,
     updatePriority,
-    showOpen: true,
   })
 
   const selectColum: any = useMemo(() => {
@@ -377,58 +377,65 @@ const Need = (props: any) => {
   )
   return (
     <>
-      <TabsHehavior>
-        <div className={tabCss}>
-          <TabsItem isActive>
-            <div>{t('mine.copyDemand')}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
-      </TabsHehavior>
-      <Hehavior>
-        <div>
-          <MyInput
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
-            placeholder={t('common.pleaseSearchDemand')}
-            allowClear
-          />
-        </div>
-        <div style={{ marginRight: '40px', display: 'flex' }}>
-          {props.id !== 0 && (
-            <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-              <Tooltip title={t('common.search')}>
+      <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+        <TabsHehavior>
+          <div className={tabCss}>
+            <TabsItem isActive>
+              <div>{t('common.createDemand')}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
+          </div>
+        </TabsHehavior>
+        <Hehavior>
+          <div>
+            <MyInput
+              suffix={
                 <IconFont
-                  type="filter"
-                  style={{ fontSize: 20, color: isShowSearch ? '#2877ff' : '' }}
+                  type="search"
+                  style={{ color: '#BBBDBF', fontSize: 20 }}
                 />
-              </Tooltip>
-            </SetButton>
-          )}
+              }
+              onPressEnter={onPressEnter}
+              placeholder={t('common.pleaseSearchDemand')}
+              allowClear
+            />
+          </div>
+          <div style={{ marginRight: '40px', display: 'flex' }}>
+            {props.id !== 0 && (
+              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+                <Tooltip title={t('common.search')}>
+                  <IconFont
+                    type="filter"
+                    style={{
+                      fontSize: 20,
+                      color: isShowSearch ? '#2877ff' : '',
+                    }}
+                  />
+                </Tooltip>
+              </SetButton>
+            )}
 
-          <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
-            <SetButton>
-              <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="set-default" style={{ fontSize: 20 }} />
-              </Tooltip>
-            </SetButton>
-          </Dropdown>
-        </div>
-      </Hehavior>
+            <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
+              <SetButton>
+                <Tooltip title={t('common.tableFieldSet')}>
+                  <IconFont type="set-default" style={{ fontSize: 20 }} />
+                </Tooltip>
+              </SetButton>
+            </Dropdown>
+          </div>
+        </Hehavior>
+      </div>
 
       {isShowSearch && props.id !== 0 ? (
-        <TableFilter
-          onFilter={getSearchKey}
-          onSearch={onSearch}
-          list={searchList}
-          basicsList={filterBasicsList}
-          specialList={filterSpecialList}
-        />
+        <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+          <TableFilter
+            onFilter={getSearchKey}
+            onSearch={onSearch}
+            list={searchList}
+            basicsList={filterBasicsList}
+            specialList={filterSpecialList}
+          />
+        </div>
       ) : null}
 
       <div>
@@ -450,6 +457,7 @@ const Need = (props: any) => {
           </StaffTableWrap>
         </LoadingSpin>
       </div>
+
       <PaginationWrap style={{ paddingRight: 24 }}>
         <Pagination
           defaultCurrent={1}

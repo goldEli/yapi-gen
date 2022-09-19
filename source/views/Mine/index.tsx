@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 import { useState } from 'react'
 import styled from '@emotion/styled'
@@ -45,28 +46,25 @@ const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
 `
-const menuItem = css`
-  box-sizing: border-box;
-  justify-content: center;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  border-right: 3px solid white;
-  &:hover: {
-    color: #2877ff !important;
-  }
-`
-const menuItemColor = css`
-  box-sizing: border-box;
-  background: rgba(240, 244, 250, 1);
-  color: rgba(40, 119, 255, 1);
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: 3px solid rgba(40, 119, 255, 1);
-`
+const MenuItem = styled.div<{ active?: boolean }>(
+  {
+    boxSizing: 'border-box',
+    justifyContent: 'center',
+    height: 44,
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    '&: hover': {
+      color: '#2877ff!important',
+    },
+  },
+  ({ active }) => ({
+    borderRight: active ? '3px solid #2877ff' : '3px solid white',
+    color: active ? '#2877ff' : '#323233',
+    background: active ? '#F0F4FA' : 'white',
+  }),
+)
+
 type MenuList = {
   id: number
   name: string
@@ -164,14 +162,14 @@ const MineBox = () => {
           )}
         <Menu>
           {menuList.map(item => (
-            <div
+            <MenuItem
+              active={nowPath === item.path}
               onClick={() => changeActive(item)}
               key={item.id}
-              className={nowPath === item.path ? menuItemColor : menuItem}
               hidden={item.isPermission}
             >
               {item.name}
-            </div>
+            </MenuItem>
           ))}
         </Menu>
       </Side>
