@@ -118,6 +118,8 @@ const Staff = () => {
     'created_at',
   ])
 
+  const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
+
   const getStaffListData = async () => {
     setIsSpinning(true)
     const res = await getStaffList({
@@ -233,12 +235,18 @@ const Staff = () => {
         width: 120,
         render: (text: string, record: any) => {
           return (
-            <span
-              onClick={() => onToDetail(record)}
-              style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
-            >
-              查看详情
-            </span>
+            <>
+              {hasCheck
+                ? '--'
+                : (
+                    <span
+                      onClick={() => onToDetail(record)}
+                      style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                    >
+                  查看详情
+                    </span>
+                  )}
+            </>
           )
         },
       },

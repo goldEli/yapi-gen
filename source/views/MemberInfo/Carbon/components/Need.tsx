@@ -23,7 +23,6 @@ import {
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from './../../components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
@@ -33,6 +32,7 @@ import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
+import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',

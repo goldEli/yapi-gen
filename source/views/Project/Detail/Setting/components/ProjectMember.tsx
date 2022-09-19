@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable max-lines */
 /* eslint-disable multiline-ternary */
@@ -185,6 +186,11 @@ const ProjectMember = () => {
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/project/member/update',
+  )
+
+  const hasCheck = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/project/member/info',
   )
 
   const getList = async (orderVal?: any, pagePrams?: any) => {
@@ -481,12 +487,18 @@ const ProjectMember = () => {
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <span
-            onClick={() => onToDetail(record)}
-            style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
-          >
-            查看详情
-          </span>
+          <>
+            {hasCheck
+              ? '--'
+              : (
+                  <span
+                    onClick={() => onToDetail(record)}
+                    style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                  >
+                查看详情
+                  </span>
+                )}
+          </>
         )
       },
     },

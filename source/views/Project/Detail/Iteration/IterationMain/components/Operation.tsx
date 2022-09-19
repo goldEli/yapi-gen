@@ -194,11 +194,10 @@ const Operation = (props: Props) => {
       <OperationWrap>
         <IterationInfo>
           <Tooltip
-            style={{ position: 'relative' }}
             key={isShow.toString()}
             visible={isShow}
             onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getPopupContainer={node => node}
+            getTooltipContainer={node => node}
             title={
               props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
             }

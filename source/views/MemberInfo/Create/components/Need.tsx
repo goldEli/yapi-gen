@@ -19,7 +19,7 @@ import {
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from './../../components/CreateProjectTableColum'
+import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'

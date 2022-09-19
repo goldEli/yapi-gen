@@ -260,10 +260,10 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="users_name">需求进度</NewSort>,
-      dataIndex: 'progress',
-      key: 'progress',
-      width: 80,
+      title: <NewSort fixedKey="schedule">需求进度</NewSort>,
+      dataIndex: 'schedule',
+      key: 'schedule',
+      width: 120,
       render: (text: string, record: any) => {
         return <DemandProgress value={60} row={record} />
       },
