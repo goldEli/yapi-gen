@@ -304,7 +304,7 @@ const CardGroup = (props: CardGroupProps) => {
               </CategoryName>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Switch
-                  defaultChecked={item.isDisable}
+                  checked={item.isDisable}
                   onChange={checked => onChange(checked, item)}
                 />
                 <MoreWrap onChange={row => onChangeMore(row)} row={item} />

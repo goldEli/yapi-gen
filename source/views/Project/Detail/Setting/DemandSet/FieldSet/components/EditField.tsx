@@ -8,6 +8,13 @@ import { Checkbox, Form, Input, Select, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useMemo, useState } from 'react'
+import { random } from 'lodash'
+import { arrayMoveImmutable } from 'array-move'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -37,6 +44,14 @@ const ChooseWrap = styled.div({
 const OptionsWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  '.flex1': {
+    margin: 0,
+    padding: 0,
+  },
+  '.flex': {
+    listStyle: 'none',
+    visibility: 'visible',
+  },
 })
 
 const OptionsItemWrap = styled.div({
@@ -71,15 +86,38 @@ const option = [
   { label: '数值型', value: '8', type: 'number' },
 ]
 
+const DragHandle = sortableHandle(() => (
+  <IconFont
+    type="move"
+    style={{
+      fontSize: 16,
+      cursor: 'pointer',
+      color: '#969799',
+    }}
+  />
+))
+
+// 拖拽容器
+const SortContainer = sortableContainer((props: any) => <ul className="flex flex1" {...props} />)
+
+// 拖拽元素
+const SortItemLi = sortableElement((props: any) => <li className="flex" {...props} />)
+
 const EditFiled = (props: Props) => {
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
-  const [row, setRow] = useState([{ value: '' }, { value: '' }])
+  const [row, setRow] = useState([
+    { value: '', key: `${random()}_${new Date()}` },
+    { value: '', key: `${random() + 100}_${new Date()}` },
+  ])
 
   const onReset = () => {
     form.resetFields()
     setValue('')
-    setRow([{ value: '' }, { value: '' }])
+    setRow([
+      { value: '', key: `${random()}_${new Date()}` },
+      { value: '', key: `${random() + 100}_${new Date()}` },
+    ])
   }
 
   const onClose = () => {
@@ -101,9 +139,20 @@ const EditFiled = (props: Props) => {
     setRow(row)
   }
 
-  const onDelRow = (idx: number) => {
-    const arr = row.filter((e, i) => i !== idx)
+  const onDelRow = (key: any) => {
+    const arr = row.filter((e, i) => e.key !== key)
     setRow(arr)
+  }
+
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(
+        row.slice(),
+        oldIndex,
+        newIndex,
+      ).filter((el: any) => !!el)
+      setRow(newData)
+    }
   }
 
   return (
@@ -160,22 +209,27 @@ const EditFiled = (props: Props) => {
               {value === '8' && <Checkbox>仅为整数</Checkbox>}
               {value !== '8' && value !== '7' && (
                 <OptionsWrap>
-                  <AddWrap onClick={() => setRow([...row, { value: '' }])}>
+                  <AddWrap
+                    onClick={() => setRow([
+                      ...row,
+                      { value: '', key: `${random()}_${new Date()}` },
+                    ])
+                    }
+                  >
                     <IconFont type="plus" />
                     <span>添加选项</span>
                   </AddWrap>
+                  {/* <SortContainer
+                    useDragHandle
+                    onSortEnd={values => onSortEnd(values)}
+                  > */}
                   {row.map((_i: any, idx: number) => (
-                    <OptionsItemWrap key={idx}>
-                      <IconFont
-                        type="move"
-                        style={{
-                          fontSize: 16,
-                          cursor: 'pointer',
-                          color: '#969799',
-                        }}
-                      />
+
+                    // <SortItemLi key={_i.key} index={idx}>
+                    <OptionsItemWrap key={_i.key}>
+                      <DragHandle />
                       <Input
-                        value={row[idx].value}
+                        defaultValue={row[idx].value}
                         style={{ width: 276 }}
                         placeholder="请输入参数值"
                         onChange={e => onChangeValue(e, idx)}
@@ -187,10 +241,13 @@ const EditFiled = (props: Props) => {
                           cursor: 'pointer',
                           color: '#969799',
                         }}
-                        onClick={() => onDelRow(idx)}
+                        onClick={() => onDelRow(_i.key)}
                       />
                     </OptionsItemWrap>
+
+                    // </SortItemLi>
                   ))}
+                  {/* </SortContainer> */}
                 </OptionsWrap>
               )}
             </ChooseWrap>

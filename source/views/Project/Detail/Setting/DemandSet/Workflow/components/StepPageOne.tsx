@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -14,6 +15,12 @@ import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
 import { useModel } from '@/models'
 import { CategoryWrap, ViewWrap } from '@/components/StyleCommon'
+import { arrayMoveImmutable } from 'array-move'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -42,7 +49,7 @@ const data = [
     remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
     endStatus: false,
     startStatus: true,
-    id: 0,
+    index: 0,
     hasDemand: 3,
   },
   {
@@ -52,7 +59,7 @@ const data = [
     remark: '说明文字',
     endStatus: true,
     startStatus: false,
-    id: 1,
+    index: 1,
     hasDemand: 0,
   },
   {
@@ -62,97 +69,7 @@ const data = [
     remark: '说明文字内容说',
     endStatus: true,
     startStatus: false,
-    id: 2,
-    hasDemand: 3,
-  },
-  {
-    key: '1',
-    name: '实现中',
-    color: '#43BA9A',
-    remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
-    endStatus: false,
-    startStatus: true,
-    id: 0,
-    hasDemand: 3,
-  },
-  {
-    key: '2',
-    name: '已结束',
-    color: '#969799',
-    remark: '说明文字',
-    endStatus: true,
-    startStatus: false,
-    id: 1,
-    hasDemand: 0,
-  },
-  {
-    key: '3',
-    name: '规划中',
-    color: '#FA9746',
-    remark: '说明文字内容说',
-    endStatus: true,
-    startStatus: false,
-    id: 2,
-    hasDemand: 3,
-  },
-  {
-    key: '1',
-    name: '实现中',
-    color: '#43BA9A',
-    remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
-    endStatus: false,
-    startStatus: true,
-    id: 0,
-    hasDemand: 3,
-  },
-  {
-    key: '2',
-    name: '已结束',
-    color: '#969799',
-    remark: '说明文字',
-    endStatus: true,
-    startStatus: false,
-    id: 1,
-    hasDemand: 0,
-  },
-  {
-    key: '3',
-    name: '规划中',
-    color: '#FA9746',
-    remark: '说明文字内容说',
-    endStatus: true,
-    startStatus: false,
-    id: 2,
-    hasDemand: 3,
-  },
-  {
-    key: '1',
-    name: '实现中',
-    color: '#43BA9A',
-    remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
-    endStatus: false,
-    startStatus: true,
-    id: 0,
-    hasDemand: 3,
-  },
-  {
-    key: '2',
-    name: '已结束',
-    color: '#969799',
-    remark: '说明文字',
-    endStatus: true,
-    startStatus: false,
-    id: 1,
-    hasDemand: 0,
-  },
-  {
-    key: '3',
-    name: '规划中',
-    color: '#FA9746',
-    remark: '说明文字内容说',
-    endStatus: true,
-    startStatus: false,
-    id: 2,
+    index: 2,
     hasDemand: 3,
   },
 ]
@@ -182,6 +99,7 @@ const StepPageOne = () => {
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [form] = Form.useForm()
+  const [dataSource, setDataSource] = useState(data)
 
   const onClickOperation = (row: any, type: string) => {
     setOperationObj(row)
@@ -220,12 +138,49 @@ const StepPageOne = () => {
     // 更新列表
   }
 
+  const DragHandle = sortableHandle(() => <IconFont type="move" />)
+
+  const SortableItem = sortableElement(
+    (props: React.HTMLAttributes<HTMLTableRowElement>) => <tr {...props} />,
+  )
+  const SortableBody = sortableContainer(
+    (props: React.HTMLAttributes<HTMLTableSectionElement>) => <tbody {...props} />
+    ,
+  )
+
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(
+        dataSource.slice(),
+        oldIndex,
+        newIndex,
+      ).filter((el: any) => !!el)
+      setDataSource(newData)
+    }
+  }
+
+  const DraggableContainer = (props: any) => (
+    <SortableBody
+      useDragHandle
+      disableAutoscroll
+      onSortEnd={onSortEnd}
+      {...props}
+    />
+  )
+
+  const DraggableBodyRow: React.FC<any> = ({ ...restProps }) => {
+    const index = dataSource.findIndex(
+      x => x.index === restProps['data-row-key'],
+    )
+    return <SortableItem index={index} {...restProps} />
+  }
+
   const columns = [
     {
       title: '',
       dataIndex: 'sort',
       width: 30,
-      render: () => <IconFont type="move" />,
+      render: () => <DragHandle />,
     },
     {
       title: '状态名称',
@@ -300,6 +255,7 @@ const StepPageOne = () => {
       ),
     },
   ]
+
   return (
     <>
       <AddWorkflow
@@ -377,10 +333,15 @@ const StepPageOne = () => {
       <TableWrap>
         <Table
           pagination={false}
-          dataSource={data}
+          dataSource={dataSource}
           columns={columns}
-          rowKey="id"
-          sticky
+          rowKey="index"
+          components={{
+            body: {
+              wrapper: DraggableContainer,
+              row: DraggableBodyRow,
+            },
+          }}
         />
       </TableWrap>
       <div style={{ marginTop: 8, color: '#969799', fontSize: 12 }}>
