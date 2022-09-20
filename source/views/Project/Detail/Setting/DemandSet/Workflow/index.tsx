@@ -12,7 +12,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { Divider, Space } from 'antd'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { CategoryWrap } from '@/components/StyleCommon'
+import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
 
@@ -72,36 +72,6 @@ const StepWrap = styled.div({
   justifyContent: 'center',
   margin: '24px 0',
 })
-
-const StepBoxWrap = styled.div<{ active?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: 500,
-    fontSize: 14,
-    '.circle': {
-      color: 'white',
-      width: 27,
-      height: 27,
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    span: {
-      marginLeft: 5,
-    },
-  },
-  ({ active }) => ({
-    '.circle': {
-      background: active ? '#2877ff' : '#BBBDBF',
-      border: active ? '3px solid #F0F4FA' : '3px solid white',
-    },
-    span: {
-      color: active ? '#2877ff' : '#646566',
-    },
-  }),
-)
 
 const SetBreadcrumb = () => {
   const navigate = useNavigate()

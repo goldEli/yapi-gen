@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable multiline-ternary */
+/* eslint-disable complexity */
 import styled from '@emotion/styled'
-import SearchComponent from '@/components/SearchComponent'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
@@ -12,6 +13,9 @@ import IconFont from '@/components/IconFont'
 import { Button, Divider, Popover, Space, Tooltip } from 'antd'
 import AddButton from '@/components/AddButton'
 import { MyInput } from '@/components/StyleCommon'
+import CommonModal from '@/components/CommonModal'
+import ImportDemand from './ImportDemand'
+import { getPermission } from '@/services/project'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -50,6 +54,34 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   }),
 )
 
+const MoreWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  borderRadius: 6,
+  padding: '0 16px',
+  background: '#F0F4FA',
+  color: '#2877ff',
+  fontSize: 14,
+  fontWeight: 400,
+  cursor: 'pointer',
+})
+
+const MoreItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  color: '#646566',
+  fontSize: 14,
+  fontWeight: 400,
+  cursor: 'pointer',
+  padding: '0 16px',
+  '&: hover': {
+    color: '#2877ff',
+    background: '#F0F4FA',
+  },
+})
+
 interface Props {
   isGrid: boolean
   onChangeGrid(val: boolean): void
@@ -64,6 +96,8 @@ interface Props {
 const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [isShow, setIsShow] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isShowImport, setIsShowImport] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const { filterAll, projectInfo } = useModel('project')
   const { setFilterHeight } = useModel('demand')
@@ -87,6 +121,15 @@ const Operation = (props: Props) => {
     searchValue: '',
   })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
+  const hasImport = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/import',
+  )
+
+  const hasExport = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/export',
+  )
 
   const onChangeSearch = (val: string) => {
     setSearchVal(val)
@@ -151,20 +194,54 @@ const Operation = (props: Props) => {
   }
 
   const changeStatus = (
-    <Space
-      size={8}
+    <div
       style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
     >
       <StatusTag color="#43BA9A" bgColor="#EDF7F4" onClick={onChangeCategory}>
         开发需求
       </StatusTag>
-    </Space>
+    </div>
   )
+
+  const onImportClick = () => {
+    setIsVisible(false)
+    setIsShowImport(true)
+  }
+
+  const moreOperation = (
+    <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
+      {hasImport ? null : (
+        <MoreItem onClick={onImportClick}>
+          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
+          <span>导入需求</span>
+        </MoreItem>
+      )}
+      {hasExport ? null : (
+        <MoreItem>
+          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
+          <span>导出需求</span>
+        </MoreItem>
+      )}
+    </div>
+  )
+
+  const onImportClose = () => {
+    setIsShowImport(false)
+  }
 
   return (
     <StickyWrap ref={stickyWrapDom}>
+      <CommonModal
+        isVisible={isShowImport}
+        width={784}
+        title="导入需求"
+        isShowFooter
+        onClose={onImportClose}
+      >
+        <ImportDemand />
+      </CommonModal>
       <OperationWrap>
-        <Space size={8}>
+        <Space size={16}>
           <Tooltip
             key={isShow.toString()}
             visible={isShow}
@@ -181,7 +258,6 @@ const Operation = (props: Props) => {
                 fontSize: 20,
                 color: 'black',
                 cursor: 'pointer',
-                marginRight: 8,
               }}
             />
           </Tooltip>
@@ -193,6 +269,9 @@ const Operation = (props: Props) => {
               content={changeStatus}
               placement="bottom"
               getPopupContainer={node => node}
+              key={isVisible.toString()}
+              visible={isVisible}
+              onVisibleChange={visible => setIsVisible(visible)}
             >
               <Button
                 type="primary"
@@ -201,6 +280,18 @@ const Operation = (props: Props) => {
               >
                 {t('common.createDemand')}
               </Button>
+            </Popover>
+          )}
+          {hasExport && hasImport ? null : (
+            <Popover
+              content={moreOperation}
+              placement="bottom"
+              getPopupContainer={node => node}
+            >
+              <MoreWrap>
+                <span>更多操作</span>
+                <IconFont style={{ fontSize: 16, marginLeft: 8 }} type="down" />
+              </MoreWrap>
             </Popover>
           )}
         </Space>

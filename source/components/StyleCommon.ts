@@ -3,6 +3,36 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input, Slider } from 'antd'
 
+const StepBoxWrap = styled.div<{ active?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    fontWeight: 500,
+    fontSize: 14,
+    '.circle': {
+      color: 'white',
+      width: 27,
+      height: 27,
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    span: {
+      marginLeft: 5,
+    },
+  },
+  ({ active }) => ({
+    '.circle': {
+      background: active ? '#2877ff' : '#BBBDBF',
+      border: active ? '3px solid #F0F4FA' : '3px solid white',
+    },
+    span: {
+      color: active ? '#2877ff' : '#646566',
+    },
+  }),
+)
+
 const ProgressWrap = styled.div({
   background: 'white',
   padding: '16px 24px',
@@ -445,4 +475,5 @@ export {
   NameWrap,
   SliderWrap,
   ProgressWrap,
+  StepBoxWrap,
 }

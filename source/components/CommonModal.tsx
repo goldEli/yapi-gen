@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 import { Modal, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -32,6 +33,7 @@ interface ModalProps {
   onConfirm?(): void
   confirmText?: string
   hasFooter?: any
+  isShowFooter?: boolean
 }
 
 const CommonModal = (props: ModalProps) => {
@@ -58,16 +60,20 @@ const CommonModal = (props: ModalProps) => {
         />
       </ModalHeader>
       <div>{props?.children}</div>
-      {props?.hasFooter
-        ? props?.hasFooter
-        : (
-            <ModalFooter size={16}>
-              <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-              <Button onClick={props?.onConfirm} type="primary">
-                {t('common.confirm2')}
-              </Button>
-            </ModalFooter>
-          )}
+      {props?.isShowFooter ? null : (
+        <>
+          {props?.hasFooter
+            ? props?.hasFooter
+            : (
+                <ModalFooter size={16}>
+                  <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
+                  <Button onClick={props?.onConfirm} type="primary">
+                    {t('common.confirm2')}
+                  </Button>
+                </ModalFooter>
+              )}
+        </>
+      )}
     </Modal>
   )
 }

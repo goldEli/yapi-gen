@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
-import { CategoryWrap, StatusWrap } from '@/components/StyleCommon'
+import { StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 
