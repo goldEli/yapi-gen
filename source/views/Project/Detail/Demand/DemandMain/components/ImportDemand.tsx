@@ -11,6 +11,10 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize, uploadFile } from '@/services/cos'
 
+const Wrap = styled.div({
+  height: 570,
+})
+
 const StepWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -131,7 +135,7 @@ const ImportDemand = () => {
   }
 
   return (
-    <>
+    <Wrap>
       <StepWrap>
         <StepBoxWrap active={step === 1}>
           <div className="circle">1</div>
@@ -241,6 +245,9 @@ const ImportDemand = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 24,
                 }}
               >
                 <Button
@@ -255,32 +262,29 @@ const ImportDemand = () => {
               </div>
             </>
           ) : (
-            <div>
-              <UploadDragger
-                beforeUpload={onUploadBefore}
-                customRequest={onUploadFileClick}
-                showUploadList={false}
-                maxCount={1}
+            <UploadDragger
+              beforeUpload={onUploadBefore}
+              customRequest={onUploadFileClick}
+              showUploadList={false}
+              maxCount={1}
+            >
+              <IconFont
+                style={{ color: '#646566', fontSize: 40, marginBottom: 8 }}
+                type="upload"
+              />
+              <div
+                style={{
+                  color: '#646566',
+                  fontSize: 14,
+                  lineHeight: '14px',
+                }}
               >
-                <IconFont
-                  style={{ color: '#646566', fontSize: 40, marginBottom: 8 }}
-                  type="upload"
-                />
-                <div
-                  style={{
-                    color: '#646566',
-                    fontSize: 14,
-                    lineHeight: '14px',
-                  }}
-                >
-                  点击或将文件拖拽到这里上传
-                </div>
-                <span style={{ color: '#969799', fontSize: 12 }}>
-                  目前支持的文件类型为*.xls，*.xlsx
-                </span>
-              </UploadDragger>
-              <div style={{ height: 56 }} />
-            </div>
+                点击或将文件拖拽到这里上传
+              </div>
+              <span style={{ color: '#969799', fontSize: 12 }}>
+                目前支持的文件类型为*.xls，*.xlsx
+              </span>
+            </UploadDragger>
           )}
         </>
       ) : null}
@@ -288,7 +292,7 @@ const ImportDemand = () => {
       {step === 2 ? (
         <>
           {spinLoading ? (
-            <CommonWrap>
+            <CommonWrap style={{ height: 443 }}>
               <Spin spinning={spinLoading} />
               <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
                 正在导入，请稍后...
@@ -309,11 +313,16 @@ const ImportDemand = () => {
 
       {step === 3 ? (
         <>
-          {/* {uploadResult?.id ? (
-            <CommonWrap>
+          {uploadResult?.id ? (
+            <CommonWrap
+              style={{
+                height: 503,
+                textAlign: 'center',
+              }}
+            >
               <IconFont
                 type="checked-poster"
-                style={{ marginTop: 60, fontSize: 80, color: '#43BA9A' }}
+                style={{ fontSize: 80, color: '#43BA9A' }}
               />
               <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
                 导入成功！
@@ -333,49 +342,56 @@ const ImportDemand = () => {
                 </Button>
               </Space>
             </CommonWrap>
-          ) : ( */}
-          <CommonWrap>
-            <IconFont
-              type="close-circle-fill"
-              style={{ marginTop: 30, fontSize: 80, color: '#FF5C5E' }}
-            />
-            <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
-              导入失败！
-            </div>
-            <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
-              共计导入需求数量：36 其中导入错误数量：12
-              本次整个表格都未导入，请对照错误原型修改后重新导入
-            </span>
-            <ItemWrap style={{ marginTop: 16 }}>
-              <ContentWrap width={120} hasBg>
-                错误行号
-              </ContentWrap>
-              <ContentWrap width={616} hasBg>
-                错误原因
-              </ContentWrap>
-            </ItemWrap>
-            <ItemWrap>
-              <ContentWrap width={120}>5</ContentWrap>
-              <ContentWrap width={616}>
-                “字段名称xx”格式错误；“字段名称xx”填写参数项目不存在；“字段名称xx”必填项没填写
-              </ContentWrap>
-            </ItemWrap>
-            <div
-              style={{
-                textAlign: 'right',
-                width: '100%',
-                margin: '32px 0 24px 0',
-              }}
-            >
-              <Button type="primary" onClick={onClear}>
-                重新导入
-              </Button>
-            </div>
-          </CommonWrap>
-          {/* )} */}
+          ) : (
+            <CommonWrap>
+              <div
+                style={{
+                  height: 415,
+                  textAlign: 'center',
+                }}
+              >
+                <IconFont
+                  type="close-circle-fill"
+                  style={{ fontSize: 80, color: '#FF5C5E' }}
+                />
+                <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
+                  导入失败！
+                </div>
+                <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
+                  共计导入需求数量：36 其中导入错误数量：12
+                  本次整个表格都未导入，请对照错误原型修改后重新导入
+                </span>
+                <ItemWrap style={{ marginTop: 16 }}>
+                  <ContentWrap width={120} hasBg>
+                    错误行号
+                  </ContentWrap>
+                  <ContentWrap width={616} hasBg>
+                    错误原因
+                  </ContentWrap>
+                </ItemWrap>
+                <ItemWrap>
+                  <ContentWrap width={120}>5</ContentWrap>
+                  <ContentWrap width={616}>
+                    “字段名称xx”格式错误；“字段名称xx”填写参数项目不存在；“字段名称xx”必填项没填写
+                  </ContentWrap>
+                </ItemWrap>
+              </div>
+              <div
+                style={{
+                  textAlign: 'right',
+                  width: '100%',
+                  margin: '32px 0 24px 0',
+                }}
+              >
+                <Button type="primary" onClick={onClear}>
+                  重新导入
+                </Button>
+              </div>
+            </CommonWrap>
+          )}
         </>
       ) : null}
-    </>
+    </Wrap>
   )
 }
 

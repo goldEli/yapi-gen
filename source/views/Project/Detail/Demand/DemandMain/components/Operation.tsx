@@ -97,6 +97,7 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [isShow, setIsShow] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const { filterAll, projectInfo } = useModel('project')
@@ -287,10 +288,16 @@ const Operation = (props: Props) => {
               content={moreOperation}
               placement="bottom"
               getPopupContainer={node => node}
+              key={isVisibleMore.toString()}
+              visible={isVisibleMore}
+              onVisibleChange={visible => setIsVisibleMore(visible)}
             >
               <MoreWrap>
                 <span>更多操作</span>
-                <IconFont style={{ fontSize: 16, marginLeft: 8 }} type="down" />
+                <IconFont
+                  style={{ fontSize: 16, marginLeft: 8 }}
+                  type={isVisibleMore ? 'up' : 'down'}
+                />
               </MoreWrap>
             </Popover>
           )}
