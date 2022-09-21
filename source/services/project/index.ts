@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
@@ -338,6 +339,7 @@ export const storyConfigField: any = async (params: any) => {
       hasDemand: i.use_custom_field_count,
       type: i.field_content,
       id: i.id,
+      remarks: i.remarks,
     })),
   }
 }
@@ -365,5 +367,209 @@ export const updateStoryConfigField: any = async (params: any) => {
     remarks: params.remarks,
     content: params.content,
     id: params.id,
+  })
+}
+
+export const storyConfigCategoryList: any = async (params: any) => {
+  const response: any = await http.get<any>('getCategoryList', {
+    project_id: params.projectId,
+  })
+
+  return {
+    list: response.data.map((i: any) => ({
+      name: i.name,
+      hasDemand: i.story_count,
+      color: i.color,
+      id: i.id,
+      isCheck: i.status,
+      statusCount: i.status_count,
+      remarks: i.remarks,
+    })),
+  }
+}
+
+export const changeCategoryStatus: any = async (params: any) => {
+  await http.post<any>('changeCategoryStatus', {
+    project_id: params.projectId,
+    id: params.id,
+    status: params.status,
+  })
+}
+
+export const addStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('addCategory', {
+    name: params.name,
+    color: params?.color,
+    project_id: params.projectId,
+  })
+}
+
+export const updateStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('updateCategory', {
+    name: params.name,
+    color: params?.color,
+    project_id: params.projectId,
+    id: params.id,
+    remarks: params.remarks,
+  })
+}
+
+export const deleteStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('deleteCategory', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+}
+
+// ----------------------------
+
+export const changeStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('moveCategoryStory', {
+    status_id: params.statusId,
+    old_category_id: params?.oldId,
+    project_id: params.projectId,
+    new_category_id: params.newId,
+  })
+}
+
+export const storyConfigStatusList: any = async (params: any) => {
+  const response: any = await http.get<any>('getStatusList', {
+    search: {
+      project_id: params.projectId,
+      category_id: params.categoryId,
+    },
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+
+  return {
+    list: response.data.map((i: any) => ({
+      color: i.color,
+      name: i.content,
+      id: i.id,
+      categoryName: i.category_name,
+      isCheck: i.is_check,
+      deleteData: i.deleteData,
+    })),
+  }
+}
+
+export const addStoryConfigStatus: any = async (params: any) => {
+  const response = await http.post<any>('getStatusList', {
+    project_id: params.projectId,
+    content: params.name,
+    color: params.color,
+  })
+  return response
+}
+
+export const deleteStoryConfigStatus: any = async (params: any) => {
+  await http.delete<any>(`/b/project/story_config/status/${params.id}`, {
+    project_id: params.projectId,
+    list: {
+      category_id: params?.categoryId,
+      status_id: params?.statusId,
+    },
+  })
+}
+
+export const updateStoryConfigStatus: any = async (params: any) => {
+  await http.put<any>(`/b/project/story_config/status/${params.id}`, {
+    project_id: params.projectId,
+    content: params.name,
+    color: params.color,
+  })
+}
+
+export const getWorkflowList: any = async (params: any) => {
+  const response: any = await http.get<any>('getWorkflowList', {
+    search: {
+      project_id: params.projectId,
+      category_id: params.categoryId,
+    },
+  })
+
+  return {
+    list: response.data.map((i: any) => ({
+      id: i.id,
+      index: i.id,
+      remark: i.info,
+      categorys: i.categorys,
+      startStatus: i.is_start === 1,
+      endStatus: i.is_end === 1,
+      color: i.status.color,
+      name: i.status.content,
+      deleteData: i.deleteData,
+      sort: i.sort,
+      canChange: i.can_changes_category_status,
+    })),
+  }
+}
+
+export const addStoryConfigWorkflow: any = async (params: any) => {
+  await http.post<any>('getWorkflowList', {
+    category_id: params.categoryId,
+    ids: params?.ids,
+    project_id: params.projectId,
+  })
+}
+
+export const updateStoryConfigWorkflow: any = async (params: any) => {
+  await http.put<any>(`/b/project/story_config/workflow/${params.id}`, {
+    color: params.color,
+    info: params?.remark,
+    project_id: params.projectId,
+    content: params.name,
+    is_end: params.endStatus,
+    is_start: params?.startStatus,
+  })
+}
+
+export const deleteStoryConfigWorkflow: any = async (params: any) => {
+  await http.delete<any>(`/b/project/story_config/workflow/${params.id}`, {
+    project_id: params.projectId,
+    item: {
+      category_id: params?.categoryId,
+      status_id: params?.statusId,
+    },
+  })
+}
+
+export const sortchangeWorkflow: any = async (params: any) => {
+  await http.put<any>('dragWorkflow', {
+    project_id: params.projectId,
+    list: params.ids,
+  })
+}
+
+export const saveWorkflowStatus: any = async (params: any) => {
+  await http.put<any>('saveWorkflowStatus', {
+    project_id: params.projectId,
+    category_id: params.categoryId,
+    can_changes: params.canChanges,
+  })
+}
+
+export const getWorkflowInfo: any = async (params: any) => {
+  const response: any = await http.get<any>('getWorkflowInfo', {
+    project_id: params.projectId,
+    category_id: params.categoryId,
+    category_status_from_id: params.fromId,
+    category_status_to_id: params.toId,
+  })
+
+  return response
+}
+
+export const saveWorkflowConfig: any = async (params: any) => {
+  await http.post<any>('saveWorkflowConfig', {
+    project_id: params.projectId,
+    category_id: params.categoryId,
+    category_status_from_id: params.fromId,
+    category_status_to_id: params.toId,
+    is_verify: params.isVerify,
+    fields: params.fields,
+    verify: params.verify,
+    auth: params.auth,
   })
 }

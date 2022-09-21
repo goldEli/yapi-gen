@@ -6,6 +6,8 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import ChooseColor from '../../components/ChooseColor'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -33,14 +35,20 @@ interface EditorProps {
   isVisible: boolean
   item?: any
   onClose(): void
-  onConfirm(data: any): void
 }
 
 const EditorCategory = (props: EditorProps) => {
-  const { colorList } = useModel('project')
+  const {
+    colorList,
+    getCategoryList,
+    updateStoryConfigCategory,
+    addStoryConfigCategory,
+  } = useModel('project')
   const [name, setName] = useState<any>('')
   const [normalColor, setNormalColor] = useState<any>('')
   const [form] = Form.useForm()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
 
   useEffect(() => {
     if (props?.item?.id) {
@@ -49,13 +57,42 @@ const EditorCategory = (props: EditorProps) => {
     }
   }, [props?.item])
 
+  const onReset = () => {
+    props?.onClose()
+    setTimeout(() => {
+      form.resetFields()
+      getCategoryList({ projectId: paramsData.id })
+    }, 100)
+  }
+
   const onConfirm = async () => {
     await form.validateFields()
     if (!form.getFieldValue('color')) {
       message.warning('请选择需求类别颜色！')
       return
     }
-    props.onConfirm(form.getFieldsValue())
+    const params = form.getFieldsValue()
+    params.projectId = paramsData.id
+    params.id = props?.item?.id
+    if (props?.item?.id) {
+      try {
+        await updateStoryConfigCategory(params)
+        message.success('编辑成功')
+        onReset()
+      } catch (error) {
+
+        //
+      }
+    } else {
+      try {
+        await addStoryConfigCategory(params)
+        message.success('创建成功')
+        onReset()
+      } catch (error) {
+
+        //
+      }
+    }
   }
 
   const onClose = () => {
@@ -96,7 +133,7 @@ const EditorCategory = (props: EditorProps) => {
             onChange={e => setName(e.target.value)}
           />
         </Form.Item>
-        <Form.Item label="类别说明" name="remark">
+        <Form.Item label="类别说明" name="remarks">
           <Input.TextArea
             placeholder="请输入描述类别说明限200个字符"
             autoSize={{ minRows: 5, maxRows: 5 }}

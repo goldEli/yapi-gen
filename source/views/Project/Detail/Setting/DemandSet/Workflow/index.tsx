@@ -111,7 +111,11 @@ const SetBreadcrumb = () => {
 }
 
 const Workflow = () => {
+  const { colorList } = useModel('project')
   const [step, setStep] = useState(1)
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { categoryItem } = paramsData
 
   const onSaveNext = () => {
     setStep(2)
@@ -126,8 +130,13 @@ const Workflow = () => {
         <LabelWrap>
           <div className="provider" />
           <span>工作流设置</span>
-          <CategoryWrap color="#43BA9A" bgColor="#EDF7F4">
-            游戏开发
+          <CategoryWrap
+            color={categoryItem.color}
+            bgColor={
+              colorList?.filter(i => i.key === categoryItem.color)[0]?.bgColor
+            }
+          >
+            {categoryItem.name}
           </CategoryWrap>
         </LabelWrap>
         <StepWrap>

@@ -243,6 +243,7 @@ const FieldSet = () => {
   ]
 
   const onUpdate = () => {
+    setOperationObj({})
     getList()
   }
 

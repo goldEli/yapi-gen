@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 import { useState } from 'react'
 import * as services from '@/services'
@@ -17,6 +19,9 @@ export default () => {
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
+  const [categoryList, setCategoryList] = useState<any>([])
+  const [statusWorkList, setStatusWorkList] = useState<any>([])
+
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
     { key: '#FF5C5E', bgColor: '#FCEEEE' },
@@ -44,35 +49,93 @@ export default () => {
     { label: '数值型', value: '8', type: 'number' },
   ]
 
-  const getFieldList = async (params: any) => {
+  const getStatusList = async (params: any) => {
 
-    // const result = await services.project.storyConfigField(params)
-    // setFieldList(result)
-    setFieldList({
+    // const result = await services.project.storyConfigStatusList(params)
+    // setStatusWorkList(result)
+    setStatusWorkList({
       list: [
         {
-          name: '自定义字段',
-          hasDemand: 2,
-          remark: '121212',
+          name: '实现中',
+          color: '#43BA9A',
+          isCheck: 1,
           id: 1,
-          type: { attr: 'text', value: '' },
+          deleteData: {},
+          categoryName: '软件需求',
         },
         {
-          name: '自定义字段2',
-          hasDemand: 0,
-          remark: '121212',
+          name: '开发需求',
+          color: '#43BA9A',
+          isCheck: 2,
           id: 2,
-          type: { attr: 'checkbox', value: ['1', '2'] },
+          deleteData: {},
+          categoryName: '软件需求',
         },
         {
-          name: '自定义字段3',
-          hasDemand: 0,
-          remark: '121212',
+          name: '美术组的修改图片需求美术组的修改图片需求',
+          color: '#FA9746',
+          isCheck: 1,
+          id: 3,
+          deleteData: {},
+          categoryName: '软件需求',
+        },
+        {
+          name: '软件需求',
+          color: '#43BA9A',
+          isCheck: 1,
           id: 4,
-          type: { attr: 'date', value: ['date'] },
+          deleteData: {},
+          categoryName: '软件需求',
         },
       ],
     })
+  }
+
+  const getCategoryList = async (params: any) => {
+    const result = await services.project.storyConfigCategoryList(params)
+    setCategoryList(result)
+
+    // setCategoryList({
+    //   list: [
+    //     {
+    //       name: '软件需求',
+    //       color: '#43BA9A',
+    //       isCheck: 1,
+    //       id: 1,
+    //       hasDemand: 2,
+    //       statusCount: 1,
+    //     },
+    //     {
+    //       name: '开发需求',
+    //       color: '#43BA9A',
+    //       isCheck: 2,
+    //       id: 2,
+    //       hasDemand: 2,
+    //       statusCount: 0,
+    //     },
+    //     {
+    //       name: '美术组的修改图片需求美术组的修改图片需求',
+    //       color: '#FA9746',
+    //       isCheck: 1,
+    //       id: 3,
+    //       hasDemand: 0,
+    //       statusCount: 2,
+    //     },
+    //     {
+    //       name: '软件需求',
+    //       color: '#43BA9A',
+    //       isCheck: 1,
+    //       id: 4,
+    //       hasDemand: 2,
+    //       statusCount: 2,
+    //     },
+    //   ],
+    // })
+  }
+
+  const getFieldList = async (params: any) => {
+    const result = await services.project.storyConfigField(params)
+    setFieldList(result)
   }
 
   const getProjectList = async (params: any) => {
@@ -120,6 +183,11 @@ export default () => {
     addStoryConfigField,
     deleteStoryConfigField,
     updateStoryConfigField,
+    addStoryConfigCategory,
+    updateStoryConfigCategory,
+    deleteStoryConfigCategory,
+    changeCategoryStatus,
+    changeStoryConfigCategory,
   } = services.project
 
   return {
@@ -165,5 +233,14 @@ export default () => {
     addStoryConfigField,
     deleteStoryConfigField,
     updateStoryConfigField,
+    getCategoryList,
+    categoryList,
+    addStoryConfigCategory,
+    updateStoryConfigCategory,
+    deleteStoryConfigCategory,
+    changeCategoryStatus,
+    changeStoryConfigCategory,
+    getStatusList,
+    statusWorkList,
   }
 }

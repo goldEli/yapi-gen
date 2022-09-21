@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
@@ -74,7 +76,6 @@ const CategoryCard = styled.div({
   flexDirection: 'column',
   padding: 16,
   margin: '24px 24px 0 0',
-  cursor: 'pointer',
   '&:hover': {
     border: '1px solid transparent',
     boxShadow: '0px 4px 13px -2px rgba(0,0,0,0.08)',
@@ -89,12 +90,25 @@ const CategoryCardHead = styled.div({
 
 const DivWrap = styled.div({
   marginTop: 32,
-  cursor: 'pointer',
   fontSize: 12,
   fontWeight: 400,
-  color: '#646566',
-  '&: hover': {
-    color: '#2877ff',
+  display: 'flex',
+  alignItems: 'center',
+  '.set': {
+    cursor: 'pointer',
+    color: '#646566',
+    marginRight: 16,
+    '&: hover': {
+      color: '#2877ff',
+    },
+  },
+  '.warning': {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: '#FA9746',
+      marginLeft: 6,
+    },
   },
 })
 
@@ -104,6 +118,7 @@ const CategoryName = styled.div<{ bgColor?: string; color?: string }>(
     borderRadius: '11px',
     padding: '0 8px',
     fontSize: 12,
+    lineHeight: '22px',
   },
   ({ bgColor, color }) => ({
     background: bgColor,
@@ -128,6 +143,7 @@ const IconFontWrap = styled(IconFont)({
   fontSize: 20,
   color: '#969799',
   marginLeft: 16,
+  cursor: 'pointer',
   '&: hover': {
     color: '#2877ff',
   },
@@ -136,6 +152,7 @@ const IconFontWrap = styled(IconFont)({
 interface MoreWrapProps {
   row: any
   onChange(row: any): void
+  list?: any
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -143,8 +160,19 @@ const MoreWrap = (props: MoreWrapProps) => {
   const [isDelete, setIsDelete] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [form] = Form.useForm()
-  const [categoryList, setCategoryList] = useState<any>([])
-  const [statusList, setStatusList] = useState<any>([])
+  const {
+    getCategoryList,
+    deleteStoryConfigCategory,
+    changeStoryConfigCategory,
+    getStatusList,
+    statusWorkList,
+  } = useModel('project')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+
+  useEffect(() => {
+    getStatusList({ projectId: paramsData.id, categoryId: props?.row?.id })
+  }, [])
 
   const onClickMenu = (type: string) => {
     setIsMoreVisible(false)
@@ -172,17 +200,39 @@ const MoreWrap = (props: MoreWrapProps) => {
   }
 
   const onDeleteConfirm = async () => {
+    try {
+      await deleteStoryConfigCategory({
+        id: props.row.id,
+        projectId: paramsData.id,
+      })
+      message.success('删除成功')
+      getCategoryList({ projectId: paramsData.id })
+    } catch (error) {
 
-    // console.log('删除id', props.row.id)
+      //
+    }
   }
 
   const onCloseHasDelete = () => {
     setIsHasDelete(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
   }
 
   const onConfirmHasDelete = async () => {
+    await form.validateFields()
+    const params = form.getFieldsValue()
+    params.projectId = paramsData.id
+    params.oldId = props.row.id
+    try {
+      await changeStoryConfigCategory(params)
+      message.success('数据迁移成功')
+      onCloseHasDelete()
+    } catch (error) {
 
-    //
+      //
+    }
   }
 
   return (
@@ -205,7 +255,11 @@ const MoreWrap = (props: MoreWrapProps) => {
         >
           <HasDemandText>{`检测到该类型下有${props?.row?.hasDemand}条需求，请把历史需求变更为其他类型`}</HasDemandText>
           <FormWrap form={form} layout="vertical">
-            <Form.Item label="变更后需求类别">
+            <Form.Item
+              label="变更后需求类别"
+              name="newId"
+              rules={[{ required: true, message: '' }]}
+            >
               <Select
                 placeholder="请选择"
                 showArrow
@@ -213,10 +267,16 @@ const MoreWrap = (props: MoreWrapProps) => {
                 getPopupContainer={node => node}
                 allowClear
                 optionFilterProp="label"
-                options={categoryList}
+                options={props?.list
+                  ?.filter((i: any) => i.id !== props?.row?.id)
+                  ?.map((k: any) => ({ label: k.name, value: k.id }))}
               />
             </Form.Item>
-            <Form.Item label="变更后需求状态">
+            <Form.Item
+              label="变更后需求状态"
+              name="statusId"
+              rules={[{ required: true, message: '' }]}
+            >
               <Select
                 placeholder="请选择"
                 showArrow
@@ -224,7 +284,10 @@ const MoreWrap = (props: MoreWrapProps) => {
                 getPopupContainer={node => node}
                 allowClear
                 optionFilterProp="label"
-                options={statusList}
+                options={statusWorkList?.list?.map((k: any) => ({
+                  label: k.name,
+                  value: k.id,
+                }))}
               />
             </Form.Item>
           </FormWrap>
@@ -248,27 +311,45 @@ const MoreWrap = (props: MoreWrapProps) => {
 
 interface CardGroupProps {
   list: any[]
-  onClickTo(): void
 }
 
 const CardGroup = (props: CardGroupProps) => {
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { colorList } = useModel('project')
+  const { colorList, changeCategoryStatus, getCategoryList, projectInfo }
+    = useModel('project')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const navigate = useNavigate()
+  const activeTabs = Number(paramsData.type) || 0
 
-  const onChange = (checked: boolean, row: any) => {
+  const onChangeStatus = async (item: any, state: any) => {
+    try {
+      await changeCategoryStatus({
+        projectId: paramsData.id,
+        id: item.id,
+        status: state,
+      })
+      message.success('状态修改成功')
+      getCategoryList({ projectId: paramsData.id })
+    } catch (error) {
 
-    // if (!checked && props?.list.length === 1) {
-    //   message.warning('至少保证有一个需求类别是开启状')
-    //   return
-    // }
-    // console.log(`switch to ${checked}`, row)
+      //
+    }
   }
 
-  const onConfirm = async () => {
+  const onChange = (checked: boolean, row: any) => {
+    const arr = props?.list?.filter(i => i.id !== row.id)
+    if (!row.statusCount && checked) {
+      message.warning('工作流配置完成后才能开启需求类别')
+      return
+    }
 
-    // 调用编辑接口
-    setEditRow({})
+    if (!arr?.filter(i => i.isCheck === 1)?.length && !checked) {
+      message.warning('至少保证有一个需求类别是开启状')
+      return
+    }
+    onChangeStatus(row, checked ? 1 : 2)
   }
 
   const onClose = () => {
@@ -282,16 +363,24 @@ const CardGroup = (props: CardGroupProps) => {
     setEditRow(row)
     setIsEdit(true)
   }
+
+  const onToWorkFlow = (item: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: activeTabs,
+        id: projectInfo.id,
+        pageIdx: 'work',
+        categoryItem: item,
+      }),
+    )
+    navigate(`/Detail/Set?data=${params}`)
+  }
+
   return (
     <>
-      <EditCategory
-        isVisible={isEdit}
-        onClose={onClose}
-        onConfirm={onConfirm}
-        item={editRow}
-      />
+      <EditCategory isVisible={isEdit} onClose={onClose} item={editRow} />
       <CardGroupWrap>
-        {props?.list.map((item: any) => (
+        {props?.list?.map((item: any) => (
           <CategoryCard key={item.id}>
             <CategoryCardHead>
               <CategoryName
@@ -304,13 +393,30 @@ const CardGroup = (props: CardGroupProps) => {
               </CategoryName>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Switch
-                  checked={item.isDisable}
+                  checked={item.isCheck === 1}
                   onChange={checked => onChange(checked, item)}
                 />
-                <MoreWrap onChange={row => onChangeMore(row)} row={item} />
+                <MoreWrap
+                  onChange={row => onChangeMore(row)}
+                  row={item}
+                  list={props?.list}
+                />
               </div>
             </CategoryCardHead>
-            <DivWrap onClick={props?.onClickTo}>工作流设置</DivWrap>
+            <DivWrap>
+              <span className="set" onClick={() => onToWorkFlow(item)}>
+                工作流设置
+              </span>
+              {item?.statusCount ? null : (
+                <div className="warning">
+                  <IconFont
+                    type="fillwarning"
+                    style={{ fontSize: 14, color: '#FA9746' }}
+                  />
+                  <div>工作流还未完成</div>
+                </div>
+              )}
+            </DivWrap>
           </CategoryCard>
         ))}
         <CategoryCard
@@ -319,6 +425,7 @@ const CardGroup = (props: CardGroupProps) => {
             alignItems: 'center',
             justifyContent: 'center',
             color: '#646566',
+            cursor: 'pointer',
           }}
         >
           <IconFont type="plus" style={{ fontSize: 20 }} />
@@ -332,52 +439,26 @@ const CardGroup = (props: CardGroupProps) => {
 }
 
 const DemandSet = () => {
-  const [cardList, setCardList] = useState<any>([])
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useModel('project')
+  const { projectInfo, getCategoryList, categoryList } = useModel('project')
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 
+  const getList = () => {
+    getCategoryList({ projectId: paramsData.id })
+  }
+
   useEffect(() => {
-    setCardList([
-      {
-        name: '软件需求',
-        color: '#43BA9A',
-        isDisable: true,
-        id: 1,
-        hasDemand: 2,
-      },
-      {
-        name: '开发需求',
-        color: '#43BA9A',
-        isDisable: true,
-        id: 2,
-        hasDemand: 2,
-      },
-      {
-        name: '美术组的修改图片需求美术组的修改图片需求',
-        color: '#FA9746',
-        isDisable: false,
-        id: 3,
-        hasDemand: 0,
-      },
-      {
-        name: '软件需求',
-        color: '#43BA9A',
-        isDisable: true,
-        id: 4,
-        hasDemand: 2,
-      },
-    ])
+    getList()
   }, [])
 
-  const onToPage = (type: string) => {
+  const onToPage = () => {
     const params = encryptPhp(
       JSON.stringify({
         type: activeTabs,
         id: projectInfo.id,
-        pageIdx: type,
+        pageIdx: 'field',
       }),
     )
     navigate(`/Detail/Set?data=${params}`)
@@ -395,7 +476,7 @@ const DemandSet = () => {
           <Button
             type="primary"
             icon={<IconFont type="settings" />}
-            onClick={() => onToPage('field')}
+            onClick={onToPage}
           >
             字段设置
           </Button>
@@ -405,7 +486,7 @@ const DemandSet = () => {
             <div />
             <span>需求类别设置</span>
           </LabelWrap>
-          <CardGroup list={cardList} onClickTo={() => onToPage('work')} />
+          <CardGroup list={categoryList?.list} />
         </ModeWrap>
       </ContentWrap>
     </Wrap>

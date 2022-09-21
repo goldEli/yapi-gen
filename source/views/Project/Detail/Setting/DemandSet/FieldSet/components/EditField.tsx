@@ -125,6 +125,14 @@ const EditFiled = (props: Props) => {
       } else if (props?.item?.type === '8') {
         setChecked(props?.item?.values[0] === 'integer')
       }
+    } else {
+      form.resetFields()
+      setValue('')
+      setChecked(false)
+      setRow([
+        { value: '', key: `${random()}_${new Date()}` },
+        { value: '', key: `${random() + 100}_${new Date()}` },
+      ])
     }
   }, [props?.item])
 
@@ -173,7 +181,7 @@ const EditFiled = (props: Props) => {
     const obj: any = {
       projectId: paramsData.id,
       name: form.getFieldValue('name'),
-      remark: form.getFieldValue('remark'),
+      remarks: form.getFieldValue('remarks') || '',
       content: {
         attr: selObj.type,
         value: contentValue,
@@ -245,7 +253,7 @@ const EditFiled = (props: Props) => {
             输入一个符合阅读习惯的短名字,最多12个字符,不能是系统字段,且不能与已有的自定义字段重名
           </div>
         </ItemWrap>
-        <Form.Item label="字段备注" name="remark">
+        <Form.Item label="字段备注" name="remarks">
           <Input.TextArea
             placeholder="备注信息可以用来提示用户如何填写字段值 (比如“请输入数字”)"
             autoSize={{ minRows: 5, maxRows: 5 }}

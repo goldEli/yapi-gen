@@ -67,6 +67,18 @@ const urls = {
   getPriOrStu: '/b/project/getconfig',
   addQuicklyCreate: '/b/user/fast/create',
   storyConfigField: '/b/project/story_config/field',
+  getStatusList: '/b/project/story_config/status',
+  getCategoryList: '/b/project/story_config/category/list',
+  addCategory: '/b/project/story_config/category/add',
+  updateCategory: '/b/project/story_config/category/edit',
+  deleteCategory: '/b/project/story_config/category/delete',
+  changeCategoryStatus: '/b/project/story_config/category/change/status',
+  moveCategoryStory: '/b/project/story_config/category/change/story',
+  getWorkflowList: '/b/project/story_config/workflow',
+  dragWorkflow: '/b/project/story_config/workflow/sortchange',
+  saveWorkflowStatus: '/b/project/story_config/workflow_config/save',
+  getWorkflowInfo: '/b/project/story_config/workflow_config/info',
+  saveWorkflowConfig: '/b/project/story_config/workflow_config/setInfo',
 }
 
 export default urls

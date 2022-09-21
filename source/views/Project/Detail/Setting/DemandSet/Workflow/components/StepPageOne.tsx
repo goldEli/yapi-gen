@@ -21,6 +21,8 @@ import {
   SortableElement as sortableElement,
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -92,6 +94,9 @@ const categoryList = [
 ]
 
 const StepPageOne = () => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { categoryItem } = paramsData
   const { colorList } = useModel('project')
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
