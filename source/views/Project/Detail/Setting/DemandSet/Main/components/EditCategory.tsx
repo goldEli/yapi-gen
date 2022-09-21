@@ -133,7 +133,7 @@ const EditorCategory = (props: EditorProps) => {
             onChange={e => setName(e.target.value)}
           />
         </Form.Item>
-        <Form.Item label="类别说明" name="remarks">
+        <Form.Item label="类别说明" name="remark">
           <Input.TextArea
             placeholder="请输入描述类别说明限200个字符"
             autoSize={{ minRows: 5, maxRows: 5 }}

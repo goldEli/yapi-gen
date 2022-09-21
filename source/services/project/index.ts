@@ -383,7 +383,7 @@ export const storyConfigCategoryList: any = async (params: any) => {
       id: i.id,
       isCheck: i.status,
       statusCount: i.status_count,
-      remarks: i.remarks,
+      remark: i.remark,
     })),
   }
 }
@@ -401,6 +401,7 @@ export const addStoryConfigCategory: any = async (params: any) => {
     name: params.name,
     color: params?.color,
     project_id: params.projectId,
+    remark: params.remark,
   })
 }
 
@@ -410,7 +411,7 @@ export const updateStoryConfigCategory: any = async (params: any) => {
     color: params?.color,
     project_id: params.projectId,
     id: params.id,
-    remarks: params.remarks,
+    remark: params.remark,
   })
 }
 
