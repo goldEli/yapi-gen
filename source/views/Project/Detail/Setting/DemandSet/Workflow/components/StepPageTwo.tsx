@@ -22,12 +22,18 @@ const TextWrap = styled.div({
 const data = [
   {
     name: '从【规划中】流转到',
+    id: 1,
+    checked: ['1'],
   },
   {
     name: '从【实现中】流转到',
+    id: 1,
+    checked: ['1'],
   },
   {
     name: '从【已实现】流转到',
+    id: 1,
+    checked: ['1'],
   },
 ]
 const statusList = [

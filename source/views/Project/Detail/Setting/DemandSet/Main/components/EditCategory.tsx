@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
-import { Input, Form } from 'antd'
+import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
@@ -43,15 +43,17 @@ const EditorCategory = (props: EditorProps) => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    form.setFieldsValue(props?.item)
-    setNormalColor(props?.item?.color || '#969799')
+    if (props?.item?.id) {
+      form.setFieldsValue(props?.item)
+      setNormalColor(props?.item?.color)
+    }
   }, [props?.item])
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
+    await form.validateFields()
     if (!form.getFieldValue('color')) {
-      form.setFieldsValue({
-        color: '#969799',
-      })
+      message.warning('请选择需求类别颜色！')
+      return
     }
     props.onConfirm(form.getFieldsValue())
   }
@@ -61,7 +63,7 @@ const EditorCategory = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('#969799')
+      setNormalColor('')
     }, 100)
   }
 
@@ -81,13 +83,24 @@ const EditorCategory = (props: EditorProps) => {
       confirmText="创建"
     >
       <FormWrap form={form} layout="vertical">
-        <Form.Item label="类别名称" name="name">
+        <Form.Item
+          label="类别名称"
+          name="name"
+          rules={[{ required: true, message: '' }]}
+        >
           <Input
             autoComplete="off"
             maxLength={20}
             placeholder="请输入中英文字符限20个字符"
             allowClear
             onChange={e => setName(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item label="类别说明" name="remark">
+          <Input.TextArea
+            placeholder="请输入描述类别说明限200个字符"
+            autoSize={{ minRows: 5, maxRows: 5 }}
+            maxLength={200}
           />
         </Form.Item>
         <Form.Item label="选择颜色" name="color">
@@ -99,9 +112,10 @@ const EditorCategory = (props: EditorProps) => {
         <Form.Item label="预览效果">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ViewWrap
-              color={normalColor}
+              color={normalColor || '#969799'}
               bgColor={
-                colorList?.filter(i => i.key === normalColor)[0]?.bgColor
+                colorList?.filter(i => i.key === (normalColor || '#969799'))[0]
+                  ?.bgColor
               }
             >
               {name || '无'}

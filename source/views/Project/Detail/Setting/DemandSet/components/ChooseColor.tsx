@@ -1,8 +1,10 @@
+/* eslint-disable multiline-ternary */
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Popover, Space } from 'antd'
 import { useState } from 'react'
+import colorImg from '/colorImg.png'
 
 const ChooseColorWrap = styled.div<{ color?: string }>(
   {
@@ -44,7 +46,13 @@ const ChooseColor = (props: ChooseColorProps) => {
   }
   const colorStatus = (
     <Space
-      style={{ display: 'flex', alignItems: 'center', padding: 16 }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: 16,
+        flexWrap: 'wrap',
+        maxWidth: 240,
+      }}
       size={8}
     >
       {colorList.map(i => (
@@ -69,10 +77,14 @@ const ChooseColor = (props: ChooseColorProps) => {
       content={colorStatus}
       onVisibleChange={onVisibleChange}
     >
-      <ChooseColorWrap
-        color={props?.color}
-        onClick={() => setIsChooseColor(true)}
-      />
+      {props?.color ? (
+        <ChooseColorWrap
+          color={props?.color}
+          onClick={() => setIsChooseColor(true)}
+        />
+      )
+        : <img style={{ height: 32, cursor: 'pointer' }} src={colorImg} alt="" />
+      }
     </Popover>
   )
 }

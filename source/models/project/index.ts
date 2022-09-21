@@ -14,11 +14,66 @@ export default () => {
   const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [filterAll, setFilterAll] = useState<any>([])
   const [isRefreshIterateList, setIsRefreshIterateList] = useState<any>(false)
+  const [fieldList, setFieldList] = useState<any>({
+    list: undefined,
+  })
   const colorList = [
+    { key: '#2877FF', bgColor: '#F2F7FF' },
+    { key: '#FF5C5E', bgColor: '#FCEEEE' },
     { key: '#43BA9A', bgColor: '#EDF7F4' },
-    { key: '#969799', bgColor: '#EBEDF0' },
     { key: '#FA9746', bgColor: '#FCF3EB' },
+    { key: '#969799', bgColor: '#F2F2F4' },
+    { key: '#8046FA', bgColor: '#F0EBFC' },
+    { key: '#FA46E1', bgColor: '#FCEBFA' },
+    { key: '#FF8B8B', bgColor: '#FCEBEB' },
+    { key: '#269758', bgColor: '#EBFCF3' },
+    { key: '#3AA7FF', bgColor: '#EBF4FC' },
+    { key: '#00ADD2', bgColor: '#EBF9FC' },
+    { key: '#ED7303', bgColor: '#FCF3EB' },
+    { key: '#4D5EFF', bgColor: '#EBEDFC' },
+    { key: '#464646', bgColor: '#EDEDED' },
   ]
+  const option = [
+    { label: '单行文本', value: '1', type: 'text' },
+    { label: '多行文本', value: '2', type: 'textarea' },
+    { label: '单选下拉列表', value: '3', type: 'select' },
+    { label: '多选下拉列表', value: '4', type: 'select_checkbox' },
+    { label: '复选框', value: '5', type: 'checkbox' },
+    { label: '单选框', value: '6', type: 'radio' },
+    { label: '日期', value: '7', type: 'date' },
+    { label: '数值型', value: '8', type: 'number' },
+  ]
+
+  const getFieldList = async (params: any) => {
+
+    // const result = await services.project.storyConfigField(params)
+    // setFieldList(result)
+    setFieldList({
+      list: [
+        {
+          name: '自定义字段',
+          hasDemand: 2,
+          remark: '121212',
+          id: 1,
+          type: { attr: 'text', value: '' },
+        },
+        {
+          name: '自定义字段2',
+          hasDemand: 0,
+          remark: '121212',
+          id: 2,
+          type: { attr: 'checkbox', value: ['1', '2'] },
+        },
+        {
+          name: '自定义字段3',
+          hasDemand: 0,
+          remark: '121212',
+          id: 4,
+          type: { attr: 'date', value: ['date'] },
+        },
+      ],
+    })
+  }
 
   const getProjectList = async (params: any) => {
     const result = await services.project.getProjectList(params)
@@ -62,6 +117,9 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
+    addStoryConfigField,
+    deleteStoryConfigField,
+    updateStoryConfigField,
   } = services.project
 
   return {
@@ -101,5 +159,11 @@ export default () => {
     setProjectInfo,
     setTagList,
     colorList,
+    getFieldList,
+    fieldList,
+    option,
+    addStoryConfigField,
+    deleteStoryConfigField,
+    updateStoryConfigField,
   }
 }

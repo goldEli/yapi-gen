@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import CommonModal from '@/components/CommonModal'
-import { Input, Space, Table } from 'antd'
+import { Input, message, Space, Table } from 'antd'
 import ChooseColor from '../../components/ChooseColor'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
@@ -58,7 +58,7 @@ const data = [
     remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
     endStatus: false,
     startStatus: true,
-    id: 0,
+    id: 9,
     hasDemand: 3,
     hasCategory: [
       {
@@ -141,7 +141,8 @@ interface AddActiveWrapProps {
 
 const AddActiveWrap = (props: AddActiveWrapProps) => {
   const [value, setValue] = useState<any>('')
-  const [normalColor, setNormalColor] = useState<any>('#969799')
+  const [errorState, setErrorState] = useState(false)
+  const [normalColor, setNormalColor] = useState<any>()
 
   useEffect(() => {
     if (props?.item?.id) {
@@ -150,21 +151,37 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
     }
   }, [props?.item])
 
-  const onClose = () => {
-    setValue('')
-    setNormalColor('#969799')
+  const onReset = () => {
     props?.onClose?.()
+    setValue('')
+    setNormalColor('')
+    setErrorState(false)
+  }
+
+  const onClose = () => {
+    onReset()
   }
 
   const onConfirm = () => {
-    setValue('')
-    setNormalColor('#969799')
+    if (!value) {
+      setErrorState(true)
+      return
+    }
+    if (!normalColor) {
+      message.warning('请选择状态颜色！')
+      return
+    }
     props?.onConfirm?.({ name: value, color: normalColor })
-    props?.onClose?.()
+    onReset()
   }
 
   const onChangeValue = (val: string | undefined) => {
     setNormalColor(val)
+  }
+
+  const onChangeInpValue = (val: any) => {
+    setValue(val)
+    setErrorState(false)
   }
 
   return (
@@ -179,10 +196,11 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         style={{
           width: 196,
           margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
+          border: errorState ? '1px solid #FF5C5E' : '1px solid #EBEDF0',
         }}
         placeholder="请输入状态名称"
         allowClear
-        onChange={e => setValue(e.target.value)}
+        onChange={e => onChangeInpValue(e.target.value)}
         value={value}
       />
       <ChooseColor

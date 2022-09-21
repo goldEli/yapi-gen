@@ -66,6 +66,7 @@ const urls = {
   getMineCreacteList: '/b/user/create/story',
   getPriOrStu: '/b/project/getconfig',
   addQuicklyCreate: '/b/user/fast/create',
+  storyConfigField: '/b/project/story_config/field',
 }
 
 export default urls

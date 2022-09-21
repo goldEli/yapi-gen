@@ -326,3 +326,44 @@ export const setPermission: any = async (params: any) => {
     project_id: params.projectId,
   })
 }
+
+export const storyConfigField: any = async (params: any) => {
+  const response: any = await http.get<any>('storyConfigField', {
+    project_id: params.projectId,
+  })
+
+  return {
+    list: response.data.map((i: any) => ({
+      name: i.title,
+      hasDemand: i.use_custom_field_count,
+      type: i.field_content,
+      id: i.id,
+    })),
+  }
+}
+
+export const addStoryConfigField: any = async (params: any) => {
+  const response = await http.post<any>('storyConfigField', {
+    project_id: params.projectId,
+    name: params.name,
+    remarks: params.remarks,
+    content: params.content,
+  })
+  return response
+}
+
+export const deleteStoryConfigField: any = async (params: any) => {
+  await http.delete<any>(`/b/project/story_config/field/${params.id}`, {
+    project_id: params.projectId,
+  })
+}
+
+export const updateStoryConfigField: any = async (params: any) => {
+  await http.put<any>(`/b/project/story_config/field/${params.id}`, {
+    project_id: params.projectId,
+    name: params.name,
+    remarks: params.remarks,
+    content: params.content,
+    id: params.id,
+  })
+}

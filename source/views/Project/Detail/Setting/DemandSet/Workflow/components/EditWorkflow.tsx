@@ -117,6 +117,7 @@ const EditWorkflow = (props: EditorProps) => {
           <Input.TextArea
             autoSize={{ minRows: 5, maxRows: 5 }}
             placeholder="请输入状态说明"
+            maxLength={200}
           />
         </Form.Item>
         <Form.Item label="选择颜色" name="color">

@@ -4,7 +4,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Form, Input, Select, Space } from 'antd'
+import { Checkbox, Form, Input, message, Select, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useMemo, useState } from 'react'
@@ -15,6 +15,10 @@ import {
   SortableElement as sortableElement,
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
+import { useModel } from '@/models'
+import { getParamsData } from '@/tools'
+import { useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -75,17 +79,6 @@ interface Props {
   onUpdate(): void
 }
 
-const option = [
-  { label: '单行文本', value: '1', type: 'input' },
-  { label: '多行文本', value: '2', type: 'textArea' },
-  { label: '单选下拉列表', value: '3', type: 'select' },
-  { label: '多选下拉列表', value: '4', type: 'multiple' },
-  { label: '复选框', value: '5', type: 'checkbox' },
-  { label: '单选框', value: '6', type: 'radio' },
-  { label: '日期', value: '7', type: 'time' },
-  { label: '数值型', value: '8', type: 'number' },
-]
-
 const DragHandle = sortableHandle(() => (
   <IconFont
     type="move"
@@ -98,12 +91,18 @@ const DragHandle = sortableHandle(() => (
 ))
 
 // 拖拽容器
-const SortContainer = sortableContainer((props: any) => <ul className="flex flex1" {...props} />)
+const SortContainer = sortableContainer<any>((props: any) => <ul className="flex flex1" {...props} />)
 
 // 拖拽元素
-const SortItemLi = sortableElement((props: any) => <li className="flex" {...props} />)
+const SortItemLi = sortableElement<any>((props: any) => <li className="flex" {...props} />)
 
 const EditFiled = (props: Props) => {
+  const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { option, updateStoryConfigField, addStoryConfigField }
+    = useModel('project')
+  const [checked, setChecked] = useState(false)
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
   const [row, setRow] = useState([
@@ -111,27 +110,97 @@ const EditFiled = (props: Props) => {
     { value: '', key: `${random() + 100}_${new Date()}` },
   ])
 
-  const onReset = () => {
-    form.resetFields()
-    setValue('')
-    setRow([
-      { value: '', key: `${random()}_${new Date()}` },
-      { value: '', key: `${random() + 100}_${new Date()}` },
-    ])
-  }
+  useEffect(() => {
+    if (props?.item?.id) {
+      form.setFieldsValue(props?.item)
+      setValue(props?.item?.type)
+      if (['3', '4', '5', '6'].includes(props?.item?.type)) {
+        const values = props?.item?.values?.map((i: any) => ({
+          value: i,
+          key: `${random() + Number(i) * 10}_${new Date()}`,
+        }))
+        setRow(values)
+      } else if (props?.item?.type === '7') {
+        setChecked(props?.item?.values[0] === 'datetime')
+      } else if (props?.item?.type === '8') {
+        setChecked(props?.item?.values[0] === 'integer')
+      }
+    }
+  }, [props?.item])
 
-  const onClose = () => {
+  const onReset = () => {
     props?.onClose()
     setTimeout(() => {
-      onReset()
+      form.resetFields()
+      setValue('')
+      setChecked(false)
+      setRow([
+        { value: '', key: `${random()}_${new Date()}` },
+        { value: '', key: `${random() + 100}_${new Date()}` },
+      ])
     }, 100)
   }
 
-  const onConfirm = () => {
-    form.validateFields()
+  const onClose = () => {
+    onReset()
+  }
 
-    // 点击保存后
-    // console.log(row)
+  const onConfirm = async () => {
+    await form.validateFields()
+    const selObj = option?.filter(
+      i => i.value === form.getFieldValue('type'),
+    )[0]
+    let contentValue
+
+    if (['1', '2'].includes(selObj?.value)) {
+
+      // 文本
+      contentValue = ''
+    } else if (['3', '4', '5', '6'].includes(selObj?.value)) {
+
+      // 下拉
+      contentValue = row.map(i => i.value)
+    } else if (selObj?.value === '7') {
+
+      // 时间
+      contentValue = checked ? ['datetime'] : ['date']
+    } else if (selObj?.value === '8') {
+
+      // 整数
+      contentValue = checked ? ['integer'] : ['number']
+    }
+
+    const obj: any = {
+      projectId: paramsData.id,
+      name: form.getFieldValue('name'),
+      remark: form.getFieldValue('remark'),
+      content: {
+        attr: selObj.type,
+        value: contentValue,
+      },
+    }
+
+    if (props?.item?.id) {
+      try {
+        obj.id = props?.item?.id
+        await updateStoryConfigField(obj)
+        message.success(t('common.editSuccess'))
+      } catch (error) {
+
+        //
+      }
+    } else {
+      try {
+        await addStoryConfigField(obj)
+        message.success(t('common.createSuccess'))
+      } catch (error) {
+
+        //
+      }
+    }
+
+    onReset()
+    props?.onUpdate()
   }
 
   const onChangeValue = (e: any, idx: number) => {
@@ -205,8 +274,22 @@ const EditFiled = (props: Props) => {
           </div>
           {value && value !== '1' && value !== '2' ? (
             <ChooseWrap>
-              {value === '7' && <Checkbox>包含时分</Checkbox>}
-              {value === '8' && <Checkbox>仅为整数</Checkbox>}
+              {value === '7' && (
+                <Checkbox
+                  checked={checked}
+                  onChange={e => setChecked(e.target.checked)}
+                >
+                  包含时分
+                </Checkbox>
+              )}
+              {value === '8' && (
+                <Checkbox
+                  checked={checked}
+                  onChange={e => setChecked(e.target.checked)}
+                >
+                  仅为整数
+                </Checkbox>
+              )}
               {value !== '8' && value !== '7' && (
                 <OptionsWrap>
                   <AddWrap
@@ -219,35 +302,33 @@ const EditFiled = (props: Props) => {
                     <IconFont type="plus" />
                     <span>添加选项</span>
                   </AddWrap>
-                  {/* <SortContainer
+                  <SortContainer
                     useDragHandle
-                    onSortEnd={values => onSortEnd(values)}
-                  > */}
-                  {row.map((_i: any, idx: number) => (
-
-                    // <SortItemLi key={_i.key} index={idx}>
-                    <OptionsItemWrap key={_i.key}>
-                      <DragHandle />
-                      <Input
-                        defaultValue={row[idx].value}
-                        style={{ width: 276 }}
-                        placeholder="请输入参数值"
-                        onChange={e => onChangeValue(e, idx)}
-                      />
-                      <IconFont
-                        type="close"
-                        style={{
-                          fontSize: 16,
-                          cursor: 'pointer',
-                          color: '#969799',
-                        }}
-                        onClick={() => onDelRow(_i.key)}
-                      />
-                    </OptionsItemWrap>
-
-                    // </SortItemLi>
-                  ))}
-                  {/* </SortContainer> */}
+                    onSortEnd={(values: any) => onSortEnd(values)}
+                  >
+                    {row.map((_i: any, idx: number) => (
+                      <SortItemLi key={_i.key} index={idx}>
+                        <OptionsItemWrap key={_i.key}>
+                          <DragHandle />
+                          <Input
+                            defaultValue={row[idx].value}
+                            style={{ width: 276 }}
+                            placeholder="请输入参数值"
+                            onChange={e => onChangeValue(e, idx)}
+                          />
+                          <IconFont
+                            type="close"
+                            style={{
+                              fontSize: 16,
+                              cursor: 'pointer',
+                              color: '#969799',
+                            }}
+                            onClick={() => onDelRow(_i.key)}
+                          />
+                        </OptionsItemWrap>
+                      </SortItemLi>
+                    ))}
+                  </SortContainer>
                 </OptionsWrap>
               )}
             </ChooseWrap>

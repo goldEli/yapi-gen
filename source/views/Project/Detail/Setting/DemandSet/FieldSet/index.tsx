@@ -1,3 +1,5 @@
+/* eslint-disable multiline-ternary */
+/* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable new-cap */
@@ -8,14 +10,15 @@ import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { Divider, Space, Table } from 'antd'
-import { useState } from 'react'
+import { Divider, message, Space, Spin, Table } from 'antd'
+import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditFiled from './components/EditField'
+import NoData from '@/components/NoData'
 
 const Wrap = styled.div({
   padding: 16,
@@ -113,21 +116,31 @@ const NewSort = (sortProps: any) => {
 
 const FieldSet = () => {
   const [t] = useTranslation()
+  const { getFieldList, fieldList, option, deleteStoryConfigField }
+    = useModel('project')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isSpinning, setIsSpinning] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [dataList, setDataList] = useState({
-    list: [
-      { name: '自定义', type: '单行文本', id: 3, hasDemand: 2 },
-      { name: '自定义', type: '多行文本', id: 1, hasDemand: 0 },
-      { name: '自定义', type: '单选下拉列表', id: 2, hasDemand: 2 },
-    ],
-  })
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+
+  const getList = async () => {
+    setIsSpinning(true)
+    await getFieldList({
+      projectId: paramsData.id,
+    })
+    setIsSpinning(false)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   const onUpdateOrderKey = (key: any, val: any) => {
 
-    //
+    // 排序
   }
 
   const onAddClick = () => {
@@ -141,13 +154,28 @@ const FieldSet = () => {
   }
 
   const onEditClick = (row: any) => {
-    setOperationObj(row)
+    const obj = Object.assign({}, row)
+    obj.values = obj.type?.value
+    obj.type = option?.filter(i => i.type === obj.type.attr)[0]?.value
+
+    setOperationObj(obj)
     setIsVisible(true)
   }
 
   const onDelConfirm = async () => {
+    try {
+      await deleteStoryConfigField({
+        id: operationObj.id,
+        projectId: paramsData.id,
+      })
+      setIsDelVisible(false)
+      setOperationObj({})
+      message.success(t('common.deleteSuccess'))
+      getList()
+    } catch (error) {
 
-    // 调用删除接口
+      //
+    }
   }
 
   const columns = [
@@ -182,7 +210,11 @@ const FieldSet = () => {
       dataIndex: 'type',
       width: 240,
       render: (text: any) => {
-        return <div style={{ color: '#323233', fontSize: 14 }}>{text}</div>
+        return (
+          <div style={{ color: '#323233', fontSize: 14 }}>
+            {option?.filter(i => i.type === text?.attr)[0]?.label}
+          </div>
+        )
       },
     },
     {
@@ -211,8 +243,7 @@ const FieldSet = () => {
   ]
 
   const onUpdate = () => {
-
-    // 编辑或添加成功后更新列表
+    getList()
   }
 
   return (
@@ -250,13 +281,20 @@ const FieldSet = () => {
           </div>
         </ItemWrap>
         <TableWrap>
-          <Table
-            rowKey="id"
-            pagination={false}
-            columns={columns}
-            dataSource={dataList?.list}
-            sticky
-          />
+          <Spin spinning={isSpinning}>
+            {!!fieldList?.list
+              && (fieldList?.list?.length > 0 ? (
+                <Table
+                  rowKey="id"
+                  pagination={false}
+                  columns={columns}
+                  dataSource={fieldList?.list}
+                  sticky
+                />
+              )
+                : <NoData />
+              )}
+          </Spin>
         </TableWrap>
       </ContentWrap>
     </Wrap>
