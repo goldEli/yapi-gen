@@ -1,12 +1,15 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
-import { Input, Form, Switch, Space } from 'antd'
+import { Input, Form, Switch, Space, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import ChooseColor from '../../components/ChooseColor'
 import { useModel } from '@/models'
 import { ViewWrap } from '@/components/StyleCommon'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -35,26 +38,43 @@ interface EditorProps {
   isVisible: boolean
   item?: any
   onClose(): void
-  onConfirm(data: any): void
-  category?: any[]
+  onUpdate(): void
 }
 
 const EditWorkflow = (props: EditorProps) => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
   const [form] = Form.useForm()
+  const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
   const [normalColor, setNormalColor] = useState<any>('')
-  const { colorList } = useModel('project')
+  const { colorList, updateStoryConfigWorkflow } = useModel('project')
 
   useEffect(() => {
     setNormalColor(props?.item?.color)
     setName(props?.item?.name)
     form.setFieldsValue(props?.item)
+    setStatus(form.getFieldValue('endStatus'))
   }, [props?.item])
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
+    await form.validateFields()
+    const params = form.getFieldsValue()
+    params.projectId = paramsData.id
+    params.id = props?.item?.id
 
-    // console.log(form.getFieldsValue(), 'form.getFieldsValue()')
-    props.onConfirm(form.getFieldsValue())
+    try {
+      await updateStoryConfigWorkflow(params)
+      message.success('编辑成功')
+      props?.onClose()
+      props?.onUpdate()
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
+    } catch (error) {
+
+      //
+    }
   }
 
   const onClose = () => {
@@ -62,7 +82,8 @@ const EditWorkflow = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('#969799')
+      setNormalColor('')
+      setStatus(false)
     }, 100)
   }
 
@@ -72,6 +93,15 @@ const EditWorkflow = (props: EditorProps) => {
       color: val,
     })
   }
+
+  const onChangeStatus = (checked: any) => {
+    if (props?.item?.startStatus && checked) {
+      message.warning('起始状态与结束状态不能同时存在')
+      return
+    }
+    setStatus(checked)
+  }
+
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -80,24 +110,28 @@ const EditWorkflow = (props: EditorProps) => {
       onConfirm={onConfirm}
       confirmText="创建"
     >
-      <div style={{ color: '#323233', fontSize: 14 }}>
-        该状态已存在于需求类别中
-      </div>
-      <Space
-        size={8}
-        style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
-      >
-        {props?.category?.map(i => (
-          <CategoryWrap
-            style={{ margin: 0, marginTop: 8 }}
-            color={i.color}
-            bgColor={colorList?.filter(k => k.key === i.color)[0]?.bgColor}
-            key={i.id}
+      {props?.item?.categorys?.length && (
+        <>
+          <div style={{ color: '#323233', fontSize: 14 }}>
+            该状态已存在于需求类别中
+          </div>
+          <Space
+            size={8}
+            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
           >
-            {i.name}
-          </CategoryWrap>
-        ))}
-      </Space>
+            {props?.item?.categorys?.map((i: any) => (
+              <CategoryWrap
+                style={{ margin: 0, marginTop: 8 }}
+                color={i.color}
+                bgColor={colorList?.filter(k => k.key === i.color)[0]?.bgColor}
+                key={i.id}
+              >
+                {i.name}
+              </CategoryWrap>
+            ))}
+          </Space>
+        </>
+      )}
       <FormWrap form={form} layout="vertical">
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Form.Item label="状态名称" name="name">
@@ -113,7 +147,7 @@ const EditWorkflow = (props: EditorProps) => {
             状态名称是显示在页面上的名字，最多输入28个字符。
           </span>
         </div>
-        <Form.Item label="状态说明" name="remark">
+        <Form.Item label="状态说明" name="info">
           <Input.TextArea
             autoSize={{ minRows: 5, maxRows: 5 }}
             placeholder="请输入状态说明"
@@ -133,7 +167,8 @@ const EditWorkflow = (props: EditorProps) => {
           <Switch
             checkedChildren="是"
             unCheckedChildren="否"
-            defaultChecked={props?.item?.endStatus}
+            checked={status}
+            onChange={checked => onChangeStatus(checked)}
           />
         </Form.Item>
       </FormWrap>

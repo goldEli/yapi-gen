@@ -21,6 +21,9 @@ export default () => {
   })
   const [categoryList, setCategoryList] = useState<any>([])
   const [statusWorkList, setStatusWorkList] = useState<any>([])
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -49,88 +52,20 @@ export default () => {
     { label: '数值型', value: '8', type: 'number' },
   ]
 
-  const getStatusList = async (params: any) => {
+  const getWorkflowList = async (params: any) => {
+    const result = await services.project.getWorkflowList(params)
+    setWorkList(result)
+    return result
+  }
 
-    // const result = await services.project.storyConfigStatusList(params)
-    // setStatusWorkList(result)
-    setStatusWorkList({
-      list: [
-        {
-          name: '实现中',
-          color: '#43BA9A',
-          isCheck: 1,
-          id: 1,
-          deleteData: {},
-          categoryName: '软件需求',
-        },
-        {
-          name: '开发需求',
-          color: '#43BA9A',
-          isCheck: 2,
-          id: 2,
-          deleteData: {},
-          categoryName: '软件需求',
-        },
-        {
-          name: '美术组的修改图片需求美术组的修改图片需求',
-          color: '#FA9746',
-          isCheck: 1,
-          id: 3,
-          deleteData: {},
-          categoryName: '软件需求',
-        },
-        {
-          name: '软件需求',
-          color: '#43BA9A',
-          isCheck: 1,
-          id: 4,
-          deleteData: {},
-          categoryName: '软件需求',
-        },
-      ],
-    })
+  const getStatusList = async (params: any) => {
+    const result = await services.project.storyConfigStatusList(params)
+    setStatusWorkList(result)
   }
 
   const getCategoryList = async (params: any) => {
     const result = await services.project.storyConfigCategoryList(params)
     setCategoryList(result)
-
-    // setCategoryList({
-    //   list: [
-    //     {
-    //       name: '软件需求',
-    //       color: '#43BA9A',
-    //       isCheck: 1,
-    //       id: 1,
-    //       hasDemand: 2,
-    //       statusCount: 1,
-    //     },
-    //     {
-    //       name: '开发需求',
-    //       color: '#43BA9A',
-    //       isCheck: 2,
-    //       id: 2,
-    //       hasDemand: 2,
-    //       statusCount: 0,
-    //     },
-    //     {
-    //       name: '美术组的修改图片需求美术组的修改图片需求',
-    //       color: '#FA9746',
-    //       isCheck: 1,
-    //       id: 3,
-    //       hasDemand: 0,
-    //       statusCount: 2,
-    //     },
-    //     {
-    //       name: '软件需求',
-    //       color: '#43BA9A',
-    //       isCheck: 1,
-    //       id: 4,
-    //       hasDemand: 2,
-    //       statusCount: 2,
-    //     },
-    //   ],
-    // })
   }
 
   const getFieldList = async (params: any) => {
@@ -188,6 +123,16 @@ export default () => {
     deleteStoryConfigCategory,
     changeCategoryStatus,
     changeStoryConfigCategory,
+    addStoryConfigWorkflow,
+    updateStoryConfigWorkflow,
+    deleteStoryConfigWorkflow,
+    sortchangeWorkflow,
+    saveWorkflowStatus,
+    getWorkflowInfo,
+    saveWorkflowConfig,
+    addStoryConfigStatus,
+    deleteStoryConfigStatus,
+    updateStoryConfigStatus,
   } = services.project
 
   return {
@@ -242,5 +187,18 @@ export default () => {
     changeStoryConfigCategory,
     getStatusList,
     statusWorkList,
+    getWorkflowList,
+    addStoryConfigWorkflow,
+    updateStoryConfigWorkflow,
+    deleteStoryConfigWorkflow,
+    sortchangeWorkflow,
+    saveWorkflowStatus,
+    getWorkflowInfo,
+    saveWorkflowConfig,
+    addStoryConfigStatus,
+    deleteStoryConfigStatus,
+    updateStoryConfigStatus,
+    workList,
+    setWorkList,
   }
 }

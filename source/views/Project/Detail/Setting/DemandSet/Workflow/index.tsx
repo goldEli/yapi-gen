@@ -8,9 +8,8 @@ import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Divider, Space } from 'antd'
-import { useState } from 'react'
+import { Divider } from 'antd'
+import { createRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
@@ -116,11 +115,13 @@ const Workflow = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
+  const ChildRef: any = createRef()
 
-  const onSaveNext = () => {
-    setStep(2)
-
-    // 保存第一步数据
+  const onChangeStep = (val: number) => {
+    setStep(val)
+    if (val === 2) {
+      ChildRef?.current?.onSave()
+    }
   }
 
   return (
@@ -140,7 +141,11 @@ const Workflow = () => {
           </CategoryWrap>
         </LabelWrap>
         <StepWrap>
-          <StepBoxWrap active={step === 1}>
+          <StepBoxWrap
+            style={{ cursor: 'pointer' }}
+            active={step === 1}
+            onClick={() => onChangeStep(1)}
+          >
             <div className="circle">1</div>
             <span>状态定义</span>
           </StepBoxWrap>
@@ -152,18 +157,19 @@ const Workflow = () => {
               margin: '0 8px',
             }}
           />
-          <StepBoxWrap active={step === 2}>
+          <StepBoxWrap
+            style={{ cursor: 'pointer' }}
+            active={step === 2}
+            onClick={() => onChangeStep(2)}
+          >
             <div className="circle">2</div>
             <span>流转设置</span>
           </StepBoxWrap>
         </StepWrap>
-        {step === 1 ? <StepPageOne /> : <StepPageTwo />}
-        <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
-          <Button type="primary" onClick={onSaveNext}>
-            {step === 1 ? '保存&下一步' : '保存'}
-          </Button>
-          <Button>取消</Button>
-        </Space>
+        {step === 1
+          ? <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
+          : <StepPageTwo />
+        }
       </ContentWrap>
     </Wrap>
   )

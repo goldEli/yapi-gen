@@ -1,19 +1,33 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import CommonModal from '@/components/CommonModal'
-import { Input, message, Space, Table } from 'antd'
+import { Form, Input, message, Space, Spin, Table, Select } from 'antd'
 import ChooseColor from '../../components/ChooseColor'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
-import { ViewWrap } from '@/components/StyleCommon'
+import { CategoryWrap, ViewWrap } from '@/components/StyleCommon'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
+import NoData from '@/components/NoData'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
-const TableWrap = styled(Table)({
-  maxHeight: 400,
+const TableWrap = styled.div({
+  height: 400,
   overflowY: 'auto',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
+const TableWrapBox = styled(Table)({
   '.ant-checkbox-wrapper': {
     marginLeft: 8,
   },
@@ -50,73 +64,18 @@ const TextWrap = styled.div({
   cursor: 'pointer',
 })
 
-const data = [
-  {
-    key: '1',
-    name: '实现中',
-    color: '#43BA9A',
-    remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
-    endStatus: false,
-    startStatus: true,
-    id: 9,
-    hasDemand: 3,
-    hasCategory: [
-      {
-        name: '软件需求',
-        color: '#43BA9A',
-        isDisable: true,
-        id: 1,
-        hasDemand: 2,
-      },
-      {
-        name: '开发需求',
-        color: '#43BA9A',
-        isDisable: true,
-        id: 2,
-        hasDemand: 2,
-      },
-    ],
-  },
-  {
-    key: '2',
-    name: '已结束',
-    color: '#969799',
-    remark: '说明文字',
-    endStatus: true,
-    startStatus: false,
-    id: 1,
-    hasDemand: 0,
-    hasCategory: [
-      {
-        name: '软件需求',
-        color: '#43BA9A',
-        isDisable: true,
-        id: 1,
-        hasDemand: 2,
-      },
-    ],
-  },
-  {
-    key: '3',
-    name: '规划中',
-    color: '#FA9746',
-    remark: '说明文字内容说',
-    endStatus: true,
-    startStatus: false,
-    id: 2,
-    hasDemand: 3,
-    hasCategory: [
-      {
-        name: '美术组',
-        color: '#FA9746',
-        isDisable: true,
-        id: 1,
-        hasDemand: 2,
-      },
-    ],
-  },
-]
+const HasDemandText = styled.div({
+  marginTop: 8,
+  color: '#FF5C5E',
+  fontWeight: 400,
+  fontSize: 12,
+})
 
+const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '24px 0 0 0',
+  },
+})
 interface Props {
   isVisible: boolean
   onUpdate(): void
@@ -248,13 +207,61 @@ const ChangeTableName = (props: ChangeTableNameProps) => {
 const AddWorkflow = (props: Props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [isAdd, setIsAdd] = useState(false)
-  const [dataList, setDataList] = useState(data)
   const [operationObj, setOperationObj] = useState<any>({})
+  const [operationDelObj, setOperationDelObj] = useState<any>({})
+  const {
+    getStatusList,
+    statusWorkList,
+    addStoryConfigStatus,
+    updateStoryConfigStatus,
+    deleteStoryConfigStatus,
+    colorList,
+    addStoryConfigWorkflow,
+  } = useModel('project')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { categoryItem } = paramsData
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [isDelVisible, setIsDelVisible] = useState(false)
+  const [isHasDelete, setIsHasDelete] = useState(false)
+  const [form] = Form.useForm()
 
-  const onConfirm = () => {
+  useEffect(() => {
+    const arr = statusWorkList?.list?.filter((i: any) => i.isCheck)
+    setSelectedRowKeys(arr?.map((k: any) => k.id))
+  }, [statusWorkList])
 
-    // console.log(form.getFieldsValue(), 'form.getFieldsValue()')
-    props?.onUpdate?.()
+  const getList = async () => {
+    setIsSpinning(true)
+    await getStatusList({
+      projectId: paramsData.id,
+      categoryId: categoryItem?.id,
+    })
+    setIsSpinning(false)
+  }
+
+  useEffect(() => {
+    if (props?.isVisible) {
+      getList()
+    }
+  }, [props?.isVisible])
+
+  const onConfirm = async () => {
+    const obj = {
+      projectId: paramsData.id,
+      categoryId: categoryItem?.id,
+      ids: selectedRowKeys,
+    }
+    try {
+      await addStoryConfigWorkflow(obj)
+      message.success('添加成功')
+      setSelectedRowKeys([])
+      props?.onClose()
+      props?.onUpdate()
+    } catch (error) {
+
+      //
+    }
   }
 
   const onClose = () => {
@@ -263,37 +270,96 @@ const AddWorkflow = (props: Props) => {
     setSelectedRowKeys([])
   }
 
-  const onAddConfirm = (obj: any) => {
+  const onAddConfirm = async (obj: any) => {
+    obj.projectId = paramsData.id
+    try {
+      await addStoryConfigStatus(obj)
+      message.success('添加成功')
+      getList()
+    } catch (error) {
 
-    // console.log(obj, '====')
-    // 调用添加状态的接口
+      //
+    }
   }
 
-  const onChangeName = (obj: any) => {
-    const idx = dataList.findIndex(i => i.id === operationObj.id)
-    const arr = dataList
-    arr[idx].color = obj.color
-    arr[idx].name = obj.name
-    setDataList(arr)
-    setOperationObj({})
+  const onChangeName = async (obj: any) => {
+    obj.projectId = paramsData.id
+    obj.id = operationObj.id
+    try {
+      await updateStoryConfigStatus(obj)
+      message.success('编辑成功')
+      setOperationObj({})
+      getList()
+      props?.onUpdate()
+    } catch (error) {
 
-    // 调用编辑状态的接口
+      //
+    }
   }
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-
-    // console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys)
   }
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
+  const onAddDel = async (row: any) => {
+    setOperationDelObj(row)
+    if (row.deleteData?.story_count) {
+      setIsHasDelete(true)
+    } else {
+      setIsDelVisible(true)
+    }
   }
 
-  const onAddDel = (row: any) => {
-    const arr = dataList.filter(i => i.id !== row.id)
-    setDataList(arr)
+  const onCloseDel = () => {
+    setOperationDelObj({})
+    setIsDelVisible(false)
+  }
+
+  const onDeleteConfirm = async () => {
+    const obj = {
+      projectId: paramsData.id,
+      id: operationDelObj?.id,
+    }
+    try {
+      await deleteStoryConfigStatus(obj)
+      message.success('删除成功')
+      getList()
+      onCloseDel()
+      props?.onUpdate()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onCloseHasDelete = () => {
+    setOperationDelObj({})
+    setIsHasDelete(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
+
+  const onConfirmHasDelete = async () => {
+    const arr = Object.keys(form.getFieldsValue())?.map((i: any) => ({
+      category_id: Number(String(i).split('_')[0]),
+      status_id: form.getFieldValue(i),
+    }))
+    const obj = {
+      projectId: paramsData.id,
+      id: operationDelObj?.id,
+      list: arr,
+    }
+    try {
+      await deleteStoryConfigStatus(obj)
+      message.success('删除成功')
+      getList()
+      onCloseHasDelete()
+      props?.onUpdate()
+    } catch (error) {
+
+      //
+    }
   }
 
   const onAddEdit = (row: any) => {
@@ -318,16 +384,13 @@ const AddWorkflow = (props: Props) => {
     {
       width: 314,
       title: '',
-      dataIndex: 'hasCategory',
+      dataIndex: 'categoryName',
       render: (text: any, record: any) => (
         <>
           {operationObj?.id === record.id
             ? ''
-            : (
-                <OmitText width={300}>
-                  {text ? text.map((i: any) => i.name).join('、') : '--'}
-                </OmitText>
-              )}
+            : <OmitText width={300}>{text || '--'}</OmitText>
+          }
         </>
       ),
     },
@@ -359,40 +422,113 @@ const AddWorkflow = (props: Props) => {
     },
   ]
 
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  }
+
   return (
-    <CommonModal
-      isVisible={props.isVisible}
-      title="添加状态"
-      onClose={onClose}
-      onConfirm={onConfirm}
-      width={784}
-    >
-      <TableTitle>
-        <span style={{ width: '40%' }}>状态名称</span>
-        <span style={{ width: '45%' }}>应用的需求类别</span>
-        <span style={{ width: '15%' }}>操作</span>
-      </TableTitle>
-      {isAdd ? (
-        <AddActiveWrap
-          hasMargin
-          onClose={() => setIsAdd(false)}
-          onConfirm={obj => onAddConfirm(obj)}
+    <>
+      {isDelVisible && (
+        <DeleteConfirm
+          text="确认删除需求状态？"
+          isVisible={isDelVisible}
+          onChangeVisible={onCloseDel}
+          onConfirm={onDeleteConfirm}
         />
-      ) : null}
-      {!isAdd && (
-        <div onClick={() => setIsAdd(true)}>
-          <AddWrap />
-        </div>
       )}
-      <TableWrap
-        rowSelection={rowSelection}
-        dataSource={dataList}
-        columns={columns}
-        showHeader={false}
-        pagination={false}
-        rowKey="id"
-      />
-    </CommonModal>
+      {isHasDelete && (
+        <CommonModal
+          isVisible={isHasDelete}
+          onClose={onCloseHasDelete}
+          title="新状态分配"
+          onConfirm={onConfirmHasDelete}
+        >
+          <HasDemandText>{`共有${operationDelObj?.deleteData?.story_count}个需求当前处于【${operationDelObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
+          <FormWrap form={form} layout="vertical">
+            {operationDelObj?.deleteData?.list?.map((i: any) => (
+              <Form.Item
+                name={`${i.category_id}_name`}
+                key={i.category_id}
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <CategoryWrap
+                      style={{ marginRight: 8, marginLeft: 0 }}
+                      color={i.category_color}
+                      bgColor={
+                        colorList?.filter(k => k.key === i.category_color)[0]
+                          ?.bgColor
+                      }
+                    >
+                      {i.category_name}
+                    </CategoryWrap>
+                    指定新状态
+                  </div>
+                }
+              >
+                <Select
+                  placeholder="请选择"
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={statusWorkList?.list
+                    ?.filter((j: any) => j.id !== operationDelObj?.id)
+                    ?.map((k: any) => ({
+                      label: k.name,
+                      value: k.id,
+                    }))}
+                />
+              </Form.Item>
+            ))}
+          </FormWrap>
+        </CommonModal>
+      )}
+      <CommonModal
+        isVisible={props.isVisible}
+        title="添加状态"
+        onClose={onClose}
+        onConfirm={onConfirm}
+        width={784}
+      >
+        <TableTitle>
+          <span style={{ width: '40%' }}>状态名称</span>
+          <span style={{ width: '45%' }}>应用的需求类别</span>
+          <span style={{ width: '15%' }}>操作</span>
+        </TableTitle>
+        {isAdd ? (
+          <AddActiveWrap
+            hasMargin
+            onClose={() => setIsAdd(false)}
+            onConfirm={obj => onAddConfirm(obj)}
+          />
+        ) : null}
+        {!isAdd && (
+          <div onClick={() => setIsAdd(true)}>
+            <AddWrap />
+          </div>
+        )}
+
+        <TableWrap>
+          <Spin spinning={isSpinning}>
+            {!!statusWorkList?.list
+              && (statusWorkList?.list?.length > 0 ? (
+                <TableWrapBox
+                  rowSelection={rowSelection}
+                  dataSource={statusWorkList?.list}
+                  columns={columns}
+                  showHeader={false}
+                  pagination={false}
+                  rowKey="id"
+                />
+              )
+                : <NoData />
+              )}
+          </Spin>
+        </TableWrap>
+      </CommonModal>
+    </>
   )
 }
 

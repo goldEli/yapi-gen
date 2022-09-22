@@ -373,6 +373,7 @@ export const updateStoryConfigField: any = async (params: any) => {
 export const storyConfigCategoryList: any = async (params: any) => {
   const response: any = await http.get<any>('getCategoryList', {
     project_id: params.projectId,
+    is_select: params.isSelect ? 1 : 2,
   })
 
   return {
@@ -422,17 +423,6 @@ export const deleteStoryConfigCategory: any = async (params: any) => {
   })
 }
 
-// ----------------------------
-
-export const changeStoryConfigCategory: any = async (params: any) => {
-  await http.post<any>('moveCategoryStory', {
-    status_id: params.statusId,
-    old_category_id: params?.oldId,
-    project_id: params.projectId,
-    new_category_id: params.newId,
-  })
-}
-
 export const storyConfigStatusList: any = async (params: any) => {
   const response: any = await http.get<any>('getStatusList', {
     search: {
@@ -467,10 +457,7 @@ export const addStoryConfigStatus: any = async (params: any) => {
 export const deleteStoryConfigStatus: any = async (params: any) => {
   await http.delete<any>(`/b/project/story_config/status/${params.id}`, {
     project_id: params.projectId,
-    list: {
-      category_id: params?.categoryId,
-      status_id: params?.statusId,
-    },
+    list: params.list,
   })
 }
 
@@ -494,7 +481,7 @@ export const getWorkflowList: any = async (params: any) => {
     list: response.data.map((i: any) => ({
       id: i.id,
       index: i.id,
-      remark: i.info,
+      info: i.info,
       categorys: i.categorys,
       startStatus: i.is_start === 1,
       endStatus: i.is_end === 1,
@@ -518,21 +505,18 @@ export const addStoryConfigWorkflow: any = async (params: any) => {
 export const updateStoryConfigWorkflow: any = async (params: any) => {
   await http.put<any>(`/b/project/story_config/workflow/${params.id}`, {
     color: params.color,
-    info: params?.remark,
+    info: params?.info,
     project_id: params.projectId,
     content: params.name,
-    is_end: params.endStatus,
-    is_start: params?.startStatus,
+    is_end: params.endStatus ? 1 : 2,
+    is_start: params?.startStatus ? 1 : 2,
   })
 }
 
 export const deleteStoryConfigWorkflow: any = async (params: any) => {
   await http.delete<any>(`/b/project/story_config/workflow/${params.id}`, {
     project_id: params.projectId,
-    item: {
-      category_id: params?.categoryId,
-      status_id: params?.statusId,
-    },
+    item: params.item,
   })
 }
 
@@ -551,6 +535,17 @@ export const saveWorkflowStatus: any = async (params: any) => {
   })
 }
 
+// ----------------------------
+
+export const changeStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('moveCategoryStory', {
+    status_id: params.statusId,
+    old_category_id: params?.oldId,
+    project_id: params.projectId,
+    new_category_id: params.newId,
+  })
+}
+
 export const getWorkflowInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getWorkflowInfo', {
     project_id: params.projectId,
@@ -559,7 +554,7 @@ export const getWorkflowInfo: any = async (params: any) => {
     category_status_to_id: params.toId,
   })
 
-  return response
+  return response.data
 }
 
 export const saveWorkflowConfig: any = async (params: any) => {

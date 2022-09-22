@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
+/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
+import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Input, Popover, Space, Timeline } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
@@ -16,6 +19,16 @@ const AddWrap = styled.div({
   cursor: 'pointer',
   borderRadius: 16,
   border: '1px dashed #969799',
+  '.icon': {
+    color: '#969799',
+    fontSize: 16,
+  },
+  '&: hover': {
+    border: '1px dashed #2877ff',
+    '.icon': {
+      color: '#2877ff!important',
+    },
+  },
 })
 
 const PersonItemWrap = styled.div({
@@ -70,7 +83,7 @@ const IconFontWrap = styled(IconFont)({
   top: -5,
 })
 
-const NewNameWrap = styled(NameWrap)({
+const NewNameWrap = styled.div({
   position: 'relative',
   overflow: 'inherit',
   '&: hover': {
@@ -80,35 +93,48 @@ const NewNameWrap = styled(NameWrap)({
   },
 })
 
+const IconfontCloseWrap = styled(IconFont)({
+  fontSize: 16,
+  color: '#969799',
+  cursor: 'pointer',
+  display: 'none',
+  marginLeft: 16,
+})
+
 const ItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
+  '&: hover': {
+    [IconfontCloseWrap.toString()]: {
+      display: 'block',
+    },
+  },
 })
 
-const personList = [
-  { name: '张三', id: 1 },
-  { name: '哈哈哈', id: 2 },
-  { name: '问问', id: 3 },
-  { name: '站和人', id: 4 },
-  { name: '里斯', id: 5 },
+const menuList = [
+  { name: '依次审核', value: 1 },
+  { name: '与逻辑审核', value: 2 },
+  { name: '或逻辑审核', value: 3 },
 ]
 
 interface ChoosePersonProps {
   onChangeValue(obj: any): void
   checkList?: any
+  checkedUser?: any
 }
 
 const ChoosePerson = (props: ChoosePersonProps) => {
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
+  const { memberList } = useModel('project')
 
   useEffect(() => {
     setArr(
-      personList?.filter(
-        (i: any) => !props.checkList?.find((k: any) => k.id === i.id),
-      ),
+      memberList
+        ?.filter((i: any) => !props.checkList?.find((k: any) => k.id === i.id))
+        ?.filter((i: any) => !props.checkedUser?.find((k: any) => k === i.id)),
     )
-  }, [personList, props.checkList])
+  }, [memberList, props.checkList, props?.checkedUser])
 
   return (
     <div style={{ padding: '16px 0', minWidth: 240 }}>
@@ -124,7 +150,25 @@ const ChoosePerson = (props: ChoosePersonProps) => {
           ?.filter((k: any) => k.name.includes(value))
           ?.map((i: any) => (
             <PersonItemWrap key={i.id} onClick={() => props?.onChangeValue(i)}>
-              <NameWrap style={{ margin: '0 8px 0 0' }}>张</NameWrap>
+              {i.avatar ? (
+                <img
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    marginRight: 8,
+                  }}
+                  src={i?.avatar}
+                  alt=""
+                />
+              ) : (
+                <NameWrap style={{ margin: '0 8px 0 0' }}>
+                  {String(
+                    i?.name?.substring(0, 1).trim()
+                      .slice(0, 1),
+                  ).toLocaleUpperCase()}
+                </NameWrap>
+              )}
               {i.name}
             </PersonItemWrap>
           ))}
@@ -133,10 +177,19 @@ const ChoosePerson = (props: ChoosePersonProps) => {
   )
 }
 
-const ExamineItem = (props: { onRef: any }) => {
+interface Props {
+  onRef: any
+  info: any
+  onDel(): void
+  onChangeList(obj: any): void
+  checkedUser?: any
+}
+
+const ExamineItem = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isShowSelect, setIsShowSelect] = useState(false)
   const [examineList, setExamineList] = useState<any>([])
+  const [normal, setNormal] = useState(1)
 
   const onReset = () => {
     setExamineList([])
@@ -151,12 +204,28 @@ const ExamineItem = (props: { onRef: any }) => {
   })
 
   const onAddPerson = (obj: any) => {
-    setExamineList([...examineList, ...[obj]])
+    const arr = [...examineList, ...[obj]]
+    setExamineList(arr)
+    props?.onChangeList({
+      operator: normal,
+      verify_users: arr?.map((i: any) => i.id),
+    })
   }
 
   const onDelCheckPerson = (id: any) => {
-    setExamineList(examineList?.filter((i: any) => i.id !== id))
+    const arr = examineList?.filter((i: any) => i.id !== id)
+    setExamineList(arr)
+    props?.onChangeList({
+      operator: normal,
+      verify_users: arr?.map((i: any) => i.id),
+    })
   }
+
+  const onChangeMenu = (val: any) => {
+    setNormal(val)
+    setIsShowSelect(false)
+  }
+
   return (
     <Timeline.Item>
       <ItemWrap>
@@ -169,9 +238,14 @@ const ExamineItem = (props: { onRef: any }) => {
           onVisibleChange={visible => setIsShowSelect(visible)}
           content={
             <MenuWrap>
-              <MenuItemWrap key={1}>依次审核</MenuItemWrap>
-              <MenuItemWrap key={2}>与逻辑审核</MenuItemWrap>
-              <MenuItemWrap key={3}>或逻辑审核</MenuItemWrap>
+              {menuList?.map((i: any) => (
+                <MenuItemWrap
+                  key={i.value}
+                  onClick={() => onChangeMenu(i.value)}
+                >
+                  {i.name}
+                </MenuItemWrap>
+              ))}
             </MenuWrap>
           }
           getPopupContainer={node => node}
@@ -189,7 +263,7 @@ const ExamineItem = (props: { onRef: any }) => {
                 color: isShowSelect ? '#2877ff' : '##323233',
               }}
             >
-              依次审核
+              {menuList?.filter((i: any) => i.value === normal)[0]?.name}
             </span>
             <IconFont
               style={{
@@ -200,6 +274,7 @@ const ExamineItem = (props: { onRef: any }) => {
             />
           </div>
         </Popover>
+        <IconfontCloseWrap type="close" onClick={props?.onDel} />
       </ItemWrap>
       <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
         <Space size={8}>
@@ -212,7 +287,19 @@ const ExamineItem = (props: { onRef: any }) => {
               }}
             >
               <NewNameWrap>
-                <span>张</span>
+                {i.avatar ? (
+                  <img
+                    style={{ width: 32, height: 32, borderRadius: 16 }}
+                    src={i.avatar}
+                  />
+                ) : (
+                  <NameWrap>
+                    {String(
+                      i?.name?.substring(0, 1).trim()
+                        .slice(0, 1),
+                    ).toLocaleUpperCase()}
+                  </NameWrap>
+                )}
                 <IconFontWrap
                   type="close-circle-fill"
                   onClick={() => onDelCheckPerson(i.id)}
@@ -234,6 +321,7 @@ const ExamineItem = (props: { onRef: any }) => {
             <ChoosePerson
               onChangeValue={obj => onAddPerson(obj)}
               checkList={examineList}
+              checkedUser={props?.checkedUser}
             />
           }
           getPopupContainer={node => node}
@@ -244,9 +332,9 @@ const ExamineItem = (props: { onRef: any }) => {
             }}
           >
             <IconFont
+              className="icon"
               type="plus"
               onClick={() => setIsOpen(true)}
-              style={{ color: '#969799', fontSize: 16 }}
             />
           </AddWrap>
         </Popover>

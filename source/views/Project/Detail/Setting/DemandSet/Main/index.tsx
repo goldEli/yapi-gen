@@ -170,14 +170,15 @@ const MoreWrap = (props: MoreWrapProps) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
 
-  useEffect(() => {
-    getStatusList({ projectId: paramsData.id, categoryId: props?.row?.id })
-  }, [])
-
   const onClickMenu = (type: string) => {
     setIsMoreVisible(false)
     if (type === 'delete' && props?.row?.hasDemand) {
       setIsHasDelete(true)
+      getStatusList({
+        projectId: paramsData.id,
+        categoryId: props?.row?.id,
+        isSelect: true,
+      })
     } else if (type === 'delete' && !props?.row?.hasDemand) {
       setIsDelete(true)
     } else {

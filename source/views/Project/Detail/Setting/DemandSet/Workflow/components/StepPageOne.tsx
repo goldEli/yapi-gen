@@ -1,13 +1,27 @@
+/* eslint-disable camelcase */
+/* eslint-disable complexity */
+/* eslint-disable no-undefined */
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { Form, Radio, Select, Space, Switch, Table, Tooltip } from 'antd'
+import {
+  Form,
+  Radio,
+  Select,
+  Space,
+  Spin,
+  Switch,
+  Table,
+  Tooltip,
+  message,
+} from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useImperativeHandle, useState } from 'react'
 import { OmitText } from '@star-yun/ui'
 import EditWorkflow from './EditWorkflow'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -23,11 +37,18 @@ import {
 } from 'react-sortable-hoc'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import NoData from '@/components/NoData'
 
 const TableWrap = styled.div({
   width: '100%',
-  maxHeight: 'calc(100% - 262px)',
+  height: 'calc(100% - 204px)',
   overflowY: 'auto',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '.ant-spin-nested-loading': {
+    width: '100%',
+  },
 })
 
 const FormWrap = styled(Form)({
@@ -43,75 +64,55 @@ const HasDemandText = styled.div({
   fontSize: 12,
 })
 
-const data = [
-  {
-    key: '1',
-    name: '实现中',
-    color: '#43BA9A',
-    remark: '说明文字内容说明文字内容说明文字内容说明文字内容说',
-    endStatus: false,
-    startStatus: true,
-    index: 0,
-    hasDemand: 3,
-  },
-  {
-    key: '2',
-    name: '已结束',
-    color: '#969799',
-    remark: '说明文字',
-    endStatus: true,
-    startStatus: false,
-    index: 1,
-    hasDemand: 0,
-  },
-  {
-    key: '3',
-    name: '规划中',
-    color: '#FA9746',
-    remark: '说明文字内容说',
-    endStatus: true,
-    startStatus: false,
-    index: 2,
-    hasDemand: 3,
-  },
-]
+interface Props {
+  onChangeStep(val: any): void
+  onRef: any
+}
 
-const categoryList = [
-  {
-    name: '软件需求',
-    color: '#43BA9A',
-    isDisable: true,
-    id: 1,
-    hasDemand: 2,
-  },
-  {
-    name: '开发需求',
-    color: '#43BA9A',
-    isDisable: true,
-    id: 2,
-    hasDemand: 2,
-  },
-]
-
-const StepPageOne = () => {
+const StepPageOne = (propsOne: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
-  const { colorList } = useModel('project')
+  const {
+    colorList,
+    getWorkflowList,
+    deleteStoryConfigWorkflow,
+    updateStoryConfigWorkflow,
+    sortchangeWorkflow,
+  } = useModel('project')
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [form] = Form.useForm()
-  const [dataSource, setDataSource] = useState(data)
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [dataSource, setDataSource] = useState<any>({
+    list: undefined,
+  })
+
+  const getList = async () => {
+    setIsSpinning(true)
+    const result = await getWorkflowList({
+      projectId: paramsData.id,
+      categoryId: categoryItem?.id,
+    })
+    setDataSource(result)
+    setIsSpinning(false)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   const onClickOperation = (row: any, type: string) => {
     setOperationObj(row)
     if (type === 'edit') {
       setIsVisible(true)
     } else {
-      Number(row.hasDemand) ? setIsHasDelete(true) : setIsDelVisible(true)
+      Number(row.deleteData?.story_count)
+        ? setIsHasDelete(true)
+        : setIsDelVisible(true)
     }
   }
 
@@ -120,18 +121,44 @@ const StepPageOne = () => {
   }
 
   const onConfirmHasDelete = async () => {
+    const obj = {
+      projectId: paramsData.id,
+      id: operationObj?.id,
+      item: {
+        status_id: form.getFieldValue('statusId'),
+        category_id: categoryItem?.id,
+      },
+    }
 
-    // 历史迁移确认
+    try {
+      await deleteStoryConfigWorkflow(obj)
+      message.success('删除成功')
+      getList()
+      setOperationObj({})
+      setIsHasDelete(false)
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
+    } catch (error) {
+
+      //
+    }
   }
 
-  const onDeleteConfirm = () => {
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteStoryConfigWorkflow({
+        projectId: paramsData.id,
+        id: operationObj?.id,
+      })
+      message.success('删除成功')
+      getList()
+      setOperationObj({})
+      setIsDelVisible(false)
+    } catch (error) {
 
-    // 删除确认
-  }
-
-  const onConfirm = (formData: any) => {
-
-    // 编辑确认
+      //
+    }
   }
 
   const onClose = () => {
@@ -139,15 +166,64 @@ const StepPageOne = () => {
   }
 
   const onUpdate = () => {
-
-    // 更新列表
+    getList()
   }
 
-  const DragHandle = sortableHandle(() => <IconFont type="move" />)
+  const onChangeListStatus = async (checked: any, row: any) => {
+    if (row.startStatus) {
+      message.warning('起始状态与结束状态不能同时存在')
+      return
+    }
+    const obj = {
+      projectId: paramsData.id,
+      id: row.id,
+      color: row.color,
+      info: row.info,
+      name: row.name,
+      endStatus: checked,
+      startStatus: row.startStatus,
+    }
+    try {
+      await updateStoryConfigWorkflow(obj)
+      message.success('修改成功')
+      getList()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onchangeRadio = async (e: any, row: any) => {
+    const obj = {
+      projectId: paramsData.id,
+      id: row.id,
+      color: row.color,
+      info: row.info,
+      name: row.name,
+      endStatus: row.endStatus,
+      startStatus: e.target.checked,
+    }
+    try {
+      await updateStoryConfigWorkflow(obj)
+      message.success('修改成功')
+      getList()
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const DragHandle = sortableHandle(() => (
+    <IconFont
+      type="move"
+      style={{ fontSize: 16, cursor: 'pointer', color: '#969799' }}
+    />
+  ))
 
   const SortableItem = sortableElement(
     (props: React.HTMLAttributes<HTMLTableRowElement>) => <tr {...props} />,
   )
+
   const SortableBody = sortableContainer(
     (props: React.HTMLAttributes<HTMLTableSectionElement>) => <tbody {...props} />
     ,
@@ -156,11 +232,11 @@ const StepPageOne = () => {
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
     if (oldIndex !== newIndex) {
       const newData = arrayMoveImmutable(
-        dataSource.slice(),
+        dataSource?.list?.slice(),
         oldIndex,
         newIndex,
       ).filter((el: any) => !!el)
-      setDataSource(newData)
+      setDataSource({ list: newData })
     }
   }
 
@@ -174,8 +250,8 @@ const StepPageOne = () => {
   )
 
   const DraggableBodyRow: React.FC<any> = ({ ...restProps }) => {
-    const index = dataSource.findIndex(
-      x => x.index === restProps['data-row-key'],
+    const index = dataSource?.list?.findIndex(
+      (x: any) => x.index === restProps['data-row-key'],
     )
     return <SortableItem index={index} {...restProps} />
   }
@@ -197,7 +273,7 @@ const StepPageOne = () => {
     {
       title: '状态说明',
       width: 400,
-      dataIndex: 'remark',
+      dataIndex: 'info',
       render: (text: any) => <OmitText width={380}>{text}</OmitText>,
     },
     {
@@ -214,7 +290,8 @@ const StepPageOne = () => {
         </div>
       ),
       dataIndex: 'startStatus',
-      render: (text: any) => <Radio defaultChecked={text} />,
+      render: (text: any, record: any) => <Radio checked={text} onChange={e => onchangeRadio(e, record)} />
+      ,
     },
     {
       width: 120,
@@ -230,11 +307,12 @@ const StepPageOne = () => {
         </div>
       ),
       dataIndex: 'endStatus',
-      render: (text: any) => (
+      render: (text: any, record: any) => (
         <Switch
           checkedChildren="是"
           unCheckedChildren="否"
-          defaultChecked={text}
+          checked={text}
+          onChange={checked => onChangeListStatus(checked, record)}
         />
       ),
     },
@@ -261,20 +339,51 @@ const StepPageOne = () => {
     },
   ]
 
+  const onSaveMethod = async () => {
+    await sortchangeWorkflow({
+      projectId: paramsData.id,
+      ids: dataSource?.list?.map((i: any) => ({ id: i.id })),
+    })
+  }
+
+  const onSave = () => {
+    if (!dataSource?.list?.length) {
+      message.warning('至少保证有已经添加一个需求状态')
+      return
+    }
+    try {
+      onSaveMethod()
+      message.success('保存成功')
+      propsOne?.onChangeStep(2)
+    } catch (error) {
+
+      //
+    }
+  }
+
+  useImperativeHandle(propsOne.onRef, () => {
+    return {
+      onSave: onSaveMethod,
+    }
+  })
+
   return (
     <>
-      <AddWorkflow
-        isVisible={isAddVisible}
-        onUpdate={onUpdate}
-        onClose={() => setIsAddVisible(false)}
-      />
-      <EditWorkflow
-        category={categoryList}
-        item={operationObj}
-        isVisible={isVisible}
-        onClose={onClose}
-        onConfirm={onConfirm}
-      />
+      {isAddVisible && (
+        <AddWorkflow
+          isVisible={isAddVisible}
+          onUpdate={onUpdate}
+          onClose={() => setIsAddVisible(false)}
+        />
+      )}
+      {isVisible && (
+        <EditWorkflow
+          item={operationObj}
+          isVisible={isVisible}
+          onClose={onClose}
+          onUpdate={() => getList()}
+        />
+      )}
       <DeleteConfirm
         text="确认删除需求状态？"
         isVisible={isDelVisible}
@@ -288,36 +397,40 @@ const StepPageOne = () => {
           title="历史数据迁移"
           onConfirm={onConfirmHasDelete}
         >
-          <HasDemandText>{`共有${operationObj?.hasDemand}个需求当前处于【${operationObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
+          <HasDemandText>{`共有${operationObj?.deleteData?.story_count}个需求当前处于【${operationObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
           <FormWrap form={form} layout="vertical">
-            {categoryList?.map(i => (
-              <Form.Item
-                key={i.id}
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <CategoryWrap
-                      style={{ marginRight: 8, marginLeft: 0 }}
-                      color={i.color}
-                      bgColor={
-                        colorList?.filter(k => k.key === i.color)[0]?.bgColor
-                      }
-                    >
-                      {i.name}
-                    </CategoryWrap>
-                    指定新状态
-                  </div>
-                }
-              >
-                <Select
-                  placeholder="请选择"
-                  showArrow
-                  showSearch
-                  getPopupContainer={node => node}
-                  allowClear
-                  optionFilterProp="label"
-                />
-              </Form.Item>
-            ))}
+            <Form.Item
+              name="statusId"
+              label={
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <CategoryWrap
+                    style={{ marginRight: 8, marginLeft: 0 }}
+                    color={operationObj?.deleteData?.item?.category_color}
+                    bgColor={
+                      colorList?.filter(
+                        k => k.key
+                          === operationObj?.deleteData?.item?.category_color,
+                      )[0]?.bgColor
+                    }
+                  >
+                    {operationObj?.deleteData?.item?.category_name}
+                  </CategoryWrap>
+                  指定新状态
+                </div>
+              }
+            >
+              <Select
+                placeholder="请选择"
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={operationObj?.deleteData?.item?.status?.map(
+                  (i: any) => ({ label: i.content, value: i.id }),
+                )}
+              />
+            </Form.Item>
           </FormWrap>
         </CommonModal>
       )}
@@ -336,22 +449,36 @@ const StepPageOne = () => {
         </span>
       </div>
       <TableWrap>
-        <Table
-          pagination={false}
-          dataSource={dataSource}
-          columns={columns}
-          rowKey="index"
-          components={{
-            body: {
-              wrapper: DraggableContainer,
-              row: DraggableBodyRow,
-            },
-          }}
-        />
+        <Spin spinning={isSpinning}>
+          {!!dataSource?.list
+            && (dataSource?.list?.length > 0 ? (
+              <div style={{ width: '100%' }}>
+                <Table
+                  pagination={false}
+                  dataSource={dataSource?.list}
+                  columns={columns}
+                  rowKey="index"
+                  components={{
+                    body: {
+                      wrapper: DraggableContainer,
+                      row: DraggableBodyRow,
+                    },
+                  }}
+                />
+                <div style={{ marginTop: 8, color: '#969799', fontSize: 12 }}>
+                  注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+                </div>
+              </div>
+            )
+              : <NoData />
+            )}
+        </Spin>
       </TableWrap>
-      <div style={{ marginTop: 8, color: '#969799', fontSize: 12 }}>
-        注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
-      </div>
+      <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
+        <Button type="primary" onClick={onSave}>
+          保存&下一步
+        </Button>
+      </Space>
     </>
   )
 }

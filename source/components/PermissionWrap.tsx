@@ -40,6 +40,9 @@ const PermissionWrap = ({
   isPadding?: boolean
 }) => {
   const [t] = useTranslation()
+  if (!permission?.length) {
+    return ''
+  }
   if (permission?.length && !isType) {
     if (!getIsPermission(permission, auth)) {
       return permission ? children : ''
