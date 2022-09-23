@@ -554,6 +554,50 @@ export const getWorkflowInfo: any = async (params: any) => {
     category_status_to_id: params.toId,
   })
 
+  // const list: any = response.data.fieldAll?.map((i: any) => ({
+  //   label: i.title,
+  //   value: i.content,
+  //   groupLabel: i.group_name,
+  //   defaultValueTypeOptions: [
+  //     {
+  //       label: 'fieldLabel',
+  //       value: 1,
+  //     },
+  //     {
+  //       label: 'fixedLabel',
+  //       value: 2,
+  //     },
+  //   ],
+  //   defaultValueTypeDefaultValue: 1,
+  //   defaultValueFields: {
+  //     1: {
+  //       type: i.attr && i.attr !== 'date' ? i.attr : 'radio',
+  //       options:
+  //         // 选项去其他的地方取
+  //         (i.attr === 'date'
+  //           ? []
+  //           : i.field?.value?.map((field: any) => ({
+  //               label: field,
+  //               value: field,
+  //             }))) ??
+  //         i.field_type?.map((field: any) => ({
+  //           label: field.title ?? field.name,
+  //           value: field.content,
+  //         })) ??
+  //         [],
+  //     },
+  //     2: {
+  //       type: i.attr ?? i.fixed_type?.flag,
+  //       extra: i.value[0],
+  //       options:
+  //         i.fixed_type?.list?.map((field: any) => ({
+  //           label: field.title ?? field.name ?? field.content_txt,
+  //           value: field.id ?? field.content,
+  //         })) ?? [],
+  //     },
+  //   },
+  // }))
+
   return response.data
 }
 

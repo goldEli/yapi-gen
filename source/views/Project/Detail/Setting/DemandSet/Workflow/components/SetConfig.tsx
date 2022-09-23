@@ -259,6 +259,11 @@ const SetConfig = (props: Props) => {
     setDataSource(arr)
   }
 
+  const onChangeSelect = (val: any, row: any) => {
+
+    //
+  }
+
   const columns = [
     {
       title: '',
@@ -339,6 +344,7 @@ const SetConfig = (props: Props) => {
                     showSearch
                     value={text}
                     optionFilterProp="value"
+                    onChange={value => onChangeSelect(value, record)}
                     {...onGetList(text, record)}
                   />
                 )}
