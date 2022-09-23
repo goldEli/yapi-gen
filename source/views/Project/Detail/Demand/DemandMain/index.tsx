@@ -46,7 +46,7 @@ const DemandMain = (props: Props) => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
-  const [isShowLeft, setIsShowLeft] = useState(false)
+  const [isShowLeft, setIsShowLeft] = useState(true)
 
   const getList = async (
     state: boolean,
@@ -145,7 +145,6 @@ const DemandMain = (props: Props) => {
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)
     } catch (error) {
-
       //
     }
   }
@@ -177,7 +176,7 @@ const DemandMain = (props: Props) => {
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <WrapLeft isShowLeft={isShowLeft} />
+      <WrapLeft projectId={projectId} isShowLeft={isShowLeft} />
       <Right isShowLeft={isShowLeft}>
         <Operation
           isGrid={isGrid}
