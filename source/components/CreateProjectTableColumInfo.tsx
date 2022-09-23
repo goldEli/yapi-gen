@@ -19,8 +19,8 @@ import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { message } from 'antd'
-import review from '/review.png'
 import DemandProgress from '@/components/DemandProgress'
+import { useModel } from '@/models'
 
 const flexCss = css`
   display: flex;
@@ -30,6 +30,7 @@ const flexCss = css`
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
+  const { projectInfo } = useModel('project')
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(
@@ -67,7 +68,7 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
-  return [
+  const arr = [
     {
       width: 140,
       title: <NewSort fixedKey="id">ID</NewSort>,
@@ -214,9 +215,9 @@ export const useDynamicColumns = (state: any) => {
           >
             <StyledShape
               onClick={record.isExamine ? onExamine : void 0}
-              color={text.color}
+              color={text?.status.color}
             >
-              {text.content_txt}
+              {text?.status.content}
             </StyledShape>
           </Pop>
         )
@@ -302,4 +303,23 @@ export const useDynamicColumns = (state: any) => {
       },
     },
   ]
+
+  const getArr = () => {
+    const result: any = []
+    projectInfo?.plainOptions3?.forEach((element: any) => {
+      result.unshift({
+        width: 200,
+        title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
+        dataIndex: element.value,
+        key: element.value,
+        render: (text: any, record: any) => {
+          return <span>{text?.value || '--'}</span>
+        },
+      })
+    })
+
+    return arr.slice(0, -5).concat(result.concat(arr.slice(-5)))
+  }
+
+  return getArr()
 }

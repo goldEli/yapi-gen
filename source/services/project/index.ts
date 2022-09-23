@@ -117,6 +117,24 @@ export const getProjectInfo: any = async (params: any) => {
       },
     )
 
+  const plainOptions3 = response.data.storyConfig.display_fidlds
+    .filter((item: { group_name: string }) => item.group_name === '自定义字段')
+    .map(
+      (item: {
+        title: any
+        content: any
+        is_default_display: any
+        content_txt: any
+      }) => {
+        return {
+          label: item.title,
+          value: item.content,
+          is_default_display: item.is_default_display,
+          labelTxt: item.content_txt,
+        }
+      },
+    )
+
   const titleList: any[] = []
   plainOptions
     .filter((item: any) => item.is_default_display === 1)
@@ -129,6 +147,13 @@ export const getProjectInfo: any = async (params: any) => {
     .filter((item: any) => item.is_default_display === 1)
     .forEach((item: { title: any; value: any }) => {
       titleList2.push(item.value)
+    })
+
+  const titleList3: any[] = []
+  plainOptions3
+    .filter((item: any) => item.is_default_display === 1)
+    .forEach((item: { title: any; value: any }) => {
+      titleList3.push(item.value)
     })
 
   const filterBasicsList = response.data.storyConfig.filter_fidlds.filter(
@@ -153,8 +178,10 @@ export const getProjectInfo: any = async (params: any) => {
     status: response.data.status,
     plainOptions,
     plainOptions2,
+    plainOptions3,
     titleList,
     titleList2,
+    titleList3,
     filterBasicsList,
     filterSpecialList,
     filterFelid: response.data.storyConfig.filter_fidlds,

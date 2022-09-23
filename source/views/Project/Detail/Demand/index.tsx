@@ -302,11 +302,11 @@ const DemandBox = () => {
                 onClick={demandInfo?.isExamine ? onExamine : void 0}
                 isShow={isCanEdit || demandInfo?.isExamine}
                 style={{
-                  color: demandInfo?.status?.color,
-                  border: `1px solid ${demandInfo?.status?.color}`,
+                  color: demandInfo?.status?.status?.color,
+                  border: `1px solid ${demandInfo?.status?.status?.color}`,
                 }}
               >
-                {demandInfo?.status?.content_txt}
+                {demandInfo?.status?.status?.content}
               </StatusWrap>
             </PopConfirm>
           </NameWrap>

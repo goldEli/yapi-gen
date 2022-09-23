@@ -204,9 +204,12 @@ const ChildDemandTable = (props: {
           >
             <StatusWrap
               isShow={isCanEdit}
-              style={{ color: text.color, border: `1px solid ${text.color}` }}
+              style={{
+                color: text?.status.color,
+                border: `1px solid ${text?.status.color}`,
+              }}
             >
-              {text.content_txt}
+              {text?.status.content}
             </StatusWrap>
           </PopConfirm>
         )

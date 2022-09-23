@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-negated-condition */
@@ -26,7 +27,6 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
 import { PriorityWrap, SliderWrap } from '@/components/StyleCommon'
-import DemandProgress from '@/components/DemandProgress'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -194,8 +194,13 @@ const EditDemand = (props: Props) => {
     projectId = paramsData.id
   }
 
-  const { memberList, projectInfo, getMemberList, getProjectInfo }
-    = useModel('project')
+  const {
+    memberList,
+    projectInfo,
+    getMemberList,
+    getProjectInfo,
+    getFieldList,
+  } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const {
     addDemand,
@@ -211,6 +216,7 @@ const EditDemand = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
+  const [field, setField] = useState<any>([])
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -223,9 +229,17 @@ const EditDemand = (props: Props) => {
     setParentList(arr)
   }
 
+  const getFieldData = async () => {
+    const result: any = await getFieldList({ projectId })
+    setField(result?.list)
+  }
+
   useEffect(() => {
-    getList()
-  }, [])
+    if (props?.visible) {
+      getList()
+      getFieldData()
+    }
+  }, [props?.visible])
 
   const getCommonUser = (arr: any, memberArr: any) => {
     let res: any[] = []
@@ -695,6 +709,20 @@ const EditDemand = (props: Props) => {
             )}
           </Form.Item>
         </div>
+        {/* {field?.length &&
+          field?.map((i: any) => (
+            <div style={{ display: 'flex' }} key={i.id}>
+              <Form.Item label={i.} name="category">
+                <Select
+                  style={{ width: '100%' }}
+                  showArrow
+                  showSearch
+                  placeholder="请选择需求类别"
+                  getPopupContainer={node => node}
+                />
+              </Form.Item>
+            </div>
+          ))} */}
       </FormWrap>
       <ModalFooter>
         <AddButtonWrap isEdit={props?.id} onClick={() => onSaveDemand(1)}>

@@ -270,7 +270,6 @@ const Operation = (props: Props) => {
               content={changeStatus}
               placement="bottom"
               getPopupContainer={node => node}
-              key={isVisible.toString()}
               visible={isVisible}
               onVisibleChange={visible => setIsVisible(visible)}
             >

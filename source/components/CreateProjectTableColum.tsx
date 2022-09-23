@@ -71,7 +71,7 @@ export const useDynamicColumns = (state: any) => {
     message.warning('该需求正在审核中，现在不能流转操作')
   }
 
-  return [
+  const arr = [
     {
       width: 200,
       title: <NewSort fixedKey="id">ID</NewSort>,
@@ -92,7 +92,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 240,
+      width: 280,
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -113,7 +113,7 @@ export const useDynamicColumns = (state: any) => {
               isClose={record.status?.content === '已关闭'}
               onClick={() => state.onClickItem(record)}
             >
-              <OmitText width={200}>{text}</OmitText>
+              <OmitText width={160}>{text}</OmitText>
               <IconFont
                 type="review"
                 style={{
@@ -159,11 +159,11 @@ export const useDynamicColumns = (state: any) => {
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
               style={{
-                color: text.color,
-                border: `1px solid ${text.color}`,
+                color: text?.status.color,
+                border: `1px solid ${text?.status.color}`,
               }}
             >
-              {text.content_txt}
+              {text?.status.content}
             </StatusWrap>
           </PopConfirm>
         )
@@ -329,4 +329,23 @@ export const useDynamicColumns = (state: any) => {
       },
     },
   ]
+
+  const getArr = () => {
+    const result: any = []
+    projectInfo?.plainOptions3?.forEach((element: any) => {
+      result.unshift({
+        width: 200,
+        title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
+        dataIndex: element.value,
+        key: element.value,
+        render: (text: any, record: any) => {
+          return <span>{text?.value || '--'}</span>
+        },
+      })
+    })
+
+    return arr.slice(0, -5).concat(result.concat(arr.slice(-5)))
+  }
+
+  return getArr()
 }

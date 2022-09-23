@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
@@ -66,11 +67,19 @@ type OptionalFeldProps = {
     value: string
     is_default_display?: number
   }[]
+  plainOptions3?: {
+    labelTxt: string
+    label: string
+    value: string
+    is_default_display?: number
+  }[]
   checkList: CheckboxValueType[]
   checkList2: CheckboxValueType[]
+  checkList3?: CheckboxValueType[]
   getCheckList(
     checkList: CheckboxValueType[],
     checkList2: CheckboxValueType[],
+    checkList3?: CheckboxValueType[],
   ): void
   onClose(): void
   isVisible: boolean
@@ -79,6 +88,7 @@ type OptionalFeldProps = {
 export const OptionalFeld = (props: OptionalFeldProps) => {
   const [t] = useTranslation()
   const { plainOptions, plainOptions2 } = props
+  const plainOptions3 = props?.plainOptions3 || []
 
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props.checkList,
@@ -86,11 +96,18 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>(
     props.checkList2,
   )
+  const [checkList3, setCheckList3] = useState<CheckboxValueType[]>(
+    props?.checkList3 || [],
+  )
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
+  }
+
+  const onChange3 = (list: CheckboxValueType[]) => {
+    setCheckList3(list)
   }
 
   function del(value: string) {
@@ -101,15 +118,17 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       const arr2 = checkList2.filter(value1 => value1 !== value)
       setCheckList2([...arr2])
     }
+
+    //
   }
 
   const handleOk = () => {
-    props.getCheckList(checkList, checkList2)
+    props.getCheckList(checkList, checkList2, checkList3)
     props.onClose()
   }
   const allList = useMemo(() => {
-    const arr = [...checkList, ...checkList2]
-    const arr2 = [...plainOptions, ...plainOptions2]
+    const arr = [...checkList, ...checkList2, ...checkList3]
+    const arr2 = [...plainOptions, ...plainOptions2, ...plainOptions3]
     const all = arr2.reduce(
       (res: { labelTxt: string; label: string; value: string }[], item) => {
         if (arr.includes(item.value)) {
@@ -135,7 +154,14 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
         )}
       </CheckedItem>
     ))
-  }, [checkList, checkList2, plainOptions, plainOptions2])
+  }, [
+    checkList,
+    checkList2,
+    checkList3,
+    plainOptions,
+    plainOptions2,
+    plainOptions3,
+  ])
 
   return (
     <Modal
@@ -178,6 +204,20 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               </Space>
             </CheckboxGroup>
           </ItemWrap>
+          {plainOptions3?.length ? (
+            <ItemWrap>
+              <div className={text}>自定义字段</div>
+              <CheckboxGroup value={checkList3} onChange={onChange3}>
+                <Space style={{ flexWrap: 'wrap' }}>
+                  {plainOptions3?.map(item => (
+                    <Checkbox key={item.label} value={item.value}>
+                      {item.labelTxt}
+                    </Checkbox>
+                  ))}
+                </Space>
+              </CheckboxGroup>
+            </ItemWrap>
+          ) : null}
         </Left>
         <Right>
           <div className={text}>{t('components.currentFiled')}</div>

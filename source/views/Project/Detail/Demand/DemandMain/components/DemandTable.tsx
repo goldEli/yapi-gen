@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
@@ -64,16 +65,20 @@ const DemandTable = (props: Props) => {
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
+  const [titleList3, setTitleList3] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
+    setPlainOptions3(projectInfo?.plainOptions3 || [])
     setTitleList(projectInfo?.titleList || [])
     setTitleList2(projectInfo?.titleList2 || [])
+    setTitleList3(projectInfo?.titleList3 || [])
   }
 
   useEffect(() => {
@@ -83,9 +88,11 @@ const DemandTable = (props: Props) => {
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
+    setTitleList3(list3)
   }
 
   const onChangePage = (page: number, size: number) => {
@@ -198,7 +205,7 @@ const DemandTable = (props: Props) => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2]
+    const arr = [...titleList, ...titleList2, ...titleList3]
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -230,7 +237,7 @@ const DemandTable = (props: Props) => {
       },
     ]
     return [...arrList, ...newList]
-  }, [titleList, titleList2, columns])
+  }, [titleList, titleList2, titleList3, columns])
 
   return (
     <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
@@ -270,8 +277,10 @@ const DemandTable = (props: Props) => {
         <OptionalFeld
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
+          plainOptions3={plainOptions3}
           checkList={titleList}
           checkList2={titleList2}
+          checkList3={titleList3}
           isVisible={props.settingState}
           onClose={() => props.onChangeSetting(false)}
           getCheckList={getCheckList}

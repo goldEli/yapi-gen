@@ -55,9 +55,7 @@ const DemandMain = (props: Props) => {
     orderItem?: any,
     isInit?: boolean,
   ) => {
-    if (!isInit) {
-      setIsSpinning(true)
-    }
+    setIsSpinning(true)
     let params = {}
     if (state) {
       params = {

@@ -118,6 +118,7 @@ const Need = (props: any) => {
   })
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
@@ -128,6 +129,7 @@ const Need = (props: any) => {
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
+  const [titleList3, setTitleList3] = useState<any[]>([])
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -228,7 +230,7 @@ const Need = (props: any) => {
   })
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2]
+    const arr = [...titleList, ...titleList2, ...titleList3]
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -256,11 +258,12 @@ const Need = (props: any) => {
   }, [titleList, columns])
   const getShowkey = async () => {
     const res2 = await getField(props.id)
-
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
+    setPlainOptions3(res2.plainOptions3)
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
+    setTitleList3(res2.titleList3)
     setIsRefresh(false)
   }
   const getSearchKey = async (key?: any, type?: number) => {
@@ -340,9 +343,11 @@ const Need = (props: any) => {
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
+    setTitleList3(list3)
   }
 
   const onChangeVisible = () => {
@@ -467,8 +472,10 @@ const Need = (props: any) => {
         <OptionalFeld
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
+          plainOptions3={plainOptions3}
           checkList={titleList}
           checkList2={titleList2}
+          checkList3={titleList3}
           isVisible={isModalVisible}
           onClose={close2}
           getCheckList={getCheckList}

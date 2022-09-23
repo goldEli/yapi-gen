@@ -90,6 +90,7 @@ export const getDemandList: any = async (params: any) => {
           iterateId: i.iterate_id,
           parentId: i.parent_id,
           isExamine: true,
+          ...i.custom_field,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -113,6 +114,7 @@ export const getDemandList: any = async (params: any) => {
       parentId: i.parent_id,
       userName: i.user_name,
       isExamine: true,
+      ...i.custom_field,
     }))
   } else {
     return {
@@ -139,6 +141,7 @@ export const getDemandList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         isExamine: true,
+        ...i.custom_field,
       })),
     }
   }

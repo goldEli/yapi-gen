@@ -153,6 +153,24 @@ export const getField: any = async (params: any) => {
       },
     )
 
+  const plainOptions3 = display_fidlds
+    .filter((item: { group_name: string }) => item.group_name === '自定义字段')
+    .map(
+      (item: {
+        title: any
+        content: any
+        is_default_display: any
+        content_txt: any
+      }) => {
+        return {
+          label: item.title,
+          value: item.content,
+          is_default_display: item.is_default_display,
+          labelTxt: item.content_txt,
+        }
+      },
+    )
+
   const titleList: any[] = []
   plainOptions
     .filter((item: any) => item.is_default_display === 1)
@@ -167,11 +185,20 @@ export const getField: any = async (params: any) => {
       titleList2.push(item.value)
     })
 
+  const titleList3: any[] = []
+  plainOptions3
+    .filter((item: any) => item.is_default_display === 1)
+    .forEach((item: { title: any; value: any }) => {
+      titleList3.push(item.value)
+    })
+
   return {
     plainOptions,
     plainOptions2,
+    plainOptions3,
     titleList,
     titleList2,
+    titleList3,
   }
 }
 
@@ -318,6 +345,7 @@ export const getMineNoFinishList: any = async (params: any) => {
           tag: i.tag,
           project_id: i.project_id,
           isExamine: true,
+          ...i.custom_field,
         }))
         : [],
     }))
@@ -346,6 +374,7 @@ export const getMineNoFinishList: any = async (params: any) => {
           tag: i.tag,
           project_id: i.project_id,
           isExamine: true,
+          ...i.custom_field,
         }))
         : [],
       pager: response.data.pager,
@@ -401,6 +430,7 @@ export const getMineCreacteList: any = async (params: any) => {
         tag: i.tag,
         project_id: i.project_id,
         isExamine: true,
+        ...i.custom_field,
       }))
       : [],
     pager: response.data.pager,
@@ -455,6 +485,7 @@ export const getMineFinishList: any = async (params: any) => {
         tag: i.tag,
         project_id: i.project_id,
         isExamine: true,
+        ...i.custom_field,
       }))
       : [],
     pager: response.data.pager,
@@ -511,6 +542,7 @@ export const getMineNeedList: any = async (params: any) => {
         project_id: i.project_id,
         project: i.project,
         isExamine: true,
+        ...i.custom_field,
       }))
       : [],
     pager: response.data.pager,
