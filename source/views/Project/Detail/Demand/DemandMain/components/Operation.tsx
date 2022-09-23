@@ -244,7 +244,6 @@ const Operation = (props: Props) => {
       <OperationWrap>
         <Space size={16}>
           <Tooltip
-            key={isShow.toString()}
             visible={isShow}
             onVisibleChange={isShow1 => setIsShow(isShow1)}
             getTooltipContainer={node => node}

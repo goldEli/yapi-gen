@@ -44,6 +44,7 @@ export const getDemandInfo: any = async (params: any) => {
     iterateId: response.data.iterate_id || null,
     projectId: response.data.project_id,
     isExamine: true,
+    customField: response.data.custom_field,
   }
 }
 
@@ -233,6 +234,7 @@ export const addDemand: any = async (params: any) => {
     copysend: params?.copySendIds,
     tag: params?.tagIds,
     attachment: params?.attachments,
+    custom_field: params?.customField,
   })
 }
 
@@ -269,6 +271,7 @@ export const updateDemand: any = async (params: any) => {
     tag: params.tagIds,
     attachment: params.attachments,
     id: params.id,
+    custom_field: params?.customField,
   })
 }
 

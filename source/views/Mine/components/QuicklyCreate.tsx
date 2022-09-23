@@ -8,7 +8,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, Select, Space, message, Progress } from 'antd'
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Space,
+  message,
+  Progress,
+  Tooltip,
+} from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -23,6 +32,8 @@ import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { PriorityWrap } from '@/components/StyleCommon'
+import { OmitText } from '@star-yun/ui'
+import { getTypeComponent } from '@/tools'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -171,6 +182,7 @@ const ProgressWrap = styled(Progress)({
 const EditDemand = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
+  const [form1] = Form.useForm()
   const [html, setHtml] = useState('')
   const [prejectId, setPrejectId] = useState<any>()
   const [prejectList, setPrejectList] = useState<any>([])
@@ -183,7 +195,8 @@ const EditDemand = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const { getDemandList, percentVal, percentShow, uploadStatus }
     = useModel('demand')
-  const { getProjectInfo, setTagList } = useModel('project')
+  const { getProjectInfo, setTagList, getFieldList, fieldList, setFieldList }
+    = useModel('project')
   const [isShow, setIsShow] = useState(false)
 
   const {
@@ -201,7 +214,12 @@ const EditDemand = (props: Props) => {
         inputRef.current?.focus()
       }, 200)
     }
+    setFieldList({})
   }, [props.visible])
+
+  const getFieldData = async (projectId: any) => {
+    await getFieldList({ projectId })
+  }
 
   const getPrejectName = async () => {
     const res = await getProjectList({
@@ -256,6 +274,7 @@ const EditDemand = (props: Props) => {
   const onSaveDemand = async (hasNext?: number) => {
     await form.validateFields()
     const formdata = form.getFieldsValue()
+    const values1 = form1.getFieldsValue()
 
     if (formdata.times && formdata.times[0]) {
       formdata.expectedStart = moment(formdata.times[0]).format('YYYY-MM-DD')
@@ -263,6 +282,18 @@ const EditDemand = (props: Props) => {
     if (formdata.times && formdata.times[1]) {
       formdata.expectedEnd = moment(formdata.times[1]).format('YYYY-MM-DD')
     }
+    Object.keys(values1)?.forEach((k: any) => {
+      values1[k] = values1[k] ? values1[k] : ''
+      const obj = fieldList?.list?.filter((i: any) => k === i.content)[0]
+      if (obj?.type?.attr === 'date' && values1[k]) {
+        values1[obj.content] = moment(values1[obj.content]).format(
+          obj?.type?.value[0] === 'datetime'
+            ? 'YYYY-MM-DD hh:mm:ss'
+            : 'YYYY-MM-DD',
+        )
+      }
+    })
+
     const values = JSON.parse(JSON.stringify(formdata))
     values.info = html
     const data = {
@@ -278,6 +309,7 @@ const EditDemand = (props: Props) => {
       copysend: values.copysend,
       tag: values.tag,
       attachments: values.attachments,
+      customField: values1,
     }
     const res = await addQuicklyCreate(data)
     if (res.code === 0) {
@@ -290,6 +322,7 @@ const EditDemand = (props: Props) => {
         props.onChangeVisible()
       } else {
         form.resetFields()
+        form1.resetFields()
       }
     }
   }
@@ -342,6 +375,7 @@ const EditDemand = (props: Props) => {
   const onCancel = () => {
     props.onChangeVisible()
     form.resetFields()
+    form1.resetFields()
     setAttachList([])
     setTagListAll([])
     setHtml('')
@@ -349,16 +383,19 @@ const EditDemand = (props: Props) => {
   }
   const selectPrejectName = (value: any) => {
     form.resetFields(['parentId', 'iterate_id'])
+    form1.resetFields()
     form.setFieldsValue({
       users: [],
       copysend: [],
     })
     setPrejectId(value)
     getProjectInfo({ projectId: value })
+    getFieldData(value)
   }
   const clearProjectId = () => {
     setPrejectId('')
     form.resetFields(['parentId', 'iterate_id'])
+    form1.resetFields()
     form.setFieldsValue({
       users: [],
       copysend: [],
@@ -623,6 +660,28 @@ const EditDemand = (props: Props) => {
             />
           </Form.Item>
         </div>
+        <FormWrap
+          form={form1}
+          labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
+        >
+          {fieldList?.list?.map((i: any) => (
+            <div style={{ display: 'flex' }} key={i.content}>
+              <IconFont className="labelIcon" type="attachment" />
+              <Form.Item
+                label={
+                  <Tooltip>
+                    <OmitText width={i18n.language === 'zh' ? 80 : 100}>
+                      {i.name}
+                    </OmitText>
+                  </Tooltip>
+                }
+                name={i.content}
+              >
+                {getTypeComponent(i.type)}
+              </Form.Item>
+            </div>
+          ))}
+        </FormWrap>
       </FormWrap>
       <ModalFooter>
         <AddButtonWrap onClick={() => onSaveDemand(1)}>

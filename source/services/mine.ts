@@ -640,6 +640,7 @@ export const addQuicklyCreate: any = async (params: any) => {
     copysend: params.copysend,
     tag: params.tag,
     attachment: params.attachments,
+    custom_field: params.customField,
   })
   return response
 }

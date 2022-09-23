@@ -16,12 +16,13 @@ import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message, Progress } from 'antd'
+import { message, Progress, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getParamsData } from '@/tools'
+import { getParamsData, getTypeComponent } from '@/tools'
 import { SliderWrap } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
+import { OmitText } from '@star-yun/ui'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -179,7 +180,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
-  const { projectInfo } = useModel('project')
+  const { projectInfo, getFieldList, fieldList } = useModel('project')
   const [tagList, setTagList] = useState<any>([])
   const isCanEdit
     = projectInfo.projectPermissions?.length > 0
@@ -224,10 +225,15 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     }
   }
 
+  const getFieldData = async () => {
+    await getFieldList({ projectId })
+  }
+
   useEffect(() => {
+    getFieldData()
     textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
     return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
-  })
+  }, [])
 
   useEffect(() => {
     setTagList(
@@ -431,6 +437,18 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
             : '--'}
         </TextWrap>
       </InfoItem>
+      {fieldList?.list?.map((i: any) => (
+        <InfoItem key={i.content}>
+          <Label>
+            <Tooltip>
+              <OmitText width={80}>{i.name}</OmitText>
+            </Tooltip>
+          </Label>
+          <TextWrap>
+            {demandInfo?.customField?.[i.content].value || '--'}
+          </TextWrap>
+        </InfoItem>
+      ))}
     </WrapLeft>
   )
 }

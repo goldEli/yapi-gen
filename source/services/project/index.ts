@@ -367,6 +367,7 @@ export const storyConfigField: any = async (params: any) => {
       type: i.field_content,
       id: i.id,
       remarks: i.remarks,
+      content: i.content,
     })),
   }
 }

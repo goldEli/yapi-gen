@@ -10,7 +10,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, Select, Space, message, Progress } from 'antd'
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Space,
+  message,
+  Progress,
+  Tooltip,
+} from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { LevelContent } from '@/components/Level'
@@ -25,8 +34,9 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
-import { getParamsData } from '@/tools'
+import { getParamsData, getTypeComponent } from '@/tools'
 import { PriorityWrap, SliderWrap } from '@/components/StyleCommon'
+import { OmitText } from '@star-yun/ui'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -180,6 +190,7 @@ const ProgressWrap = styled(Progress)({
 const EditDemand = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
+  const [form1] = Form.useForm()
   const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
@@ -200,6 +211,7 @@ const EditDemand = (props: Props) => {
     getMemberList,
     getProjectInfo,
     getFieldList,
+    fieldList,
   } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const {
@@ -216,7 +228,6 @@ const EditDemand = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
-  const [field, setField] = useState<any>([])
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -230,8 +241,7 @@ const EditDemand = (props: Props) => {
   }
 
   const getFieldData = async () => {
-    const result: any = await getFieldList({ projectId })
-    setField(result?.list)
+    await getFieldList({ projectId })
   }
 
   useEffect(() => {
@@ -259,6 +269,16 @@ const EditDemand = (props: Props) => {
     })
     if (res) {
       form.setFieldsValue(res)
+      const form1Obj: any = {}
+      for (const key in res?.customField) {
+        form1Obj[key]
+          = res?.customField[key]?.attr === 'date'
+            ? res?.customField[key]?.value
+              ? moment(res?.customField[key]?.value)
+              : ''
+            : res?.customField[key]?.value
+      }
+      form1.setFieldsValue(form1Obj)
       setPriorityDetail(res.priority)
       setHtml(res.info)
       setAttachList(
@@ -315,6 +335,7 @@ const EditDemand = (props: Props) => {
       }
     } else {
       form.resetFields()
+      form1.resetFields()
     }
   }
 
@@ -323,6 +344,7 @@ const EditDemand = (props: Props) => {
       getInfo()
     } else {
       form.resetFields()
+      form1.resetFields()
     }
     getList()
   }, [props.id])
@@ -330,6 +352,7 @@ const EditDemand = (props: Props) => {
   const onSaveDemand = async (hasNext?: number) => {
     await form.validateFields()
     const values = form.getFieldsValue()
+    const values1 = form1.getFieldsValue()
     if (values.times && values.times[0]) {
       values.expectedStart = moment(values.times[0]).format('YYYY-MM-DD')
     }
@@ -344,6 +367,20 @@ const EditDemand = (props: Props) => {
     if (values.priority?.id) {
       values.priority = values.priority?.id
     }
+
+    Object.keys(values1)?.forEach((k: any) => {
+      values1[k] = values1[k] ? values1[k] : ''
+      const obj = fieldList?.list?.filter((i: any) => k === i.content)[0]
+      if (obj?.type?.attr === 'date' && values1[k]) {
+        values1[obj.content] = moment(values1[obj.content]).format(
+          obj?.type?.value[0] === 'datetime'
+            ? 'YYYY-MM-DD hh:mm:ss'
+            : 'YYYY-MM-DD',
+        )
+      }
+    })
+
+    values.customField = values1
 
     try {
       if (props.id) {
@@ -370,9 +407,11 @@ const EditDemand = (props: Props) => {
         props.onChangeVisible()
         setTimeout(() => {
           form.resetFields()
+          form1.resetFields()
         }, 100)
       } else {
         form.resetFields()
+        form1.resetFields()
       }
     } catch (error) {
 
@@ -418,6 +457,7 @@ const EditDemand = (props: Props) => {
     setIsShowProgress(false)
     props.onChangeVisible()
     form.resetFields()
+    form1.resetFields()
     setAttachList([])
     setTagList([])
     setHtml('')
@@ -709,20 +749,28 @@ const EditDemand = (props: Props) => {
             )}
           </Form.Item>
         </div>
-        {/* {field?.length &&
-          field?.map((i: any) => (
-            <div style={{ display: 'flex' }} key={i.id}>
-              <Form.Item label={i.} name="category">
-                <Select
-                  style={{ width: '100%' }}
-                  showArrow
-                  showSearch
-                  placeholder="请选择需求类别"
-                  getPopupContainer={node => node}
-                />
-              </Form.Item>
-            </div>
-          ))} */}
+      </FormWrap>
+      <FormWrap
+        form={form1}
+        labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
+      >
+        {fieldList?.list?.map((i: any) => (
+          <div style={{ display: 'flex' }} key={i.content}>
+            <IconFont className="labelIcon" type="attachment" />
+            <Form.Item
+              label={
+                <Tooltip>
+                  <OmitText width={i18n.language === 'zh' ? 80 : 100}>
+                    {i.name}
+                  </OmitText>
+                </Tooltip>
+              }
+              name={i.content}
+            >
+              {getTypeComponent(i.type)}
+            </Form.Item>
+          </div>
+        ))}
       </FormWrap>
       <ModalFooter>
         <AddButtonWrap isEdit={props?.id} onClick={() => onSaveDemand(1)}>
