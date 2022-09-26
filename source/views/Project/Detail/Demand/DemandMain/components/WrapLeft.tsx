@@ -4,7 +4,12 @@
 import styled from '@emotion/styled'
 import { Form, Input, Popover, Tree, type TreeProps } from 'antd'
 import { useEffect, useState } from 'react'
-import { getTreeList, addTreeList, delTreeList } from '@/services/project/tree'
+import {
+  getTreeList,
+  addTreeList,
+  delTreeList,
+  moveTreeList,
+} from '@/services/project/tree'
 import IconFont from '@/components/IconFont'
 import { DataNode } from 'antd/lib/tree'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -142,36 +147,35 @@ const TreeItem = (props: any) => {
     <div>
       {props.pid === 1
         ? btnsText
-          .filter(item => item.id === 1)
-          .map(item => (
+            .filter(item => item.id === 1)
+            .map(item => (
+              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+                {item.text}
+              </BtnsItemBox>
+            ))
+        : btnsText.map(item => (
             <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
               {item.text}
             </BtnsItemBox>
-          ))
-        : btnsText.map(item => (
-          <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
-            {item.text}
-          </BtnsItemBox>
-        ))}
+          ))}
     </div>
   )
   return (
     <TreeBox>
       <span>{props.name}</span>
       <span>{props.story_count}</span>
-      {props.pid === 0
-        ? ''
-
-        : (
-            <Popover
-              getPopupContainer={node => node}
-              placement="bottomRight"
-              content={content}
-              trigger="click"
-            >
-              <IconFont type="more" />
-            </Popover>
-          )}
+      {props.pid === 0 ? (
+        ''
+      ) : (
+        <Popover
+          getPopupContainer={node => node}
+          placement="bottomRight"
+          content={content}
+          trigger="click"
+        >
+          <IconFont type="more" />
+        </Popover>
+      )}
 
       <DeleteConfirm
         isVisible={visible}
@@ -211,7 +215,6 @@ const TreeItem = (props: any) => {
 
 const WrapLeft = (props: Props) => {
   const [treeData, setTreeData] = useState([])
-
   const init = async () => {
     const res = await getTreeList({ id: props.projectId })
 
@@ -237,6 +240,21 @@ const WrapLeft = (props: Props) => {
     }))
     return newData
   }
+  const onDrop = async (info: any) => {
+    console.log(info.dropToGap)
+
+    const start = info.dragNode.title.props
+    const end = info.node.title.props
+
+    await moveTreeList({
+      projectId: props.projectId,
+      newId: end.id,
+      sort: start.sort,
+      id: start.id,
+      top: info.dropToGap,
+    })
+    init()
+  }
 
   useEffect(() => {
     init()
@@ -245,7 +263,7 @@ const WrapLeft = (props: Props) => {
   return (
     <Left isShowLeft={props.isShowLeft}>
       <TitleWrap>需求分类</TitleWrap>
-      <Tree treeData={treeData} />
+      <Tree onDrop={onDrop} draggable treeData={treeData} />
     </Left>
   )
 }

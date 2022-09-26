@@ -17,12 +17,14 @@ export const getTreeList = async (params: any) => {
       id: 0,
       pid: 1,
       parent_id: 0,
-      story_count: '',
+      story_count: res.data[0].story_count,
       children: [
         ...transData(res.data, 'id', 'parent_id', 'children'),
         {
           name: '未分类',
           pid: 0,
+          id: 0,
+          story_count: res.data[1].story_count,
         },
       ],
     },
@@ -51,6 +53,20 @@ export const delTreeList = async (params: any) => {
     project_id: params.projectId,
 
     id: params?.id,
+  })
+
+  console.log(res)
+
+  return res
+}
+
+export const moveTreeList = async (params: any) => {
+  const res = await http.post('moveNeedTreeList', {
+    project_id: params.projectId,
+    new_class_id: params.newId,
+    sort: params.sort,
+    id: params?.id,
+    is_top: params.top,
   })
 
   console.log(res)
