@@ -30,6 +30,17 @@ const TextWrap = styled.div({
   color: '#969799',
   fontSize: 12,
   fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
+})
+
+const IconfontWrap = styled(IconFont)({
+  color: '#BBBDBF',
+  cursor: 'pointer',
+  fontSize: 16,
+  '&: hover': {
+    color: '#2877ff',
+  },
 })
 
 const StepPageTwo = () => {
@@ -81,9 +92,8 @@ const StepPageTwo = () => {
               onChange={e => onChangeCheck(e, record, i.id)}
             />
             {record.canChange?.includes(String(i.id)) ? (
-              <IconFont
+              <IconfontWrap
                 onClick={() => onClickSet(record, i.id)}
-                style={{ color: '#BBBDBF', cursor: 'pointer', fontSize: 16 }}
                 type="settings"
               />
             ) : null}
@@ -140,7 +150,16 @@ const StepPageTwo = () => {
         <TextWrap>
           工作流流转设置，是设置工作流各状态间的先后流转关系。如果需要设置该流转，请在两个状态间的复选框内打勾
         </TextWrap>
-        <TextWrap>注：点击图标，可以设置流转的附加字段及授权用户。</TextWrap>
+        <TextWrap>
+          注：点击
+          <IconFont
+            type="settings"
+            style={{
+              fontSize: 14,
+            }}
+          />
+          图标，可以设置流转的附加字段及授权用户。
+        </TextWrap>
       </ContWrap>
 
       <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>

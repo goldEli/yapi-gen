@@ -274,7 +274,7 @@ const StepPageOne = (propsOne: Props) => {
       title: '状态说明',
       width: 400,
       dataIndex: 'info',
-      render: (text: any) => <OmitText width={380}>{text}</OmitText>,
+      render: (text: any) => <OmitText width={380}>{text || '--'}</OmitText>,
     },
     {
       width: 120,
@@ -465,8 +465,23 @@ const StepPageOne = (propsOne: Props) => {
                     },
                   }}
                 />
-                <div style={{ marginTop: 8, color: '#969799', fontSize: 12 }}>
-                  注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+                <div
+                  style={{
+                    marginTop: 8,
+                    color: '#969799',
+                    fontSize: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  注：拖动
+                  <IconFont
+                    type="move"
+                    style={{
+                      fontSize: 14,
+                    }}
+                  />
+                  图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
                 </div>
               </div>
             )

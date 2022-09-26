@@ -64,6 +64,8 @@ const TextWrap = styled.div({
   fontSize: 12,
   color: '#969799',
   fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
 })
 
 const TimelineWrap = styled(Timeline)({
@@ -118,10 +120,10 @@ const SetConfig = (props: Props) => {
   const [normalList, setNormalList] = useState([
     { id: new Date().getTime(), obj: {} },
   ])
-  const [checkedUser, setCheckedUser] = useState<any>([])
   const [form] = Form.useForm()
   const [dataSource, setDataSource] = useState<any>([])
   const [fieldAll, setFieldAll] = useState<any>([])
+  const [options, setOptions] = useState<any>([])
 
   const getMemberList = async () => {
     const result = await getProjectMember({
@@ -129,6 +131,7 @@ const SetConfig = (props: Props) => {
       all: true,
     })
     setMemberList(result)
+    setOptions(result)
   }
 
   const getInfo = async () => {
@@ -157,13 +160,13 @@ const SetConfig = (props: Props) => {
     )
 
     // setNormalList()
-    // setCheckedUser()
+    // setOptions()
   }
 
   useEffect(() => {
     if (props?.isVisible) {
-      getInfo()
       getMemberList()
+      getInfo()
     }
   }, [props?.isVisible])
 
@@ -395,7 +398,12 @@ const SetConfig = (props: Props) => {
 
   const onChangeList = (obj: any, id: any) => {
     normalList.filter((i: any) => i.id === id)[0].obj = obj
-    setCheckedUser([...checkedUser, ...obj.verify_users])
+    if (obj.type === 'add') {
+      setOptions(options?.filter((k: any) => k.id !== obj.id))
+    } else {
+      const checkObj = memberList?.filter((i: any) => i.id === obj.id)[0]
+      setOptions([...options, ...[checkObj]])
+    }
   }
 
   const onClickAddField = () => {
@@ -465,7 +473,7 @@ const SetConfig = (props: Props) => {
               <LabelWrap>用户组</LabelWrap>
               <Form.Item noStyle name="roles">
                 <Select
-                  style={{ width: 186 }}
+                  style={{ minWidth: 186 }}
                   showSearch
                   mode="multiple"
                   optionFilterProp="label"
@@ -482,7 +490,7 @@ const SetConfig = (props: Props) => {
               <LabelWrap>人员字段</LabelWrap>
               <Form.Item noStyle name="user_fields">
                 <Select
-                  style={{ width: 186 }}
+                  style={{ minWidth: 186 }}
                   showSearch
                   mode="multiple"
                   showArrow
@@ -499,7 +507,7 @@ const SetConfig = (props: Props) => {
               <LabelWrap>其他用户</LabelWrap>
               <Form.Item noStyle name="other_users">
                 <Select
-                  style={{ width: 186 }}
+                  style={{ minWidth: 186 }}
                   showSearch
                   mode="multiple"
                   optionFilterProp="label"
@@ -544,7 +552,7 @@ const SetConfig = (props: Props) => {
                         info={info}
                         onDel={() => onDel(i.id)}
                         onChangeList={arr => onChangeList(arr, i.id)}
-                        checkedUser={checkedUser}
+                        options={options}
                       />
                     ))}
                     <Timeline.Item>
@@ -601,7 +609,14 @@ const SetConfig = (props: Props) => {
               style={{ marginTop: 16 }}
             />
             <TextWrap>
-              注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+              注：拖动
+              <IconFont
+                type="move"
+                style={{
+                  fontSize: 14,
+                }}
+              />
+              图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
             </TextWrap>
           </div>
         )}
