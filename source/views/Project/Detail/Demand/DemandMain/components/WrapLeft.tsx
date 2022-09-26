@@ -2,11 +2,14 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Tree, type TreeProps } from 'antd'
+import { Form, Input, Popover, Tree, type TreeProps } from 'antd'
 import { useEffect, useState } from 'react'
-import { getTreeList } from '@/services/project/tree'
+import { getTreeList, addTreeList, delTreeList } from '@/services/project/tree'
 import IconFont from '@/components/IconFont'
 import { DataNode } from 'antd/lib/tree'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import CommonModal from '@/components/CommonModal'
+import { rest } from 'lodash'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -36,7 +39,7 @@ interface Props {
   projectId: any
 }
 const TreeBox = styled.div`
-  width: 220px;
+  /* width: 220px; */
   height: 40px;
   background: #f0f4fa;
   border-radius: 0px 0px 0px 0px;
@@ -44,69 +47,195 @@ const TreeBox = styled.div`
   display: flex;
   align-items: center;
 `
+const FormBox = styled.div``
+const BtnsItemBox = styled.div`
+  cursor: pointer;
+  width: 102px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 0px 0px 0px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #646566;
+  &:hover {
+    background: #f0f4fa;
+    color: #2877ff;
+  }
+`
 const TreeItem = (props: any) => {
-  console.log(props, 'shjuju')
+  const [form] = Form.useForm()
+  const [visible, setVisible] = useState(false)
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
+  const btnsText = [
+    {
+      id: 1,
+      text: '创建子分类',
+    },
+    {
+      id: 2,
+      text: '修改子分类',
+    },
+    {
+      id: 3,
+      text: '删除子分类',
+    },
+  ]
+  const close = () => {
+    setVisible(false)
+    setVisibleEdit(false)
+  }
+  const showVisible = (id: number) => {
+    close()
+    if (id === 3) {
+      setVisible(true)
+    } else if (id === 1) {
+      setVisibleEditText('add')
+      setVisibleEdit(true)
+    } else if (id === 2) {
+      setVisibleEditText('edit')
+      setVisibleEdit(true)
+      form.setFieldsValue({
+        name: props.name,
+        remark: props.remark,
+      })
+    }
+  }
+  const onChangeVisible = () => {
+    close()
+  }
 
+  const onConfirm = async () => {
+    await delTreeList({
+      projectId: props.projectId,
+      id: props.id,
+    })
+
+    close()
+    props.onRest()
+  }
+
+  const editClose = () => {
+    close()
+  }
+
+  const editConfirm = async () => {
+    const tag = visibleEditText === 'add'
+    const data = form.getFieldsValue()
+    const obj = {
+      name: data.name,
+      remark: data.remark,
+      projectId: props.projectId,
+      pid: tag ? props.id : undefined,
+      id: tag ? undefined : props.id,
+    }
+
+    await addTreeList(obj, visibleEditText)
+
+    close()
+    props.onRest()
+  }
+  const content = (
+    <div>
+      {props.pid === 1
+        ? btnsText
+          .filter(item => item.id === 1)
+          .map(item => (
+            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+              {item.text}
+            </BtnsItemBox>
+          ))
+        : btnsText.map(item => (
+          <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+            {item.text}
+          </BtnsItemBox>
+        ))}
+    </div>
+  )
   return (
     <TreeBox>
       <span>{props.name}</span>
-      <span>{props.num}</span>
-      <IconFont type="more" />
+      <span>{props.story_count}</span>
+      {props.pid === 0
+        ? ''
+
+        : (
+            <Popover
+              getPopupContainer={node => node}
+              placement="bottomRight"
+              content={content}
+              trigger="click"
+            >
+              <IconFont type="more" />
+            </Popover>
+          )}
+
+      <DeleteConfirm
+        isVisible={visible}
+        onChangeVisible={onChangeVisible}
+        onConfirm={onConfirm}
+        text="确认删除该分类？"
+      />
+      <CommonModal
+        title={visibleEditText === 'add' ? '创建子分类' : '修改子分类'}
+        isVisible={visibleEdit}
+        onClose={editClose}
+        onConfirm={editConfirm}
+      >
+        <FormBox>
+          <Form form={form} layout="vertical">
+            <Form.Item
+              label="分类名称"
+              name="name"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Input placeholder="请输入分类名称" />
+            </Form.Item>
+            <Form.Item name="remark" label="分类说明">
+              <Input.TextArea
+                maxLength={200}
+                showCount
+                placeholder="请输入分类描述内容"
+                autoSize={{ minRows: 3, maxRows: 5 }}
+              />
+            </Form.Item>
+          </Form>
+        </FormBox>
+      </CommonModal>
     </TreeBox>
   )
 }
-const myData = [
-  {
-    title: '1-2',
-    num: 1,
-    key: '0-0',
-    children: [
-      {
-        title: 1233,
-        num: 1,
-        key: '0-0-0',
-        children: [
-          {
-            title: 'leaf',
-            num: 1,
-            key: '0-0-0-0',
-          },
-          {
-            title: 'leaf',
-            num: 1,
-            key: '0-0-0-1',
-          },
-        ],
-      },
-      {
-        title: 'parent 1-1',
-        num: 1,
-        key: '0-0-1',
-        children: [
-          {
-            titleL: 'sss',
-            key: '0-0-1-0',
-          },
-        ],
-      },
-    ],
-  },
-]
-const filterTreeData = (data: any) => {
-  const newData = data.map((item: any) => ({
-    title: <TreeItem {...item} num={item.num} name={item.title} />,
-    children:
-      item.children && item.children.length
-        ? filterTreeData(item.children)
-        : null,
-  }))
-  return newData
-}
+
 const WrapLeft = (props: Props) => {
-  const treeData: any = filterTreeData(myData)
+  const [treeData, setTreeData] = useState([])
+
   const init = async () => {
     const res = await getTreeList({ id: props.projectId })
-    console.log(res)
+
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setTreeData(filterTreeData(res))
+  }
+
+  function filterTreeData(data: any) {
+    const newData = data.map((item: any) => ({
+      title: (
+        <TreeItem
+          onRest={() => {
+            init()
+          }}
+          projectId={props.projectId}
+          {...item}
+        />
+      ),
+      children:
+        item.children && item.children.length
+          ? filterTreeData(item.children)
+          : null,
+    }))
+    return newData
   }
 
   useEffect(() => {

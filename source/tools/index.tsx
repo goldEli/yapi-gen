@@ -16,5 +16,29 @@ function openDetail(url: string) {
 function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
+const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
+  const result = []
+  const id = idStr
+  const pid = pidStr
+  const children = childrenStr
+  const len = jsonArr.length
 
-export { getIsPermission, openDetail, getParamsData }
+  const hash = {}
+  jsonArr.forEach(item => {
+    hash[item[id]] = item
+  })
+
+  for (let j = 0; j < len; j++) {
+    const jsonArrItem = jsonArr[j]
+    const hashItem = hash[jsonArrItem[pid]]
+    if (hashItem) {
+      !hashItem[children] && (hashItem[children] = [])
+      hashItem[children].push(jsonArrItem)
+    } else {
+      result.push(jsonArrItem)
+    }
+  }
+  return result
+}
+
+export { getIsPermission, openDetail, getParamsData, transData }
