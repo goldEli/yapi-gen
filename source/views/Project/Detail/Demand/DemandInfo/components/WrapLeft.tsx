@@ -445,7 +445,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
             </Tooltip>
           </Label>
           <TextWrap>
-            {demandInfo?.customField?.[i.content].value || '--'}
+            {demandInfo?.customField?.[i.content]?.value || '--'}
           </TextWrap>
         </InfoItem>
       ))}
