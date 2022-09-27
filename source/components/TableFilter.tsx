@@ -91,7 +91,8 @@ const DelButton = styled.div`
   top: -7px;
   width: 15px;
   height: 15px;
-  visibility: hidden;
+  /* visibility: hidden; */
+  z-index: 9999999;
   &:hover {
     background-color: #2877ff;
   }
@@ -162,7 +163,7 @@ const CollapseWrap = styled(Collapse)({
 
 const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
-  const { list, basicsList, specialList } = props
+  const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
 
   const filterBasicsList = useMemo(() => {
@@ -180,6 +181,14 @@ const TableFilter = (props: any) => {
     )
     return arr
   }, [list, specialList])
+
+  const filterCustomList = useMemo(() => {
+    const newKeys = list?.map((item: { content: any }) => item.content)
+    const arr = customList?.filter(
+      (item: any) => !newKeys.includes(item.content),
+    )
+    return arr
+  }, [list, customList])
 
   const delList = (key: string) => {
     props.onFilter(key, 0)
@@ -211,6 +220,13 @@ const TableFilter = (props: any) => {
       </Collapse.Panel>
       <Collapse.Panel header={t('components.personOrTime')} key="2">
         {filterSpecialList?.map((i: any) => (
+          <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+            {i.content_txt}
+          </CollapseDiv>
+        ))}
+      </Collapse.Panel>
+      <Collapse.Panel header="自定义字段" key="3">
+        {filterCustomList?.map((i: any) => (
           <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
             {i.content_txt}
           </CollapseDiv>

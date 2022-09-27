@@ -78,6 +78,7 @@ const centerText = css`
 `
 const rightText = css`
   /* margin-left: 10px; */
+  font-size: 20px;
   margin-left: 50px;
   &:hover {
     color: #2877ff;

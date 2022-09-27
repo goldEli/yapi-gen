@@ -132,6 +132,8 @@ const Need = (props: any) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [filterCustomList, setFilterCustomList] = useState<any[]>([])
+
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -278,6 +280,7 @@ const Need = (props: any) => {
     setSearchList(arr)
     setFilterBasicsList(res?.filterBasicsList)
     setFilterSpecialList(res?.filterSpecialList)
+    setFilterSpecialList(res?.filterCustomList)
     setIsRefresh(false)
   }
 
@@ -430,6 +433,7 @@ const Need = (props: any) => {
             list={searchList}
             basicsList={filterBasicsList}
             specialList={filterSpecialList}
+            customList={filterCustomList}
           />
         </div>
       ) : null}

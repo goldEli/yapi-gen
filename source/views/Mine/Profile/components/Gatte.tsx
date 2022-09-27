@@ -12,8 +12,6 @@ const Gatte = (props: any) => {
   const [t] = useTranslation()
   const { data: res } = props
 
-  // console.log(res, 'gante数据')
-
   Highcharts.setOptions({
     lang: {
       decimalPoint: '',

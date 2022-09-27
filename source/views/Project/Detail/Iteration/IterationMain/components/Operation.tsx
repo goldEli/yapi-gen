@@ -75,6 +75,7 @@ const Operation = (props: Props) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -153,6 +154,7 @@ const Operation = (props: Props) => {
     setSearchList(arr)
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
   }
 
   useEffect(() => {
@@ -286,6 +288,7 @@ const Operation = (props: Props) => {
           list={searchList}
           basicsList={filterBasicsList}
           specialList={filterSpecialList}
+          customList={filterCustomList}
           isIteration
         />
       )}
