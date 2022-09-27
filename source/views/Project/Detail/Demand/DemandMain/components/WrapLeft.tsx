@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -77,6 +78,7 @@ const centerText = css`
 `
 const rightText = css`
   /* margin-left: 10px; */
+  font-size: 20px;
   margin-left: 50px;
   &:hover {
     color: #2877ff;
@@ -159,35 +161,35 @@ const TreeItem = (props: any) => {
     <div>
       {props.pid === 1
         ? btnsText
-            .filter(item => item.id === 1)
-            .map(item => (
-              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
-                {item.text}
-              </BtnsItemBox>
-            ))
-        : btnsText.map(item => (
+          .filter(item => item.id === 1)
+          .map(item => (
             <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
               {item.text}
             </BtnsItemBox>
-          ))}
+          ))
+        : btnsText.map(item => (
+          <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+            {item.text}
+          </BtnsItemBox>
+        ))}
     </div>
   )
   return (
     <TreeBox>
       <span>{props.name}</span>
       <span className={centerText}>{props.story_count}</span>
-      {props.pid === 0 ? (
-        ''
-      ) : (
-        <Popover
-          getPopupContainer={node => node}
-          placement="bottomRight"
-          content={content}
-          trigger="click"
-        >
-          <IconFont className={rightText} type="more" />
-        </Popover>
-      )}
+      {props.pid === 0
+        ? ''
+        : (
+            <Popover
+              getPopupContainer={node => node}
+              placement="bottomRight"
+              content={content}
+              trigger="click"
+            >
+              <IconFont className={rightText} type="more" />
+            </Popover>
+          )}
 
       <DeleteConfirm
         isVisible={visible}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-negated-condition */
 import { decryptPhp } from './cryptoPhp'
 
@@ -18,13 +19,12 @@ function getParamsData(params: any) {
 }
 const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
   const result = []
-  const id = idStr
-  const pid = pidStr
-  const children = childrenStr
-  const len = jsonArr.length
-
-  const hash = {}
-  jsonArr.forEach(item => {
+  const id: any = idStr
+  const pid: any = pidStr
+  const children: any = childrenStr
+  const len: any = jsonArr.length
+  const hash: any = {}
+  jsonArr.forEach((item: any) => {
     hash[item[id]] = item
   })
 

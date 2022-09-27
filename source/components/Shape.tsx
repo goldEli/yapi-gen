@@ -100,8 +100,6 @@ export const ShapeContent = (props: ShapeProps) => {
   }
 
   useEffect(() => {
-
-    // console.log(1111)
     init()
   }, [])
 
