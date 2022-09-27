@@ -349,7 +349,7 @@ export const getMineNoFinishList: any = async (params: any) => {
           userName: i.user_name,
           tag: i.tag,
           project_id: i.project_id,
-          isExamine: true,
+          isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
         : [],
@@ -378,7 +378,7 @@ export const getMineNoFinishList: any = async (params: any) => {
           userName: i.user_name,
           tag: i.tag,
           project_id: i.project_id,
-          isExamine: true,
+          isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
         : [],
@@ -434,7 +434,7 @@ export const getMineCreacteList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
-        isExamine: true,
+        isExamine: i.verify_lock === 1,
         ...i.custom_field,
       }))
       : [],
@@ -489,7 +489,7 @@ export const getMineFinishList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
-        isExamine: true,
+        isExamine: i.verify_lock === 1,
         ...i.custom_field,
       }))
       : [],
@@ -546,7 +546,7 @@ export const getMineNeedList: any = async (params: any) => {
         tag: i.tag,
         project_id: i.project_id,
         project: i.project,
-        isExamine: true,
+        isExamine: i.verify_lock === 1,
         ...i.custom_field,
       }))
       : [],
@@ -645,6 +645,7 @@ export const addQuicklyCreate: any = async (params: any) => {
     copysend: params.copysend,
     tag: params.tag,
     attachment: params.attachments,
+    custom_field: params.customField,
   })
   return response
 }

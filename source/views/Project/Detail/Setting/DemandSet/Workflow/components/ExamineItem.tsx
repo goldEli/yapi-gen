@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
@@ -112,29 +113,18 @@ const ItemWrap = styled.div({
 })
 
 const menuList = [
-  { name: '依次审核', value: 1 },
-  { name: '与逻辑审核', value: 2 },
-  { name: '或逻辑审核', value: 3 },
+  { name: '依次审核', value: 1, icon: '>' },
+  { name: '与逻辑审核', value: 2, icon: '&' },
+  { name: '或逻辑审核', value: 3, icon: '|' },
 ]
 
 interface ChoosePersonProps {
   onChangeValue(obj: any): void
-  checkList?: any
-  checkedUser?: any
+  options: any
 }
 
 const ChoosePerson = (props: ChoosePersonProps) => {
   const [value, setValue] = useState('')
-  const [arr, setArr] = useState<any>([])
-  const { memberList } = useModel('project')
-
-  useEffect(() => {
-    setArr(
-      memberList
-        ?.filter((i: any) => !props.checkList?.find((k: any) => k.id === i.id))
-        ?.filter((i: any) => !props.checkedUser?.find((k: any) => k === i.id)),
-    )
-  }, [memberList, props.checkList, props?.checkedUser])
 
   return (
     <div style={{ padding: '16px 0', minWidth: 240 }}>
@@ -146,7 +136,7 @@ const ChoosePerson = (props: ChoosePersonProps) => {
         />
       </div>
       <PersonWrap>
-        {arr
+        {props?.options
           ?.filter((k: any) => k.name.includes(value))
           ?.map((i: any) => (
             <PersonItemWrap key={i.id} onClick={() => props?.onChangeValue(i)}>
@@ -179,10 +169,10 @@ const ChoosePerson = (props: ChoosePersonProps) => {
 
 interface Props {
   onRef: any
-  info: any
   onDel(): void
   onChangeList(obj: any): void
-  checkedUser?: any
+  options?: any
+  item: any
 }
 
 const ExamineItem = (props: Props) => {
@@ -190,6 +180,13 @@ const ExamineItem = (props: Props) => {
   const [isShowSelect, setIsShowSelect] = useState(false)
   const [examineList, setExamineList] = useState<any>([])
   const [normal, setNormal] = useState(1)
+
+  useEffect(() => {
+    if (props?.item.id) {
+      setNormal(props?.item?.obj?.operator)
+      setExamineList(props?.item?.obj?.verify_users)
+    }
+  }, [props?.item])
 
   const onReset = () => {
     setExamineList([])
@@ -208,7 +205,9 @@ const ExamineItem = (props: Props) => {
     setExamineList(arr)
     props?.onChangeList({
       operator: normal,
-      verify_users: arr?.map((i: any) => i.id),
+      verify_users: arr,
+      id: obj.id,
+      type: 'add',
     })
   }
 
@@ -217,7 +216,9 @@ const ExamineItem = (props: Props) => {
     setExamineList(arr)
     props?.onChangeList({
       operator: normal,
-      verify_users: arr?.map((i: any) => i.id),
+      verify_users: arr,
+      id,
+      type: 'del',
     })
   }
 
@@ -277,35 +278,48 @@ const ExamineItem = (props: Props) => {
         <IconfontCloseWrap type="close" onClick={props?.onDel} />
       </ItemWrap>
       <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
-        <Space size={8}>
-          {examineList?.map((i: any) => (
+        <Space size={0}>
+          {examineList?.map((i: any, index: any) => (
             <div
               key={i.id}
               style={{
                 display: 'flex',
-                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
-              <NewNameWrap>
-                {i.avatar ? (
-                  <img
-                    style={{ width: 32, height: 32, borderRadius: 16 }}
-                    src={i.avatar}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <NewNameWrap>
+                  {i.avatar ? (
+                    <img
+                      style={{ width: 32, height: 32, borderRadius: 16 }}
+                      src={i.avatar}
+                    />
+                  ) : (
+                    <NameWrap style={{ margin: 0 }}>
+                      {String(
+                        i?.name?.substring(0, 1).trim()
+                          .slice(0, 1),
+                      ).toLocaleUpperCase()}
+                    </NameWrap>
+                  )}
+                  <IconFontWrap
+                    type="close-circle-fill"
+                    onClick={() => onDelCheckPerson(i.id)}
                   />
-                ) : (
-                  <NameWrap>
-                    {String(
-                      i?.name?.substring(0, 1).trim()
-                        .slice(0, 1),
-                    ).toLocaleUpperCase()}
-                  </NameWrap>
-                )}
-                <IconFontWrap
-                  type="close-circle-fill"
-                  onClick={() => onDelCheckPerson(i.id)}
-                />
-              </NewNameWrap>
-              <span>{i.name}</span>
+                </NewNameWrap>
+                <span>{i.name}</span>
+              </div>
+              {index !== examineList?.length - 1 && (
+                <span style={{ fontSize: 18, margin: '0 12px' }}>
+                  {menuList?.filter((k: any) => k.value === normal)[0]?.icon}
+                </span>
+              )}
             </div>
           ))}
         </Space>
@@ -320,8 +334,7 @@ const ExamineItem = (props: Props) => {
           content={
             <ChoosePerson
               onChangeValue={obj => onAddPerson(obj)}
-              checkList={examineList}
-              checkedUser={props?.checkedUser}
+              options={props?.options}
             />
           }
           getPopupContainer={node => node}

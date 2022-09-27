@@ -43,6 +43,8 @@ export const addTreeList = async (params: any, tag: string) => {
     remark: params.remark,
   })
 
+  // console.log(res)
+
   return res
 }
 
@@ -52,6 +54,8 @@ export const delTreeList = async (params: any) => {
 
     id: params?.id,
   })
+
+  // console.log(res)
 
   return res
 }

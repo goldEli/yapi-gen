@@ -43,7 +43,8 @@ export const getDemandInfo: any = async (params: any) => {
     changeCount: response.data.app_changelog_count,
     iterateId: response.data.iterate_id || null,
     projectId: response.data.project_id,
-    isExamine: true,
+    isExamine: response.data.verify_lock === 1,
+    customField: response.data.custom_field,
   }
 }
 
@@ -89,7 +90,7 @@ export const getDemandList: any = async (params: any) => {
           userIds: i.user_id,
           iterateId: i.iterate_id,
           parentId: i.parent_id,
-          isExamine: true,
+          isExamine: i.verify_lock === 1,
           ...i.custom_field,
         })),
         name: k.content_txt,
@@ -113,7 +114,7 @@ export const getDemandList: any = async (params: any) => {
       iterateId: i.iterate_id,
       parentId: i.parent_id,
       userName: i.user_name,
-      isExamine: true,
+      isExamine: i.verify_lock === 1,
       ...i.custom_field,
     }))
   } else {
@@ -140,7 +141,7 @@ export const getDemandList: any = async (params: any) => {
         usersCopySendName: i.users_copysend_name,
         userName: i.user_name,
         tag: i.tag,
-        isExamine: true,
+        isExamine: i.verify_lock === 1,
         ...i.custom_field,
       })),
     }
@@ -233,6 +234,7 @@ export const addDemand: any = async (params: any) => {
     copysend: params?.copySendIds,
     tag: params?.tagIds,
     attachment: params?.attachments,
+    custom_field: params?.customField,
   })
 }
 
@@ -269,6 +271,7 @@ export const updateDemand: any = async (params: any) => {
     tag: params.tagIds,
     attachment: params.attachments,
     id: params.id,
+    custom_field: params?.customField,
   })
 }
 

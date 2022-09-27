@@ -145,6 +145,7 @@ const DemandMain = (props: Props) => {
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)
     } catch (error) {
+
       //
     }
   }

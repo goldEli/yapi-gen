@@ -169,16 +169,12 @@ const MoreWrap = (props: MoreWrapProps) => {
   } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [disable, setDisable] = useState(true)
 
   const onClickMenu = (type: string) => {
     setIsMoreVisible(false)
     if (type === 'delete' && props?.row?.hasDemand) {
       setIsHasDelete(true)
-      getStatusList({
-        projectId: paramsData.id,
-        categoryId: props?.row?.id,
-        isSelect: true,
-      })
     } else if (type === 'delete' && !props?.row?.hasDemand) {
       setIsDelete(true)
     } else {
@@ -236,6 +232,20 @@ const MoreWrap = (props: MoreWrapProps) => {
     }
   }
 
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      await getStatusList({
+        projectId: paramsData.id,
+        categoryId: value,
+        isSelect: true,
+      })
+      setDisable(false)
+    } else {
+      form.resetFields()
+      setDisable(true)
+    }
+  }
+
   return (
     <>
       {isDelete && (
@@ -268,6 +278,7 @@ const MoreWrap = (props: MoreWrapProps) => {
                 getPopupContainer={node => node}
                 allowClear
                 optionFilterProp="label"
+                onChange={onChangeSelect}
                 options={props?.list
                   ?.filter((i: any) => i.id !== props?.row?.id)
                   ?.map((k: any) => ({ label: k.name, value: k.id }))}
@@ -280,6 +291,7 @@ const MoreWrap = (props: MoreWrapProps) => {
             >
               <Select
                 placeholder="请选择"
+                disabled={disable}
                 showArrow
                 showSearch
                 getPopupContainer={node => node}
@@ -357,7 +369,7 @@ const CardGroup = (props: CardGroupProps) => {
     setIsEdit(false)
     setTimeout(() => {
       setEditRow({})
-    }, 100)
+    }, 50)
   }
 
   const onChangeMore = (row: any) => {

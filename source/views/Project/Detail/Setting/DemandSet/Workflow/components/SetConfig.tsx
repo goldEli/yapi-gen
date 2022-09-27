@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable prefer-destructuring */
 /* eslint-disable max-lines */
 /* eslint-disable no-lonely-if */
 /* eslint-disable camelcase */
@@ -24,10 +26,19 @@ import {
   Form,
   Input,
   DatePicker,
+  InputNumber,
+  message,
 } from 'antd'
+import moment from 'moment'
 import { createRef, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import ExamineItem from './ExamineItem'
+import { arrayMoveImmutable } from 'array-move'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
 
 const LabelWrap = styled.div({
   color: '#323233',
@@ -64,6 +75,8 @@ const TextWrap = styled.div({
   fontSize: 12,
   color: '#969799',
   fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
 })
 
 const TimelineWrap = styled(Timeline)({
@@ -93,11 +106,11 @@ interface Props {
   item: any
 }
 
-const normalObj = {
+const normalObj: any = {
   can_delete: 2,
   content: '',
   default_type: 1,
-  default_value: { title: '', content: '' },
+  default_value: '',
   is_must: 2,
   title: '',
 }
@@ -115,23 +128,15 @@ const SetConfig = (props: Props) => {
   const { categoryItem } = paramsData
   const [info, setInfo] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
+  const [allMemberList, setAllMemberList] = useState<any>([])
   const [normalList, setNormalList] = useState([
     { id: new Date().getTime(), obj: {} },
   ])
-  const [checkedUser, setCheckedUser] = useState<any>([])
   const [form] = Form.useForm()
   const [dataSource, setDataSource] = useState<any>([])
-  const [fieldAll, setFieldAll] = useState<any>([])
+  const [options, setOptions] = useState<any>([])
 
-  const getMemberList = async () => {
-    const result = await getProjectMember({
-      projectId: paramsData.id,
-      all: true,
-    })
-    setMemberList(result)
-  }
-
-  const getInfo = async () => {
+  const getInfo = async (arrOption: any) => {
     const result = await getWorkflowInfo({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
@@ -147,22 +152,41 @@ const SetConfig = (props: Props) => {
     })
     setIsSwitch(result?.is_verify === 1)
     setDataSource(result?.fields)
-    setFieldAll(
-      result?.fieldAll?.map((i: any) => ({
-        label: i.title,
-        value: i.content,
-        fixed_type: i.fixed_type,
-        field_type: i.field_type,
-      })),
-    )
+    setRadioValue(result?.verify?.verify_type)
+    if (result?.verify?.verify_type === 1) {
+      let checkedList: any = []
+      const arr = result?.verify?.process?.map((k: any, index: any) => ({
+        id: new Date().getTime() + index * 11,
+        obj: {
+          operator: k.operator,
+          verify_users: arrOption?.filter((j: any) => k.verify_users?.some((i: any) => i === j.id)),
+        },
+      }))
+      setNormalList(arr)
+      result?.verify?.process?.forEach((element: any) => {
+        checkedList = [...checkedList, ...element.verify_users]
+      })
+      setOptions(
+        arrOption?.filter(
+          (j: any) => !checkedList?.some((i: any) => i === j.id),
+        ),
+      )
+    }
+  }
 
-    // setNormalList()
-    // setCheckedUser()
+  const getMemberList = async () => {
+    const result = await getProjectMember({
+      projectId: paramsData.id,
+      all: true,
+    })
+    setMemberList(result?.map((k: any) => ({ label: k.name, value: k.id })))
+    setOptions(result)
+    setAllMemberList(result)
+    getInfo(result)
   }
 
   useEffect(() => {
     if (props?.isVisible) {
-      getInfo()
       getMemberList()
     }
   }, [props?.isVisible])
@@ -174,6 +198,7 @@ const SetConfig = (props: Props) => {
     setIsShowPermission(true)
     setInfo({})
     setNormalList([])
+    setOptions([])
     ChildRef?.current?.reset()
   }
 
@@ -182,86 +207,259 @@ const SetConfig = (props: Props) => {
     onReset()
   }
 
-  const onConfirm = () => {
+  // 提交
+  const onConfirm = async () => {
     const obj = form.getFieldsValue()
-    obj.verify = {
+    const params = {
+      projectId: paramsData.id,
+      categoryId: categoryItem?.id,
+      fromId: props?.item?.id,
+      toId: props?.item?.toId,
+      isVerify: obj.is_verify ? 1 : 2,
       verify_type: radioValue,
+      process: normalList
+        ?.map((i: any) => i.obj)
+        ?.map((k: any) => ({
+          operator: k.operator,
+          verify_users: k.verify_users?.map((j: any) => j.id),
+        })),
+      auth: {
+        roles: obj.roles,
+        other_users: obj.other_users,
+        user_fields: obj.user_fields,
+      },
+      fields: dataSource,
     }
-    if (radioValue === 1) {
-      obj.verify.process = normalList?.map((i: any) => i.obj)
-    }
+    await saveWorkflowConfig(params)
+    message.success('保存成功')
+    onClose()
+    setDataSource([])
   }
 
-  const onGetList = (text: any, row: any) => {
-    const arr: any = {}
-    if (row.default_type === 1) {
-      if (
-        row.content === 'user_name'
-        || row.content === 'users_copysend_name'
-        || row.content === 'users_name'
-      ) {
-        arr.options = fieldAll
-          ?.filter((i: any) => i.value === 'users_copysend_name')[0]
-          ?.field_type?.map((k: any) => ({ label: k.title, value: k.content }))
-      } else if (row.content?.includes('expected_')) {
-        arr.options = fieldAll
-          ?.filter((i: any) => i.value === 'expected_end_at')[0]
-          ?.field_type?.map((k: any) => ({ label: k.title, value: k.content }))
-      } else {
-        arr.options = fieldAll
-          ?.filter((i: any) => i.value === text.content)[0]
-          ?.field_type?.map((k: any) => ({ label: k.title, value: k.content }))
-      }
-    } else {
-      if (
-        row.content === 'user_name'
-        || row.content === 'users_copysend_name'
-        || row.content === 'users_name'
-      ) {
-        arr.options = memberList?.map((i: any) => ({
-          label: i.name,
-          value: i.id,
-        }))
-      } else if (row.content === 'priority' || row.content === 'tag') {
-        arr.options = fieldAll
-          ?.filter((i: any) => i.value === row.content)[0]
-          ?.fixed_type.list?.map((k: any) => ({
-            label: k.content,
-            value: k.id,
-          }))
-        if (row.content === 'tag') {
-          arr.mode = 'multiple'
-        }
-      } else {
-        arr.options = fieldAll
-          ?.filter((i: any) => i.value === text.content)[0]
-          ?.fixed_type.list?.map((k: any) => ({
-            label: k.name,
-            value: k.id,
-          }))
-      }
-    }
-    return arr
-  }
-
+  // 修改默认值类型
   const onChangeValue = (val: any, row: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
-    arr.filter((i: any) => i.content === row.content)[0].default_type = val
+    let obj: any = {}
+    if (row.tag) {
+      obj = arr.filter((i: any) => i.tag === row.tag)[0]
+    } else {
+      obj = arr.filter((i: any) => i.content === row.content)[0]
+    }
+    obj.default_value = row.default_type === val ? row.default_value : ''
+    obj.default_type = val
     setDataSource(arr)
   }
 
+  // 修改字段名称
   const onChangeName = (val: any, row: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
-    arr.filter((i: any) => i.content === row.content)[0].title
-      = fieldAll?.filter((k: any) => k.value === val)[0]?.label
-    arr.filter((i: any) => i.content === row.content)[0].content
-      = fieldAll?.filter((k: any) => k.value === val)[0]?.value
+    let obj: any = {}
+    if (row.tag) {
+      obj = arr.filter((i: any) => i.tag === row.tag)[0]
+    } else {
+      obj = arr.filter((i: any) => i.content === row.content)[0]
+    }
+    obj.title = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.label
+    obj.content = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.value
     setDataSource(arr)
   }
 
-  const onChangeSelect = (val: any, row: any) => {
+  // 修改默认值、默认值字段 --- 点选||多选
+  const onChangeSelect = (value: any, row: any, obj: any) => {
+    const arr = JSON.parse(JSON.stringify(dataSource))
+    if (row.tag) {
+      arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
+        'select_checkbox',
+        'checkbox',
+      ].includes(obj.type)
+        ? value
+        : {
+            title: obj?.options?.filter((k: any) => k.value === value)[0]
+              ?.label,
+            content: value,
+          }
+    } else {
+      arr.filter((i: any) => i.content === row.content)[0].default_value = [
+        'select_checkbox',
+        'checkbox',
+      ].includes(obj.type)
+        ? value
+        : {
+            title: obj?.options?.filter((k: any) => k.value === value)[0]
+              ?.label,
+            content: value,
+          }
+    }
+    setDataSource(arr)
+  }
 
-    //
+  // 修改默认值、默认值字段 --- 文本
+  const onChangeText = (value: any, row: any, type?: any) => {
+    const arr = JSON.parse(JSON.stringify(dataSource))
+    if (row.tag) {
+      arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
+        'date',
+        'datetime',
+      ].includes(type)
+        ? moment(value).format(
+          type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+        )
+        : value
+    } else {
+      arr.filter((i: any) => i.content === row.content)[0].default_value = [
+        'date',
+        'datetime',
+      ].includes(type)
+        ? moment(value).format(
+          type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+        )
+        : value
+    }
+    setDataSource(arr)
+  }
+
+  // 获取默认值/默认值字段 控件
+  const getTableCol = (row: any) => {
+    const filterObj = info?.fieldAll?.filter(
+      (i: any) => i.value === row.content,
+    )[0]
+    const defaultObj = filterObj?.defaultValueFields[row.default_type]
+    let child: any
+    if (
+      ['select', 'select_checkbox', 'checkbox', ' radio'].includes(
+        defaultObj?.type,
+      )
+    ) {
+      child = (
+        <Select
+          style={{ width: 148 }}
+          showArrow
+          showSearch
+          optionFilterProp="label"
+          value={
+            Array.isArray(row.default_value)
+              ? row.default_value
+              : row.default_value?.title
+          }
+          options={
+            ['users_name', 'users_copysend_name'].includes(row.content)
+            && row.default_type === 2
+              ? memberList
+              : defaultObj?.options
+          }
+          mode={
+            defaultObj?.type === 'select_checkbox' ? 'multiple' : ('' as any)
+          }
+          onChange={(value: any) => onChangeSelect(value, row, defaultObj)}
+        />
+      )
+    } else if (['textarea'].includes(defaultObj?.type)) {
+      child = (
+        <Input.TextArea
+          style={{ width: 148 }}
+          value={row.default_value}
+          onChange={e => onChangeText(e.target.value, row)}
+        />
+      )
+    } else if (['date', 'datetime'].includes(defaultObj?.type)) {
+      child = (
+        <DatePicker
+          style={{ width: 148 }}
+          value={row.default_value ? moment(row.default_value) : ('' as any)}
+          onChange={date => onChangeText(date, row, defaultObj.type)}
+          showTime={defaultObj?.type === 'datetime'}
+        />
+      )
+    } else if (['integer', 'number'].includes(defaultObj?.type)) {
+      child = (
+        <InputNumber
+          style={{ width: 148 }}
+          value={row.default_value}
+          onChange={value => onChangeText(value, row)}
+        />
+      )
+    } else {
+      child = (
+        <Input
+          style={{ width: 148 }}
+          value={row.default_value}
+          onChange={e => onChangeText(e.target.value, row)}
+        />
+      )
+    }
+
+    return child
+  }
+
+  // 修改必填项
+  const onChangeCheck = (e: any, row: any) => {
+    const arr = JSON.parse(JSON.stringify(dataSource))
+    if (row.tag) {
+      arr.filter((i: any) => i.tag === row.tag)[0].is_must = e.target.checked
+        ? 1
+        : 2
+    } else {
+      arr.filter((i: any) => i.content === row.content)[0].is_must = e.target
+        .checked
+        ? 1
+        : 2
+    }
+    setDataSource(arr)
+  }
+
+  // 删除行
+  const onDelRow = (row: any) => {
+    let arr = JSON.parse(JSON.stringify(dataSource))
+    if (row.tag) {
+      arr = arr.filter((k: any) => k.tag !== row.tag)
+    } else {
+      arr = arr.filter((k: any) => k.content !== row.content)
+    }
+    setDataSource(arr)
+  }
+
+  const DragHandle = sortableHandle(() => (
+    <IconFont
+      type="move"
+      style={{ fontSize: 16, cursor: 'pointer', color: '#969799' }}
+    />
+  ))
+
+  const SortableItem = sortableElement(
+    (propsItem: React.HTMLAttributes<HTMLTableRowElement>) => <tr {...propsItem} />
+    ,
+  )
+
+  const SortableBody = sortableContainer(
+    (propsItem: React.HTMLAttributes<HTMLTableSectionElement>) => <tbody {...propsItem} />
+    ,
+  )
+
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(
+        dataSource?.slice(),
+        oldIndex,
+        newIndex,
+      ).filter((el: any) => !!el)
+      setDataSource(newData)
+    }
+  }
+
+  const DraggableContainer = (propsItem: any) => (
+    <SortableBody
+      useDragHandle
+      disableAutoscroll
+      onSortEnd={onSortEnd}
+      {...propsItem}
+    />
+  )
+
+  const DraggableBodyRow: React.FC<any> = ({ ...restProps }) => {
+    const index = dataSource?.findIndex(
+      (x: any) => x.index === restProps['data-row-key'],
+    )
+    return <SortableItem index={index} {...restProps} />
   }
 
   const columns = [
@@ -275,7 +473,7 @@ const SetConfig = (props: Props) => {
             {record?.content === 'comment'
             || record.content === 'users_name'
               ? ''
-              : <IconFont type="move" />
+              : <DragHandle />
             }
           </>
         )
@@ -296,10 +494,14 @@ const SetConfig = (props: Props) => {
           disabled={
             record?.content === 'comment' || record?.content === 'users_name'
           }
-          options={fieldAll?.filter((i: any) => ({
-            label: i.title,
-            value: i.content,
-          }))}
+          options={info?.fieldAll
+            ?.filter(
+              (k: any) => !dataSource?.some((j: any) => k.value === j.content),
+            )
+            ?.filter((i: any) => ({
+              label: i.title,
+              value: i.content,
+            }))}
         />
       ),
     },
@@ -330,34 +532,19 @@ const SetConfig = (props: Props) => {
       title: '默认值/默认值字段',
       dataIndex: 'default_value',
       width: 170,
-      render: (text: any, record: any) => (
-        <>
-          {record.content === 'comment' && record.default_type === 2
-            ? <Input />
-            : record.content.includes('expected_')
-            && record.default_type === 2
-              ? <DatePicker />
-              : (
-                  <Select
-                    style={{ width: 148 }}
-                    showArrow
-                    showSearch
-                    value={text}
-                    optionFilterProp="value"
-                    onChange={value => onChangeSelect(value, record)}
-                    {...onGetList(text, record)}
-                  />
-                )}
-        </>
-      ),
+      render: (text: any, record: any) => <>{getTableCol(record)}</>,
     },
     {
       title: '是否必填',
       width: 100,
       dataIndex: 'is_must',
       align: 'center',
-      render: (text: any, record: any) => <Checkbox checked={record.is_must === 1} />
-      ,
+      render: (text: any, record: any) => (
+        <Checkbox
+          onChange={e => onChangeCheck(e, record)}
+          checked={record.is_must === 1}
+        />
+      ),
     },
     {
       title: '操作',
@@ -369,18 +556,26 @@ const SetConfig = (props: Props) => {
             {record?.content === 'comment'
             || record.content === 'users_name'
               ? ''
-              : <span style={{ color: '#2877ff', cursor: 'pointer' }}>删除</span>
-            }
+              : (
+                  <span
+                    style={{ color: '#2877ff', cursor: 'pointer' }}
+                    onClick={() => onDelRow(record)}
+                  >
+                删除
+                  </span>
+                )}
           </>
         )
       },
     },
   ]
 
+  // 流转审核下的类型
   const onRadioChange = (e: any) => {
     setRadioValue(e.target.value)
   }
 
+  // 是否开启流转审核
   const onChangeSwitch = (checked: boolean) => {
     setIsSwitch(checked)
     setNormalList([{ id: new Date().getTime(), obj: {} }])
@@ -389,17 +584,27 @@ const SetConfig = (props: Props) => {
     })
   }
 
+  // 删除流转审核线
   const onDel = (id: any) => {
     setNormalList(normalList?.filter((i: any) => i.id !== id))
   }
 
+  // 更新流转审核线并过滤人员下拉
   const onChangeList = (obj: any, id: any) => {
     normalList.filter((i: any) => i.id === id)[0].obj = obj
-    setCheckedUser([...checkedUser, ...obj.verify_users])
+    if (obj.type === 'add') {
+      setOptions(options?.filter((k: any) => k.id !== obj.id))
+    } else {
+      const checkObj = allMemberList?.filter((i: any) => i.id === obj.id)[0]
+      setOptions([...options, ...[checkObj]])
+    }
   }
 
+  // 点击添加字段
   const onClickAddField = () => {
     const arr = JSON.parse(JSON.stringify(dataSource))
+    normalObj.tag = new Date().getTime()
+    normalObj.index = new Date().getTime()
     setDataSource(arr.slice(0, -1).concat([normalObj].concat(arr.slice(-1))))
   }
 
@@ -465,7 +670,7 @@ const SetConfig = (props: Props) => {
               <LabelWrap>用户组</LabelWrap>
               <Form.Item noStyle name="roles">
                 <Select
-                  style={{ width: 186 }}
+                  style={{ minWidth: 186 }}
                   showSearch
                   mode="multiple"
                   optionFilterProp="label"
@@ -482,7 +687,7 @@ const SetConfig = (props: Props) => {
               <LabelWrap>人员字段</LabelWrap>
               <Form.Item noStyle name="user_fields">
                 <Select
-                  style={{ width: 186 }}
+                  style={{ minWidth: 186 }}
                   showSearch
                   mode="multiple"
                   showArrow
@@ -499,16 +704,13 @@ const SetConfig = (props: Props) => {
               <LabelWrap>其他用户</LabelWrap>
               <Form.Item noStyle name="other_users">
                 <Select
-                  style={{ width: 186 }}
+                  style={{ minWidth: 186 }}
                   showSearch
                   mode="multiple"
                   optionFilterProp="label"
                   showArrow
                   getPopupContainer={node => node}
-                  options={memberList?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
+                  options={memberList}
                   allowClear
                 />
               </Form.Item>
@@ -541,10 +743,10 @@ const SetConfig = (props: Props) => {
                       <ExamineItem
                         key={i.id}
                         onRef={ChildRef}
-                        info={info}
                         onDel={() => onDel(i.id)}
                         onChangeList={arr => onChangeList(arr, i.id)}
-                        checkedUser={checkedUser}
+                        options={options}
+                        item={i}
                       />
                     ))}
                     <Timeline.Item>
@@ -596,12 +798,25 @@ const SetConfig = (props: Props) => {
               pagination={false}
               dataSource={dataSource}
               columns={columns as any}
-              rowKey="content"
+              rowKey="index"
               sticky
               style={{ marginTop: 16 }}
+              components={{
+                body: {
+                  wrapper: DraggableContainer,
+                  row: DraggableBodyRow,
+                },
+              }}
             />
             <TextWrap>
-              注：拖动图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+              注：拖动
+              <IconFont
+                type="move"
+                style={{
+                  fontSize: 14,
+                }}
+              />
+              图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
             </TextWrap>
           </div>
         )}

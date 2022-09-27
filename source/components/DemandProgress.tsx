@@ -9,6 +9,7 @@ interface Props {
 const DemandProgress = (props: Props) => {
   return (
     <Popover
+      trigger={['click']}
       content={
         <ProgressWrap>
           <SliderWrap

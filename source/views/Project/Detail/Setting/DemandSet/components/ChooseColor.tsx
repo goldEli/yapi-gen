@@ -43,6 +43,7 @@ const ChooseColor = (props: ChooseColorProps) => {
   const onChangeColor = (val: string) => {
     props?.onChangeValue?.(val)
     props?.onChange?.(val)
+    setIsChooseColor(false)
   }
   const colorStatus = (
     <Space

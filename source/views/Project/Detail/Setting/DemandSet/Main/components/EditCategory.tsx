@@ -54,6 +54,8 @@ const EditorCategory = (props: EditorProps) => {
     if (props?.item?.id) {
       form.setFieldsValue(props?.item)
       setNormalColor(props?.item?.color)
+    } else {
+      form.resetFields()
     }
   }, [props?.item])
 
@@ -61,6 +63,7 @@ const EditorCategory = (props: EditorProps) => {
     props?.onClose()
     setTimeout(() => {
       form.resetFields()
+      setNormalColor('')
       getCategoryList({ projectId: paramsData.id })
     }, 100)
   }

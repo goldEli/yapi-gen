@@ -373,6 +373,7 @@ export const storyConfigField: any = async (params: any) => {
       type: i.field_content,
       id: i.id,
       remarks: i.remarks,
+      content: i.content,
     })),
   }
 }
@@ -453,6 +454,15 @@ export const deleteStoryConfigCategory: any = async (params: any) => {
   await http.post<any>('deleteCategory', {
     project_id: params.projectId,
     id: params.id,
+  })
+}
+
+export const changeStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('moveCategoryStory', {
+    status_id: params.statusId,
+    old_category_id: params?.oldId,
+    project_id: params.projectId,
+    new_category_id: params.newId,
   })
 }
 
@@ -568,17 +578,6 @@ export const saveWorkflowStatus: any = async (params: any) => {
   })
 }
 
-// ----------------------------
-
-export const changeStoryConfigCategory: any = async (params: any) => {
-  await http.post<any>('moveCategoryStory', {
-    status_id: params.statusId,
-    old_category_id: params?.oldId,
-    project_id: params.projectId,
-    new_category_id: params.newId,
-  })
-}
-
 export const getWorkflowInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getWorkflowInfo', {
     project_id: params.projectId,
@@ -587,49 +586,53 @@ export const getWorkflowInfo: any = async (params: any) => {
     category_status_to_id: params.toId,
   })
 
-  // const list: any = response.data.fieldAll?.map((i: any) => ({
-  //   label: i.title,
-  //   value: i.content,
-  //   groupLabel: i.group_name,
-  //   defaultValueTypeOptions: [
-  //     {
-  //       label: 'fieldLabel',
-  //       value: 1,
-  //     },
-  //     {
-  //       label: 'fixedLabel',
-  //       value: 2,
-  //     },
-  //   ],
-  //   defaultValueTypeDefaultValue: 1,
-  //   defaultValueFields: {
-  //     1: {
-  //       type: i.attr && i.attr !== 'date' ? i.attr : 'radio',
-  //       options:
-  //         // 选项去其他的地方取
-  //         (i.attr === 'date'
-  //           ? []
-  //           : i.field?.value?.map((field: any) => ({
-  //               label: field,
-  //               value: field,
-  //             }))) ??
-  //         i.field_type?.map((field: any) => ({
-  //           label: field.title ?? field.name,
-  //           value: field.content,
-  //         })) ??
-  //         [],
-  //     },
-  //     2: {
-  //       type: i.attr ?? i.fixed_type?.flag,
-  //       extra: i.value[0],
-  //       options:
-  //         i.fixed_type?.list?.map((field: any) => ({
-  //           label: field.title ?? field.name ?? field.content_txt,
-  //           value: field.id ?? field.content,
-  //         })) ?? [],
-  //     },
-  //   },
-  // }))
+  const list: any = response.data.fieldAll?.map((i: any) => ({
+    label: i.title,
+    value: i.content,
+    groupLabel: i.group_name,
+    defaultValueFields: {
+      1: {
+        type: 'select',
+        options: i.field_type?.map((k: any) => ({
+          label: k.title,
+          value: k.content,
+        })),
+      },
+      2: {
+        type:
+          i.fixed_type.attr === 'date' || i.fixed_type.attr === 'number'
+            ? i.fixed_type.value ?? i.fixed_type.attr
+            : i.fixed_type.attr,
+        options:
+          i.fixed_type.attr === 'date'
+          || i.fixed_type.attr === 'number'
+          || !i.fixed_type.value
+            ? []
+            : i.fixed_type.attr === 'select'
+              && String(i.content).includes('custom_')
+              ? i.fixed_type.value?.map((fixed: any) => ({
+                label: fixed,
+                value: fixed,
+              }))
+              : i.fixed_type.value?.map((fixed: any) => ({
+                label: fixed.content ?? fixed.name,
+                value: fixed.id,
+              })),
+      },
+    },
+  }))
+
+  response.data.fieldAll = list
+  response.data.fields = response.data.fields?.map((k: any, index: any) => ({
+    can_delete: k.can_delete,
+    content: k.content,
+    default_type: k.default_type,
+    default_value: k.default_value,
+    is_must: k.is_must,
+    title: k.title,
+    index: new Date().getTime() + index * 11,
+    id: new Date().getTime() + index * 11,
+  }))
 
   return response.data
 }
@@ -642,7 +645,10 @@ export const saveWorkflowConfig: any = async (params: any) => {
     category_status_to_id: params.toId,
     is_verify: params.isVerify,
     fields: params.fields,
-    verify: params.verify,
+    verify: {
+      verify_type: params.verify_type,
+      process: params.process,
+    },
     auth: params.auth,
   })
 }
