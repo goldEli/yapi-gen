@@ -121,6 +121,7 @@ const SetConfig = (props: Props) => {
   const { categoryItem } = paramsData
   const [info, setInfo] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
+  const [allMemberList, setAllMemberList] = useState<any>([])
   const [normalList, setNormalList] = useState([
     { id: new Date().getTime(), obj: {} },
   ])
@@ -128,24 +129,13 @@ const SetConfig = (props: Props) => {
   const [dataSource, setDataSource] = useState<any>([])
   const [options, setOptions] = useState<any>([])
 
-  const getMemberList = async () => {
-    const result = await getProjectMember({
-      projectId: paramsData.id,
-      all: true,
-    })
-    setMemberList(result?.map((k: any) => ({ label: k.name, value: k.id })))
-    setOptions(result)
-  }
-
-  const getInfo = async () => {
+  const getInfo = async (arrOption: any) => {
     const result = await getWorkflowInfo({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
       fromId: props?.item?.id,
       toId: props?.item?.toId,
     })
-
-    // console.log(result, '======121212')
     setInfo(result)
     form.setFieldsValue(result)
     form.setFieldsValue({
@@ -155,15 +145,42 @@ const SetConfig = (props: Props) => {
     })
     setIsSwitch(result?.is_verify === 1)
     setDataSource(result?.fields)
+    setRadioValue(result?.verify?.verify_type)
+    if (result?.verify?.verify_type === 1) {
+      let checkedList: any = []
+      const arr = result?.verify?.process?.map((k: any, index: any) => ({
+        id: new Date().getTime() + index * 11,
+        obj: {
+          operator: k.operator,
+          verify_users: arrOption?.filter((j: any) => k.verify_users?.some((i: any) => i === j.id)),
+        },
+      }))
+      setNormalList(arr)
+      result?.verify?.process?.forEach((element: any) => {
+        checkedList = [...checkedList, ...element.verify_users]
+      })
+      setOptions(
+        arrOption?.filter(
+          (j: any) => !checkedList?.some((i: any) => i === j.id),
+        ),
+      )
+    }
+  }
 
-    // setNormalList()
-    // setOptions()
+  const getMemberList = async () => {
+    const result = await getProjectMember({
+      projectId: paramsData.id,
+      all: true,
+    })
+    setMemberList(result?.map((k: any) => ({ label: k.name, value: k.id })))
+    setOptions(result)
+    setAllMemberList(result)
+    getInfo(result)
   }
 
   useEffect(() => {
     if (props?.isVisible) {
       getMemberList()
-      getInfo()
     }
   }, [props?.isVisible])
 
@@ -191,7 +208,7 @@ const SetConfig = (props: Props) => {
       categoryId: categoryItem?.id,
       fromId: props?.item?.id,
       toId: props?.item?.toId,
-      is_verify: obj.is_verify,
+      isVerify: obj.is_verify ? 1 : 2,
       verify_type: radioValue,
       process: normalList
         ?.map((i: any) => i.obj)
@@ -206,14 +223,10 @@ const SetConfig = (props: Props) => {
       },
       fields: dataSource,
     }
-
-    // console.log(
-    //   params,
-    //   normalList?.map((i: any) => i.obj),
-    // )
     await saveWorkflowConfig(params)
     message.success('保存成功')
-    onReset()
+    onClose()
+    setDataSource([])
   }
 
   // 修改默认值类型
@@ -277,17 +290,23 @@ const SetConfig = (props: Props) => {
   const onChangeText = (value: any, row: any, type?: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
     if (row.tag) {
-      arr.filter((i: any) => i.tag === row.tag)[0].default_value = value
+      arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
+        'date',
+        'datetime',
+      ].includes(type)
         ? moment(value).format(
           type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
         )
-        : ''
+        : value
     } else {
-      arr.filter((i: any) => i.content === row.content)[0].default_value = value
+      arr.filter((i: any) => i.content === row.content)[0].default_value = [
+        'date',
+        'datetime',
+      ].includes(type)
         ? moment(value).format(
           type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
         )
-        : ''
+        : value
     }
     setDataSource(arr)
   }
@@ -313,7 +332,7 @@ const SetConfig = (props: Props) => {
           value={
             Array.isArray(row.default_value)
               ? row.default_value
-              : row.default_value?.name
+              : row.default_value?.title
           }
           options={
             ['users_name', 'users_copysend_name'].includes(row.content)
@@ -525,7 +544,7 @@ const SetConfig = (props: Props) => {
     if (obj.type === 'add') {
       setOptions(options?.filter((k: any) => k.id !== obj.id))
     } else {
-      const checkObj = memberList?.filter((i: any) => i.id === obj.id)[0]
+      const checkObj = allMemberList?.filter((i: any) => i.id === obj.id)[0]
       setOptions([...options, ...[checkObj]])
     }
   }
@@ -672,10 +691,10 @@ const SetConfig = (props: Props) => {
                       <ExamineItem
                         key={i.id}
                         onRef={ChildRef}
-                        info={info}
                         onDel={() => onDel(i.id)}
                         onChangeList={arr => onChangeList(arr, i.id)}
                         options={options}
+                        item={i}
                       />
                     ))}
                     <Timeline.Item>

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
@@ -168,10 +169,10 @@ const ChoosePerson = (props: ChoosePersonProps) => {
 
 interface Props {
   onRef: any
-  info: any
   onDel(): void
   onChangeList(obj: any): void
   options?: any
+  item: any
 }
 
 const ExamineItem = (props: Props) => {
@@ -179,6 +180,13 @@ const ExamineItem = (props: Props) => {
   const [isShowSelect, setIsShowSelect] = useState(false)
   const [examineList, setExamineList] = useState<any>([])
   const [normal, setNormal] = useState(1)
+
+  useEffect(() => {
+    if (props?.item.id) {
+      setNormal(props?.item?.obj?.operator)
+      setExamineList(props?.item?.obj?.verify_users)
+    }
+  }, [props?.item])
 
   const onReset = () => {
     setExamineList([])
