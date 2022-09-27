@@ -15,6 +15,7 @@ import { DataNode } from 'antd/lib/tree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { rest } from 'lodash'
+import { css } from '@emotion/css'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -44,9 +45,9 @@ interface Props {
   projectId: any
 }
 const TreeBox = styled.div`
-  /* width: 220px; */
+  width: 100%;
   height: 40px;
-  background: #f0f4fa;
+  /* background: #f0f4fa; */
   border-radius: 0px 0px 0px 0px;
 
   display: flex;
@@ -67,6 +68,17 @@ const BtnsItemBox = styled.div`
   color: #646566;
   &:hover {
     background: #f0f4fa;
+    color: #2877ff;
+  }
+`
+const centerText = css`
+  margin-left: 10px;
+  /* margin-right: auto; */
+`
+const rightText = css`
+  /* margin-left: 10px; */
+  margin-left: 50px;
+  &:hover {
     color: #2877ff;
   }
 `
@@ -163,7 +175,7 @@ const TreeItem = (props: any) => {
   return (
     <TreeBox>
       <span>{props.name}</span>
-      <span>{props.story_count}</span>
+      <span className={centerText}>{props.story_count}</span>
       {props.pid === 0 ? (
         ''
       ) : (
@@ -173,7 +185,7 @@ const TreeItem = (props: any) => {
           content={content}
           trigger="click"
         >
-          <IconFont type="more" />
+          <IconFont className={rightText} type="more" />
         </Popover>
       )}
 
@@ -241,15 +253,13 @@ const WrapLeft = (props: Props) => {
     return newData
   }
   const onDrop = async (info: any) => {
-    console.log(info.dropToGap)
-
     const start = info.dragNode.title.props
     const end = info.node.title.props
 
     await moveTreeList({
       projectId: props.projectId,
       newId: end.id,
-      sort: start.sort,
+      sort: end.sort,
       id: start.id,
       top: info.dropToGap,
     })
