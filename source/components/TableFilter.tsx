@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
 /* eslint-disable max-len */
@@ -91,8 +93,8 @@ const DelButton = styled.div`
   top: -7px;
   width: 15px;
   height: 15px;
-  /* visibility: hidden; */
-  z-index: 9999999;
+  visibility: hidden;
+  /* z-index: 9999999; */
   &:hover {
     background-color: #2877ff;
   }
@@ -103,9 +105,14 @@ const SelectWrapBedeck = styled.div`
   position: relative;
   height: 32px;
   border: 1px solid rgba(235, 237, 240, 1);
+  /* border: 1px solid #0a66ef; */
   display: flex;
   align-items: center;
   border-radius: 6px;
+  &:hover ${DelButton} {
+    visibility: visible;
+  }
+
   span {
     white-space: nowrap;
   }
@@ -284,89 +291,97 @@ const TableFilter = (props: any) => {
                     </DelButton>
                   </SelectWrapBedeck>
                 )
-              }
-              return (
-                <SelectWrapBedeck key={i.key}>
-                  <Form.Item name={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                      {i.contentTxt}
-                    </span>
-                    <DatePicker.RangePicker
-                      onChange={dates => onChangeTime(i.key, dates)}
-                      className={rangPicker}
-                      getPopupContainer={node => node}
-                      format={(times: moment.Moment) => {
-                        if (times.unix() === 0 || times.unix() === 1893427200) {
-                          return t('common.null')
+              } else if (i.type === 'time') {
+                return (
+                  <SelectWrapBedeck key={i.key}>
+                    <Form.Item name={i.key}>
+                      <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                        {i.contentTxt}
+                      </span>
+                      <DatePicker.RangePicker
+                        onChange={dates => onChangeTime(i.key, dates)}
+                        className={rangPicker}
+                        getPopupContainer={node => node}
+                        format={(times: moment.Moment) => {
+                          if (
+                            times.unix() === 0
+                            || times.unix() === 1893427200
+                          ) {
+                            return t('common.null')
+                          }
+                          return times.format('YYYY-MM-DD')
+                        }}
+                        ranges={
+                          i18n.language === 'zh'
+                            ? {
+                                最近一周: [
+                                  moment(new Date())
+                                    .startOf('days')
+                                    .subtract(6, 'days'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                最近一月: [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(1, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                最近三月: [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(3, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                今天开始: [
+                                  moment(new Date()).startOf('days'),
+                                  moment(1893427200 * 1000),
+                                ],
+                                今天截止: [
+                                  moment(0),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                              }
+                            : {
+                                'Last Week': [
+                                  moment(new Date())
+                                    .startOf('days')
+                                    .subtract(6, 'days'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                'Last Month': [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(1, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                'Last March': [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(3, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                'Start today': [
+                                  moment(new Date()).startOf('days'),
+                                  moment(1893427200 * 1000),
+                                ],
+                                'Due today': [
+                                  moment(0),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                              }
                         }
-                        return times.format('YYYY-MM-DD')
-                      }}
-                      ranges={
-                        i18n.language === 'zh'
-                          ? {
-                              最近一周: [
-                                moment(new Date())
-                                  .startOf('days')
-                                  .subtract(6, 'days'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              最近一月: [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(1, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              最近三月: [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(3, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              今天开始: [
-                                moment(new Date()).startOf('days'),
-                                moment(1893427200 * 1000),
-                              ],
-                              今天截止: [
-                                moment(0),
-                                moment(new Date()).endOf('days'),
-                              ],
-                            }
-                          : {
-                              'Last Week': [
-                                moment(new Date())
-                                  .startOf('days')
-                                  .subtract(6, 'days'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              'Last Month': [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(1, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              'Last March': [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(3, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              'Start today': [
-                                moment(new Date()).startOf('days'),
-                                moment(1893427200 * 1000),
-                              ],
-                              'Due today': [
-                                moment(0),
-                                moment(new Date()).endOf('days'),
-                              ],
-                            }
-                      }
-                    />
-                  </Form.Item>
-                  <DelButton onClick={() => delList(i.key)}>
-                    <IconFont type="close" style={{ fontSize: '12px' }} />
-                  </DelButton>
-                </SelectWrapBedeck>
-              )
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.key)}>
+                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )
+              } else if (i.type === 'number') {
+                return <div>1</div>
+              } else if (i.type === 'text') {
+                return <div>2</div>
+              }
             })}
 
           <Popover placement="bottom" content={content} trigger={['click']}>

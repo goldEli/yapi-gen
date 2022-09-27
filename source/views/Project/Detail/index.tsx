@@ -98,7 +98,7 @@ const Detail = () => {
     })
 
     const filterAllList = allList?.map((item: any) => {
-      if (item.title.includes('时间')) {
+      if (item.title.includes('时间') && !item.attr) {
         return {
           id: item.id,
           name: item.title,
@@ -106,6 +106,17 @@ const Detail = () => {
           content: item.content,
           children: item.values,
           type: 'time',
+          isDefault: item.is_default_filter,
+          contentTxt: item.content_txt,
+        }
+      } else if (item.attr) {
+        return {
+          id: item.id,
+          name: item.title,
+          key: item.content,
+          content: item.content,
+          children: item.values,
+          type: item.attr,
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
         }
