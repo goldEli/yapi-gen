@@ -228,6 +228,7 @@ const Need = (props: any) => {
     updateStatus,
     updatePriority,
     showOpen: true,
+    init,
   })
 
   const selectColum: any = useMemo(() => {

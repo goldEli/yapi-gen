@@ -99,6 +99,10 @@ const ChildDemandTable = (props: {
     openDetail(`/Detail/Demand?data=${params}`)
   }
 
+  const onUpdate = () => {
+    getList(order)
+  }
+
   const columnsChild = [
     {
       title: (
@@ -180,6 +184,7 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'status',
+      width: 120,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
@@ -221,7 +226,13 @@ const ChildDemandTable = (props: {
       key: 'schedule',
       width: 120,
       render: (text: string, record: any) => {
-        return <DemandProgress value={60} row={record} />
+        return (
+          <DemandProgress
+            value={record.schedule}
+            row={record}
+            onUpdate={onUpdate}
+          />
+        )
       },
     },
     {
@@ -255,7 +266,7 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 600, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxWidth: 720, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"

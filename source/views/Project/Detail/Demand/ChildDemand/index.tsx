@@ -266,6 +266,7 @@ const ChildDemand = () => {
     onChangeState,
     rowIconFont,
     onClickItem,
+    onUpdate,
   })
 
   const hasEdit = getIsPermission(

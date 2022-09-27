@@ -15,7 +15,7 @@ import { CategoryWrap, ClickWrap, StatusWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import DemandProgress from './DemandProgress'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
@@ -49,7 +49,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { projectInfo } = useModel('project')
+  const { projectInfo, colorList } = useModel('project')
   const isCanEdit
     = projectInfo.projectPermissions?.length > 0
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -72,9 +72,13 @@ export const useDynamicColumns = (state: any) => {
     message.warning('该需求正在审核中，现在不能流转操作')
   }
 
+  const onUpdate = () => {
+    state.onUpdate()
+  }
+
   const arr = [
     {
-      width: 200,
+      width: 100,
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
@@ -93,17 +97,23 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 280,
+      width: 340,
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CategoryWrap
-              color="#43BA9A"
-              bgColor="#EDF7F4"
-              style={{ marginLeft: 0 }}
-            >
-              软件需求
-            </CategoryWrap>
+            <Tooltip placement="topLeft" title={record.categoryRemark}>
+              <CategoryWrap
+                color={record.categoryColor}
+                bgColor={
+                  colorList?.filter(
+                    (k: any) => k.key === record.categoryColor,
+                  )[0]?.bgColor
+                }
+                style={{ marginLeft: 0 }}
+              >
+                {record.category}
+              </CategoryWrap>
+            </Tooltip>
             <ClickWrap
               style={{
                 position: 'relative',
@@ -268,7 +278,13 @@ export const useDynamicColumns = (state: any) => {
       key: 'schedule',
       width: 120,
       render: (text: string, record: any) => {
-        return <DemandProgress value={60} row={record} />
+        return (
+          <DemandProgress
+            value={record.schedule}
+            row={record}
+            onUpdate={onUpdate}
+          />
+        )
       },
     },
     {

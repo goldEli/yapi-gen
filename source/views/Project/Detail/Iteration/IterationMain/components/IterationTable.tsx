@@ -54,6 +54,7 @@ interface Props {
   onChangeOrder?(item: any): void
   isSpinning?: boolean
   hasId: any
+  onUpdate(): void
 }
 
 const IterationTable = (props: Props) => {
@@ -165,6 +166,7 @@ const IterationTable = (props: Props) => {
     onClickItem,
     rowIconFont,
     showChildCOntent: true,
+    onUpdate: props?.onUpdate(),
   })
 
   const hasEdit = getIsPermission(

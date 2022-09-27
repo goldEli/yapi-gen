@@ -19,6 +19,7 @@ import {
   message,
   Progress,
   Tooltip,
+  TreeSelect,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -37,8 +38,10 @@ import RangePicker from '@/components/RangePicker'
 import { getParamsData, getTypeComponent } from '@/tools'
 import { PriorityWrap, SliderWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
+import { getTreeList } from '@/services/project/tree'
 
 const FormWrap = styled(Form)({
+  paddingRight: 16,
   '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -187,6 +190,43 @@ const ProgressWrap = styled(Progress)({
     },
 })
 
+const treeData = [
+  {
+    title: 'Node1',
+    value: '0-0',
+    key: '0-0',
+    children: [
+      {
+        title: 'Child Node1',
+        value: '0-0-0',
+        key: '0-0-0',
+      },
+    ],
+  },
+  {
+    title: 'Node2',
+    value: '0-1',
+    key: '0-1',
+    children: [
+      {
+        title: 'Child Node3',
+        value: '0-1-0',
+        key: '0-1-0',
+      },
+      {
+        title: 'Child Node4',
+        value: '0-1-1',
+        key: '0-1-1',
+      },
+      {
+        title: 'Child Node5',
+        value: '0-1-2',
+        key: '0-1-2',
+      },
+    ],
+  },
+]
+
 const EditDemand = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
@@ -212,6 +252,8 @@ const EditDemand = (props: Props) => {
     getProjectInfo,
     getFieldList,
     fieldList,
+    getCategoryList,
+    categoryList,
   } = useModel('project')
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const {
@@ -223,11 +265,15 @@ const EditDemand = (props: Props) => {
     percentShow,
     percentVal,
     uploadStatus,
+    createCategory,
+    setCreateCategory,
   } = useModel('demand')
   const { selectIterate } = useModel('iterate')
   const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
+  const [classTreeData, setClassTreeData] = useState<any>(treeData)
+  const [schedule, setSchedule] = useState(0)
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -244,10 +290,35 @@ const EditDemand = (props: Props) => {
     await getFieldList({ projectId })
   }
 
+  const getTree = (arr: any) => {
+    return arr?.map((k: any) => ({
+      title: k.name,
+      key: k.id,
+      value: k.id,
+      children: k.children ? getTree(k.children) : [],
+    }))
+  }
+
+  const getInit = async () => {
+    await getList()
+    await getFieldData()
+    await getList()
+    await getCategoryList({ projectId, isSelect: true })
+    const classTree = await getTreeList({ id: projectId })
+
+    // setClassTreeData(
+    //   classTree?.map((k: any) => ({
+    //     title: k.name,
+    //     key: k.id,
+    //     value: k.id,
+    //     children: k.children ? getTree(k.children) : [],
+    //   })),
+    // )
+  }
+
   useEffect(() => {
     if (props?.visible) {
-      getList()
-      getFieldData()
+      getInit()
     }
   }, [props?.visible])
 
@@ -269,6 +340,7 @@ const EditDemand = (props: Props) => {
     })
     if (res) {
       form.setFieldsValue(res)
+      setSchedule(res?.schedule)
       const form1Obj: any = {}
       for (const key in res?.customField) {
         form1Obj[key]
@@ -346,8 +418,15 @@ const EditDemand = (props: Props) => {
       form.resetFields()
       form1.resetFields()
     }
-    getList()
   }, [props.id])
+
+  useEffect(() => {
+    if (!props?.id) {
+      form.setFieldsValue({
+        category: createCategory?.id,
+      })
+    }
+  }, [categoryList])
 
   const onSaveDemand = async (hasNext?: number) => {
     await form.validateFields()
@@ -402,6 +481,7 @@ const EditDemand = (props: Props) => {
       setHtml('')
       setPriorityDetail({})
       getList()
+      setCreateCategory({})
       props.onUpdate?.()
       if (!hasNext) {
         props.onChangeVisible()
@@ -462,6 +542,7 @@ const EditDemand = (props: Props) => {
     setTagList([])
     setHtml('')
     setPriorityDetail({})
+    setCreateCategory({})
   }
 
   const onChangeTag = (result: any, type: string) => {
@@ -511,6 +592,15 @@ const EditDemand = (props: Props) => {
     )
   }
 
+  const onChangeSetSchedule = (val: any) => {
+    setSchedule(val)
+    form.setFieldsValue({
+      schedule: val,
+    })
+  }
+
+  // console.log(classTreeData, '==classTreeData')
+
   return (
     <Modal
       visible={props.visible}
@@ -518,260 +608,279 @@ const EditDemand = (props: Props) => {
       footer={false}
       title={titleText()}
       onCancel={onCancel}
-      bodyStyle={{ padding: '16px 24px', position: 'relative' }}
+      bodyStyle={{
+        padding: '16px 24px',
+        position: 'relative',
+      }}
       destroyOnClose
       maskClosable={false}
       keyboard={false}
     >
-      <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="category" />
-          <Form.Item label="需求类别" name="category">
-            <Select
-              style={{ width: '100%' }}
-              showArrow
-              showSearch
-              placeholder="请选择需求类别"
-              getPopupContainer={node => node}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="apartment" />
-          <Form.Item
-            label={t('common.demandName')}
-            name="name"
-            rules={[{ required: true, message: '' }]}
-          >
-            <Input
-              autoComplete="off"
-              ref={inputRef as any}
-              placeholder={t('common.pleaseDemandName')}
-              maxLength={100}
-              autoFocus
-            />
-          </Form.Item>
-        </div>
-        {props?.id ? (
+      <div style={{ maxHeight: 600, overflow: 'auto' }}>
+        <FormWrap
+          form={form}
+          labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
+        >
           <div style={{ display: 'flex' }}>
-            <IconFont className="labelIcon" type="plan" />
-            <Form.Item label="需求进度" name="progress">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <SliderWrap
-                  style={{ width: 330 }}
-                  defaultValue={30}
-                  tipFormatter={(value: any) => `${value}%`}
-                />
-                <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
-                  30%
-                </span>
-              </div>
+            <IconFont className="labelIcon" type="category" />
+            <Form.Item
+              label="需求类别"
+              name="category"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                showSearch
+                placeholder="请选择需求类别"
+                getPopupContainer={node => node}
+                options={categoryList?.list?.map((k: any) => ({
+                  label: k.name,
+                  value: k.id,
+                }))}
+              />
             </Form.Item>
           </div>
-        ) : null}
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="edit-square" />
-          <Form.Item label={t('mine.demandInfo')} name="info">
-            <Editor />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="user" />
-          <Form.Item label={t('common.dealName')} name="userIds">
-            <Select
-              style={{ width: '100%' }}
-              showArrow
-              mode="multiple"
-              showSearch
-              placeholder={t('common.searchDeal')}
-              getPopupContainer={node => node}
-              allowClear
-              optionFilterProp="label"
-              options={memberList?.map((i: any) => ({
-                label: i.name,
-                value: i.id,
-              }))}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="carryout" />
-          <Form.Item label={t('common.estimatedTime')} name="times">
-            <RangePicker
-              isShowQuick={false}
-              value={form.getFieldValue('times')}
-              onChange={(_values: any) => onChangePicker(_values)}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="gold" />
-          <Form.Item label="需求分类" name="assort">
-            <Select
-              style={{ width: '100%' }}
-              showArrow
-              showSearch
-              placeholder="请选择需求分类"
-              getPopupContainer={node => node}
-              optionFilterProp="label"
-              allowClear
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="apartment" />
-          <Form.Item label={t('common.parentDemand')} name="parentId">
-            <Select
-              style={{ width: '100%' }}
-              showArrow
-              showSearch
-              placeholder={t('common.pleaseParentDemand')}
-              options={
-                props?.id
-                  ? parentList?.filter(
-                      (k: any) => k.value !== props?.id
-                        && k.parentId !== props?.id
-                        && k.parentId !== demandInfo?.parentId,
-                    )
-                  : parentList
-              }
-              getPopupContainer={node => node}
-              optionFilterProp="label"
-              allowClear
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="carryout" />
-          <Form.Item label={t('common.priority')} name="priority">
-            <PopConfirm
-              content={({ onHide }: { onHide(): void }) => {
-                return (
-                  <LevelContent
-                    onHide={onHide}
-                    record={{ project_id: projectId }}
-                    onCurrentDetail={onCurrentDetail}
-                  />
-                )
-              }}
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="apartment" />
+            <Form.Item
+              label={t('common.demandName')}
+              name="name"
+              rules={[{ required: true, message: '' }]}
             >
-              <PriorityWrap>
-                <IconFont
-                  className="priorityIcon"
-                  type={priorityDetail?.icon}
-                  style={{
-                    fontSize: 16,
-                    color: priorityDetail?.color,
-                  }}
-                />
-                <div>
-                  <span>{priorityDetail?.content_txt || '--'}</span>
-                  <IconFont className="icon" type="down-icon" />
+              <Input
+                autoComplete="off"
+                ref={inputRef as any}
+                placeholder={t('common.pleaseDemandName')}
+                maxLength={100}
+                autoFocus
+              />
+            </Form.Item>
+          </div>
+          {props?.id ? (
+            <div style={{ display: 'flex' }}>
+              <IconFont className="labelIcon" type="plan" />
+              <Form.Item label="需求进度" name="schedule">
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <SliderWrap
+                    style={{ width: 330 }}
+                    value={schedule}
+                    tipFormatter={(value: any) => `${value}%`}
+                    onChange={value => onChangeSetSchedule(value)}
+                  />
+                  <span
+                    style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}
+                  >
+                    {schedule}%
+                  </span>
                 </div>
-              </PriorityWrap>
-            </PopConfirm>
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="interation" />
-          <Form.Item label={t('common.iterate')} name="iterateId">
-            <Select
-              placeholder={t('common.pleaseSelect')}
-              showSearch
-              showArrow
-              getPopupContainer={node => node}
-              allowClear
-              optionFilterProp="label"
-              options={selectIterate?.list
-                ?.filter((k: any) => k.status === 1)
-                ?.map((i: any) => ({
+              </Form.Item>
+            </div>
+          ) : null}
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="edit-square" />
+            <Form.Item label={t('mine.demandInfo')} name="info">
+              <Editor />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="user" />
+            <Form.Item label={t('common.dealName')} name="userIds">
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                mode="multiple"
+                showSearch
+                placeholder={t('common.searchDeal')}
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={memberList?.map((i: any) => ({
                   label: i.name,
                   value: i.id,
                 }))}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="id-card" />
-          <Form.Item label={t('common.copySend')} name="copySendIds">
-            <Select
-              style={{ width: '100%' }}
-              showArrow
-              mode="multiple"
-              showSearch
-              placeholder={t('common.pleaseChooseCopySend')}
-              getPopupContainer={node => node}
-              optionFilterProp="label"
-              options={memberList?.map((i: any) => ({
-                label: i.name,
-                value: i.id,
-              }))}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="app-store-add" />
-          <Form.Item label={t('common.tag')} name="tagIds">
-            <TagComponent
-              defaultList={tagList}
-              onChangeTag={onChangeTag}
-              addWrap={
-                <AddWrap hasDash>
-                  <IconFont type="plus" />
-                </AddWrap>
-              }
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont className="labelIcon" type="attachment" />
-          <Form.Item label={t('common.attachment')} name="attachments">
-            {!projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length ? (
-              <AddWrap onClick={onAdd}>
-                <IconFont type="plus" />
-                <div>{t('common.add23')}</div>
-              </AddWrap>
-            ) : (
-              <UploadAttach
-                child={isShow ? <Children /> : ''}
-                onChangeShow={setIsShow}
-                defaultList={attachList}
-                onChangeAttachment={onChangeAttachment}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="carryout" />
+            <Form.Item label={t('common.estimatedTime')} name="times">
+              <RangePicker
+                isShowQuick={false}
+                value={form.getFieldValue('times')}
+                onChange={(_values: any) => onChangePicker(_values)}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="gold" />
+            <Form.Item label="需求分类" name="class">
+              <TreeSelect
+                style={{ width: '100%' }}
+                showArrow
+                showSearch
+                placeholder="请选择需求分类"
+                getPopupContainer={node => node}
+                allowClear
+                treeData={classTreeData}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="apartment" />
+            <Form.Item label={t('common.parentDemand')} name="parentId">
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                showSearch
+                placeholder={t('common.pleaseParentDemand')}
+                options={
+                  props?.id
+                    ? parentList?.filter(
+                        (k: any) => k.value !== props?.id
+                          && k.parentId !== props?.id
+                          && k.parentId !== demandInfo?.parentId,
+                      )
+                    : parentList
+                }
+                getPopupContainer={node => node}
+                optionFilterProp="label"
+                allowClear
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="carryout" />
+            <Form.Item label={t('common.priority')} name="priority">
+              <PopConfirm
+                content={({ onHide }: { onHide(): void }) => {
+                  return (
+                    <LevelContent
+                      onHide={onHide}
+                      record={{ project_id: projectId }}
+                      onCurrentDetail={onCurrentDetail}
+                    />
+                  )
+                }}
+              >
+                <PriorityWrap>
+                  <IconFont
+                    className="priorityIcon"
+                    type={priorityDetail?.icon}
+                    style={{
+                      fontSize: 16,
+                      color: priorityDetail?.color,
+                    }}
+                  />
+                  <div>
+                    <span>{priorityDetail?.content_txt || '--'}</span>
+                    <IconFont className="icon" type="down-icon" />
+                  </div>
+                </PriorityWrap>
+              </PopConfirm>
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="interation" />
+            <Form.Item label={t('common.iterate')} name="iterateId">
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showSearch
+                showArrow
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={selectIterate?.list
+                  ?.filter((k: any) => k.status === 1)
+                  ?.map((i: any) => ({
+                    label: i.name,
+                    value: i.id,
+                  }))}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="id-card" />
+            <Form.Item label={t('common.copySend')} name="copySendIds">
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                mode="multiple"
+                showSearch
+                placeholder={t('common.pleaseChooseCopySend')}
+                getPopupContainer={node => node}
+                optionFilterProp="label"
+                options={memberList?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="app-store-add" />
+            <Form.Item label={t('common.tag')} name="tagIds">
+              <TagComponent
+                defaultList={tagList}
+                onChangeTag={onChangeTag}
                 addWrap={
-                  <AddWrap>
+                  <AddWrap hasDash>
                     <IconFont type="plus" />
-                    <div>{t('common.add23')}</div>
                   </AddWrap>
                 }
               />
-            )}
-          </Form.Item>
-        </div>
-      </FormWrap>
-      <FormWrap
-        form={form1}
-        labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
-      >
-        {fieldList?.list?.map((i: any) => (
-          <div style={{ display: 'flex' }} key={i.content}>
-            <IconFont className="labelIcon" type="attachment" />
-            <Form.Item
-              label={
-                <Tooltip>
-                  <OmitText width={i18n.language === 'zh' ? 80 : 100}>
-                    {i.name}
-                  </OmitText>
-                </Tooltip>
-              }
-              name={i.content}
-            >
-              {getTypeComponent(i.type)}
             </Form.Item>
           </div>
-        ))}
-      </FormWrap>
+          <div style={{ display: 'flex' }}>
+            <IconFont className="labelIcon" type="attachment" />
+            <Form.Item label={t('common.attachment')} name="attachments">
+              {!projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length ? (
+                <AddWrap onClick={onAdd}>
+                  <IconFont type="plus" />
+                  <div>{t('common.add23')}</div>
+                </AddWrap>
+              ) : (
+                <UploadAttach
+                  child={isShow ? <Children /> : ''}
+                  onChangeShow={setIsShow}
+                  defaultList={attachList}
+                  onChangeAttachment={onChangeAttachment}
+                  addWrap={
+                    <AddWrap>
+                      <IconFont type="plus" />
+                      <div>{t('common.add23')}</div>
+                    </AddWrap>
+                  }
+                />
+              )}
+            </Form.Item>
+          </div>
+        </FormWrap>
+        <FormWrap
+          form={form1}
+          labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
+        >
+          {fieldList?.list?.map((i: any) => (
+            <div style={{ display: 'flex' }} key={i.content}>
+              <IconFont className="labelIcon" type="edit" />
+              <Form.Item
+                label={
+                  <Tooltip>
+                    <OmitText width={i18n.language === 'zh' ? 80 : 100}>
+                      {i.name}
+                    </OmitText>
+                  </Tooltip>
+                }
+                name={i.content}
+              >
+                {getTypeComponent(i.type)}
+              </Form.Item>
+            </div>
+          ))}
+        </FormWrap>
+      </div>
       <ModalFooter>
         <AddButtonWrap isEdit={props?.id} onClick={() => onSaveDemand(1)}>
           {t('common.finishToAdd')}

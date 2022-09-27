@@ -186,6 +186,10 @@ const IterationMain = (props: Props) => {
     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
+  const onUpdate = () => {
+    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       {isDemandVisible ? (
@@ -245,6 +249,7 @@ const IterationMain = (props: Props) => {
             onChangeOrder={onChangeOrder}
             isSpinning={isSpinning}
             hasId={currentDetail}
+            onUpdate={onUpdate}
           />
         )}
       </Right>

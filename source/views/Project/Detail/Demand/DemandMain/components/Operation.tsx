@@ -26,6 +26,9 @@ const OperationWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0 24px',
+  '.ant-popover-content': {
+    width: 'max-content',
+  },
 })
 
 const StickyWrap = styled.div({
@@ -100,8 +103,9 @@ const Operation = (props: Props) => {
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
   const [filterState, setFilterState] = useState(true)
-  const { filterAll, projectInfo } = useModel('project')
-  const { setFilterHeight } = useModel('demand')
+  const { filterAll, projectInfo, categoryList, colorList }
+    = useModel('project')
+  const { setFilterHeight, setCreateCategory } = useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -191,19 +195,33 @@ const Operation = (props: Props) => {
     }, 100)
   }
 
-  const onChangeCategory = () => {
-
-    //
+  const onChangeCategory = (e: any, item: any) => {
+    setCreateCategory(item)
+    props.onChangeVisible?.(e)
+    setIsVisible(false)
   }
 
   const changeStatus = (
-    <div
-      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    <Space
+      style={{
+        padding: '8px 16px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
     >
-      <StatusTag color="#43BA9A" bgColor="#EDF7F4" onClick={onChangeCategory}>
-        开发需求
-      </StatusTag>
-    </div>
+      {categoryList?.list?.map((k: any) => (
+        <StatusTag
+          style={{ marginRight: 0 }}
+          key={k.id}
+          color={k.color}
+          bgColor={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={(e: any) => onChangeCategory(e, k)}
+        >
+          {k.name}
+        </StatusTag>
+      ))}
+    </Space>
   )
 
   const onImportClick = () => {
@@ -245,47 +263,36 @@ const Operation = (props: Props) => {
       </CommonModal>
       <OperationWrap>
         <Space size={16}>
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/project/story/class',
-          ) ? null : (
-            <Tooltip
-              visible={isShow}
-              onVisibleChange={isShow1 => setIsShow(isShow1)}
-              getTooltipContainer={node => node}
-              title={
-                props.isShowLeft
-                  ? t('common.collapseMenu')
-                  : t('common.openMenu')
-              }
-            >
-              <IconFont
-                onClick={props.onChangeIsShowLeft}
-                type="indent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                }}
-              />
-            </Tooltip>
-          )}
+          <Tooltip
+            visible={isShow}
+            onVisibleChange={isShow1 => setIsShow(isShow1)}
+            getTooltipContainer={node => node}
+            title={
+              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
+            }
+          >
+            <IconFont
+              onClick={props.onChangeIsShowLeft}
+              type="indent"
+              style={{
+                fontSize: 20,
+                color: 'black',
+                cursor: 'pointer',
+              }}
+            />
+          </Tooltip>
           {getIsPermission(
             projectInfo?.projectPermissions,
             'b/story/save',
           ) ? null : (
             <Popover
               content={changeStatus}
-              placement="bottom"
+              placement="bottomLeft"
               getPopupContainer={node => node}
               visible={isVisible}
               onVisibleChange={visible => setIsVisible(visible)}
             >
-              <Button
-                type="primary"
-                icon={<IconFont type="plus" />}
-                onClick={(e: any) => props.onChangeVisible?.(e)}
-              >
+              <Button type="primary" icon={<IconFont type="plus" />}>
                 {t('common.createDemand')}
               </Button>
             </Popover>

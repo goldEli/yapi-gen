@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
@@ -17,6 +18,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { rest } from 'lodash'
 import { css } from '@emotion/css'
+import { getIsPermission } from '@/tools'
+import { useModel } from '@/models'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -89,6 +92,7 @@ const TreeItem = (props: any) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
+  const { projectInfo } = useModel('project')
   const btnsText = [
     {
       id: 1,
@@ -179,6 +183,10 @@ const TreeItem = (props: any) => {
       <span>{props.name}</span>
       <span className={centerText}>{props.story_count}</span>
       {props.pid === 0
+      || getIsPermission(
+        projectInfo?.projectPermissions,
+        'b/project/story/class',
+      )
         ? ''
         : (
             <Popover

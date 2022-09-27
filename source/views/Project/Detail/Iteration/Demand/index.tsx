@@ -203,6 +203,7 @@ const DemandWrap = () => {
     onClickItem,
     rowIconFont,
     showChildCOntent: true,
+    onUpdate: getList(pageObj, order),
   })
 
   const onChangeVisible = () => {

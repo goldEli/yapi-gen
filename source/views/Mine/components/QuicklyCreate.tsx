@@ -666,7 +666,7 @@ const EditDemand = (props: Props) => {
         >
           {fieldList?.list?.map((i: any) => (
             <div style={{ display: 'flex' }} key={i.content}>
-              <IconFont className="labelIcon" type="attachment" />
+              <IconFont className="labelIcon" type="edit" />
               <Form.Item
                 label={
                   <Tooltip>

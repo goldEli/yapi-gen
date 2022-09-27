@@ -277,11 +277,11 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <SliderWrap
             style={{ width: 320 }}
-            defaultValue={30}
+            value={demandInfo?.schedule}
             tipFormatter={(value: any) => `${value}%`}
           />
           <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
-            30%
+            {demandInfo?.schedule}%
           </span>
         </div>
       </InfoItem>

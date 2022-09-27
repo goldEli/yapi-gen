@@ -9,6 +9,8 @@ export default () => {
   const [percentShow, setPercentShow] = useState<boolean>(false)
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
+  const [createCategory, setCreateCategory] = useState<any>({})
+
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     setDemandInfo(result)
@@ -33,6 +35,7 @@ export default () => {
     deleteInfoDemand,
     addInfoDemand,
     updatePriority,
+    updateTableParams,
   } = services.demand
 
   return {
@@ -63,5 +66,8 @@ export default () => {
     setPercentVal,
     uploadStatus,
     setUploadStatus,
+    setCreateCategory,
+    createCategory,
+    updateTableParams,
   }
 }
