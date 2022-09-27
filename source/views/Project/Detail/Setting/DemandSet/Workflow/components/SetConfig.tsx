@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable max-lines */
 /* eslint-disable no-lonely-if */
@@ -32,6 +33,12 @@ import moment from 'moment'
 import { createRef, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import ExamineItem from './ExamineItem'
+import { arrayMoveImmutable } from 'array-move'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
 
 const LabelWrap = styled.div({
   color: '#323233',
@@ -411,6 +418,50 @@ const SetConfig = (props: Props) => {
     setDataSource(arr)
   }
 
+  const DragHandle = sortableHandle(() => (
+    <IconFont
+      type="move"
+      style={{ fontSize: 16, cursor: 'pointer', color: '#969799' }}
+    />
+  ))
+
+  const SortableItem = sortableElement(
+    (propsItem: React.HTMLAttributes<HTMLTableRowElement>) => <tr {...propsItem} />
+    ,
+  )
+
+  const SortableBody = sortableContainer(
+    (propsItem: React.HTMLAttributes<HTMLTableSectionElement>) => <tbody {...propsItem} />
+    ,
+  )
+
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(
+        dataSource?.slice(),
+        oldIndex,
+        newIndex,
+      ).filter((el: any) => !!el)
+      setDataSource(newData)
+    }
+  }
+
+  const DraggableContainer = (propsItem: any) => (
+    <SortableBody
+      useDragHandle
+      disableAutoscroll
+      onSortEnd={onSortEnd}
+      {...propsItem}
+    />
+  )
+
+  const DraggableBodyRow: React.FC<any> = ({ ...restProps }) => {
+    const index = dataSource?.findIndex(
+      (x: any) => x.index === restProps['data-row-key'],
+    )
+    return <SortableItem index={index} {...restProps} />
+  }
+
   const columns = [
     {
       title: '',
@@ -422,7 +473,7 @@ const SetConfig = (props: Props) => {
             {record?.content === 'comment'
             || record.content === 'users_name'
               ? ''
-              : <IconFont type="move" />
+              : <DragHandle />
             }
           </>
         )
@@ -553,6 +604,7 @@ const SetConfig = (props: Props) => {
   const onClickAddField = () => {
     const arr = JSON.parse(JSON.stringify(dataSource))
     normalObj.tag = new Date().getTime()
+    normalObj.index = new Date().getTime()
     setDataSource(arr.slice(0, -1).concat([normalObj].concat(arr.slice(-1))))
   }
 
@@ -746,9 +798,15 @@ const SetConfig = (props: Props) => {
               pagination={false}
               dataSource={dataSource}
               columns={columns as any}
-              rowKey="content"
+              rowKey="index"
               sticky
               style={{ marginTop: 16 }}
+              components={{
+                body: {
+                  wrapper: DraggableContainer,
+                  row: DraggableBodyRow,
+                },
+              }}
             />
             <TextWrap>
               注：拖动

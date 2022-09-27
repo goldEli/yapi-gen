@@ -451,6 +451,15 @@ export const deleteStoryConfigCategory: any = async (params: any) => {
   })
 }
 
+export const changeStoryConfigCategory: any = async (params: any) => {
+  await http.post<any>('moveCategoryStory', {
+    status_id: params.statusId,
+    old_category_id: params?.oldId,
+    project_id: params.projectId,
+    new_category_id: params.newId,
+  })
+}
+
 export const storyConfigStatusList: any = async (params: any) => {
   const response: any = await http.get<any>('getStatusList', {
     search: {
@@ -563,17 +572,6 @@ export const saveWorkflowStatus: any = async (params: any) => {
   })
 }
 
-// ----------------------------
-
-export const changeStoryConfigCategory: any = async (params: any) => {
-  await http.post<any>('moveCategoryStory', {
-    status_id: params.statusId,
-    old_category_id: params?.oldId,
-    project_id: params.projectId,
-    new_category_id: params.newId,
-  })
-}
-
 export const getWorkflowInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getWorkflowInfo', {
     project_id: params.projectId,
@@ -619,6 +617,16 @@ export const getWorkflowInfo: any = async (params: any) => {
   }))
 
   response.data.fieldAll = list
+  response.data.fields = response.data.fields?.map((k: any, index: any) => ({
+    can_delete: k.can_delete,
+    content: k.content,
+    default_type: k.default_type,
+    default_value: k.default_value,
+    is_must: k.is_must,
+    title: k.title,
+    index: new Date().getTime() + index * 11,
+    id: new Date().getTime() + index * 11,
+  }))
 
   return response.data
 }
