@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
@@ -114,15 +115,17 @@ export const useDynamicColumns = (state: any) => {
               onClick={() => state.onClickItem(record)}
             >
               <OmitText width={160}>{text}</OmitText>
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                  position: 'absolute',
-                  left: -20,
-                  top: 0,
-                }}
-              />
+              {record.isExamine && (
+                <IconFont
+                  type="review"
+                  style={{
+                    fontSize: 46,
+                    position: 'absolute',
+                    left: -20,
+                    top: 0,
+                  }}
+                />
+              )}
             </ClickWrap>
           </div>
         )
