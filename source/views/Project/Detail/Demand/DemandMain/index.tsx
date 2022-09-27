@@ -2,6 +2,7 @@
 /* eslint-disable max-params */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-len */
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
@@ -46,7 +47,7 @@ const DemandMain = (props: Props) => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
-  const [isShowLeft, setIsShowLeft] = useState(true)
+  const [isShowLeft, setIsShowLeft] = useState(false)
 
   const getList = async (
     state: boolean,
@@ -177,7 +178,7 @@ const DemandMain = (props: Props) => {
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <WrapLeft projectId={projectId} isShowLeft={isShowLeft} />
+      {isShowLeft ? <WrapLeft projectId={projectId} isShowLeft={isShowLeft} /> : null}
       <Right isShowLeft={isShowLeft}>
         <Operation
           isGrid={isGrid}

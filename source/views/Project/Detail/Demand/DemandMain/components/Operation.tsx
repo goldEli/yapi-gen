@@ -243,24 +243,31 @@ const Operation = (props: Props) => {
       </CommonModal>
       <OperationWrap>
         <Space size={16}>
-          <Tooltip
-            visible={isShow}
-            onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getTooltipContainer={node => node}
-            title={
-              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
-            }
-          >
-            <IconFont
-              onClick={props.onChangeIsShowLeft}
-              type="indent"
-              style={{
-                fontSize: 20,
-                color: 'black',
-                cursor: 'pointer',
-              }}
-            />
-          </Tooltip>
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/project/story/class',
+          ) ? null : (
+            <Tooltip
+              visible={isShow}
+              onVisibleChange={isShow1 => setIsShow(isShow1)}
+              getTooltipContainer={node => node}
+              title={
+                props.isShowLeft
+                  ? t('common.collapseMenu')
+                  : t('common.openMenu')
+              }
+            >
+              <IconFont
+                onClick={props.onChangeIsShowLeft}
+                type="indent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                }}
+              />
+            </Tooltip>
+          )}
           {getIsPermission(
             projectInfo?.projectPermissions,
             'b/story/save',
