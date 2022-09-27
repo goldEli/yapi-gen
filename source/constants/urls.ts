@@ -79,6 +79,11 @@ const urls = {
   saveWorkflowStatus: '/b/project/story_config/workflow_config/save',
   getWorkflowInfo: '/b/project/story_config/workflow_config/info',
   saveWorkflowConfig: '/b/project/story_config/workflow_config/setInfo',
+  getNeedTreeList: '/b/project/story/class/list',
+  addNeedTreeList: '/b/project/story/class/add',
+  editNeedTreeList: '/b/project/story/class/edit',
+  delNeedTreeList: '/b/project/story/class/delete',
+  moveNeedTreeList: '/b/project/story/class/move',
 }
 
 export default urls

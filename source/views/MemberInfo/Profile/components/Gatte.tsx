@@ -236,7 +236,8 @@ const Gantt = (_props: Props) => {
       'onAfterTaskDrag',
       (id: any, mode: any, e: any) => {
         const task = gantt.getTask(id)
-        console.log(task, id, mode, e)
+
+        // console.log(task, id, mode, e)
       },
       {},
     )

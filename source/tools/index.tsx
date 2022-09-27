@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable complexity */
 /* eslint-disable no-negated-condition */
 import { decryptPhp } from './cryptoPhp'
@@ -59,4 +60,35 @@ function getTypeComponent(params: any) {
   return child
 }
 
-export { getIsPermission, openDetail, getParamsData, getTypeComponent }
+const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
+  const result = []
+  const id = idStr
+  const pid = pidStr
+  const children = childrenStr
+  const len = jsonArr.length
+  const hash: any = {}
+
+  jsonArr.forEach((item: any) => {
+    hash[item[id]] = item
+  })
+
+  for (let j = 0; j < len; j++) {
+    const jsonArrItem = jsonArr[j]
+    const hashItem = hash[jsonArrItem[pid]]
+    if (hashItem) {
+      !hashItem[children] && (hashItem[children] = [])
+      hashItem[children].push(jsonArrItem)
+    } else {
+      result.push(jsonArrItem)
+    }
+  }
+  return result
+}
+
+export {
+  getIsPermission,
+  openDetail,
+  getParamsData,
+  transData,
+  getTypeComponent,
+}

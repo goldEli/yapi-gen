@@ -1,9 +1,22 @@
+/* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Tree, type TreeProps } from 'antd'
-import { useState } from 'react'
+import { Form, Input, Popover, Tree, type TreeProps } from 'antd'
+import { useEffect, useState } from 'react'
+import {
+  getTreeList,
+  addTreeList,
+  delTreeList,
+  moveTreeList,
+} from '@/services/project/tree'
+import IconFont from '@/components/IconFont'
+import { DataNode } from 'antd/lib/tree'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import CommonModal from '@/components/CommonModal'
+import { rest } from 'lodash'
+import { css } from '@emotion/css'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -30,115 +43,238 @@ const TitleWrap = styled.div({
 
 interface Props {
   isShowLeft: boolean
+  projectId: any
+}
+const TreeBox = styled.div`
+  width: 100%;
+  height: 40px;
+  /* background: #f0f4fa; */
+  border-radius: 0px 0px 0px 0px;
+
+  display: flex;
+  align-items: center;
+`
+const FormBox = styled.div``
+const BtnsItemBox = styled.div`
+  cursor: pointer;
+  width: 102px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 0px 0px 0px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #646566;
+  &:hover {
+    background: #f0f4fa;
+    color: #2877ff;
+  }
+`
+const centerText = css`
+  margin-left: 10px;
+  /* margin-right: auto; */
+`
+const rightText = css`
+  /* margin-left: 10px; */
+  margin-left: 50px;
+  &:hover {
+    color: #2877ff;
+  }
+`
+const TreeItem = (props: any) => {
+  const [form] = Form.useForm()
+  const [visible, setVisible] = useState(false)
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
+  const btnsText = [
+    {
+      id: 1,
+      text: '创建子分类',
+    },
+    {
+      id: 2,
+      text: '修改子分类',
+    },
+    {
+      id: 3,
+      text: '删除子分类',
+    },
+  ]
+  const close = () => {
+    setVisible(false)
+    setVisibleEdit(false)
+  }
+  const showVisible = (id: number) => {
+    close()
+    if (id === 3) {
+      setVisible(true)
+    } else if (id === 1) {
+      setVisibleEditText('add')
+      setVisibleEdit(true)
+    } else if (id === 2) {
+      setVisibleEditText('edit')
+      setVisibleEdit(true)
+      form.setFieldsValue({
+        name: props.name,
+        remark: props.remark,
+      })
+    }
+  }
+  const onChangeVisible = () => {
+    close()
+  }
+
+  const onConfirm = async () => {
+    await delTreeList({
+      projectId: props.projectId,
+      id: props.id,
+    })
+
+    close()
+    props.onRest()
+  }
+
+  const editClose = () => {
+    close()
+  }
+
+  const editConfirm = async () => {
+    const tag = visibleEditText === 'add'
+    const data = form.getFieldsValue()
+    const obj = {
+      name: data.name,
+      remark: data.remark,
+      projectId: props.projectId,
+      pid: tag ? props.id : undefined,
+      id: tag ? undefined : props.id,
+    }
+
+    await addTreeList(obj, visibleEditText)
+
+    close()
+    props.onRest()
+  }
+  const content = (
+    <div>
+      {props.pid === 1
+        ? btnsText
+          .filter(item => item.id === 1)
+          .map(item => (
+            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+              {item.text}
+            </BtnsItemBox>
+          ))
+        : btnsText.map(item => (
+          <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+            {item.text}
+          </BtnsItemBox>
+        ))}
+    </div>
+  )
+  return (
+    <TreeBox>
+      <span>{props.name}</span>
+      <span className={centerText}>{props.story_count}</span>
+      {props.pid === 0
+        ? ''
+        : (
+            <Popover
+              getPopupContainer={node => node}
+              placement="bottomRight"
+              content={content}
+              trigger="click"
+            >
+              <IconFont className={rightText} type="more" />
+            </Popover>
+          )}
+
+      <DeleteConfirm
+        isVisible={visible}
+        onChangeVisible={onChangeVisible}
+        onConfirm={onConfirm}
+        text="确认删除该分类？"
+      />
+      <CommonModal
+        title={visibleEditText === 'add' ? '创建子分类' : '修改子分类'}
+        isVisible={visibleEdit}
+        onClose={editClose}
+        onConfirm={editConfirm}
+      >
+        <FormBox>
+          <Form form={form} layout="vertical">
+            <Form.Item
+              label="分类名称"
+              name="name"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Input placeholder="请输入分类名称" />
+            </Form.Item>
+            <Form.Item name="remark" label="分类说明">
+              <Input.TextArea
+                maxLength={200}
+                showCount
+                placeholder="请输入分类描述内容"
+                autoSize={{ minRows: 3, maxRows: 5 }}
+              />
+            </Form.Item>
+          </Form>
+        </FormBox>
+      </CommonModal>
+    </TreeBox>
+  )
 }
 
 const WrapLeft = (props: Props) => {
-  const x = 3
-  const y = 2
-  const z = 1
-  const defaultData: any[] = []
+  const [treeData, setTreeData] = useState([])
+  const init = async () => {
+    const res = await getTreeList({ id: props.projectId })
 
-  const generateData = (_level: number, _preKey?: React.Key, _tns?: any[]) => {
-    const preKey = _preKey || '0'
-    const tns = _tns || defaultData
-    const children = []
-    for (let i = 0; i < x; i++) {
-      const key = `${preKey}-${i}`
-      tns.push({ title: key, key })
-      if (i < y) {
-        children.push(key)
-      }
-    }
-    if (_level < 0) {
-      return tns
-    }
-    const level = _level - 1
-    children.forEach((key, index) => {
-      tns[index].children = []
-      return generateData(level, key, tns[index].children)
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setTreeData(filterTreeData(res))
+  }
+
+  function filterTreeData(data: any) {
+    const newData = data.map((item: any) => ({
+      title: (
+        <TreeItem
+          onRest={() => {
+            init()
+          }}
+          projectId={props.projectId}
+          {...item}
+        />
+      ),
+      children:
+        item.children && item.children.length
+          ? filterTreeData(item.children)
+          : null,
+    }))
+    return newData
+  }
+  const onDrop = async (info: any) => {
+    const start = info.dragNode.title.props
+    const end = info.node.title.props
+
+    await moveTreeList({
+      projectId: props.projectId,
+      newId: end.id,
+      sort: end.sort,
+      id: start.id,
+      top: info.dropToGap,
     })
-  }
-  generateData(z)
-  const [gData, setGData] = useState(defaultData)
-  const [expandedKeys, setExpandedKeys] = useState(['0-0', '0-0-0', '0-0-0-0'])
-
-  const onDragEnter: TreeProps['onDragEnter'] = (info: any) => {
-
-    // console.log(info)
-    // expandedKeys 需要受控时设置
-    // setExpandedKeys(info.expandedKeys)
+    init()
   }
 
-  const onDrop: TreeProps['onDrop'] = (info: any) => {
+  useEffect(() => {
+    init()
+  }, [])
 
-    // console.log(info)
-    const dropKey = info.node.key
-    const dragKey = info.dragNode.key
-    const dropPos = info.node.pos.split('-')
-    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1])
-
-    const loop = (
-      data: any[],
-      key: React.Key,
-      callback: (node: any, i: number, data: any[]) => void,
-    ) => {
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].key === key) {
-          return callback(data[i], i, data)
-        }
-        if (data[i].children) {
-          loop(data[i].children!, key, callback)
-        }
-      }
-    }
-    const data = [...gData]
-    let dragObj: any
-    loop(data, dragKey, (item, index, arr) => {
-      arr.splice(index, 1)
-      dragObj = item
-    })
-
-    if (!info.dropToGap) {
-      loop(data, dropKey, item => {
-        item.children = item.children || []
-        item.children.unshift(dragObj)
-      })
-    } else if (
-      ((info.node as any).props.children || []).length > 0
-      && (info.node as any).props.expanded
-      && dropPosition === 1
-    ) {
-      loop(data, dropKey, item => {
-        item.children = item.children || []
-        item.children.unshift(dragObj)
-      })
-    } else {
-      let ar: any[] = []
-      let i: number
-      loop(data, dropKey, (_item, index, arr) => {
-        ar = arr
-        i = index
-      })
-      if (dropPosition === -1) {
-        ar.splice(i!, 0, dragObj!)
-      } else {
-        ar.splice(i! + 1, 0, dragObj!)
-      }
-    }
-    setGData(data)
-  }
   return (
     <Left isShowLeft={props.isShowLeft}>
       <TitleWrap>需求分类</TitleWrap>
-      <Tree
-        className="draggable-tree"
-        defaultExpandedKeys={expandedKeys}
-        draggable
-        blockNode
-        onDragEnter={onDragEnter}
-        onDrop={onDrop}
-        treeData={gData}
-      />
+      <Tree onDrop={onDrop} draggable treeData={treeData} />
     </Left>
   )
 }
