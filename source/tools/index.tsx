@@ -20,7 +20,7 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
-function getTypeComponent(params: any) {
+function getTypeComponent(params: any, defaultValue?: any) {
   let child: any = null
   if (params?.attr === 'date') {
     child = (
@@ -28,6 +28,7 @@ function getTypeComponent(params: any) {
         style={{ width: '100%' }}
         showTime={params?.value[0] === 'datetime'}
         allowClear
+        value={defaultValue}
       />
     )
   } else if (
@@ -84,10 +85,30 @@ const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
   return result
 }
 
+function getNestedChildren(arr: any, parent?: any) {
+  const resArr: any = []
+  for (const item of arr) {
+    if (item.parent_id === parent) {
+      const children = getNestedChildren(arr, item.id)
+      if (children.length) {
+        item.children = children
+      }
+      resArr.push({
+        title: item.name,
+        key: item.id,
+        value: item.id,
+        children: item.children ?? [],
+      })
+    }
+  }
+  return resArr
+}
+
 export {
   getIsPermission,
   openDetail,
   getParamsData,
   transData,
   getTypeComponent,
+  getNestedChildren,
 }

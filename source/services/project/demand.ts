@@ -48,6 +48,7 @@ export const getDemandInfo: any = async (params: any) => {
     schedule: response.data.schedule,
     category: response.data.category_id,
     'class': response.data.class_id,
+    className: response.data.class,
   }
 }
 

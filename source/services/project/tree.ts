@@ -8,7 +8,7 @@ import { transData } from '@/tools'
 export const getTreeList = async (params: any) => {
   const res = await http.get('getNeedTreeList', {
     project_id: params.id,
-    is_tree: 2,
+    is_tree: params.isTree ?? 2,
   })
 
   const treeData = [
@@ -30,7 +30,7 @@ export const getTreeList = async (params: any) => {
     },
   ]
 
-  return treeData
+  return params.isTree === 1 ? res.data : treeData
 }
 
 export const addTreeList = async (params: any, tag: string) => {

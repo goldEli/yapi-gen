@@ -3,6 +3,17 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input, Slider } from 'antd'
 
+const HiddenText = styled.div<{ width?: number }>(
+  {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  ({ width }) => ({
+    width,
+  }),
+)
+
 const StepBoxWrap = styled.div<{ active?: boolean }>(
   {
     display: 'flex',
@@ -476,4 +487,5 @@ export {
   SliderWrap,
   ProgressWrap,
   StepBoxWrap,
+  HiddenText,
 }

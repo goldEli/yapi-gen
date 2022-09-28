@@ -35,7 +35,7 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
-import { getParamsData, getTypeComponent } from '@/tools'
+import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { PriorityWrap, SliderWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import { getTreeList } from '@/services/project/tree'
@@ -190,43 +190,6 @@ const ProgressWrap = styled(Progress)({
     },
 })
 
-const treeData = [
-  {
-    title: 'Node1',
-    value: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: 'Child Node1',
-        value: '0-0-0',
-        key: '0-0-0',
-      },
-    ],
-  },
-  {
-    title: 'Node2',
-    value: '0-1',
-    key: '0-1',
-    children: [
-      {
-        title: 'Child Node3',
-        value: '0-1-0',
-        key: '0-1-0',
-      },
-      {
-        title: 'Child Node4',
-        value: '0-1-1',
-        key: '0-1-1',
-      },
-      {
-        title: 'Child Node5',
-        value: '0-1-2',
-        key: '0-1-2',
-      },
-    ],
-  },
-]
-
 const EditDemand = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
@@ -272,7 +235,7 @@ const EditDemand = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
-  const [classTreeData, setClassTreeData] = useState<any>(treeData)
+  const [classTreeData, setClassTreeData] = useState<any>([])
   const [schedule, setSchedule] = useState(0)
 
   const getList = async () => {
@@ -290,38 +253,6 @@ const EditDemand = (props: Props) => {
     await getFieldList({ projectId })
   }
 
-  const getTree = (arr: any) => {
-    return arr?.map((k: any) => ({
-      title: k.name,
-      key: k.id,
-      value: k.id,
-      children: k.children ? getTree(k.children) : [],
-    }))
-  }
-
-  const getInit = async () => {
-    await getList()
-    await getFieldData()
-    await getList()
-    await getCategoryList({ projectId, isSelect: true })
-    const classTree = await getTreeList({ id: projectId })
-
-    // setClassTreeData(
-    //   classTree?.map((k: any) => ({
-    //     title: k.name,
-    //     key: k.id,
-    //     value: k.id,
-    //     children: k.children ? getTree(k.children) : [],
-    //   })),
-    // )
-  }
-
-  useEffect(() => {
-    if (props?.visible) {
-      getInit()
-    }
-  }, [props?.visible])
-
   const getCommonUser = (arr: any, memberArr: any) => {
     let res: any[] = []
     if (arr.length) {
@@ -330,7 +261,7 @@ const EditDemand = (props: Props) => {
     return res.length ? res.map((i: any) => i.id) : []
   }
 
-  const getInfo = async () => {
+  const getInfo = async (treeArr?: any) => {
     const res = await getDemandInfo({ projectId, id: props?.id })
     setDemandInfo(res)
     getProjectInfo({ projectId: res.projectId })
@@ -341,6 +272,16 @@ const EditDemand = (props: Props) => {
     if (res) {
       form.setFieldsValue(res)
       setSchedule(res?.schedule)
+      if (treeArr?.find((j: any) => j.id === res.class)?.length) {
+        form.setFieldsValue({
+          'class': '',
+        })
+      }
+      if (categoryList?.list?.find((j: any) => j.id === res.category)?.length) {
+        form.setFieldsValue({
+          category: '',
+        })
+      }
       const form1Obj: any = {}
       for (const key in res?.customField) {
         form1Obj[key]
@@ -411,14 +352,36 @@ const EditDemand = (props: Props) => {
     }
   }
 
-  useEffect(() => {
+  const getInit = async () => {
+    await getList()
+    await getFieldData()
+    await getList()
+    await getCategoryList({ projectId, isSelect: true })
+    const classTree = await getTreeList({ id: projectId, isTree: 1 })
+    setClassTreeData([
+      ...[
+        {
+          title: '未分类',
+          key: 0,
+          value: 0,
+          children: [],
+        },
+      ],
+      ...getNestedChildren(classTree, 0),
+    ])
     if (props?.id) {
-      getInfo()
+      getInfo(classTree)
     } else {
       form.resetFields()
       form1.resetFields()
     }
-  }, [props.id])
+  }
+
+  useEffect(() => {
+    if (props?.visible) {
+      getInit()
+    }
+  }, [props?.visible])
 
   useEffect(() => {
     if (!props?.id) {
@@ -598,8 +561,6 @@ const EditDemand = (props: Props) => {
       schedule: val,
     })
   }
-
-  // console.log(classTreeData, '==classTreeData')
 
   return (
     <Modal
