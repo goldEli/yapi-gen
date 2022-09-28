@@ -20,7 +20,9 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
-function getTypeComponent(params: any, defaultValue?: any) {
+function getTypeComponent(params: any, defaultValue?: any, inputRef?: any) {
+
+  // console.log(params, '---12', defaultValue)
   let child: any = null
   if (params?.attr === 'date') {
     child = (
@@ -49,6 +51,8 @@ function getTypeComponent(params: any, defaultValue?: any) {
         optionFilterProp="label"
         getPopupContainer={node => node}
         allowClear
+        value={defaultValue}
+        ref={inputRef}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         mode={
           ['select_checkbox', 'checkbox'].includes(params?.attr)

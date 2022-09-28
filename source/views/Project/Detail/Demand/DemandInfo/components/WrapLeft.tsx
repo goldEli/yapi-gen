@@ -215,11 +215,14 @@ const QuickEdit = (props: Props) => {
       {isShowControl ? (
         <>
           {props?.isCustom
-            ? getTypeComponent({
-              attr: props?.type,
-              value: props?.value,
-              defaultValue: props?.defaultText,
-            })
+            ? getTypeComponent(
+              {
+                attr: props?.type,
+                value: props?.value,
+              },
+              props?.defaultText,
+              inputRef,
+            )
             : (
                 <TreeSelect
                   style={{ minWidth: 200, position: 'relative' }}
