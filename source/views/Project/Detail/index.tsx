@@ -53,28 +53,6 @@ const Detail = () => {
     setIsRefreshIterateList(false)
   }
 
-  useEffect(() => {
-    getProjectInfo({ projectId })
-    getProjectCoverList()
-    getPermissionList()
-    getMemberList({ all: true, projectId })
-    getTagList({ projectId })
-    getIterateList()
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      getProjectInfo({ projectId })
-      getPermissionList()
-    }
-  }, [isRefresh])
-
-  useEffect(() => {
-    if (isRefreshIterateList) {
-      getIterateList()
-    }
-  }, [isRefreshIterateList])
-
   function filterTreeData(data: any) {
     const newData = data.map((item: any) => ({
       title: item.name,
@@ -115,6 +93,28 @@ const Detail = () => {
   }
   useEffect(() => {
     getTreeData()
+    getProjectInfo({ projectId })
+    getProjectCoverList()
+    getPermissionList()
+    getMemberList({ all: true, projectId })
+    getTagList({ projectId })
+    getIterateList()
+  }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getProjectInfo({ projectId })
+      getPermissionList()
+    }
+  }, [isRefresh])
+
+  useEffect(() => {
+    if (isRefreshIterateList) {
+      getIterateList()
+    }
+  }, [isRefreshIterateList])
+
+  useEffect(() => {
     const allList = projectInfo.filterFelid?.map((item: any) => {
       if (item.content === 'iterate_name') {
         item.values = selectIterate.list?.map((i: any) => {
@@ -181,7 +181,7 @@ const Detail = () => {
           name: item.title,
           key: item.content,
           content: item.content,
-          type: 'select',
+          type: 'select_checkbox',
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
           children: leiBieData,
