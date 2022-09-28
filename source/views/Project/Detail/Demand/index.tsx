@@ -155,6 +155,7 @@ const DemandBox = () => {
     updateDemandStatus,
     setIsShowProgress,
     setFilterHeight,
+    updateDemandCategory,
   } = useModel('demand')
   const navigate = useNavigate()
   const isEdit = getIsPermission(
@@ -257,8 +258,21 @@ const DemandBox = () => {
   }
 
   const onConfirmCategory = async () => {
+    await form.validateFields()
+    try {
+      await updateDemandCategory({
+        projectId,
+        id: demandInfo?.id,
+        ...form.getFieldsValue(),
+      })
+      setIsShowCategory(false)
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
+    } catch (error) {
 
-    //
+      //
+    }
   }
 
   const onChangeSelect = async (value: any) => {
@@ -280,7 +294,7 @@ const DemandBox = () => {
       isSelect: true,
     })
     form.setFieldsValue({
-      newId: k.id,
+      categoryId: k.id,
     })
     setIsShowChange(false)
     setIsShowCategory(true)
@@ -343,7 +357,7 @@ const DemandBox = () => {
               </Form.Item>
               <Form.Item
                 label="变更后需求类别"
-                name="newId"
+                name="categoryId"
                 rules={[{ required: true, message: '' }]}
               >
                 <Select

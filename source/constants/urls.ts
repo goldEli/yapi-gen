@@ -85,6 +85,7 @@ const urls = {
   delNeedTreeList: '/b/project/story/class/delete',
   moveNeedTreeList: '/b/project/story/class/move',
   changeTableParams: '/b/story/update_fast',
+  updateDemandCategory: '/b/story/update/category',
 }
 
 export default urls

@@ -36,6 +36,7 @@ export default () => {
     addInfoDemand,
     updatePriority,
     updateTableParams,
+    updateDemandCategory,
   } = services.demand
 
   return {
@@ -69,5 +70,6 @@ export default () => {
     setCreateCategory,
     createCategory,
     updateTableParams,
+    updateDemandCategory,
   }
 }
