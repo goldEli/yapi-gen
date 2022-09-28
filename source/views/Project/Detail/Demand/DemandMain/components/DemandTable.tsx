@@ -53,6 +53,7 @@ interface Props {
   onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
+  onUpdate(updateState?: boolean): void
 }
 
 const DemandTable = (props: Props) => {
@@ -164,6 +165,7 @@ const DemandTable = (props: Props) => {
     onClickItem,
     rowIconFont,
     showChildCOntent: true,
+    onUpdate: props?.onUpdate,
   })
 
   const hasEdit = getIsPermission(

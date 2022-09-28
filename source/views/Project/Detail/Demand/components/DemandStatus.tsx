@@ -147,7 +147,7 @@ const DemandBox = (props: Props) => {
 
 const DemandStatusBox = () => {
   const { demandInfo } = useModel('demand')
-  const statusList = demandInfo?.status?.can_changes
+  const statusList = demandInfo?.status?.can_changes_category_status
   const [active, setActive] = useState(0)
   const { projectInfo } = useModel('project')
   const isCanEdit

@@ -1,3 +1,6 @@
+/* eslint-disable max-lines */
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
@@ -14,7 +17,7 @@ import ChildDemand from './ChildDemand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Tooltip, Popover } from 'antd'
+import { Space, Button, message, Tooltip, Popover, Form, Select } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
@@ -27,6 +30,7 @@ import { OmitText } from '@star-yun/ui'
 import { StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
+import CommonModal from '@/components/CommonModal'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -106,6 +110,7 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
     fontSize: 12,
     cursor: 'pointer',
     marginRight: 8,
+    width: 'fit-content',
   },
   ({ color, bgColor }) => ({
     color,
@@ -113,20 +118,36 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   }),
 )
 
+const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '24px 0 0 0',
+  },
+})
+
 const DemandBox = () => {
   const [t] = useTranslation()
+  const [form] = Form.useForm()
+  const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [loadingState, setLoadingState] = useState<boolean>(false)
+  const [colorObj, setColorObj] = useState<any>({})
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { projectInfo } = useModel('project')
+  const {
+    projectInfo,
+    getCategoryList,
+    categoryList,
+    colorList,
+    getStatusList,
+    statusWorkList,
+  } = useModel('project')
   const {
     getDemandInfo,
     demandInfo,
@@ -149,16 +170,25 @@ const DemandBox = () => {
     = projectInfo.projectPermissions?.length > 0
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
+
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
+      await getCategoryList({ projectId, isSelect: true })
     }
     setLoadingState(true)
   }
+
   useEffect(() => {
     init()
     setFilterHeight(52)
   }, [])
+
+  useEffect(() => {
+    setColorObj(
+      categoryList?.list?.filter((k: any) => k.id === demandInfo?.category)[0],
+    )
+  }, [demandInfo, categoryList])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -219,20 +249,63 @@ const DemandBox = () => {
     message.warning('该需求正在审核中，现在不能流转操作')
   }
 
-  const onChangeCategory = () => {
+  const onCloseCategory = () => {
+    setIsShowCategory(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
 
-    // 弹出需求类别框
+  const onConfirmCategory = async () => {
+
+    //
+  }
+
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      await getStatusList({
+        projectId: paramsData.id,
+        categoryId: value,
+        isSelect: true,
+      })
+    } else {
+      form.resetFields()
+    }
+  }
+
+  const onClickCategory = async (k: any) => {
+    await getStatusList({
+      projectId: paramsData.id,
+      categoryId: k.id,
+      isSelect: true,
+    })
+    form.setFieldsValue({
+      newId: k.id,
+    })
+    setIsShowChange(false)
     setIsShowCategory(true)
   }
 
   const changeStatus = (
     <Space
-      size={8}
-      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+      style={{
+        padding: '8px 16px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
     >
-      <StatusTag color="#43BA9A" bgColor="#EDF7F4" onClick={onChangeCategory}>
-        开发需求
-      </StatusTag>
+      {categoryList?.list?.map((k: any) => (
+        <StatusTag
+          style={{ marginRight: 0 }}
+          key={k.id}
+          color={k.color}
+          bgColor={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={() => onClickCategory(k)}
+        >
+          {k.name}
+        </StatusTag>
+      ))}
     </Space>
   )
 
@@ -249,6 +322,64 @@ const DemandBox = () => {
     }
     return (
       <>
+        {isShowCategory && (
+          <CommonModal
+            isVisible={isShowCategory}
+            onClose={onCloseCategory}
+            title="变更需求类别"
+            onConfirm={onConfirmCategory}
+          >
+            <FormWrap form={form} layout="vertical">
+              <Form.Item label="变更前需求类别">
+                <StatusTag
+                  color={colorObj?.color}
+                  bgColor={
+                    colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                      ?.bgColor
+                  }
+                >
+                  <>{colorObj?.name}</>
+                </StatusTag>
+              </Form.Item>
+              <Form.Item
+                label="变更后需求类别"
+                name="newId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder="请选择"
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={categoryList?.list
+                    ?.filter((i: any) => i.id !== demandInfo?.category)
+                    ?.map((k: any) => ({ label: k.name, value: k.id }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label="变更后需求状态"
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder="请选择"
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={statusWorkList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.id,
+                  }))}
+                />
+              </Form.Item>
+            </FormWrap>
+          </CommonModal>
+        )}
         <DeleteConfirm
           text={t('common.confirmDelDemand')}
           isVisible={isDelVisible}
@@ -258,12 +389,21 @@ const DemandBox = () => {
         <DemandInfoWrap>
           <NameWrap>
             <Popover
-              placement="bottom"
+              trigger={['hover']}
+              visible={isShowChange}
+              placement="bottomLeft"
               content={changeStatus}
               getPopupContainer={node => node}
+              onVisibleChange={visible => setIsShowChange(visible)}
             >
-              <StatusTag color="#43BA9A" bgColor="#EDF7F4">
-                <>软件开发</>
+              <StatusTag
+                color={colorObj?.color}
+                bgColor={
+                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                    ?.bgColor
+                }
+              >
+                <>{colorObj?.name}</>
                 <IconFont
                   type="down-icon"
                   style={{

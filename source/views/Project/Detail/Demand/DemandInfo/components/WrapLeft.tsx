@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
@@ -16,13 +18,13 @@ import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message, Progress, Tooltip } from 'antd'
+import { message, Progress, Tooltip, TreeSelect } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getParamsData, getTypeComponent } from '@/tools'
-import { SliderWrap } from '@/components/StyleCommon'
+import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
+import { SliderWrap, HiddenText } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
-import { OmitText } from '@star-yun/ui'
+import { getTreeList } from '@/services/project/tree'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -46,7 +48,8 @@ const TextWrapEditor = styled.div({
 
 const InfoItem = styled.div({
   display: 'flex',
-  marginTop: 24,
+  alignItems: 'center',
+  marginTop: 14,
   position: 'relative',
 })
 
@@ -55,8 +58,8 @@ const Label = styled.div({
   fontSize: 14,
   fontWeight: 400,
   minWidth: 120,
-  height: 22,
-  lineHeight: '22px',
+  height: 32,
+  lineHeight: '32px',
 })
 
 const TextWrap = styled.div({
@@ -166,6 +169,80 @@ const ProgressWrap = styled(Progress)({
     },
 })
 
+interface Props {
+  text: any
+  keyText: any
+  type: string
+  value: any
+  defaultText?: any
+  isCustom?: boolean
+}
+
+const QuickEdit = (props: Props) => {
+  const [isShowControl, setIsShowControl] = useState(false)
+  const inputRef = useRef<any>(null)
+  const { updateTableParams, demandInfo, getDemandInfo } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+
+  useEffect(() => {
+    if (isShowControl) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 200)
+    }
+  }, [isShowControl])
+
+  const onChange = async (newValue: string) => {
+    const obj = {
+      projectId,
+      id: demandInfo?.id,
+      otherParams: { [props?.keyText]: newValue },
+    }
+    try {
+      await updateTableParams(obj)
+      getDemandInfo({ projectId, id: demandInfo?.id })
+      setIsShowControl(false)
+    } catch (error) {
+
+      //
+    }
+  }
+
+  return (
+    <>
+      {isShowControl ? (
+        <>
+          {props?.isCustom
+            ? getTypeComponent({
+              attr: props?.type,
+              value: props?.value,
+              defaultValue: props?.defaultText,
+            })
+            : (
+                <TreeSelect
+                  style={{ minWidth: 200, position: 'relative' }}
+                  showArrow
+                  showSearch
+                  placeholder="请选择需求分类"
+                  getPopupContainer={node => node}
+                  allowClear
+                  treeData={props?.value}
+                  value={props?.defaultText}
+                  ref={inputRef}
+                  onBlur={() => setIsShowControl(false)}
+                  onChange={onChange}
+                />
+              )}
+        </>
+      )
+        : <span onMouseEnter={() => setIsShowControl(true)}>{props?.text}</span>
+      }
+    </>
+  )
+}
+
 const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
   const {
@@ -175,13 +252,17 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     percentShow,
     percentVal,
     uploadStatus,
+    getDemandInfo,
+    updateTableParams,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { projectInfo, getFieldList, fieldList } = useModel('project')
+  const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
+  const [classTreeData, setClassTreeData] = useState<any>([])
   const isCanEdit
     = projectInfo.projectPermissions?.length > 0
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -229,8 +310,24 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     await getFieldList({ projectId })
   }
 
+  const getTreeData = async () => {
+    const classTree = await getTreeList({ id: projectId, isTree: 1 })
+    setClassTreeData([
+      ...[
+        {
+          title: '未分类',
+          key: 0,
+          value: 0,
+          children: [],
+        },
+      ],
+      ...getNestedChildren(classTree, 0),
+    ])
+  }
+
   useEffect(() => {
     getFieldData()
+    getTreeData()
     textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
     return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
   }, [])
@@ -244,6 +341,21 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       })),
     )
   }, [demandInfo])
+
+  const onChangeSchedule = async () => {
+    const obj = {
+      projectId,
+      id: demandInfo?.id,
+      otherParams: { schedule },
+    }
+    try {
+      await updateTableParams(obj)
+      getDemandInfo({ projectId, id: demandInfo?.id })
+    } catch (error) {
+
+      //
+    }
+  }
 
   const Children = (item: any) => {
     return (
@@ -274,14 +386,18 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       </InfoItem>
       <InfoItem>
         <Label>需求进度</Label>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{ display: 'flex', alignItems: 'center' }}
+          onMouseUp={onChangeSchedule}
+        >
           <SliderWrap
             style={{ width: 320 }}
-            defaultValue={30}
+            value={schedule}
             tipFormatter={(value: any) => `${value}%`}
+            onChange={value => setSchedule(value)}
           />
           <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
-            30%
+            {schedule}%
           </span>
         </div>
       </InfoItem>
@@ -368,24 +484,15 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       </InfoItem>
       <InfoItem>
         <Label>需求分类</Label>
-        <Popconfirm
-          content={({ onHide }: { onHide(): void }) => {
-            return isCanEdit ? 1212 : null
-          }}
-        >
-          <div
-            style={{
-              cursor: isCanEdit ? 'pointer' : 'inherit',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <DownPriority isShow={isCanEdit}>
-              <span>未分类</span>
-              <IconFont className="icon" type="down-icon" />
-            </DownPriority>
-          </div>
-        </Popconfirm>
+        <TextWrap>
+          <QuickEdit
+            text={demandInfo?.className ? demandInfo?.className : '未分类'}
+            keyText="class_id"
+            type="select"
+            defaultText={demandInfo?.class}
+            value={classTreeData}
+          />
+        </TextWrap>
       </InfoItem>
       <InfoItem>
         <Label>{t('common.priority')}</Label>
@@ -440,12 +547,23 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       {fieldList?.list?.map((i: any) => (
         <InfoItem key={i.content}>
           <Label>
-            <Tooltip>
-              <OmitText width={80}>{i.name}</OmitText>
+            <Tooltip title={i.name} placement="topLeft">
+              <HiddenText width={80}>{i.name}</HiddenText>
             </Tooltip>
           </Label>
           <TextWrap>
-            {demandInfo?.customField?.[i.content]?.value || '--'}
+            <QuickEdit
+              text={
+                Array.isArray(demandInfo?.customField?.[i.content]?.value)
+                  ? demandInfo?.customField?.[i.content]?.value.join('、')
+                  : demandInfo?.customField?.[i.content]?.value || '--'
+              }
+              keyText={i.content}
+              type={i.type?.attr}
+              defaultText={demandInfo?.customField?.[i.content]?.value}
+              value={i.type?.value}
+              isCustom
+            />
           </TextWrap>
         </InfoItem>
       ))}

@@ -2,6 +2,7 @@
 /* eslint-disable max-params */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-len */
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
@@ -46,7 +47,8 @@ const DemandMain = (props: Props) => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
-  const [isShowLeft, setIsShowLeft] = useState(true)
+  const [isShowLeft, setIsShowLeft] = useState(false)
+  const { getCategoryList } = useModel('project')
 
   const getList = async (
     state: boolean,
@@ -54,8 +56,12 @@ const DemandMain = (props: Props) => {
     item?: any,
     orderItem?: any,
     isInit?: boolean,
+    updateState?: boolean,
   ) => {
-    setIsSpinning(true)
+    if (!updateState) {
+      setIsSpinning(true)
+    }
+
     let params = {}
     if (state) {
       params = {
@@ -107,6 +113,7 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
+    getCategoryList({ projectId, isSelect: true })
   }, [])
 
   useEffect(() => {
@@ -169,6 +176,10 @@ const DemandMain = (props: Props) => {
     getList(isGrid, searchItems, { page: 1, size: pageObj.size }, item)
   }
 
+  const onUpdate = (state?: boolean) => {
+    getList(isGrid, searchItems, pageObj, order, true, state)
+  }
+
   return (
     <div style={{ height: '100%', display: 'flex' }}>
       <DeleteConfirm
@@ -177,7 +188,9 @@ const DemandMain = (props: Props) => {
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <WrapLeft projectId={projectId} isShowLeft={isShowLeft} />
+      {isShowLeft
+        ? <WrapLeft projectId={projectId} isShowLeft={isShowLeft} />
+        : null}
       <Right isShowLeft={isShowLeft}>
         <Operation
           isGrid={isGrid}
@@ -207,6 +220,7 @@ const DemandMain = (props: Props) => {
             onChangeSetting={setIsSettingState}
             onChangeOrder={onChangeOrder}
             isSpinning={isSpinning}
+            onUpdate={onUpdate}
           />
         )}
       </Right>

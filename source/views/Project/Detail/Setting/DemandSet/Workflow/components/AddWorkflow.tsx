@@ -161,6 +161,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         allowClear
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
+        maxLength={20}
       />
       <ChooseColor
         color={normalColor}

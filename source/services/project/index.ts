@@ -566,6 +566,7 @@ export const deleteStoryConfigWorkflow: any = async (params: any) => {
 export const sortchangeWorkflow: any = async (params: any) => {
   await http.put<any>('dragWorkflow', {
     project_id: params.projectId,
+    category_id: params.categoryId,
     list: params.ids,
   })
 }

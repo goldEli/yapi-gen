@@ -76,8 +76,10 @@ const DemandWrap = () => {
     setTitleList2(projectInfo?.titleList2 || [])
   }
 
-  const getList = async (item?: any, orderVal?: any) => {
-    setIsSpinning(true)
+  const getList = async (item?: any, orderVal?: any, updateState?: boolean) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
     const result = await getDemandList({
       projectId,
       iterateIds: [iterateId],
@@ -193,6 +195,10 @@ const DemandWrap = () => {
     return <RowIconFont type="more" />
   }
 
+  const onUpdate = (updateState?: boolean) => {
+    getList(pageObj, order, updateState)
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey: order.key,
@@ -203,6 +209,7 @@ const DemandWrap = () => {
     onClickItem,
     rowIconFont,
     showChildCOntent: true,
+    onUpdate,
   })
 
   const onChangeVisible = () => {

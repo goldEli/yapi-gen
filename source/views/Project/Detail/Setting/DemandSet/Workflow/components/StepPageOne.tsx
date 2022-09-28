@@ -342,6 +342,7 @@ const StepPageOne = (propsOne: Props) => {
   const onSaveMethod = async () => {
     await sortchangeWorkflow({
       projectId: paramsData.id,
+      categoryId: categoryItem?.id,
       ids: dataSource?.list?.map((i: any) => ({ id: i.id })),
     })
   }

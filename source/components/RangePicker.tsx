@@ -74,6 +74,7 @@ const RangePicker = (props: Props) => {
                   moment(1893427200 * 1000),
                 ],
                 今天截止: [moment(0), moment(new Date()).endOf('days')],
+                空: [moment(0), moment(0)],
               }
             : {
                 'Last Week': [
@@ -96,6 +97,7 @@ const RangePicker = (props: Props) => {
                   moment(1893427200 * 1000),
                 ],
                 'Due today': [moment(0), moment(new Date()).endOf('days')],
+                Empty: [moment(0), moment(0)],
               }
           : {}
       }

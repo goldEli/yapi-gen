@@ -1,21 +1,45 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import { Progress, Popover } from 'antd'
 import { ProgressWrap, SliderWrap } from '@/components/StyleCommon'
+import { useModel } from '@/models'
+import { useState } from 'react'
 
 interface Props {
   value: number
   row?: any
+  onUpdate(): void
 }
 
 const DemandProgress = (props: Props) => {
+  const [schedule, setSchedule] = useState(props?.row?.schedule)
+  const { updateTableParams } = useModel('demand')
+
+  const onChangeSchedule = async () => {
+    const obj = {
+      projectId: props?.row?.project_id,
+      id: props?.row?.id,
+      otherParams: { schedule },
+    }
+    try {
+      await updateTableParams(obj)
+      props?.onUpdate()
+    } catch (error) {
+
+      //
+    }
+  }
+
   return (
     <Popover
       trigger={['click']}
       content={
-        <ProgressWrap>
+        <ProgressWrap onMouseUp={onChangeSchedule}>
           <SliderWrap
             style={{ width: 246 }}
-            defaultValue={30}
+            value={schedule}
             tipFormatter={(value: any) => `${value}%`}
+            onChange={val => setSchedule(val)}
           />
         </ProgressWrap>
       }

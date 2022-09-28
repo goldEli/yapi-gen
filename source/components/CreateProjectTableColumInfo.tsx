@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
 import { useModel } from '@/models'
 
@@ -31,7 +31,7 @@ const flexCss = css`
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { projectInfo } = useModel('project')
+  const { projectInfo, colorList } = useModel('project')
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(
@@ -69,9 +69,13 @@ export const useDynamicColumns = (state: any) => {
     )
   }
 
+  const onUpdate = () => {
+    state.init(true)
+  }
+
   const arr = [
     {
-      width: 140,
+      width: 100,
       title: <NewSort fixedKey="id">ID</NewSort>,
       dataIndex: 'id',
       key: 'id',
@@ -93,13 +97,19 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CategoryWrap
-              color="#43BA9A"
-              bgColor="#EDF7F4"
-              style={{ marginLeft: 0 }}
-            >
-              软件需求
-            </CategoryWrap>
+            <Tooltip placement="topLeft" title={record.categoryRemark}>
+              <CategoryWrap
+                color={record.categoryColor}
+                bgColor={
+                  colorList?.filter(
+                    (k: any) => k.key === record.categoryColor,
+                  )[0]?.bgColor
+                }
+                style={{ marginLeft: 0 }}
+              >
+                {record.category}
+              </CategoryWrap>
+            </Tooltip>
             <ClickWrap
               style={{
                 position: 'relative',
@@ -248,7 +258,13 @@ export const useDynamicColumns = (state: any) => {
       key: 'schedule',
       width: 120,
       render: (text: string, record: any) => {
-        return <DemandProgress value={60} row={record} />
+        return (
+          <DemandProgress
+            value={record.schedule}
+            row={record}
+            onUpdate={onUpdate}
+          />
+        )
       },
     },
     {

@@ -45,6 +45,10 @@ export const getDemandInfo: any = async (params: any) => {
     projectId: response.data.project_id,
     isExamine: response.data.verify_lock === 1,
     customField: response.data.custom_field,
+    schedule: response.data.schedule,
+    category: response.data.category_id,
+    'class': response.data.class_id,
+    className: response.data.class,
   }
 }
 
@@ -91,7 +95,13 @@ export const getDemandList: any = async (params: any) => {
           iterateId: i.iterate_id,
           parentId: i.parent_id,
           isExamine: i.verify_lock === 1,
+          category: i.category,
+          'class': i.class,
+          schedule: i.schedule,
           ...i.custom_field,
+          categoryColor: i.category_color,
+          categoryRemark: i.category_remark,
+          project_id: i.project_id,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -115,7 +125,13 @@ export const getDemandList: any = async (params: any) => {
       parentId: i.parent_id,
       userName: i.user_name,
       isExamine: i.verify_lock === 1,
+      category: i.category,
+      'class': i.class,
+      schedule: i.schedule,
       ...i.custom_field,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      project_id: i.project_id,
     }))
   } else {
     return {
@@ -142,7 +158,13 @@ export const getDemandList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         isExamine: i.verify_lock === 1,
+        category: i.category,
+        'class': i.class,
+        schedule: i.schedule,
         ...i.custom_field,
+        categoryColor: i.category_color,
+        categoryRemark: i.category_remark,
+        project_id: i.project_id,
       })),
     }
   }
@@ -235,6 +257,9 @@ export const addDemand: any = async (params: any) => {
     tag: params?.tagIds,
     attachment: params?.attachments,
     custom_field: params?.customField,
+    category_id: params?.category,
+    class_id: params?.class,
+    schedule: params?.schedule,
   })
 }
 
@@ -272,6 +297,9 @@ export const updateDemand: any = async (params: any) => {
     attachment: params.attachments,
     id: params.id,
     custom_field: params?.customField,
+    category_id: params?.category,
+    class_id: params?.class,
+    schedule: params?.schedule,
   })
 }
 
@@ -305,5 +333,13 @@ export const updatePriority: any = async (params: any) => {
     priority: params.priorityId,
     id: params.demandId,
     project_id: params.projectId,
+  })
+}
+
+export const updateTableParams: any = async (params: any) => {
+  await http.put<any>('changeTableParams', {
+    project_id: params.projectId,
+    id: params.id,
+    ...params.otherParams,
   })
 }
