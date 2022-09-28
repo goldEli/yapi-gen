@@ -7,7 +7,18 @@ import iterate from '@/models/project/iterate'
 import project from '@/models/project/index'
 import cos from '@/models/cos'
 import mine from '@/models/mine'
+import member from '@/models/member'
 
-const hooks = { user, setting, staff, demand, iterate, project, cos, mine }
+const hooks = {
+  user,
+  setting,
+  staff,
+  demand,
+  iterate,
+  project,
+  cos,
+  mine,
+  member,
+}
 
 export const { Provider, useModel } = createModels(hooks)

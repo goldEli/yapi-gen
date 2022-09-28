@@ -18,16 +18,16 @@ const MainWrap = styled.div({
 const Finished = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { isMember } = paramsData
+  const { isMember, userId } = paramsData
   const [t] = useTranslation()
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(paramsData.id || 0)
-  const { getMineProjectList } = useModel('mine')
+  const { getUserInfoProject } = useModel('member')
   const { userInfo } = useModel('user')
   const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const init = async () => {
-    const res = await getMineProjectList('finish')
+    const res = await getUserInfoProject({ type: 'finish', targetId: userId })
     await setSwiperData(res.data)
     setLoadingState(true)
   }

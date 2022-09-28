@@ -86,6 +86,17 @@ const urls = {
   moveNeedTreeList: '/b/project/story/class/move',
   changeTableParams: '/b/story/update_fast',
   updateDemandCategory: '/b/story/update/category',
+  userInfoAbeyanceStory: '/b/user/info/abeyance_story',
+  userInfoFinishStory: '/b/user/info/finish_story',
+  userInfoCreateStory: '/b/user/info/create_story',
+  userInfoOverviewStatistics: '/b/user/info/overview_statistics',
+  userInfoOverviewFeed: '/b/user/info/overview_feed',
+  userInfoProject: '/b/user/info/project',
+  memberInfoAbeyanceStory: '/b/project/member/info/abeyance_story',
+  memberInfoFinishStory: '/b/project/member/info/finish_story',
+  memberInfoCreateStory: '/b/project/member/info/create_story',
+  memberInfoOverviewStatistics: '/b/project/member/info/overview_statistics',
+  memberInfoProject: '/b/project/member/info/project',
 }
 
 export default urls

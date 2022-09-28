@@ -6,5 +6,6 @@ import * as demand from './project/demand'
 import * as iterate from './project/iterate'
 import * as project from './project/index'
 import * as cos from './cos'
+import * as member from './member'
 
-export { user, setting, staff, demand, iterate, project, cos, mine }
+export { user, setting, staff, demand, iterate, project, cos, mine, member }

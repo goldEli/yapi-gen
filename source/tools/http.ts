@@ -63,7 +63,7 @@ client.config({
     'Content-Type': 'application/json; charset=UTF-8',
   },
   requestInterceptors: [
-    async options => {
+    async (options: any) => {
       await isCheckTicket(
         options.url ===
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
@@ -152,11 +152,15 @@ client.config({
 })
 
 export const get = <SearchParams extends HttpRequestSearch, Result = any>(
-  key: UrlKeys,
+  key: UrlKeys | string,
   data?: any,
   options?: any,
 ) => {
-  return client.get<SearchParams, Result>(urls[key], data, options)
+  return client.get<SearchParams, Result>(
+    urls[key as UrlKeys] || key,
+    data,
+    options,
+  )
 }
 
 export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {

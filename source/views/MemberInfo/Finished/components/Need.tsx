@@ -27,6 +27,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -97,6 +99,9 @@ const MoreWrap = (props: MoreWrapProps) => {
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
   const {
@@ -106,6 +111,8 @@ const Need = (props: any) => {
     updateDemandStatus,
     updatePriorityStatus,
   } = useModel('mine')
+  const { getUserInfoFinishStory, getMemberInfoFinishStory }
+    = useModel('member')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isSpin, setIsSpin] = useState<boolean>(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -173,7 +180,7 @@ const Need = (props: any) => {
     if (!updateState) {
       setIsSpin(true)
     }
-    const res = await getMineFinishList({
+    const params = {
       projectId: props.id,
       keyword,
       searchGroups,
@@ -181,7 +188,11 @@ const Need = (props: any) => {
       orderkey: orderKey,
       page: pageNumber ? pageNumber : page,
       pagesize,
-    })
+      targetId: userId,
+    }
+    const res = isMember
+      ? await getMemberInfoFinishStory(params)
+      : await getUserInfoFinishStory(params)
 
     setListData(res)
     setTotal(res?.pager?.total)

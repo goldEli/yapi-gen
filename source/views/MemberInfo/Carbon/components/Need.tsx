@@ -32,6 +32,8 @@ import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -117,6 +119,9 @@ const MoreWrap = (props: MoreWrapProps) => {
 // eslint-disable-next-line complexity
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
   const {
@@ -125,9 +130,9 @@ const Need = (props: any) => {
     getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
-    isUpdateCreate,
-    setIsUpdateCreate,
   } = useModel('mine')
+  const { getUserInfoAbeyanceStory, getMemberInfoAbeyanceStory }
+    = useModel('member')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -198,18 +203,22 @@ const Need = (props: any) => {
     }
 
     if (isMany) {
-      const res = await getMineNoFinishList({
+      const params = {
         projectId: props.id,
         all: isMany ? 1 : '',
         panelDate: isMany ? 1 : '',
-      })
+        targetId: userId,
+      }
+      const res = isMember
+        ? await getMemberInfoAbeyanceStory(params)
+        : await getUserInfoAbeyanceStory(params)
 
       setManyListData(res)
       setIsSpin(false)
     }
 
     if (!isMany) {
-      const res = await getMineNoFinishList({
+      const params = {
         projectId: props.id,
         keyword,
         searchGroups,
@@ -217,20 +226,17 @@ const Need = (props: any) => {
         orderkey: orderKey,
         page: pageNumber ? pageNumber : page,
         pagesize,
-      })
+        targetId: userId,
+      }
+      const res = isMember
+        ? await getMemberInfoAbeyanceStory(params)
+        : await getUserInfoAbeyanceStory(params)
 
       setListData(res)
       setTotal(res.pager.total)
       setIsSpin(false)
     }
-    setIsUpdateCreate(false)
   }
-
-  useEffect(() => {
-    if (isUpdateCreate) {
-      init()
-    }
-  }, [isUpdateCreate])
 
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)

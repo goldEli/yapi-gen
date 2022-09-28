@@ -9,6 +9,8 @@ import {
 import { NameWrap } from '@/components/StyleCommon'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { useModel } from '@/models'
+import { useEffect } from 'react'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -112,16 +114,25 @@ const MemberInfo = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  // 有projectId就是项目成员详情，反之
   const projectId = paramsData.id
-  const { isMember } = paramsData
+  const { isMember, userId } = paramsData
+  const { getMainInfo, mainInfo } = useModel('member')
+
+  useEffect(() => {
+
+    // getMainInfo({ isMember, userId })
+  }, [])
 
   const changeActive = (value: any) => {
     if (isMember) {
-      const params = encryptPhp(JSON.stringify({ id: projectId, isMember }))
+      const params = encryptPhp(
+        JSON.stringify({ id: projectId, isMember, userId }),
+      )
       navigate(`/Detail/MemberInfo/${value.path}?data=${params}`)
     } else {
-      const params = encryptPhp(JSON.stringify({ userId: paramsData.userId }))
+      const params = encryptPhp(
+        JSON.stringify({ userId, isMember: false, id: '' }),
+      )
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
