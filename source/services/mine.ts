@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
@@ -65,8 +66,8 @@ export const getSearchField: any = async (params: any) => {
     return item
   })
 
-  const filterAllList = allList.map((item: any) => {
-    if (item.title.includes('时间')) {
+  const filterAllList = allList?.map((item: any) => {
+    if (item.title.includes('时间') && !item.attr) {
       return {
         id: item.id,
         name: item.title,
@@ -77,17 +78,49 @@ export const getSearchField: any = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else {
+    } else if (item.title.includes('需求进度') && !item.attr) {
       return {
         id: item.id,
         name: item.title,
         key: item.content,
         content: item.content,
         children: item.values,
-        type: 'select',
+        type: 'number',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
+    } else if (item.title.includes('需求分类') && !item.attr) {
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: 'tree',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.attr) {
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: item.attr,
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    }
+    return {
+      id: item.id,
+      name: item.title,
+      key: item.content,
+      content: item.content,
+      children: item.values,
+      type: 'select',
+      isDefault: item.is_default_filter,
+      contentTxt: item.content_txt,
     }
   })
   const filterBasicsList = filter_fidlds.filter(
