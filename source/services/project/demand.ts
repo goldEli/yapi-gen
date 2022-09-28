@@ -297,7 +297,6 @@ export const updateDemand: any = async (params: any) => {
     attachment: params.attachments,
     id: params.id,
     custom_field: params?.customField,
-    category_id: params?.category,
     class_id: params?.class,
     schedule: params?.schedule,
   })

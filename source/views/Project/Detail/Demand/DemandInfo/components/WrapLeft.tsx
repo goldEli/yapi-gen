@@ -187,18 +187,22 @@ const QuickEdit = (props: Props) => {
   const projectId = paramsData.id
 
   useEffect(() => {
-    if (isShowControl) {
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 200)
-    }
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 200)
   }, [isShowControl])
 
   const onChange = async (newValue: string) => {
-    const obj = {
+    const obj: any = {
       projectId,
       id: demandInfo?.id,
-      otherParams: { [props?.keyText]: newValue },
+    }
+    if (props?.isCustom) {
+      obj.otherParams = {
+        custom_field: { [props?.keyText]: newValue },
+      }
+    } else {
+      obj.otherParams = { [props?.keyText]: newValue }
     }
     try {
       await updateTableParams(obj)
@@ -210,34 +214,28 @@ const QuickEdit = (props: Props) => {
     }
   }
 
+  const onBlur = (val: any) => {
+    if (val) {
+      onChange(val)
+    } else {
+      setIsShowControl(false)
+    }
+  }
+
   return (
     <>
       {isShowControl ? (
         <>
-          {props?.isCustom
-            ? getTypeComponent(
-              {
-                attr: props?.type,
-                value: props?.value,
-              },
-              props?.defaultText,
-              inputRef,
-            )
-            : (
-                <TreeSelect
-                  style={{ minWidth: 200, position: 'relative' }}
-                  showArrow
-                  showSearch
-                  placeholder="请选择需求分类"
-                  getPopupContainer={node => node}
-                  allowClear
-                  treeData={props?.value}
-                  value={props?.defaultText}
-                  ref={inputRef}
-                  onBlur={() => setIsShowControl(false)}
-                  onChange={onChange}
-                />
-              )}
+          {getTypeComponent(
+            {
+              attr: props?.type,
+              value: props?.value,
+            },
+            props?.defaultText,
+            inputRef,
+            onBlur,
+            onChange,
+          )}
         </>
       )
         : <span onMouseEnter={() => setIsShowControl(true)}>{props?.text}</span>
@@ -491,7 +489,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
           <QuickEdit
             text={demandInfo?.className ? demandInfo?.className : '未分类'}
             keyText="class_id"
-            type="select"
+            type="treeSelect"
             defaultText={demandInfo?.class}
             value={classTreeData}
           />

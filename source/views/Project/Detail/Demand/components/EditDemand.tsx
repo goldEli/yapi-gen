@@ -594,6 +594,7 @@ const EditDemand = (props: Props) => {
                 showArrow
                 showSearch
                 placeholder="请选择需求类别"
+                disabled={props?.id}
                 getPopupContainer={node => node}
                 options={categoryList?.list?.map((k: any) => ({
                   label: k.name,
