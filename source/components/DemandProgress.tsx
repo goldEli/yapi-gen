@@ -3,8 +3,6 @@
 import { Progress, Popover } from 'antd'
 import { ProgressWrap, SliderWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
-import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
 import { useState } from 'react'
 
 interface Props {
@@ -14,14 +12,12 @@ interface Props {
 }
 
 const DemandProgress = (props: Props) => {
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
   const [schedule, setSchedule] = useState(props?.row?.schedule)
   const { updateTableParams } = useModel('demand')
 
   const onChangeSchedule = async () => {
     const obj = {
-      projectId: paramsData.id,
+      projectId: props?.row?.project_id,
       id: props?.row?.id,
       otherParams: { schedule },
     }

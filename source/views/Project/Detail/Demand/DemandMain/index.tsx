@@ -56,8 +56,12 @@ const DemandMain = (props: Props) => {
     item?: any,
     orderItem?: any,
     isInit?: boolean,
+    updateState?: boolean,
   ) => {
-    setIsSpinning(true)
+    if (!updateState) {
+      setIsSpinning(true)
+    }
+
     let params = {}
     if (state) {
       params = {
@@ -172,8 +176,8 @@ const DemandMain = (props: Props) => {
     getList(isGrid, searchItems, { page: 1, size: pageObj.size }, item)
   }
 
-  const onUpdate = () => {
-    getList(isGrid, searchItems, pageObj, order, true)
+  const onUpdate = (state?: boolean) => {
+    getList(isGrid, searchItems, pageObj, order, true, state)
   }
 
   return (

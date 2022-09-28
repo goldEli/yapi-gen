@@ -100,6 +100,7 @@ export const getDemandList: any = async (params: any) => {
           ...i.custom_field,
           categoryColor: i.category_color,
           categoryRemark: i.category_remark,
+          project_id: i.project_id,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -129,6 +130,7 @@ export const getDemandList: any = async (params: any) => {
       ...i.custom_field,
       categoryColor: i.category_color,
       categoryRemark: i.category_remark,
+      project_id: i.project_id,
     }))
   } else {
     return {
@@ -161,6 +163,7 @@ export const getDemandList: any = async (params: any) => {
         ...i.custom_field,
         categoryColor: i.category_color,
         categoryRemark: i.category_remark,
+        project_id: i.project_id,
       })),
     }
   }

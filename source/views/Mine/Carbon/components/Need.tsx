@@ -193,8 +193,10 @@ const Need = (props: any) => {
     setOrderKey(key)
     setOrder(order)
   }
-  const init = async (pageNumber?: any) => {
-    setIsSpin(true)
+  const init = async (pageNumber?: any, updateState?: boolean) => {
+    if (!updateState) {
+      setIsSpin(true)
+    }
     if (isMany) {
       const res = await getMineNoFinishList({
         projectId: props.id,

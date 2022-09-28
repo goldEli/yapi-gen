@@ -172,8 +172,10 @@ const Need = (props: any) => {
     setOrderKey(key)
     setOrder(order)
   }
-  const init = async (pageNumber?: any) => {
-    setIsSpin(true)
+  const init = async (pageNumber?: any, updateState?: boolean) => {
+    if (!updateState) {
+      setIsSpin(true)
+    }
     const res = await getMineCreacteList({
       projectId: props.id,
       keyword,

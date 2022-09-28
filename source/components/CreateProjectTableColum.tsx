@@ -73,7 +73,7 @@ export const useDynamicColumns = (state: any) => {
   }
 
   const onUpdate = () => {
-    state.onUpdate()
+    state.onUpdate(true)
   }
 
   const arr = [

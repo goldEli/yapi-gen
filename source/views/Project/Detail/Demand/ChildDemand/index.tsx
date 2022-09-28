@@ -115,8 +115,14 @@ const ChildDemand = () => {
     setTitleList3(projectInfo?.titleList3 || [])
   }
 
-  const getList = async (item?: any, orderItem?: any) => {
-    setIsSpinning(true)
+  const getList = async (
+    item?: any,
+    orderItem?: any,
+    updateState?: boolean,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
     const result = await getDemandList({
       projectId,
       page: item ? item.page : 1,
@@ -159,9 +165,9 @@ const ChildDemand = () => {
     setIsVisible(true)
   }
 
-  const onUpdate = () => {
+  const onUpdate = (updateState?: boolean) => {
     getDemandInfo({ projectId, id: demandId })
-    getList(pageObj, order)
+    getList(pageObj, order, updateState)
   }
 
   const updateOrderkey = (key: any, val: any) => {

@@ -52,8 +52,15 @@ const IterationMain = (props: Props) => {
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
   const [searchItems, setSearchItems] = useState({})
   const [isSpinning, setIsSpinning] = useState(false)
-  const getList = async (state: boolean, item: any, searchParamsObj: any) => {
-    setIsSpinning(true)
+  const getList = async (
+    state: boolean,
+    item: any,
+    searchParamsObj: any,
+    updateState?: boolean,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
     let params = {}
     if (state) {
       params = {
@@ -186,8 +193,8 @@ const IterationMain = (props: Props) => {
     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
-  const onUpdate = () => {
-    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+  const onUpdate = (updateState?: boolean) => {
+    getList(isGrid, { page: 1, size: pageObj.size }, searchItems, updateState)
   }
 
   return (

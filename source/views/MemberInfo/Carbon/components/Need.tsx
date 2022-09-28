@@ -28,7 +28,6 @@ import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
@@ -193,8 +192,11 @@ const Need = (props: any) => {
     setOrderKey(key)
     setOrder(order)
   }
-  const init = async (pageNumber?: any) => {
-    setIsSpin(true)
+  const init = async (pageNumber?: any, updateState?: boolean) => {
+    if (!updateState) {
+      setIsSpin(true)
+    }
+
     if (isMany) {
       const res = await getMineNoFinishList({
         projectId: props.id,

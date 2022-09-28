@@ -57,7 +57,7 @@
     "timesDays": "Last week",
     "timesMonths": "Last month",
     "timesThreeMonths": "Last March",
-    "null": "Null",
+    "null": "Empty",
     "startDate": "Start today",
     "endDate": "Due today",
     "copySend": "CopySend to",
