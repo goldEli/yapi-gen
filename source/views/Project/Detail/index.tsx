@@ -36,8 +36,6 @@ const Detail = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isRefresh } = useModel('user')
-  const [treeData, setTreeData] = useState([])
-  const [leiBieData, setLeiBieData] = useState([])
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
     const arr = result.list?.map((i: any) => ({
@@ -88,34 +86,10 @@ const Detail = () => {
       isSelect: true,
     })
 
-    setTreeData(filterTreeData(res))
-    setLeiBieData(filArr2(res2.list))
-  }
-  useEffect(() => {
-    getTreeData()
-    getProjectInfo({ projectId })
-    getProjectCoverList()
-    getPermissionList()
-    getMemberList({ all: true, projectId })
-    getTagList({ projectId })
-    getIterateList()
-  }, [])
+    const newTreeData = filterTreeData(res)
+    const newLieBieData = filArr2(res2.list)
 
-  useEffect(() => {
-    if (isRefresh) {
-      getProjectInfo({ projectId })
-      getPermissionList()
-    }
-  }, [isRefresh])
-
-  useEffect(() => {
-    if (isRefreshIterateList) {
-      getIterateList()
-    }
-  }, [isRefreshIterateList])
-
-  useEffect(() => {
-    const allList = projectInfo.filterFelid?.map((item: any) => {
+    const allList = projectInfo?.filterFelid?.map((item: any) => {
       if (item.content === 'iterate_name') {
         item.values = selectIterate.list?.map((i: any) => {
           return {
@@ -173,7 +147,7 @@ const Detail = () => {
           type: 'tree',
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
-          children: treeData,
+          children: newTreeData,
         }
       } else if (item.title.includes('需求类别') && !item.attr) {
         return {
@@ -184,7 +158,7 @@ const Detail = () => {
           type: 'select_checkbox',
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
-          children: leiBieData,
+          children: newLieBieData,
         }
       } else if (item.attr) {
         return {
@@ -211,7 +185,36 @@ const Detail = () => {
     })
 
     setFilterAll(filterAllList)
+  }
+
+  useEffect(() => {
+    getProjectInfo({ projectId })
+    getProjectCoverList()
+    getPermissionList()
+    getMemberList({ all: true, projectId })
+    getTagList({ projectId })
+    getIterateList()
+  }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getProjectInfo({ projectId })
+      getPermissionList()
+    }
+  }, [isRefresh])
+
+  useEffect(() => {
+    if (isRefreshIterateList) {
+      getIterateList()
+    }
+  }, [isRefreshIterateList])
+
+  useEffect(() => {
+    getTreeData()
   }, [memberList, selectIterate, projectInfo])
+  useEffect(() => {
+    getTreeData()
+  }, [])
 
   return (
     <Wrap>
