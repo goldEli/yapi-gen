@@ -138,6 +138,10 @@ const SelectWrapBedeck = styled.div`
   .ant-picker {
     border: none;
   }
+  .ant-select-selector {
+    border: none !important;
+    background-color: transparent !important;
+  }
 `
 
 const CollapseDiv = styled.div({
