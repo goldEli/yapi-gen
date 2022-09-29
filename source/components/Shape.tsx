@@ -28,13 +28,13 @@ const Left = styled.div`
 const Right = styled.div`
   box-sizing: border-box;
   padding-left: 24px;
-  width: 400px;
+  width: 500px;
   min-height: 400px;
   /* overflow-y: scroll; */
 `
 const Contain = styled.div`
   position: relative;
-  width: 550px;
+  width: 600px;
   min-height: 316px;
   display: flex;
 `
