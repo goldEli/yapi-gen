@@ -412,8 +412,10 @@ export const ShapeContent = (props: ShapeProps) => {
                     <ArrorBox>
                       {item2.verify_users.map((item: any) => (
                         <ArrorItem key={item}>
-                          <span className={arron}>{item.name.charAt(0)}</span>
-                          <span className={arrorText}>{item2.name}</span>
+                          <span className={arron}>
+                            {item.name.trim().charAt(0)}
+                          </span>
+                          <span className={arrorText}>{item.name}</span>
                           <span className={symbol}>
                             {item2.operator === 1
                               ? '>'
@@ -449,28 +451,30 @@ export const ShapeContent = (props: ShapeProps) => {
             </Timeline>
           </AuditBox>
         ) : null}
-        {rightList.is_verify && rightList.verify.verify_type === 2 ? <Form.Item
-          labelCol={{ span: 5 }}
-          label="审核人"
-          name="username"
-          rules={[
-            {
-              required: activeContent || !activeContent && !hasDealName,
-              message: '',
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            placeholder={t('common.pleaseSelect')}
-            allowClear
-            options={optionsList?.map((item: any) => ({
-              label: item.name,
-              value: item.id,
-            }))}
-            optionFilterProp="label"
-          />
-        </Form.Item> : null}
+        {rightList.is_verify && rightList.verify.verify_type === 2 ? (
+          <Form.Item
+            labelCol={{ span: 5 }}
+            label="审核人"
+            name="username"
+            rules={[
+              {
+                required: activeContent || !activeContent && !hasDealName,
+                message: '',
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              placeholder={t('common.pleaseSelect')}
+              allowClear
+              options={optionsList?.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              optionFilterProp="label"
+            />
+          </Form.Item>
+        ) : null}
         <ButtonFooter>
           <Button
             onClick={confirm}
