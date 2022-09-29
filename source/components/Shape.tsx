@@ -1,3 +1,7 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable multiline-ternary */
+/* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import { Select, Button, Form, Input, Timeline } from 'antd'
@@ -8,6 +12,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
+import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 
 const Left = styled.div`
   width: 120px;
@@ -23,13 +28,13 @@ const Left = styled.div`
 const Right = styled.div`
   box-sizing: border-box;
   padding-left: 24px;
-  width: 354px;
+  width: 400px;
   min-height: 400px;
   /* overflow-y: scroll; */
 `
 const Contain = styled.div`
   position: relative;
-  width: 475px;
+  width: 550px;
   min-height: 316px;
   display: flex;
 `
@@ -74,6 +79,7 @@ const Close = styled.span`
 `
 const ExcessiveBox = styled.div`
   display: flex;
+  align-items: center;
 
   height: 22px;
 `
@@ -124,7 +130,7 @@ const ArrorBox = styled.div`
   display: flex;
 `
 
-const arror = css`
+const arron = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,8 +181,15 @@ type ShapeProps = {
   row?: any
 }
 
+// eslint-disable-next-line complexity
 export const ShapeContent = (props: ShapeProps) => {
   const [t] = useTranslation()
+  const {
+    row: {
+      status: { status: fromText },
+    },
+  } = props
+
   const {
     record: {
       id: myid,
@@ -190,10 +203,48 @@ export const ShapeContent = (props: ShapeProps) => {
   const [form] = Form.useForm()
   const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
+  const [leftList, setLeftList] = useState([])
+  const [rightList, setRightList] = useState<any>({})
+  const [activeStatus, setActiveStatus] = useState<any>({})
+  const [active, setActive] = useState(activeID)
 
+  const change = async (item?: any) => {
+    setActiveStatus(item.status)
+    setActive(item.id)
+    const res = await getShapeRight({
+      id: projectId,
+      nId: myid,
+      fromId: activeID,
+      toId: item.id ?? activeID,
+    })
+    setRightList(res)
+
+    // console.log(res, '右边数据 ')
+  }
+
+  const getRight = async () => {
+    setActiveStatus(fromText)
+    const res = await getShapeRight({
+      id: projectId,
+      nId: myid,
+      fromId: activeID,
+      toId: activeID,
+    })
+    setRightList(res)
+
+    // console.log(res, '初始右边数据')
+  }
   const init = async () => {
     const res = await getProjectMember(projectId)
     setOptionsList(res.data)
+    const res2 = await getShapeLeft({
+      id: projectId,
+      nId: myid,
+    })
+    setLeftList(res2)
+    getRight()
+
+    // console.log(res2, '左边数据')
   }
 
   useEffect(() => {
@@ -212,10 +263,10 @@ export const ShapeContent = (props: ShapeProps) => {
     form.resetFields()
   }
 
-  const [active, setActive] = useState(activeID)
   const activeContent
     = statusList?.filter((i: any) => i.id === active)[0]?.content !== '规划中'
   const hasDealName = props.row?.dealName === '--'
+
   const confirm = async () => {
     const res = await form.validateFields()
     const value = {
@@ -225,6 +276,10 @@ export const ShapeContent = (props: ShapeProps) => {
       userIds: res.username,
       content: res.password,
     }
+
+    // console.log(res)
+    return
+
     tap(value)
     onClear()
   }
@@ -232,112 +287,190 @@ export const ShapeContent = (props: ShapeProps) => {
   return (
     <Contain>
       <Left>
-        {[1, 2, 3, 4, 5].map((item: any) => (
-          <div onClick={() => setActive(item)} key={item}>
+        {leftList.map((item: any) => (
+          <div onClick={() => change(item)} key={item.id}>
             <StyledShape
               style={{
-                color: item === active ? '#2877ff' : '#969799',
+                color: item.id === active ? '#2877ff' : '#969799',
                 border:
-                  item === active ? '1px solid #2877ff' : '1px solid #EBEDF0',
+                  item.id === active
+                    ? '1px solid #2877ff'
+                    : '1px solid #EBEDF0',
               }}
             >
-              {item}
+              {item.status.content}
             </StyledShape>
           </div>
         ))}
       </Left>
       <Right>
         <FormWrap>
-          <Form form={form}>
-            <Form.Item
-              labelCol={{ span: 5 }}
-              label={t('common.dealName')}
-              name="username"
-              rules={[
-                {
-                  required: activeContent || !activeContent && !hasDealName,
-                  message: '',
-                },
-              ]}
-            >
-              <Select
-                mode="multiple"
-                placeholder={t('common.pleaseSelect')}
-                allowClear
-                options={optionsList?.map((item: any) => ({
-                  label: item.name,
-                  value: item.id,
-                }))}
-                optionFilterProp="label"
-              />
-            </Form.Item>
-
-            <Form.Item
-              labelCol={{ span: 5 }}
-              label={t('common.comment')}
-              name="password"
-            >
-              <Input.TextArea
-                maxLength={200}
-                style={{ maxHeight: '132px', minHeight: '132px' }}
-                placeholder={t('project.pleaseComment')}
-              />
-            </Form.Item>
+          <Form labelAlign="left" form={form}>
+            {rightList?.fields?.map((i: any) => {
+              if (i.type === 'area') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Input.TextArea
+                      maxLength={200}
+                      style={{ maxHeight: '132px', minHeight: '132px' }}
+                      placeholder={t('project.pleaseComment')}
+                    />
+                  </Form.Item>
+                )
+              } else if (i.type === 'select') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Select
+                      mode="multiple"
+                      placeholder={t('common.pleaseSelect')}
+                      allowClear
+                      options={optionsList?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))}
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                )
+              }
+            })}
           </Form>
         </FormWrap>
-        <ExcessiveBox>
-          <StyledShape2>实现中</StyledShape2>
-          <StyledShape2
-            style={{ color: '#2877FF', border: '1px solid #2877FF' }}
-          >
-            已实现
-          </StyledShape2>
-          <StyledShape3>该流转状态需要审核</StyledShape3>
-        </ExcessiveBox>
+        {rightList?.is_verify ? (
+          <ExcessiveBox>
+            <StyledShape2
+              style={{
+                color: fromText.color,
+                border: `1px solid ${fromText.color}`,
+                marginRight: '8px',
+              }}
+            >
+              {fromText.content}
+            </StyledShape2>
+            <img
+              style={{ width: '40px', height: '15px', margin: '0px 8px' }}
+              src="/public/arrows.png"
+              alt=""
+            />
+            <StyledShape2
+              style={{
+                color: activeStatus.color,
+                border: `1px solid ${activeStatus.color}`,
+                marginRight: '8px',
+              }}
+            >
+              {activeStatus?.content}
+            </StyledShape2>
+            <StyledShape3>该流转状态需要审核</StyledShape3>
+          </ExcessiveBox>
+        ) : null}
+        {rightList.is_verify && rightList.verify.verify_type === 1 ? (
+          <AuditBox>
+            <div
+              style={{
+                width: '56px',
+                height: '22px',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#323233',
+                lineHeight: '22px',
+                marginBottom: '16px',
+              }}
+            >
+              审核流程
+            </div>
 
-        <AuditBox>
-          <div
-            style={{
-              width: '56px',
-              height: '22px',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: '#323233',
-              lineHeight: '22px',
-              marginBottom: '16px',
-            }}
-          >
-            审核流程
-          </div>
+            <Timeline>
+              {rightList.verify.process.map((item2: any) => (
+                <Timeline.Item key={item2}>
+                  <LineBox>
+                    <div style={{ display: 'flex' }}>
+                      <LineBoxTitle2>审核人</LineBoxTitle2>
+                      {/* <LineBoxTitle3>依次审核</LineBoxTitle3> */}
+                    </div>
 
-          <Timeline>
-            {[1, 2, 3].map(item2 => (
-              <Timeline.Item key={item2}>
+                    <ArrorBox>
+                      {item2.verify_users.map((item: any) => (
+                        <ArrorItem key={item}>
+                          <span className={arron}>{item.name.charAt(0)}</span>
+                          <span className={arrorText}>{item2.name}</span>
+                          <span className={symbol}>
+                            {item2.operator === 1
+                              ? '>'
+                              : item2.operator === 2
+                                ? '&'
+                                : item2.operator === 3
+                                  ? '|'
+                                  : ''}
+                          </span>
+                        </ArrorItem>
+                      ))}
+                    </ArrorBox>
+                  </LineBox>
+                </Timeline.Item>
+              ))}
+              <Timeline.Item>
                 <LineBox>
                   <div style={{ display: 'flex' }}>
-                    <LineBoxTitle2>审核人</LineBoxTitle2>
-                    <LineBoxTitle3>依次审核</LineBoxTitle3>
+                    <LineBoxTitle2>流转至</LineBoxTitle2>
+
                     <StyledShape2
-                      style={{ color: '#43BA9A', border: '1px solid #43BA9A' }}
+                      style={{
+                        color: activeStatus.color,
+                        border: `1px solid ${activeStatus.color}`,
+                        marginRight: '8px',
+                      }}
                     >
-                      已实现
+                      {activeStatus?.content}
                     </StyledShape2>
                   </div>
-
-                  <ArrorBox>
-                    {[1, 2, 3].map(item => (
-                      <ArrorItem key={item}>
-                        <span className={arror}>张</span>
-                        <span className={arrorText}>张三</span>
-                        <span className={symbol}>&</span>
-                      </ArrorItem>
-                    ))}
-                  </ArrorBox>
                 </LineBox>
               </Timeline.Item>
-            ))}
-          </Timeline>
-        </AuditBox>
+            </Timeline>
+          </AuditBox>
+        ) : null}
+        {rightList.is_verify && rightList.verify.verify_type === 2 ? <Form.Item
+          labelCol={{ span: 5 }}
+          label="审核人"
+          name="username"
+          rules={[
+            {
+              required: activeContent || !activeContent && !hasDealName,
+              message: '',
+            },
+          ]}
+        >
+          <Select
+            mode="multiple"
+            placeholder={t('common.pleaseSelect')}
+            allowClear
+            options={optionsList?.map((item: any) => ({
+              label: item.name,
+              value: item.id,
+            }))}
+            optionFilterProp="label"
+          />
+        </Form.Item> : null}
         <ButtonFooter>
           <Button
             onClick={confirm}
