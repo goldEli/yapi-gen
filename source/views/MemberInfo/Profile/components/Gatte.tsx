@@ -102,7 +102,7 @@ const Gantt = (_props: Props) => {
         id: 4,
         text: 'Task #2',
         start_date: '2020-10-05',
-        end_date: '2020-10-10',
+        end_date: '2020-10-8',
         status: '<span id="status">1212</span>',
         parent: 2,
       },

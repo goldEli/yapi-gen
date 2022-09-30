@@ -493,6 +493,7 @@ export const addStoryConfigStatus: any = async (params: any) => {
     project_id: params.projectId,
     content: params.name,
     color: params.color,
+    category_id: params.categoryId,
   })
   return response
 }

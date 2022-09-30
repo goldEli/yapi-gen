@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -32,6 +33,8 @@ import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -115,23 +118,29 @@ const MoreWrap = (props: MoreWrapProps) => {
 }
 
 // eslint-disable-next-line complexity
-const Need = (props: any) => {
+const CommonNeed = (props: any) => {
   const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
+  const { getField, getSearchField, updateDemandStatus, updatePriorityStatus }
+    = useModel('mine')
   const {
-    getMineNoFinishList,
-    getField,
-    getSearchField,
-    updateDemandStatus,
-    updatePriorityStatus,
-    isUpdateCreate,
-    setIsUpdateCreate,
-  } = useModel('mine')
+    getUserInfoAbeyanceStory,
+    getUserInfoCreateStory,
+    getUserInfoFinishStory,
+    getMemberInfoAbeyanceStory,
+    getMemberInfoCreateStory,
+    getMemberInfoFinishStory,
+  } = useModel('member')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isMany, setIsMany] = useState(!!props?.isMember)
+  const [isMany, setIsMany] = useState(
+    !!props?.isMember && props?.type === 'abeyance',
+  )
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
@@ -198,18 +207,21 @@ const Need = (props: any) => {
     }
 
     if (isMany) {
-      const res = await getMineNoFinishList({
+      const params = {
         projectId: props.id,
         all: isMany ? 1 : '',
         panelDate: isMany ? 1 : '',
-      })
-
+        targetId: userId,
+      }
+      const res = isMember
+        ? await getMemberInfoAbeyanceStory(params)
+        : await getUserInfoAbeyanceStory(params)
       setManyListData(res)
       setIsSpin(false)
     }
 
     if (!isMany) {
-      const res = await getMineNoFinishList({
+      const params = {
         projectId: props.id,
         keyword,
         searchGroups,
@@ -217,20 +229,32 @@ const Need = (props: any) => {
         orderkey: orderKey,
         page: pageNumber ? pageNumber : page,
         pagesize,
-      })
+        targetId: userId,
+      }
+
+      let res: any
+
+      if (isMember) {
+        res
+          = props?.type === 'abeyance'
+            ? await getMemberInfoAbeyanceStory(params)
+            : props?.type === 'create'
+              ? await getMemberInfoCreateStory(params)
+              : await getMemberInfoFinishStory(params)
+      } else {
+        res
+          = props?.type === 'abeyance'
+            ? await getUserInfoAbeyanceStory(params)
+            : props?.type === 'create'
+              ? await getUserInfoCreateStory(params)
+              : await getUserInfoFinishStory(params)
+      }
 
       setListData(res)
       setTotal(res.pager.total)
       setIsSpin(false)
     }
-    setIsUpdateCreate(false)
   }
-
-  useEffect(() => {
-    if (isUpdateCreate) {
-      init()
-    }
-  }, [isUpdateCreate])
 
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
@@ -431,7 +455,7 @@ const Need = (props: any) => {
         <TabsHehavior>
           <div className={tabCss}>
             <TabsItem isActive>
-              <div>{t('mine.carbonDemand')}</div>
+              <div>{props?.subTitle}</div>
             </TabsItem>
             <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
@@ -626,4 +650,4 @@ const Need = (props: any) => {
   )
 }
 
-export default Need
+export default CommonNeed

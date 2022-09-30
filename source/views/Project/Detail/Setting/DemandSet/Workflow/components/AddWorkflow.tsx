@@ -273,6 +273,7 @@ const AddWorkflow = (props: Props) => {
 
   const onAddConfirm = async (obj: any) => {
     obj.projectId = paramsData.id
+    obj.categoryId = categoryItem?.id
     try {
       await addStoryConfigStatus(obj)
       message.success('添加成功')

@@ -160,13 +160,12 @@ const TotalWrap = styled.div({
 
 const Profile = () => {
   const [t, i18n] = useTranslation()
+  const { getMineGatte } = useModel('mine')
   const {
-    getMineChartsList,
-    getUserFeedList,
-    getMineGatte,
-    isUpdateCreate,
-    setIsUpdateCreate,
-  } = useModel('mine')
+    getUserInfoOverviewFeed,
+    getUserInfoOverviewStatistics,
+    getMemberInfoOverviewStatistics,
+  } = useModel('member')
   const { userInfo } = useModel('user')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
@@ -178,7 +177,7 @@ const Profile = () => {
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { isMember } = paramsData
+  const { isMember, userId, id } = paramsData
 
   const changeMonth = async () => {
     const res2 = await getMineGatte({
@@ -199,24 +198,25 @@ const Profile = () => {
   }
 
   const getFeedList = async () => {
-    const res1 = await getUserFeedList({
+    const res1 = await getUserInfoOverviewFeed({
       limit: '',
+      targetId: userId,
     })
-
     setLineData(res1.data)
-    setIsUpdateCreate(false)
   }
 
   const init = async () => {
-    const res = await getMineChartsList()
-
+    const res = isMember
+      ? await getMemberInfoOverviewStatistics({
+        targetId: userId,
+        projectId: id,
+      })
+      : await getUserInfoOverviewStatistics({ targetId: userId })
     setData(res)
-    getFeedList()
+    if (!isMember) {
+      getFeedList()
+    }
   }
-
-  useEffect(() => {
-    getFeedList()
-  }, [isUpdateCreate])
 
   useEffect(() => {
     init()

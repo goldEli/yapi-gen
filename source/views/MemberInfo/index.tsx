@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import {
@@ -9,6 +10,8 @@ import {
 import { NameWrap } from '@/components/StyleCommon'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { useModel } from '@/models'
+import { useEffect } from 'react'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -85,25 +88,21 @@ const menuList = [
     id: 1,
     name: '他的概况',
     path: 'profile',
-    isPermission: true,
   },
   {
     id: 2,
     name: '他的待办',
     path: 'carbon',
-    isPermission: true,
   },
   {
     id: 3,
     name: '他的创建',
     path: 'create',
-    isPermission: true,
   },
   {
     id: 4,
     name: '他的已办',
     path: 'finished',
-    isPermission: true,
   },
 ]
 
@@ -112,16 +111,24 @@ const MemberInfo = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  // 有projectId就是项目成员详情，反之
   const projectId = paramsData.id
-  const { isMember } = paramsData
+  const { isMember, userId } = paramsData
+  const { getMainInfo, mainInfo } = useModel('member')
+
+  useEffect(() => {
+    getMainInfo({ userId })
+  }, [])
 
   const changeActive = (value: any) => {
     if (isMember) {
-      const params = encryptPhp(JSON.stringify({ id: projectId, isMember }))
+      const params = encryptPhp(
+        JSON.stringify({ id: projectId, isMember, userId }),
+      )
       navigate(`/Detail/MemberInfo/${value.path}?data=${params}`)
     } else {
-      const params = encryptPhp(JSON.stringify({ userId: paramsData.userId }))
+      const params = encryptPhp(
+        JSON.stringify({ userId, isMember: false, id: '' }),
+      )
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
@@ -130,9 +137,24 @@ const MemberInfo = () => {
     <Wrap isMember={isMember}>
       <Side>
         <InfoWrap>
-          <NameWrap style={{ margin: '0 8px 0 0 ' }}>王</NameWrap>
+          {mainInfo?.avatar ? (
+            <img
+              src={mainInfo?.avatar}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                marginRight: 8,
+              }}
+              alt=""
+            />
+          ) : (
+            <NameWrap style={{ margin: '0 8px 0 0 ' }}>
+              {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+            </NameWrap>
+          )}
           <InfoItem>
-            <div>成员名称</div>
+            <div>{mainInfo?.name}</div>
             <span>1212121212</span>
           </InfoItem>
         </InfoWrap>
@@ -142,8 +164,6 @@ const MemberInfo = () => {
               active={pathname.includes(item.path)}
               onClick={() => changeActive(item)}
               key={item.id}
-
-              //   hidden={item.isPermission}
             >
               {item.name}
             </MenuItem>

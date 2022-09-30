@@ -342,3 +342,12 @@ export const updateTableParams: any = async (params: any) => {
     ...params.otherParams,
   })
 }
+
+export const updateDemandCategory: any = async (params: any) => {
+  await http.put<any>('updateDemandCategory', {
+    project_id: params.projectId,
+    story_id: params.id,
+    category_id: params.categoryId,
+    status_id: params.statusId,
+  })
+}

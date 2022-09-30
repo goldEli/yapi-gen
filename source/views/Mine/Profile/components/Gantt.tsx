@@ -85,8 +85,8 @@ const Gantt = (_props: Props) => {
       {
         id: 2,
         text: 'Task #1',
-        start_date: '2020-10-04',
-        end_date: '2020-10-10',
+        start_date: '2020-10-05',
+        end_date: '2020-10-12',
         status: '<span id="status">1212</span>',
         render: 'split',
       },
@@ -99,18 +99,14 @@ const Gantt = (_props: Props) => {
       },
       {
         id: 4,
-        text: 'Task #2',
         start_date: '2020-10-05',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
+        end_date: '2020-10-8',
         parent: 2,
       },
       {
         id: 5,
-        text: 'Task #2',
-        start_date: '2020-10-07',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
+        start_date: '2020-10-09',
+        end_date: '2020-10-12',
         parent: 2,
       },
       {
