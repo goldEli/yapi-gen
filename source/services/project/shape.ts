@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
@@ -69,14 +70,29 @@ export const getShapeRight = async (params: any) => {
         contentTxt: item.content_txt,
       }
     } else if (item.attr) {
+      if (item.attr === 'date') {
+        return {
+          ...item,
+          id: index,
+          name: item.title,
+          key: item.content,
+          content: item.content,
+          dvalue: item.true_value,
+          type: item.value[0],
+        }
+      }
       return {
         ...item,
         id: index,
         name: item.title,
         key: item.content,
         content: item.content,
-
         type: item.attr,
+        dvalue: item.true_value,
+        children: item?.value?.map((item: any) => ({
+          name: item,
+          id: item,
+        })),
       }
     }
     return {
