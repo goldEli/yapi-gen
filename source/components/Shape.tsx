@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
@@ -5,10 +6,16 @@
 /* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { Select, Button, Form, Input, Timeline, DatePicker } from 'antd'
+import {
+  Select,
+  Button,
+  Form,
+  Input,
+  Timeline,
+  DatePicker,
+  TreeSelect,
+} from 'antd'
 import { useModel } from '@/models'
-
-const { Option } = Select
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -64,6 +71,8 @@ const FormWrap = styled.div`
   margin-top: 48px;
   box-sizing: border-box;
   padding-right: 24px;
+  /* overflow: scroll;
+  height: 400px; */
 `
 const ButtonFooter = styled.div`
   height: 56px;
@@ -82,7 +91,7 @@ const Close = styled.span`
 const ExcessiveBox = styled.div`
   display: flex;
   align-items: center;
-
+  margin-bottom: 24px;
   height: 22px;
 `
 const StyledShape2 = styled.div`
@@ -118,16 +127,18 @@ const LineBoxTitle2 = styled.div`
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   color: #323233;
+  margin-bottom: 8px;
   line-height: 22px;
 `
-const LineBoxTitle3 = styled.div`
-  height: 20px;
-  font-size: 12px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #969799;
-  line-height: 20px;
-`
+
+// const LineBoxTitle3 = styled.div`
+//   height: 20px;
+//   font-size: 12px;
+//   font-family: PingFang SC-Regular, PingFang SC;
+//   font-weight: 400;
+//   color: #969799;
+//   line-height: 20px;
+// `
 const ArrorBox = styled.div`
   display: flex;
 `
@@ -154,21 +165,22 @@ const arrorText = css`
   line-height: 20px;
 `
 const symbol = css`
+  color: #bbbdbf;
   position: absolute;
   width: 16px;
   height: 16px;
   border-radius: 0px 0px 0px 0px;
-  top: 8px;
+  top: 5px;
   right: -25px;
 `
 const ArrorItem = styled.div`
   position: relative;
-  height: 56px;
+  height: 60px;
   display: flex;
   flex-direction: column;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-right: 32px;
   &:nth-last-child(1) {
     .${symbol} {
@@ -273,6 +285,7 @@ export const ShapeContent = (props: ShapeProps) => {
   const [active, setActive] = useState(activeID)
 
   const change = async (item?: any) => {
+    form.resetFields()
     setActiveStatus(item.status)
     setActive(item.id)
     const res = await getShapeRight({
@@ -391,7 +404,34 @@ export const ShapeContent = (props: ShapeProps) => {
                     />
                   </Form.Item>
                 )
-              } else if (i.type === 'select') {
+              } else if (i.type === 'select' || i.type === 'radio') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Select
+                      placeholder={t('common.pleaseSelect')}
+                      allowClear
+                      options={i.children?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))}
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                )
+              } else if (
+                i.type === 'select_checkbox'
+                || i.type === 'checkbox'
+              ) {
                 return (
                   <Form.Item
                     labelCol={{ span: 8 }}
@@ -408,7 +448,7 @@ export const ShapeContent = (props: ShapeProps) => {
                       mode="multiple"
                       placeholder={t('common.pleaseSelect')}
                       allowClear
-                      options={optionsList?.map((item: any) => ({
+                      options={i.children?.map((item: any) => ({
                         label: item.name,
                         value: item.id,
                       }))}
@@ -416,7 +456,11 @@ export const ShapeContent = (props: ShapeProps) => {
                     />
                   </Form.Item>
                 )
-              } else if (i.type === 'date') {
+              } else if (
+                i.type === 'date'
+                || i.type === 'time'
+                || i.type === 'datetime'
+              ) {
                 return (
                   <Form.Item
                     labelCol={{ span: 8 }}
@@ -446,6 +490,44 @@ export const ShapeContent = (props: ShapeProps) => {
                     ]}
                   >
                     <NumericInput />
+                  </Form.Item>
+                )
+              } else if (i.type === 'text' || i.type === 'textarea') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Input placeholder="请输入搜索关键词" />
+                  </Form.Item>
+                )
+              } else if (i.type === 'tree') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <TreeSelect
+                      style={{ width: '100%', border: 'none' }}
+                      dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                      treeData={i.children}
+                      placeholder="Please select"
+                      treeDefaultExpandAll
+                    />
                   </Form.Item>
                 )
               }
@@ -490,7 +572,7 @@ export const ShapeContent = (props: ShapeProps) => {
                 fontWeight: 500,
                 color: '#323233',
                 lineHeight: '22px',
-                marginBottom: '16px',
+                marginBottom: '20px',
               }}
             >
               审核流程
@@ -549,7 +631,9 @@ export const ShapeContent = (props: ShapeProps) => {
         ) : null}
         {rightList.is_verify && rightList.verify.verify_type === 2 ? (
           <Form.Item
-            labelCol={{ span: 5 }}
+            style={{ paddingRight: '24px' }}
+            labelAlign="left"
+            labelCol={{ span: 8 }}
             label="审核人"
             name="username"
             rules={[
@@ -560,7 +644,8 @@ export const ShapeContent = (props: ShapeProps) => {
             ]}
           >
             <Select
-              mode="multiple"
+
+              // mode="multiple"
               placeholder={t('common.pleaseSelect')}
               allowClear
               options={optionsList?.map((item: any) => ({

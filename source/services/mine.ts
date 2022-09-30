@@ -4,6 +4,36 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
+import { getTreeList } from '@/services/project/tree'
+import { storyConfigCategoryList } from '@/services/project'
+
+function filterTreeData(data: any) {
+  const newData = data.map((item: any) => ({
+    title: item.name,
+    value: item.id,
+    children:
+      item.children && item.children.length
+        ? filterTreeData(item.children)
+        : null,
+  }))
+  return newData
+}
+const filArr = (data: any) => {
+  return data?.map((item: any) => {
+    return {
+      content_txt: item,
+      id: item,
+    }
+  })
+}
+const filArr2 = (data: any) => {
+  return data?.map((item: any) => {
+    return {
+      content_txt: item.name,
+      id: item.id,
+    }
+  })
+}
 
 // 获取动态搜索段
 export const getSearchField: any = async (params: any) => {
@@ -12,6 +42,15 @@ export const getSearchField: any = async (params: any) => {
   if (params === 0) {
     return
   }
+
+  const res = await getTreeList({ id: params })
+
+  const res2 = await storyConfigCategoryList({
+    projectId: params,
+    isSelect: true,
+  })
+  const newTreeData = filterTreeData(res)
+  const newLieBieData = filArr2(res2.list)
 
   const memberList = await http.get('getProjectMember', {
     search: {
@@ -95,10 +134,21 @@ export const getSearchField: any = async (params: any) => {
         name: item.title,
         key: item.content,
         content: item.content,
-        children: item.values,
         type: 'tree',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
+        children: newTreeData,
+      }
+    } else if (item.title.includes('需求类别') && !item.attr) {
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+        children: newLieBieData,
       }
     } else if (item.attr) {
       return {
@@ -106,10 +156,10 @@ export const getSearchField: any = async (params: any) => {
         name: item.title,
         key: item.content,
         content: item.content,
-        children: item.values,
         type: item.attr,
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
+        children: filArr(item?.values),
       }
     }
     return {
@@ -118,7 +168,7 @@ export const getSearchField: any = async (params: any) => {
       key: item.content,
       content: item.content,
       children: item.values,
-      type: 'select',
+      type: 'select_checkbox',
       isDefault: item.is_default_filter,
       contentTxt: item.content_txt,
     }

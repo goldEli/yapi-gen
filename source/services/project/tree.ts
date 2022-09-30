@@ -23,7 +23,7 @@ export const getTreeList = async (params: any) => {
         {
           name: '未分类',
           pid: 0,
-          id: 0,
+          id: -1,
           story_count: res.data[1].story_count,
         },
       ],
