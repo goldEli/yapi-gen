@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -24,6 +23,7 @@ import {
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
@@ -32,9 +32,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
-import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -120,27 +117,22 @@ const MoreWrap = (props: MoreWrapProps) => {
 // eslint-disable-next-line complexity
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
-  const { getField, getSearchField, updateDemandStatus, updatePriorityStatus }
-    = useModel('mine')
   const {
-    getUserInfoAbeyanceStory,
-    getUserInfoCreateStory,
-    getUserInfoFinishStory,
-    getMemberInfoAbeyanceStory,
-    getMemberInfoCreateStory,
-    getMemberInfoFinishStory,
-  } = useModel('member')
+    getField,
+    getSearchField,
+    updateDemandStatus,
+    updatePriorityStatus,
+    getMineNoFinishList,
+    getMineCreacteList,
+    getMineFinishList,
+    getMineNeedList,
+  } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isMany, setIsMany] = useState(
-    !!props?.isMember && props?.type === 'abeyance',
-  )
+  const [isMany, setIsMany] = useState(false)
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
@@ -211,11 +203,8 @@ const CommonNeed = (props: any) => {
         projectId: props.id,
         all: isMany ? 1 : '',
         panelDate: isMany ? 1 : '',
-        targetId: userId,
       }
-      const res = isMember
-        ? await getMemberInfoAbeyanceStory(params)
-        : await getUserInfoAbeyanceStory(params)
+      const res = await getMineNoFinishList(params)
       setManyListData(res)
       setIsSpin(false)
     }
@@ -229,29 +218,19 @@ const CommonNeed = (props: any) => {
         orderkey: orderKey,
         page: pageNumber ? pageNumber : page,
         pagesize,
-        targetId: userId,
       }
 
-      let res: any
-
-      if (isMember) {
-        res
-          = props?.type === 'abeyance'
-            ? await getMemberInfoAbeyanceStory(params)
-            : props?.type === 'create'
-              ? await getMemberInfoCreateStory(params)
-              : await getMemberInfoFinishStory(params)
-      } else {
-        res
-          = props?.type === 'abeyance'
-            ? await getUserInfoAbeyanceStory(params)
-            : props?.type === 'create'
-              ? await getUserInfoCreateStory(params)
-              : await getUserInfoFinishStory(params)
-      }
+      const res
+        = props?.type === 'abeyance'
+          ? await getMineNoFinishList(params)
+          : props?.type === 'create'
+            ? await getMineCreacteList(params)
+            : props?.type === 'finish'
+              ? await getMineFinishList(params)
+              : await getMineNeedList(params)
 
       setListData(res)
-      setTotal(res.pager.total)
+      setTotal(res?.pager?.total)
       setIsSpin(false)
     }
   }
