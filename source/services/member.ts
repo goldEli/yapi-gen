@@ -471,6 +471,10 @@ export const getMemberInfoOverviewStatistics: any = async (params: any) => {
 }
 
 export const getMainInfo: any = async (params: any) => {
-  const response = await http.get(`/b/user/${params.userId}`)
-  return response.data
+  const response = await http.get(`/b/get_user/${params.userId}`)
+  return {
+    name: response.data.name,
+    phone: response.data.account?.phone,
+    avatar: response.data.avatar,
+  }
 }

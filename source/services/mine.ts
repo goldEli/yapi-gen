@@ -267,34 +267,37 @@ export const getMineGatte: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
-  const handleData = (data: any) => {
-    return data.reduce((res: any, item: any, index: any) => {
-      const { children, ...rest } = item
-      children.forEach((child: any) => {
-        res.push({
-          ...rest,
-          ...child,
-          y: index,
-        })
-      })
-      return res
-    }, [])
-  }
 
-  const arr = handleData(response.data.list)
-  const arr2 = arr.map((item: any) => {
-    return {
-      start: item.created_at * 1000,
-      end: item.end_at * 1000,
-      beginTime: item.expected_start_at,
-      endTime: item.expected_end_at,
-      name: item.name,
-      state: item.status_name,
-      y: item.y,
-    }
-  })
+  // const handleData = (data: any) => {
+  //   return data.reduce((res: any, item: any, index: any) => {
+  //     const { children, ...rest } = item
+  //     children.forEach((child: any) => {
+  //       res.push({
+  //         ...rest,
+  //         ...child,
+  //         y: index,
+  //       })
+  //     })
+  //     return res
+  //   }, [])
+  // }
 
-  return { list: arr2, pager: response.data.pager }
+  // const arr = handleData(response.data.list)
+  // const arr2 = arr.map((item: any) => {
+  //   return {
+  //     start: item.created_at * 1000,
+  //     end: item.end_at * 1000,
+  //     beginTime: item.expected_start_at,
+  //     endTime: item.expected_end_at,
+  //     name: item.name,
+  //     state: item.status_name,
+  //     y: item.y,
+  //   }
+  // })
+
+  // console.log(response, '===response')
+
+  // return { list: arr2, pager: response.data.pager }
 }
 
 // 获取状态下的成员列表
