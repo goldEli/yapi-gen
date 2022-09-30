@@ -85,6 +85,8 @@ const urls = {
   delNeedTreeList: '/b/project/story/class/delete',
   moveNeedTreeList: '/b/project/story/class/move',
   changeTableParams: '/b/story/update_fast',
+  getShapeLeft: '/b/story/get_can_changes_workflows',
+  getShapeRight: '/b/story/get_workflows_config',
   updateDemandCategory: '/b/story/update/category',
   userInfoAbeyanceStory: '/b/user/info/abeyance_story',
   userInfoFinishStory: '/b/user/info/finish_story',

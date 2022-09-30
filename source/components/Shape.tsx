@@ -1,16 +1,24 @@
+/* eslint-disable max-lines */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable multiline-ternary */
+/* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { Select, Button, Form, Input } from 'antd'
+import { Select, Button, Form, Input, Timeline, DatePicker } from 'antd'
 import { useModel } from '@/models'
 
 const { Option } = Select
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
+import { css } from '@emotion/css'
+import { getShapeLeft, getShapeRight } from '@/services/project/shape'
+import moment from 'moment'
 
 const Left = styled.div`
   width: 120px;
-  min-height: 316px;
+  min-height: 400px;
   box-sizing: border-box;
   padding-top: 32px;
   display: flex;
@@ -22,12 +30,13 @@ const Left = styled.div`
 const Right = styled.div`
   box-sizing: border-box;
   padding-left: 24px;
-  width: 354px;
-  min-height: 316px;
+  width: 500px;
+  min-height: 400px;
+  /* overflow-y: scroll; */
 `
 const Contain = styled.div`
   position: relative;
-  width: 475px;
+  width: 600px;
   min-height: 316px;
   display: flex;
 `
@@ -70,7 +79,112 @@ const Close = styled.span`
   right: 10px;
   top: 10px;
 `
+const ExcessiveBox = styled.div`
+  display: flex;
+  align-items: center;
 
+  height: 22px;
+`
+const StyledShape2 = styled.div`
+  width: 52px;
+  height: 22px;
+  background: #ffffff;
+  border-radius: 6px 6px 6px 6px;
+  opacity: 1;
+  border: 1px solid #ebedf0;
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #969799;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const StyledShape3 = styled.div`
+  height: 20px;
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #969799;
+  line-height: 20px;
+`
+const AuditBox = styled.div``
+const LineBox = styled.div``
+
+const LineBoxTitle2 = styled.div`
+  margin-right: 40px;
+  height: 22px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #323233;
+  line-height: 22px;
+`
+const LineBoxTitle3 = styled.div`
+  height: 20px;
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #969799;
+  line-height: 20px;
+`
+const ArrorBox = styled.div`
+  display: flex;
+`
+
+const arron = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #a4acf5;
+  border-radius: 16px 16px 16px 16px;
+  font-size: 14px;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+`
+const arrorText = css`
+  height: 20px;
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #323233;
+  line-height: 20px;
+`
+const symbol = css`
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 0px 0px 0px 0px;
+  top: 8px;
+  right: -25px;
+`
+const ArrorItem = styled.div`
+  position: relative;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 32px;
+  &:nth-last-child(1) {
+    .${symbol} {
+      visibility: hidden;
+    }
+  }
+`
+const danweiCss = css`
+  height: 22px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #323233;
+  line-height: 22px;
+  margin: 0 16px;
+`
 type ShapeProps = {
   record: any
   hide(): void
@@ -78,8 +192,68 @@ type ShapeProps = {
   row?: any
 }
 
+const DateInput = (props: any) => {
+  const { onChange: set } = props
+
+  const change = (key: any, dates: any) => {
+    set(dates)
+  }
+
+  return (
+    <DatePicker
+      onChange={change}
+      style={{ width: '100%' }}
+      format="YYYY-MM-DD HH:mm:ss"
+      showTime={{
+        defaultValue: moment('00:00:00', 'HH:mm:ss'),
+      }}
+    />
+  )
+}
+
+const NumericInput = (props: any) => {
+  const { value, onChange, onPress } = props
+
+  const enter = (e: any) => {
+    onChange({ ...value, start: e })
+  }
+  const enter2 = (e: any) => {
+    onChange({ ...value, end: e })
+  }
+
+  return (
+    <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+      <Input
+        type="number"
+        placeholder="请输入值"
+        onPressEnter={onPress}
+        onChange={e => enter(e.target.value)}
+        value={value?.start}
+        style={{ width: '80px', border: 'none' }}
+      />
+      <span className={danweiCss}>单位</span>
+      <Input
+        type="number"
+        placeholder="请输入值"
+        onPressEnter={onPress}
+        onChange={e => enter2(e.target.value)}
+        value={value?.end}
+        style={{ width: '80px', border: 'none' }}
+      />
+      <span className={danweiCss}>单位</span>
+    </div>
+  )
+}
+
+// eslint-disable-next-line complexity
 export const ShapeContent = (props: ShapeProps) => {
   const [t] = useTranslation()
+  const {
+    row: {
+      status: { status: fromText },
+    },
+  } = props
+
   const {
     record: {
       id: myid,
@@ -93,10 +267,48 @@ export const ShapeContent = (props: ShapeProps) => {
   const [form] = Form.useForm()
   const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
+  const [leftList, setLeftList] = useState([])
+  const [rightList, setRightList] = useState<any>({})
+  const [activeStatus, setActiveStatus] = useState<any>({})
+  const [active, setActive] = useState(activeID)
 
+  const change = async (item?: any) => {
+    setActiveStatus(item.status)
+    setActive(item.id)
+    const res = await getShapeRight({
+      id: projectId,
+      nId: myid,
+      fromId: activeID,
+      toId: item.id ?? activeID,
+    })
+    setRightList(res)
+
+    // console.log(res, '右边数据 ')
+  }
+
+  const getRight = async () => {
+    setActiveStatus(fromText)
+    const res = await getShapeRight({
+      id: projectId,
+      nId: myid,
+      fromId: activeID,
+      toId: activeID,
+    })
+    setRightList(res)
+
+    // console.log(res, '初始右边数据')
+  }
   const init = async () => {
     const res = await getProjectMember(projectId)
     setOptionsList(res.data)
+    const res2 = await getShapeLeft({
+      id: projectId,
+      nId: myid,
+    })
+    setLeftList(res2)
+    getRight()
+
+    // console.log(res2, '左边数据')
   }
 
   useEffect(() => {
@@ -115,10 +327,10 @@ export const ShapeContent = (props: ShapeProps) => {
     form.resetFields()
   }
 
-  const [active, setActive] = useState(activeID)
   const activeContent
     = statusList?.filter((i: any) => i.id === active)[0]?.content !== '规划中'
   const hasDealName = props.row?.dealName === '--'
+
   const confirm = async () => {
     const res = await form.validateFields()
     const value = {
@@ -128,6 +340,10 @@ export const ShapeContent = (props: ShapeProps) => {
       userIds: res.username,
       content: res.password,
     }
+
+    // console.log(res)
+    return
+
     tap(value)
     onClear()
   }
@@ -135,8 +351,8 @@ export const ShapeContent = (props: ShapeProps) => {
   return (
     <Contain>
       <Left>
-        {statusList.map((item: any) => (
-          <div onClick={() => setActive(item.id)} key={item.id}>
+        {leftList.map((item: any) => (
+          <div onClick={() => change(item)} key={item.id}>
             <StyledShape
               style={{
                 color: item.id === active ? '#2877ff' : '#969799',
@@ -146,52 +362,215 @@ export const ShapeContent = (props: ShapeProps) => {
                     : '1px solid #EBEDF0',
               }}
             >
-              {item.content_txt}
+              {item.status.content}
             </StyledShape>
-            {/* {item.content} */}
           </div>
         ))}
       </Left>
       <Right>
         <FormWrap>
-          <Form form={form}>
-            <Form.Item
-              labelCol={{ span: 5 }}
-              label={t('common.dealName')}
-              name="username"
-              rules={[
-                {
-                  required: activeContent || !activeContent && !hasDealName,
-                  message: '',
-                },
-              ]}
-            >
-              <Select
-                mode="multiple"
-                placeholder={t('common.pleaseSelect')}
-                allowClear
-                options={optionsList?.map((item: any) => ({
-                  label: item.name,
-                  value: item.id,
-                }))}
-                optionFilterProp="label"
-              />
-            </Form.Item>
-
-            <Form.Item
-              labelCol={{ span: 5 }}
-              label={t('common.comment')}
-              name="password"
-            >
-              <Input.TextArea
-                maxLength={200}
-                style={{ maxHeight: '132px', minHeight: '132px' }}
-                placeholder={t('project.pleaseComment')}
-              />
-            </Form.Item>
+          <Form labelAlign="left" form={form}>
+            {rightList?.fields?.map((i: any) => {
+              if (i.type === 'area') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Input.TextArea
+                      maxLength={200}
+                      style={{ maxHeight: '132px', minHeight: '132px' }}
+                      placeholder={t('project.pleaseComment')}
+                    />
+                  </Form.Item>
+                )
+              } else if (i.type === 'select') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Select
+                      mode="multiple"
+                      placeholder={t('common.pleaseSelect')}
+                      allowClear
+                      options={optionsList?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))}
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                )
+              } else if (i.type === 'date') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <DateInput />
+                  </Form.Item>
+                )
+              } else if (i.type === 'number') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <NumericInput />
+                  </Form.Item>
+                )
+              }
+            })}
           </Form>
         </FormWrap>
+        {rightList?.is_verify ? (
+          <ExcessiveBox>
+            <StyledShape2
+              style={{
+                color: fromText.color,
+                border: `1px solid ${fromText.color}`,
+                marginRight: '8px',
+              }}
+            >
+              {fromText.content}
+            </StyledShape2>
+            <img
+              style={{ width: '40px', height: '15px', margin: '0px 8px' }}
+              src="/public/arrows.png"
+              alt=""
+            />
+            <StyledShape2
+              style={{
+                color: activeStatus.color,
+                border: `1px solid ${activeStatus.color}`,
+                marginRight: '8px',
+              }}
+            >
+              {activeStatus?.content}
+            </StyledShape2>
+            <StyledShape3>该流转状态需要审核</StyledShape3>
+          </ExcessiveBox>
+        ) : null}
+        {rightList.is_verify && rightList.verify.verify_type === 1 ? (
+          <AuditBox>
+            <div
+              style={{
+                width: '56px',
+                height: '22px',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#323233',
+                lineHeight: '22px',
+                marginBottom: '16px',
+              }}
+            >
+              审核流程
+            </div>
 
+            <Timeline>
+              {rightList.verify.process.map((item2: any) => (
+                <Timeline.Item key={item2}>
+                  <LineBox>
+                    <div style={{ display: 'flex' }}>
+                      <LineBoxTitle2>审核人</LineBoxTitle2>
+                      {/* <LineBoxTitle3>依次审核</LineBoxTitle3> */}
+                    </div>
+
+                    <ArrorBox>
+                      {item2.verify_users.map((item: any) => (
+                        <ArrorItem key={item}>
+                          <span className={arron}>
+                            {item.name.trim().charAt(0)}
+                          </span>
+                          <span className={arrorText}>{item.name}</span>
+                          <span className={symbol}>
+                            {item2.operator === 1
+                              ? '>'
+                              : item2.operator === 2
+                                ? '&'
+                                : item2.operator === 3
+                                  ? '|'
+                                  : ''}
+                          </span>
+                        </ArrorItem>
+                      ))}
+                    </ArrorBox>
+                  </LineBox>
+                </Timeline.Item>
+              ))}
+              <Timeline.Item>
+                <LineBox>
+                  <div style={{ display: 'flex' }}>
+                    <LineBoxTitle2>流转至</LineBoxTitle2>
+
+                    <StyledShape2
+                      style={{
+                        color: activeStatus.color,
+                        border: `1px solid ${activeStatus.color}`,
+                        marginRight: '8px',
+                      }}
+                    >
+                      {activeStatus?.content}
+                    </StyledShape2>
+                  </div>
+                </LineBox>
+              </Timeline.Item>
+            </Timeline>
+          </AuditBox>
+        ) : null}
+        {rightList.is_verify && rightList.verify.verify_type === 2 ? (
+          <Form.Item
+            labelCol={{ span: 5 }}
+            label="审核人"
+            name="username"
+            rules={[
+              {
+                required: activeContent || !activeContent && !hasDealName,
+                message: '',
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              placeholder={t('common.pleaseSelect')}
+              allowClear
+              options={optionsList?.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              optionFilterProp="label"
+            />
+          </Form.Item>
+        ) : null}
         <ButtonFooter>
           <Button
             onClick={confirm}

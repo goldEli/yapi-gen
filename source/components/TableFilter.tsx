@@ -138,6 +138,10 @@ const SelectWrapBedeck = styled.div`
   .ant-picker {
     border: none;
   }
+  .ant-select-selector {
+    border: none !important;
+    background-color: transparent !important;
+  }
 `
 
 const CollapseDiv = styled.div({
@@ -192,7 +196,7 @@ const CollapseWrap = styled(Collapse)({
   },
 })
 
-const NumericInput = (props: any) => {
+export const NumericInput = (props: any) => {
   const { value, onChange, onPress } = props
 
   const enter = (e: any) => {
@@ -225,6 +229,7 @@ const NumericInput = (props: any) => {
     </>
   )
 }
+
 const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
   const { list, basicsList, specialList, customList } = props
