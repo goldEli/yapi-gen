@@ -87,25 +87,21 @@ const menuList = [
     id: 1,
     name: '他的概况',
     path: 'profile',
-    isPermission: true,
   },
   {
     id: 2,
     name: '他的待办',
     path: 'carbon',
-    isPermission: true,
   },
   {
     id: 3,
     name: '他的创建',
     path: 'create',
-    isPermission: true,
   },
   {
     id: 4,
     name: '他的已办',
     path: 'finished',
-    isPermission: true,
   },
 ]
 
@@ -119,8 +115,7 @@ const MemberInfo = () => {
   const { getMainInfo, mainInfo } = useModel('member')
 
   useEffect(() => {
-
-    // getMainInfo({ isMember, userId })
+    getMainInfo({ userId })
   }, [])
 
   const changeActive = (value: any) => {
@@ -136,6 +131,8 @@ const MemberInfo = () => {
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
+
+  // console.log(mainInfo, '===mainInfo')
 
   return (
     <Wrap isMember={isMember}>
@@ -153,8 +150,6 @@ const MemberInfo = () => {
               active={pathname.includes(item.path)}
               onClick={() => changeActive(item)}
               key={item.id}
-
-              //   hidden={item.isPermission}
             >
               {item.name}
             </MenuItem>

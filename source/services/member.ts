@@ -218,7 +218,7 @@ export const getUserInfoProject: any = async (params: any) => {
 export const getUserInfoOverviewStatistics: any = async (params: any) => {
   const response = await http.get('userInfoOverviewStatistics', {
     target_id: params.targetId,
-    project_id: params.projectId,
+    project_id: params?.projectId,
   })
   const { join, abeyance } = response.data
 
@@ -241,11 +241,6 @@ export const getUserInfoOverviewFeed: any = async (params: any) => {
     pagesize: params.pagesize,
     target_id: params.targetId,
   })
-  return response
-}
-
-export const getMainUserInfo: any = async (params: any) => {
-  const response = await http.get(`/b/user/info/${params.userId}`)
   return response
 }
 
@@ -475,7 +470,7 @@ export const getMemberInfoOverviewStatistics: any = async (params: any) => {
   }
 }
 
-export const getMainMemberInfo: any = async (params: any) => {
-  const response = await http.get(`/b/member/info/${params.userId}`)
-  return response
+export const getMainInfo: any = async (params: any) => {
+  const response = await http.get(`/b/user/${params.userId}`)
+  return response.data
 }
