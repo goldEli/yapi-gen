@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable complexity */
+/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -12,21 +17,22 @@ import {
   TabsHehavior,
   TabsItem,
   LabNumber,
+  StaffTableWrap2,
   ShowWrap,
   TableWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
+import NoData from '@/components/NoData'
+import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 
@@ -50,8 +56,23 @@ const TableBox = styled(TableWrap)({
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
-  '.ant-spin-container': {
+  '.ant-spin-nested-loading, .ant-spin-container': {
     height: 'initial!important',
+  },
+})
+
+const TableTitle = styled.div({
+  color: '#323233',
+  fontSize: '16px',
+  height: '53px',
+  display: 'flex',
+  alignItems: 'center',
+  marginLeft: '16px',
+  fontWeight: '500',
+  span: {
+    borderLeft: '3px solid #2877ff',
+    paddingLeft: 6,
+    lineHeight: '20px',
   },
 })
 
@@ -97,31 +118,35 @@ const MoreWrap = (props: MoreWrapProps) => {
 }
 
 // eslint-disable-next-line complexity
-const Need = (props: any) => {
+const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
+  const { getField, getSearchField, updateDemandStatus, updatePriorityStatus }
+    = useModel('mine')
   const {
-    getMineFinishList,
-    getField,
-    getSearchField,
-    updateDemandStatus,
-    updatePriorityStatus,
-  } = useModel('mine')
-  const { getUserInfoFinishStory, getMemberInfoFinishStory }
-    = useModel('member')
+    getUserInfoAbeyanceStory,
+    getUserInfoCreateStory,
+    getUserInfoFinishStory,
+    getMemberInfoAbeyanceStory,
+    getMemberInfoCreateStory,
+    getMemberInfoFinishStory,
+  } = useModel('member')
   const { isRefresh, setIsRefresh } = useModel('user')
-  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isMany, setIsMany] = useState(
+    !!props?.isMember && props?.type === 'abeyance',
+  )
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
+  const [manyListData, setManyListData] = useState<any>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -140,7 +165,7 @@ const Need = (props: any) => {
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
-
+  const [isSpin, setIsSpin] = useState<boolean>(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -180,23 +205,55 @@ const Need = (props: any) => {
     if (!updateState) {
       setIsSpin(true)
     }
-    const params = {
-      projectId: props.id,
-      keyword,
-      searchGroups,
-      order,
-      orderkey: orderKey,
-      page: pageNumber ? pageNumber : page,
-      pagesize,
-      targetId: userId,
-    }
-    const res = isMember
-      ? await getMemberInfoFinishStory(params)
-      : await getUserInfoFinishStory(params)
 
-    setListData(res)
-    setTotal(res?.pager?.total)
-    setIsSpin(false)
+    if (isMany) {
+      const params = {
+        projectId: props.id,
+        all: isMany ? 1 : '',
+        panelDate: isMany ? 1 : '',
+        targetId: userId,
+      }
+      const res = isMember
+        ? await getMemberInfoAbeyanceStory(params)
+        : await getUserInfoAbeyanceStory(params)
+      setManyListData(res)
+      setIsSpin(false)
+    }
+
+    if (!isMany) {
+      const params = {
+        projectId: props.id,
+        keyword,
+        searchGroups,
+        order,
+        orderkey: orderKey,
+        page: pageNumber ? pageNumber : page,
+        pagesize,
+        targetId: userId,
+      }
+
+      let res: any
+
+      if (isMember) {
+        res
+          = props?.type === 'abeyance'
+            ? await getMemberInfoAbeyanceStory(params)
+            : props?.type === 'create'
+              ? await getMemberInfoCreateStory(params)
+              : await getMemberInfoFinishStory(params)
+      } else {
+        res
+          = props?.type === 'abeyance'
+            ? await getUserInfoAbeyanceStory(params)
+            : props?.type === 'create'
+              ? await getUserInfoCreateStory(params)
+              : await getUserInfoFinishStory(params)
+      }
+
+      setListData(res)
+      setTotal(res.pager.total)
+      setIsSpin(false)
+    }
   }
 
   const updateStatus = async (res1: any) => {
@@ -262,6 +319,7 @@ const Need = (props: any) => {
     return [...arrList, ...newList]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
+
   const getShowkey = async () => {
     const res2 = await getField(props.id)
     setPlainOptions(res2.plainOptions)
@@ -272,6 +330,7 @@ const Need = (props: any) => {
     setTitleList3(res2.titleList3)
     setIsRefresh(false)
   }
+
   const getSearchKey = async (key?: any, type?: number) => {
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
@@ -294,7 +353,7 @@ const Need = (props: any) => {
     setSearchList(arr)
     setFilterBasicsList(res?.filterBasicsList)
     setFilterSpecialList(res?.filterSpecialList)
-    setFilterSpecialList(res?.filterCustomList)
+    setFilterCustomList(res?.filterCustomList)
     setIsRefresh(false)
   }
 
@@ -315,19 +374,16 @@ const Need = (props: any) => {
 
   useEffect(() => {
     setPage(1)
-    setPage(1)
     init(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, orderKey, order, props.id, searchGroups])
+  }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
     getSearchKey()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id])
 
   useEffect(() => {
     getShowkey()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -388,13 +444,18 @@ const Need = (props: any) => {
       ]}
     />
   )
+
+  const onChangeMany = (state: boolean) => {
+    setIsMany(state)
+  }
+
   return (
     <>
       <div style={{ borderLeft: '1px solid #EBEDF0' }}>
         <TabsHehavior>
           <div className={tabCss}>
             <TabsItem isActive>
-              <div>{t('mine.finishDemand')}</div>
+              <div>{props?.subTitle}</div>
             </TabsItem>
             <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
@@ -414,6 +475,35 @@ const Need = (props: any) => {
             />
           </div>
           <div style={{ marginRight: '40px', display: 'flex' }}>
+            {props?.isMember ? null : (
+              <>
+                <SetButton
+                  onClick={() => {
+                    onChangeMany(false)
+                  }}
+                >
+                  <Tooltip title={t('common.list')}>
+                    <IconFont
+                      type="unorderedlist"
+                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
+                    />
+                  </Tooltip>
+                </SetButton>
+                <SetButton
+                  onClick={() => {
+                    onChangeMany(true)
+                  }}
+                >
+                  <Tooltip title={t('common.timeList')}>
+                    <IconFont
+                      type="database"
+                      style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
+                    />
+                  </Tooltip>
+                </SetButton>
+              </>
+            )}
+
             {props.id !== 0 && (
               <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
                 <Tooltip title={t('common.search')}>
@@ -428,7 +518,7 @@ const Need = (props: any) => {
               </SetButton>
             )}
 
-            <Dropdown trigger={['click']} overlay={menu} placement="bottomLeft">
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
               <SetButton>
                 <Tooltip title={t('common.tableFieldSet')}>
                   <IconFont type="set-default" style={{ fontSize: 20 }} />
@@ -451,40 +541,83 @@ const Need = (props: any) => {
           />
         </div>
       ) : null}
+      {!isMany && (
+        <div>
+          <LoadingSpin spinning={isSpin}>
+            <StaffTableWrap>
+              {listData?.list
+                ? listData?.list?.length ? (
+                  <TableBox
+                    rowKey="id"
+                    columns={selectColum}
+                    dataSource={listData?.list}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                  />
+                )
+                  : <NoData />
 
-      <div>
-        <LoadingSpin spinning={isSpin}>
-          <StaffTableWrap>
-            {listData?.list
-              ? listData?.list?.length ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              )
-                : <NoData />
+                : null}
+            </StaffTableWrap>
+          </LoadingSpin>
+        </div>
+      )}
 
-              : null}
-          </StaffTableWrap>
-        </LoadingSpin>
-      </div>
+      {isMany ? (
+        <div>
+          <LoadingSpin spinning={isSpin}>
+            <StaffTableWrap2>
+              {manyListData?.map((item: any, index: any) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <div
+                  key={index}
+                  style={{
+                    background: 'white',
+                    borderRadius: 6,
+                    marginTop: 16,
+                  }}
+                >
+                  <TableTitle>
+                    <span>
+                      {item.status_name}（{item.list.length}）
+                    </span>
+                  </TableTitle>
 
-      <PaginationWrap style={{ paddingRight: 24 }}>
-        <Pagination
-          defaultCurrent={1}
-          current={page}
-          showSizeChanger
-          showQuickJumper
-          total={total ?? 0}
-          showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+                  {item.list
+                    ? item?.list?.length ? (
+                      <TableBox
+                        rowKey="id"
+                        columns={selectColum}
+                        dataSource={item.list}
+                        pagination={false}
+                        scroll={{ x: 'max-content' }}
+                      />
+                    )
+                      : <NoData />
+
+                    : null}
+                </div>
+              ))}
+            </StaffTableWrap2>
+          </LoadingSpin>
+        </div>
+      ) : null}
+
+      {!isMany && (
+        <PaginationWrap style={{ paddingRight: 24 }}>
+          <Pagination
+            defaultCurrent={1}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
+      )}
       {isModalVisible ? (
         <OptionalFeld
           plainOptions={plainOptions}
@@ -517,4 +650,4 @@ const Need = (props: any) => {
   )
 }
 
-export default Need
+export default CommonNeed

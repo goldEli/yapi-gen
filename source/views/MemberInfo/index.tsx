@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import {
@@ -132,15 +133,28 @@ const MemberInfo = () => {
     }
   }
 
-  // console.log(mainInfo, '===mainInfo')
-
   return (
     <Wrap isMember={isMember}>
       <Side>
         <InfoWrap>
-          <NameWrap style={{ margin: '0 8px 0 0 ' }}>王</NameWrap>
+          {mainInfo?.avatar ? (
+            <img
+              src={mainInfo?.avatar}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                marginRight: 8,
+              }}
+              alt=""
+            />
+          ) : (
+            <NameWrap style={{ margin: '0 8px 0 0 ' }}>
+              {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+            </NameWrap>
+          )}
           <InfoItem>
-            <div>成员名称</div>
+            <div>{mainInfo?.name}</div>
             <span>1212121212</span>
           </InfoItem>
         </InfoWrap>
