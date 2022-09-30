@@ -139,7 +139,7 @@ const CommonNeed = (props: any) => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(
-    !!props?.isMember && props?.type === 'abeyance',
+    !!props?.isMember && props?.type === 'carbon',
   )
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
@@ -251,7 +251,7 @@ const CommonNeed = (props: any) => {
       }
 
       setListData(res)
-      setTotal(res.pager.total)
+      setTotal(res?.pager?.total)
       setIsSpin(false)
     }
   }
