@@ -1,10 +1,11 @@
+/* eslint-disable max-lines */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { Select, Button, Form, Input, Timeline } from 'antd'
+import { Select, Button, Form, Input, Timeline, DatePicker } from 'antd'
 import { useModel } from '@/models'
 
 const { Option } = Select
@@ -13,6 +14,7 @@ import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
+import moment from 'moment'
 
 const Left = styled.div`
   width: 120px;
@@ -174,11 +176,73 @@ const ArrorItem = styled.div`
     }
   }
 `
+const danweiCss = css`
+  height: 22px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #323233;
+  line-height: 22px;
+  margin: 0 16px;
+`
 type ShapeProps = {
   record: any
   hide(): void
   tap(value: any): void
   row?: any
+}
+
+const DateInput = (props: any) => {
+  const { onChange: set } = props
+
+  const change = (key: any, dates: any) => {
+    set(dates)
+  }
+
+  return (
+    <DatePicker
+      onChange={change}
+      style={{ width: '100%' }}
+      format="YYYY-MM-DD HH:mm:ss"
+      showTime={{
+        defaultValue: moment('00:00:00', 'HH:mm:ss'),
+      }}
+    />
+  )
+}
+
+const NumericInput = (props: any) => {
+  const { value, onChange, onPress } = props
+
+  const enter = (e: any) => {
+    onChange({ ...value, start: e })
+  }
+  const enter2 = (e: any) => {
+    onChange({ ...value, end: e })
+  }
+
+  return (
+    <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+      <Input
+        type="number"
+        placeholder="请输入值"
+        onPressEnter={onPress}
+        onChange={e => enter(e.target.value)}
+        value={value?.start}
+        style={{ width: '80px', border: 'none' }}
+      />
+      <span className={danweiCss}>单位</span>
+      <Input
+        type="number"
+        placeholder="请输入值"
+        onPressEnter={onPress}
+        onChange={e => enter2(e.target.value)}
+        value={value?.end}
+        style={{ width: '80px', border: 'none' }}
+      />
+      <span className={danweiCss}>单位</span>
+    </div>
+  )
 }
 
 // eslint-disable-next-line complexity
@@ -350,6 +414,38 @@ export const ShapeContent = (props: ShapeProps) => {
                       }))}
                       optionFilterProp="label"
                     />
+                  </Form.Item>
+                )
+              } else if (i.type === 'date') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <DateInput />
+                  </Form.Item>
+                )
+              } else if (i.type === 'number') {
+                return (
+                  <Form.Item
+                    labelCol={{ span: 8 }}
+                    label={i.title}
+                    name={i.content}
+                    rules={[
+                      {
+                        required: i.is_must === 1,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <NumericInput />
                   </Form.Item>
                 )
               }
