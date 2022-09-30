@@ -232,7 +232,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory,
   } = useModel('demand')
   const { selectIterate } = useModel('iterate')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRefDom = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
   const [classTreeData, setClassTreeData] = useState<any>([])
@@ -353,11 +353,12 @@ const EditDemand = (props: Props) => {
   }
 
   const getInit = async () => {
-    await getList()
-    await getFieldData()
-    await getList()
-    await getCategoryList({ projectId, isSelect: true })
-    const classTree = await getTreeList({ id: projectId, isTree: 1 })
+    const [classTree] = await Promise.all([
+      getTreeList({ id: projectId, isTree: 1 }),
+      getList(),
+      getFieldData(),
+      getCategoryList({ projectId, isSelect: true }),
+    ])
     setClassTreeData([
       ...[
         {
@@ -374,7 +375,13 @@ const EditDemand = (props: Props) => {
     } else {
       form.resetFields()
       form1.resetFields()
+      form.setFieldsValue({
+        category: createCategory?.id,
+      })
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
 
   useEffect(() => {
@@ -382,14 +389,6 @@ const EditDemand = (props: Props) => {
       getInit()
     }
   }, [props?.visible])
-
-  useEffect(() => {
-    if (!props?.id) {
-      form.setFieldsValue({
-        category: createCategory?.id,
-      })
-    }
-  }, [categoryList])
 
   const onSaveDemand = async (hasNext?: number) => {
     await form.validateFields()
@@ -536,14 +535,6 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  useEffect(() => {
-    if (props.visible) {
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 200)
-    }
-  }, [props.visible])
-
   const Children = (item: any) => {
     return (
       <ProgressWrap
@@ -612,7 +603,7 @@ const EditDemand = (props: Props) => {
             >
               <Input
                 autoComplete="off"
-                ref={inputRef as any}
+                ref={inputRefDom as any}
                 placeholder={t('common.pleaseDemandName')}
                 maxLength={100}
                 autoFocus

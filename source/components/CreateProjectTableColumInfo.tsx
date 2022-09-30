@@ -42,7 +42,7 @@ export const useDynamicColumns = (state: any) => {
       }),
     )
     if (state.showOpen) {
-      if (item.project?.is_public !== 1 && !item.project?.user_ismember) {
+      if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
         message.warning(t('common.notCheckInfo'))
       } else {
         openDetail(`/Detail/Demand?data=${params}`)
@@ -118,7 +118,7 @@ export const useDynamicColumns = (state: any) => {
               }}
               isName
               isClose={record.status?.content === '已关闭'}
-              onClick={() => state.onClickItem(record)}
+              onClick={() => onToDetail(record)}
             >
               <OmitText width={200}>{text}</OmitText>
               {record.isExamine && (

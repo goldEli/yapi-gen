@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import {
   ChartsItem,
@@ -12,7 +13,6 @@ import {
   SecondTitle,
 } from '@/components/StyleCommon'
 import { Timeline, message, Pagination, Tooltip } from 'antd'
-import Gatte from './components/Gatte'
 import Gantt from './components/Gantt'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
@@ -146,6 +146,7 @@ const Profile = () => {
     setIsUpdateCreate,
   } = useModel('mine')
   const { userInfo } = useModel('user')
+  const { colorList } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -154,7 +155,6 @@ const Profile = () => {
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
   const [loadingState, setLoadingState] = useState<boolean>(false)
-
   const changeMonth = async () => {
     const res2 = await getMineGatte({
       startTime: moment()
@@ -168,7 +168,29 @@ const Profile = () => {
       pagesize,
     })
 
-    setGatteData(res2.list)
+    setGatteData(
+      res2.list?.map((k: any) => ({
+        id: k.id,
+        demandText: k.text,
+        text: `<div style="display: flex; align-items: center">
+          <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
+        k.categoryColor
+        }; background: ${
+          colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
+        }">${k.categoryName}</span>
+          <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
+        k.text
+        }</span>
+        </div>`,
+        start_date: k.start_date,
+        end_date: k.end_date,
+        statusName: `<span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusTitle: k.statusName,
+        parent: k.parent,
+        render: k.render,
+        statusColor: k.statusColor,
+      })),
+    )
     await setTotal(res2.pager.total)
     setLoadingState(true)
   }
@@ -360,7 +382,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {/* {gatteData.length >= 1 && <Mygante data={gatteData} />} */}
         {gatteData.length >= 1 && <Mygante data={gatteData} />}
         {gatteData.length < 1 && (
           <div style={{ height: 'calc(100% - 136px)' }}>

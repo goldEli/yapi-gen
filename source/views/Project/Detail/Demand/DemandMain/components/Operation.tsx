@@ -197,8 +197,10 @@ const Operation = (props: Props) => {
 
   const onChangeCategory = (e: any, item: any) => {
     setCreateCategory(item)
-    props.onChangeVisible?.(e)
-    setIsVisible(false)
+    setTimeout(() => {
+      props.onChangeVisible?.(e)
+      setIsVisible(false)
+    }, 100)
   }
 
   const changeStatus = (

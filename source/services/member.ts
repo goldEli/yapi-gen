@@ -59,6 +59,11 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
           project_id: i.project_id,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: i.project.is_edit,
+          },
         }))
         : [],
     }))
@@ -88,6 +93,11 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
           project_id: i.project_id,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: i.project.is_edit,
+          },
         }))
         : [],
       pager: response.data.pager,
@@ -144,6 +154,11 @@ export const getUserInfoCreateStory: any = async (params: any) => {
         project_id: i.project_id,
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -199,6 +214,11 @@ export const getUserInfoFinishStory: any = async (params: any) => {
         project_id: i.project_id,
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -298,6 +318,11 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
           project_id: i.project_id,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: i.project.is_edit,
+          },
         }))
         : [],
     }))
@@ -327,6 +352,11 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
           project_id: i.project_id,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: i.project.is_edit,
+          },
         }))
         : [],
       pager: response.data.pager,
@@ -383,6 +413,11 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
         project_id: i.project_id,
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -438,6 +473,11 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
         project_id: i.project_id,
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
       }))
       : [],
     pager: response.data.pager,

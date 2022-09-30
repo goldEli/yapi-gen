@@ -268,36 +268,21 @@ export const getMineGatte: any = async (params: any) => {
     pagesize: params.pagesize,
   })
 
-  // const handleData = (data: any) => {
-  //   return data.reduce((res: any, item: any, index: any) => {
-  //     const { children, ...rest } = item
-  //     children.forEach((child: any) => {
-  //       res.push({
-  //         ...rest,
-  //         ...child,
-  //         y: index,
-  //       })
-  //     })
-  //     return res
-  //   }, [])
-  // }
-
-  // const arr = handleData(response.data.list)
-  // const arr2 = arr.map((item: any) => {
-  //   return {
-  //     start: item.created_at * 1000,
-  //     end: item.end_at * 1000,
-  //     beginTime: item.expected_start_at,
-  //     endTime: item.expected_end_at,
-  //     name: item.name,
-  //     state: item.status_name,
-  //     y: item.y,
-  //   }
-  // })
-
-  // console.log(response, '===response')
-
-  // return { list: arr2, pager: response.data.pager }
+  return {
+    pager: response.data.pager,
+    list: response.data.list?.map((k: any, index: any) => ({
+      id: k.id || new Date().getTime() + index * 11,
+      text: k.name || '',
+      start_date: k.start_at,
+      end_date: k.end_at,
+      statusName: k.status_name || '',
+      statusColor: k.status_color || '',
+      categoryName: k.category || '',
+      categoryColor: k.category_color || '',
+      parent: k.parent || '',
+      render: k.render || '',
+    })),
+  }
 }
 
 // 获取状态下的成员列表
@@ -387,6 +372,11 @@ export const getMineNoFinishList: any = async (params: any) => {
           project_id: i.project_id,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: i.project.is_edit,
+          },
         }))
         : [],
     }))
@@ -414,6 +404,11 @@ export const getMineNoFinishList: any = async (params: any) => {
           userName: i.user_name,
           tag: i.tag,
           project_id: i.project_id,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: i.project.is_edit,
+          },
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
@@ -472,6 +467,11 @@ export const getMineCreacteList: any = async (params: any) => {
         project_id: i.project_id,
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -527,6 +527,11 @@ export const getMineFinishList: any = async (params: any) => {
         project_id: i.project_id,
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -581,7 +586,11 @@ export const getMineNeedList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
-        project: i.project,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: i.project.is_edit,
+        },
         isExamine: i.verify_lock === 1,
         ...i.custom_field,
       }))
