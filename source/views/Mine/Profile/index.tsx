@@ -184,7 +184,7 @@ const Profile = () => {
         </div>`,
         start_date: k.start_date,
         end_date: k.end_date,
-        statusName: `<span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusName: `<span style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; line-height: 16px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
         statusTitle: k.statusName,
         parent: k.parent,
         render: k.render,

@@ -75,7 +75,8 @@ interface Props {
 
 const Gantt = (props: Props) => {
   const [t, i18n] = useTranslation()
-  useEffect(() => {
+
+  const init = () => {
     gantt.config.date_scale = '%j, %D'
     gantt.config.scale_height = 44
     gantt.config.row_height = 52
@@ -85,7 +86,7 @@ const Gantt = (props: Props) => {
     gantt.config.drag_progress = false
     gantt.config.readonly = true
     gantt.config.date_format = '%Y-%m-%d %H:%i:%s'
-    gantt.i18n.setLocale('cn')
+    gantt.i18n.setLocale(i18n.language === 'zh' ? 'cn' : 'en')
     gantt.plugins({
       tooltip: true,
     })
@@ -96,7 +97,7 @@ const Gantt = (props: Props) => {
     gantt.templates.tooltip_text = function (start, end, task) {
       return (
         `<b>${i18n.language === 'zh' ? '标题：' : 'Title:'}</b> ` +
-        task.demandText +
+        (task.demandText || '--') +
         '<br/>' +
         `<span style="color: ${task.statusColor}">${
           task.statusTitle || '--'
@@ -140,12 +141,13 @@ const Gantt = (props: Props) => {
     // )
 
     gantt.init(document.getElementById('ganttDom') as string | HTMLElement)
-  }, [])
+  }
 
   useEffect(() => {
+    init()
     gantt.clearAll()
     gantt.parse({ data: props?.data })
-  }, [props?.data])
+  }, [props?.data, i18n.language])
 
   return (
     <GanttWrap
