@@ -86,21 +86,28 @@ interface MoreWrapProps {
 const MoreWrap = (props: MoreWrapProps) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const menu = (
-    <Menu
-      style={{ minWidth: 56 }}
-      items={[
-        {
-          key: '1',
-          label: <span onClick={props.onShowEdit}>{t('common.edit')}</span>,
-        },
-        {
-          key: '2',
-          label: <span onClick={props.onShowDel}>{t('common.del')}</span>,
-        },
-      ]}
-    />
-  )
+  const menu = () => {
+    let menuItems = [
+      {
+        key: '1',
+        label: <span onClick={props.onShowEdit}>{t('common.edit')}</span>,
+      },
+      {
+        key: '2',
+        label: <span onClick={props.onShowDel}>{t('common.del')}</span>,
+      },
+    ]
+
+    if (!props?.record?.project?.isEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (!props?.record?.project?.isDelete) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu style={{ minWidth: 56 }} items={menuItems} />
+  }
   return (
     <ShowWrap>
       <Dropdown
@@ -140,7 +147,7 @@ const CommonNeed = (props: any) => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(
-    !!props?.isMember && props?.type === 'carbon',
+    !!props?.isMember && props?.type === 'abeyance',
   )
   const [operationItem, setOperationItem] = useState<any>()
   const [projectId, setProjectId] = useState<any>()
@@ -296,6 +303,7 @@ const CommonNeed = (props: any) => {
     updateStatus,
     updatePriority,
     init,
+    showOpen: true,
   })
 
   const selectColum: any = useMemo(() => {
@@ -313,11 +321,16 @@ const CommonNeed = (props: any) => {
         width: 40,
         render: (text: any, record: any) => {
           return (
-            <MoreWrap
-              record={record}
-              onShowEdit={() => showEdit(record)}
-              onShowDel={() => showDel(record)}
-            />
+            <>
+              {!props?.record?.project?.isEdit
+              && !props?.record?.project?.isDelete ? (
+                    <MoreWrap
+                      record={record}
+                      onShowEdit={() => showEdit(record)}
+                      onShowDel={() => showDel(record)}
+                    />
+                  ) : null}
+            </>
           )
         },
       },

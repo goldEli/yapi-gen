@@ -10,6 +10,7 @@ export default () => {
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
+  const [statusLogs, setStatusLogs] = useState<any>([])
 
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
@@ -20,6 +21,11 @@ export default () => {
   const getDemandChildInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     return result
+  }
+
+  const getStatusLogs = async (params: any) => {
+    const result = await services.demand.getStoryStatusLog(params)
+    setStatusLogs(result)
   }
 
   const {
@@ -71,5 +77,7 @@ export default () => {
     createCategory,
     updateTableParams,
     updateDemandCategory,
+    statusLogs,
+    getStatusLogs,
   }
 }

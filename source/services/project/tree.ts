@@ -17,14 +17,14 @@ export const getTreeList = async (params: any) => {
       id: 0,
       pid: 1,
       parent_id: 0,
-      story_count: res.data[0].story_count,
+      story_count: res.data[0]?.story_count,
       children: [
         ...transData(res.data, 'id', 'parent_id', 'children'),
         {
           name: '未分类',
           pid: 0,
-          id: -1,
-          story_count: res.data[1].story_count,
+          id: 0,
+          story_count: res.data[1]?.story_count,
         },
       ],
     },

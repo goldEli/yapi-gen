@@ -8,7 +8,8 @@
 import { gantt } from 'dhtmlx-gantt'
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css'
 import styled from '@emotion/styled'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const GanttWrap = styled.div({
   '.gantt_grid_head_cell': {
@@ -72,111 +73,10 @@ interface Props {
   data: any
 }
 
-const Gantt = (_props: Props) => {
-  const [taskData, setTaskData] = useState({
-    data: [
-      {
-        id: 1,
-        text: 'Project #2',
-        start_date: '2020-10-01',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 2,
-        text: 'Task #1',
-        start_date: '2020-10-05',
-        end_date: '2020-10-12',
-        status: '<span id="status">1212</span>',
-        render: 'split',
-      },
-      {
-        id: 3,
-        text: 'Task #2',
-        start_date: '2020-10-10',
-        end_date: '2020-10-21',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 4,
-        start_date: '2020-10-05',
-        end_date: '2020-10-8',
-        parent: 2,
-      },
-      {
-        id: 5,
-        start_date: '2020-10-09',
-        end_date: '2020-10-12',
-        parent: 2,
-      },
-      {
-        id: 6,
-        text: 'Project #2',
-        start_date: '2020-10-01',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 7,
-        text: 'Task #1',
-        start_date: '2020-10-04',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-        render: 'split',
-      },
-      {
-        id: 8,
-        text: 'Task #2',
-        start_date: '2020-10-10',
-        end_date: '2020-10-21',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 9,
-        text: 'Task #2',
-        start_date: '2020-10-05',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 10,
-        text: 'Task #2',
-        start_date: '2020-10-07',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 11,
-        text: 'Project #2',
-        start_date: '2020-10-01',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 12,
-        text: 'Task #1',
-        start_date: '2020-10-04',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 13,
-        text: 'Task #2',
-        start_date: '2020-10-10',
-        end_date: '2020-10-21',
-        status: '<span id="status">1212</span>',
-      },
-      {
-        id: 14,
-        text: 'Task #2',
-        start_date: '2020-10-05',
-        end_date: '2020-10-10',
-        status: '<span id="status">1212</span>',
-      },
-    ],
-  })
+const Gantt = (props: Props) => {
+  const [t, i18n] = useTranslation()
 
-  useEffect(() => {
+  const init = () => {
     gantt.config.date_scale = '%j, %D'
     gantt.config.scale_height = 44
     gantt.config.row_height = 52
@@ -184,22 +84,27 @@ const Gantt = (_props: Props) => {
     gantt.config.drag_links = false
     gantt.config.details_on_dblclick = false
     gantt.config.drag_progress = false
+    gantt.config.readonly = true
     gantt.config.date_format = '%Y-%m-%d %H:%i:%s'
-    gantt.i18n.setLocale('cn')
+    gantt.i18n.setLocale(i18n.language === 'zh' ? 'cn' : 'en')
     gantt.plugins({
       tooltip: true,
     })
     gantt.templates.tooltip_date_format = function (date) {
-      const formatFunc = gantt.date.date_to_str('%Y-%m-%d %H:%i')
+      const formatFunc = gantt.date.date_to_str('%Y-%m-%d %H:%i:%s')
       return formatFunc(date)
     }
     gantt.templates.tooltip_text = function (start, end, task) {
       return (
-        '<b>需求名称:</b> ' +
-        task.text +
-        '<br/><b>Start date:</b> ' +
+        `<b>${i18n.language === 'zh' ? '标题：' : 'Title:'}</b> ` +
+        (task.demandText || '--') +
+        '<br/>' +
+        `<span style="color: ${task.statusColor}">${
+          task.statusTitle || '--'
+        }</span>` +
+        `<br/><b>${i18n.language === 'zh' ? '开始时间：' : 'Star date:'}</b> ` +
         gantt.templates.tooltip_date_format(start) +
-        '<br/><b>End date:</b> ' +
+        `<br/><b>${i18n.language === 'zh' ? '结束时间：' : 'End date:'}</b> ` +
         gantt.templates.tooltip_date_format(end)
       )
     }
@@ -207,42 +112,48 @@ const Gantt = (_props: Props) => {
     gantt.config.columns = [
       {
         name: 'text',
-        label: '任务名称',
-        width: '150',
+        label: '标题',
+        width: '280',
       },
       {
         name: 'start_date',
-        label: '计划开始时间',
+        label: '预计开始时间',
         width: '90',
       },
       {
         name: 'end_date',
-        label: '计划结束时间',
+        label: '预计结束时间',
         width: '90',
       },
       {
-        name: 'status',
+        name: 'statusName',
         label: '状态',
-        width: 90,
+        width: 140,
       },
     ]
 
-    gantt.attachEvent(
-      'onAfterTaskDrag',
-      (id: any, mode: any, e: any) => {
-        const task = gantt.getTask(id)
-
-        // console.log(task, id, mode, e)
-      },
-      {},
-    )
+    // gantt.attachEvent(
+    //   'onAfterTaskDrag',
+    //   (id: any, mode: any, e: any) => {
+    //     const task = gantt.getTask(id)
+    //   },
+    //   {},
+    // )
 
     gantt.init(document.getElementById('ganttDom') as string | HTMLElement)
-    gantt.parse(taskData)
-  }, [])
+  }
+
+  useEffect(() => {
+    init()
+    gantt.clearAll()
+    gantt.parse({ data: props?.data })
+  }, [props?.data, i18n.language])
 
   return (
-    <GanttWrap id="ganttDom" style={{ width: '100%', height: 380 }}></GanttWrap>
+    <GanttWrap
+      id="ganttDom"
+      style={{ height: 380, width: 'calc(100% - 48px)', padding: '0 24px' }}
+    ></GanttWrap>
   )
 }
 

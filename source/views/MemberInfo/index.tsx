@@ -155,7 +155,7 @@ const MemberInfo = () => {
           )}
           <InfoItem>
             <div>{mainInfo?.name}</div>
-            <span>1212121212</span>
+            <span>{mainInfo?.phone}</span>
           </InfoItem>
         </InfoWrap>
         <Menu>
