@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
@@ -180,7 +181,7 @@ const CommonNeed = (props: any) => {
     updatedat: [],
     finishAt: [],
   })
-  const onSearch = (e: any) => {
+  const onSearch = (e: any, customField: any) => {
     setSearchGroups({
       statusId: e.status,
       priorityId: e.priority,
@@ -194,6 +195,11 @@ const CommonNeed = (props: any) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
+      class_ids: e.category,
+      category_id: e.class,
+      schedule_start: e.schedule?.start,
+      schedule_end: e.schedule?.end,
+      custom_field: customField,
     })
   }
   // eslint-disable-next-line @typescript-eslint/no-shadow

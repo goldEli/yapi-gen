@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -118,7 +119,7 @@ const Operation = (props: Props) => {
     </Space>
   )
 
-  const onFilterSearch = (e: any) => {
+  const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.status,
       priorityId: e.priority,
@@ -132,6 +133,11 @@ const Operation = (props: Props) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
+      class_ids: e.category,
+      category_id: e.class,
+      schedule_start: e.schedule?.start,
+      schedule_end: e.schedule?.end,
+      custom_field: customField,
     }
     props.onSearch(params)
   }

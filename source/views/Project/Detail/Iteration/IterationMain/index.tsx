@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
@@ -62,6 +64,7 @@ const IterationMain = (props: Props) => {
       setIsSpinning(true)
     }
     let params = {}
+
     if (state) {
       params = {
         projectId,
@@ -79,6 +82,11 @@ const IterationMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
       }
     } else {
       params = {
@@ -99,8 +107,14 @@ const IterationMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
       }
     }
+
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -190,7 +204,7 @@ const IterationMain = (props: Props) => {
   const onSearch = (params: string) => {
     setSearchItems(params)
     setDataList({ list: undefined })
-    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+    getList(isGrid, { page: 1, size: pageObj.size }, params)
   }
 
   const onUpdate = (updateState?: boolean) => {

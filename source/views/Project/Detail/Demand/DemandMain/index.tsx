@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable max-params */
 /* eslint-disable multiline-ternary */
@@ -81,6 +83,11 @@ const DemandMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
       }
     } else {
       params = {
@@ -102,6 +109,11 @@ const DemandMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
       }
     }
     const result = await getDemandList(params)
