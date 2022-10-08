@@ -234,6 +234,9 @@ const DemandBox = () => {
   }
 
   const onChangeStatus = async (value: any) => {
+
+    // console.log(value)
+
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))

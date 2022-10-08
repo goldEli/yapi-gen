@@ -217,7 +217,7 @@ export const useDynamicColumns = (state: any) => {
                 ? null
                 : (
                     <ShapeContent
-                      tap={state.updateStatus}
+                      tap={value => state.updateStatus(value)}
                       hide={onHide}
                       record={record}
                       row={record}

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -124,7 +125,7 @@ export const getShapeRight = async (params: any) => {
         name: item.title,
         key: item.content,
         content: item.content,
-        children: filterMemberList,
+        children: [{ name: '空', id: -1 }, ...filterMemberList],
         type: 'select_checkbox',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
@@ -245,4 +246,17 @@ export const getShapeRight = async (params: any) => {
     user_has_auth: res.data.user_has_auth,
   }
   return obj
+}
+
+// updateDemandStatus
+export const updateDemandStatus = async (params: any) => {
+  const res = await http.put('updateDemandStatus', {
+    project_id: params.projectId,
+    story_id: params.nId,
+    category_status_to_id: params.toId,
+    fields: params.fields,
+    verify_user_id: params.verifyId ?? undefined,
+  })
+
+  return res.data
 }

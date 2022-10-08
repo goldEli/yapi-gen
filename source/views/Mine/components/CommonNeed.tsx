@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -172,7 +173,7 @@ const CommonNeed = (props: any) => {
     updatedat: [],
     finishAt: [],
   })
-  const onSearch = (e: any) => {
+  const onSearch = (e: any, customField: any) => {
     setSearchGroups({
       statusId: e.status,
       priorityId: e.priority,
@@ -186,6 +187,11 @@ const CommonNeed = (props: any) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
+      class_ids: e.category,
+      category_id: e.class,
+      schedule_start: e.schedule?.start,
+      schedule_end: e.schedule?.end,
+      custom_field: customField,
     })
   }
   // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -236,6 +242,9 @@ const CommonNeed = (props: any) => {
   }
 
   const updateStatus = async (res1: any) => {
+
+    // console.log(res1)
+
     const res = await updateDemandStatus(res1)
 
     if (res.code === 0) {

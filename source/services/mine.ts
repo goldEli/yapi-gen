@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
@@ -93,14 +94,20 @@ export const getSearchField: any = async (params: any) => {
 
   const allList = filter_fidlds.map((item: any) => {
     if (item.content === 'iterate_name') {
-      item.values = filterIterateList
+      item.values = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...filterIterateList,
+      ]
     }
     if (
       item.content === 'user_name'
       || item.content === 'users_name'
       || item.content === 'users_copysend_name'
     ) {
-      item.values = filterMemberList
+      item.values = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...filterMemberList,
+      ]
     }
     return item
   })
@@ -362,10 +369,10 @@ export const getProjectMember: any = async (params: any) => {
 export const updateDemandStatus: any = async (params: any) => {
   const res = await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
-    story_id: params.demandId,
-    status_id: params.statusId,
-    content: params.content,
-    user_ids: params.userIds,
+    story_id: params.nId,
+    category_status_to_id: params.toId,
+    fields: params.fields,
+    verify_user_id: params.verifyId ?? undefined,
   })
   return res
 }
@@ -400,6 +407,11 @@ export const getMineNoFinishList: any = async (params: any) => {
       finish_at: params.searchGroups?.finishAt,
       panel_date: params?.panelDate,
       all: params?.all,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -488,6 +500,11 @@ export const getMineCreacteList: any = async (params: any) => {
       expected_end_at: params.searchGroups?.expectedendat,
       updated_at: params.searchGroups?.updatedat,
       finish_at: params.searchGroups?.finishAt,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -543,6 +560,11 @@ export const getMineFinishList: any = async (params: any) => {
       expected_end_at: params.searchGroups?.expectedendat,
       updated_at: params.searchGroups?.updatedat,
       finish_at: params.searchGroups?.finishAt,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -599,6 +621,11 @@ export const getMineNeedList: any = async (params: any) => {
       expected_end_at: params.searchGroups?.expectedendat,
       updated_at: params.searchGroups?.updatedat,
       finish_at: params.searchGroups?.finishAt,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,

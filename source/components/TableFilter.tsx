@@ -279,8 +279,7 @@ const TableFilter = (props: any) => {
       }
     }
 
-    // console.log(customField)
-    props.onSearch(res)
+    props.onSearch(res, customField)
   }
   const onClearForm = async () => {
     form.resetFields()

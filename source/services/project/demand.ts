@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable no-else-return */
@@ -8,10 +9,10 @@ import * as http from '@/tools/http'
 export const updateDemandStatus: any = async (params: any) => {
   await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
-    story_id: params.demandId,
-    status_id: params.statusId,
-    content: params.content,
-    user_ids: params.userIds,
+    story_id: params.nId,
+    category_status_to_id: params.toId,
+    fields: params.fields,
+    verify_user_id: params.verifyId ?? undefined,
   })
 }
 

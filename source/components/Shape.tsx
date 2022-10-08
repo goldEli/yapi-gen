@@ -229,9 +229,10 @@ const NumericInput = (props: any) => {
   const enter = (e: any) => {
     onChange({ ...value, start: e })
   }
-  const enter2 = (e: any) => {
-    onChange({ ...value, end: e })
-  }
+
+  // const enter2 = (e: any) => {
+  //   onChange({ ...value, end: e })
+  // }
 
   return (
     <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
@@ -244,7 +245,7 @@ const NumericInput = (props: any) => {
         style={{ width: '80px', border: 'none' }}
       />
       <span className={danweiCss}>单位</span>
-      <Input
+      {/* <Input
         type="number"
         placeholder="请输入值"
         onPressEnter={onPress}
@@ -252,7 +253,7 @@ const NumericInput = (props: any) => {
         value={value?.end}
         style={{ width: '80px', border: 'none' }}
       />
-      <span className={danweiCss}>单位</span>
+      <span className={danweiCss}>单位</span> */}
     </div>
   )
 }
@@ -283,6 +284,13 @@ export const ShapeContent = (props: ShapeProps) => {
   const [rightList, setRightList] = useState<any>({})
   const [activeStatus, setActiveStatus] = useState<any>({})
   const [active, setActive] = useState(activeID)
+  const [reviewerValue, setReviewerValue] = useState('')
+
+  const handleChange = (value: string) => {
+    setReviewerValue(value)
+
+    // console.log(`selected ${value}`)
+  }
 
   const change = async (item?: any) => {
     form.resetFields()
@@ -346,18 +354,25 @@ export const ShapeContent = (props: ShapeProps) => {
 
   const confirm = async () => {
     const res = await form.validateFields()
-    const value = {
+
+    // const value = {
+    //   projectId,
+    //   demandId: myid,
+    //   statusId: active,
+    //   userIds: res.username,
+    //   content: res.password,
+    // }
+    const obj = {
       projectId,
-      demandId: myid,
-      statusId: active,
-      userIds: res.username,
-      content: res.password,
+      nId: myid,
+      toId: active,
+      fields: res,
+      verifyId: reviewerValue,
     }
 
-    // console.log(res)
-    return
+    // console.log(obj)
 
-    tap(value)
+    tap(obj)
     onClear()
   }
 
@@ -644,6 +659,7 @@ export const ShapeContent = (props: ShapeProps) => {
             ]}
           >
             <Select
+              onChange={handleChange}
 
               // mode="multiple"
               placeholder={t('common.pleaseSelect')}
