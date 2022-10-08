@@ -236,7 +236,7 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: Props) => {
-  const [treeData, setTreeData] = useState([])
+  const [treeData, setTreeData] = useState<any>([])
   const init = async () => {
     const res = await getTreeList({ id: props.projectId })
 
@@ -263,16 +263,32 @@ const WrapLeft = (props: Props) => {
     return newData
   }
   const onDrop = async (info: any) => {
+    const onlyID: any = treeData[0].children[0].title.props.id
+    const onlySort: any = treeData[0].children[0].title.props.sort
     const start = info.dragNode.title.props
     const end = info.node.title.props
 
-    await moveTreeList({
-      projectId: props.projectId,
-      newId: end.id,
-      sort: end.sort,
-      id: start.id,
-      top: info.dropToGap,
-    })
+    if (start.pid === 0) {
+      return
+    }
+    if (end.pid === 1) {
+      await moveTreeList({
+        projectId: props.projectId,
+        newId: onlyID,
+        sort: onlySort,
+        id: start.id,
+        top: info.dropToGap,
+      })
+    } else {
+      await moveTreeList({
+        projectId: props.projectId,
+        newId: end.id,
+        sort: end.sort,
+        id: start.id,
+        top: info.dropToGap,
+      })
+    }
+
     init()
   }
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -99,6 +101,12 @@ export const getSearchField: any = async (params: any) => {
         ...filterIterateList,
       ]
     }
+    if (item.content === 'priority' || item.content === 'tag') {
+      item.values = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...item.values,
+      ]
+    }
     if (
       item.content === 'user_name'
       || item.content === 'users_name'
@@ -155,9 +163,13 @@ export const getSearchField: any = async (params: any) => {
         type: 'select_checkbox',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
-        children: newLieBieData,
+        children: [
+          { id: -1, content: '空', content_txt: '空' },
+          ...newLieBieData,
+        ],
       }
     } else if (item.attr) {
+      const filterData = filArr(item?.values) || []
       return {
         id: item.id,
         name: item.title,
@@ -166,7 +178,7 @@ export const getSearchField: any = async (params: any) => {
         type: item.attr,
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
-        children: filArr(item?.values),
+        children: [{ id: -1, content: '空', content_txt: '空' }, ...filterData],
       }
     }
     return {
@@ -192,6 +204,7 @@ export const getSearchField: any = async (params: any) => {
     (item: any) => item.group_content_txt === '自定义字段',
   )
   // eslint-disable-next-line consistent-return
+
   return {
     filterAllList,
     filterBasicsList,

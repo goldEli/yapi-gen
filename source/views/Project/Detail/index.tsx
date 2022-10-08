@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -91,26 +92,38 @@ const Detail = () => {
 
     const allList = projectInfo?.filterFelid?.map((item: any) => {
       if (item.content === 'iterate_name') {
-        item.values = selectIterate.list?.map((i: any) => {
-          return {
-            id: i.id,
-            content: i.name,
-            content_txt: i.name,
-          }
-        })
+        item.values = [
+          { id: -1, content: '空', content_txt: '空' },
+          ...selectIterate.list?.map((i: any) => {
+            return {
+              id: i.id,
+              content: i.name,
+              content_txt: i.name,
+            }
+          }),
+        ]
+      }
+      if (item.content === 'priority' || item.content === 'tag') {
+        item.values = [
+          { id: -1, content: '空', content_txt: '空' },
+          ...item.values,
+        ]
       }
       if (
         item.content === 'user_name'
         || item.content === 'users_name'
         || item.content === 'users_copysend_name'
       ) {
-        item.values = memberList?.map((k: any) => {
-          return {
-            id: k.id,
-            content: k.name,
-            content_txt: k.name,
-          }
-        })
+        item.values = [
+          { id: -1, content: '空', content_txt: '空' },
+          ...memberList?.map((k: any) => {
+            return {
+              id: k.id,
+              content: k.name,
+              content_txt: k.name,
+            }
+          }),
+        ]
       }
       return item
     })
@@ -158,9 +171,13 @@ const Detail = () => {
           type: 'select_checkbox',
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
-          children: newLieBieData,
+          children: [
+            { id: -1, content: '空', content_txt: '空' },
+            ...newLieBieData,
+          ],
         }
       } else if (item.attr) {
+        const filterData = filArr(item?.values) || []
         return {
           id: item.id,
           name: item.title,
@@ -169,7 +186,10 @@ const Detail = () => {
           type: item.attr,
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
-          children: filArr(item?.values),
+          children: [
+            { id: -1, content: '空', content_txt: '空' },
+            ...filterData,
+          ],
         }
       }
       return {
