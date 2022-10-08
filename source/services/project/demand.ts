@@ -351,3 +351,70 @@ export const updateDemandCategory: any = async (params: any) => {
     status_id: params.statusId,
   })
 }
+
+export const getStoryStatusLog: any = async (params: any) => {
+  const response: any = await http.get<any>('getStoryStatusLog', {
+    search: {
+      story_id: params.demandId,
+      project_id: params.projectId,
+      all: params?.all ? 1 : 0,
+    },
+  })
+
+  return response.data?.map((i: any) => ({
+    operationName: i.user_name,
+    time: i.created_at,
+    id: i.id,
+    statusTo: {
+      color: i.statusto?.color,
+      name: i.statusto?.content,
+    },
+    changeType: i.change_type,
+    fields: {
+      tag: i.fields?.tag,
+      'class': i.fields?.class,
+      comment: i.fields?.comment,
+      priority: i.fields?.priority,
+      usersName: i.fields?.users_name,
+      iterateName: i.fields?.iterate_name,
+      customFields: i.fields?.custom_field,
+      startTime: i.fields?.expected_start_at,
+      endTime: i.fields?.expected_end_at,
+      copySendName: i.fields?.users_copysend_name,
+    },
+    verifyAll: {
+      id: i.verify?.id,
+      statusFrom: {
+        color: i.statusFrom?.color,
+        name: i.statusFrom?.content,
+      },
+
+      // 整条审核的状态  1-待审核  2-已通过 3-未通过
+      verifyStatus: i.verify?.verify_status,
+
+      // 是否开启审核
+      isVerify: i.verify?.statusconfig?.is_verify,
+      verify: {
+
+        // 1：固定审核流程；2：用户指定审核人
+        verifyType: i.verify?.statusconfig?.verify?.verify_type,
+        fixedUser: {
+          comment: i.verify?.statusconfig?.verify?.fixedUser?.verify_opinion,
+          verifyStatus:
+            i.verify?.statusconfig?.verify?.fixedUser?.verify_status,
+          userName: i.verify?.statusconfig?.verify?.fixedUser?.user_name,
+        },
+        process: i.verify?.statusconfig?.verify?.process?.map((k: any) => ({
+          operator: k.operator,
+          verifyUsers: k.verify_users?.map((j: any) => ({
+            id: j.id,
+            name: j.name,
+            verifyStatus: j.verify_status,
+            verifyOpinion: j.verify_opinion,
+            time: j.verify_at,
+          })),
+        })),
+      },
+    },
+  }))
+}

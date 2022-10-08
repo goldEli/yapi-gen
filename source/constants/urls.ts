@@ -99,6 +99,7 @@ const urls = {
   memberInfoCreateStory: '/b/project/member/info/create_story',
   memberInfoOverviewStatistics: '/b/project/member/info/overview_statistics',
   memberInfoProject: '/b/project/member/info/project',
+  getStoryStatusLog: '/b/story/getstatuslog',
 }
 
 export default urls

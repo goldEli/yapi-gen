@@ -265,7 +265,9 @@ const DemandBox = () => {
         id: demandInfo?.id,
         ...form.getFieldsValue(),
       })
+      message.success('变更成功')
       setIsShowCategory(false)
+      getDemandInfo({ projectId, id: demandInfo?.id })
       setTimeout(() => {
         form.resetFields()
       }, 100)

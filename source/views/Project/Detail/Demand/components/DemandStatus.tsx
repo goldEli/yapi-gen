@@ -163,6 +163,8 @@ const DemandStatusBox = () => {
     }
   }
 
+  // console.log(demandInfo, '====')
+
   return (
     <>
       {statusList?.map((i: any, index: number) => (
