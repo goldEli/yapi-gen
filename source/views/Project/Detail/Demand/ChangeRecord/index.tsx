@@ -106,6 +106,10 @@ const ChangeRecord = () => {
         : '--'
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
       return item[i]?.length ? item[i].join(',') : '--'
+    } else if (i === 'status') {
+      return item[i]?.status?.content
+    } else if (i === 'custom_field') {
+      return item[i]?.status?.content || '--'
     } else {
       return item[i] || '--'
     }
@@ -242,7 +246,12 @@ const ChangeRecord = () => {
                       : '--'}
                   </span>
                 ) : (
-                  <OmitText width={300}>
+                  <OmitText
+                    tipProps={{
+                      placement: 'topLeft',
+                    }}
+                    width={300}
+                  >
                     <span>{text ? fieldContent(text, i) : '--'}</span>
                   </OmitText>
                 )}
@@ -288,7 +297,12 @@ const ChangeRecord = () => {
                       : '--'}
                   </span>
                 ) : (
-                  <OmitText width={300}>
+                  <OmitText
+                    tipProps={{
+                      placement: 'topLeft',
+                    }}
+                    width={300}
+                  >
                     <span>{text ? fieldContent(text, i) : '--'}</span>
                   </OmitText>
                 )}

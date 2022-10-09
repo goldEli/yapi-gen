@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
@@ -171,8 +172,8 @@ const Circulation = () => {
               <>
                 {m === 'customFields' && i.fields[m] ? (
                   <>
-                    {Object.values(i.fields[m])?.map((c: any) => (
-                      <LineItem key={c} top={16}>
+                    {Object.values(i.fields[m])?.map((c: any, index: any) => (
+                      <LineItem key={`${c?.name}_${index}`} top={16}>
                         <LabelItem>{c?.name}：</LabelItem>
                         <ContentWrap>
                           {Array.isArray(c?.value)
