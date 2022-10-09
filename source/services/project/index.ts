@@ -552,8 +552,8 @@ export const updateStoryConfigWorkflow: any = async (params: any) => {
     info: params?.info,
     project_id: params.projectId,
     content: params.name,
-    is_end: params.endStatus ? 1 : 2,
-    is_start: params?.startStatus ? 1 : 2,
+    is_end: params.endStatus,
+    is_start: params?.startStatus,
   })
 }
 

@@ -17,6 +17,7 @@ import {
   message,
   Progress,
   Tooltip,
+  TreeSelect,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -33,7 +34,8 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { PriorityWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
-import { getTypeComponent } from '@/tools'
+import { getNestedChildren, getTypeComponent } from '@/tools'
+import { getTreeList } from '@/services/project/tree'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -193,10 +195,18 @@ const EditDemand = (props: Props) => {
   const [demandList, setDemandList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>()
   const inputRef = useRef<HTMLInputElement>(null)
+  const [classTreeData, setClassTreeData] = useState<any>([])
   const { getDemandList, percentVal, percentShow, uploadStatus }
     = useModel('demand')
-  const { getProjectInfo, setTagList, getFieldList, fieldList, setFieldList }
-    = useModel('project')
+  const {
+    getProjectInfo,
+    setTagList,
+    getFieldList,
+    fieldList,
+    setFieldList,
+    getCategoryList,
+    categoryList,
+  } = useModel('project')
   const [isShow, setIsShow] = useState(false)
 
   const {
@@ -310,6 +320,8 @@ const EditDemand = (props: Props) => {
       tag: values.tag,
       attachments: values.attachments,
       customField: values1,
+      category: values?.category,
+      'class': values?.class,
     }
     const res = await addQuicklyCreate(data)
     if (res.code === 0) {
@@ -381,6 +393,22 @@ const EditDemand = (props: Props) => {
     setHtml('')
     setPriorityDetail({})
   }
+
+  const getTree = async (value: any) => {
+    const classTree = await getTreeList({ id: value, isTree: 1 })
+    setClassTreeData([
+      ...[
+        {
+          title: '未分类',
+          key: 0,
+          value: 0,
+          children: [],
+        },
+      ],
+      ...getNestedChildren(classTree, 0),
+    ])
+  }
+
   const selectPrejectName = (value: any) => {
     form.resetFields(['parentId', 'iterate_id'])
     form1.resetFields()
@@ -391,6 +419,8 @@ const EditDemand = (props: Props) => {
     setPrejectId(value)
     getProjectInfo({ projectId: value })
     getFieldData(value)
+    getCategoryList({ projectId: value, isSelect: true })
+    getTree(value)
   }
   const clearProjectId = () => {
     setPrejectId('')
@@ -475,13 +505,22 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="category" />
-          <Form.Item label="需求类别" name="category">
+          <Form.Item
+            label="需求类别"
+            name="category"
+            rules={[{ required: true, message: '' }]}
+          >
             <Select
               style={{ width: '100%' }}
+              disabled={!prejectId}
               showArrow
               showSearch
               placeholder="请选择需求类别"
               getPopupContainer={node => node}
+              options={categoryList?.list?.map((k: any) => ({
+                label: k.name,
+                value: k.id,
+              }))}
             />
           </Form.Item>
         </div>
@@ -533,15 +572,16 @@ const EditDemand = (props: Props) => {
         </div>
         <div style={{ display: 'flex' }}>
           <IconFont className="labelIcon" type="gold" />
-          <Form.Item label="需求分类" name="assort">
-            <Select
+          <Form.Item label="需求分类" name="class">
+            <TreeSelect
               style={{ width: '100%' }}
               showArrow
               showSearch
               placeholder="请选择需求分类"
               getPopupContainer={node => node}
-              optionFilterProp="label"
               allowClear
+              treeData={classTreeData}
+              disabled={!prejectId}
             />
           </Form.Item>
         </div>

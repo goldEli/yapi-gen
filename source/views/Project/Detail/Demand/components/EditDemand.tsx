@@ -232,6 +232,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory,
   } = useModel('demand')
   const { selectIterate } = useModel('iterate')
+  const { setIsRefresh } = useModel('user')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
@@ -438,6 +439,7 @@ const EditDemand = (props: Props) => {
         })
         message.success(t('common.createSuccess'))
       }
+      setIsRefresh(true)
       setAttachList([])
       setTagList([])
       setHtml('')

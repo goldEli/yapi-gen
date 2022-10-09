@@ -227,6 +227,7 @@ export const useDynamicColumns = (state: any) => {
             record={record}
           >
             <StyledShape
+              style={{ width: 'fit-content' }}
               onClick={record.isExamine ? onExamine : void 0}
               color={text?.status.color}
             >

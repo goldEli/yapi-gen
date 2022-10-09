@@ -62,6 +62,7 @@ const EditWorkflow = (props: EditorProps) => {
     const params = form.getFieldsValue()
     params.projectId = paramsData.id
     params.id = props?.item?.id
+    params.endStatus = status ? 1 : 2
 
     try {
       await updateStoryConfigWorkflow(params)
@@ -144,7 +145,7 @@ const EditWorkflow = (props: EditorProps) => {
             />
           </Form.Item>
           <span style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-            状态名称是显示在页面上的名字，最多输入28个字符。
+            状态名称是显示在页面上的名字，最多输入20个字。
           </span>
         </div>
         <Form.Item label="状态说明" name="info">

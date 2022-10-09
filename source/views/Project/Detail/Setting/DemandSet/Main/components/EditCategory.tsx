@@ -130,15 +130,15 @@ const EditorCategory = (props: EditorProps) => {
         >
           <Input
             autoComplete="off"
-            maxLength={20}
-            placeholder="请输入中英文字符限20个字符"
+            placeholder="请输入中英文字符限20个字"
             allowClear
+            maxLength={10}
             onChange={e => setName(e.target.value)}
           />
         </Form.Item>
         <Form.Item label="类别说明" name="remark">
           <Input.TextArea
-            placeholder="请输入描述类别说明限200个字符"
+            placeholder="请输入描述类别说明限200个字"
             autoSize={{ minRows: 5, maxRows: 5 }}
             maxLength={200}
           />

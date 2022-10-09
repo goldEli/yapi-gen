@@ -177,11 +177,7 @@ const StepPageOne = (propsOne: Props) => {
     const obj = {
       projectId: paramsData.id,
       id: row.id,
-      color: row.color,
-      info: row.info,
-      name: row.name,
-      endStatus: checked,
-      startStatus: row.startStatus,
+      endStatus: checked ? 1 : 2,
     }
     try {
       await updateStoryConfigWorkflow(obj)
@@ -197,11 +193,7 @@ const StepPageOne = (propsOne: Props) => {
     const obj = {
       projectId: paramsData.id,
       id: row.id,
-      color: row.color,
-      info: row.info,
-      name: row.name,
-      endStatus: row.endStatus,
-      startStatus: e.target.checked,
+      startStatus: e.target.checked ? 1 : 2,
     }
     try {
       await updateStoryConfigWorkflow(obj)
