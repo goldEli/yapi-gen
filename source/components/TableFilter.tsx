@@ -237,9 +237,14 @@ const TableFilter = (props: any) => {
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
-    const arr = basicsList?.filter(
-      (item: any) => !newKeys.includes(item.content),
-    )
+    const arr = basicsList
+      ?.filter((item: any) => !newKeys.includes(item.content))
+      .filter((item: any) => {
+        if (props.noNeed) {
+          return item.content !== 'class'
+        }
+        return item
+      })
     return arr
   }, [list, basicsList])
 

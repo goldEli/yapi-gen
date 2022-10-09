@@ -74,6 +74,7 @@ export const getDemandList: any = async (params: any) => {
       all: params?.all ? 1 : 0,
       panel: params?.panel ? 1 : 0,
       class_ids: params.class_ids,
+      class_id: params.class_id,
       category_id: params.category_id,
       schedule_start: params.schedule_start,
       schedule_end: params.schedule_end,

@@ -350,6 +350,7 @@ const Operation = (props: Props) => {
       </OperationWrap>
       {filterState ? null : (
         <TableFilter
+          noNeed
           onFilter={getSearchKey}
           onSearch={onFilterSearch}
           list={searchList}

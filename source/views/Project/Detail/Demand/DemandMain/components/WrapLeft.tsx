@@ -1,3 +1,5 @@
+/* eslint-disable no-duplicate-imports */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
@@ -5,13 +7,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Form, Input, Popover, Tree, type TreeProps } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import {
   getTreeList,
   addTreeList,
   delTreeList,
   moveTreeList,
 } from '@/services/project/tree'
+import { TreeContext } from '../index'
 import IconFont from '@/components/IconFont'
 import { DataNode } from 'antd/lib/tree'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -236,6 +239,7 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: Props) => {
+  const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const init = async () => {
     const res = await getTreeList({ id: props.projectId })
@@ -292,6 +296,21 @@ const WrapLeft = (props: Props) => {
     init()
   }
 
+  const onSelect = (selectedKeys: any, e: any) => {
+    const {
+      node: {
+        title: { props: selectLine },
+      },
+    } = e
+
+    // console.log(context)
+    // return
+
+    context.changeKey(selectLine.id)
+
+    // console.log(selectLine)
+  }
+
   useEffect(() => {
     init()
   }, [])
@@ -299,7 +318,7 @@ const WrapLeft = (props: Props) => {
   return (
     <Left isShowLeft={props.isShowLeft}>
       <TitleWrap>需求分类</TitleWrap>
-      <Tree onDrop={onDrop} draggable treeData={treeData} />
+      <Tree onDrop={onDrop} onSelect={onSelect} draggable treeData={treeData} />
     </Left>
   )
 }
