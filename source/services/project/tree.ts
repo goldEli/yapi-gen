@@ -23,7 +23,7 @@ export const getTreeList = async (params: any) => {
         {
           name: '未分类',
           pid: 0,
-          id: 0,
+          id: -1,
           story_count: res.data[1]?.story_count,
         },
       ],
@@ -66,7 +66,7 @@ export const moveTreeList = async (params: any) => {
     new_class_id: params.newId,
     sort: params.sort,
     id: params?.id,
-    is_top: params.top ? 1 : 2,
+    is_top: params.top,
   })
 
   return res

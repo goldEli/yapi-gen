@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines */
 /* eslint-disable no-negated-condition */
 /* eslint-disable require-unicode-regexp */
@@ -523,6 +524,7 @@ const TableFilter = (props: any) => {
                         treeData={i.children}
                         placeholder="Please select"
                         treeDefaultExpandAll
+                        onSelect={confirm}
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
