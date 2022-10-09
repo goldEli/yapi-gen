@@ -37,6 +37,7 @@ const Left = styled.div`
 const Right = styled.div`
   box-sizing: border-box;
   padding-left: 24px;
+  padding-top: 40px;
   width: 500px;
   min-height: 400px;
   /* overflow-y: scroll; */
@@ -396,282 +397,285 @@ export const ShapeContent = (props: ShapeProps) => {
         ))}
       </Left>
       <Right>
-        <FormWrap>
-          <Form labelAlign="left" form={form}>
-            {rightList?.fields?.map((i: any) => {
-              if (i.type === 'area') {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <Input.TextArea
-                      maxLength={200}
-                      style={{ maxHeight: '132px', minHeight: '132px' }}
-                      placeholder={t('project.pleaseComment')}
-                    />
-                  </Form.Item>
-                )
-              } else if (i.type === 'select' || i.type === 'radio') {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <Select
-                      placeholder={t('common.pleaseSelect')}
-                      allowClear
-                      options={i.children?.map((item: any) => ({
-                        label: item.name,
-                        value: item.id,
-                      }))}
-                      optionFilterProp="label"
-                    />
-                  </Form.Item>
-                )
-              } else if (
-                i.type === 'select_checkbox'
-                || i.type === 'checkbox'
-              ) {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <Select
-                      mode="multiple"
-                      placeholder={t('common.pleaseSelect')}
-                      allowClear
-                      options={i.children?.map((item: any) => ({
-                        label: item.name,
-                        value: item.id,
-                      }))}
-                      optionFilterProp="label"
-                    />
-                  </Form.Item>
-                )
-              } else if (
-                i.type === 'date'
-                || i.type === 'time'
-                || i.type === 'datetime'
-              ) {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <DateInput />
-                  </Form.Item>
-                )
-              } else if (i.type === 'number') {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <NumericInput />
-                  </Form.Item>
-                )
-              } else if (i.type === 'text' || i.type === 'textarea') {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <Input placeholder="请输入搜索关键词" />
-                  </Form.Item>
-                )
-              } else if (i.type === 'tree') {
-                return (
-                  <Form.Item
-                    labelCol={{ span: 8 }}
-                    label={i.title}
-                    name={i.content}
-                    rules={[
-                      {
-                        required: i.is_must === 1,
-                        message: '',
-                      },
-                    ]}
-                  >
-                    <TreeSelect
-                      style={{ width: '100%', border: 'none' }}
-                      dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                      treeData={i.children}
-                      placeholder="Please select"
-                      treeDefaultExpandAll
-                    />
-                  </Form.Item>
-                )
-              }
-            })}
-          </Form>
-        </FormWrap>
-        {rightList?.is_verify ? (
-          <ExcessiveBox>
-            <StyledShape2
-              style={{
-                color: fromText.color,
-                border: `1px solid ${fromText.color}`,
-                marginRight: '8px',
-              }}
-            >
-              {fromText.content}
-            </StyledShape2>
-            <img
-              style={{ width: '40px', height: '15px', margin: '0px 8px' }}
-              src="/public/arrows.png"
-              alt=""
-            />
-            <StyledShape2
-              style={{
-                color: activeStatus.color,
-                border: `1px solid ${activeStatus.color}`,
-                marginRight: '8px',
-              }}
-            >
-              {activeStatus?.content}
-            </StyledShape2>
-            <StyledShape3>该流转状态需要审核</StyledShape3>
-          </ExcessiveBox>
-        ) : null}
-        {rightList.is_verify && rightList.verify.verify_type === 1 ? (
-          <AuditBox>
-            <div
-              style={{
-                width: '56px',
-                height: '22px',
-                fontSize: '14px',
-                fontWeight: 500,
-                color: '#323233',
-                lineHeight: '22px',
-                marginBottom: '20px',
-              }}
-            >
-              审核流程
-            </div>
+        <div style={{ height: '500px', overflow: 'auto' }}>
+          <FormWrap>
+            <Form labelAlign="left" form={form}>
+              {rightList?.fields?.map((i: any) => {
+                if (i.type === 'area') {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <Input.TextArea
+                        maxLength={200}
+                        style={{ maxHeight: '132px', minHeight: '132px' }}
+                        placeholder={t('project.pleaseComment')}
+                      />
+                    </Form.Item>
+                  )
+                } else if (i.type === 'select' || i.type === 'radio') {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <Select
+                        placeholder={t('common.pleaseSelect')}
+                        allowClear
+                        options={i.children?.map((item: any) => ({
+                          label: item.name,
+                          value: item.id,
+                        }))}
+                        optionFilterProp="label"
+                      />
+                    </Form.Item>
+                  )
+                } else if (
+                  i.type === 'select_checkbox'
+                  || i.type === 'checkbox'
+                ) {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <Select
+                        mode="multiple"
+                        placeholder={t('common.pleaseSelect')}
+                        allowClear
+                        options={i.children?.map((item: any) => ({
+                          label: item.name,
+                          value: item.id,
+                        }))}
+                        optionFilterProp="label"
+                      />
+                    </Form.Item>
+                  )
+                } else if (
+                  i.type === 'date'
+                  || i.type === 'time'
+                  || i.type === 'datetime'
+                ) {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <DateInput />
+                    </Form.Item>
+                  )
+                } else if (i.type === 'number') {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <NumericInput />
+                    </Form.Item>
+                  )
+                } else if (i.type === 'text' || i.type === 'textarea') {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <Input placeholder="请输入搜索关键词" />
+                    </Form.Item>
+                  )
+                } else if (i.type === 'tree') {
+                  return (
+                    <Form.Item
+                      labelCol={{ span: 8 }}
+                      label={i.title}
+                      name={i.content}
+                      rules={[
+                        {
+                          required: i.is_must === 1,
+                          message: '',
+                        },
+                      ]}
+                    >
+                      <TreeSelect
+                        style={{ width: '100%', border: 'none' }}
+                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                        treeData={i.children}
+                        placeholder="Please select"
+                        treeDefaultExpandAll
+                      />
+                    </Form.Item>
+                  )
+                }
+              })}
+            </Form>
+          </FormWrap>
+          {rightList?.is_verify ? (
+            <ExcessiveBox>
+              <StyledShape2
+                style={{
+                  color: fromText.color,
+                  border: `1px solid ${fromText.color}`,
+                  marginRight: '8px',
+                }}
+              >
+                {fromText.content}
+              </StyledShape2>
+              <img
+                style={{ width: '40px', height: '15px', margin: '0px 8px' }}
+                src="/public/arrows.png"
+                alt=""
+              />
+              <StyledShape2
+                style={{
+                  color: activeStatus.color,
+                  border: `1px solid ${activeStatus.color}`,
+                  marginRight: '8px',
+                }}
+              >
+                {activeStatus?.content}
+              </StyledShape2>
+              <StyledShape3>该流转状态需要审核</StyledShape3>
+            </ExcessiveBox>
+          ) : null}
+          {rightList.is_verify && rightList.verify.verify_type === 1 ? (
+            <AuditBox>
+              <div
+                style={{
+                  width: '56px',
+                  height: '22px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: '#323233',
+                  lineHeight: '22px',
+                  marginBottom: '20px',
+                }}
+              >
+                审核流程
+              </div>
 
-            <Timeline>
-              {rightList.verify.process.map((item2: any) => (
-                <Timeline.Item key={item2}>
+              <Timeline>
+                {rightList.verify.process.map((item2: any) => (
+                  <Timeline.Item key={item2}>
+                    <LineBox>
+                      <div style={{ display: 'flex' }}>
+                        <LineBoxTitle2>审核人</LineBoxTitle2>
+                        {/* <LineBoxTitle3>依次审核</LineBoxTitle3> */}
+                      </div>
+
+                      <ArrorBox>
+                        {item2.verify_users.map((item: any) => (
+                          <ArrorItem key={item}>
+                            <span className={arron}>
+                              {item.name.trim().charAt(0)}
+                            </span>
+                            <span className={arrorText}>{item.name}</span>
+                            <span className={symbol}>
+                              {item2.operator === 1
+                                ? '>'
+                                : item2.operator === 2
+                                  ? '&'
+                                  : item2.operator === 3
+                                    ? '|'
+                                    : ''}
+                            </span>
+                          </ArrorItem>
+                        ))}
+                      </ArrorBox>
+                    </LineBox>
+                  </Timeline.Item>
+                ))}
+                <Timeline.Item>
                   <LineBox>
                     <div style={{ display: 'flex' }}>
-                      <LineBoxTitle2>审核人</LineBoxTitle2>
-                      {/* <LineBoxTitle3>依次审核</LineBoxTitle3> */}
-                    </div>
+                      <LineBoxTitle2>流转至</LineBoxTitle2>
 
-                    <ArrorBox>
-                      {item2.verify_users.map((item: any) => (
-                        <ArrorItem key={item}>
-                          <span className={arron}>
-                            {item.name.trim().charAt(0)}
-                          </span>
-                          <span className={arrorText}>{item.name}</span>
-                          <span className={symbol}>
-                            {item2.operator === 1
-                              ? '>'
-                              : item2.operator === 2
-                                ? '&'
-                                : item2.operator === 3
-                                  ? '|'
-                                  : ''}
-                          </span>
-                        </ArrorItem>
-                      ))}
-                    </ArrorBox>
+                      <StyledShape2
+                        style={{
+                          color: activeStatus.color,
+                          border: `1px solid ${activeStatus.color}`,
+                          marginRight: '8px',
+                        }}
+                      >
+                        {activeStatus?.content}
+                      </StyledShape2>
+                    </div>
                   </LineBox>
                 </Timeline.Item>
-              ))}
-              <Timeline.Item>
-                <LineBox>
-                  <div style={{ display: 'flex' }}>
-                    <LineBoxTitle2>流转至</LineBoxTitle2>
+              </Timeline>
+            </AuditBox>
+          ) : null}
+          {rightList.is_verify && rightList.verify.verify_type === 2 ? (
+            <Form.Item
+              style={{ paddingRight: '24px' }}
+              labelAlign="left"
+              labelCol={{ span: 8 }}
+              label="审核人"
+              name="username"
+              rules={[
+                {
+                  required: activeContent || !activeContent && !hasDealName,
+                  message: '',
+                },
+              ]}
+            >
+              <Select
+                onChange={handleChange}
 
-                    <StyledShape2
-                      style={{
-                        color: activeStatus.color,
-                        border: `1px solid ${activeStatus.color}`,
-                        marginRight: '8px',
-                      }}
-                    >
-                      {activeStatus?.content}
-                    </StyledShape2>
-                  </div>
-                </LineBox>
-              </Timeline.Item>
-            </Timeline>
-          </AuditBox>
-        ) : null}
-        {rightList.is_verify && rightList.verify.verify_type === 2 ? (
-          <Form.Item
-            style={{ paddingRight: '24px' }}
-            labelAlign="left"
-            labelCol={{ span: 8 }}
-            label="审核人"
-            name="username"
-            rules={[
-              {
-                required: activeContent || !activeContent && !hasDealName,
-                message: '',
-              },
-            ]}
-          >
-            <Select
-              onChange={handleChange}
+                // mode="multiple"
+                placeholder={t('common.pleaseSelect')}
+                allowClear
+                options={optionsList?.map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+                optionFilterProp="label"
+              />
+            </Form.Item>
+          ) : null}
+        </div>
 
-              // mode="multiple"
-              placeholder={t('common.pleaseSelect')}
-              allowClear
-              options={optionsList?.map((item: any) => ({
-                label: item.name,
-                value: item.id,
-              }))}
-              optionFilterProp="label"
-            />
-          </Form.Item>
-        ) : null}
         <ButtonFooter>
           <Button
             onClick={confirm}
