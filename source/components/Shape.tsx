@@ -678,7 +678,7 @@ export const ShapeContent = (props: ShapeProps) => {
             style={{ marginLeft: '16px' }}
             type="primary"
           >
-            {t('common.circulation')}
+            {rightList.is_verify ? '提交审核' : t('common.circulation')}
           </Button>
           <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
         </ButtonFooter>

@@ -276,6 +276,7 @@ const TableFilter = (props: any) => {
   const confirm = async () => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
+    // console.log(value, 'shuj')
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))
     const customField: any = {}
@@ -401,6 +402,7 @@ const TableFilter = (props: any) => {
                         {i.contentTxt}
                       </span>
                       <DatePicker.RangePicker
+                        allowClear={false}
                         onChange={dates => onChangeTime(i.key, dates)}
                         className={rangPicker}
                         getPopupContainer={node => node}
