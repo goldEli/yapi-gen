@@ -3,6 +3,12 @@ import { useState } from 'react'
 
 export default () => {
   const [isUpdateCreate, setIsUpdateCreate] = useState(false)
+  const [verifyInfo, setVerifyInfo] = useState<any>({})
+
+  const getVerifyInfo = async (params: any) => {
+    const response = await services.mine.getVerifyInfo(params)
+    setVerifyInfo(response)
+  }
 
   const {
     addQuicklyCreate,
@@ -24,6 +30,9 @@ export default () => {
     getMineProjectList,
     getMineChartsList,
     getMineCreacteList,
+    updateVerifyOperation,
+    getVerifyUserList,
+    getVerifyList,
   } = services.mine
 
   return {
@@ -48,5 +57,10 @@ export default () => {
     getMineCreacteList,
     setIsUpdateCreate,
     isUpdateCreate,
+    updateVerifyOperation,
+    getVerifyInfo,
+    verifyInfo,
+    getVerifyUserList,
+    getVerifyList,
   }
 }

@@ -76,6 +76,7 @@ const SelectWrapBedeck = styled.div`
 
 interface Props {
   activeTab: number
+  onFilterChange(params: any): void
 }
 
 const SearchList = (props: Props) => {
@@ -83,30 +84,32 @@ const SearchList = (props: Props) => {
   const [t, i18n] = useTranslation()
 
   const onConfirm = async () => {
-
-    //
+    const values = form.getFieldsValue()
+    if (values.time) {
+      values.time = [
+        moment(values.time[0]).format('YYYY-MM-DD'),
+        moment(values.time[1]).format('YYYY-MM-DD'),
+      ]
+    }
+    if (values.verifyTime) {
+      values.verifyTime = [
+        moment(values.verifyTime[0]).format('YYYY-MM-DD'),
+        moment(values.verifyTime[1]).format('YYYY-MM-DD'),
+      ]
+    }
+    props?.onFilterChange(values)
   }
 
   const onClearForm = async () => {
-
-    //
+    form.resetFields()
   }
 
-  const onChangeTime = (dates: any) => {
-
-    //
-  }
-
-  const onChangePickerExamine = (dates: any) => {
-
-    //
-  }
   return (
     <SearchLine>
       <FormWrap form={form}>
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '12px' }}>审核状态</span>
-          <Form.Item name="department">
+          <Form.Item name="verifyStatus">
             <SelectWrap
               showArrow
               onChange={onConfirm}
@@ -115,14 +118,19 @@ const SearchList = (props: Props) => {
               placeholder={t('common.all')}
               showSearch
               optionFilterProp="label"
+              options={[
+                { label: '待审核', value: 1 },
+                { label: '已通过', value: 2 },
+                { label: '未通过', value: 3 },
+              ]}
             />
           </Form.Item>
         </SelectWrapBedeck>
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '12px' }}>提交时间</span>
-          <Form.Item name="times">
+          <Form.Item name="time">
             <DatePicker.RangePicker
-              onChange={dates => onChangeTime(dates)}
+              onChange={onConfirm}
               className={rangPicker}
               getPopupContainer={node => node}
               format={(times: moment.Moment) => {
@@ -192,9 +200,9 @@ const SearchList = (props: Props) => {
         </SelectWrapBedeck>
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '12px' }}>审核时间</span>
-          <Form.Item name="times1">
+          <Form.Item name="verifyTime">
             <DatePicker.RangePicker
-              onChange={dates => onChangeTime(dates)}
+              onChange={onConfirm}
               className={rangPicker}
               getPopupContainer={node => node}
               format={(times: moment.Moment) => {
@@ -228,6 +236,7 @@ const SearchList = (props: Props) => {
                         moment(1893427200 * 1000),
                       ],
                       今天截止: [moment(0), moment(new Date()).endOf('days')],
+                      空: [moment(0), moment(0)],
                     }
                   : {
                       'Last Week': [
@@ -255,6 +264,7 @@ const SearchList = (props: Props) => {
                         moment(0),
                         moment(new Date()).endOf('days'),
                       ],
+                      Empty: [moment(0), moment(0)],
                     }
               }
             />
@@ -263,11 +273,12 @@ const SearchList = (props: Props) => {
         {!props?.activeTab && (
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '12px' }}>审核意见</span>
-            <Form.Item name="userGroup">
+            <Form.Item name="remark">
               <InputWrap
                 allowClear
                 autoComplete="off"
                 placeholder="请输入查看内容"
+                onPressEnter={onConfirm}
               />
             </Form.Item>
           </SelectWrapBedeck>

@@ -1,10 +1,13 @@
+/* eslint-disable max-params */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Hehavior,
   PaginationWrap,
   StaffTableWrap,
   MyInput,
@@ -18,7 +21,7 @@ import {
   CategoryWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Pagination, Spin } from 'antd'
+import { Divider, Pagination, Spin, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
@@ -56,81 +59,109 @@ const LoadingSpin = styled(Spin)({
 const StatusWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  div: {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    marginRight: 8,
-  },
-  span: {
-    color: '#323233',
-    fontSize: 14,
-    fontWeight: 400,
-  },
 })
 
-const NewSort = (props: any) => {
-  return (
-    <Sort
-      fixedKey={props.fixedKey}
-      onChangeKey={props.onUpdateOrderkey}
-      nowKey={props.orderKey}
-      order={props.order}
-    >
-      {props.children}
-    </Sort>
-  )
-}
+const CircleWrap = styled.div({
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  marginRight: 8,
+})
+
+const SearchWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+})
+
+const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
+  {
+    fontSize: 20,
+    cursor: 'pointer',
+  },
+  ({ active }) => ({
+    color: active ? '#2877FF' : '#969799',
+  }),
+)
+
+const CanClick = styled.div({
+  height: 24,
+  borderRadius: 6,
+  padding: '0 8px',
+  cursor: 'pointer',
+  color: 'white',
+  fontSize: 12,
+  background: '#2877ff',
+  lineHeight: '24px',
+  width: 'fit-content',
+})
 
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const { colorList } = useModel('project')
+  const { userInfo } = useModel('user')
+  const { getVerifyList, getVerifyUserList } = useModel('mine')
   const [listData, setListData] = useState<any>({
-    list: [
-      {
-        id: 1,
-        name: '需求标题',
-        category: { color: '#43BA9A', name: '软件开发' },
-        dealName: '何飞',
-        createName: '校长',
-        status: '[实现中] 至 [已实现]',
-        examineStatus: '1',
-        time: '2022-06-16 16:20:29',
-        reason: '我的审核意见我的审核意见',
-      },
-      {
-        id: 1,
-        name: '需求标题',
-        category: { color: '#43BA9A', name: '软件开发' },
-        dealName: '何飞',
-        createName: '校长',
-        status: '[实现中] 至 [已实现]',
-        examineStatus: '1',
-        time: '2022-06-16 16:20:29',
-        reason: '我的审核意见我的审核意见',
-      },
-    ],
+    list: undefined,
   })
-  const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(10)
-  const [total, setTotal] = useState<number>()
-  const [orderKey, setOrderKey] = useState<any>()
-  const [order, setOrder] = useState<any>(3)
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
   const [keyword, setKeyword] = useState<string>('')
+  const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
 
-  const onChangePage = (newPage: any) => {
-    setPage(newPage)
+  const getList = async (
+    item?: any,
+    orderVal?: any,
+    searchValue?: any,
+    filterParams?: any,
+    val?: any,
+  ) => {
+    setIsSpin(true)
+    const params = {
+      userId: userInfo?.id,
+      projectId: props?.projectId,
+      searchValue,
+      ...filterParams,
+      page: item ? item.page : 1,
+      pageSize: item ? item.size : 10,
+      order: orderVal.value,
+      orderKey: orderVal.key,
+    }
+    const result
+      = val ?? activeTab
+        ? await getVerifyList(params)
+        : await getVerifyUserList(params)
+    setListData(result)
+    setIsSpin(false)
   }
-  const onShowSizeChange = (current: any, size: any) => {
-    setPagesize(size)
+
+  useEffect(() => {
+    getList(pageObj, order, keyword, searchParams)
+  }, [])
+
+  const onChangePage = (page: number, size: number) => {
+    setPageObj({ page, size })
+    getList({ page, size }, order, keyword, searchParams)
+  }
+
+  const onShowSizeChange = (page: number, size: number) => {
+    setPageObj({ page, size })
+    getList({ page, size }, order, keyword, searchParams)
+  }
+
+  const onFilterChange = (params: any) => {
+    setSearchParams(params)
+    getList(pageObj, order, keyword, params)
   }
 
   const onPressEnter = (e: any) => {
     setKeyword(e.target.value)
+    getList(pageObj, order, e.target.value, searchParams)
   }
 
   const onToDetail = (item: any) => {
@@ -140,34 +171,55 @@ const Need = (props: any) => {
 
   const onChangeOperation = (record: any) => {
     setOperationObj(record)
-    setIsVisible(true)
+    setTimeout(() => {
+      setIsVisible(true)
+    }, 100)
+  }
+
+  const onUpdateOrderkey = (key: any, value: any) => {
+    setOrder({ value, key })
+
+    // getList(pageObj, { value, key }, keyword, searchParams)
+  }
+
+  const NewSort = (propsSort: any) => {
+    return (
+      <Sort
+        fixedKey={propsSort.fixedKey}
+        onChangeKey={onUpdateOrderkey}
+        nowKey={order?.key}
+        order={order}
+      >
+        {propsSort.children}
+      </Sort>
+    )
   }
 
   const columns = [
     {
-      title: <NewSort fixedKey="id">ID</NewSort>,
-      dataIndex: 'id',
-      key: 'id',
+      title: <NewSort fixedKey="story_id">ID</NewSort>,
+      dataIndex: 'demandId',
+      key: 'story_id',
       render: (text: string, record: any) => {
         return <ClickWrap onClick={() => onToDetail(record)}>{text}</ClickWrap>
       },
     },
     {
-      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
-      dataIndex: 'name',
-      key: 'name',
+      title: <NewSort fixedKey="story_name">{t('common.title')}</NewSort>,
+      dataIndex: 'demandName',
+      key: 'story_name',
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CategoryWrap
               style={{ marginLeft: 0 }}
-              color={record.category.color}
+              color={record.categoryColor}
               bgColor={
-                colorList?.filter(i => i.key === record.category.color)[0]
+                colorList?.filter(i => i.key === record.categoryColor)[0]
                   ?.bgColor
               }
             >
-              {record.category.name}
+              {record.categoryName}
             </CategoryWrap>
             <ClickWrap onClick={() => onToDetail(record)}>
               <OmitText width={200}>{text}</OmitText>
@@ -178,65 +230,71 @@ const Need = (props: any) => {
     },
     {
       title: <NewSort fixedKey="users_name">{t('common.dealName')}</NewSort>,
-      dataIndex: 'dealName',
+      dataIndex: 'usersName',
       key: 'users_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title: <NewSort fixedKey="create_name">提交人</NewSort>,
-      dataIndex: 'createName',
-      key: 'create_name',
+      title: <NewSort fixedKey="user_name">提交人</NewSort>,
+      dataIndex: 'userName',
+      key: 'user_name',
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
 
     {
-      title: <NewSort fixedKey="status">流转状态</NewSort>,
-      dataIndex: 'status',
-      key: 'status',
+      title: <NewSort fixedKey="status_from_to">流转状态</NewSort>,
+      dataIndex: 'statusFromTo',
+      key: 'status_from_to',
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title: <NewSort fixedKey="examine_status">审核状态</NewSort>,
-      dataIndex: 'examineStatus',
-      key: 'examine_status',
-      render: (text: string, record: any) => {
+      title: <NewSort fixedKey="verify_status">审核状态</NewSort>,
+      dataIndex: 'status',
+      key: 'verify_status',
+      render: (text: any, record: any) => {
         return (
-          <StatusWrap onClick={() => onChangeOperation(record)}>
-            <div
-              style={{
-                background:
-                  text === '1'
-                    ? '#43BA9A'
-                    : text === '2'
-                      ? '#FF5C5E'
-                      : '#FA9746',
-              }}
-            />
-            <span style={{ cursor: 'pointer' }}>
-              {text === '1' ? '已通过' : text === '2' ? '未通过' : '待审核'}
-            </span>
-          </StatusWrap>
+          <div onClick={() => onChangeOperation(record)}>
+            {text === 1 && !activeTab
+              ? <CanClick>待审核</CanClick>
+              : (
+                  <StatusWrap>
+                    <CircleWrap
+                      style={{
+                        background:
+                      text === 1
+                        ? '#FA9746'
+                        : text === 2
+                          ? '#43BA9A'
+                          : '#FF5C5E',
+                      }}
+                    />
+                    <ClickWrap style={{ display: 'inline' }}>
+                      {text === 1 ? '待审核' : text === 2 ? '已通过' : '未通过'}
+                    </ClickWrap>
+                  </StatusWrap>
+                )}
+          </div>
         )
       },
     },
     {
-      title: <NewSort fixedKey="created_at">审核时间</NewSort>,
-      dataIndex: 'time',
-      key: 'created_at',
+      title: <NewSort fixedKey="verify_at">审核时间</NewSort>,
+      dataIndex: 'verifyTime',
+      key: 'verify_at',
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title: <NewSort fixedKey="reason">审核意见</NewSort>,
+      title: <NewSort fixedKey="verify_opinion">审核意见</NewSort>,
       dataIndex: 'reason',
-      key: 'reason',
+      key: 'verify_opinion',
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -252,22 +310,36 @@ const Need = (props: any) => {
 
   const onChangeTab = (val: number) => {
     setActiveTab(val)
+    setPageObj({ page: 1, size: pageObj.size })
+    setSearchParams({})
+    setListData({ list: undefined })
+    setKeyword('')
+    setOrder({ value: '', key: '' })
+    getList(
+      { page: 1, size: pageObj.size },
+      { value: '', key: '' },
+      '',
+      {},
+      val,
+    )
   }
 
-  const onConfirm = () => {
-
-    //
+  const onUpdate = () => {
+    getList(pageObj, order, keyword, searchParams)
   }
 
   return (
     <>
-      <EditExamine
+      {isVisible ? <EditExamine
         isVisible={isVisible}
         onClose={() => setIsVisible(false)}
         item={operationObj}
         isEdit={!activeTab}
-      />
-      <TabsHehavior>
+        onUpdate={onUpdate}
+      /> : null}
+      <TabsHehavior
+        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      >
         <div className={tabCss}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>我审核的</div>
@@ -283,23 +355,37 @@ const Need = (props: any) => {
           </TabsItem>
           <LabNumber isActive={activeTab === 1}>{12}</LabNumber>
         </div>
+        <SearchWrap>
+          <MyInput
+            suffix={
+              <IconFont
+                type="search"
+                style={{ color: '#BBBDBF', fontSize: 20 }}
+              />
+            }
+            onPressEnter={onPressEnter}
+            placeholder={t('common.pleaseSearchDemand')}
+            allowClear
+            defaultValue={keyword}
+            onBlur={onPressEnter}
+          />
+          <Divider
+            style={{ height: 20, margin: '0 16px 0 24px' }}
+            type="vertical"
+          />
+          <Tooltip title={t('common.search')}>
+            <IconFontWrap
+              active={!filterState}
+              type="filter"
+              onClick={() => setFilterState(!filterState)}
+            />
+          </Tooltip>
+        </SearchWrap>
       </TabsHehavior>
 
-      <Hehavior>
-        <MyInput
-          suffix={
-            <IconFont
-              type="search"
-              style={{ color: '#BBBDBF', fontSize: 20 }}
-            />
-          }
-          onPressEnter={onPressEnter}
-          placeholder={t('common.pleaseSearchDemand')}
-          allowClear
-        />
-      </Hehavior>
-
-      <SearchList activeTab={activeTab} />
+      {!filterState
+        && <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
+      }
 
       <div>
         <LoadingSpin spinning={isSpin}>
@@ -324,10 +410,10 @@ const Need = (props: any) => {
       <PaginationWrap style={{ paddingRight: 24 }}>
         <Pagination
           defaultCurrent={1}
-          current={page}
+          current={listData?.currentPage}
           showSizeChanger
           showQuickJumper
-          total={total}
+          total={listData?.total}
           showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}
