@@ -45,7 +45,7 @@ const Finished = () => {
       <StaffHeader>我的审核</StaffHeader>
       <MainWrap>
         <MineSwiper data={swiperData} onTap={getProjectId} />
-        <Need id={projectId} />
+        <Need projectId={projectId} />
       </MainWrap>
     </PermissionWrap>
   )

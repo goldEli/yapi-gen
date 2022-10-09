@@ -100,6 +100,9 @@ const urls = {
   memberInfoOverviewStatistics: '/b/project/member/info/overview_statistics',
   memberInfoProject: '/b/project/member/info/project',
   getStoryStatusLog: '/b/story/getstatuslog',
+  getVerifyUserList: '/b/user/verifyuser/list',
+  getVerifyList: '/b/user/verify/list',
+  updateVerifyOperation: '/b/user/verify/operation',
 }
 
 export default urls

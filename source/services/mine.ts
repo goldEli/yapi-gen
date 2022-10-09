@@ -786,7 +786,7 @@ export const getPeopleList: any = async (params: any) => {
   return response.data
 }
 
-// 获取成员列表
+// 快速创建
 export const addQuicklyCreate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
@@ -808,4 +808,124 @@ export const addQuicklyCreate: any = async (params: any) => {
     custom_field: params.customField,
   })
   return response
+}
+
+export const getVerifyUserList: any = async (params: any) => {
+  const response: any = await http.get<any>('getVerifyUserList', {
+    search: {
+      project_id: params.projectId,
+      user_id: params.userId,
+      keyword: params.searchValue,
+      verify_status: params.verifyStatus,
+      verify_opinion: params.remark,
+      verify_at: params.verifyTime,
+      created_at: params.time,
+    },
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+
+  return {
+    currentPage: params.page,
+    total: response.data.pager.total,
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      storyVerifyId: i.story_verify_id,
+      status: i.verify_status,
+      verifyTime: i.verify_at,
+      reason: i.verify_opinion,
+      demandId: i.story_id,
+      demandName: i.story_name,
+      categoryName: i.category_name,
+      categoryColor: i.category_color,
+      userName: i.user_name,
+      usersName: i.users_name,
+      statusFromTo: i.status_from_to,
+      projectId: i.project_id,
+    })),
+  }
+}
+
+export const getVerifyList: any = async (params: any) => {
+  const response: any = await http.get<any>('getVerifyList', {
+    search: {
+      project_id: params.projectId,
+      user_id: params.userId,
+      keyword: params.searchValue,
+      verify_status: params.verifyStatus,
+      verify_at: params.verifyTime,
+      created_at: params.time,
+    },
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order,
+  })
+
+  return {
+    currentPage: params.page,
+    total: response.data.pager.total,
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      storyVerifyId: i.story_verify_id,
+      status: i.verify_status,
+      verifyTime: i.verify_at,
+      demandId: i.story_id,
+      demandName: i.story_name,
+      categoryName: i.category_name,
+      categoryColor: i.category_color,
+      usersName: i.users_name,
+      statusFromTo: i.status_from_to,
+      projectId: i.project_id,
+    })),
+  }
+}
+
+export const getVerifyInfo: any = async (params: any) => {
+  const response = await http.get(`/b/user/verify/${params?.id}`)
+
+  return {
+    id: response.data.id,
+    demandName: response.data.story_name,
+    categoryColor: response.data.category_color,
+    categoryName: response.data?.category_name,
+    statusFromTo: response.data?.status_from_to,
+    usersName: response.data.users_name,
+    userName: response.data.user_name,
+    time: response.data.verify_at,
+    from: response.data.category_status_from,
+    to: response.data.category_status_to,
+    verifyStatus: response.data.verify_status,
+    verify: {
+      verifyType: response.data.verify.verify_type,
+      process: response.data.verify.process?.map((i: any) => ({
+        operator: i.operator,
+        verifyUsers: i.verify_users?.map((k: any) => ({
+          id: k.user_id,
+          status: k.verify_status,
+          time: k.verify_at,
+          remark: k.verify_opinion,
+          userName: k.user_name,
+        })),
+      })),
+    },
+    fixedUser: response.data.verify_users?.map((k: any) => ({
+      userName: k.user_name,
+      time: k.verify_at,
+      status: k.verify_status,
+      remark: k.verify_opinion,
+      id: k.user_id,
+    })),
+  }
+}
+
+export const updateVerifyOperation: any = async (params: any) => {
+  await http.put('updateVerifyOperation', {
+    id: params.id,
+    project_id: params.projectId,
+    verify_status: params.status,
+    verify_opinion: params.remark,
+  })
 }

@@ -436,6 +436,7 @@ const TableFilter = (props: any) => {
                                   moment(0),
                                   moment(new Date()).endOf('days'),
                                 ],
+                                空: [moment(0), moment(0)],
                               }
                             : {
                                 'Last Week': [
@@ -464,6 +465,7 @@ const TableFilter = (props: any) => {
                                   moment(0),
                                   moment(new Date()).endOf('days'),
                                 ],
+                                Empty: [moment(0), moment(0)],
                               }
                         }
                       />
