@@ -279,6 +279,7 @@ export const ShapeContent = (props: ShapeProps) => {
   } = props
 
   const [form] = Form.useForm()
+  const [form2] = Form.useForm()
   const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
   const [leftList, setLeftList] = useState([])
@@ -355,6 +356,7 @@ export const ShapeContent = (props: ShapeProps) => {
 
   const confirm = async () => {
     const res = await form.validateFields()
+    const res2 = await form2.validateFields()
 
     // const value = {
     //   projectId,
@@ -363,6 +365,7 @@ export const ShapeContent = (props: ShapeProps) => {
     //   userIds: res.username,
     //   content: res.password,
     // }
+
     const obj = {
       projectId,
       nId: myid,
@@ -647,32 +650,34 @@ export const ShapeContent = (props: ShapeProps) => {
             </AuditBox>
           ) : null}
           {rightList.is_verify && rightList.verify.verify_type === 2 ? (
-            <Form.Item
-              style={{ paddingRight: '24px' }}
-              labelAlign="left"
-              labelCol={{ span: 8 }}
-              label="审核人"
-              name="username"
-              rules={[
-                {
-                  required: activeContent || !activeContent && !hasDealName,
-                  message: '',
-                },
-              ]}
-            >
-              <Select
-                onChange={handleChange}
+            <Form labelAlign="left" form={form2}>
+              <Form.Item
+                style={{ paddingRight: '24px' }}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                label="审核人"
+                name="reviewerValue"
+                rules={[
+                  {
+                    required: activeContent || !activeContent && !hasDealName,
+                    message: '',
+                  },
+                ]}
+              >
+                <Select
 
-                // mode="multiple"
-                placeholder={t('common.pleaseSelect')}
-                allowClear
-                options={optionsList?.map((item: any) => ({
-                  label: item.name,
-                  value: item.id,
-                }))}
-                optionFilterProp="label"
-              />
-            </Form.Item>
+                  // mode="multiple"
+                  onChange={handleChange}
+                  placeholder={t('common.pleaseSelect')}
+                  allowClear
+                  options={optionsList?.map((item: any) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                  optionFilterProp="label"
+                />
+              </Form.Item>
+            </Form>
           ) : null}
         </div>
 
