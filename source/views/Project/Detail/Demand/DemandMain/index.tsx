@@ -201,9 +201,6 @@ const DemandMain = (props: Props) => {
     () => ({
       key,
       changeKey: (value: any) => {
-
-        // console.log(value)
-
         setKey(value)
       },
     }),

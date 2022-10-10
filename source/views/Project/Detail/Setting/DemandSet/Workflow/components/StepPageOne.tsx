@@ -357,6 +357,7 @@ const StepPageOne = (propsOne: Props) => {
   useImperativeHandle(propsOne.onRef, () => {
     return {
       onSave: onSaveMethod,
+      list: dataSource?.list,
     }
   })
 

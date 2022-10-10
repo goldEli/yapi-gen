@@ -94,20 +94,11 @@ export const getDemandList: any = async (params: any) => {
           childCount: i.child_story_count,
           id: i.id,
           name: i.name,
-          userName: i.user_name.split(',') || [],
+          userName: i.users_name.split(',') || [],
           priority: i.priority,
           status: i.status,
-          info: i.info,
-          userIds: i.user_id,
-          iterateId: i.iterate_id,
-          parentId: i.parent_id,
-          isExamine: i.verify_lock === 1,
           category: i.category,
-          'class': i.class,
-          schedule: i.schedule,
-          ...i.custom_field,
           categoryColor: i.category_color,
-          categoryRemark: i.category_remark,
           project_id: i.project_id,
         })),
         name: k.content_txt,
@@ -118,27 +109,6 @@ export const getDemandList: any = async (params: any) => {
     return response.data.map((i: any) => ({
       id: i.id,
       name: i.name,
-      demand: i.child_story_count,
-      priority: i.priority,
-      iteration: i.iterate_name,
-      status: i.status,
-      dealName: i.users_name,
-      time: i.created_at,
-      expectedStart: i.expected_start_at,
-      expectedEnd: i.expected_end_at,
-      info: i.info,
-      userIds: i.user_id,
-      iterateId: i.iterate_id,
-      parentId: i.parent_id,
-      userName: i.user_name,
-      isExamine: i.verify_lock === 1,
-      category: i.category,
-      'class': i.class,
-      schedule: i.schedule,
-      ...i.custom_field,
-      categoryColor: i.category_color,
-      categoryRemark: i.category_remark,
-      project_id: i.project_id,
     }))
   } else {
     return {
@@ -440,11 +410,17 @@ export const getLoadListFields: any = async (params: any) => {
 }
 
 export const getImportDownloadModel: any = async (params: any) => {
-  await http.get('getImportDownloadModel', {
-    is_update: params.isUpdate,
-    project_id: params.projectId,
-    fields: params.fields,
-  })
+  const response = await http.get(
+    'getImportDownloadModel',
+    {
+      is_update: params.isUpdate,
+      project_id: params.projectId,
+      fields: params.fields,
+    },
+    { responseType: 'blob' },
+  )
+
+  return response
 }
 
 export const getImportExcel: any = async (params: any) => {

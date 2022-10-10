@@ -5,7 +5,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Input, Popover, Space, Timeline } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
@@ -183,8 +182,8 @@ const ExamineItem = (props: Props) => {
 
   useEffect(() => {
     if (props?.item.id) {
-      setNormal(props?.item?.obj?.operator)
-      setExamineList(props?.item?.obj?.verify_users)
+      setNormal(props?.item?.obj?.operator || 1)
+      setExamineList(props?.item?.obj?.verify_users || [])
     }
   }, [props?.item])
 
@@ -201,7 +200,8 @@ const ExamineItem = (props: Props) => {
   })
 
   const onAddPerson = (obj: any) => {
-    const arr = [...examineList, ...[obj]]
+    const oldList = examineList
+    const arr = [...oldList, ...[obj]]
     setExamineList(arr)
     props?.onChangeList({
       operator: normal,

@@ -28,6 +28,7 @@ function getTypeComponent(
   inputRef?: any,
   onBlur?: any,
   onChange?: any,
+  isModal?: any,
 ) {
   let child: any = null
   if (params?.attr === 'date') {
@@ -38,7 +39,7 @@ function getTypeComponent(
         allowClear
         value={moment(defaultValue)}
         ref={inputRef}
-        onBlur={() => onBlur('')}
+        onBlur={() => !isModal ? void 0 : onBlur('')}
         onChange={(date: any) => onChange(
           moment(date).format(
             params?.value[0] === 'datetime'
@@ -55,7 +56,7 @@ function getTypeComponent(
   ) {
     child = (
       <Input
-        onBlur={e => onBlur(e.target.value)}
+        onBlur={e => !isModal ? void 0 : onBlur(e.target.value)}
         type={params?.attr}
         allowClear
         defaultValue={defaultValue}
@@ -66,7 +67,7 @@ function getTypeComponent(
   } else if (params?.attr === 'textarea') {
     child = (
       <Input.TextArea
-        onBlur={e => onBlur(e.target.value || '')}
+        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
@@ -77,7 +78,7 @@ function getTypeComponent(
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
     child = (
       <InputNumber
-        onBlur={value => onBlur(value)}
+        onBlur={value => !isModal ? void 0 : onBlur(value)}
         step={1}
         style={{ width: '100%' }}
         defaultValue={defaultValue}
@@ -96,7 +97,7 @@ function getTypeComponent(
         treeData={params?.value}
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => onBlur('')}
+        onBlur={() => !isModal ? void 0 : onBlur('')}
         onChange={onChange}
       />
     )
@@ -111,7 +112,7 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => onBlur('')}
+        onBlur={() => !isModal ? void 0 : onBlur('')}
         onChange={onChange}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         mode={

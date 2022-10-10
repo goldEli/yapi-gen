@@ -145,8 +145,8 @@ const DemandBox = () => {
     getCategoryList,
     categoryList,
     colorList,
-    getStatusList,
-    statusWorkList,
+    getWorkflowList,
+    workList,
   } = useModel('project')
   const {
     getDemandInfo,
@@ -282,10 +282,9 @@ const DemandBox = () => {
 
   const onChangeSelect = async (value: any) => {
     if (value) {
-      await getStatusList({
+      await getWorkflowList({
         projectId: paramsData.id,
         categoryId: value,
-        isSelect: true,
       })
     } else {
       form.resetFields()
@@ -293,10 +292,9 @@ const DemandBox = () => {
   }
 
   const onClickCategory = async (k: any) => {
-    await getStatusList({
+    await getWorkflowList({
       projectId: paramsData.id,
       categoryId: k.id,
-      isSelect: true,
     })
     form.setFieldsValue({
       categoryId: k.id,
@@ -314,17 +312,21 @@ const DemandBox = () => {
         alignItems: 'flex-start',
       }}
     >
-      {categoryList?.list?.map((k: any) => (
-        <StatusTag
-          style={{ marginRight: 0 }}
-          key={k.id}
-          color={k.color}
-          bgColor={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-          onClick={() => onClickCategory(k)}
-        >
-          {k.name}
-        </StatusTag>
-      ))}
+      {categoryList?.list
+        ?.filter((i: any) => i.id !== demandInfo?.category)
+        ?.map((k: any) => (
+          <StatusTag
+            style={{ marginRight: 0 }}
+            key={k.id}
+            color={k.color}
+            bgColor={
+              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+            }
+            onClick={() => onClickCategory(k)}
+          >
+            {k.name}
+          </StatusTag>
+        ))}
     </Space>
   )
 
@@ -390,7 +392,7 @@ const DemandBox = () => {
                   getPopupContainer={node => node}
                   allowClear
                   optionFilterProp="label"
-                  options={statusWorkList?.list?.map((k: any) => ({
+                  options={workList?.list?.map((k: any) => ({
                     label: k.name,
                     value: k.id,
                   }))}

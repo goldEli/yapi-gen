@@ -8,7 +8,7 @@ import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { Divider } from 'antd'
+import { Divider, message } from 'antd'
 import { createRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
@@ -118,9 +118,16 @@ const Workflow = () => {
   const ChildRef: any = createRef()
 
   const onChangeStep = (val: number) => {
-    setStep(val)
-    if (val === 2) {
-      ChildRef?.current?.onSave()
+    if (step === val) {
+      return
+    }
+    if (!ChildRef?.current?.list?.length && val === 2) {
+      message.warning('至少保证有已经添加一个需求状态')
+    } else {
+      setStep(val)
+      if (val === 2) {
+        ChildRef?.current?.onSave()
+      }
     }
   }
 

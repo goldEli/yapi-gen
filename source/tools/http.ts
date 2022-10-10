@@ -116,10 +116,15 @@ client.config({
           decryptPhp(JSON.parse((response as { body: string }).body).p),
         )
       }
-      return JSON.parse((response as { body: string }).body)
+      return options.responseType === 'blob'
+        ? response
+        : JSON.parse((response as { body: string }).body)
     },
 
-    (data: any) => {
+    (data: any, options: any) => {
+      if (options.responseType === 'blob') {
+        return data
+      }
       if (
 
         // data.code === '00000' ||

@@ -152,7 +152,7 @@ const SetConfig = (props: Props) => {
     })
     setIsSwitch(result?.is_verify === 1)
     setDataSource(result?.fields)
-    setRadioValue(result?.verify?.verify_type)
+    setRadioValue(result?.verify?.verify_type || 1)
     if (result?.verify?.verify_type === 1) {
       let checkedList: any = []
       const arr = result?.verify?.process?.map((k: any, index: any) => ({
@@ -210,25 +210,31 @@ const SetConfig = (props: Props) => {
   // 提交
   const onConfirm = async () => {
     const obj = form.getFieldsValue()
-    const params = {
+    const params: any = {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
       fromId: props?.item?.id,
       toId: props?.item?.toId,
       isVerify: obj.is_verify ? 1 : 2,
       verify_type: radioValue,
-      process: normalList
-        ?.map((i: any) => i.obj)
-        ?.map((k: any) => ({
-          operator: k.operator,
-          verify_users: k.verify_users?.map((j: any) => j.id),
-        })),
       auth: {
         roles: obj.roles,
         other_users: obj.other_users,
         user_fields: obj.user_fields,
       },
       fields: dataSource,
+    }
+    if (radioValue === 1) {
+      if (normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
+        message.warning('审核人为必填')
+        return
+      }
+      params.process = normalList
+        ?.map((i: any) => i.obj)
+        ?.map((k: any) => ({
+          operator: k.operator,
+          verify_users: k.verify_users?.map((j: any) => j.id),
+        }))
     }
     await saveWorkflowConfig(params)
     message.success('保存成功')
@@ -608,6 +614,15 @@ const SetConfig = (props: Props) => {
     setDataSource(arr.slice(0, -1).concat([normalObj].concat(arr.slice(-1))))
   }
 
+  const onAddExamine = () => {
+    const lastItem: any = normalList[normalList?.length - 1]
+    if (!lastItem?.obj?.verify_users?.length) {
+      message.warning('审核人为必填')
+      return
+    }
+    setNormalList([...normalList, ...[{ id: new Date().getTime(), obj: {} }]])
+  }
+
   return (
     <CommonModal
       isVisible={props?.isVisible}
@@ -751,11 +766,7 @@ const SetConfig = (props: Props) => {
                     ))}
                     <Timeline.Item>
                       <div
-                        onClick={() => setNormalList([
-                          ...normalList,
-                          ...[{ id: new Date().getTime(), obj: {} }],
-                        ])
-                        }
+                        onClick={onAddExamine}
                         style={{
                           color: '#2877ff',
                           cursor: 'pointer',

@@ -154,8 +154,20 @@ const ImportDemand = () => {
     setTabs(1)
   }
 
-  const onConfirmTemplate = (arr: any) => {
-    getImportDownloadModel({ projectId, isUpdate: tabs, fields: arr.join(',') })
+  const onConfirmTemplate = async (arr: any) => {
+    const result = await getImportDownloadModel({
+      projectId,
+      isUpdate: tabs,
+      fields: arr.join(','),
+    })
+    const blob = new Blob([result.body], {
+      type: result.headers['content-type'],
+    })
+    const blobUrl = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.download = '下载模板'
+    a.href = blobUrl
+    a.click()
   }
 
   return (

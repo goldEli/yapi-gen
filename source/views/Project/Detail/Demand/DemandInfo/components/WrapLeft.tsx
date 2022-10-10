@@ -235,6 +235,7 @@ const QuickEdit = (props: Props) => {
             inputRef,
             onBlur,
             onChange,
+            true,
           )}
         </>
       )

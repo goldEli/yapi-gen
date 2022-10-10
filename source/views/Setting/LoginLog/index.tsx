@@ -361,6 +361,7 @@ const LoginLog = () => {
                 showSearch
                 options={staffList}
                 optionFilterProp="label"
+                getPopupContainer={node => node}
               />
             </Form.Item>
           </SelectWrapBedeck>
