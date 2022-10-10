@@ -6,7 +6,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Form, Input, Popover, Tree, type TreeProps } from 'antd'
+import { Form, Input, Popover, Tooltip, Tree } from 'antd'
 import { useEffect, useState, useContext } from 'react'
 import {
   getTreeList,
@@ -16,10 +16,8 @@ import {
 } from '@/services/project/tree'
 import { TreeContext } from '../index'
 import IconFont from '@/components/IconFont'
-import { DataNode } from 'antd/lib/tree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
-import { rest } from 'lodash'
 import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
@@ -52,13 +50,21 @@ interface Props {
   projectId: any
 }
 const TreeBox = styled.div`
-  width: 100%;
+  width: 100% !important;
   height: 40px;
   /* background: #f0f4fa; */
   border-radius: 0px 0px 0px 0px;
-
+  /* color: green;
+  border-left: 5px solid currentColor;
+  box-shadow: 5px 5px 10px currentColor; */
   display: flex;
   align-items: center;
+  /* justify-content: space-between; */
+  &:hover {
+    [data] {
+      visibility: visible;
+    }
+  }
 `
 const FormBox = styled.div``
 const BtnsItemBox = styled.div`
@@ -83,6 +89,7 @@ const centerText = css`
   /* margin-right: auto; */
 `
 const rightText = css`
+  visibility: hidden;
   /* margin-left: 10px; */
   font-size: 20px;
   margin-left: 50px;
@@ -113,6 +120,7 @@ const TreeItem = (props: any) => {
   const close = () => {
     setVisible(false)
     setVisibleEdit(false)
+    form.resetFields()
   }
   const showVisible = (id: number) => {
     close()
@@ -142,10 +150,13 @@ const TreeItem = (props: any) => {
 
     close()
     props.onRest()
+    form.resetFields()
   }
 
   const editClose = () => {
     close()
+    props.onRest()
+    form.resetFields()
   }
 
   const editConfirm = async () => {
@@ -183,7 +194,16 @@ const TreeItem = (props: any) => {
   )
   return (
     <TreeBox>
-      <span>{props.name}</span>
+      <span
+        style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: ' ellipsis',
+          width: '60px',
+        }}
+      >
+        <Tooltip title={props.name}>{props.name}</Tooltip>
+      </span>
       <span className={centerText}>{props.story_count}</span>
       {props.pid === 0
       || getIsPermission(
@@ -198,7 +218,7 @@ const TreeItem = (props: any) => {
               content={content}
               trigger="click"
             >
-              <IconFont className={rightText} type="more" />
+              <IconFont data="1" className={rightText} type="more" />
             </Popover>
           )}
 
@@ -221,7 +241,7 @@ const TreeItem = (props: any) => {
               name="name"
               rules={[{ required: true, message: '' }]}
             >
-              <Input placeholder="请输入分类名称" />
+              <Input maxLength={10} placeholder="请输入分类名称" />
             </Form.Item>
             <Form.Item name="remark" label="分类说明">
               <Input.TextArea
