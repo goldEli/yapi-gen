@@ -114,9 +114,12 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     if (checkList.includes(value)) {
       const arr = checkList.filter(value1 => value1 !== value)
       setCheckList([...arr])
-    } else {
+    } else if (checkList2.includes(value)) {
       const arr2 = checkList2.filter(value1 => value1 !== value)
       setCheckList2([...arr2])
+    } else {
+      const arr3 = checkList3.filter(value1 => value1 !== value)
+      setCheckList3([...arr3])
     }
 
     //

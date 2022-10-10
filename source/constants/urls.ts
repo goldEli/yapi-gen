@@ -103,6 +103,10 @@ const urls = {
   getVerifyUserList: '/b/user/verifyuser/list',
   getVerifyList: '/b/user/verify/list',
   updateVerifyOperation: '/b/user/verify/operation',
+  getLoadListFields: '/b/story/load_list_fields',
+  getImportDownloadModel: '/b/story/download_story_model',
+  getImportExcel: '/b/story/import_story_excel',
+  getImportExcelUpdate: '/b/story/import_story_update_excel',
 }
 
 export default urls

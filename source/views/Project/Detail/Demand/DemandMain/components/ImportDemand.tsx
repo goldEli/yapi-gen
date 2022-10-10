@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
 /* eslint-disable multiline-ternary */
@@ -10,6 +12,10 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize, uploadFile } from '@/services/cos'
+import FieldsTemplate from './FieldsTemplate'
+import { useModel } from '@/models'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const Wrap = styled.div({
   height: 570,
@@ -88,11 +94,21 @@ const ItemWrap = styled.div({
 
 const ImportDemand = () => {
   const [step, setStep] = useState(1)
-  const [tabs, setTabs] = useState(1)
+  const [tabs, setTabs] = useState(2)
   const [fileList, setFileList] = useState<any>([])
   const [t] = useTranslation()
   const [uploadResult, setUploadResult] = useState<any>({})
   const [spinLoading, setSpinLoading] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const {
+    getImportDownloadModel,
+    getImportExcel,
+    importExcel,
+    getImportExcelUpdate,
+  } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
 
   const onUploadBefore = (file: any) => {
     const acceptArr = ['xlsx', 'xls']
@@ -110,14 +126,18 @@ const ImportDemand = () => {
     }
   }
 
-  const onUpload = (result: any) => {
-
-    // 调用后端接口
-    setUploadResult(result)
-    setTimeout(() => {
+  const onUpload = async (result: any) => {
+    try {
+      tabs === 1
+        ? await getImportExcelUpdate({ projectId, filePath: result.url })
+        : await getImportExcel({ projectId, filePath: result.url })
+      setUploadResult(result)
       setSpinLoading(false)
       setStep(3)
-    }, 500)
+    } catch (error) {
+
+      //
+    }
   }
 
   const onConfirmUpload = async () => {
@@ -134,8 +154,21 @@ const ImportDemand = () => {
     setTabs(1)
   }
 
+  const onConfirmTemplate = (arr: any) => {
+    getImportDownloadModel({ projectId, isUpdate: tabs, fields: arr.join(',') })
+  }
+
   return (
     <Wrap>
+      {isVisible && (
+        <FieldsTemplate
+          visible={isVisible}
+          title="导入需求字段选择"
+          importState={tabs}
+          onClose={() => setIsVisible(false)}
+          onConfirm={onConfirmTemplate}
+        />
+      )}
       <StepWrap>
         <StepBoxWrap active={step === 1}>
           <div className="circle">1</div>
@@ -169,10 +202,10 @@ const ImportDemand = () => {
       {step === 1 ? (
         <>
           <TabsWrap>
-            <TabsItem active={tabs === 1} onClick={() => setTabs(1)}>
+            <TabsItem active={tabs === 2} onClick={() => setTabs(2)}>
               导入新建
             </TabsItem>
-            <TabsItem active={tabs === 2} onClick={() => setTabs(2)}>
+            <TabsItem active={tabs === 1} onClick={() => setTabs(1)}>
               导入更新
             </TabsItem>
           </TabsWrap>
@@ -215,6 +248,7 @@ const ImportDemand = () => {
             </TextWrap>
           )}
           <Button
+            onClick={() => setIsVisible(true)}
             style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 24 }}
           >
             下载模板
@@ -328,7 +362,7 @@ const ImportDemand = () => {
                 导入成功！
               </div>
               <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
-                共计导入需求数量：36
+                共计导入需求数量：{importExcel?.successCount}
               </span>
               <Space size={16} style={{ margin: '56px 0' }}>
                 <Button
@@ -358,7 +392,8 @@ const ImportDemand = () => {
                   导入失败！
                 </div>
                 <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
-                  共计导入需求数量：36 其中导入错误数量：12
+                  共计导入需求数量：{importExcel?.successCount}
+                  其中导入错误数量：{importExcel?.errorCount}
                   本次整个表格都未导入，请对照错误原型修改后重新导入
                 </span>
                 <ItemWrap style={{ marginTop: 16 }}>
@@ -369,12 +404,14 @@ const ImportDemand = () => {
                     错误原因
                   </ContentWrap>
                 </ItemWrap>
-                <ItemWrap>
-                  <ContentWrap width={120}>5</ContentWrap>
-                  <ContentWrap width={616}>
-                    “字段名称xx”格式错误；“字段名称xx”填写参数项目不存在；“字段名称xx”必填项没填写
-                  </ContentWrap>
-                </ItemWrap>
+                {Object.keys(importExcel?.errorList)?.map((i: any) => (
+                  <ItemWrap key={i}>
+                    <ContentWrap width={120}>{i}</ContentWrap>
+                    <ContentWrap width={616}>
+                      {importExcel?.errorList[i].join(';')}
+                    </ContentWrap>
+                  </ItemWrap>
+                ))}
               </div>
               <div
                 style={{

@@ -49,7 +49,6 @@ const CommonModal = (props: ModalProps) => {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
-      okText={props?.confirmText ? props?.confirmText : '确定'}
     >
       <ModalHeader>
         <span>{props?.title}</span>
@@ -68,7 +67,7 @@ const CommonModal = (props: ModalProps) => {
                 <ModalFooter size={16}>
                   <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
                   <Button onClick={props?.onConfirm} type="primary">
-                    {t('common.confirm2')}
+                    {props?.confirmText ? props?.confirmText : '确定'}
                   </Button>
                 </ModalFooter>
               )}

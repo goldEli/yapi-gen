@@ -238,7 +238,7 @@ const EditFiled = (props: Props) => {
       title={props?.item?.id ? '编辑自定义字段' : '创建自定义字段'}
       onClose={onClose}
       onConfirm={onConfirm}
-      confirmText={props?.item?.id ? '创建' : '确定'}
+      confirmText={props?.item?.id ? '确定' : '创建'}
     >
       <FormWrap form={form} layout="vertical">
         <ItemWrap notMargin>

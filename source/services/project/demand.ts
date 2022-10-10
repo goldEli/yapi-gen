@@ -425,3 +425,50 @@ export const getStoryStatusLog: any = async (params: any) => {
     },
   }))
 }
+
+export const getLoadListFields: any = async (params: any) => {
+  const response: any = await http.get<any>('getLoadListFields', {
+    project_id: params.projectId,
+    is_update: params.isUpdate,
+  })
+
+  return {
+    baseFields: response.data.base_fields,
+    timeAndPersonFields: response.data.time_person_fields,
+    customFields: response.data.custom_fields,
+  }
+}
+
+export const getImportDownloadModel: any = async (params: any) => {
+  await http.get('getImportDownloadModel', {
+    is_update: params.isUpdate,
+    project_id: params.projectId,
+    fields: params.fields,
+  })
+}
+
+export const getImportExcel: any = async (params: any) => {
+  const response = await http.post('getImportExcel', {
+    project_id: params.projectId,
+    file_path: params.filePath,
+  })
+
+  return {
+    successCount: response.data.count,
+    errorCount: Object.keys(response.data.error_list)?.length,
+    errorList: response.data.error_list,
+  }
+}
+
+export const getImportExcelUpdate: any = async (params: any) => {
+  const response = await http.post('getImportExcelUpdate', {
+    project_id: params.projectId,
+    file_path: params.filePath,
+  })
+
+  return {
+    successCount: response.data.count,
+    errorCount: Object.keys(response.data.error_list)?.length,
+    errorList: response.data.error_list,
+  }
+}

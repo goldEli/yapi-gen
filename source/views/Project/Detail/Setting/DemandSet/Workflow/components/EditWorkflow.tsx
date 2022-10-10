@@ -109,7 +109,6 @@ const EditWorkflow = (props: EditorProps) => {
       title="编辑状态"
       onClose={onClose}
       onConfirm={onConfirm}
-      confirmText="创建"
     >
       {props?.item?.categorys?.length && (
         <>

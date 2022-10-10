@@ -11,6 +11,23 @@ export default () => {
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
   const [statusLogs, setStatusLogs] = useState<any>([])
+  const [importFields, setImportFields] = useState<any>({})
+  const [importExcel, setImportExcel] = useState<any>({})
+
+  const getImportExcelUpdate = async (params: any) => {
+    const result = await services.demand.getImportExcelUpdate(params)
+    setImportExcel(result)
+  }
+
+  const getImportExcel = async (params: any) => {
+    const result = await services.demand.getImportExcel(params)
+    setImportExcel(result)
+  }
+
+  const getLoadListFields = async (params: any) => {
+    const result = await services.demand.getLoadListFields(params)
+    setImportFields(result)
+  }
 
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
@@ -43,6 +60,7 @@ export default () => {
     updatePriority,
     updateTableParams,
     updateDemandCategory,
+    getImportDownloadModel,
   } = services.demand
 
   return {
@@ -79,5 +97,11 @@ export default () => {
     updateDemandCategory,
     statusLogs,
     getStatusLogs,
+    importFields,
+    getLoadListFields,
+    getImportDownloadModel,
+    importExcel,
+    getImportExcel,
+    getImportExcelUpdate,
   }
 }
