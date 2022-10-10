@@ -362,7 +362,7 @@ export const ShapeContent = (props: ShapeProps) => {
 
   const confirm = async () => {
     const res = await form.validateFields()
-    const res2 = await form2.validateFields()
+    await form2.validateFields()
 
     // const value = {
     //   projectId,
@@ -707,7 +707,7 @@ export const ShapeContent = (props: ShapeProps) => {
             position: 'absolute',
             transform: 'translate(-50%, -50%)',
             top: '50%',
-            left: '50%',
+            left: '60%',
           }}
         />
       )}
