@@ -26,9 +26,10 @@ import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
 
 const Left = styled.div`
-  width: 120px;
+  /* min-width: 120px; */
   min-height: 400px;
   box-sizing: border-box;
+  padding: 0 20px;
   padding-top: 32px;
   display: flex;
   flex-direction: column;
@@ -46,7 +47,7 @@ const Right = styled.div`
 `
 const Contain = styled.div`
   position: relative;
-  width: 600px;
+  min-width: 600px;
   min-height: 316px;
   display: flex;
 `
@@ -59,6 +60,7 @@ const StyledShape = styled.div`
   padding: 1px 8px 1px 8px;
   min-width: 60px;
   height: 25px;
+  white-space: nowrap;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
   border: 1px solid rgba(235, 237, 240, 1);
