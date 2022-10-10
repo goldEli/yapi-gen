@@ -13,23 +13,24 @@ const MainWrap = styled.div({
   overflow: 'auto',
 })
 
-const Finished = () => {
+const Examine = () => {
   const [t] = useTranslation()
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
   const { userInfo } = useModel('user')
   const [loadingState, setLoadingState] = useState<boolean>(false)
+  const [type, setType] = useState('verify')
 
   const init = async () => {
-    const res = await getMineProjectList('create')
+    const res = await getMineProjectList(type)
     await setSwiperData(res.data)
     setLoadingState(true)
   }
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [type])
 
   const getProjectId = (value: any) => {
     setProjectId(value)
@@ -45,10 +46,10 @@ const Finished = () => {
       <StaffHeader>我的审核</StaffHeader>
       <MainWrap>
         <MineSwiper data={swiperData} onTap={getProjectId} />
-        <Need projectId={projectId} />
+        <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
       </MainWrap>
     </PermissionWrap>
   )
 }
 
-export default Finished
+export default Examine

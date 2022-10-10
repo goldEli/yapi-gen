@@ -589,3 +589,30 @@ export const getMainInfo: any = async (params: any) => {
     avatar: response.data.avatar,
   }
 }
+
+// 获取甘特图
+export const getMemberGantt: any = async (params: any) => {
+  const response = await http.get('getMemberGantt', {
+    start_time: params.startTime,
+    end_time: params.endTime,
+    page: params.page,
+    pagesize: params.pagesize,
+    target_id: params.targetId,
+  })
+
+  return {
+    pager: response.data.pager,
+    list: response.data.list?.map((k: any, index: any) => ({
+      id: k.id || new Date().getTime() + index * 11,
+      text: k.name || '',
+      start_date: k.start_at,
+      end_date: k.end_at,
+      statusName: k.status_name || '',
+      statusColor: k.status_color || '',
+      categoryName: k.category || '',
+      categoryColor: k.category_color || '',
+      parent: k.parent || '',
+      render: k.render || '',
+    })),
+  }
+}

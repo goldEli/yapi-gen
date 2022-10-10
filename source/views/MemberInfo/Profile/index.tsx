@@ -1,3 +1,6 @@
+/* eslint-disable max-lines */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable prefer-named-capture-group */
@@ -160,13 +163,14 @@ const TotalWrap = styled.div({
 
 const Profile = () => {
   const [t, i18n] = useTranslation()
-  const { getMineGatte } = useModel('mine')
   const {
     getUserInfoOverviewFeed,
     getUserInfoOverviewStatistics,
     getMemberInfoOverviewStatistics,
+    getMemberGantt,
   } = useModel('member')
   const { userInfo } = useModel('user')
+  const { colorList } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -180,7 +184,7 @@ const Profile = () => {
   const { isMember, userId, id } = paramsData
 
   const changeMonth = async () => {
-    const res2 = await getMineGatte({
+    const res2 = await getMemberGantt({
       startTime: moment()
         .startOf('month')
         .month(monthIndex)
@@ -190,9 +194,32 @@ const Profile = () => {
         .format('YYYY-MM-DD'),
       page,
       pagesize,
+      targetId: userId,
     })
 
-    setGatteData(res2.list)
+    setGatteData(
+      res2.list?.map((k: any) => ({
+        id: k.id,
+        demandText: k.text,
+        text: `<div style="display: flex; align-items: center">
+        <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
+        k.categoryColor
+        }; background: ${
+          colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
+        }">${k.categoryName}</span>
+        <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
+        k.text
+        }</span>
+      </div>`,
+        start_date: k.start_date,
+        end_date: k.end_date,
+        statusName: `<span style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; line-height: 16px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusTitle: k.statusName,
+        parent: k.parent,
+        render: k.render,
+        statusColor: k.statusColor,
+      })),
+    )
     await setTotal(res2.pager.total)
     setLoadingState(true)
   }

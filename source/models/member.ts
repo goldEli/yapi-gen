@@ -21,6 +21,7 @@ export default () => {
     getMemberInfoFinishStory,
     getMemberInfoProject,
     getMemberInfoOverviewStatistics,
+    getMemberGantt,
   } = services.member
 
   return {
@@ -37,5 +38,6 @@ export default () => {
     getMemberInfoOverviewStatistics,
     getMainInfo,
     mainInfo,
+    getMemberGantt,
   }
 }

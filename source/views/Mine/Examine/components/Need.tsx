@@ -309,6 +309,7 @@ const Need = (props: any) => {
   }, [activeTab])
 
   const onChangeTab = (val: number) => {
+    props?.onChangeType(val ? 'verify_submit' : 'verify')
     setActiveTab(val)
     setPageObj({ page: 1, size: pageObj.size })
     setSearchParams({})
@@ -330,13 +331,15 @@ const Need = (props: any) => {
 
   return (
     <>
-      {isVisible ? <EditExamine
-        isVisible={isVisible}
-        onClose={() => setIsVisible(false)}
-        item={operationObj}
-        isEdit={!activeTab}
-        onUpdate={onUpdate}
-      /> : null}
+      {isVisible ? (
+        <EditExamine
+          isVisible={isVisible}
+          onClose={() => setIsVisible(false)}
+          item={operationObj}
+          isEdit={!activeTab}
+          onUpdate={onUpdate}
+        />
+      ) : null}
       <TabsHehavior
         style={{ padding: '0 24px', justifyContent: 'space-between' }}
       >
