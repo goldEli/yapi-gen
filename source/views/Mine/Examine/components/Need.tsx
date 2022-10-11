@@ -30,6 +30,8 @@ import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { openDetail } from '@/tools'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -142,7 +144,7 @@ const Need = (props: any) => {
 
   useEffect(() => {
     getList(pageObj, order, keyword, searchParams)
-  }, [])
+  }, [props?.projectId])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -165,8 +167,14 @@ const Need = (props: any) => {
   }
 
   const onToDetail = (item: any) => {
-
-    //
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: item.projectId,
+        demandId: item.demandId,
+      }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const onChangeOperation = (record: any) => {
@@ -347,7 +355,9 @@ const Need = (props: any) => {
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>我审核的</div>
           </TabsItem>
-          <LabNumber isActive={!activeTab}>{1}</LabNumber>
+          <LabNumber isActive={!activeTab}>
+            {!activeTab ? listData?.total : listData?.otherCount}
+          </LabNumber>
 
           <TabsItem
             isActive={activeTab === 1}
@@ -356,7 +366,9 @@ const Need = (props: any) => {
           >
             <div>我提交的</div>
           </TabsItem>
-          <LabNumber isActive={activeTab === 1}>{12}</LabNumber>
+          <LabNumber isActive={activeTab === 1}>
+            {activeTab === 1 ? listData?.total : listData?.otherCount}
+          </LabNumber>
         </div>
         <SearchWrap>
           <MyInput

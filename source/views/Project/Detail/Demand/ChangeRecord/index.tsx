@@ -248,11 +248,15 @@ const ChangeRecord = () => {
                   </span>
                 ) : i === 'custom_field' ? (
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {record.fields.custom_field
-                      ?.map(
-                        (m: any) => record.beforeField[i][m.field]?.value,
-                      )
-                      ?.map((k: any) => <span key={k}>{k}</span>)}
+                    {record.beforeField
+                      ? Object.keys(record.fields.custom_field)
+                        ?.map(
+                          (m: any) => record.beforeField[i][m.field]?.value,
+                        )
+                        ?.map((k: any) => <span key={k}>{k || '--'}</span>)
+                      : Object.keys(record.fields.custom_field)?.map(
+                        (m: any) => <span key={m}>--</span>,
+                      )}
                   </div>
                 ) : (
                   <OmitText
@@ -307,9 +311,15 @@ const ChangeRecord = () => {
                   </span>
                 ) : i === 'custom_field' ? (
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {record.fields.custom_field
-                      ?.map((m: any) => record.afterField[i][m.field]?.value)
-                      ?.map((k: any) => <span key={k}>{k}</span>)}
+                    {record.afterField
+                      ? Object.keys(record.fields.custom_field)
+                        ?.map(
+                          (m: any) => record.afterField[i][m.field]?.value,
+                        )
+                        ?.map((k: any) => <span key={k}>{k || '--'}</span>)
+                      : Object.keys(record.fields.custom_field)?.map(
+                        (m: any) => <span key={m}>--</span>,
+                      )}
                   </div>
                 ) : (
                   <OmitText

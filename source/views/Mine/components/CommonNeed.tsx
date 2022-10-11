@@ -248,9 +248,6 @@ const CommonNeed = (props: any) => {
   }
 
   const updateStatus = async (res1: any) => {
-
-    // console.log(res1)
-
     const res = await updateDemandStatus(res1)
 
     if (res.code === 0) {

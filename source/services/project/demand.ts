@@ -336,6 +336,8 @@ export const getStoryStatusLog: any = async (params: any) => {
       project_id: params.projectId,
       all: params?.all ? 1 : 0,
     },
+    order: 'asc',
+    orderkey: 'id',
   })
 
   return response.data?.map((i: any) => ({

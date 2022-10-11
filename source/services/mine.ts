@@ -837,6 +837,7 @@ export const getVerifyUserList: any = async (params: any) => {
   return {
     currentPage: params.page,
     total: response.data.pager.total,
+    otherCount: response.data.otherCount,
     list: response.data.list.map((i: any) => ({
       id: i.id,
       storyVerifyId: i.story_verify_id,
@@ -874,6 +875,7 @@ export const getVerifyList: any = async (params: any) => {
   return {
     currentPage: params.page,
     total: response.data.pager.total,
+    otherCount: response.data.otherCount,
     list: response.data.list.map((i: any) => ({
       id: i.id,
       storyVerifyId: i.story_verify_id,

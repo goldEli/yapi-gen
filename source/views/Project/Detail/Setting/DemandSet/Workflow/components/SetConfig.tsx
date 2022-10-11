@@ -273,7 +273,10 @@ const SetConfig = (props: Props) => {
     obj.content = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.value
     if (String(obj.content).includes('custom_')) {
       obj.is_customize = 1
+    } else {
+      obj.is_customize = 2
     }
+
     setDataSource(arr)
   }
 
