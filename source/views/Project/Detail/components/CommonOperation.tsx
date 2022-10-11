@@ -3,7 +3,7 @@ import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
-import { Space, Dropdown, Menu } from 'antd'
+import { Space, Dropdown, Menu, Tooltip } from 'antd'
 import { useState } from 'react'
 import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
@@ -34,9 +34,9 @@ const ProjectInfo = styled.div({
 })
 
 const ImgWrap = styled.img({
-  width: 60,
-  height: 28,
-  borderRadius: 2,
+  width: 86,
+  height: 40,
+  borderRadius: 4,
   marginRight: 16,
 })
 
@@ -53,8 +53,7 @@ const TabsItem = styled.div<{ isActive: boolean }>(
     cursor: 'pointer',
     color: '#323233',
     div: {
-      fontSize: 16,
-      fontWeight: 400,
+      fontSize: 18,
       height: 62,
       lineHeight: '62px',
     },
@@ -66,6 +65,7 @@ const TabsItem = styled.div<{ isActive: boolean }>(
     div: {
       color: String(isActive ? '#2877FF' : ''),
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
+      fontWeight: isActive ? 500 : 400,
     },
   }),
 )
@@ -124,6 +124,18 @@ const ClickIcon = styled(IconFont)({
   '&: hover': {
     color: '#2877ff',
   },
+})
+
+const BackWrap = styled.div({
+  height: 24,
+  width: 32,
+  borderRadius: 4,
+  background: '#F0F4FA',
+  cursor: 'pointer',
+  marginRight: 16,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
 
 interface Props {
@@ -256,25 +268,35 @@ const CommonOperation = (props: Props) => {
       />
       <OperationTop>
         <ProjectInfo>
-          <IconFont
-            onClick={onToProject}
-            style={{ color: '#969799', fontSize: 16, marginRight: 16 }}
-            type="left"
-          />
+          <Tooltip title="返回列表">
+            <BackWrap>
+              <IconFont
+                onClick={onToProject}
+                style={{ color: '#2877ff', fontSize: 20 }}
+                type="return"
+              />
+            </BackWrap>
+          </Tooltip>
           <ImgWrap src={projectInfo.cover} />
           <OmitText width={152}>
-            <ClickWrap onClick={() => setIsVisible(true)}>
+            <ClickWrap
+              style={{ fontSize: 14, fontWeight: 500 }}
+              onClick={() => setIsVisible(true)}
+            >
               {projectInfo.name}
             </ClickWrap>
           </OmitText>
-          <ClickIcon
-            hidden={getIsPermission(
-              userInfo?.company_permissions,
-              'b/project/update',
-            )}
-            type="edit-square"
-            onClick={() => setIsVisible(true)}
-          />
+          <Tooltip title="编辑项目">
+            <ClickIcon
+              hidden={getIsPermission(
+                userInfo?.company_permissions,
+                'b/project/update',
+              )}
+              style={{ fontSize: 20 }}
+              type="edit-square"
+              onClick={() => setIsVisible(true)}
+            />
+          </Tooltip>
         </ProjectInfo>
         <Tabs size={60}>
           {tabsList.map(i => (

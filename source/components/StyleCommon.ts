@@ -260,16 +260,17 @@ const TabsItem = styled.div<{ isActive: boolean }>(
 )
 const LabNumber = styled.div<{ isActive: boolean }>`
   margin-left: 12px;
-  width: 20px;
-  height: 18px;
-  border-radius: 50%;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 12px;
 
-  color: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(150, 151, 153, 1)'};
-  background: ${({ isActive }) => isActive ? '#f0f4fa' : 'rgba(242, 242, 244, 1)'};
+  color: ${({ isActive }) => isActive ? 'white' : 'rgba(150, 151, 153, 1)'};
+  background: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
 `
 const tabCss = css`
   display: flex;
@@ -354,12 +355,12 @@ const StyledTable = styled(Table)({
   },
 })
 const SecondTitle = styled.span`
-  height: 24px;
   padding-left: 8px;
-  border-left: 3px solid rgba(40, 119, 255, 1);
+  border-left: 3px solid #2877ff;
   color: rgba(0, 0, 0, 1);
   font-size: 16px;
   font-weight: bold;
+  line-height: 20px;
 `
 const TextWrap = styled.div`
   display: flex;

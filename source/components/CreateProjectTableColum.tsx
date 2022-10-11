@@ -101,7 +101,7 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Tooltip placement="topLeft" title={record.categoryRemark}>
+            <Tooltip placement="top" title={record.categoryRemark}>
               <CategoryWrap
                 color={record.categoryColor}
                 bgColor={

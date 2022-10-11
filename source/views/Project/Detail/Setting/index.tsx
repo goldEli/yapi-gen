@@ -88,6 +88,7 @@ const MenuItem = styled.div<{ isActive: boolean; language?: string }>(
     paddingLeft: language === 'zh' ? 65 : 40,
     div: {
       color: isActive ? '#2877FF' : '#323233',
+      fontWeight: isActive ? 'bold' : 400,
     },
     svg: {
       color: isActive ? '#2877FF' : '#323233',

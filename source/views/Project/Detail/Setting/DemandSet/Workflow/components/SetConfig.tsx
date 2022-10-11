@@ -631,25 +631,10 @@ const SetConfig = (props: Props) => {
       onConfirm={onConfirm}
       width={784}
     >
-      <div style={{ maxHeight: 584, overflowY: 'auto' }}>
+      <div style={{ maxHeight: 544, overflowY: 'auto' }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>当前流转</LabelWrap>
           <ItemWrap>
-            <StatusWrap
-              color={
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.color
-              }
-            >
-              {
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.name
-              }
-            </StatusWrap>
-            <Divider
-              type="vertical"
-              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
-            />
             <StatusWrap
               color={
                 workList?.list?.filter(
@@ -661,6 +646,21 @@ const SetConfig = (props: Props) => {
                 workList?.list?.filter(
                   (i: any) => i.id === props?.item?.toId,
                 )[0]?.name
+              }
+            </StatusWrap>
+            <Divider
+              type="vertical"
+              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
+            />
+            <StatusWrap
+              color={
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.color
+              }
+            >
+              {
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.name
               }
             </StatusWrap>
           </ItemWrap>

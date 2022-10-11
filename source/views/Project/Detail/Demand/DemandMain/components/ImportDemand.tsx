@@ -45,6 +45,7 @@ const TabsItem = styled.div<{ active?: boolean }>(
   ({ active }) => ({
     color: active ? '#2877ff' : '#323233',
     borderBottom: active ? '3px solid #2877ff' : '3px solid white',
+    fontWeight: active ? 'bold' : 400,
   }),
 )
 

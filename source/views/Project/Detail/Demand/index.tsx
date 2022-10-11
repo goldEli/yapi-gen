@@ -82,9 +82,10 @@ const Item = styled.div<{ activeIdx: boolean }>(
       lineHeight: '50px',
     },
     div: {
+      minWidth: 20,
       height: 20,
       padding: '0 6px',
-      borderRadius: '50%',
+      borderRadius: 10,
       color: '#2877FF',
       background: '#F0F4FA',
       display: 'flex',
@@ -96,6 +97,10 @@ const Item = styled.div<{ activeIdx: boolean }>(
     span: {
       color: activeIdx ? '#2877FF' : '#323233',
       borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
+    },
+    div: {
+      color: activeIdx ? 'white' : '#2877FF',
+      background: activeIdx ? '#2877FF' : '#F0F4FA',
     },
   }),
 )

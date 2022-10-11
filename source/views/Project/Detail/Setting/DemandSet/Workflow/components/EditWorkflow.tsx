@@ -110,68 +110,76 @@ const EditWorkflow = (props: EditorProps) => {
       onClose={onClose}
       onConfirm={onConfirm}
     >
-      {props?.item?.categorys?.length && (
-        <>
-          <div style={{ color: '#323233', fontSize: 14 }}>
-            该状态已存在于需求类别中
+      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 16 }}>
+        {props?.item?.categorys?.length && (
+          <>
+            <div style={{ color: '#323233', fontSize: 14 }}>
+              该状态已存在于需求类别中
+            </div>
+            <Space
+              size={8}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              {props?.item?.categorys?.map((i: any) => (
+                <CategoryWrap
+                  style={{ margin: 0, marginTop: 8 }}
+                  color={i.color}
+                  bgColor={
+                    colorList?.filter(k => k.key === i.color)[0]?.bgColor
+                  }
+                  key={i.id}
+                >
+                  {i.name}
+                </CategoryWrap>
+              ))}
+            </Space>
+          </>
+        )}
+        <FormWrap form={form} layout="vertical">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Form.Item label="状态名称" name="name">
+              <Input
+                autoComplete="off"
+                maxLength={10}
+                placeholder="请输入状态名称"
+                allowClear
+                onChange={e => setName(e.target.value)}
+              />
+            </Form.Item>
+            <span style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
+              状态名称是显示在页面上的名字，最多输入10个字。
+            </span>
           </div>
-          <Space
-            size={8}
-            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
-          >
-            {props?.item?.categorys?.map((i: any) => (
-              <CategoryWrap
-                style={{ margin: 0, marginTop: 8 }}
-                color={i.color}
-                bgColor={colorList?.filter(k => k.key === i.color)[0]?.bgColor}
-                key={i.id}
-              >
-                {i.name}
-              </CategoryWrap>
-            ))}
-          </Space>
-        </>
-      )}
-      <FormWrap form={form} layout="vertical">
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Form.Item label="状态名称" name="name">
-            <Input
-              autoComplete="off"
-              maxLength={20}
-              placeholder="请输入状态名称"
-              allowClear
-              onChange={e => setName(e.target.value)}
+          <Form.Item label="状态说明" name="info">
+            <Input.TextArea
+              autoSize={{ minRows: 5, maxRows: 5 }}
+              placeholder="请输入状态说明"
+              maxLength={200}
             />
           </Form.Item>
-          <span style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-            状态名称是显示在页面上的名字，最多输入20个字。
-          </span>
-        </div>
-        <Form.Item label="状态说明" name="info">
-          <Input.TextArea
-            autoSize={{ minRows: 5, maxRows: 5 }}
-            placeholder="请输入状态说明"
-            maxLength={200}
-          />
-        </Form.Item>
-        <Form.Item label="选择颜色" name="color">
-          <ChooseColor
-            color={normalColor}
-            onChangeValue={val => onChangeValue(val)}
-          />
-        </Form.Item>
-        <Form.Item label="状态预览">
-          <ViewWrap color={normalColor}>{name || '无'}</ViewWrap>
-        </Form.Item>
-        <Form.Item label="结束状态" name="endStatus">
-          <Switch
-            checkedChildren="是"
-            unCheckedChildren="否"
-            checked={status}
-            onChange={checked => onChangeStatus(checked)}
-          />
-        </Form.Item>
-      </FormWrap>
+          <Form.Item label="选择颜色" name="color">
+            <ChooseColor
+              color={normalColor}
+              onChangeValue={val => onChangeValue(val)}
+            />
+          </Form.Item>
+          <Form.Item label="状态预览">
+            <ViewWrap color={normalColor}>{name || '无'}</ViewWrap>
+          </Form.Item>
+          <Form.Item label="结束状态" name="endStatus">
+            <Switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              checked={status}
+              onChange={checked => onChangeStatus(checked)}
+            />
+          </Form.Item>
+        </FormWrap>
+      </div>
     </CommonModal>
   )
 }

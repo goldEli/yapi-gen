@@ -15,6 +15,7 @@ const GanttWrap = styled.div({
   '.gantt_grid_head_cell': {
     textAlign: 'left',
     paddingLeft: 10,
+    fontSize: 14,
   },
   '.gantt_cell': {
     padding: 0,

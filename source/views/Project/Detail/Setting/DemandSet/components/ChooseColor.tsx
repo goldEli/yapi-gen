@@ -19,8 +19,8 @@ const ChooseColorWrap = styled.div<{ color?: string }>(
 )
 
 const ColorWrap = styled.div({
-  height: 16,
-  width: 16,
+  height: 20,
+  width: 20,
   borderRadius: 4,
   display: 'flex',
   alignItems: 'center',
@@ -52,7 +52,7 @@ const ChooseColor = (props: ChooseColorProps) => {
         alignItems: 'center',
         padding: 16,
         flexWrap: 'wrap',
-        maxWidth: 240,
+        maxWidth: 248,
       }}
       size={8}
     >
@@ -73,7 +73,7 @@ const ChooseColor = (props: ChooseColorProps) => {
   return (
     <Popover
       visible={isChooseColor}
-      placement="bottom"
+      placement="bottomLeft"
       trigger="click"
       content={colorStatus}
       onVisibleChange={onVisibleChange}
