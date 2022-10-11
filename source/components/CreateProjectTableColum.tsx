@@ -206,7 +206,7 @@ export const useDynamicColumns = (state: any) => {
                 className="priorityIcon"
                 type={text.icon}
                 style={{
-                  fontSize: 16,
+                  fontSize: 20,
                   color: text.color,
                 }}
               />

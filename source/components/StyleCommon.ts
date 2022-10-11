@@ -154,7 +154,7 @@ const TableWrap = styled(Table)({
 
 const StaffHeader = styled.div`
   color: rgba(0, 0, 0, 1);
-  font-weight: 400;
+  font-weight: bold;
   display: flex;
   align-items: center;
   padding-left: 24px;

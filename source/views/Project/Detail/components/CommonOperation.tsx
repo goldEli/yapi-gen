@@ -242,7 +242,7 @@ const CommonOperation = (props: Props) => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/Detail/${i.type}?data=${params}`)
     setFilterHeight(52)
-    setFilterHeightIterate(52)
+    setFilterHeightIterate(60)
   }
 
   return (

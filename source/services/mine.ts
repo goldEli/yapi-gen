@@ -901,7 +901,7 @@ export const getVerifyInfo: any = async (params: any) => {
     statusFromTo: response.data?.status_from_to,
     usersName: response.data.users_name,
     userName: response.data.user_name,
-    time: response.data.verify_at,
+    time: response.data.create_at,
     from: response.data.category_status_from,
     to: response.data.category_status_to,
     verifyStatus: response.data.verify_status,

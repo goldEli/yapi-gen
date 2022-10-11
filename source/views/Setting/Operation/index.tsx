@@ -81,6 +81,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const NewSort = (sortProps: any) => {
@@ -258,7 +259,7 @@ const Operation = () => {
         <div className="label">{t('setting.operationLog')}</div>
         <SearchWrap>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationName')}
             </span>
             <Form.Item name="pageSize" />
@@ -275,7 +276,7 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationType')}
             </span>
             <Form.Item name="types" noStyle>
@@ -291,7 +292,7 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationTime')}
             </span>
             <Form.Item name="times" noStyle>

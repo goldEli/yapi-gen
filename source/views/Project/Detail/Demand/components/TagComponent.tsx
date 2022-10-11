@@ -373,6 +373,7 @@ const TagComponent = (props: Props) => {
                 right: -6,
                 top: -6,
                 color: '#969799',
+                fontSize: 14,
               }}
               type="close-circle-fill"
               onClick={() => onDeleteInfoDemand(i)}

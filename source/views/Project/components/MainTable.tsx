@@ -335,7 +335,6 @@ const MainTable = (props: Props) => {
             style={{ color: '#43BA9A' }}
             width={38}
             type="circle"
-            strokeLinecap="butt"
             percent={Number(text) * 100}
             format={percent => percent === 100 ? '100%' : `${percent}%`}
             strokeWidth={8}

@@ -72,7 +72,8 @@ const GanttWrap = styled.div({
 
 interface Props {
   data: any
-  height?: number
+  height?: any
+  minHeight?: any
 }
 
 const Gantt = (props: Props) => {
@@ -154,7 +155,11 @@ const Gantt = (props: Props) => {
   return (
     <GanttWrap
       id="ganttDom"
-      style={{ width: '100%', height: props.height }}
+      style={{
+        width: '100%',
+        height: props.height,
+        minHeight: props?.minHeight,
+      }}
     ></GanttWrap>
   )
 }

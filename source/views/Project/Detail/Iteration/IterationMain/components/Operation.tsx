@@ -43,10 +43,28 @@ const StatusTag = styled.div<{ isOpen?: boolean }>(
     padding: '0 8px',
     fontSize: 12,
     cursor: 'pointer',
+    width: 'fit-content',
   },
   ({ isOpen }) => ({
     color: isOpen ? '#43BA9A' : '#969799',
     background: isOpen ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
+
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
   }),
 )
 
@@ -102,21 +120,26 @@ const Operation = (props: Props) => {
   }
 
   const changeStatus = (
-    <Space
-      size={8}
-      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
     >
-      <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-        {t('common.opening')}
-      </StatusTag>
-      <StatusTag
-        isOpen={false}
-        onClick={() => onChangeStatus(2)}
-        style={{ color: '#969799', background: '#F2F2F4' }}
-      >
-        {t('common.Closed')}
-      </StatusTag>
-    </Space>
+      <LiWrap color="#EDF7F4">
+        <StatusTag isOpen onClick={() => onChangeStatus(1)}>
+          {t('common.opening')}
+        </StatusTag>
+      </LiWrap>
+
+      <LiWrap color="#F2F2F4">
+        <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
+          {t('common.Closed')}
+        </StatusTag>
+      </LiWrap>
+    </div>
   )
 
   const onFilterSearch = (e: any, customField: any) => {
@@ -171,8 +194,8 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
 
     setTimeout(() => {
-      setFilterHeightIterate(stickyWrapDom.current?.clientHeight)
-    }, 50)
+      setFilterHeightIterate(Number(stickyWrapDom.current?.clientHeight) + 8)
+    }, 42)
   }
 
   return (
@@ -212,7 +235,7 @@ const Operation = (props: Props) => {
           >
             <IconFont
               onClick={props.onChangeIsShowLeft}
-              type="indent"
+              type={props.isShowLeft ? 'outdent' : 'indent'}
               style={{
                 fontSize: 20,
                 color: 'black',

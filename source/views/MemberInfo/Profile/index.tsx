@@ -136,7 +136,7 @@ const GatteWrap = styled.div`
 
 const HasIdWrap = styled.div({
   overflow: 'auto',
-  padding: 16,
+  padding: '16px 16px 0 16px',
 })
 
 const HeadWrap = styled.div({
@@ -329,7 +329,7 @@ const Profile = () => {
                 </ChartsItem>
               </TotalWrap>
             </HeadWrap>
-            <GatteWrap style={{ height: 'calc(100vh - 352px)', margin: 0 }}>
+            <GatteWrap style={{ margin: 0 }}>
               <div style={{ padding: '28px 24px 0' }}>
                 <SecondTitle>他的需求甘特图</SecondTitle>
                 <div className={titleWrap}>
@@ -354,11 +354,15 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              {gatteData.length >= 1
-                && <Mygante data={gatteData} height={500} />
-              }
+              {gatteData.length >= 1 && (
+                <Mygante
+                  data={gatteData}
+                  height="calc(100vh - 420px)"
+                  minHeight={300}
+                />
+              )}
               {gatteData.length < 1 && (
-                <div style={{ height: 'calc(100% - 136px)' }}>
+                <div style={{ height: 'calc(100vh - 372px)' }}>
                   <NoData />
                 </div>
               )}
@@ -482,7 +486,7 @@ const Profile = () => {
               </CenterRight>
             </Center>
           </StyledWrap>
-          <GatteWrap style={{ height: 'calc(100vh - 464px)' }}>
+          <GatteWrap>
             <div style={{ padding: '28px 24px 0' }}>
               <SecondTitle>他的需求甘特图</SecondTitle>
               <div className={titleWrap}>
@@ -510,7 +514,7 @@ const Profile = () => {
             </div>
             {gatteData.length >= 1 && <Mygante data={gatteData} height={380} />}
             {gatteData.length < 1 && (
-              <div style={{ height: 'calc(100% - 136px)' }}>
+              <div style={{ height: 'calc(100vh - 508px)' }}>
                 <NoData />
               </div>
             )}

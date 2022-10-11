@@ -350,7 +350,7 @@ const Profile = () => {
           </CenterRight>
         </Center>
       </StyledWrap>
-      <GatteWrap style={{ height: 'calc(100vh - 464px)' }}>
+      <GatteWrap>
         <div style={{ padding: '28px 24px 0' }}>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
@@ -378,7 +378,7 @@ const Profile = () => {
         </div>
         {gatteData.length >= 1 && <Mygante data={gatteData} />}
         {gatteData.length < 1 && (
-          <div style={{ height: 'calc(100% - 136px)' }}>
+          <div style={{ height: 'calc(100vh - 508px)' }}>
             <NoData />
           </div>
         )}

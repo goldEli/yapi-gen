@@ -172,7 +172,7 @@ export const useDynamicColumns = (state: any) => {
                 <IconFont
                   type={text.icon}
                   style={{
-                    fontSize: 16,
+                    fontSize: 20,
                     marginRight: '8px',
                     color: text.color,
                   }}
