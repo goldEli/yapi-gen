@@ -58,7 +58,7 @@ const StyledShape = styled.div`
   justify-content: center;
   font-size: 12px;
   padding: 1px 8px 1px 8px;
-  min-width: 60px;
+  width: 100%;
   height: 25px;
   white-space: nowrap;
   background: rgba(255, 255, 255, 1);
@@ -100,7 +100,8 @@ const ExcessiveBox = styled.div`
   height: 22px;
 `
 const StyledShape2 = styled.div`
-  width: 52px;
+  /* width: 52px; */
+  padding: 1px 8px 1px 8px;
   height: 22px;
   background: #ffffff;
   border-radius: 6px 6px 6px 6px;
@@ -293,6 +294,8 @@ export const ShapeContent = (props: ShapeProps) => {
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
 
+  // console.log(rightList)
+
   const handleChange = (value: string) => {
     setReviewerValue(value)
 
@@ -392,7 +395,11 @@ export const ShapeContent = (props: ShapeProps) => {
     <Contain>
       <Left>
         {leftList.map((item: any) => (
-          <div onClick={() => change(item)} key={item.id}>
+          <div
+            style={{ width: '100%' }}
+            onClick={() => change(item)}
+            key={item.id}
+          >
             <StyledShape
               style={{
                 color: item.id === active ? '#2877ff' : '#969799',
@@ -436,6 +443,7 @@ export const ShapeContent = (props: ShapeProps) => {
                   } else if (i.type === 'select' || i.type === 'radio') {
                     return (
                       <Form.Item
+                        initialValue={i.true_value}
                         labelCol={{ span: 8 }}
                         label={i.title}
                         name={i.content}
@@ -463,6 +471,7 @@ export const ShapeContent = (props: ShapeProps) => {
                   ) {
                     return (
                       <Form.Item
+                        initialValue={i.true_value ?? []}
                         labelCol={{ span: 8 }}
                         label={i.title}
                         name={i.content}
@@ -576,7 +585,7 @@ export const ShapeContent = (props: ShapeProps) => {
                 </StyledShape2>
                 <img
                   style={{ width: '40px', height: '15px', margin: '0px 8px' }}
-                  src="/public/arrows.png"
+                  src="/arrows.png"
                   alt=""
                 />
                 <StyledShape2
@@ -709,7 +718,7 @@ export const ShapeContent = (props: ShapeProps) => {
             position: 'absolute',
             transform: 'translate(-50%, -50%)',
             top: '50%',
-            left: '60%',
+            left: '67%',
           }}
         />
       )}
