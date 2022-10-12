@@ -4,6 +4,7 @@ import { useState } from 'react'
 export default () => {
   const [isUpdateCreate, setIsUpdateCreate] = useState(false)
   const [verifyInfo, setVerifyInfo] = useState<any>({})
+  const [count, setCount] = useState({ verifyUser: 0, verify: 0 })
 
   const getVerifyInfo = async (params: any) => {
     const response = await services.mine.getVerifyInfo(params)
@@ -62,5 +63,7 @@ export default () => {
     verifyInfo,
     getVerifyUserList,
     getVerifyList,
+    setCount,
+    count,
   }
 }

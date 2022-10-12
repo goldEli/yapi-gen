@@ -106,7 +106,7 @@ const Need = (props: any) => {
   const [operationObj, setOperationObj] = useState<any>({})
   const { colorList } = useModel('project')
   const { userInfo } = useModel('user')
-  const { getVerifyList, getVerifyUserList } = useModel('mine')
+  const { getVerifyList, getVerifyUserList, setCount, count } = useModel('mine')
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
@@ -139,6 +139,10 @@ const Need = (props: any) => {
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
     setListData(result)
+    setCount({
+      verifyUser: !(val ?? activeTab) ? result?.total : result?.otherCount,
+      verify: val ?? activeTab ? result?.total : result?.otherCount,
+    })
     setIsSpin(false)
   }
 
@@ -355,9 +359,7 @@ const Need = (props: any) => {
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>我审核的</div>
           </TabsItem>
-          <LabNumber isActive={!activeTab}>
-            {!activeTab ? listData?.total : listData?.otherCount}
-          </LabNumber>
+          <LabNumber isActive={!activeTab}>{count?.verifyUser}</LabNumber>
 
           <TabsItem
             isActive={activeTab === 1}
@@ -366,9 +368,7 @@ const Need = (props: any) => {
           >
             <div>我提交的</div>
           </TabsItem>
-          <LabNumber isActive={activeTab === 1}>
-            {activeTab === 1 ? listData?.total : listData?.otherCount}
-          </LabNumber>
+          <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
           <MyInput
