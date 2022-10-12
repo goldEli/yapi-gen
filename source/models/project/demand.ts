@@ -15,11 +15,13 @@ export default () => {
   const [importExcel, setImportExcel] = useState<any>({})
 
   const getImportExcelUpdate = async (params: any) => {
+    setImportExcel({})
     const result = await services.demand.getImportExcelUpdate(params)
     setImportExcel(result)
   }
 
   const getImportExcel = async (params: any) => {
+    setImportExcel({})
     const result = await services.demand.getImportExcel(params)
     setImportExcel(result)
   }

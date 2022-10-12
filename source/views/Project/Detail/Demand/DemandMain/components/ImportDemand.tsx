@@ -98,7 +98,6 @@ const ImportDemand = () => {
   const [tabs, setTabs] = useState(2)
   const [fileList, setFileList] = useState<any>([])
   const [t] = useTranslation()
-  const [uploadResult, setUploadResult] = useState<any>({})
   const [spinLoading, setSpinLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const {
@@ -107,6 +106,7 @@ const ImportDemand = () => {
     importExcel,
     getImportExcelUpdate,
   } = useModel('demand')
+  const { setIsRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -132,9 +132,9 @@ const ImportDemand = () => {
       tabs === 1
         ? await getImportExcelUpdate({ projectId, filePath: result })
         : await getImportExcel({ projectId, filePath: result })
-      setUploadResult(result)
       setSpinLoading(false)
       setStep(3)
+      setIsRefresh(true)
     } catch (error) {
 
       //
@@ -144,16 +144,13 @@ const ImportDemand = () => {
   const onConfirmUpload = async () => {
     setStep(2)
     setSpinLoading(true)
-    const file = fileList[0]
-
-    // const result = await uploadFile(file, file.name, 'file')
-    onUpload(file)
+    onUpload(fileList[0])
   }
 
   const onClear = () => {
     setFileList([])
     setStep(1)
-    setTabs(1)
+    setTabs(2)
   }
 
   const onConfirmTemplate = async (arr: any) => {
@@ -170,6 +167,7 @@ const ImportDemand = () => {
     a.download = '下载模板'
     a.href = blobUrl
     a.click()
+    setIsVisible(false)
   }
 
   return (
@@ -361,7 +359,57 @@ const ImportDemand = () => {
 
       {step === 3 ? (
         <>
-          {uploadResult?.id ? (
+          {importExcel?.errorCount ? (
+            <CommonWrap>
+              <div
+                style={{
+                  height: 415,
+                  textAlign: 'center',
+                }}
+              >
+                <IconFont
+                  type="close-circle-fill"
+                  style={{ fontSize: 80, color: '#FF5C5E' }}
+                />
+                <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
+                  导入失败！
+                </div>
+                <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
+                  共计导入需求数量：{importExcel?.successCount || 0}，
+                  其中导入错误数量：{importExcel?.errorCount}，
+                  本次整个表格都未导入，请对照错误原型修改后重新导入
+                </span>
+                <ItemWrap style={{ marginTop: 16 }}>
+                  <ContentWrap width={120} hasBg>
+                    错误行号
+                  </ContentWrap>
+                  <ContentWrap width={616} hasBg>
+                    错误原因
+                  </ContentWrap>
+                </ItemWrap>
+                {importExcel?.errorList
+                  && Object.keys(importExcel?.errorList)?.map((i: any) => (
+                    <ItemWrap key={i}>
+                      <ContentWrap width={120}>{i}</ContentWrap>
+                      <ContentWrap width={616}>
+                        {importExcel?.errorList[i].join(';')}
+                      </ContentWrap>
+                    </ItemWrap>
+                  ))}
+              </div>
+              <div
+                style={{
+                  textAlign: 'right',
+                  width: '100%',
+                  margin: '32px 0 24px 0',
+                }}
+              >
+                <Button type="primary" onClick={onClear}>
+                  重新导入
+                </Button>
+              </div>
+            </CommonWrap>
+          ) : (
             <CommonWrap
               style={{
                 height: 503,
@@ -389,55 +437,6 @@ const ImportDemand = () => {
                   完成
                 </Button>
               </Space>
-            </CommonWrap>
-          ) : (
-            <CommonWrap>
-              <div
-                style={{
-                  height: 415,
-                  textAlign: 'center',
-                }}
-              >
-                <IconFont
-                  type="close-circle-fill"
-                  style={{ fontSize: 80, color: '#FF5C5E' }}
-                />
-                <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
-                  导入失败！
-                </div>
-                <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
-                  共计导入需求数量：{importExcel?.successCount}
-                  其中导入错误数量：{importExcel?.errorCount}
-                  本次整个表格都未导入，请对照错误原型修改后重新导入
-                </span>
-                <ItemWrap style={{ marginTop: 16 }}>
-                  <ContentWrap width={120} hasBg>
-                    错误行号
-                  </ContentWrap>
-                  <ContentWrap width={616} hasBg>
-                    错误原因
-                  </ContentWrap>
-                </ItemWrap>
-                {Object.keys(importExcel?.errorList)?.map((i: any) => (
-                  <ItemWrap key={i}>
-                    <ContentWrap width={120}>{i}</ContentWrap>
-                    <ContentWrap width={616}>
-                      {importExcel?.errorList[i].join(';')}
-                    </ContentWrap>
-                  </ItemWrap>
-                ))}
-              </div>
-              <div
-                style={{
-                  textAlign: 'right',
-                  width: '100%',
-                  margin: '32px 0 24px 0',
-                }}
-              >
-                <Button type="primary" onClick={onClear}>
-                  重新导入
-                </Button>
-              </div>
             </CommonWrap>
           )}
         </>

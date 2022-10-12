@@ -16,7 +16,7 @@
     "@emotion/css": "^11.7.1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.8.1",
-    "@jihe/http-client": "^0.0.6",
+    "@jihe/http-client": "^0.0.7",
     "@jihe/secure-log": "^0.0.2",
     "@jihe/use-model": "^0.0.1",
     "@star-yun/ui": "^0.0.3",

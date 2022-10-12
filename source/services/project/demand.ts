@@ -431,14 +431,16 @@ export const getImportExcel: any = async (params: any) => {
   formData.append('file_path', params.filePath)
   const response = await http.post('getImportExcel', formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': undefined,
     },
   })
 
   return {
-    successCount: response.data.count,
-    errorCount: Object.keys(response.data.error_list)?.length,
-    errorList: response.data.error_list,
+    successCount: response.data.count || 0,
+    errorCount: response.data.error_list
+      ? Object.keys(response.data.error_list)?.length
+      : 0,
+    errorList: response.data.error_list ? response.data.error_list : {},
   }
 }
 
@@ -447,12 +449,16 @@ export const getImportExcelUpdate: any = async (params: any) => {
   formData.append('project_id', params.projectId)
   formData.append('file_path', params.filePath)
   const response = await http.post('getImportExcelUpdate', formData, {
-    headers: {},
+    headers: {
+      'Content-Type': undefined,
+    },
   })
 
   return {
-    successCount: response.data.count,
-    errorCount: Object.keys(response.data.error_list)?.length,
-    errorList: response.data.error_list,
+    successCount: response.data.count || 0,
+    errorCount: response.data.error_list
+      ? Object.keys(response.data.error_list)?.length
+      : 0,
+    errorList: response.data.error_list ? response.data.error_list : {},
   }
 }
