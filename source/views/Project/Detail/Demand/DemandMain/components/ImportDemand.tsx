@@ -130,8 +130,8 @@ const ImportDemand = () => {
   const onUpload = async (result: any) => {
     try {
       tabs === 1
-        ? await getImportExcelUpdate({ projectId, filePath: result.url })
-        : await getImportExcel({ projectId, filePath: result.url })
+        ? await getImportExcelUpdate({ projectId, filePath: result })
+        : await getImportExcel({ projectId, filePath: result })
       setUploadResult(result)
       setSpinLoading(false)
       setStep(3)
@@ -145,8 +145,9 @@ const ImportDemand = () => {
     setStep(2)
     setSpinLoading(true)
     const file = fileList[0]
-    const result = await uploadFile(file, file.name, 'file')
-    onUpload(result)
+
+    // const result = await uploadFile(file, file.name, 'file')
+    onUpload(file)
   }
 
   const onClear = () => {

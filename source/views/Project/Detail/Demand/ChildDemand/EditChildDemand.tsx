@@ -25,7 +25,7 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
-import { PriorityWrap } from '@/components/StyleCommon'
+import { PriorityWrap, AddWrap } from '@/components/StyleCommon'
 
 const FormWrap = styled(Form)({
   '.labelIcon': {
@@ -99,55 +99,6 @@ interface Props {
   preId?: any
   list?: any
 }
-
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    height: 26,
-    boxSizing: 'border-box',
-    cursor: 'pointer',
-    borderRadius: 4,
-    width: 'fit-content',
-    '.anticon': {
-      fontSize: 16,
-      alignItems: 'center',
-      svg: {
-        margin: 0,
-      },
-    },
-    div: {
-      fontSize: 14,
-      fontWeight: 400,
-    },
-  },
-  ({ hasColor, hasDash }) => ({
-    padding: hasColor || hasDash ? '0 4px' : 0,
-    color: hasColor ? '#2877FF' : '#969799',
-    border: hasColor
-      ? '1px solid #2877FF'
-      : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
-    '.anticon > svg': {
-      color: hasColor ? '#2877FF' : '#969799',
-    },
-    '.anticon ': {
-      marginRight: hasDash ? 0 : 4,
-    },
-    '&: hover': {
-      border: hasDash ? '1px dashed #2877ff' : '',
-      '.anticon': {
-        svg: {
-          color: '#2877ff',
-        },
-      },
-      div: {
-        color: '#2877ff',
-      },
-    },
-  }),
-)
 
 const ProgressWrap = styled(Progress)({
   '.ant-progress-status-exception .ant-progress-bg': {

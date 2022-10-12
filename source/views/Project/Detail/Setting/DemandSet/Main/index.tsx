@@ -426,7 +426,7 @@ const CardGroup = (props: CardGroupProps) => {
                     type="fillwarning"
                     style={{ fontSize: 14, color: '#FA9746' }}
                   />
-                  <div>工作流还设置未完成</div>
+                  <div>工作流设置还未完成</div>
                 </div>
               )}
             </DivWrap>

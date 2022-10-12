@@ -364,8 +364,8 @@ export const getStoryStatusLog: any = async (params: any) => {
     verifyAll: {
       id: i.verify?.id,
       statusFrom: {
-        color: i.statusFrom?.color,
-        name: i.statusFrom?.content,
+        color: i.verify?.statusfrom?.color,
+        name: i.verify?.statusfrom?.content,
       },
 
       // 整条审核的状态  1-待审核  2-已通过 3-未通过
@@ -426,9 +426,13 @@ export const getImportDownloadModel: any = async (params: any) => {
 }
 
 export const getImportExcel: any = async (params: any) => {
-  const response = await http.post('getImportExcel', {
-    project_id: params.projectId,
-    file_path: params.filePath,
+  const formData = new FormData()
+  formData.append('project_id', params.projectId)
+  formData.append('file_path', params.filePath)
+  const response = await http.post('getImportExcel', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
 
   return {
@@ -439,9 +443,11 @@ export const getImportExcel: any = async (params: any) => {
 }
 
 export const getImportExcelUpdate: any = async (params: any) => {
-  const response = await http.post('getImportExcelUpdate', {
-    project_id: params.projectId,
-    file_path: params.filePath,
+  const formData = new FormData()
+  formData.append('project_id', params.projectId)
+  formData.append('file_path', params.filePath)
+  const response = await http.post('getImportExcelUpdate', formData, {
+    headers: {},
   })
 
   return {

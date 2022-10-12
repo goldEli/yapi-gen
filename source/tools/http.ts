@@ -73,7 +73,9 @@ client.config({
       options.headers.Language = localStorage.getItem('language') || ''
       options.headers.System = getSystem()
       options.headers.Client = browser()
-      options.payload = JSON.stringify(options.payload)
+      if (!(options.payload instanceof FormData)) {
+        options.payload = JSON.stringify(options.payload)
+      }
 
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
@@ -168,8 +170,12 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   )
 }
 
-export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {
-  return client.post<Payload, Result>(urls[key], data)
+export const post = <Payload, Result = any>(
+  key: UrlKeys,
+  data?: any,
+  options?: any,
+) => {
+  return client.post<Payload, Result>(urls[key], data, options)
 }
 
 export const put = <Payload, Result = any>(
