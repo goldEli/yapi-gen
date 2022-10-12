@@ -48,6 +48,11 @@ const PopoverFooter = styled(Space)({
   marginTop: 36,
   justifyContent: 'flex-end',
 })
+const Box = styled.div`
+  &:last-child {
+    visibility: hidden;
+  }
+`
 
 interface Props {
   hide?(): void
@@ -151,7 +156,7 @@ const DemandBox = (props: Props) => {
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { demandInfo } = useModel('demand')
+  const { getDemandInfo, demandInfo } = useModel('demand')
   const statusList = demandInfo?.status?.can_changes_category_status
   const [active, setActive] = useState(0)
   const { projectInfo } = useModel('project')
@@ -180,6 +185,7 @@ const DemandStatusBox = (props: any) => {
 
     if (res.code === 0) {
       message.success(t('common.circulationSuccess'))
+      getDemandInfo({ projectId: props.pid, id: props.sid })
     }
   }
   useEffect(() => {
@@ -193,18 +199,20 @@ const DemandStatusBox = (props: any) => {
       {leftList?.map((i: any, index: number) => (
         <Pop
           content={({ onHide }: { onHide(): void }) => {
-            return (
-              <ShapeContent
-                active={demandInfo.status.status}
-                sid={props.sid}
-                fromId={demandInfo?.status?.id}
-                noleft
-                tap={(value: any) => updateStatus(value)}
-                hide={onHide}
-                record={i}
-                row={i}
-              />
-            )
+            return demandInfo?.isExamine
+              ? null
+              : (
+                  <ShapeContent
+                    active={demandInfo.status.status}
+                    sid={props.sid}
+                    fromId={demandInfo?.status?.id}
+                    noleft
+                    tap={(value: any) => updateStatus(value)}
+                    hide={onHide}
+                    record={i}
+                    row={i}
+                  />
+                )
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -226,7 +234,7 @@ const DemandStatusBox = (props: any) => {
                 width: 48,
                 margin: '0 8px',
                 minWidth: 'auto',
-                display: index === statusList?.length - 1 ? 'none' : 'block',
+                display: index === leftList?.length - 1 ? 'none' : 'block',
               }}
               dashed
             />
