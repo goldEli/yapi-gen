@@ -29,6 +29,7 @@ const Left = styled.div<{ isShowLeft: boolean }>(
     borderRight: '1px solid #EBEDF0',
     padding: '0px 16px 10px',
     background: 'white',
+    overflow: 'scroll',
     height: 'calc(100vh - 64px)',
     '.ant-space-item': {
       display: 'flex',
@@ -296,6 +297,10 @@ const WrapLeft = (props: Props) => {
     if (start.pid === 0) {
       return
     }
+    if (end.pid === 0) {
+      return
+    }
+
     if (end.pid === 1) {
       await moveTreeList({
         projectId: props.projectId,
