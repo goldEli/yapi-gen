@@ -152,7 +152,7 @@ export const useDynamicColumns = (state: any) => {
             content={({ onHide }: { onHide(): void }) => {
               return isCanEdit && !record.isExamine ? (
                 <ShapeContent
-                  tap={value => state.onChangeStatus(value)}
+                  tap={(value: any) => state.onChangeStatus(value)}
                   hide={onHide}
                   row={record}
                   record={{

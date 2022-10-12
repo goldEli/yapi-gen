@@ -94,7 +94,7 @@ const DragHandle = sortableHandle(() => (
 const SortContainer = sortableContainer<any>((props: any) => <ul className="flex flex1" {...props} />)
 
 // 拖拽元素
-const SortItemLi = sortableElement<any>((props: any) => <li className="flex" {...props} />)
+const SortItemLi = sortableElement<any>((props: any) => <li helperClass="row-dragging" className="flex" {...props} />)
 
 const EditFiled = (props: Props) => {
   const [t] = useTranslation()
@@ -316,11 +316,16 @@ const EditFiled = (props: Props) => {
                       <span>添加选项</span>
                     </AddWrap>
                     <SortContainer
+                      helperClass="row-dragging"
                       useDragHandle
                       onSortEnd={(values: any) => onSortEnd(values)}
                     >
                       {row.map((_i: any, idx: number) => (
-                        <SortItemLi key={_i.key} index={idx}>
+                        <SortItemLi
+                          helperClass="row-dragging"
+                          key={_i.key}
+                          index={idx}
+                        >
                           <OptionsItemWrap key={_i.key}>
                             <DragHandle />
                             <Input

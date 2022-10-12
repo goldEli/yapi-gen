@@ -235,6 +235,7 @@ const StepPageOne = (propsOne: Props) => {
   const DraggableContainer = (props: any) => (
     <SortableBody
       useDragHandle
+      helperClass="row-dragging"
       disableAutoscroll
       onSortEnd={onSortEnd}
       {...props}

@@ -450,7 +450,7 @@ const DemandBox = () => {
               content={({ onHide }: { onHide(): void }) => {
                 return isCanEdit && !demandInfo?.isExamine ? (
                   <ShapeContent
-                    tap={value => onChangeStatus(value)}
+                    tap={(value: any) => onChangeStatus(value)}
                     hide={onHide}
                     row={demandInfo}
                     record={{

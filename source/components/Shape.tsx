@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -38,6 +39,7 @@ const Left = styled.div`
   border-right: 1px solid #ebedf0;
 `
 const Right = styled.div`
+  position: relative;
   box-sizing: border-box;
   padding-left: 24px;
   padding-top: 40px;
@@ -265,7 +267,7 @@ const NumericInput = (props: any) => {
 }
 
 // eslint-disable-next-line complexity
-export const ShapeContent = (props: ShapeProps) => {
+export const ShapeContent = (props: any) => {
   const [t] = useTranslation()
   const {
     row: {
@@ -291,6 +293,7 @@ export const ShapeContent = (props: ShapeProps) => {
   const [rightList, setRightList] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)
   const [activeStatus, setActiveStatus] = useState<any>({})
+  const { demandInfo } = useModel('demand')
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
 
@@ -332,6 +335,18 @@ export const ShapeContent = (props: ShapeProps) => {
 
     // console.log(res, '初始右边数据')
   }
+  const init2 = async () => {
+    setActiveStatus(props.row.status)
+
+    const res = await getShapeRight({
+      id: props.row.project_id,
+      nId: props.sid,
+      fromId: props.fromId,
+      toId: props.row.id,
+    })
+    setRightList(res)
+    setLoading(true)
+  }
   const init = async () => {
     const res = await getProjectMember(projectId)
     setOptionsList(res.data)
@@ -346,7 +361,11 @@ export const ShapeContent = (props: ShapeProps) => {
   }
 
   useEffect(() => {
-    init()
+    if (props.noleft) {
+      init2()
+    } else {
+      init()
+    }
   }, [])
 
   useEffect(() => {
@@ -377,43 +396,53 @@ export const ShapeContent = (props: ShapeProps) => {
     //   content: res.password,
     // }
 
-    const obj = {
+    const putData = {
       projectId,
       nId: myid,
       toId: active,
       fields: res,
       verifyId: reviewerValue,
     }
+    const putData2 = {
+      projectId: props.row.project_id,
+      nId: props.sid,
+      toId: props.row.id,
+      fields: res,
+      verifyId: reviewerValue,
+    }
 
     // console.log(obj)
 
-    tap(obj)
+    tap(props.noleft ? putData2 : putData)
     onClear()
   }
 
   return (
     <Contain>
-      <Left>
-        {leftList.map((item: any) => (
-          <div
-            style={{ width: '100%' }}
-            onClick={() => change(item)}
-            key={item.id}
-          >
-            <StyledShape
-              style={{
-                color: item.id === active ? '#2877ff' : '#969799',
-                border:
-                  item.id === active
-                    ? '1px solid #2877ff'
-                    : '1px solid #EBEDF0',
-              }}
+      {props.noleft ? null : (
+        <Left>
+          {leftList.map((item: any) => (
+            <div
+              style={{ width: '100%' }}
+              onClick={() => change(item)}
+              key={item.id}
             >
-              {item.status.content}
-            </StyledShape>
-          </div>
-        ))}
-      </Left>
+              <StyledShape
+                style={{
+                  color: item.id === active ? '#2877ff' : '#969799',
+                  border:
+                    item.id === active
+                      ? '1px solid #2877ff'
+                      : '1px solid #EBEDF0',
+                }}
+              >
+                {item.status.content}
+              </StyledShape>
+            </div>
+          ))}
+        </Left>
+      )}
+
       {loading ? (
         <Right>
           <div style={{ height: '500px', overflow: 'auto' }}>
@@ -576,12 +605,14 @@ export const ShapeContent = (props: ShapeProps) => {
               <ExcessiveBox>
                 <StyledShape2
                   style={{
-                    color: fromText.color,
-                    border: `1px solid ${fromText.color}`,
+                    color: props.noleft ? props?.active.color : fromText?.color,
+                    border: `1px solid ${
+                      props.noleft ? props?.active.color : fromText?.color
+                    }`,
                     marginRight: '8px',
                   }}
                 >
-                  {fromText.content}
+                  {props.noleft ? props?.active?.content : fromText?.content}
                 </StyledShape2>
                 <img
                   style={{ width: '40px', height: '15px', margin: '0px 8px' }}
@@ -718,7 +749,7 @@ export const ShapeContent = (props: ShapeProps) => {
             position: 'absolute',
             transform: 'translate(-50%, -50%)',
             top: '50%',
-            left: '67%',
+            left: '50%',
           }}
         />
       )}
