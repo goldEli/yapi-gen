@@ -93,6 +93,7 @@ const activeCss = css`
   justify-content: center;
   background: rgba(240, 244, 250, 1);
   color: rgba(40, 119, 255, 1);
+  font-weight: bold;
 `
 
 export const Side = () => {

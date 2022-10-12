@@ -235,6 +235,7 @@ const Circulation = () => {
               </>
             ))}
             {i.changeType === 3
+              && i.verifyAll?.verify.verifyType === 1
               && i.verifyAll?.verify?.process?.map((k: any) => (
                 <div key={k.id}>
                   <LineItem style={{ alignItems: 'center' }} top={24}>
@@ -316,6 +317,54 @@ const Circulation = () => {
                   ))}
                 </div>
               ))}
+            {i.changeType === 3 && i.verifyAll?.verify.verifyType === 2 && (
+              <div>
+                <LineItem style={{ alignItems: 'center' }} top={24}>
+                  <SpanWrap
+                    size={16}
+                    weight={500}
+                    color="#323233"
+                    style={{
+                      marginRight: 16,
+                    }}
+                  >
+                    审核人
+                  </SpanWrap>
+                </LineItem>
+                <LineItem top={16}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <NameWrap
+                      style={{ marginBottom: 0, width: 24, height: 24 }}
+                    >
+                      {String(
+                        i.verifyAll?.verify.fixedUser.userName
+                          ?.trim()
+                          .slice(0, 1),
+                      ).toLocaleUpperCase()}
+                    </NameWrap>
+                    <span style={{ marginLeft: 8 }}>
+                      {i.verifyAll?.verify.fixedUser.userName?.trim()}
+                    </span>
+                  </div>
+                </LineItem>
+                <LineItem style={{ marginLeft: 32 }}>
+                  {i.verifyAll?.verify.fixedUser.verifyStatus === 1
+                    ? <SpanWrap color="#FA9746">待审核</SpanWrap>
+                    : i.verifyAll?.verify.fixedUser.verifyStatus === 2
+                      ? <SpanWrap color="#43BA9A">已通过</SpanWrap>
+                      : <SpanWrap color="#FF5C5E">未通过</SpanWrap>
+                  }
+                </LineItem>
+                <LineItem
+                  top={4}
+                  hidden={!i.verifyAll?.verify.fixedUser.comment}
+                >
+                  <SpanWrap size={14} color="#323233">
+                    {i.verifyAll?.verify.fixedUser.comment}
+                  </SpanWrap>
+                </LineItem>
+              </div>
+            )}
             {i.changeType === 3 && i.verifyAll?.verifyStatus !== 1 && (
               <LineItem top={24}>
                 <SpanWrap size={16} color="#323233" weight={500}>

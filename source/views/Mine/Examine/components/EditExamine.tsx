@@ -260,7 +260,9 @@ const EditExamine = (props: Props) => {
                                     ? '已通过'
                                     : '未通过'}
                               </span>
-                              <WrapBox left={16}>{i.time}</WrapBox>
+                              {i.status !== 1
+                                && <WrapBox left={16}>{i.time}</WrapBox>
+                              }
                             </div>
                           </div>
                         </div>
@@ -324,7 +326,9 @@ const EditExamine = (props: Props) => {
                                 ? '已通过'
                                 : '未通过'}
                           </span>
-                          <WrapBox left={16}>{k.time}</WrapBox>
+                          {k.status !== 1
+                            && <WrapBox left={16}>{k.time}</WrapBox>
+                          }
                         </div>
                       </div>
                     </div>

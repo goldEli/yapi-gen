@@ -38,12 +38,18 @@ const NameWrap = styled.div({
   },
 })
 
-const ContentWrap = styled.div({
-  padding: 24,
-  display: 'flex',
-  flexDirection: 'column',
-  height: 'calc(100% - 64px)',
-})
+const ContentWrap = styled.div<{ hasTop?: any }>(
+  {
+    padding: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'calc(100% - 72px)',
+  },
+  ({ hasTop }) => ({
+
+    // padding: hasTop ? '0 16px 16px' : 16,
+  }),
+)
 
 const MainWrap = styled(Space)({
   borderRadius: 4,
@@ -67,17 +73,26 @@ const Item = styled.div<{ activeIdx: boolean }>(
       lineHeight: '50px',
     },
     div: {
+      minWidth: 20,
       height: 20,
       padding: '0 6px',
-      borderRadius: '50%',
+      borderRadius: 10,
       color: '#2877FF',
       background: '#F0F4FA',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   },
   ({ activeIdx }) => ({
     span: {
       color: activeIdx ? '#2877FF' : '#323233',
       borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
+      fontWeight: activeIdx ? 'bold' : 400,
+    },
+    div: {
+      color: activeIdx ? 'white' : '#2877FF',
+      background: activeIdx ? '#2877FF' : '#F0F4FA',
     },
   }),
 )
@@ -91,10 +106,28 @@ const StatusTag = styled.div<{ isOpen: boolean }>(
     padding: '0 8px',
     fontSize: 12,
     cursor: 'pointer',
+    width: 'fit-content',
   },
   ({ isOpen }) => ({
     color: isOpen ? '#43BA9A' : '#969799',
     background: isOpen ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
+
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
   }),
 )
 
@@ -143,7 +176,7 @@ const IterationWrap = () => {
   }
 
   useEffect(() => {
-    setFilterHeightIterate(52)
+    setFilterHeightIterate(60)
     if (iterateId) {
       getIterateInfo({ projectId, id: iterateId })
     }
@@ -206,17 +239,26 @@ const IterationWrap = () => {
   }
 
   const changeStatus = (
-    <Space
-      size={8}
-      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
     >
-      <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-        {t('common.opening')}
-      </StatusTag>
-      <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
-        {t('common.Closed')}
-      </StatusTag>
-    </Space>
+      <LiWrap color="#EDF7F4">
+        <StatusTag isOpen onClick={() => onChangeStatus(1)}>
+          {t('common.opening')}
+        </StatusTag>
+      </LiWrap>
+
+      <LiWrap color="#F2F2F4">
+        <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
+          {t('common.Closed')}
+        </StatusTag>
+      </LiWrap>
+    </div>
   )
 
   const content = () => {
@@ -286,7 +328,7 @@ const IterationWrap = () => {
             )}
           </Space>
         </DemandInfoWrap>
-        <ContentWrap>
+        <ContentWrap hasTop={type === 'info'}>
           <MainWrap size={32}>
             <Item
               onClick={() => onChangeIdx('info')}

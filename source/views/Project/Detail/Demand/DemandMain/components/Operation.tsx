@@ -41,6 +41,23 @@ const DividerWrap = styled(Divider)({
   margin: '0 16px 0 24px',
 })
 
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
+  }),
+)
+
 const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   {
     height: 22,
@@ -49,8 +66,7 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
     lineHeight: '22px',
     padding: '0 8px',
     fontSize: 12,
-    cursor: 'pointer',
-    marginRight: 8,
+    width: 'fit-content',
   },
   ({ color, bgColor }) => ({
     color,
@@ -210,26 +226,32 @@ const Operation = (props: Props) => {
   }
 
   const changeStatus = (
-    <Space
+    <div
       style={{
-        padding: '8px 16px',
+        padding: '4px 0px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
       }}
     >
       {categoryList?.list?.map((k: any) => (
-        <StatusTag
-          style={{ marginRight: 0 }}
+        <LiWrap
           key={k.id}
-          color={k.color}
-          bgColor={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-          onClick={(e: any) => onChangeCategory(e, k)}
+          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
         >
-          {k.name}
-        </StatusTag>
+          <StatusTag
+            style={{ marginRight: 0 }}
+            color={k.color}
+            bgColor={
+              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+            }
+            onClick={(e: any) => onChangeCategory(e, k)}
+          >
+            {k.name}
+          </StatusTag>
+        </LiWrap>
       ))}
-    </Space>
+    </div>
   )
 
   const onImportClick = () => {
@@ -281,7 +303,7 @@ const Operation = (props: Props) => {
           >
             <IconFont
               onClick={props.onChangeIsShowLeft}
-              type="indent"
+              type={props.isShowLeft ? 'outdent' : 'indent'}
               style={{
                 fontSize: 20,
                 color: 'black',

@@ -233,6 +233,7 @@ const Staff = () => {
         title: '操作',
         dataIndex: 'action',
         width: 120,
+        fixed: 'right',
         render: (text: string, record: any) => {
           return (
             <>
@@ -348,12 +349,13 @@ const Staff = () => {
               />
             }
             onPressEnter={onPressEnter}
+            onBlur={onPressEnter}
             placeholder={t('staff.pleaseKey')}
             allowClear
           />
         </div>
         <div
-          style={{ marginRight: '40px', display: 'flex', alignItems: 'center' }}
+          style={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <SetButton onClick={onChangeFilter}>
@@ -370,7 +372,7 @@ const Staff = () => {
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <SetButton>
               <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="set-default" style={{ fontSize: 20 }} />
+                <IconFont type="settings" style={{ fontSize: 20 }} />
               </Tooltip>
             </SetButton>
           </Dropdown>

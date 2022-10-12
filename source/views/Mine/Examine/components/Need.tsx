@@ -30,6 +30,8 @@ import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { openDetail } from '@/tools'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -104,7 +106,7 @@ const Need = (props: any) => {
   const [operationObj, setOperationObj] = useState<any>({})
   const { colorList } = useModel('project')
   const { userInfo } = useModel('user')
-  const { getVerifyList, getVerifyUserList } = useModel('mine')
+  const { getVerifyList, getVerifyUserList, setCount, count } = useModel('mine')
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
@@ -137,12 +139,16 @@ const Need = (props: any) => {
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
     setListData(result)
+    setCount({
+      verifyUser: !(val ?? activeTab) ? result?.total : result?.otherCount,
+      verify: val ?? activeTab ? result?.total : result?.otherCount,
+    })
     setIsSpin(false)
   }
 
   useEffect(() => {
     getList(pageObj, order, keyword, searchParams)
-  }, [])
+  }, [props?.projectId])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -165,8 +171,14 @@ const Need = (props: any) => {
   }
 
   const onToDetail = (item: any) => {
-
-    //
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: item.projectId,
+        demandId: item.demandId,
+      }),
+    )
+    openDetail(`/Detail/Demand?data=${params}`)
   }
 
   const onChangeOperation = (record: any) => {
@@ -347,7 +359,7 @@ const Need = (props: any) => {
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>我审核的</div>
           </TabsItem>
-          <LabNumber isActive={!activeTab}>{1}</LabNumber>
+          <LabNumber isActive={!activeTab}>{count?.verifyUser}</LabNumber>
 
           <TabsItem
             isActive={activeTab === 1}
@@ -356,7 +368,7 @@ const Need = (props: any) => {
           >
             <div>我提交的</div>
           </TabsItem>
-          <LabNumber isActive={activeTab === 1}>{12}</LabNumber>
+          <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
           <MyInput

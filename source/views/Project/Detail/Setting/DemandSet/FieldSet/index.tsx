@@ -48,7 +48,7 @@ const ContentWrap = styled.div({
   background: 'white',
   width: '100%',
   height: 'calc(100% - 35px)',
-  padding: 24,
+  padding: '24px 8px 24px 24px',
   overflow: 'auto',
   position: 'relative',
 })
@@ -60,8 +60,9 @@ const ItemWrap = styled.div({
 
 const TableWrap = styled.div({
   overflow: 'auto',
-  height: 'calc(100% - 74px)',
-  marginTop: 42,
+  height: 'calc(100% - 50px)',
+  marginTop: 16,
+  paddingRight: 16,
 })
 
 const SetBreadcrumb = () => {

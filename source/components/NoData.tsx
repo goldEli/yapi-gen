@@ -10,7 +10,7 @@ const Wrap = styled.div({
   backgroundColor: 'white',
   height: '100%',
   width: '100%',
-  borderRadius: 4,
+  borderRadius: 6,
   padding: 16,
   img: {
     width: 240,

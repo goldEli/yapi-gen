@@ -1,7 +1,58 @@
+/* eslint-disable max-lines */
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Pagination, Input, Slider } from 'antd'
+
+const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: 26,
+    boxSizing: 'border-box',
+    cursor: 'pointer',
+    borderRadius: 6,
+    width: 'fit-content',
+    '.anticon': {
+      fontSize: 16,
+      alignItems: 'center',
+      svg: {
+        margin: 0,
+      },
+    },
+    div: {
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  },
+  ({ hasColor, hasDash }) => ({
+    padding: hasColor || hasDash ? '0 4px' : 0,
+    color: hasColor ? '#2877FF' : '#969799',
+    border: hasColor
+      ? '1px solid #2877FF'
+      : hasDash
+        ? '1px dashed #969799'
+        : '1px solid white',
+    '.anticon > svg': {
+      color: hasColor ? '#2877FF' : '#969799',
+    },
+    '.anticon ': {
+      marginRight: hasDash ? 0 : 4,
+    },
+    '&: hover': {
+      border: hasDash ? '1px dashed #2877ff' : '',
+      '.anticon': {
+        svg: {
+          color: '#2877ff',
+        },
+      },
+      div: {
+        color: '#2877ff',
+      },
+    },
+  }),
+)
 
 const HiddenText = styled.div<{ width?: number }>(
   {
@@ -154,7 +205,7 @@ const TableWrap = styled(Table)({
 
 const StaffHeader = styled.div`
   color: rgba(0, 0, 0, 1);
-  font-weight: 400;
+  font-weight: bold;
   display: flex;
   align-items: center;
   padding-left: 24px;
@@ -260,16 +311,17 @@ const TabsItem = styled.div<{ isActive: boolean }>(
 )
 const LabNumber = styled.div<{ isActive: boolean }>`
   margin-left: 12px;
-  width: 20px;
-  height: 18px;
-  border-radius: 50%;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 12px;
 
-  color: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(150, 151, 153, 1)'};
-  background: ${({ isActive }) => isActive ? '#f0f4fa' : 'rgba(242, 242, 244, 1)'};
+  color: ${({ isActive }) => isActive ? 'white' : 'rgba(150, 151, 153, 1)'};
+  background: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
 `
 const tabCss = css`
   display: flex;
@@ -354,12 +406,12 @@ const StyledTable = styled(Table)({
   },
 })
 const SecondTitle = styled.span`
-  height: 24px;
   padding-left: 8px;
-  border-left: 3px solid rgba(40, 119, 255, 1);
+  border-left: 3px solid #2877ff;
   color: rgba(0, 0, 0, 1);
   font-size: 16px;
   font-weight: bold;
+  line-height: 20px;
 `
 const TextWrap = styled.div`
   display: flex;
@@ -488,4 +540,5 @@ export {
   ProgressWrap,
   StepBoxWrap,
   HiddenText,
+  AddWrap,
 }

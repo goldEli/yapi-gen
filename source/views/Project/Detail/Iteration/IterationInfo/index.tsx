@@ -34,7 +34,7 @@ const Title = styled.div({
   fontSize: 16,
   lineHeight: '20px',
   color: '#323233',
-  fontWeight: 400,
+  fontWeight: 'bold',
   paddingLeft: 8,
   borderLeft: '3px solid #2877FF',
 })

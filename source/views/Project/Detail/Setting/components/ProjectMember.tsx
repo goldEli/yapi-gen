@@ -54,6 +54,9 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  '.ant-table table': {
+    paddingBottom: 0,
+  },
   '.ant-table-thead > tr > th:nth-child(1)': {
     paddingLeft: 64,
   },
@@ -485,6 +488,7 @@ const ProjectMember = () => {
       title: '操作',
       dataIndex: 'action',
       width: 120,
+      fixed: 'right',
       render: (text: string, record: any) => {
         return (
           <>
@@ -641,7 +645,7 @@ const ProjectMember = () => {
                 && (memberList?.list?.length > 0 ? (
                   <TableBox
                     rowKey="id"
-                    columns={columns}
+                    columns={columns as any}
                     dataSource={memberList?.list}
                     pagination={false}
                     scroll={{ x: 'max-content' }}

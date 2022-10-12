@@ -632,6 +632,7 @@ export const getWorkflowInfo: any = async (params: any) => {
     default_value: k.default_value,
     is_must: k.is_must,
     title: k.title,
+    is_customize: k.is_customize,
     index: new Date().getTime() + index * 11,
     id: new Date().getTime() + index * 11,
   }))

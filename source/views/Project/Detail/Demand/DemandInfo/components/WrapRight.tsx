@@ -1,30 +1,97 @@
+/* eslint-disable max-lines */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
+/* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable max-len */
 import { Input, Button, message, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
-import { getParamsData } from '@/tools'
+import { getParamsData, getNestedChildren, getTypeComponent } from '@/tools'
+import { getTreeList } from '@/services/project/tree'
+import { AddWrap } from '@/components/StyleCommon'
+import ParentDemand from '../../components/ParentDemand'
+import { LevelContent } from '@/components/Level'
+import Popconfirm from '@/components/Popconfirm'
 
 const WrapRight = styled.div({
   width: '424px',
   height: '100%',
-  overflow: 'auto',
 })
 
-const Title = styled.div({
+const TitleWrap = styled.div<{ activeTabs?: any }>(
+  {
+    height: 24,
+    borderRadius: 4,
+    margin: '8px 0 24px 0',
+    display: 'flex',
+    width: 'fit-content',
+    div: {
+      padding: '0 12px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 14,
+      fontWeight: 400,
+      height: 24,
+      width: 'fit-content',
+      cursor: 'pointer',
+    },
+  },
+  ({ activeTabs }) => ({
+    '.leftWrap': {
+      color: activeTabs === 1 ? '#2877ff' : '#969799',
+      border: activeTabs === 1 ? '1px solid #2877ff' : '1px solid #D5D6D9',
+      borderRadius: '4px 0 0 4px',
+      borderRight: activeTabs === 1 ? '' : 'none',
+    },
+    '.rightWrap': {
+      color: activeTabs === 2 ? '#2877ff' : '#969799',
+      border: activeTabs === 2 ? '1px solid #2877ff' : '1px solid #D5D6D9',
+      borderLeft: activeTabs === 2 ? '' : 'none',
+      borderRadius: '0 4px 4px 0',
+    },
+  }),
+)
+
+const BasicWrap = styled.div({
+  color: '#323233',
+  fontWeight: 'bold',
+  fontSize: 14,
+})
+
+const InfoItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  marginTop: 14,
+  position: 'relative',
+})
+
+const Label = styled.div({
+  color: '#646566',
   fontSize: 14,
   fontWeight: 400,
-  color: 'black',
+  minWidth: 120,
+  height: 32,
+  lineHeight: '32px',
+})
+
+const ContentWrap = styled.div({
+  color: '#323233',
+  fontSize: 14,
+  display: 'flex',
+  flexDirection: 'column',
+  img: {
+    maxWidth: '20%',
+  },
 })
 
 const CommentItem = styled.div<{ isShow?: boolean }>(
@@ -121,8 +188,101 @@ const SetHead = styled.div`
   margin-right: 8px;
   margin-top: 24;
 `
+const DownPriority = styled.div<{ isShow?: boolean; isMargin?: boolean }>(
+  {
+    '.icon': {
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 16,
+      color: '#2877ff',
+    },
+  },
+  ({ isShow, isMargin }) => ({
+    marginLeft: isMargin ? 8 : 0,
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
 
-const WrapRightBox = () => {
+interface Props {
+  text: any
+  keyText: any
+  type: string
+  value: any
+  defaultText?: any
+  isCustom?: boolean
+}
+const QuickEdit = (props: Props) => {
+  const [isShowControl, setIsShowControl] = useState(false)
+  const inputRef = useRef<any>(null)
+  const { updateTableParams, demandInfo, getDemandInfo } = useModel('demand')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 200)
+  }, [isShowControl])
+
+  const onChange = async (newValue: string) => {
+    const obj: any = {
+      projectId,
+      id: demandInfo?.id,
+    }
+    if (props?.isCustom) {
+      obj.otherParams = {
+        custom_field: { [props?.keyText]: newValue },
+      }
+    } else {
+      obj.otherParams = { [props?.keyText]: newValue }
+    }
+    try {
+      await updateTableParams(obj)
+      getDemandInfo({ projectId, id: demandInfo?.id })
+      setIsShowControl(false)
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onBlur = (val: any) => {
+    if (val) {
+      onChange(val)
+    } else {
+      setIsShowControl(false)
+    }
+  }
+
+  return (
+    <>
+      {isShowControl ? (
+        <>
+          {getTypeComponent(
+            {
+              attr: props?.type,
+              value: props?.value,
+            },
+            props?.defaultText,
+            inputRef,
+            onBlur,
+            onChange,
+            true,
+          )}
+        </>
+      )
+        : <span onMouseEnter={() => setIsShowControl(true)}>{props?.text}</span>
+      }
+    </>
+  )
+}
+
+const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -131,21 +291,30 @@ const WrapRightBox = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [addValue, setAddValue] = useState('')
+  const [activeTabs, setActiveTabs] = useState(1)
+  const [classTreeData, setClassTreeData] = useState<any>([])
   const {
     getCommentList,
     addComment,
     deleteComment,
     isRefreshComment,
     setIsRefreshComment,
+    demandInfo,
+    updatePriority,
   } = useModel('demand')
   const { userInfo } = useModel('user')
-  const { projectInfo } = useModel('project')
+  const { projectInfo, fieldList, getFieldList } = useModel('project')
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
   const isComment = !projectInfo?.projectPermissions?.filter(
     (i: any) => i.identity === 'b/story/comment',
   ).length
+
+  const isCanEdit
+    = projectInfo.projectPermissions?.length > 0
+    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const getList = async () => {
     const result = await getCommentList({
@@ -160,7 +329,28 @@ const WrapRightBox = () => {
     }, 100)
   }
 
+  const getFieldData = async () => {
+    await getFieldList({ projectId })
+  }
+
+  const getTreeData = async () => {
+    const classTree = await getTreeList({ id: projectId, isTree: 1 })
+    setClassTreeData([
+      ...[
+        {
+          title: '未分类',
+          key: 0,
+          value: 0,
+          children: [],
+        },
+      ],
+      ...getNestedChildren(classTree, 0),
+    ])
+  }
+
   useEffect(() => {
+    getFieldData()
+    getTreeData()
     getList()
   }, [])
 
@@ -169,6 +359,24 @@ const WrapRightBox = () => {
       getList()
     }
   }, [isRefreshComment])
+
+  const onChangeTabs = (val: any) => {
+    setActiveTabs(val)
+    if (val === 2) {
+      getList()
+    }
+  }
+
+  const onChangeState = async (item: any) => {
+    try {
+      await updatePriority({ demandId, priorityId: item.priorityId, projectId })
+      message.success(t('common.prioritySuccess'))
+      props.onUpdate?.()
+    } catch (error) {
+
+      //
+    }
+  }
 
   const onDeleteComment = (item: any) => {
     setIsVisible(true)
@@ -214,58 +422,209 @@ const WrapRightBox = () => {
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <Title>{t('common.comment')}</Title>
-      <div style={{ maxHeight: isComment ? 600 : 400, overflow: 'auto' }}>
-        {!!dataList?.list
-          && (dataList?.list?.length > 0 ? (
-            <div>
-              {dataList?.list?.map((item: any) => (
-                <CommentItem key={item.id} isShow={item.userId === userInfo.id}>
-                  {item.avatar
-                    ? <img src={item.avatar} alt="" />
-                    : (
-                        <SetHead>
-                          {String(
-                            item.name?.trim().slice(0, 1),
-                          ).toLocaleUpperCase()}
-                        </SetHead>
-                      )}
-                  <TextWrap>
-                    <div className="textTop">
-                      {isComment ? null : (
-                        <IconFont
-                          type="close"
-                          onClick={() => onDeleteComment(item)}
-                        />
-                      )}
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span className="name">
-                          <Tooltip title={item.name}>
-                            <OmitText width={100}>{item.name}</OmitText>
-                          </Tooltip>
-                        </span>
-                        <span className="common">
-                          <Tooltip title={item.statusContent}>
-                            <OmitText width={108}>
-                              {item.statusContent}
-                            </OmitText>
-                          </Tooltip>
-                        </span>
+      <TitleWrap activeTabs={activeTabs}>
+        <div className="leftWrap" onClick={() => onChangeTabs(1)}>
+          基本信息
+        </div>
+        <div className="rightWrap" onClick={() => onChangeTabs(2)}>
+          评论{' '}
+          {dataList?.list?.length > 99
+            ? `${dataList?.list?.length}+`
+            : dataList?.list?.length}
+        </div>
+      </TitleWrap>
+      {activeTabs === 1 && <BasicWrap>基本信息</BasicWrap>}
+      {activeTabs === 1 ? (
+        <div style={{ maxHeight: 'calc(100% - 100px)', overflow: 'auto' }}>
+          <InfoItem>
+            <Label>{t('common.dealName')}</Label>
+            <ContentWrap>
+              {demandInfo?.user?.length
+                ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
+                : '--'}
+            </ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.createName')}</Label>
+            <ContentWrap>{demandInfo?.userName || '--'}</ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.createTime')}</Label>
+            <ContentWrap>{demandInfo?.createdTime || '--'}</ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.finishTime')}</Label>
+            <ContentWrap>{demandInfo?.finishTime || '--'}</ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.parentDemand')}</Label>
+            <ParentDemand
+              addWrap={
+                <AddWrap>
+                  <IconFont type="plus" />
+                  <div>{t('common.add23')}</div>
+                </AddWrap>
+              }
+            />
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.iterate')}</Label>
+            <ContentWrap>{demandInfo?.iterateName}</ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>需求分类</Label>
+            <ContentWrap>
+              <QuickEdit
+                text={demandInfo?.className ? demandInfo?.className : '未分类'}
+                keyText="class_id"
+                type="treeSelect"
+                defaultText={demandInfo?.class}
+                value={classTreeData}
+              />
+            </ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.priority')}</Label>
+            <Popconfirm
+              content={({ onHide }: { onHide(): void }) => {
+                return isCanEdit ? (
+                  <LevelContent
+                    onTap={item => onChangeState(item)}
+                    onHide={onHide}
+                    record={{
+                      id: demandId,
+                      project_id: projectId,
+                    }}
+                  />
+                ) : null
+              }}
+            >
+              <div
+                style={{
+                  cursor: isCanEdit ? 'pointer' : 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <IconFont
+                  style={{ fontSize: 16, color: demandInfo?.priority?.color }}
+                  type={demandInfo?.priority?.icon}
+                />
+                <DownPriority isShow={isCanEdit} isMargin>
+                  <span>{demandInfo?.priority?.content_txt || '--'}</span>
+                  <IconFont className="icon" type="down-icon" />
+                </DownPriority>
+              </div>
+            </Popconfirm>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.start')}</Label>
+            <ContentWrap>{demandInfo?.expectedStart || '--'}</ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.end')}</Label>
+            <ContentWrap>{demandInfo?.expectedEnd || '--'}</ContentWrap>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.copySend')}</Label>
+            <ContentWrap>
+              {demandInfo?.copySend?.length
+                ? demandInfo?.copySend
+                  ?.map((i: any) => i.copysend?.name)
+                  .join('、')
+                : '--'}
+            </ContentWrap>
+          </InfoItem>
+          {fieldList?.list?.map((i: any) => (
+            <InfoItem key={i.content}>
+              <Label>
+                <OmitText
+                  width={80}
+                  tipProps={{
+                    placement: 'topLeft',
+                  }}
+                >
+                  {i.name}
+                </OmitText>
+              </Label>
+              <ContentWrap>
+                <QuickEdit
+                  text={
+                    Array.isArray(demandInfo?.customField?.[i.content]?.value)
+                      ? demandInfo?.customField?.[i.content]?.value.join('、')
+                      : demandInfo?.customField?.[i.content]?.value || '--'
+                  }
+                  keyText={i.content}
+                  type={i.type?.attr}
+                  defaultText={demandInfo?.customField?.[i.content]?.value}
+                  value={i.type?.value}
+                  isCustom
+                />
+              </ContentWrap>
+            </InfoItem>
+          ))}
+        </div>
+      ) : (
+        <div
+          style={{
+            maxHeight: `calc(100% - ${isComment ? 80 : 320}px)`,
+            overflow: 'auto',
+          }}
+        >
+          {!!dataList?.list
+            && (dataList?.list?.length > 0 ? (
+              <div>
+                {dataList?.list?.map((item: any) => (
+                  <CommentItem
+                    key={item.id}
+                    isShow={item.userId === userInfo.id}
+                  >
+                    {item.avatar
+                      ? <img src={item.avatar} alt="" />
+                      : (
+                          <SetHead>
+                            {String(
+                              item.name?.trim().slice(0, 1),
+                            ).toLocaleUpperCase()}
+                          </SetHead>
+                        )}
+                    <TextWrap>
+                      <div className="textTop">
+                        {isComment ? null : (
+                          <IconFont
+                            type="close"
+                            onClick={() => onDeleteComment(item)}
+                          />
+                        )}
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <span className="name">
+                            <Tooltip title={item.name}>
+                              <OmitText width={100}>{item.name}</OmitText>
+                            </Tooltip>
+                          </span>
+                          <span className="common">
+                            <Tooltip title={item.statusContent}>
+                              <OmitText width={108}>
+                                {item.statusContent}
+                              </OmitText>
+                            </Tooltip>
+                          </span>
+                        </div>
+                        <div className="common" style={{ paddingRight: 30 }}>
+                          {item.createdTime}
+                        </div>
                       </div>
-                      <div className="common" style={{ paddingRight: 30 }}>
-                        {item.createdTime}
-                      </div>
-                    </div>
-                    <div className="content">{item.content}</div>
-                  </TextWrap>
-                </CommentItem>
-              ))}
-            </div>
-          )
-            : <NoData />
-          )}
-      </div>
-      {isComment ? null : (
+                      <div className="content">{item.content}</div>
+                    </TextWrap>
+                  </CommentItem>
+                ))}
+              </div>
+            )
+              : <NoData />
+            )}
+        </div>
+      )}
+      {!isComment && activeTabs === 2 && (
         <TextareaWrap>
           <Input.TextArea
             placeholder={t('mark.editCom')}
@@ -283,4 +642,4 @@ const WrapRightBox = () => {
   )
 }
 
-export default WrapRightBox
+export default NewWrapRight

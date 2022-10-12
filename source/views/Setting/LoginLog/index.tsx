@@ -19,7 +19,7 @@ const Header = styled.div({
   lineHeight: '64px',
   position: 'sticky',
   top: 0,
-  zIndex: 1,
+  zIndex: 9,
   '.label': {
     fontSize: 16,
     fontWeight: 400,
@@ -79,6 +79,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 48px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const StatusWrap = styled.div({
@@ -348,7 +349,7 @@ const LoginLog = () => {
         <div className="label">{t('setting.loginLog')}</div>
         <SearchWrap>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.loginUser')}
             </span>
             <Form.Item name="pageSize" />
@@ -366,7 +367,7 @@ const LoginLog = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationTime')}
             </span>
             <Form.Item name="times" noStyle>

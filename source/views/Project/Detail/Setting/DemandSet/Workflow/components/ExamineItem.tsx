@@ -112,9 +112,9 @@ const ItemWrap = styled.div({
 })
 
 const menuList = [
-  { name: '依次审核', value: 1, icon: '>' },
-  { name: '与逻辑审核', value: 2, icon: '&' },
-  { name: '或逻辑审核', value: 3, icon: '|' },
+  { name: '依次审核', value: 1, icon: 'right' },
+  { name: '与逻辑审核', value: 2, icon: 'and' },
+  { name: '或逻辑审核', value: 3, icon: 'line' },
 ]
 
 interface ChoosePersonProps {
@@ -316,9 +316,12 @@ const ExamineItem = (props: Props) => {
                 <span>{i.name}</span>
               </div>
               {index !== examineList?.length - 1 && (
-                <span style={{ fontSize: 18, margin: '0 12px' }}>
-                  {menuList?.filter((k: any) => k.value === normal)[0]?.icon}
-                </span>
+                <IconFont
+                  style={{ fontSize: 16, margin: '0 8px', color: '#BBBDBF' }}
+                  type={
+                    menuList?.filter((k: any) => k.value === normal)[0]?.icon
+                  }
+                />
               )}
             </div>
           ))}

@@ -15,6 +15,7 @@ const GanttWrap = styled.div({
   '.gantt_grid_head_cell': {
     textAlign: 'left',
     paddingLeft: 10,
+    fontSize: 14,
   },
   '.gantt_cell': {
     padding: 0,
@@ -71,7 +72,8 @@ const GanttWrap = styled.div({
 
 interface Props {
   data: any
-  height?: number
+  height?: any
+  minHeight?: any
 }
 
 const Gantt = (props: Props) => {
@@ -119,12 +121,12 @@ const Gantt = (props: Props) => {
       {
         name: 'start_date',
         label: '预计开始时间',
-        width: '90',
+        width: '100',
       },
       {
         name: 'end_date',
         label: '预计结束时间',
-        width: '90',
+        width: '100',
       },
       {
         name: 'statusName',
@@ -153,7 +155,11 @@ const Gantt = (props: Props) => {
   return (
     <GanttWrap
       id="ganttDom"
-      style={{ width: '100%', height: props.height }}
+      style={{
+        width: '100%',
+        height: props.height,
+        minHeight: props?.minHeight,
+      }}
     ></GanttWrap>
   )
 }

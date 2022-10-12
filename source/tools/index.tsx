@@ -34,7 +34,7 @@ function getTypeComponent(
   if (params?.attr === 'date') {
     child = (
       <DatePicker
-        style={{ width: '100%' }}
+        style={{ width: '100%', minWidth: 192 }}
         showTime={params?.value[0] === 'datetime'}
         allowClear
         value={moment(defaultValue)}
@@ -62,6 +62,7 @@ function getTypeComponent(
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
+        style={{ minWidth: 192 }}
       />
     )
   } else if (params?.attr === 'textarea') {
@@ -72,6 +73,7 @@ function getTypeComponent(
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
         ref={inputRef}
+        style={{ minWidth: 192 }}
         autoComplete="off"
       />
     )
@@ -80,7 +82,7 @@ function getTypeComponent(
       <InputNumber
         onBlur={value => !isModal ? void 0 : onBlur(value)}
         step={1}
-        style={{ width: '100%' }}
+        style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
@@ -89,7 +91,7 @@ function getTypeComponent(
   } else if (params?.attr === 'treeSelect') {
     child = (
       <TreeSelect
-        style={{ minWidth: 200 }}
+        style={{ minWidth: 192 }}
         showArrow
         showSearch
         getPopupContainer={node => node}
@@ -104,7 +106,7 @@ function getTypeComponent(
   } else {
     child = (
       <Select
-        style={{ width: '100%' }}
+        style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
         optionFilterProp="label"

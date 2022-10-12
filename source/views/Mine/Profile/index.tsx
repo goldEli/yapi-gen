@@ -81,17 +81,11 @@ const Head = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  flex: 1;
-`
-const HeadLeft = styled.div`
-  /* flex: 2; */
-`
-const HeadRight = styled.div`
-  /* flex: 3; */
+  flex: 8;
 `
 const Center = styled.div`
   display: flex;
-  flex: 2;
+  flex: 7;
 `
 
 const CenterRight = styled.div`
@@ -271,7 +265,7 @@ const Profile = () => {
     >
       <StyledWrap>
         <Head>
-          <HeadLeft>
+          <div>
             <SecondTitle>{t('mine.basicSurvey')}</SecondTitle>
             <InnerWrap>
               <ChartsItem>
@@ -287,8 +281,8 @@ const Profile = () => {
                 <span className={titleTextCss}>{t('mine.totalIterate')}</span>
               </ChartsItem>
             </InnerWrap>
-          </HeadLeft>
-          <HeadRight>
+          </div>
+          <div>
             <SecondTitle> {t('mine.backLog')}</SecondTitle>
             <InnerWrap>
               <ChartsItem style={{ width: '20%' }}>
@@ -312,7 +306,7 @@ const Profile = () => {
                 <span className={titleTextCss}>{t('mine.finishOver')}</span>
               </ChartsItem>
             </InnerWrap>
-          </HeadRight>
+          </div>
         </Head>
         <Center>
           <CenterRight>
@@ -356,7 +350,7 @@ const Profile = () => {
           </CenterRight>
         </Center>
       </StyledWrap>
-      <GatteWrap style={{ height: 'calc(100vh - 464px)' }}>
+      <GatteWrap>
         <div style={{ padding: '28px 24px 0' }}>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
@@ -384,7 +378,7 @@ const Profile = () => {
         </div>
         {gatteData.length >= 1 && <Mygante data={gatteData} />}
         {gatteData.length < 1 && (
-          <div style={{ height: 'calc(100% - 136px)' }}>
+          <div style={{ height: 'calc(100vh - 508px)' }}>
             <NoData />
           </div>
         )}

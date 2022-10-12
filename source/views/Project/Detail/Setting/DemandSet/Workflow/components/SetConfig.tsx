@@ -150,6 +150,7 @@ const SetConfig = (props: Props) => {
       roles: result?.auth.roles,
       other_users: result?.auth.other_users,
       user_fields: result?.auth.user_fields,
+      is_verify: result?.is_verify === 1,
     })
     setIsSwitch(result?.is_verify === 1)
     setDataSource(result?.fields)
@@ -217,7 +218,6 @@ const SetConfig = (props: Props) => {
       fromId: props?.item?.id,
       toId: props?.item?.toId,
       isVerify: obj.is_verify ? 1 : 2,
-      verify_type: radioValue,
       auth: {
         roles: obj.roles,
         other_users: obj.other_users,
@@ -225,18 +225,22 @@ const SetConfig = (props: Props) => {
       },
       fields: dataSource,
     }
-    if (radioValue === 1) {
-      if (normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
-        message.warning('审核人为必填')
-        return
+    if (isSwitch) {
+      params.verify_type = radioValue
+      if (radioValue === 1) {
+        if (normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
+          message.warning('审核人为必填')
+          return
+        }
+        params.process = normalList
+          ?.map((i: any) => i.obj)
+          ?.map((k: any) => ({
+            operator: k.operator,
+            verify_users: k.verify_users?.map((j: any) => j.id),
+          }))
       }
-      params.process = normalList
-        ?.map((i: any) => i.obj)
-        ?.map((k: any) => ({
-          operator: k.operator,
-          verify_users: k.verify_users?.map((j: any) => j.id),
-        }))
     }
+
     await saveWorkflowConfig(params)
     message.success('保存成功')
     onClose()
@@ -268,6 +272,12 @@ const SetConfig = (props: Props) => {
     }
     obj.title = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.label
     obj.content = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.value
+    if (String(obj.content).includes('custom_')) {
+      obj.is_customize = 1
+    } else {
+      obj.is_customize = 2
+    }
+
     setDataSource(arr)
   }
 
@@ -364,8 +374,8 @@ const SetConfig = (props: Props) => {
       child = (
         <Input.TextArea
           style={{ width: 148 }}
-          value={row.default_value}
-          onChange={e => onChangeText(e.target.value, row)}
+          defaultValue={row.default_value}
+          onBlur={e => onChangeText(e.target.value, row)}
         />
       )
     } else if (['date', 'datetime'].includes(defaultObj?.type)) {
@@ -381,16 +391,16 @@ const SetConfig = (props: Props) => {
       child = (
         <InputNumber
           style={{ width: 148 }}
-          value={row.default_value}
-          onChange={value => onChangeText(value, row)}
+          defaultValue={row.default_value}
+          onBlur={value => onChangeText(value, row)}
         />
       )
     } else {
       child = (
         <Input
           style={{ width: 148 }}
-          value={row.default_value}
-          onChange={e => onChangeText(e.target.value, row)}
+          defaultValue={row.default_value}
+          onBlur={e => onChangeText(e.target.value, row)}
         />
       )
     }
@@ -634,25 +644,10 @@ const SetConfig = (props: Props) => {
       onConfirm={onConfirm}
       width={784}
     >
-      <div style={{ maxHeight: 584, overflowY: 'auto' }}>
+      <div style={{ maxHeight: 544, overflowY: 'auto' }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>当前流转</LabelWrap>
           <ItemWrap>
-            <StatusWrap
-              color={
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.color
-              }
-            >
-              {
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.name
-              }
-            </StatusWrap>
-            <Divider
-              type="vertical"
-              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
-            />
             <StatusWrap
               color={
                 workList?.list?.filter(
@@ -664,6 +659,21 @@ const SetConfig = (props: Props) => {
                 workList?.list?.filter(
                   (i: any) => i.id === props?.item?.toId,
                 )[0]?.name
+              }
+            </StatusWrap>
+            <Divider
+              type="vertical"
+              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
+            />
+            <StatusWrap
+              color={
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.color
+              }
+            >
+              {
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.name
               }
             </StatusWrap>
           </ItemWrap>

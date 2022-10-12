@@ -18,7 +18,7 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
-  padding: 24,
+  padding: 16,
   background: '#F5F7FA',
 })
 

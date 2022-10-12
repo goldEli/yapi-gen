@@ -240,114 +240,120 @@ const EditFiled = (props: Props) => {
       onConfirm={onConfirm}
       confirmText={props?.item?.id ? '确定' : '创建'}
     >
-      <FormWrap form={form} layout="vertical">
-        <ItemWrap notMargin>
-          <Form.Item
-            label="字段名称"
-            rules={[{ required: true, message: '' }]}
-            name="name"
-          >
-            <Input placeholder="请输入字段名称" autoComplete="off" autoFocus />
-          </Form.Item>
-          <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-            输入一个符合阅读习惯的短名字,最多12个字符,不能是系统字段,且不能与已有的自定义字段重名
-          </div>
-        </ItemWrap>
-        <Form.Item label="字段备注" name="remarks">
-          <Input.TextArea
-            placeholder="备注信息可以用来提示用户如何填写字段值 (比如“请输入数字”)"
-            autoSize={{ minRows: 5, maxRows: 5 }}
-          />
-        </Form.Item>
-        <ItemWrap>
-          <Form.Item
-            label="字段类型"
-            rules={[{ required: true, message: '' }]}
-            name="type"
-          >
-            <Select
-              placeholder="请选择"
-              allowClear
-              showArrow
-              optionFilterProp="label"
-              getPopupContainer={node => node}
-              showSearch
-              options={option}
-              onSelect={(val: any) => setValue(val)}
-              onClear={() => setValue('')}
+      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 16 }}>
+        <FormWrap form={form} layout="vertical">
+          <ItemWrap notMargin>
+            <Form.Item
+              label="字段名称"
+              rules={[{ required: true, message: '' }]}
+              name="name"
+            >
+              <Input
+                placeholder="请输入字段名称"
+                autoComplete="off"
+                autoFocus
+              />
+            </Form.Item>
+            <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
+              输入一个符合阅读习惯的短名字,最多12个字符,不能是系统字段,且不能与已有的自定义字段重名
+            </div>
+          </ItemWrap>
+          <Form.Item label="字段备注" name="remarks">
+            <Input.TextArea
+              placeholder="备注信息可以用来提示用户如何填写字段值 (比如“请输入数字”)"
+              autoSize={{ minRows: 5, maxRows: 5 }}
             />
           </Form.Item>
-          <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-            根据需要可选择不同的字段类型,选择的字段类型会对是否配置字段选项产生影响
-          </div>
-          {value && value !== '1' && value !== '2' ? (
-            <ChooseWrap>
-              {value === '7' && (
-                <Checkbox
-                  checked={checked}
-                  onChange={e => setChecked(e.target.checked)}
-                >
-                  包含时分
-                </Checkbox>
-              )}
-              {value === '8' && (
-                <Checkbox
-                  checked={checked}
-                  onChange={e => setChecked(e.target.checked)}
-                >
-                  仅为整数
-                </Checkbox>
-              )}
-              {value !== '8' && value !== '7' && (
-                <OptionsWrap>
-                  <AddWrap
-                    onClick={() => setRow([
-                      ...row,
-                      { value: '', key: `${random()}_${new Date()}` },
-                    ])
-                    }
+          <ItemWrap>
+            <Form.Item
+              label="字段类型"
+              rules={[{ required: true, message: '' }]}
+              name="type"
+            >
+              <Select
+                placeholder="请选择"
+                allowClear
+                showArrow
+                optionFilterProp="label"
+                getPopupContainer={node => node}
+                showSearch
+                options={option}
+                onSelect={(val: any) => setValue(val)}
+                onClear={() => setValue('')}
+              />
+            </Form.Item>
+            <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
+              根据需要可选择不同的字段类型,选择的字段类型会对是否配置字段选项产生影响
+            </div>
+            {value && value !== '1' && value !== '2' ? (
+              <ChooseWrap>
+                {value === '7' && (
+                  <Checkbox
+                    checked={checked}
+                    onChange={e => setChecked(e.target.checked)}
                   >
-                    <IconFont type="plus" />
-                    <span>添加选项</span>
-                  </AddWrap>
-                  <SortContainer
-                    helperClass="row-dragging"
-                    useDragHandle
-                    onSortEnd={(values: any) => onSortEnd(values)}
+                    包含时分
+                  </Checkbox>
+                )}
+                {value === '8' && (
+                  <Checkbox
+                    checked={checked}
+                    onChange={e => setChecked(e.target.checked)}
                   >
-                    {row.map((_i: any, idx: number) => (
-                      <SortItemLi
-                        helperClass="row-dragging"
-                        key={_i.key}
-                        index={idx}
-                      >
-                        <OptionsItemWrap key={_i.key}>
-                          <DragHandle />
-                          <Input
-                            defaultValue={row[idx].value}
-                            style={{ width: 276 }}
-                            placeholder="请输入参数值"
-                            onChange={e => onChangeValue(e, idx)}
-                          />
-                          <IconFont
-                            type="close"
-                            style={{
-                              fontSize: 16,
-                              cursor: 'pointer',
-                              color: '#969799',
-                            }}
-                            onClick={() => onDelRow(_i.key)}
-                          />
-                        </OptionsItemWrap>
-                      </SortItemLi>
-                    ))}
-                  </SortContainer>
-                </OptionsWrap>
-              )}
-            </ChooseWrap>
-          ) : null}
-        </ItemWrap>
-      </FormWrap>
+                    仅为整数
+                  </Checkbox>
+                )}
+                {value !== '8' && value !== '7' && (
+                  <OptionsWrap>
+                    <AddWrap
+                      onClick={() => setRow([
+                        ...row,
+                        { value: '', key: `${random()}_${new Date()}` },
+                      ])
+                      }
+                    >
+                      <IconFont type="plus" />
+                      <span>添加选项</span>
+                    </AddWrap>
+                    <SortContainer
+                      helperClass="row-dragging"
+                      useDragHandle
+                      onSortEnd={(values: any) => onSortEnd(values)}
+                    >
+                      {row.map((_i: any, idx: number) => (
+                        <SortItemLi
+                          helperClass="row-dragging"
+                          key={_i.key}
+                          index={idx}
+                        >
+                          <OptionsItemWrap key={_i.key}>
+                            <DragHandle />
+                            <Input
+                              defaultValue={row[idx].value}
+                              style={{ width: 276 }}
+                              placeholder="请输入参数值"
+                              onChange={e => onChangeValue(e, idx)}
+                            />
+                            <IconFont
+                              type="close"
+                              style={{
+                                fontSize: 16,
+                                cursor: 'pointer',
+                                color: '#969799',
+                              }}
+                              onClick={() => onDelRow(_i.key)}
+                            />
+                          </OptionsItemWrap>
+                        </SortItemLi>
+                      ))}
+                    </SortContainer>
+                  </OptionsWrap>
+                )}
+              </ChooseWrap>
+            ) : null}
+          </ItemWrap>
+        </FormWrap>
+      </div>
     </CommonModal>
   )
 }

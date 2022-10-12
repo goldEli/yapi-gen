@@ -42,8 +42,9 @@ const Left = styled.div<{ isShowLeft: boolean }>(
 
 const TitleWrap = styled.div({
   fontSize: 14,
-  color: '#646566',
+  color: '#323233',
   lineHeight: '52px',
+  fontWeight: 'bold',
 })
 
 interface Props {
@@ -92,8 +93,9 @@ const centerText = css`
 const rightText = css`
   visibility: hidden;
   /* margin-left: 10px; */
-  font-size: 20px;
+  font-size: 16px;
   margin-left: 50px;
+  color: #969799;
   &:hover {
     color: #2877ff;
   }

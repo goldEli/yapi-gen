@@ -84,17 +84,11 @@ const Head = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  flex: 1;
-`
-const HeadLeft = styled.div`
-  /* flex: 2; */
-`
-const HeadRight = styled.div`
-  /* flex: 3; */
+  flex: 8;
 `
 const Center = styled.div`
   display: flex;
-  flex: 2;
+  flex: 7;
 `
 
 const CenterRight = styled.div`
@@ -142,7 +136,7 @@ const GatteWrap = styled.div`
 
 const HasIdWrap = styled.div({
   overflow: 'auto',
-  padding: 16,
+  padding: '16px 16px 0 16px',
 })
 
 const HeadWrap = styled.div({
@@ -335,7 +329,7 @@ const Profile = () => {
                 </ChartsItem>
               </TotalWrap>
             </HeadWrap>
-            <GatteWrap style={{ height: 'calc(100vh - 352px)', margin: 0 }}>
+            <GatteWrap style={{ margin: 0 }}>
               <div style={{ padding: '28px 24px 0' }}>
                 <SecondTitle>他的需求甘特图</SecondTitle>
                 <div className={titleWrap}>
@@ -360,11 +354,15 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              {gatteData.length >= 1
-                && <Mygante data={gatteData} height={500} />
-              }
+              {gatteData.length >= 1 && (
+                <Mygante
+                  data={gatteData}
+                  height="calc(100vh - 420px)"
+                  minHeight={300}
+                />
+              )}
               {gatteData.length < 1 && (
-                <div style={{ height: 'calc(100% - 136px)' }}>
+                <div style={{ height: 'calc(100vh - 372px)' }}>
                   <NoData />
                 </div>
               )}
@@ -391,7 +389,7 @@ const Profile = () => {
         <>
           <StyledWrap>
             <Head>
-              <HeadLeft>
+              <div>
                 <SecondTitle>他的概况</SecondTitle>
                 <InnerWrap>
                   <ChartsItem>
@@ -413,8 +411,8 @@ const Profile = () => {
                     </span>
                   </ChartsItem>
                 </InnerWrap>
-              </HeadLeft>
-              <HeadRight>
+              </div>
+              <div>
                 <SecondTitle>他的待办事项</SecondTitle>
                 <InnerWrap>
                   <ChartsItem style={{ width: '20%' }}>
@@ -444,7 +442,7 @@ const Profile = () => {
                     <span className={titleTextCss}>{t('mine.finishOver')}</span>
                   </ChartsItem>
                 </InnerWrap>
-              </HeadRight>
+              </div>
             </Head>
             <Center>
               <CenterRight>
@@ -488,7 +486,7 @@ const Profile = () => {
               </CenterRight>
             </Center>
           </StyledWrap>
-          <GatteWrap style={{ height: 'calc(100vh - 464px)' }}>
+          <GatteWrap>
             <div style={{ padding: '28px 24px 0' }}>
               <SecondTitle>他的需求甘特图</SecondTitle>
               <div className={titleWrap}>
@@ -516,7 +514,7 @@ const Profile = () => {
             </div>
             {gatteData.length >= 1 && <Mygante data={gatteData} height={380} />}
             {gatteData.length < 1 && (
-              <div style={{ height: 'calc(100% - 136px)' }}>
+              <div style={{ height: 'calc(100vh - 508px)' }}>
                 <NoData />
               </div>
             )}

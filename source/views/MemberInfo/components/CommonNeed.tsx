@@ -77,6 +77,12 @@ const TableTitle = styled.div({
   },
 })
 
+const SearchWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+})
+
 interface MoreWrapProps {
   record: any
   onShowEdit(): void
@@ -471,81 +477,88 @@ const CommonNeed = (props: any) => {
   return (
     <>
       <div style={{ borderLeft: '1px solid #EBEDF0' }}>
-        <TabsHehavior>
+        <TabsHehavior
+          style={{ padding: '0 24px', justifyContent: 'space-between' }}
+        >
           <div className={tabCss}>
             <TabsItem isActive>
               <div>{props?.subTitle}</div>
             </TabsItem>
             <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
-        </TabsHehavior>
-        <Hehavior>
-          <div>
-            <MyInput
-              suffix={
-                <IconFont
-                  type="search"
-                  style={{ color: '#BBBDBF', fontSize: 20 }}
-                />
-              }
-              onPressEnter={onPressEnter}
-              placeholder={t('common.pleaseSearchDemand')}
-              allowClear
-            />
-          </div>
-          <div style={{ marginRight: '40px', display: 'flex' }}>
-            {props?.isMember ? null : (
-              <>
-                <SetButton
-                  onClick={() => {
-                    onChangeMany(false)
-                  }}
-                >
-                  <Tooltip title={t('common.list')}>
-                    <IconFont
-                      type="unorderedlist"
-                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-                    />
-                  </Tooltip>
-                </SetButton>
-                <SetButton
-                  onClick={() => {
-                    onChangeMany(true)
-                  }}
-                >
-                  <Tooltip title={t('common.timeList')}>
-                    <IconFont
-                      type="database"
-                      style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
-                    />
-                  </Tooltip>
-                </SetButton>
-              </>
-            )}
-
-            {props.id !== 0 && (
-              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-                <Tooltip title={t('common.search')}>
+          <SearchWrap>
+            <div style={{ marginRight: 16 }}>
+              <MyInput
+                suffix={
                   <IconFont
-                    type="filter"
-                    style={{
-                      fontSize: 20,
-                      color: isShowSearch ? '#2877ff' : '',
-                    }}
+                    type="search"
+                    style={{ color: '#BBBDBF', fontSize: 20 }}
                   />
-                </Tooltip>
-              </SetButton>
-            )}
+                }
+                onPressEnter={onPressEnter}
+                onBlur={onPressEnter}
+                placeholder={t('common.pleaseSearchDemand')}
+                allowClear
+              />
+            </div>
+            <div style={{ display: 'flex' }}>
+              {props?.isMember ? null : (
+                <>
+                  <SetButton
+                    onClick={() => {
+                      onChangeMany(false)
+                    }}
+                  >
+                    <Tooltip title={t('common.list')}>
+                      <IconFont
+                        type="unorderedlist"
+                        style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
+                      />
+                    </Tooltip>
+                  </SetButton>
+                  <SetButton
+                    onClick={() => {
+                      onChangeMany(true)
+                    }}
+                  >
+                    <Tooltip title={t('common.timeList')}>
+                      <IconFont
+                        type="database"
+                        style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
+                      />
+                    </Tooltip>
+                  </SetButton>
+                </>
+              )}
 
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              <SetButton>
-                <Tooltip title={t('common.tableFieldSet')}>
-                  <IconFont type="set-default" style={{ fontSize: 20 }} />
-                </Tooltip>
-              </SetButton>
-            </Dropdown>
-          </div>
-        </Hehavior>
+              {props.id !== 0 && (
+                <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+                  <Tooltip title={t('common.search')}>
+                    <IconFont
+                      type="filter"
+                      style={{
+                        fontSize: 20,
+                        color: isShowSearch ? '#2877ff' : '',
+                      }}
+                    />
+                  </Tooltip>
+                </SetButton>
+              )}
+
+              <Dropdown
+                overlay={menu}
+                placement="bottomLeft"
+                trigger={['click']}
+              >
+                <SetButton>
+                  <Tooltip title={t('common.tableFieldSet')}>
+                    <IconFont type="settings" style={{ fontSize: 20 }} />
+                  </Tooltip>
+                </SetButton>
+              </Dropdown>
+            </div>
+          </SearchWrap>
+        </TabsHehavior>
       </div>
 
       {isShowSearch && props.id !== 0 ? (

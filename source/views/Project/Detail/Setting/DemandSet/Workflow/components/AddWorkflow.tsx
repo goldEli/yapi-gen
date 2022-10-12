@@ -43,7 +43,7 @@ const TableTitle = styled.div({
   alignItems: 'center',
   padding: '0 16px',
   color: '#969799',
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: 500,
   borderBottom: '1px solid #EBEDF0',
 })
@@ -161,7 +161,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         allowClear
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
-        maxLength={20}
+        maxLength={10}
       />
       <ChooseColor
         color={normalColor}

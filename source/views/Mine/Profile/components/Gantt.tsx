@@ -15,6 +15,7 @@ const GanttWrap = styled.div({
   '.gantt_grid_head_cell': {
     textAlign: 'left',
     paddingLeft: 10,
+    fontSize: 14,
   },
   '.gantt_cell': {
     padding: 0,
@@ -118,12 +119,12 @@ const Gantt = (props: Props) => {
       {
         name: 'start_date',
         label: '预计开始时间',
-        width: '90',
+        width: '100',
       },
       {
         name: 'end_date',
         label: '预计结束时间',
-        width: '90',
+        width: '100',
       },
       {
         name: 'statusName',
