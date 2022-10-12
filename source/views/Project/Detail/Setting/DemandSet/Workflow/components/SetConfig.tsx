@@ -30,7 +30,7 @@ import {
   message,
 } from 'antd'
 import moment from 'moment'
-import { createRef, useEffect, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import ExamineItem from './ExamineItem'
 import { arrayMoveImmutable } from 'array-move'
@@ -116,6 +116,7 @@ const normalObj: any = {
 }
 
 const SetConfig = (props: Props) => {
+  const modalBody = useRef<any>(null)
   const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList }
     = useModel('project')
   const [isShowPermission, setIsShowPermission] = useState(true)
@@ -454,7 +455,9 @@ const SetConfig = (props: Props) => {
 
   const DraggableContainer = (propsItem: any) => (
     <SortableBody
+      helperContainer={modalBody.current}
       useDragHandle
+      helperClass="row-dragging"
       disableAutoscroll
       onSortEnd={onSortEnd}
       {...propsItem}
@@ -810,7 +813,6 @@ const SetConfig = (props: Props) => {
               dataSource={dataSource}
               columns={columns as any}
               rowKey="index"
-              sticky
               style={{ marginTop: 16 }}
               components={{
                 body: {
