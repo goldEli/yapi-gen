@@ -281,7 +281,7 @@ const DemandCard = (props: Props) => {
             content={({ onHide }: { onHide(): void }) => {
               return (
                 <ShapeContent
-                  tap={value => onChangeStatus(value)}
+                  tap={(value: any) => onChangeStatus(value)}
                   hide={onHide}
                   row={record}
                   record={{

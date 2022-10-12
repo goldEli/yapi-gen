@@ -191,7 +191,7 @@ const ChildDemandTable = (props: {
             content={({ onHide }: { onHide(): void }) => {
               return isCanEdit ? (
                 <ShapeContent
-                  tap={value => onChangeStatus(value)}
+                  tap={(value: any) => onChangeStatus(value)}
                   hide={onHide}
                   row={record}
                   record={{

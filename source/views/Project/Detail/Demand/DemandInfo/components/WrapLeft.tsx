@@ -384,7 +384,8 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
 
       <InfoItem>
         <Label>{t('project.demandStatus')}</Label>
-        <DemandStatus />
+
+        <DemandStatus pid={projectId} sid={demandId} />
       </InfoItem>
       <InfoItem>
         <Label>需求进度</Label>

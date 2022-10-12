@@ -1,18 +1,23 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import Popconfirm from '@/components/Popconfirm'
+import Pop from '@/components/Popconfirm'
 import styled from '@emotion/styled'
 import { Divider, Form, Input, message, Select, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import { getShapeLeft } from '@/services/project/shape'
+import { ShapeContent } from '@/components/Shape'
+import { updateDemandStatus } from '@/services/mine'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -57,8 +62,7 @@ const DemandBox = (props: Props) => {
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { memberList } = useModel('project')
-  const { updateDemandStatus, getDemandInfo, demandInfo, setIsRefreshComment }
-    = useModel('demand')
+  const { getDemandInfo, demandInfo, setIsRefreshComment } = useModel('demand')
   const statusList = demandInfo?.status?.can_changes
   const activeContent
     = statusList?.filter((i: any) => i.id === props.active)[0]?.content
@@ -145,11 +149,13 @@ const DemandBox = (props: Props) => {
   )
 }
 
-const DemandStatusBox = () => {
+const DemandStatusBox = (props: any) => {
+  const [t] = useTranslation()
   const { demandInfo } = useModel('demand')
   const statusList = demandInfo?.status?.can_changes_category_status
   const [active, setActive] = useState(0)
   const { projectInfo } = useModel('project')
+  const [leftList, setLeftList] = useState([])
   const isCanEdit
     = projectInfo.projectPermissions?.length > 0
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -162,18 +168,43 @@ const DemandStatusBox = () => {
       setActive(id)
     }
   }
+  const init = async () => {
+    const res2 = await getShapeLeft({
+      id: props.pid,
+      nId: props.sid,
+    })
+    setLeftList(res2)
+  }
+  const updateStatus = async (res1: any) => {
+    const res = await updateDemandStatus(res1)
+
+    if (res.code === 0) {
+      message.success(t('common.circulationSuccess'))
+    }
+  }
+  useEffect(() => {
+    init()
+  }, [])
 
   // console.log(demandInfo, '====')
 
   return (
     <>
-      {statusList?.map((i: any, index: number) => (
-        <Popconfirm
-          key={i.id}
+      {leftList?.map((i: any, index: number) => (
+        <Pop
           content={({ onHide }: { onHide(): void }) => {
-            return isCanEdit && !demandInfo?.isExamine
-              ? <DemandBox active={active} hide={onHide} />
-              : null
+            return (
+              <ShapeContent
+                active={demandInfo.status.status}
+                sid={props.sid}
+                fromId={demandInfo?.status?.id}
+                noleft
+                tap={(value: any) => updateStatus(value)}
+                hide={onHide}
+                record={i}
+                row={i}
+              />
+            )
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -188,7 +219,7 @@ const DemandStatusBox = () => {
                 cursor: isCanEdit ? 'pointer' : 'inherit',
               }}
             >
-              {i.content_txt}
+              {i.status.content}
             </StatusWrap>
             <Divider
               style={{
@@ -200,7 +231,7 @@ const DemandStatusBox = () => {
               dashed
             />
           </div>
-        </Popconfirm>
+        </Pop>
       ))}
     </>
   )
