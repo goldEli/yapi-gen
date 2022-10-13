@@ -181,6 +181,7 @@ const MineBox = () => {
           visible={quickCreateVisible}
           onChangeVisible={() => setQuickCreateVisible(false)}
           isQuickCreate
+          notGetPath
         />
       ) : null}
     </Wrap>

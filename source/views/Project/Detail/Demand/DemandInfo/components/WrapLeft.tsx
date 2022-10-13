@@ -10,19 +10,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { LevelContent } from '@/components/Level'
-import Popconfirm from '@/components/Popconfirm'
 import TagComponent from '../../components/TagComponent'
 import DemandStatus from '../../components/DemandStatus'
-import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message, Progress, Tooltip, TreeSelect } from 'antd'
+import { message, Progress } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getNestedChildren, getParamsData } from '@/tools'
-import { SliderWrap, HiddenText } from '@/components/StyleCommon'
+import { SliderWrap } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
 import { getTreeList } from '@/services/project/tree'
 
@@ -54,7 +51,7 @@ const InfoItem = styled.div({
 })
 
 const Label = styled.div({
-  color: '#646566',
+  color: '#969799',
   fontSize: 14,
   fontWeight: 400,
   minWidth: 120,
@@ -121,25 +118,6 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const DownPriority = styled.div<{ isShow?: boolean; isMargin?: boolean }>(
-  {
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 16,
-      color: '#2877ff',
-    },
-  },
-  ({ isShow, isMargin }) => ({
-    marginLeft: isMargin ? 8 : 0,
-    '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
-      },
-    },
-  }),
-)
-
 const ProgressWrap = styled(Progress)({
   '.ant-progress-status-exception .ant-progress-bg': {
     backgroundColor: '#ff5c5e',
@@ -169,20 +147,10 @@ const ProgressWrap = styled(Progress)({
     },
 })
 
-interface Props {
-  text: any
-  keyText: any
-  type: string
-  value: any
-  defaultText?: any
-  isCustom?: boolean
-}
-
-const WrapLeftBox = (props: { onUpdate?(): void }) => {
+const WrapLeftBox = () => {
   const [t] = useTranslation()
   const {
     demandInfo,
-    updatePriority,
     isShowProgress,
     percentShow,
     percentVal,
@@ -194,32 +162,15 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
-  const { projectInfo, getFieldList, fieldList } = useModel('project')
+  const { projectInfo } = useModel('project')
   const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
-  const [classTreeData, setClassTreeData] = useState<any>([])
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
-
   const textWrapEditor = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
   })
-
-  const onChangeState = async (item: any) => {
-    try {
-      await updatePriority({ demandId, priorityId: item.priorityId, projectId })
-      message.success(t('common.prioritySuccess'))
-      props.onUpdate?.()
-    } catch (error) {
-
-      //
-    }
-  }
 
   const onGetViewPicture = (e: any) => {
     if (e.path[0].nodeName === 'IMG') {
@@ -241,28 +192,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
     }
   }
 
-  const getFieldData = async () => {
-    await getFieldList({ projectId })
-  }
-
-  const getTreeData = async () => {
-    const classTree = await getTreeList({ id: projectId, isTree: 1 })
-    setClassTreeData([
-      ...[
-        {
-          title: '未分类',
-          key: 0,
-          value: 0,
-          children: [],
-        },
-      ],
-      ...getNestedChildren(classTree, 0),
-    ])
-  }
-
   useEffect(() => {
-    getFieldData()
-    getTreeData()
     textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
     return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
   }, [])

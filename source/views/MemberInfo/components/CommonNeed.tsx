@@ -155,7 +155,7 @@ const CommonNeed = (props: any) => {
   const [isMany, setIsMany] = useState(
     !!props?.isMember && props?.type === 'abeyance',
   )
-  const [operationItem, setOperationItem] = useState<any>()
+  const [operationItem, setOperationItem] = useState<any>({})
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
     list: undefined,
@@ -293,13 +293,13 @@ const CommonNeed = (props: any) => {
   }
   const showEdit = async (record: any) => {
     setProjectId(record.project_id)
-    setOperationItem(record.id)
+    setOperationItem(record)
     await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
   const showDel = (record: any) => {
     setProjectId(record.project_id)
-    setOperationItem(record.id)
+    setOperationItem(record)
     setIsDelVisible(true)
   }
   const columns = useDynamicColumns({
@@ -449,7 +449,7 @@ const CommonNeed = (props: any) => {
 
   const onDeleteConfirm = async () => {
     try {
-      await deleteDemand({ projectId, id: operationItem })
+      await deleteDemand({ projectId, id: operationItem?.id })
       message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
       init()
@@ -667,9 +667,10 @@ const CommonNeed = (props: any) => {
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
-          demandId={operationItem}
+          demandId={operationItem?.id}
           projectId={projectId}
           onUpdate={onUpdate}
+          notGetPath
         />
       ) : null}
       <DeleteConfirm

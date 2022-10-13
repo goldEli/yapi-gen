@@ -189,7 +189,7 @@ const ArrorItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 32px;
+  /* margin-right: 32px; */
   &:nth-last-child(1) {
     .${symbol} {
       visibility: hidden;
@@ -445,7 +445,7 @@ export const ShapeContent = (props: any) => {
 
       {loading ? (
         <Right>
-          <div style={{ height: '500px', overflow: 'auto' }}>
+          <div style={{ maxHeight: 280, overflow: 'auto' }}>
             <FormWrap>
               <Form labelAlign="left" form={form}>
                 {rightList?.fields?.map((i: any) => {
@@ -657,22 +657,34 @@ export const ShapeContent = (props: any) => {
                         </div>
 
                         <ArrorBox>
-                          {item2.verify_users.map((item: any) => (
-                            <ArrorItem key={item}>
-                              <span className={arron}>
-                                {item.name.trim().charAt(0)}
-                              </span>
-                              <span className={arrorText}>{item.name}</span>
-                              <span className={symbol}>
-                                {item2.operator === 1
-                                  ? '>'
-                                  : item2.operator === 2
-                                    ? '&'
-                                    : item2.operator === 3
-                                      ? '|'
-                                      : ''}
-                              </span>
-                            </ArrorItem>
+                          {item2.verify_users.map((item: any, index: any) => (
+                            <div
+                              key={item}
+                              style={{ display: 'flex', alignItems: 'center' }}
+                            >
+                              <ArrorItem>
+                                <span className={arron}>
+                                  {item.name.trim().charAt(0)}
+                                </span>
+                                <span className={arrorText}>{item.name}</span>
+                              </ArrorItem>
+                              {index !== item2.verify_users?.length - 1 && (
+                                <IconFont
+                                  style={{
+                                    fontSize: 16,
+                                    margin: '0 8px',
+                                    color: '#BBBDBF',
+                                  }}
+                                  type={
+                                    item2.operator === 1
+                                      ? 'right'
+                                      : item2.operator === 2
+                                        ? 'and'
+                                        : 'line'
+                                  }
+                                />
+                              )}
+                            </div>
                           ))}
                         </ArrorBox>
                       </LineBox>

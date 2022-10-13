@@ -233,6 +233,9 @@ interface Props {
 
   // 我的-快速创建
   isQuickCreate?: any
+
+  // 用于我的，他的，快速创建取项目id
+  notGetPath?: any
 }
 
 const EditDemand = (props: Props) => {
@@ -246,12 +249,10 @@ const EditDemand = (props: Props) => {
   const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
   let paramsData: any
-  if (!props?.projectId && !props?.isQuickCreate) {
+  if (!props?.notGetPath) {
     paramsData = getParamsData(searchParams)
   }
-  const [projectId, setProjectId] = useState(
-    props?.projectId || paramsData?.id || null,
-  )
+  const [projectId, setProjectId] = useState(null)
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const {
     addDemand,
@@ -473,10 +474,16 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.visible) {
+      const value = !props?.notGetPath
+        ? paramsData?.id
+        : props?.isQuickCreate
+        ? null
+        : props?.projectId
+      setProjectId(value)
       if (props?.isQuickCreate) {
         getProjectData()
       } else {
-        getInit()
+        getInit(value)
       }
     }
   }, [props?.visible])
@@ -638,7 +645,7 @@ const EditDemand = (props: Props) => {
   }
 
   const onClearProjectId = () => {
-    setProjectId('')
+    setProjectId(null)
     setCategoryObj({})
     form.resetFields()
     form1.resetFields()
