@@ -337,7 +337,8 @@ export const ShapeContent = (props: any) => {
   }
   const init2 = async () => {
     setActiveStatus(props.row.status)
-
+    const res2 = await getProjectMember(projectId)
+    setOptionsList(res2.data)
     const res = await getShapeRight({
       id: props.row.project_id,
       nId: props.sid,
