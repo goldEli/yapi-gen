@@ -249,7 +249,6 @@ export const updateDemand: any = async (params: any) => {
     : element.innerText.trim() === ''
       ? ''
       : element.innerHTML
-
   await http.put<any>('updateDemand', {
     project_id: params.projectId,
     name: params.name,

@@ -446,7 +446,7 @@ const Profile = () => {
             </Head>
             <Center>
               <CenterRight>
-                <SecondTitle>{t('mine.mineNews')}</SecondTitle>
+                <SecondTitle>他的动态</SecondTitle>
                 {lineData.length < 1
                   ? <NoData />
                   : (

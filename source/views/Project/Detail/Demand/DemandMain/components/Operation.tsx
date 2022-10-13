@@ -12,11 +12,9 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Button, Divider, Popover, Space, Tooltip } from 'antd'
-import AddButton from '@/components/AddButton'
 import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
 import ImportDemand from './ImportDemand'
-import { getPermission } from '@/services/project'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -177,8 +175,8 @@ const Operation = (props: Props) => {
       updatedat: e.updated_at,
       finishAt: e.finish_at,
       searchValue: searchVal,
-      class_ids: e.category,
-      category_id: e.class,
+      class_ids: e.class,
+      category_id: e.category,
       schedule_start: e.schedule?.start,
       schedule_end: e.schedule?.end,
       custom_field: customField,

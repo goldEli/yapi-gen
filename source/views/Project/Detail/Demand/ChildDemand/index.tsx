@@ -14,12 +14,12 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import EditChildDemand from './EditChildDemand'
+import EditDemand from '@/components/EditDemand'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Operation = styled.div({
@@ -86,6 +86,7 @@ const ChildDemand = () => {
     updateDemandStatus,
     deleteDemand,
     getDemandInfo,
+    demandInfo,
   } = useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
@@ -344,13 +345,14 @@ const ChildDemand = () => {
   return (
     <div style={{ height: 'calc(100% - 50px)' }}>
       {isVisible ? (
-        <EditChildDemand
+        <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
           isChild
-          id={operationItem.id}
+          demandId={operationItem.id}
           onUpdate={onUpdate}
-          list={dataList?.list}
+          childList={dataList?.list}
+          categoryId={demandInfo?.category}
         />
       ) : null}
       <DeleteConfirm

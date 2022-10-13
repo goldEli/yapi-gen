@@ -9,8 +9,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
-// import EditDemand from '@/components/EditDemand'
-import EditDemand from './components/EditDemand'
+
+import EditDemand from '@/components/EditDemand'
 import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
 import ChangeRecord from './ChangeRecord'
@@ -576,9 +576,7 @@ const DemandBox = () => {
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
-
-          // demandId={operationItem.id}
-          id={operationItem.id}
+          demandId={operationItem.id}
           onUpdate={onUpdate}
         />
       ) : null}

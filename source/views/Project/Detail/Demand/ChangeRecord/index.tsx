@@ -253,7 +253,11 @@ const ChangeRecord = () => {
                         ?.map(
                           (m: any) => record.beforeField[i][m.field]?.value,
                         )
-                        ?.map((k: any) => <span key={k}>{k || '--'}</span>)
+                        ?.map((k: any) => (
+                          <span key={k}>
+                            {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                          </span>
+                        ))
                       : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
                   </div>
                 ) : (
@@ -314,7 +318,11 @@ const ChangeRecord = () => {
                         ?.map(
                           (m: any) => record.afterField[i][m.field]?.value,
                         )
-                        ?.map((k: any) => <span key={k}>{k || '--'}</span>)
+                        ?.map((k: any) => (
+                          <span key={k}>
+                            {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                          </span>
+                        ))
                       : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
                   </div>
                 ) : (
@@ -358,6 +366,7 @@ const ChangeRecord = () => {
         destroyOnClose
         maskClosable={false}
         keyboard={false}
+        wrapClassName="vertical-center-modal"
       >
         <SpaceWrap
           size={32}

@@ -390,6 +390,7 @@ const EditDemand = (props: Props) => {
       destroyOnClose
       maskClosable={false}
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <FormWrap form={form} labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}>
         <div style={{ display: 'flex' }}>

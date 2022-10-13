@@ -97,6 +97,7 @@ export const StaffPersonal = (props: {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <PersonalHead>
         {data?.avatar

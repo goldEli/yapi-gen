@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
 import { useState, useEffect } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
@@ -20,6 +21,7 @@ interface Props {
   value?: string
   onChange?(value: string): void
   onChangeValue?(value: string): void
+  height?: number
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -72,17 +74,20 @@ i18nAddResources('en', {
   },
 })
 
-const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ebedf0;
-  border-radius: 6px;
-  z-index: 100;
-  /* height: 172px; */
-  .w-e-text-container [data-slate-editor] p {
-    margin: 0;
-  }
-`
+const Wrap = styled.div<{ minHeight?: any }>(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: 6,
+    border: '1px solid #ebedf0',
+    zIndex: 100,
+  },
+  ({ minHeight }) => ({
+    '.w-e-text-container [data-slate-editor]': {
+      minHeight: minHeight || 120,
+    },
+  }),
+)
 
 const EditorBox = (props: Props) => {
   const [t, i18n] = useTranslation()
@@ -199,7 +204,7 @@ const EditorBox = (props: Props) => {
   }
 
   return (
-    <Wrap id="editorWrap">
+    <Wrap id="editorWrap" minHeight={props?.height}>
       <Toolbar
         key={key}
         editor={editor}

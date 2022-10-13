@@ -94,6 +94,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       {isShow ? <Spin /> : null}
       {!isShow && (

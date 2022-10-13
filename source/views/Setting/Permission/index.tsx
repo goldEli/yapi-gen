@@ -394,6 +394,7 @@ const Permission = () => {
         maskClosable={false}
         destroyOnClose
         keyboard={false}
+        wrapClassName="vertical-center-modal"
       >
         <ModalHeader>
           <span>

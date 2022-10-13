@@ -447,6 +447,8 @@ export const getMineNoFinishList: any = async (params: any) => {
           project_id: i.project_id,
           schedule: i.schedule,
           isExamine: i.verify_lock === 1,
+          category: i.category,
+          categoryColor: i.category_color,
           ...i.custom_field,
           project: {
             isPublic: i.project.is_public,
@@ -486,6 +488,8 @@ export const getMineNoFinishList: any = async (params: any) => {
           tag: i.tag,
           project_id: i.project_id,
           schedule: i.schedule,
+          category: i.category,
+          categoryColor: i.category_color,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -559,6 +563,8 @@ export const getMineCreacteList: any = async (params: any) => {
         project_id: i.project_id,
         schedule: i.schedule,
         isExamine: i.verify_lock === 1,
+        category: i.category,
+        categoryColor: i.category_color,
         ...i.custom_field,
         project: {
           isPublic: i.project.is_public,
@@ -630,6 +636,8 @@ export const getMineFinishList: any = async (params: any) => {
         project_id: i.project_id,
         schedule: i.schedule,
         isExamine: i.verify_lock === 1,
+        category: i.category,
+        categoryColor: i.category_color,
         ...i.custom_field,
         project: {
           isPublic: i.project.is_public,
@@ -701,6 +709,8 @@ export const getMineNeedList: any = async (params: any) => {
         tag: i.tag,
         project_id: i.project_id,
         schedule: i.schedule,
+        category: i.category,
+        categoryColor: i.category_color,
         project: {
           isPublic: i.project.is_public,
           isUserMember: i.project.user_ismember,
@@ -795,7 +805,12 @@ export const getPeopleList: any = async (params: any) => {
 export const addQuicklyCreate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
-  const info = element.innerText.trim()
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+      ? ''
+      : element.innerHTML
 
   const response: any = await http.post<any>('addQuicklyCreate', {
     project_id: params.projectId,
@@ -813,6 +828,7 @@ export const addQuicklyCreate: any = async (params: any) => {
     custom_field: params.customField,
     category_id: params?.category,
     class_id: params?.class,
+    schedule: params?.schedule,
   })
   return response
 }
@@ -903,7 +919,7 @@ export const getVerifyInfo: any = async (params: any) => {
     statusFromTo: response.data?.status_from_to,
     usersName: response.data.users_name,
     userName: response.data.user_name,
-    time: response.data.create_at,
+    time: response.data.created_at,
     from: response.data.category_status_from,
     to: response.data.category_status_to,
     verifyStatus: response.data.verify_status,

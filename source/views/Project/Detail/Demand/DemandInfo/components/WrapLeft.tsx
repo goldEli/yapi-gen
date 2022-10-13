@@ -21,7 +21,7 @@ import { useSearchParams } from 'react-router-dom'
 import { message, Progress, Tooltip, TreeSelect } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
+import { getNestedChildren, getParamsData } from '@/tools'
 import { SliderWrap, HiddenText } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
 import { getTreeList } from '@/services/project/tree'
@@ -176,73 +176,6 @@ interface Props {
   value: any
   defaultText?: any
   isCustom?: boolean
-}
-
-const QuickEdit = (props: Props) => {
-  const [isShowControl, setIsShowControl] = useState(false)
-  const inputRef = useRef<any>(null)
-  const { updateTableParams, demandInfo, getDemandInfo } = useModel('demand')
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef.current?.focus()
-    }, 200)
-  }, [isShowControl])
-
-  const onChange = async (newValue: string) => {
-    const obj: any = {
-      projectId,
-      id: demandInfo?.id,
-    }
-    if (props?.isCustom) {
-      obj.otherParams = {
-        custom_field: { [props?.keyText]: newValue },
-      }
-    } else {
-      obj.otherParams = { [props?.keyText]: newValue }
-    }
-    try {
-      await updateTableParams(obj)
-      getDemandInfo({ projectId, id: demandInfo?.id })
-      setIsShowControl(false)
-    } catch (error) {
-
-      //
-    }
-  }
-
-  const onBlur = (val: any) => {
-    if (val) {
-      onChange(val)
-    } else {
-      setIsShowControl(false)
-    }
-  }
-
-  return (
-    <>
-      {isShowControl ? (
-        <>
-          {getTypeComponent(
-            {
-              attr: props?.type,
-              value: props?.value,
-            },
-            props?.defaultText,
-            inputRef,
-            onBlur,
-            onChange,
-            true,
-          )}
-        </>
-      )
-        : <span onMouseEnter={() => setIsShowControl(true)}>{props?.text}</span>
-      }
-    </>
-  )
 }
 
 const WrapLeftBox = (props: { onUpdate?(): void }) => {

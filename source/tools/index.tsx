@@ -24,11 +24,11 @@ function getParamsData(params: any) {
 
 function getTypeComponent(
   params: any,
+  isModal?: any,
   defaultValue?: any,
   inputRef?: any,
   onBlur?: any,
   onChange?: any,
-  isModal?: any,
 ) {
   let child: any = null
   if (params?.attr === 'date') {
@@ -40,13 +40,16 @@ function getTypeComponent(
         value={moment(defaultValue)}
         ref={inputRef}
         onBlur={() => !isModal ? void 0 : onBlur('')}
-        onChange={(date: any) => onChange(
-          moment(date).format(
-            params?.value[0] === 'datetime'
-              ? 'YYYY-MM-DD hh:mm:ss'
-              : 'YYYY-MM-DD',
-          ),
-        )
+        onChange={
+          !isModal
+            ? void 0
+            : (date: any) => onChange(
+                moment(date).format(
+                  params?.value[0] === 'datetime'
+                    ? 'YYYY-MM-DD hh:mm:ss'
+                    : 'YYYY-MM-DD',
+                ),
+              )
         }
       />
     )

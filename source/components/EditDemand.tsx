@@ -1,5 +1,13 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable camelcase */
+/* eslint-disable max-lines */
+/* eslint-disable no-negated-condition */
+/* eslint-disable multiline-ternary */
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable complexity */
 import {
   Modal,
   Form,
@@ -10,6 +18,9 @@ import {
   Progress,
   Tooltip,
   TreeSelect,
+  DatePicker,
+  Popover,
+  Dropdown,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -26,7 +37,12 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
-import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
+import {
+  PriorityWrap,
+  SliderWrap,
+  AddWrap,
+  CategoryWrap,
+} from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import { getTreeList } from '@/services/project/tree'
 
@@ -75,40 +91,60 @@ const FormWrap = styled(Form)({
 })
 
 const ModalHeader = styled.div({
-  height: 54,
+  height: 56,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   div: {
     display: 'flex',
     alignItems: 'center',
+    '.label': {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#323233',
+      marginRight: 16,
+    },
   },
+})
+
+const ModalContent = styled.div({
+  display: 'flex',
+  height: 'calc(90vh - 126px)',
+  justifyContent: 'space-between',
+})
+const LeftWrap = styled.div({
+  height: '100%',
+  overflow: 'auto',
+  width: 'calc(100% - 410px)',
+})
+const RightWrap = styled.div({
+  height: '100%',
+  overflow: 'auto',
+  width: 400,
+  paddingLeft: 24,
+  borderLeft: '1px solid #EBEDF0',
 })
 
 const ModalFooter = styled.div({
   width: '100%',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
+  height: 80,
 })
 
-const AddButtonWrap = styled.div<{ isEdit?: boolean }>(
-  {
-    height: 32,
-    boxSizing: 'border-box',
-    borderRadius: 6,
-    border: '1px solid #2877FF',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#2877FF',
-    padding: '0 16px',
-    cursor: 'pointer',
-  },
-  ({ isEdit }) => ({
-    visibility: isEdit ? 'hidden' : 'visible',
-  }),
-)
+const AddButtonWrap = styled.div({
+  height: 32,
+  boxSizing: 'border-box',
+  borderRadius: 6,
+  border: '1px solid #2877FF',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#2877FF',
+  padding: '0 16px',
+  cursor: 'pointer',
+})
 
 const ProgressWrap = styled(Progress)({
   '.ant-progress-status-exception .ant-progress-bg': {
@@ -139,6 +175,41 @@ const ProgressWrap = styled(Progress)({
     },
 })
 
+const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+    marginRight: 8,
+    width: 'fit-content',
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
+  }),
+)
+
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
+  }),
+)
+
 interface Props {
   visible: boolean
   onChangeVisible(): void
@@ -154,6 +225,12 @@ interface Props {
   // 是否为子需求
   isChild?: any
 
+  // 子需求列表
+  childList?: any
+
+  // 子需求延用父需求类别
+  categoryId?: any
+
   // 我的-快速创建
   isQuickCreate?: any
 }
@@ -168,13 +245,13 @@ const EditDemand = (props: Props) => {
   const [demandList, setDemandList] = useState<any>([])
   const [demandInfo, setDemandInfo] = useState<any>()
   const [searchParams] = useSearchParams()
-  let projectId: any
-  if (props?.projectId) {
-    projectId = props.projectId
-  } else {
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
+  let paramsData: any
+  if (!props?.projectId && !props?.isQuickCreate) {
+    paramsData = getParamsData(searchParams)
   }
+  const [projectId, setProjectId] = useState(
+    props?.projectId || paramsData?.id || null,
+  )
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const {
     addDemand,
@@ -197,17 +274,25 @@ const EditDemand = (props: Props) => {
     fieldList,
     getCategoryList,
     categoryList,
+    colorList,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const { setIsRefresh } = useModel('user')
+  const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
   const [classTreeData, setClassTreeData] = useState<any>([])
   const [schedule, setSchedule] = useState(0)
+  const [projectList, setProjectList] = useState<any>([])
+  const [isShowPop, setIsShowPop] = useState(false)
+  const [categoryObj, setCategoryObj] = useState<any>(createCategory)
 
-  const getList = async () => {
-    const result = await getDemandList({ projectId, all: true })
+  const getList = async (value?: any) => {
+    const result = await getDemandList({
+      projectId: value || projectId,
+      all: true,
+    })
     const arr = result.map((i: any) => ({
       label: i.name,
       value: i.id,
@@ -215,10 +300,11 @@ const EditDemand = (props: Props) => {
     }))
     setDemandList(arr)
     setParentList(arr)
+    return arr
   }
 
-  const getFieldData = async () => {
-    await getFieldList({ projectId })
+  const getFieldData = async (value?: any) => {
+    await getFieldList({ projectId: value || projectId })
   }
 
   const getCommonUser = (arr: any, memberArr: any) => {
@@ -229,17 +315,120 @@ const EditDemand = (props: Props) => {
     return res.length ? res.map((i: any) => i.id) : []
   }
 
-  const getInfo = async (treeArr?: any) => {
+  const getInfo = async (id: any, treeArr?: any, categoryData?: any) => {
+    const res = await getDemandInfo({ projectId: id, id: props?.demandId })
+    setDemandInfo(res)
+    const memberArr = await getMemberList({
+      all: true,
+      projectId: res.projectId,
+    })
+    if (res) {
+      form.setFieldsValue(res)
+      setSchedule(res?.schedule)
+      if (treeArr?.find((j: any) => j.id === res.class)?.length) {
+        form.setFieldsValue({
+          'class': '',
+        })
+      }
+      if (categoryData?.find((j: any) => j.id === res.category)?.length) {
+        setCategoryObj({})
+      } else {
+        setCategoryObj(
+          categoryData?.filter((i: any) => i.id === res.category)[0],
+        )
+      }
 
-    //
+      const form1Obj: any = {}
+      for (const key in res?.customField) {
+        form1Obj[key]
+          = res?.customField[key]?.attr === 'date'
+            ? res?.customField[key]?.value
+              ? moment(res?.customField[key]?.value)
+              : ''
+            : res?.customField[key]?.value
+      }
+      form1.setFieldsValue(form1Obj)
+
+      setPriorityDetail(res.priority)
+      setHtml(res.info)
+      setAttachList(
+        res?.attachment.map((i: any) => ({
+          path: i.attachment.path,
+          id: i.id,
+        })),
+      )
+      setTagList(
+        res?.tag?.map((i: any) => ({
+          id: i.id,
+          color: i.tag?.color,
+          name: i.tag?.content,
+        })),
+      )
+      if (res?.expectedStart) {
+        form.setFieldsValue({
+          startTime: moment(res.expectedStart || 0),
+        })
+      }
+
+      if (res?.expectedEnd) {
+        form.setFieldsValue({
+          endTime: moment(res.expectedStart || 0),
+        })
+      }
+      const parentArr = demandList
+
+      form.setFieldsValue({
+        copySendIds: getCommonUser(
+          res?.copySend?.map((i: any) => i.copysend),
+          memberArr,
+        ),
+        attachments: res?.attachment.map((i: any) => i.attachment.path),
+        userIds: getCommonUser(
+          res?.user?.map((i: any) => i.user),
+          memberArr,
+        ),
+        tagIds: res?.tag?.map((i: any) => ({
+          id: i.id,
+          color: i.tag?.color,
+          name: i.tag?.content,
+        })),
+      })
+      if (
+        selectIterate?.list?.filter((i: any) => i.id === res?.iterateId).length
+      ) {
+        form.setFieldsValue({
+          iterateId: res?.iterateId,
+        })
+      }
+      if (parentArr?.filter((i: any) => i.value === res?.parentId).length) {
+        form.setFieldsValue({
+          parentId: res?.parentId,
+        })
+      }
+    } else {
+      form.resetFields()
+      form1.resetFields()
+    }
   }
 
-  const getInit = async () => {
-    const [classTree] = await Promise.all([
-      getTreeList({ id: projectId, isTree: 1 }),
-      getList(),
-      getFieldData(),
-      getCategoryList({ projectId, isSelect: true }),
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.data)
+  }
+
+  const getInit = async (value?: any) => {
+    const [classTree, categoryData, allDemandList] = await Promise.all([
+      getTreeList({ id: value || projectId, isTree: 1 }),
+      getCategoryList({ projectId: value || projectId, isSelect: true }),
+      getList(value || projectId),
+      getFieldData(value || projectId),
+      getMemberList({
+        all: true,
+        projectId: value || projectId,
+      }),
     ])
     setClassTreeData([
       ...[
@@ -252,14 +441,30 @@ const EditDemand = (props: Props) => {
       ],
       ...getNestedChildren(classTree, 0),
     ])
+    getProjectInfo({ projectId: value || projectId })
     if (props?.demandId) {
-      getInfo(classTree)
+      setCategoryObj({})
+      getInfo(value || projectId, classTree, categoryData?.list)
     } else {
       form.resetFields()
       form1.resetFields()
       form.setFieldsValue({
-        category: createCategory?.id,
+        projectId: value,
       })
+      setProjectId(value)
+      if (props?.isChild) {
+        form.setFieldsValue({
+          parentId: allDemandList?.filter(
+            (i: any) => i.value === Number(paramsData?.demandId),
+          )[0]?.value,
+        })
+        setCategoryObj(
+          categoryData?.list?.filter((i: any) => i.id === props?.categoryId)[0],
+        )
+      }
+      if (props?.isQuickCreate) {
+        setCategoryObj(categoryData?.list[0])
+      }
     }
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -268,13 +473,91 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.visible) {
-      getInit()
+      if (props?.isQuickCreate) {
+        getProjectData()
+      } else {
+        getInit()
+      }
     }
   }, [props?.visible])
 
   const onSaveDemand = async (hasNext?: number) => {
+    await form.validateFields()
+    const values = form.getFieldsValue()
+    const values1 = form1.getFieldsValue()
+    if (values.startTime) {
+      values.expectedStart = moment(values.startTime).format('YYYY-MM-DD')
+    }
+    if (values.endTime) {
+      values.expectedEnd = moment(values.endTime).format('YYYY-MM-DD')
+    }
 
-    //
+    if (props.iterateId) {
+      values.iterateId = props.iterateId
+    }
+
+    if (values.priority?.id) {
+      values.priority = values.priority?.id
+    }
+
+    Object.keys(values1)?.forEach((k: any) => {
+      values1[k] = values1[k] ? values1[k] : ''
+      const obj = fieldList?.list?.filter((i: any) => k === i.content)[0]
+      if (obj?.type?.attr === 'date' && values1[k]) {
+        values1[obj.content] = moment(values1[obj.content]).format(
+          obj?.type?.value[0] === 'datetime'
+            ? 'YYYY-MM-DD hh:mm:ss'
+            : 'YYYY-MM-DD',
+        )
+      }
+    })
+    values.category = categoryObj?.id
+    values.customField = values1
+    try {
+      if (props?.demandId) {
+        await updateDemand({
+          projectId,
+          id: demandInfo.id,
+          ...values,
+        })
+        message.success(t('common.editSuccess'))
+      } else {
+        await addDemand({
+          projectId,
+          ...values,
+        })
+        message.success(t('common.createSuccess'))
+      }
+      setIsRefresh(true)
+      setAttachList([])
+      setTagList([])
+      setHtml('')
+      setPriorityDetail({})
+      getList()
+      if (!props?.isQuickCreate) {
+        props.onUpdate?.()
+      } else {
+        setIsUpdateCreate(true)
+      }
+      if (!hasNext) {
+        setCreateCategory({})
+        props.onChangeVisible()
+        setTimeout(() => {
+          form.resetFields()
+          form1.resetFields()
+        }, 100)
+      } else {
+        form.resetFields()
+        form.setFieldsValue({
+          projectId,
+          type: 'need',
+        })
+        form1.resetFields()
+      }
+    } catch (error) {
+
+      //
+    }
   }
 
   const onCurrentDetail = (item: any) => {
@@ -326,12 +609,6 @@ const EditDemand = (props: Props) => {
     message.warning(t('common.pleaseProject'))
   }
 
-  const onChangePicker = (_values: any) => {
-    form.setFieldsValue({
-      times: _values,
-    })
-  }
-
   const Children = () => {
     return (
       <ProgressWrap
@@ -347,6 +624,27 @@ const EditDemand = (props: Props) => {
     setSchedule(val)
     form.setFieldsValue({
       schedule: val,
+    })
+  }
+
+  const onSelectProjectName = (value: any) => {
+    form.resetFields(['parentId', 'iterate_id'])
+    form1.resetFields()
+    form.setFieldsValue({
+      users: [],
+      copysend: [],
+    })
+    getInit(value)
+  }
+
+  const onClearProjectId = () => {
+    setProjectId('')
+    setCategoryObj({})
+    form.resetFields()
+    form1.resetFields()
+    form.setFieldsValue({
+      users: [],
+      copysend: [],
     })
   }
 
@@ -374,29 +672,401 @@ const EditDemand = (props: Props) => {
     return text
   }
 
+  const onClickCategory = (item: any) => {
+    setCategoryObj(item)
+    setIsShowPop(false)
+  }
+
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
+    >
+      {categoryList?.list?.map((k: any) => (
+        <LiWrap
+          key={k.id}
+          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={() => onClickCategory(k)}
+        >
+          <StatusTag
+            style={{ marginRight: 0 }}
+            color={k.color}
+            bgColor={
+              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+            }
+          >
+            {k.name}
+          </StatusTag>
+        </LiWrap>
+      ))}
+    </div>
+  )
+
   return (
     <ModalWrap
       visible={props.visible}
       width="96%"
       footer={false}
       bodyStyle={{
-        padding: '16px 24px',
+        padding: '0 24px',
         position: 'relative',
+        maxHeight: '90vh',
       }}
       destroyOnClose
       maskClosable={false}
       keyboard={false}
       closable={false}
+      wrapClassName="vertical-center-modal"
     >
       <ModalHeader>
         <div>
-          <span>{titleText()}</span>
-          <div>
-            <span>需求类别</span>
-            <IconFont type="tableDown" />
-          </div>
+          <span className="label">{titleText()}</span>
+          {props?.demandId ? (
+            <StatusTag
+              style={{ cursor: 'inherit' }}
+              color={
+                categoryList?.list?.filter(
+                  (i: any) => i.id === categoryObj?.id,
+                )[0]?.color
+              }
+              bgColor={
+                colorList?.filter(
+                  (i: any) => i.key
+                    === categoryList?.list?.filter(
+                      (k: any) => k.id === categoryObj?.id,
+                    )[0]?.color,
+                )[0]?.bgColor
+              }
+            >
+              <>
+                {
+                  categoryList?.list?.filter(
+                    (i: any) => i.id === categoryObj?.id,
+                  )[0]?.name
+                }
+              </>
+            </StatusTag>
+          ) : (
+            <>
+              {categoryObj?.id && (
+                <Popover
+                  key={isShowPop.toString()}
+                  trigger={['hover']}
+                  visible={isShowPop}
+                  placement="bottomLeft"
+                  content={changeStatus}
+                  getPopupContainer={node => node}
+                  onVisibleChange={visible => setIsShowPop(visible)}
+                >
+                  <StatusTag
+                    color={
+                      categoryList?.list?.filter(
+                        (i: any) => i.id === categoryObj?.id,
+                      )[0]?.color
+                    }
+                    bgColor={
+                      colorList?.filter(
+                        (i: any) => i.key
+                          === categoryList?.list?.filter(
+                            (k: any) => k.id === categoryObj?.id,
+                          )[0]?.color,
+                      )[0]?.bgColor
+                    }
+                  >
+                    <>
+                      {
+                        categoryList?.list?.filter(
+                          (i: any) => i.id === categoryObj?.id,
+                        )[0]?.name
+                      }
+                    </>
+                    <IconFont
+                      type="down-icon"
+                      style={{
+                        fontSize: 12,
+                        marginLeft: 4,
+                        color: '43BA9A',
+                      }}
+                    />
+                  </StatusTag>
+                </Popover>
+              )}
+            </>
+          )}
         </div>
+        <IconFont type="close" onClick={onCancel} />
       </ModalHeader>
+      <ModalContent>
+        <LeftWrap>
+          <FormWrap layout="vertical" form={form}>
+            {props?.isQuickCreate && (
+              <div style={{ display: 'flex' }}>
+                <Form.Item
+                  label="创建项目"
+                  name="projectId"
+                  style={{ marginRight: 24 }}
+                  rules={[{ required: true, message: '' }]}
+                >
+                  <Select
+                    onSelect={onSelectProjectName}
+                    placeholder={t('common.searchProject')}
+                    allowClear
+                    showArrow
+                    onClear={onClearProjectId}
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    showSearch
+                    options={projectList?.map((k: any) => ({
+                      label: k.name,
+                      value: k.id,
+                    }))}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="创建类型"
+                  name="type"
+                  rules={[{ required: true, message: '' }]}
+                >
+                  <Select
+                    placeholder={t('common.selectType')}
+                    showArrow
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                  >
+                    <Select.Option value="need">
+                      {t('common.demand')}
+                    </Select.Option>
+                  </Select>
+                </Form.Item>
+              </div>
+            )}
+            <Form.Item
+              label={t('common.demandName')}
+              name="name"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Input
+                autoComplete="off"
+                ref={inputRefDom as any}
+                placeholder={t('common.pleaseDemandName')}
+                maxLength={100}
+                autoFocus
+              />
+            </Form.Item>
+            <Form.Item label={t('mine.demandInfo')} name="info">
+              <Editor height={360} />
+            </Form.Item>
+            {projectId && (
+              <Form.Item label={t('common.tag')} name="tagIds">
+                <TagComponent
+                  defaultList={tagList}
+                  onChangeTag={onChangeTag}
+                  addWrap={
+                    <AddWrap hasDash>
+                      <IconFont type="plus" />
+                    </AddWrap>
+                  }
+                />
+              </Form.Item>
+            )}
+            {projectId && (
+              <Form.Item label={t('common.attachment')} name="attachments">
+                {!projectInfo?.projectPermissions?.filter(
+                  (i: any) => i.name === '附件上传',
+                ).length ? (
+                  <AddWrap onClick={onAdd}>
+                    <IconFont type="plus" />
+                    <div>{t('common.add23')}</div>
+                  </AddWrap>
+                ) : (
+                  <UploadAttach
+                    child={isShow ? <Children /> : ''}
+                    onChangeShow={setIsShow}
+                    defaultList={attachList}
+                    onChangeAttachment={onChangeAttachment}
+                    addWrap={
+                      <AddWrap>
+                        <IconFont type="plus" />
+                        <div>{t('common.add23')}</div>
+                      </AddWrap>
+                    }
+                  />
+                )}
+              </Form.Item>
+            )}
+          </FormWrap>
+        </LeftWrap>
+        <RightWrap>
+          <FormWrap layout="vertical" form={form}>
+            {props?.demandId && (
+              <Form.Item label="需求进度" name="schedule">
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <SliderWrap
+                    style={{ width: 330 }}
+                    value={schedule}
+                    tipFormatter={(value: any) => `${value}%`}
+                    onChange={value => onChangeSetSchedule(value)}
+                  />
+                  <span
+                    style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}
+                  >
+                    {schedule}%
+                  </span>
+                </div>
+              </Form.Item>
+            )}
+            <Form.Item label={t('common.dealName')} name="userIds">
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                mode="multiple"
+                disabled={!projectId}
+                showSearch
+                placeholder={t('common.searchDeal')}
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={memberList?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              />
+            </Form.Item>
+            <Form.Item label="预计开始时间" name="startTime">
+              <DatePicker
+                getPopupContainer={node => node}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+            <Form.Item label="预计结束时间" name="endTime">
+              <DatePicker
+                getPopupContainer={node => node}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+            <Form.Item label="需求分类" name="class">
+              <TreeSelect
+                style={{ width: '100%' }}
+                showArrow
+                showSearch
+                placeholder="请选择需求分类"
+                getPopupContainer={node => node}
+                allowClear
+                treeData={classTreeData}
+                disabled={!projectId}
+              />
+            </Form.Item>
+            <Form.Item label={t('common.parentDemand')} name="parentId">
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                showSearch
+                placeholder={t('common.pleaseParentDemand')}
+                disabled={!projectId}
+                options={
+                  props?.demandId
+                    ? parentList?.filter(
+                        (k: any) => k.value !== props?.demandId
+                          && k.parentId !== props?.demandId
+                          && k.parentId !== demandInfo?.parentId,
+                      )
+                    : parentList
+                }
+                getPopupContainer={node => node}
+                optionFilterProp="label"
+                allowClear
+              />
+            </Form.Item>
+            <Form.Item label={t('common.priority')} name="priority">
+              <PopConfirm
+                content={({ onHide }: { onHide(): void }) => {
+                  return (
+                    <LevelContent
+                      onHide={onHide}
+                      record={{ project_id: projectId }}
+                      onCurrentDetail={onCurrentDetail}
+                    />
+                  )
+                }}
+              >
+                <PriorityWrap>
+                  <IconFont
+                    className="priorityIcon"
+                    type={priorityDetail?.icon}
+                    style={{
+                      fontSize: 16,
+                      color: priorityDetail?.color,
+                    }}
+                  />
+                  <div>
+                    <span>{priorityDetail?.content_txt || '--'}</span>
+                    <IconFont className="icon" type="down-icon" />
+                  </div>
+                </PriorityWrap>
+              </PopConfirm>
+            </Form.Item>
+            <Form.Item label={t('common.iterate')} name="iterateId">
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showSearch
+                showArrow
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                disabled={!projectId}
+                options={selectIterate?.list
+                  ?.filter((k: any) => k.status === 1)
+                  ?.map((i: any) => ({
+                    label: i.name,
+                    value: i.id,
+                  }))}
+              />
+            </Form.Item>
+            <Form.Item label={t('common.copySend')} name="copySendIds">
+              <Select
+                style={{ width: '100%' }}
+                showArrow
+                mode="multiple"
+                showSearch
+                placeholder={t('common.pleaseChooseCopySend')}
+                getPopupContainer={node => node}
+                optionFilterProp="label"
+                disabled={!projectId}
+                options={memberList?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              />
+            </Form.Item>
+          </FormWrap>
+          <FormWrap layout="vertical" form={form1}>
+            {fieldList?.list?.map((i: any) => (
+              <div style={{ display: 'flex' }} key={i.content}>
+                <Form.Item label={i.name} name={i.content}>
+                  {getTypeComponent(i.type)}
+                </Form.Item>
+              </div>
+            ))}
+          </FormWrap>
+        </RightWrap>
+      </ModalContent>
+      <ModalFooter>
+        <Space size={16}>
+          <Button onClick={onCancel}>{t('common.cancel')}</Button>
+          {!props?.demandId && (
+            <AddButtonWrap onClick={() => onSaveDemand(1)}>
+              {t('common.finishToAdd')}
+            </AddButtonWrap>
+          )}
+          <Button type="primary" onClick={() => onSaveDemand()}>
+            {props?.demandId ? t('common.confirm2') : '创建'}
+          </Button>
+        </Space>
+      </ModalFooter>
     </ModalWrap>
   )
 }

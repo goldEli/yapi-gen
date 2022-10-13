@@ -13,7 +13,7 @@ import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import EditDemand from '../../Demand/components/EditDemand'
+import EditDemand from '@/components/EditDemand'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 
@@ -217,9 +217,9 @@ const IterationMain = (props: Props) => {
         <EditDemand
           visible={isDemandVisible}
           onChangeVisible={onChangeVisible}
-          id={demandItem?.id}
+          demandId={demandItem?.id}
           onUpdate={onChangeRow}
-          isIterateId={iterateId}
+          iterateId={iterateId}
         />
       ) : null}
 
