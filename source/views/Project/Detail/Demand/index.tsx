@@ -9,6 +9,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
+// import EditDemand from '@/components/EditDemand'
 import EditDemand from './components/EditDemand'
 import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
@@ -130,6 +131,23 @@ const FormWrap = styled(Form)({
   },
 })
 
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
+  }),
+)
+
 const DemandBox = () => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -240,9 +258,6 @@ const DemandBox = () => {
   }
 
   const onChangeStatus = async (value: any) => {
-
-    // console.log(value)
-
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
@@ -310,9 +325,9 @@ const DemandBox = () => {
   }
 
   const changeStatus = (
-    <Space
+    <div
       style={{
-        padding: '8px 16px',
+        padding: '4px 0px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -321,19 +336,23 @@ const DemandBox = () => {
       {categoryList?.list
         ?.filter((i: any) => i.id !== demandInfo?.category)
         ?.map((k: any) => (
-          <StatusTag
-            style={{ marginRight: 0 }}
+          <LiWrap
             key={k.id}
-            color={k.color}
-            bgColor={
-              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-            }
+            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
             onClick={() => onClickCategory(k)}
           >
-            {k.name}
-          </StatusTag>
+            <StatusTag
+              style={{ marginRight: 0 }}
+              color={k.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+            >
+              {k.name}
+            </StatusTag>
+          </LiWrap>
         ))}
-    </Space>
+    </div>
   )
 
   const content = () => {
@@ -400,7 +419,7 @@ const DemandBox = () => {
                   optionFilterProp="label"
                   options={workList?.list?.map((k: any) => ({
                     label: k.name,
-                    value: k.id,
+                    value: k.statusId,
                   }))}
                 />
               </Form.Item>
@@ -557,6 +576,8 @@ const DemandBox = () => {
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
+
+          // demandId={operationItem.id}
           id={operationItem.id}
           onUpdate={onUpdate}
         />

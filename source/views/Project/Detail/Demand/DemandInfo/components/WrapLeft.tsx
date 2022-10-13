@@ -384,7 +384,6 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
 
       <InfoItem>
         <Label>{t('project.demandStatus')}</Label>
-
         <DemandStatus pid={projectId} sid={demandId} />
       </InfoItem>
       <InfoItem>
@@ -414,37 +413,6 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         )
           : <TextWrap>--</TextWrap>
         }
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.dealName')}</Label>
-        <TextWrap>
-          {demandInfo?.user?.length
-            ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
-            : '--'}
-        </TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.createName')}</Label>
-        <TextWrap>{demandInfo?.userName || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.createTime')}</Label>
-        <TextWrap>{demandInfo?.createdTime || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.finishTime')}</Label>
-        <TextWrap>{demandInfo?.finishTime || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.parentDemand')}</Label>
-        <ParentDemand
-          addWrap={
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>{t('common.add23')}</div>
-            </AddWrap>
-          }
-        />
       </InfoItem>
       <InfoItem>
         <Label>{t('common.tag')}</Label>
@@ -481,95 +449,6 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
           child={isShowProgress ? null : <Children />}
         />
       </InfoItem>
-      <InfoItem>
-        <Label>{t('common.iterate')}</Label>
-        <TextWrap>{demandInfo?.iterateName}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>需求分类</Label>
-        <TextWrap>
-          <QuickEdit
-            text={demandInfo?.className ? demandInfo?.className : '未分类'}
-            keyText="class_id"
-            type="treeSelect"
-            defaultText={demandInfo?.class}
-            value={classTreeData}
-          />
-        </TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.priority')}</Label>
-        <Popconfirm
-          content={({ onHide }: { onHide(): void }) => {
-            return isCanEdit ? (
-              <LevelContent
-                onTap={item => onChangeState(item)}
-                onHide={onHide}
-                record={{
-                  id: demandId,
-                  project_id: projectId,
-                }}
-              />
-            ) : null
-          }}
-        >
-          <div
-            style={{
-              cursor: isCanEdit ? 'pointer' : 'inherit',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <IconFont
-              style={{ fontSize: 16, color: demandInfo?.priority?.color }}
-              type={demandInfo?.priority?.icon}
-            />
-            <DownPriority isShow={isCanEdit} isMargin>
-              <span>{demandInfo?.priority?.content_txt || '--'}</span>
-              <IconFont className="icon" type="down-icon" />
-            </DownPriority>
-          </div>
-        </Popconfirm>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.start')}</Label>
-        <TextWrap>{demandInfo?.expectedStart || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.end')}</Label>
-        <TextWrap>{demandInfo?.expectedEnd || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.copySend')}</Label>
-        <TextWrap>
-          {demandInfo?.copySend?.length
-            ? demandInfo?.copySend?.map((i: any) => i.copysend?.name).join('、')
-            : '--'}
-        </TextWrap>
-      </InfoItem>
-      {fieldList?.list?.map((i: any) => (
-        <InfoItem key={i.content}>
-          <Label>
-            <Tooltip title={i.name} placement="topLeft">
-              <HiddenText width={80}>{i.name}</HiddenText>
-            </Tooltip>
-          </Label>
-          <TextWrap>
-            <QuickEdit
-              text={
-                Array.isArray(demandInfo?.customField?.[i.content]?.value)
-                  ? demandInfo?.customField?.[i.content]?.value.join('、')
-                  : demandInfo?.customField?.[i.content]?.value || '--'
-              }
-              keyText={i.content}
-              type={i.type?.attr}
-              defaultText={demandInfo?.customField?.[i.content]?.value}
-              value={i.type?.value}
-              isCustom
-            />
-          </TextWrap>
-        </InfoItem>
-      ))}
     </WrapLeft>
   )
 }

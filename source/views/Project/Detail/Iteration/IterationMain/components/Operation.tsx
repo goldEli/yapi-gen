@@ -128,16 +128,12 @@ const Operation = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="#EDF7F4">
-        <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-          {t('common.opening')}
-        </StatusTag>
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
+        <StatusTag isOpen>{t('common.opening')}</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#F2F2F4">
-        <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
-          {t('common.Closed')}
-        </StatusTag>
+      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
+        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
       </LiWrap>
     </div>
   )

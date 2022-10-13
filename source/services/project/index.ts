@@ -533,6 +533,7 @@ export const getWorkflowList: any = async (params: any) => {
       name: i.status.content,
       deleteData: i.deleteData,
       sort: i.sort,
+      statusId: i.status_id,
       canChange: i.can_changes_category_status,
     })),
   }

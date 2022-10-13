@@ -238,6 +238,7 @@ const Operation = (props: Props) => {
         <LiWrap
           key={k.id}
           color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={(e: any) => onChangeCategory(e, k)}
         >
           <StatusTag
             style={{ marginRight: 0 }}
@@ -245,7 +246,6 @@ const Operation = (props: Props) => {
             bgColor={
               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
             }
-            onClick={(e: any) => onChangeCategory(e, k)}
           >
             {k.name}
           </StatusTag>
