@@ -222,10 +222,12 @@ export const getShapeRight = async (params: any) => {
         content: item.content,
         type: item.attr,
         dvalue: item.true_value,
-        children: item?.value?.map((item: any) => ({
-          name: item,
-          id: item,
-        })),
+        children: item?.value
+          ? item?.value?.map((item: any) => ({
+            name: item,
+            id: item,
+          }))
+          : [],
       }
     }
     return {
