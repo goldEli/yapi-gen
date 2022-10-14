@@ -76,7 +76,7 @@ const InfoItem = styled.div({
 })
 
 const Label = styled.div({
-  color: '#646566',
+  color: '#969799',
   fontSize: 14,
   fontWeight: 400,
   minWidth: 120,

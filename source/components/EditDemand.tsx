@@ -37,6 +37,13 @@ import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
 
+const ShowLabel = styled.div({
+  cursor: 'pointer',
+  fontSize: 14,
+  fontWeight: 400,
+  color: '#2877ff',
+})
+
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
     display: 'none',
@@ -281,6 +288,7 @@ const EditDemand = (props: Props) => {
   const [projectList, setProjectList] = useState<any>([])
   const [isShowPop, setIsShowPop] = useState(false)
   const [categoryObj, setCategoryObj] = useState<any>(createCategory)
+  const [isShowFields, setIsShowFields] = useState(false)
 
   const getList = async (value?: any) => {
     const result = await getDemandList({
@@ -467,6 +475,7 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.visible) {
+      setCategoryObj(createCategory)
       const value = !props?.notGetPath
         ? paramsData?.id
         : props?.isQuickCreate
@@ -534,6 +543,7 @@ const EditDemand = (props: Props) => {
       setHtml('')
       setPriorityDetail({})
       getList()
+      setIsShowFields(false)
       if (!props?.isQuickCreate) {
         props.onUpdate?.()
       } else {
@@ -658,6 +668,7 @@ const EditDemand = (props: Props) => {
     setHtml('')
     setPriorityDetail({})
     setCreateCategory({})
+    setIsShowFields(false)
   }
 
   const titleText = () => {
@@ -806,7 +817,7 @@ const EditDemand = (props: Props) => {
             {props?.isQuickCreate && (
               <div style={{ display: 'flex' }}>
                 <Form.Item
-                  label="创建项目"
+                  label={<div style={{ fontWeight: 'bold' }}>创建项目</div>}
                   name="projectId"
                   style={{ marginRight: 24 }}
                   rules={[{ required: true, message: '' }]}
@@ -827,7 +838,7 @@ const EditDemand = (props: Props) => {
                   />
                 </Form.Item>
                 <Form.Item
-                  label="创建类型"
+                  label={<div style={{ fontWeight: 'bold' }}>创建类型</div>}
                   name="type"
                   rules={[{ required: true, message: '' }]}
                 >
@@ -845,7 +856,11 @@ const EditDemand = (props: Props) => {
               </div>
             )}
             <Form.Item
-              label={t('common.demandName')}
+              label={
+                <div style={{ fontWeight: 'bold' }}>
+                  {t('common.demandName')}
+                </div>
+              }
               name="name"
               rules={[{ required: true, message: '' }]}
             >
@@ -857,11 +872,21 @@ const EditDemand = (props: Props) => {
                 autoFocus
               />
             </Form.Item>
-            <Form.Item label={t('mine.demandInfo')} name="info">
+            <Form.Item
+              label={
+                <div style={{ fontWeight: 'bold' }}>{t('mine.demandInfo')}</div>
+              }
+              name="info"
+            >
               <Editor height={360} />
             </Form.Item>
             {projectId && (
-              <Form.Item label={t('common.tag')} name="tagIds">
+              <Form.Item
+                label={
+                  <div style={{ fontWeight: 'bold' }}>{t('common.tag')}</div>
+                }
+                name="tagIds"
+              >
                 <TagComponent
                   defaultList={tagList}
                   onChangeTag={onChangeTag}
@@ -874,7 +899,14 @@ const EditDemand = (props: Props) => {
               </Form.Item>
             )}
             {projectId && (
-              <Form.Item label={t('common.attachment')} name="attachments">
+              <Form.Item
+                label={
+                  <div style={{ fontWeight: 'bold' }}>
+                    {t('common.attachment')}
+                  </div>
+                }
+                name="attachments"
+              >
                 {!projectInfo?.projectPermissions?.filter(
                   (i: any) => i.name === '附件上传',
                 ).length ? (
@@ -1043,15 +1075,31 @@ const EditDemand = (props: Props) => {
               />
             </Form.Item>
           </FormWrap>
-          <FormWrap layout="vertical" form={form1}>
-            {fieldList?.list?.map((i: any) => (
-              <div style={{ display: 'flex' }} key={i.content}>
-                <Form.Item label={i.name} name={i.content}>
-                  {getTypeComponent(i.type)}
-                </Form.Item>
-              </div>
-            ))}
-          </FormWrap>
+          {fieldList?.list && (
+            <>
+              {!isShowFields && (
+                <ShowLabel onClick={() => setIsShowFields(true)}>
+                  展开
+                </ShowLabel>
+              )}
+              {isShowFields && (
+                <FormWrap layout="vertical" form={form1}>
+                  {fieldList?.list?.map((i: any) => (
+                    <div style={{ display: 'flex' }} key={i.content}>
+                      <Form.Item label={i.name} name={i.content}>
+                        {getTypeComponent(i.type)}
+                      </Form.Item>
+                    </div>
+                  ))}
+                </FormWrap>
+              )}
+              {isShowFields && (
+                <ShowLabel onClick={() => setIsShowFields(false)}>
+                  收起
+                </ShowLabel>
+              )}
+            </>
+          )}
         </RightWrap>
       </ModalContent>
       <ModalFooter>

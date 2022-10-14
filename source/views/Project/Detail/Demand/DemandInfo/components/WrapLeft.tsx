@@ -35,6 +35,7 @@ const TextWrapEditor = styled.div({
   flexDirection: 'column',
   img: {
     maxWidth: '20%',
+    height: 'auto!important',
     cursor: 'pointer',
   },
   p: {
@@ -42,12 +43,17 @@ const TextWrapEditor = styled.div({
   },
 })
 
-const InfoItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  marginTop: 14,
-  position: 'relative',
-})
+const InfoItem = styled.div<{ activeState?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 14,
+    position: 'relative',
+  },
+  ({ activeState }) => ({
+    alignItems: activeState ? 'flex-start' : 'center',
+  }),
+)
 
 const Label = styled.div({
   color: '#969799',
@@ -265,7 +271,7 @@ const WrapLeftBox = () => {
           </span>
         </div>
       </InfoItem>
-      <InfoItem>
+      <InfoItem activeState>
         <Label>{t('mine.demandInfo')}</Label>
         {demandInfo?.info ? (
           <TextWrapEditor
@@ -289,6 +295,7 @@ const WrapLeftBox = () => {
         />
       </InfoItem>
       <InfoItem
+        activeState
         hidden={
           !projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',

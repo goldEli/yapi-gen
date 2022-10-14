@@ -3,7 +3,7 @@
 import CommonModal from '@/components/CommonModal'
 import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import ChooseColor from '../../components/ChooseColor'
 import { useSearchParams } from 'react-router-dom'
@@ -49,6 +49,7 @@ const EditorCategory = (props: EditorProps) => {
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (props?.item?.id) {
@@ -57,7 +58,16 @@ const EditorCategory = (props: EditorProps) => {
     } else {
       form.resetFields()
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 50)
   }, [props?.item])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     inputRefDom.current?.focus()
+  //   }, 100)
+  // }, [])
 
   const onReset = () => {
     props?.onClose()
@@ -130,10 +140,12 @@ const EditorCategory = (props: EditorProps) => {
         >
           <Input
             autoComplete="off"
+            ref={inputRefDom as any}
             placeholder="请输入中英文字符限20个字"
             allowClear
             maxLength={10}
             onChange={e => setName(e.target.value)}
+            autoFocus
           />
         </Form.Item>
         <Form.Item label="类别说明" name="remark">
