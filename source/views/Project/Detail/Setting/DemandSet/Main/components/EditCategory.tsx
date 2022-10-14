@@ -63,12 +63,6 @@ const EditorCategory = (props: EditorProps) => {
     }, 50)
   }, [props?.item])
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     inputRefDom.current?.focus()
-  //   }, 100)
-  // }, [])
-
   const onReset = () => {
     props?.onClose()
     setTimeout(() => {

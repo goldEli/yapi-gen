@@ -106,19 +106,6 @@ const EditorBox = (props: Props) => {
 
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: t('components.pleaseContent'),
-
-    // hoverbarKeys: {
-    //   image: {
-    //     menuKeys: [
-    //       'imageWidth30',
-    //       'imageWidth50',
-    //       'imageWidth100',
-    //       'viewImageLink',
-    //       'deleteImage',
-    //     ],
-    //   },
-    // },
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     MENU_CONF: {
       fontFamily: {
         fontFamilyList: [

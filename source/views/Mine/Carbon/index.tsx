@@ -1,12 +1,14 @@
+import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const Carbon = () => {
+  const [t] = useTranslation()
   return (
     <MainIndex
       auth="b/user/abeyance/story"
-      title="我的待办"
+      title={t('mine.mineCarbon')}
       type="abeyance"
-      subTitle="待办需求"
+      subTitle={t('mine.carbonDemand')}
     />
   )
 }

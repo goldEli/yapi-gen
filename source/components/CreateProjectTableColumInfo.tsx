@@ -53,7 +53,7 @@ export const useDynamicColumns = (state: any) => {
   }
 
   const onExamine = () => {
-    message.warning('该需求正在审核中，现在不能流转操作')
+    message.warning(t('newlyAdd.underReview'))
   }
 
   const NewSort = (props: any) => {
@@ -254,7 +254,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="schedule">需求进度</NewSort>,
+      title:
+        <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
+      ,
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
@@ -334,7 +336,7 @@ export const useDynamicColumns = (state: any) => {
         title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
         dataIndex: element.value,
         key: element.value,
-        render: (text: any, record: any) => {
+        render: (text: any) => {
           return <span>{text?.value || '--'}</span>
         },
       })

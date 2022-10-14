@@ -24,7 +24,7 @@ import {
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'

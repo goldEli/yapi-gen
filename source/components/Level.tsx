@@ -20,7 +20,6 @@ const flexCss = css`
 const Contain = styled.div`
   padding: 10px 0;
   min-width: 120px;
-  /* height: 136px; */
   display: flex;
   flex-direction: column;
 `

@@ -278,7 +278,7 @@ const CommonOperation = (props: Props) => {
       />
       <OperationTop>
         <ProjectInfo>
-          <Tooltip title="返回列表">
+          <Tooltip title={t('newlyAdd.backList')}>
             <BackWrap>
               <IconFont onClick={onToProject} type="return" />
             </BackWrap>
@@ -292,7 +292,7 @@ const CommonOperation = (props: Props) => {
               {projectInfo.name}
             </ClickWrap>
           </OmitText>
-          <Tooltip title="编辑项目">
+          <Tooltip title={t('project.editProject')}>
             <ClickIcon
               hidden={getIsPermission(
                 userInfo?.company_permissions,

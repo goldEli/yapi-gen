@@ -5,18 +5,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, message, Popover, Table } from 'antd'
+import { Dropdown } from 'antd'
 import { OmitText } from '@star-yun/ui'
-import PopConfirm from '@/components/Popconfirm'
-import { ShapeContent } from '@/components/Shape'
 import { useModel } from '@/models'
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, openDetail } from '@/tools'
+import { getIsPermission } from '@/tools'
 import { CategoryWrap, ClickWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
-import Sort from './Sort'
-import NoData from './NoData'
 import ChildDemandTable from '@/components/ChildDemandTable'
 
 interface Props {
@@ -110,44 +105,10 @@ const NameGroup = styled.div({
   },
 })
 
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
-
-const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order === 'asc' ? 1 : 2}
-    >
-      {sortProps.children}
-    </Sort>
-  )
-}
-
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const { getDemandList, updateDemandStatus } = useModel('demand')
   const { projectInfo } = useModel('project')
-  const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -156,177 +117,6 @@ const DemandCard = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
-
-  const getList = async (item: any) => {
-    const result = await getDemandList({
-      projectId,
-      all: true,
-      parentId: props.item?.id,
-      order: item.value,
-      orderKey: item.key,
-    })
-    setDataList({ list: result })
-  }
-
-  const onUpdateOrderKey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(order)
-  }
-
-  const onChildClick = () => {
-    getList(order)
-    setIsVisible(!isVisible)
-  }
-
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getList(order)
-    } catch (error) {
-
-      //
-    }
-  }
-
-  const columnsChild = [
-    {
-      title: (
-        <NewSort
-          fixedKey="id"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          ID
-        </NewSort>
-      ),
-      dataIndex: 'id',
-      render: (text: string, record: any) => {
-        return (
-          <ClickWrap
-            onClick={() => {
-              openDetail(
-                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
-              )
-            }}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.demandName')}
-        </NewSort>
-      ),
-      dataIndex: 'name',
-      render: (text: string, record: any) => {
-        return (
-          <OmitText width={180}>
-            <ClickWrap
-              onClick={() => {
-                openDetail(
-                  `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
-                )
-              }}
-              isName
-              isClose={record.status?.content === '已关闭'}
-            >
-              {text}
-            </ClickWrap>
-          </OmitText>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="iterate_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.iterate')}
-        </NewSort>
-      ),
-      dataIndex: 'iteration',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="status"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.status')}
-        </NewSort>
-      ),
-      dataIndex: 'status',
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={(value: any) => onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              )
-            }}
-            record={record}
-          >
-            <StatusWrap
-              style={{
-                color: text?.status.color,
-                border: `1px solid ${text?.status.color}`,
-              }}
-            >
-              {text?.status.content}
-            </StatusWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="user_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.createName')}
-        </NewSort>
-      ),
-      dataIndex: 'dealName',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-  ]
-
   return (
     <div>
       <Wrap>

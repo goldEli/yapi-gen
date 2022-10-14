@@ -1,7 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const Create = () => {
-  return <MainIndex title="他的创建" type="create" subTitle="创建需求" />
+  const [t] = useTranslation()
+  return (
+    <MainIndex
+      title={t('newlyAdd.hisCreate')}
+      type="create"
+      subTitle={t('common.createDemand')}
+    />
+  )
 }
 
 export default Create

@@ -255,7 +255,7 @@ const WrapLeftBox = () => {
         <DemandStatus pid={projectId} sid={demandId} />
       </InfoItem>
       <InfoItem>
-        <Label>需求进度</Label>
+        <Label>{t('newlyAdd.demandProgress')}</Label>
         <div
           style={{ display: 'flex', alignItems: 'center' }}
           onMouseUp={onChangeSchedule}

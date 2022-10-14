@@ -182,7 +182,6 @@ const SetHead = styled.div`
   font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
-  /* border: 2px solid rgba(40, 119, 255, 0.16); */
   border: 1px solid #f0f2fd;
   color: white;
   margin-right: 8px;
@@ -338,7 +337,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     setClassTreeData([
       ...[
         {
-          title: '未分类',
+          title: t('newlyAdd.unclassified'),
           key: 0,
           value: 0,
           children: [],
@@ -424,16 +423,16 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       />
       <TitleWrap activeTabs={activeTabs}>
         <div className="leftWrap" onClick={() => onChangeTabs(1)}>
-          基本信息
+          {t('newlyAdd.basicInfo')}
         </div>
         <div className="rightWrap" onClick={() => onChangeTabs(2)}>
-          评论{' '}
+          {t('common.comment')}{' '}
           {dataList?.list?.length > 99
             ? `${dataList?.list?.length}+`
             : dataList?.list?.length}
         </div>
       </TitleWrap>
-      {activeTabs === 1 && <BasicWrap>基本信息</BasicWrap>}
+      {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
       {activeTabs === 1 ? (
         <div style={{ maxHeight: 'calc(100% - 100px)', overflow: 'auto' }}>
           <InfoItem>
@@ -472,10 +471,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             <ContentWrap>{demandInfo?.iterateName}</ContentWrap>
           </InfoItem>
           <InfoItem>
-            <Label>需求分类</Label>
+            <Label>{t('newlyAdd.demandClass')}</Label>
             <ContentWrap>
               <QuickEdit
-                text={demandInfo?.className ? demandInfo?.className : '未分类'}
+                text={
+                  demandInfo?.className
+                    ? demandInfo?.className
+                    : t('newlyAdd.unclassified')
+                }
                 keyText="class_id"
                 type="treeSelect"
                 defaultText={demandInfo?.class}

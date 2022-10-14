@@ -28,7 +28,6 @@ import moment from 'moment'
 import arrows from '/arrows.png'
 
 const Left = styled.div`
-  /* min-width: 120px; */
   min-height: 400px;
   box-sizing: border-box;
   padding: 0 20px;
@@ -46,7 +45,6 @@ const Right = styled.div`
   padding-top: 40px;
   width: 500px;
   min-height: 400px;
-  /* overflow-y: scroll; */
 `
 const Contain = styled.div`
   position: relative;
@@ -79,8 +77,6 @@ const FormWrap = styled.div`
   margin-top: 48px;
   box-sizing: border-box;
   padding-right: 24px;
-  /* overflow: scroll;
-  height: 400px; */
 `
 const ButtonFooter = styled.div`
   height: 56px;
@@ -103,7 +99,6 @@ const ExcessiveBox = styled.div`
   height: 22px;
 `
 const StyledShape2 = styled.div`
-  /* width: 52px; */
   padding: 1px 8px 1px 8px;
   height: 22px;
   background: #ffffff;
@@ -139,15 +134,6 @@ const LineBoxTitle2 = styled.div`
   margin-bottom: 8px;
   line-height: 22px;
 `
-
-// const LineBoxTitle3 = styled.div`
-//   height: 20px;
-//   font-size: 12px;
-//   font-family: PingFang SC-Regular, PingFang SC;
-//   font-weight: 400;
-//   color: #969799;
-//   line-height: 20px;
-// `
 const ArrorBox = styled.div`
   display: flex;
 `
@@ -190,7 +176,6 @@ const ArrorItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-right: 32px; */
   &:nth-last-child(1) {
     .${symbol} {
       visibility: hidden;
@@ -239,10 +224,6 @@ const NumericInput = (props: any) => {
     onChange({ ...value, start: e })
   }
 
-  // const enter2 = (e: any) => {
-  //   onChange({ ...value, end: e })
-  // }
-
   return (
     <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
       <Input
@@ -254,15 +235,6 @@ const NumericInput = (props: any) => {
         style={{ width: '80px', border: 'none' }}
       />
       <span className={danweiCss}>单位</span>
-      {/* <Input
-        type="number"
-        placeholder="请输入值"
-        onPressEnter={onPress}
-        onChange={e => enter2(e.target.value)}
-        value={value?.end}
-        style={{ width: '80px', border: 'none' }}
-      />
-      <span className={danweiCss}>单位</span> */}
     </div>
   )
 }
@@ -294,16 +266,11 @@ export const ShapeContent = (props: any) => {
   const [rightList, setRightList] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)
   const [activeStatus, setActiveStatus] = useState<any>({})
-  const { demandInfo } = useModel('demand')
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
 
-  // console.log(rightList)
-
   const handleChange = (value: string) => {
     setReviewerValue(value)
-
-    // console.log(`selected ${value}`)
   }
 
   const change = async (item?: any) => {
@@ -319,8 +286,6 @@ export const ShapeContent = (props: any) => {
     })
     setRightList(res)
     setLoading(true)
-
-    // console.log(res, '右边数据 ')
   }
 
   const getRight = async () => {
@@ -333,8 +298,6 @@ export const ShapeContent = (props: any) => {
     })
     setRightList(res)
     setLoading(true)
-
-    // console.log(res, '初始右边数据')
   }
   const init2 = async () => {
     setActiveStatus(props.row.status)
@@ -357,8 +320,6 @@ export const ShapeContent = (props: any) => {
     })
     setLeftList(res2)
     getRight()
-
-    // console.log(res2, '左边数据')
   }
 
   useEffect(() => {
@@ -388,15 +349,6 @@ export const ShapeContent = (props: any) => {
   const confirm = async () => {
     const res = await form.validateFields()
     await form2.validateFields()
-
-    // const value = {
-    //   projectId,
-    //   demandId: myid,
-    //   statusId: active,
-    //   userIds: res.username,
-    //   content: res.password,
-    // }
-
     const putData = {
       projectId,
       nId: myid,
@@ -411,8 +363,6 @@ export const ShapeContent = (props: any) => {
       fields: res,
       verifyId: reviewerValue,
     }
-
-    // console.log(obj)
 
     tap(props.noleft ? putData2 : putData)
     onClear()
@@ -573,7 +523,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <Input placeholder="请输入搜索关键词" />
+                        <Input placeholder={t('newlyAdd.pleaseKeyword')} />
                       </Form.Item>
                     )
                   } else if (i.type === 'tree') {
@@ -629,7 +579,7 @@ export const ShapeContent = (props: any) => {
                 >
                   {activeStatus?.content}
                 </StyledShape2>
-                <StyledShape3>该流转状态需要审核</StyledShape3>
+                <StyledShape3>{t('newlyAdd.needReview')}</StyledShape3>
               </ExcessiveBox>
             ) : null}
             {rightList.is_verify && rightList.verify.verify_type === 1 ? (
@@ -645,7 +595,7 @@ export const ShapeContent = (props: any) => {
                     marginBottom: '20px',
                   }}
                 >
-                  审核流程
+                  {t('newlyAdd.reviewProcess')}
                 </div>
 
                 <Timeline>
@@ -653,8 +603,9 @@ export const ShapeContent = (props: any) => {
                     <Timeline.Item key={item2}>
                       <LineBox>
                         <div style={{ display: 'flex' }}>
-                          <LineBoxTitle2>审核人</LineBoxTitle2>
-                          {/* <LineBoxTitle3>依次审核</LineBoxTitle3> */}
+                          <LineBoxTitle2>
+                            {t('newlyAdd.reviewPerson')}
+                          </LineBoxTitle2>
                         </div>
 
                         <ArrorBox>
@@ -694,7 +645,9 @@ export const ShapeContent = (props: any) => {
                   <Timeline.Item>
                     <LineBox>
                       <div style={{ display: 'flex' }}>
-                        <LineBoxTitle2>流转至</LineBoxTitle2>
+                        <LineBoxTitle2>
+                          {t('newlyAdd.circulationTo')}
+                        </LineBoxTitle2>
 
                         <StyledShape2
                           style={{
@@ -717,7 +670,7 @@ export const ShapeContent = (props: any) => {
                   style={{ paddingRight: '24px' }}
                   labelAlign="left"
                   labelCol={{ span: 8 }}
-                  label="审核人"
+                  label={t('newlyAdd.reviewPerson')}
                   name="reviewerValue"
                   rules={[
                     {
@@ -728,11 +681,10 @@ export const ShapeContent = (props: any) => {
                   ]}
                 >
                   <Select
-
-                    // mode="multiple"
                     onChange={handleChange}
                     placeholder={t('common.pleaseSelect')}
                     allowClear
+                    getPopupContainer={node => node}
                     options={optionsList?.map((item: any) => ({
                       label: item.name,
                       value: item.id,
@@ -750,7 +702,9 @@ export const ShapeContent = (props: any) => {
               style={{ marginLeft: '16px' }}
               type="primary"
             >
-              {rightList.is_verify ? '提交审核' : t('common.circulation')}
+              {rightList.is_verify
+                ? t('newlyAdd.submitReview')
+                : t('common.circulation')}
             </Button>
             <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
           </ButtonFooter>

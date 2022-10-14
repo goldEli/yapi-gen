@@ -38,18 +38,12 @@ const NameWrap = styled.div({
   },
 })
 
-const ContentWrap = styled.div<{ hasTop?: any }>(
-  {
-    padding: 16,
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'calc(100% - 72px)',
-  },
-  ({ hasTop }) => ({
-
-    // padding: hasTop ? '0 16px 16px' : 16,
-  }),
-)
+const ContentWrap = styled.div<{ hasTop?: any }>({
+  padding: 16,
+  display: 'flex',
+  flexDirection: 'column',
+  height: 'calc(100% - 72px)',
+})
 
 const MainWrap = styled(Space)({
   borderRadius: 4,

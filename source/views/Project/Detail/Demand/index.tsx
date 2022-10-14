@@ -271,7 +271,7 @@ const DemandBox = () => {
   }
 
   const onExamine = () => {
-    message.warning('该需求正在审核中，现在不能流转操作')
+    message.warning(t('newlyAdd.underReview'))
   }
 
   const onCloseCategory = () => {
@@ -289,7 +289,7 @@ const DemandBox = () => {
         id: demandInfo?.id,
         ...form.getFieldsValue(),
       })
-      message.success('变更成功')
+      message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
       getDemandInfo({ projectId, id: demandInfo?.id })
       setTimeout(() => {
@@ -372,7 +372,7 @@ const DemandBox = () => {
           <CommonModal
             isVisible={isShowCategory}
             onClose={onCloseCategory}
-            title="变更需求类别"
+            title={t('newlyAdd.changeCategory')}
             onConfirm={onConfirmCategory}
           >
             <FormWrap
@@ -380,7 +380,7 @@ const DemandBox = () => {
               layout="vertical"
               style={{ paddingRight: 20 }}
             >
-              <Form.Item label="变更前需求类别">
+              <Form.Item label={t('newlyAdd.beforeCategory')}>
                 <StatusTag
                   color={colorObj?.color}
                   bgColor={
@@ -392,12 +392,12 @@ const DemandBox = () => {
                 </StatusTag>
               </Form.Item>
               <Form.Item
-                label="变更后需求类别"
+                label={t('newlyAdd.afterCategory')}
                 name="categoryId"
                 rules={[{ required: true, message: '' }]}
               >
                 <Select
-                  placeholder="请选择"
+                  placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
                   getPopupContainer={node => node}
@@ -410,12 +410,12 @@ const DemandBox = () => {
                 />
               </Form.Item>
               <Form.Item
-                label="变更后需求状态"
+                label={t('newlyAdd.afterStatus')}
                 name="statusId"
                 rules={[{ required: true, message: '' }]}
               >
                 <Select
-                  placeholder="请选择"
+                  placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
                   getPopupContainer={node => node}
@@ -539,7 +539,7 @@ const DemandBox = () => {
               onClick={() => onChangeIdx('circulation')}
               activeIdx={type === 'circulation'}
             >
-              <span>流转记录</span>
+              <span>{t('newlyAdd.circulationRecord')}</span>
             </Item>
             {demandInfo?.isExamine && type === 'info' ? (
               <IconFont

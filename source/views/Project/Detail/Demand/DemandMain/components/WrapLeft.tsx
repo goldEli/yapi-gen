@@ -21,6 +21,7 @@ import CommonModal from '@/components/CommonModal'
 import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -54,14 +55,9 @@ interface Props {
 const TreeBox = styled.div`
   width: 100% !important;
   height: 40px;
-  /* background: #f0f4fa; */
   border-radius: 0px 0px 0px 0px;
-  /* color: green;
-  border-left: 5px solid currentColor;
-  box-shadow: 5px 5px 10px currentColor; */
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   &:hover {
     [data] {
       visibility: visible;
@@ -90,11 +86,9 @@ const BtnsItemBox = styled.div`
 `
 const centerText = css`
   margin-left: 10px;
-  /* margin-right: auto; */
 `
 const rightText = css`
   visibility: hidden;
-  /* margin-left: 10px; */
   font-size: 16px;
   margin-left: 50px;
   color: #969799;
@@ -103,6 +97,7 @@ const rightText = css`
   }
 `
 const TreeItem = (props: any) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -111,15 +106,15 @@ const TreeItem = (props: any) => {
   const btnsText = [
     {
       id: 1,
-      text: '创建子分类',
+      text: t('newlyAdd.createChildClass'),
     },
     {
       id: 2,
-      text: '修改子分类',
+      text: t('newlyAdd.editChildClass'),
     },
     {
       id: 3,
-      text: '删除子分类',
+      text: t('newlyAdd.deleteChildClass'),
     },
   ]
   const close = () => {
@@ -231,10 +226,14 @@ const TreeItem = (props: any) => {
         isVisible={visible}
         onChangeVisible={onChangeVisible}
         onConfirm={onConfirm}
-        text="确认删除该分类？"
+        text={t('newlyAdd.confirmDelClass')}
       />
       <CommonModal
-        title={visibleEditText === 'add' ? '创建子分类' : '修改子分类'}
+        title={
+          visibleEditText === 'add'
+            ? t('newlyAdd.createChildClass')
+            : t('newlyAdd.editChildClass')
+        }
         isVisible={visibleEdit}
         onClose={editClose}
         onConfirm={editConfirm}
@@ -242,17 +241,20 @@ const TreeItem = (props: any) => {
         <FormBox>
           <Form form={form} layout="vertical">
             <Form.Item
-              label="分类名称"
+              label={t('newlyAdd.className')}
               name="name"
               rules={[{ required: true, message: '' }]}
             >
-              <Input maxLength={10} placeholder="请输入分类名称" />
+              <Input
+                maxLength={10}
+                placeholder={t('newlyAdd.pleaseClassName')}
+              />
             </Form.Item>
-            <Form.Item name="remark" label="分类说明">
+            <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
               <Input.TextArea
                 maxLength={200}
                 showCount
-                placeholder="请输入分类描述内容"
+                placeholder={t('newlyAdd.pleaseClassRemark')}
                 autoSize={{ minRows: 3, maxRows: 5 }}
               />
             </Form.Item>
@@ -264,6 +266,7 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: Props) => {
+  const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const init = async () => {
@@ -332,13 +335,7 @@ const WrapLeft = (props: Props) => {
         title: { props: selectLine },
       },
     } = e
-
-    // console.log(context)
-    // return
-
     context.changeKey(selectLine.id)
-
-    // console.log(selectLine)
   }
 
   useEffect(() => {
@@ -347,7 +344,7 @@ const WrapLeft = (props: Props) => {
 
   return (
     <Left isShowLeft={props.isShowLeft}>
-      <TitleWrap>需求分类</TitleWrap>
+      <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
       <Tree onDrop={onDrop} onSelect={onSelect} draggable treeData={treeData} />
     </Left>
   )

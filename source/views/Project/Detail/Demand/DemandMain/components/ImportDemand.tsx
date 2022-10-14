@@ -7,11 +7,11 @@
 import { StepBoxWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Upload, Table, message, Spin, Space } from 'antd'
+import { Upload, message, Spin, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { formatFileSize, uploadFile } from '@/services/cos'
+import { formatFileSize } from '@/services/cos'
 import FieldsTemplate from './FieldsTemplate'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -176,7 +176,7 @@ const ImportDemand = () => {
       {isVisible && (
         <FieldsTemplate
           visible={isVisible}
-          title="导入需求字段选择"
+          title={t('newlyAdd.importChoose')}
           importState={tabs}
           onClose={() => setIsVisible(false)}
           onConfirm={onConfirmTemplate}
@@ -185,7 +185,7 @@ const ImportDemand = () => {
       <StepWrap>
         <StepBoxWrap active={step === 1}>
           <div className="circle">1</div>
-          <span>上传需求</span>
+          <span>{t('newlyAdd.uploadDemand')}</span>
         </StepBoxWrap>
         <div
           style={{
@@ -197,7 +197,7 @@ const ImportDemand = () => {
         />
         <StepBoxWrap active={step === 2}>
           <div className="circle">2</div>
-          <span>系统导入</span>
+          <span>{t('newlyAdd.systemImport')}</span>
         </StepBoxWrap>
         <div
           style={{
@@ -209,62 +209,49 @@ const ImportDemand = () => {
         />
         <StepBoxWrap active={step === 3}>
           <div className="circle">3</div>
-          <span>导入完成</span>
+          <span>{t('newlyAdd.importSuccess')}</span>
         </StepBoxWrap>
       </StepWrap>
       {step === 1 ? (
         <>
           <TabsWrap>
             <TabsItem active={tabs === 2} onClick={() => setTabs(2)}>
-              导入新建
+              {t('newlyAdd.importCreate')}
             </TabsItem>
             <TabsItem active={tabs === 1} onClick={() => setTabs(1)}>
-              导入更新
+              {t('newlyAdd.importUpdate')}
             </TabsItem>
           </TabsWrap>
           {tabs === 1 ? (
             <TextWrap>
-              <div>
-                1.请先下载模板，在模板中填写需要导入的信息，然后上传该文件导入的需求个数需小于100,需求字段不符合规则，整条需求不予以导入
-              </div>
-              <span>1）“需求类别”字段为必填项；</span>
-              <span>2）“标题”字段为必填项；</span>
-              <span>3）“优先级”请填写：极高、高、中、低、极低；</span>
-              <span>
-                4）“父需求”请填写ID，请满足如下条件：1 父需求在本项目下；
-              </span>
-              <span>5）人员类型字段请填写人员的昵称；</span>
-              <span>6）日期型字段格式为：YYYY/MM/DD；</span>
-              <span>
-                7）多选类型的自定义字段格式为：a|b|c,请用‘|’隔开多个选项；
-              </span>
-              <span>8）其他字段值，请确保与项目中配置的值保持一致。</span>
+              <div>{t('newlyAdd.importText1')}</div>
+              <span>{t('newlyAdd.importText2')}</span>
+              <span>{t('newlyAdd.importText3')}</span>
+              <span>{t('newlyAdd.importText4')}</span>
+              <span>{t('newlyAdd.importText5')}</span>
+              <span>{t('newlyAdd.importText6')}</span>
+              <span>{t('newlyAdd.importText7')}</span>
+              <span>{t('newlyAdd.importText8')}</span>
+              <span>{t('newlyAdd.importText9')}</span>
             </TextWrap>
           ) : (
             <TextWrap>
-              <div>
-                1.请先下载模板，在模板中填写需要导入的信息，然后上传该文件导入的需求个数需小于100,需求字段不符合规则，整条需求不予以导入
-              </div>
-              <span>1）ID字段必须在excel中（为必填）；</span>
-              <span>2）优先级请填写：极高、高、中、低、极低；</span>
-              <span>3）人员类型字段请填写人员的昵称；</span>
-              <span>4）日期型字段格式为：YYYY/MM/DD；</span>
-              <span>
-                5）多选类型的自定义字段格式为：a|b|c,请用‘|’隔开多个选项；
-              </span>
-              <span>6）其他字段值，请确保与项目中配置的值保持一致；</span>
-              <span>
-                7）
-                更新方式填写“1”空数据字段覆盖原来字段参数为空；填写“0”空数据不覆盖原来字段参数；
-              </span>
-              <span>8）不支持对不在访问范围的需求进行更新。</span>
+              <div>{t('newlyAdd.importText1')}</div>
+              <span>{t('newlyAdd.importText10')}</span>
+              <span>{t('newlyAdd.importText4')}</span>
+              <span>{t('newlyAdd.importText6')}</span>
+              <span>{t('newlyAdd.importText7')}</span>
+              <span>{t('newlyAdd.importText8')}</span>
+              <span>{t('newlyAdd.importText9')}</span>
+              <span>{t('newlyAdd.importText11')}</span>
+              <span>{t('newlyAdd.importText12')}</span>
             </TextWrap>
           )}
           <Button
             onClick={() => setIsVisible(true)}
             style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 24 }}
           >
-            下载模板
+            {t('newlyAdd.downloadTemplate')}
           </Button>
           {fileList?.length > 0 ? (
             <>
@@ -301,10 +288,10 @@ const ImportDemand = () => {
                   style={{ marginRight: 16 }}
                   onClick={() => setFileList([])}
                 >
-                  重新选择
+                  {t('newlyAdd.aginChoose')}
                 </Button>
                 <Button type="primary" onClick={onConfirmUpload}>
-                  开始上传
+                  {t('newlyAdd.startUpload')}
                 </Button>
               </div>
             </>
@@ -326,10 +313,10 @@ const ImportDemand = () => {
                   lineHeight: '14px',
                 }}
               >
-                点击或将文件拖拽到这里上传
+                {t('newlyAdd.clickOrDrag')}
               </div>
               <span style={{ color: '#969799', fontSize: 12 }}>
-                目前支持的文件类型为*.xls，*.xlsx
+                {t('newlyAdd.uploadLimit')}
               </span>
             </UploadDragger>
           )}
@@ -342,7 +329,7 @@ const ImportDemand = () => {
             <CommonWrap style={{ height: 443 }}>
               <Spin spinning={spinLoading} />
               <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
-                正在导入，请稍后...
+                {t('newlyAdd.importIng')}
               </div>
               <span
                 style={{
@@ -351,7 +338,7 @@ const ImportDemand = () => {
                   margin: '8px 0 56px 0',
                 }}
               >
-                温馨提示：请勿关闭窗口，否则可能导致数据错误
+                {t('newlyAdd.uploadToast')}
               </span>
             </CommonWrap>
           ) : null}
@@ -373,19 +360,20 @@ const ImportDemand = () => {
                   style={{ fontSize: 80, color: '#FF5C5E' }}
                 />
                 <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
-                  导入失败！
+                  {t('newlyAdd.importError')}
                 </div>
                 <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
-                  共计导入需求数量：{importExcel?.successCount || 0}，
-                  其中导入错误数量：{importExcel?.errorCount}，
-                  本次整个表格都未导入，请对照错误原型修改后重新导入
+                  {t('newlyAdd.importSuccessTotal')}
+                  {importExcel?.successCount || 0}，
+                  {t('newlyAdd.importErrorTotal')}
+                  {importExcel?.errorCount}，{t('newlyAdd.importErrorToast')}
                 </span>
                 <ItemWrap style={{ marginTop: 16 }}>
                   <ContentWrap width={120} hasBg>
-                    错误行号
+                    {t('newlyAdd.lineError')}
                   </ContentWrap>
                   <ContentWrap width={616} hasBg>
-                    错误原因
+                    {t('newlyAdd.errorReason')}
                   </ContentWrap>
                 </ItemWrap>
                 {importExcel?.errorList
@@ -406,7 +394,7 @@ const ImportDemand = () => {
                 }}
               >
                 <Button type="primary" onClick={onClear}>
-                  重新导入
+                  {t('newlyAdd.aginImport')}
                 </Button>
               </div>
             </CommonWrap>
@@ -422,20 +410,21 @@ const ImportDemand = () => {
                 style={{ fontSize: 80, color: '#43BA9A' }}
               />
               <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
-                导入成功！
+                {t('newlyAdd.importSuccess')}
               </div>
               <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
-                共计导入需求数量：{importExcel?.successCount}
+                {t('newlyAdd.importSuccessTotal')}
+                {importExcel?.successCount}
               </span>
               <Space size={16} style={{ margin: '56px 0' }}>
                 <Button
                   style={{ color: '#2877ff', background: '#F0F4FA' }}
                   onClick={onClear}
                 >
-                  继续导入
+                  {t('newlyAdd.continueImport')}
                 </Button>
                 <Button type="primary" onClick={onClear}>
-                  完成
+                  {t('container.finish')}
                 </Button>
               </Space>
             </CommonWrap>

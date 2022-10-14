@@ -11,7 +11,6 @@ import { getTicket } from '@/services/user'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
-import { env } from 'process'
 import { decrypt, encrypt } from './crypto'
 import { decryptPhp, encryptPhp } from './cryptoPhp'
 

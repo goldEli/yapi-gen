@@ -435,7 +435,7 @@ const EditDemand = (props: Props) => {
     setClassTreeData([
       ...[
         {
-          title: '未分类',
+          title: t('newlyAdd.unclassified'),
           key: 0,
           value: 0,
           children: [],
@@ -674,7 +674,9 @@ const EditDemand = (props: Props) => {
   const titleText = () => {
     let text: any
     if (props?.isChild) {
-      text = props?.demandId ? '编辑子需求' : '创建子需求'
+      text = props?.demandId
+        ? t('project.editChildDemand')
+        : t('common.createChildDemand')
     } else {
       text = props?.demandId
         ? t('project.editDemand')
@@ -817,7 +819,11 @@ const EditDemand = (props: Props) => {
             {props?.isQuickCreate && (
               <div style={{ display: 'flex' }}>
                 <Form.Item
-                  label={<div style={{ fontWeight: 'bold' }}>创建项目</div>}
+                  label={
+                    <div style={{ fontWeight: 'bold' }}>
+                      {t('common.createProject')}
+                    </div>
+                  }
                   name="projectId"
                   style={{ marginRight: 24 }}
                   rules={[{ required: true, message: '' }]}
@@ -838,7 +844,11 @@ const EditDemand = (props: Props) => {
                   />
                 </Form.Item>
                 <Form.Item
-                  label={<div style={{ fontWeight: 'bold' }}>创建类型</div>}
+                  label={
+                    <div style={{ fontWeight: 'bold' }}>
+                      {t('mine.createType')}
+                    </div>
+                  }
                   name="type"
                   rules={[{ required: true, message: '' }]}
                 >
@@ -935,7 +945,7 @@ const EditDemand = (props: Props) => {
         <RightWrap>
           <FormWrap layout="vertical" form={form}>
             {props?.demandId && (
-              <Form.Item label="需求进度" name="schedule">
+              <Form.Item label={t('newlyAdd.demandProgress')} name="schedule">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <SliderWrap
                     style={{ width: 330 }}
@@ -968,24 +978,24 @@ const EditDemand = (props: Props) => {
                 }))}
               />
             </Form.Item>
-            <Form.Item label="预计开始时间" name="startTime">
+            <Form.Item label={t('common.expectedStart')} name="startTime">
               <DatePicker
                 getPopupContainer={node => node}
                 style={{ width: '100%' }}
               />
             </Form.Item>
-            <Form.Item label="预计结束时间" name="endTime">
+            <Form.Item label={t('common.expectedEnd')} name="endTime">
               <DatePicker
                 getPopupContainer={node => node}
                 style={{ width: '100%' }}
               />
             </Form.Item>
-            <Form.Item label="需求分类" name="class">
+            <Form.Item label={t('newlyAdd.demandClass')} name="class">
               <TreeSelect
                 style={{ width: '100%' }}
                 showArrow
                 showSearch
-                placeholder="请选择需求分类"
+                placeholder={t('newlyAdd.pleaseClass')}
                 getPopupContainer={node => node}
                 allowClear
                 treeData={classTreeData}
@@ -1079,7 +1089,7 @@ const EditDemand = (props: Props) => {
             <>
               {!isShowFields && (
                 <ShowLabel onClick={() => setIsShowFields(true)}>
-                  展开
+                  {t('newlyAdd.open')}
                 </ShowLabel>
               )}
               {isShowFields && (
@@ -1095,7 +1105,7 @@ const EditDemand = (props: Props) => {
               )}
               {isShowFields && (
                 <ShowLabel onClick={() => setIsShowFields(false)}>
-                  收起
+                  {t('newlyAdd.close')}
                 </ShowLabel>
               )}
             </>
@@ -1111,7 +1121,7 @@ const EditDemand = (props: Props) => {
             </AddButtonWrap>
           )}
           <Button type="primary" onClick={() => onSaveDemand()}>
-            {props?.demandId ? t('common.confirm2') : '创建'}
+            {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
           </Button>
         </Space>
       </ModalFooter>
