@@ -66,6 +66,7 @@ export default () => {
   const getCategoryList = async (params: any) => {
     const result = await services.project.storyConfigCategoryList(params)
     setCategoryList(result)
+    return result
   }
 
   const getFieldList = async (params: any) => {

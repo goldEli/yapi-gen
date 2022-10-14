@@ -8,7 +8,7 @@ import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import EditDemand from '../../Demand/components/EditDemand'
+import EditDemand from '@/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -276,9 +276,9 @@ const DemandWrap = () => {
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
-          id={demandItem?.id}
+          demandId={demandItem?.id}
           onUpdate={() => getList(pageObj)}
-          isIterateId={iterateId}
+          iterateId={iterateId}
         />
       ) : null}
       <DataWrap>

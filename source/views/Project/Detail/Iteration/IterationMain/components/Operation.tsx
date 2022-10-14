@@ -128,16 +128,12 @@ const Operation = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="#EDF7F4">
-        <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-          {t('common.opening')}
-        </StatusTag>
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
+        <StatusTag isOpen>{t('common.opening')}</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#F2F2F4">
-        <StatusTag isOpen={false} onClick={() => onChangeStatus(2)}>
-          {t('common.Closed')}
-        </StatusTag>
+      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
+        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
       </LiWrap>
     </div>
   )
@@ -156,8 +152,8 @@ const Operation = (props: Props) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
-      class_ids: e.category,
-      category_id: e.class,
+      class_ids: e.class,
+      category_id: e.category,
       schedule_start: e.schedule?.start,
       schedule_end: e.schedule?.end,
       custom_field: customField,
@@ -209,6 +205,7 @@ const Operation = (props: Props) => {
         destroyOnClose
         maskClosable={false}
         keyboard={false}
+        wrapClassName="vertical-center-modal"
       >
         <div style={{ height: 436, overflow: 'auto' }}>
           {props.currentDetail?.info ? (

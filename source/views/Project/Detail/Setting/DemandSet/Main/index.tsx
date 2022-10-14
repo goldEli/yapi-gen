@@ -408,6 +408,7 @@ const CardGroup = (props: CardGroupProps) => {
                 <Switch
                   checked={item.isCheck === 1}
                   onChange={checked => onChange(checked, item)}
+                  disabled={!item?.statusCount}
                 />
                 <MoreWrap
                   onChange={row => onChangeMore(row)}

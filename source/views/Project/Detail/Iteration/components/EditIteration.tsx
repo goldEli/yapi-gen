@@ -170,6 +170,7 @@ const EditIteration = (props: Props) => {
       destroyOnClose
       maskClosable={false}
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <FormWrap
         form={form}

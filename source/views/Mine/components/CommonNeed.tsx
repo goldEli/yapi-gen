@@ -28,7 +28,7 @@ import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/views/Project/Detail/Demand/components/EditDemand'
+import EditDemand from '@/components/EditDemand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -140,7 +140,7 @@ const CommonNeed = (props: any) => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
-  const [operationItem, setOperationItem] = useState<any>()
+  const [operationItem, setOperationItem] = useState<any>({})
   const [projectId, setProjectId] = useState<any>()
   const [listData, setListData] = useState<any>({
     list: undefined,
@@ -193,8 +193,8 @@ const CommonNeed = (props: any) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
-      class_ids: e.category,
-      category_id: e.class,
+      class_ids: e.class,
+      category_id: e.category,
       schedule_start: e.schedule?.start,
       schedule_end: e.schedule?.end,
       custom_field: customField,
@@ -265,13 +265,13 @@ const CommonNeed = (props: any) => {
   }
   const showEdit = async (record: any) => {
     setProjectId(record.project_id)
-    setOperationItem(record.id)
+    setOperationItem(record)
     await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
   const showDel = (record: any) => {
     setProjectId(record.project_id)
-    setOperationItem(record.id)
+    setOperationItem(record)
     setIsDelVisible(true)
   }
   const columns = useDynamicColumns({
@@ -416,7 +416,7 @@ const CommonNeed = (props: any) => {
 
   const onDeleteConfirm = async () => {
     try {
-      await deleteDemand({ projectId, id: operationItem })
+      await deleteDemand({ projectId, id: operationItem?.id })
       message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
       init()
@@ -634,9 +634,10 @@ const CommonNeed = (props: any) => {
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
-          id={operationItem}
-          preId={projectId}
+          demandId={operationItem?.id}
+          projectId={projectId}
           onUpdate={onUpdate}
+          notGetPath
         />
       ) : null}
       <DeleteConfirm

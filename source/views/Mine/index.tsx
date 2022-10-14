@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
-import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
-import QuicklyCreate from './components/QuicklyCreate'
+// import QuicklyCreate from './components/QuicklyCreate'
+import EditDemand from '@/components/EditDemand'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
@@ -177,9 +177,11 @@ const MineBox = () => {
         <Outlet />
       </Main>
       {quickCreateVisible ? (
-        <QuicklyCreate
+        <EditDemand
           visible={quickCreateVisible}
           onChangeVisible={() => setQuickCreateVisible(false)}
+          isQuickCreate
+          notGetPath
         />
       ) : null}
     </Wrap>

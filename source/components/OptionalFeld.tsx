@@ -176,6 +176,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <Wrap>
         <Left>

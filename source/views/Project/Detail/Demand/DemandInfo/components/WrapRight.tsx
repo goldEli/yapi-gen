@@ -268,11 +268,11 @@ const QuickEdit = (props: Props) => {
               attr: props?.type,
               value: props?.value,
             },
+            true,
             props?.defaultText,
             inputRef,
             onBlur,
             onChange,
-            true,
           )}
         </>
       )

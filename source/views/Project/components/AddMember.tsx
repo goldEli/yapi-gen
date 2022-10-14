@@ -123,6 +123,7 @@ const AddMember = (props: Props) => {
       destroyOnClose
       maskClosable={false}
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <ModalHeader>
         <span>

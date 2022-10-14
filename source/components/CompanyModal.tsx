@@ -79,6 +79,7 @@ const CompanyModal = (props: Props) => {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <ContentWrap>
         {companyList.map(i => (
