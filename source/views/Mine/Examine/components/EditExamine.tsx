@@ -171,9 +171,9 @@ const EditExamine = (props: Props) => {
           <LabelWrap>提交时间</LabelWrap>
           <ContentWrap>{verifyInfo?.time || '--'}</ContentWrap>
         </ItemWrap>
-        <ItemWrap>
-          <LabelWrap>审核意见</LabelWrap>
-          {props?.isEdit && props?.item?.status === 1 ? (
+        {props?.isEdit && props?.item?.status === 1 && (
+          <ItemWrap>
+            <LabelWrap>审核意见</LabelWrap>
             <Input.TextArea
               style={{ width: 256 }}
               autoSize={{ minRows: 3, maxRows: 5 }}
@@ -181,10 +181,8 @@ const EditExamine = (props: Props) => {
               value={value}
               onChange={e => setValue(e.target.value)}
             />
-          )
-            : <ContentWrap>{props?.item.reason || '--'}</ContentWrap>
-          }
-        </ItemWrap>
+          </ItemWrap>
+        )}
         <div
           style={{
             color: '#323233',

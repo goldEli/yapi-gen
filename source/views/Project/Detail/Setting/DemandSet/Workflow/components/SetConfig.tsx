@@ -248,6 +248,20 @@ const SetConfig = (props: Props) => {
       }
     }
 
+    if (dataSource?.filter((k: any) => !k.content)?.length) {
+      message.warning('字段名称为必填！')
+      return
+    }
+
+    if (
+      dataSource?.filter(
+        (k: any) => k.content && k.default_type === 1 && !k.default_value,
+      )?.length
+    ) {
+      message.warning('默认值类型为字段值时默认值为必填！')
+      return
+    }
+
     await saveWorkflowConfig(params)
     message.success('保存成功')
     onClose()
