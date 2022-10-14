@@ -96,7 +96,7 @@ const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
     marginRight: 8,
   },
   ({ active }) => ({
-    transform: active ? 'rotate(-90deg)' : 'inherit',
+    transform: active ? 'rotate(0deg)' : 'rotate(-90deg)',
   }),
 )
 
@@ -644,7 +644,7 @@ const SetConfig = (props: Props) => {
       onConfirm={onConfirm}
       width={784}
     >
-      <div style={{ maxHeight: 544, overflowY: 'auto' }}>
+      <div style={{ maxHeight: 544, overflowY: 'auto', paddingRight: 20 }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>当前流转</LabelWrap>
           <ItemWrap>
@@ -691,70 +691,72 @@ const SetConfig = (props: Props) => {
         </ItemWrap>
         {isShowPermission && (
           <Form form={form}>
-            <TextWrap>
-              配置状态流转用户权限，只有有权限的用户才允许做此流转。如果为空则默认所有人有权限。
-            </TextWrap>
-            <ItemWrap style={{ marginTop: 16 }}>
-              <LabelWrap>用户组</LabelWrap>
-              <Form.Item noStyle name="roles">
-                <Select
-                  style={{ minWidth: 186 }}
-                  showSearch
-                  mode="multiple"
-                  optionFilterProp="label"
-                  getPopupContainer={node => node}
-                  showArrow
-                  options={info?.roles?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
-                />
-              </Form.Item>
-            </ItemWrap>
-            <ItemWrap style={{ marginTop: 24 }}>
-              <LabelWrap>人员字段</LabelWrap>
-              <Form.Item noStyle name="user_fields">
-                <Select
-                  style={{ minWidth: 186 }}
-                  showSearch
-                  mode="multiple"
-                  showArrow
-                  optionFilterProp="label"
-                  getPopupContainer={node => node}
-                  options={info?.authUserFields?.map((i: any) => ({
-                    label: i.title,
-                    value: i.content,
-                  }))}
-                />
-              </Form.Item>
-            </ItemWrap>
-            <ItemWrap style={{ marginTop: 24 }}>
-              <LabelWrap>其他用户</LabelWrap>
-              <Form.Item noStyle name="other_users">
-                <Select
-                  style={{ minWidth: 186 }}
-                  showSearch
-                  mode="multiple"
-                  optionFilterProp="label"
-                  showArrow
-                  getPopupContainer={node => node}
-                  options={memberList}
-                  allowClear
-                />
-              </Form.Item>
-            </ItemWrap>
+            <div style={{ paddingLeft: 20 }}>
+              <TextWrap>
+                配置状态流转用户权限，只有有权限的用户才允许做此流转。如果为空则默认所有人有权限。
+              </TextWrap>
+              <ItemWrap style={{ marginTop: 16 }}>
+                <LabelWrap>用户组</LabelWrap>
+                <Form.Item noStyle name="roles">
+                  <Select
+                    style={{ minWidth: 186 }}
+                    showSearch
+                    mode="multiple"
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    showArrow
+                    options={info?.roles?.map((i: any) => ({
+                      label: i.name,
+                      value: i.id,
+                    }))}
+                  />
+                </Form.Item>
+              </ItemWrap>
+              <ItemWrap style={{ marginTop: 24 }}>
+                <LabelWrap>人员字段</LabelWrap>
+                <Form.Item noStyle name="user_fields">
+                  <Select
+                    style={{ minWidth: 186 }}
+                    showSearch
+                    mode="multiple"
+                    showArrow
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    options={info?.authUserFields?.map((i: any) => ({
+                      label: i.title,
+                      value: i.content,
+                    }))}
+                  />
+                </Form.Item>
+              </ItemWrap>
+              <ItemWrap style={{ marginTop: 24 }}>
+                <LabelWrap>其他用户</LabelWrap>
+                <Form.Item noStyle name="other_users">
+                  <Select
+                    style={{ minWidth: 186 }}
+                    showSearch
+                    mode="multiple"
+                    optionFilterProp="label"
+                    showArrow
+                    getPopupContainer={node => node}
+                    options={memberList}
+                    allowClear
+                  />
+                </Form.Item>
+              </ItemWrap>
 
-            <ItemWrap style={{ marginTop: 24 }}>
-              <LabelWrap>流转审核</LabelWrap>
-              <Form.Item noStyle name="is_verify">
-                <Switch
-                  checked={isSwitch}
-                  onChange={checked => onChangeSwitch(checked)}
-                />
-              </Form.Item>
-            </ItemWrap>
+              <ItemWrap style={{ marginTop: 24 }}>
+                <LabelWrap>流转审核</LabelWrap>
+                <Form.Item noStyle name="is_verify">
+                  <Switch
+                    checked={isSwitch}
+                    onChange={checked => onChangeSwitch(checked)}
+                  />
+                </Form.Item>
+              </ItemWrap>
+              <TextWrap>开启审核后，需审核人同意后才可流转到下一状态</TextWrap>
+            </div>
 
-            <TextWrap>开启审核后，需审核人同意后才可流转到下一状态</TextWrap>
             {isSwitch && (
               <Wrap>
                 <Radio.Group
@@ -808,11 +810,16 @@ const SetConfig = (props: Props) => {
         </ItemWrap>
         {isShowField && (
           <div>
-            <TextWrap>
+            <TextWrap style={{ paddingLeft: 20 }}>
               配置状态流转过程中需要额外填写的字段，可以设置是否必填和默认值。
             </TextWrap>
             <Button
-              style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 16 }}
+              style={{
+                background: '#F0F4FA',
+                color: '#2877ff',
+                marginTop: 16,
+                marginLeft: 20,
+              }}
               icon={<IconFont type="plus" />}
               onClick={onClickAddField}
             >

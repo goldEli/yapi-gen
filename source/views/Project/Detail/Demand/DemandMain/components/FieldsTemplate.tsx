@@ -16,6 +16,7 @@ const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 350,
+  paddingRight: 20,
 })
 
 const LeftWrap = styled.div({

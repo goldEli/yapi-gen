@@ -264,46 +264,48 @@ const MoreWrap = (props: MoreWrapProps) => {
           title="历史数据迁移"
           onConfirm={onConfirmHasDelete}
         >
-          <HasDemandText>{`检测到该类型下有${props?.row?.hasDemand}条需求，请把历史需求变更为其他类型`}</HasDemandText>
-          <FormWrap form={form} layout="vertical">
-            <Form.Item
-              label="变更后需求类别"
-              name="newId"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Select
-                placeholder="请选择"
-                showArrow
-                showSearch
-                getPopupContainer={node => node}
-                allowClear
-                optionFilterProp="label"
-                onChange={onChangeSelect}
-                options={props?.list
-                  ?.filter((i: any) => i.id !== props?.row?.id)
-                  ?.map((k: any) => ({ label: k.name, value: k.id }))}
-              />
-            </Form.Item>
-            <Form.Item
-              label="变更后需求状态"
-              name="statusId"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Select
-                placeholder="请选择"
-                disabled={disable}
-                showArrow
-                showSearch
-                getPopupContainer={node => node}
-                allowClear
-                optionFilterProp="label"
-                options={statusWorkList?.list?.map((k: any) => ({
-                  label: k.name,
-                  value: k.id,
-                }))}
-              />
-            </Form.Item>
-          </FormWrap>
+          <div style={{ paddingRight: 20 }}>
+            <HasDemandText>{`检测到该类型下有${props?.row?.hasDemand}条需求，请把历史需求变更为其他类型`}</HasDemandText>
+            <FormWrap form={form} layout="vertical">
+              <Form.Item
+                label="变更后需求类别"
+                name="newId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder="请选择"
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={props?.list
+                    ?.filter((i: any) => i.id !== props?.row?.id)
+                    ?.map((k: any) => ({ label: k.name, value: k.id }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label="变更后需求状态"
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder="请选择"
+                  disabled={disable}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={statusWorkList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.id,
+                  }))}
+                />
+              </Form.Item>
+            </FormWrap>
+          </div>
         </CommonModal>
       )}
 

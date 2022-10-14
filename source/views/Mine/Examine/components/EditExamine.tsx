@@ -139,7 +139,7 @@ const EditExamine = (props: Props) => {
         style={{
           maxHeight: props?.isEdit && props?.item?.status === 1 ? 464 : 544,
           overflowY: 'auto',
-          paddingRight: 16,
+          paddingRight: 20,
         }}
       >
         <ItemWrap>

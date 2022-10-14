@@ -68,7 +68,9 @@ const TreeBox = styled.div`
     }
   }
 `
-const FormBox = styled.div``
+const FormBox = styled.div`
+  padding-right: 20px;
+`
 const BtnsItemBox = styled.div`
   cursor: pointer;
   width: 102px;

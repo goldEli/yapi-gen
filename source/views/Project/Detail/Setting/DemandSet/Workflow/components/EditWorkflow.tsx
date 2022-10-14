@@ -110,7 +110,7 @@ const EditWorkflow = (props: EditorProps) => {
       onClose={onClose}
       onConfirm={onConfirm}
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 16 }}>
+      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
         {props?.item?.categorys?.length && (
           <>
             <div style={{ color: '#323233', fontSize: 14 }}>

@@ -136,6 +136,16 @@ const BackWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  svg: {
+    color: '#2877ff',
+    fontSize: 20,
+  },
+  '&: hover': {
+    background: '#2877ff',
+    svg: {
+      color: 'white',
+    },
+  },
 })
 
 interface Props {
@@ -270,11 +280,7 @@ const CommonOperation = (props: Props) => {
         <ProjectInfo>
           <Tooltip title="返回列表">
             <BackWrap>
-              <IconFont
-                onClick={onToProject}
-                style={{ color: '#2877ff', fontSize: 20 }}
-                type="return"
-              />
+              <IconFont onClick={onToProject} type="return" />
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />

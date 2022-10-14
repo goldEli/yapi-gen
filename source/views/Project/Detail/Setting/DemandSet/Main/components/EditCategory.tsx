@@ -122,7 +122,7 @@ const EditorCategory = (props: EditorProps) => {
       onConfirm={onConfirm}
       confirmText="创建"
     >
-      <FormWrap form={form} layout="vertical">
+      <FormWrap form={form} layout="vertical" style={{ paddingRight: 20 }}>
         <Form.Item
           label="类别名称"
           name="name"

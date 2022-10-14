@@ -15,13 +15,12 @@ import DemandStatus from '../../components/DemandStatus'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message, Progress } from 'antd'
+import { Progress } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getNestedChildren, getParamsData } from '@/tools'
+import { getParamsData } from '@/tools'
 import { SliderWrap } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
-import { getTreeList } from '@/services/project/tree'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -182,7 +181,7 @@ const WrapLeftBox = () => {
           params.imageArray.push({ src: element.src })
         }
         for (let i = 0; i < oPics.length; i++) {
-          if (e.path[0].src === params.imageArray[i].url) {
+          if (e.path[0].src === params.imageArray[i].src) {
             params.index = i
           }
         }

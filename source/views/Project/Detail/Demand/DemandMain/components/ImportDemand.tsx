@@ -19,6 +19,7 @@ import { getParamsData } from '@/tools'
 
 const Wrap = styled.div({
   height: 570,
+  paddingRight: 20,
 })
 
 const StepWrap = styled.div({
@@ -136,8 +137,8 @@ const ImportDemand = () => {
       setStep(3)
       setIsRefresh(true)
     } catch (error) {
-
-      //
+      setStep(1)
+      setSpinLoading(false)
     }
   }
 

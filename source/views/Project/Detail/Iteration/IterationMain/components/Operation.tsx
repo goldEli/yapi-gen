@@ -206,8 +206,9 @@ const Operation = (props: Props) => {
         maskClosable={false}
         keyboard={false}
         wrapClassName="vertical-center-modal"
+        bodyStyle={{ padding: '16px 4px 16px 24px' }}
       >
-        <div style={{ height: 436, overflow: 'auto' }}>
+        <div style={{ maxHeight: 436, overflow: 'auto', paddingRight: 20 }}>
           {props.currentDetail?.info ? (
             <div
               dangerouslySetInnerHTML={{

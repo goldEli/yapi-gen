@@ -16,11 +16,9 @@ import {
   Space,
   message,
   Progress,
-  Tooltip,
   TreeSelect,
   DatePicker,
   Popover,
-  Dropdown,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -35,15 +33,8 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import RangePicker from '@/components/RangePicker'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
-import {
-  PriorityWrap,
-  SliderWrap,
-  AddWrap,
-  CategoryWrap,
-} from '@/components/StyleCommon'
-import { OmitText } from '@star-yun/ui'
+import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
 
 const ModalWrap = styled(Modal)({
@@ -53,7 +44,7 @@ const ModalWrap = styled(Modal)({
 })
 
 const FormWrap = styled(Form)({
-  paddingRight: 16,
+  paddingRight: 20,
   '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -95,6 +86,7 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  paddingRight: 24,
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -120,7 +112,7 @@ const LeftWrap = styled.div({
 const RightWrap = styled.div({
   height: '100%',
   overflow: 'auto',
-  width: 400,
+  width: 406,
   paddingLeft: 24,
   borderLeft: '1px solid #EBEDF0',
 })
@@ -131,6 +123,7 @@ const ModalFooter = styled.div({
   alignItems: 'center',
   justifyContent: 'flex-end',
   height: 80,
+  paddingRight: 24,
 })
 
 const AddButtonWrap = styled.div({
@@ -719,7 +712,7 @@ const EditDemand = (props: Props) => {
       width="96%"
       footer={false}
       bodyStyle={{
-        padding: '0 24px',
+        padding: '0 4px 0 24px',
         position: 'relative',
         maxHeight: '90vh',
       }}

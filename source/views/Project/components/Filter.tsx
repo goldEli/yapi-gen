@@ -24,6 +24,9 @@ const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
     color: '#969799',
     fontSize: 20,
     cursor: 'pointer',
+    '&: hover': {
+      color: '#2877FF',
+    },
   },
   ({ active }) => ({
     color: active ? '#2877FF' : '#969799',
@@ -37,11 +40,6 @@ const WrapRight = styled.div({
   '.ant-space-item': {
     display: 'flex',
     alignItems: 'center',
-  },
-  '&: hover': {
-    [IconfontWrap.toString()]: {
-      color: '#2877ff',
-    },
   },
 })
 

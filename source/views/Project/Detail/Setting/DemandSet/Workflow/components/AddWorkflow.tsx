@@ -446,45 +446,47 @@ const AddWorkflow = (props: Props) => {
           title="新状态分配"
           onConfirm={onConfirmHasDelete}
         >
-          <HasDemandText>{`共有${operationDelObj?.deleteData?.story_count}个需求当前处于【${operationDelObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
-          <FormWrap form={form} layout="vertical">
-            {operationDelObj?.deleteData?.list?.map((i: any) => (
-              <Form.Item
-                name={`${i.category_id}_name`}
-                key={i.category_id}
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <CategoryWrap
-                      style={{ marginRight: 8, marginLeft: 0 }}
-                      color={i.category_color}
-                      bgColor={
-                        colorList?.filter(k => k.key === i.category_color)[0]
-                          ?.bgColor
-                      }
-                    >
-                      {i.category_name}
-                    </CategoryWrap>
-                    指定新状态
-                  </div>
-                }
-              >
-                <Select
-                  placeholder="请选择"
-                  showArrow
-                  showSearch
-                  getPopupContainer={node => node}
-                  allowClear
-                  optionFilterProp="label"
-                  options={statusWorkList?.list
-                    ?.filter((j: any) => j.id !== operationDelObj?.id)
-                    ?.map((k: any) => ({
-                      label: k.name,
-                      value: k.id,
-                    }))}
-                />
-              </Form.Item>
-            ))}
-          </FormWrap>
+          <div style={{ paddingRight: 20 }}>
+            <HasDemandText>{`共有${operationDelObj?.deleteData?.story_count}个需求当前处于【${operationDelObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
+            <FormWrap form={form} layout="vertical">
+              {operationDelObj?.deleteData?.list?.map((i: any) => (
+                <Form.Item
+                  name={`${i.category_id}_name`}
+                  key={i.category_id}
+                  label={
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <CategoryWrap
+                        style={{ marginRight: 8, marginLeft: 0 }}
+                        color={i.category_color}
+                        bgColor={
+                          colorList?.filter(k => k.key === i.category_color)[0]
+                            ?.bgColor
+                        }
+                      >
+                        {i.category_name}
+                      </CategoryWrap>
+                      指定新状态
+                    </div>
+                  }
+                >
+                  <Select
+                    placeholder="请选择"
+                    showArrow
+                    showSearch
+                    getPopupContainer={node => node}
+                    allowClear
+                    optionFilterProp="label"
+                    options={statusWorkList?.list
+                      ?.filter((j: any) => j.id !== operationDelObj?.id)
+                      ?.map((k: any) => ({
+                        label: k.name,
+                        value: k.id,
+                      }))}
+                  />
+                </Form.Item>
+              ))}
+            </FormWrap>
+          </div>
         </CommonModal>
       )}
       <CommonModal
@@ -494,41 +496,43 @@ const AddWorkflow = (props: Props) => {
         onConfirm={onConfirm}
         width={784}
       >
-        <TableTitle>
-          <span style={{ width: '40%' }}>状态名称</span>
-          <span style={{ width: '45%' }}>应用的需求类别</span>
-          <span style={{ width: '15%' }}>操作</span>
-        </TableTitle>
-        {isAdd ? (
-          <AddActiveWrap
-            hasMargin
-            onClose={() => setIsAdd(false)}
-            onConfirm={obj => onAddConfirm(obj)}
-          />
-        ) : null}
-        {!isAdd && (
-          <div onClick={() => setIsAdd(true)}>
-            <AddWrap />
-          </div>
-        )}
+        <div style={{ paddingRight: 20 }}>
+          <TableTitle>
+            <span style={{ width: '40%' }}>状态名称</span>
+            <span style={{ width: '45%' }}>应用的需求类别</span>
+            <span style={{ width: '15%' }}>操作</span>
+          </TableTitle>
+          {isAdd ? (
+            <AddActiveWrap
+              hasMargin
+              onClose={() => setIsAdd(false)}
+              onConfirm={obj => onAddConfirm(obj)}
+            />
+          ) : null}
+          {!isAdd && (
+            <div onClick={() => setIsAdd(true)}>
+              <AddWrap />
+            </div>
+          )}
 
-        <TableWrap>
-          <Spin spinning={isSpinning}>
-            {!!statusWorkList?.list
-              && (statusWorkList?.list?.length > 0 ? (
-                <TableWrapBox
-                  rowSelection={rowSelection}
-                  dataSource={statusWorkList?.list}
-                  columns={columns}
-                  showHeader={false}
-                  pagination={false}
-                  rowKey="id"
-                />
-              )
-                : <NoData />
-              )}
-          </Spin>
-        </TableWrap>
+          <TableWrap>
+            <Spin spinning={isSpinning}>
+              {!!statusWorkList?.list
+                && (statusWorkList?.list?.length > 0 ? (
+                  <TableWrapBox
+                    rowSelection={rowSelection}
+                    dataSource={statusWorkList?.list}
+                    columns={columns}
+                    showHeader={false}
+                    pagination={false}
+                    rowKey="id"
+                  />
+                )
+                  : <NoData />
+                )}
+            </Spin>
+          </TableWrap>
+        </div>
       </CommonModal>
     </>
   )

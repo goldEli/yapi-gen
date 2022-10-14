@@ -240,7 +240,7 @@ const EditFiled = (props: Props) => {
       onConfirm={onConfirm}
       confirmText={props?.item?.id ? '确定' : '创建'}
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 16 }}>
+      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>
             <Form.Item

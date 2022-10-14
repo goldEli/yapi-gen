@@ -375,7 +375,11 @@ const DemandBox = () => {
             title="变更需求类别"
             onConfirm={onConfirmCategory}
           >
-            <FormWrap form={form} layout="vertical">
+            <FormWrap
+              form={form}
+              layout="vertical"
+              style={{ paddingRight: 20 }}
+            >
               <Form.Item label="变更前需求类别">
                 <StatusTag
                   color={colorObj?.color}

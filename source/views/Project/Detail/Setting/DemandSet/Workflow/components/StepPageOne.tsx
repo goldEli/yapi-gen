@@ -305,6 +305,7 @@ const StepPageOne = (propsOne: Props) => {
           checkedChildren="是"
           unCheckedChildren="否"
           checked={text}
+          disabled={record.startStatus}
           onChange={checked => onChangeListStatus(checked, record)}
         />
       ),
@@ -392,41 +393,43 @@ const StepPageOne = (propsOne: Props) => {
           title="历史数据迁移"
           onConfirm={onConfirmHasDelete}
         >
-          <HasDemandText>{`共有${operationObj?.deleteData?.story_count}个需求当前处于【${operationObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
-          <FormWrap form={form} layout="vertical">
-            <Form.Item
-              name="statusId"
-              label={
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <CategoryWrap
-                    style={{ marginRight: 8, marginLeft: 0 }}
-                    color={operationObj?.deleteData?.item?.category_color}
-                    bgColor={
-                      colorList?.filter(
-                        k => k.key
-                          === operationObj?.deleteData?.item?.category_color,
-                      )[0]?.bgColor
-                    }
-                  >
-                    {operationObj?.deleteData?.item?.category_name}
-                  </CategoryWrap>
-                  指定新状态
-                </div>
-              }
-            >
-              <Select
-                placeholder="请选择"
-                showArrow
-                showSearch
-                getPopupContainer={node => node}
-                allowClear
-                optionFilterProp="label"
-                options={operationObj?.deleteData?.item?.status?.map(
-                  (i: any) => ({ label: i.content, value: i.id }),
-                )}
-              />
-            </Form.Item>
-          </FormWrap>
+          <div style={{ paddingRight: 20 }}>
+            <HasDemandText>{`共有${operationObj?.deleteData?.story_count}个需求当前处于【${operationObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
+            <FormWrap form={form} layout="vertical">
+              <Form.Item
+                name="statusId"
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <CategoryWrap
+                      style={{ marginRight: 8, marginLeft: 0 }}
+                      color={operationObj?.deleteData?.item?.category_color}
+                      bgColor={
+                        colorList?.filter(
+                          k => k.key
+                            === operationObj?.deleteData?.item?.category_color,
+                        )[0]?.bgColor
+                      }
+                    >
+                      {operationObj?.deleteData?.item?.category_name}
+                    </CategoryWrap>
+                    指定新状态
+                  </div>
+                }
+              >
+                <Select
+                  placeholder="请选择"
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={operationObj?.deleteData?.item?.status?.map(
+                    (i: any) => ({ label: i.content, value: i.id }),
+                  )}
+                />
+              </Form.Item>
+            </FormWrap>
+          </div>
         </CommonModal>
       )}
       <div
@@ -484,11 +487,13 @@ const StepPageOne = (propsOne: Props) => {
             )}
         </Spin>
       </TableWrap>
-      <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
-        <Button type="primary" onClick={onSave}>
-          保存&下一步
-        </Button>
-      </Space>
+      {dataSource?.list?.length > 0 && (
+        <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
+          <Button type="primary" onClick={onSave}>
+            保存&下一步
+          </Button>
+        </Space>
+      )}
     </>
   )
 }

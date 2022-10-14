@@ -73,6 +73,9 @@ const TableBox = styled(TableWrap)({
       visibility: 'visible',
     },
   },
+  '.ant-table table': {
+    paddingBottom: 0,
+  },
 })
 
 const Staff = () => {

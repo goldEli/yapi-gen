@@ -112,6 +112,7 @@ const ProjectCard = (props: Props) => {
   )
 
   const onClickMenu = (e: any, type: string, item: any) => {
+    setIsMoreVisible(false)
     e.stopPropagation()
     props.onChangeOperation?.(type, item)
   }
