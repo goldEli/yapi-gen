@@ -112,7 +112,7 @@ interface Props {
 }
 
 const Operation = (props: Props) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
@@ -230,6 +230,7 @@ const Operation = (props: Props) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
+        minWidth: i18n.language === 'zh' ? 110 : 151,
       }}
     >
       {categoryList?.list?.map((k: any) => (

@@ -40,6 +40,12 @@ import {
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
 
+const TableWrap = styled(Table)({
+  '.ant-table-cell': {
+    padding: 0,
+  },
+})
+
 const LabelWrap = styled.div({
   color: '#323233',
   fontSize: 14,
@@ -50,6 +56,7 @@ const LabelWrap = styled.div({
 const Wrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  padding: '0 24px',
 })
 
 const ItemWrap = styled.div({
@@ -438,7 +445,12 @@ const SetConfig = (props: Props) => {
   const DragHandle = sortableHandle(() => (
     <IconFont
       type="move"
-      style={{ fontSize: 16, cursor: 'pointer', color: '#969799' }}
+      style={{
+        fontSize: 16,
+        cursor: 'pointer',
+        color: '#969799',
+        padding: '0 16px',
+      }}
     />
   ))
 
@@ -491,7 +503,7 @@ const SetConfig = (props: Props) => {
           <>
             {record?.content === 'comment'
             || record.content === 'users_name'
-              ? ''
+              ? <div style={{ width: 48 }} />
               : <DragHandle />
             }
           </>
@@ -500,7 +512,7 @@ const SetConfig = (props: Props) => {
     },
     {
       title: '字段名称',
-      width: 160,
+      width: 170,
       dataIndex: 'title',
       render: (text: any, record: any) => (
         <Select
@@ -526,7 +538,7 @@ const SetConfig = (props: Props) => {
     },
     {
       title: '默认值类型',
-      width: 160,
+      width: 170,
       dataIndex: 'default_type',
       render: (text: any, record: any) => (
         <Select
@@ -643,11 +655,27 @@ const SetConfig = (props: Props) => {
       onClose={onClose}
       onConfirm={onConfirm}
       width={784}
+      confirmText="提交"
     >
       <div style={{ maxHeight: 544, overflowY: 'auto', paddingRight: 20 }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>当前流转</LabelWrap>
           <ItemWrap>
+            <StatusWrap
+              color={
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.color
+              }
+            >
+              {
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.name
+              }
+            </StatusWrap>
+            <Divider
+              type="vertical"
+              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
+            />
             <StatusWrap
               color={
                 workList?.list?.filter(
@@ -659,21 +687,6 @@ const SetConfig = (props: Props) => {
                 workList?.list?.filter(
                   (i: any) => i.id === props?.item?.toId,
                 )[0]?.name
-              }
-            </StatusWrap>
-            <Divider
-              type="vertical"
-              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
-            />
-            <StatusWrap
-              color={
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.color
-              }
-            >
-              {
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.name
               }
             </StatusWrap>
           </ItemWrap>
@@ -825,7 +838,7 @@ const SetConfig = (props: Props) => {
             >
               添加字段
             </Button>
-            <Table
+            <TableWrap
               pagination={false}
               dataSource={dataSource}
               columns={columns as any}

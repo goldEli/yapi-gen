@@ -16,13 +16,17 @@ const GanttWrap = styled.div({
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 14,
+    fontWeight: '500',
   },
   '.gantt_cell': {
     padding: 0,
     paddingLeft: 10,
+    fontSize: 14,
   },
   '.gantt_layout_cell, .gantt_scale_cell': {
     border: 'none!important',
+    fontSize: '14px!important',
+    fontWeight: '500!important',
   },
   '.gantt_task_line.gantt_selected': {
     boxShadow: 'none',

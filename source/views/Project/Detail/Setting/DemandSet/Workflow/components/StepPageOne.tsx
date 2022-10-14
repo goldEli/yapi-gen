@@ -258,7 +258,7 @@ const StepPageOne = (propsOne: Props) => {
     },
     {
       title: '状态名称',
-      width: 140,
+      width: 180,
       dataIndex: 'name',
       render: (text: any, record: any) => <ViewWrap color={record?.color}>{text}</ViewWrap>
       ,

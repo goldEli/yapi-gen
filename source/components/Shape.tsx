@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
+import arrows from '/arrows.png'
 
 const Left = styled.div`
   /* min-width: 120px; */
@@ -616,7 +617,7 @@ export const ShapeContent = (props: any) => {
                 </StyledShape2>
                 <img
                   style={{ width: '40px', height: '15px', margin: '0px 8px' }}
-                  src="/arrows.png"
+                  src={arrows}
                   alt=""
                 />
                 <StyledShape2

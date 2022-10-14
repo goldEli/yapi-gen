@@ -78,7 +78,6 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   minHeight: 64,
   background: 'white',
-  padding: '0 24px',
   flexWrap: 'wrap',
 })
 
@@ -597,7 +596,7 @@ const ProjectMember = () => {
           >
             <SearchWrap>
               <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '12px' }}>
+                <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.job')}
                 </span>
                 <Form.Item name="searchValue" />
@@ -614,7 +613,7 @@ const ProjectMember = () => {
                 </Form.Item>
               </SelectWrapBedeck>
               <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '12px' }}>
+                <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.permissionGroup')}
                 </span>
                 <Form.Item name="userGroupIds" noStyle>
@@ -630,7 +629,7 @@ const ProjectMember = () => {
                 </Form.Item>
               </SelectWrapBedeck>
               <div
-                style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
+                style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
                 onClick={onReset}
               >
                 {t('common.clearForm')}

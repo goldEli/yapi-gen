@@ -302,7 +302,7 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <div
-            style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
+            style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
             onClick={onReset}
           >
             {t('common.clearForm')}

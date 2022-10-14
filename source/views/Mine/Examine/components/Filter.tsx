@@ -108,7 +108,7 @@ const SearchList = (props: Props) => {
     <SearchLine>
       <FormWrap form={form}>
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '12px' }}>审核状态</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>审核状态</span>
           <Form.Item name="verifyStatus">
             <SelectWrap
               showArrow
@@ -127,7 +127,7 @@ const SearchList = (props: Props) => {
           </Form.Item>
         </SelectWrapBedeck>
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '12px' }}>提交时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>提交时间</span>
           <Form.Item name="time">
             <DatePicker.RangePicker
               onChange={onConfirm}
@@ -199,7 +199,7 @@ const SearchList = (props: Props) => {
           </Form.Item>
         </SelectWrapBedeck>
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '12px' }}>审核时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>审核时间</span>
           <Form.Item name="verifyTime">
             <DatePicker.RangePicker
               onChange={onConfirm}
@@ -272,7 +272,7 @@ const SearchList = (props: Props) => {
         </SelectWrapBedeck>
         {!props?.activeTab && (
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>审核意见</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>审核意见</span>
             <Form.Item name="remark">
               <InputWrap
                 allowClear

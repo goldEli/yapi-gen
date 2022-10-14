@@ -279,11 +279,13 @@ export const useDynamicColumns = (state: any) => {
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <DemandProgress
-            value={record.schedule}
-            row={record}
-            onUpdate={onUpdate}
-          />
+          <div style={{ cursor: 'pointer' }}>
+            <DemandProgress
+              value={record.schedule}
+              row={record}
+              onUpdate={onUpdate}
+            />
+          </div>
         )
       },
     },

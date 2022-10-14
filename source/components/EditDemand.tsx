@@ -998,7 +998,7 @@ const EditDemand = (props: Props) => {
                     className="priorityIcon"
                     type={priorityDetail?.icon}
                     style={{
-                      fontSize: 16,
+                      fontSize: 20,
                       color: priorityDetail?.color,
                     }}
                   />

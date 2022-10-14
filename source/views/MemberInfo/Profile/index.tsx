@@ -223,7 +223,7 @@ const Profile = () => {
       limit: '',
       targetId: userId,
     })
-    setLineData(res1.data)
+    setLineData(res1)
   }
 
   const init = async () => {
@@ -258,7 +258,12 @@ const Profile = () => {
   }, [monthIndex])
 
   const onToDetail = (item: any) => {
-    if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
+    if (item?.isPublic !== 1 && !item.isUserMember) {
+      message.warning(t('common.notCheckInfo'))
+      return
+    }
+
+    if (item.deletedTime || item.projectDeletedTime) {
       message.warning(t('common.demandDeleteEd'))
       return
     }
@@ -266,8 +271,8 @@ const Profile = () => {
     const params = encryptPhp(
       JSON.stringify({
         type: 'info',
-        id: item.feedable.project_id,
-        demandId: item.feedable_id,
+        id: item.projectId,
+        demandId: item.feedableId,
       }),
     )
 
@@ -455,16 +460,16 @@ const Profile = () => {
                           {lineData.map((item: any) => (
                             <Timeline.Item key={item.id}>
                               <LineItem>
-                                <span>{item.created_at}</span>
+                                <span>{item.createTime}</span>
                                 <span>{item.content}</span>
                               </LineItem>
                               <LineItem>
-                                <Tooltip title={item.feedable?.project.name}>
+                                <Tooltip title={item.projectName}>
                                   <OmitText width={200}>
-                                    {item.feedable?.project.name}
+                                    {item.projectName}
                                   </OmitText>
                                 </Tooltip>
-                                <Tooltip title={item.feedable?.project.name}>
+                                <Tooltip title={item.name}>
                                   <OmitText width={300}>
                                     <span
                                       onClick={() => onToDetail(item)}
@@ -473,7 +478,7 @@ const Profile = () => {
                                         cursor: 'pointer',
                                       }}
                                     >
-                                      {item.feedable?.name}
+                                      {item.name}
                                     </span>
                                   </OmitText>
                                 </Tooltip>

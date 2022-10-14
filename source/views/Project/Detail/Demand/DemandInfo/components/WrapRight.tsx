@@ -507,7 +507,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 }}
               >
                 <IconFont
-                  style={{ fontSize: 16, color: demandInfo?.priority?.color }}
+                  style={{ fontSize: 20, color: demandInfo?.priority?.color }}
                   type={demandInfo?.priority?.icon}
                 />
                 <DownPriority isShow={isCanEdit} isMargin>

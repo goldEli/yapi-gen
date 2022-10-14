@@ -120,7 +120,7 @@ const EditorCategory = (props: EditorProps) => {
       title={props?.item?.id ? '编辑需求类别' : '创建需求类别'}
       onClose={onClose}
       onConfirm={onConfirm}
-      confirmText="创建"
+      confirmText={props?.item?.id ? '确定' : '创建'}
     >
       <FormWrap form={form} layout="vertical" style={{ paddingRight: 20 }}>
         <Form.Item

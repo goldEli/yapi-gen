@@ -317,7 +317,11 @@ const ExamineItem = (props: Props) => {
               </div>
               {index !== examineList?.length - 1 && (
                 <IconFont
-                  style={{ fontSize: 16, margin: '0 8px', color: '#BBBDBF' }}
+                  style={{
+                    fontSize: 16,
+                    margin: '-20px 8px 0',
+                    color: '#BBBDBF',
+                  }}
                   type={
                     menuList?.filter((k: any) => k.value === normal)[0]?.icon
                   }
