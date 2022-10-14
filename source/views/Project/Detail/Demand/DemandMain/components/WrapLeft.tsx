@@ -294,7 +294,6 @@ const WrapLeft = (props: Props) => {
     const onlySort: any = treeData[0].children[0].title.props.sort
     const start = info.dragNode.title.props
     const end = info.node.title.props
-    const pos = info.node?.children ?? 2
 
     if (start.pid === 0) {
       return
@@ -309,7 +308,7 @@ const WrapLeft = (props: Props) => {
         newId: onlyID,
         sort: onlySort,
         id: start.id,
-        top: pos === 2 ? 2 : 1,
+        pid: start.id,
       })
     } else {
       await moveTreeList({
@@ -317,7 +316,7 @@ const WrapLeft = (props: Props) => {
         newId: end.id,
         sort: end.sort,
         id: start.id,
-        top: pos === 2 ? 2 : 1,
+        pid: end.id,
       })
     }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
@@ -29,6 +30,7 @@ import moment from 'moment'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import { AddWrap } from '@/views/Project/Detail/Demand/DemandInfo/components/WrapLeft'
 import { P } from '@antv/g2plot'
+import { init } from 'i18next'
 
 const Left = styled.div`
   /* min-width: 120px; */
@@ -274,6 +276,24 @@ const TagSelect = (props: any) => {
       })
     set(newArr)
   }
+  const init3 = () => {
+    const newArr = props.dvalue
+      .map((item: any) => {
+        return props.options.find((index: { id: any }) => index.id === item)
+      })
+      .map((i: any) => {
+        return {
+          id: i.id,
+          name: i.name,
+          color: i.color,
+        }
+      })
+    set(newArr)
+  }
+
+  useEffect(() => {
+    init3()
+  }, [])
 
   return (
     <Select
@@ -542,7 +562,7 @@ export const ShapeContent = (props: any) => {
                   } else if (i.type === 'select' || i.type === 'radio') {
                     return (
                       <Form.Item
-                        initialValue={i.true_value}
+                        initialValue={i.true_value === 0 ? '' : i.true_value}
                         labelCol={{ span: 8 }}
                         label={i.title}
                         name={i.content}
