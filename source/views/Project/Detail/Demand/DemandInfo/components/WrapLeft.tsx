@@ -69,7 +69,7 @@ const TextWrap = styled.div({
   },
 })
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+export const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',

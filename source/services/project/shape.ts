@@ -162,7 +162,7 @@ export const getShapeRight = async (params: any) => {
         key: item.content,
         content: item.content,
         children: filterGetTagList,
-        type: 'select_checkbox',
+        type: 'tag',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
