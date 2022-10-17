@@ -8,6 +8,7 @@ import { useModel } from '@/models'
 import ChooseColor from '../../components/ChooseColor'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -44,6 +45,7 @@ const EditorCategory = (props: EditorProps) => {
     updateStoryConfigCategory,
     addStoryConfigCategory,
   } = useModel('project')
+  const [t] = useTranslation()
   const [name, setName] = useState<any>('')
   const [normalColor, setNormalColor] = useState<any>('')
   const [form] = Form.useForm()
@@ -75,7 +77,7 @@ const EditorCategory = (props: EditorProps) => {
   const onConfirm = async () => {
     await form.validateFields()
     if (!form.getFieldValue('color')) {
-      message.warning('请选择需求类别颜色！')
+      message.warning(t('newlyAdd.pleaseChooseColor'))
       return
     }
     const params = form.getFieldsValue()
@@ -84,7 +86,7 @@ const EditorCategory = (props: EditorProps) => {
     if (props?.item?.id) {
       try {
         await updateStoryConfigCategory(params)
-        message.success('编辑成功')
+        message.success(t('common.editSuccess'))
         onReset()
       } catch (error) {
 
@@ -93,7 +95,7 @@ const EditorCategory = (props: EditorProps) => {
     } else {
       try {
         await addStoryConfigCategory(params)
-        message.success('创建成功')
+        message.success(t('common.createSuccess'))
         onReset()
       } catch (error) {
 
@@ -121,41 +123,45 @@ const EditorCategory = (props: EditorProps) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title={props?.item?.id ? '编辑需求类别' : '创建需求类别'}
+      title={
+        props?.item?.id
+          ? t('newlyAdd.editCategory')
+          : t('newlyAdd.createCategory')
+      }
       onClose={onClose}
       onConfirm={onConfirm}
-      confirmText={props?.item?.id ? '确定' : '创建'}
+      confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
       <FormWrap form={form} layout="vertical" style={{ paddingRight: 20 }}>
         <Form.Item
-          label="类别名称"
+          label={t('newlyAdd.categoryName')}
           name="name"
           rules={[{ required: true, message: '' }]}
         >
           <Input
             autoComplete="off"
             ref={inputRefDom as any}
-            placeholder="请输入中英文字符限20个字"
+            placeholder={t('newlyAdd.pleaseCategory')}
             allowClear
             maxLength={10}
             onChange={e => setName(e.target.value)}
             autoFocus
           />
         </Form.Item>
-        <Form.Item label="类别说明" name="remark">
+        <Form.Item label={t('newlyAdd.categoryRemark')} name="remark">
           <Input.TextArea
-            placeholder="请输入描述类别说明限200个字"
+            placeholder={t('newlyAdd.pleaseCategoryRemark')}
             autoSize={{ minRows: 5, maxRows: 5 }}
             maxLength={200}
           />
         </Form.Item>
-        <Form.Item label="选择颜色" name="color">
+        <Form.Item label={t('newlyAdd.chooseColor')} name="color">
           <ChooseColor
             color={normalColor}
             onChangeValue={val => onChangeValue(val)}
           />
         </Form.Item>
-        <Form.Item label="预览效果">
+        <Form.Item label={t('newlyAdd.view')}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ViewWrap
               color={normalColor || '#969799'}
@@ -164,9 +170,9 @@ const EditorCategory = (props: EditorProps) => {
                   ?.bgColor
               }
             >
-              {name || '无'}
+              {name || t('newlyAdd.nothing')}
             </ViewWrap>
-            <span>需求名称XXXX</span>
+            <span>{t('newlyAdd.viewName')}</span>
           </div>
         </Form.Item>
       </FormWrap>

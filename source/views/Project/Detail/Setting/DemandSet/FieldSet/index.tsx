@@ -66,6 +66,7 @@ const TableWrap = styled.div({
 })
 
 const SetBreadcrumb = () => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useModel('project')
@@ -90,14 +91,14 @@ const SetBreadcrumb = () => {
     <SetTitleWrap>
       <BackWrap onClick={onBack}>
         <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
-        <span>返回</span>
+        <span>{t('newlyAdd.back')}</span>
       </BackWrap>
       <Divider type="vertical" style={{ background: '#BBBDBF' }} />
       <div style={{ color: '#323233', cursor: 'pointer' }} onClick={onToSet}>
-        需求设置
+        {t('newlyAdd.demandSet')}
       </div>
       <IconFont type="right" style={{ color: '#323233', margin: '0 4px' }} />
-      <div style={{ color: '#969799' }}>字段设置</div>
+      <div style={{ color: '#969799' }}>{t('newlyAdd.fieldsSet')}</div>
     </SetTitleWrap>
   )
 }
@@ -188,7 +189,7 @@ const FieldSet = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          自定义名称
+          {t('newlyAdd.customName')}
         </NewSort>
       ),
       dataIndex: 'name',
@@ -205,7 +206,7 @@ const FieldSet = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          字段类型
+          {t('newlyAdd.fieldsType')}
         </NewSort>
       ),
       dataIndex: 'type',
@@ -219,7 +220,7 @@ const FieldSet = () => {
       },
     },
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       dataIndex: 'action',
       width: 100,
       render: (text: any, record: any) => {
@@ -229,13 +230,13 @@ const FieldSet = () => {
               style={{ color: '#2877ff', cursor: 'pointer', fontSize: 14 }}
               onClick={() => onEditClick(record)}
             >
-              编辑
+              {t('common.edit')}
             </span>
             <span
               style={{ color: '#2877ff', cursor: 'pointer', fontSize: 14 }}
               onClick={() => onDelClick(record)}
             >
-              删除
+              {t('common.del')}
             </span>
           </Space>
         )
@@ -260,12 +261,15 @@ const FieldSet = () => {
         isVisible={isDelVisible}
         onConfirm={onDelConfirm}
         onChangeVisible={() => setIsDelVisible(false)}
-        title={operationObj?.hasDemand ? '确认删除该字段？' : '删除确认'}
+        title={
+          operationObj?.hasDemand
+            ? t('newlyAdd.confirmDel')
+            : t('components.deleteConfirm')
+        }
         text={
           operationObj?.hasDemand
-            ? `检测到该字段有${operationObj?.hasDemand}个需求，删除自定义字段后，对应
-        字段值将会被清空，且无法恢复，请谨慎操作。`
-            : '确认删除该字段？'
+            ? t('newlyAdd.hasDemandDel', { hasDemand: operationObj?.hasDemand })
+            : t('newlyAdd.confirmDel')
         }
       />
       <SetBreadcrumb />
@@ -276,10 +280,10 @@ const FieldSet = () => {
             icon={<IconFont type="plus" />}
             onClick={onAddClick}
           >
-            添加字段
+            {t('newlyAdd.addFields')}
           </Button>
           <div style={{ color: '#969799', fontSize: 12, marginLeft: 16 }}>
-            自定义字段最多可添加20个
+            {t('newlyAdd.maxAddFields')}
           </div>
         </ItemWrap>
         <TableWrap>

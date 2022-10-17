@@ -108,7 +108,9 @@ const SearchList = (props: Props) => {
     <SearchLine>
       <FormWrap form={form}>
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>审核状态</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('newlyAdd.examineStatus')}
+          </span>
           <Form.Item name="verifyStatus">
             <SelectWrap
               showArrow
@@ -119,15 +121,17 @@ const SearchList = (props: Props) => {
               showSearch
               optionFilterProp="label"
               options={[
-                { label: '待审核', value: 1 },
-                { label: '已通过', value: 2 },
-                { label: '未通过', value: 3 },
+                { label: t('newlyAdd.waitExamine'), value: 1 },
+                { label: t('newlyAdd.passed'), value: 2 },
+                { label: t('newlyAdd.notPass'), value: 3 },
               ]}
             />
           </Form.Item>
         </SelectWrapBedeck>
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>提交时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('newlyAdd.submitTime')}
+          </span>
           <Form.Item name="time">
             <DatePicker.RangePicker
               onChange={onConfirm}
@@ -199,7 +203,9 @@ const SearchList = (props: Props) => {
           </Form.Item>
         </SelectWrapBedeck>
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>审核时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('newlyAdd.examineTime')}
+          </span>
           <Form.Item name="verifyTime">
             <DatePicker.RangePicker
               onChange={onConfirm}
@@ -272,12 +278,14 @@ const SearchList = (props: Props) => {
         </SelectWrapBedeck>
         {!props?.activeTab && (
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>审核意见</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('newlyAdd.examineTime')}
+            </span>
             <Form.Item name="remark">
               <InputWrap
                 allowClear
                 autoComplete="off"
-                placeholder="请输入查看内容"
+                placeholder={t('newlyAdd.pleaseInfo')}
                 onPressEnter={onConfirm}
               />
             </Form.Item>

@@ -10,6 +10,7 @@ import { useModel } from '@/models'
 import { ViewWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -42,6 +43,7 @@ interface EditorProps {
 }
 
 const EditWorkflow = (props: EditorProps) => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [form] = Form.useForm()
@@ -66,7 +68,7 @@ const EditWorkflow = (props: EditorProps) => {
 
     try {
       await updateStoryConfigWorkflow(params)
-      message.success('编辑成功')
+      message.success(t('common.editSuccess'))
       props?.onClose()
       props?.onUpdate()
       setTimeout(() => {
@@ -97,7 +99,7 @@ const EditWorkflow = (props: EditorProps) => {
 
   const onChangeStatus = (checked: any) => {
     if (props?.item?.startStatus && checked) {
-      message.warning('起始状态与结束状态不能同时存在')
+      message.warning(t('newlyAdd.startStatusNoEnd'))
       return
     }
     setStatus(checked)
@@ -106,7 +108,7 @@ const EditWorkflow = (props: EditorProps) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title="编辑状态"
+      title={t('newlyAdd.editStatus')}
       onClose={onClose}
       onConfirm={onConfirm}
     >
@@ -114,7 +116,7 @@ const EditWorkflow = (props: EditorProps) => {
         {props?.item?.categorys?.length && (
           <>
             <div style={{ color: '#323233', fontSize: 14 }}>
-              该状态已存在于需求类别中
+              {t('newlyAdd.existenceCategory')}
             </div>
             <Space
               size={8}
@@ -141,39 +143,41 @@ const EditWorkflow = (props: EditorProps) => {
         )}
         <FormWrap form={form} layout="vertical">
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Form.Item label="状态名称" name="name">
+            <Form.Item label={t('newlyAdd.statusName')} name="name">
               <Input
                 autoComplete="off"
                 maxLength={10}
-                placeholder="请输入状态名称"
+                placeholder={t('newlyAdd.pleaseStatusName')}
                 allowClear
                 onChange={e => setName(e.target.value)}
               />
             </Form.Item>
             <span style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-              状态名称是显示在页面上的名字，最多输入10个字。
+              {t('newlyAdd.pleaseStatusNameMax')}
             </span>
           </div>
-          <Form.Item label="状态说明" name="info">
+          <Form.Item label={t('newlyAdd.statusRemark')} name="info">
             <Input.TextArea
               autoSize={{ minRows: 5, maxRows: 5 }}
-              placeholder="请输入状态说明"
+              placeholder={t('newlyAdd.pleaseStatusRemark')}
               maxLength={200}
             />
           </Form.Item>
-          <Form.Item label="选择颜色" name="color">
+          <Form.Item label={t('newlyAdd.chooseColor')} name="color">
             <ChooseColor
               color={normalColor}
               onChangeValue={val => onChangeValue(val)}
             />
           </Form.Item>
-          <Form.Item label="状态预览">
-            <ViewWrap color={normalColor}>{name || '无'}</ViewWrap>
+          <Form.Item label={t('newlyAdd.statusView')}>
+            <ViewWrap color={normalColor}>
+              {name || t('newlyAdd.nothing')}
+            </ViewWrap>
           </Form.Item>
-          <Form.Item label="结束状态" name="endStatus">
+          <Form.Item label={t('newlyAdd.endStatus')} name="endStatus">
             <Switch
-              checkedChildren="是"
-              unCheckedChildren="否"
+              checkedChildren={t('newlyAdd.yes')}
+              unCheckedChildren={t('newlyAdd.no')}
               checked={status}
               onChange={checked => onChangeStatus(checked)}
             />

@@ -249,7 +249,7 @@ const Need = (props: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="user_name">提交人</NewSort>,
+      title: <NewSort fixedKey="user_name">{t('newlyAdd.submitName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
       render: (text: string) => {
@@ -258,7 +258,11 @@ const Need = (props: any) => {
     },
 
     {
-      title: <NewSort fixedKey="status_from_to">流转状态</NewSort>,
+      title: (
+        <NewSort fixedKey="status_from_to">
+          {t('newlyAdd.reviewStatus')}
+        </NewSort>
+      ),
       dataIndex: 'statusFromTo',
       key: 'status_from_to',
       render: (text: string) => {
@@ -266,14 +270,18 @@ const Need = (props: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="verify_status">审核状态</NewSort>,
+      title: (
+        <NewSort fixedKey="verify_status">
+          {t('newlyAdd.examineStatus')}
+        </NewSort>
+      ),
       dataIndex: 'status',
       key: 'verify_status',
       render: (text: any, record: any) => {
         return (
           <div onClick={() => onChangeOperation(record)}>
             {text === 1 && !activeTab
-              ? <CanClick>待审核</CanClick>
+              ? <CanClick>{t('newlyAdd.waitExamine')}</CanClick>
               : (
                   <StatusWrap>
                     <CircleWrap
@@ -287,7 +295,11 @@ const Need = (props: any) => {
                       }}
                     />
                     <ClickWrap style={{ display: 'inline' }}>
-                      {text === 1 ? '待审核' : text === 2 ? '已通过' : '未通过'}
+                      {text === 1
+                        ? t('newlyAdd.waitExamine')
+                        : text === 2
+                          ? t('newlyAdd.passed')
+                          : t('newlyAdd.notPass')}
                     </ClickWrap>
                   </StatusWrap>
                 )}
@@ -296,7 +308,9 @@ const Need = (props: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="verify_at">审核时间</NewSort>,
+      title:
+        <NewSort fixedKey="verify_at">{t('newlyAdd.examineTime')}</NewSort>
+      ,
       dataIndex: 'verifyTime',
       key: 'verify_at',
       render: (text: string) => {
@@ -304,7 +318,11 @@ const Need = (props: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="verify_opinion">审核意见</NewSort>,
+      title: (
+        <NewSort fixedKey="verify_opinion">
+          {t('newlyAdd.examineReason')}
+        </NewSort>
+      ),
       dataIndex: 'reason',
       key: 'verify_opinion',
       render: (text: string) => {
@@ -357,7 +375,7 @@ const Need = (props: any) => {
       >
         <div className={tabCss}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
-            <div>我审核的</div>
+            <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>
           <LabNumber isActive={!activeTab}>{count?.verifyUser}</LabNumber>
 
@@ -366,7 +384,7 @@ const Need = (props: any) => {
             style={{ marginLeft: 32 }}
             onClick={() => onChangeTab(1)}
           >
-            <div>我提交的</div>
+            <div>{t('newlyAdd.mineSubmit')}</div>
           </TabsItem>
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>

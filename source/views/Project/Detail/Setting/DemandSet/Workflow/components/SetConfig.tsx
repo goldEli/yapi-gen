@@ -39,6 +39,7 @@ import {
   SortableElement as sortableElement,
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled(Table)({
   '.ant-table-cell': {
@@ -123,6 +124,7 @@ const normalObj: any = {
 }
 
 const SetConfig = (props: Props) => {
+  const [t] = useTranslation()
   const modalBody = useRef<any>(null)
   const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList }
     = useModel('project')
@@ -236,7 +238,7 @@ const SetConfig = (props: Props) => {
       params.verify_type = radioValue
       if (radioValue === 1) {
         if (normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
-          message.warning('审核人为必填')
+          message.warning(t('newlyAdd.needExaminePerson'))
           return
         }
         params.process = normalList
@@ -249,7 +251,7 @@ const SetConfig = (props: Props) => {
     }
 
     if (dataSource?.filter((k: any) => !k.content)?.length) {
-      message.warning('字段名称为必填！')
+      message.warning(t('newlyAdd.needFields'))
       return
     }
 
@@ -258,12 +260,12 @@ const SetConfig = (props: Props) => {
         (k: any) => k.content && k.default_type === 1 && !k.default_value,
       )?.length
     ) {
-      message.warning('默认值类型为字段值时默认值为必填！')
+      message.warning(t('newlyAdd.needNormal'))
       return
     }
 
     await saveWorkflowConfig(params)
-    message.success('保存成功')
+    message.success(t('common.saveSuccess'))
     onClose()
     setDataSource([])
   }
@@ -525,7 +527,7 @@ const SetConfig = (props: Props) => {
       },
     },
     {
-      title: '字段名称',
+      title: t('newlyAdd.fieldsName'),
       width: 170,
       dataIndex: 'title',
       render: (text: any, record: any) => (
@@ -551,7 +553,7 @@ const SetConfig = (props: Props) => {
       ),
     },
     {
-      title: '默认值类型',
+      title: t('newlyAdd.normalType'),
       width: 170,
       dataIndex: 'default_type',
       render: (text: any, record: any) => (
@@ -564,23 +566,23 @@ const SetConfig = (props: Props) => {
           onChange={value => onChangeValue(value, record)}
           options={
             record.content === 'comment'
-              ? [{ label: '固定值', value: 2 }]
+              ? [{ label: t('newlyAdd.fixedValue'), value: 2 }]
               : [
-                  { label: '字段值', value: 1 },
-                  { label: '固定值', value: 2 },
+                  { label: t('newlyAdd.fieldsValue'), value: 1 },
+                  { label: t('newlyAdd.fixedValue'), value: 2 },
                 ]
           }
         />
       ),
     },
     {
-      title: '默认值/默认值字段',
+      title: t('newlyAdd.normalValueOrFields'),
       dataIndex: 'default_value',
       width: 170,
       render: (text: any, record: any) => <>{getTableCol(record)}</>,
     },
     {
-      title: '是否必填',
+      title: t('newlyAdd.isNeed'),
       width: 100,
       dataIndex: 'is_must',
       align: 'center',
@@ -592,7 +594,7 @@ const SetConfig = (props: Props) => {
       ),
     },
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       width: 60,
       dataIndex: 'action',
       render: (text: string, record: any) => {
@@ -606,7 +608,7 @@ const SetConfig = (props: Props) => {
                     style={{ color: '#2877ff', cursor: 'pointer' }}
                     onClick={() => onDelRow(record)}
                   >
-                删除
+                    {t('common.del')}
                   </span>
                 )}
           </>
@@ -656,7 +658,7 @@ const SetConfig = (props: Props) => {
   const onAddExamine = () => {
     const lastItem: any = normalList[normalList?.length - 1]
     if (!lastItem?.obj?.verify_users?.length) {
-      message.warning('审核人为必填')
+      message.warning(t('newlyAdd.needExaminePerson'))
       return
     }
     setNormalList([...normalList, ...[{ id: new Date().getTime(), obj: {} }]])
@@ -665,15 +667,15 @@ const SetConfig = (props: Props) => {
   return (
     <CommonModal
       isVisible={props?.isVisible}
-      title="配置流转附加字段及权限"
+      title={t('newlyAdd.setReviewAndPermission')}
       onClose={onClose}
       onConfirm={onConfirm}
       width={784}
-      confirmText="提交"
+      confirmText={t('newlyAdd.submit')}
     >
       <div style={{ maxHeight: 544, overflowY: 'auto', paddingRight: 20 }}>
         <ItemWrap style={{ marginTop: 8 }}>
-          <LabelWrap>当前流转</LabelWrap>
+          <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>
             <StatusWrap
               color={
@@ -712,18 +714,16 @@ const SetConfig = (props: Props) => {
           >
             <IconfontWrap type="tableDown" active={isShowPermission} />
             <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
-              流转操作权限
+              {t('newlyAdd.reviewPermission')}
             </span>
           </ItemWrap>
         </ItemWrap>
         {isShowPermission && (
           <Form form={form}>
             <div style={{ paddingLeft: 20 }}>
-              <TextWrap>
-                配置状态流转用户权限，只有有权限的用户才允许做此流转。如果为空则默认所有人有权限。
-              </TextWrap>
+              <TextWrap>{t('newlyAdd.setPermissionText')}</TextWrap>
               <ItemWrap style={{ marginTop: 16 }}>
-                <LabelWrap>用户组</LabelWrap>
+                <LabelWrap>{t('setting.userGroup')}</LabelWrap>
                 <Form.Item noStyle name="roles">
                   <Select
                     style={{ minWidth: 186 }}
@@ -740,7 +740,7 @@ const SetConfig = (props: Props) => {
                 </Form.Item>
               </ItemWrap>
               <ItemWrap style={{ marginTop: 24 }}>
-                <LabelWrap>人员字段</LabelWrap>
+                <LabelWrap>{t('newlyAdd.userFields')}</LabelWrap>
                 <Form.Item noStyle name="user_fields">
                   <Select
                     style={{ minWidth: 186 }}
@@ -757,7 +757,7 @@ const SetConfig = (props: Props) => {
                 </Form.Item>
               </ItemWrap>
               <ItemWrap style={{ marginTop: 24 }}>
-                <LabelWrap>其他用户</LabelWrap>
+                <LabelWrap>{t('newlyAdd.otherUser')}</LabelWrap>
                 <Form.Item noStyle name="other_users">
                   <Select
                     style={{ minWidth: 186 }}
@@ -773,7 +773,7 @@ const SetConfig = (props: Props) => {
               </ItemWrap>
 
               <ItemWrap style={{ marginTop: 24 }}>
-                <LabelWrap>流转审核</LabelWrap>
+                <LabelWrap>{t('newlyAdd.reviewExamine')}</LabelWrap>
                 <Form.Item noStyle name="is_verify">
                   <Switch
                     checked={isSwitch}
@@ -781,7 +781,7 @@ const SetConfig = (props: Props) => {
                   />
                 </Form.Item>
               </ItemWrap>
-              <TextWrap>开启审核后，需审核人同意后才可流转到下一状态</TextWrap>
+              <TextWrap>{t('newlyAdd.openExamineCanTo')}</TextWrap>
             </div>
 
             {isSwitch && (
@@ -791,8 +791,8 @@ const SetConfig = (props: Props) => {
                   value={radioValue}
                   style={{ marginTop: 8 }}
                 >
-                  <Radio value={1}>固定审核流程</Radio>
-                  <Radio value={2}>用户指定审核人</Radio>
+                  <Radio value={1}>{t('newlyAdd.fixedExamine')}</Radio>
+                  <Radio value={2}>{t('newlyAdd.userAppoint')}</Radio>
                 </Radio.Group>
                 {radioValue === 1 ? (
                   <TimelineWrap>
@@ -815,7 +815,7 @@ const SetConfig = (props: Props) => {
                           width: 'fit-content',
                         }}
                       >
-                        添加审核
+                        {t('newlyAdd.addExamine')}
                       </div>
                     </Timeline.Item>
                   </TimelineWrap>
@@ -831,14 +831,14 @@ const SetConfig = (props: Props) => {
           >
             <IconfontWrap type="tableDown" active={isShowField} />
             <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
-              流转填写字段
+              {t('newlyAdd.reviewFields')}
             </span>
           </ItemWrap>
         </ItemWrap>
         {isShowField && (
           <div>
             <TextWrap style={{ paddingLeft: 20 }}>
-              配置状态流转过程中需要额外填写的字段，可以设置是否必填和默认值。
+              {t('newlyAdd.reviewFieldsText')}
             </TextWrap>
             <Button
               style={{
@@ -850,7 +850,7 @@ const SetConfig = (props: Props) => {
               icon={<IconFont type="plus" />}
               onClick={onClickAddField}
             >
-              添加字段
+              {t('newlyAdd.addFields')}
             </Button>
             <TableWrap
               pagination={false}

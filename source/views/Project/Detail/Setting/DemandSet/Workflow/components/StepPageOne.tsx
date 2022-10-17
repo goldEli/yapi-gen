@@ -38,6 +38,7 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -70,6 +71,7 @@ interface Props {
 }
 
 const StepPageOne = (propsOne: Props) => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
@@ -132,7 +134,7 @@ const StepPageOne = (propsOne: Props) => {
 
     try {
       await deleteStoryConfigWorkflow(obj)
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getList()
       setOperationObj({})
       setIsHasDelete(false)
@@ -151,7 +153,7 @@ const StepPageOne = (propsOne: Props) => {
         projectId: paramsData.id,
         id: operationObj?.id,
       })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getList()
       setOperationObj({})
       setIsDelVisible(false)
@@ -171,7 +173,7 @@ const StepPageOne = (propsOne: Props) => {
 
   const onChangeListStatus = async (checked: any, row: any) => {
     if (row.startStatus) {
-      message.warning('起始状态与结束状态不能同时存在')
+      message.warning(t('newlyAdd.startStatusNoEnd'))
       return
     }
     const obj = {
@@ -181,7 +183,7 @@ const StepPageOne = (propsOne: Props) => {
     }
     try {
       await updateStoryConfigWorkflow(obj)
-      message.success('修改成功')
+      message.success(t('common.editS'))
       getList()
     } catch (error) {
 
@@ -197,7 +199,7 @@ const StepPageOne = (propsOne: Props) => {
     }
     try {
       await updateStoryConfigWorkflow(obj)
-      message.success('修改成功')
+      message.success(t('common.editS'))
       getList()
     } catch (error) {
 
@@ -257,14 +259,14 @@ const StepPageOne = (propsOne: Props) => {
       render: () => <DragHandle />,
     },
     {
-      title: '状态名称',
+      title: t('newlyAdd.statusName'),
       width: 180,
       dataIndex: 'name',
       render: (text: any, record: any) => <ViewWrap color={record?.color}>{text}</ViewWrap>
       ,
     },
     {
-      title: '状态说明',
+      title: t('newlyAdd.statusRemark'),
       width: 400,
       dataIndex: 'info',
       render: (text: any) => <OmitText width={380}>{text || '--'}</OmitText>,
@@ -273,8 +275,8 @@ const StepPageOne = (propsOne: Props) => {
       width: 120,
       title: (
         <div>
-          <span>起始状态</span>
-          <Tooltip title="创建需求的默认状态">
+          <span>{t('newlyAdd.startStatus')}</span>
+          <Tooltip title={t('newlyAdd.createNormalStatus')}>
             <IconFont
               style={{ marginLeft: 16, cursor: 'pointer' }}
               type="question"
@@ -290,8 +292,8 @@ const StepPageOne = (propsOne: Props) => {
       width: 120,
       title: (
         <div>
-          <span>结束状态</span>
-          <Tooltip title="需求的终结状态，流转至当前状态，需求标题会灰色展示！">
+          <span>{t('newlyAdd.endStatus')}</span>
+          <Tooltip title={t('newlyAdd.endStatusText')}>
             <IconFont
               style={{ marginLeft: 16, cursor: 'pointer' }}
               type="question"
@@ -302,8 +304,8 @@ const StepPageOne = (propsOne: Props) => {
       dataIndex: 'endStatus',
       render: (text: any, record: any) => (
         <Switch
-          checkedChildren="是"
-          unCheckedChildren="否"
+          checkedChildren={t('newlyAdd.yes')}
+          unCheckedChildren={t('newlyAdd.no')}
           checked={text}
           disabled={record.startStatus}
           onChange={checked => onChangeListStatus(checked, record)}
@@ -312,7 +314,7 @@ const StepPageOne = (propsOne: Props) => {
     },
     {
       width: 120,
-      title: '操作',
+      title: t('newlyAdd.operation'),
       dataIndex: 'action',
       render: (text: string, record: any) => (
         <Space size={16}>
@@ -320,13 +322,13 @@ const StepPageOne = (propsOne: Props) => {
             style={{ color: '#2877ff', cursor: 'pointer' }}
             onClick={() => onClickOperation(record, 'edit')}
           >
-            编辑
+            {t('common.edit')}
           </span>
           <span
             style={{ color: '#2877ff', cursor: 'pointer' }}
             onClick={() => onClickOperation(record, 'del')}
           >
-            删除
+            {t('common.del')}
           </span>
         </Space>
       ),
@@ -343,12 +345,12 @@ const StepPageOne = (propsOne: Props) => {
 
   const onSave = () => {
     if (!dataSource?.list?.length) {
-      message.warning('至少保证有已经添加一个需求状态')
+      message.warning(t('newlyAdd.onlyDemandStatus'))
       return
     }
     try {
       onSaveMethod()
-      message.success('保存成功')
+      message.success(t('common.saveSuccess'))
       propsOne?.onChangeStep(2)
     } catch (error) {
 
@@ -381,7 +383,7 @@ const StepPageOne = (propsOne: Props) => {
         />
       )}
       <DeleteConfirm
-        text="确认删除需求状态？"
+        text={t('newlyAdd.confirmDelStatus')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
@@ -390,11 +392,16 @@ const StepPageOne = (propsOne: Props) => {
         <CommonModal
           isVisible={isHasDelete}
           onClose={onCloseHasDelete}
-          title="历史数据迁移"
+          title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
           <div style={{ paddingRight: 20 }}>
-            <HasDemandText>{`共有${operationObj?.deleteData?.story_count}个需求当前处于【${operationObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
+            <HasDemandText>
+              {t('newlyAdd.changeNewStatus', {
+                count: operationObj?.deleteData?.story_count,
+                name: operationObj?.name,
+              })}
+            </HasDemandText>
             <FormWrap form={form} layout="vertical">
               <Form.Item
                 name="statusId"
@@ -412,12 +419,12 @@ const StepPageOne = (propsOne: Props) => {
                     >
                       {operationObj?.deleteData?.item?.category_name}
                     </CategoryWrap>
-                    指定新状态
+                    {t('newlyAdd.appointStatus')}
                   </div>
                 }
               >
                 <Select
-                  placeholder="请选择"
+                  placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
                   getPopupContainer={node => node}
@@ -440,10 +447,10 @@ const StepPageOne = (propsOne: Props) => {
           icon={<IconFont type="plus" />}
           onClick={() => setIsAddVisible(true)}
         >
-          添加状态
+          {t('newlyAdd.addStatus')}
         </Button>
         <span style={{ color: '#969799', fontSize: 12, marginLeft: 8 }}>
-          支持添加、编辑和删除工作流状态
+          {t('newlyAdd.canOperation')}
         </span>
       </div>
       <TableWrap>
@@ -490,7 +497,7 @@ const StepPageOne = (propsOne: Props) => {
       {dataSource?.list?.length > 0 && (
         <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
           <Button type="primary" onClick={onSave}>
-            保存&下一步
+            {t('newlyAdd.saveAndNext')}
           </Button>
         </Space>
       )}

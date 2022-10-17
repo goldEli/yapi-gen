@@ -14,6 +14,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   padding: 16,
@@ -73,6 +74,7 @@ const StepWrap = styled.div({
 })
 
 const SetBreadcrumb = () => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useModel('project')
@@ -97,19 +99,20 @@ const SetBreadcrumb = () => {
     <SetTitleWrap>
       <BackWrap onClick={onBack}>
         <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
-        <span>返回</span>
+        <span>{t('newlyAdd.back')}</span>
       </BackWrap>
       <Divider type="vertical" style={{ background: '#BBBDBF' }} />
       <div style={{ color: '#323233', cursor: 'pointer' }} onClick={onToSet}>
-        需求设置
+        {t('newlyAdd.demandSet')}
       </div>
       <IconFont type="right" style={{ color: '#323233', margin: '0 4px' }} />
-      <div style={{ color: '#969799' }}>工作流设置</div>
+      <div style={{ color: '#969799' }}>{t('newlyAdd.workflowSet')}</div>
     </SetTitleWrap>
   )
 }
 
 const Workflow = () => {
+  const [t] = useTranslation()
   const { colorList } = useModel('project')
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
@@ -122,7 +125,7 @@ const Workflow = () => {
       return
     }
     if (!ChildRef?.current?.list?.length && val === 2) {
-      message.warning('至少保证有已经添加一个需求状态')
+      message.warning(t('newlyAdd.onlyDemandStatus'))
     } else {
       setStep(val)
       if (val === 2) {
@@ -137,7 +140,7 @@ const Workflow = () => {
       <ContentWrap>
         <LabelWrap>
           <div className="provider" />
-          <span>工作流设置</span>
+          <span>{t('newlyAdd.workflowSet')}</span>
           <CategoryWrap
             color={categoryItem.color}
             bgColor={
@@ -154,7 +157,7 @@ const Workflow = () => {
             onClick={() => onChangeStep(1)}
           >
             <div className="circle">1</div>
-            <span>状态定义</span>
+            <span>{t('newlyAdd.definitionStatus')}</span>
           </StepBoxWrap>
           <div
             style={{
@@ -170,7 +173,7 @@ const Workflow = () => {
             onClick={() => onChangeStep(2)}
           >
             <div className="circle">2</div>
-            <span>流转设置</span>
+            <span>{t('newlyAdd.reviewSet')}</span>
           </StepBoxWrap>
         </StepWrap>
         {step === 1

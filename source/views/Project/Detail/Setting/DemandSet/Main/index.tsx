@@ -14,6 +14,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div({
   padding: 16,
@@ -156,6 +157,7 @@ interface MoreWrapProps {
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
+  const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
@@ -186,11 +188,15 @@ const MoreWrap = (props: MoreWrapProps) => {
     const menuItems = [
       {
         key: '1',
-        label: <div onClick={() => onClickMenu('edit')}>编辑</div>,
+        label:
+          <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
+        ,
       },
       {
         key: '2',
-        label: <div onClick={() => onClickMenu('delete')}>删除</div>,
+        label:
+          <div onClick={() => onClickMenu('delete')}>{t('common.del')}</div>
+        ,
       },
     ]
     return <Menu items={menuItems} />
@@ -202,7 +208,7 @@ const MoreWrap = (props: MoreWrapProps) => {
         id: props.row.id,
         projectId: paramsData.id,
       })
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getCategoryList({ projectId: paramsData.id })
     } catch (error) {
 
@@ -224,7 +230,7 @@ const MoreWrap = (props: MoreWrapProps) => {
     params.oldId = props.row.id
     try {
       await changeStoryConfigCategory(params)
-      message.success('数据迁移成功')
+      message.success(t('newlyAdd.dateMoveSuccess'))
       onCloseHasDelete()
     } catch (error) {
 
@@ -251,7 +257,7 @@ const MoreWrap = (props: MoreWrapProps) => {
       {isDelete && (
         <DeleteConfirm
           isVisible={isDelete}
-          text="确认删除该需求类别？"
+          text={t('newlyAdd.confirmDelCategory')}
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
@@ -261,19 +267,21 @@ const MoreWrap = (props: MoreWrapProps) => {
         <CommonModal
           isVisible={isHasDelete}
           onClose={onCloseHasDelete}
-          title="历史数据迁移"
+          title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
           <div style={{ paddingRight: 20 }}>
-            <HasDemandText>{`检测到该类型下有${props?.row?.hasDemand}条需求，请把历史需求变更为其他类型`}</HasDemandText>
+            <HasDemandText>
+              {t('newlyAdd.hasMoveType', { hasDemand: props?.row?.hasDemand })}
+            </HasDemandText>
             <FormWrap form={form} layout="vertical">
               <Form.Item
-                label="变更后需求类别"
+                label={t('newlyAdd.afterCategory')}
                 name="newId"
                 rules={[{ required: true, message: '' }]}
               >
                 <Select
-                  placeholder="请选择"
+                  placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
                   getPopupContainer={node => node}
@@ -286,12 +294,12 @@ const MoreWrap = (props: MoreWrapProps) => {
                 />
               </Form.Item>
               <Form.Item
-                label="变更后需求状态"
+                label={t('newlyAdd.afterStatus')}
                 name="statusId"
                 rules={[{ required: true, message: '' }]}
               >
                 <Select
-                  placeholder="请选择"
+                  placeholder={t('common.pleaseSelect')}
                   disabled={disable}
                   showArrow
                   showSearch
@@ -329,6 +337,7 @@ interface CardGroupProps {
 }
 
 const CardGroup = (props: CardGroupProps) => {
+  const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
   const { colorList, changeCategoryStatus, getCategoryList, projectInfo }
@@ -345,7 +354,7 @@ const CardGroup = (props: CardGroupProps) => {
         id: item.id,
         status: state,
       })
-      message.success('状态修改成功')
+      message.success(t('common.statusSuccess'))
       getCategoryList({ projectId: paramsData.id })
     } catch (error) {
 
@@ -356,12 +365,12 @@ const CardGroup = (props: CardGroupProps) => {
   const onChange = (checked: boolean, row: any) => {
     const arr = props?.list?.filter(i => i.id !== row.id)
     if (!row.statusCount && checked) {
-      message.warning('工作流配置完成后才能开启需求类别')
+      message.warning(t('newlyAdd.hasFlowCanOpen'))
       return
     }
 
     if (!arr?.filter(i => i.isCheck === 1)?.length && !checked) {
-      message.warning('至少保证有一个需求类别是开启状')
+      message.warning(t('newlyAdd.onlyCategoryOpen'))
       return
     }
     onChangeStatus(row, checked ? 1 : 2)
@@ -421,7 +430,7 @@ const CardGroup = (props: CardGroupProps) => {
             </CategoryCardHead>
             <DivWrap>
               <span className="set" onClick={() => onToWorkFlow(item)}>
-                工作流设置
+                {t('newlyAdd.workflowSet')}
               </span>
               {item?.statusCount ? null : (
                 <div className="warning">
@@ -429,7 +438,7 @@ const CardGroup = (props: CardGroupProps) => {
                     type="fillwarning"
                     style={{ fontSize: 14, color: '#FA9746' }}
                   />
-                  <div>工作流设置还未完成</div>
+                  <div>{t('newlyAdd.notFinishFlow')}</div>
                 </div>
               )}
             </DivWrap>
@@ -446,7 +455,7 @@ const CardGroup = (props: CardGroupProps) => {
         >
           <IconFont type="plus" style={{ fontSize: 20 }} />
           <div style={{ fontSize: 14, fontWeight: 400, marginTop: 8 }}>
-            创建需求类别
+            {t('newlyAdd.createCategory')}
           </div>
         </CategoryCard>
       </CardGroupWrap>
@@ -455,6 +464,7 @@ const CardGroup = (props: CardGroupProps) => {
 }
 
 const DemandSet = () => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { projectInfo, getCategoryList, categoryList } = useModel('project')
@@ -482,25 +492,25 @@ const DemandSet = () => {
 
   return (
     <Wrap>
-      <SetTitleWrap>需求设置</SetTitleWrap>
+      <SetTitleWrap>{t('newlyAdd.demandSet')}</SetTitleWrap>
       <ContentWrap>
         <ModeWrap style={{ marginBottom: 72 }}>
           <LabelWrap style={{ marginBottom: 24 }}>
             <div />
-            <span>需求字段设置</span>
+            <span>{t('newlyAdd.demandFieldsSet')}</span>
           </LabelWrap>
           <Button
             type="primary"
             icon={<IconFont type="settings" />}
             onClick={onToPage}
           >
-            字段设置
+            {t('newlyAdd.fieldsSet')}
           </Button>
         </ModeWrap>
         <ModeWrap>
           <LabelWrap>
             <div />
-            <span>需求类别设置</span>
+            <span>{t('newlyAdd.demandCategorySet')}</span>
           </LabelWrap>
           <CardGroup list={categoryList?.list} />
         </ModeWrap>

@@ -43,7 +43,7 @@ const Examine = () => {
       auth="b/user/copysend/story"
       permission={userInfo?.company_permissions}
     >
-      <StaffHeader>我的审核</StaffHeader>
+      <StaffHeader>{t('newlyAdd.mineExamine')}</StaffHeader>
       <MainWrap>
         <MineSwiper data={swiperData} onTap={getProjectId} />
         <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
