@@ -297,7 +297,19 @@ export const getUserInfoOverviewFeed: any = async (params: any) => {
     pagesize: params.pagesize,
     target_id: params.targetId,
   })
-  return response
+  return response.data?.map((i: any) => ({
+    id: i.id,
+    createTime: i.created_at,
+    content: i.content,
+    projectName: i.feedable?.project?.name,
+    name: i.feedable?.name,
+    isPublic: i.feedable?.project?.is_public,
+    isUserMember: i.feedable?.project?.user_ismember,
+    deletedTime: i.feedable?.deleted_at,
+    projectDeletedTime: i.feedable?.project?.deleted_at,
+    feedableId: i.feedable_id,
+    projectId: i.feedable?.project_id,
+  }))
 }
 
 export const getMemberInfoAbeyanceStory: any = async (params: any) => {

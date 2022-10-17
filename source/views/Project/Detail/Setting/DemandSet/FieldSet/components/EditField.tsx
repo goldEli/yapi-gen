@@ -235,43 +235,47 @@ const EditFiled = (props: Props) => {
   return (
     <CommonModal
       isVisible={props?.isVisible}
-      title={props?.item?.id ? '编辑自定义字段' : '创建自定义字段'}
+      title={
+        props?.item?.id
+          ? t('newlyAdd.editCustomFields')
+          : t('newlyAdd.createCustomFields')
+      }
       onClose={onClose}
       onConfirm={onConfirm}
-      confirmText={props?.item?.id ? '确定' : '创建'}
+      confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 16 }}>
+      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>
             <Form.Item
-              label="字段名称"
+              label={t('newlyAdd.fieldsName')}
               rules={[{ required: true, message: '' }]}
               name="name"
             >
               <Input
-                placeholder="请输入字段名称"
+                placeholder={t('newlyAdd.pleaseFieldsName')}
                 autoComplete="off"
                 autoFocus
               />
             </Form.Item>
             <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-              输入一个符合阅读习惯的短名字,最多12个字符,不能是系统字段,且不能与已有的自定义字段重名
+              {t('newlyAdd.nameText')}
             </div>
           </ItemWrap>
-          <Form.Item label="字段备注" name="remarks">
+          <Form.Item label={t('newlyAdd.fieldsRemark')} name="remarks">
             <Input.TextArea
-              placeholder="备注信息可以用来提示用户如何填写字段值 (比如“请输入数字”)"
+              placeholder={t('newlyAdd.pleaseFields')}
               autoSize={{ minRows: 5, maxRows: 5 }}
             />
           </Form.Item>
           <ItemWrap>
             <Form.Item
-              label="字段类型"
+              label={t('newlyAdd.fieldsType')}
               rules={[{ required: true, message: '' }]}
               name="type"
             >
               <Select
-                placeholder="请选择"
+                placeholder={t('common.pleaseSelect')}
                 allowClear
                 showArrow
                 optionFilterProp="label"
@@ -283,7 +287,7 @@ const EditFiled = (props: Props) => {
               />
             </Form.Item>
             <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-              根据需要可选择不同的字段类型,选择的字段类型会对是否配置字段选项产生影响
+              {t('newlyAdd.pleaseFieldsType')}
             </div>
             {value && value !== '1' && value !== '2' ? (
               <ChooseWrap>
@@ -292,7 +296,7 @@ const EditFiled = (props: Props) => {
                     checked={checked}
                     onChange={e => setChecked(e.target.checked)}
                   >
-                    包含时分
+                    {t('newlyAdd.hasShowTime')}
                   </Checkbox>
                 )}
                 {value === '8' && (
@@ -300,7 +304,7 @@ const EditFiled = (props: Props) => {
                     checked={checked}
                     onChange={e => setChecked(e.target.checked)}
                   >
-                    仅为整数
+                    {t('newlyAdd.onlyInt')}
                   </Checkbox>
                 )}
                 {value !== '8' && value !== '7' && (
@@ -313,7 +317,7 @@ const EditFiled = (props: Props) => {
                       }
                     >
                       <IconFont type="plus" />
-                      <span>添加选项</span>
+                      <span>{t('newlyAdd.addChoose')}</span>
                     </AddWrap>
                     <SortContainer
                       helperClass="row-dragging"
@@ -331,7 +335,7 @@ const EditFiled = (props: Props) => {
                             <Input
                               defaultValue={row[idx].value}
                               style={{ width: 276 }}
-                              placeholder="请输入参数值"
+                              placeholder={t('newlyAdd.pleaseParams')}
                               onChange={e => onChangeValue(e, idx)}
                             />
                             <IconFont

@@ -210,7 +210,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
           </ItemWrap>
           {plainOptions3?.length ? (
             <ItemWrap>
-              <div className={text}>自定义字段</div>
+              <div className={text}>{t('newlyAdd.customFields')}</div>
               <CheckboxGroup value={checkList3} onChange={onChange3}>
                 <Space style={{ flexWrap: 'wrap' }}>
                   {plainOptions3?.map(item => (

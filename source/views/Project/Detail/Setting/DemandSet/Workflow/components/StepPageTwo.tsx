@@ -13,6 +13,7 @@ import SetConfig from './SetConfig'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -44,6 +45,7 @@ const IconfontWrap = styled(IconFont)({
 })
 
 const StepPageTwo = () => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
@@ -72,11 +74,14 @@ const StepPageTwo = () => {
   const setColumns: any = useMemo(() => {
     const arr = [
       {
-        title: '状态名称',
+        title: t('newlyAdd.statusName'),
         width: 200,
         dataIndex: 'name',
-        render: (text: any, record: any) => <OmitText width={180}>{`从【${text}】流转到`}</OmitText>
-        ,
+        render: (text: any, record: any) => (
+          <OmitText width={180}>
+            {t('newlyAdd.fromReviewTo', { name: text })}
+          </OmitText>
+        ),
       },
     ]
     workList?.list?.forEach((i: any) => {
@@ -114,7 +119,7 @@ const StepPageTwo = () => {
           can_changes_category_status: k.canChange,
         })),
       })
-      message.success('保存成功')
+      message.success(t('common.saveSuccess'))
     } catch (error) {
 
       //
@@ -147,9 +152,7 @@ const StepPageTwo = () => {
             sticky
           />
         </TableWrap>
-        <TextWrap>
-          工作流流转设置，是设置工作流各状态间的先后流转关系。如果需要设置该流转，请在两个状态间的复选框内打勾
-        </TextWrap>
+        <TextWrap>{t('newlyAdd.text')}</TextWrap>
         <TextWrap>
           注：点击
           <IconFont
@@ -164,7 +167,7 @@ const StepPageTwo = () => {
 
       <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
         <Button type="primary" onClick={onSave}>
-          保存
+          {t('common.save')}
         </Button>
       </Space>
     </>

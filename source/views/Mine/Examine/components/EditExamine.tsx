@@ -11,6 +11,7 @@ import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -26,6 +27,7 @@ const FooterWrap = styled(Space)({
   alignItems: 'center',
   justifyContent: 'flex-end',
   height: 80,
+  paddingRight: 20,
 })
 
 const ItemWrap = styled.div({
@@ -68,6 +70,7 @@ interface Props {
 }
 
 const EditExamine = (props: Props) => {
+  const [t] = useTranslation()
   const { colorList } = useModel('project')
   const { getVerifyInfo, verifyInfo, updateVerifyOperation } = useModel('mine')
   const [value, setValue] = useState('')
@@ -97,7 +100,7 @@ const EditExamine = (props: Props) => {
         status,
         remark: value,
       })
-      message.success('修改审核状态成功')
+      message.success(t('newlyAdd.editExamineSuccess'))
       onClose()
       props?.onUpdate()
     } catch (error) {
@@ -117,16 +120,16 @@ const EditExamine = (props: Props) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title="审核"
+      title={t('newlyAdd.examine')}
       onClose={onClose}
       hasFooter={
         props?.isEdit
         && props?.item?.status === 1 && (
           <FooterWrap size={16}>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={onRefuse}>拒绝</Button>
+            <Button onClick={onClose}>{t('common.cancel')}</Button>
+            <Button onClick={onRefuse}>{t('newlyAdd.refuse')}</Button>
             <Button type="primary" onClick={onConfirm}>
-              通过
+              {t('newlyAdd.adopt')}
             </Button>
           </FooterWrap>
         )
@@ -139,7 +142,7 @@ const EditExamine = (props: Props) => {
         style={{
           maxHeight: props?.isEdit && props?.item?.status === 1 ? 464 : 544,
           overflowY: 'auto',
-          paddingRight: 16,
+          paddingRight: 20,
         }}
       >
         <ItemWrap>
@@ -156,35 +159,33 @@ const EditExamine = (props: Props) => {
           <div>{verifyInfo?.demandName}</div>
         </ItemWrap>
         <ItemWrap>
-          <LabelWrap>流转状态</LabelWrap>
+          <LabelWrap>{t('newlyAdd.reviewStatus')}</LabelWrap>
           <ContentWrap>{verifyInfo?.statusFromTo || '--'}</ContentWrap>
         </ItemWrap>
         <ItemWrap>
-          <LabelWrap>处理人</LabelWrap>
+          <LabelWrap>{t('common.dealName')}</LabelWrap>
           <ContentWrap>{verifyInfo?.usersName || '--'}</ContentWrap>
         </ItemWrap>
         <ItemWrap>
-          <LabelWrap>提交人</LabelWrap>
+          <LabelWrap>{t('newlyAdd.submitName')}</LabelWrap>
           <ContentWrap>{verifyInfo?.userName || '--'}</ContentWrap>
         </ItemWrap>
         <ItemWrap>
-          <LabelWrap>提交时间</LabelWrap>
+          <LabelWrap>{t('newlyAdd.submitTime')}</LabelWrap>
           <ContentWrap>{verifyInfo?.time || '--'}</ContentWrap>
         </ItemWrap>
-        <ItemWrap>
-          <LabelWrap>审核意见</LabelWrap>
-          {props?.isEdit && props?.item?.status === 1 ? (
+        {props?.isEdit && props?.item?.status === 1 && (
+          <ItemWrap>
+            <LabelWrap>{t('newlyAdd.examineReason')}</LabelWrap>
             <Input.TextArea
               style={{ width: 256 }}
               autoSize={{ minRows: 3, maxRows: 5 }}
-              placeholder="请输入审核意见"
+              placeholder={t('newlyAdd.pleaseExamine')}
               value={value}
               onChange={e => setValue(e.target.value)}
             />
-          )
-            : <ContentWrap>{props?.item.reason || '--'}</ContentWrap>
-          }
-        </ItemWrap>
+          </ItemWrap>
+        )}
         <div
           style={{
             color: '#323233',
@@ -193,7 +194,7 @@ const EditExamine = (props: Props) => {
             fontWeight: 500,
           }}
         >
-          审核流程
+          {t('newlyAdd.reviewProcess')}
         </div>
         {verifyInfo?.verify && (
           <TimelineWrap>
@@ -203,14 +204,14 @@ const EditExamine = (props: Props) => {
                   <Timeline.Item key={index}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <WrapBox size={16} color="#323233" right={16}>
-                        审核人
+                        {t('newlyAdd.reviewPerson')}
                       </WrapBox>
                       <WrapBox>
                         {k.operator === 1
-                          ? '依次审核'
+                          ? t('newlyAdd.sequence')
                           : k.operator === 2
-                            ? '与逻辑审核'
-                            : '或逻辑审核'}
+                            ? t('newlyAdd.andExamine')
+                            : t('newlyAdd.orExamine')}
                       </WrapBox>
                     </div>
                     {k.verifyUsers?.map((i: any) => (
@@ -255,10 +256,10 @@ const EditExamine = (props: Props) => {
                                 }}
                               >
                                 {i.status === 1
-                                  ? '待审核'
+                                  ? t('newlyAdd.waitExamine')
                                   : i.status === 2
-                                    ? '已通过'
-                                    : '未通过'}
+                                    ? t('newlyAdd.passed')
+                                    : t('newlyAdd.notPass')}
                               </span>
                               {i.status !== 1
                                 && <WrapBox left={16}>{i.time}</WrapBox>
@@ -276,7 +277,7 @@ const EditExamine = (props: Props) => {
               <Timeline.Item>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <WrapBox size={16} color="#323233" right={16}>
-                    审核人
+                    {t('newlyAdd.reviewPerson')}
                   </WrapBox>
                 </div>
                 {verifyInfo?.fixedUser?.map((k: any) => (
@@ -321,10 +322,10 @@ const EditExamine = (props: Props) => {
                             }}
                           >
                             {k.status === 1
-                              ? '待审核'
+                              ? t('newlyAdd.waitExamine')
                               : k.status === 2
-                                ? '已通过'
-                                : '未通过'}
+                                ? t('newlyAdd.passed')
+                                : t('newlyAdd.notPass')}
                           </span>
                           {k.status !== 1
                             && <WrapBox left={16}>{k.time}</WrapBox>
@@ -341,7 +342,7 @@ const EditExamine = (props: Props) => {
             <Timeline.Item style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <WrapBox size={16} color="#323233" right={8}>
-                  流转至
+                  {t('newlyAdd.circulationTo')}
                 </WrapBox>
                 <ViewWrap color={verifyInfo?.to?.color}>
                   {verifyInfo?.to?.content}

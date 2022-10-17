@@ -15,13 +15,12 @@ import DemandStatus from '../../components/DemandStatus'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message, Progress } from 'antd'
+import { Progress } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getNestedChildren, getParamsData } from '@/tools'
+import { getParamsData } from '@/tools'
 import { SliderWrap } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
-import { getTreeList } from '@/services/project/tree'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -36,6 +35,7 @@ const TextWrapEditor = styled.div({
   flexDirection: 'column',
   img: {
     maxWidth: '20%',
+    height: 'auto!important',
     cursor: 'pointer',
   },
   p: {
@@ -43,12 +43,17 @@ const TextWrapEditor = styled.div({
   },
 })
 
-const InfoItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  marginTop: 14,
-  position: 'relative',
-})
+const InfoItem = styled.div<{ activeState?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 14,
+    position: 'relative',
+  },
+  ({ activeState }) => ({
+    alignItems: activeState ? 'flex-start' : 'center',
+  }),
+)
 
 const Label = styled.div({
   color: '#969799',
@@ -182,7 +187,7 @@ const WrapLeftBox = () => {
           params.imageArray.push({ src: element.src })
         }
         for (let i = 0; i < oPics.length; i++) {
-          if (e.path[0].src === params.imageArray[i].url) {
+          if (e.path[0].src === params.imageArray[i].src) {
             params.index = i
           }
         }
@@ -250,7 +255,7 @@ const WrapLeftBox = () => {
         <DemandStatus pid={projectId} sid={demandId} />
       </InfoItem>
       <InfoItem>
-        <Label>需求进度</Label>
+        <Label>{t('newlyAdd.demandProgress')}</Label>
         <div
           style={{ display: 'flex', alignItems: 'center' }}
           onMouseUp={onChangeSchedule}
@@ -266,7 +271,7 @@ const WrapLeftBox = () => {
           </span>
         </div>
       </InfoItem>
-      <InfoItem>
+      <InfoItem activeState>
         <Label>{t('mine.demandInfo')}</Label>
         {demandInfo?.info ? (
           <TextWrapEditor
@@ -290,6 +295,7 @@ const WrapLeftBox = () => {
         />
       </InfoItem>
       <InfoItem
+        activeState
         hidden={
           !projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',

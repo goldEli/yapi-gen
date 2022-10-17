@@ -12,6 +12,7 @@ import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -83,30 +84,8 @@ const InfoItem = styled.div({
   },
 })
 
-const menuList = [
-  {
-    id: 1,
-    name: '他的概况',
-    path: 'profile',
-  },
-  {
-    id: 2,
-    name: '他的待办',
-    path: 'carbon',
-  },
-  {
-    id: 3,
-    name: '他的创建',
-    path: 'create',
-  },
-  {
-    id: 4,
-    name: '他的已办',
-    path: 'finished',
-  },
-]
-
 const MemberInfo = () => {
+  const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -114,6 +93,29 @@ const MemberInfo = () => {
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
   const { getMainInfo, mainInfo } = useModel('member')
+
+  const menuList = [
+    {
+      id: 1,
+      name: t('newlyAdd.hisSurvey'),
+      path: 'profile',
+    },
+    {
+      id: 2,
+      name: t('newlyAdd.hisAbeyance'),
+      path: 'carbon',
+    },
+    {
+      id: 3,
+      name: t('newlyAdd.hisCreate'),
+      path: 'create',
+    },
+    {
+      id: 4,
+      name: t('newlyAdd.hisFinish'),
+      path: 'finished',
+    },
+  ]
 
   useEffect(() => {
     getMainInfo({ userId })

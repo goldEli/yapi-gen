@@ -151,6 +151,9 @@ const GroupWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   width: 'calc(100% - 200px)',
+  '.ant-checkbox-group-item': {
+    margin: '6px 24px 6px 0',
+  },
 })
 
 interface ItemProps {
@@ -196,7 +199,6 @@ const PermissionItem = (props: ItemProps) => {
       <GroupWrap>
         <Checkbox.Group
           options={props.item.children}
-          style={{ marginRight: 8 }}
           value={keys}
           onChange={onChange}
           disabled={props.activeDetail?.type === 1}

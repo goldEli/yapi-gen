@@ -73,6 +73,9 @@ const TableBox = styled(TableWrap)({
       visibility: 'visible',
     },
   },
+  '.ant-table table': {
+    paddingBottom: 0,
+  },
 })
 
 const Staff = () => {
@@ -230,7 +233,7 @@ const Staff = () => {
     ]
     const lastList = [
       {
-        title: '操作',
+        title: t('newlyAdd.operation'),
         dataIndex: 'action',
         width: 120,
         fixed: 'right',
@@ -244,7 +247,7 @@ const Staff = () => {
                       onClick={() => onToDetail(record)}
                       style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
                     >
-                  查看详情
+                      {t('project.checkInfo')}
                     </span>
                   )}
             </>

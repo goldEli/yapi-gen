@@ -14,6 +14,7 @@ const ModalHeader = styled.div({
   color: '#323233',
   fontWeight: '500',
   height: 56,
+  padding: '0 24px',
 })
 
 const ModalFooter = styled(Space)({
@@ -22,6 +23,7 @@ const ModalFooter = styled(Space)({
   alignItems: 'center',
   justifyContent: 'flex-end',
   height: 80,
+  padding: '0 24px',
 })
 
 interface ModalProps {
@@ -44,7 +46,7 @@ const CommonModal = (props: ModalProps) => {
       visible={props?.isVisible}
       title={false}
       closable={false}
-      bodyStyle={{ padding: '0 24px' }}
+      bodyStyle={{ padding: 0 }}
       width={props?.width || 420}
       maskClosable={false}
       destroyOnClose
@@ -59,7 +61,7 @@ const CommonModal = (props: ModalProps) => {
           type="close"
         />
       </ModalHeader>
-      <div>{props?.children}</div>
+      <div style={{ padding: '0 4px 0 24px' }}>{props?.children}</div>
       {props?.isShowFooter ? null : (
         <>
           {props?.hasFooter
@@ -68,7 +70,7 @@ const CommonModal = (props: ModalProps) => {
                 <ModalFooter size={16}>
                   <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
                   <Button onClick={props?.onConfirm} type="primary">
-                    {props?.confirmText ? props?.confirmText : '确定'}
+                    {props?.confirmText ? props?.confirmText : t('common.confirm')}
                   </Button>
                 </ModalFooter>
               )}

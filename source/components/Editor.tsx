@@ -81,6 +81,7 @@ const Wrap = styled.div<{ minHeight?: any }>(
     borderRadius: 6,
     border: '1px solid #ebedf0',
     zIndex: 100,
+    overflow: 'hidden',
   },
   ({ minHeight }) => ({
     '.w-e-text-container [data-slate-editor]': {
@@ -105,19 +106,6 @@ const EditorBox = (props: Props) => {
 
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: t('components.pleaseContent'),
-
-    // hoverbarKeys: {
-    //   image: {
-    //     menuKeys: [
-    //       'imageWidth30',
-    //       'imageWidth50',
-    //       'imageWidth100',
-    //       'viewImageLink',
-    //       'deleteImage',
-    //     ],
-    //   },
-    // },
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     MENU_CONF: {
       fontFamily: {
         fontFamilyList: [

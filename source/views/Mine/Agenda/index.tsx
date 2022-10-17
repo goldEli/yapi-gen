@@ -1,12 +1,14 @@
+import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const CopySend = () => {
+  const [t] = useTranslation()
   return (
     <MainIndex
       auth="b/user/copysend/story"
-      title="我的抄送"
+      title={t('mine.mineCopySend')}
       type="copysend"
-      subTitle="抄送需求"
+      subTitle={t('mine.copyDemand')}
     />
   )
 }

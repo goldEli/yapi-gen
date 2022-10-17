@@ -5,16 +5,12 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
-import IconFont from '@/components/IconFont'
 import Pop from '@/components/Popconfirm'
 import styled from '@emotion/styled'
-import { Divider, Form, Input, message, Select, Space } from 'antd'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { Divider, message, Space } from 'antd'
 import { useModel } from '@/models'
-import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getParamsData } from '@/tools'
 import { getShapeLeft } from '@/services/project/shape'
 import { ShapeContent } from '@/components/Shape'
 import { updateDemandStatus } from '@/services/mine'
@@ -32,33 +28,6 @@ const StatusWrap = styled.div({
   cursor: 'pointer',
 })
 
-const DemandStatus = styled.div({
-  padding: '16px 24px',
-  display: 'flex',
-  flexDirection: 'column',
-  width: 362,
-  '.ant-form-item': {
-    margin: '16px 0 0 0',
-  },
-})
-
-const PopoverFooter = styled(Space)({
-  display: 'flex',
-  alignItems: 'center',
-  marginTop: 36,
-  justifyContent: 'flex-end',
-})
-const Box = styled.div`
-  &:last-child {
-    visibility: hidden;
-  }
-`
-
-interface Props {
-  hide?(): void
-  active?: any
-}
-
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const { getDemandInfo, demandInfo } = useModel('demand')
@@ -72,7 +41,7 @@ const DemandStatusBox = (props: any) => {
 
   const onChangeIdx = (id: any) => {
     if (demandInfo?.isExamine) {
-      message.warning('该需求正在审核中，现在不能流转操作')
+      message.warning(t('newlyAdd.underReview'))
     } else {
       setActive(id)
     }
@@ -95,8 +64,6 @@ const DemandStatusBox = (props: any) => {
   useEffect(() => {
     init()
   }, [])
-
-  // console.log(demandInfo, '====')
 
   return (
     <>

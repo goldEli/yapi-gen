@@ -136,6 +136,16 @@ const BackWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  svg: {
+    color: '#2877ff',
+    fontSize: 20,
+  },
+  '&: hover': {
+    background: '#2877ff',
+    svg: {
+      color: 'white',
+    },
+  },
 })
 
 interface Props {
@@ -268,13 +278,9 @@ const CommonOperation = (props: Props) => {
       />
       <OperationTop>
         <ProjectInfo>
-          <Tooltip title="返回列表">
+          <Tooltip title={t('newlyAdd.backList')}>
             <BackWrap>
-              <IconFont
-                onClick={onToProject}
-                style={{ color: '#2877ff', fontSize: 20 }}
-                type="return"
-              />
+              <IconFont onClick={onToProject} type="return" />
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
@@ -286,7 +292,7 @@ const CommonOperation = (props: Props) => {
               {projectInfo.name}
             </ClickWrap>
           </OmitText>
-          <Tooltip title="编辑项目">
+          <Tooltip title={t('project.editProject')}>
             <ClickIcon
               hidden={getIsPermission(
                 userInfo?.company_permissions,

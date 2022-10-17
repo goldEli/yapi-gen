@@ -8,6 +8,7 @@ import { NameWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Input, Popover, Space, Timeline } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const AddWrap = styled.div({
   display: 'flex',
@@ -111,18 +112,13 @@ const ItemWrap = styled.div({
   },
 })
 
-const menuList = [
-  { name: '依次审核', value: 1, icon: 'right' },
-  { name: '与逻辑审核', value: 2, icon: 'and' },
-  { name: '或逻辑审核', value: 3, icon: 'line' },
-]
-
 interface ChoosePersonProps {
   onChangeValue(obj: any): void
   options: any
 }
 
 const ChoosePerson = (props: ChoosePersonProps) => {
+  const [t] = useTranslation()
   const [value, setValue] = useState('')
 
   return (
@@ -130,7 +126,7 @@ const ChoosePerson = (props: ChoosePersonProps) => {
       <div style={{ padding: '0 16px' }}>
         <Input
           style={{ height: 32, width: 208 }}
-          placeholder="请输入关键字"
+          placeholder={t('newlyAdd.pleaseKeyWord')}
           onChange={e => setValue(e.target.value)}
         />
       </div>
@@ -175,10 +171,17 @@ interface Props {
 }
 
 const ExamineItem = (props: Props) => {
+  const [t] = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [isShowSelect, setIsShowSelect] = useState(false)
   const [examineList, setExamineList] = useState<any>([])
   const [normal, setNormal] = useState(1)
+
+  const menuList = [
+    { name: t('newlyAdd.sequence'), value: 1, icon: 'right' },
+    { name: t('newlyAdd.andExamine'), value: 2, icon: 'and' },
+    { name: t('newlyAdd.orExamine'), value: 3, icon: 'line' },
+  ]
 
   useEffect(() => {
     if (props?.item.id) {
@@ -225,12 +228,17 @@ const ExamineItem = (props: Props) => {
   const onChangeMenu = (val: any) => {
     setNormal(val)
     setIsShowSelect(false)
+    props?.onChangeList({
+      operator: val,
+      id: props?.item.id,
+      type: 'update',
+    })
   }
 
   return (
     <Timeline.Item>
       <ItemWrap>
-        <span>审核人</span>
+        <span>{t('newlyAdd.reviewPerson')}</span>
         <Popover
           key={isShowSelect.toString()}
           visible={isShowSelect}
@@ -317,7 +325,11 @@ const ExamineItem = (props: Props) => {
               </div>
               {index !== examineList?.length - 1 && (
                 <IconFont
-                  style={{ fontSize: 16, margin: '0 8px', color: '#BBBDBF' }}
+                  style={{
+                    fontSize: 16,
+                    margin: '-20px 8px 0',
+                    color: '#BBBDBF',
+                  }}
                   type={
                     menuList?.filter((k: any) => k.value === normal)[0]?.icon
                   }

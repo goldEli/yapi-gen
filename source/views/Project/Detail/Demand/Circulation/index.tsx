@@ -11,6 +11,7 @@ import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -109,20 +110,21 @@ const TimeTag = styled.div({
 })
 
 const Circulation = () => {
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { getStatusLogs, statusLogs, demandInfo } = useModel('demand')
   const keys = [
-    { name: '标签', key: 'tag' },
-    { name: '需求分类', key: 'class' },
-    { name: '评论', key: 'comment' },
-    { name: '优先级', key: 'priority' },
-    { name: '处理人', key: 'usersName' },
-    { name: '迭代', key: 'iterateName' },
-    { name: '预计开始', key: 'startTime' },
-    { name: '预计结束', key: 'endTime' },
-    { name: '抄送', key: 'copySendName' },
+    { name: t('common.tag'), key: 'tag' },
+    { name: t('newlyAdd.demandClass'), key: 'class' },
+    { name: t('common.comment'), key: 'comment' },
+    { name: t('common.priority'), key: 'priority' },
+    { name: t('common.dealName'), key: 'usersName' },
+    { name: t('common.iterate'), key: 'iterateName' },
+    { name: t('common.start'), key: 'startTime' },
+    { name: t('common.end'), key: 'endTime' },
+    { name: t('common.copySend'), key: 'copySendName' },
   ]
 
   const getLogs = async () => {
@@ -155,10 +157,10 @@ const Circulation = () => {
               <TextWrap style={{ marginLeft: 8 }}>{i?.operationName}</TextWrap>
               <TextWrap style={{ marginLeft: 32 }}>
                 {i.changeType === 1
-                  ? '创建需求'
+                  ? t('common.createDemand')
                   : i.changeType === 2
-                    ? '流转需求至'
-                    : '申请流转至'}
+                    ? t('newlyAdd.reviewDemandTo')
+                    : t('newlyAdd.applyReviewTo')}
               </TextWrap>
               {i.changeType === 3
                 ? `【${i.statusTo?.name}】`
@@ -247,14 +249,14 @@ const Circulation = () => {
                         marginRight: 16,
                       }}
                     >
-                      审核人
+                      {t('newlyAdd.reviewPerson')}
                     </SpanWrap>
                     <SpanWrap size={12} weight={400} color="#969799">
                       {k.operator === 1
-                        ? '依次审核'
+                        ? t('newlyAdd.sequence')
                         : k.operator === 2
-                          ? '与逻辑审核'
-                          : '或逻辑审核'}
+                          ? t('newlyAdd.andExamine')
+                          : t('newlyAdd.orExamine')}
                     </SpanWrap>
                   </LineItem>
                   {k.verifyUsers?.map((m: any) => (
@@ -301,12 +303,19 @@ const Circulation = () => {
                         </div>
                       </LineItem>
                       <LineItem style={{ marginLeft: 32 }}>
-                        {m.verifyStatus === 1
-                          ? <SpanWrap color="#FA9746">待审核</SpanWrap>
-                          : m.verifyStatus === 2
-                            ? <SpanWrap color="#43BA9A">已通过</SpanWrap>
-                            : <SpanWrap color="#FF5C5E">未通过</SpanWrap>
-                        }
+                        {m.verifyStatus === 1 ? (
+                          <SpanWrap color="#FA9746">
+                            {t('newlyAdd.waitExamine')}
+                          </SpanWrap>
+                        ) : m.verifyStatus === 2 ? (
+                          <SpanWrap color="#43BA9A">
+                            {t('newlyAdd.passed')}
+                          </SpanWrap>
+                        ) : (
+                          <SpanWrap color="#FF5C5E">
+                            {t('newlyAdd.notPass')}
+                          </SpanWrap>
+                        )}
                       </LineItem>
                       <LineItem top={4} hidden={!m.verifyOpinion}>
                         <SpanWrap size={14} color="#323233">
@@ -328,7 +337,7 @@ const Circulation = () => {
                       marginRight: 16,
                     }}
                   >
-                    审核人
+                    {t('newlyAdd.reviewPerson')}
                   </SpanWrap>
                 </LineItem>
                 <LineItem top={16}>
@@ -348,11 +357,13 @@ const Circulation = () => {
                   </div>
                 </LineItem>
                 <LineItem style={{ marginLeft: 32 }}>
-                  {i.verifyAll?.verify.fixedUser.verifyStatus === 1
-                    ? <SpanWrap color="#FA9746">待审核</SpanWrap>
-                    : i.verifyAll?.verify.fixedUser.verifyStatus === 2
-                      ? <SpanWrap color="#43BA9A">已通过</SpanWrap>
-                      : <SpanWrap color="#FF5C5E">未通过</SpanWrap>
+                  {i.verifyAll?.verify.fixedUser.verifyStatus === 1 ? (
+                    <SpanWrap color="#FA9746">
+                      {t('newlyAdd.waitExamine')}
+                    </SpanWrap>
+                  ) : i.verifyAll?.verify.fixedUser.verifyStatus === 2
+                    ? <SpanWrap color="#43BA9A">{t('newlyAdd.passed')}</SpanWrap>
+                    : <SpanWrap color="#FF5C5E">{t('newlyAdd.notPass')}</SpanWrap>
                   }
                 </LineItem>
                 <LineItem
@@ -369,8 +380,8 @@ const Circulation = () => {
               <LineItem top={24}>
                 <SpanWrap size={16} color="#323233" weight={500}>
                   {i.verifyAll?.verifyStatus === 2
-                    ? '需求流转至'
-                    : '审核未通过需求状态流回'}
+                    ? t('newlyAdd.demandReviewTo')
+                    : t('newlyAdd.notExamineTo')}
                 </SpanWrap>
                 <ViewWrap
                   style={{ marginLeft: 8 }}

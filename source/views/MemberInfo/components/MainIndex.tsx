@@ -5,7 +5,6 @@ import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
-import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
@@ -26,7 +25,6 @@ const MainIndex = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
-  const [t] = useTranslation()
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(paramsData.id || 0)
   const { getUserInfoProject } = useModel('member')

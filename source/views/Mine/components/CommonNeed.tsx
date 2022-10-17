@@ -8,7 +8,6 @@
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Hehavior,
   PaginationWrap,
   StaffTableWrap,
   MyInput,

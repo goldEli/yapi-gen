@@ -16,6 +16,7 @@ const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 350,
+  paddingRight: 20,
 })
 
 const LeftWrap = styled.div({
@@ -205,7 +206,7 @@ const FieldsTemplate = (props: Props) => {
       title={props?.title}
       isVisible={props?.visible}
       width={784}
-      confirmText="下载模板"
+      confirmText={t('newlyAdd.downloadTemplate')}
       onClose={onClose}
       onConfirm={onConfirm}
     >
@@ -217,7 +218,7 @@ const FieldsTemplate = (props: Props) => {
             style={{ marginBottom: 24, width: 'fit-content' }}
             onClick={onAllChecked}
           >
-            全选
+            {t('newlyAdd.allChecked')}
           </Checkbox>
           <ItemWrap>
             <LabelWrap>{t('components.basicFiled')}</LabelWrap>
@@ -253,7 +254,7 @@ const FieldsTemplate = (props: Props) => {
           </ItemWrap>
           {importFields?.customFields?.length ? (
             <ItemWrap>
-              <LabelWrap>自定义字段</LabelWrap>
+              <LabelWrap>{t('newlyAdd.customFields')}</LabelWrap>
               <Checkbox.Group value={checkList3} onChange={onChange3}>
                 <Space style={{ flexWrap: 'wrap' }}>
                   {importFields?.customFields?.map((item: any) => (

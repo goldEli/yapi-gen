@@ -24,7 +24,7 @@ import {
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
@@ -276,7 +276,7 @@ const WrapLeft = (props: Props) => {
 
   const filterContent = (
     <div className="filterContent">
-      <Form form={form} style={{ width: 260, padding: 24 }} layout="vertical">
+      <Form form={form} style={{ width: 270, padding: 24 }} layout="vertical">
         <Form.Item label={t('common.title')} name="name">
           <Input autoComplete="off" placeholder={t('project.pleaseTitle')} />
         </Form.Item>

@@ -1,7 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const Finish = () => {
-  return <MainIndex title="他的已办" type="finish" subTitle="已办需求" />
+  const [t] = useTranslation()
+  return (
+    <MainIndex
+      title={t('newlyAdd.hisFinish')}
+      type="finish"
+      subTitle={t('mine.finishDemand')}
+    />
+  )
 }
 
 export default Finish

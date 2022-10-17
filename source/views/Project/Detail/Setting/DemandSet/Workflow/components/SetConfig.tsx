@@ -39,6 +39,13 @@ import {
   SortableElement as sortableElement,
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
+import { useTranslation } from 'react-i18next'
+
+const TableWrap = styled(Table)({
+  '.ant-table-cell': {
+    padding: 0,
+  },
+})
 
 const LabelWrap = styled.div({
   color: '#323233',
@@ -50,6 +57,7 @@ const LabelWrap = styled.div({
 const Wrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  padding: '0 24px',
 })
 
 const ItemWrap = styled.div({
@@ -96,7 +104,7 @@ const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
     marginRight: 8,
   },
   ({ active }) => ({
-    transform: active ? 'rotate(-90deg)' : 'inherit',
+    transform: active ? 'rotate(0deg)' : 'rotate(-90deg)',
   }),
 )
 
@@ -116,6 +124,7 @@ const normalObj: any = {
 }
 
 const SetConfig = (props: Props) => {
+  const [t] = useTranslation()
   const modalBody = useRef<any>(null)
   const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList }
     = useModel('project')
@@ -228,8 +237,8 @@ const SetConfig = (props: Props) => {
     if (isSwitch) {
       params.verify_type = radioValue
       if (radioValue === 1) {
-        if (normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
-          message.warning('审核人为必填')
+        if (!normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
+          message.warning(t('newlyAdd.needExaminePerson'))
           return
         }
         params.process = normalList
@@ -241,8 +250,22 @@ const SetConfig = (props: Props) => {
       }
     }
 
+    if (dataSource?.filter((k: any) => !k.content)?.length) {
+      message.warning(t('newlyAdd.needFields'))
+      return
+    }
+
+    if (
+      dataSource?.filter(
+        (k: any) => k.content && k.default_type === 1 && !k.default_value,
+      )?.length
+    ) {
+      message.warning(t('newlyAdd.needNormal'))
+      return
+    }
+
     await saveWorkflowConfig(params)
-    message.success('保存成功')
+    message.success(t('common.saveSuccess'))
     onClose()
     setDataSource([])
   }
@@ -438,7 +461,12 @@ const SetConfig = (props: Props) => {
   const DragHandle = sortableHandle(() => (
     <IconFont
       type="move"
-      style={{ fontSize: 16, cursor: 'pointer', color: '#969799' }}
+      style={{
+        fontSize: 16,
+        cursor: 'pointer',
+        color: '#969799',
+        padding: '0 16px',
+      }}
     />
   ))
 
@@ -491,7 +519,7 @@ const SetConfig = (props: Props) => {
           <>
             {record?.content === 'comment'
             || record.content === 'users_name'
-              ? ''
+              ? <div style={{ width: 48 }} />
               : <DragHandle />
             }
           </>
@@ -499,8 +527,8 @@ const SetConfig = (props: Props) => {
       },
     },
     {
-      title: '字段名称',
-      width: 160,
+      title: t('newlyAdd.fieldsName'),
+      width: 170,
       dataIndex: 'title',
       render: (text: any, record: any) => (
         <Select
@@ -525,8 +553,8 @@ const SetConfig = (props: Props) => {
       ),
     },
     {
-      title: '默认值类型',
-      width: 160,
+      title: t('newlyAdd.normalType'),
+      width: 170,
       dataIndex: 'default_type',
       render: (text: any, record: any) => (
         <Select
@@ -538,23 +566,23 @@ const SetConfig = (props: Props) => {
           onChange={value => onChangeValue(value, record)}
           options={
             record.content === 'comment'
-              ? [{ label: '固定值', value: 2 }]
+              ? [{ label: t('newlyAdd.fixedValue'), value: 2 }]
               : [
-                  { label: '字段值', value: 1 },
-                  { label: '固定值', value: 2 },
+                  { label: t('newlyAdd.fieldsValue'), value: 1 },
+                  { label: t('newlyAdd.fixedValue'), value: 2 },
                 ]
           }
         />
       ),
     },
     {
-      title: '默认值/默认值字段',
+      title: t('newlyAdd.normalValueOrFields'),
       dataIndex: 'default_value',
       width: 170,
       render: (text: any, record: any) => <>{getTableCol(record)}</>,
     },
     {
-      title: '是否必填',
+      title: t('newlyAdd.isNeed'),
       width: 100,
       dataIndex: 'is_must',
       align: 'center',
@@ -566,7 +594,7 @@ const SetConfig = (props: Props) => {
       ),
     },
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       width: 60,
       dataIndex: 'action',
       render: (text: string, record: any) => {
@@ -580,7 +608,7 @@ const SetConfig = (props: Props) => {
                     style={{ color: '#2877ff', cursor: 'pointer' }}
                     onClick={() => onDelRow(record)}
                   >
-                删除
+                    {t('common.del')}
                   </span>
                 )}
           </>
@@ -592,6 +620,7 @@ const SetConfig = (props: Props) => {
   // 流转审核下的类型
   const onRadioChange = (e: any) => {
     setRadioValue(e.target.value)
+    setNormalList([{ id: new Date().getTime(), obj: {} }])
   }
 
   // 是否开启流转审核
@@ -610,12 +639,16 @@ const SetConfig = (props: Props) => {
 
   // 更新流转审核线并过滤人员下拉
   const onChangeList = (obj: any, id: any) => {
-    normalList.filter((i: any) => i.id === id)[0].obj = obj
     if (obj.type === 'add') {
+      normalList.filter((i: any) => i.id === id)[0].obj = obj
       setOptions(options?.filter((k: any) => k.id !== obj.id))
-    } else {
+    } else if (obj.type === 'del') {
+      normalList.filter((i: any) => i.id === id)[0].obj = obj
       const checkObj = allMemberList?.filter((i: any) => i.id === obj.id)[0]
       setOptions([...options, ...[checkObj]])
+    } else {
+      const resultObj: any = normalList.filter((i: any) => i.id === id)[0].obj
+      resultObj.operator = obj.operator
     }
   }
 
@@ -630,7 +663,7 @@ const SetConfig = (props: Props) => {
   const onAddExamine = () => {
     const lastItem: any = normalList[normalList?.length - 1]
     if (!lastItem?.obj?.verify_users?.length) {
-      message.warning('审核人为必填')
+      message.warning(t('newlyAdd.needExaminePerson'))
       return
     }
     setNormalList([...normalList, ...[{ id: new Date().getTime(), obj: {} }]])
@@ -639,15 +672,31 @@ const SetConfig = (props: Props) => {
   return (
     <CommonModal
       isVisible={props?.isVisible}
-      title="配置流转附加字段及权限"
+      title={t('newlyAdd.setReviewAndPermission')}
       onClose={onClose}
       onConfirm={onConfirm}
       width={784}
+      confirmText={t('newlyAdd.submit')}
     >
-      <div style={{ maxHeight: 544, overflowY: 'auto' }}>
+      <div style={{ maxHeight: 544, overflowY: 'auto', paddingRight: 20 }}>
         <ItemWrap style={{ marginTop: 8 }}>
-          <LabelWrap>当前流转</LabelWrap>
+          <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>
+            <StatusWrap
+              color={
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.color
+              }
+            >
+              {
+                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
+                  ?.name
+              }
+            </StatusWrap>
+            <Divider
+              type="vertical"
+              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
+            />
             <StatusWrap
               color={
                 workList?.list?.filter(
@@ -661,21 +710,6 @@ const SetConfig = (props: Props) => {
                 )[0]?.name
               }
             </StatusWrap>
-            <Divider
-              type="vertical"
-              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
-            />
-            <StatusWrap
-              color={
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.color
-              }
-            >
-              {
-                workList?.list?.filter((i: any) => i.id === props?.item?.id)[0]
-                  ?.name
-              }
-            </StatusWrap>
           </ItemWrap>
         </ItemWrap>
         <ItemWrap style={{ marginTop: 32 }}>
@@ -685,76 +719,76 @@ const SetConfig = (props: Props) => {
           >
             <IconfontWrap type="tableDown" active={isShowPermission} />
             <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
-              流转操作权限
+              {t('newlyAdd.reviewPermission')}
             </span>
           </ItemWrap>
         </ItemWrap>
         {isShowPermission && (
           <Form form={form}>
-            <TextWrap>
-              配置状态流转用户权限，只有有权限的用户才允许做此流转。如果为空则默认所有人有权限。
-            </TextWrap>
-            <ItemWrap style={{ marginTop: 16 }}>
-              <LabelWrap>用户组</LabelWrap>
-              <Form.Item noStyle name="roles">
-                <Select
-                  style={{ minWidth: 186 }}
-                  showSearch
-                  mode="multiple"
-                  optionFilterProp="label"
-                  getPopupContainer={node => node}
-                  showArrow
-                  options={info?.roles?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
-                />
-              </Form.Item>
-            </ItemWrap>
-            <ItemWrap style={{ marginTop: 24 }}>
-              <LabelWrap>人员字段</LabelWrap>
-              <Form.Item noStyle name="user_fields">
-                <Select
-                  style={{ minWidth: 186 }}
-                  showSearch
-                  mode="multiple"
-                  showArrow
-                  optionFilterProp="label"
-                  getPopupContainer={node => node}
-                  options={info?.authUserFields?.map((i: any) => ({
-                    label: i.title,
-                    value: i.content,
-                  }))}
-                />
-              </Form.Item>
-            </ItemWrap>
-            <ItemWrap style={{ marginTop: 24 }}>
-              <LabelWrap>其他用户</LabelWrap>
-              <Form.Item noStyle name="other_users">
-                <Select
-                  style={{ minWidth: 186 }}
-                  showSearch
-                  mode="multiple"
-                  optionFilterProp="label"
-                  showArrow
-                  getPopupContainer={node => node}
-                  options={memberList}
-                  allowClear
-                />
-              </Form.Item>
-            </ItemWrap>
+            <div style={{ paddingLeft: 20 }}>
+              <TextWrap>{t('newlyAdd.setPermissionText')}</TextWrap>
+              <ItemWrap style={{ marginTop: 16 }}>
+                <LabelWrap>{t('setting.userGroup')}</LabelWrap>
+                <Form.Item noStyle name="roles">
+                  <Select
+                    style={{ minWidth: 186 }}
+                    showSearch
+                    mode="multiple"
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    showArrow
+                    options={info?.roles?.map((i: any) => ({
+                      label: i.name,
+                      value: i.id,
+                    }))}
+                  />
+                </Form.Item>
+              </ItemWrap>
+              <ItemWrap style={{ marginTop: 24 }}>
+                <LabelWrap>{t('newlyAdd.userFields')}</LabelWrap>
+                <Form.Item noStyle name="user_fields">
+                  <Select
+                    style={{ minWidth: 186 }}
+                    showSearch
+                    mode="multiple"
+                    showArrow
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    options={info?.authUserFields?.map((i: any) => ({
+                      label: i.title,
+                      value: i.content,
+                    }))}
+                  />
+                </Form.Item>
+              </ItemWrap>
+              <ItemWrap style={{ marginTop: 24 }}>
+                <LabelWrap>{t('newlyAdd.otherUser')}</LabelWrap>
+                <Form.Item noStyle name="other_users">
+                  <Select
+                    style={{ minWidth: 186 }}
+                    showSearch
+                    mode="multiple"
+                    optionFilterProp="label"
+                    showArrow
+                    getPopupContainer={node => node}
+                    options={memberList}
+                    allowClear
+                  />
+                </Form.Item>
+              </ItemWrap>
 
-            <ItemWrap style={{ marginTop: 24 }}>
-              <LabelWrap>流转审核</LabelWrap>
-              <Form.Item noStyle name="is_verify">
-                <Switch
-                  checked={isSwitch}
-                  onChange={checked => onChangeSwitch(checked)}
-                />
-              </Form.Item>
-            </ItemWrap>
+              <ItemWrap style={{ marginTop: 24 }}>
+                <LabelWrap>{t('newlyAdd.reviewExamine')}</LabelWrap>
+                <Form.Item noStyle name="is_verify">
+                  <Switch
+                    checked={isSwitch}
+                    onChange={checked => onChangeSwitch(checked)}
+                  />
+                </Form.Item>
+              </ItemWrap>
+              <TextWrap>{t('newlyAdd.openExamineCanTo')}</TextWrap>
+            </div>
 
-            <TextWrap>开启审核后，需审核人同意后才可流转到下一状态</TextWrap>
             {isSwitch && (
               <Wrap>
                 <Radio.Group
@@ -762,8 +796,8 @@ const SetConfig = (props: Props) => {
                   value={radioValue}
                   style={{ marginTop: 8 }}
                 >
-                  <Radio value={1}>固定审核流程</Radio>
-                  <Radio value={2}>用户指定审核人</Radio>
+                  <Radio value={1}>{t('newlyAdd.fixedExamine')}</Radio>
+                  <Radio value={2}>{t('newlyAdd.userAppoint')}</Radio>
                 </Radio.Group>
                 {radioValue === 1 ? (
                   <TimelineWrap>
@@ -786,7 +820,7 @@ const SetConfig = (props: Props) => {
                           width: 'fit-content',
                         }}
                       >
-                        添加审核
+                        {t('newlyAdd.addExamine')}
                       </div>
                     </Timeline.Item>
                   </TimelineWrap>
@@ -802,23 +836,28 @@ const SetConfig = (props: Props) => {
           >
             <IconfontWrap type="tableDown" active={isShowField} />
             <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
-              流转填写字段
+              {t('newlyAdd.reviewFields')}
             </span>
           </ItemWrap>
         </ItemWrap>
         {isShowField && (
           <div>
-            <TextWrap>
-              配置状态流转过程中需要额外填写的字段，可以设置是否必填和默认值。
+            <TextWrap style={{ paddingLeft: 20 }}>
+              {t('newlyAdd.reviewFieldsText')}
             </TextWrap>
             <Button
-              style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 16 }}
+              style={{
+                background: '#F0F4FA',
+                color: '#2877ff',
+                marginTop: 16,
+                marginLeft: 20,
+              }}
               icon={<IconFont type="plus" />}
               onClick={onClickAddField}
             >
-              添加字段
+              {t('newlyAdd.addFields')}
             </Button>
-            <Table
+            <TableWrap
               pagination={false}
               dataSource={dataSource}
               columns={columns as any}

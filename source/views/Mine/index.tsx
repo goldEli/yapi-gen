@@ -4,7 +4,6 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-// import QuicklyCreate from './components/QuicklyCreate'
 import EditDemand from '@/components/EditDemand'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
@@ -134,7 +133,7 @@ const MineBox = () => {
     },
     {
       id: 6,
-      name: '我的审核',
+      name: t('newlyAdd.mineExamine'),
       path: 'examine',
       isPermission: false,
     },

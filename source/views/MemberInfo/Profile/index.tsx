@@ -8,7 +8,7 @@
 import { useModel } from '@/models'
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { css } from '@emotion/css'
 import {
   ChartsItem,
@@ -121,7 +121,6 @@ const TimeLineWrap = styled.div`
   height: 300px;
 `
 const LineItem = styled.div`
-  /* width: 360px; */
   display: flex;
   justify-content: space-between;
   font-size: 12px;
@@ -223,7 +222,7 @@ const Profile = () => {
       limit: '',
       targetId: userId,
     })
-    setLineData(res1.data)
+    setLineData(res1)
   }
 
   const init = async () => {
@@ -258,7 +257,12 @@ const Profile = () => {
   }, [monthIndex])
 
   const onToDetail = (item: any) => {
-    if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
+    if (item?.isPublic !== 1 && !item.isUserMember) {
+      message.warning(t('common.notCheckInfo'))
+      return
+    }
+
+    if (item.deletedTime || item.projectDeletedTime) {
       message.warning(t('common.demandDeleteEd'))
       return
     }
@@ -266,8 +270,8 @@ const Profile = () => {
     const params = encryptPhp(
       JSON.stringify({
         type: 'info',
-        id: item.feedable.project_id,
-        demandId: item.feedable_id,
+        id: item.projectId,
+        demandId: item.feedableId,
       }),
     )
 
@@ -300,7 +304,7 @@ const Profile = () => {
               <SecondTitle
                 style={{ marginBottom: 16, display: 'inline-block' }}
               >
-                他的概况
+                {t('newlyAdd.hisSurvey')}
               </SecondTitle>
               <TotalWrap>
                 <ChartsItem>
@@ -331,7 +335,7 @@ const Profile = () => {
             </HeadWrap>
             <GatteWrap style={{ margin: 0 }}>
               <div style={{ padding: '28px 24px 0' }}>
-                <SecondTitle>他的需求甘特图</SecondTitle>
+                <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
                 <div className={titleWrap}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <span onClick={nextMonth}>
@@ -390,7 +394,7 @@ const Profile = () => {
           <StyledWrap>
             <Head>
               <div>
-                <SecondTitle>他的概况</SecondTitle>
+                <SecondTitle>{t('newlyAdd.hisSurvey')}</SecondTitle>
                 <InnerWrap>
                   <ChartsItem>
                     <span className={titleNumberCss3}>{data?.firstP}</span>
@@ -413,7 +417,7 @@ const Profile = () => {
                 </InnerWrap>
               </div>
               <div>
-                <SecondTitle>他的待办事项</SecondTitle>
+                <SecondTitle>{t('newlyAdd.hisNotFinish')}</SecondTitle>
                 <InnerWrap>
                   <ChartsItem style={{ width: '20%' }}>
                     <span className={titleNumberCss3}>{data?.secondAll}</span>
@@ -446,7 +450,7 @@ const Profile = () => {
             </Head>
             <Center>
               <CenterRight>
-                <SecondTitle>他的动态</SecondTitle>
+                <SecondTitle>{t('newlyAdd.hisFeed')}</SecondTitle>
                 {lineData.length < 1
                   ? <NoData />
                   : (
@@ -455,16 +459,16 @@ const Profile = () => {
                           {lineData.map((item: any) => (
                             <Timeline.Item key={item.id}>
                               <LineItem>
-                                <span>{item.created_at}</span>
+                                <span>{item.createTime}</span>
                                 <span>{item.content}</span>
                               </LineItem>
                               <LineItem>
-                                <Tooltip title={item.feedable?.project.name}>
+                                <Tooltip title={item.projectName}>
                                   <OmitText width={200}>
-                                    {item.feedable?.project.name}
+                                    {item.projectName}
                                   </OmitText>
                                 </Tooltip>
-                                <Tooltip title={item.feedable?.project.name}>
+                                <Tooltip title={item.name}>
                                   <OmitText width={300}>
                                     <span
                                       onClick={() => onToDetail(item)}
@@ -473,7 +477,7 @@ const Profile = () => {
                                         cursor: 'pointer',
                                       }}
                                     >
-                                      {item.feedable?.name}
+                                      {item.name}
                                     </span>
                                   </OmitText>
                                 </Tooltip>
@@ -488,7 +492,7 @@ const Profile = () => {
           </StyledWrap>
           <GatteWrap>
             <div style={{ padding: '28px 24px 0' }}>
-              <SecondTitle>他的需求甘特图</SecondTitle>
+              <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
               <div className={titleWrap}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span onClick={nextMonth}>

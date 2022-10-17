@@ -8,7 +8,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Space, Modal, message, Tooltip } from 'antd'
+import { Popover, Modal, message, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
@@ -206,8 +206,9 @@ const Operation = (props: Props) => {
         maskClosable={false}
         keyboard={false}
         wrapClassName="vertical-center-modal"
+        bodyStyle={{ padding: '16px 4px 16px 24px' }}
       >
-        <div style={{ height: 436, overflow: 'auto' }}>
+        <div style={{ maxHeight: 436, overflow: 'auto', paddingRight: 20 }}>
           {props.currentDetail?.info ? (
             <div
               dangerouslySetInnerHTML={{

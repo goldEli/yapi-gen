@@ -1,7 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const Carbon = () => {
-  return <MainIndex title="他的待办" type="abeyance" subTitle="待办需求" />
+  const [t] = useTranslation()
+  return (
+    <MainIndex
+      title={t('newlyAdd.hisAbeyance')}
+      type="abeyance"
+      subTitle={t('mine.carbonDemand')}
+    />
+  )
 }
 
 export default Carbon

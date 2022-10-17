@@ -56,6 +56,7 @@ const ModalFooter = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
+  padding: '0 24px',
 })
 
 interface Props {
@@ -166,54 +167,57 @@ const EditIteration = (props: Props) => {
       footer={false}
       title={props?.id ? t('project.editIterate') : t('common.createIterate')}
       onCancel={onCancel}
-      bodyStyle={{ padding: '16px 24px' }}
+      bodyStyle={{ padding: '16px 4px 16px 24px' }}
       destroyOnClose
       maskClosable={false}
       keyboard={false}
       wrapClassName="vertical-center-modal"
     >
-      <FormWrap
-        form={form}
-        labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
-        initialValues={iterateInfo}
-      >
-        <div style={{ display: 'flex' }}>
-          <IconFont type="interation" />
-          <Form.Item
-            label={t('common.iterateName')}
-            rules={[{ required: true, message: '' }]}
-            name="iterationName"
-          >
-            <Input
-              autoComplete="off"
-              maxLength={100}
-              ref={inputRef as any}
-              autoFocus
-              placeholder={t('mark.level')}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont type="carryout" />
-          <Form.Item
-            label={t('project.iterateTime')}
-            rules={[{ required: true, message: '' }]}
-            name="time"
-          >
-            <RangePicker
-              isShowQuick={false}
-              value={form.getFieldValue('time')}
-              onChange={(_values: any) => onChangePicker(_values)}
-            />
-          </Form.Item>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <IconFont type="detail" />
-          <Form.Item label={t('project.iterateTarget')}>
-            <Editor value={html} onChangeValue={setHtml} />
-          </Form.Item>
-        </div>
-      </FormWrap>
+      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
+        <FormWrap
+          form={form}
+          labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
+          initialValues={iterateInfo}
+        >
+          <div style={{ display: 'flex' }}>
+            <IconFont type="interation" />
+            <Form.Item
+              label={t('common.iterateName')}
+              rules={[{ required: true, message: '' }]}
+              name="iterationName"
+            >
+              <Input
+                autoComplete="off"
+                maxLength={100}
+                ref={inputRef as any}
+                autoFocus
+                placeholder={t('mark.level')}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont type="carryout" />
+            <Form.Item
+              label={t('project.iterateTime')}
+              rules={[{ required: true, message: '' }]}
+              name="time"
+            >
+              <RangePicker
+                isShowQuick={false}
+                value={form.getFieldValue('time')}
+                onChange={(_values: any) => onChangePicker(_values)}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <IconFont type="detail" />
+            <Form.Item label={t('project.iterateTarget')}>
+              <Editor value={html} onChangeValue={setHtml} />
+            </Form.Item>
+          </div>
+        </FormWrap>
+      </div>
+
       <ModalFooter size={16}>
         <Button onClick={onCancel}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={onConfirm}>

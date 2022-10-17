@@ -16,11 +16,9 @@ import {
   Space,
   message,
   Progress,
-  Tooltip,
   TreeSelect,
   DatePicker,
   Popover,
-  Dropdown,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -35,16 +33,16 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import RangePicker from '@/components/RangePicker'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
-import {
-  PriorityWrap,
-  SliderWrap,
-  AddWrap,
-  CategoryWrap,
-} from '@/components/StyleCommon'
-import { OmitText } from '@star-yun/ui'
+import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
+
+const ShowLabel = styled.div({
+  cursor: 'pointer',
+  fontSize: 14,
+  fontWeight: 400,
+  color: '#2877ff',
+})
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -53,7 +51,7 @@ const ModalWrap = styled(Modal)({
 })
 
 const FormWrap = styled(Form)({
-  paddingRight: 16,
+  paddingRight: 20,
   '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -95,6 +93,7 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  paddingRight: 24,
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -120,7 +119,7 @@ const LeftWrap = styled.div({
 const RightWrap = styled.div({
   height: '100%',
   overflow: 'auto',
-  width: 400,
+  width: 406,
   paddingLeft: 24,
   borderLeft: '1px solid #EBEDF0',
 })
@@ -131,6 +130,7 @@ const ModalFooter = styled.div({
   alignItems: 'center',
   justifyContent: 'flex-end',
   height: 80,
+  paddingRight: 24,
 })
 
 const AddButtonWrap = styled.div({
@@ -288,6 +288,7 @@ const EditDemand = (props: Props) => {
   const [projectList, setProjectList] = useState<any>([])
   const [isShowPop, setIsShowPop] = useState(false)
   const [categoryObj, setCategoryObj] = useState<any>(createCategory)
+  const [isShowFields, setIsShowFields] = useState(false)
 
   const getList = async (value?: any) => {
     const result = await getDemandList({
@@ -434,7 +435,7 @@ const EditDemand = (props: Props) => {
     setClassTreeData([
       ...[
         {
-          title: '未分类',
+          title: t('newlyAdd.unclassified'),
           key: 0,
           value: 0,
           children: [],
@@ -474,6 +475,7 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.visible) {
+      setCategoryObj(createCategory)
       const value = !props?.notGetPath
         ? paramsData?.id
         : props?.isQuickCreate
@@ -541,6 +543,7 @@ const EditDemand = (props: Props) => {
       setHtml('')
       setPriorityDetail({})
       getList()
+      setIsShowFields(false)
       if (!props?.isQuickCreate) {
         props.onUpdate?.()
       } else {
@@ -665,12 +668,15 @@ const EditDemand = (props: Props) => {
     setHtml('')
     setPriorityDetail({})
     setCreateCategory({})
+    setIsShowFields(false)
   }
 
   const titleText = () => {
     let text: any
     if (props?.isChild) {
-      text = props?.demandId ? '编辑子需求' : '创建子需求'
+      text = props?.demandId
+        ? t('project.editChildDemand')
+        : t('common.createChildDemand')
     } else {
       text = props?.demandId
         ? t('project.editDemand')
@@ -719,7 +725,7 @@ const EditDemand = (props: Props) => {
       width="96%"
       footer={false}
       bodyStyle={{
-        padding: '0 24px',
+        padding: '0 4px 0 24px',
         position: 'relative',
         maxHeight: '90vh',
       }}
@@ -813,7 +819,11 @@ const EditDemand = (props: Props) => {
             {props?.isQuickCreate && (
               <div style={{ display: 'flex' }}>
                 <Form.Item
-                  label="创建项目"
+                  label={
+                    <div style={{ fontWeight: 'bold' }}>
+                      {t('common.createProject')}
+                    </div>
+                  }
                   name="projectId"
                   style={{ marginRight: 24 }}
                   rules={[{ required: true, message: '' }]}
@@ -834,7 +844,11 @@ const EditDemand = (props: Props) => {
                   />
                 </Form.Item>
                 <Form.Item
-                  label="创建类型"
+                  label={
+                    <div style={{ fontWeight: 'bold' }}>
+                      {t('mine.createType')}
+                    </div>
+                  }
                   name="type"
                   rules={[{ required: true, message: '' }]}
                 >
@@ -852,7 +866,11 @@ const EditDemand = (props: Props) => {
               </div>
             )}
             <Form.Item
-              label={t('common.demandName')}
+              label={
+                <div style={{ fontWeight: 'bold' }}>
+                  {t('common.demandName')}
+                </div>
+              }
               name="name"
               rules={[{ required: true, message: '' }]}
             >
@@ -864,11 +882,21 @@ const EditDemand = (props: Props) => {
                 autoFocus
               />
             </Form.Item>
-            <Form.Item label={t('mine.demandInfo')} name="info">
+            <Form.Item
+              label={
+                <div style={{ fontWeight: 'bold' }}>{t('mine.demandInfo')}</div>
+              }
+              name="info"
+            >
               <Editor height={360} />
             </Form.Item>
             {projectId && (
-              <Form.Item label={t('common.tag')} name="tagIds">
+              <Form.Item
+                label={
+                  <div style={{ fontWeight: 'bold' }}>{t('common.tag')}</div>
+                }
+                name="tagIds"
+              >
                 <TagComponent
                   defaultList={tagList}
                   onChangeTag={onChangeTag}
@@ -881,7 +909,14 @@ const EditDemand = (props: Props) => {
               </Form.Item>
             )}
             {projectId && (
-              <Form.Item label={t('common.attachment')} name="attachments">
+              <Form.Item
+                label={
+                  <div style={{ fontWeight: 'bold' }}>
+                    {t('common.attachment')}
+                  </div>
+                }
+                name="attachments"
+              >
                 {!projectInfo?.projectPermissions?.filter(
                   (i: any) => i.name === '附件上传',
                 ).length ? (
@@ -910,7 +945,7 @@ const EditDemand = (props: Props) => {
         <RightWrap>
           <FormWrap layout="vertical" form={form}>
             {props?.demandId && (
-              <Form.Item label="需求进度" name="schedule">
+              <Form.Item label={t('newlyAdd.demandProgress')} name="schedule">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <SliderWrap
                     style={{ width: 330 }}
@@ -943,24 +978,24 @@ const EditDemand = (props: Props) => {
                 }))}
               />
             </Form.Item>
-            <Form.Item label="预计开始时间" name="startTime">
+            <Form.Item label={t('common.expectedStart')} name="startTime">
               <DatePicker
                 getPopupContainer={node => node}
                 style={{ width: '100%' }}
               />
             </Form.Item>
-            <Form.Item label="预计结束时间" name="endTime">
+            <Form.Item label={t('common.expectedEnd')} name="endTime">
               <DatePicker
                 getPopupContainer={node => node}
                 style={{ width: '100%' }}
               />
             </Form.Item>
-            <Form.Item label="需求分类" name="class">
+            <Form.Item label={t('newlyAdd.demandClass')} name="class">
               <TreeSelect
                 style={{ width: '100%' }}
                 showArrow
                 showSearch
-                placeholder="请选择需求分类"
+                placeholder={t('newlyAdd.pleaseClass')}
                 getPopupContainer={node => node}
                 allowClear
                 treeData={classTreeData}
@@ -1005,7 +1040,7 @@ const EditDemand = (props: Props) => {
                     className="priorityIcon"
                     type={priorityDetail?.icon}
                     style={{
-                      fontSize: 16,
+                      fontSize: 20,
                       color: priorityDetail?.color,
                     }}
                   />
@@ -1050,15 +1085,31 @@ const EditDemand = (props: Props) => {
               />
             </Form.Item>
           </FormWrap>
-          <FormWrap layout="vertical" form={form1}>
-            {fieldList?.list?.map((i: any) => (
-              <div style={{ display: 'flex' }} key={i.content}>
-                <Form.Item label={i.name} name={i.content}>
-                  {getTypeComponent(i.type)}
-                </Form.Item>
-              </div>
-            ))}
-          </FormWrap>
+          {fieldList?.list && (
+            <>
+              {!isShowFields && (
+                <ShowLabel onClick={() => setIsShowFields(true)}>
+                  {t('newlyAdd.open')}
+                </ShowLabel>
+              )}
+              {isShowFields && (
+                <FormWrap layout="vertical" form={form1}>
+                  {fieldList?.list?.map((i: any) => (
+                    <div style={{ display: 'flex' }} key={i.content}>
+                      <Form.Item label={i.name} name={i.content}>
+                        {getTypeComponent(i.type)}
+                      </Form.Item>
+                    </div>
+                  ))}
+                </FormWrap>
+              )}
+              {isShowFields && (
+                <ShowLabel onClick={() => setIsShowFields(false)}>
+                  {t('newlyAdd.close')}
+                </ShowLabel>
+              )}
+            </>
+          )}
         </RightWrap>
       </ModalContent>
       <ModalFooter>
@@ -1070,7 +1121,7 @@ const EditDemand = (props: Props) => {
             </AddButtonWrap>
           )}
           <Button type="primary" onClick={() => onSaveDemand()}>
-            {props?.demandId ? t('common.confirm2') : '创建'}
+            {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
           </Button>
         </Space>
       </ModalFooter>

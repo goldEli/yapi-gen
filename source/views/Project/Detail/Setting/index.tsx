@@ -126,7 +126,7 @@ const Setting = () => {
         String(i.identity).includes('b/project/role')).length,
     },
     {
-      name: '需求设置',
+      name: t('newlyAdd.demandSet'),
       icon: 'settings',
       content: <DemandSet />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>

@@ -16,13 +16,17 @@ const GanttWrap = styled.div({
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 14,
+    fontWeight: '500',
   },
   '.gantt_cell': {
     padding: 0,
     paddingLeft: 10,
+    fontSize: 14,
   },
   '.gantt_layout_cell, .gantt_scale_cell': {
     border: 'none!important',
+    fontSize: '14px!important',
+    fontWeight: '500!important',
   },
   '.gantt_task_line.gantt_selected': {
     boxShadow: 'none',
@@ -97,15 +101,21 @@ const Gantt = (props: Props) => {
     }
     gantt.templates.tooltip_text = function (start, end, task) {
       return (
-        `<b>${i18n.language === 'zh' ? '标题：' : 'Title:'}</b> ` +
+        `<b>${
+          i18n.language === 'zh' ? t('common.title') + '：' : 'Title:'
+        }</b> ` +
         (task.demandText || '--') +
         '<br/>' +
         `<span style="color: ${task.statusColor}">${
           task.statusTitle || '--'
         }</span>` +
-        `<br/><b>${i18n.language === 'zh' ? '开始时间：' : 'Star date:'}</b> ` +
+        `<br/><b>${
+          i18n.language === 'zh' ? t('common.startTime') + '：' : 'Star date:'
+        }</b> ` +
         gantt.templates.tooltip_date_format(start) +
-        `<br/><b>${i18n.language === 'zh' ? '结束时间：' : 'End date:'}</b> ` +
+        `<br/><b>${
+          i18n.language === 'zh' ? t('common.endTime') + '：' : 'End date:'
+        }</b> ` +
         gantt.templates.tooltip_date_format(end)
       )
     }
@@ -113,22 +123,22 @@ const Gantt = (props: Props) => {
     gantt.config.columns = [
       {
         name: 'text',
-        label: '标题',
+        label: t('common.title'),
         width: '280',
       },
       {
         name: 'start_date',
-        label: '预计开始时间',
+        label: t('common.expectedStart'),
         width: '100',
       },
       {
         name: 'end_date',
-        label: '预计结束时间',
+        label: t('common.expectedEnd'),
         width: '100',
       },
       {
         name: 'statusName',
-        label: '状态',
+        label: t('common.status'),
         width: 140,
       },
     ]

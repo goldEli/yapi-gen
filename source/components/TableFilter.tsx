@@ -17,22 +17,16 @@ import {
   Popover,
   Collapse,
   Input,
-  Tooltip,
   TreeSelect,
 } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { divide } from 'lodash'
-import Item from 'antd/lib/list/Item'
 
-const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
-
-  // minHeight: 64,
   alignItems: 'center',
 })
 
@@ -51,20 +45,6 @@ const FormWrap = styled(Form)({
     margin: 0,
   },
 })
-
-const TimeWrap = styled(DatePicker.RangePicker)<{ label: string }>`
-  &::before {
-    content: '${({ label }) => label}';
-    display: inline-block;
-    white-space: nowrap;
-    margin-right: 16px;
-    margin-left: 10px;
-  }
-  .ant-picker-active-bar {
-    visibility: hidden;
-    /* left: 200px !important; */
-  }
-`
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
@@ -111,7 +91,6 @@ const DelButton = styled.div`
   width: 15px;
   height: 15px;
   visibility: hidden;
-  /* z-index: 9999999; */
   &:hover {
     background-color: #2877ff;
   }
@@ -122,7 +101,6 @@ const SelectWrapBedeck = styled.div`
   position: relative;
   height: 32px;
   border: 1px solid rgba(235, 237, 240, 1);
-  /* border: 1px solid #0a66ef; */
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -198,6 +176,7 @@ const CollapseWrap = styled(Collapse)({
 })
 
 export const NumericInput = (props: any) => {
+  const [t] = useTranslation()
   const { value, onChange, onPress } = props
 
   const enter = (e: any) => {
@@ -211,22 +190,22 @@ export const NumericInput = (props: any) => {
     <>
       <Input
         type="number"
-        placeholder="请输入值"
+        placeholder={t('newlyAdd.pleaseValue')}
         onPressEnter={onPress}
         onChange={e => enter(e.target.value)}
         value={value?.start}
         style={{ width: '100px', border: 'none' }}
       />
-      <span className={danweiCss}>单位</span>
+      <span className={danweiCss}>{t('newlyAdd.unit')}</span>
       <Input
         type="number"
-        placeholder="请输入值"
+        placeholder={t('newlyAdd.pleaseValue')}
         onPressEnter={onPress}
         onChange={e => enter2(e.target.value)}
         value={value?.end}
         style={{ width: '100px', border: 'none' }}
       />
-      <span className={danweiCss}>单位</span>
+      <span className={danweiCss}>{t('newlyAdd.unit')}</span>
     </>
   )
 }
@@ -267,8 +246,6 @@ const TableFilter = (props: any) => {
 
   const delList = (key: string) => {
     props.onFilter(key, 0)
-
-    // setList(list.filter((item, idx) => item.key !== key))
   }
   const addList = (key: string) => {
     props.onFilter(key, 1)
@@ -276,7 +253,6 @@ const TableFilter = (props: any) => {
   const confirm = async () => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
-    // console.log(value, 'shuj')
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))
     const customField: any = {}
@@ -310,7 +286,7 @@ const TableFilter = (props: any) => {
           </CollapseDiv>
         ))}
       </Collapse.Panel>
-      <Collapse.Panel header="自定义字段" key="3">
+      <Collapse.Panel header={t('newlyAdd.customFields')} key="3">
         {filterCustomList?.map((i: any) => (
           <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
             {i.content_txt}
@@ -515,7 +491,7 @@ const TableFilter = (props: any) => {
                       <Input
                         onPressEnter={confirm}
                         style={{ border: 'none' }}
-                        placeholder="请输入搜索关键词"
+                        placeholder={t('newlyAdd.pleaseKeyword')}
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>

@@ -112,7 +112,7 @@ interface Props {
 }
 
 const Operation = (props: Props) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
@@ -230,6 +230,7 @@ const Operation = (props: Props) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
+        minWidth: i18n.language === 'zh' ? 110 : 151,
       }}
     >
       {categoryList?.list?.map((k: any) => (
@@ -262,13 +263,13 @@ const Operation = (props: Props) => {
       {hasImport ? null : (
         <MoreItem onClick={onImportClick}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
-          <span>导入需求</span>
+          <span>{t('newlyAdd.importDemand')}</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
-          <span>导出需求</span>
+          <span>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
       )}
     </div>
@@ -283,7 +284,7 @@ const Operation = (props: Props) => {
       <CommonModal
         isVisible={isShowImport}
         width={784}
-        title="导入需求"
+        title={t('newlyAdd.importDemand')}
         isShowFooter
         onClose={onImportClose}
       >
@@ -335,7 +336,7 @@ const Operation = (props: Props) => {
               onVisibleChange={visible => setIsVisibleMore(visible)}
             >
               <MoreWrap>
-                <span>更多操作</span>
+                <span>{t('newlyAdd.moreOperation')}</span>
                 <IconFont
                   style={{ fontSize: 16, marginLeft: 8 }}
                   type={isVisibleMore ? 'up' : 'down'}

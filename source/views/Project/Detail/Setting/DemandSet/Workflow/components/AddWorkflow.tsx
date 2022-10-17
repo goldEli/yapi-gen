@@ -18,6 +18,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled.div({
   height: 400,
@@ -83,10 +84,11 @@ interface Props {
 }
 
 const AddWrap = () => {
+  const [t] = useTranslation()
   return (
     <AddWrapBox>
       <IconFont style={{ fontSize: 16, marginRight: 8 }} type="plus" />
-      <span style={{ fontSize: 14 }}>添加状态</span>
+      <span style={{ fontSize: 14 }}>{t('newlyAdd.addStatus')}</span>
     </AddWrapBox>
   )
 }
@@ -99,6 +101,7 @@ interface AddActiveWrapProps {
 }
 
 const AddActiveWrap = (props: AddActiveWrapProps) => {
+  const [t] = useTranslation()
   const [value, setValue] = useState<any>('')
   const [errorState, setErrorState] = useState(false)
   const [normalColor, setNormalColor] = useState<any>()
@@ -127,7 +130,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       return
     }
     if (!normalColor) {
-      message.warning('请选择状态颜色！')
+      message.warning(t('newlyAdd.pleaseStatusChooseColor'))
       return
     }
     props?.onConfirm?.({ name: value, color: normalColor })
@@ -157,7 +160,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
           margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
           border: errorState ? '1px solid #FF5C5E' : '1px solid #EBEDF0',
         }}
-        placeholder="请输入状态名称"
+        placeholder={t('newlyAdd.pleaseStatusName')}
         allowClear
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
@@ -171,10 +174,10 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         style={{ margin: '0 16px 0 24px', color: '#2877ff' }}
         onClick={onConfirm}
       >
-        完成
+        {t('container.finish')}
       </TextWrap>
       <TextWrap style={{ color: '#646566' }} onClick={onClose}>
-        取消
+        {t('common.cancel')}
       </TextWrap>
     </div>
   )
@@ -206,6 +209,7 @@ const ChangeTableName = (props: ChangeTableNameProps) => {
 }
 
 const AddWorkflow = (props: Props) => {
+  const [t] = useTranslation()
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [isAdd, setIsAdd] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
@@ -255,7 +259,7 @@ const AddWorkflow = (props: Props) => {
     }
     try {
       await addStoryConfigWorkflow(obj)
-      message.success('添加成功')
+      message.success(t('common.addSuccess'))
       setSelectedRowKeys([])
       props?.onClose()
       props?.onUpdate()
@@ -276,7 +280,7 @@ const AddWorkflow = (props: Props) => {
     obj.categoryId = categoryItem?.id
     try {
       await addStoryConfigStatus(obj)
-      message.success('添加成功')
+      message.success(t('common.addSuccess'))
       getList()
     } catch (error) {
 
@@ -289,7 +293,7 @@ const AddWorkflow = (props: Props) => {
     obj.id = operationObj.id
     try {
       await updateStoryConfigStatus(obj)
-      message.success('编辑成功')
+      message.success(t('common.editSuccess'))
       setOperationObj({})
       getList()
       props?.onUpdate()
@@ -324,7 +328,7 @@ const AddWorkflow = (props: Props) => {
     }
     try {
       await deleteStoryConfigStatus(obj)
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getList()
       onCloseDel()
       props?.onUpdate()
@@ -354,7 +358,7 @@ const AddWorkflow = (props: Props) => {
     }
     try {
       await deleteStoryConfigStatus(obj)
-      message.success('删除成功')
+      message.success(t('common.deleteSuccess'))
       getList()
       onCloseHasDelete()
       props?.onUpdate()
@@ -409,13 +413,13 @@ const AddWorkflow = (props: Props) => {
                     style={{ color: '#2877ff', cursor: 'pointer' }}
                     onClick={() => onAddEdit(record)}
                   >
-                编辑
+                    {t('common.edit')}
                   </span>
                   <span
                     style={{ color: '#2877ff', cursor: 'pointer' }}
                     onClick={() => onAddDel(record)}
                   >
-                删除
+                    {t('common.del')}
                   </span>
                 </Space>
               )}
@@ -433,7 +437,7 @@ const AddWorkflow = (props: Props) => {
     <>
       {isDelVisible && (
         <DeleteConfirm
-          text="确认删除需求状态？"
+          text={t('newlyAdd.confirmDelStatus')}
           isVisible={isDelVisible}
           onChangeVisible={onCloseDel}
           onConfirm={onDeleteConfirm}
@@ -443,92 +447,101 @@ const AddWorkflow = (props: Props) => {
         <CommonModal
           isVisible={isHasDelete}
           onClose={onCloseHasDelete}
-          title="新状态分配"
+          title={t('newlyAdd.newStatus')}
           onConfirm={onConfirmHasDelete}
         >
-          <HasDemandText>{`共有${operationDelObj?.deleteData?.story_count}个需求当前处于【${operationDelObj?.name}】，删除状态后您需要为这些需求分配一个新的状态`}</HasDemandText>
-          <FormWrap form={form} layout="vertical">
-            {operationDelObj?.deleteData?.list?.map((i: any) => (
-              <Form.Item
-                name={`${i.category_id}_name`}
-                key={i.category_id}
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <CategoryWrap
-                      style={{ marginRight: 8, marginLeft: 0 }}
-                      color={i.category_color}
-                      bgColor={
-                        colorList?.filter(k => k.key === i.category_color)[0]
-                          ?.bgColor
-                      }
-                    >
-                      {i.category_name}
-                    </CategoryWrap>
-                    指定新状态
-                  </div>
-                }
-              >
-                <Select
-                  placeholder="请选择"
-                  showArrow
-                  showSearch
-                  getPopupContainer={node => node}
-                  allowClear
-                  optionFilterProp="label"
-                  options={statusWorkList?.list
-                    ?.filter((j: any) => j.id !== operationDelObj?.id)
-                    ?.map((k: any) => ({
-                      label: k.name,
-                      value: k.id,
-                    }))}
-                />
-              </Form.Item>
-            ))}
-          </FormWrap>
+          <div style={{ paddingRight: 20 }}>
+            <HasDemandText>
+              {t('newlyAdd.changeNewStatus', {
+                count: operationDelObj?.deleteData?.story_count,
+                name: operationDelObj?.name,
+              })}
+            </HasDemandText>
+            <FormWrap form={form} layout="vertical">
+              {operationDelObj?.deleteData?.list?.map((i: any) => (
+                <Form.Item
+                  name={`${i.category_id}_name`}
+                  key={i.category_id}
+                  label={
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <CategoryWrap
+                        style={{ marginRight: 8, marginLeft: 0 }}
+                        color={i.category_color}
+                        bgColor={
+                          colorList?.filter(k => k.key === i.category_color)[0]
+                            ?.bgColor
+                        }
+                      >
+                        {i.category_name}
+                      </CategoryWrap>
+                      {t('newlyAdd.appointStatus')}
+                    </div>
+                  }
+                >
+                  <Select
+                    placeholder={t('common.pleaseSelect')}
+                    showArrow
+                    showSearch
+                    getPopupContainer={node => node}
+                    allowClear
+                    optionFilterProp="label"
+                    options={statusWorkList?.list
+                      ?.filter((j: any) => j.id !== operationDelObj?.id)
+                      ?.map((k: any) => ({
+                        label: k.name,
+                        value: k.id,
+                      }))}
+                  />
+                </Form.Item>
+              ))}
+            </FormWrap>
+          </div>
         </CommonModal>
       )}
       <CommonModal
         isVisible={props.isVisible}
-        title="添加状态"
+        title={t('newlyAdd.addStatus')}
         onClose={onClose}
         onConfirm={onConfirm}
         width={784}
       >
-        <TableTitle>
-          <span style={{ width: '40%' }}>状态名称</span>
-          <span style={{ width: '45%' }}>应用的需求类别</span>
-          <span style={{ width: '15%' }}>操作</span>
-        </TableTitle>
-        {isAdd ? (
-          <AddActiveWrap
-            hasMargin
-            onClose={() => setIsAdd(false)}
-            onConfirm={obj => onAddConfirm(obj)}
-          />
-        ) : null}
-        {!isAdd && (
-          <div onClick={() => setIsAdd(true)}>
-            <AddWrap />
-          </div>
-        )}
+        <div style={{ paddingRight: 20 }}>
+          <TableTitle>
+            <span style={{ width: '40%' }}>{t('newlyAdd.statusName')}</span>
+            <span style={{ width: '45%' }}>{t('newlyAdd.demandCategory')}</span>
+            <span style={{ width: '15%' }}>{t('newlyAdd.operation')}</span>
+          </TableTitle>
+          {isAdd ? (
+            <AddActiveWrap
+              hasMargin
+              onClose={() => setIsAdd(false)}
+              onConfirm={obj => onAddConfirm(obj)}
+            />
+          ) : null}
+          {!isAdd && (
+            <div onClick={() => setIsAdd(true)}>
+              <AddWrap />
+            </div>
+          )}
 
-        <TableWrap>
-          <Spin spinning={isSpinning}>
-            {!!statusWorkList?.list
-              && (statusWorkList?.list?.length > 0 ? (
-                <TableWrapBox
-                  rowSelection={rowSelection}
-                  dataSource={statusWorkList?.list}
-                  columns={columns}
-                  showHeader={false}
-                  pagination={false}
-                  rowKey="id"
-                />
-              )
-                : <NoData />
-              )}
-          </Spin>
-        </TableWrap>
+          <TableWrap>
+            <Spin spinning={isSpinning}>
+              {!!statusWorkList?.list
+                && (statusWorkList?.list?.length > 0 ? (
+                  <TableWrapBox
+                    rowSelection={rowSelection}
+                    dataSource={statusWorkList?.list}
+                    columns={columns}
+                    showHeader={false}
+                    pagination={false}
+                    rowKey="id"
+                  />
+                )
+                  : <NoData />
+                )}
+            </Spin>
+          </TableWrap>
+        </div>
       </CommonModal>
     </>
   )

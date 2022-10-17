@@ -221,7 +221,9 @@ const ChildDemandTable = (props: {
       },
     },
     {
-      title: <NewSort fixedKey="schedule">需求进度</NewSort>,
+      title:
+        <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
+      ,
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,

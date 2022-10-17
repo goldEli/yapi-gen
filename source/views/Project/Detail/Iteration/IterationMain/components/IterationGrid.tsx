@@ -7,7 +7,7 @@
 import styled from '@emotion/styled'
 import { Menu, Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'

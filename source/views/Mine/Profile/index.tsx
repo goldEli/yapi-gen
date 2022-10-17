@@ -118,7 +118,6 @@ const TimeLineWrap = styled.div`
   height: 300px;
 `
 const LineItem = styled.div`
-  /* width: 360px; */
   display: flex;
   justify-content: space-between;
   font-size: 12px;
