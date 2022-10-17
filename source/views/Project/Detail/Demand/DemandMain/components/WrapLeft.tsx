@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
@@ -22,25 +23,15 @@ import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 
-const Left = styled.div<{ isShowLeft: boolean }>(
-  {
-    width: 340,
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-    borderRight: '1px solid #EBEDF0',
-    padding: '0px 16px 10px',
-    background: 'white',
-    overflow: 'scroll',
-    height: 'calc(100vh - 64px)',
-    '.ant-space-item': {
-      display: 'flex',
-    },
-  },
-  ({ isShowLeft }) => ({
-    display: isShowLeft ? 'block' : 'none',
-  }),
-)
+const Left = styled.div`
+  height: calc(100vh - 64px);
+  background-color: #fff;
+  position: relative;
+  /* float: left; */
+`
 
 const TitleWrap = styled.div({
+  whiteSpace: 'nowrap',
   fontSize: 14,
   color: '#323233',
   lineHeight: '52px',
@@ -87,10 +78,13 @@ const BtnsItemBox = styled.div`
   }
 `
 const centerText = css`
+  box-sizing: border-box;
+  white-space: nowrap;
   margin-left: 10px;
   /* margin-right: auto; */
 `
 const rightText = css`
+  box-sizing: border-box;
   visibility: hidden;
   /* margin-left: 10px; */
   font-size: 16px;
@@ -200,12 +194,14 @@ const TreeItem = (props: any) => {
       <span
         style={{
           whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: ' ellipsis',
-          width: '60px',
+
+          // overflow: 'hidden',
+          // textOverflow: ' ellipsis',
+          // width: '60px',
         }}
       >
-        <Tooltip title={props.name}>{props.name}</Tooltip>
+        {/* <Tooltip title={props.name}>{props.name}</Tooltip> */}
+        {props.name}
       </span>
       <span className={centerText}>{props.story_count}</span>
       {props.pid === 0
@@ -219,9 +215,9 @@ const TreeItem = (props: any) => {
               getPopupContainer={node => node}
               placement="bottomRight"
               content={content}
-              trigger="click"
+              trigger="hover"
             >
-              <IconFont data="1" className={rightText} type="more" />
+              <IconFont data-tree className={rightText} type="more" />
             </Popover>
           )}
 
@@ -354,9 +350,6 @@ const WrapLeft = (props: Props) => {
       },
     } = e
 
-    // console.log(context)
-    // return
-
     context.changeKey(selectLine.id)
 
     // console.log(selectLine)
@@ -365,21 +358,27 @@ const WrapLeft = (props: Props) => {
   useEffect(() => {
     init()
   }, [])
-
-  return (
-    <Left isShowLeft={props.isShowLeft}>
-      <TitleWrap>需求分类</TitleWrap>
-      {treeData.length > 0 && (
-        <Tree
-          defaultExpandAll
-          onDrop={onDrop}
-          onSelect={onSelect}
-          draggable
-          treeData={treeData}
-        />
-      )}
-    </Left>
-  )
+  if (props.isShowLeft) {
+    return (
+      <Left>
+        <div className="resize_bar" />
+        <div className="resize_line" />
+        <div className="resize_save">
+          <TitleWrap>需求分类</TitleWrap>
+          {treeData.length > 0 && (
+            <Tree
+              defaultExpandAll
+              onDrop={onDrop}
+              onSelect={onSelect}
+              draggable
+              treeData={treeData}
+            />
+          )}
+        </div>
+      </Left>
+    )
+  }
+  return null
 }
 
 export default WrapLeft

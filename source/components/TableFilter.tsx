@@ -343,7 +343,12 @@ const TableFilter = (props: any) => {
           {list
             ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
             ?.map((i: any) => {
-              if (i.type === 'select_checkbox' || i.type === 'checkbox') {
+              if (
+                i.type === 'select_checkbox'
+                || i.type === 'checkbox'
+                || i.type === 'select'
+                || i.type === 'radio'
+              ) {
                 return (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
@@ -369,32 +374,35 @@ const TableFilter = (props: any) => {
                     </DelButton>
                   </SelectWrapBedeck>
                 )
-              } else if (i.type === 'select' || i.type === 'radio') {
-                return (
-                  <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                      {i.contentTxt}
-                    </span>
-                    <Form.Item name={i.key}>
-                      <SelectWrap
-                        showArrow
-                        style={{ width: '100%' }}
-                        placeholder={t('common.pleaseSelect')}
-                        showSearch
-                        onChange={confirm}
-                        optionFilterProp="label"
-                        options={i.children.map((v: any) => ({
-                          label: v.content_txt,
-                          value: v.id,
-                        }))}
-                      />
-                    </Form.Item>
-                    <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
-                    </DelButton>
-                  </SelectWrapBedeck>
-                )
-              } else if (i.type === 'time' || i.type === 'date') {
+              }
+
+              //  else if (i.type === 'select' || i.type === 'radio') {
+              //   return (
+              //     <SelectWrapBedeck key={i.key}>
+              //       <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              //         {i.contentTxt}
+              //       </span>
+              //       <Form.Item name={i.key}>
+              //         <SelectWrap
+              //           showArrow
+              //           style={{ width: '100%' }}
+              //           placeholder={t('common.pleaseSelect')}
+              //           showSearch
+              //           onChange={confirm}
+              //           optionFilterProp="label"
+              //           options={i.children.map((v: any) => ({
+              //             label: v.content_txt,
+              //             value: v.id,
+              //           }))}
+              //         />
+              //       </Form.Item>
+              //       <DelButton onClick={() => delList(i.content)}>
+              //         <IconFont type="close" style={{ fontSize: '12px' }} />
+              //       </DelButton>
+              //     </SelectWrapBedeck>
+              //   )
+              // }
+              else if (i.type === 'time' || i.type === 'date') {
                 return (
                   <SelectWrapBedeck key={i.key}>
                     <Form.Item name={i.key}>
