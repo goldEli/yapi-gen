@@ -24,7 +24,7 @@ import { useModel } from '@/models'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
-    width: 300,
+    width: 340,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
     borderRight: '1px solid #EBEDF0',
     padding: '0px 16px 10px',
@@ -94,7 +94,7 @@ const rightText = css`
   visibility: hidden;
   /* margin-left: 10px; */
   font-size: 16px;
-  margin-left: 50px;
+  margin-left: 30px;
   color: #969799;
   &:hover {
     color: #2877ff;
@@ -294,11 +294,15 @@ const WrapLeft = (props: Props) => {
     const onlySort: any = treeData[0].children[0].title.props.sort
     const start = info.dragNode.title.props
     const end = info.node.title.props
+    const isDropToGap = info.dropToGap
+
+    // console.log(info, '信息')
+    // console.log(isDropToGap, '是否间隙')
+
+    // console.log(start, '起点')
+    // console.log(end, '终点')
 
     if (start.pid === 0) {
-      return
-    }
-    if (end.pid === 0) {
       return
     }
 
@@ -310,11 +314,31 @@ const WrapLeft = (props: Props) => {
         id: start.id,
         pid: start.id,
       })
+    } else if (isDropToGap) {
+      if (end.pid === 0) {
+        await moveTreeList({
+          projectId: props.projectId,
+
+          id: start.id,
+        })
+      } else {
+        if (end.pid === 0) {
+          return
+        }
+        await moveTreeList({
+          projectId: props.projectId,
+          newId: end.id,
+          sort: end.sort,
+          id: start.id,
+          pid: end.id,
+        })
+      }
     } else {
+      if (end.pid === 0) {
+        return
+      }
       await moveTreeList({
         projectId: props.projectId,
-        newId: end.id,
-        sort: end.sort,
         id: start.id,
         pid: end.id,
       })
@@ -345,7 +369,15 @@ const WrapLeft = (props: Props) => {
   return (
     <Left isShowLeft={props.isShowLeft}>
       <TitleWrap>需求分类</TitleWrap>
-      <Tree onDrop={onDrop} onSelect={onSelect} draggable treeData={treeData} />
+      {treeData.length > 0 && (
+        <Tree
+          defaultExpandAll
+          onDrop={onDrop}
+          onSelect={onSelect}
+          draggable
+          treeData={treeData}
+        />
+      )}
     </Left>
   )
 }
