@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
@@ -17,6 +18,7 @@ import {
   DatePicker,
   TreeSelect,
   Spin,
+  Tag,
 } from 'antd'
 import { useModel } from '@/models'
 import IconFont from '@/components/IconFont'
@@ -204,9 +206,13 @@ const DateInput = (props: any) => {
   const change = (key: any, dates: any) => {
     set(dates)
   }
+  useEffect(() => {
+    set(props.dvalue)
+  }, [])
 
   return (
     <DatePicker
+      defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
       onChange={change}
       style={{ width: '100%' }}
       format="YYYY-MM-DD HH:mm:ss"
@@ -216,7 +222,76 @@ const DateInput = (props: any) => {
     />
   )
 }
+const tagRender = (props2: any) => {
+  const { label, value, closable, onClose } = props2
+  const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+  return (
+    <Tag
+      color={value}
+      onMouseDown={onPreventMouseDown}
+      closable={closable}
+      onClose={onClose}
+      style={{ marginRight: 3 }}
+    >
+      {label}
+    </Tag>
+  )
+}
+const TagSelect = (props: any) => {
+  const [t] = useTranslation()
+  const { onChange: set } = props
 
+  const onSelect = (e: any[]) => {
+    const newArr = e
+      .map((item: any) => {
+        return props.options.find((index: { id: any }) => index.id === item)
+      })
+      .map((i: any) => {
+        return {
+          id: i.id,
+          name: i.name,
+          color: i.color,
+        }
+      })
+    set(newArr)
+  }
+  const init3 = () => {
+    const newArr = props.dvalue
+      .map((item: any) => {
+        return props.options.find((index: { id: any }) => index.id === item)
+      })
+      .map((i: any) => {
+        return {
+          id: i.id,
+          name: i.name,
+          color: i.color,
+        }
+      })
+    set(newArr)
+  }
+
+  useEffect(() => {
+    init3()
+  }, [])
+
+  return (
+    <Select
+      defaultValue={props.dvalue}
+      onChange={onSelect}
+      mode="multiple"
+      placeholder={t('common.pleaseSelect')}
+      allowClear
+      options={props.options?.map((item: any) => ({
+        label: item.name,
+        value: item.id,
+      }))}
+      optionFilterProp="label"
+    />
+  )
+}
 const NumericInput = (props: any) => {
   const { value, onChange, onPress } = props
 
@@ -257,7 +332,7 @@ export const ShapeContent = (props: any) => {
     hide,
     tap,
   } = props
-
+  const [tagList, setTagList] = useState<any>([])
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
   const { getProjectMember } = useModel('mine')
@@ -299,9 +374,19 @@ export const ShapeContent = (props: any) => {
     setRightList(res)
     setLoading(true)
   }
+  const setNewTagList = () => {
+    setTagList(
+      rightList?.fields?.filter((item: any) => {
+        return {
+          ...item,
+        }
+      }),
+    )
+  }
   const init2 = async () => {
     setActiveStatus(props.row.status)
-
+    const res2 = await getProjectMember(projectId)
+    setOptionsList(res2.data)
     const res = await getShapeRight({
       id: props.row.project_id,
       nId: props.sid,
@@ -309,8 +394,10 @@ export const ShapeContent = (props: any) => {
       toId: props.row.id,
     })
     setRightList(res)
+
     setLoading(true)
   }
+
   const init = async () => {
     const res = await getProjectMember(projectId)
     setOptionsList(res.data)
@@ -328,6 +415,7 @@ export const ShapeContent = (props: any) => {
     } else {
       init()
     }
+    setNewTagList()
   }, [])
 
   useEffect(() => {
@@ -423,7 +511,7 @@ export const ShapeContent = (props: any) => {
                   } else if (i.type === 'select' || i.type === 'radio') {
                     return (
                       <Form.Item
-                        initialValue={i.true_value}
+                        initialValue={i.true_value === 0 ? '' : i.true_value}
                         labelCol={{ span: 8 }}
                         label={i.title}
                         name={i.content}
@@ -491,7 +579,23 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <DateInput />
+                        <DateInput dvalue={i.true_value} />
+                      </Form.Item>
+                    )
+                  } else if (i.type === 'tag') {
+                    return (
+                      <Form.Item
+                        labelCol={{ span: 8 }}
+                        label={i.title}
+                        name={i.content}
+                        rules={[
+                          {
+                            required: i.is_must === 1,
+                            message: '',
+                          },
+                        ]}
+                      >
+                        <TagSelect dvalue={i.true_value} options={i.children} />
                       </Form.Item>
                     )
                   } else if (i.type === 'number') {
@@ -529,6 +633,7 @@ export const ShapeContent = (props: any) => {
                   } else if (i.type === 'tree') {
                     return (
                       <Form.Item
+                        initialValue={i.true_value ?? []}
                         labelCol={{ span: 8 }}
                         label={i.title}
                         name={i.content}

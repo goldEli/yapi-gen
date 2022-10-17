@@ -66,7 +66,7 @@ export const moveTreeList = async (params: any) => {
     new_class_id: params.newId,
     sort: params.sort,
     id: params?.id,
-    is_top: params.top,
+    parent_id: params.pid,
   })
 
   return res
