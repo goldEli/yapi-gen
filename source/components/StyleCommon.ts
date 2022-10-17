@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Pagination, Input, Slider } from 'antd'
+import { Table, Input, Slider } from 'antd'
 
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
@@ -27,13 +27,9 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     },
   },
   ({ hasColor, hasDash }) => ({
-    padding: hasColor || hasDash ? '0 4px' : 0,
+    padding: hasDash ? '0 4px' : hasColor ? '0 8px' : 0,
     color: hasColor ? '#2877FF' : '#969799',
-    border: hasColor
-      ? '1px solid #2877FF'
-      : hasDash
-        ? '1px dashed #969799'
-        : '1px solid white',
+    border: hasDash ? '1px dashed #969799' : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -42,6 +38,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     },
     '&: hover': {
       border: hasDash ? '1px dashed #2877ff' : '',
+      background: hasColor ? '#F0F4FA' : '',
       '.anticon': {
         svg: {
           color: '#2877ff',
@@ -50,6 +47,9 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
       div: {
         color: '#2877ff',
       },
+    },
+    '&: active': {
+      background: hasColor ? '#DBEAFF' : '',
     },
   }),
 )

@@ -43,15 +43,16 @@ const DemandWrap = styled.div({
 const MaxWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  maxHeight: 240,
+  maxHeight: 200,
   overflow: 'auto',
+  width: 360,
 })
 
 const DemandItem = styled.div<{ isActive?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    height: 32,
+    padding: '8px 0',
     cursor: 'pointer',
     paddingLeft: 16,
     '&:hover': {
@@ -68,7 +69,7 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
 
 const SearchInput = styled(Input)`
   font-size: 14px;
-  width: 240px;
+  min-width: 240px;
   height: 32px;
   background: rgba(245, 246, 247, 1);
   background-blend-mode: normal;
@@ -85,6 +86,12 @@ const SearchInput = styled(Input)`
     }
   }
 `
+
+const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
+  '.ant-popover-placement-bottom': {
+    left: isRight ? '40px!important' : 0,
+  },
+}))
 
 interface DemandProps {
   tap?(item: any): void
@@ -149,6 +156,7 @@ const TagBox = (props: DemandProps) => {
 
 interface Props {
   addWrap: React.ReactElement
+  isRight?: any
 }
 
 const ParentDemand = (props: Props) => {
@@ -214,14 +222,15 @@ const ParentDemand = (props: Props) => {
         </div>
       </DemandCheckedItem>
       {isCanEdit ? (
-        <Popover
+        <PopoverWrap
           placement="bottom"
           trigger="click"
           content={<TagBox tap={onChangeParent} />}
           getPopupContainer={node => node}
+          isRight={props?.isRight}
         >
           <div hidden={demandInfo?.parentId}>{props.addWrap}</div>
-        </Popover>
+        </PopoverWrap>
       ) : null}
     </div>
   )

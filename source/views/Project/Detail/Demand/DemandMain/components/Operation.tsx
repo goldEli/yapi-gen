@@ -256,6 +256,7 @@ const Operation = (props: Props) => {
   const onImportClick = () => {
     setIsVisible(false)
     setIsShowImport(true)
+    setIsVisibleMore(false)
   }
 
   const moreOperation = (

@@ -19,15 +19,21 @@ const Wrap = styled.div({
   div: {
     color: '#323233',
     fontSize: 18,
+    fontWeight: '500',
   },
 })
 
-const NoData = () => {
+const NoData = (props?: any) => {
   const [t] = useTranslation()
   return (
     <Wrap>
       <img src={empty} alt="" />
       <div>{t('components.noData')}</div>
+      {props?.subText
+        ? <span style={{ color: '#969799', fontSize: 14, marginTop: 8 }}>
+            {props?.subText}
+          </span>
+        : null}
     </Wrap>
   )
 }

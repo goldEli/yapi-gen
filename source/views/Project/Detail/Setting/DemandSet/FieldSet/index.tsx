@@ -103,19 +103,6 @@ const SetBreadcrumb = () => {
   )
 }
 
-const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order === 'asc' ? 1 : 2}
-    >
-      {sortProps.children}
-    </Sort>
-  )
-}
-
 const FieldSet = () => {
   const [t] = useTranslation()
   const { getFieldList, fieldList, option, deleteStoryConfigField }
@@ -124,7 +111,6 @@ const FieldSet = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
 
@@ -139,11 +125,6 @@ const FieldSet = () => {
   useEffect(() => {
     getList()
   }, [])
-
-  const onUpdateOrderKey = (key: any, val: any) => {
-
-    // 排序
-  }
 
   const onAddClick = () => {
     setOperationObj({})
@@ -182,16 +163,7 @@ const FieldSet = () => {
 
   const columns = [
     {
-      title: (
-        <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('newlyAdd.customName')}
-        </NewSort>
-      ),
+      title: t('newlyAdd.customName'),
       dataIndex: 'name',
       width: 240,
       render: (text: any) => {
@@ -199,16 +171,7 @@ const FieldSet = () => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="type"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('newlyAdd.fieldsType')}
-        </NewSort>
-      ),
+      title: t('newlyAdd.fieldsType'),
       dataIndex: 'type',
       width: 240,
       render: (text: any) => {

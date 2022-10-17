@@ -5,6 +5,9 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+
+// 我的模块和他的模块甘特图
+
 import { gantt } from 'dhtmlx-gantt'
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css'
 import styled from '@emotion/styled'
@@ -131,12 +134,12 @@ const Gantt = (props: Props) => {
       {
         name: 'start_date',
         label: t('common.expectedStart'),
-        width: '100',
+        width: '136',
       },
       {
         name: 'end_date',
         label: t('common.expectedEnd'),
-        width: '100',
+        width: '136',
       },
       {
         name: 'statusName',

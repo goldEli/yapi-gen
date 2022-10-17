@@ -17,10 +17,14 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 
-const Wrap = styled.div({
-  height: 570,
-  paddingRight: 20,
-})
+const Wrap = styled.div<{ language: any }>(
+  {
+    paddingRight: 20,
+  },
+  ({ language }) => ({
+    minHeight: language === 'zh' ? 570 : 594,
+  }),
+)
 
 const StepWrap = styled.div({
   display: 'flex',
@@ -98,7 +102,7 @@ const ImportDemand = () => {
   const [step, setStep] = useState(1)
   const [tabs, setTabs] = useState(2)
   const [fileList, setFileList] = useState<any>([])
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const [spinLoading, setSpinLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const {
@@ -108,6 +112,7 @@ const ImportDemand = () => {
     getImportExcelUpdate,
   } = useModel('demand')
   const { setIsRefresh } = useModel('user')
+  const { projectInfo } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -165,14 +170,21 @@ const ImportDemand = () => {
     })
     const blobUrl = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.download = '下载模板'
+    a.download = `${projectInfo?.name} - ${
+      tabs === 2 ? t('newlyAdd.importCreate') : t('newlyAdd.importUpdate')
+    }`
     a.href = blobUrl
     a.click()
     setIsVisible(false)
   }
 
+  const onChangeTabs = (value: any) => {
+    setTabs(value)
+    setFileList([])
+  }
+
   return (
-    <Wrap>
+    <Wrap language={i18n.language}>
       {isVisible && (
         <FieldsTemplate
           visible={isVisible}
@@ -189,7 +201,7 @@ const ImportDemand = () => {
         </StepBoxWrap>
         <div
           style={{
-            width: 160,
+            width: i18n.language === 'zh' ? 160 : 148,
             height: 1,
             background: '#EBEDF0',
             margin: '0 8px',
@@ -201,7 +213,7 @@ const ImportDemand = () => {
         </StepBoxWrap>
         <div
           style={{
-            width: 160,
+            width: i18n.language === 'zh' ? 160 : 148,
             height: 1,
             background: '#EBEDF0',
             margin: '0 8px',
@@ -215,10 +227,10 @@ const ImportDemand = () => {
       {step === 1 ? (
         <>
           <TabsWrap>
-            <TabsItem active={tabs === 2} onClick={() => setTabs(2)}>
+            <TabsItem active={tabs === 2} onClick={() => onChangeTabs(2)}>
               {t('newlyAdd.importCreate')}
             </TabsItem>
-            <TabsItem active={tabs === 1} onClick={() => setTabs(1)}>
+            <TabsItem active={tabs === 1} onClick={() => onChangeTabs(1)}>
               {t('newlyAdd.importUpdate')}
             </TabsItem>
           </TabsWrap>

@@ -458,6 +458,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           <InfoItem>
             <Label>{t('common.parentDemand')}</Label>
             <ParentDemand
+              isRight
               addWrap={
                 <AddWrap>
                   <IconFont type="plus" />
@@ -471,7 +472,18 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             <ContentWrap>{demandInfo?.iterateName}</ContentWrap>
           </InfoItem>
           <InfoItem>
-            <Label>{t('newlyAdd.demandClass')}</Label>
+            <Label>
+              <OmitText
+                width={110}
+                tipProps={{
+                  placement: 'topLeft',
+                  getPopupContainer: node => node,
+                }}
+              >
+                {t('newlyAdd.demandClass')}
+              </OmitText>
+            </Label>
+
             <ContentWrap>
               <QuickEdit
                 text={
@@ -545,6 +557,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   width={80}
                   tipProps={{
                     placement: 'topLeft',
+                    getPopupContainer: node => node,
                   }}
                 >
                   {i.name}

@@ -83,7 +83,7 @@ function getTypeComponent(
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
     child = (
       <InputNumber
-        onBlur={value => !isModal ? void 0 : onBlur(value)}
+        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}

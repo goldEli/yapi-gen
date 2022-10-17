@@ -154,14 +154,14 @@ const StepPageTwo = () => {
         </TableWrap>
         <TextWrap>{t('newlyAdd.text')}</TextWrap>
         <TextWrap>
-          注：点击
+          {t('newlyAdd.dragSortClick')}
           <IconFont
             type="settings"
             style={{
               fontSize: 14,
             }}
           />
-          图标，可以设置流转的附加字段及授权用户。
+          {t('newlyAdd.textSort1')}
         </TextWrap>
       </ContWrap>
 

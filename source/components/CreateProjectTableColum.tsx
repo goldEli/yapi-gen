@@ -227,7 +227,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'demand',
       key: 'child_story_count',
-      width: 200,
+      width: 100,
       render: (text: string, record: any) => {
         return state.showChildCOntent
           ? <ChildDemandTable value={text} row={record} />

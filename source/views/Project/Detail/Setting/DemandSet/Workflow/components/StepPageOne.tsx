@@ -38,7 +38,7 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -272,7 +272,7 @@ const StepPageOne = (propsOne: Props) => {
       render: (text: any) => <OmitText width={380}>{text || '--'}</OmitText>,
     },
     {
-      width: 120,
+      width: 130,
       title: (
         <div>
           <span>{t('newlyAdd.startStatus')}</span>
@@ -289,7 +289,7 @@ const StepPageOne = (propsOne: Props) => {
       ,
     },
     {
-      width: 120,
+      width: 130,
       title: (
         <div>
           <span>{t('newlyAdd.endStatus')}</span>
@@ -479,18 +479,18 @@ const StepPageOne = (propsOne: Props) => {
                     alignItems: 'center',
                   }}
                 >
-                  注：拖动
+                  {t('newlyAdd.dragSort')}
                   <IconFont
                     type="move"
                     style={{
                       fontSize: 14,
                     }}
                   />
-                  图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+                  {t('newlyAdd.textSort')}
                 </div>
               </div>
             )
-              : <NoData />
+              : <NoData subText={t('newlyAdd.pleaseAddStatus')} />
             )}
         </Spin>
       </TableWrap>

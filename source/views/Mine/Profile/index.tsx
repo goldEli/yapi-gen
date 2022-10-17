@@ -13,7 +13,7 @@ import {
   SecondTitle,
 } from '@/components/StyleCommon'
 import { Timeline, message, Pagination, Tooltip } from 'antd'
-import Gantt from './components/Gantt'
+import Gantt from '@/components/Gantt'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
@@ -375,7 +375,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {gatteData.length >= 1 && <Mygante data={gatteData} />}
+        {gatteData.length >= 1 && <Mygante data={gatteData} minHeight={380} />}
         {gatteData.length < 1 && (
           <div style={{ height: 'calc(100vh - 508px)' }}>
             <NoData />

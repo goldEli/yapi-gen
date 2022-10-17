@@ -124,7 +124,7 @@ const normalObj: any = {
 }
 
 const SetConfig = (props: Props) => {
-  const [t] = useTranslation()
+  const [t, i18n] = useTranslation()
   const modalBody = useRef<any>(null)
   const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList }
     = useModel('project')
@@ -528,7 +528,7 @@ const SetConfig = (props: Props) => {
     },
     {
       title: t('newlyAdd.fieldsName'),
-      width: 170,
+      width: i18n.language === 'zh' ? 180 : 160,
       dataIndex: 'title',
       render: (text: any, record: any) => (
         <Select
@@ -554,7 +554,7 @@ const SetConfig = (props: Props) => {
     },
     {
       title: t('newlyAdd.normalType'),
-      width: 170,
+      width: i18n.language === 'zh' ? 180 : 160,
       dataIndex: 'default_type',
       render: (text: any, record: any) => (
         <Select
@@ -578,7 +578,7 @@ const SetConfig = (props: Props) => {
     {
       title: t('newlyAdd.normalValueOrFields'),
       dataIndex: 'default_value',
-      width: 170,
+      width: i18n.language === 'zh' ? 170 : 220,
       render: (text: any, record: any) => <>{getTableCol(record)}</>,
     },
     {
@@ -675,7 +675,7 @@ const SetConfig = (props: Props) => {
       title={t('newlyAdd.setReviewAndPermission')}
       onClose={onClose}
       onConfirm={onConfirm}
-      width={784}
+      width={820}
       confirmText={t('newlyAdd.submit')}
     >
       <div style={{ maxHeight: 544, overflowY: 'auto', paddingRight: 20 }}>
@@ -871,14 +871,16 @@ const SetConfig = (props: Props) => {
               }}
             />
             <TextWrap>
-              注：拖动
-              <IconFont
-                type="move"
-                style={{
-                  fontSize: 14,
-                }}
-              />
-              图标可以调整状态顺序哦。（状态的顺序会体现在流转时状态的展现和列表排序中。）
+              <span style={{ wordBreak: 'break-word' }}>
+                {t('newlyAdd.dragSort')}
+                <IconFont
+                  type="move"
+                  style={{
+                    fontSize: 14,
+                  }}
+                />
+                {t('newlyAdd.textSort')}
+              </span>
             </TextWrap>
           </div>
         )}

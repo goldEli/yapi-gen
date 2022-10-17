@@ -443,7 +443,10 @@ const EditDemand = (props: Props) => {
       ],
       ...getNestedChildren(classTree, 0),
     ])
-    getProjectInfo({ projectId: value || projectId })
+    if (!props?.isQuickCreate) {
+      getProjectInfo({ projectId: value || projectId })
+    }
+
     if (props?.demandId) {
       setCategoryObj({})
       getInfo(value || projectId, classTree, categoryData?.list)
@@ -920,7 +923,7 @@ const EditDemand = (props: Props) => {
                 {!projectInfo?.projectPermissions?.filter(
                   (i: any) => i.name === '附件上传',
                 ).length ? (
-                  <AddWrap onClick={onAdd}>
+                  <AddWrap onClick={onAdd} hasColor>
                     <IconFont type="plus" />
                     <div>{t('common.add23')}</div>
                   </AddWrap>
@@ -931,7 +934,7 @@ const EditDemand = (props: Props) => {
                     defaultList={attachList}
                     onChangeAttachment={onChangeAttachment}
                     addWrap={
-                      <AddWrap>
+                      <AddWrap hasColor>
                         <IconFont type="plus" />
                         <div>{t('common.add23')}</div>
                       </AddWrap>

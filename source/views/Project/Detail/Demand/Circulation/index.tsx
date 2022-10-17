@@ -28,6 +28,9 @@ const TimeLIneWrap = styled(Timeline)({
     width: 'calc(100% - 151px)!important',
     background: '#F8F9FA',
   },
+  '.ant-timeline-item-last .ant-timeline-item-content': {
+    display: 'none!important',
+  },
 })
 
 const Wrap = styled.div({

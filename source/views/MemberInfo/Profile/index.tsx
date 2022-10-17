@@ -16,7 +16,7 @@ import {
   SecondTitle,
 } from '@/components/StyleCommon'
 import { Timeline, message, Pagination, Tooltip } from 'antd'
-import Gatte from './components/Gatte'
+import Gantt from '@/components/Gantt'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
@@ -29,7 +29,7 @@ import { OmitText } from '@star-yun/ui'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
-const Mygante = styled(Gatte)`
+const Mygante = styled(Gantt)`
   min-width: 1000px;
   .highcharts-tick {
     stroke: red;

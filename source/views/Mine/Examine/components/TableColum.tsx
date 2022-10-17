@@ -180,9 +180,12 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
+  let resultArr: any
   if (state.activeTab) {
-    arr.pop()
+    resultArr = arr.filter(
+      (i: any) => i.key !== 'verify_opinion' && i.key !== 'user_name',
+    )
   }
 
-  return arr
+  return state.activeTab ? resultArr : arr
 }

@@ -70,12 +70,12 @@ const CardGroupWrap = styled.div({
 
 const CategoryCard = styled.div({
   width: 290,
-  height: 106,
+  height: 110,
   borderRadius: 6,
   border: '1px solid #EBEDF0',
   display: 'flex',
   flexDirection: 'column',
-  padding: 16,
+  padding: '16px 16px 4px',
   margin: '24px 24px 0 0',
   '&:hover': {
     border: '1px solid transparent',
@@ -90,14 +90,16 @@ const CategoryCardHead = styled.div({
 })
 
 const DivWrap = styled.div({
-  marginTop: 32,
+  marginTop: 24,
   fontSize: 12,
   fontWeight: 400,
   display: 'flex',
   alignItems: 'center',
+  height: 70,
   '.set': {
     cursor: 'pointer',
     color: '#646566',
+    lineHeight: '16px',
     marginRight: 16,
     '&: hover': {
       color: '#2877ff',
@@ -109,6 +111,7 @@ const DivWrap = styled.div({
     div: {
       color: '#FA9746',
       marginLeft: 6,
+      lineHeight: '16px',
     },
   },
 })

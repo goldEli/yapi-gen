@@ -40,7 +40,12 @@ const Sort = (props: any) => {
       }}
       show={nowKey === fixedKey}
     >
-      <Text style={{ color: nowKey === fixedKey ? '#2877ff' : '' }}>
+      <Text
+        style={{
+          color: nowKey === fixedKey ? '#2877ff' : '',
+          lineHeight: '14px',
+        }}
+      >
         {props.children}
       </Text>
       <Arrow>

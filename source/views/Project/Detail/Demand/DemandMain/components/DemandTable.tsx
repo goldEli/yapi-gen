@@ -72,6 +72,7 @@ const DemandTable = (props: Props) => {
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
+  const [isShowMore, setIsShowMore] = useState(false)
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -145,6 +146,7 @@ const DemandTable = (props: Props) => {
 
   const onPropsChangeVisible = (e: any, item: any) => {
     props.onChangeVisible(e, item)
+    setIsShowMore(false)
   }
 
   const onPropsChangeDelete = (item: any) => {
@@ -225,10 +227,13 @@ const DemandTable = (props: Props) => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {hasEdit && hasDel ? null : (
                 <Dropdown
+                  key={isShowMore.toString()}
+                  visible={isShowMore}
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
                   getPopupContainer={node => node}
+                  onVisibleChange={visible => setIsShowMore(visible)}
                 >
                   {rowIconFont()}
                 </Dropdown>

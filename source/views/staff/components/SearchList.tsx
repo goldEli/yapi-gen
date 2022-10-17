@@ -100,7 +100,7 @@ const SearchList = (props: Props) => {
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('common.department')}
             </span>
             <Form.Item name="department">
@@ -120,7 +120,7 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('common.job')}
             </span>
             <Form.Item name="position">
@@ -140,7 +140,7 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('common.permissionGroup')}
             </span>
             <Form.Item name="userGroup">

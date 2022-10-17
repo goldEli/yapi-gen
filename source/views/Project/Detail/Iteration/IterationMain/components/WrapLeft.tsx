@@ -358,44 +358,6 @@ const WrapLeft = (props: Props) => {
     }
   }
 
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label:
-          <div onClick={e => onChangeEdit(e, item)}>{t('common.edit')}</div>
-        ,
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={e => onChangeEnd(e, item)}>
-            {item.status === 1 ? t('common.close') : t('common.open')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label:
-          <div onClick={e => onChangeDelete(e, item)}>{t('common.del')} </div>
-        ,
-      },
-    ]
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasChangeStatus) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-
-    return <Menu items={menuItems} />
-  }
-
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
 
@@ -477,12 +439,14 @@ const WrapLeft = (props: Props) => {
               <div>
                 {dataList.list?.map((item: any) => (
                   <IterationCard
-                    menu={menu(item)}
                     key={item.id}
                     item={item}
                     onClickInfo={() => onClickInfo(item)}
                     onClickItem={() => onClickItem(item)}
                     isActive={item.id === props.currentDetail?.id}
+                    onChangeEdit={onChangeEdit}
+                    onChangeEnd={onChangeEnd}
+                    onChangeDelete={onChangeDelete}
                   />
                 ))}
               </div>
