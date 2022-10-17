@@ -228,6 +228,11 @@ const ExamineItem = (props: Props) => {
   const onChangeMenu = (val: any) => {
     setNormal(val)
     setIsShowSelect(false)
+    props?.onChangeList({
+      operator: val,
+      id: props?.item.id,
+      type: 'update',
+    })
   }
 
   return (

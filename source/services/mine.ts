@@ -847,7 +847,7 @@ export const getVerifyUserList: any = async (params: any) => {
     pagesize: params.pageSize,
     page: params.page,
     orderkey: params.orderKey,
-    order: params.order,
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
   })
 
   return {
@@ -885,7 +885,7 @@ export const getVerifyList: any = async (params: any) => {
     pagesize: params.pageSize,
     page: params.page,
     orderkey: params.orderKey,
-    order: params.order,
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
   })
 
   return {

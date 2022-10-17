@@ -32,6 +32,7 @@ import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { openDetail } from '@/tools'
+import { useDynamicColumns } from './TableColum'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -190,153 +191,20 @@ const Need = (props: any) => {
 
   const onUpdateOrderkey = (key: any, value: any) => {
     setOrder({ value, key })
-
-    // getList(pageObj, { value, key }, keyword, searchParams)
+    getList(pageObj, { value, key }, keyword, searchParams)
   }
 
-  const NewSort = (propsSort: any) => {
-    return (
-      <Sort
-        fixedKey={propsSort.fixedKey}
-        onChangeKey={onUpdateOrderkey}
-        nowKey={order?.key}
-        order={order}
-      >
-        {propsSort.children}
-      </Sort>
-    )
-  }
+  const columns = useDynamicColumns({
+    orderKey: order?.key,
+    order: order?.value,
+    onUpdateOrderkey,
+    onChangeOperation,
+    activeTab,
+  })
 
-  const columns = [
-    {
-      title: <NewSort fixedKey="story_id">ID</NewSort>,
-      dataIndex: 'demandId',
-      key: 'story_id',
-      render: (text: string, record: any) => {
-        return <ClickWrap onClick={() => onToDetail(record)}>{text}</ClickWrap>
-      },
-    },
-    {
-      title: <NewSort fixedKey="story_name">{t('common.title')}</NewSort>,
-      dataIndex: 'demandName',
-      key: 'story_name',
-      render: (text: string | number, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CategoryWrap
-              style={{ marginLeft: 0 }}
-              color={record.categoryColor}
-              bgColor={
-                colorList?.filter(i => i.key === record.categoryColor)[0]
-                  ?.bgColor
-              }
-            >
-              {record.categoryName}
-            </CategoryWrap>
-            <ClickWrap onClick={() => onToDetail(record)}>
-              <OmitText width={200}>{text}</OmitText>
-            </ClickWrap>
-          </div>
-        )
-      },
-    },
-    {
-      title: <NewSort fixedKey="users_name">{t('common.dealName')}</NewSort>,
-      dataIndex: 'usersName',
-      key: 'users_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <NewSort fixedKey="user_name">{t('newlyAdd.submitName')}</NewSort>,
-      dataIndex: 'userName',
-      key: 'user_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-
-    {
-      title: (
-        <NewSort fixedKey="status_from_to">
-          {t('newlyAdd.reviewStatus')}
-        </NewSort>
-      ),
-      dataIndex: 'statusFromTo',
-      key: 'status_from_to',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort fixedKey="verify_status">
-          {t('newlyAdd.examineStatus')}
-        </NewSort>
-      ),
-      dataIndex: 'status',
-      key: 'verify_status',
-      render: (text: any, record: any) => {
-        return (
-          <div onClick={() => onChangeOperation(record)}>
-            {text === 1 && !activeTab
-              ? <CanClick>{t('newlyAdd.waitExamine')}</CanClick>
-              : (
-                  <StatusWrap>
-                    <CircleWrap
-                      style={{
-                        background:
-                      text === 1
-                        ? '#FA9746'
-                        : text === 2
-                          ? '#43BA9A'
-                          : '#FF5C5E',
-                      }}
-                    />
-                    <ClickWrap style={{ display: 'inline' }}>
-                      {text === 1
-                        ? t('newlyAdd.waitExamine')
-                        : text === 2
-                          ? t('newlyAdd.passed')
-                          : t('newlyAdd.notPass')}
-                    </ClickWrap>
-                  </StatusWrap>
-                )}
-          </div>
-        )
-      },
-    },
-    {
-      title:
-        <NewSort fixedKey="verify_at">{t('newlyAdd.examineTime')}</NewSort>
-      ,
-      dataIndex: 'verifyTime',
-      key: 'verify_at',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort fixedKey="verify_opinion">
-          {t('newlyAdd.examineReason')}
-        </NewSort>
-      ),
-      dataIndex: 'reason',
-      key: 'verify_opinion',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-  ]
-
-  const setColumns = useMemo(() => {
-    if (activeTab) {
-      columns.pop()
-    }
+  const selectColum: any = useMemo(() => {
     return columns
-  }, [activeTab])
+  }, [columns])
 
   const onChangeTab = (val: number) => {
     props?.onChangeType(val ? 'verify_submit' : 'verify')
@@ -427,7 +295,7 @@ const Need = (props: any) => {
               ? listData?.list?.length ? (
                 <TableBox
                   rowKey="id"
-                  columns={setColumns}
+                  columns={selectColum}
                   dataSource={listData?.list}
                   pagination={false}
                   scroll={{ x: 'max-content' }}

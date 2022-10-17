@@ -27,6 +27,7 @@ const FooterWrap = styled(Space)({
   alignItems: 'center',
   justifyContent: 'flex-end',
   height: 80,
+  paddingRight: 20,
 })
 
 const ItemWrap = styled.div({

@@ -237,7 +237,7 @@ const SetConfig = (props: Props) => {
     if (isSwitch) {
       params.verify_type = radioValue
       if (radioValue === 1) {
-        if (normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
+        if (!normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
           message.warning(t('newlyAdd.needExaminePerson'))
           return
         }
@@ -620,6 +620,7 @@ const SetConfig = (props: Props) => {
   // 流转审核下的类型
   const onRadioChange = (e: any) => {
     setRadioValue(e.target.value)
+    setNormalList([{ id: new Date().getTime(), obj: {} }])
   }
 
   // 是否开启流转审核
@@ -638,12 +639,16 @@ const SetConfig = (props: Props) => {
 
   // 更新流转审核线并过滤人员下拉
   const onChangeList = (obj: any, id: any) => {
-    normalList.filter((i: any) => i.id === id)[0].obj = obj
     if (obj.type === 'add') {
+      normalList.filter((i: any) => i.id === id)[0].obj = obj
       setOptions(options?.filter((k: any) => k.id !== obj.id))
-    } else {
+    } else if (obj.type === 'del') {
+      normalList.filter((i: any) => i.id === id)[0].obj = obj
       const checkObj = allMemberList?.filter((i: any) => i.id === obj.id)[0]
       setOptions([...options, ...[checkObj]])
+    } else {
+      const resultObj: any = normalList.filter((i: any) => i.id === id)[0].obj
+      resultObj.operator = obj.operator
     }
   }
 
