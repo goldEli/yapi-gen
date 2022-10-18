@@ -25,6 +25,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 
 const Left = styled.div`
+  /* max-width: 500px; */
   height: calc(100vh - 64px);
   background-color: #fff;
   position: relative;

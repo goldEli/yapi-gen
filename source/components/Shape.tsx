@@ -50,7 +50,7 @@ const Right = styled.div`
 `
 const Contain = styled.div`
   position: relative;
-  min-width: 600px;
+  /* min-width: 600px; */
   min-height: 316px;
   display: flex;
 `
@@ -731,6 +731,8 @@ export const ShapeContent = (props: any) => {
                                     fontSize: 16,
                                     margin: '0 8px',
                                     color: '#BBBDBF',
+                                    position: 'relative',
+                                    top: '-13px',
                                   }}
                                   type={
                                     item2.operator === 1

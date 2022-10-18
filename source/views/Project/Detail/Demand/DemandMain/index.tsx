@@ -19,7 +19,7 @@ import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
-  width: isShowLeft ? 'calc(100% - 300px)' : '100%',
+  width: '100%',
   height: 'calc(100vh - 64px)',
   overflowY: 'auto',
 }))
