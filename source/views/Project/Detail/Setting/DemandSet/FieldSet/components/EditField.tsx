@@ -62,7 +62,8 @@ const OptionsItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginTop: 16,
+  marginTop: 8,
+  marginBottom: 8,
 })
 
 const AddWrap = styled.div({
@@ -94,7 +95,7 @@ const DragHandle = sortableHandle(() => (
 const SortContainer = sortableContainer<any>((props: any) => <ul className="flex flex1" {...props} />)
 
 // 拖拽元素
-const SortItemLi = sortableElement<any>((props: any) => <li helperClass="row-dragging" className="flex" {...props} />)
+const SortItemLi = sortableElement<any>((props: any) => <li helperClass="row-dragging" {...props} />)
 
 const EditFiled = (props: Props) => {
   const [t] = useTranslation()

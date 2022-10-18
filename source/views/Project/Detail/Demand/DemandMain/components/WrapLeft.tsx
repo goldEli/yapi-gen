@@ -25,6 +25,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 
 const Left = styled.div`
+  /* max-width: 500px; */
   height: calc(100vh - 64px);
   background-color: #fff;
   position: relative;
@@ -314,6 +315,9 @@ const WrapLeft = (props: Props) => {
     if (start.pid === 0) {
       return
     }
+    if (end.level === 4) {
+      return
+    }
 
     if (end.pid === 1) {
       await moveTreeList({
@@ -380,7 +384,18 @@ const WrapLeft = (props: Props) => {
               defaultExpandAll
               onDrop={onDrop}
               onSelect={onSelect}
-              draggable
+              draggable={(node: any) => {
+                const {
+                  title: {
+                    props: { id, level },
+                  },
+                } = node
+                if (id === -1 || id === 0 || level === 4) {
+                  return false
+                }
+
+                return true
+              }}
               treeData={treeData}
             />
           )}

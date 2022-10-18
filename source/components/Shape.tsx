@@ -19,6 +19,7 @@ import {
   TreeSelect,
   Spin,
   Tag,
+  Tooltip,
 } from 'antd'
 import { useModel } from '@/models'
 import IconFont from '@/components/IconFont'
@@ -28,6 +29,8 @@ import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
 import arrows from '/arrows.png'
+import { divide } from 'lodash'
+import { HiddenText } from './StyleCommon'
 
 const Left = styled.div`
   min-height: 400px;
@@ -50,7 +53,8 @@ const Right = styled.div`
 `
 const Contain = styled.div`
   position: relative;
-  min-width: 600px;
+  min-width: 505px;
+  padding-right: 4px;
   min-height: 316px;
   display: flex;
 `
@@ -76,7 +80,6 @@ const StyledShape = styled.div`
   }
 `
 const FormWrap = styled.div`
-  margin-top: 48px;
   box-sizing: border-box;
   padding-right: 24px;
 `
@@ -193,11 +196,22 @@ const danweiCss = css`
   line-height: 22px;
   margin: 0 16px;
 `
-type ShapeProps = {
-  record: any
-  hide(): void
-  tap(value: any): void
-  row?: any
+
+const LabelComponent = (props: any) => {
+  return (
+    <Tooltip title={props.title}>
+      <div
+        style={{
+          overflow: 'Hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          width: 'inherit',
+        }}
+      >
+        {props.title}
+      </div>
+    </Tooltip>
+  )
 }
 
 const DateInput = (props: any) => {
@@ -222,24 +236,7 @@ const DateInput = (props: any) => {
     />
   )
 }
-const tagRender = (props2: any) => {
-  const { label, value, closable, onClose } = props2
-  const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-  }
-  return (
-    <Tag
-      color={value}
-      onMouseDown={onPreventMouseDown}
-      closable={closable}
-      onClose={onClose}
-      style={{ marginRight: 3 }}
-    >
-      {label}
-    </Tag>
-  )
-}
+
 const TagSelect = (props: any) => {
   const [t] = useTranslation()
   const { onChange: set } = props
@@ -332,7 +329,7 @@ export const ShapeContent = (props: any) => {
     hide,
     tap,
   } = props
-  const [tagList, setTagList] = useState<any>([])
+
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
   const { getProjectMember } = useModel('mine')
@@ -374,15 +371,7 @@ export const ShapeContent = (props: any) => {
     setRightList(res)
     setLoading(true)
   }
-  const setNewTagList = () => {
-    setTagList(
-      rightList?.fields?.filter((item: any) => {
-        return {
-          ...item,
-        }
-      }),
-    )
-  }
+
   const init2 = async () => {
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
@@ -415,7 +404,6 @@ export const ShapeContent = (props: any) => {
     } else {
       init()
     }
-    setNewTagList()
   }, [])
 
   useEffect(() => {
@@ -486,13 +474,17 @@ export const ShapeContent = (props: any) => {
         <Right>
           <div style={{ maxHeight: 280, overflow: 'auto' }}>
             <FormWrap>
-              <Form labelAlign="left" form={form}>
+              <Form
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                labelAlign="left"
+                form={form}
+              >
                 {rightList?.fields?.map((i: any) => {
                   if (i.type === 'area') {
                     return (
                       <Form.Item
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -512,8 +504,7 @@ export const ShapeContent = (props: any) => {
                     return (
                       <Form.Item
                         initialValue={i.true_value === 0 ? '' : i.true_value}
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -540,8 +531,7 @@ export const ShapeContent = (props: any) => {
                     return (
                       <Form.Item
                         initialValue={i.true_value ?? []}
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -569,8 +559,7 @@ export const ShapeContent = (props: any) => {
                   ) {
                     return (
                       <Form.Item
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -585,8 +574,7 @@ export const ShapeContent = (props: any) => {
                   } else if (i.type === 'tag') {
                     return (
                       <Form.Item
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -601,8 +589,7 @@ export const ShapeContent = (props: any) => {
                   } else if (i.type === 'number') {
                     return (
                       <Form.Item
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -617,8 +604,7 @@ export const ShapeContent = (props: any) => {
                   } else if (i.type === 'text' || i.type === 'textarea') {
                     return (
                       <Form.Item
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -634,8 +620,7 @@ export const ShapeContent = (props: any) => {
                     return (
                       <Form.Item
                         initialValue={i.true_value ?? []}
-                        labelCol={{ span: 8 }}
-                        label={i.title}
+                        label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
                           {
@@ -731,6 +716,8 @@ export const ShapeContent = (props: any) => {
                                     fontSize: 16,
                                     margin: '0 8px',
                                     color: '#BBBDBF',
+                                    position: 'relative',
+                                    top: '-13px',
                                   }}
                                   type={
                                     item2.operator === 1
@@ -770,11 +757,15 @@ export const ShapeContent = (props: any) => {
               </AuditBox>
             ) : null}
             {rightList.is_verify && rightList.verify.verify_type === 2 ? (
-              <Form labelAlign="left" form={form2}>
+              <Form
+                labelCol={{ span: 10 }}
+                wrapperCol={{ span: 16 }}
+                labelAlign="left"
+                form={form2}
+              >
                 <Form.Item
                   style={{ paddingRight: '24px' }}
                   labelAlign="left"
-                  labelCol={{ span: 8 }}
                   label={t('newlyAdd.reviewPerson')}
                   name="reviewerValue"
                   rules={[
