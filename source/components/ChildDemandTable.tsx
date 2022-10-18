@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools'
 import { useState } from 'react'
 import { useModel } from '@/models'
-import { message, Popover, Table } from 'antd'
+import { message, Popover, Progress, Table } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
 import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
@@ -53,6 +53,7 @@ const ChildDemandTable = (props: {
     list: undefined,
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
+  const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
   const isCanEdit
@@ -143,7 +144,7 @@ const ChildDemandTable = (props: {
       width: 160,
       render: (text: string, record: any) => {
         return (
-          <OmitText width={160}>
+          <OmitText width={160} tipProps={{ placement: 'topLeft' }}>
             <ClickWrap
               onClick={() => onToDetail(record)}
               isName
@@ -169,7 +170,13 @@ const ChildDemandTable = (props: {
       dataIndex: 'iteration',
       width: 100,
       render: (text: string) => {
-        return <OmitText width={100}>{text || '--'}</OmitText>
+        return (
+          <OmitText tipProps={{ placement: 'topLeft' }} width={100}>
+            <span style={{ minWidth: 30, display: 'inline-block' }}>
+              {text || '--'}
+            </span>
+          </OmitText>
+        )
       },
     },
     {
@@ -229,12 +236,29 @@ const ChildDemandTable = (props: {
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <div style={{ cursor: 'pointer' }}>
-            <DemandProgress
-              value={record.schedule}
-              row={record}
-              onUpdate={onUpdate}
-            />
+          <div>
+            {isCanEdit
+            && record?.usersNameIds?.includes(userInfo?.id)
+            && record.status.is_start !== 1
+            && record.status.is_end !== 1 ? (
+                  <div style={{ cursor: 'pointer' }}>
+                    <DemandProgress
+                      value={record.schedule}
+                      row={record}
+                      onUpdate={onUpdate}
+                    />
+                  </div>
+                ) : (
+                  <Progress
+                    strokeColor="#43BA9A"
+                    style={{ color: '#43BA9A' }}
+                    width={38}
+                    type="circle"
+                    percent={record.schedule}
+                    format={percent => percent === 100 ? '100%' : `${percent}%`}
+                    strokeWidth={8}
+                  />
+                )}
           </div>
         )
       },
@@ -253,7 +277,13 @@ const ChildDemandTable = (props: {
       dataIndex: 'dealName',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <OmitText tipProps={{ placement: 'topLeft' }} width={120}>
+            <span style={{ minWidth: 30, display: 'inline-block' }}>
+              {text || '--'}
+            </span>
+          </OmitText>
+        )
       },
     },
   ]

@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { message, Tooltip } from 'antd'
+import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
 import { useModel } from '@/models'
 
@@ -32,6 +32,7 @@ const flexCss = css`
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { projectInfo, colorList } = useModel('project')
+  const { userInfo } = useModel('user')
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(
@@ -199,6 +200,15 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
+      title: <NewSort fixedKey="class">{t('newlyAdd.demandClass')}</NewSort>,
+      dataIndex: 'class',
+      key: 'class',
+      width: 120,
+      render: (text: string) => {
+        return <OmitText width={120}>{text || '--'}</OmitText>
+      },
+    },
+    {
       title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
       key: 'tag',
@@ -263,13 +273,31 @@ export const useDynamicColumns = (state: any) => {
       width: 120,
       render: (text: string, record: any) => {
         return (
-          <div style={{ cursor: 'pointer' }}>
-            <DemandProgress
-              value={record.schedule}
-              row={record}
-              onUpdate={onUpdate}
-            />
-          </div>
+          <>
+            {record?.usersNameIds?.includes(userInfo?.id)
+            && record.status.is_start !== 1
+            && record.status.is_end !== 1
+              ? (
+                  <div style={{ cursor: 'pointer' }}>
+                    <DemandProgress
+                      value={record.schedule}
+                      row={record}
+                      onUpdate={onUpdate}
+                    />
+                  </div>
+                )
+              : (
+                  <Progress
+                    strokeColor="#43BA9A"
+                    style={{ color: '#43BA9A' }}
+                    width={38}
+                    type="circle"
+                    percent={record.schedule}
+                    format={percent => percent === 100 ? '100%' : `${percent}%`}
+                    strokeWidth={8}
+                  />
+                )}
+          </>
         )
       },
     },
@@ -338,7 +366,15 @@ export const useDynamicColumns = (state: any) => {
         dataIndex: element.value,
         key: element.value,
         render: (text: any) => {
-          return <span>{text?.value || '--'}</span>
+          return (
+            <span>
+              {text?.value
+                ? Array.isArray(text?.value)
+                  ? text?.value?.join('、')
+                  : text?.value
+                : '--'}
+            </span>
+          )
         },
       })
     })

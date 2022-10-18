@@ -278,7 +278,7 @@ const EditDemand = (props: Props) => {
     colorList,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
-  const { setIsRefresh } = useModel('user')
+  const { setIsRefresh, userInfo } = useModel('user')
   const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
@@ -533,8 +533,6 @@ const EditDemand = (props: Props) => {
     })
     values.category = categoryObj?.id
     values.customField = values1
-
-    // console.log(values, '===values1values1values1')
     try {
       if (props?.demandId) {
         await updateDemand({
@@ -965,6 +963,15 @@ const EditDemand = (props: Props) => {
                     value={schedule}
                     tipFormatter={(value: any) => `${value}%`}
                     onChange={value => onChangeSetSchedule(value)}
+                    disabled={
+                      !(
+                        demandInfo?.user
+                          ?.map((i: any) => i.user.id)
+                          ?.includes(userInfo?.id)
+                        && demandInfo.status.is_start !== 1
+                        && demandInfo.status.is_end !== 1
+                      )
+                    }
                   />
                   <span
                     style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}

@@ -37,7 +37,7 @@ function getTypeComponent(
         style={{ width: '100%', minWidth: 192 }}
         showTime={params?.value[0] === 'datetime'}
         allowClear
-        value={moment(defaultValue)}
+        value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
         onBlur={() => !isModal ? void 0 : onBlur('')}
         onChange={

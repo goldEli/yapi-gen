@@ -168,6 +168,7 @@ interface Props {
   onChangeList(obj: any): void
   options?: any
   item: any
+  len?: any
 }
 
 const ExamineItem = (props: Props) => {
@@ -283,7 +284,9 @@ const ExamineItem = (props: Props) => {
             />
           </div>
         </Popover>
-        <IconfontCloseWrap type="close" onClick={props?.onDel} />
+        {props?.len !== 1
+          && <IconfontCloseWrap type="close" onClick={props?.onDel} />
+        }
       </ItemWrap>
       <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
         <Space size={0}>

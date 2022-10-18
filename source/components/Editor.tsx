@@ -82,6 +82,12 @@ const Wrap = styled.div<{ minHeight?: any }>(
     border: '1px solid #ebedf0',
     zIndex: 100,
     overflow: 'hidden',
+    '.w-e-text-container [data-slate-editor] p': {
+      margin: 0,
+    },
+    '.w-e-text-placeholder': {
+      top: 0,
+    },
   },
   ({ minHeight }) => ({
     '.w-e-text-container [data-slate-editor]': {

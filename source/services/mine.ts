@@ -450,6 +450,8 @@ export const getMineNoFinishList: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           ...i.custom_field,
+          usersNameIds: i.users_name_ids,
+          'class': i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -490,6 +492,8 @@ export const getMineNoFinishList: any = async (params: any) => {
           schedule: i.schedule,
           category: i.category,
           categoryColor: i.category_color,
+          usersNameIds: i.users_name_ids,
+          'class': i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -566,6 +570,8 @@ export const getMineCreacteList: any = async (params: any) => {
         category: i.category,
         categoryColor: i.category_color,
         ...i.custom_field,
+        usersNameIds: i.users_name_ids,
+        'class': i.class,
         project: {
           isPublic: i.project.is_public,
           isUserMember: i.project.user_ismember,
@@ -639,6 +645,8 @@ export const getMineFinishList: any = async (params: any) => {
         category: i.category,
         categoryColor: i.category_color,
         ...i.custom_field,
+        usersNameIds: i.users_name_ids,
+        'class': i.class,
         project: {
           isPublic: i.project.is_public,
           isUserMember: i.project.user_ismember,
@@ -711,6 +719,8 @@ export const getMineNeedList: any = async (params: any) => {
         schedule: i.schedule,
         category: i.category,
         categoryColor: i.category_color,
+        usersNameIds: i.users_name_ids,
+        'class': i.class,
         project: {
           isPublic: i.project.is_public,
           isUserMember: i.project.user_ismember,

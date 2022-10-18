@@ -225,7 +225,7 @@ const QuickEdit = (props: Props) => {
   useEffect(() => {
     setTimeout(() => {
       inputRef.current?.focus()
-    }, 200)
+    }, 100)
   }, [isShowControl])
 
   const onChange = async (newValue: string) => {

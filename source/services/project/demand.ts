@@ -100,6 +100,7 @@ export const getDemandList: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           project_id: i.project_id,
+          usersNameIds: i.users_name_ids,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -109,6 +110,11 @@ export const getDemandList: any = async (params: any) => {
     return response.data.map((i: any) => ({
       id: i.id,
       name: i.name,
+      usersNameIds: i.users_name_ids,
+      userName: i.users_name?.split(',') || [],
+      status: i.status,
+      iteration: i.iterate_name || '--',
+      schedule: i.schedule,
     }))
   } else {
     return {
@@ -142,6 +148,7 @@ export const getDemandList: any = async (params: any) => {
         categoryColor: i.category_color,
         categoryRemark: i.category_remark,
         project_id: i.project_id,
+        usersNameIds: i.users_name_ids,
       })),
     }
   }

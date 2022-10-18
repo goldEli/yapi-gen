@@ -15,6 +15,10 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const GanttWrap = styled.div({
+  '.gantt_tree_content': {
+    display: 'flex',
+    alignItems: 'center',
+  },
   '.gantt_grid_head_cell': {
     textAlign: 'left',
     paddingLeft: 10,

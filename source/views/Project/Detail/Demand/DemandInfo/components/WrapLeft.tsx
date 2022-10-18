@@ -168,6 +168,7 @@ const WrapLeftBox = () => {
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { projectInfo } = useModel('project')
+  const { userInfo } = useModel('user')
   const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
   const textWrapEditor = useRef<HTMLInputElement>(null)
@@ -265,6 +266,15 @@ const WrapLeftBox = () => {
             value={schedule}
             tipFormatter={(value: any) => `${value}%`}
             onChange={value => setSchedule(value)}
+            disabled={
+              !(
+                demandInfo?.user
+                  ?.map((i: any) => i.user.id)
+                  ?.includes(userInfo?.id)
+                && demandInfo.status.is_start !== 1
+                && demandInfo.status.is_end !== 1
+              )
+            }
           />
           <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
             {schedule}%

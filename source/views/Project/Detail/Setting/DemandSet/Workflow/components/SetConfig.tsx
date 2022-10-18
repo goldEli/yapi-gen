@@ -237,7 +237,11 @@ const SetConfig = (props: Props) => {
     if (isSwitch) {
       params.verify_type = radioValue
       if (radioValue === 1) {
-        if (!normalList?.filter((i: any) => !i.obj?.verify_users)?.length) {
+        if (
+          normalList?.filter(
+            (i: any) => i.obj.verify_users && i.obj.verify_users?.length > 0,
+          )?.length !== normalList?.length
+        ) {
           message.warning(t('newlyAdd.needExaminePerson'))
           return
         }
@@ -809,6 +813,7 @@ const SetConfig = (props: Props) => {
                         onChangeList={arr => onChangeList(arr, i.id)}
                         options={options}
                         item={i}
+                        len={normalList?.length}
                       />
                     ))}
                     <Timeline.Item>

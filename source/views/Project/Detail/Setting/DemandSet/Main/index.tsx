@@ -169,8 +169,8 @@ const MoreWrap = (props: MoreWrapProps) => {
     getCategoryList,
     deleteStoryConfigCategory,
     changeStoryConfigCategory,
-    getStatusList,
-    statusWorkList,
+    getWorkflowList,
+    workList,
   } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -223,6 +223,7 @@ const MoreWrap = (props: MoreWrapProps) => {
     setIsHasDelete(false)
     setTimeout(() => {
       form.resetFields()
+      setDisable(true)
     }, 100)
   }
 
@@ -243,10 +244,9 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   const onChangeSelect = async (value: any) => {
     if (value) {
-      await getStatusList({
+      await getWorkflowList({
         projectId: paramsData.id,
         categoryId: value,
-        isSelect: true,
       })
       setDisable(false)
     } else {
@@ -292,7 +292,11 @@ const MoreWrap = (props: MoreWrapProps) => {
                   optionFilterProp="label"
                   onChange={onChangeSelect}
                   options={props?.list
-                    ?.filter((i: any) => i.id !== props?.row?.id)
+                    ?.filter(
+                      (i: any) => i.id !== props?.row?.id
+                        && i?.statusCount
+                        && i.isCheck === 1,
+                    )
                     ?.map((k: any) => ({ label: k.name, value: k.id }))}
                 />
               </Form.Item>
@@ -309,9 +313,9 @@ const MoreWrap = (props: MoreWrapProps) => {
                   getPopupContainer={node => node}
                   allowClear
                   optionFilterProp="label"
-                  options={statusWorkList?.list?.map((k: any) => ({
+                  options={workList?.list?.map((k: any) => ({
                     label: k.name,
-                    value: k.id,
+                    value: k.statusId,
                   }))}
                 />
               </Form.Item>
