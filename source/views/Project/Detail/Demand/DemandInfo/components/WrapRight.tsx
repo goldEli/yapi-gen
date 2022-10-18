@@ -567,7 +567,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 <QuickEdit
                   text={
                     Array.isArray(demandInfo?.customField?.[i.content]?.value)
-                      ? demandInfo?.customField?.[i.content]?.value.join('、')
+                      ? demandInfo?.customField?.[i.content]?.value?.length > 0
+                        ? demandInfo?.customField?.[i.content]?.value.join('、')
+                        : '--'
                       : demandInfo?.customField?.[i.content]?.value || '--'
                   }
                   keyText={i.content}

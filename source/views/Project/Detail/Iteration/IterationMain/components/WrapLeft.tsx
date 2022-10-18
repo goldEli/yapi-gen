@@ -276,7 +276,7 @@ const WrapLeft = (props: Props) => {
 
   const filterContent = (
     <div className="filterContent">
-      <Form form={form} style={{ width: 270, padding: 24 }} layout="vertical">
+      <Form form={form} style={{ width: 270, padding: 16 }} layout="vertical">
         <Form.Item label={t('common.title')} name="name">
           <Input autoComplete="off" placeholder={t('project.pleaseTitle')} />
         </Form.Item>

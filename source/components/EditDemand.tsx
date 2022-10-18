@@ -497,6 +497,7 @@ const EditDemand = (props: Props) => {
     await form.validateFields()
     const values = form.getFieldsValue()
     const values1 = form1.getFieldsValue()
+
     if (values.startTime) {
       values.expectedStart = moment(values.startTime).format('YYYY-MM-DD')
     }
@@ -521,10 +522,19 @@ const EditDemand = (props: Props) => {
             ? 'YYYY-MM-DD hh:mm:ss'
             : 'YYYY-MM-DD',
         )
+      } else if (
+        obj?.type?.attr === 'select_checkbox'
+        || obj?.type?.attr === 'checkbox'
+      ) {
+        values1[obj.content] = values1[obj.content]?.length
+          ? values1[obj.content]
+          : []
       }
     })
     values.category = categoryObj?.id
     values.customField = values1
+
+    // console.log(values, '===values1values1values1')
     try {
       if (props?.demandId) {
         await updateDemand({
@@ -1095,17 +1105,19 @@ const EditDemand = (props: Props) => {
                   {t('newlyAdd.open')}
                 </ShowLabel>
               )}
-              {isShowFields && (
-                <FormWrap layout="vertical" form={form1}>
-                  {fieldList?.list?.map((i: any) => (
-                    <div style={{ display: 'flex' }} key={i.content}>
-                      <Form.Item label={i.name} name={i.content}>
-                        {getTypeComponent(i.type)}
-                      </Form.Item>
-                    </div>
-                  ))}
-                </FormWrap>
-              )}
+              <FormWrap
+                layout="vertical"
+                form={form1}
+                style={{ display: isShowFields ? 'block' : 'none' }}
+              >
+                {fieldList?.list?.map((i: any) => (
+                  <div style={{ display: 'flex' }} key={i.content}>
+                    <Form.Item label={i.name} name={i.content}>
+                      {getTypeComponent(i.type)}
+                    </Form.Item>
+                  </div>
+                ))}
+              </FormWrap>
               {isShowFields && (
                 <ShowLabel onClick={() => setIsShowFields(false)}>
                   {t('newlyAdd.close')}
