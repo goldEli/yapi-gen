@@ -100,7 +100,13 @@ export const useDynamicColumns = (state: any) => {
       width: 340,
       render: (text: string | number, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+            }}
+          >
             <Tooltip placement="top" title={record.categoryRemark}>
               <CategoryWrap
                 color={record.categoryColor}
@@ -115,28 +121,22 @@ export const useDynamicColumns = (state: any) => {
               </CategoryWrap>
             </Tooltip>
             <ClickWrap
-              style={{
-                position: 'relative',
-                height: 46,
-                lineHeight: '46px',
-              }}
               isName
               isClose={record.status?.content === '已关闭'}
               onClick={() => state.onClickItem(record)}
             >
-              <OmitText width={160}>{text}</OmitText>
-              {record.isExamine && (
-                <IconFont
-                  type="review"
-                  style={{
-                    fontSize: 46,
-                    position: 'absolute',
-                    left: -20,
-                    top: 0,
-                  }}
-                />
-              )}
+              <OmitText width={110}>{text}</OmitText>
             </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                  position: 'absolute',
+                  right: 0,
+                }}
+              />
+            )}
           </div>
         )
       },
