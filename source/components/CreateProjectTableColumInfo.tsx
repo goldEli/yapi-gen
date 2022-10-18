@@ -359,7 +359,7 @@ export const useDynamicColumns = (state: any) => {
 
   const getArr = () => {
     const result: any = []
-    projectInfo?.plainOptions3?.forEach((element: any) => {
+    state.plainOptions3?.forEach((element: any) => {
       result.unshift({
         width: 200,
         title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,

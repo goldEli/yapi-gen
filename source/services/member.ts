@@ -66,6 +66,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            category: i.category,
+            categoryColor: i.category_color,
             'class': i.class,
             project: {
               isPublic: i.project.is_public,
@@ -107,6 +109,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            category: i.category,
+            categoryColor: i.category_color,
             'class': i.class,
             project: {
               isPublic: i.project.is_public,
@@ -180,6 +184,8 @@ export const getUserInfoCreateStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          category: i.category,
+          categoryColor: i.category_color,
           'class': i.class,
           project: {
             isPublic: i.project.is_public,
@@ -252,6 +258,8 @@ export const getUserInfoFinishStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          category: i.category,
+          categoryColor: i.category_color,
           'class': i.class,
           project: {
             isPublic: i.project.is_public,
@@ -380,6 +388,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            category: i.category,
+            categoryColor: i.category_color,
             'class': i.class,
             project: {
               isPublic: i.project.is_public,
@@ -421,6 +431,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            category: i.category,
+            categoryColor: i.category_color,
             'class': i.class,
             project: {
               isPublic: i.project.is_public,
@@ -494,6 +506,8 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          category: i.category,
+          categoryColor: i.category_color,
           'class': i.class,
           project: {
             isPublic: i.project.is_public,
@@ -566,6 +580,8 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          category: i.category,
+          categoryColor: i.category_color,
           'class': i.class,
           project: {
             isPublic: i.project.is_public,

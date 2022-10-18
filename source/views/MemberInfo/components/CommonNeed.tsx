@@ -308,6 +308,7 @@ const CommonNeed = (props: any) => {
     updateStatus,
     updatePriority,
     init,
+    plainOptions3,
     showOpen: true,
   })
 
@@ -404,11 +405,8 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     getSearchKey()
-  }, [props.id])
-
-  useEffect(() => {
     getShowkey()
-  }, [])
+  }, [props.id])
 
   useEffect(() => {
     if (isRefresh) {
