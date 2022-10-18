@@ -210,9 +210,13 @@ textarea {
   background-color: transparent;
 }
 .ant-tree .ant-tree-treenode {
+  box-sizing: border-box;
   width: 100%;
   &:hover {
     background-color: #f0f4f9;
+    [data-tree] {
+      visibility: visible;
+    }
   }
 }
 .ant-tree-switcher {
@@ -277,4 +281,43 @@ input::-webkit-inner-spin-button {
 
 .row-dragging .drag-visible {
   visibility: visible;
+}
+.resize_save {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  bottom: 0;
+  left: 0;
+  padding: 16px;
+  overflow-x: hidden;
+}
+.resize_bar {
+  width: 200px;
+  height: inherit;
+  resize: horizontal;
+  cursor: ew-resize;
+  cursor: col-resize;
+  opacity: 0;
+  overflow: scroll;
+}
+/* 拖拽线 */
+.resize_line {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-right: 2px solid #f0f0f0;
+  border-left: 1px solid #f0f0f0;
+  pointer-events: none;
+}
+.resize_bar:hover ~ .resize_line,
+.resize_bar:active ~ .resize_line {
+  border-left: 1px dashed skyblue;
+}
+.resize_bar::-webkit-scrollbar {
+  width: 200px;
+  height: inherit;
+}
+.ant-tree-treenode-selected {
+  background-color: transparent;
 }
