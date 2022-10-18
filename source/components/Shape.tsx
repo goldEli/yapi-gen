@@ -53,8 +53,8 @@ const Right = styled.div`
 `
 const Contain = styled.div`
   position: relative;
-  min-width: 550px;
-  padding-right: 50px;
+  min-width: 505px;
+  padding-right: 4px;
   min-height: 316px;
   display: flex;
 `
@@ -80,7 +80,6 @@ const StyledShape = styled.div`
   }
 `
 const FormWrap = styled.div`
-  margin-top: 48px;
   box-sizing: border-box;
   padding-right: 24px;
 `
@@ -197,12 +196,6 @@ const danweiCss = css`
   line-height: 22px;
   margin: 0 16px;
 `
-type ShapeProps = {
-  record: any
-  hide(): void
-  tap(value: any): void
-  row?: any
-}
 
 const LabelComponent = (props: any) => {
   return (
@@ -243,24 +236,7 @@ const DateInput = (props: any) => {
     />
   )
 }
-const tagRender = (props2: any) => {
-  const { label, value, closable, onClose } = props2
-  const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-  }
-  return (
-    <Tag
-      color={value}
-      onMouseDown={onPreventMouseDown}
-      closable={closable}
-      onClose={onClose}
-      style={{ marginRight: 3 }}
-    >
-      {label}
-    </Tag>
-  )
-}
+
 const TagSelect = (props: any) => {
   const [t] = useTranslation()
   const { onChange: set } = props
@@ -353,7 +329,7 @@ export const ShapeContent = (props: any) => {
     hide,
     tap,
   } = props
-  const [tagList, setTagList] = useState<any>([])
+
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
   const { getProjectMember } = useModel('mine')
@@ -395,15 +371,7 @@ export const ShapeContent = (props: any) => {
     setRightList(res)
     setLoading(true)
   }
-  const setNewTagList = () => {
-    setTagList(
-      rightList?.fields?.filter((item: any) => {
-        return {
-          ...item,
-        }
-      }),
-    )
-  }
+
   const init2 = async () => {
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
@@ -436,7 +404,6 @@ export const ShapeContent = (props: any) => {
     } else {
       init()
     }
-    setNewTagList()
   }, [])
 
   useEffect(() => {
