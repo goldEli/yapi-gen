@@ -314,6 +314,9 @@ const WrapLeft = (props: Props) => {
     if (start.pid === 0) {
       return
     }
+    if (end.level === 4) {
+      return
+    }
 
     if (end.pid === 1) {
       await moveTreeList({
