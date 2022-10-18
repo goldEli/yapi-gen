@@ -179,11 +179,19 @@ const TreeItem = (props: any) => {
               {item.text}
             </BtnsItemBox>
           ))
-        : btnsText.map(item => (
-          <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
-            {item.text}
-          </BtnsItemBox>
-        ))}
+        : props.level === 4
+          ? btnsText
+            .filter(item => item.id !== 1)
+            .map(item => (
+              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+                {item.text}
+              </BtnsItemBox>
+            ))
+          : btnsText.map(item => (
+            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+              {item.text}
+            </BtnsItemBox>
+          ))}
     </div>
   )
   return (
