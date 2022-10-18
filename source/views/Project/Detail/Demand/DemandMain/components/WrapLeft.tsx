@@ -384,7 +384,18 @@ const WrapLeft = (props: Props) => {
               defaultExpandAll
               onDrop={onDrop}
               onSelect={onSelect}
-              draggable
+              draggable={(node: any) => {
+                const {
+                  title: {
+                    props: { id, level },
+                  },
+                } = node
+                if (id === -1 || id === 0 || level === 4) {
+                  return false
+                }
+
+                return true
+              }}
               treeData={treeData}
             />
           )}
