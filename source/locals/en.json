@@ -119,7 +119,7 @@
     "createCustomFields": "Create Custom Fields",
     "fieldsName": "Field Name",
     "pleaseFieldsName": "Please enter a field name",
-    "nameText": "Enter a short name that conforms to reading habits, up to 12 characters, cannot be a system field, and cannot have the same name as an existing custom field",
+    "nameText": "Enter a short name that conforms to reading habits, up to 12, cannot be a system field, and cannot have the same name as an existing custom field",
     "fieldsRemark": "Field Remarks",
     "pleaseFields": "Remarks can be used to prompt the user how to fill in field values (eg 'please enter a number')",
     "fieldsType": "Field Type",

@@ -119,7 +119,7 @@
     "createCustomFields": "创建自定义字段",
     "fieldsName": "字段名称",
     "pleaseFieldsName": "请输入字段名称",
-    "nameText": "输入一个符合阅读习惯的短名字,最多12个字符,不能是系统字段,且不能与已有的自定义字段重名",
+    "nameText": "输入一个符合阅读习惯的短名字,最多12个字,不能是系统字段,且不能与已有的自定义字段重名",
     "fieldsRemark": "字段备注",
     "pleaseFields": "备注信息可以用来提示用户如何填写字段值 (比如“请输入数字”)",
     "fieldsType": "字段类型",

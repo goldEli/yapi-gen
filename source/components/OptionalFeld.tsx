@@ -41,6 +41,7 @@ const Left = styled.div`
   width: 524px;
   height: 350px;
   border-right: 1px solid #f1f2f4;
+  overflow: scroll;
 `
 const Right = styled.div`
   box-sizing: border-box;
@@ -215,7 +216,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                 <Space style={{ flexWrap: 'wrap' }}>
                   {plainOptions3?.map(item => (
                     <Checkbox key={item.label} value={item.value}>
-                      {item.labelTxt}
+                      {item.label}
                     </Checkbox>
                   ))}
                 </Space>

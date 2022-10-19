@@ -15,6 +15,9 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const GanttWrap = styled.div({
+  '.gantt_split_parent': {
+    opacity: 0,
+  },
   '.gantt_tree_content': {
     display: 'flex',
     alignItems: 'center',
@@ -91,7 +94,7 @@ const Gantt = (props: Props) => {
   const [t, i18n] = useTranslation()
 
   const init = () => {
-    gantt.config.date_scale = '%j, %D'
+    gantt.config.date_scale = '%m/%j, %D'
     gantt.config.scale_height = 44
     gantt.config.row_height = 52
     gantt.config.bar_height = 6
@@ -115,9 +118,11 @@ const Gantt = (props: Props) => {
         }</b> ` +
         (task.demandText || '--') +
         '<br/>' +
-        `<span style="color: ${task.statusColor}">${
-          task.statusTitle || '--'
-        }</span>` +
+        String(task.statusTitle
+          ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
+          : `<span style="color: #969799;text-decoration:line-through">${t(
+            'newlyAdd.statusDel',
+          )}</span>`) +
         `<br/><b>${
           i18n.language === 'zh' ? t('common.startTime') + '：' : 'Star date:'
         }</b> ` +
@@ -134,16 +139,6 @@ const Gantt = (props: Props) => {
         name: 'text',
         label: t('common.title'),
         width: '280',
-      },
-      {
-        name: 'start_date',
-        label: t('common.expectedStart'),
-        width: '136',
-      },
-      {
-        name: 'end_date',
-        label: t('common.expectedEnd'),
-        width: '136',
       },
       {
         name: 'statusName',

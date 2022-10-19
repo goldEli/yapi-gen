@@ -161,6 +161,7 @@ const Profile = () => {
     getUserInfoOverviewStatistics,
     getMemberInfoOverviewStatistics,
     getMemberGantt,
+    getUserGantt,
   } = useModel('member')
   const { userInfo } = useModel('user')
   const { colorList } = useModel('project')
@@ -177,7 +178,7 @@ const Profile = () => {
   const { isMember, userId, id } = paramsData
 
   const changeMonth = async () => {
-    const res2 = await getMemberGantt({
+    const params: any = {
       startTime: moment()
         .startOf('month')
         .month(monthIndex)
@@ -188,7 +189,13 @@ const Profile = () => {
       page,
       pagesize,
       targetId: userId,
-    })
+    }
+    if (isMember) {
+      params.projectId = id
+    }
+    const res2 = isMember
+      ? await getMemberGantt(params)
+      : await getUserGantt(params)
 
     setGatteData(
       res2.list?.map((k: any) => ({

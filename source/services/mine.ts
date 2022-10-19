@@ -193,15 +193,15 @@ export const getSearchField: any = async (params: any) => {
     }
   })
   const filterBasicsList = filter_fidlds.filter(
-    (item: any) => item.group_content_txt === '基本字段',
+    (item: any) => item.group_name === '基本字段',
   )
 
   const filterSpecialList = filter_fidlds.filter(
-    (item: any) => item.group_content_txt === '人员与时间字段',
+    (item: any) => item.group_name === '人员与时间字段',
   )
 
   const filterCustomList = filter_fidlds.filter(
-    (item: any) => item.group_content_txt === '自定义字段',
+    (item: any) => item.group_name === '自定义字段',
   )
   // eslint-disable-next-line consistent-return
 

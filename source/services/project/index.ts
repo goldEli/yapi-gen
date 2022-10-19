@@ -157,15 +157,15 @@ export const getProjectInfo: any = async (params: any) => {
     })
 
   const filterBasicsList = response.data.storyConfig.filter_fidlds.filter(
-    (item: any) => item.group_content_txt === '基本字段',
+    (item: any) => item.group_name === '基本字段',
   )
 
   const filterSpecialList = response.data.storyConfig.filter_fidlds.filter(
-    (item: any) => item.group_content_txt === '人员与时间字段',
+    (item: any) => item.group_name === '人员与时间字段',
   )
 
   const filterCustomList = response.data.storyConfig.filter_fidlds.filter(
-    (item: any) => item.group_content_txt === '自定义字段',
+    (item: any) => item.group_name === '自定义字段',
   )
 
   return {

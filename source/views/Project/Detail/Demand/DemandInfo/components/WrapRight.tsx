@@ -230,7 +230,7 @@ const QuickEdit = (props: Props) => {
     }
   }, [isShowControl])
 
-  const onChange = async (newValue: string) => {
+  const onChange = async (newValue: any) => {
     const obj: any = {
       projectId,
       id: demandInfo?.id,
@@ -253,10 +253,12 @@ const QuickEdit = (props: Props) => {
   }
 
   const onBlur = (val: any) => {
-    if (val) {
-      onChange(val)
-    } else {
+    if (val === props?.defaultText) {
       setIsShowControl(false)
+    } else {
+      const resultVal: any
+        = ['select_checkbox', 'checkbox'].includes(props?.type) && !val ? [] : val
+      onChange(resultVal)
     }
   }
 

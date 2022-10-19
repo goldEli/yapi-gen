@@ -107,7 +107,8 @@ const urls = {
   getImportDownloadModel: '/b/story/download_story_model',
   getImportExcel: '/b/story/import_story_excel',
   getImportExcelUpdate: '/b/story/import_story_update_excel',
-  getMemberGantt: '/b/user/info/overview_gantt_chart',
+  getMemberGantt: '/b/project/member/user/info/overview_gantt_chart',
+  getUserGantt: '/b/user/info/overview_gantt_chart',
 }
 
 export default urls

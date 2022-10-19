@@ -256,6 +256,7 @@ const EditFiled = (props: Props) => {
               <Input
                 placeholder={t('newlyAdd.pleaseFieldsName')}
                 autoComplete="off"
+                maxLength={12}
                 autoFocus
               />
             </Form.Item>

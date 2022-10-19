@@ -175,6 +175,12 @@ const CollapseWrap = styled(Collapse)({
   },
 })
 
+const PopoverWrap = styled(Popover)({
+  '.ant-popover-content': {
+    minWidth: 188,
+  },
+})
+
 export const NumericInput = (props: any) => {
   const [t] = useTranslation()
   const { value, onChange, onPress } = props
@@ -289,7 +295,7 @@ const TableFilter = (props: any) => {
       <Collapse.Panel header={t('newlyAdd.customFields')} key="3">
         {filterCustomList?.map((i: any) => (
           <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
-            {i.content_txt}
+            {i.title}
           </CollapseDiv>
         ))}
       </Collapse.Panel>
@@ -350,35 +356,7 @@ const TableFilter = (props: any) => {
                     </DelButton>
                   </SelectWrapBedeck>
                 )
-              }
-
-              //  else if (i.type === 'select' || i.type === 'radio') {
-              //   return (
-              //     <SelectWrapBedeck key={i.key}>
-              //       <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              //         {i.contentTxt}
-              //       </span>
-              //       <Form.Item name={i.key}>
-              //         <SelectWrap
-              //           showArrow
-              //           style={{ width: '100%' }}
-              //           placeholder={t('common.pleaseSelect')}
-              //           showSearch
-              //           onChange={confirm}
-              //           optionFilterProp="label"
-              //           options={i.children.map((v: any) => ({
-              //             label: v.content_txt,
-              //             value: v.id,
-              //           }))}
-              //         />
-              //       </Form.Item>
-              //       <DelButton onClick={() => delList(i.content)}>
-              //         <IconFont type="close" style={{ fontSize: '12px' }} />
-              //       </DelButton>
-              //     </SelectWrapBedeck>
-              //   )
-              // }
-              else if (i.type === 'time' || i.type === 'date') {
+              } else if (i.type === 'time' || i.type === 'date') {
                 return (
                   <SelectWrapBedeck key={i.key}>
                     <Form.Item name={i.key}>
@@ -525,12 +503,17 @@ const TableFilter = (props: any) => {
               }
             })}
 
-          <Popover placement="bottom" content={content} trigger={['click']}>
+          <PopoverWrap
+            placement="bottom"
+            content={content}
+            trigger={['click']}
+            getPopupContainer={node => node}
+          >
             <Button
               style={{ background: 'white', border: '1px solid #d5d6d9' }}
               icon={<IconFont type="plus" />}
             />
-          </Popover>
+          </PopoverWrap>
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
               {t('common.clearForm')}
