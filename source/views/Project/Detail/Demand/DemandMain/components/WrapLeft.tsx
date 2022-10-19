@@ -391,7 +391,7 @@ const WrapLeft = (props: any, ref: any) => {
         <div className="resize_bar" />
         <div className="resize_line" />
         <div className="resize_save">
-          <TitleWrap>需求分类</TitleWrap>
+          <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
           {treeData.length > 0 && (
             <Tree
               defaultExpandAll
