@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown } from 'antd'
+import { Dropdown, Menu } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useState } from 'react'
@@ -16,9 +16,8 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 
 interface Props {
   item: any
-  onChangeEdit?(): void
-  onChangeDelete?(): void
-  menu: React.ReactElement
+  onChangeEdit?(e: any, item: any): void
+  onChangeDelete?(item: any): void
   onClickItem(): void
 }
 
@@ -108,7 +107,7 @@ const NameGroup = styled.div({
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const { projectInfo } = useModel('project')
+  const { projectInfo, colorList } = useModel('project')
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -117,20 +116,61 @@ const DemandCard = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
+
+  const onClickMenu = (type: any, e?: any) => {
+    setIsMoreVisible(false)
+    if (type === 'edit') {
+      props.onChangeEdit?.(e, props?.item)
+    } else {
+      props.onChangeDelete?.(props?.item)
+    }
+  }
+
+  const menu = () => {
+    let menuItems = [
+      {
+        key: '1',
+        label:
+          <div onClick={e => onClickMenu('edit', e)}>{t('common.edit')}</div>
+        ,
+      },
+      {
+        key: '2',
+        label: <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>,
+      },
+    ]
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
+
   return (
     <div>
       <Wrap>
         <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
           <CategoryWrap
-            color="#43BA9A"
-            bgColor="#EDF7F4"
+            color={props?.item?.categoryColor}
+            bgColor={
+              colorList?.filter(
+                (i: any) => i.key === props?.item?.categoryColor,
+              )[0]?.bgColor
+            }
             style={{ margin: '0 0 8px 0', width: 'fit-content' }}
           >
-            软件需求
+            {props?.item?.category}
           </CategoryWrap>
           <ClickWrap onClick={props.onClickItem}>
-            <OmitText width={200}>{props.item.name}</OmitText>
+            <OmitText width={200} tipProps={{ placement: 'topLeft' }}>
+              {props.item.name}
+            </OmitText>
           </ClickWrap>
           <AvatarWrap>
             <NameGroup>
@@ -167,7 +207,7 @@ const DemandCard = (props: Props) => {
               <Dropdown
                 key={isMoreVisible.toString()}
                 visible={isMoreVisible}
-                overlay={props.menu}
+                overlay={menu()}
                 placement="bottomRight"
                 trigger={['hover']}
                 getPopupContainer={node => node}

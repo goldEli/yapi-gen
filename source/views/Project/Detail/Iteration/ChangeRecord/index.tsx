@@ -34,7 +34,7 @@ const TitleWrap = styled(Space)({
 })
 
 const DataWrap = styled.div({
-  height: 'calc(100% - 40px)',
+  height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
 })

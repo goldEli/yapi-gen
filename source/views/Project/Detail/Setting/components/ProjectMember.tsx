@@ -5,7 +5,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableWrap,
+  PaginationWrap,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -80,26 +84,6 @@ const SearchWrap = styled.div({
   background: 'white',
   flexWrap: 'wrap',
 })
-
-const SelectWrapBedeck = styled.div`
-  height: 32px;
-  margin-right: 16px;
-  position: relative;
-  height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-  .ant-picker {
-    border: none;
-  }
-`
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {

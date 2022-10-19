@@ -5,12 +5,11 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
-import { Menu, Space, Spin } from 'antd'
+import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
+import { getParamsData, openDetail } from '@/tools/index'
 import { useModel } from '@/models'
-import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -64,7 +63,6 @@ interface Props {
 }
 
 const IterationGrid = (props: Props) => {
-  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -99,35 +97,6 @@ const IterationGrid = (props: Props) => {
     }
   }, [props.data, projectInfo])
 
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={e => props.onChangeVisible(e, item)}>
-            {t('common.edit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label:
-          <div onClick={() => props.onDelete(item)}>{t('common.del')}</div>
-        ,
-      },
-    ]
-
-    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu items={menuItems} />
-  }
-
   const onClickItem = (item: any) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
@@ -155,9 +124,10 @@ const IterationGrid = (props: Props) => {
                     ?.list?.map((i: any) => (
                       <DemandCard
                         key={i.id}
-                        menu={menu(i)}
                         item={i}
                         onClickItem={() => onClickItem(i)}
+                        onChangeDelete={props?.onDelete}
+                        onChangeEdit={props?.onChangeVisible}
                       />
                     ))
                  : <NoData />

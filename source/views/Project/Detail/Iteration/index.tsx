@@ -38,19 +38,27 @@ const NameWrap = styled.div({
   },
 })
 
-const ContentWrap = styled.div<{ hasTop?: any }>({
-  padding: 16,
-  display: 'flex',
-  flexDirection: 'column',
-  height: 'calc(100% - 72px)',
-})
+const ContentWrap = styled.div<{ hasTop?: any }>(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  ({ hasTop }) => ({
+    padding: hasTop ? 0 : '16px 16px 0',
+    height: hasTop ? 'calc(100% - 64px)' : 'calc(100% - 64px)',
+  }),
+)
 
-const MainWrap = styled(Space)({
-  borderRadius: 4,
-  paddingLeft: 24,
-  background: 'white',
-  width: '100%',
-})
+const MainWrap = styled(Space)<{ hasTop?: any }>(
+  {
+    paddingLeft: 24,
+    background: 'white',
+    width: '100%',
+  },
+  ({ hasTop }) => ({
+    borderRadius: hasTop ? 0 : 4,
+  }),
+)
 
 const Item = styled.div<{ activeIdx: boolean }>(
   {
@@ -319,7 +327,7 @@ const IterationWrap = () => {
           </Space>
         </DemandInfoWrap>
         <ContentWrap hasTop={type === 'info'}>
-          <MainWrap size={32}>
+          <MainWrap size={32} hasTop={type === 'info'}>
             <Item
               onClick={() => onChangeIdx('info')}
               activeIdx={type === 'info'}

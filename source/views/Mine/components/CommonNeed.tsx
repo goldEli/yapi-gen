@@ -281,7 +281,6 @@ const CommonNeed = (props: any) => {
     updatePriority,
     init,
     plainOptions3,
-    showOpen: props?.type === 'copysend',
   })
 
   const selectColum: any = useMemo(() => {

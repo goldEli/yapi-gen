@@ -6,8 +6,7 @@
 import styled from '@emotion/styled'
 import { Table, Select, Pagination, Form, Spin } from 'antd'
 import moment from 'moment'
-import { css } from '@emotion/css'
-import { PaginationWrap } from '@/components/StyleCommon'
+import { PaginationWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -39,26 +38,6 @@ const SearchWrap = styled.div({
   padding: '0 24px',
   flexWrap: 'wrap',
 })
-
-const SelectWrapBedeck = styled.div`
-  height: 32px;
-  margin-right: 16px;
-  position: relative;
-  height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-  .ant-picker {
-    border: none;
-  }
-`
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {

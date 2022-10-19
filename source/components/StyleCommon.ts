@@ -5,6 +5,25 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider } from 'antd'
 
+const SelectWrapBedeck = styled.div`
+  height: 32px;
+  position: relative;
+  height: 32px;
+  border: 1px solid #ebedf0;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  span {
+    white-space: nowrap;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-picker {
+    border: none;
+  }
+`
+
 const DelWrap = styled.span({
   fontSize: 12,
   marginLeft: 8,
@@ -542,4 +561,5 @@ export {
   HiddenText,
   AddWrap,
   DelWrap,
+  SelectWrapBedeck,
 }

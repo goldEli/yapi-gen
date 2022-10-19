@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { SearchLine } from '@/components/StyleCommon'
+import { SearchLine, SelectWrapBedeck } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { DatePicker, Form, Input, Select } from 'antd'
 import moment from 'moment'
@@ -55,25 +55,6 @@ const InputWrap = styled(Input)`
   border: none !important;
   outline: none !important;
 `
-const SelectWrapBedeck = styled.div`
-  height: 32px;
-  position: relative;
-  height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-  .ant-picker {
-    border: none;
-  }
-`
-
 interface Props {
   activeTab: number
   onFilterChange(params: any): void

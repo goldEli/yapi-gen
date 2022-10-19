@@ -31,7 +31,7 @@ const flexCss = css`
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { projectInfo, colorList } = useModel('project')
+  const { colorList } = useModel('project')
   const { userInfo } = useModel('user')
 
   const onToDetail = (item: any) => {
@@ -42,12 +42,8 @@ export const useDynamicColumns = (state: any) => {
         demandId: item.id,
       }),
     )
-    if (state.showOpen) {
-      if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
-        message.warning(t('common.notCheckInfo'))
-      } else {
-        openDetail(`/Detail/Demand?data=${params}`)
-      }
+    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
+      message.warning(t('common.notCheckInfo'))
     } else {
       openDetail(`/Detail/Demand?data=${params}`)
     }

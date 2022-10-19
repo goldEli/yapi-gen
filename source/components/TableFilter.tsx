@@ -100,7 +100,7 @@ const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
+  border: 1px solid #ebedf0;
   display: flex;
   align-items: center;
   border-radius: 6px;

@@ -94,7 +94,7 @@ export const getDemandList: any = async (params: any) => {
           childCount: i.child_story_count,
           id: i.id,
           name: i.name,
-          userName: i.users_name.split(',') || [],
+          userName: i.users_name ? i.users_name.split(',') : [],
           priority: i.priority,
           status: i.status,
           category: i.category,
