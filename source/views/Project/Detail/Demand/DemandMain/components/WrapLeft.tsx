@@ -8,7 +8,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Form, Input, Popover, Tooltip, Tree } from 'antd'
-import { useEffect, useState, useContext } from 'react'
+import {
+  useEffect,
+  useState,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import {
   getTreeList,
   addTreeList,
@@ -270,7 +276,7 @@ const TreeItem = (props: any) => {
   )
 }
 
-const WrapLeft = (props: Props) => {
+const WrapLeft = (props: any, ref: any) => {
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
@@ -372,13 +378,20 @@ const WrapLeft = (props: Props) => {
   useEffect(() => {
     init()
   }, [])
+
+  useImperativeHandle(ref, () => {
+    return {
+      init,
+    }
+  })
+
   if (props.isShowLeft) {
     return (
       <Left>
         <div className="resize_bar" />
         <div className="resize_line" />
         <div className="resize_save">
-          <TitleWrap>需求分类</TitleWrap>
+          <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
           {treeData.length > 0 && (
             <Tree
               defaultExpandAll
@@ -406,4 +419,4 @@ const WrapLeft = (props: Props) => {
   return null
 }
 
-export default WrapLeft
+export default forwardRef(WrapLeft)
