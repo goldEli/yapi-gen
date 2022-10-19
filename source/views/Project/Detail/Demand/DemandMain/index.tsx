@@ -5,7 +5,7 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
@@ -34,6 +34,7 @@ interface Props {
 export const TreeContext: any = React.createContext('')
 
 const DemandMain = (props: Props) => {
+  const myTreeComponent: any = useRef(null)
   const [t] = useTranslation()
   const [key, setKey] = useState()
   const [isGrid, setIsGrid] = useState(false)
@@ -126,23 +127,27 @@ const DemandMain = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdate?.()
     setIsRefresh(false)
+    myTreeComponent?.current?.init()
   }
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
     getCategoryList({ projectId, isSelect: true })
+    myTreeComponent?.current?.init()
   }, [key])
 
   useEffect(() => {
     if (isRefresh) {
       getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
     }
+    myTreeComponent?.current?.init()
   }, [isRefresh])
 
   useEffect(() => {
     if (props.isUpdate) {
       getList(isGrid, searchItems, pageObj, order)
     }
+    myTreeComponent?.current?.init()
   }, [props.isUpdate])
 
   const onChangeGrid = (val: boolean) => {
@@ -159,6 +164,7 @@ const DemandMain = (props: Props) => {
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
+    myTreeComponent?.current?.init()
   }
 
   const onDeleteConfirm = async () => {
@@ -216,9 +222,13 @@ const DemandMain = (props: Props) => {
           onChangeVisible={() => setIsVisible(!isVisible)}
           onConfirm={onDeleteConfirm}
         />
-        {isShowLeft
-          ? <WrapLeft projectId={projectId} isShowLeft={isShowLeft} />
-          : null}
+        {isShowLeft ? (
+          <WrapLeft
+            ref={myTreeComponent}
+            projectId={projectId}
+            isShowLeft={isShowLeft}
+          />
+        ) : null}
         <Right isShowLeft={isShowLeft}>
           <Operation
             isGrid={isGrid}

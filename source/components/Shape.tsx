@@ -794,6 +794,7 @@ export const ShapeContent = (props: any) => {
 
           <ButtonFooter>
             <Button
+              disabled={!rightList.user_has_auth}
               onClick={confirm}
               style={{ marginLeft: '16px' }}
               type="primary"
@@ -802,6 +803,7 @@ export const ShapeContent = (props: any) => {
                 ? t('newlyAdd.submitReview')
                 : t('common.circulation')}
             </Button>
+
             <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
           </ButtonFooter>
         </Right>
