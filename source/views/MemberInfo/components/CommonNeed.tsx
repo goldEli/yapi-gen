@@ -91,15 +91,27 @@ interface MoreWrapProps {
 const MoreWrap = (props: MoreWrapProps) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const onClickMenu = (type?: any) => {
+    setIsMoreVisible(false)
+    if (type === 'edit') {
+      props.onShowEdit()
+    } else {
+      props.onShowDel()
+    }
+  }
   const menu = () => {
     let menuItems = [
       {
         key: '1',
-        label: <span onClick={props.onShowEdit}>{t('common.edit')}</span>,
+        label:
+          <span onClick={() => onClickMenu('edit')}>{t('common.edit')}</span>
+        ,
       },
       {
         key: '2',
-        label: <span onClick={props.onShowDel}>{t('common.del')}</span>,
+        label:
+          <span onClick={() => onClickMenu('del')}>{t('common.del')}</span>
+        ,
       },
     ]
 

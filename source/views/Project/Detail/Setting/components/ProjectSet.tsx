@@ -320,6 +320,7 @@ const ProjectSet = () => {
   }
 
   const onClickMenu = (e: any, type: string, item: any) => {
+    setIsMoreVisible(false)
     e.stopPropagation()
     setOperationDetail(item)
     if (type === 'edit') {
