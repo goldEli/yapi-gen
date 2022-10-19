@@ -5,6 +5,13 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider } from 'antd'
 
+const DelWrap = styled.span({
+  fontSize: 12,
+  marginLeft: 8,
+  color: '#969799',
+  textDecoration: 'line-through',
+})
+
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
@@ -534,4 +541,5 @@ export {
   StepBoxWrap,
   HiddenText,
   AddWrap,
+  DelWrap,
 }

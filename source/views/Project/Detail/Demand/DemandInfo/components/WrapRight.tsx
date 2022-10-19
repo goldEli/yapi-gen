@@ -223,9 +223,11 @@ const QuickEdit = (props: Props) => {
   const projectId = paramsData.id
 
   useEffect(() => {
-    setTimeout(() => {
-      inputRef.current?.focus()
-    }, 100)
+    if (isShowControl) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 100)
+    }
   }, [isShowControl])
 
   const onChange = async (newValue: string) => {
@@ -258,6 +260,10 @@ const QuickEdit = (props: Props) => {
     }
   }
 
+  const onMouseEnter = () => {
+    setIsShowControl(true)
+  }
+
   return (
     <>
       {isShowControl ? (
@@ -275,7 +281,7 @@ const QuickEdit = (props: Props) => {
           )}
         </>
       )
-        : <span onMouseEnter={() => setIsShowControl(true)}>{props?.text}</span>
+        : <span onMouseEnter={onMouseEnter}>{props?.text}</span>
       }
     </>
   )

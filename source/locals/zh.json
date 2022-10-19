@@ -1,5 +1,6 @@
 {
   "newlyAdd": {
+    "statusDel": "状态已被删除",
     "null": "空",
     "pleaseAddStatus": "请添加需求状态，来配置工作流程",
     "lineText": "单行文本",

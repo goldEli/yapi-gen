@@ -5,7 +5,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 import { Input, message, Space, Timeline } from 'antd'
-import { CategoryWrap, ViewWrap, NameWrap } from '@/components/StyleCommon'
+import {
+  CategoryWrap,
+  ViewWrap,
+  NameWrap,
+  DelWrap,
+} from '@/components/StyleCommon'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
@@ -344,9 +349,13 @@ const EditExamine = (props: Props) => {
                 <WrapBox size={16} color="#323233" right={8}>
                   {t('newlyAdd.circulationTo')}
                 </WrapBox>
-                <ViewWrap color={verifyInfo?.to?.color}>
-                  {verifyInfo?.to?.content}
-                </ViewWrap>
+                {verifyInfo?.to ? (
+                  <ViewWrap color={verifyInfo?.to?.color}>
+                    {verifyInfo?.to?.content}
+                  </ViewWrap>
+                )
+                  : <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                }
               </div>
             </Timeline.Item>
           </TimelineWrap>

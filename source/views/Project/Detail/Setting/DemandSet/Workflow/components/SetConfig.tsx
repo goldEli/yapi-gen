@@ -864,16 +864,40 @@ const SetConfig = (props: Props) => {
             </Button>
             <TableWrap
               pagination={false}
-              dataSource={dataSource}
+              dataSource={dataSource?.filter(
+                (i: any) => i.content === 'users_name',
+              )}
               columns={columns as any}
               rowKey="index"
               style={{ marginTop: 16 }}
-              components={{
-                body: {
-                  wrapper: DraggableContainer,
-                  row: DraggableBodyRow,
-                },
-              }}
+            />
+            {dataSource?.filter(
+              (i: any) => i.content !== 'users_name' && i.content !== 'comment',
+            )?.length > 0 && (
+              <TableWrap
+                pagination={false}
+                dataSource={dataSource?.filter(
+                  (i: any) => i.content !== 'users_name' && i.content !== 'comment',
+                )}
+                columns={columns as any}
+                rowKey="index"
+                showHeader={false}
+                components={{
+                  body: {
+                    wrapper: DraggableContainer,
+                    row: DraggableBodyRow,
+                  },
+                }}
+              />
+            )}
+            <TableWrap
+              pagination={false}
+              dataSource={dataSource?.filter(
+                (i: any) => i.content === 'comment',
+              )}
+              columns={columns as any}
+              rowKey="index"
+              showHeader={false}
             />
             <TextWrap>
               <span style={{ wordBreak: 'break-word' }}>

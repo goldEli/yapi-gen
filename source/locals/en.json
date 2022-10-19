@@ -1,5 +1,6 @@
 {
   "newlyAdd": {
+    "statusDel": "Status has been deleted",
     "null": "Empty",
     "pleaseAddStatus": "Please add a requirement status to configure the workflow",
     "lineText": "Single line text",

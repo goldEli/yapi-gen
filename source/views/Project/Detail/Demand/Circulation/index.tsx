@@ -6,7 +6,7 @@
 /* eslint-disable max-len */
 import styled from '@emotion/styled'
 import { Space, Timeline } from 'antd'
-import { NameWrap, ViewWrap } from '@/components/StyleCommon'
+import { NameWrap, ViewWrap, DelWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -165,13 +165,22 @@ const Circulation = () => {
                     ? t('newlyAdd.reviewDemandTo')
                     : t('newlyAdd.applyReviewTo')}
               </TextWrap>
-              {i.changeType === 3
-                ? `【${i.statusTo?.name}】`
-                : (
-                    <ViewWrap style={{ marginLeft: 8 }} color={i.statusTo?.color}>
-                      {i.statusTo?.name}
-                    </ViewWrap>
-                  )}
+              {i.statusTo ? (
+                <>
+                  {i.changeType === 3
+                    ? `【${i.statusTo?.name}】`
+                    : (
+                        <ViewWrap
+                          style={{ marginLeft: 8 }}
+                          color={i.statusTo?.color}
+                        >
+                          {i.statusTo?.name}
+                        </ViewWrap>
+                      )}
+                </>
+              )
+                : <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+              }
             </LineItem>
             {Object.keys(i.fields)?.map((m: any) => (
               <>
@@ -386,18 +395,25 @@ const Circulation = () => {
                     ? t('newlyAdd.demandReviewTo')
                     : t('newlyAdd.notExamineTo')}
                 </SpanWrap>
-                <ViewWrap
-                  style={{ marginLeft: 8 }}
-                  color={
-                    i.verifyAll?.verifyStatus === 2
-                      ? i.statusTo?.color
-                      : i.verifyAll?.statusFrom?.color
-                  }
-                >
-                  {i.verifyAll?.verifyStatus === 2
-                    ? i.statusTo?.name
-                    : i.verifyAll?.statusFrom?.name}
-                </ViewWrap>
+
+                {i.verifyAll?.verifyStatus === 2
+                  ? i.statusTo
+                  : i.verifyAll?.statusFrom ? (
+                    <ViewWrap
+                      style={{ marginLeft: 8 }}
+                      color={
+                        i.verifyAll?.verifyStatus === 2
+                          ? i.statusTo?.color
+                          : i.verifyAll?.statusFrom?.color
+                      }
+                    >
+                      {i.verifyAll?.verifyStatus === 2
+                        ? i.statusTo?.name
+                        : i.verifyAll?.statusFrom?.name}
+                    </ViewWrap>
+                  )
+                    : <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                }
               </LineItem>
             )}
           </Timeline.Item>

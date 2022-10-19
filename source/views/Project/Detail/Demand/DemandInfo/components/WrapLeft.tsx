@@ -214,17 +214,23 @@ const WrapLeftBox = () => {
   }, [demandInfo])
 
   const onChangeSchedule = async () => {
-    const obj = {
-      projectId,
-      id: demandInfo?.id,
-      otherParams: { schedule },
-    }
-    try {
-      await updateTableParams(obj)
-      getDemandInfo({ projectId, id: demandInfo?.id })
-    } catch (error) {
+    if (
+      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id)
+      && demandInfo.status.is_start !== 1
+      && demandInfo.status.is_end !== 1
+    ) {
+      const obj = {
+        projectId,
+        id: demandInfo?.id,
+        otherParams: { schedule },
+      }
+      try {
+        await updateTableParams(obj)
+        getDemandInfo({ projectId, id: demandInfo?.id })
+      } catch (error) {
 
-      //
+        //
+      }
     }
   }
 
