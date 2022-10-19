@@ -50,6 +50,9 @@ const Right = styled.div`
   padding-top: 40px;
   width: 500px;
   min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 const Contain = styled.div`
   position: relative;
@@ -84,10 +87,10 @@ const FormWrap = styled.div`
   padding-right: 24px;
 `
 const ButtonFooter = styled.div`
-  height: 56px;
+  height: 80px;
   display: flex;
   align-items: center;
-  margin-top: 24px;
+  /* margin-top: 24px; */
   flex-direction: row-reverse;
   box-sizing: border-box;
   padding-right: 24px;
@@ -655,10 +658,18 @@ export const ShapeContent = (props: any) => {
                 >
                   {props.noleft ? props?.active?.content : fromText?.content}
                 </StyledShape2>
-                <img
+                {/* <img
                   style={{ width: '40px', height: '15px', margin: '0px 8px' }}
                   src={arrows}
                   alt=""
+                /> */}
+                <IconFont
+                  style={{
+                    fontSize: '50px',
+                    margin: '0 8px',
+                    color: '#BBBDBF',
+                  }}
+                  type="flow"
                 />
                 <StyledShape2
                   style={{

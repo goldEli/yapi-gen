@@ -295,7 +295,7 @@ input::-webkit-inner-spin-button {
 .resize_bar {
   width: 200px;
   max-width: 700px;
-  min-width: 300px;
+  min-width: 400px;
   height: inherit;
   resize: horizontal;
   cursor: ew-resize;
@@ -309,7 +309,7 @@ input::-webkit-inner-spin-button {
   right: 0;
   top: 0;
   bottom: 0;
-  border-right: 2px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
   border-left: 1px solid #f0f0f0;
   pointer-events: none;
 }
@@ -330,4 +330,7 @@ input::-webkit-inner-spin-button {
 .ant-input,
 .ant-input-number {
   border: 1px solid #ebedf0;
+}
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  width: 0;
 }

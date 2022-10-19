@@ -46,21 +46,12 @@ const TitleWrap = styled.div({
   fontWeight: 'bold',
 })
 
-interface Props {
-  isShowLeft: boolean
-  projectId: any
-}
 const TreeBox = styled.div`
   width: 100% !important;
   height: 40px;
   border-radius: 0px 0px 0px 0px;
   display: flex;
   align-items: center;
-  &:hover {
-    [data] {
-      visibility: visible;
-    }
-  }
 `
 const FormBox = styled.div`
   padding-right: 20px;
@@ -206,10 +197,6 @@ const TreeItem = (props: any) => {
       <span
         style={{
           whiteSpace: 'nowrap',
-
-          // overflow: 'hidden',
-          // textOverflow: ' ellipsis',
-          // width: '60px',
         }}
       >
         {/* <Tooltip title={props.name}>{props.name}</Tooltip> */}
