@@ -197,10 +197,6 @@ const TreeItem = (props: any) => {
       <span
         style={{
           whiteSpace: 'nowrap',
-
-          // overflow: 'hidden',
-          // textOverflow: ' ellipsis',
-          // width: '60px',
         }}
       >
         {/* <Tooltip title={props.name}>{props.name}</Tooltip> */}
