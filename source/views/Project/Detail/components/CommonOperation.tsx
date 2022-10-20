@@ -279,8 +279,8 @@ const CommonOperation = (props: Props) => {
       <OperationTop>
         <ProjectInfo>
           <Tooltip title={t('newlyAdd.backList')}>
-            <BackWrap>
-              <IconFont onClick={onToProject} type="return" />
+            <BackWrap onClick={onToProject}>
+              <IconFont type="return" />
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />

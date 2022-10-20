@@ -163,7 +163,7 @@ const EditIteration = (props: Props) => {
   return (
     <Modal
       visible={props.visible}
-      width={524}
+      width={758}
       footer={false}
       title={props?.id ? t('project.editIterate') : t('common.createIterate')}
       onCancel={onCancel}
@@ -173,7 +173,7 @@ const EditIteration = (props: Props) => {
       keyboard={false}
       wrapClassName="vertical-center-modal"
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
+      <div style={{ maxHeight: 464, overflow: 'auto', paddingRight: 20 }}>
         <FormWrap
           form={form}
           labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}

@@ -11,7 +11,7 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Button, Divider, Popover, Space, Tooltip } from 'antd'
+import { Divider, Popover, Space, Tooltip } from 'antd'
 import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
 import ImportDemand from './ImportDemand'
@@ -72,18 +72,22 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   }),
 )
 
-const MoreWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  borderRadius: 6,
-  padding: '0 16px',
-  background: '#F0F4FA',
-  color: '#2877ff',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-})
+const MoreWrap = styled.div<{ type?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: 32,
+    borderRadius: 6,
+    padding: '0 16px',
+    fontSize: 14,
+    fontWeight: 400,
+    cursor: 'pointer',
+  },
+  ({ type }) => ({
+    background: type ? '#2877ff' : '#F0F4FA',
+    color: type ? 'white' : '#2877ff',
+  }),
+)
 
 const MoreItem = styled.div({
   display: 'flex',
@@ -351,9 +355,13 @@ const Operation = (props: Props) => {
               visible={isVisible}
               onVisibleChange={visible => setIsVisible(visible)}
             >
-              <Button type="primary" icon={<IconFont type="plus" />}>
-                {t('common.createDemand')}
-              </Button>
+              <MoreWrap type="create">
+                <span>{t('common.createDemand')}</span>
+                <IconFont
+                  style={{ fontSize: 16, marginLeft: 8 }}
+                  type={isVisible ? 'up' : 'down'}
+                />
+              </MoreWrap>
             </Popover>
           )}
           {hasExport && hasImport ? null : (
