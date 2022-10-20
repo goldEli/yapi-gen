@@ -234,7 +234,7 @@ const MoreWrap = (props: MoreWrapProps) => {
     params.oldId = props.row.id
     try {
       await changeStoryConfigCategory(params)
-      message.success(t('newlyAdd.dateMoveSuccess'))
+      await onDeleteConfirm()
       onCloseHasDelete()
     } catch (error) {
 
@@ -273,7 +273,7 @@ const MoreWrap = (props: MoreWrapProps) => {
           title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ paddingRight: 20 }}>
+          <div style={{ padding: '0 20px 0 2px' }}>
             <HasDemandText>
               {t('newlyAdd.hasMoveType', { hasDemand: props?.row?.hasDemand })}
             </HasDemandText>
@@ -446,7 +446,7 @@ const CardGroup = (props: CardGroupProps) => {
               <span className="set" onClick={() => onToWorkFlow(item)}>
                 {t('newlyAdd.workflowSet')}
               </span>
-              {item?.statusCount ? null : (
+              {!item?.statusCount && (
                 <div className="warning">
                   <IconFont
                     type="fillwarning"

@@ -135,7 +135,11 @@ const EditorCategory = (props: EditorProps) => {
       onConfirm={onConfirm}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
-      <FormWrap form={form} layout="vertical" style={{ paddingRight: 20 }}>
+      <FormWrap
+        form={form}
+        layout="vertical"
+        style={{ padding: '0 20px 0 2px' }}
+      >
         <Form.Item
           label={t('newlyAdd.categoryName')}
           name="name"
@@ -155,7 +159,7 @@ const EditorCategory = (props: EditorProps) => {
           <Input.TextArea
             placeholder={t('newlyAdd.pleaseCategoryRemark')}
             autoSize={{ minRows: 5, maxRows: 5 }}
-            maxLength={200}
+            maxLength={100}
           />
         </Form.Item>
         <Form.Item label={t('newlyAdd.chooseColor')} name="color">

@@ -245,7 +245,9 @@ const EditFiled = (props: Props) => {
       onConfirm={onConfirm}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
+      <div
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
+      >
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>
             <Form.Item

@@ -378,7 +378,7 @@ const DemandBox = () => {
             <FormWrap
               form={form}
               layout="vertical"
-              style={{ paddingRight: 20 }}
+              style={{ padding: '0 20px 0 2px' }}
             >
               <Form.Item label={t('newlyAdd.beforeCategory')}>
                 <StatusTag

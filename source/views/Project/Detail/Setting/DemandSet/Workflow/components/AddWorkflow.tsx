@@ -310,11 +310,13 @@ const AddWorkflow = (props: Props) => {
 
   const onAddDel = async (row: any) => {
     setOperationDelObj(row)
-    if (row.deleteData?.story_count) {
-      setIsHasDelete(true)
-    } else {
-      setIsDelVisible(true)
-    }
+    setTimeout(() => {
+      if (row.deleteData?.story_count) {
+        setIsHasDelete(true)
+      } else {
+        setIsDelVisible(true)
+      }
+    }, 100)
   }
 
   const onCloseDel = () => {

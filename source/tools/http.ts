@@ -113,9 +113,13 @@ client.config({
         import.meta.env.MODE !== 'development' &&
         options.url !== import.meta.env.__COS_SIGN_URL__
       ) {
+        if (options.responseType === 'blob') {
+          return response
+        }
         return JSON.parse(
           decryptPhp(JSON.parse((response as { body: string }).body).p),
         )
+
       }
       return options.responseType === 'blob'
         ? response

@@ -172,6 +172,7 @@ const DemandCard = (props: Props) => {
               <OmitText
                 width={200}
                 tipProps={{
+                  placement: 'topLeft',
                   getPopupContainer: node => node,
                 }}
               >

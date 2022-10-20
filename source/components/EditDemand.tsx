@@ -51,7 +51,7 @@ const ModalWrap = styled(Modal)({
 })
 
 const FormWrap = styled(Form)({
-  paddingRight: 20,
+  padding: '0 20px 0 2px',
   '.labelIcon': {
     display: 'flex',
     alignItems: 'flex-start',

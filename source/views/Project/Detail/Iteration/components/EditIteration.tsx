@@ -173,7 +173,9 @@ const EditIteration = (props: Props) => {
       keyboard={false}
       wrapClassName="vertical-center-modal"
     >
-      <div style={{ maxHeight: 464, overflow: 'auto', paddingRight: 20 }}>
+      <div
+        style={{ maxHeight: 464, overflow: 'auto', padding: '0 20px 0 2px' }}
+      >
         <FormWrap
           form={form}
           labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
