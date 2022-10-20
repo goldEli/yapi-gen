@@ -281,6 +281,7 @@ const EditDemand = (props: Props) => {
   const { setIsRefresh, userInfo } = useModel('user')
   const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const LeftDom = useRef<HTMLInputElement>(null)
   const [parentList, setParentList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
   const [classTreeData, setClassTreeData] = useState<any>([])
@@ -730,6 +731,11 @@ const EditDemand = (props: Props) => {
     </div>
   )
 
+  const onBottom = () => {
+    const dom: any = LeftDom?.current
+    dom.scrollTop = dom.scrollHeight
+  }
+
   return (
     <ModalWrap
       visible={props.visible}
@@ -825,7 +831,7 @@ const EditDemand = (props: Props) => {
         <IconFont type="close" onClick={onCancel} />
       </ModalHeader>
       <ModalContent>
-        <LeftWrap>
+        <LeftWrap ref={LeftDom}>
           <FormWrap layout="vertical" form={form}>
             {props?.isQuickCreate && (
               <div style={{ display: 'flex' }}>
@@ -941,6 +947,7 @@ const EditDemand = (props: Props) => {
                     onChangeShow={setIsShow}
                     defaultList={attachList}
                     onChangeAttachment={onChangeAttachment}
+                    onBottom={onBottom}
                     addWrap={
                       <AddWrap hasColor>
                         <IconFont type="plus" />
