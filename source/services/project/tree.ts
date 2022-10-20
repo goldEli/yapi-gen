@@ -10,22 +10,29 @@ export const getTreeList = async (params: any) => {
     project_id: params.id,
     is_tree: params.isTree ?? 2,
   })
-
+  const newData = res.data.map((item: any) => {
+    return {
+      ...item,
+      key: item.id,
+    }
+  })
   const treeData = [
     {
       name: '全部分类',
+      key: 0,
       id: 0,
       pid: 1,
       parent_id: 0,
       story_count: res.data[0]?.story_count,
       children: [
         {
+          key: 101,
           name: '未分类',
           pid: 0,
           id: -1,
           story_count: res.data[1]?.story_count,
         },
-        ...transData(res.data, 'id', 'parent_id', 'children') ?? [],
+        ...transData(newData, 'id', 'parent_id', 'children') ?? [],
       ],
     },
   ]
