@@ -32,6 +32,7 @@ const StickyWrap = styled.div({
 const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
 })
 
 const StatusTag = styled.div<{ isOpen?: boolean }>(
@@ -85,6 +86,7 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
   const [isShow, setIsShow] = useState(false)
+  const [isShow2, setIsShow2] = useState(false)
   const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
     = useModel('iterate')
   const [searchParams] = useSearchParams()
@@ -194,6 +196,15 @@ const Operation = (props: Props) => {
     }, 42)
   }
 
+  const onClickIcon = (value: any) => {
+    if (value === 1) {
+      setIsShow2(false)
+    } else {
+      setIsShow(false)
+    }
+    props?.onChangeIsShowLeft?.()
+  }
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <Modal
@@ -222,26 +233,45 @@ const Operation = (props: Props) => {
       </Modal>
       <OperationWrap>
         <IterationInfo>
-          <Tooltip
-            key={isShow.toString()}
-            visible={isShow}
-            onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getTooltipContainer={node => node}
-            title={
-              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
-            }
-          >
-            <IconFont
-              onClick={props.onChangeIsShowLeft}
-              type={props.isShowLeft ? 'outdent' : 'indent'}
-              style={{
-                fontSize: 20,
-                color: 'black',
-                cursor: 'pointer',
-                marginRight: 8,
-              }}
-            />
-          </Tooltip>
+          {props.isShowLeft ? (
+            <Tooltip
+              key={isShow.toString()}
+              visible={isShow}
+              onVisibleChange={isShow3 => setIsShow(isShow3)}
+              getTooltipContainer={node => node}
+              title={t('common.collapseMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(1)}
+                type="outdent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip
+              key={isShow2.toString()}
+              visible={isShow2}
+              onVisibleChange={isShow1 => setIsShow2(isShow1)}
+              getTooltipContainer={node => node}
+              title={t('common.openMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(2)}
+                type="indent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          )}
           <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
             {props.currentDetail?.name}
           </span>

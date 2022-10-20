@@ -52,7 +52,7 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChangeRecord = () => {
+const ChangeRecord = (props?: any) => {
   const [t] = useTranslation()
   const { getIterateChangeLog } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
@@ -85,14 +85,10 @@ const ChangeRecord = () => {
   }
 
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh || props?.isUpdate) {
       getList({ page: 1, size: pageObj.size }, order)
     }
-  }, [isRefresh])
-
-  useEffect(() => {
-    getList(pageObj, order)
-  }, [])
+  }, [isRefresh, props?.isUpdate])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)

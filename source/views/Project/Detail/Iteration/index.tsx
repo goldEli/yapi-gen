@@ -45,7 +45,7 @@ const ContentWrap = styled.div<{ hasTop?: any }>(
   },
   ({ hasTop }) => ({
     padding: hasTop ? 0 : '16px 16px 0',
-    height: hasTop ? 'calc(100% - 64px)' : 'calc(100% - 64px)',
+    height: 'calc(100% - 64px)',
   }),
 )
 
@@ -174,7 +174,7 @@ const IterationWrap = () => {
     } else if (type === 'demand') {
       return <Demand />
     }
-    return <ChangeRecord />
+    return <ChangeRecord isUpdate={isUpdateState} />
   }
 
   useEffect(() => {

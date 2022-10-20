@@ -114,6 +114,7 @@ interface Props {
 const Operation = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
+  const [isShow2, setIsShow2] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
@@ -280,6 +281,15 @@ const Operation = (props: Props) => {
     setIsShowImport(false)
   }
 
+  const onClickIcon = (value: any) => {
+    if (value === 1) {
+      setIsShow2(false)
+    } else {
+      setIsShow(false)
+    }
+    props?.onChangeIsShowLeft?.()
+  }
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <CommonModal
@@ -292,25 +302,44 @@ const Operation = (props: Props) => {
         <ImportDemand />
       </CommonModal>
       <OperationWrap>
-        <Space size={16}>
-          <Tooltip
-            visible={isShow}
-            onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getTooltipContainer={node => node}
-            title={
-              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
-            }
-          >
-            <IconFont
-              onClick={props.onChangeIsShowLeft}
-              type={props.isShowLeft ? 'outdent' : 'indent'}
-              style={{
-                fontSize: 20,
-                color: 'black',
-                cursor: 'pointer',
-              }}
-            />
-          </Tooltip>
+        <Space size={16} style={{ position: 'relative' }}>
+          {props.isShowLeft ? (
+            <Tooltip
+              visible={isShow}
+              onVisibleChange={isShow3 => setIsShow(isShow3)}
+              getTooltipContainer={node => node}
+              title={t('common.collapseMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(1)}
+                type="outdent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip
+              visible={isShow2}
+              onVisibleChange={isShow1 => setIsShow2(isShow1)}
+              getTooltipContainer={node => node}
+              title={t('common.openMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(2)}
+                type="indent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          )}
           {getIsPermission(
             projectInfo?.projectPermissions,
             'b/story/save',
