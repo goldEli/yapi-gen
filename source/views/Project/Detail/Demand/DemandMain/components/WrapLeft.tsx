@@ -269,7 +269,6 @@ const WrapLeft = (props: any, ref: any) => {
   const [treeData, setTreeData] = useState<any>([])
   const init = async () => {
     const res = await getTreeList({ id: props.projectId })
-
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setTreeData(filterTreeData(res))
   }
@@ -308,7 +307,7 @@ const WrapLeft = (props: any, ref: any) => {
     if (start.pid === 0) {
       return
     }
-    if (end.level === 4) {
+    if (end.grade === 4 && !isDropToGap) {
       return
     }
 
@@ -359,6 +358,7 @@ const WrapLeft = (props: any, ref: any) => {
         title: { props: selectLine },
       },
     } = e
+
     context.changeKey(selectLine.id)
   }
 
@@ -387,10 +387,10 @@ const WrapLeft = (props: any, ref: any) => {
               draggable={(node: any) => {
                 const {
                   title: {
-                    props: { id, level },
+                    props: { id },
                   },
                 } = node
-                if (id === -1 || id === 0 || level === 4) {
+                if (id === -1 || id === 0) {
                   return false
                 }
 

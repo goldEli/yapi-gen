@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -131,6 +132,19 @@ function getTypeComponent(
   return child
 }
 
+function arrayFlagLevel(array: any, grade: any) {
+  if (!array || !array.length) {
+    return
+  }
+  array.forEach((item: any) => {
+    item.grade = grade
+    if (item.children && item.children.length) {
+      arrayFlagLevel(item.children, grade + 1)
+    }
+  })
+  return array
+}
+
 const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
   const result = []
   const id: any = idStr
@@ -152,7 +166,8 @@ const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
       result.push(jsonArrItem)
     }
   }
-  return result
+
+  return arrayFlagLevel(result, 1)
 }
 
 function getNestedChildren(arr: any, parent?: any) {
