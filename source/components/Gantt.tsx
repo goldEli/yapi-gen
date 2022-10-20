@@ -118,11 +118,13 @@ const Gantt = (props: Props) => {
         }</b> ` +
         (task.demandText || '--') +
         '<br/>' +
-        String(task.statusTitle
-          ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
-          : `<span style="color: #969799;text-decoration:line-through">${t(
-            'newlyAdd.statusDel',
-          )}</span>`) +
+        String(
+          task.statusTitle
+            ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
+            : `<span style="color: #969799;text-decoration:line-through">${t(
+              'newlyAdd.statusDel',
+            )}</span>`,
+        ) +
         `<br/><b>${
           i18n.language === 'zh' ? t('common.startTime') + '：' : 'Star date:'
         }</b> ` +
@@ -162,6 +164,14 @@ const Gantt = (props: Props) => {
     init()
     gantt.clearAll()
     gantt.parse({ data: props?.data })
+
+    // setTimeout(() => {
+    //   document.getElementsByClassName('gantt_tooltip')[0].style.display =
+    //     'block'
+    // }, 100)
+    // return () =>
+    //   (document.getElementsByClassName('gantt_tooltip')[0].style.display =
+    //     'none')
   }, [props?.data, i18n.language])
 
   return (

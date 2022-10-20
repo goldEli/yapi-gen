@@ -350,10 +350,12 @@ export const getStoryStatusLog: any = async (params: any) => {
     operationName: i.user_name,
     time: i.created_at,
     id: i.id,
-    statusTo: {
-      color: i.statusto?.color,
-      name: i.statusto?.content,
-    },
+    statusTo: i.statusto
+      ? {
+          color: i.statusto?.color,
+          name: i.statusto?.content,
+        }
+      : null,
     changeType: i.change_type,
     fields: {
       tag: i.fields?.tag,
@@ -369,10 +371,12 @@ export const getStoryStatusLog: any = async (params: any) => {
     },
     verifyAll: {
       id: i.verify?.id,
-      statusFrom: {
-        color: i.verify?.statusfrom?.color,
-        name: i.verify?.statusfrom?.content,
-      },
+      statusFrom: i.verify?.statusfrom
+        ? {
+            color: i.verify?.statusfrom?.color,
+            name: i.verify?.statusfrom?.content,
+          }
+        : null,
 
       // 整条审核的状态  1-待审核  2-已通过 3-未通过
       verifyStatus: i.verify?.verify_status,

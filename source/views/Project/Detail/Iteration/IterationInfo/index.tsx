@@ -135,7 +135,9 @@ const DemoLine = (props: { data: any }) => {
 
 const DemoColumn = (props: { data: any }) => {
   const config = {
+    seriesField: 'type',
     data: props.data,
+    color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
     xField: 'type',
     yField: 'count',
     xAxis: {

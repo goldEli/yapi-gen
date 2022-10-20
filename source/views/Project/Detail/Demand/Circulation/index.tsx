@@ -397,22 +397,21 @@ const Circulation = () => {
                 </SpanWrap>
 
                 {i.verifyAll?.verifyStatus === 2
-                  ? i.statusTo
-                  : i.verifyAll?.statusFrom ? (
-                    <ViewWrap
-                      style={{ marginLeft: 8 }}
-                      color={
-                        i.verifyAll?.verifyStatus === 2
-                          ? i.statusTo?.color
-                          : i.verifyAll?.statusFrom?.color
-                      }
-                    >
-                      {i.verifyAll?.verifyStatus === 2
-                        ? i.statusTo?.name
-                        : i.verifyAll?.statusFrom?.name}
-                    </ViewWrap>
-                  )
-                    : <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                && (i.statusTo || i.verifyAll?.statusFrom) ? (
+                      <ViewWrap
+                        style={{ marginLeft: 8 }}
+                        color={
+                          i.verifyAll?.verifyStatus === 2
+                            ? i.statusTo?.color
+                            : i.verifyAll?.statusFrom?.color
+                        }
+                      >
+                        {i.verifyAll?.verifyStatus === 2
+                          ? i.statusTo?.name
+                          : i.verifyAll?.statusFrom?.name}
+                      </ViewWrap>
+                    )
+                  : <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
                 }
               </LineItem>
             )}
