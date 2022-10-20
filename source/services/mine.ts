@@ -1,8 +1,42 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable consistent-return */
+/* eslint-disable no-undefined */
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
+import { getTreeList } from '@/services/project/tree'
+import { storyConfigCategoryList } from '@/services/project'
+
+function filterTreeData(data: any) {
+  const newData = data.map((item: any) => ({
+    title: item.name,
+    value: item.id,
+    children:
+      item.children && item.children.length
+        ? filterTreeData(item.children)
+        : null,
+  }))
+  return newData
+}
+const filArr = (data: any) => {
+  return data?.map((item: any) => {
+    return {
+      content_txt: item,
+      id: item,
+    }
+  })
+}
+const filArr2 = (data: any) => {
+  return data?.map((item: any) => {
+    return {
+      content_txt: item.name,
+      id: item.id,
+    }
+  })
+}
 
 // 获取动态搜索段
 export const getSearchField: any = async (params: any) => {
@@ -11,6 +45,15 @@ export const getSearchField: any = async (params: any) => {
   if (params === 0) {
     return
   }
+
+  const res = await getTreeList({ id: params })
+
+  const res2 = await storyConfigCategoryList({
+    projectId: params,
+    isSelect: true,
+  })
+  const newTreeData = filterTreeData(res)
+  const newLieBieData = filArr2(res2.list)
 
   const memberList = await http.get('getProjectMember', {
     search: {
@@ -53,20 +96,32 @@ export const getSearchField: any = async (params: any) => {
 
   const allList = filter_fidlds.map((item: any) => {
     if (item.content === 'iterate_name') {
-      item.values = filterIterateList
+      item.values = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...filterIterateList,
+      ]
+    }
+    if (item.content === 'priority' || item.content === 'tag') {
+      item.values = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...item.values,
+      ]
     }
     if (
       item.content === 'user_name'
       || item.content === 'users_name'
       || item.content === 'users_copysend_name'
     ) {
-      item.values = filterMemberList
+      item.values = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...filterMemberList,
+      ]
     }
     return item
   })
 
-  const filterAllList = allList.map((item: any) => {
-    if (item.title.includes('时间')) {
+  const filterAllList = allList?.map((item: any) => {
+    if (item.title.includes('时间') && !item.attr) {
       return {
         id: item.id,
         name: item.title,
@@ -77,31 +132,84 @@ export const getSearchField: any = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else {
+    } else if (item.title.includes('需求进度') && !item.attr) {
       return {
         id: item.id,
         name: item.title,
         key: item.content,
         content: item.content,
         children: item.values,
-        type: 'select',
+        type: 'number',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
+    } else if (item.title.includes('需求分类') && !item.attr) {
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: 'tree',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+        children: newTreeData,
+      }
+    } else if (item.title.includes('需求类别') && !item.attr) {
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+        children: [
+          { id: -1, content: '空', content_txt: '空' },
+          ...newLieBieData,
+        ],
+      }
+    } else if (item.attr) {
+      const filterData = filArr(item?.values) || []
+      return {
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: item.attr,
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+        children: [{ id: -1, content: '空', content_txt: '空' }, ...filterData],
+      }
+    }
+    return {
+      id: item.id,
+      name: item.title,
+      key: item.content,
+      content: item.content,
+      children: item.values,
+      type: 'select_checkbox',
+      isDefault: item.is_default_filter,
+      contentTxt: item.content_txt,
     }
   })
   const filterBasicsList = filter_fidlds.filter(
-    (item: any) => item.is_default_filter === 1,
-  )
-  const filterSpecialList = filter_fidlds.filter(
-    (item: any) => item.is_default_filter !== 1,
+    (item: any) => item.group_name === '基本字段',
   )
 
+  const filterSpecialList = filter_fidlds.filter(
+    (item: any) => item.group_name === '人员与时间字段',
+  )
+
+  const filterCustomList = filter_fidlds.filter(
+    (item: any) => item.group_name === '自定义字段',
+  )
   // eslint-disable-next-line consistent-return
+
   return {
     filterAllList,
     filterBasicsList,
     filterSpecialList,
+    filterCustomList,
   }
 }
 
@@ -153,6 +261,24 @@ export const getField: any = async (params: any) => {
       },
     )
 
+  const plainOptions3 = display_fidlds
+    .filter((item: { group_name: string }) => item.group_name === '自定义字段')
+    .map(
+      (item: {
+        title: any
+        content: any
+        is_default_display: any
+        content_txt: any
+      }) => {
+        return {
+          label: item.title,
+          value: item.content,
+          is_default_display: item.is_default_display,
+          labelTxt: item.content_txt,
+        }
+      },
+    )
+
   const titleList: any[] = []
   plainOptions
     .filter((item: any) => item.is_default_display === 1)
@@ -167,11 +293,20 @@ export const getField: any = async (params: any) => {
       titleList2.push(item.value)
     })
 
+  const titleList3: any[] = []
+  plainOptions3
+    .filter((item: any) => item.is_default_display === 1)
+    .forEach((item: { title: any; value: any }) => {
+      titleList3.push(item.value)
+    })
+
   return {
     plainOptions,
     plainOptions2,
+    plainOptions3,
     titleList,
     titleList2,
+    titleList3,
   }
 }
 
@@ -202,34 +337,22 @@ export const getMineGatte: any = async (params: any) => {
     page: params.page,
     pagesize: params.pagesize,
   })
-  const handleData = (data: any) => {
-    return data.reduce((res: any, item: any, index: any) => {
-      const { children, ...rest } = item
-      children.forEach((child: any) => {
-        res.push({
-          ...rest,
-          ...child,
-          y: index,
-        })
-      })
-      return res
-    }, [])
+
+  return {
+    pager: response.data.pager,
+    list: response.data.list?.map((k: any, index: any) => ({
+      id: k.id || new Date().getTime() + index * 11,
+      text: k.name || '',
+      start_date: k.start_at,
+      end_date: k.end_at,
+      statusName: k.status_name || '',
+      statusColor: k.status_color || '',
+      categoryName: k.category || '',
+      categoryColor: k.category_color || '',
+      parent: k.parent || '',
+      render: k.render || '',
+    })),
   }
-
-  const arr = handleData(response.data.list)
-  const arr2 = arr.map((item: any) => {
-    return {
-      start: item.created_at * 1000,
-      end: item.end_at * 1000,
-      beginTime: item.expected_start_at,
-      endTime: item.expected_end_at,
-      name: item.name,
-      state: item.status_name,
-      y: item.y,
-    }
-  })
-
-  return { list: arr2, pager: response.data.pager }
 }
 
 // 获取状态下的成员列表
@@ -247,10 +370,10 @@ export const getProjectMember: any = async (params: any) => {
 export const updateDemandStatus: any = async (params: any) => {
   const res = await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
-    story_id: params.demandId,
-    status_id: params.statusId,
-    content: params.content,
-    user_ids: params.userIds,
+    story_id: params.nId,
+    category_status_to_id: params.toId,
+    fields: params.fields,
+    verify_user_id: params.verifyId ?? undefined,
   })
   return res
 }
@@ -285,6 +408,11 @@ export const getMineNoFinishList: any = async (params: any) => {
       finish_at: params.searchGroups?.finishAt,
       panel_date: params?.panelDate,
       all: params?.all,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -317,6 +445,23 @@ export const getMineNoFinishList: any = async (params: any) => {
           userName: i.user_name,
           tag: i.tag,
           project_id: i.project_id,
+          schedule: i.schedule,
+          isExamine: i.verify_lock === 1,
+          category: i.category,
+          categoryColor: i.category_color,
+          ...i.custom_field,
+          usersNameIds: i.users_name_ids,
+          'class': i.class,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: Object.values(i.project.permissions).includes(
+              'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              'b/story/delete',
+            ),
+          },
         }))
         : [],
     }))
@@ -344,6 +489,23 @@ export const getMineNoFinishList: any = async (params: any) => {
           userName: i.user_name,
           tag: i.tag,
           project_id: i.project_id,
+          schedule: i.schedule,
+          category: i.category,
+          categoryColor: i.category_color,
+          usersNameIds: i.users_name_ids,
+          'class': i.class,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: Object.values(i.project.permissions).includes(
+              'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              'b/story/delete',
+            ),
+          },
+          isExamine: i.verify_lock === 1,
+          ...i.custom_field,
         }))
         : [],
       pager: response.data.pager,
@@ -369,6 +531,11 @@ export const getMineCreacteList: any = async (params: any) => {
       expected_end_at: params.searchGroups?.expectedendat,
       updated_at: params.searchGroups?.updatedat,
       finish_at: params.searchGroups?.finishAt,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -398,6 +565,23 @@ export const getMineCreacteList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
+        schedule: i.schedule,
+        isExamine: i.verify_lock === 1,
+        category: i.category,
+        categoryColor: i.category_color,
+        ...i.custom_field,
+        usersNameIds: i.users_name_ids,
+        'class': i.class,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: Object.values(i.project.permissions).includes(
+            'b/story/update',
+          ),
+          isDelete: Object.values(i.project.permissions).includes(
+            'b/story/delete',
+          ),
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -422,6 +606,11 @@ export const getMineFinishList: any = async (params: any) => {
       expected_end_at: params.searchGroups?.expectedendat,
       updated_at: params.searchGroups?.updatedat,
       finish_at: params.searchGroups?.finishAt,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -451,6 +640,23 @@ export const getMineFinishList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
+        schedule: i.schedule,
+        isExamine: i.verify_lock === 1,
+        category: i.category,
+        categoryColor: i.category_color,
+        ...i.custom_field,
+        usersNameIds: i.users_name_ids,
+        'class': i.class,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: Object.values(i.project.permissions).includes(
+            'b/story/update',
+          ),
+          isDelete: Object.values(i.project.permissions).includes(
+            'b/story/delete',
+          ),
+        },
       }))
       : [],
     pager: response.data.pager,
@@ -476,6 +682,11 @@ export const getMineNeedList: any = async (params: any) => {
       expected_end_at: params.searchGroups?.expectedendat,
       updated_at: params.searchGroups?.updatedat,
       finish_at: params.searchGroups?.finishAt,
+      class_ids: params.searchGroups?.class_ids,
+      category_id: params.searchGroups?.category_id,
+      schedule_start: params.searchGroups?.schedule_start,
+      schedule_end: params.searchGroups?.schedule_end,
+      custom_field: params.searchGroups?.custom_field,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
@@ -505,7 +716,23 @@ export const getMineNeedList: any = async (params: any) => {
         userName: i.user_name,
         tag: i.tag,
         project_id: i.project_id,
-        project: i.project,
+        schedule: i.schedule,
+        category: i.category,
+        categoryColor: i.category_color,
+        usersNameIds: i.users_name_ids,
+        'class': i.class,
+        project: {
+          isPublic: i.project.is_public,
+          isUserMember: i.project.user_ismember,
+          isEdit: Object.values(i.project.permissions).includes(
+            'b/story/update',
+          ),
+          isDelete: Object.values(i.project.permissions).includes(
+            'b/story/delete',
+          ),
+        },
+        isExamine: i.verify_lock === 1,
+        ...i.custom_field,
       }))
       : [],
     pager: response.data.pager,
@@ -584,11 +811,16 @@ export const getPeopleList: any = async (params: any) => {
   return response.data
 }
 
-// 获取成员列表
+// 快速创建
 export const addQuicklyCreate: any = async (params: any) => {
   const element = document.createElement('div')
   element.innerHTML = params?.info
-  const info = element.innerText.trim()
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+      ? ''
+      : element.innerHTML
 
   const response: any = await http.post<any>('addQuicklyCreate', {
     project_id: params.projectId,
@@ -603,6 +835,132 @@ export const addQuicklyCreate: any = async (params: any) => {
     copysend: params.copysend,
     tag: params.tag,
     attachment: params.attachments,
+    custom_field: params.customField,
+    category_id: params?.category,
+    class_id: params?.class,
+    schedule: params?.schedule,
   })
   return response
+}
+
+export const getVerifyUserList: any = async (params: any) => {
+  const response: any = await http.get<any>('getVerifyUserList', {
+    search: {
+      project_id: params.projectId,
+      user_id: params.userId,
+      keyword: params.searchValue,
+      verify_status: params.verifyStatus,
+      verify_opinion: params.remark,
+      verify_at: params.verifyTime,
+      created_at: params.time,
+    },
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+  })
+
+  return {
+    currentPage: params.page,
+    total: response.data.pager.total,
+    otherCount: response.data.otherCount,
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      storyVerifyId: i.story_verify_id,
+      status: i.verify_status,
+      verifyTime: i.verify_at,
+      reason: i.verify_opinion,
+      demandId: i.story_id,
+      demandName: i.story_name,
+      categoryName: i.category_name,
+      categoryColor: i.category_color,
+      userName: i.user_name,
+      usersName: i.users_name,
+      statusFromTo: i.status_from_to,
+      projectId: i.project_id,
+    })),
+  }
+}
+
+export const getVerifyList: any = async (params: any) => {
+  const response: any = await http.get<any>('getVerifyList', {
+    search: {
+      project_id: params.projectId,
+      user_id: params.userId,
+      keyword: params.searchValue,
+      verify_status: params.verifyStatus,
+      verify_at: params.verifyTime,
+      created_at: params.time,
+    },
+    pagesize: params.pageSize,
+    page: params.page,
+    orderkey: params.orderKey,
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+  })
+
+  return {
+    currentPage: params.page,
+    total: response.data.pager.total,
+    otherCount: response.data.otherCount,
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      storyVerifyId: i.story_verify_id,
+      status: i.verify_status,
+      verifyTime: i.verify_at,
+      demandId: i.story_id,
+      demandName: i.story_name,
+      categoryName: i.category_name,
+      categoryColor: i.category_color,
+      usersName: i.users_name,
+      statusFromTo: i.status_from_to,
+      projectId: i.project_id,
+    })),
+  }
+}
+
+export const getVerifyInfo: any = async (params: any) => {
+  const response = await http.get(`/b/user/verify/${params?.id}`)
+
+  return {
+    id: response.data.id,
+    demandName: response.data.story_name,
+    categoryColor: response.data.category_color,
+    categoryName: response.data?.category_name,
+    statusFromTo: response.data?.status_from_to,
+    usersName: response.data.users_name,
+    userName: response.data.user_name,
+    time: response.data.created_at,
+    from: response.data.category_status_from,
+    to: response.data.category_status_to,
+    verifyStatus: response.data.verify_status,
+    verify: {
+      verifyType: response.data.verify.verify_type,
+      process: response.data.verify.process?.map((i: any) => ({
+        operator: i.operator,
+        verifyUsers: i.verify_users?.map((k: any) => ({
+          id: k.user_id,
+          status: k.verify_status,
+          time: k.verify_at,
+          remark: k.verify_opinion,
+          userName: k.user_name,
+        })),
+      })),
+    },
+    fixedUser: response.data.verify_users?.map((k: any) => ({
+      userName: k.user_name,
+      time: k.verify_at,
+      status: k.verify_status,
+      remark: k.verify_opinion,
+      id: k.user_id,
+    })),
+  }
+}
+
+export const updateVerifyOperation: any = async (params: any) => {
+  await http.put('updateVerifyOperation', {
+    id: params.id,
+    project_id: params.projectId,
+    verify_status: params.status,
+    verify_opinion: params.remark,
+  })
 }

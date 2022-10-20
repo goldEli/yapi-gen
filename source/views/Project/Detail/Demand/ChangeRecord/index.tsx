@@ -5,10 +5,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import { Table, Pagination, Modal, Space, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { PaginationWrap } from '@/components/StyleCommon'
+import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -54,7 +55,7 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getDemandChangeLog, demandInfo } = useModel('demand')
+  const { getDemandChangeLog } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -94,12 +95,6 @@ const ChangeRecord = () => {
     }
   }, [isRefresh])
 
-  // useEffect(() => {
-  //   if (demandInfo?.changeCount !== dataList?.total) {
-  //     getList({ page: 1, size: pageObj.size }, order)
-  //   }
-  // }, [demandInfo, dataList])
-
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
     setIsVisible(true)
@@ -112,6 +107,8 @@ const ChangeRecord = () => {
         : '--'
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
       return item[i]?.length ? item[i].join(',') : '--'
+    } else if (i === 'status') {
+      return item[i]?.status?.content
     } else {
       return item[i] || '--'
     }
@@ -207,7 +204,9 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {Object.values(text).map(i => <span key={i}>{i}</span>)}
+            {Object.keys(text)?.map((i: any) => i === 'custom_field'
+              ? (text[i] as any).map((k: any) => <span key={k.field}>{k.name}</span>)
+              : <span>{text[i]}</span>)}
           </div>
         )
       },
@@ -247,10 +246,31 @@ const ChangeRecord = () => {
                         : '--'
                       : '--'}
                   </span>
+                ) : i === 'custom_field' ? (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {record.beforeField
+                      ? record.fields.custom_field
+                        ?.map(
+                          (m: any) => record.beforeField[i][m.field]?.value,
+                        )
+                        ?.map((k: any) => (
+                          <span key={k}>
+                            {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                          </span>
+                        ))
+                      : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
+                  </div>
                 ) : (
-                  <OmitText width={300}>
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -293,10 +313,31 @@ const ChangeRecord = () => {
                         : '--'
                       : '--'}
                   </span>
+                ) : i === 'custom_field' ? (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {record.afterField
+                      ? record.fields.custom_field
+                        ?.map(
+                          (m: any) => record.afterField[i][m.field]?.value,
+                        )
+                        ?.map((k: any) => (
+                          <span key={k}>
+                            {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                          </span>
+                        ))
+                      : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
+                  </div>
                 ) : (
-                  <OmitText width={300}>
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -329,6 +370,7 @@ const ChangeRecord = () => {
         destroyOnClose
         maskClosable={false}
         keyboard={false}
+        wrapClassName="vertical-center-modal"
       >
         <SpaceWrap
           size={32}

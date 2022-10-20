@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
@@ -11,7 +13,7 @@ import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import EditDemand from '../../Demand/components/EditDemand'
+import EditDemand from '@/components/EditDemand'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 
@@ -52,9 +54,17 @@ const IterationMain = (props: Props) => {
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
   const [searchItems, setSearchItems] = useState({})
   const [isSpinning, setIsSpinning] = useState(false)
-  const getList = async (state: boolean, item: any, searchParamsObj: any) => {
-    setIsSpinning(true)
+  const getList = async (
+    state: boolean,
+    item: any,
+    searchParamsObj: any,
+    updateState?: boolean,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
     let params = {}
+
     if (state) {
       params = {
         projectId,
@@ -72,6 +82,11 @@ const IterationMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
       }
     } else {
       params = {
@@ -92,8 +107,14 @@ const IterationMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
       }
     }
+
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -176,14 +197,18 @@ const IterationMain = (props: Props) => {
     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
-  const onChangeIsUpdate = (val: boolean) => {
+  const onChangeIsUpdate = () => {
     props.onChangeIsUpdate(false)
   }
 
   const onSearch = (params: string) => {
     setSearchItems(params)
     setDataList({ list: undefined })
-    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+    getList(isGrid, { page: 1, size: pageObj.size }, params)
+  }
+
+  const onUpdate = (updateState?: boolean) => {
+    getList(isGrid, { page: 1, size: pageObj.size }, searchItems, updateState)
   }
 
   return (
@@ -192,9 +217,9 @@ const IterationMain = (props: Props) => {
         <EditDemand
           visible={isDemandVisible}
           onChangeVisible={onChangeVisible}
-          id={demandItem?.id}
+          demandId={demandItem?.id}
           onUpdate={onChangeRow}
-          isIterateId={iterateId}
+          iterateId={iterateId}
         />
       ) : null}
 
@@ -245,6 +270,7 @@ const IterationMain = (props: Props) => {
             onChangeOrder={onChangeOrder}
             isSpinning={isSpinning}
             hasId={currentDetail}
+            onUpdate={onUpdate}
           />
         )}
       </Right>

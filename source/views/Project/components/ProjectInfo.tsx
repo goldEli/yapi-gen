@@ -56,12 +56,13 @@ const ProjectInfo = (props: Props) => {
       visible={props.visible}
       footer={false}
       onCancel={props.onChangeVisible}
-      bodyStyle={{ padding: '16px 24px' }}
+      bodyStyle={{ padding: '16px 4px 16px 24px' }}
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
-      <div>
+      <div style={{ maxHeight: 544, overflow: 'auto', paddingRight: 20 }}>
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
           <div>{projectInfo.name}</div>

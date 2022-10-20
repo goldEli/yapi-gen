@@ -5,8 +5,6 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const { Option } = Select
-
 const PersonalHead = styled.div`
   display: flex;
   justify-content: center;
@@ -70,7 +68,6 @@ export const StaffPersonal = (props: {
   })
 
   const { getRoleList } = useModel('staff')
-  const { userInfo } = useModel('user')
 
   const init = async () => {
     const res3 = await getRoleList()
@@ -100,6 +97,7 @@ export const StaffPersonal = (props: {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <PersonalHead>
         {data?.avatar

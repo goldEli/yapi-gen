@@ -1,7 +1,201 @@
+/* eslint-disable max-lines */
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Pagination, Input } from 'antd'
+import { Table, Input, Slider } from 'antd'
+
+const HiddenText = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+})
+
+const SelectWrapBedeck = styled.div`
+  height: 32px;
+  position: relative;
+  height: 32px;
+  border: 1px solid #ebedf0;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  span {
+    white-space: nowrap;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-picker {
+    border: none;
+  }
+`
+
+const DelWrap = styled.span({
+  fontSize: 12,
+  marginLeft: 8,
+  color: '#969799',
+  textDecoration: 'line-through',
+})
+
+const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: 26,
+    boxSizing: 'border-box',
+    cursor: 'pointer',
+    borderRadius: 6,
+    width: 'fit-content',
+    '.anticon': {
+      fontSize: 16,
+      alignItems: 'center',
+      svg: {
+        margin: 0,
+      },
+    },
+    div: {
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  },
+  ({ hasColor, hasDash }) => ({
+    padding: hasDash ? '0 4px' : hasColor ? '0 8px' : 0,
+    color: hasColor ? '#2877FF' : '#969799',
+    border: hasDash ? '1px dashed #969799' : '1px solid white',
+    '.anticon > svg': {
+      color: hasColor ? '#2877FF' : '#969799',
+    },
+    '.anticon ': {
+      marginRight: hasDash ? 0 : 4,
+    },
+    '&: hover': {
+      border: hasDash ? '1px dashed #2877ff' : '',
+      background: hasColor ? '#F0F4FA' : '',
+      '.anticon': {
+        svg: {
+          color: '#2877ff',
+        },
+      },
+      div: {
+        color: '#2877ff',
+      },
+    },
+    '&: active': {
+      background: hasColor ? '#DBEAFF' : '',
+    },
+  }),
+)
+
+const StepBoxWrap = styled.div<{ active?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    fontWeight: 500,
+    fontSize: 14,
+    '.circle': {
+      color: 'white',
+      width: 27,
+      height: 27,
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    span: {
+      marginLeft: 5,
+    },
+  },
+  ({ active }) => ({
+    '.circle': {
+      background: active ? '#2877ff' : '#BBBDBF',
+      border: active ? '3px solid #F0F4FA' : '3px solid white',
+    },
+    span: {
+      color: active ? '#2877ff' : '#646566',
+    },
+  }),
+)
+
+const ProgressWrap = styled.div({
+  background: 'white',
+  padding: '16px 24px',
+  borderRadius: 6,
+})
+
+const SliderWrap = styled(Slider)({
+  margin: '0!important',
+  '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
+    height: '8px!important',
+  },
+  '.ant-slider-rail': {
+    backgroundColor: '#F2F2F4!important',
+    borderRadius: 10,
+  },
+  '.ant-slider-track': {
+    backgroundColor: '#43BA9A!important',
+  },
+  '.ant-slider-handle': {
+    width: 20,
+    height: 20,
+    border: '1px solid #EBEDF0!important',
+    marginTop: -7,
+    '&: hover': {
+      border: '1px solid #2877FF!important',
+    },
+  },
+  '.ant-slider-handle:focus': {
+    boxShadow: 'none',
+  },
+})
+
+const NameWrap = styled.div({
+  width: 32,
+  height: 32,
+  borderRadius: 16,
+  background: '#A4ACF5',
+  color: 'white',
+  fontSize: 12,
+  fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 4,
+  overflow: 'hidden',
+})
+
+const ViewWrap = styled.div<{ color: string }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '20px',
+    fontSize: 12,
+    fontWeight: 400,
+    width: 'fit-content',
+    background: 'white',
+  },
+  ({ color }) => ({
+    color,
+    border: `1px solid ${color}`,
+  }),
+)
+
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '22px',
+    fontSize: 12,
+    fontWeight: 400,
+    marginLeft: 8,
+  },
+  ({ color, bgColor }) => ({
+    background: bgColor,
+    color,
+  }),
+)
 
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
@@ -17,46 +211,14 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
 )
 
 const TableWrap = styled(Table)({
-
-  // '.ant-table-thead > tr > th:nth-child(1)': {
-  //   paddingLeft: 64,
-  // },
-  // '.ant-table-tbody > tr > td:nth-child(1)': {
-  //   paddingLeft: 64,
-  // },
   '.ant-table table': {
     paddingBottom: 10,
   },
 })
 
-const StylePagination = styled(Pagination)`
-  margin-top: auto;
-  align-self: end;
-  padding: 8px 0;
-  .ant-pagination-prev button,
-  .ant-pagination-next button {
-    border: none;
-  }
-  .ant-pagination-item {
-    border-radius: 32px;
-    border: none;
-  }
-  .ant-pagination-item:hover {
-    background: #f0f4fa;
-    a {
-      color: #2877ff !important;
-    }
-  }
-  .ant-pagination-item-active {
-    background: #2877ff;
-    a {
-      color: #ffffff !important;
-    }
-  }
-`
 const StaffHeader = styled.div`
   color: rgba(0, 0, 0, 1);
-  font-weight: 400;
+  font-weight: bold;
   display: flex;
   align-items: center;
   padding-left: 24px;
@@ -94,7 +256,7 @@ const PaginationWrap = styled.div`
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
-  padding: 16px;
+  padding: 16px 24px;
   background: #f5f7fa;
 `
 const StaffTableWrap2 = styled(StaffTableWrap)`
@@ -135,6 +297,7 @@ const SetButton = styled.div<{ show?: boolean }>`
   height: 20px;
   border-left: 1px solid #d5d6d9;
   color: #bbbdbf;
+  position: relative;
   color: ${({ show }) => show ? ' rgba(40, 119, 255, 1)' : ''};
   &:hover {
     color: rgba(40, 119, 255, 1);
@@ -162,16 +325,17 @@ const TabsItem = styled.div<{ isActive: boolean }>(
 )
 const LabNumber = styled.div<{ isActive: boolean }>`
   margin-left: 12px;
-  width: 20px;
-  height: 18px;
-  border-radius: 50%;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 12px;
 
-  color: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(150, 151, 153, 1)'};
-  background: ${({ isActive }) => isActive ? '#f0f4fa' : 'rgba(242, 242, 244, 1)'};
+  color: ${({ isActive }) => isActive ? 'white' : 'rgba(150, 151, 153, 1)'};
+  background: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
 `
 const tabCss = css`
   display: flex;
@@ -256,12 +420,12 @@ const StyledTable = styled(Table)({
   },
 })
 const SecondTitle = styled.span`
-  height: 24px;
   padding-left: 8px;
-  border-left: 3px solid rgba(40, 119, 255, 1);
+  border-left: 3px solid #2877ff;
   color: rgba(0, 0, 0, 1);
   font-size: 16px;
   font-weight: bold;
+  line-height: 20px;
 `
 const TextWrap = styled.div`
   display: flex;
@@ -301,8 +465,59 @@ const StyledShape = styled.div<{ color: any }>`
   color: ${({ color }) => color};
   cursor: pointer;
 `
+const StatusWrap = styled.div<{ isShow?: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #2877FF',
+    color: '#2877FF',
+    width: 'fit-content',
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+  }),
+)
+
+const PriorityWrap = styled.div<{ status?: any }>({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  height: 26,
+  padding: '0 6px',
+  width: 'fit-content',
+  borderRadius: 6,
+  div: {
+    color: '#323233',
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  '.icon': {
+    marginLeft: 8,
+    visibility: 'hidden',
+    fontSize: 16,
+    color: '#2877ff',
+  },
+  '.priorityIcon': {
+    fontSize: 16,
+    svg: {
+      margin: '0!important',
+    },
+  },
+  '&: hover': {
+    background: 'rgba(240, 244, 250, 1)',
+    '.icon': {
+      visibility: 'visible',
+    },
+  },
+})
 
 export {
+  PriorityWrap,
+  StatusWrap,
   StaffTableWrap2,
   StyledShape,
   HightChartsWrap,
@@ -310,7 +525,6 @@ export {
   TextBlueWrap,
   SecondTitle,
   TableWrap,
-  StylePagination,
   StaffHeader,
   Hehavior,
   PaginationWrap,
@@ -333,4 +547,14 @@ export {
   ShowWrap,
   StyledTable,
   ClickWrap,
+  CategoryWrap,
+  ViewWrap,
+  NameWrap,
+  SliderWrap,
+  ProgressWrap,
+  StepBoxWrap,
+  HiddenText,
+  AddWrap,
+  DelWrap,
+  SelectWrapBedeck,
 }

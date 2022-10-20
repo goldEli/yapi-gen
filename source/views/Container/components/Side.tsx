@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 import { useState } from 'react'
@@ -92,6 +93,7 @@ const activeCss = css`
   justify-content: center;
   background: rgba(240, 244, 250, 1);
   color: rgba(40, 119, 255, 1);
+  font-weight: bold;
 `
 
 export const Side = () => {
@@ -149,6 +151,8 @@ export const Side = () => {
   const getClassName = (path: string) => {
     if (path === '/Project') {
       return nowPath === '/Project' || nowPath === '/Detail' ? activeCss : ''
+    } else if (path === '/staff') {
+      return nowPath === '/staff' || nowPath === '/MemberInfo' ? activeCss : ''
     }
     return nowPath === path ? activeCss : ''
   }

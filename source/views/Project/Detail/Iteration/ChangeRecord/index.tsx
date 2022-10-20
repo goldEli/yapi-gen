@@ -8,7 +8,7 @@
 import { Table, Pagination, Modal, Space, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { PaginationWrap } from '@/components/StyleCommon'
+import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -34,7 +34,7 @@ const TitleWrap = styled(Space)({
 })
 
 const DataWrap = styled.div({
-  height: 'calc(100% - 40px)',
+  height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
 })
@@ -52,9 +52,9 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChangeRecord = () => {
+const ChangeRecord = (props?: any) => {
   const [t] = useTranslation()
-  const { getIterateChangeLog, iterateInfo } = useModel('iterate')
+  const { getIterateChangeLog } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -85,20 +85,10 @@ const ChangeRecord = () => {
   }
 
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh || props?.isUpdate) {
       getList({ page: 1, size: pageObj.size }, order)
     }
-  }, [isRefresh])
-
-  useEffect(() => {
-    getList(pageObj, order)
-  }, [])
-
-  // useEffect(() => {
-  //   if (iterateInfo?.changeCount !== dataList?.total) {
-  //     // getList({ page: 1, size: pageObj.size }, order)
-  //   }
-  // }, [iterateInfo, dataList])
+  }, [isRefresh, props?.isUpdate])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
@@ -248,9 +238,16 @@ const ChangeRecord = () => {
                       : '--'}
                   </span>
                 ) : (
-                  <OmitText width={300}>
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -294,9 +291,16 @@ const ChangeRecord = () => {
                       : '--'}
                   </span>
                 ) : (
-                  <OmitText width={300}>
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -328,6 +332,7 @@ const ChangeRecord = () => {
         destroyOnClose
         maskClosable={false}
         keyboard={false}
+        wrapClassName="vertical-center-modal"
       >
         <SpaceWrap
           size={32}

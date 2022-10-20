@@ -15,7 +15,6 @@ import {
   Popover,
   Form,
   Input,
-  DatePicker,
   Menu,
   message,
   Radio,
@@ -25,7 +24,7 @@ import {
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
@@ -126,7 +125,6 @@ const WrapLeft = (props: Props) => {
   ]
 
   const [form] = Form.useForm()
-  const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
   const [isFilter, setIsFilter] = useState(false)
   const [isSort, setIsSort] = useState(false)
@@ -278,7 +276,7 @@ const WrapLeft = (props: Props) => {
 
   const filterContent = (
     <div className="filterContent">
-      <Form form={form} style={{ width: 260, padding: 24 }} layout="vertical">
+      <Form form={form} style={{ width: 270, padding: 16 }} layout="vertical">
         <Form.Item label={t('common.title')} name="name">
           <Input autoComplete="off" placeholder={t('project.pleaseTitle')} />
         </Form.Item>
@@ -309,7 +307,7 @@ const WrapLeft = (props: Props) => {
           <Space size={16}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button type="primary" onClick={onConfirmFilter}>
-              {t('common.search')}
+              {t('common.search2')}
             </Button>
           </Space>
         </div>
@@ -353,51 +351,11 @@ const WrapLeft = (props: Props) => {
       })
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
-
-      // props.onChangeOperation?.({})
       getList({})
     } catch (error) {
 
       //
     }
-  }
-
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label:
-          <div onClick={e => onChangeEdit(e, item)}>{t('common.edit')}</div>
-        ,
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={e => onChangeEnd(e, item)}>
-            {item.status === 1 ? t('common.close') : t('common.open')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label:
-          <div onClick={e => onChangeDelete(e, item)}>{t('common.del')} </div>
-        ,
-      },
-    ]
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasChangeStatus) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-
-    return <Menu items={menuItems} />
   }
 
   const onClickInfo = (item: any) => {
@@ -481,12 +439,14 @@ const WrapLeft = (props: Props) => {
               <div>
                 {dataList.list?.map((item: any) => (
                   <IterationCard
-                    menu={menu(item)}
                     key={item.id}
                     item={item}
                     onClickInfo={() => onClickInfo(item)}
                     onClickItem={() => onClickItem(item)}
                     isActive={item.id === props.currentDetail?.id}
+                    onChangeEdit={onChangeEdit}
+                    onChangeEnd={onChangeEnd}
+                    onChangeDelete={onChangeDelete}
                   />
                 ))}
               </div>

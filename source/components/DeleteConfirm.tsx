@@ -54,6 +54,7 @@ const DeleteConfirm = (props: Props) => {
       maskClosable={false}
       destroyOnClose
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <ModalHeader>
         <Title>

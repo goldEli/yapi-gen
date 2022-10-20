@@ -1,10 +1,15 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable max-lines */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableWrap,
+  PaginationWrap,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -20,6 +25,7 @@ import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -52,6 +58,9 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  '.ant-table table': {
+    paddingBottom: 0,
+  },
   '.ant-table-thead > tr > th:nth-child(1)': {
     paddingLeft: 64,
   },
@@ -73,29 +82,8 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   minHeight: 64,
   background: 'white',
-  padding: '0 24px',
   flexWrap: 'wrap',
 })
-
-const SelectWrapBedeck = styled.div`
-  height: 32px;
-  margin-right: 16px;
-  position: relative;
-  height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-  .ant-picker {
-    border: none;
-  }
-`
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
@@ -184,6 +172,11 @@ const ProjectMember = () => {
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/project/member/update',
+  )
+
+  const hasCheck = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/project/member/info',
   )
 
   const getList = async (orderVal?: any, pagePrams?: any) => {
@@ -313,6 +306,13 @@ const ProjectMember = () => {
       { value: val === 2 ? 'desc' : 'asc', key },
       { page: 1, size: pageObj.size },
     )
+  }
+
+  const onToDetail = (row: any) => {
+    const params = encryptPhp(
+      JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
+    )
+    navigate(`/Detail/MemberInfo/profile?data=${params}`)
   }
 
   const columns = [
@@ -467,6 +467,28 @@ const ProjectMember = () => {
         return <span>{text || '--'}</span>
       },
     },
+    {
+      title: t('newlyAdd.operation'),
+      dataIndex: 'action',
+      width: 120,
+      fixed: 'right',
+      render: (text: string, record: any) => {
+        return (
+          <>
+            {hasCheck
+              ? '--'
+              : (
+                  <span
+                    onClick={() => onToDetail(record)}
+                    style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                  >
+                    {t('project.checkInfo')}
+                  </span>
+                )}
+          </>
+        )
+      },
+    },
   ]
 
   const onChangeUpdate = () => {
@@ -558,7 +580,7 @@ const ProjectMember = () => {
           >
             <SearchWrap>
               <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '12px' }}>
+                <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.job')}
                 </span>
                 <Form.Item name="searchValue" />
@@ -575,7 +597,7 @@ const ProjectMember = () => {
                 </Form.Item>
               </SelectWrapBedeck>
               <SelectWrapBedeck>
-                <span style={{ margin: '0 16px', fontSize: '12px' }}>
+                <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.permissionGroup')}
                 </span>
                 <Form.Item name="userGroupIds" noStyle>
@@ -591,7 +613,7 @@ const ProjectMember = () => {
                 </Form.Item>
               </SelectWrapBedeck>
               <div
-                style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
+                style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
                 onClick={onReset}
               >
                 {t('common.clearForm')}
@@ -606,7 +628,7 @@ const ProjectMember = () => {
                 && (memberList?.list?.length > 0 ? (
                   <TableBox
                     rowKey="id"
-                    columns={columns}
+                    columns={columns as any}
                     dataSource={memberList?.list}
                     pagination={false}
                     scroll={{ x: 'max-content' }}

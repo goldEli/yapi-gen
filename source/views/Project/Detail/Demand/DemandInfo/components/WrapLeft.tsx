@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
@@ -8,18 +10,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { LevelContent } from '@/components/Level'
-import Popconfirm from '@/components/Popconfirm'
 import TagComponent from '../../components/TagComponent'
 import DemandStatus from '../../components/DemandStatus'
-import ParentDemand from '../../components/ParentDemand'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { message, Progress } from 'antd'
-import { useEffect, useState } from 'react'
+import { Progress } from 'antd'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import { SliderWrap } from '@/components/StyleCommon'
+import Viewer from 'react-viewer'
 
 const WrapLeft = styled.div({
   width: 'calc(100% - 472px)',
@@ -27,19 +28,40 @@ const WrapLeft = styled.div({
   paddingBottom: 24,
 })
 
-const InfoItem = styled.div({
+const TextWrapEditor = styled.div({
+  color: '#323233',
+  fontSize: 14,
   display: 'flex',
-  marginTop: 24,
-  position: 'relative',
+  flexDirection: 'column',
+  img: {
+    maxWidth: '20%',
+    height: 'auto!important',
+    cursor: 'pointer',
+  },
+  p: {
+    marginBottom: '0px!important',
+  },
 })
 
+const InfoItem = styled.div<{ activeState?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 14,
+    position: 'relative',
+  },
+  ({ activeState }) => ({
+    alignItems: activeState ? 'flex-start' : 'center',
+  }),
+)
+
 const Label = styled.div({
-  color: '#646566',
+  color: '#969799',
   fontSize: 14,
   fontWeight: 400,
   minWidth: 120,
-  height: 22,
-  lineHeight: '22px',
+  height: 32,
+  lineHeight: '32px',
 })
 
 const TextWrap = styled.div({
@@ -52,7 +74,7 @@ const TextWrap = styled.div({
   },
 })
 
-const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
+export const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -101,25 +123,6 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const DownPriority = styled.div<{ isShow?: boolean }>(
-  {
-    marginLeft: 8,
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 16,
-      color: '#2877ff',
-    },
-  },
-  ({ isShow }) => ({
-    '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
-      },
-    },
-  }),
-)
-
 const ProgressWrap = styled(Progress)({
   '.ant-progress-status-exception .ant-progress-bg': {
     backgroundColor: '#ff5c5e',
@@ -149,37 +152,56 @@ const ProgressWrap = styled(Progress)({
     },
 })
 
-const WrapLeftBox = (props: { onUpdate?(): void }) => {
+const WrapLeftBox = () => {
   const [t] = useTranslation()
   const {
     demandInfo,
-    updatePriority,
     isShowProgress,
     percentShow,
     percentVal,
     uploadStatus,
+    getDemandInfo,
+    updateTableParams,
   } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { projectInfo } = useModel('project')
+  const { userInfo } = useModel('user')
+  const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+  const textWrapEditor = useRef<HTMLInputElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
 
-  const onChangeState = async (item: any) => {
-    try {
-      await updatePriority({ demandId, priorityId: item.priorityId, projectId })
-      message.success(t('common.prioritySuccess'))
-      props.onUpdate?.()
-    } catch (error) {
-
-      //
+  const onGetViewPicture = (e: any) => {
+    if (e.path[0].nodeName === 'IMG') {
+      const params: any = {}
+      const oPics = textWrapEditor?.current?.getElementsByTagName('img')
+      params.imageArray = []
+      if (oPics) {
+        for (const element of oPics) {
+          params.imageArray.push({ src: element.src })
+        }
+        for (let i = 0; i < oPics.length; i++) {
+          if (e.path[0].src === params.imageArray[i].src) {
+            params.index = i
+          }
+        }
+      }
+      setIsVisible(true)
+      setPictureList(params)
     }
   }
+
+  useEffect(() => {
+    textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
+    return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
+  }, [])
 
   useEffect(() => {
     setTagList(
@@ -190,6 +212,27 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
       })),
     )
   }, [demandInfo])
+
+  const onChangeSchedule = async () => {
+    if (
+      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id)
+      && demandInfo.status.is_start !== 1
+      && demandInfo.status.is_end !== 1
+    ) {
+      const obj = {
+        projectId,
+        id: demandInfo?.id,
+        otherParams: { schedule },
+      }
+      try {
+        await updateTableParams(obj)
+        getDemandInfo({ projectId, id: demandInfo?.id })
+      } catch (error) {
+
+        //
+      }
+    }
+  }
 
   const Children = (item: any) => {
     return (
@@ -204,47 +247,56 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
 
   return (
     <WrapLeft>
+      {isVisible ? (
+        <Viewer
+          zIndex={99}
+          visible={isVisible}
+          images={pictureList?.imageArray}
+          activeIndex={pictureList?.index}
+          onClose={() => setIsVisible(false)}
+        />
+      ) : null}
+
       <InfoItem>
         <Label>{t('project.demandStatus')}</Label>
-        <DemandStatus />
+        <DemandStatus pid={projectId} sid={demandId} />
       </InfoItem>
       <InfoItem>
+        <Label>{t('newlyAdd.demandProgress')}</Label>
+        <div
+          style={{ display: 'flex', alignItems: 'center' }}
+          onMouseUp={onChangeSchedule}
+        >
+          <SliderWrap
+            style={{ width: 320 }}
+            value={schedule}
+            tipFormatter={(value: any) => `${value}%`}
+            onChange={value => setSchedule(value)}
+            disabled={
+              !(
+                demandInfo?.user
+                  ?.map((i: any) => i.user.id)
+                  ?.includes(userInfo?.id)
+                && demandInfo.status.is_start !== 1
+                && demandInfo.status.is_end !== 1
+              )
+            }
+          />
+          <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
+            {schedule}%
+          </span>
+        </div>
+      </InfoItem>
+      <InfoItem activeState>
         <Label>{t('mine.demandInfo')}</Label>
-        {demandInfo?.info
-          ? <TextWrap dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
+        {demandInfo?.info ? (
+          <TextWrapEditor
+            ref={textWrapEditor}
+            dangerouslySetInnerHTML={{ __html: demandInfo?.info }}
+          />
+        )
           : <TextWrap>--</TextWrap>
         }
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.dealName')}</Label>
-        <TextWrap>
-          {demandInfo?.user?.length
-            ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
-            : '--'}
-        </TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.createName')}</Label>
-        <TextWrap>{demandInfo?.userName || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.createTime')}</Label>
-        <TextWrap>{demandInfo?.createdTime || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.finishTime')}</Label>
-        <TextWrap>{demandInfo?.finishTime || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.parentDemand')}</Label>
-        <ParentDemand
-          addWrap={
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>{t('common.add23')}</div>
-            </AddWrap>
-          }
-        />
       </InfoItem>
       <InfoItem>
         <Label>{t('common.tag')}</Label>
@@ -259,6 +311,7 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
         />
       </InfoItem>
       <InfoItem
+        activeState
         hidden={
           !projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
@@ -280,60 +333,6 @@ const WrapLeftBox = (props: { onUpdate?(): void }) => {
           }
           child={isShowProgress ? null : <Children />}
         />
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.iterate')}</Label>
-        <TextWrap>{demandInfo?.iterateName}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.priority')}</Label>
-        <Popconfirm
-          content={({ onHide }: { onHide(): void }) => {
-            return isCanEdit ? (
-              <LevelContent
-                onTap={item => onChangeState(item)}
-                onHide={onHide}
-                record={{
-                  id: demandId,
-                  project_id: projectId,
-                }}
-              />
-            ) : null
-          }}
-        >
-          <div
-            style={{
-              cursor: isCanEdit ? 'pointer' : 'inherit',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <IconFont
-              style={{ fontSize: 16, color: demandInfo?.priority?.color }}
-              type={demandInfo?.priority?.icon}
-            />
-            <DownPriority isShow={isCanEdit}>
-              <span>{demandInfo?.priority?.content_txt || '--'}</span>
-              <IconFont className="icon" type="down-icon" />
-            </DownPriority>
-          </div>
-        </Popconfirm>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.start')}</Label>
-        <TextWrap>{demandInfo?.expectedStart || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.end')}</Label>
-        <TextWrap>{demandInfo?.expectedEnd || '--'}</TextWrap>
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.copySend')}</Label>
-        <TextWrap>
-          {demandInfo?.copySend?.length
-            ? demandInfo?.copySend?.map((i: any) => i.copysend?.name).join('、')
-            : '--'}
-        </TextWrap>
       </InfoItem>
     </WrapLeft>
   )

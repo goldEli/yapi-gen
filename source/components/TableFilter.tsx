@@ -1,20 +1,33 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-lines */
+/* eslint-disable no-negated-condition */
+/* eslint-disable require-unicode-regexp */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
 /* eslint-disable max-len */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Form, Select, DatePicker, Button, Popover, Collapse } from 'antd'
+import {
+  Form,
+  Select,
+  DatePicker,
+  Button,
+  Popover,
+  Collapse,
+  Input,
+  TreeSelect,
+} from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 
-const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
-
-  // minHeight: 64,
   alignItems: 'center',
 })
 
@@ -33,19 +46,6 @@ const FormWrap = styled(Form)({
     margin: 0,
   },
 })
-const TimeWrap = styled(DatePicker.RangePicker)<{ label: string }>`
-  &::before {
-    content: '${({ label }) => label}';
-    display: inline-block;
-    white-space: nowrap;
-    margin-right: 16px;
-    margin-left: 10px;
-  }
-  .ant-picker-active-bar {
-    visibility: hidden;
-    /* left: 200px !important; */
-  }
-`
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
@@ -101,10 +101,14 @@ const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
+  border: 1px solid #ebedf0;
   display: flex;
   align-items: center;
   border-radius: 6px;
+  &:hover ${DelButton} {
+    visibility: visible;
+  }
+
   span {
     white-space: nowrap;
   }
@@ -113,6 +117,10 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-picker {
     border: none;
+  }
+  .ant-select-selector {
+    border: none !important;
+    background-color: transparent !important;
   }
 `
 
@@ -127,7 +135,15 @@ const CollapseDiv = styled.div({
     color: '#2877ff',
   },
 })
-
+const danweiCss = css`
+  height: 22px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #323233;
+  line-height: 22px;
+  margin: 0 16px;
+`
 const CollapseWrap = styled(Collapse)({
   border: 'none',
   backgroundColor: 'white',
@@ -160,16 +176,62 @@ const CollapseWrap = styled(Collapse)({
   },
 })
 
+const PopoverWrap = styled(Popover)({
+  '.ant-popover-content': {
+    minWidth: 188,
+  },
+})
+
+export const NumericInput = (props: any) => {
+  const [t] = useTranslation()
+  const { value, onChange, onPress } = props
+
+  const enter = (e: any) => {
+    onChange({ ...value, start: e })
+  }
+  const enter2 = (e: any) => {
+    onChange({ ...value, end: e })
+  }
+
+  return (
+    <>
+      <Input
+        type="number"
+        placeholder={t('newlyAdd.pleaseValue')}
+        onPressEnter={onPress}
+        onChange={e => enter(e.target.value)}
+        value={value?.start}
+        style={{ width: '100px', border: 'none' }}
+      />
+      <span className={danweiCss}>{t('newlyAdd.unit')}</span>
+      <Input
+        type="number"
+        placeholder={t('newlyAdd.pleaseValue')}
+        onPressEnter={onPress}
+        onChange={e => enter2(e.target.value)}
+        value={value?.end}
+        style={{ width: '100px', border: 'none' }}
+      />
+      <span className={danweiCss}>{t('newlyAdd.unit')}</span>
+    </>
+  )
+}
+
 const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
-  const { list, basicsList, specialList } = props
+  const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
-    const arr = basicsList?.filter(
-      (item: any) => !newKeys.includes(item.content),
-    )
+    const arr = basicsList
+      ?.filter((item: any) => !newKeys.includes(item.content))
+      .filter((item: any) => {
+        if (props.noNeed) {
+          return item.content !== 'class'
+        }
+        return item
+      })
     return arr
   }, [list, basicsList])
 
@@ -181,18 +243,33 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, specialList])
 
+  const filterCustomList = useMemo(() => {
+    const newKeys = list?.map((item: { content: any }) => item.content)
+    const arr = customList?.filter(
+      (item: any) => !newKeys.includes(item.content),
+    )
+    return arr
+  }, [list, customList])
+
   const delList = (key: string) => {
     props.onFilter(key, 0)
-
-    // setList(list.filter((item, idx) => item.key !== key))
   }
   const addList = (key: string) => {
     props.onFilter(key, 1)
   }
   const confirm = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
-    props.onSearch(res)
+    const res2 = JSON.parse(JSON.stringify(value))
+    const customField: any = {}
+    for (const key in res2) {
+      if (key.startsWith('custom')) {
+        customField[key] = res2[key]
+      }
+    }
+
+    props.onSearch(res, customField)
   }
   const onClearForm = async () => {
     form.resetFields()
@@ -216,6 +293,13 @@ const TableFilter = (props: any) => {
           </CollapseDiv>
         ))}
       </Collapse.Panel>
+      <Collapse.Panel header={t('newlyAdd.customFields')} key="3">
+        {filterCustomList?.map((i: any) => (
+          <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+            {i.title}
+          </CollapseDiv>
+        ))}
+      </Collapse.Panel>
     </CollapseWrap>
   )
 
@@ -235,6 +319,16 @@ const TableFilter = (props: any) => {
     confirm()
   }
 
+  function deWeight(arr: any) {
+    const map = new Map()
+    for (const item of arr) {
+      if (!map.has(item.id)) {
+        map.set(item.id, item)
+      }
+    }
+    arr = [...map.values()]
+    return arr
+  }
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
@@ -242,7 +336,12 @@ const TableFilter = (props: any) => {
           {list
             ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
             ?.map((i: any) => {
-              if (i.type === 'select') {
+              if (
+                i.type === 'select_checkbox'
+                || i.type === 'checkbox'
+                || i.type === 'select'
+                || i.type === 'radio'
+              ) {
                 return (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
@@ -257,10 +356,157 @@ const TableFilter = (props: any) => {
                         showSearch
                         onChange={confirm}
                         optionFilterProp="label"
-                        options={i.children.map((v: any) => ({
-                          label: v.content_txt,
-                          value: v.id,
-                        }))}
+                        options={deWeight(
+                          i.children.map((v: any) => ({
+                            label: v.content_txt,
+                            value: v.id,
+                            id: v.id,
+                          })),
+                        )}
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )
+              } else if (i.type === 'time' || i.type === 'date') {
+                return (
+                  <SelectWrapBedeck key={i.key}>
+                    <Form.Item name={i.key}>
+                      <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                        {i.contentTxt}
+                      </span>
+                      <DatePicker.RangePicker
+                        allowClear={false}
+                        onChange={dates => onChangeTime(i.key, dates)}
+                        className={rangPicker}
+                        getPopupContainer={node => node}
+                        format={(times: moment.Moment) => {
+                          if (
+                            times.unix() === 0
+                            || times.unix() === 1893427200
+                          ) {
+                            return t('common.null')
+                          }
+                          return times.format('YYYY-MM-DD')
+                        }}
+                        ranges={
+                          i18n.language === 'zh'
+                            ? {
+                                最近一周: [
+                                  moment(new Date())
+                                    .startOf('days')
+                                    .subtract(6, 'days'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                最近一月: [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(1, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                最近三月: [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(3, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                今天开始: [
+                                  moment(new Date()).startOf('days'),
+                                  moment(1893427200 * 1000),
+                                ],
+                                今天截止: [
+                                  moment(0),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                空: [moment(0), moment(0)],
+                              }
+                            : {
+                                'Last Week': [
+                                  moment(new Date())
+                                    .startOf('days')
+                                    .subtract(6, 'days'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                'Last Month': [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(1, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                'Last March': [
+                                  moment(new Date())
+                                    .startOf('months')
+                                    .subtract(3, 'months'),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                'Start today': [
+                                  moment(new Date()).startOf('days'),
+                                  moment(1893427200 * 1000),
+                                ],
+                                'Due today': [
+                                  moment(0),
+                                  moment(new Date()).endOf('days'),
+                                ],
+                                Empty: [moment(0), moment(0)],
+                              }
+                        }
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.key)}>
+                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )
+              } else if (i.type === 'number') {
+                return (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <NumericInput onPress={confirm} />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )
+              } else if (i.type === 'text' || i.type === 'textarea') {
+                return (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <Input
+                        onPressEnter={confirm}
+                        style={{ border: 'none' }}
+                        placeholder={t('newlyAdd.pleaseKeyword')}
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )
+              } else if (i.type === 'tree') {
+                return (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <TreeSelect
+                        style={{ minWidth: '200px', border: 'none' }}
+                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                        treeData={i.children}
+                        placeholder="Please select"
+                        treeDefaultExpandAll
+                        onSelect={confirm}
+                        multiple
+                        onChange={confirm}
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
@@ -269,96 +515,19 @@ const TableFilter = (props: any) => {
                   </SelectWrapBedeck>
                 )
               }
-              return (
-                <SelectWrapBedeck key={i.key}>
-                  <Form.Item name={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                      {i.contentTxt}
-                    </span>
-                    <DatePicker.RangePicker
-                      onChange={dates => onChangeTime(i.key, dates)}
-                      className={rangPicker}
-                      getPopupContainer={node => node}
-                      format={(times: moment.Moment) => {
-                        if (times.unix() === 0 || times.unix() === 1893427200) {
-                          return t('common.null')
-                        }
-                        return times.format('YYYY-MM-DD')
-                      }}
-                      ranges={
-                        i18n.language === 'zh'
-                          ? {
-                              最近一周: [
-                                moment(new Date())
-                                  .startOf('days')
-                                  .subtract(6, 'days'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              最近一月: [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(1, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              最近三月: [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(3, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              今天开始: [
-                                moment(new Date()).startOf('days'),
-                                moment(1893427200 * 1000),
-                              ],
-                              今天截止: [
-                                moment(0),
-                                moment(new Date()).endOf('days'),
-                              ],
-                            }
-                          : {
-                              'Last Week': [
-                                moment(new Date())
-                                  .startOf('days')
-                                  .subtract(6, 'days'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              'Last Month': [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(1, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              'Last March': [
-                                moment(new Date())
-                                  .startOf('months')
-                                  .subtract(3, 'months'),
-                                moment(new Date()).endOf('days'),
-                              ],
-                              'Start today': [
-                                moment(new Date()).startOf('days'),
-                                moment(1893427200 * 1000),
-                              ],
-                              'Due today': [
-                                moment(0),
-                                moment(new Date()).endOf('days'),
-                              ],
-                            }
-                      }
-                    />
-                  </Form.Item>
-                  <DelButton onClick={() => delList(i.key)}>
-                    <IconFont type="close" style={{ fontSize: '12px' }} />
-                  </DelButton>
-                </SelectWrapBedeck>
-              )
             })}
 
-          <Popover placement="bottom" content={content} trigger={['click']}>
+          <PopoverWrap
+            placement="bottom"
+            content={content}
+            trigger={['click']}
+            getPopupContainer={node => node}
+          >
             <Button
               style={{ background: 'white', border: '1px solid #d5d6d9' }}
               icon={<IconFont type="plus" />}
             />
-          </Popover>
+          </PopoverWrap>
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
               {t('common.clearForm')}

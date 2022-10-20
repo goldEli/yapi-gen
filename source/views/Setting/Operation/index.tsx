@@ -4,18 +4,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import {
-  Table,
-  Select,
-  DatePicker,
-  Pagination,
-  Form,
-  message,
-  Spin,
-} from 'antd'
+import { Table, Select, Pagination, Form, Spin } from 'antd'
 import moment from 'moment'
-import { css } from '@emotion/css'
-import { PaginationWrap } from '@/components/StyleCommon'
+import { PaginationWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -29,7 +20,7 @@ const Header = styled.div({
   lineHeight: '64px',
   position: 'sticky',
   top: 0,
-  zIndex: 1,
+  zIndex: 9,
   '.label': {
     fontSize: 16,
     fontWeight: 400,
@@ -48,26 +39,6 @@ const SearchWrap = styled.div({
   flexWrap: 'wrap',
 })
 
-const SelectWrapBedeck = styled.div`
-  height: 32px;
-  margin-right: 16px;
-  position: relative;
-  height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-  .ant-picker {
-    border: none;
-  }
-`
-
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
     color: rgba(187, 189, 191, 1);
@@ -76,24 +47,6 @@ const SelectWrap = styled(Select)`
     min-width: 200px;
     border: none !important;
     outline: none !important;
-  }
-`
-
-const rangPicker = css`
-  .ant-picker-panel-container {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  .ant-picker-footer {
-    min-width: inherit;
-    width: max-content;
-  }
-  .ant-picker-ranges {
-    display: flex;
-    flex-direction: column;
-  }
-  .ant-tag {
-    margin-right: 0;
   }
 `
 
@@ -107,6 +60,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const NewSort = (sortProps: any) => {
@@ -284,7 +238,7 @@ const Operation = () => {
         <div className="label">{t('setting.operationLog')}</div>
         <SearchWrap>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationName')}
             </span>
             <Form.Item name="pageSize" />
@@ -301,7 +255,7 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationType')}
             </span>
             <Form.Item name="types" noStyle>
@@ -317,7 +271,7 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationTime')}
             </span>
             <Form.Item name="times" noStyle>
@@ -327,7 +281,7 @@ const Operation = () => {
             </Form.Item>
           </SelectWrapBedeck>
           <div
-            style={{ color: '#2877FF', fontSize: 12, cursor: 'pointer' }}
+            style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
             onClick={onReset}
           >
             {t('common.clearForm')}

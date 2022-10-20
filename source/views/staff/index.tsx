@@ -28,12 +28,13 @@ import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
 
 const tableWrapP = css`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* height:  800px; */
 `
 const Reset = styled.div`
   height: 32px;
@@ -72,10 +73,14 @@ const TableBox = styled(TableWrap)({
       visibility: 'visible',
     },
   },
+  '.ant-table table': {
+    paddingBottom: 0,
+  },
 })
 
 const Staff = () => {
   const [t] = useTranslation()
+  const navigate = useNavigate()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
@@ -115,6 +120,8 @@ const Staff = () => {
   const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
     'created_at',
   ])
+
+  const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -188,6 +195,13 @@ const Staff = () => {
     />
   )
 
+  const onToDetail = (row: any) => {
+    const params = encryptPhp(
+      JSON.stringify({ id: '', isMember: false, userId: row.id }),
+    )
+    navigate(`/MemberInfo/profile?data=${params}`)
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = [...titleList, ...titleList2]
     const newList = []
@@ -217,7 +231,31 @@ const Staff = () => {
         },
       },
     ]
-    return [...arrList, ...newList]
+    const lastList = [
+      {
+        title: t('newlyAdd.operation'),
+        dataIndex: 'action',
+        width: 120,
+        fixed: 'right',
+        render: (text: string, record: any) => {
+          return (
+            <>
+              {hasCheck
+                ? '--'
+                : (
+                    <span
+                      onClick={() => onToDetail(record)}
+                      style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                    >
+                      {t('project.checkInfo')}
+                    </span>
+                  )}
+            </>
+          )
+        },
+      },
+    ]
+    return [...arrList, ...newList, ...lastList]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {
@@ -314,12 +352,13 @@ const Staff = () => {
               />
             }
             onPressEnter={onPressEnter}
+            onBlur={onPressEnter}
             placeholder={t('staff.pleaseKey')}
             allowClear
           />
         </div>
         <div
-          style={{ marginRight: '40px', display: 'flex', alignItems: 'center' }}
+          style={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
           <SetButton onClick={onChangeFilter}>
@@ -336,7 +375,7 @@ const Staff = () => {
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <SetButton>
               <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="set-default" style={{ fontSize: 20 }} />
+                <IconFont type="settings" style={{ fontSize: 20 }} />
               </Tooltip>
             </SetButton>
           </Dropdown>

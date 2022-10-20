@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from 'react'
 import styled from '@emotion/styled'
-import { Dropdown, Progress } from 'antd'
+import { Dropdown, Menu, Progress } from 'antd'
 import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
@@ -48,7 +48,7 @@ const CardWrap = styled.div<{ active?: boolean }>(
       },
     },
     '.ant-progress-circle.ant-progress-status-success .ant-progress-text': {
-      color: 'black',
+      color: 'black!important',
     },
   },
   ({ active }) => ({
@@ -98,10 +98,12 @@ const StatusTag = styled.div<{ isOpen: boolean }>(
 
 interface Props {
   item: any
-  menu: React.ReactElement
   onClickInfo(): void
   onClickItem?(): void
   isActive?: boolean
+  onChangeEdit(e: any, item: any): void
+  onChangeEnd(e: any, item: any): void
+  onChangeDelete(e: any, item: any): void
 }
 
 const IterationCard = (props: Props) => {
@@ -126,6 +128,55 @@ const IterationCard = (props: Props) => {
     setIsVisible(visible)
   }
 
+  const onClickMenu = (e: any, type: any) => {
+    setIsVisible(false)
+    if (type === 'edit') {
+      props?.onChangeEdit(e, props?.item)
+    } else if (type === 'del') {
+      props?.onChangeDelete(e, props?.item)
+    } else {
+      props?.onChangeEnd(e, props?.item)
+    }
+  }
+
+  const menu = (item: any) => {
+    let menuItems = [
+      {
+        key: '1',
+        label:
+          <div onClick={e => onClickMenu(e, 'edit')}>{t('common.edit')}</div>
+        ,
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickMenu(e, 'other')}>
+            {item.status === 1 ? t('common.close') : t('common.open')}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label:
+          <div onClick={e => onClickMenu(e, 'del')}>{t('common.del')} </div>
+        ,
+      },
+    ]
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (hasChangeStatus) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+
+    return <Menu items={menuItems} />
+  }
+
   return (
     <CardWrap onClick={props.onClickItem} active={props.isActive}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -134,7 +185,6 @@ const IterationCard = (props: Props) => {
           style={{ color: '#43BA9A' }}
           width={48}
           type="circle"
-          strokeLinecap="butt"
           percent={Math.trunc(
             props.item.finishCount / props.item.storyCount * 100,
           )}
@@ -161,7 +211,7 @@ const IterationCard = (props: Props) => {
             <Dropdown
               key={isVisible.toString()}
               visible={isVisible}
-              overlay={props.menu}
+              overlay={menu(props?.item)}
               placement="bottomRight"
               trigger={['hover']}
               getPopupContainer={node => node}

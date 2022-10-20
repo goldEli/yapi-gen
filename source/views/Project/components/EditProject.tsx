@@ -79,6 +79,7 @@ const EditProject = (props: Props) => {
       destroyOnClose
       maskClosable={false}
       keyboard={false}
+      wrapClassName="vertical-center-modal"
     >
       <Form form={form} layout="vertical">
         <Form.Item

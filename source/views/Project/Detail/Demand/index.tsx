@@ -1,3 +1,6 @@
+/* eslint-disable max-lines */
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
@@ -6,7 +9,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
-import EditDemand from './components/EditDemand'
+
+import EditDemand from '@/components/EditDemand'
 import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
 import ChangeRecord from './ChangeRecord'
@@ -14,7 +18,7 @@ import ChildDemand from './ChildDemand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Tooltip } from 'antd'
+import { Space, Button, message, Tooltip, Popover, Form, Select } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
@@ -24,6 +28,10 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
+import { StatusWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
+import Circulation from './Circulation'
+import CommonModal from '@/components/CommonModal'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -39,17 +47,17 @@ const NameWrap = styled.div({
   alignItems: 'center',
   '.demandName': {
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: 'bold',
     color: 'black',
     marginRight: 8,
   },
 })
 
 const ContentWrap = styled.div({
-  padding: 24,
+  padding: 16,
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 64px)',
+  height: 'calc(100% - 72px)',
 })
 
 const MainWrap = styled(Space)({
@@ -57,6 +65,7 @@ const MainWrap = styled(Space)({
   paddingLeft: 24,
   background: 'white',
   width: '100%',
+  position: 'relative',
 })
 
 const Item = styled.div<{ activeIdx: boolean }>(
@@ -74,9 +83,10 @@ const Item = styled.div<{ activeIdx: boolean }>(
       lineHeight: '50px',
     },
     div: {
+      minWidth: 20,
       height: 20,
       padding: '0 6px',
-      borderRadius: '50%',
+      borderRadius: 10,
       color: '#2877FF',
       background: '#F0F4FA',
       display: 'flex',
@@ -88,40 +98,80 @@ const Item = styled.div<{ activeIdx: boolean }>(
     span: {
       color: activeIdx ? '#2877FF' : '#323233',
       borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
+      fontWeight: activeIdx ? 'bold' : 400,
+    },
+    div: {
+      color: activeIdx ? 'white' : '#2877FF',
+      background: activeIdx ? '#2877FF' : '#F0F4FA',
     },
   }),
 )
 
-const StatusWrap = styled.div<{ isShow?: boolean }>(
+const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   {
     height: 22,
-    borderRadius: 6,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
     padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid #2877FF',
-    color: '#2877FF',
+    fontSize: 12,
+    cursor: 'pointer',
+    marginRight: 8,
     width: 'fit-content',
   },
-  ({ isShow }) => ({
-    cursor: isShow ? 'pointer' : 'inherit',
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
+  }),
+)
+
+const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '24px 0 0 0',
+  },
+})
+
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
   }),
 )
 
 const DemandBox = () => {
   const [t] = useTranslation()
+  const [form] = Form.useForm()
+  const [isShowChange, setIsShowChange] = useState(false)
+  const [isShowCategory, setIsShowCategory] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [loadingState, setLoadingState] = useState<boolean>(false)
+  const [colorObj, setColorObj] = useState<any>({})
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { projectInfo } = useModel('project')
+  const {
+    projectInfo,
+    getCategoryList,
+    categoryList,
+    colorList,
+    getWorkflowList,
+    workList,
+  } = useModel('project')
   const {
     getDemandInfo,
     demandInfo,
@@ -129,6 +179,7 @@ const DemandBox = () => {
     updateDemandStatus,
     setIsShowProgress,
     setFilterHeight,
+    updateDemandCategory,
   } = useModel('demand')
   const navigate = useNavigate()
   const isEdit = getIsPermission(
@@ -144,16 +195,25 @@ const DemandBox = () => {
     = projectInfo.projectPermissions?.length > 0
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
+
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
+      await getCategoryList({ projectId, isSelect: true })
     }
     setLoadingState(true)
   }
+
   useEffect(() => {
     init()
     setFilterHeight(52)
   }, [])
+
+  useEffect(() => {
+    setColorObj(
+      categoryList?.list?.filter((k: any) => k.id === demandInfo?.category)[0],
+    )
+  }, [demandInfo, categoryList])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -191,8 +251,10 @@ const DemandBox = () => {
       return <DemandInfo />
     } else if (type === 'child') {
       return <ChildDemand />
+    } else if (type === 'record') {
+      return <ChangeRecord />
     }
-    return <ChangeRecord />
+    return <Circulation />
   }
 
   const onChangeStatus = async (value: any) => {
@@ -208,6 +270,91 @@ const DemandBox = () => {
     }
   }
 
+  const onExamine = () => {
+    message.warning(t('newlyAdd.underReview'))
+  }
+
+  const onCloseCategory = () => {
+    setIsShowCategory(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
+
+  const onConfirmCategory = async () => {
+    await form.validateFields()
+    try {
+      await updateDemandCategory({
+        projectId,
+        id: demandInfo?.id,
+        ...form.getFieldsValue(),
+      })
+      message.success(t('newlyAdd.changeSuccess'))
+      setIsShowCategory(false)
+      getDemandInfo({ projectId, id: demandInfo?.id })
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
+    } catch (error) {
+
+      //
+    }
+  }
+
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      await getWorkflowList({
+        projectId: paramsData.id,
+        categoryId: value,
+      })
+    } else {
+      form.resetFields()
+    }
+  }
+
+  const onClickCategory = async (k: any) => {
+    await getWorkflowList({
+      projectId: paramsData.id,
+      categoryId: k.id,
+    })
+    form.setFieldsValue({
+      categoryId: k.id,
+    })
+    setIsShowChange(false)
+    setIsShowCategory(true)
+  }
+
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
+    >
+      {categoryList?.list
+        ?.filter((i: any) => i.id !== demandInfo?.category)
+        ?.map((k: any) => (
+          <LiWrap
+            key={k.id}
+            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+            onClick={() => onClickCategory(k)}
+          >
+            <StatusTag
+              style={{ marginRight: 0 }}
+              color={k.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+            >
+              {k.name}
+            </StatusTag>
+          </LiWrap>
+        ))}
+    </div>
+  )
+
   const content = () => {
     if (!type) {
       return (
@@ -221,6 +368,68 @@ const DemandBox = () => {
     }
     return (
       <>
+        {isShowCategory && (
+          <CommonModal
+            isVisible={isShowCategory}
+            onClose={onCloseCategory}
+            title={t('newlyAdd.changeCategory')}
+            onConfirm={onConfirmCategory}
+          >
+            <FormWrap
+              form={form}
+              layout="vertical"
+              style={{ paddingRight: 20 }}
+            >
+              <Form.Item label={t('newlyAdd.beforeCategory')}>
+                <StatusTag
+                  color={colorObj?.color}
+                  bgColor={
+                    colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                      ?.bgColor
+                  }
+                >
+                  <>{colorObj?.name}</>
+                </StatusTag>
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterCategory')}
+                name="categoryId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={categoryList?.list
+                    ?.filter((i: any) => i.id !== demandInfo?.category)
+                    ?.map((k: any) => ({ label: k.name, value: k.id }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterStatus')}
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={workList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.statusId,
+                  }))}
+                />
+              </Form.Item>
+            </FormWrap>
+          </CommonModal>
+        )}
         <DeleteConfirm
           text={t('common.confirmDelDemand')}
           isVisible={isDelVisible}
@@ -229,16 +438,45 @@ const DemandBox = () => {
         />
         <DemandInfoWrap>
           <NameWrap>
-            <Tooltip title={demandInfo?.name}>
-              <OmitText width={600}>
-                <span className="demandName">{demandInfo?.name}</span>
-              </OmitText>
-            </Tooltip>
+            <Popover
+              trigger={['hover']}
+              visible={isShowChange}
+              placement="bottomLeft"
+              content={changeStatus}
+              getPopupContainer={node => node}
+              onVisibleChange={visible => setIsShowChange(visible)}
+            >
+              <StatusTag
+                color={colorObj?.color}
+                bgColor={
+                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                    ?.bgColor
+                }
+              >
+                <>{colorObj?.name}</>
+                <IconFont
+                  type="down-icon"
+                  style={{
+                    fontSize: 12,
+                    marginLeft: 4,
+                    color: '43BA9A',
+                  }}
+                />
+              </StatusTag>
+            </Popover>
+            <OmitText
+              width={600}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              <span className="demandName">{demandInfo?.name}</span>
+            </OmitText>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
-                return isCanEdit ? (
+                return isCanEdit && !demandInfo?.isExamine ? (
                   <ShapeContent
-                    tap={value => onChangeStatus(value)}
+                    tap={(value: any) => onChangeStatus(value)}
                     hide={onHide}
                     row={demandInfo}
                     record={{
@@ -254,13 +492,14 @@ const DemandBox = () => {
               }}
             >
               <StatusWrap
-                isShow={isCanEdit}
+                onClick={demandInfo?.isExamine ? onExamine : void 0}
+                isShow={isCanEdit || demandInfo?.isExamine}
                 style={{
-                  color: demandInfo?.status?.color,
-                  border: `1px solid ${demandInfo?.status?.color}`,
+                  color: demandInfo?.status?.status?.color,
+                  border: `1px solid ${demandInfo?.status?.status?.color}`,
                 }}
               >
-                {demandInfo?.status?.content_txt}
+                {demandInfo?.status?.status?.content}
               </StatusWrap>
             </PopConfirm>
           </NameWrap>
@@ -299,6 +538,23 @@ const DemandBox = () => {
               <span>{t('common.changeRecord')}</span>
               <div>{demandInfo?.changeCount || 0}</div>
             </Item>
+            <Item
+              onClick={() => onChangeIdx('circulation')}
+              activeIdx={type === 'circulation'}
+            >
+              <span>{t('newlyAdd.circulationRecord')}</span>
+            </Item>
+            {demandInfo?.isExamine && type === 'info' ? (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 80,
+                  position: 'absolute',
+                  top: 22,
+                  right: 530,
+                }}
+              />
+            ) : null}
           </MainWrap>
           {childContent()}
         </ContentWrap>
@@ -327,7 +583,7 @@ const DemandBox = () => {
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
-          id={operationItem.id}
+          demandId={operationItem.id}
           onUpdate={onUpdate}
         />
       ) : null}

@@ -9,6 +9,28 @@ export default () => {
   const [percentShow, setPercentShow] = useState<boolean>(false)
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
+  const [createCategory, setCreateCategory] = useState<any>({})
+  const [statusLogs, setStatusLogs] = useState<any>([])
+  const [importFields, setImportFields] = useState<any>({})
+  const [importExcel, setImportExcel] = useState<any>({})
+
+  const getImportExcelUpdate = async (params: any) => {
+    setImportExcel({})
+    const result = await services.demand.getImportExcelUpdate(params)
+    setImportExcel(result)
+  }
+
+  const getImportExcel = async (params: any) => {
+    setImportExcel({})
+    const result = await services.demand.getImportExcel(params)
+    setImportExcel(result)
+  }
+
+  const getLoadListFields = async (params: any) => {
+    const result = await services.demand.getLoadListFields(params)
+    setImportFields(result)
+  }
+
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     setDemandInfo(result)
@@ -18,6 +40,11 @@ export default () => {
   const getDemandChildInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     return result
+  }
+
+  const getStatusLogs = async (params: any) => {
+    const result = await services.demand.getStoryStatusLog(params)
+    setStatusLogs(result)
   }
 
   const {
@@ -33,6 +60,9 @@ export default () => {
     deleteInfoDemand,
     addInfoDemand,
     updatePriority,
+    updateTableParams,
+    updateDemandCategory,
+    getImportDownloadModel,
   } = services.demand
 
   return {
@@ -63,5 +93,17 @@ export default () => {
     setPercentVal,
     uploadStatus,
     setUploadStatus,
+    setCreateCategory,
+    createCategory,
+    updateTableParams,
+    updateDemandCategory,
+    statusLogs,
+    getStatusLogs,
+    importFields,
+    getLoadListFields,
+    getImportDownloadModel,
+    importExcel,
+    getImportExcel,
+    getImportExcelUpdate,
   }
 }

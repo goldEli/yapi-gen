@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { useModel } from '@/models'
-import { message, Progress, Upload, type UploadProps } from 'antd'
+import { message, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -25,6 +25,7 @@ interface Props {
   child?: any
   onChangeShow?(state: boolean): void
   id?: any
+  onBottom?(): void
 }
 
 const UploadAttach = (props: Props) => {
@@ -159,6 +160,7 @@ const UploadAttach = (props: Props) => {
         onAddInfoAttach([result.url])
       } else {
         props.onChangeAttachment?.(result, 'add')
+        props?.onBottom?.()
       }
     }
   }
@@ -172,6 +174,7 @@ const UploadAttach = (props: Props) => {
       onDeleteInfoAttach(file)
     } else {
       props.onChangeAttachment?.(file, 'delete')
+      props?.onBottom?.()
     }
   }
 

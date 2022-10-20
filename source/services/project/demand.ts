@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable no-else-return */
@@ -8,10 +9,10 @@ import * as http from '@/tools/http'
 export const updateDemandStatus: any = async (params: any) => {
   await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
-    story_id: params.demandId,
-    status_id: params.statusId,
-    content: params.content,
-    user_ids: params.userIds,
+    story_id: params.nId,
+    category_status_to_id: params.toId,
+    fields: params.fields,
+    verify_user_id: params.verifyId ?? undefined,
   })
 }
 
@@ -43,6 +44,12 @@ export const getDemandInfo: any = async (params: any) => {
     changeCount: response.data.app_changelog_count,
     iterateId: response.data.iterate_id || null,
     projectId: response.data.project_id,
+    isExamine: response.data.verify_lock === 1,
+    customField: response.data.custom_field,
+    schedule: response.data.schedule,
+    category: response.data.category_id,
+    'class': response.data.class_id,
+    className: response.data.class,
   }
 }
 
@@ -66,6 +73,12 @@ export const getDemandList: any = async (params: any) => {
       parent_id: params?.parentId,
       all: params?.all ? 1 : 0,
       panel: params?.panel ? 1 : 0,
+      class_ids: params.class_ids,
+      class_id: params.class_id,
+      category_id: params.category_id,
+      schedule_start: params.schedule_start,
+      schedule_end: params.schedule_end,
+      custom_field: params?.custom_field,
     },
     pagesize: params?.pageSize,
     page: params?.page,
@@ -81,13 +94,13 @@ export const getDemandList: any = async (params: any) => {
           childCount: i.child_story_count,
           id: i.id,
           name: i.name,
-          userName: i.user_name.split(',') || [],
+          userName: i.users_name ? i.users_name.split(',') : [],
           priority: i.priority,
           status: i.status,
-          info: i.info,
-          userIds: i.user_id,
-          iterateId: i.iterate_id,
-          parentId: i.parent_id,
+          category: i.category,
+          categoryColor: i.category_color,
+          project_id: i.project_id,
+          usersNameIds: i.users_name_ids,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -97,19 +110,11 @@ export const getDemandList: any = async (params: any) => {
     return response.data.map((i: any) => ({
       id: i.id,
       name: i.name,
-      demand: i.child_story_count,
-      priority: i.priority,
-      iteration: i.iterate_name,
+      usersNameIds: i.users_name_ids,
+      userName: i.users_name?.split(',') || [],
       status: i.status,
-      dealName: i.users_name,
-      time: i.created_at,
-      expectedStart: i.expected_start_at,
-      expectedEnd: i.expected_end_at,
-      info: i.info,
-      userIds: i.user_id,
-      iterateId: i.iterate_id,
-      parentId: i.parent_id,
-      userName: i.user_name,
+      iteration: i.iterate_name || '--',
+      schedule: i.schedule,
     }))
   } else {
     return {
@@ -135,6 +140,15 @@ export const getDemandList: any = async (params: any) => {
         usersCopySendName: i.users_copysend_name,
         userName: i.user_name,
         tag: i.tag,
+        isExamine: i.verify_lock === 1,
+        category: i.category,
+        'class': i.class,
+        schedule: i.schedule,
+        ...i.custom_field,
+        categoryColor: i.category_color,
+        categoryRemark: i.category_remark,
+        project_id: i.project_id,
+        usersNameIds: i.users_name_ids,
       })),
     }
   }
@@ -226,6 +240,10 @@ export const addDemand: any = async (params: any) => {
     copysend: params?.copySendIds,
     tag: params?.tagIds,
     attachment: params?.attachments,
+    custom_field: params?.customField,
+    category_id: params?.category,
+    class_id: params?.class,
+    schedule: params?.schedule,
   })
 }
 
@@ -238,7 +256,6 @@ export const updateDemand: any = async (params: any) => {
     : element.innerText.trim() === ''
       ? ''
       : element.innerHTML
-
   await http.put<any>('updateDemand', {
     project_id: params.projectId,
     name: params.name,
@@ -262,6 +279,9 @@ export const updateDemand: any = async (params: any) => {
     tag: params.tagIds,
     attachment: params.attachments,
     id: params.id,
+    custom_field: params?.customField,
+    class_id: params?.class,
+    schedule: params?.schedule,
   })
 }
 
@@ -296,4 +316,159 @@ export const updatePriority: any = async (params: any) => {
     id: params.demandId,
     project_id: params.projectId,
   })
+}
+
+export const updateTableParams: any = async (params: any) => {
+  await http.put<any>('changeTableParams', {
+    project_id: params.projectId,
+    id: params.id,
+    ...params.otherParams,
+  })
+}
+
+export const updateDemandCategory: any = async (params: any) => {
+  await http.put<any>('updateDemandCategory', {
+    project_id: params.projectId,
+    story_id: params.id,
+    category_id: params.categoryId,
+    status_id: params.statusId,
+  })
+}
+
+export const getStoryStatusLog: any = async (params: any) => {
+  const response: any = await http.get<any>('getStoryStatusLog', {
+    search: {
+      story_id: params.demandId,
+      project_id: params.projectId,
+      all: params?.all ? 1 : 0,
+    },
+    order: 'asc',
+    orderkey: 'id',
+  })
+
+  return response.data?.map((i: any) => ({
+    operationName: i.user_name,
+    time: i.created_at,
+    id: i.id,
+    statusTo: i.statusto
+      ? {
+          color: i.statusto?.color,
+          name: i.statusto?.content,
+        }
+      : null,
+    changeType: i.change_type,
+    fields: {
+      tag: i.fields?.tag,
+      'class': i.fields?.class,
+      comment: i.fields?.comment,
+      priority: i.fields?.priority,
+      usersName: i.fields?.users_name,
+      iterateName: i.fields?.iterate_name,
+      customFields: i.fields?.custom_field,
+      startTime: i.fields?.expected_start_at,
+      endTime: i.fields?.expected_end_at,
+      copySendName: i.fields?.users_copysend_name,
+    },
+    verifyAll: {
+      id: i.verify?.id,
+      statusFrom: i.verify?.statusfrom
+        ? {
+            color: i.verify?.statusfrom?.color,
+            name: i.verify?.statusfrom?.content,
+          }
+        : null,
+
+      // 整条审核的状态  1-待审核  2-已通过 3-未通过
+      verifyStatus: i.verify?.verify_status,
+
+      // 是否开启审核
+      isVerify: i.verify?.statusconfig?.is_verify,
+      verify: {
+
+        // 1：固定审核流程；2：用户指定审核人
+        verifyType: i.verify?.statusconfig?.verify?.verify_type,
+        fixedUser: {
+          comment: i.verify?.statusconfig?.verify?.fixedUser?.verify_opinion,
+          verifyStatus:
+            i.verify?.statusconfig?.verify?.fixedUser?.verify_status,
+          userName: i.verify?.statusconfig?.verify?.fixedUser?.user_name,
+        },
+        process: i.verify?.statusconfig?.verify?.process?.map((k: any) => ({
+          operator: k.operator,
+          verifyUsers: k.verify_users?.map((j: any) => ({
+            id: j.id,
+            name: j.name,
+            verifyStatus: j.verify_status,
+            verifyOpinion: j.verify_opinion,
+            time: j.verify_at,
+          })),
+        })),
+      },
+    },
+  }))
+}
+
+export const getLoadListFields: any = async (params: any) => {
+  const response: any = await http.get<any>('getLoadListFields', {
+    project_id: params.projectId,
+    is_update: params.isUpdate,
+  })
+
+  return {
+    baseFields: response.data.base_fields,
+    timeAndPersonFields: response.data.time_person_fields,
+    customFields: response.data.custom_fields,
+  }
+}
+
+export const getImportDownloadModel: any = async (params: any) => {
+  const response = await http.get(
+    'getImportDownloadModel',
+    {
+      is_update: params.isUpdate,
+      project_id: params.projectId,
+      fields: params.fields,
+    },
+    { responseType: 'blob' },
+  )
+
+  return response
+}
+
+export const getImportExcel: any = async (params: any) => {
+  const formData = new FormData()
+  formData.append('project_id', params.projectId)
+  formData.append('file_path', params.filePath)
+  const response = await http.post('getImportExcel', formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
+
+  return {
+    successCount: response.data.count || 0,
+    errorCount: response.data.error_list
+      ? Object.keys(response.data.error_list)?.length
+      : 0,
+    errorList: response.data.error_list ? response.data.error_list : {},
+  }
+}
+
+export const getImportExcelUpdate: any = async (params: any) => {
+  const formData = new FormData()
+  formData.append('project_id', params.projectId)
+  formData.append('file_path', params.filePath)
+  const response = await http.post('getImportExcelUpdate', formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
+
+  return {
+    successCount: response.data.count || 0,
+    errorCount: response.data.error_list
+      ? Object.keys(response.data.error_list)?.length
+      : 0,
+    errorList: response.data.error_list ? response.data.error_list : {},
+  }
 }

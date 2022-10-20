@@ -2,11 +2,10 @@
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
-import { SearchLine } from '@/components/StyleCommon'
+import { SearchLine, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const { Option } = Select
 const Wrap = styled.div({
   display: 'flex',
   minHeight: 64,
@@ -36,24 +35,6 @@ const SelectWrap = styled(Select)`
     min-width: 160px;
     border: none !important;
     outline: none !important;
-  }
-`
-const SelectWrapBedeck = styled.div`
-  height: 32px;
-  position: relative;
-  height: 32px;
-  border: 1px solid rgba(235, 237, 240, 1);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-  .ant-picker {
-    border: none;
   }
 `
 interface Props {
@@ -101,7 +82,7 @@ const SearchList = (props: Props) => {
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('common.department')}
             </span>
             <Form.Item name="department">
@@ -121,7 +102,7 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('common.job')}
             </span>
             <Form.Item name="position">
@@ -141,7 +122,7 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '12px' }}>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('common.permissionGroup')}
             </span>
             <Form.Item name="userGroup">

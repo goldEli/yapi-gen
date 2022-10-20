@@ -17,6 +17,16 @@
 @border-color-base: #d5d6d9;
 @text-color: #323233;
 
+.vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vertical-center-modal .ant-modal {
+  top: 0;
+}
+
 .ant-spin-nested-loading,
 .ant-spin-container {
   height: 100%;
@@ -89,17 +99,13 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #dadada;
+  background: #adadad;
 }
 
 body,
 html {
   margin: 0;
   box-sizing: border-box;
-}
-
-* {
-  user-select: none;
 }
 
 input:-webkit-autofill {
@@ -195,4 +201,157 @@ textarea {
 
 .ant-tooltip-inner span {
   color: white !important;
+}
+
+.ant-progress-circle.ant-progress-status-success .ant-progress-text {
+  color: black !important;
+}
+.ant-tree .ant-tree-node-content-wrapper:hover {
+  background-color: transparent;
+}
+.ant-tree .ant-tree-treenode {
+  box-sizing: border-box;
+  width: 100%;
+  &:hover {
+    cursor: grab;
+    background-color: #f0f4f9;
+    [data-tree] {
+      visibility: visible;
+    }
+  }
+}
+.ant-tree-switcher {
+  display: flex;
+  align-items: center;
+}
+.ant-tree .ant-tree-treenode {
+  align-items: center;
+}
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background-color: transparent;
+  width: 100%;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  display: none;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}
+.ant-form-item-label > label::after {
+  display: none;
+}
+.ant-tree-treenode-selected {
+  background-color: #f0f4f9;
+}
+.ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
+  opacity: 1;
+}
+.row-dragging {
+  display: flex;
+  align-items: center;
+
+  // justify-content: space-between;
+  background: #fafafa;
+  border: 1px solid #ccc;
+  z-index: 10000 !important;
+}
+.row-dragging td {
+  padding: 16px;
+}
+.row-dragging li {
+  padding: 6px;
+}
+
+.row-dragging .drag-visible {
+  visibility: visible;
+}
+.resize_save {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  bottom: 0;
+  left: 0;
+  padding: 16px;
+  overflow-x: hidden;
+}
+.resize_bar {
+  width: 200px;
+  max-width: 700px;
+  min-width: 200px;
+  height: inherit;
+  resize: horizontal;
+  cursor: ew-resize;
+  cursor: col-resize;
+  opacity: 0;
+  overflow: scroll;
+}
+/* 拖拽线 */
+.resize_line {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid #f0f0f0;
+  border-left: 1px solid #f0f0f0;
+  pointer-events: none;
+}
+.resize_bar:hover ~ .resize_line,
+.resize_bar:active ~ .resize_line {
+  border-left: 1px dashed skyblue;
+}
+.resize_bar::-webkit-scrollbar {
+  width: 200px;
+  height: inherit;
+}
+
+.ant-picker,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector,
+.ant-input,
+.ant-input-number {
+  border: 1px solid #ebedf0;
+}
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  width: 0;
+}
+
+.ant-table table {
+  padding-bottom: 0 !important;
+}
+
+.ant-tag-blue {
+  color: #646566 !important;
+  background: white !important;
+  border-color: #ebedf0 !important;
+  text-align: center !important;
+  width: -webkit-fill-available !important;
+}
+
+.ant-tag-blue[ant-click-animating-without-extra-node="false"] {
+  color: #2877ff !important;
+  background: white !important;
+  border-color: #2877ff !important;
+}
+
+.ant-tag-blue:hover {
+  color: #2877ff !important;
+  background: #f0f4fa !important;
+  border-color: #f0f4fa !important;
 }

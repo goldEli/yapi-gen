@@ -11,15 +11,15 @@ import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useDynamicColumns } from './CreatePrejectTableColum'
+import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import EditChildDemand from './EditChildDemand'
+import EditDemand from '@/components/EditDemand'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Operation = styled.div({
@@ -86,6 +86,7 @@ const ChildDemand = () => {
     updateDemandStatus,
     deleteDemand,
     getDemandInfo,
+    demandInfo,
   } = useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
@@ -97,23 +98,32 @@ const ChildDemand = () => {
   })
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
+  const [titleList3, setTitleList3] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
-  const navigate = useNavigate()
   const [isSpinning, setIsSpinning] = useState(false)
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
+    setPlainOptions3(projectInfo?.plainOptions3 || [])
     setTitleList(projectInfo?.titleList || [])
     setTitleList2(projectInfo?.titleList2 || [])
+    setTitleList3(projectInfo?.titleList3 || [])
   }
 
-  const getList = async (item?: any, orderItem?: any) => {
-    setIsSpinning(true)
+  const getList = async (
+    item?: any,
+    orderItem?: any,
+    updateState?: boolean,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
     const result = await getDemandList({
       projectId,
       page: item ? item.page : 1,
@@ -144,9 +154,11 @@ const ChildDemand = () => {
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
+    setTitleList3(list3)
   }
 
   const onEdit = (e: any, item: any) => {
@@ -154,9 +166,9 @@ const ChildDemand = () => {
     setIsVisible(true)
   }
 
-  const onUpdate = () => {
+  const onUpdate = (updateState?: boolean) => {
     getDemandInfo({ projectId, id: demandId })
-    getList(pageObj, order)
+    getList(pageObj, order, updateState)
   }
 
   const updateOrderkey = (key: any, val: any) => {
@@ -259,10 +271,9 @@ const ChildDemand = () => {
     updateOrderkey,
     onChangeStatus,
     onChangeState,
-    onEdit,
-    onDelete,
     rowIconFont,
     onClickItem,
+    onUpdate,
   })
 
   const hasEdit = getIsPermission(
@@ -298,7 +309,7 @@ const ChildDemand = () => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2]
+    const arr = [...titleList, ...titleList2, ...titleList3]
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -329,18 +340,19 @@ const ChildDemand = () => {
       },
     ]
     return [...arrList, ...newList]
-  }, [titleList, titleList2, columns])
+  }, [titleList, titleList2, titleList3, columns])
 
   return (
     <div style={{ height: 'calc(100% - 50px)' }}>
       {isVisible ? (
-        <EditChildDemand
+        <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
           isChild
-          id={operationItem.id}
+          demandId={operationItem.id}
           onUpdate={onUpdate}
-          list={dataList?.list}
+          childList={dataList?.list}
+          categoryId={demandInfo?.category}
         />
       ) : null}
       <DeleteConfirm
@@ -401,8 +413,10 @@ const ChildDemand = () => {
         <OptionalFeld
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
+          plainOptions3={plainOptions3}
           checkList={titleList}
           checkList2={titleList2}
+          checkList3={titleList3}
           isVisible={isSettingState}
           onClose={() => setIsSettingState(false)}
           getCheckList={getCheckList}

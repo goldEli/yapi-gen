@@ -8,7 +8,6 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useTranslation } from 'react-i18next'
-import { values } from 'lodash'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -116,7 +115,7 @@ interface Props {
 const PosterComponent = (props: Props) => {
   const [t] = useTranslation()
   const { coverList } = useModel('project')
-  const [checkedPoster, setCheckedPoster] = useState(props.value || '')
+  const [checkedPoster, setCheckedPoster] = useState('')
   const { uploadFile } = useModel('cos')
   const [posterList, setPosterList] = useState<any>([])
 
@@ -130,6 +129,12 @@ const PosterComponent = (props: Props) => {
       onUpdateValue(coverList[0].path)
     }
   }, [coverList])
+
+  useEffect(() => {
+    if (props?.value) {
+      setCheckedPoster(props?.value)
+    }
+  }, [props?.value])
 
   const onUploadBefore = (file: any) => {
     const acceptArr = ['jpg', 'png']

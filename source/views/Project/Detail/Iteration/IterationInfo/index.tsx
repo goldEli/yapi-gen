@@ -34,7 +34,7 @@ const Title = styled.div({
   fontSize: 16,
   lineHeight: '20px',
   color: '#323233',
-  fontWeight: 400,
+  fontWeight: 'bold',
   paddingLeft: 8,
   borderLeft: '3px solid #2877FF',
 })
@@ -91,6 +91,10 @@ const ChartWrap = styled.div({
 const Wrap = styled.div({
   overflow: 'auto',
   height: 'calc(100% - 50px)',
+  padding: '0 16px',
+  '.ant-spin-nested-loading, .ant-spin-container': {
+    height: 'auto!important',
+  },
 })
 
 const DemoLine = (props: { data: any }) => {
@@ -131,7 +135,9 @@ const DemoLine = (props: { data: any }) => {
 
 const DemoColumn = (props: { data: any }) => {
   const config = {
+    seriesField: 'type',
     data: props.data,
+    color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
     xField: 'type',
     yField: 'count',
     xAxis: {
@@ -179,10 +185,11 @@ const IterationInfo = () => {
                   strokeColor="#43BA9A"
                   width={125}
                   type="circle"
+                  format={percent => percent === 100 ? '100%' : `${percent}%`}
                   percent={Math.trunc(
                     iterateInfo?.finishCount / iterateInfo?.storyCount * 100,
                   )}
-                  strokeWidth={16}
+                  strokeWidth={12}
                 />
                 <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
                   {iterateInfo.startTime || '--'}-{iterateInfo.endTime || '--'}

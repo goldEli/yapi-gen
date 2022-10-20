@@ -1,17 +1,28 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable max-params */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-len */
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import styled from '@emotion/styled'
+import WrapLeft from './components/WrapLeft'
+
+const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
+  width: '100%',
+  height: 'calc(100vh - 64px)',
+  overflowY: 'auto',
+}))
 
 interface Props {
   onChangeVisible(e: any): void
@@ -20,8 +31,12 @@ interface Props {
   onIsUpdate?(): void
 }
 
+export const TreeContext: any = React.createContext('')
+
 const DemandMain = (props: Props) => {
+  const myTreeComponent: any = useRef(null)
   const [t] = useTranslation()
+  const [key, setKey] = useState()
   const [isGrid, setIsGrid] = useState(false)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
@@ -38,6 +53,8 @@ const DemandMain = (props: Props) => {
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
+  const [isShowLeft, setIsShowLeft] = useState(false)
+  const { getCategoryList } = useModel('project')
 
   const getList = async (
     state: boolean,
@@ -45,10 +62,12 @@ const DemandMain = (props: Props) => {
     item?: any,
     orderItem?: any,
     isInit?: boolean,
+    updateState?: boolean,
   ) => {
-    if (!isInit) {
+    if (!updateState) {
       setIsSpinning(true)
     }
+
     let params = {}
     if (state) {
       params = {
@@ -68,6 +87,12 @@ const DemandMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
+        class_id: key,
       }
     } else {
       params = {
@@ -89,6 +114,12 @@ const DemandMain = (props: Props) => {
         endTime: searchParamsObj.finishAt,
         usersNameId: searchParamsObj.usersnameId,
         copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
+        class_id: key,
       }
     }
     const result = await getDemandList(params)
@@ -96,22 +127,27 @@ const DemandMain = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdate?.()
     setIsRefresh(false)
+    myTreeComponent?.current?.init()
   }
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
-  }, [])
+    getCategoryList({ projectId, isSelect: true })
+    myTreeComponent?.current?.init()
+  }, [key])
 
   useEffect(() => {
     if (isRefresh) {
       getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
     }
+    myTreeComponent?.current?.init()
   }, [isRefresh])
 
   useEffect(() => {
     if (props.isUpdate) {
       getList(isGrid, searchItems, pageObj, order)
     }
+    myTreeComponent?.current?.init()
   }, [props.isUpdate])
 
   const onChangeGrid = (val: boolean) => {
@@ -128,6 +164,7 @@ const DemandMain = (props: Props) => {
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
+    myTreeComponent?.current?.init()
   }
 
   const onDeleteConfirm = async () => {
@@ -162,43 +199,71 @@ const DemandMain = (props: Props) => {
     getList(isGrid, searchItems, { page: 1, size: pageObj.size }, item)
   }
 
+  const onUpdate = (state?: boolean) => {
+    getList(isGrid, searchItems, pageObj, order, true, state)
+  }
+
+  const keyValue = useMemo(
+    () => ({
+      key,
+      changeKey: (value: any) => {
+        setKey(value)
+      },
+    }),
+    [key],
+  )
+
   return (
-    <div style={{ height: '100%' }}>
-      <DeleteConfirm
-        text={t('common.confirmDelDemand')}
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
-        onConfirm={onDeleteConfirm}
-      />
-      <Operation
-        isGrid={isGrid}
-        onChangeGrid={val => onChangeGrid(val)}
-        onChangeVisible={(e: any) => props.onChangeVisible(e)}
-        onSearch={onSearch}
-        settingState={isSettingState}
-        onChangeSetting={setIsSettingState}
-      />
-      {isGrid ? (
-        <DemandGrid
-          onChangeVisible={onChangeOperation}
-          onDelete={onDelete}
-          data={dataList}
-          isSpinning={isSpinning}
+    <TreeContext.Provider value={keyValue}>
+      <div style={{ height: '100%', display: 'flex' }}>
+        <DeleteConfirm
+          text={t('common.confirmDelDemand')}
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          onConfirm={onDeleteConfirm}
         />
-      ) : (
-        <DemandTable
-          onChangeVisible={onChangeOperation}
-          onDelete={onDelete}
-          data={dataList}
-          onChangePageNavigation={onChangePageNavigation}
-          onChangeRow={onChangeRow}
-          settingState={isSettingState}
-          onChangeSetting={setIsSettingState}
-          onChangeOrder={onChangeOrder}
-          isSpinning={isSpinning}
-        />
-      )}
-    </div>
+        {isShowLeft ? (
+          <WrapLeft
+            ref={myTreeComponent}
+            projectId={projectId}
+            isShowLeft={isShowLeft}
+          />
+        ) : null}
+        <Right isShowLeft={isShowLeft}>
+          <Operation
+            isGrid={isGrid}
+            onChangeGrid={val => onChangeGrid(val)}
+            onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+            onChangeVisible={(e: any) => props.onChangeVisible(e)}
+            onSearch={onSearch}
+            settingState={isSettingState}
+            onChangeSetting={setIsSettingState}
+            isShowLeft={isShowLeft}
+          />
+          {isGrid ? (
+            <DemandGrid
+              onChangeVisible={onChangeOperation}
+              onDelete={onDelete}
+              data={dataList}
+              isSpinning={isSpinning}
+            />
+          ) : (
+            <DemandTable
+              onChangeVisible={onChangeOperation}
+              onDelete={onDelete}
+              data={dataList}
+              onChangePageNavigation={onChangePageNavigation}
+              onChangeRow={onChangeRow}
+              settingState={isSettingState}
+              onChangeSetting={setIsSettingState}
+              onChangeOrder={onChangeOrder}
+              isSpinning={isSpinning}
+              onUpdate={onUpdate}
+            />
+          )}
+        </Right>
+      </div>
+    </TreeContext.Provider>
   )
 }
 

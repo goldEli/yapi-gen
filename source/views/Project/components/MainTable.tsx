@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -5,8 +6,13 @@
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Menu, Dropdown, Pagination } from 'antd'
-import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
+import { Menu, Dropdown, Pagination, Progress } from 'antd'
+import {
+  TableWrap,
+  PaginationWrap,
+  ClickWrap,
+  HiddenText,
+} from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -89,57 +95,14 @@ const ImgWrap = styled.div<{ url?: string }>(
 )
 
 interface MoreProps {
-  menu: React.ReactElement
+  onChange(type: string, item: any, e: any): void
   text: string
+  record?: any
 }
 
 const MoreContent = (props: MoreProps) => {
-
-  //
-  const [isVisible, setIsVisible] = useState(false)
-
-  const onChangeVisible = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
-  }
-
-  const onVisibleChange = (visible: any) => {
-    setIsVisible(visible)
-  }
-
-  return (
-    <MoreWrap>
-      <Dropdown
-        key={isVisible.toString()}
-        visible={isVisible}
-        overlay={props.menu}
-        trigger={['hover']}
-        placement="bottomRight"
-        getPopupContainer={node => node}
-        onVisibleChange={onVisibleChange}
-      >
-        <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
-      </Dropdown>
-    </MoreWrap>
-  )
-}
-
-const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order === 'asc' ? 1 : 2}
-    >
-      {sortProps.children}
-    </Sort>
-  )
-}
-
-const MainTable = (props: Props) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
+  const [isVisible, setIsVisible] = useState(false)
   const { userInfo } = useModel('user')
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,
@@ -158,12 +121,17 @@ const MainTable = (props: Props) => {
     'b/project/start',
   )
 
+  const onClickMore = (type: any, item: any, e: any) => {
+    setIsVisible(false)
+    props?.onChange(type, item, e)
+  }
+
   const menu = (record: any) => {
     let menuItems = [
       {
         key: '1',
         label: (
-          <div onClick={e => props.onChangeOperation?.('edit', record, e)}>
+          <div onClick={e => onClickMore?.('edit', record, e)}>
             {t('common.edit')}
           </div>
         ),
@@ -171,7 +139,7 @@ const MainTable = (props: Props) => {
       {
         key: '2',
         label: (
-          <div onClick={e => props.onChangeOperation?.('end', record, e)}>
+          <div onClick={e => onClickMore?.('end', record, e)}>
             {record.status === 1 ? t('common.stop') : t('common.open')}
           </div>
         ),
@@ -179,7 +147,7 @@ const MainTable = (props: Props) => {
       {
         key: '3',
         label: (
-          <div onClick={e => props.onChangeOperation?.('delete', record, e)}>
+          <div onClick={e => onClickMore?.('delete', record, e)}>
             {t('common.del')}
           </div>
         ),
@@ -207,6 +175,55 @@ const MainTable = (props: Props) => {
     return <Menu items={menuItems} />
   }
 
+  const onChangeVisible = (e: any) => {
+    e.stopPropagation()
+    setIsVisible(!isVisible)
+  }
+
+  const onVisibleChange = (visible: any) => {
+    setIsVisible(visible)
+  }
+
+  return (
+    <>
+      {!hasDelete && !hasEdit && !hasStart && !hasStop ? (
+        <MoreWrap>
+          <Dropdown
+            key={isVisible.toString()}
+            visible={isVisible}
+            overlay={menu(props?.record)}
+            trigger={['hover']}
+            placement="bottomRight"
+            getPopupContainer={node => node}
+            onVisibleChange={onVisibleChange}
+          >
+            <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
+          </Dropdown>
+        </MoreWrap>
+      )
+        : <div style={{ width: 16 }} />
+      }
+    </>
+  )
+}
+
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
+
+const MainTable = (props: Props) => {
+  const [t] = useTranslation()
+  const navigate = useNavigate()
+
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
@@ -228,10 +245,11 @@ const MainTable = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {!hasDelete && !hasEdit && !hasStart && !hasStop
-              ? <MoreContent menu={menu(record)} text={text} />
-              : <div style={{ width: 16 }} />
-            }
+            <MoreContent
+              onChange={props?.onChangeOperation}
+              text={text}
+              record={record}
+            />
             <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
               {text}
             </ClickWrap>
@@ -269,9 +287,18 @@ const MainTable = (props: Props) => {
       width: 200,
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isName isClose={record.status === 2}>
-            <OmitText width={160}>{text}</OmitText>
-          </ClickWrap>
+          <HiddenText>
+            <ClickWrap isName isClose={record.status === 2}>
+              <OmitText
+                width={160}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
+            </ClickWrap>
+          </HiddenText>
         )
       },
     },
@@ -331,7 +358,17 @@ const MainTable = (props: Props) => {
       dataIndex: 'progress',
       width: 160,
       render: (text: string) => {
-        return <span>{`${Number(text) * 100}%`}</span>
+        return (
+          <Progress
+            strokeColor="#43BA9A"
+            style={{ color: '#43BA9A' }}
+            width={38}
+            type="circle"
+            percent={Number(text) * 100}
+            format={percent => percent === 100 ? '100%' : `${percent}%`}
+            strokeWidth={8}
+          />
+        )
       },
     },
     {

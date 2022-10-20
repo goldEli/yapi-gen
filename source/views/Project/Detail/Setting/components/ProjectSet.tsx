@@ -20,7 +20,7 @@ import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 
 const Warp = styled.div({
@@ -54,11 +54,12 @@ const SetRight = styled.div({
 
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 400,
+  fontWeight: 'bold',
   color: 'black',
-  paddingLeft: 8,
+  paddingLeft: 10,
   borderLeft: '3px solid #2877FF',
-  marginBottom: 8,
+  marginBottom: 16,
+  lineHeight: '18px',
 })
 
 const MenuItems = styled.div({
@@ -146,6 +147,14 @@ const ModalFooter = styled(Space)({
 
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
+const GroupWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  width: 'calc(100% - 200px)',
+  '.ant-checkbox-group-item': {
+    margin: '6px 24px 6px 0',
+  },
+})
 
 interface ItemProps {
   item: any
@@ -187,15 +196,14 @@ const PermissionItem = (props: ItemProps) => {
         />
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <GroupWrap>
         <Checkbox.Group
           options={props.item.children}
-          style={{ marginRight: 8 }}
           value={keys}
           onChange={onChange}
           disabled={props.activeDetail?.type === 1}
         />
-      </div>
+      </GroupWrap>
     </MainWrapItem>
   )
 }
@@ -312,6 +320,7 @@ const ProjectSet = () => {
   }
 
   const onClickMenu = (e: any, type: string, item: any) => {
+    setIsMoreVisible(false)
     e.stopPropagation()
     setOperationDetail(item)
     if (type === 'edit') {
@@ -391,6 +400,7 @@ const ProjectSet = () => {
           maskClosable={false}
           destroyOnClose
           keyboard={false}
+          wrapClassName="vertical-center-modal"
         >
           <ModalHeader>
             <span>

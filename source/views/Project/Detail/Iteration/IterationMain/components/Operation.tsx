@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -7,7 +8,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Space, Modal, message, Tooltip } from 'antd'
+import { Popover, Modal, message, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
@@ -31,8 +32,7 @@ const StickyWrap = styled.div({
 const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
-
-  // position: 'relative',
+  position: 'relative',
 })
 
 const StatusTag = styled.div<{ isOpen?: boolean }>(
@@ -44,10 +44,28 @@ const StatusTag = styled.div<{ isOpen?: boolean }>(
     padding: '0 8px',
     fontSize: 12,
     cursor: 'pointer',
+    width: 'fit-content',
   },
   ({ isOpen }) => ({
     color: isOpen ? '#43BA9A' : '#969799',
     background: isOpen ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
+
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
   }),
 )
 
@@ -68,6 +86,7 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
   const [isShow, setIsShow] = useState(false)
+  const [isShow2, setIsShow2] = useState(false)
   const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
     = useModel('iterate')
   const [searchParams] = useSearchParams()
@@ -77,6 +96,7 @@ const Operation = (props: Props) => {
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -102,24 +122,25 @@ const Operation = (props: Props) => {
   }
 
   const changeStatus = (
-    <Space
-      size={8}
-      style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column' }}
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
     >
-      <StatusTag isOpen onClick={() => onChangeStatus(1)}>
-        {t('common.opening')}
-      </StatusTag>
-      <StatusTag
-        isOpen={false}
-        onClick={() => onChangeStatus(2)}
-        style={{ color: '#969799', background: '#F2F2F4' }}
-      >
-        {t('common.Closed')}
-      </StatusTag>
-    </Space>
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
+        <StatusTag isOpen>{t('common.opening')}</StatusTag>
+      </LiWrap>
+
+      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
+        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
+      </LiWrap>
+    </div>
   )
 
-  const onFilterSearch = (e: any) => {
+  const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.status,
       priorityId: e.priority,
@@ -133,6 +154,11 @@ const Operation = (props: Props) => {
       expectedendat: e.expected_end_at,
       updatedat: e.updated_at,
       finishAt: e.finish_at,
+      class_ids: e.class,
+      category_id: e.category,
+      schedule_start: e.schedule?.start,
+      schedule_end: e.schedule?.end,
+      custom_field: customField,
     }
     props.onSearch(params)
   }
@@ -155,6 +181,7 @@ const Operation = (props: Props) => {
     setSearchList(arr)
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
   }
 
   useEffect(() => {
@@ -165,8 +192,17 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
 
     setTimeout(() => {
-      setFilterHeightIterate(stickyWrapDom.current?.clientHeight)
-    }, 50)
+      setFilterHeightIterate(Number(stickyWrapDom.current?.clientHeight) + 8)
+    }, 42)
+  }
+
+  const onClickIcon = (value: any) => {
+    if (value === 1) {
+      setIsShow2(false)
+    } else {
+      setIsShow(false)
+    }
+    props?.onChangeIsShowLeft?.()
   }
 
   return (
@@ -180,8 +216,10 @@ const Operation = (props: Props) => {
         destroyOnClose
         maskClosable={false}
         keyboard={false}
+        wrapClassName="vertical-center-modal"
+        bodyStyle={{ padding: '16px 4px 16px 24px' }}
       >
-        <div style={{ height: 436, overflow: 'auto' }}>
+        <div style={{ maxHeight: 436, overflow: 'auto', paddingRight: 20 }}>
           {props.currentDetail?.info ? (
             <div
               dangerouslySetInnerHTML={{
@@ -195,27 +233,45 @@ const Operation = (props: Props) => {
       </Modal>
       <OperationWrap>
         <IterationInfo>
-          <Tooltip
-            style={{ position: 'relative' }}
-            key={isShow.toString()}
-            visible={isShow}
-            onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getPopupContainer={node => node}
-            title={
-              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
-            }
-          >
-            <IconFont
-              onClick={props.onChangeIsShowLeft}
-              type="indent"
-              style={{
-                fontSize: 20,
-                color: 'black',
-                cursor: 'pointer',
-                marginRight: 8,
-              }}
-            />
-          </Tooltip>
+          {props.isShowLeft ? (
+            <Tooltip
+              key={isShow.toString()}
+              visible={isShow}
+              onVisibleChange={isShow3 => setIsShow(isShow3)}
+              getTooltipContainer={node => node}
+              title={t('common.collapseMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(1)}
+                type="outdent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip
+              key={isShow2.toString()}
+              visible={isShow2}
+              onVisibleChange={isShow1 => setIsShow2(isShow1)}
+              getTooltipContainer={node => node}
+              title={t('common.openMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(2)}
+                type="indent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          )}
           <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
             {props.currentDetail?.name}
           </span>
@@ -289,6 +345,7 @@ const Operation = (props: Props) => {
           list={searchList}
           basicsList={filterBasicsList}
           specialList={filterSpecialList}
+          customList={filterCustomList}
           isIteration
         />
       )}

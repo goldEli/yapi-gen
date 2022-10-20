@@ -11,7 +11,6 @@ import { getTicket } from '@/services/user'
 import client from '@jihe/http-client'
 import { type HttpRequestSearch } from '@jihe/http-client/typings/types'
 import { message } from 'antd'
-import { env } from 'process'
 import { decrypt, encrypt } from './crypto'
 import { decryptPhp, encryptPhp } from './cryptoPhp'
 
@@ -63,7 +62,7 @@ client.config({
     'Content-Type': 'application/json; charset=UTF-8',
   },
   requestInterceptors: [
-    async options => {
+    async (options: any) => {
       await isCheckTicket(
         options.url ===
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
@@ -73,7 +72,9 @@ client.config({
       options.headers.Language = localStorage.getItem('language') || ''
       options.headers.System = getSystem()
       options.headers.Client = browser()
-      options.payload = JSON.stringify(options.payload)
+      if (!(options.payload instanceof FormData)) {
+        options.payload = JSON.stringify(options.payload)
+      }
 
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
@@ -116,10 +117,15 @@ client.config({
           decryptPhp(JSON.parse((response as { body: string }).body).p),
         )
       }
-      return JSON.parse((response as { body: string }).body)
+      return options.responseType === 'blob'
+        ? response
+        : JSON.parse((response as { body: string }).body)
     },
 
-    (data: any) => {
+    (data: any, options: any) => {
+      if (options.responseType === 'blob') {
+        return data
+      }
       if (
 
         // data.code === '00000' ||
@@ -152,15 +158,23 @@ client.config({
 })
 
 export const get = <SearchParams extends HttpRequestSearch, Result = any>(
+  key: UrlKeys | string,
+  data?: any,
+  options?: any,
+) => {
+  return client.get<SearchParams, Result>(
+    urls[key as UrlKeys] || key,
+    data,
+    options,
+  )
+}
+
+export const post = <Payload, Result = any>(
   key: UrlKeys,
   data?: any,
   options?: any,
 ) => {
-  return client.get<SearchParams, Result>(urls[key], data, options)
-}
-
-export const post = <Payload, Result = any>(key: UrlKeys, data?: any) => {
-  return client.post<Payload, Result>(urls[key], data)
+  return client.post<Payload, Result>(urls[key], data, options)
 }
 
 export const put = <Payload, Result = any>(

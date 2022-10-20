@@ -24,6 +24,9 @@ const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
     color: '#969799',
     fontSize: 20,
     cursor: 'pointer',
+    '&: hover': {
+      color: '#2877FF',
+    },
   },
   ({ active }) => ({
     color: active ? '#2877FF' : '#969799',
@@ -37,11 +40,6 @@ const WrapRight = styled.div({
   '.ant-space-item': {
     display: 'flex',
     alignItems: 'center',
-  },
-  '&: hover': {
-    [IconfontWrap.toString()]: {
-      color: '#2877ff',
-    },
   },
 })
 
@@ -153,14 +151,17 @@ const Filter = (props: Props) => {
         <TotalText>{t('project.allProject', { count: props.total })}</TotalText>
         <Divider style={{ height: 20 }} type="vertical" />
         <Space size={12}>
-          <Tooltip title={t('common.thumbnail')}>
+          <Tooltip
+            title={t('common.thumbnail')}
+            getPopupContainer={node => node}
+          >
             <IconfontWrap
               onClick={() => props.onChangeFormat(true)}
               active={props.isGrid}
               type="app-store"
             />
           </Tooltip>
-          <Tooltip title={t('common.list')}>
+          <Tooltip title={t('common.list')} getPopupContainer={node => node}>
             <IconfontWrap
               onClick={() => props.onChangeFormat(false)}
               active={!props.isGrid}

@@ -5,24 +5,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, message, Popover, Table } from 'antd'
+import { Dropdown, Menu } from 'antd'
 import { OmitText } from '@star-yun/ui'
-import PopConfirm from '@/components/Popconfirm'
-import { ShapeContent } from '@/components/Shape'
 import { useModel } from '@/models'
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { getIsPermission, openDetail } from '@/tools'
-import { ClickWrap } from './StyleCommon'
+import { getIsPermission } from '@/tools'
+import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
-import Sort from './Sort'
-import NoData from './NoData'
+import ChildDemandTable from '@/components/ChildDemandTable'
 
 interface Props {
   item: any
-  onChangeEdit?(): void
-  onChangeDelete?(): void
-  menu: React.ReactElement
+  onChangeEdit?(e: any, item: any): void
+  onChangeDelete?(item: any): void
   onClickItem(): void
 }
 
@@ -37,7 +32,7 @@ const MoreWrap = styled(IconFont)({
 
 const Wrap = styled.div({
   width: '100%',
-  height: 90,
+  height: 126,
   background: 'white',
   borderRadius: 6,
   border: '1px solid #EBEDF0',
@@ -65,7 +60,7 @@ const WrapBorder = styled.div({
 const MainWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  padding: '12px 16px 12px 20px',
+  padding: 16,
 })
 
 const AvatarWrap = styled.div({
@@ -109,44 +104,10 @@ const NameGroup = styled.div({
   },
 })
 
-const StatusWrap = styled.div({
-  height: 22,
-  borderRadius: 6,
-  padding: '0 8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: '1px solid #2877FF',
-  color: '#2877FF',
-  width: 'fit-content',
-  cursor: 'pointer',
-})
-
-const NewSort = (sortProps: any) => {
-  return (
-    <Sort
-      fixedKey={sortProps.fixedKey}
-      onChangeKey={sortProps.onUpdateOrderKey}
-      nowKey={sortProps.nowKey}
-      order={sortProps.order === 'asc' ? 1 : 2}
-    >
-      {sortProps.children}
-    </Sort>
-  )
-}
-
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const { getDemandList, updateDemandStatus } = useModel('demand')
-  const { projectInfo } = useModel('project')
-  const [searchParams] = useSearchParams()
-  const projectId = searchParams.get('id')
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const { projectInfo, colorList } = useModel('project')
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -156,181 +117,68 @@ const DemandCard = (props: Props) => {
     'b/story/delete',
   )
 
-  const getList = async (item: any) => {
-    const result = await getDemandList({
-      projectId,
-      all: true,
-      parentId: props.item?.id,
-      order: item.value,
-      orderKey: item.key,
-    })
-    setDataList({ list: result })
-  }
-
-  const onUpdateOrderKey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(order)
-  }
-
-  const onChildClick = () => {
-    getList(order)
-    setIsVisible(!isVisible)
-  }
-
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getList(order)
-    } catch (error) {
-
-      //
+  const onClickMenu = (type: any, e?: any) => {
+    setIsMoreVisible(false)
+    if (type === 'edit') {
+      props.onChangeEdit?.(e, props?.item)
+    } else {
+      props.onChangeDelete?.(props?.item)
     }
   }
 
-  const columnsChild = [
-    {
-      title: (
-        <NewSort
-          fixedKey="id"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          ID
-        </NewSort>
-      ),
-      dataIndex: 'id',
-      render: (text: string, record: any) => {
-        return (
-          <ClickWrap
-            onClick={() => {
-              openDetail(
-                `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
-              )
-            }}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
-        )
+  const menu = () => {
+    let menuItems = [
+      {
+        key: '1',
+        label:
+          <div onClick={e => onClickMenu('edit', e)}>{t('common.edit')}</div>
+        ,
       },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.demandName')}
-        </NewSort>
-      ),
-      dataIndex: 'name',
-      render: (text: string, record: any) => {
-        return (
-          <OmitText width={180}>
-            <ClickWrap
-              onClick={() => {
-                openDetail(
-                  `/Detail/Demand?type=info&id=${record.project_id}&demandId=${record.id}`,
-                )
-              }}
-              isName
-              isClose={record.status?.content === '已关闭'}
-            >
-              {text}
-            </ClickWrap>
-          </OmitText>
-        )
+      {
+        key: '2',
+        label: <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>,
       },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="iterate_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.iterate')}
-        </NewSort>
-      ),
-      dataIndex: 'iteration',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="status"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.status')}
-        </NewSort>
-      ),
-      dataIndex: 'status',
-      render: (text: any, record: any) => {
-        return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                <ShapeContent
-                  tap={value => onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              )
-            }}
-            record={record}
-          >
-            <StatusWrap
-              style={{ color: text.color, border: `1px solid ${text.color}` }}
-            >
-              {text.content_txt}
-            </StatusWrap>
-          </PopConfirm>
-        )
-      },
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="user_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.createName')}
-        </NewSort>
-      ),
-      dataIndex: 'dealName',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-  ]
+    ]
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+
+    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
+    return <Menu items={menuItems} />
+  }
 
   return (
     <div>
       <Wrap>
         <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
-          <ClickWrap onClick={props.onClickItem}>
-            <OmitText width={200}>{props.item.name}</OmitText>
-          </ClickWrap>
+          <CategoryWrap
+            color={props?.item?.categoryColor}
+            bgColor={
+              colorList?.filter(
+                (i: any) => i.key === props?.item?.categoryColor,
+              )[0]?.bgColor
+            }
+            style={{ margin: '0 0 8px 0', width: 'fit-content' }}
+          >
+            {props?.item?.category}
+          </CategoryWrap>
+          <HiddenText>
+            <ClickWrap onClick={props.onClickItem}>
+              <OmitText
+                width={200}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {props.item.name}
+              </OmitText>
+            </ClickWrap>
+          </HiddenText>
           <AvatarWrap>
             <NameGroup>
               {props.item?.userName
@@ -353,45 +201,11 @@ const DemandCard = (props: Props) => {
                 +{props.item?.userName?.length - 3}
               </div>
             </NameGroup>
-            <Popover
-              key={isVisible.toString()}
-              visible={isVisible}
-              placement="bottom"
-              trigger="click"
-              onVisibleChange={visible => setIsVisible(visible)}
-              content={
-                <div style={{ minWidth: 500, maxHeight: 400 }}>
-                  {!!dataList?.list && dataList?.list.length
-                    ? (
-                        <Table
-                          rowKey="id"
-                          pagination={false}
-                          columns={columnsChild}
-                          dataSource={dataList?.list}
-                        />
-                      )
-                    : <NoData />
-                  }
-                </div>
-              }
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onClick={onChildClick}
-              >
-                <IconFont
-                  type="apartment"
-                  style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
-                />
-                <span style={{ color: '#323233', fontSize: 16 }}>
-                  {props.item?.childCount}
-                </span>
-              </div>
-            </Popover>
+            <ChildDemandTable
+              value={props.item?.childCount}
+              row={props.item}
+              hasIcon
+            />
           </AvatarWrap>
         </MainWrap>
         {hasDel && hasEdit
@@ -400,7 +214,7 @@ const DemandCard = (props: Props) => {
               <Dropdown
                 key={isMoreVisible.toString()}
                 visible={isMoreVisible}
-                overlay={props.menu}
+                overlay={menu()}
                 placement="bottomRight"
                 trigger={['hover']}
                 getPopupContainer={node => node}

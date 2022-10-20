@@ -1,18 +1,20 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import {
   ChartsItem,
+  HiddenText,
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
-import { Timeline, message, Pagination, Spin, Tooltip } from 'antd'
-import Gatte from './components/Gatte'
+import { Timeline, message, Pagination, Tooltip } from 'antd'
+import Gantt from '@/components/Gantt'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
@@ -25,7 +27,7 @@ import { OmitText } from '@star-yun/ui'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
-const Mygante = styled(Gatte)`
+const Mygante = styled(Gantt)`
   min-width: 1000px;
   .highcharts-tick {
     stroke: red;
@@ -80,17 +82,11 @@ const Head = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  flex: 1;
-`
-const HeadLeft = styled.div`
-  /* flex: 2; */
-`
-const HeadRight = styled.div`
-  /* flex: 3; */
+  flex: 8;
 `
 const Center = styled.div`
   display: flex;
-  flex: 2;
+  flex: 7;
 `
 
 const CenterRight = styled.div`
@@ -119,11 +115,10 @@ const TimeLineWrap = styled.div`
   padding: 10px 10px;
   margin-top: 10px;
   overflow-y: scroll;
-
+  overflow-x: hidden;
   height: 300px;
 `
 const LineItem = styled.div`
-  /* width: 360px; */
   display: flex;
   justify-content: space-between;
   font-size: 12px;
@@ -145,6 +140,7 @@ const Profile = () => {
     setIsUpdateCreate,
   } = useModel('mine')
   const { userInfo } = useModel('user')
+  const { colorList } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -152,9 +148,7 @@ const Profile = () => {
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
-  const navigate = useNavigate()
   const [loadingState, setLoadingState] = useState<boolean>(false)
-
   const changeMonth = async () => {
     const res2 = await getMineGatte({
       startTime: moment()
@@ -168,7 +162,29 @@ const Profile = () => {
       pagesize,
     })
 
-    setGatteData(res2.list)
+    setGatteData(
+      res2.list?.map((k: any) => ({
+        id: k.id,
+        demandText: k.text,
+        text: `<div style="display: flex; align-items: center">
+          <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
+        k.categoryColor
+        }; background: ${
+          colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
+        }">${k.categoryName}</span>
+          <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
+        k.text
+        }</span>
+        </div>`,
+        start_date: k.start_date,
+        end_date: k.end_date,
+        statusName: `<span style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; line-height: 16px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusTitle: k.statusName,
+        parent: k.parent,
+        render: k.render,
+        statusColor: k.statusColor,
+      })),
+    )
     await setTotal(res2.pager.total)
     setLoadingState(true)
   }
@@ -249,7 +265,7 @@ const Profile = () => {
     >
       <StyledWrap>
         <Head>
-          <HeadLeft>
+          <div>
             <SecondTitle>{t('mine.basicSurvey')}</SecondTitle>
             <InnerWrap>
               <ChartsItem>
@@ -265,8 +281,8 @@ const Profile = () => {
                 <span className={titleTextCss}>{t('mine.totalIterate')}</span>
               </ChartsItem>
             </InnerWrap>
-          </HeadLeft>
-          <HeadRight>
+          </div>
+          <div>
             <SecondTitle> {t('mine.backLog')}</SecondTitle>
             <InnerWrap>
               <ChartsItem style={{ width: '20%' }}>
@@ -290,7 +306,7 @@ const Profile = () => {
                 <span className={titleTextCss}>{t('mine.finishOver')}</span>
               </ChartsItem>
             </InnerWrap>
-          </HeadRight>
+          </div>
         </Head>
         <Center>
           <CenterRight>
@@ -307,13 +323,23 @@ const Profile = () => {
                             <span>{item.content}</span>
                           </LineItem>
                           <LineItem>
-                            <Tooltip title={item.feedable?.project.name}>
-                              <OmitText width={200}>
+                            <HiddenText>
+                              <OmitText
+                                width={200}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
                                 {item.feedable?.project.name}
                               </OmitText>
-                            </Tooltip>
-                            <Tooltip title={item.feedable?.project.name}>
-                              <OmitText width={300}>
+                            </HiddenText>
+                            <HiddenText>
+                              <OmitText
+                                width={300}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
                                 <span
                                   onClick={() => onToDetail(item)}
                                   style={{
@@ -324,7 +350,7 @@ const Profile = () => {
                                   {item.feedable?.name}
                                 </span>
                               </OmitText>
-                            </Tooltip>
+                            </HiddenText>
                           </LineItem>
                         </Timeline.Item>
                       ))}
@@ -334,7 +360,7 @@ const Profile = () => {
           </CenterRight>
         </Center>
       </StyledWrap>
-      <GatteWrap style={{ height: 'calc(100vh - 400px)' }}>
+      <GatteWrap>
         <div style={{ padding: '28px 24px 0' }}>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
           <div className={titleWrap}>
@@ -360,30 +386,29 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {gatteData.length >= 1 && <Mygante data={gatteData} />}
+        {gatteData.length >= 1 && <Mygante data={gatteData} minHeight={380} />}
         {gatteData.length < 1 && (
-          <div style={{ height: 'calc(100% - 136px)' }}>
+          <div style={{ height: 'calc(100vh - 508px)' }}>
             <NoData />
           </div>
         )}
-
-        {gatteData.length >= 1 && (
-          <PaginationWrap>
-            <Pagination
-              defaultCurrent={1}
-              current={page}
-              showSizeChanger
-              showQuickJumper
-              total={total}
-              showTotal={newTotal => t('common.tableTotal', { count: newTotal })
-              }
-              pageSizeOptions={['10', '20', '50']}
-              onChange={onChangePage}
-              onShowSizeChange={onShowSizeChange}
-            />
-          </PaginationWrap>
-        )}
       </GatteWrap>
+
+      {gatteData.length >= 1 && (
+        <PaginationWrap>
+          <Pagination
+            defaultCurrent={1}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            total={total}
+            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
+            pageSizeOptions={['10', '20', '50']}
+            onChange={onChangePage}
+            onShowSizeChange={onShowSizeChange}
+          />
+        </PaginationWrap>
+      )}
     </PermissionWrap>
   )
 }

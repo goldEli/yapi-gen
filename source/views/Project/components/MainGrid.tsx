@@ -11,7 +11,6 @@ import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface Props {
