@@ -132,7 +132,14 @@ const ProjectInfo = () => {
               alignItems: 'center',
             }}
           >
-            <OmitText width={340}>{projectInfo.name}</OmitText>
+            <OmitText
+              width={340}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {projectInfo.name}
+            </OmitText>
             <ClickIcon
               hidden={getIsPermission(
                 userInfo?.company_permissions,

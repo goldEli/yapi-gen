@@ -10,7 +10,7 @@ import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools'
-import { CategoryWrap, ClickWrap } from './StyleCommon'
+import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 
@@ -167,11 +167,18 @@ const DemandCard = (props: Props) => {
           >
             {props?.item?.category}
           </CategoryWrap>
-          <ClickWrap onClick={props.onClickItem}>
-            <OmitText width={200} tipProps={{ placement: 'topLeft' }}>
-              {props.item.name}
-            </OmitText>
-          </ClickWrap>
+          <HiddenText>
+            <ClickWrap onClick={props.onClickItem}>
+              <OmitText
+                width={200}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {props.item.name}
+              </OmitText>
+            </ClickWrap>
+          </HiddenText>
           <AvatarWrap>
             <NameGroup>
               {props.item?.userName

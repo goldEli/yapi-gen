@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
@@ -12,7 +13,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
-import { CategoryWrap, ViewWrap } from '@/components/StyleCommon'
+import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
@@ -395,8 +396,18 @@ const AddWorkflow = (props: Props) => {
         <>
           {operationObj?.id === record.id
             ? ''
-            : <OmitText width={300}>{text || '--'}</OmitText>
-          }
+            : (
+                <HiddenText>
+                  <OmitText
+                    width={300}
+                    tipProps={{
+                      getPopupContainer: node => node,
+                    }}
+                  >
+                    {text || '--'}
+                  </OmitText>
+                </HiddenText>
+              )}
         </>
       ),
     },

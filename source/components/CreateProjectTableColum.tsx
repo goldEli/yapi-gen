@@ -11,7 +11,12 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { CategoryWrap, ClickWrap, StatusWrap } from '@/components/StyleCommon'
+import {
+  CategoryWrap,
+  ClickWrap,
+  HiddenText,
+  StatusWrap,
+} from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
@@ -108,7 +113,11 @@ export const useDynamicColumns = (state: any) => {
               position: 'relative',
             }}
           >
-            <Tooltip placement="top" title={record.categoryRemark}>
+            <Tooltip
+              placement="top"
+              getPopupContainer={node => node}
+              title={record.categoryRemark}
+            >
               <CategoryWrap
                 color={record.categoryColor}
                 bgColor={
@@ -126,7 +135,14 @@ export const useDynamicColumns = (state: any) => {
               isClose={record.status?.content === '已关闭'}
               onClick={() => state.onClickItem(record)}
             >
-              <OmitText width={110}>{text}</OmitText>
+              <OmitText
+                width={110}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
             </ClickWrap>
             {record.isExamine && (
               <IconFont
@@ -242,7 +258,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'iterate_name',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
     {
@@ -251,7 +278,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'class',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
     {
@@ -260,7 +298,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'tag',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
 

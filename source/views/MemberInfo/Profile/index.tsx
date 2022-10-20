@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import { css } from '@emotion/css'
 import {
   ChartsItem,
+  HiddenText,
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
@@ -117,14 +118,15 @@ const TimeLineWrap = styled.div`
   padding: 10px 10px;
   margin-top: 10px;
   overflow-y: scroll;
-
   height: 300px;
+  overflow-x: hidden;
 `
 const LineItem = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   color: #646566;
+  position: relative;
 `
 const GatteWrap = styled.div`
   background: white;
@@ -470,13 +472,23 @@ const Profile = () => {
                                 <span>{item.content}</span>
                               </LineItem>
                               <LineItem>
-                                <Tooltip title={item.projectName}>
-                                  <OmitText width={200}>
+                                <HiddenText>
+                                  <OmitText
+                                    width={200}
+                                    tipProps={{
+                                      getPopupContainer: node => node,
+                                    }}
+                                  >
                                     {item.projectName}
                                   </OmitText>
-                                </Tooltip>
-                                <Tooltip title={item.name}>
-                                  <OmitText width={300}>
+                                </HiddenText>
+                                <HiddenText>
+                                  <OmitText
+                                    width={300}
+                                    tipProps={{
+                                      getPopupContainer: node => node,
+                                    }}
+                                  >
                                     <span
                                       onClick={() => onToDetail(item)}
                                       style={{
@@ -487,7 +499,7 @@ const Profile = () => {
                                       {item.name}
                                     </span>
                                   </OmitText>
-                                </Tooltip>
+                                </HiddenText>
                               </LineItem>
                             </Timeline.Item>
                           ))}

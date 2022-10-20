@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { OmitText } from '@star-yun/ui'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { HiddenText } from '@/components/StyleCommon'
 
 const imgCss = css`
   width: 40px;
@@ -228,9 +229,16 @@ export const Panel = (props: Props) => {
               )}
 
           <NameAndPhone>
-            <Tooltip title={userInfo?.name}>
-              <OmitText width={120}>{userInfo?.name}</OmitText>
-            </Tooltip>
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {userInfo?.name}
+              </OmitText>
+            </HiddenText>
             <span>{userInfo?.phone}</span>
           </NameAndPhone>
         </PanelHeaderFirst>

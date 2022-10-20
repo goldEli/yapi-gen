@@ -12,7 +12,7 @@ import { useModel } from '@/models'
 import { message, Popover, Progress, Table } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
-import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
+import { ClickWrap, HiddenText, StatusWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
@@ -144,15 +144,22 @@ const ChildDemandTable = (props: {
       width: 160,
       render: (text: string, record: any) => {
         return (
-          <OmitText width={160} tipProps={{ placement: 'topLeft' }}>
-            <ClickWrap
-              onClick={() => onToDetail(record)}
-              isName
-              isClose={record.status?.content === '已关闭'}
+          <HiddenText>
+            <OmitText
+              width={160}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
             >
-              {text}
-            </ClickWrap>
-          </OmitText>
+              <ClickWrap
+                onClick={() => onToDetail(record)}
+                isName
+                isClose={record.status?.content === '已关闭'}
+              >
+                {text}
+              </ClickWrap>
+            </OmitText>
+          </HiddenText>
         )
       },
     },
@@ -171,11 +178,16 @@ const ChildDemandTable = (props: {
       width: 100,
       render: (text: string) => {
         return (
-          <OmitText tipProps={{ placement: 'topLeft' }} width={100}>
-            <span style={{ minWidth: 30, display: 'inline-block' }}>
+          <HiddenText>
+            <OmitText
+              width={100}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
               {text || '--'}
-            </span>
-          </OmitText>
+            </OmitText>
+          </HiddenText>
         )
       },
     },
@@ -278,11 +290,16 @@ const ChildDemandTable = (props: {
       width: 120,
       render: (text: string) => {
         return (
-          <OmitText tipProps={{ placement: 'topLeft' }} width={120}>
-            <span style={{ minWidth: 30, display: 'inline-block' }}>
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
               {text || '--'}
-            </span>
-          </OmitText>
+            </OmitText>
+          </HiddenText>
         )
       },
     },

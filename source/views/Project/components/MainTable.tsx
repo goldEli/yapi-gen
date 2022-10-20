@@ -7,7 +7,12 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination, Progress } from 'antd'
-import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
+import {
+  TableWrap,
+  PaginationWrap,
+  ClickWrap,
+  HiddenText,
+} from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -282,9 +287,18 @@ const MainTable = (props: Props) => {
       width: 200,
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isName isClose={record.status === 2}>
-            <OmitText width={160}>{text}</OmitText>
-          </ClickWrap>
+          <HiddenText>
+            <ClickWrap isName isClose={record.status === 2}>
+              <OmitText
+                width={160}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
+            </ClickWrap>
+          </HiddenText>
         )
       },
     },

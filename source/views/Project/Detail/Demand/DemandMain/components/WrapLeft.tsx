@@ -199,7 +199,6 @@ const TreeItem = (props: any) => {
           whiteSpace: 'nowrap',
         }}
       >
-        {/* <Tooltip title={props.name}>{props.name}</Tooltip> */}
         {props.name}
       </span>
       <span className={centerText}>{props.story_count}</span>

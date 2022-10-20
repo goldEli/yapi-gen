@@ -517,7 +517,10 @@ const CommonNeed = (props: any) => {
                       onChangeMany(false)
                     }}
                   >
-                    <Tooltip title={t('common.list')}>
+                    <Tooltip
+                      title={t('common.list')}
+                      getPopupContainer={node => node}
+                    >
                       <IconFont
                         type="unorderedlist"
                         style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
@@ -530,7 +533,10 @@ const CommonNeed = (props: any) => {
                         onChangeMany(true)
                       }}
                     >
-                      <Tooltip title={t('common.timeList')}>
+                      <Tooltip
+                        title={t('common.timeList')}
+                        getPopupContainer={node => node}
+                      >
                         <IconFont
                           type="database"
                           style={{
@@ -546,7 +552,10 @@ const CommonNeed = (props: any) => {
 
               {props.id !== 0 && (
                 <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-                  <Tooltip title={t('common.search')}>
+                  <Tooltip
+                    title={t('common.search')}
+                    getPopupContainer={node => node}
+                  >
                     <IconFont
                       type="filter"
                       style={{
@@ -564,7 +573,10 @@ const CommonNeed = (props: any) => {
                 trigger={['click']}
               >
                 <SetButton>
-                  <Tooltip title={t('common.tableFieldSet')}>
+                  <Tooltip
+                    title={t('common.tableFieldSet')}
+                    getPopupContainer={node => node}
+                  >
                     <IconFont type="settings" style={{ fontSize: 20 }} />
                   </Tooltip>
                 </SetButton>

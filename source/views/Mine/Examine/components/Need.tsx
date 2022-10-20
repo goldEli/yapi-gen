@@ -17,8 +17,6 @@ import {
   LabNumber,
   ShowWrap,
   TableWrap,
-  ClickWrap,
-  CategoryWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Divider, Pagination, Spin, Tooltip } from 'antd'
@@ -26,8 +24,6 @@ import { useModel } from '@/models'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import Sort from '@/components/Sort'
-import { OmitText } from '@star-yun/ui'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -59,22 +55,11 @@ const LoadingSpin = styled(Spin)({
   },
 })
 
-const StatusWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-})
-
-const CircleWrap = styled.div({
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-  marginRight: 8,
-})
-
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
+  position: 'relative',
 })
 
 const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
@@ -274,7 +259,7 @@ const Need = (props: any) => {
             style={{ height: 20, margin: '0 16px 0 24px' }}
             type="vertical"
           />
-          <Tooltip title={t('common.search')}>
+          <Tooltip title={t('common.search')} getPopupContainer={node => node}>
             <IconFontWrap
               active={!filterState}
               type="filter"

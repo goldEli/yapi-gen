@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import {
   ChartsItem,
+  HiddenText,
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
@@ -114,7 +115,7 @@ const TimeLineWrap = styled.div`
   padding: 10px 10px;
   margin-top: 10px;
   overflow-y: scroll;
-
+  overflow-x: hidden;
   height: 300px;
 `
 const LineItem = styled.div`
@@ -322,13 +323,23 @@ const Profile = () => {
                             <span>{item.content}</span>
                           </LineItem>
                           <LineItem>
-                            <Tooltip title={item.feedable?.project.name}>
-                              <OmitText width={200}>
+                            <HiddenText>
+                              <OmitText
+                                width={200}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
                                 {item.feedable?.project.name}
                               </OmitText>
-                            </Tooltip>
-                            <Tooltip title={item.feedable?.project.name}>
-                              <OmitText width={300}>
+                            </HiddenText>
+                            <HiddenText>
+                              <OmitText
+                                width={300}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
                                 <span
                                   onClick={() => onToDetail(item)}
                                   style={{
@@ -339,7 +350,7 @@ const Profile = () => {
                                   {item.feedable?.name}
                                 </span>
                               </OmitText>
-                            </Tooltip>
+                            </HiddenText>
                           </LineItem>
                         </Timeline.Item>
                       ))}

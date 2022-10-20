@@ -18,7 +18,6 @@ import {
   DatePicker,
   TreeSelect,
   Spin,
-  Tag,
   Tooltip,
 } from 'antd'
 import { useModel } from '@/models'
@@ -28,9 +27,6 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
-import arrows from '/arrows.png'
-import { divide } from 'lodash'
-import { HiddenText } from './StyleCommon'
 
 const Left = styled.div`
   min-height: 400px;

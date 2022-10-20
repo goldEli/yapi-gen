@@ -284,7 +284,12 @@ const CommonOperation = (props: Props) => {
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
-          <OmitText width={152}>
+          <OmitText
+            width={152}
+            tipProps={{
+              getPopupContainer: node => node,
+            }}
+          >
             <ClickWrap
               style={{ fontSize: 14, fontWeight: 500 }}
               onClick={() => setIsVisible(true)}

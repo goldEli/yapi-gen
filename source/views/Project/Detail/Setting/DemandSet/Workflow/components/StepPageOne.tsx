@@ -28,7 +28,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
 import { useModel } from '@/models'
-import { CategoryWrap, ViewWrap } from '@/components/StyleCommon'
+import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
 import { arrayMoveImmutable } from 'array-move'
 import {
   SortableContainer as sortableContainer,
@@ -269,7 +269,18 @@ const StepPageOne = (propsOne: Props) => {
       title: t('newlyAdd.statusRemark'),
       width: 400,
       dataIndex: 'info',
-      render: (text: any) => <OmitText width={380}>{text || '--'}</OmitText>,
+      render: (text: any) => (
+        <HiddenText>
+          <OmitText
+            width={380}
+            tipProps={{
+              getPopupContainer: node => node,
+            }}
+          >
+            {text || '--'}
+          </OmitText>
+        </HiddenText>
+      ),
     },
     {
       width: 130,
@@ -463,6 +474,7 @@ const StepPageOne = (propsOne: Props) => {
                   dataSource={dataSource?.list}
                   columns={columns}
                   rowKey="index"
+                  sticky
                   components={{
                     body: {
                       wrapper: DraggableContainer,

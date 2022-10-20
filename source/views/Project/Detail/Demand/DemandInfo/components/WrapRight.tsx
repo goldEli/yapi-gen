@@ -17,7 +17,7 @@ import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
 import { getParamsData, getNestedChildren, getTypeComponent } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
-import { AddWrap } from '@/components/StyleCommon'
+import { AddWrap, HiddenText } from '@/components/StyleCommon'
 import ParentDemand from '../../components/ParentDemand'
 import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
@@ -624,16 +624,28 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                         )}
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <span className="name">
-                            <Tooltip title={item.name}>
-                              <OmitText width={100}>{item.name}</OmitText>
-                            </Tooltip>
+                            <HiddenText>
+                              <OmitText
+                                width={100}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
+                                {item.name}
+                              </OmitText>
+                            </HiddenText>
                           </span>
                           <span className="common">
-                            <Tooltip title={item.statusContent}>
-                              <OmitText width={108}>
+                            <HiddenText>
+                              <OmitText
+                                width={108}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
                                 {item.statusContent}
                               </OmitText>
-                            </Tooltip>
+                            </HiddenText>
                           </span>
                         </div>
                         <div className="common" style={{ paddingRight: 30 }}>

@@ -420,7 +420,14 @@ const CardGroup = (props: CardGroupProps) => {
                 }
                 color={item.color}
               >
-                <OmitText width={150}>{item.name}</OmitText>
+                <OmitText
+                  width={150}
+                  tipProps={{
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {item.name}
+                </OmitText>
               </CategoryName>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Switch

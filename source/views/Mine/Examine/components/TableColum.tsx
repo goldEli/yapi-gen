@@ -87,7 +87,14 @@ export const useDynamicColumns = (state: any) => {
               {record.categoryName}
             </CategoryWrap>
             <ClickWrap onClick={() => onToDetail(record)}>
-              <OmitText width={200}>{text}</OmitText>
+              <OmitText
+                width={200}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
             </ClickWrap>
           </div>
         )

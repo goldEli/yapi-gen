@@ -9,7 +9,7 @@
 import { Table, Pagination, Modal, Space, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { PaginationWrap } from '@/components/StyleCommon'
+import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -261,14 +261,16 @@ const ChangeRecord = () => {
                       : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
                   </div>
                 ) : (
-                  <OmitText
-                    tipProps={{
-                      placement: 'topLeft',
-                    }}
-                    width={300}
-                  >
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -326,14 +328,16 @@ const ChangeRecord = () => {
                       : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
                   </div>
                 ) : (
-                  <OmitText
-                    tipProps={{
-                      placement: 'topLeft',
-                    }}
-                    width={300}
-                  >
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}

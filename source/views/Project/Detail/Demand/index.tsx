@@ -464,11 +464,14 @@ const DemandBox = () => {
                 />
               </StatusTag>
             </Popover>
-            <Tooltip title={demandInfo?.name}>
-              <OmitText width={600}>
-                <span className="demandName">{demandInfo?.name}</span>
-              </OmitText>
-            </Tooltip>
+            <OmitText
+              width={600}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              <span className="demandName">{demandInfo?.name}</span>
+            </OmitText>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
                 return isCanEdit && !demandInfo?.isExamine ? (

@@ -12,6 +12,7 @@ import {
   ShowWrap,
   StyledShape,
   CategoryWrap,
+  HiddenText,
 } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
@@ -100,7 +101,11 @@ export const useDynamicColumns = (state: any) => {
               position: 'relative',
             }}
           >
-            <Tooltip placement="top" title={record.categoryRemark}>
+            <Tooltip
+              placement="top"
+              getPopupContainer={node => node}
+              title={record.categoryRemark}
+            >
               <CategoryWrap
                 color={record.categoryColor}
                 bgColor={
@@ -119,7 +124,14 @@ export const useDynamicColumns = (state: any) => {
               isClose={record.status?.content === '已关闭'}
               onClick={() => onToDetail(record)}
             >
-              <OmitText width={120}>{text}</OmitText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
             </ClickWrap>
             {record.isExamine && (
               <IconFont
@@ -201,7 +213,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'class',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
     {

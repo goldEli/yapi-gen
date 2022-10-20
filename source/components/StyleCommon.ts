@@ -5,6 +5,11 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider } from 'antd'
 
+const HiddenText = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+})
+
 const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
@@ -77,17 +82,6 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     '&: active': {
       background: hasColor ? '#DBEAFF' : '',
     },
-  }),
-)
-
-const HiddenText = styled.div<{ width?: number }>(
-  {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  ({ width }) => ({
-    width,
   }),
 )
 
@@ -303,6 +297,7 @@ const SetButton = styled.div<{ show?: boolean }>`
   height: 20px;
   border-left: 1px solid #d5d6d9;
   color: #bbbdbf;
+  position: relative;
   color: ${({ show }) => show ? ' rgba(40, 119, 255, 1)' : ''};
   &:hover {
     color: rgba(40, 119, 255, 1);
