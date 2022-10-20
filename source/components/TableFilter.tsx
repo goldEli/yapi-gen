@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines */
 /* eslint-disable no-negated-condition */
@@ -318,6 +319,16 @@ const TableFilter = (props: any) => {
     confirm()
   }
 
+  function deWeight(arr: any) {
+    const map = new Map()
+    for (const item of arr) {
+      if (!map.has(item.id)) {
+        map.set(item.id, item)
+      }
+    }
+    arr = [...map.values()]
+    return arr
+  }
   return (
     <SearchLine>
       <Wrap hidden={props.showForm}>
@@ -345,10 +356,13 @@ const TableFilter = (props: any) => {
                         showSearch
                         onChange={confirm}
                         optionFilterProp="label"
-                        options={i.children.map((v: any) => ({
-                          label: v.content_txt,
-                          value: v.id,
-                        }))}
+                        options={deWeight(
+                          i.children.map((v: any) => ({
+                            label: v.content_txt,
+                            value: v.id,
+                            id: v.id,
+                          })),
+                        )}
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>

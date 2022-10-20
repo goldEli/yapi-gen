@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-negated-condition */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -7,7 +8,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Form, Input, Popover, Tooltip, Tree } from 'antd'
+import { Form, Input, message, Popover, Tooltip, Tree } from 'antd'
 import {
   useEffect,
   useState,
@@ -135,11 +136,13 @@ const TreeItem = (props: any) => {
   }
 
   const onConfirm = async () => {
-    await delTreeList({
+    const news = await delTreeList({
       projectId: props.projectId,
       id: props.id,
     })
-
+    if (news.code === 0) {
+      message.success(t('common.deleteSuccess'))
+    }
     close()
     props.onRest()
     form.resetFields()
@@ -153,7 +156,7 @@ const TreeItem = (props: any) => {
 
   const editConfirm = async () => {
     const tag = visibleEditText === 'add'
-    const data = form.getFieldsValue()
+    const data: any = await form.validateFields()
     const obj = {
       name: data.name,
       remark: data.remark,
@@ -162,7 +165,13 @@ const TreeItem = (props: any) => {
       id: tag ? undefined : props.id,
     }
 
-    await addTreeList(obj, visibleEditText)
+    const news = await addTreeList(obj, visibleEditText)
+
+    if (news.code === 0) {
+      tag
+        ? message.success(t('common.createSuccess'))
+        : message.success(t('common.editSuccess'))
+    }
 
     close()
     props.onRest()
