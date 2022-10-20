@@ -491,18 +491,23 @@ const CommonNeed = (props: any) => {
                       />
                     </Tooltip>
                   </SetButton>
-                  <SetButton
-                    onClick={() => {
-                      onChangeMany(true)
-                    }}
-                  >
-                    <Tooltip title={t('common.timeList')}>
-                      <IconFont
-                        type="database"
-                        style={{ fontSize: 20, color: isMany ? '#4388ff' : '' }}
-                      />
-                    </Tooltip>
-                  </SetButton>
+                  {props?.type === 'abeyance' && (
+                    <SetButton
+                      onClick={() => {
+                        onChangeMany(true)
+                      }}
+                    >
+                      <Tooltip title={t('common.timeList')}>
+                        <IconFont
+                          type="database"
+                          style={{
+                            fontSize: 20,
+                            color: isMany ? '#4388ff' : '',
+                          }}
+                        />
+                      </Tooltip>
+                    </SetButton>
+                  )}
                 </>
               )}
 

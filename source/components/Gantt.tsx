@@ -165,13 +165,15 @@ const Gantt = (props: Props) => {
     gantt.clearAll()
     gantt.parse({ data: props?.data })
 
-    // setTimeout(() => {
-    //   document.getElementsByClassName('gantt_tooltip')[0].style.display =
-    //     'block'
-    // }, 100)
-    // return () =>
-    //   (document.getElementsByClassName('gantt_tooltip')[0].style.display =
-    //     'none')
+    // 需优化
+    return () => {
+      const tooltips: any = document.querySelectorAll('.gantt_tooltip')
+      if (tooltips || tooltips?.length) {
+        Array.from(tooltips).forEach((element: any) => {
+          element.remove()
+        })
+      }
+    }
   }, [props?.data, i18n.language])
 
   return (
