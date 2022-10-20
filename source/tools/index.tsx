@@ -138,6 +138,7 @@ function arrayFlagLevel(array: any, grade: any) {
   }
   array.forEach((item: any) => {
     item.grade = grade
+
     if (item.children && item.children.length) {
       arrayFlagLevel(item.children, grade + 1)
     }
