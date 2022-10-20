@@ -88,6 +88,12 @@ const Wrap = styled.div<{ minHeight?: any }>(
     '.w-e-text-placeholder': {
       top: 0,
     },
+    '&: hover': {
+      borderColor: '#5297ff',
+      boxShadow: '0 0 0 2px rgb(40 119 255 / 20%)',
+      borderRightWidth: 1,
+      outline: 0,
+    },
   },
   ({ minHeight }) => ({
     '.w-e-text-container [data-slate-editor]': {

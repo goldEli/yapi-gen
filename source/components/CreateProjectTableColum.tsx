@@ -162,7 +162,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
-      width: 180,
+      width: 190,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
@@ -355,7 +355,7 @@ export const useDynamicColumns = (state: any) => {
                 ) : (
                   <Progress
                     strokeColor="#43BA9A"
-                    style={{ color: '#43BA9A' }}
+                    style={{ color: '#43BA9A', cursor: 'not-allowed' }}
                     width={38}
                     type="circle"
                     percent={record.schedule}

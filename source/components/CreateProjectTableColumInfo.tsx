@@ -308,7 +308,7 @@ export const useDynamicColumns = (state: any) => {
               : (
                   <Progress
                     strokeColor="#43BA9A"
-                    style={{ color: '#43BA9A' }}
+                    style={{ color: '#43BA9A', cursor: 'not-allowed' }}
                     width={38}
                     type="circle"
                     percent={record.schedule}

@@ -307,7 +307,7 @@ const WrapLeft = (props: Props) => {
           <Space size={16}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button type="primary" onClick={onConfirmFilter}>
-              {t('common.search')}
+              {t('common.search2')}
             </Button>
           </Space>
         </div>

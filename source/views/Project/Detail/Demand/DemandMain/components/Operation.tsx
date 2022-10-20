@@ -312,7 +312,7 @@ const Operation = (props: Props) => {
               visible={isShow}
               onVisibleChange={isShow3 => setIsShow(isShow3)}
               getTooltipContainer={node => node}
-              title={t('common.collapseMenu')}
+              title={t('newlyAdd.collapseClass')}
             >
               <IconFont
                 onClick={() => onClickIcon(1)}
@@ -330,7 +330,7 @@ const Operation = (props: Props) => {
               visible={isShow2}
               onVisibleChange={isShow1 => setIsShow2(isShow1)}
               getTooltipContainer={node => node}
-              title={t('common.openMenu')}
+              title={t('newlyAdd.openClass')}
             >
               <IconFont
                 onClick={() => onClickIcon(2)}

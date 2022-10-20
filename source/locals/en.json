@@ -1,5 +1,7 @@
 {
   "newlyAdd": {
+    "collapseClass": "Collapse Category",
+    "openClass": "Expand Category",
     "statusDel": "Status has been deleted",
     "null": "Empty",
     "pleaseAddStatus": "Please add a requirement status to configure the workflow",
@@ -234,7 +236,8 @@
     "searchDeal": "Enter search processor",
     "chooseProject": "Select item",
     "chooseType": "Select type:",
-    "search": "Search",
+    "search": "Screen",
+    "search2": "Search",
     "localsSwitching": "Language switching",
     "close": "Close",
     "move": "Remove",
