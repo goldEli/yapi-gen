@@ -283,6 +283,7 @@ const WrapLeft = (props: any, ref: any) => {
 
   function filterTreeData(data: any) {
     const newData = data.map((item: any) => ({
+      key: item.key,
       title: (
         <TreeItem
           onRest={() => {
@@ -379,6 +380,11 @@ const WrapLeft = (props: any, ref: any) => {
       init,
     }
   })
+  const drawerFieldNames = {
+    title: 'title',
+    key: 'id',
+    children: 'children',
+  }
 
   if (props.isShowLeft) {
     return (
@@ -389,6 +395,7 @@ const WrapLeft = (props: any, ref: any) => {
           <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
           {treeData.length > 0 && (
             <Tree
+              fieldNames={drawerFieldNames}
               defaultExpandAll
               onDrop={onDrop}
               onSelect={onSelect}

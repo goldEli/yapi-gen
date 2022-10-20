@@ -25,7 +25,7 @@ export const getTreeList = async (params: any) => {
           id: -1,
           story_count: res.data[1]?.story_count,
         },
-        ...transData(res.data, 'id', 'parent_id', 'children'),
+        ...transData(res.data, 'id', 'parent_id', 'children') ?? [],
       ],
     },
   ]
