@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Input, message, Popover } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -104,6 +104,7 @@ const TagBox = (props: DemandProps) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [demandList, setDemandList] = useState<any>([])
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -116,6 +117,9 @@ const TagBox = (props: DemandProps) => {
 
   useEffect(() => {
     getList()
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }, [])
 
   const [value, setValue] = useState('')
@@ -123,6 +127,7 @@ const TagBox = (props: DemandProps) => {
     <DemandWrap>
       <div style={{ padding: '16px 16px 4px 16px' }}>
         <SearchInput
+          ref={inputRefDom as any}
           onPressEnter={(e: any) => setValue(e.target.value)}
           onChange={e => setValue(e.target.value)}
           suffix={
@@ -134,6 +139,7 @@ const TagBox = (props: DemandProps) => {
           allowClear
           value={value}
           placeholder={t('common.searchParent')}
+          autoFocus
         />
       </div>
       <MaxWrap>
@@ -167,6 +173,7 @@ const ParentDemand = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo } = useModel('project')
+  const [isOpen, setIsOpen] = useState(false)
   const isCanEdit
     = projectInfo.projectPermissions?.length > 0
     || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -204,6 +211,10 @@ const ParentDemand = (props: Props) => {
     }
   }
 
+  const onVisibleOpenChange = (visible: any) => {
+    setIsOpen(visible)
+  }
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <DemandCheckedItem
@@ -223,13 +234,17 @@ const ParentDemand = (props: Props) => {
       </DemandCheckedItem>
       {isCanEdit ? (
         <PopoverWrap
+          visible={isOpen}
           placement="bottom"
           trigger="click"
-          content={<TagBox tap={onChangeParent} />}
+          onVisibleChange={onVisibleOpenChange}
+          content={isOpen ? <TagBox tap={onChangeParent} /> : null}
           getPopupContainer={node => node}
           isRight={props?.isRight}
         >
-          <div hidden={demandInfo?.parentId}>{props.addWrap}</div>
+          <div hidden={demandInfo?.parentId} onClick={() => setIsOpen(!isOpen)}>
+            {props.addWrap}
+          </div>
         </PopoverWrap>
       ) : null}
     </div>

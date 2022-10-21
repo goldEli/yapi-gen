@@ -10,7 +10,7 @@ import CommonModal from '@/components/CommonModal'
 import { Form, Input, message, Space, Spin, Table, Select } from 'antd'
 import ChooseColor from '../../components/ChooseColor'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
@@ -106,6 +106,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const [value, setValue] = useState<any>('')
   const [errorState, setErrorState] = useState(false)
   const [normalColor, setNormalColor] = useState<any>()
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (props?.item?.id) {
@@ -156,6 +157,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       }}
     >
       <Input
+        ref={inputRefDom as any}
         style={{
           width: 196,
           margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
@@ -166,6 +168,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
         maxLength={10}
+        autoFocus
       />
       <ChooseColor
         color={normalColor}

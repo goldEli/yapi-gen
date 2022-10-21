@@ -412,6 +412,9 @@ const EditDemand = (props: Props) => {
       form.resetFields()
       form1.resetFields()
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
 
   const getProjectData = async () => {
@@ -420,6 +423,9 @@ const EditDemand = (props: Props) => {
       all: 1,
     })
     setProjectList(res.data)
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
 
   const getInit = async (value?: any) => {
@@ -471,10 +477,10 @@ const EditDemand = (props: Props) => {
       if (props?.isQuickCreate) {
         setCategoryObj(categoryData?.list[0])
       }
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     }
-    setTimeout(() => {
-      inputRefDom.current?.focus()
-    }, 100)
   }
 
   useEffect(() => {
