@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
@@ -9,6 +9,18 @@ import EditDemand from '@/components/EditDemand'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { Form, Input, Popover, Space } from 'antd'
+import CommonModal from '@/components/CommonModal'
+import Editor from '@/components/Editor'
+import {
+  AddWrap,
+  ChoosePerson,
+  IconFontWrap,
+  ItemWrap,
+  NewNameWrap,
+} from '../Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
+import { NameWrap } from '@/components/StyleCommon'
+import { getStaffList2 } from '@/services/staff'
 
 const Wrap = styled.div`
   height: 100%;
@@ -41,6 +53,28 @@ const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
 `
+
+const LabelTitle = (props: any) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: '3px',
+          height: '16px',
+          background: '#2877FF',
+          display: 'inline-block',
+          marginRight: '8px',
+        }}
+      />
+      <span>{props.title}</span>
+    </div>
+  )
+}
 const MenuItem = styled.div<{ active?: boolean }>(
   {
     boxSizing: 'border-box',
@@ -73,10 +107,29 @@ type MenuList = {
 const Information = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
+  const [form] = Form.useForm()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
+  const [examineList, setExamineList] = useState<any>([])
+  const [normal, setNormal] = useState(1)
+  const [isOpen, setIsOpen] = useState(false)
+  const [staffList, setStaffList] = useState<any>([])
+
+  const getList = async () => {
+    const result = await getStaffList2({ all: 1 })
+
+    // console.log(result, '成员')
+
+    setStaffList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
@@ -84,7 +137,51 @@ const Information = () => {
   const controlquickCreateVisible = () => {
     setQuickCreateVisible(true)
   }
+  const close = () => {
+    setVisibleEdit(false)
+    form.resetFields()
+  }
+  const editClose = () => {
+    close()
 
+    form.resetFields()
+  }
+  const onAddPerson = (obj: any) => {
+    const oldList = examineList
+    const arr = [...oldList, ...[obj]]
+    setExamineList(arr)
+
+    // props?.onChangeList({
+    //   operator: normal,
+    //   verify_users: arr,
+    //   id: obj.id,
+    //   type: 'add',
+    // })
+  }
+
+  const onDelCheckPerson = (id: any) => {
+    const arr = examineList?.filter((i: any) => i.id !== id)
+    setExamineList(arr)
+
+    // props?.onChangeList({
+    //   operator: normal,
+    //   verify_users: arr,
+    //   id,
+    //   type: 'del',
+    // })
+  }
+
+  const editConfirm = async () => {
+    const data: any = await form.validateFields()
+
+    return
+    close()
+  }
+  const tagMenuList = [
+    { name: t('newlyAdd.sequence'), value: 1, icon: 'right' },
+    { name: t('newlyAdd.andExamine'), value: 2, icon: 'and' },
+    { name: t('newlyAdd.orExamine'), value: 3, icon: 'line' },
+  ]
   const menuList = [
     {
       id: 1,
@@ -132,6 +229,46 @@ const Information = () => {
       isPermission: false,
     },
   ]
+  const writeDailyInner = [
+    {
+      id: 1,
+      name: '写日报',
+    },
+    {
+      id: 1,
+      name: '写周报',
+    },
+    {
+      id: 1,
+      name: '写月报',
+    },
+  ]
+  const WriteDaily = styled.div`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    width: 128px;
+    height: 32px;
+    &:hover {
+      background: #f0f4fa;
+      color: #2877ff;
+    }
+  `
+
+  const onWriteDaily = (item: any) => {
+    setVisibleEdit(true)
+    setVisibleEditText(item.name)
+  }
+  const content = (
+    <div>
+      {writeDailyInner.map((item: any) => (
+        <WriteDaily onClick={() => onWriteDaily(item)} key={item.id}>
+          {item.name}
+        </WriteDaily>
+      ))}
+    </div>
+  )
   const title = menuList[(nowPath2 as number) - 1].name
   return (
     <Wrap>
@@ -140,18 +277,20 @@ const Information = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : (
-            <AddButton onClick={controlquickCreateVisible}>
-              <IconFont
-                style={{
-                  marginRight: 8,
-                  fontSize: 14,
-                  fontWeight: 400,
-                  color: 'white',
-                }}
-                type="plus"
-              />
-              <span>写日志</span>
-            </AddButton>
+            <Popover content={content}>
+              <AddButton onClick={controlquickCreateVisible}>
+                <IconFont
+                  style={{
+                    marginRight: 8,
+                    fontSize: 14,
+                    fontWeight: 400,
+                    color: 'white',
+                  }}
+                  type="plus"
+                />
+                <span>写日志</span>
+              </AddButton>
+            </Popover>
           )}
         <Menu>
           {menuList.map(item => (
@@ -193,6 +332,8 @@ const Information = () => {
           ))}
         </Menu>
       </Side>
+
+      {/* 右边的表格 */}
       <Main>
         <div
           style={{
@@ -209,6 +350,116 @@ const Information = () => {
         </div>
         <Outlet />
       </Main>
+      {/* // 写日志的表单D */}
+      <CommonModal
+        width={784}
+        title={visibleEditText}
+        isVisible={visibleEdit}
+        onClose={editClose}
+        onConfirm={editConfirm}
+        confirmText="提交"
+      >
+        <div>
+          <Form form={form} layout="vertical">
+            <Form.Item label={<LabelTitle title="今日完成工作" />} name="info">
+              <Editor height={240} />
+            </Form.Item>
+            <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
+              <Editor height={240} />
+            </Form.Item>
+            <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
+              <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
+                <Space size={0}>
+                  {examineList?.map((i: any, index: any) => (
+                    <div
+                      key={i.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <NewNameWrap>
+                          {i.avatar ? (
+                            <img
+                              style={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: 16,
+                              }}
+                              src={i.avatar}
+                            />
+                          ) : (
+                            <NameWrap style={{ margin: 0 }}>
+                              {String(
+                                i?.name?.substring(0, 1).trim()
+                                  .slice(0, 1),
+                              ).toLocaleUpperCase()}
+                            </NameWrap>
+                          )}
+                          <IconFontWrap
+                            type="close-circle-fill"
+                            onClick={() => onDelCheckPerson(i.id)}
+                          />
+                        </NewNameWrap>
+                        <span>{i.name}</span>
+                      </div>
+                      {index !== examineList?.length - 1 && (
+                        <IconFont
+                          style={{
+                            fontSize: 16,
+                            margin: '-20px 8px 0',
+                            color: '#BBBDBF',
+                          }}
+                          type={
+                            tagMenuList?.filter(
+                              (k: any) => k.value === normal,
+                            )[0]?.icon
+                          }
+                        />
+                      )}
+                    </div>
+                  ))}
+                </Space>
+
+                <Popover
+                  key={isOpen.toString()}
+                  visible={isOpen}
+                  placement="bottomRight"
+                  trigger="click"
+                  onVisibleChange={visible => setIsOpen(visible)}
+                  getTooltipContainer={node => node}
+                  content={
+                    <ChoosePerson
+                      onChangeValue={obj => onAddPerson(obj)}
+                      options={staffList}
+                    />
+                  }
+                  getPopupContainer={node => node}
+                >
+                  <AddWrap
+                    style={{
+                      marginLeft: examineList?.length ? '40px' : 0,
+                    }}
+                  >
+                    <IconFont
+                      className="icon"
+                      type="plus"
+                      onClick={() => setIsOpen(true)}
+                    />
+                  </AddWrap>
+                </Popover>
+              </ItemWrap>
+            </Form.Item>
+          </Form>
+        </div>
+      </CommonModal>
     </Wrap>
   )
 }

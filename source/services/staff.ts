@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -87,6 +88,33 @@ export const getStaffList: any = async (params: any) => {
       list: response.data.list,
       pager: response.data.pager,
     }
+  }
+}
+
+export const getStaffList2: any = async (params: any) => {
+  const response = await http.get('getStaffList', {
+    search: {
+      job_id: params?.jobId,
+      department_id: params?.departmentId,
+      user_group_id: params?.userGroupId,
+      keyword: params?.keyword,
+      all: params.all,
+    },
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+    orderkey: params.orderkey,
+    page: params.page,
+    pagesize: params.pagesize,
+  })
+
+  if (params.all) {
+    return response.data.map((i: any) => ({
+      avatar: i.avatar,
+      id: i.id,
+      name: i.name,
+      nickname: i.nickname,
+      positionName: null,
+      roleName: i.role_name,
+    }))
   }
 }
 

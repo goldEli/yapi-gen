@@ -160,6 +160,8 @@ export const Side = () => {
       return nowPath === '/Project' || nowPath === '/Detail' ? activeCss : ''
     } else if (path === '/staff') {
       return nowPath === '/staff' || nowPath === '/MemberInfo' ? activeCss : ''
+    } else if (path === '/Information/send/1') {
+      return nowPath === '/Information' ? activeCss : ''
     }
     return nowPath === path ? activeCss : ''
   }
