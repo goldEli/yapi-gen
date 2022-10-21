@@ -154,10 +154,11 @@ const Profile = () => {
       startTime: moment()
         .startOf('month')
         .month(monthIndex)
-        .format('YYYY-MM-DD'),
-      endTime: moment().endOf('month')
+        .format('YYYY-MM-DD 00:00:00'),
+      endTime: moment()
+        .endOf('month')
         .month(monthIndex)
-        .format('YYYY-MM-DD'),
+        .format('YYYY-MM-DD 23:59:59'),
       page,
       pagesize,
     })
