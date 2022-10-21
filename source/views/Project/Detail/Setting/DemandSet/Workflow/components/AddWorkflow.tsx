@@ -27,6 +27,7 @@ const TableWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  overflowX: 'hidden',
 })
 
 const TableWrapBox = styled(Table)({
@@ -408,7 +409,7 @@ const AddWorkflow = (props: Props) => {
             : (
                 <HiddenText>
                   <OmitText
-                    width={300}
+                    width={220}
                     tipProps={{
                       getPopupContainer: node => node,
                     }}

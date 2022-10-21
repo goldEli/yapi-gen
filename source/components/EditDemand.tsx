@@ -581,6 +581,9 @@ const EditDemand = (props: Props) => {
           type: 'need',
         })
         form1.resetFields()
+        setTimeout(() => {
+          inputRefDom.current?.focus()
+        }, 100)
       }
     } catch (error) {
 
