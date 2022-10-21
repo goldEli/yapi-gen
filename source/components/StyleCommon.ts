@@ -27,6 +27,9 @@ const SelectWrapBedeck = styled.div`
   .ant-picker {
     border: none;
   }
+  .ant-select-selection-placeholder {
+    color: black;
+  }
 `
 
 const DelWrap = styled.span({

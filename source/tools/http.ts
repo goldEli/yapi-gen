@@ -83,7 +83,10 @@ client.config({
         }
       } else if (options.url !== import.meta.env.__COS_SIGN_URL__) {
         if (import.meta.env.MODE !== 'development') {
-          if (options.responseType !== 'blob') {
+          if (
+            Object.prototype.toString.call(options.payload) !==
+            '[object FormData]'
+          ) {
             if (JSON.stringify(options.search) !== '{}') {
               options.search = { p: encryptPhp(JSON.stringify(options.search)) }
             } else if (

@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Table, Select, Pagination, Form, Spin } from 'antd'
+import { Table, Select, Pagination, Form, Spin, Space } from 'antd'
 import moment from 'moment'
 import { PaginationWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useModel } from '@/models'
@@ -30,7 +30,7 @@ const Header = styled.div({
   },
 })
 
-const SearchWrap = styled.div({
+const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   minHeight: 64,
@@ -236,7 +236,7 @@ const Operation = () => {
     >
       <Header>
         <div className="label">{t('setting.operationLog')}</div>
-        <SearchWrap>
+        <SearchWrap size={16}>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.operationName')}
@@ -251,6 +251,7 @@ const Operation = () => {
                 showSearch
                 options={staffList}
                 optionFilterProp="label"
+                allowClear
               />
             </Form.Item>
           </SelectWrapBedeck>
@@ -267,6 +268,7 @@ const Operation = () => {
                 showSearch
                 options={typeList}
                 optionFilterProp="label"
+                allowClear
               />
             </Form.Item>
           </SelectWrapBedeck>

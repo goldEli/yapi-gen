@@ -1,5 +1,6 @@
 {
   "newlyAdd": {
+    "onlyChooseStatus": "Select at least one adding status!",
     "collapseClass": "Collapse Category",
     "openClass": "Expand Category",
     "statusDel": "Status has been deleted",

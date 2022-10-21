@@ -94,6 +94,7 @@ const TreeItem = (props: any) => {
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const [isShowMore, setIsShowMore] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
   const { projectInfo } = useModel('project')
   const btnsText = [
@@ -117,6 +118,7 @@ const TreeItem = (props: any) => {
   }
   const showVisible = (id: number) => {
     close()
+    setIsShowMore(false)
     if (id === 3) {
       setVisible(true)
     } else if (id === 1) {
@@ -219,6 +221,8 @@ const TreeItem = (props: any) => {
         ? ''
         : (
             <Popover
+              visible={isShowMore}
+              onVisibleChange={isVisible => setIsShowMore(isVisible)}
               getPopupContainer={node => node}
               placement="bottomRight"
               content={content}
@@ -252,14 +256,17 @@ const TreeItem = (props: any) => {
               rules={[{ required: true, message: '' }]}
             >
               <Input
+                allowClear
+                autoComplete="off"
                 maxLength={10}
                 placeholder={t('newlyAdd.pleaseClassName')}
               />
             </Form.Item>
             <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
               <Input.TextArea
-                maxLength={200}
+                maxLength={100}
                 showCount
+                allowClear
                 placeholder={t('newlyAdd.pleaseClassRemark')}
                 autoSize={{ minRows: 3, maxRows: 5 }}
               />
@@ -306,12 +313,6 @@ const WrapLeft = (props: any, ref: any) => {
     const start = info.dragNode.title.props
     const end = info.node.title.props
     const isDropToGap = info.dropToGap
-
-    // console.log(info, '信息')
-    // console.log(isDropToGap, '是否间隙')
-
-    // console.log(start, '起点')
-    // console.log(end, '终点')
 
     if (start.pid === 0) {
       return
