@@ -90,6 +90,10 @@ const ChangeRecord = (props?: any) => {
     }
   }, [isRefresh, props?.isUpdate])
 
+  useEffect(() => {
+    getList({ page: 1, size: pageObj.size }, order)
+  }, [])
+
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
     setIsVisible(true)

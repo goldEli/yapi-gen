@@ -253,6 +253,10 @@ const AddWorkflow = (props: Props) => {
   }, [props?.isVisible])
 
   const onConfirm = async () => {
+    if (!selectedRowKeys?.length) {
+      message.warning(t('newlyAdd.onlyChooseStatus'))
+      return
+    }
     const obj = {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
@@ -444,6 +448,9 @@ const AddWorkflow = (props: Props) => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: (record: any) => ({
+      disabled: record?.deleteData?.story_count && record.isCheck,
+    }),
   }
 
   return (

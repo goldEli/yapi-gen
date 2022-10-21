@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Table, Select, Pagination, Form, Spin } from 'antd'
+import { Table, Select, Pagination, Form, Spin, Space } from 'antd'
 import moment from 'moment'
 import { PaginationWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
@@ -28,7 +28,7 @@ const Header = styled.div({
   },
 })
 
-const SearchWrap = styled.div({
+const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   minHeight: 64,
@@ -326,7 +326,7 @@ const LoginLog = () => {
     >
       <Header>
         <div className="label">{t('setting.loginLog')}</div>
-        <SearchWrap>
+        <SearchWrap size={16}>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('setting.loginUser')}
@@ -339,6 +339,7 @@ const LoginLog = () => {
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
+                allowClear
                 options={staffList}
                 optionFilterProp="label"
                 getPopupContainer={node => node}

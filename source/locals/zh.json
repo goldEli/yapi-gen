@@ -1,5 +1,6 @@
 {
   "newlyAdd": {
+    "onlyChooseStatus": "至少选择一个添加状态！",
     "collapseClass": "折叠分类",
     "openClass": "展开分类",
     "statusDel": "状态已被删除",

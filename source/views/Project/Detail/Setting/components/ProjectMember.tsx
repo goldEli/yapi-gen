@@ -14,7 +14,16 @@ import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Dropdown, Pagination, message, Select, Form, Spin } from 'antd'
+import {
+  Menu,
+  Dropdown,
+  Pagination,
+  message,
+  Select,
+  Form,
+  Spin,
+  Space,
+} from 'antd'
 import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -77,7 +86,7 @@ const FilterWrap = styled(Form)({
   alignItems: 'center',
 })
 
-const SearchWrap = styled.div({
+const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   minHeight: 64,
@@ -578,7 +587,7 @@ const ProjectMember = () => {
             form={form}
             onValuesChange={onValuesChange}
           >
-            <SearchWrap>
+            <SearchWrap size={16}>
               <SelectWrapBedeck>
                 <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.job')}
@@ -593,6 +602,7 @@ const ProjectMember = () => {
                     showSearch
                     options={jobList}
                     optionFilterProp="label"
+                    allowClear
                   />
                 </Form.Item>
               </SelectWrapBedeck>
@@ -609,6 +619,7 @@ const ProjectMember = () => {
                     showSearch
                     options={projectPermission}
                     optionFilterProp="label"
+                    allowClear
                   />
                 </Form.Item>
               </SelectWrapBedeck>
