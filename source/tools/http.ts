@@ -75,7 +75,6 @@ client.config({
       if (!(options.payload instanceof FormData)) {
         options.payload = JSON.stringify(options.payload)
       }
-
       if (
         options.url === `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket`
       ) {
@@ -84,18 +83,20 @@ client.config({
         }
       } else if (options.url !== import.meta.env.__COS_SIGN_URL__) {
         if (import.meta.env.MODE !== 'development') {
-          if (JSON.stringify(options.search) !== '{}') {
-            options.search = { p: encryptPhp(JSON.stringify(options.search)) }
-          } else if (
-            options.payload !== 'null' &&
-            options.payload !== null &&
-            options.payload !== 'undefined' &&
-            options.payload !== undefined &&
-            options.payload !== '{}'
-          ) {
-            options.payload = JSON.stringify({
-              p: encryptPhp(options.payload as string),
-            })
+          if (options.responseType !== 'blob') {
+            if (JSON.stringify(options.search) !== '{}') {
+              options.search = { p: encryptPhp(JSON.stringify(options.search)) }
+            } else if (
+              options.payload !== 'null' &&
+              options.payload !== null &&
+              options.payload !== 'undefined' &&
+              options.payload !== undefined &&
+              options.payload !== '{}'
+            ) {
+              options.payload = JSON.stringify({
+                p: encryptPhp(options.payload as string),
+              })
+            }
           }
         }
       }
@@ -119,7 +120,6 @@ client.config({
         return JSON.parse(
           decryptPhp(JSON.parse((response as { body: string }).body).p),
         )
-
       }
       return options.responseType === 'blob'
         ? response
