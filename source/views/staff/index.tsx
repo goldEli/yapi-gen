@@ -31,11 +31,12 @@ import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
 
-const tableWrapP = css`
+export const tableWrapP = css`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `
+
 const Reset = styled.div`
   height: 32px;
   background: white;
@@ -54,7 +55,7 @@ const Reset = styled.div`
   }
 `
 
-const DataWrap = styled.div({
+export const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   height: '100%',
@@ -67,7 +68,7 @@ const RowIconFont = styled(IconFont)({
   color: '#2877ff',
 })
 
-const TableBox = styled(TableWrap)({
+export const TableBox = styled(TableWrap)({
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',

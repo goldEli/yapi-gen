@@ -47,7 +47,7 @@ const FormWrap = styled(Form)({
   },
 })
 
-const SelectWrap = styled(Select)`
+export const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
     color: black;
   }
@@ -62,7 +62,7 @@ const SelectWrap = styled(Select)`
   }
 `
 
-const rangPicker = css`
+export const rangPicker = css`
   .ant-picker-panel-container {
     display: flex;
     flex-direction: row-reverse;
@@ -79,6 +79,7 @@ const rangPicker = css`
     margin-right: 0;
   }
 `
+
 const DelButton = styled.div`
   color: white;
   border-radius: 50%;
@@ -97,7 +98,7 @@ const DelButton = styled.div`
   }
 `
 
-const SelectWrapBedeck = styled.div`
+export const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;

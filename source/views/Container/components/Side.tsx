@@ -144,6 +144,13 @@ export const Side = () => {
         path: '/staff',
         isHidden: getIsPermission('员工'),
       },
+      {
+        key: '/organization',
+        title: t('container.information'),
+        icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
+        path: '/Information/send/1',
+        isHidden: getIsPermission('员工'),
+      },
     ]
     return menu
   }
