@@ -638,6 +638,11 @@ const SetConfig = (props: Props) => {
 
   // 删除流转审核线
   const onDel = (id: any) => {
+    const current: any = normalList?.filter((i: any) => i.id === id)[0]?.obj
+    if (current?.verify_users?.length) {
+      setOptions([...options, ...current?.verify_users || []])
+    }
+
     setNormalList(normalList?.filter((i: any) => i.id !== id))
   }
 

@@ -14,7 +14,6 @@ import { Divider, message, Space, Spin, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditFiled from './components/EditField'
@@ -242,6 +241,7 @@ const FieldSet = () => {
             type="primary"
             icon={<IconFont type="plus" />}
             onClick={onAddClick}
+            disabled={fieldList?.list?.length === 20}
           >
             {t('newlyAdd.addFields')}
           </Button>
