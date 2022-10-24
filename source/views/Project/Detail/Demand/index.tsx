@@ -159,6 +159,7 @@ const DemandBox = () => {
   const [operationItem, setOperationItem] = useState<any>({})
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [colorObj, setColorObj] = useState<any>({})
+  const [resultCategory, setResultCategory] = useState([])
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -200,7 +201,7 @@ const DemandBox = () => {
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
-      await getCategoryList({ projectId, isSelect: true })
+      await getCategoryList({ projectId })
     }
     setLoadingState(true)
   }
@@ -213,6 +214,11 @@ const DemandBox = () => {
   useEffect(() => {
     setColorObj(
       categoryList?.list?.filter((k: any) => k.id === demandInfo?.category)[0],
+    )
+    setResultCategory(
+      categoryList?.list
+        ?.filter((i: any) => i.id !== demandInfo?.category)
+        ?.filter((i: any) => i.isCheck === 1),
     )
   }, [demandInfo, categoryList])
 
@@ -335,25 +341,23 @@ const DemandBox = () => {
         alignItems: 'flex-start',
       }}
     >
-      {categoryList?.list
-        ?.filter((i: any) => i.id !== demandInfo?.category)
-        ?.map((k: any) => (
-          <LiWrap
-            key={k.id}
-            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-            onClick={() => onClickCategory(k)}
+      {resultCategory?.map((k: any) => (
+        <LiWrap
+          key={k.id}
+          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={() => onClickCategory(k)}
+        >
+          <StatusTag
+            style={{ marginRight: 0 }}
+            color={k.color}
+            bgColor={
+              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+            }
           >
-            <StatusTag
-              style={{ marginRight: 0 }}
-              color={k.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-            >
-              {k.name}
-            </StatusTag>
-          </LiWrap>
-        ))}
+            {k.name}
+          </StatusTag>
+        </LiWrap>
+      ))}
     </div>
   )
 
@@ -406,9 +410,10 @@ const DemandBox = () => {
                   allowClear
                   optionFilterProp="label"
                   onChange={onChangeSelect}
-                  options={categoryList?.list
-                    ?.filter((i: any) => i.id !== demandInfo?.category)
-                    ?.map((k: any) => ({ label: k.name, value: k.id }))}
+                  options={resultCategory?.map((k: any) => ({
+                    label: k.name,
+                    value: k.id,
+                  }))}
                 />
               </Form.Item>
               <Form.Item
@@ -449,6 +454,9 @@ const DemandBox = () => {
               onVisibleChange={visible => setIsShowChange(visible)}
             >
               <StatusTag
+                style={{
+                  cursor: resultCategory?.length > 0 ? 'pointer' : 'inherit',
+                }}
                 color={colorObj?.color}
                 bgColor={
                   colorList?.filter((i: any) => i.key === colorObj?.color)[0]
@@ -456,14 +464,16 @@ const DemandBox = () => {
                 }
               >
                 <>{colorObj?.name}</>
-                <IconFont
-                  type="down-icon"
-                  style={{
-                    fontSize: 12,
-                    marginLeft: 4,
-                    color: '43BA9A',
-                  }}
-                />
+                {resultCategory?.length > 0 && (
+                  <IconFont
+                    type="down-icon"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: 4,
+                      color: '43BA9A',
+                    }}
+                  />
+                )}
               </StatusTag>
             </Popover>
             <OmitText
