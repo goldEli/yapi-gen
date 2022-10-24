@@ -125,7 +125,7 @@ export const getShapeRight = async (params: any) => {
         name: item.title,
         key: item.content,
         content: item.content,
-        children: [{ name: '空', id: -1 }, ...filterMemberList],
+        children: [...filterMemberList],
         type: 'select_checkbox',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
