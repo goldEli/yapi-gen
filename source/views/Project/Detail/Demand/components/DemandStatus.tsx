@@ -30,7 +30,7 @@ const StatusWrap = styled.div({
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { getDemandInfo, demandInfo } = useModel('demand')
+  const { getDemandInfo, demandInfo, isUpdateStatus } = useModel('demand')
   const [active, setActive] = useState(0)
   const { projectInfo } = useModel('project')
   const [leftList, setLeftList] = useState([])
@@ -61,9 +61,10 @@ const DemandStatusBox = (props: any) => {
       getDemandInfo({ projectId: props.pid, id: props.sid })
     }
   }
+
   useEffect(() => {
     init()
-  }, [])
+  }, [isUpdateStatus])
 
   return (
     <>
