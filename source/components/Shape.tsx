@@ -356,6 +356,13 @@ export const ShapeContent = (props: any) => {
       toId: item.id ?? activeID,
     })
     setRightList(res)
+
+    const form1Obj: any = {}
+    for (const key in res?.fields) {
+      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+    }
+
+    form.setFieldsValue(form1Obj)
     setLoading(true)
   }
 
@@ -368,6 +375,12 @@ export const ShapeContent = (props: any) => {
       toId: activeID,
     })
     setRightList(res)
+    const form1Obj: any = {}
+    for (const key in res?.fields) {
+      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+    }
+
+    form.setFieldsValue(form1Obj)
     setLoading(true)
   }
 
@@ -382,7 +395,12 @@ export const ShapeContent = (props: any) => {
       toId: props.row.id,
     })
     setRightList(res)
+    const form1Obj: any = {}
+    for (const key in res?.fields) {
+      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+    }
 
+    form.setFieldsValue(form1Obj)
     setLoading(true)
   }
 
