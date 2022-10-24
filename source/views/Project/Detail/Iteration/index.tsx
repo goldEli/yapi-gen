@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -10,13 +11,16 @@ import Demand from './Demand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Popover } from 'antd'
+import { Space, Button, message, Popover, Tooltip, Dropdown, Menu } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
+import { DividerWrap, IconFontWrap, MyInput } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import TableFilter from '@/components/TableFilter'
+import { OptionalFeld } from '@/components/OptionalFeld'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -38,27 +42,33 @@ const NameWrap = styled.div({
   },
 })
 
-const ContentWrap = styled.div<{ hasTop?: any }>(
-  {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  ({ hasTop }) => ({
-    padding: hasTop ? 0 : '16px 16px 0',
-    height: 'calc(100% - 64px)',
-  }),
-)
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: 'calc(100% - 64px)',
+})
 
-const MainWrap = styled(Space)<{ hasTop?: any }>(
-  {
-    paddingLeft: 24,
-    background: 'white',
-    width: '100%',
+const MainWrap = styled.div({
+  padding: '0 24px',
+  background: 'white',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  '.ant-space-item': {
+    display: 'flex',
   },
-  ({ hasTop }) => ({
-    borderRadius: hasTop ? 0 : 4,
-  }),
-)
+})
+
+const TitleWrap = styled(Space)({
+  display: 'flex',
+  alignItems: 'center',
+})
+
+const OperationWrap = styled(Space)({
+  display: 'flex',
+  alignItems: 'center',
+})
 
 const Item = styled.div<{ activeIdx: boolean }>(
   {
@@ -136,6 +146,8 @@ const LiWrap = styled.div<{ color: any }>(
 const IterationWrap = () => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
+  const [filterState, setFilterState] = useState(true)
+  const [settingState, setSettingState] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -152,7 +164,11 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo } = useModel('project')
+  const { projectInfo, filterAll } = useModel('project')
+  const [searchList, setSearchList] = useState<any[]>([])
+  const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
+  const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [filterCustomList, setFilterCustomList] = useState<any[]>([])
 
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -168,6 +184,11 @@ const IterationWrap = () => {
     'b/iterate/del',
   )
 
+  const hasFilter = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/get',
+  )
+
   const childContent = () => {
     if (type === 'info') {
       return <IterationInfo />
@@ -177,12 +198,61 @@ const IterationWrap = () => {
     return <ChangeRecord isUpdate={isUpdateState} />
   }
 
+  const onFilterSearch = (e: any, customField: any) => {
+    const params = {
+      statusId: e.status,
+      priorityId: e.priority,
+      iterateId: e.iterate_name,
+      tagId: e.tag,
+      userId: e.user_name,
+      usersnameId: e.users_name,
+      usersCopysendNameId: e.users_copysend_name,
+      createdAtId: e.created_at,
+      expectedStartAtId: e.expected_start_at,
+      expectedendat: e.expected_end_at,
+      updatedat: e.updated_at,
+      finishAt: e.finish_at,
+      class_ids: e.class,
+      category_id: e.category,
+      schedule_start: e.schedule?.start,
+      schedule_end: e.schedule?.end,
+      custom_field: customField,
+    }
+
+    // props.onSearch(params)
+  }
+
+  const getSearchKey = async (key?: any, typeVal?: number) => {
+    if (key && typeVal === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && typeVal === 1) {
+      const addList = filterAll?.filter((item: any) => item.content === key)
+
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+
+    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
+  }
+
   useEffect(() => {
     setFilterHeightIterate(60)
     if (iterateId) {
       getIterateInfo({ projectId, id: iterateId })
     }
   }, [])
+
+  useEffect(() => {
+    getSearchKey()
+  }, [projectInfo, filterAll])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -326,29 +396,86 @@ const IterationWrap = () => {
             )}
           </Space>
         </DemandInfoWrap>
-        <ContentWrap hasTop={type === 'info'}>
-          <MainWrap size={32} hasTop={type === 'info'}>
-            <Item
-              onClick={() => onChangeIdx('info')}
-              activeIdx={type === 'info'}
-            >
-              <span>{t('common.iterateSurvey')}</span>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('demand')}
-              activeIdx={type === 'demand'}
-            >
-              <span>{t('common.demand')}</span>
-              <div>{iterateInfo?.storyCount || 0}</div>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('record')}
-              activeIdx={type === 'record'}
-            >
-              <span>{t('common.changeRecord')}</span>
-              <div>{iterateInfo?.changeCount || 0}</div>
-            </Item>
+        <ContentWrap>
+          <MainWrap>
+            <TitleWrap size={32}>
+              <Item
+                onClick={() => onChangeIdx('info')}
+                activeIdx={type === 'info'}
+              >
+                <span>{t('common.iterateSurvey')}</span>
+              </Item>
+              <Item
+                onClick={() => onChangeIdx('demand')}
+                activeIdx={type === 'demand'}
+              >
+                <span>{t('common.demand')}</span>
+                <div>{iterateInfo?.storyCount || 0}</div>
+              </Item>
+              <Item
+                onClick={() => onChangeIdx('record')}
+                activeIdx={type === 'record'}
+              >
+                <span>{t('common.changeRecord')}</span>
+                <div>{iterateInfo?.changeCount || 0}</div>
+              </Item>
+            </TitleWrap>
+            <OperationWrap size={16}>
+              <MyInput
+                suffix={
+                  <IconFont
+                    type="search"
+                    style={{ color: '#BBBDBF', fontSize: 20 }}
+                  />
+                }
+
+                // onPressEnter={onPressEnter}
+                // onBlur={onPressEnter}
+                placeholder={t('common.pleaseSearchDemand')}
+                allowClear
+              />
+              {hasFilter ? null : <DividerWrap type="vertical" />}
+
+              {hasFilter ? null : (
+                <Tooltip title={t('common.search')}>
+                  <IconFontWrap
+                    active={!filterState}
+                    type="filter"
+                    onClick={() => setFilterState(!filterState)}
+                  />
+                </Tooltip>
+              )}
+              <DividerWrap type="vertical" />
+              <Dropdown
+                overlay={
+                  <Menu
+                    items={[
+                      {
+                        key: '1',
+                        label: <div>{t('common.setField')}</div>,
+                      },
+                    ]}
+                  />
+                }
+                trigger={['click']}
+              >
+                <Tooltip title={t('common.tableFieldSet')}>
+                  <IconFontWrap active={settingState} type="settings" />
+                </Tooltip>
+              </Dropdown>
+            </OperationWrap>
           </MainWrap>
+          {filterState ? null : (
+            <TableFilter
+              onFilter={getSearchKey}
+              onSearch={onFilterSearch}
+              list={searchList}
+              basicsList={filterBasicsList}
+              specialList={filterSpecialList}
+              customList={filterCustomList}
+              isIteration
+            />
+          )}
           {childContent()}
         </ContentWrap>
       </div>

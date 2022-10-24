@@ -38,6 +38,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const DemandWrap = () => {
@@ -265,7 +266,7 @@ const DemandWrap = () => {
   }, [titleList, titleList2, columns])
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', padding: '16px 16px 0' }}>
       <DeleteConfirm
         text={t('mark.del')}
         isVisible={isDelete}

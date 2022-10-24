@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Divider, Space, Dropdown, Menu, Tooltip } from 'antd'
-import IconFont from './IconFont'
+import { Space, Dropdown, Menu, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
+import { DividerWrap, IconFontWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -19,21 +19,6 @@ const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     display: 'flex',
   },
-})
-
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    fontSize: 20,
-    cursor: 'pointer',
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
-  }),
-)
-
-const DividerWrap = styled(Divider)({
-  height: 20,
-  margin: 0,
 })
 
 const OperationGroup = (props: Props) => {

@@ -37,6 +37,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const NewSort = (sortProps: any) => {
@@ -325,7 +326,7 @@ const ChangeRecord = (props?: any) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 50px)' }}>
+    <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
       <Modal
         visible={isVisible}
         title={t('project.changeInfo')}

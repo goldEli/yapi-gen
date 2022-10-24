@@ -3,7 +3,23 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Input, Slider } from 'antd'
+import { Table, Input, Slider, Divider } from 'antd'
+import IconFont from './IconFont'
+
+const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
+  {
+    fontSize: 20,
+    cursor: 'pointer',
+  },
+  ({ active }) => ({
+    color: active ? '#2877FF' : '#969799',
+  }),
+)
+
+const DividerWrap = styled(Divider)({
+  height: 20,
+  margin: 0,
+})
 
 const HiddenText = styled.div({
   display: 'flex',
@@ -560,4 +576,6 @@ export {
   AddWrap,
   DelWrap,
   SelectWrapBedeck,
+  DividerWrap,
+  IconFontWrap,
 }
