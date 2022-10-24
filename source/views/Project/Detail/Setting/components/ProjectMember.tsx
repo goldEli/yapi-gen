@@ -306,6 +306,14 @@ const ProjectMember = () => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
+    const hasUser = memberList?.list?.filter(
+      (i: any) => i.roleName === '管理员',
+    ).length
+
+    if (hasUser === 1 && item.roleName === '管理员') {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
     return <Menu items={menuItems} />
   }
 
