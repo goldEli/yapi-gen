@@ -36,6 +36,7 @@ import { useTranslation } from 'react-i18next'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
+import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
 
 const ShowLabel = styled.div({
   cursor: 'pointer',
@@ -420,18 +421,7 @@ const EditDemand = (props: Props) => {
     }, 100)
   }
 
-  const getProjectData = async () => {
-    const res = await getProjectList({
-      self: 1,
-      all: 1,
-    })
-    setProjectList(res.data)
-    setTimeout(() => {
-      inputRefDom.current?.focus()
-    }, 100)
-  }
-
-  const getInit = async (value?: any) => {
+  const getInit = async (value?: any, categoryId?: any) => {
     const [classTree, categoryData, allDemandList] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
@@ -478,12 +468,39 @@ const EditDemand = (props: Props) => {
         )
       }
       if (props?.isQuickCreate) {
-        setCategoryObj(categoryData?.list[0])
+        if (categoryId) {
+          setCategoryObj(
+            categoryData?.list?.filter((i: any) => i.id === categoryId)[0],
+          )
+          form.setFieldsValue({
+            type: 'need',
+          })
+        } else {
+          setCategoryObj(categoryData?.list[0])
+        }
       }
       setTimeout(() => {
         inputRefDom.current?.focus()
       }, 100)
     }
+  }
+
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.data)
+    let hisCategoryData: any
+    if (localStorage.getItem('quickCreateData')) {
+      hisCategoryData = JSON.parse(
+        decryptPhp(localStorage.getItem('quickCreateData') as any),
+      )
+    }
+    getInit(hisCategoryData?.projectId, hisCategoryData?.categoryId)
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
 
   useEffect(() => {
@@ -571,6 +588,16 @@ const EditDemand = (props: Props) => {
         setIsUpdateCreate(true)
       }
       if (!hasNext) {
+        localStorage.setItem(
+          'quickCreateData',
+          encryptPhp(
+            JSON.stringify({
+              projectId,
+              type: 'need',
+              categoryId: categoryObj?.id,
+            }),
+          ),
+        )
         setCreateCategory({})
         props.onChangeVisible()
         setTimeout(() => {
