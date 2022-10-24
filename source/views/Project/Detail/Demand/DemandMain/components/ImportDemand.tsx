@@ -165,17 +165,26 @@ const ImportDemand = () => {
       isUpdate: tabs,
       fields: arr.join(','),
     })
-    const blob = new Blob([result.body], {
-      type: result.headers['content-type'],
-    })
-    const blobUrl = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.download = `${projectInfo?.name} - ${
-      tabs === 2 ? t('newlyAdd.importCreate') : t('newlyAdd.importUpdate')
-    }`
-    a.href = blobUrl
-    a.click()
-    setIsVisible(false)
+    if (result.body.type === 'application/json') {
+      const reader = new FileReader()
+      reader.readAsText(result.body, 'utf-8')
+      reader.onload = function () {
+        const obj = JSON.parse(reader.result as any)
+        message.error(obj.message)
+      }
+    } else {
+      const blob = new Blob([result.body], {
+        type: result.headers['content-type'],
+      })
+      const blobUrl = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.download = `${projectInfo?.name} - ${
+        tabs === 2 ? t('newlyAdd.importCreate') : t('newlyAdd.importUpdate')
+      }`
+      a.href = blobUrl
+      a.click()
+      setIsVisible(false)
+    }
   }
 
   const onChangeTabs = (value: any) => {
