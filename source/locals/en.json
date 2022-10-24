@@ -144,7 +144,7 @@
     "categoryName": "Category Name",
     "pleaseCategory": "Please input only 10 Chinese and English characters",
     "categoryRemark": "Category Description",
-    "pleaseCategoryRemark": "Please enter a description category description limit of 200 characters",
+    "pleaseCategoryRemark": "Please enter a description category description limit of 100 characters",
     "chooseColor": "Choose Color",
     "view": "Preview effect",
     "viewName": "Requirement name XXXX",

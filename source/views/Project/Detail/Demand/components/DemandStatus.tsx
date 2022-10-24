@@ -30,7 +30,8 @@ const StatusWrap = styled.div({
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { getDemandInfo, demandInfo, isUpdateStatus } = useModel('demand')
+  const { getDemandInfo, demandInfo, isUpdateStatus, setIsUpdateStatus }
+    = useModel('demand')
   const [active, setActive] = useState(0)
   const { projectInfo } = useModel('project')
   const [leftList, setLeftList] = useState([])
@@ -52,6 +53,7 @@ const DemandStatusBox = (props: any) => {
       nId: props.sid,
     })
     setLeftList(res2)
+    setIsUpdateStatus(false)
   }
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
