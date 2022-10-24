@@ -1,26 +1,18 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-import EditDemand from '@/components/EditDemand'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
-import { Form, Input, Popover, Space } from 'antd'
+import { Form, Popover } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import Editor from '@/components/Editor'
-import {
-  AddWrap,
-  ChoosePerson,
-  IconFontWrap,
-  ItemWrap,
-  NewNameWrap,
-} from '../Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
-import { NameWrap } from '@/components/StyleCommon'
-import { getStaffList2 } from '@/services/staff'
+import ChoosePeople from './components/ChoosePeople'
 
 const Wrap = styled.div`
   height: 100%;
@@ -114,22 +106,6 @@ const Information = () => {
   const { userInfo } = useModel('user')
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
-  const [examineList, setExamineList] = useState<any>([])
-  const [normal, setNormal] = useState(1)
-  const [isOpen, setIsOpen] = useState(false)
-  const [staffList, setStaffList] = useState<any>([])
-
-  const getList = async () => {
-    const result = await getStaffList2({ all: 1 })
-
-    // console.log(result, '成员')
-
-    setStaffList(result)
-  }
-
-  useEffect(() => {
-    getList()
-  }, [])
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
@@ -146,30 +122,6 @@ const Information = () => {
 
     form.resetFields()
   }
-  const onAddPerson = (obj: any) => {
-    const oldList = examineList
-    const arr = [...oldList, ...[obj]]
-    setExamineList(arr)
-
-    // props?.onChangeList({
-    //   operator: normal,
-    //   verify_users: arr,
-    //   id: obj.id,
-    //   type: 'add',
-    // })
-  }
-
-  const onDelCheckPerson = (id: any) => {
-    const arr = examineList?.filter((i: any) => i.id !== id)
-    setExamineList(arr)
-
-    // props?.onChangeList({
-    //   operator: normal,
-    //   verify_users: arr,
-    //   id,
-    //   type: 'del',
-    // })
-  }
 
   const editConfirm = async () => {
     const data: any = await form.validateFields()
@@ -177,11 +129,7 @@ const Information = () => {
     return
     close()
   }
-  const tagMenuList = [
-    { name: t('newlyAdd.sequence'), value: 1, icon: 'right' },
-    { name: t('newlyAdd.andExamine'), value: 2, icon: 'and' },
-    { name: t('newlyAdd.orExamine'), value: 3, icon: 'line' },
-  ]
+
   const menuList = [
     {
       id: 1,
@@ -367,95 +315,8 @@ const Information = () => {
             <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
               <Editor height={240} />
             </Form.Item>
-            <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
-              <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
-                <Space size={0}>
-                  {examineList?.map((i: any, index: any) => (
-                    <div
-                      key={i.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <NewNameWrap>
-                          {i.avatar ? (
-                            <img
-                              style={{
-                                width: 32,
-                                height: 32,
-                                borderRadius: 16,
-                              }}
-                              src={i.avatar}
-                            />
-                          ) : (
-                            <NameWrap style={{ margin: 0 }}>
-                              {String(
-                                i?.name?.substring(0, 1).trim()
-                                  .slice(0, 1),
-                              ).toLocaleUpperCase()}
-                            </NameWrap>
-                          )}
-                          <IconFontWrap
-                            type="close-circle-fill"
-                            onClick={() => onDelCheckPerson(i.id)}
-                          />
-                        </NewNameWrap>
-                        <span>{i.name}</span>
-                      </div>
-                      {index !== examineList?.length - 1 && (
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            margin: '-20px 8px 0',
-                            color: '#BBBDBF',
-                          }}
-                          type={
-                            tagMenuList?.filter(
-                              (k: any) => k.value === normal,
-                            )[0]?.icon
-                          }
-                        />
-                      )}
-                    </div>
-                  ))}
-                </Space>
-
-                <Popover
-                  key={isOpen.toString()}
-                  visible={isOpen}
-                  placement="bottomRight"
-                  trigger="click"
-                  onVisibleChange={visible => setIsOpen(visible)}
-                  getTooltipContainer={node => node}
-                  content={
-                    <ChoosePerson
-                      onChangeValue={obj => onAddPerson(obj)}
-                      options={staffList}
-                    />
-                  }
-                  getPopupContainer={node => node}
-                >
-                  <AddWrap
-                    style={{
-                      marginLeft: examineList?.length ? '40px' : 0,
-                    }}
-                  >
-                    <IconFont
-                      className="icon"
-                      type="plus"
-                      onClick={() => setIsOpen(true)}
-                    />
-                  </AddWrap>
-                </Popover>
-              </ItemWrap>
+            <Form.Item label={<LabelTitle title="抄送人" />} name="people">
+              <ChoosePeople />
             </Form.Item>
           </Form>
         </div>
