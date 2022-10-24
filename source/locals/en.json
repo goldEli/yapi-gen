@@ -154,7 +154,7 @@
     "historyMove": "History data migration",
     "hasMoveType": "Detected that there are {{hasDemand}} requirements under this type, please change the historical demand to another type",
     "hasFlowCanOpen": "The requirement category can only be opened after the workflow configuration is completed",
-    "onlyCategoryOpen": "At least one requirement category is guaranteed to be open",
+    "onlyCategoryOpen": "At least one requirement category is guaranteed to be open status",
     "workflowSet": "Workflow Settings",
     "notFinishFlow": "The workflow setup has not been completed",
     "demandFieldsSet": "Demand Fields Set",

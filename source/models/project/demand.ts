@@ -7,6 +7,7 @@ export default () => {
   const [isRefreshComment, setIsRefreshComment] = useState(false)
   const [isShowProgress, setIsShowProgress] = useState(false)
   const [percentShow, setPercentShow] = useState<boolean>(false)
+  const [isUpdateStatus, setIsUpdateStatus] = useState<any>(false)
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
@@ -105,5 +106,7 @@ export default () => {
     importExcel,
     getImportExcel,
     getImportExcelUpdate,
+    setIsUpdateStatus,
+    isUpdateStatus,
   }
 }

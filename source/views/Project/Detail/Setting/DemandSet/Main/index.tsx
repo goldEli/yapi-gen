@@ -188,7 +188,7 @@ const MoreWrap = (props: MoreWrapProps) => {
   }
 
   const menu = () => {
-    const menuItems = [
+    let menuItems = [
       {
         key: '1',
         label:
@@ -202,6 +202,12 @@ const MoreWrap = (props: MoreWrapProps) => {
         ,
       },
     ]
+    if (
+      props?.row.isCheck === 1
+      && props?.list?.filter((i: any) => i.isCheck === 1)?.length === 1
+    ) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
     return <Menu items={menuItems} />
   }
 

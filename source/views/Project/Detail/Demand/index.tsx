@@ -180,6 +180,7 @@ const DemandBox = () => {
     setIsShowProgress,
     setFilterHeight,
     updateDemandCategory,
+    setIsUpdateStatus,
   } = useModel('demand')
   const navigate = useNavigate()
   const isEdit = getIsPermission(
@@ -291,6 +292,7 @@ const DemandBox = () => {
       })
       message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
+      setIsUpdateStatus(true)
       getDemandInfo({ projectId, id: demandInfo?.id })
       setTimeout(() => {
         form.resetFields()
@@ -585,6 +587,7 @@ const DemandBox = () => {
           onChangeVisible={onChangeVisible}
           demandId={operationItem.id}
           onUpdate={onUpdate}
+          isInfo={type === 'info'}
         />
       ) : null}
       {content()}

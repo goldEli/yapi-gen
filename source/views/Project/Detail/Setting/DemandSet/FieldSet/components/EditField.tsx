@@ -270,6 +270,7 @@ const EditFiled = (props: Props) => {
             <Input.TextArea
               placeholder={t('newlyAdd.pleaseFields')}
               autoSize={{ minRows: 5, maxRows: 5 }}
+              maxLength={100}
             />
           </Form.Item>
           <ItemWrap>
