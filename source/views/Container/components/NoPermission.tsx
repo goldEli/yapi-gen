@@ -178,6 +178,7 @@ const NoPermission = () => {
       await loginOut()
       setTimeout(() => {
         localStorage.removeItem('agileToken')
+        localStorage.removeItem('quickCreateData')
         getTicket()
       }, 100)
     } catch (error) {

@@ -147,6 +147,7 @@ client.config({
         setTimeout(() => {
           localStorage.removeItem('agileToken')
           localStorage.removeItem('saveRouter')
+          localStorage.removeItem('quickCreateData')
           getTicket()
         }, 500)
       }
