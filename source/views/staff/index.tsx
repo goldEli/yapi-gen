@@ -2,10 +2,10 @@
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
+import { Dropdown, Menu, message, Pagination, Spin, Tooltip, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -35,6 +35,7 @@ const tableWrapP = css`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 `
 const Reset = styled.div`
   height: 32px;
@@ -58,6 +59,7 @@ const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   height: '100%',
+  overflow: 'hidden',
 })
 
 const RowIconFont = styled(IconFont)({
@@ -95,6 +97,7 @@ const Staff = () => {
     departmentId: [],
     userGroupId: [],
   })
+  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [listData, setListData] = useState<any>(undefined)
   const [editData, setEditData] = useState<any>({})
   const [plainOptions, setPlainOptions] = useState<any>([])
@@ -103,8 +106,8 @@ const Staff = () => {
   const [order, setOrder] = useState<any>(3)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isSpinning, setIsSpinning] = useState(false)
-  const [isStaffPersonalVisible, setIsStaffPersonalVisible]
-    = useState<boolean>(false)
+  const [isStaffPersonalVisible, setIsStaffPersonalVisible] =
+    useState<boolean>(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'nickname',
     'name',
@@ -240,16 +243,16 @@ const Staff = () => {
         render: (text: string, record: any) => {
           return (
             <>
-              {hasCheck
-                ? '--'
-                : (
-                    <span
-                      onClick={() => onToDetail(record)}
-                      style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
-                    >
-                      {t('project.checkInfo')}
-                    </span>
-                  )}
+              {hasCheck ? (
+                '--'
+              ) : (
+                <span
+                  onClick={() => onToDetail(record)}
+                  style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                >
+                  {t('project.checkInfo')}
+                </span>
+              )}
             </>
           )
         },
@@ -332,6 +335,27 @@ const Staff = () => {
       ]}
     />
   )
+
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  })
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
   if (!loadingState) {
     return <Loading />
   }
@@ -387,22 +411,31 @@ const Staff = () => {
         className={tableWrapP}
         style={{ height: `calc(100% - ${filterHeight}px)` }}
       >
-        <StaffTableWrap style={{ height: '100%' }}>
-          <DataWrap>
+        <StaffTableWrap
+          style={{ height: 'calc(100% - 50px)', overflow: 'hidden' }}
+        >
+          <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
-              {!!listData
-                && (listData?.length > 0 ? (
-                  <TableBox
+              {!!listData &&
+                (listData?.length > 0 ? (
+                  <Table
                     rowKey="id"
                     columns={selectColum}
                     dataSource={listData}
                     pagination={false}
-                    scroll={{ x: 'max-content' }}
+                    scroll={{
+                      x: selectColum.reduce(
+                        (totalWidth: number, item: any) =>
+                          totalWidth + item.width,
+                        0,
+                      ),
+                      y: tableY,
+                    }}
                     sticky
                   />
-                )
-                  : <NoData />
-                )}
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </DataWrap>
         </StaffTableWrap>
