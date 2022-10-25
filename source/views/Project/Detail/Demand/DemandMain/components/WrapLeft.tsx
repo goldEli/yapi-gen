@@ -182,21 +182,21 @@ const TreeItem = (props: any) => {
     <div>
       {props.pid === 1
         ? btnsText
-          .filter(item => item.id === 1)
-          .map(item => (
-            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
-              {item.text}
-            </BtnsItemBox>
-          ))
+            .filter(item => item.id === 1)
+            .map(item => (
+              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+                {item.text}
+              </BtnsItemBox>
+            ))
         : props.level === 4
-          ? btnsText
+        ? btnsText
             .filter(item => item.id !== 1)
             .map(item => (
               <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
                 {item.text}
               </BtnsItemBox>
             ))
-          : btnsText.map(item => (
+        : btnsText.map(item => (
             <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
               {item.text}
             </BtnsItemBox>
@@ -213,24 +213,24 @@ const TreeItem = (props: any) => {
         {props.name}
       </span>
       <span className={centerText}>{props.story_count}</span>
-      {props.pid === 0
-      || getIsPermission(
+      {props.pid === 0 ||
+      getIsPermission(
         projectInfo?.projectPermissions,
         'b/project/story/class',
-      )
-        ? ''
-        : (
-            <Popover
-              visible={isShowMore}
-              onVisibleChange={isVisible => setIsShowMore(isVisible)}
-              getPopupContainer={node => node}
-              placement="bottomRight"
-              content={content}
-              trigger="hover"
-            >
-              <IconFont data-tree className={rightText} type="more" />
-            </Popover>
-          )}
+      ) ? (
+        ''
+      ) : (
+        <Popover
+          visible={isShowMore}
+          onVisibleChange={isVisible => setIsShowMore(isVisible)}
+          getPopupContainer={node => node}
+          placement="bottomRight"
+          content={content}
+          trigger="hover"
+        >
+          <IconFont data-tree className={rightText} type="more" />
+        </Popover>
+      )}
 
       <DeleteConfirm
         isVisible={visible}
@@ -282,10 +282,13 @@ const WrapLeft = (props: any, ref: any) => {
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
+  const [show, setShow] = useState<any>(false)
   const init = async () => {
+    setShow(false)
     const res = await getTreeList({ id: props.projectId })
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setTreeData(filterTreeData(res))
+    setShow(true)
   }
 
   function filterTreeData(data: any) {
@@ -389,9 +392,16 @@ const WrapLeft = (props: any, ref: any) => {
         <div className="resize_line" />
         <div className="resize_save">
           <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
-          {treeData.length > 0 && (
+          {treeData.length > 0 && show && (
             <Tree
+              allowDrop={(dropNode: any) => {
+                if (dropNode.dropNode.title.props.grade === 4) {
+                  return false
+                }
+                return true
+              }}
               defaultExpandAll
+              autoExpandParent
               onDrop={onDrop}
               onSelect={onSelect}
               draggable={(node: any) => {

@@ -185,9 +185,9 @@ const IterationInfo = () => {
                   strokeColor="#43BA9A"
                   width={125}
                   type="circle"
-                  format={percent => percent === 100 ? '100%' : `${percent}%`}
+                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
                   percent={Math.trunc(
-                    iterateInfo?.finishCount / iterateInfo?.storyCount * 100,
+                    (iterateInfo?.finishCount / iterateInfo?.storyCount) * 100,
                   )}
                   strokeWidth={12}
                 />
@@ -209,14 +209,13 @@ const IterationInfo = () => {
           </SurveyWrap>
           <SurveyWrap>
             <Title>{t('project.iterateTarget')}</Title>
-            {iterateInfo?.info
-              ? (
-                  <TargetWrap
-                    dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
-                  />
-                )
-              : <NoData />
-            }
+            {iterateInfo?.info ? (
+              <TargetWrap
+                dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
+              />
+            ) : (
+              <NoData />
+            )}
           </SurveyWrap>
         </TopWrap>
         <BottomWrap>
