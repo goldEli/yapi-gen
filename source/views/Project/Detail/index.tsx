@@ -89,122 +89,122 @@ const Detail = () => {
 
     const newTreeData = filterTreeData(res)
     const newLieBieData = filArr2(res2.list)
-
-    const allList = projectInfo?.filterFelid?.map((item: any) => {
-      if (item.content === 'iterate_name') {
-        item.values = [
-          { id: -1, content: '空', content_txt: '空' },
-          ...selectIterate.list?.map((i: any) => {
-            return {
-              id: i.id,
-              content: i.name,
-              content_txt: i.name,
-            }
-          }),
-        ]
-      }
-      if (item.content === 'priority' || item.content === 'tag') {
-        item.values = [
-          { id: -1, content: '空', content_txt: '空' },
-          ...item.values,
-        ]
-      }
-      if (
-        item.content === 'user_name'
-        || item.content === 'users_name'
-        || item.content === 'users_copysend_name'
-      ) {
-        item.values = [
-          { id: -1, content: '空', content_txt: '空' },
-          ...memberList?.map((k: any) => {
-            return {
-              id: k.id,
-              content: k.name,
-              content_txt: k.name,
-            }
-          }),
-        ]
-      }
-      return item
-    })
-
-    const filterAllList = allList?.map((item: any) => {
-      if (item.title.includes('时间') && !item.attr) {
+    if (projectInfo?.filterFelid) {
+      const allList = projectInfo?.filterFelid?.map((item: any) => {
+        if (item.content === 'iterate_name') {
+          item.values = [
+            { id: -1, content: '空', content_txt: '空' },
+            ...selectIterate.list?.map((i: any) => {
+              return {
+                id: i.id,
+                content: i.name,
+                content_txt: i.name,
+              }
+            }),
+          ]
+        }
+        if (item.content === 'priority' || item.content === 'tag') {
+          item.values = [
+            { id: -1, content: '空', content_txt: '空' },
+            ...item.values,
+          ]
+        }
+        if (
+          item.content === 'user_name' ||
+          item.content === 'users_name' ||
+          item.content === 'users_copysend_name'
+        ) {
+          item.values = [
+            { id: -1, content: '空', content_txt: '空' },
+            ...memberList?.map((k: any) => {
+              return {
+                id: k.id,
+                content: k.name,
+                content_txt: k.name,
+              }
+            }),
+          ]
+        }
+        return item
+      })
+      const filterAllList = allList?.map((item: any) => {
+        if (item.title.includes('时间') && !item.attr) {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            children: item.values,
+            type: 'time',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+          }
+        } else if (item.title.includes('需求进度') && !item.attr) {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            children: item.values,
+            type: 'number',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+          }
+        } else if (item.title.includes('需求分类') && !item.attr) {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: 'tree',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: newTreeData,
+          }
+        } else if (item.title.includes('需求类别') && !item.attr) {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: 'select_checkbox',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: [
+              { id: -1, content: '空', content_txt: '空' },
+              ...newLieBieData,
+            ],
+          }
+        } else if (item.attr) {
+          const filterData = filArr(item?.values) || []
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: item.attr,
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: [
+              { id: -1, content: '空', content_txt: '空' },
+              ...filterData,
+            ],
+          }
+        }
         return {
           id: item.id,
           name: item.title,
           key: item.content,
           content: item.content,
           children: item.values,
-          type: 'time',
-          isDefault: item.is_default_filter,
-          contentTxt: item.content_txt,
-        }
-      } else if (item.title.includes('需求进度') && !item.attr) {
-        return {
-          id: item.id,
-          name: item.title,
-          key: item.content,
-          content: item.content,
-          children: item.values,
-          type: 'number',
-          isDefault: item.is_default_filter,
-          contentTxt: item.content_txt,
-        }
-      } else if (item.title.includes('需求分类') && !item.attr) {
-        return {
-          id: item.id,
-          name: item.title,
-          key: item.content,
-          content: item.content,
-          type: 'tree',
-          isDefault: item.is_default_filter,
-          contentTxt: item.content_txt,
-          children: newTreeData,
-        }
-      } else if (item.title.includes('需求类别') && !item.attr) {
-        return {
-          id: item.id,
-          name: item.title,
-          key: item.content,
-          content: item.content,
           type: 'select_checkbox',
           isDefault: item.is_default_filter,
           contentTxt: item.content_txt,
-          children: [
-            { id: -1, content: '空', content_txt: '空' },
-            ...newLieBieData,
-          ],
         }
-      } else if (item.attr) {
-        const filterData = filArr(item?.values) || []
-        return {
-          id: item.id,
-          name: item.title,
-          key: item.content,
-          content: item.content,
-          type: item.attr,
-          isDefault: item.is_default_filter,
-          contentTxt: item.content_txt,
-          children: [
-            { id: -1, content: '空', content_txt: '空' },
-            ...filterData,
-          ],
-        }
-      }
-      return {
-        id: item.id,
-        name: item.title,
-        key: item.content,
-        content: item.content,
-        children: item.values,
-        type: 'select_checkbox',
-        isDefault: item.is_default_filter,
-        contentTxt: item.content_txt,
-      }
-    })
+      })
 
-    setFilterAll(filterAllList)
+      setFilterAll(filterAllList)
+    }
   }
 
   useEffect(() => {
