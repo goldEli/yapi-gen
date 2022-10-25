@@ -2,7 +2,7 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
-import { Pagination, message, Spin, Dropdown, Menu } from 'antd'
+import { Pagination, message, Spin, Dropdown, Menu, Popover } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -61,8 +61,8 @@ const DemandTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, filterHeight }
-    = useModel('demand')
+  const { updatePriority, updateDemandStatus, filterHeight } =
+    useModel('demand')
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -122,7 +122,6 @@ const DemandTable = (props: Props) => {
       message.success(t('common.prioritySuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -133,7 +132,6 @@ const DemandTable = (props: Props) => {
       message.success(t('common.statusSuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -191,9 +189,9 @@ const DemandTable = (props: Props) => {
       },
       {
         key: '2',
-        label:
+        label: (
           <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ,
+        ),
       },
     ]
 
@@ -226,7 +224,7 @@ const DemandTable = (props: Props) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {hasEdit && hasDel ? null : (
-                <Dropdown
+                <Popover
                   key={isShowMore.toString()}
                   visible={isShowMore}
                   overlay={menu(record)}
@@ -236,7 +234,7 @@ const DemandTable = (props: Props) => {
                   onVisibleChange={visible => setIsShowMore(visible)}
                 >
                   {rowIconFont()}
-                </Dropdown>
+                </Popover>
               )}
             </div>
           )
@@ -250,8 +248,8 @@ const DemandTable = (props: Props) => {
     <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
-          {!!props.data?.list
-            && (props.data?.list?.length > 0 ? (
+          {!!props.data?.list &&
+            (props.data?.list?.length > 0 ? (
               <TableBox
                 rowKey="id"
                 columns={selectColum}
@@ -261,9 +259,9 @@ const DemandTable = (props: Props) => {
                 showSorterTooltip={false}
                 sticky
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 

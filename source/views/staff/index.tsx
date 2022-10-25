@@ -422,7 +422,7 @@ const Staff = () => {
             <Spin spinning={isSpinning}>
               {!!listData &&
                 (listData?.length > 0 ? (
-                  <Table
+                  <TableBox
                     rowKey="id"
                     columns={selectColum}
                     dataSource={listData}

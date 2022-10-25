@@ -269,7 +269,6 @@ const AddWorkflow = (props: Props) => {
       props?.onClose()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -288,7 +287,6 @@ const AddWorkflow = (props: Props) => {
       message.success(t('common.addSuccess'))
       getList()
     } catch (error) {
-
       //
     }
   }
@@ -303,7 +301,6 @@ const AddWorkflow = (props: Props) => {
       getList()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -340,7 +337,6 @@ const AddWorkflow = (props: Props) => {
       onCloseDel()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -370,7 +366,6 @@ const AddWorkflow = (props: Props) => {
       onCloseHasDelete()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -400,20 +395,20 @@ const AddWorkflow = (props: Props) => {
       dataIndex: 'categoryName',
       render: (text: any, record: any) => (
         <>
-          {operationObj?.id === record.id
-            ? ''
-            : (
-                <HiddenText>
-                  <OmitText
-                    width={300}
-                    tipProps={{
-                      getPopupContainer: node => node,
-                    }}
-                  >
-                    {text || '--'}
-                  </OmitText>
-                </HiddenText>
-              )}
+          {operationObj?.id === record.id ? (
+            ''
+          ) : (
+            <HiddenText>
+              <OmitText
+                width={300}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          )}
         </>
       ),
     },
@@ -422,24 +417,24 @@ const AddWorkflow = (props: Props) => {
       dataIndex: 'action',
       render: (text: string, record: any) => (
         <>
-          {operationObj?.id === record.id
-            ? ''
-            : (
-                <Space size={16}>
-                  <span
-                    style={{ color: '#2877ff', cursor: 'pointer' }}
-                    onClick={() => onAddEdit(record)}
-                  >
-                    {t('common.edit')}
-                  </span>
-                  <span
-                    style={{ color: '#2877ff', cursor: 'pointer' }}
-                    onClick={() => onAddDel(record)}
-                  >
-                    {t('common.del')}
-                  </span>
-                </Space>
-              )}
+          {operationObj?.id === record.id ? (
+            ''
+          ) : (
+            <Space size={16}>
+              <span
+                style={{ color: '#2877ff', cursor: 'pointer' }}
+                onClick={() => onAddEdit(record)}
+              >
+                {t('common.edit')}
+              </span>
+              <span
+                style={{ color: '#2877ff', cursor: 'pointer' }}
+                onClick={() => onAddDel(record)}
+              >
+                {t('common.del')}
+              </span>
+            </Space>
+          )}
         </>
       ),
     },
@@ -505,12 +500,10 @@ const AddWorkflow = (props: Props) => {
                     getPopupContainer={node => node}
                     allowClear
                     optionFilterProp="label"
-                    options={statusWorkList?.list
-                      ?.filter((j: any) => j.id !== operationDelObj?.id)
-                      ?.map((k: any) => ({
-                        label: k.name,
-                        value: k.id,
-                      }))}
+                    options={i.status?.map((k: any) => ({
+                      label: k.content,
+                      value: k.id,
+                    }))}
                   />
                 </Form.Item>
               ))}
@@ -546,8 +539,8 @@ const AddWorkflow = (props: Props) => {
 
           <TableWrap>
             <Spin spinning={isSpinning}>
-              {!!statusWorkList?.list
-                && (statusWorkList?.list?.length > 0 ? (
+              {!!statusWorkList?.list &&
+                (statusWorkList?.list?.length > 0 ? (
                   <TableWrapBox
                     rowSelection={rowSelection}
                     dataSource={statusWorkList?.list}
@@ -556,9 +549,9 @@ const AddWorkflow = (props: Props) => {
                     pagination={false}
                     rowKey="id"
                   />
-                )
-                  : <NoData />
-                )}
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </TableWrap>
         </div>
