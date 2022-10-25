@@ -380,20 +380,16 @@ export const getStoryStatusLog: any = async (params: any) => {
 
       // 整条审核的状态  1-待审核  2-已通过 3-未通过
       verifyStatus: i.verify?.verify_status,
-
-      // 是否开启审核
-      isVerify: i.verify?.statusconfig?.is_verify,
       verify: {
 
         // 1：固定审核流程；2：用户指定审核人
-        verifyType: i.verify?.statusconfig?.verify?.verify_type,
+        verifyType: i.verify?.verify?.verify_type,
         fixedUser: {
-          comment: i.verify?.statusconfig?.verify?.fixedUser?.verify_opinion,
-          verifyStatus:
-            i.verify?.statusconfig?.verify?.fixedUser?.verify_status,
-          userName: i.verify?.statusconfig?.verify?.fixedUser?.user_name,
+          comment: i.verify?.verify?.fixedUser?.verify_opinion,
+          verifyStatus: i.verify?.verify?.fixedUser?.verify_status,
+          userName: i.verify?.verify?.fixedUser?.user_name,
         },
-        process: i.verify?.statusconfig?.verify?.process?.map((k: any) => ({
+        process: i.verify?.verify?.process?.map((k: any) => ({
           operator: k.operator,
           verifyUsers: k.verify_users?.map((j: any) => ({
             id: j.id,

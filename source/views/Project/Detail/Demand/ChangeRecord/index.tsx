@@ -108,7 +108,7 @@ const ChangeRecord = () => {
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
       return item[i]?.length ? item[i].join(',') : '--'
     } else if (i === 'status') {
-      return item[i]?.status?.content
+      return item[i]
     } else {
       return item[i] || '--'
     }

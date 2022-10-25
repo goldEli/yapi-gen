@@ -243,7 +243,7 @@ const ImportDemand = () => {
               {t('newlyAdd.importUpdate')}
             </TabsItem>
           </TabsWrap>
-          {tabs === 1 ? (
+          {tabs === 2 ? (
             <TextWrap>
               <div>{t('newlyAdd.importText1')}</div>
               <span>{t('newlyAdd.importText2')}</span>

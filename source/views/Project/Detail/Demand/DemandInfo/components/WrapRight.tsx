@@ -5,7 +5,7 @@
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Input, Button, message, Tooltip } from 'antd'
+import { Input, Button, message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -213,6 +213,7 @@ interface Props {
   value: any
   defaultText?: any
   isCustom?: boolean
+  remarks?: any
 }
 const QuickEdit = (props: Props) => {
   const [isShowControl, setIsShowControl] = useState(false)
@@ -274,6 +275,7 @@ const QuickEdit = (props: Props) => {
             {
               attr: props?.type,
               value: props?.value,
+              remarks: props?.remarks,
             },
             true,
             props?.defaultText,
@@ -585,6 +587,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   defaultText={demandInfo?.customField?.[i.content]?.value}
                   value={i.type?.value}
                   isCustom
+                  remarks={i.remarks}
                 />
               </ContentWrap>
             </InfoItem>

@@ -199,10 +199,14 @@ const Staff = () => {
   )
 
   const onToDetail = (row: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ id: '', isMember: false, userId: row.id }),
-    )
-    navigate(`/MemberInfo/profile?data=${params}`)
+    if (row.id === userInfo.id) {
+      navigate('/mine')
+    } else {
+      const params = encryptPhp(
+        JSON.stringify({ id: '', isMember: false, userId: row.id }),
+      )
+      navigate(`/MemberInfo/profile?data=${params}`)
+    }
   }
 
   const selectColum: any = useMemo(() => {

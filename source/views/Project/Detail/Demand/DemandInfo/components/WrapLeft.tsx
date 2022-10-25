@@ -34,7 +34,7 @@ const TextWrapEditor = styled.div({
   display: 'flex',
   flexDirection: 'column',
   img: {
-    maxWidth: '20%',
+    maxWidth: '80%',
     height: 'auto!important',
     cursor: 'pointer',
   },

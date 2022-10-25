@@ -326,10 +326,14 @@ const ProjectMember = () => {
   }
 
   const onToDetail = (row: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
-    )
-    navigate(`/Detail/MemberInfo/profile?data=${params}`)
+    if (row.id === userInfo.id) {
+      navigate('/mine')
+    } else {
+      const params = encryptPhp(
+        JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
+      )
+      navigate(`/Detail/MemberInfo/profile?data=${params}`)
+    }
   }
 
   const columns = [

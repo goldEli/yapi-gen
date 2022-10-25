@@ -123,6 +123,7 @@ const StepPageOne = (propsOne: Props) => {
   }
 
   const onConfirmHasDelete = async () => {
+    await form.validateFields()
     const obj = {
       projectId: paramsData.id,
       id: operationObj?.id,
@@ -415,6 +416,7 @@ const StepPageOne = (propsOne: Props) => {
             </HasDemandText>
             <FormWrap form={form} layout="vertical">
               <Form.Item
+                rules={[{ required: true, message: '' }]}
                 name="statusId"
                 label={
                   <div style={{ display: 'flex', alignItems: 'center' }}>
