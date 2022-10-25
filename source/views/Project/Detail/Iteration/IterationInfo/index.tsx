@@ -140,6 +140,9 @@ const DemoColumn = (props: { data: any }) => {
     color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
     xField: 'type',
     yField: 'count',
+    legend: {
+      itemHeight: 20,
+    },
     xAxis: {
       label: {
         autoHide: true,

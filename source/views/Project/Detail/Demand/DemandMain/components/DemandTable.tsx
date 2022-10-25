@@ -2,7 +2,7 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
-import { Pagination, message, Spin, Dropdown, Menu, Popover } from 'antd'
+import { Pagination, message, Spin, Dropdown, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -224,17 +224,19 @@ const DemandTable = (props: Props) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {hasEdit && hasDel ? null : (
-                <Popover
+                <Dropdown
                   key={isShowMore.toString()}
                   visible={isShowMore}
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    props.data?.list?.length === 1 ? document.body : node
+                  }
                   onVisibleChange={visible => setIsShowMore(visible)}
                 >
                   {rowIconFont()}
-                </Popover>
+                </Dropdown>
               )}
             </div>
           )

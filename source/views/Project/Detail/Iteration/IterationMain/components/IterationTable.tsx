@@ -122,7 +122,6 @@ const IterationTable = (props: Props) => {
       message.success(t('common.prioritySuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -133,7 +132,6 @@ const IterationTable = (props: Props) => {
       message.success(t('common.statusSuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -190,9 +188,9 @@ const IterationTable = (props: Props) => {
       },
       {
         key: '2',
-        label:
+        label: (
           <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ,
+        ),
       },
     ]
 
@@ -228,7 +226,9 @@ const IterationTable = (props: Props) => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    props.data?.list?.length === 1 ? document.body : node
+                  }
                 >
                   {rowIconFont()}
                 </Dropdown>
@@ -245,23 +245,23 @@ const IterationTable = (props: Props) => {
     <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId !== 'object'
-            ? <NoData />
-            : props.data?.list
-              ? props.data?.list?.length > 0 ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={props.data?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                  showSorterTooltip={false}
-                  sticky
-                />
-              )
-                : <NoData />
-
-              : null}
+          {typeof props?.hasId !== 'object' ? (
+            <NoData />
+          ) : props.data?.list ? (
+            props.data?.list?.length > 0 ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={props.data?.list}
+                pagination={false}
+                scroll={{ x: 'max-content' }}
+                showSorterTooltip={false}
+                sticky
+              />
+            ) : (
+              <NoData />
+            )
+          ) : null}
         </Spin>
       </DataWrap>
       <PaginationWrap>

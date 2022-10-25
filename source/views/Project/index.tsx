@@ -137,7 +137,6 @@ const Project = () => {
       setOperationDetail({})
       getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
     } catch (error) {
-
       //
     }
   }
@@ -156,7 +155,6 @@ const Project = () => {
       setIsStop(false)
       getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
     } catch (error) {
-
       //
     }
   }
@@ -240,7 +238,8 @@ const Project = () => {
             visible={isVisible}
             onChangeVisible={() => setIsVisible(!isVisible)}
             details={operationDetail}
-            onUpdate={() => getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+            onUpdate={() =>
+              getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
             }
           />
         ) : null}
@@ -278,7 +277,8 @@ const Project = () => {
               />
             ) : (
               <MainTable
-                onChangeOperation={(e, type, item) => onChangeOperation(e, type, item)
+                onChangeOperation={(e, type, item) =>
+                  onChangeOperation(e, type, item)
                 }
                 projectList={projectList}
                 onChangePageNavigation={onChangePageNavigation}

@@ -12,7 +12,6 @@ export default () => {
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
   const [statusLogs, setStatusLogs] = useState<any>([])
-  const [importFields, setImportFields] = useState<any>({})
   const [importExcel, setImportExcel] = useState<any>({})
 
   const getImportExcelUpdate = async (params: any) => {
@@ -29,7 +28,7 @@ export default () => {
 
   const getLoadListFields = async (params: any) => {
     const result = await services.demand.getLoadListFields(params)
-    setImportFields(result)
+    return result
   }
 
   const getDemandInfo = async (params: any) => {
@@ -100,7 +99,6 @@ export default () => {
     updateDemandCategory,
     statusLogs,
     getStatusLogs,
-    importFields,
     getLoadListFields,
     getImportDownloadModel,
     importExcel,

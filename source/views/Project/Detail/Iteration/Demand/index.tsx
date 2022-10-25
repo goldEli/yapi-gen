@@ -48,8 +48,8 @@ const DemandWrap = () => {
   const projectId = paramsData.id
   const { iterateId } = paramsData
   const { projectInfo } = useModel('project')
-  const { getDemandList, updateDemandStatus, updatePriority, deleteDemand }
-    = useModel('demand')
+  const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
+    useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -176,7 +176,6 @@ const DemandWrap = () => {
       message.success(t('common.prioritySuccess'))
       getList(pageObj, order)
     } catch (error) {
-
       //
     }
   }
@@ -187,7 +186,6 @@ const DemandWrap = () => {
       message.success(t('common.statusSuccess'))
       getList(pageObj, order)
     } catch (error) {
-
       //
     }
   }
@@ -226,7 +224,6 @@ const DemandWrap = () => {
       setDeleteId(0)
       getList(pageObj, order)
     } catch (error) {
-
       //
     }
   }
@@ -252,7 +249,9 @@ const DemandWrap = () => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    dataList?.list?.length === 1 ? document.body : node
+                  }
                 >
                   {rowIconFont()}
                 </Dropdown>
@@ -284,8 +283,8 @@ const DemandWrap = () => {
       ) : null}
       <DataWrap>
         <Spin spinning={isSpinning}>
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <TableBox
                 rowKey="id"
                 columns={selectColum}
@@ -295,9 +294,9 @@ const DemandWrap = () => {
                 showSorterTooltip={false}
                 sticky
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 

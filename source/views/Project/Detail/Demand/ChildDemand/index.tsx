@@ -226,7 +226,6 @@ const ChildDemand = () => {
       message.success(t('common.prioritySuccess'))
       onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -237,7 +236,6 @@ const ChildDemand = () => {
       message.success(t('common.statusSuccess'))
       onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -255,7 +253,6 @@ const ChildDemand = () => {
       setDeleteId(0)
       onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -329,7 +326,9 @@ const ChildDemand = () => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    dataList?.list?.length === 1 ? document.body : node
+                  }
                 >
                   {rowIconFont()}
                 </Dropdown>
@@ -362,16 +361,16 @@ const ChildDemand = () => {
         onConfirm={onDeleteConfirm}
       />
       <Operation>
-        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save')
-          ? <div />
-          : (
-              <ButtonWrap
-                onClick={() => setIsVisible(true)}
-                icon={<IconFont type="plus" />}
-              >
-                {t('project.addChildDemand')}
-              </ButtonWrap>
-            )}
+        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ? (
+          <div />
+        ) : (
+          <ButtonWrap
+            onClick={() => setIsVisible(true)}
+            icon={<IconFont type="plus" />}
+          >
+            {t('project.addChildDemand')}
+          </ButtonWrap>
+        )}
 
         <Dropdown overlay={setMenu}>
           <IconFontWrap active={isSettingState} type="settings" />
@@ -379,8 +378,8 @@ const ChildDemand = () => {
       </Operation>
       <DataWrap>
         <Spin spinning={isSpinning}>
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <TableBox
                 rowKey="id"
                 columns={selectColum}
@@ -390,9 +389,9 @@ const ChildDemand = () => {
                 showSorterTooltip={false}
                 sticky
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 
