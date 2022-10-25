@@ -165,6 +165,7 @@ const DemandBox = () => {
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
+  const { setIsRefresh } = useModel('user')
   const {
     projectInfo,
     getCategoryList,
@@ -299,6 +300,7 @@ const DemandBox = () => {
       message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
       setIsUpdateStatus(true)
+      setIsRefresh(true)
       getDemandInfo({ projectId, id: demandInfo?.id })
       setTimeout(() => {
         form.resetFields()
