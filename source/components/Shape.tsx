@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-negated-condition */
@@ -214,7 +215,7 @@ const LabelComponent = (props: any) => {
 }
 
 const DateInput = (props: any) => {
-  const { onChange: set } = props
+  const { onChange: set, type } = props
 
   const change = (key: any, dates: any) => {
     set(dates)
@@ -223,12 +224,25 @@ const DateInput = (props: any) => {
     set(props.dvalue)
   }, [])
 
+  if (type === 'datetime') {
+    return (
+      <DatePicker
+        defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
+        onChange={change}
+        style={{ width: '100%' }}
+        format="YYYY-MM-DD HH:mm:ss"
+        showTime={{
+          defaultValue: moment('00:00:00', 'HH:mm:ss'),
+        }}
+      />
+    )
+  }
   return (
     <DatePicker
       defaultValue={props.dvalue ? moment(props.dvalue) : ('' as any)}
       onChange={change}
       style={{ width: '100%' }}
-      format="YYYY-MM-DD HH:mm:ss"
+      format="YYYY-MM-DD "
       showTime={{
         defaultValue: moment('00:00:00', 'HH:mm:ss'),
       }}
@@ -289,12 +303,28 @@ const TagSelect = (props: any) => {
   )
 }
 const NumericInput = (props: any) => {
-  const { value, onChange, onPress } = props
-
+  const { value, onChange, onPress, type } = props
   const enter = (e: any) => {
-    onChange({ ...value, start: e })
+    onChange(e)
   }
-
+  if (type === 'integer') {
+    return (
+      <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+        <Input
+          type="number"
+          placeholder="请输入值"
+          onPressEnter={onPress}
+          onChange={e => {
+            if (/^\w*$/g.test(e.target.value)) {
+              enter(e.target.value)
+            }
+          }}
+          value={value}
+          style={{ border: 'none' }}
+        />
+      </div>
+    )
+  }
   return (
     <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
       <Input
@@ -302,10 +332,9 @@ const NumericInput = (props: any) => {
         placeholder="请输入值"
         onPressEnter={onPress}
         onChange={e => enter(e.target.value)}
-        value={value?.start}
-        style={{ width: '80px', border: 'none' }}
+        value={value}
+        style={{ border: 'none' }}
       />
-      <span className={danweiCss}>单位</span>
     </div>
   )
 }
@@ -359,7 +388,8 @@ export const ShapeContent = (props: any) => {
 
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+      form1Obj[res?.fields[key].content] =
+        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
     }
 
     form.setFieldsValue(form1Obj)
@@ -377,7 +407,8 @@ export const ShapeContent = (props: any) => {
     setRightList(res)
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+      form1Obj[res?.fields[key].content] =
+        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
     }
 
     form.setFieldsValue(form1Obj)
@@ -397,7 +428,8 @@ export const ShapeContent = (props: any) => {
     setRightList(res)
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+      form1Obj[res?.fields[key].content] =
+        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
     }
 
     form.setFieldsValue(form1Obj)
@@ -424,7 +456,9 @@ export const ShapeContent = (props: any) => {
   }, [])
 
   useEffect(() => {
-    const arr = optionsList?.filter((k: any) => props.row?.dealName?.split(',')?.some((j: any) => k.name === j))
+    const arr = optionsList?.filter((k: any) =>
+      props.row?.dealName?.split(',')?.some((j: any) => k.name === j),
+    )
     form.setFieldsValue({
       username: arr?.map((k: any) => k.id),
     })
@@ -435,8 +469,8 @@ export const ShapeContent = (props: any) => {
     form.resetFields()
   }
 
-  const activeContent
-    = statusList?.filter((i: any) => i.id === active)[0]?.content !== '规划中'
+  const activeContent =
+    statusList?.filter((i: any) => i.id === active)[0]?.content !== '规划中'
   const hasDealName = props.row?.dealName === '--'
 
   const confirm = async () => {
@@ -542,8 +576,8 @@ export const ShapeContent = (props: any) => {
                       </Form.Item>
                     )
                   } else if (
-                    i.type === 'select_checkbox'
-                    || i.type === 'checkbox'
+                    i.type === 'select_checkbox' ||
+                    i.type === 'checkbox'
                   ) {
                     return (
                       <Form.Item
@@ -570,9 +604,9 @@ export const ShapeContent = (props: any) => {
                       </Form.Item>
                     )
                   } else if (
-                    i.type === 'date'
-                    || i.type === 'time'
-                    || i.type === 'datetime'
+                    i.type === 'date' ||
+                    i.type === 'time' ||
+                    i.type === 'datetime'
                   ) {
                     return (
                       <Form.Item
@@ -585,7 +619,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <DateInput dvalue={i.true_value} />
+                        <DateInput type={i.type} dvalue={i.true_value} />
                       </Form.Item>
                     )
                   } else if (i.type === 'tag') {
@@ -615,7 +649,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <NumericInput />
+                        <NumericInput type={i.value[0]} />
                       </Form.Item>
                     )
                   } else if (i.type === 'text' || i.type === 'textarea') {
@@ -630,7 +664,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <Input placeholder={t('newlyAdd.pleaseKeyword')} />
+                        <Input placeholder={i.remarks} />
                       </Form.Item>
                     )
                   } else if (i.type === 'tree') {
@@ -748,8 +782,8 @@ export const ShapeContent = (props: any) => {
                                     item2.operator === 1
                                       ? 'right'
                                       : item2.operator === 2
-                                        ? 'and'
-                                        : 'line'
+                                      ? 'and'
+                                      : 'line'
                                   }
                                 />
                               )}
@@ -796,7 +830,7 @@ export const ShapeContent = (props: any) => {
                   rules={[
                     {
                       required:
-                        activeContent || !activeContent && !hasDealName,
+                        activeContent || (!activeContent && !hasDealName),
                       message: '',
                     },
                   ]}

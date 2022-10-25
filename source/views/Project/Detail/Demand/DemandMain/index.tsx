@@ -175,7 +175,6 @@ const DemandMain = (props: Props) => {
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)
     } catch (error) {
-
       //
     }
   }
@@ -207,6 +206,7 @@ const DemandMain = (props: Props) => {
     () => ({
       key,
       changeKey: (value: any) => {
+        setPageObj({ page: 1, size: 10 })
         setKey(value)
       },
     }),
