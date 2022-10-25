@@ -3,8 +3,46 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Input, Slider, Divider } from 'antd'
+import { Table, Input, Slider, Divider, Form } from 'antd'
 import IconFont from './IconFont'
+
+const FormWrapDemand = styled(Form)({
+  padding: '0 20px 0 2px',
+  '.labelIcon': {
+    display: 'flex',
+    alignItems: 'flex-start',
+    svg: {
+      fontSize: 16,
+      color: '#969799',
+      margin: '3px 8px 0 0',
+    },
+  },
+  '.ant-form-item-label': {
+    '> label::after': {
+      display: 'none',
+    },
+    '> label': {
+      display: 'flex',
+      alignItems: 'flex-start',
+    },
+    '.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after':
+      {
+        display: 'inline-block',
+        color: '#ff4d4f',
+        fontSize: 14,
+        content: '\'*\'',
+      },
+    '> label::before': {
+      display: 'none!important',
+    },
+  },
+  '.ant-form-item': {
+    width: '100%',
+  },
+  '.ant-form-item-control-input': {
+    minHeight: 'inherit',
+  },
+})
 
 const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
   {
@@ -578,4 +616,5 @@ export {
   SelectWrapBedeck,
   DividerWrap,
   IconFontWrap,
+  FormWrapDemand,
 }
