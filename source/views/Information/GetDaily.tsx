@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -23,13 +24,117 @@ import Sort from '@/components/Sort'
 const Get = () => {
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
-  const [listData, setListData] = useState<any>([])
+
+  // const [listData, setListData] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
   const [page, setPage] = useState<number>(1)
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
+
+  const listData = [
+    {
+      key: '1',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '2',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '3',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '4',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '5',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '6',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '7',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '8',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+    },
+    {
+      key: '9',
+      name: '胡彦斌',
+      gender: 32,
+      email: '西湖区湖底公园1号',
+      phone: '胡彦斌',
+      department_name: 32,
+      position_name: '西湖区湖底公园1号',
+      role_name: '胡彦斌',
+      created_at: 32,
+      state: true,
+    },
+  ]
 
   const NewSort = (props: any) => {
     return (
@@ -87,22 +192,28 @@ const Get = () => {
         return <span>{text || '--'}</span>
       },
     },
+
     {
-      title: <NewSort fixedKey="position_name">抄送人</NewSort>,
-      dataIndex: 'position_name',
-      key: 'position_name',
-      width: 120,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <NewSort fixedKey="role_name">已阅</NewSort>,
+      title: <NewSort fixedKey="role_name">我的阅读状态</NewSort>,
       dataIndex: 'role_name',
       key: 'role_name',
       width: 170,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            <span
+              style={{
+                width: '8px',
+                height: '8px',
+                background: record.state ? 'red' : '#43BA9A',
+                display: 'inline-block',
+                borderRadius: '50%',
+                marginRight: '8px',
+              }}
+            />
+            <span>{record.state ? '已阅' : '未读'}</span>
+          </div>
+        )
       },
     },
 
@@ -111,8 +222,23 @@ const Get = () => {
       dataIndex: 'created_at',
       key: 'created_at',
       width: 180,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      fixed: 'right',
+      render: (text: string, record: any) => {
+        return (
+          <div>
+            <span
+              style={{
+                fontSize: '14px',
+                fontWeight: ' 400',
+                color: '#2877FF',
+                marginLeft: '16px',
+                cursor: 'pointer',
+              }}
+            >
+              查看
+            </span>
+          </div>
+        )
       },
     },
   ]
@@ -269,29 +395,31 @@ const Get = () => {
         <StaffTableWrap style={{ height: '100%' }}>
           <DataWrap>
             <Spin spinning={isSpinning}>
-              {!!listData
-                && (listData?.length > 0
-                  ? (
-                      <TableBox
-                        rowKey="id"
-                        columns={columnsData}
-                        dataSource={listData}
-                        pagination={false}
-                        scroll={{ x: 'max-content' }}
-                        sticky
-                      />
-                    )
-                  : <NoData />
+              {
+                !!listData
+                  && (listData?.length > 0
+                    ? (
+                        <TableBox
+                          rowKey="id"
+                          columns={columnsData}
+                          dataSource={listData}
+                          pagination={false}
+                          scroll={{ x: 'max-content' }}
+                          sticky
+                        />
+                      )
+                    : <NoData />
+                  )
 
-              //   <TableBox
-              //     rowKey="id"
-              //     columns={columnsData}
-              //     dataSource={listData}
-              //     pagination={false}
-              //     scroll={{ x: 'max-content' }}
-              //     sticky
-              //   />
-                )}
+                //   <TableBox
+                //     rowKey="id"
+                //     columns={columnsData}
+                //     dataSource={listData}
+                //     pagination={false}
+                //     scroll={{ x: 'max-content' }}
+                //     sticky
+                //   />
+              }
             </Spin>
           </DataWrap>
         </StaffTableWrap>

@@ -13,6 +13,7 @@ import { Form, Popover } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import Editor from '@/components/Editor'
 import ChoosePeople from './components/ChoosePeople'
+import RelatedNeed from './components/RelatedNeed'
 
 const Wrap = styled.div`
   height: 100%;
@@ -317,6 +318,9 @@ const Information = () => {
             </Form.Item>
             <Form.Item label={<LabelTitle title="抄送人" />} name="people">
               <ChoosePeople />
+            </Form.Item>
+            <Form.Item label={<LabelTitle title="关联需求" />} name="needs">
+              <RelatedNeed />
             </Form.Item>
           </Form>
         </div>
