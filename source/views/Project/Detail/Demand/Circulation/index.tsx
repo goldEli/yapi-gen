@@ -278,7 +278,6 @@ const Circulation = () => {
                           <LineItem
                             style={{ direction: 'rtl', alignItems: 'center' }}
                           >
-                            <TimeTag />
                             <SpanWrap
                               color="#323233"
                               size={16}
