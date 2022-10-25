@@ -85,7 +85,7 @@ const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getLoadListFields, importFields } = useModel('demand')
+  const { getLoadListFields } = useModel('demand')
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props?.importState === 2 ? ['name', 'category_id'] : ['id'],
   )
@@ -93,9 +93,26 @@ const FieldsTemplate = (props: Props) => {
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
   const [checkAll, setCheckAll] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
+  const [importFields, setImportFields] = useState<any>({})
+
+  const getList = async () => {
+    const result = await getLoadListFields({
+      projectId,
+      isUpdate: props?.importState,
+    })
+    const basicKeys = result?.baseFields?.map((k: any) => k.field)
+    const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
+    const customKeys = result?.customFields?.map((k: any) => k.field)
+    setCheckList(basicKeys || [])
+    setCheckList2(otherKeys || [])
+    setCheckList3(customKeys || [])
+    setIndeterminate(false)
+    setCheckAll(true)
+    setImportFields(result)
+  }
 
   useEffect(() => {
-    getLoadListFields({ projectId, isUpdate: props?.importState })
+    getList()
   }, [])
 
   const [t] = useTranslation()
@@ -125,9 +142,9 @@ const FieldsTemplate = (props: Props) => {
   const allList = useMemo(() => {
     const arr = [...checkList, ...checkList2, ...checkList3]
     const arr2 = [
-      ...importFields?.baseFields || [],
-      ...importFields?.timeAndPersonFields || [],
-      ...importFields?.customFields || [],
+      ...(importFields?.baseFields || []),
+      ...(importFields?.timeAndPersonFields || []),
+      ...(importFields?.customFields || []),
     ]
     const all = arr2.reduce((res: { name: string; field: string }[], item) => {
       if (arr.includes(item.field)) {
@@ -169,15 +186,31 @@ const FieldsTemplate = (props: Props) => {
     )
   }, [checkList, checkList2, checkList3, importFields])
 
+  const onIsCheckAll = (length: any) => {
+    const allKeys = [
+      ...(importFields?.baseFields || []),
+      ...(importFields?.timeAndPersonFields || []),
+      ...(importFields?.customFields || []),
+    ].length
+    setCheckAll(allKeys === length)
+    setIndeterminate(allKeys !== length)
+  }
+
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
+    const resArr = [...list, ...checkList2, ...checkList3]
+    onIsCheckAll(resArr.length)
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
+    const resArr = [...checkList, ...list, ...checkList3]
+    onIsCheckAll(resArr.length)
   }
 
   const onChange3 = (list: CheckboxValueType[]) => {
     setCheckList3(list)
+    const resArr = [...checkList, ...checkList2, ...list]
+    onIsCheckAll(resArr.length)
   }
 
   const onAllChecked = (e: any) => {
@@ -186,8 +219,8 @@ const FieldsTemplate = (props: Props) => {
       checked
         ? importFields?.baseFields?.map((k: any) => k.field)
         : props?.importState === 2
-          ? ['name', 'category_id']
-          : ['id'],
+        ? ['name', 'category_id']
+        : ['id'],
     )
     setCheckList2(
       checked

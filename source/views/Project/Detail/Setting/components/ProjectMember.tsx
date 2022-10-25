@@ -259,7 +259,6 @@ const ProjectMember = () => {
         getMemberList({ all: true, projectId })
       }
     } catch (error) {
-
       //
     }
   }
@@ -358,7 +357,9 @@ const ProjectMember = () => {
                 overlay={() => menu(record)}
                 trigger={['hover']}
                 placement="bottom"
-                getPopupContainer={node => node}
+                getPopupContainer={node =>
+                  memberList?.list?.length === 1 ? document.body : node
+                }
               >
                 <RowIconFont type="more" />
               </Dropdown>
@@ -496,16 +497,16 @@ const ProjectMember = () => {
       render: (text: string, record: any) => {
         return (
           <>
-            {hasCheck
-              ? '--'
-              : (
-                  <span
-                    onClick={() => onToDetail(record)}
-                    style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
-                  >
-                    {t('project.checkInfo')}
-                  </span>
-                )}
+            {hasCheck ? (
+              '--'
+            ) : (
+              <span
+                onClick={() => onToDetail(record)}
+                style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+              >
+                {t('project.checkInfo')}
+              </span>
+            )}
           </>
         )
       },
@@ -544,7 +545,6 @@ const ProjectMember = () => {
       getProjectInfo({ projectId })
       setIsEditVisible(false)
     } catch (error) {
-
       //
     }
   }
@@ -647,8 +647,8 @@ const ProjectMember = () => {
         <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
           <DataWrap>
             <Spin spinning={isSpinning}>
-              {!!memberList?.list
-                && (memberList?.list?.length > 0 ? (
+              {!!memberList?.list &&
+                (memberList?.list?.length > 0 ? (
                   <TableBox
                     rowKey="id"
                     columns={columns as any}
@@ -658,9 +658,9 @@ const ProjectMember = () => {
                     showSorterTooltip={false}
                     sticky
                   />
-                )
-                  : <NoData />
-                )}
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </DataWrap>
 

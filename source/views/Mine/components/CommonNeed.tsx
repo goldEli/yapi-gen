@@ -83,6 +83,7 @@ interface MoreWrapProps {
   record: any
   onShowEdit(): void
   onShowDel(): void
+  listLength: number
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -102,15 +103,15 @@ const MoreWrap = (props: MoreWrapProps) => {
       items={[
         {
           key: '1',
-          label:
+          label: (
             <span onClick={() => onClickMenu('edit')}>{t('common.edit')}</span>
-          ,
+          ),
         },
         {
           key: '2',
-          label:
+          label: (
             <span onClick={() => onClickMenu('del')}>{t('common.del')}</span>
-          ,
+          ),
         },
       ]}
     />
@@ -124,7 +125,9 @@ const MoreWrap = (props: MoreWrapProps) => {
         trigger={['hover']}
         overlay={menu}
         placement="bottomLeft"
-        getPopupContainer={node => node}
+        getPopupContainer={node =>
+          props.listLength === 1 ? document.body : node
+        }
       >
         <RowIconFont type="more" />
       </Dropdown>
@@ -243,14 +246,14 @@ const CommonNeed = (props: any) => {
         pagesize,
       }
 
-      const res
-        = props?.type === 'abeyance'
+      const res =
+        props?.type === 'abeyance'
           ? await getMineNoFinishList(params)
           : props?.type === 'create'
-            ? await getMineCreacteList(params)
-            : props?.type === 'finish'
-              ? await getMineFinishList(params)
-              : await getMineNeedList(params)
+          ? await getMineCreacteList(params)
+          : props?.type === 'finish'
+          ? await getMineFinishList(params)
+          : await getMineNeedList(params)
 
       setListData(res)
       setTotal(res?.pager?.total)
@@ -314,6 +317,7 @@ const CommonNeed = (props: any) => {
               record={record}
               onShowEdit={() => showEdit(record)}
               onShowDel={() => showDel(record)}
+              listLength={listData?.list}
             />
           )
         },
@@ -429,7 +433,6 @@ const CommonNeed = (props: any) => {
       setIsDelVisible(false)
       init()
     } catch (error) {
-
       //
     }
   }
@@ -569,8 +572,8 @@ const CommonNeed = (props: any) => {
         <div>
           <LoadingSpin spinning={isSpin}>
             <StaffTableWrap>
-              {listData?.list
-                ? listData?.list?.length ? (
+              {listData?.list ? (
+                listData?.list?.length ? (
                   <TableBox
                     rowKey="id"
                     columns={selectColum}
@@ -578,10 +581,10 @@ const CommonNeed = (props: any) => {
                     pagination={false}
                     scroll={{ x: 'max-content' }}
                   />
+                ) : (
+                  <NoData />
                 )
-                  : <NoData />
-
-                : null}
+              ) : null}
             </StaffTableWrap>
           </LoadingSpin>
         </div>
@@ -607,8 +610,8 @@ const CommonNeed = (props: any) => {
                     </span>
                   </TableTitle>
 
-                  {item.list
-                    ? item?.list?.length ? (
+                  {item.list ? (
+                    item?.list?.length ? (
                       <TableBox
                         rowKey="id"
                         columns={selectColum}
@@ -616,10 +619,10 @@ const CommonNeed = (props: any) => {
                         pagination={false}
                         scroll={{ x: 'max-content' }}
                       />
+                    ) : (
+                      <NoData />
                     )
-                      : <NoData />
-
-                    : null}
+                  ) : null}
                 </div>
               ))}
             </StaffTableWrap2>

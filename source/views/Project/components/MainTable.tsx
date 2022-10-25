@@ -98,6 +98,7 @@ interface MoreProps {
   onChange(type: string, item: any, e: any): void
   text: string
   record?: any
+  listLength: number
 }
 
 const MoreContent = (props: MoreProps) => {
@@ -194,15 +195,17 @@ const MoreContent = (props: MoreProps) => {
             overlay={menu(props?.record)}
             trigger={['hover']}
             placement="bottomRight"
-            getPopupContainer={node => node}
+            getPopupContainer={node =>
+              props.listLength ? document.body : node
+            }
             onVisibleChange={onVisibleChange}
           >
             <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
           </Dropdown>
         </MoreWrap>
-      )
-        : <div style={{ width: 16 }} />
-      }
+      ) : (
+        <div style={{ width: 16 }} />
+      )}
     </>
   )
 }
@@ -249,6 +252,7 @@ const MainTable = (props: Props) => {
               onChange={props?.onChangeOperation}
               text={text}
               record={record}
+              listLength={props.projectList?.list?.length}
             />
             <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
               {text}
@@ -365,7 +369,7 @@ const MainTable = (props: Props) => {
             width={38}
             type="circle"
             percent={Number(text) * 100}
-            format={percent => percent === 100 ? '100%' : `${percent}%`}
+            format={percent => (percent === 100 ? '100%' : `${percent}%`)}
             strokeWidth={8}
           />
         )
@@ -462,8 +466,8 @@ const MainTable = (props: Props) => {
   return (
     <div style={{ height: '100%' }}>
       <DataWrap>
-        {!!props.projectList?.list
-          && (props.projectList?.list?.length > 0 ? (
+        {!!props.projectList?.list &&
+          (props.projectList?.list?.length > 0 ? (
             <TableBox
               rowKey="id"
               columns={columns}
@@ -474,9 +478,9 @@ const MainTable = (props: Props) => {
               onRow={onTableRow}
               sticky
             />
-          )
-            : <NoData />
-          )}
+          ) : (
+            <NoData />
+          ))}
       </DataWrap>
 
       <PaginationWrap>
