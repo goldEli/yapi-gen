@@ -724,7 +724,9 @@ const EditDemand = (props: Props) => {
 
   const titleText = () => {
     let text: any
-    if (props?.isChild) {
+    if (props?.isQuickCreate) {
+      text = t('mine.quickCreate')
+    } else if (props?.isChild) {
       text = props?.demandId
         ? t('project.editChildDemand')
         : t('common.createChildDemand')
