@@ -1132,7 +1132,10 @@ const EditDemand = (props: Props) => {
                 {fieldList?.list?.map((i: any) => (
                   <div style={{ display: 'flex' }} key={i.content}>
                     <Form.Item label={i.name} name={i.content}>
-                      {getTypeComponent(i.type)}
+                      {getTypeComponent({
+                        ...i.type,
+                        ...{ remarks: i.remarks },
+                      })}
                     </Form.Item>
                   </div>
                 ))}
