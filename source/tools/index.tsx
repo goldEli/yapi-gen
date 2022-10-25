@@ -35,6 +35,7 @@ function getTypeComponent(
   if (params?.attr === 'date') {
     child = (
       <DatePicker
+        placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showTime={params?.value[0] === 'datetime'}
         allowClear
@@ -60,6 +61,7 @@ function getTypeComponent(
   ) {
     child = (
       <Input
+        placeholder={params.remarks || ''}
         onBlur={e => !isModal ? void 0 : onBlur(e.target.value)}
         type={params?.attr}
         allowClear
@@ -72,6 +74,7 @@ function getTypeComponent(
   } else if (params?.attr === 'textarea') {
     child = (
       <Input.TextArea
+        placeholder={params.remarks || ''}
         onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
@@ -84,6 +87,7 @@ function getTypeComponent(
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
     child = (
       <InputNumber
+        placeholder={params.remarks || ''}
         onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
@@ -95,6 +99,7 @@ function getTypeComponent(
   } else if (params?.attr === 'treeSelect') {
     child = (
       <TreeSelect
+        placeholder={params.remarks || ''}
         style={{ minWidth: 192 }}
         showArrow
         showSearch
@@ -103,13 +108,14 @@ function getTypeComponent(
         treeData={params?.value}
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        onBlur={() => !isModal ? void 0 : onBlur(defaultValue)}
         onChange={onChange}
       />
     )
   } else {
     child = (
       <Select
+        placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
@@ -118,7 +124,7 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        onBlur={() => !isModal ? void 0 : onBlur(defaultValue)}
         onChange={onChange}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         mode={
