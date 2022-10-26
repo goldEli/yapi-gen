@@ -9,13 +9,14 @@ import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 
-const InnerLine = styled.div`
+export const InnerLine = styled.div`
   &:hover {
     [data-close] {
       visibility: visible;
     }
   }
 `
+
 const rightText = css`
   cursor: pointer;
   box-sizing: border-box;

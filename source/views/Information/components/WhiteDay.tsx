@@ -5,24 +5,33 @@ import Editor from '@/components/Editor'
 import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 
-const LabelTitle = (props: any) => {
+export const LabelTitle = (props: any) => {
   return (
     <div
       style={{
         display: 'flex',
         alignItems: 'center',
+        margin: '24px 0 8px 0',
       }}
     >
       <div
         style={{
           width: '3px',
           height: '16px',
+
           background: '#2877FF',
           display: 'inline-block',
           marginRight: '8px',
         }}
       />
-      <span>{props.title}</span>
+      <span
+        style={{
+          fontWeight: 'bold',
+          fontSize: '18px',
+        }}
+      >
+        {props.title}
+      </span>
     </div>
   )
 }

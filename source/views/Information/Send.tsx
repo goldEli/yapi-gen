@@ -18,6 +18,7 @@ import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
 import WhiteDay from './components/WhiteDay'
 import { useParams } from 'react-router-dom'
+import LookDay from './components/LookDay'
 
 const titleList = {
   2: '修改日报',
@@ -37,6 +38,7 @@ const Send = () => {
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleLook, setVisibleLook] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
 
   const editClose = () => {
@@ -46,7 +48,16 @@ const Send = () => {
   const editConfirm = async (e: any) => {
     editClose()
   }
+  const lookClose = () => {
+    setVisibleLook(false)
+  }
 
+  const lookConfirm = async (e: any) => {
+    editClose()
+  }
+  const openShow = () => {
+    setVisibleLook(true)
+  }
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -254,6 +265,7 @@ const Send = () => {
               : null}
 
             <span
+              onClick={openShow}
               style={{
                 fontSize: '14px',
                 fontWeight: ' 400',
@@ -447,6 +459,11 @@ const Send = () => {
         visibleEdit={visibleEdit}
         editClose={editClose}
         editConfirm={editConfirm}
+      />
+      <LookDay
+        visible={visibleLook}
+        onEditClose={lookClose}
+        editConfirm={lookConfirm}
       />
     </div>
   )
