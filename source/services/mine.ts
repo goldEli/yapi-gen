@@ -40,7 +40,6 @@ const filArr2 = (data: any) => {
 
 // 获取动态搜索段
 export const getSearchField: any = async (params: any) => {
-
   // 成员列表
   if (params === 0) {
     return
@@ -108,9 +107,9 @@ export const getSearchField: any = async (params: any) => {
       ]
     }
     if (
-      item.content === 'user_name'
-      || item.content === 'users_name'
-      || item.content === 'users_copysend_name'
+      item.content === 'user_name' ||
+      item.content === 'users_name' ||
+      item.content === 'users_copysend_name'
     ) {
       item.values = [
         { id: -1, content: '空', content_txt: '空' },
@@ -425,88 +424,88 @@ export const getMineNoFinishList: any = async (params: any) => {
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
-          id: i.id,
-          name: i.name,
-          demand: i.child_story_count,
-          priority: i.priority,
-          iteration: i.iterate_name || '--',
-          status: i.status,
-          dealName: i.users_name || '--',
-          time: i.created_at,
-          expectedStart: i.expected_start_at,
-          expectedEnd: i.expected_end_at,
-          info: i.info,
-          userIds: i.user_id,
-          iterateId: i.iterate_id,
-          parentId: i.parent_id,
-          finishTime: i.finish_at,
-          updatedTime: i.updated_at,
-          usersCopySendName: i.users_copysend_name,
-          userName: i.user_name,
-          tag: i.tag,
-          project_id: i.project_id,
-          schedule: i.schedule,
-          isExamine: i.verify_lock === 1,
-          category: i.category,
-          categoryColor: i.category_color,
-          ...i.custom_field,
-          usersNameIds: i.users_name_ids,
-          'class': i.class,
-          project: {
-            isPublic: i.project.is_public,
-            isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
-          },
-        }))
+            id: i.id,
+            name: i.name,
+            demand: i.child_story_count,
+            priority: i.priority,
+            iteration: i.iterate_name || '--',
+            status: i.status,
+            dealName: i.users_name || '--',
+            time: i.created_at,
+            expectedStart: i.expected_start_at,
+            expectedEnd: i.expected_end_at,
+            info: i.info,
+            userIds: i.user_id,
+            iterateId: i.iterate_id,
+            parentId: i.parent_id,
+            finishTime: i.finish_at,
+            updatedTime: i.updated_at,
+            usersCopySendName: i.users_copysend_name,
+            userName: i.user_name,
+            tag: i.tag,
+            project_id: i.project_id,
+            schedule: i.schedule,
+            isExamine: i.verify_lock === 1,
+            category: i.category,
+            categoryColor: i.category_color,
+            ...i.custom_field,
+            usersNameIds: i.users_name_ids,
+            class: i.class,
+            project: {
+              isPublic: i.project.is_public,
+              isUserMember: i.project.user_ismember,
+              isEdit: Object.values(i.project.permissions).includes(
+                'b/story/update',
+              ),
+              isDelete: Object.values(i.project.permissions).includes(
+                'b/story/delete',
+              ),
+            },
+          }))
         : [],
     }))
   } else {
     return {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
-          id: i.id,
-          name: i.name,
-          demand: i.child_story_count,
-          priority: i.priority,
-          iteration: i.iterate_name || '--',
-          status: i.status,
-          dealName: i.users_name || '--',
-          time: i.created_at,
-          expectedStart: i.expected_start_at,
-          expectedEnd: i.expected_end_at,
-          info: i.info,
-          userIds: i.user_id,
-          iterateId: i.iterate_id,
-          parentId: i.parent_id,
-          finishTime: i.finish_at,
-          updatedTime: i.updated_at,
-          usersCopySendName: i.users_copysend_name,
-          userName: i.user_name,
-          tag: i.tag,
-          project_id: i.project_id,
-          schedule: i.schedule,
-          category: i.category,
-          categoryColor: i.category_color,
-          usersNameIds: i.users_name_ids,
-          'class': i.class,
-          project: {
-            isPublic: i.project.is_public,
-            isUserMember: i.project.user_ismember,
-            isEdit: Object.values(i.project.permissions).includes(
-              'b/story/update',
-            ),
-            isDelete: Object.values(i.project.permissions).includes(
-              'b/story/delete',
-            ),
-          },
-          isExamine: i.verify_lock === 1,
-          ...i.custom_field,
-        }))
+            id: i.id,
+            name: i.name,
+            demand: i.child_story_count,
+            priority: i.priority,
+            iteration: i.iterate_name || '--',
+            status: i.status,
+            dealName: i.users_name || '--',
+            time: i.created_at,
+            expectedStart: i.expected_start_at,
+            expectedEnd: i.expected_end_at,
+            info: i.info,
+            userIds: i.user_id,
+            iterateId: i.iterate_id,
+            parentId: i.parent_id,
+            finishTime: i.finish_at,
+            updatedTime: i.updated_at,
+            usersCopySendName: i.users_copysend_name,
+            userName: i.user_name,
+            tag: i.tag,
+            project_id: i.project_id,
+            schedule: i.schedule,
+            category: i.category,
+            categoryColor: i.category_color,
+            usersNameIds: i.users_name_ids,
+            class: i.class,
+            project: {
+              isPublic: i.project.is_public,
+              isUserMember: i.project.user_ismember,
+              isEdit: Object.values(i.project.permissions).includes(
+                'b/story/update',
+              ),
+              isDelete: Object.values(i.project.permissions).includes(
+                'b/story/delete',
+              ),
+            },
+            isExamine: i.verify_lock === 1,
+            ...i.custom_field,
+          }))
         : [],
       pager: response.data.pager,
     }
@@ -545,44 +544,44 @@ export const getMineCreacteList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
-        id: i.id,
-        name: i.name,
-        demand: i.child_story_count,
-        priority: i.priority,
-        iteration: i.iterate_name || '--',
-        status: i.status,
-        dealName: i.users_name || '--',
-        time: i.created_at,
-        expectedStart: i.expected_start_at,
-        expectedEnd: i.expected_end_at,
-        info: i.info,
-        userIds: i.user_id,
-        iterateId: i.iterate_id,
-        parentId: i.parent_id,
-        finishTime: i.finish_at,
-        updatedTime: i.updated_at,
-        usersCopySendName: i.users_copysend_name,
-        userName: i.user_name,
-        tag: i.tag,
-        project_id: i.project_id,
-        schedule: i.schedule,
-        isExamine: i.verify_lock === 1,
-        category: i.category,
-        categoryColor: i.category_color,
-        ...i.custom_field,
-        usersNameIds: i.users_name_ids,
-        'class': i.class,
-        project: {
-          isPublic: i.project.is_public,
-          isUserMember: i.project.user_ismember,
-          isEdit: Object.values(i.project.permissions).includes(
-            'b/story/update',
-          ),
-          isDelete: Object.values(i.project.permissions).includes(
-            'b/story/delete',
-          ),
-        },
-      }))
+          id: i.id,
+          name: i.name,
+          demand: i.child_story_count,
+          priority: i.priority,
+          iteration: i.iterate_name || '--',
+          status: i.status,
+          dealName: i.users_name || '--',
+          time: i.created_at,
+          expectedStart: i.expected_start_at,
+          expectedEnd: i.expected_end_at,
+          info: i.info,
+          userIds: i.user_id,
+          iterateId: i.iterate_id,
+          parentId: i.parent_id,
+          finishTime: i.finish_at,
+          updatedTime: i.updated_at,
+          usersCopySendName: i.users_copysend_name,
+          userName: i.user_name,
+          tag: i.tag,
+          project_id: i.project_id,
+          schedule: i.schedule,
+          isExamine: i.verify_lock === 1,
+          category: i.category,
+          categoryColor: i.category_color,
+          ...i.custom_field,
+          usersNameIds: i.users_name_ids,
+          class: i.class,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: Object.values(i.project.permissions).includes(
+              'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              'b/story/delete',
+            ),
+          },
+        }))
       : [],
     pager: response.data.pager,
   }
@@ -620,44 +619,44 @@ export const getMineFinishList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
-        id: i.id,
-        name: i.name,
-        demand: i.child_story_count,
-        priority: i.priority,
-        iteration: i.iterate_name || '--',
-        status: i.status,
-        dealName: i.users_name || '--',
-        time: i.created_at,
-        expectedStart: i.expected_start_at,
-        expectedEnd: i.expected_end_at,
-        info: i.info,
-        userIds: i.user_id,
-        iterateId: i.iterate_id,
-        parentId: i.parent_id,
-        finishTime: i.finish_at,
-        updatedTime: i.updated_at,
-        usersCopySendName: i.users_copysend_name,
-        userName: i.user_name,
-        tag: i.tag,
-        project_id: i.project_id,
-        schedule: i.schedule,
-        isExamine: i.verify_lock === 1,
-        category: i.category,
-        categoryColor: i.category_color,
-        ...i.custom_field,
-        usersNameIds: i.users_name_ids,
-        'class': i.class,
-        project: {
-          isPublic: i.project.is_public,
-          isUserMember: i.project.user_ismember,
-          isEdit: Object.values(i.project.permissions).includes(
-            'b/story/update',
-          ),
-          isDelete: Object.values(i.project.permissions).includes(
-            'b/story/delete',
-          ),
-        },
-      }))
+          id: i.id,
+          name: i.name,
+          demand: i.child_story_count,
+          priority: i.priority,
+          iteration: i.iterate_name || '--',
+          status: i.status,
+          dealName: i.users_name || '--',
+          time: i.created_at,
+          expectedStart: i.expected_start_at,
+          expectedEnd: i.expected_end_at,
+          info: i.info,
+          userIds: i.user_id,
+          iterateId: i.iterate_id,
+          parentId: i.parent_id,
+          finishTime: i.finish_at,
+          updatedTime: i.updated_at,
+          usersCopySendName: i.users_copysend_name,
+          userName: i.user_name,
+          tag: i.tag,
+          project_id: i.project_id,
+          schedule: i.schedule,
+          isExamine: i.verify_lock === 1,
+          category: i.category,
+          categoryColor: i.category_color,
+          ...i.custom_field,
+          usersNameIds: i.users_name_ids,
+          class: i.class,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: Object.values(i.project.permissions).includes(
+              'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              'b/story/delete',
+            ),
+          },
+        }))
       : [],
     pager: response.data.pager,
   }
@@ -696,44 +695,44 @@ export const getMineNeedList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
-        id: i.id,
-        name: i.name,
-        demand: i.child_story_count,
-        priority: i.priority,
-        iteration: i.iterate_name || '--',
-        status: i.status,
-        dealName: i.users_name || '--',
-        time: i.created_at,
-        expectedStart: i.expected_start_at,
-        expectedEnd: i.expected_end_at,
-        info: i.info,
-        userIds: i.user_id,
-        iterateId: i.iterate_id,
-        parentId: i.parent_id,
-        finishTime: i.finish_at,
-        updatedTime: i.updated_at,
-        usersCopySendName: i.users_copysend_name,
-        userName: i.user_name,
-        tag: i.tag,
-        project_id: i.project_id,
-        schedule: i.schedule,
-        category: i.category,
-        categoryColor: i.category_color,
-        usersNameIds: i.users_name_ids,
-        'class': i.class,
-        project: {
-          isPublic: i.project.is_public,
-          isUserMember: i.project.user_ismember,
-          isEdit: Object.values(i.project.permissions).includes(
-            'b/story/update',
-          ),
-          isDelete: Object.values(i.project.permissions).includes(
-            'b/story/delete',
-          ),
-        },
-        isExamine: i.verify_lock === 1,
-        ...i.custom_field,
-      }))
+          id: i.id,
+          name: i.name,
+          demand: i.child_story_count,
+          priority: i.priority,
+          iteration: i.iterate_name || '--',
+          status: i.status,
+          dealName: i.users_name || '--',
+          time: i.created_at,
+          expectedStart: i.expected_start_at,
+          expectedEnd: i.expected_end_at,
+          info: i.info,
+          userIds: i.user_id,
+          iterateId: i.iterate_id,
+          parentId: i.parent_id,
+          finishTime: i.finish_at,
+          updatedTime: i.updated_at,
+          usersCopySendName: i.users_copysend_name,
+          userName: i.user_name,
+          tag: i.tag,
+          project_id: i.project_id,
+          schedule: i.schedule,
+          category: i.category,
+          categoryColor: i.category_color,
+          usersNameIds: i.users_name_ids,
+          class: i.class,
+          project: {
+            isPublic: i.project.is_public,
+            isUserMember: i.project.user_ismember,
+            isEdit: Object.values(i.project.permissions).includes(
+              'b/story/update',
+            ),
+            isDelete: Object.values(i.project.permissions).includes(
+              'b/story/delete',
+            ),
+          },
+          isExamine: i.verify_lock === 1,
+          ...i.custom_field,
+        }))
       : [],
     pager: response.data.pager,
   }
@@ -819,8 +818,8 @@ export const addQuicklyCreate: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
 
   const response: any = await http.post<any>('addQuicklyCreate', {
     project_id: params.projectId,
@@ -953,6 +952,7 @@ export const getVerifyInfo: any = async (params: any) => {
       remark: k.verify_opinion,
       id: k.user_id,
     })),
+    fields: response.data.fields,
   }
 }
 
