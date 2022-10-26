@@ -245,7 +245,7 @@ const ChildDemandTable = (props: {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: any) => {
         return (
           <div>
             {isCanEdit &&
@@ -258,6 +258,7 @@ const ChildDemandTable = (props: {
                   row={record}
                   onUpdate={onUpdate}
                   listLength={dataList?.list?.length}
+                  index={index}
                 />
               </div>
             ) : (

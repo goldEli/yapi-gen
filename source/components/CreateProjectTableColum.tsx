@@ -339,7 +339,7 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: any) => {
         return (
           <div>
             {isCanEdit &&
@@ -352,6 +352,7 @@ export const useDynamicColumns = (state: any) => {
                   row={record}
                   onUpdate={onUpdate}
                   listLength={state.listLength}
+                  index={index}
                 />
               </div>
             ) : (

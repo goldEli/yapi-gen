@@ -288,7 +288,7 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: any) => {
         return (
           <>
             {record?.usersNameIds?.includes(userInfo?.id) &&
@@ -300,6 +300,7 @@ export const useDynamicColumns = (state: any) => {
                   row={record}
                   onUpdate={onUpdate}
                   listLength={state.listLength}
+                  index={index}
                 />
               </div>
             ) : (
