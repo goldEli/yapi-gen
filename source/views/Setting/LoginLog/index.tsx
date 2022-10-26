@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { Table, Select, Pagination, Form, Spin, Space } from 'antd'
 import moment from 'moment'
 import { PaginationWrap, SelectWrapBedeck } from '@/components/StyleCommon'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
@@ -100,6 +100,26 @@ const LoginLog = () => {
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [dataList])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (orderVal?: any) => {
     setIsSpinning(true)
@@ -124,7 +144,6 @@ const LoginLog = () => {
       setDataList(result)
       setIsSpinning(false)
     } finally {
-
       //
     }
   }
@@ -365,22 +384,29 @@ const LoginLog = () => {
         </SearchWrap>
       </Header>
       <Content>
-        <DataWrap>
+        <DataWrap ref={dataWrapRef}>
           <Spin spinning={isSpinning}>
-            {!!dataList?.list
-              && (dataList?.list?.length > 0 ? (
+            {!!dataList?.list &&
+              (dataList?.list?.length > 0 ? (
                 <Table
                   rowKey="id"
                   columns={columns}
                   dataSource={dataList.list}
                   pagination={false}
-                  scroll={{ x: 'max-content' }}
+                  scroll={{
+                    x: columns.reduce(
+                      (totalWidth: number, item: any) =>
+                        totalWidth + item.width,
+                      0,
+                    ),
+                    y: tableY,
+                  }}
                   showSorterTooltip={false}
                   sticky
                 />
-              )
-                : <NoData />
-              )}
+              ) : (
+                <NoData />
+              ))}
           </Spin>
         </DataWrap>
 
@@ -394,7 +420,8 @@ const LoginLog = () => {
                     showSizeChanger
                     showQuickJumper
                     total={dataList.total}
-                    showTotal={total => t('common.tableTotal', { count: total })
+                    showTotal={total =>
+                      t('common.tableTotal', { count: total })
                     }
                     pageSizeOptions={[10, 20, 50]}
                     pageSize={form.getFieldValue('pageSize') || 10}

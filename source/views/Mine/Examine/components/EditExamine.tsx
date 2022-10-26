@@ -80,6 +80,18 @@ const EditExamine = (props: Props) => {
   const { getVerifyInfo, verifyInfo, updateVerifyOperation } = useModel('mine')
   const [value, setValue] = useState('')
 
+  const keys = [
+    { name: t('common.tag'), key: 'tag' },
+    { name: t('newlyAdd.demandClass'), key: 'class' },
+    { name: t('common.comment'), key: 'comment' },
+    { name: t('common.priority'), key: 'priority' },
+    { name: t('common.dealName'), key: 'usersName' },
+    { name: t('common.iterate'), key: 'iterateName' },
+    { name: t('common.start'), key: 'startTime' },
+    { name: t('common.end'), key: 'endTime' },
+    { name: t('common.copySend'), key: 'copySendName' },
+  ]
+
   const getInfo = async () => {
     await getVerifyInfo({
       id: props?.isEdit ? props?.item?.storyVerifyId : props?.item?.id,
@@ -207,10 +219,58 @@ const EditExamine = (props: Props) => {
           <LabelWrap>{t('newlyAdd.reviewStatus')}</LabelWrap>
           <ContentWrap>{verifyInfo?.statusFromTo || '--'}</ContentWrap>
         </ItemWrap>
-        <ItemWrap>
-          <LabelWrap>{t('common.dealName')}</LabelWrap>
-          <ContentWrap>{verifyInfo?.usersName || '--'}</ContentWrap>
-        </ItemWrap>
+        {verifyInfo?.id
+          ? Object.keys(verifyInfo?.fields)?.map((m: any) => (
+              <ItemWrap key={m} hidden={!verifyInfo?.fields[m]}>
+                <LabelWrap>
+                  {keys?.filter((j: any) => j.key === m)[0]?.name}
+                </LabelWrap>
+                {typeof verifyInfo.fields[m] === 'string' && (
+                  <ContentWrap>{verifyInfo.fields[m]}</ContentWrap>
+                )}
+                {Array.isArray(verifyInfo.fields[m]) &&
+                  (m === 'tag' ? (
+                    <ContentWrap>
+                      {verifyInfo.fields[m]?.map((h: any) => (
+                        <ViewWrap key={h.name} color={h?.color}>
+                          {h.name}
+                        </ViewWrap>
+                      ))}
+                    </ContentWrap>
+                  ) : (
+                    <ContentWrap>
+                      <Space size={24}>
+                        {verifyInfo.fields[m]?.map((n: any) => (
+                          <div key={n.id} style={{ display: 'flex' }}>
+                            <NameWrap
+                              style={{
+                                marginBottom: 0,
+                                marginRight: 8,
+                                width: 24,
+                                height: 24,
+                              }}
+                            >
+                              {String(
+                                n?.name?.trim().slice(0, 1),
+                              ).toLocaleUpperCase()}
+                            </NameWrap>
+                            <span>{n?.name?.trim()}</span>
+                          </div>
+                        ))}
+                      </Space>
+                    </ContentWrap>
+                  ))}
+                {m === 'priority' && (
+                  <ContentWrap>
+                    <span style={{ color: verifyInfo.fields[m]?.color }}>
+                      {verifyInfo.fields[m]?.content}
+                    </span>
+                  </ContentWrap>
+                )}
+              </ItemWrap>
+            ))
+          : null}
+
         <ItemWrap>
           <LabelWrap>{t('newlyAdd.submitName')}</LabelWrap>
           <ContentWrap>{verifyInfo?.userName || '--'}</ContentWrap>

@@ -1256,7 +1256,7 @@ const EditDemand = (props: Props) => {
             </FormWrap>
             {fieldList?.list && (
               <>
-                {!isShowFields && (
+                {!isShowFields && fieldList?.list?.length > 0 && (
                   <ShowLabel onClick={() => setIsShowFields(true)}>
                     {t('newlyAdd.open')}
                   </ShowLabel>
@@ -1277,7 +1277,7 @@ const EditDemand = (props: Props) => {
                     </div>
                   ))}
                 </FormWrap>
-                {isShowFields && (
+                {isShowFields && fieldList?.list?.length > 0 && (
                   <ShowLabel onClick={() => setIsShowFields(false)}>
                     {t('newlyAdd.close')}
                   </ShowLabel>

@@ -9,6 +9,7 @@ interface Props {
   value: number
   row?: any
   onUpdate(): void
+  listLength?: any
 }
 
 const DemandProgress = (props: Props) => {
@@ -25,7 +26,6 @@ const DemandProgress = (props: Props) => {
       await updateTableParams(obj)
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -43,7 +43,9 @@ const DemandProgress = (props: Props) => {
           />
         </ProgressWrap>
       }
-      getPopupContainer={node => node}
+      getPopupContainer={node =>
+        props?.listLength === 1 ? document.body : node
+      }
       getTooltipContainer={node => node}
     >
       <Progress
@@ -52,7 +54,7 @@ const DemandProgress = (props: Props) => {
         width={38}
         type="circle"
         percent={props?.value}
-        format={percent => percent === 100 ? '100%' : `${percent}%`}
+        format={percent => (percent === 100 ? '100%' : `${percent}%`)}
         strokeWidth={8}
       />
     </Popover>

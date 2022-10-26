@@ -48,7 +48,7 @@ export const getDemandInfo: any = async (params: any) => {
     customField: response.data.custom_field,
     schedule: response.data.schedule,
     category: response.data.category_id,
-    'class': response.data.class_id,
+    class: response.data.class_id,
     className: response.data.class,
   }
 }
@@ -111,10 +111,11 @@ export const getDemandList: any = async (params: any) => {
       id: i.id,
       name: i.name,
       usersNameIds: i.users_name_ids,
-      userName: i.users_name?.split(',') || [],
+      dealName: i.users_name?.split(',') || [],
       status: i.status,
       iteration: i.iterate_name || '--',
       schedule: i.schedule,
+      project_id: i.project_id,
     }))
   } else {
     return {
@@ -142,7 +143,7 @@ export const getDemandList: any = async (params: any) => {
         tag: i.tag,
         isExamine: i.verify_lock === 1,
         category: i.category,
-        'class': i.class,
+        class: i.class,
         schedule: i.schedule,
         ...i.custom_field,
         categoryColor: i.category_color,
@@ -224,8 +225,8 @@ export const addDemand: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
 
   await http.post<any>('addDemand', {
     project_id: Number(params.projectId),
@@ -254,8 +255,8 @@ export const updateDemand: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
   await http.put<any>('updateDemand', {
     project_id: params.projectId,
     name: params.name,
@@ -359,7 +360,7 @@ export const getStoryStatusLog: any = async (params: any) => {
     changeType: i.change_type,
     fields: {
       tag: i.fields?.tag,
-      'class': i.fields?.class,
+      class: i.fields?.class,
       comment: i.fields?.comment,
       priority: i.fields?.priority,
       usersName: i.fields?.users_name,
@@ -381,7 +382,6 @@ export const getStoryStatusLog: any = async (params: any) => {
       // 整条审核的状态  1-待审核  2-已通过 3-未通过
       verifyStatus: i.verify?.verify_status,
       verify: {
-
         // 1：固定审核流程；2：用户指定审核人
         verifyType: i.verify?.verify?.verify_type,
         fixedUser: {

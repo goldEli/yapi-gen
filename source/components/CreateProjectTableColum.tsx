@@ -56,9 +56,9 @@ export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
   const { projectInfo, colorList } = useModel('project')
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const NewSort = (props: any) => {
@@ -246,10 +246,11 @@ export const useDynamicColumns = (state: any) => {
       key: 'child_story_count',
       width: 100,
       render: (text: string, record: any) => {
-        return state.showChildCOntent
-          ? <ChildDemandTable value={text} row={record} />
-          : <span>{text || '--'}</span>
-
+        return state.showChildCOntent ? (
+          <ChildDemandTable value={text} row={record} />
+        ) : (
+          <span>{text || '--'}</span>
+        )
       },
     },
     {
@@ -332,37 +333,37 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
-      ,
+      ),
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
       render: (text: string, record: any) => {
         return (
           <div>
-            {isCanEdit
-            && record?.usersNameIds?.includes(userInfo?.id)
-            && record.status.is_start !== 1
-            && record.status.is_end !== 1 ? (
-                  <div style={{ cursor: 'pointer' }}>
-                    <DemandProgress
-                      value={record.schedule}
-                      row={record}
-                      onUpdate={onUpdate}
-                    />
-                  </div>
-                ) : (
-                  <Progress
-                    strokeColor="#43BA9A"
-                    style={{ color: '#43BA9A', cursor: 'not-allowed' }}
-                    width={38}
-                    type="circle"
-                    percent={record.schedule}
-                    format={percent => percent === 100 ? '100%' : `${percent}%`}
-                    strokeWidth={8}
-                  />
-                )}
+            {isCanEdit &&
+            record?.usersNameIds?.includes(userInfo?.id) &&
+            record.status.is_start !== 1 &&
+            record.status.is_end !== 1 ? (
+              <div style={{ cursor: 'pointer' }}>
+                <DemandProgress
+                  value={record.schedule}
+                  row={record}
+                  onUpdate={onUpdate}
+                />
+              </div>
+            ) : (
+              <Progress
+                strokeColor="#43BA9A"
+                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                width={38}
+                type="circle"
+                percent={record.schedule}
+                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                strokeWidth={8}
+              />
+            )}
           </div>
         )
       },
@@ -399,9 +400,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="expected_end_at">{t('common.expectedEnd')}</NewSort>
-      ,
+      ),
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
       width: 200,

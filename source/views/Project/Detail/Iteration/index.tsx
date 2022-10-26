@@ -276,7 +276,6 @@ const IterationWrap = () => {
       const params = encryptPhp(JSON.stringify({ id: projectId }))
       navigate(`/Detail/Iteration?data=${params}`)
     } catch (error) {
-
       //
     }
   }
@@ -304,7 +303,6 @@ const IterationWrap = () => {
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
       } catch (error) {
-
         //
       }
     }
@@ -428,7 +426,6 @@ const IterationWrap = () => {
                     style={{ color: '#BBBDBF', fontSize: 20 }}
                   />
                 }
-
                 // onPressEnter={onPressEnter}
                 // onBlur={onPressEnter}
                 placeholder={t('common.pleaseSearchDemand')}

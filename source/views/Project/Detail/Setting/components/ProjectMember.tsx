@@ -13,7 +13,7 @@ import {
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import {
   Menu,
   Dropdown,
@@ -169,6 +169,26 @@ const ProjectMember = () => {
   const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [memberList])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -645,7 +665,7 @@ const ProjectMember = () => {
           </FilterWrap>
         </Header>
         <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
-          <DataWrap>
+          <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!memberList?.list &&
                 (memberList?.list?.length > 0 ? (
@@ -654,7 +674,14 @@ const ProjectMember = () => {
                     columns={columns as any}
                     dataSource={memberList?.list}
                     pagination={false}
-                    scroll={{ x: 'max-content' }}
+                    scroll={{
+                      x: columns.reduce(
+                        (totalWidth: number, item: any) =>
+                          totalWidth + item.width,
+                        0,
+                      ),
+                      y: tableY,
+                    }}
                     showSorterTooltip={false}
                     sticky
                   />
