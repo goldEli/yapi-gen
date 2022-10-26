@@ -242,7 +242,7 @@ const MainTable = (props: Props) => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
-  })
+  }, [props.projectList?.list])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0

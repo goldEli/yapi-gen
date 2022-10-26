@@ -262,7 +262,7 @@ const DemandTable = (props: Props) => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
-  })
+  }, [props.data?.list])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0

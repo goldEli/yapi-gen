@@ -38,6 +38,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const DemandWrap = () => {
@@ -78,7 +79,7 @@ const DemandWrap = () => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
-  })
+  }, [dataList])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
@@ -285,7 +286,7 @@ const DemandWrap = () => {
   }, [titleList, titleList2, columns])
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
       <DeleteConfirm
         text={t('mark.del')}
         isVisible={isDelete}

@@ -185,7 +185,7 @@ const ProjectMember = () => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
-  })
+  }, [memberList])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0

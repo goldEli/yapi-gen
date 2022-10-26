@@ -355,7 +355,7 @@ const Staff = () => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
-  })
+  }, [listData])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
