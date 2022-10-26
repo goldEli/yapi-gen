@@ -88,6 +88,7 @@ const AddMember = (props: Props) => {
       projectId,
       userGroupId,
     }
+
     try {
       const users = staffList?.filter((i: any) =>
         values.name.find((k: any) => k === i.value),
@@ -111,6 +112,12 @@ const AddMember = (props: Props) => {
   const onClose = () => {
     form.resetFields()
     props.onChangeValue()
+  }
+
+  const onSelectUsers = (value: any) => {
+    form.setFieldsValue({
+      name: value,
+    })
   }
 
   return (
@@ -144,6 +151,7 @@ const AddMember = (props: Props) => {
               showArrow={false}
               mode="multiple"
               showSearch
+              onChange={onSelectUsers}
               disabled={props.details?.id}
               options={staffList?.filter(
                 (i: any) => !memberList?.find((k: any) => k.id === i.value),
