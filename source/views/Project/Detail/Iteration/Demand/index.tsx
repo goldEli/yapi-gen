@@ -5,7 +5,7 @@ import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import EditDemand from '@/components/EditDemand'
@@ -62,6 +62,27 @@ const DemandWrap = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  })
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -150,7 +171,7 @@ const DemandWrap = () => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
-  const onUpdateOrderKey = (key: any, val: any) => {
+  const updateOrderkey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList(
       { page: 1, size: pageObj.size },
@@ -201,7 +222,7 @@ const DemandWrap = () => {
     projectId,
     orderKey: order.key,
     order: order.value,
-    onUpdateOrderKey,
+    updateOrderkey,
     onChangeStatus,
     onChangeState,
     onClickItem,
@@ -280,7 +301,7 @@ const DemandWrap = () => {
           iterateId={iterateId}
         />
       ) : null}
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
@@ -289,7 +310,14 @@ const DemandWrap = () => {
                 columns={selectColum}
                 dataSource={dataList?.list}
                 pagination={false}
-                scroll={{ x: 'max-content' }}
+                // scroll={{ x: 'max-content' }}
+                scroll={{
+                  x: selectColum.reduce(
+                    (totalWidth: number, item: any) => totalWidth + item.width,
+                    0,
+                  ),
+                  y: tableY,
+                }}
                 showSorterTooltip={false}
                 sticky
               />

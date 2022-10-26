@@ -56,9 +56,9 @@ const ChildDemandTable = (props: {
   const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const getList = async (item: any) => {
@@ -83,7 +83,6 @@ const ChildDemandTable = (props: {
       message.success(t('common.statusSuccess'))
       getList(order)
     } catch (error) {
-
       //
     }
   }
@@ -203,7 +202,7 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'status',
-      width: 120,
+      width: 190,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
@@ -240,37 +239,38 @@ const ChildDemandTable = (props: {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
-      ,
+      ),
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
       render: (text: string, record: any) => {
         return (
           <div>
-            {isCanEdit
-            && record?.usersNameIds?.includes(userInfo?.id)
-            && record.status.is_start !== 1
-            && record.status.is_end !== 1 ? (
-                  <div style={{ cursor: 'pointer' }}>
-                    <DemandProgress
-                      value={record.schedule}
-                      row={record}
-                      onUpdate={onUpdate}
-                    />
-                  </div>
-                ) : (
-                  <Progress
-                    strokeColor="#43BA9A"
-                    style={{ color: '#43BA9A', cursor: 'not-allowed' }}
-                    width={38}
-                    type="circle"
-                    percent={record.schedule}
-                    format={percent => percent === 100 ? '100%' : `${percent}%`}
-                    strokeWidth={8}
-                  />
-                )}
+            {isCanEdit &&
+            record?.usersNameIds?.includes(userInfo?.id) &&
+            record.status.is_start !== 1 &&
+            record.status.is_end !== 1 ? (
+              <div style={{ cursor: 'pointer' }}>
+                <DemandProgress
+                  value={record.schedule}
+                  row={record}
+                  onUpdate={onUpdate}
+                  listLength={dataList?.list?.length}
+                />
+              </div>
+            ) : (
+              <Progress
+                strokeColor="#43BA9A"
+                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                width={38}
+                type="circle"
+                percent={record.schedule}
+                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                strokeWidth={8}
+              />
+            )}
           </div>
         )
       },
@@ -317,7 +317,7 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 720, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxWidth: 800, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"
@@ -327,9 +327,9 @@ const ChildDemandTable = (props: {
               sticky
               style={{ borderRadius: 4, overflow: 'hidden' }}
             />
-          )
-            : <NoData />
-          }
+          ) : (
+            <NoData />
+          )}
         </div>
       }
     >

@@ -416,7 +416,11 @@ const Staff = () => {
         style={{ height: `calc(100% - ${filterHeight}px)` }}
       >
         <StaffTableWrap
-          style={{ height: 'calc(100% - 50px)', overflow: 'hidden' }}
+          style={{
+            height: 'calc(100% - 50px)',
+            overflow: 'hidden',
+            padding: '16px 24px 0',
+          }}
         >
           <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>

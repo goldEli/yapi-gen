@@ -14,7 +14,7 @@ import {
   HiddenText,
 } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
@@ -226,6 +226,26 @@ const NewSort = (sortProps: any) => {
 const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  })
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -465,7 +485,7 @@ const MainTable = (props: Props) => {
 
   return (
     <div style={{ height: '100%' }}>
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         {!!props.projectList?.list &&
           (props.projectList?.list?.length > 0 ? (
             <TableBox
@@ -473,7 +493,13 @@ const MainTable = (props: Props) => {
               columns={columns}
               dataSource={props.projectList?.list}
               pagination={false}
-              scroll={{ x: 'max-content' }}
+              scroll={{
+                x: columns.reduce(
+                  (totalWidth: number, item: any) => totalWidth + item.width,
+                  0,
+                ),
+                y: tableY,
+              }}
               showSorterTooltip={false}
               onRow={onTableRow}
               sticky

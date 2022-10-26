@@ -191,20 +191,20 @@ const MoreWrap = (props: MoreWrapProps) => {
     let menuItems = [
       {
         key: '1',
-        label:
+        label: (
           <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
-        ,
+        ),
       },
       {
         key: '2',
-        label:
+        label: (
           <div onClick={() => onClickMenu('delete')}>{t('common.del')}</div>
-        ,
+        ),
       },
     ]
     if (
-      props?.row.isCheck === 1
-      && props?.list?.filter((i: any) => i.isCheck === 1)?.length === 1
+      props?.row.isCheck === 1 &&
+      props?.list?.filter((i: any) => i.isCheck === 1)?.length === 1
     ) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
@@ -220,7 +220,6 @@ const MoreWrap = (props: MoreWrapProps) => {
       message.success(t('common.deleteSuccess'))
       getCategoryList({ projectId: paramsData.id })
     } catch (error) {
-
       //
     }
   }
@@ -243,7 +242,6 @@ const MoreWrap = (props: MoreWrapProps) => {
       await onDeleteConfirm()
       onCloseHasDelete()
     } catch (error) {
-
       //
     }
   }
@@ -255,6 +253,9 @@ const MoreWrap = (props: MoreWrapProps) => {
         categoryId: value,
       })
       setDisable(false)
+      form.setFieldsValue({
+        statusId: '',
+      })
     } else {
       form.resetFields()
       setDisable(true)
@@ -299,9 +300,10 @@ const MoreWrap = (props: MoreWrapProps) => {
                   onChange={onChangeSelect}
                   options={props?.list
                     ?.filter(
-                      (i: any) => i.id !== props?.row?.id
-                        && i?.statusCount
-                        && i.isCheck === 1,
+                      (i: any) =>
+                        i.id !== props?.row?.id &&
+                        i?.statusCount &&
+                        i.isCheck === 1,
                     )
                     ?.map((k: any) => ({ label: k.name, value: k.id }))}
                 />
@@ -353,8 +355,8 @@ const CardGroup = (props: CardGroupProps) => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { colorList, changeCategoryStatus, getCategoryList, projectInfo }
-    = useModel('project')
+  const { colorList, changeCategoryStatus, getCategoryList, projectInfo } =
+    useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
@@ -370,7 +372,6 @@ const CardGroup = (props: CardGroupProps) => {
       message.success(t('common.statusSuccess'))
       getCategoryList({ projectId: paramsData.id })
     } catch (error) {
-
       //
     }
   }

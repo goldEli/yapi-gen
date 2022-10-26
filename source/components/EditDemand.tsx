@@ -76,7 +76,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: '\'*\'',
+        content: "'*'",
       },
     '> label::before': {
       display: 'none!important',
@@ -341,7 +341,7 @@ const EditDemand = (props: Props) => {
       setSchedule(res?.schedule)
       if (treeArr?.find((j: any) => j.id === res.class)?.length) {
         form.setFieldsValue({
-          'class': '',
+          class: '',
         })
       }
       if (categoryData?.find((j: any) => j.id === res.category)?.length) {
@@ -354,8 +354,8 @@ const EditDemand = (props: Props) => {
 
       const form1Obj: any = {}
       for (const key in res?.customField) {
-        form1Obj[key]
-          = res?.customField[key]?.attr === 'date'
+        form1Obj[key] =
+          res?.customField[key]?.attr === 'date'
             ? res?.customField[key]?.value
               ? moment(res?.customField[key]?.value)
               : ''
@@ -535,8 +535,8 @@ const EditDemand = (props: Props) => {
             : 'YYYY-MM-DD',
         )
       } else if (
-        obj?.type?.attr === 'select_checkbox'
-        || obj?.type?.attr === 'checkbox'
+        obj?.type?.attr === 'select_checkbox' ||
+        obj?.type?.attr === 'checkbox'
       ) {
         values1[obj.content] = values1[obj.content]?.length
           ? values1[obj.content]
@@ -586,9 +586,11 @@ const EditDemand = (props: Props) => {
           type: 'need',
         })
         form1.resetFields()
+        setTimeout(() => {
+          inputRefDom.current?.focus()
+        }, 100)
       }
     } catch (error) {
-
       //
     }
   }
@@ -605,7 +607,7 @@ const EditDemand = (props: Props) => {
       result.path = result.url
       form.setFieldsValue({
         attachments: [
-          ...form.getFieldValue('attachments') || [],
+          ...(form.getFieldValue('attachments') || []),
           ...[result.url],
         ],
       })
@@ -623,7 +625,7 @@ const EditDemand = (props: Props) => {
   const onChangeTag = (result: any, type: string) => {
     if (type === 'add') {
       form.setFieldsValue({
-        tagIds: [...form.getFieldValue('tagIds') || [], ...[result]],
+        tagIds: [...(form.getFieldValue('tagIds') || []), ...[result]],
       })
       setTagList([...tagList, ...[result]])
     } else {
@@ -749,7 +751,7 @@ const EditDemand = (props: Props) => {
       }}
     >
       {categoryList?.list
-        ?.filter((i: any) => props.demandId ? i.id !== categoryObj.id : i)
+        ?.filter((i: any) => (props.demandId ? i.id !== categoryObj.id : i))
         ?.map((k: any) => (
           <LiWrap
             key={k.id}
@@ -797,7 +799,6 @@ const EditDemand = (props: Props) => {
         changeCategoryForm.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -906,8 +907,9 @@ const EditDemand = (props: Props) => {
                   }
                   bgColor={
                     colorList?.filter(
-                      (i: any) => i.key
-                        === categoryList?.list?.filter(
+                      (i: any) =>
+                        i.key ===
+                        categoryList?.list?.filter(
                           (k: any) => k.id === categoryObj?.id,
                         )[0]?.color,
                     )[0]?.bgColor
@@ -1080,9 +1082,9 @@ const EditDemand = (props: Props) => {
                         !(
                           demandInfo?.user
                             ?.map((i: any) => i.user.id)
-                            ?.includes(userInfo?.id)
-                          && demandInfo.status.is_start !== 1
-                          && demandInfo.status.is_end !== 1
+                            ?.includes(userInfo?.id) &&
+                          demandInfo.status.is_start !== 1 &&
+                          demandInfo.status.is_end !== 1
                         )
                       }
                     />
@@ -1145,9 +1147,10 @@ const EditDemand = (props: Props) => {
                   options={
                     props?.demandId
                       ? parentList?.filter(
-                          (k: any) => k.value !== props?.demandId
-                            && k.parentId !== props?.demandId
-                            && k.parentId !== demandInfo?.parentId,
+                          (k: any) =>
+                            k.value !== props?.demandId &&
+                            k.parentId !== props?.demandId &&
+                            k.parentId !== demandInfo?.parentId,
                         )
                       : parentList
                   }
@@ -1220,7 +1223,7 @@ const EditDemand = (props: Props) => {
             </FormWrap>
             {fieldList?.list && (
               <>
-                {!isShowFields && (
+                {!isShowFields && fieldList?.list?.length > 0 && (
                   <ShowLabel onClick={() => setIsShowFields(true)}>
                     {t('newlyAdd.open')}
                   </ShowLabel>
@@ -1241,7 +1244,7 @@ const EditDemand = (props: Props) => {
                     </div>
                   ))}
                 </FormWrap>
-                {isShowFields && (
+                {isShowFields && fieldList?.list?.length > 0 && (
                   <ShowLabel onClick={() => setIsShowFields(false)}>
                     {t('newlyAdd.close')}
                   </ShowLabel>

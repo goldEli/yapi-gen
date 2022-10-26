@@ -952,7 +952,18 @@ export const getVerifyInfo: any = async (params: any) => {
       remark: k.verify_opinion,
       id: k.user_id,
     })),
-    fields: response.data.fields,
+    fields: {
+      tag: response.data.fields?.tag,
+      class: response.data.fields?.class,
+      comment: response.data.fields?.comment,
+      priority: response.data.fields?.priority,
+      usersName: response.data.fields?.users_name,
+      iterateName: response.data.fields?.iterate_name,
+      customFields: response.data.fields?.custom_field,
+      startTime: response.data.fields?.expected_start_at,
+      endTime: response.data.fields?.expected_end_at,
+      copySendName: response.data.fields?.users_copysend_name,
+    },
   }
 }
 
