@@ -358,18 +358,7 @@ export const getStoryStatusLog: any = async (params: any) => {
         }
       : null,
     changeType: i.change_type,
-    fields: {
-      tag: i.fields?.tag,
-      class: i.fields?.class,
-      comment: i.fields?.comment,
-      priority: i.fields?.priority,
-      usersName: i.fields?.users_name,
-      iterateName: i.fields?.iterate_name,
-      customFields: i.fields?.custom_field,
-      startTime: i.fields?.expected_start_at,
-      endTime: i.fields?.expected_end_at,
-      copySendName: i.fields?.users_copysend_name,
-    },
+    fields: i.fields,
     verifyAll: {
       id: i.verify?.id,
       statusFrom: i.verify?.statusfrom

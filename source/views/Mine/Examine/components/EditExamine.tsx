@@ -17,6 +17,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { OmitText } from '@star-yun/ui'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -79,18 +80,6 @@ const EditExamine = (props: Props) => {
   const { colorList } = useModel('project')
   const { getVerifyInfo, verifyInfo, updateVerifyOperation } = useModel('mine')
   const [value, setValue] = useState('')
-
-  const keys = [
-    { name: t('common.tag'), key: 'tag' },
-    { name: t('newlyAdd.demandClass'), key: 'class' },
-    { name: t('common.comment'), key: 'comment' },
-    { name: t('common.priority'), key: 'priority' },
-    { name: t('common.dealName'), key: 'usersName' },
-    { name: t('common.iterate'), key: 'iterateName' },
-    { name: t('common.start'), key: 'startTime' },
-    { name: t('common.end'), key: 'endTime' },
-    { name: t('common.copySend'), key: 'copySendName' },
-  ]
 
   const getInfo = async () => {
     await getVerifyInfo({
@@ -213,7 +202,10 @@ const EditExamine = (props: Props) => {
           >
             {verifyInfo?.categoryName}
           </CategoryWrap>
-          <div>{verifyInfo?.demandName}</div>
+        </ItemWrap>
+        <ItemWrap>
+          <LabelWrap>{t('common.title')}</LabelWrap>
+          <ContentWrap>{verifyInfo?.demandName}</ContentWrap>
         </ItemWrap>
         <ItemWrap>
           <LabelWrap>{t('newlyAdd.reviewStatus')}</LabelWrap>
@@ -223,15 +215,25 @@ const EditExamine = (props: Props) => {
           ? Object.keys(verifyInfo?.fields)?.map((m: any) => (
               <ItemWrap key={m} hidden={!verifyInfo?.fields[m]}>
                 <LabelWrap>
-                  {keys?.filter((j: any) => j.key === m)[0]?.name}
+                  <OmitText width={80} tipProps={{ placement: 'topLeft' }}>
+                    {verifyInfo.fields[m]?.title}
+                  </OmitText>
                 </LabelWrap>
-                {typeof verifyInfo.fields[m] === 'string' && (
-                  <ContentWrap>{verifyInfo.fields[m]}</ContentWrap>
-                )}
-                {Array.isArray(verifyInfo.fields[m]) &&
+                {(typeof verifyInfo.fields[m]?.value === 'string' ||
+                  verifyInfo.fields[m]?.value === null) &&
+                  m !== 'priority' && (
+                    <ContentWrap>
+                      {verifyInfo.fields[m]?.value
+                        ? verifyInfo.fields[m]?.value
+                        : m === 'class'
+                        ? verifyInfo.fields[m]?.value || '未分类'
+                        : '--'}
+                    </ContentWrap>
+                  )}
+                {Array.isArray(verifyInfo.fields[m]?.value) &&
                   (m === 'tag' ? (
                     <ContentWrap>
-                      {verifyInfo.fields[m]?.map((h: any) => (
+                      {verifyInfo.fields[m]?.value?.map((h: any) => (
                         <ViewWrap key={h.name} color={h?.color}>
                           {h.name}
                         </ViewWrap>
@@ -239,32 +241,18 @@ const EditExamine = (props: Props) => {
                     </ContentWrap>
                   ) : (
                     <ContentWrap>
-                      <Space size={24}>
-                        {verifyInfo.fields[m]?.map((n: any) => (
-                          <div key={n.id} style={{ display: 'flex' }}>
-                            <NameWrap
-                              style={{
-                                marginBottom: 0,
-                                marginRight: 8,
-                                width: 24,
-                                height: 24,
-                              }}
-                            >
-                              {String(
-                                n?.name?.trim().slice(0, 1),
-                              ).toLocaleUpperCase()}
-                            </NameWrap>
-                            <span>{n?.name?.trim()}</span>
-                          </div>
-                        ))}
-                      </Space>
+                      <span>
+                        {verifyInfo.fields[m]?.value
+                          ?.map((i: any) => i.name.trim())
+                          .join(',')}
+                      </span>
                     </ContentWrap>
                   ))}
                 {m === 'priority' && (
                   <ContentWrap>
-                    <span style={{ color: verifyInfo.fields[m]?.color }}>
-                      {verifyInfo.fields[m]?.content}
-                    </span>
+                    {verifyInfo.fields[m]?.value?.id
+                      ? verifyInfo.fields[m]?.value?.content
+                      : '--'}
                   </ContentWrap>
                 )}
               </ItemWrap>

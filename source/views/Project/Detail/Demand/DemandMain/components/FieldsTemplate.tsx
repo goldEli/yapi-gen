@@ -87,7 +87,7 @@ const FieldsTemplate = (props: Props) => {
   const projectId = paramsData.id
   const { getLoadListFields } = useModel('demand')
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
-    props?.importState === 2 ? ['name', 'category_id'] : ['id'],
+    props?.importState === 2 ? ['name', 'category'] : ['id'],
   )
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
@@ -219,7 +219,7 @@ const FieldsTemplate = (props: Props) => {
       checked
         ? importFields?.baseFields?.map((k: any) => k.field)
         : props?.importState === 2
-        ? ['name', 'category_id']
+        ? ['name', 'category']
         : ['id'],
     )
     setCheckList2(
@@ -261,7 +261,7 @@ const FieldsTemplate = (props: Props) => {
                   <Checkbox
                     disabled={
                       props?.importState === 2
-                        ? ['name', 'category_id'].includes(item.field)
+                        ? ['name', 'category'].includes(item.field)
                         : item.field === 'id'
                     }
                     key={item.field}

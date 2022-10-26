@@ -683,7 +683,7 @@ export const ShapeContent = (props: any) => {
                         <TreeSelect
                           style={{ width: '100%', border: 'none' }}
                           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                          treeData={i.children}
+                          treeData={i.children[0].children}
                           placeholder="Please select"
                           treeDefaultExpandAll
                         />
