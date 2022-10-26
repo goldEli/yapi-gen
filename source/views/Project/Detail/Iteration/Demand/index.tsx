@@ -310,7 +310,6 @@ const DemandWrap = () => {
                 columns={selectColum}
                 dataSource={dataList?.list}
                 pagination={false}
-                // scroll={{ x: 'max-content' }}
                 scroll={{
                   x: selectColum.reduce(
                     (totalWidth: number, item: any) => totalWidth + item.width,
