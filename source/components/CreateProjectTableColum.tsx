@@ -351,6 +351,7 @@ export const useDynamicColumns = (state: any) => {
                   value={record.schedule}
                   row={record}
                   onUpdate={onUpdate}
+                  listLength={state.listLength}
                 />
               </div>
             ) : (

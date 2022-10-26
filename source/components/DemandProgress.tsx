@@ -43,10 +43,10 @@ const DemandProgress = (props: Props) => {
           />
         </ProgressWrap>
       }
-      getPopupContainer={node =>
-        props?.listLength === 1 ? document.body : node
+      getPopupContainer={node => (props?.listLength < 5 ? document.body : node)}
+      getTooltipContainer={node =>
+        props?.listLength < 5 ? document.body : node
       }
-      getTooltipContainer={node => node}
     >
       <Progress
         strokeColor="#43BA9A"

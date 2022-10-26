@@ -230,6 +230,7 @@ const DemandWrap = () => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate,
+    listLength: dataList?.list?.length,
   })
 
   const onChangeVisible = () => {

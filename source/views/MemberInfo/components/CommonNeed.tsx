@@ -326,6 +326,7 @@ const CommonNeed = (props: any) => {
     updatePriority,
     init,
     plainOptions3,
+    listLength: listData?.list?.length,
   })
 
   const selectColum: any = useMemo(() => {
