@@ -140,6 +140,7 @@ const AddMember = (props: Props) => {
         >
           <ModalContent>
             <Select
+              style={{ width: '100%' }}
               showArrow={false}
               mode="multiple"
               showSearch
