@@ -16,10 +16,19 @@ import { rangPicker, SelectWrapBedeck } from '@/components/TableFilter'
 import { DataWrap, TableBox, tableWrapP } from '../staff'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
+import WhiteDay from './components/WhiteDay'
+import { useParams } from 'react-router-dom'
 
+const titleList = {
+  2: '修改日报',
+  3: '修改周报',
+  4: '修改月报',
+}
 const Send = () => {
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
+  const { id: urlId = '' } = useParams<any>()
+
   // const [listData, setListData] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
@@ -27,6 +36,16 @@ const Send = () => {
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
+
+  const editClose = () => {
+    setVisibleEdit(false)
+  }
+
+  const editConfirm = async (e: any) => {
+    editClose()
+  }
 
   const NewSort = (props: any) => {
     return (
@@ -208,22 +227,30 @@ const Send = () => {
       title: <NewSort fixedKey="created_at">操作</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
-      width: 50,
+      width: 120,
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
           <div style={{ textAlign: 'right' }}>
             {record.state
-              ? <span
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: ' 400',
-                    color: '#2877FF',
-                    cursor: 'pointer',
-                  }}
-                >
+              ? (
+                  <span
+                    onClick={() => {
+                      setVisibleEdit(true)
+                      setVisibleEditText(
+                        titleList[urlId as unknown as keyof typeof titleList],
+                      )
+                    }}
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: ' 400',
+                      color: '#2877FF',
+                      cursor: 'pointer',
+                    }}
+                  >
                 修改
-                </span>
+                  </span>
+                )
               : null}
 
             <span
@@ -414,6 +441,13 @@ const Send = () => {
           />
         </PaginationWrap>
       </div>
+      {/* // 写日志的表单D */}
+      <WhiteDay
+        visibleEditText={visibleEditText}
+        visibleEdit={visibleEdit}
+        editClose={editClose}
+        editConfirm={editConfirm}
+      />
     </div>
   )
 }

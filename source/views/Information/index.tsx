@@ -10,10 +10,7 @@ import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { Form, Popover } from 'antd'
-import CommonModal from '@/components/CommonModal'
-import Editor from '@/components/Editor'
-import ChoosePeople from './components/ChoosePeople'
-import RelatedNeed from './components/RelatedNeed'
+import WhiteDay from './components/WhiteDay'
 
 const Wrap = styled.div`
   height: 100%;
@@ -47,27 +44,6 @@ const Menu = styled.div`
   margin-top: 24px;
 `
 
-const LabelTitle = (props: any) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        style={{
-          width: '3px',
-          height: '16px',
-          background: '#2877FF',
-          display: 'inline-block',
-          marginRight: '8px',
-        }}
-      />
-      <span>{props.title}</span>
-    </div>
-  )
-}
 const MenuItem = styled.div<{ active?: boolean }>(
   {
     boxSizing: 'border-box',
@@ -100,9 +76,7 @@ type MenuList = {
 const Information = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
-  const [form] = Form.useForm()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
-  const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -111,24 +85,13 @@ const Information = () => {
   const changeActive = (value: MenuList) => {
     navigate(value.path)
   }
-  const controlquickCreateVisible = () => {
-    setQuickCreateVisible(true)
-  }
-  const close = () => {
-    setVisibleEdit(false)
-    form.resetFields()
-  }
+
   const editClose = () => {
-    close()
-
-    form.resetFields()
+    setVisibleEdit(false)
   }
 
-  const editConfirm = async () => {
-    const data: any = await form.validateFields()
-
-    return
-    close()
+  const editConfirm = async (e: any) => {
+    editClose()
   }
 
   const menuList = [
@@ -227,7 +190,7 @@ const Information = () => {
           'b/user/fast/create',
         ) ? null : (
             <Popover content={content}>
-              <AddButton onClick={controlquickCreateVisible}>
+              <AddButton>
                 <IconFont
                   style={{
                     marginRight: 8,
@@ -300,31 +263,12 @@ const Information = () => {
         <Outlet />
       </Main>
       {/* // 写日志的表单D */}
-      <CommonModal
-        width={784}
-        title={visibleEditText}
-        isVisible={visibleEdit}
-        onClose={editClose}
-        onConfirm={editConfirm}
-        confirmText="提交"
-      >
-        <div>
-          <Form form={form} layout="vertical">
-            <Form.Item label={<LabelTitle title="今日完成工作" />} name="info">
-              <Editor height={240} />
-            </Form.Item>
-            <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
-              <Editor height={240} />
-            </Form.Item>
-            <Form.Item label={<LabelTitle title="抄送人" />} name="people">
-              <ChoosePeople />
-            </Form.Item>
-            <Form.Item label={<LabelTitle title="关联需求" />} name="needs">
-              <RelatedNeed />
-            </Form.Item>
-          </Form>
-        </div>
-      </CommonModal>
+      <WhiteDay
+        visibleEditText={visibleEditText}
+        visibleEdit={visibleEdit}
+        editClose={editClose}
+        editConfirm={editConfirm}
+      />
     </Wrap>
   )
 }
