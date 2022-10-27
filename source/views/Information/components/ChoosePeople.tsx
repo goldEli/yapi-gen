@@ -74,7 +74,13 @@ const ChoosePeople = (props: any) => {
   }, [])
   return (
     <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
-      <Space size={0}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '10px',
+        }}
+      >
         {allMemberList?.map((i: any, index: any) => (
           <div
             key={i.id}
@@ -129,35 +135,34 @@ const ChoosePeople = (props: any) => {
             )}
           </div>
         ))}
-      </Space>
-
-      <Popover
-        key={isOpen.toString()}
-        visible={isOpen}
-        placement="bottomRight"
-        trigger="click"
-        onVisibleChange={visible => setIsOpen(visible)}
-        getTooltipContainer={node => node}
-        content={
-          <ChoosePerson
-            onChangeValue={obj => onAddPerson(obj)}
-            options={filterOptions}
-          />
-        }
-        getPopupContainer={node => node}
-      >
-        <AddWrap
-          style={{
-            marginLeft: allMemberList?.length ? '40px' : 0,
-          }}
+        <Popover
+          key={isOpen.toString()}
+          visible={isOpen}
+          placement="bottomRight"
+          trigger="click"
+          onVisibleChange={visible => setIsOpen(visible)}
+          getTooltipContainer={node => node}
+          content={
+            <ChoosePerson
+              onChangeValue={obj => onAddPerson(obj)}
+              options={filterOptions}
+            />
+          }
+          getPopupContainer={node => node}
         >
-          <IconFont
-            className="icon"
-            type="plus"
-            onClick={() => setIsOpen(true)}
-          />
-        </AddWrap>
-      </Popover>
+          <AddWrap
+            style={{
+              marginLeft: allMemberList?.length ? '40px' : 0,
+            }}
+          >
+            <IconFont
+              className="icon"
+              type="plus"
+              onClick={() => setIsOpen(true)}
+            />
+          </AddWrap>
+        </Popover>
+      </div>
     </ItemWrap>
   )
 }

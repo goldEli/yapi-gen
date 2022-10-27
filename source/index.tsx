@@ -6,6 +6,8 @@ import log from '@jihe/secure-log'
 import 'antd/dist/antd.css'
 import './style.less'
 import styled from '@emotion/styled'
+import { store } from '../source/store'
+import { Provider as RtkProvider } from 'react-redux'
 
 export const Loading = styled.div`
   width: 100%;
@@ -21,9 +23,11 @@ log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
-    <Provider>
-      <Routes />
-    </Provider>
+    <RtkProvider store={store}>
+      <Provider>
+        <Routes />
+      </Provider>
+    </RtkProvider>
   </BrowserRouter>,
 )
 

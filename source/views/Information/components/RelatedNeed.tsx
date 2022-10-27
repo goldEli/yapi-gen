@@ -1,10 +1,11 @@
 /* eslint-disable no-negated-condition */
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
+import { getDemandList, getProjectList } from '@/services/daily'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
@@ -59,17 +60,23 @@ const RelatedNeed = (props: any) => {
   const [lessForm] = Form.useForm()
   const [t] = useTranslation()
   const [chooseList, setChooseList] = useState<any>([])
+  const [projectList, setProjectList] = useState<any>([])
+  const [demandList, setDemandList] = useState<any>([])
+  const [projectId, setProjectId] = useState<any>(null)
   const [show, setShow] = useState<boolean>(false)
+  const [showNeed, setShowNeed] = useState<boolean>(true)
 
   const confirm = async () => {
     const data = await lessForm.validateFields()
     const newData = structuredClone(data)
     const historyData = structuredClone(chooseList)
     if (historyData.length >= 1) {
-      props.onChange(historyData.concat(newData.needs))
+      props.onChange(
+        historyData.concat(newData.needs).map((item: any) => item.value),
+      )
       setChooseList(historyData.concat(newData.needs))
     } else {
-      props.onChange(newData.needs)
+      props.onChange(newData.needs.map((item: any) => item.value))
       setChooseList(newData.needs)
     }
 
@@ -83,6 +90,30 @@ const RelatedNeed = (props: any) => {
     newData.splice(index, 1)
     setChooseList(newData)
     props.onChange(newData)
+  }
+
+  const init = async () => {
+    const res = await getProjectList()
+    setProjectList(res)
+  }
+  const getNeedList = async (value: any) => {
+    const res = await getDemandList(value)
+
+    // console.log(res)
+
+    setDemandList(res.data)
+  }
+  useEffect(() => {
+    init()
+  }, [])
+
+  const onSelect = async (i: any) => {
+    lessForm.setFieldsValue({
+      needs: [],
+    })
+    setShowNeed(false)
+
+    getNeedList(i.value)
   }
 
   return (
@@ -126,9 +157,13 @@ const RelatedNeed = (props: any) => {
                     },
                   ]}
                 >
-                  <Select labelInValue placeholder="Please select favourite colors">
-                    {list.map((item: any) => (
-                      <Option key={item.id} value={item.title}>
+                  <Select
+                    onSelect={onSelect}
+                    labelInValue
+                    placeholder="Please select favourite colors"
+                  >
+                    {projectList.map((item: any) => (
+                      <Option key={item.id} value={item.id}>
                         {item.title}
                       </Option>
                     ))}
@@ -145,13 +180,15 @@ const RelatedNeed = (props: any) => {
                   label="管理需求"
                 >
                   <Select
+                    disabled={showNeed}
+                    showSearch
                     labelInValue
                     mode="multiple"
                     placeholder="Please select favourite colors"
                   >
-                    {list.map((item: any) => (
-                      <Option key={item.id} value={item.title}>
-                        {item.title}
+                    {demandList.map((item: any) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
                       </Option>
                     ))}
                   </Select>

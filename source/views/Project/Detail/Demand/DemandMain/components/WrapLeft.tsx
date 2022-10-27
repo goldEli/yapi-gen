@@ -94,6 +94,7 @@ const TreeItem = (props: any) => {
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visiblePop, setVisiblePop] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
   const { projectInfo } = useModel('project')
   const btnsText = [
@@ -116,6 +117,7 @@ const TreeItem = (props: any) => {
     form.resetFields()
   }
   const showVisible = (id: number) => {
+    setVisiblePop(false)
     close()
     if (id === 3) {
       setVisible(true)
@@ -177,7 +179,12 @@ const TreeItem = (props: any) => {
     props.onRest()
   }
   const content = (
-    <div>
+    <div
+      style={{
+        padding: '4px 0',
+        borderRadius: '8px',
+      }}
+    >
       {props.pid === 1
         ? btnsText
           .filter(item => item.id === 1)
@@ -224,8 +231,14 @@ const TreeItem = (props: any) => {
               placement="bottomRight"
               content={content}
               trigger="hover"
+              visible={visiblePop}
             >
-              <IconFont data-tree className={rightText} type="more" />
+              <IconFont
+                onClick={() => setVisiblePop(true)}
+                data-tree
+                className={rightText}
+                type="more"
+              />
             </Popover>
           )}
 

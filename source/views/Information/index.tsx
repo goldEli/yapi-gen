@@ -11,6 +11,8 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { Form, Popover } from 'antd'
 import WhiteDay from './components/WhiteDay'
+import { RedLogo } from '../Container/components/Side'
+import { useSelector } from 'react-redux'
 
 const Wrap = styled.div`
   height: 100%;
@@ -74,6 +76,7 @@ type MenuList = {
 }
 
 const Information = () => {
+  const count = useSelector((state: any) => state.counter.value)
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
@@ -91,6 +94,9 @@ const Information = () => {
   }
 
   const editConfirm = async (e: any) => {
+
+    // console.log(e)
+    return
     editClose()
   }
 
@@ -167,7 +173,10 @@ const Information = () => {
       color: #2877ff;
     }
   `
-
+  const RedLogo2 = styled(RedLogo)`
+    right: 10px;
+    top: 14px;
+  `
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)
     setVisibleEditText(item.name)
@@ -219,7 +228,7 @@ const Information = () => {
             >
               {item.state === 1 && (
                 <IconFont
-                  type="project"
+                  type="send"
                   style={{
                     fontSize: 20,
                     marginRight: item.state ? '6px' : '',
@@ -230,7 +239,7 @@ const Information = () => {
               )}
               {item.state === 2 && (
                 <IconFont
-                  type="project"
+                  type="container"
                   style={{
                     fontSize: 20,
                     marginRight: item.state ? '6px' : '',
@@ -240,6 +249,7 @@ const Information = () => {
                 />
               )}
               {item.name}
+              {item.state === 2 && <RedLogo2>{count}</RedLogo2>}
             </MenuItem>
           ))}
         </Menu>
