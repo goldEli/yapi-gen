@@ -41,11 +41,33 @@ import {
 } from 'react-sortable-hoc'
 import { useTranslation } from 'react-i18next'
 
+const TableWrapTop = styled(Table)({
+  '.ant-table-cell': {
+    padding: 0,
+  },
+  '.ant-table-tbody .ant-table-row:nth-child(odd) td': {
+    backgroundColor: '#fff',
+  },
+})
+
 const TableWrap = styled(Table)({
   '.ant-table-cell': {
     padding: 0,
   },
 })
+
+const TableWrapBottom = styled(Table)<{ tableLength?: any }>(
+  {
+    '.ant-table-cell': {
+      padding: 0,
+    },
+  },
+  ({ tableLength }) => ({
+    '.ant-table-tbody .ant-table-row:nth-child(odd) td': {
+      backgroundColor: tableLength % 2 === 0 ? '#f8f9fa' : '#fff',
+    },
+  }),
+)
 
 const LabelWrap = styled.div({
   color: '#323233',
@@ -126,8 +148,8 @@ const normalObj: any = {
 const SetConfig = (props: Props) => {
   const [t, i18n] = useTranslation()
   const modalBody = useRef<any>(null)
-  const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList }
-    = useModel('project')
+  const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList } =
+    useModel('project')
   const [isShowPermission, setIsShowPermission] = useState(true)
   const [isSwitch, setIsSwitch] = useState(false)
   const [isShowField, setIsShowField] = useState(true)
@@ -170,7 +192,9 @@ const SetConfig = (props: Props) => {
         id: new Date().getTime() + index * 11,
         obj: {
           operator: k.operator,
-          verify_users: arrOption?.filter((j: any) => k.verify_users?.some((i: any) => i === j.id)),
+          verify_users: arrOption?.filter((j: any) =>
+            k.verify_users?.some((i: any) => i === j.id),
+          ),
         },
       }))
       setNormalList(arr)
@@ -346,8 +370,8 @@ const SetConfig = (props: Props) => {
         'datetime',
       ].includes(type)
         ? moment(value).format(
-          type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
-        )
+            type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+          )
         : value
     } else {
       arr.filter((i: any) => i.content === row.content)[0].default_value = [
@@ -355,8 +379,8 @@ const SetConfig = (props: Props) => {
         'datetime',
       ].includes(type)
         ? moment(value).format(
-          type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
-        )
+            type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+          )
         : value
     }
     setDataSource(arr)
@@ -386,8 +410,8 @@ const SetConfig = (props: Props) => {
               : row.default_value?.title
           }
           options={
-            ['users_name', 'users_copysend_name'].includes(row.content)
-            && row.default_type === 2
+            ['users_name', 'users_copysend_name'].includes(row.content) &&
+            row.default_type === 2
               ? memberList
               : defaultObj?.options
           }
@@ -475,13 +499,15 @@ const SetConfig = (props: Props) => {
   ))
 
   const SortableItem = sortableElement(
-    (propsItem: React.HTMLAttributes<HTMLTableRowElement>) => <tr {...propsItem} />
-    ,
+    (propsItem: React.HTMLAttributes<HTMLTableRowElement>) => (
+      <tr {...propsItem} />
+    ),
   )
 
   const SortableBody = sortableContainer(
-    (propsItem: React.HTMLAttributes<HTMLTableSectionElement>) => <tbody {...propsItem} />
-    ,
+    (propsItem: React.HTMLAttributes<HTMLTableSectionElement>) => (
+      <tbody {...propsItem} />
+    ),
   )
 
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
@@ -521,11 +547,12 @@ const SetConfig = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <>
-            {record?.content === 'comment'
-            || record.content === 'users_name'
-              ? <div style={{ width: 48 }} />
-              : <DragHandle />
-            }
+            {record?.content === 'comment' ||
+            record.content === 'users_name' ? (
+              <div style={{ width: 48 }} />
+            ) : (
+              <DragHandle />
+            )}
           </>
         )
       },
@@ -604,17 +631,17 @@ const SetConfig = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <>
-            {record?.content === 'comment'
-            || record.content === 'users_name'
-              ? ''
-              : (
-                  <span
-                    style={{ color: '#2877ff', cursor: 'pointer' }}
-                    onClick={() => onDelRow(record)}
-                  >
-                    {t('common.del')}
-                  </span>
-                )}
+            {record?.content === 'comment' ||
+            record.content === 'users_name' ? (
+              ''
+            ) : (
+              <span
+                style={{ color: '#2877ff', cursor: 'pointer' }}
+                onClick={() => onDelRow(record)}
+              >
+                {t('common.del')}
+              </span>
+            )}
           </>
         )
       },
@@ -640,7 +667,7 @@ const SetConfig = (props: Props) => {
   const onDel = (id: any) => {
     const current: any = normalList?.filter((i: any) => i.id === id)[0]?.obj
     if (current?.verify_users?.length) {
-      setOptions([...options, ...current?.verify_users || []])
+      setOptions([...options, ...(current?.verify_users || [])])
     }
 
     setNormalList(normalList?.filter((i: any) => i.id !== id))
@@ -687,7 +714,7 @@ const SetConfig = (props: Props) => {
       width={820}
       confirmText={t('newlyAdd.submit')}
     >
-      <div style={{ maxHeight: 544, overflowY: 'auto', paddingRight: 20 }}>
+      <div style={{ height: 544, overflowY: 'auto', paddingRight: 20 }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>
@@ -867,7 +894,7 @@ const SetConfig = (props: Props) => {
             >
               {t('newlyAdd.addFields')}
             </Button>
-            <TableWrap
+            <TableWrapTop
               pagination={false}
               dataSource={dataSource?.filter(
                 (i: any) => i.content === 'users_name',
@@ -882,7 +909,8 @@ const SetConfig = (props: Props) => {
               <TableWrap
                 pagination={false}
                 dataSource={dataSource?.filter(
-                  (i: any) => i.content !== 'users_name' && i.content !== 'comment',
+                  (i: any) =>
+                    i.content !== 'users_name' && i.content !== 'comment',
                 )}
                 columns={columns as any}
                 rowKey="index"
@@ -895,7 +923,8 @@ const SetConfig = (props: Props) => {
                 }}
               />
             )}
-            <TableWrap
+            <TableWrapBottom
+              tableLength={dataSource?.length}
               pagination={false}
               dataSource={dataSource?.filter(
                 (i: any) => i.content === 'comment',
@@ -904,7 +933,7 @@ const SetConfig = (props: Props) => {
               rowKey="index"
               showHeader={false}
             />
-            <TextWrap>
+            <TextWrap style={{ marginTop: 8 }}>
               <span style={{ wordBreak: 'break-word' }}>
                 {t('newlyAdd.dragSort')}
                 <IconFont

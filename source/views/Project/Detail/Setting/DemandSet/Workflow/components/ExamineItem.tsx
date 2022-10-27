@@ -99,12 +99,16 @@ const IconfontCloseWrap = styled(IconFont)({
   color: '#969799',
   cursor: 'pointer',
   display: 'none',
-  marginLeft: 16,
+  margin: '4px 0 0 12px',
 })
 
 const ItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
+  '.changeSize': {
+    fontSize: 12,
+    marginTop: 4,
+  },
   '&: hover': {
     [IconfontCloseWrap.toString()]: {
       display: 'block',
@@ -149,8 +153,7 @@ const ChoosePerson = (props: ChoosePersonProps) => {
               ) : (
                 <NameWrap style={{ margin: '0 8px 0 0' }}>
                   {String(
-                    i?.name?.substring(0, 1).trim()
-                      .slice(0, 1),
+                    i?.name?.substring(0, 1)?.trim().slice(0, 1),
                   ).toLocaleUpperCase()}
                 </NameWrap>
               )}
@@ -239,7 +242,7 @@ const ExamineItem = (props: Props) => {
   return (
     <Timeline.Item>
       <ItemWrap>
-        <span>{t('newlyAdd.reviewPerson')}</span>
+        <span className="changeSize">{t('newlyAdd.reviewPerson')}</span>
         <Popover
           key={isShowSelect.toString()}
           visible={isShowSelect}
@@ -253,7 +256,7 @@ const ExamineItem = (props: Props) => {
                   key={i.value}
                   onClick={() => onChangeMenu(i.value)}
                 >
-                  {i.name}
+                  <span className="changeSize">{i.name}</span>
                 </MenuItemWrap>
               ))}
             </MenuWrap>
@@ -265,12 +268,14 @@ const ExamineItem = (props: Props) => {
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
+              marginTop: 4,
             }}
           >
             <span
               style={{
                 marginLeft: 32,
                 color: isShowSelect ? '#2877ff' : '##323233',
+                fontSize: 12,
               }}
             >
               {menuList?.filter((i: any) => i.value === normal)[0]?.name}
@@ -284,9 +289,9 @@ const ExamineItem = (props: Props) => {
             />
           </div>
         </Popover>
-        {props?.len !== 1
-          && <IconfontCloseWrap type="close" onClick={props?.onDel} />
-        }
+        {props?.len !== 1 && (
+          <IconfontCloseWrap type="close" onClick={props?.onDel} />
+        )}
       </ItemWrap>
       <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
         <Space size={0}>
@@ -314,8 +319,7 @@ const ExamineItem = (props: Props) => {
                   ) : (
                     <NameWrap style={{ margin: 0 }}>
                       {String(
-                        i?.name?.substring(0, 1).trim()
-                          .slice(0, 1),
+                        i?.name?.substring(0, 1)?.trim().slice(0, 1),
                       ).toLocaleUpperCase()}
                     </NameWrap>
                   )}
@@ -324,7 +328,7 @@ const ExamineItem = (props: Props) => {
                     onClick={() => onDelCheckPerson(i.id)}
                   />
                 </NewNameWrap>
-                <span>{i.name}</span>
+                <span className="changeSize">{i.name}</span>
               </div>
               {index !== examineList?.length - 1 && (
                 <IconFont

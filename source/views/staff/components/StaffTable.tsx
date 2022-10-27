@@ -65,7 +65,7 @@ export const useDynamicColumns = (state: any) => {
               />
             ) : (
               <SetHead style={{ marginRight: 8 }}>
-                {String(record.name.trim().slice(0, 1)).toLocaleUpperCase()}
+                {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
             <HiddenText>
@@ -126,9 +126,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="department_name">{t('common.department')}</NewSort>
-      ,
+      ),
       dataIndex: 'department_name',
       key: 'department_name',
       width: 160,
@@ -146,9 +146,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="role_name">{t('common.permissionGroup')}</NewSort>
-      ,
+      ),
       dataIndex: 'role_name',
       key: 'role_name',
       width: 170,
@@ -173,9 +173,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="project_num">{t('staff.projectCount')}</NewSort>
-      ,
+      ),
       dataIndex: 'project_num',
       key: 'project_num',
       width: 135,

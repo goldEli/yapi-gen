@@ -65,14 +65,6 @@
 .ant-table-tbody .ant-table-row:nth-child(odd) td {
   background-color: #f8f9fa;
 }
-[data-not-scroll] .ant-table-row {
-  &:nth-child(odd) td {
-    background-color: #fff;
-  }
-  &:nth-child(even) td {
-    background-color: #f8f9fa;
-  }
-}
 
 //table样式 --- end
 
@@ -267,8 +259,6 @@ input::-webkit-inner-spin-button {
 .row-dragging {
   display: flex;
   align-items: center;
-
-  // justify-content: space-between;
   background: #fafafa;
   border: 1px solid #ccc;
   z-index: 10000 !important;
@@ -363,4 +353,8 @@ input::-webkit-inner-spin-button {
 
 .ant-table-cell .ant-popover {
   z-index: 2 !important;
+}
+
+.ant-modal {
+  padding-bottom: 0;
 }

@@ -248,7 +248,6 @@ const QuickEdit = (props: Props) => {
       getDemandInfo({ projectId, id: demandInfo?.id })
       setIsShowControl(false)
     } catch (error) {
-
       //
     }
   }
@@ -257,8 +256,8 @@ const QuickEdit = (props: Props) => {
     if (val === props?.defaultText) {
       setIsShowControl(false)
     } else {
-      const resultVal: any
-        = ['select_checkbox', 'checkbox'].includes(props?.type) && !val ? [] : val
+      const resultVal: any =
+        ['select_checkbox', 'checkbox'].includes(props?.type) && !val ? [] : val
       onChange(resultVal)
     }
   }
@@ -284,9 +283,9 @@ const QuickEdit = (props: Props) => {
             onChange,
           )}
         </>
-      )
-        : <span onMouseEnter={onMouseEnter}>{props?.text}</span>
-      }
+      ) : (
+        <span onMouseEnter={onMouseEnter}>{props?.text}</span>
+      )}
     </>
   )
 }
@@ -320,9 +319,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     (i: any) => i.identity === 'b/story/comment',
   ).length
 
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const getList = async () => {
@@ -382,7 +381,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       message.success(t('common.prioritySuccess'))
       props.onUpdate?.()
     } catch (error) {
-
       //
     }
   }
@@ -400,20 +398,18 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       setIsVisible(false)
       getList()
     } catch (error) {
-
       //
     }
   }
 
   const onAddComment = async (content: string) => {
-    if (content.trim().length) {
+    if (content?.trim().length) {
       try {
-        await addComment({ projectId, demandId, content: content.trim() })
+        await addComment({ projectId, demandId, content: content?.trim() })
         message.success(t('project.replaySuccess'))
         setAddValue('')
         getList()
       } catch (error) {
-
         //
       }
     }
@@ -555,8 +551,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             <ContentWrap>
               {demandInfo?.copySend?.length
                 ? demandInfo?.copySend
-                  ?.map((i: any) => i.copysend?.name)
-                  .join('、')
+                    ?.map((i: any) => i.copysend?.name)
+                    .join('、')
                 : '--'}
             </ContentWrap>
           </InfoItem>
@@ -600,23 +596,23 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             overflow: 'auto',
           }}
         >
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <div>
                 {dataList?.list?.map((item: any) => (
                   <CommentItem
                     key={item.id}
                     isShow={item.userId === userInfo.id}
                   >
-                    {item.avatar
-                      ? <img src={item.avatar} alt="" />
-                      : (
-                          <SetHead>
-                            {String(
-                              item.name?.trim().slice(0, 1),
-                            ).toLocaleUpperCase()}
-                          </SetHead>
-                        )}
+                    {item.avatar ? (
+                      <img src={item.avatar} alt="" />
+                    ) : (
+                      <SetHead>
+                        {String(
+                          item.name?.trim().slice(0, 1),
+                        ).toLocaleUpperCase()}
+                      </SetHead>
+                    )}
                     <TextWrap>
                       <div className="textTop">
                         {isComment ? null : (
@@ -660,9 +656,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   </CommentItem>
                 ))}
               </div>
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </div>
       )}
       {!isComment && activeTabs === 2 && (

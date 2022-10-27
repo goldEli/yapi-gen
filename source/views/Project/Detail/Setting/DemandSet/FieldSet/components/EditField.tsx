@@ -62,8 +62,7 @@ const OptionsItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginTop: 8,
-  marginBottom: 8,
+  padding: '4px 0',
 })
 
 const AddWrap = styled.div({
@@ -87,22 +86,27 @@ const DragHandle = sortableHandle(() => (
       fontSize: 16,
       cursor: 'pointer',
       color: '#969799',
+      marginRight: 12,
     }}
   />
 ))
 
 // 拖拽容器
-const SortContainer = sortableContainer<any>((props: any) => <ul className="flex flex1" {...props} />)
+const SortContainer = sortableContainer<any>((props: any) => (
+  <ul className="flex flex1" {...props} />
+))
 
 // 拖拽元素
-const SortItemLi = sortableElement<any>((props: any) => <li helperClass="row-dragging" {...props} />)
+const SortItemLi = sortableElement<any>((props: any) => (
+  <li helperClass="row-dragging" {...props} />
+))
 
 const EditFiled = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { option, updateStoryConfigField, addStoryConfigField }
-    = useModel('project')
+  const { option, updateStoryConfigField, addStoryConfigField } =
+    useModel('project')
   const [checked, setChecked] = useState(false)
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
@@ -162,19 +166,15 @@ const EditFiled = (props: Props) => {
     let contentValue
 
     if (['1', '2'].includes(selObj?.value)) {
-
       // 文本
       contentValue = ''
     } else if (['3', '4', '5', '6'].includes(selObj?.value)) {
-
       // 下拉
       contentValue = row.map(i => i.value)
     } else if (selObj?.value === '7') {
-
       // 时间
       contentValue = checked ? ['datetime'] : ['date']
     } else if (selObj?.value === '8') {
-
       // 整数
       contentValue = checked ? ['integer'] : ['number']
     }
@@ -195,7 +195,6 @@ const EditFiled = (props: Props) => {
         await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
       } catch (error) {
-
         //
       }
     } else {
@@ -203,7 +202,6 @@ const EditFiled = (props: Props) => {
         await addStoryConfigField(obj)
         message.success(t('common.createSuccess'))
       } catch (error) {
-
         //
       }
     }
@@ -315,10 +313,11 @@ const EditFiled = (props: Props) => {
                 {value !== '8' && value !== '7' && (
                   <OptionsWrap>
                     <AddWrap
-                      onClick={() => setRow([
-                        ...row,
-                        { value: '', key: `${random()}_${new Date()}` },
-                      ])
+                      onClick={() =>
+                        setRow([
+                          ...row,
+                          { value: '', key: `${random()}_${new Date()}` },
+                        ])
                       }
                     >
                       <IconFont type="plus" />
@@ -349,6 +348,7 @@ const EditFiled = (props: Props) => {
                                 fontSize: 16,
                                 cursor: 'pointer',
                                 color: '#969799',
+                                marginLeft: 12,
                               }}
                               onClick={() => onDelRow(_i.key)}
                             />

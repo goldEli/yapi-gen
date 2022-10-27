@@ -213,6 +213,7 @@ const WrapLeftBox = () => {
         name: i.tag?.content,
       })),
     )
+    setSchedule(demandInfo?.schedule)
   }, [demandInfo])
 
   const onChangeSchedule = async () => {

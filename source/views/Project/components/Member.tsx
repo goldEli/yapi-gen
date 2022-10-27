@@ -91,8 +91,8 @@ const NameWrap = styled.div({
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo }
-    = useModel('project')
+  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
+    useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
 
@@ -148,19 +148,19 @@ const Member = (props: Props) => {
             projectInfo?.projectPermissions,
             'b/project/member/save',
           ) ? null : (
-              <ButtonWrap
-                type="primary"
-                onClick={() => setIsVisible(true)}
-                icon={
-                  <IconFont
-                    type="plus"
-                    style={{ color: 'white', fontSize: 16 }}
-                  />
-                }
-              >
-                {t('project.addMember1')}
-              </ButtonWrap>
-            )}
+            <ButtonWrap
+              type="primary"
+              onClick={() => setIsVisible(true)}
+              icon={
+                <IconFont
+                  type="plus"
+                  style={{ color: 'white', fontSize: 16 }}
+                />
+              }
+            >
+              {t('project.addMember1')}
+            </ButtonWrap>
+          )}
 
           <Input
             autoComplete="off"
@@ -180,13 +180,13 @@ const Member = (props: Props) => {
           {memberList?.map((i: any) => (
             <ListItem key={i.id}>
               <div className="avatarBox">
-                {i.avatar
-                  ? <img src={i.avatar} alt="" />
-                  : (
-                      <NameWrap>
-                        {String(i.name.trim().slice(0, 1)).toLocaleUpperCase()}
-                      </NameWrap>
-                    )}
+                {i.avatar ? (
+                  <img src={i.avatar} alt="" />
+                ) : (
+                  <NameWrap>
+                    {String(i.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+                  </NameWrap>
+                )}
                 <div>
                   <span>
                     {i.name}

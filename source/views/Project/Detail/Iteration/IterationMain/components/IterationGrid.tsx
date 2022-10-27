@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
-  padding: 24,
+  padding: 16,
   overflow: 'auto',
 })
 
@@ -114,12 +114,12 @@ const IterationGrid = (props: Props) => {
                 {k.content_txt}(
                 {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
               </Title>
-              {typeof props?.hasId !== 'object'
-                ? <NoData />
-               : dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                ? dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                  .length > 0
-                  ? dataList
+              {typeof props?.hasId !== 'object' ? (
+                <NoData />
+              ) : dataList?.filter((item: any) => item.id === k.id)[0]?.list ? (
+                dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                  .length > 0 ? (
+                  dataList
                     ?.filter((item: any) => item.id === k.id)[0]
                     ?.list?.map((i: any) => (
                       <DemandCard
@@ -130,9 +130,10 @@ const IterationGrid = (props: Props) => {
                         onChangeEdit={props?.onChangeVisible}
                       />
                     ))
-                 : <NoData />
-
-               : null}
+                ) : (
+                  <NoData />
+                )
+              ) : null}
             </StatusItemsWrap>
           ))}
         </SpaceWrap>

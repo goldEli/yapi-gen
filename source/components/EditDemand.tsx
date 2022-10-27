@@ -873,7 +873,7 @@ const EditDemand = (props: Props) => {
       )}
       <ModalWrap
         visible={props.visible}
-        width="96%"
+        width="88%"
         footer={false}
         bodyStyle={{
           padding: '0 4px 0 24px',
@@ -1025,6 +1025,7 @@ const EditDemand = (props: Props) => {
                   <TagComponent
                     defaultList={tagList}
                     onChangeTag={onChangeTag}
+                    isQuick={props.isQuickCreate}
                     addWrap={
                       <AddWrap hasDash>
                         <IconFont type="plus" />
@@ -1163,15 +1164,19 @@ const EditDemand = (props: Props) => {
                 <PopConfirm
                   content={({ onHide }: { onHide(): void }) => {
                     return (
-                      <LevelContent
-                        onHide={onHide}
-                        record={{ project_id: projectId }}
-                        onCurrentDetail={onCurrentDetail}
-                      />
+                      projectId && (
+                        <LevelContent
+                          onHide={onHide}
+                          record={{ project_id: projectId }}
+                          onCurrentDetail={onCurrentDetail}
+                        />
+                      )
                     )
                   }}
                 >
-                  <PriorityWrap>
+                  <PriorityWrap
+                    style={{ cursor: projectId ? 'pointer' : 'not-allowed' }}
+                  >
                     <IconFont
                       className="priorityIcon"
                       type={priorityDetail?.icon}

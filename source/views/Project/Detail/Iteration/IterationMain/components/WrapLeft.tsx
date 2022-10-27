@@ -15,7 +15,6 @@ import {
   Popover,
   Form,
   Input,
-  Menu,
   message,
   Radio,
   Spin,
@@ -37,7 +36,6 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
     width: 300,
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
     borderRight: '1px solid #EBEDF0',
     padding: '0px 16px 10px',
     background: 'white',
