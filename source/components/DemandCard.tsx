@@ -220,6 +220,7 @@ const DemandCard = (props: Props) => {
                     onUpdate={() => props?.onUpdate(true)}
                     listLength={props?.listLength}
                     index={props?.indexVal}
+                    isCard
                   />
                 </div>
               ) : (
