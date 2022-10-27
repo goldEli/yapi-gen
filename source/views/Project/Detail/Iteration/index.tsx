@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
@@ -169,6 +170,27 @@ const IterationWrap = () => {
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
+  const [titleList3, setTitleList3] = useState<any[]>([])
+  const [searchGroups, setSearchGroups] = useState<any>({
+    statusId: [],
+    priorityId: [],
+    iterateId: [],
+    tagId: [],
+    userId: [],
+    usersnameId: [],
+    usersCopysendNameId: [],
+    createdAtId: [],
+    expectedStartAtId: [],
+    expectedendat: [],
+    updatedat: [],
+    finishAt: [],
+    searchVal: '',
+  })
 
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -188,15 +210,6 @@ const IterationWrap = () => {
     projectInfo?.projectPermissions,
     'b/story/get',
   )
-
-  const childContent = () => {
-    if (type === 'info') {
-      return <IterationInfo />
-    } else if (type === 'demand') {
-      return <Demand />
-    }
-    return <ChangeRecord isUpdate={isUpdateState} />
-  }
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
@@ -219,7 +232,23 @@ const IterationWrap = () => {
       custom_field: customField,
     }
 
-    // props.onSearch(params)
+    setSearchGroups(params)
+  }
+
+  const childContent = () => {
+    if (type === 'info') {
+      return <IterationInfo />
+    } else if (type === 'demand') {
+      return (
+        <Demand
+          searchGroups={searchGroups}
+          checkList={titleList}
+          checkList2={titleList2}
+          checkList3={titleList3}
+        />
+      )
+    }
+    return <ChangeRecord isUpdate={isUpdateState} />
   }
 
   const getSearchKey = async (key?: any, typeVal?: number) => {
@@ -241,6 +270,12 @@ const IterationWrap = () => {
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
+    setPlainOptions(projectInfo.plainOptions)
+    setPlainOptions2(projectInfo.plainOptions2)
+    setPlainOptions3(projectInfo.plainOptions3)
+    setTitleList(projectInfo.titleList)
+    setTitleList2(projectInfo.titleList2)
+    setTitleList3(projectInfo.titleList3)
   }
 
   useEffect(() => {
@@ -306,6 +341,18 @@ const IterationWrap = () => {
         //
       }
     }
+  }
+
+  const onPressEnter = (e: any) => {
+    let obj = JSON.parse(JSON.stringify(searchGroups))
+    obj.searchVal = e.target.value
+    setSearchGroups(obj)
+  }
+
+  const getCheckList = (list: any[], list2: any[], list3: any[]) => {
+    setTitleList(list)
+    setTitleList2(list2)
+    setTitleList3(list3)
   }
 
   const changeStatus = (
@@ -426,8 +473,8 @@ const IterationWrap = () => {
                     style={{ color: '#BBBDBF', fontSize: 20 }}
                   />
                 }
-                // onPressEnter={onPressEnter}
-                // onBlur={onPressEnter}
+                onPressEnter={onPressEnter}
+                onBlur={onPressEnter}
                 placeholder={t('common.pleaseSearchDemand')}
                 allowClear
               />
@@ -449,7 +496,11 @@ const IterationWrap = () => {
                     items={[
                       {
                         key: '1',
-                        label: <div>{t('common.setField')}</div>,
+                        label: (
+                          <div onClick={() => setSettingState(true)}>
+                            {t('common.setField')}
+                          </div>
+                        ),
                       },
                     ]}
                   />
@@ -462,6 +513,19 @@ const IterationWrap = () => {
               </Dropdown>
             </OperationWrap>
           </MainWrap>
+          {settingState ? (
+            <OptionalFeld
+              plainOptions={plainOptions}
+              plainOptions2={plainOptions2}
+              plainOptions3={plainOptions3}
+              checkList={titleList}
+              checkList2={titleList2}
+              checkList3={titleList3}
+              isVisible={settingState}
+              onClose={() => setSettingState(false)}
+              getCheckList={getCheckList}
+            />
+          ) : null}
           {filterState ? null : (
             <TableFilter
               onFilter={getSearchKey}
