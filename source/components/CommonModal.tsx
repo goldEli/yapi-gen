@@ -64,16 +64,16 @@ const CommonModal = (props: ModalProps) => {
       <div style={{ padding: '0 4px 0 24px' }}>{props?.children}</div>
       {props?.isShowFooter ? null : (
         <>
-          {props?.hasFooter
-            ? props?.hasFooter
-            : (
-                <ModalFooter size={16}>
-                  <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-                  <Button onClick={props?.onConfirm} type="primary">
-                    {props?.confirmText ? props?.confirmText : t('common.confirm')}
-                  </Button>
-                </ModalFooter>
-              )}
+          {props?.hasFooter ? (
+            props?.hasFooter
+          ) : (
+            <ModalFooter size={16}>
+              <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
+              <Button onClick={props?.onConfirm} type="primary">
+                {props?.confirmText ? props?.confirmText : t('common.confirm')}
+              </Button>
+            </ModalFooter>
+          )}
         </>
       )}
     </Modal>

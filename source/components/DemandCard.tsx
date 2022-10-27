@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -5,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown, Menu, Progress, Space } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useState } from 'react'
@@ -13,12 +14,16 @@ import { getIsPermission } from '@/tools'
 import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
+import DemandProgress from './DemandProgress'
 
 interface Props {
   item: any
   onChangeEdit?(e: any, item: any): void
   onChangeDelete?(item: any): void
   onClickItem(): void
+  indexVal?: any
+  listLength?: any
+  onUpdate(): void
 }
 
 const MoreWrap = styled(IconFont)({
@@ -106,6 +111,7 @@ const NameGroup = styled.div({
 
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
+  const { userInfo } = useModel('user')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { projectInfo, colorList } = useModel('project')
   const hasEdit = getIsPermission(
@@ -202,11 +208,37 @@ const DemandCard = (props: Props) => {
                 +{props.item?.userName?.length - 3}
               </div>
             </NameGroup>
-            <ChildDemandTable
-              value={props.item?.childCount}
-              row={props.item}
-              hasIcon
-            />
+            <Space size={16} style={{ display: 'flex', alignItems: 'center' }}>
+              {hasEdit &&
+              props.item?.usersNameIds?.includes(userInfo?.id) &&
+              props.item.status.is_start !== 1 &&
+              props.item.status.is_end !== 1 ? (
+                <div style={{ cursor: 'pointer' }}>
+                  <DemandProgress
+                    value={props.item?.schedule}
+                    row={props.item}
+                    onUpdate={props?.onUpdate}
+                    listLength={props?.listLength}
+                    index={props?.indexVal}
+                  />
+                </div>
+              ) : (
+                <Progress
+                  strokeColor="#43BA9A"
+                  style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                  width={38}
+                  type="circle"
+                  percent={props.item.schedule}
+                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                  strokeWidth={8}
+                />
+              )}
+              <ChildDemandTable
+                value={props.item?.childCount}
+                row={props.item}
+                hasIcon
+              />
+            </Space>
           </AvatarWrap>
         </MainWrap>
         {hasDel && hasEdit ? null : (

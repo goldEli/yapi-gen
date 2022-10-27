@@ -302,6 +302,7 @@ const EditDemand = (props: Props) => {
   const [isShowFields, setIsShowFields] = useState(false)
   const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
   const [currentCategory, setCurrentCategory] = useState<any>({})
+  const [allDemandList, setAllDemandList] = useState<any>([])
 
   const getList = async (value?: any) => {
     const result = await getDemandList({
@@ -430,7 +431,7 @@ const EditDemand = (props: Props) => {
   }
 
   const getInit = async (value?: any, categoryId?: any) => {
-    const [classTree, categoryData, allDemandList] = await Promise.all([
+    const [classTree, categoryData, allDemandArr] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
       getList(value || projectId),
@@ -440,6 +441,7 @@ const EditDemand = (props: Props) => {
         projectId: value || projectId,
       }),
     ])
+    setAllDemandList(allDemandArr)
     setClassTreeData([
       ...[
         {
@@ -467,7 +469,7 @@ const EditDemand = (props: Props) => {
       setProjectId(value)
       if (props?.isChild) {
         form.setFieldsValue({
-          parentId: allDemandList?.filter(
+          parentId: allDemandArr?.filter(
             (i: any) => i.value === Number(paramsData?.demandId),
           )[0]?.value,
         })
@@ -622,6 +624,13 @@ const EditDemand = (props: Props) => {
           type: 'need',
         })
         form1.resetFields()
+        if (props?.isChild) {
+          form.setFieldsValue({
+            parentId: allDemandList?.filter(
+              (i: any) => i.value === Number(paramsData?.demandId),
+            )[0]?.value,
+          })
+        }
         setTimeout(() => {
           inputRefDom.current?.focus()
         }, 100)
@@ -1172,6 +1181,7 @@ const EditDemand = (props: Props) => {
                   allowClear
                   treeData={classTreeData}
                   disabled={!projectId}
+                  defaultOpen
                 />
               </Form.Item>
               <Form.Item label={t('common.parentDemand')} name="parentId">

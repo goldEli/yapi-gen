@@ -303,6 +303,7 @@ const TagSelect = (props: any) => {
   )
 }
 const NumericInput = (props: any) => {
+  const [t] = useTranslation()
   const { value, onChange, onPress, type } = props
   const enter = (e: any) => {
     onChange(e)
@@ -312,7 +313,7 @@ const NumericInput = (props: any) => {
       <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
         <Input
           type="number"
-          placeholder="请输入值"
+          placeholder={t('newlyAdd.pleaseValue')}
           onPressEnter={onPress}
           onChange={e => {
             if (/^\w*$/g.test(e.target.value)) {
@@ -329,7 +330,7 @@ const NumericInput = (props: any) => {
     <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
       <Input
         type="number"
-        placeholder="请输入值"
+        placeholder={t('newlyAdd.pleaseValue')}
         onPressEnter={onPress}
         onChange={e => enter(e.target.value)}
         value={value}
@@ -474,7 +475,13 @@ export const ShapeContent = (props: any) => {
   const hasDealName = props.row?.dealName === '--'
 
   const confirm = async () => {
-    const res = await form.validateFields()
+    const res2 = await form.validateFields()
+    const res = structuredClone(res2)
+    for (const key in res) {
+      if (typeof res[key] === 'undefined') {
+        res[key] = null
+      }
+    }
     await form2.validateFields()
     const putData = {
       projectId,
