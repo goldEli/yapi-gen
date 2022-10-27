@@ -188,6 +188,7 @@ const Member = (props: Props) => {
           <Input
             autoComplete="off"
             onPressEnter={onChangeSearch}
+            onBlur={onChangeSearch}
             suffix={
               <IconFont
                 type="search"

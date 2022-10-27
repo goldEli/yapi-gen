@@ -23,7 +23,7 @@ interface Props {
   onClickItem(): void
   indexVal?: any
   listLength?: any
-  onUpdate(): void
+  onUpdate(state: any): void
 }
 
 const MoreWrap = styled(IconFont)({
@@ -114,10 +114,10 @@ const DemandCard = (props: Props) => {
   const { userInfo } = useModel('user')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { projectInfo, colorList } = useModel('project')
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
+  const hasEdit =
+    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/delete',
@@ -217,7 +217,7 @@ const DemandCard = (props: Props) => {
                   <DemandProgress
                     value={props.item?.schedule}
                     row={props.item}
-                    onUpdate={props?.onUpdate}
+                    onUpdate={() => props?.onUpdate(true)}
                     listLength={props?.listLength}
                     index={props?.indexVal}
                   />

@@ -1181,7 +1181,6 @@ const EditDemand = (props: Props) => {
                   allowClear
                   treeData={classTreeData}
                   disabled={!projectId}
-                  defaultOpen
                 />
               </Form.Item>
               <Form.Item label={t('common.parentDemand')} name="parentId">
