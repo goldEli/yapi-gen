@@ -221,14 +221,14 @@ export const useDynamicColumns = (state: any) => {
             <PriorityWrap isShow={isCanEdit}>
               <IconFont
                 className="priorityIcon"
-                type={text.icon}
+                type={text?.icon}
                 style={{
                   fontSize: 20,
-                  color: text.color,
+                  color: text?.color,
                 }}
               />
               <div>
-                <span>{text.content_txt || '--'}</span>
+                <span>{text?.content_txt || '--'}</span>
                 <IconFont className="icon" type="down-icon" />
               </div>
             </PriorityWrap>

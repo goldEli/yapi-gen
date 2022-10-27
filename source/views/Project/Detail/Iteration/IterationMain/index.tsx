@@ -169,7 +169,6 @@ const IterationMain = (props: Props) => {
       getList(isGrid, pageObj, searchItems)
       setIsRefreshList(true)
     } catch (error) {
-
       //
     }
   }
@@ -257,6 +256,7 @@ const IterationMain = (props: Props) => {
             data={dataList}
             isSpinning={isSpinning}
             hasId={currentDetail}
+            onUpdate={onUpdate}
           />
         ) : (
           <IterationTable

@@ -63,6 +63,7 @@ interface Props {
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   isSpinning?: boolean
+  onUpdate(): void
 }
 const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
@@ -115,22 +116,29 @@ const DemandGrid = (props: Props) => {
                   {k.content_txt}(
                   {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
                 </Title>
-                {!!dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                  && (dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                    .length > 0
-                    ? dataList
+                {!!dataList?.filter((item: any) => item.id === k.id)[0]?.list &&
+                  (dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                    .length > 0 ? (
+                    dataList
                       ?.filter((item: any) => item.id === k.id)[0]
-                      ?.list?.map((i: any) => (
+                      ?.list?.map((i: any, idx: any) => (
                         <DemandCard
                           key={i.id}
                           onChangeDelete={props?.onDelete}
                           onChangeEdit={props?.onChangeVisible}
                           item={i}
                           onClickItem={() => onClickItem(i)}
+                          indexVal={idx}
+                          onUpdate={props?.onUpdate}
+                          listLength={
+                            dataList?.filter((item: any) => item.id === k.id)[0]
+                              ?.list?.length
+                          }
                         />
                       ))
-                   : <NoData />
-                  )}
+                  ) : (
+                    <NoData />
+                  ))}
               </StatusItemsWrap>
             ))}
           </SpaceWrap>
