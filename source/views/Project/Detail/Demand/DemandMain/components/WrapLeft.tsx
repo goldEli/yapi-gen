@@ -266,49 +266,61 @@ const TreeItem = (props: any) => {
         </Popover>
       )}
 
-      <DeleteConfirm
-        isVisible={visible}
-        onChangeVisible={onChangeVisible}
-        onConfirm={onConfirm}
-        text={t('newlyAdd.confirmDelClass')}
-      />
-      <CommonModal
-        title={
-          visibleEditText === 'add'
-            ? t('newlyAdd.createChildClass')
-            : t('newlyAdd.editChildClass')
-        }
-        isVisible={visibleEdit}
-        onClose={editClose}
-        onConfirm={editConfirm}
+      <div
+        onClick={(e: any) => {
+          e.stopPropagation()
+        }}
       >
-        <FormBox>
-          <Form form={form} layout="vertical">
-            <Form.Item
-              label={t('newlyAdd.className')}
-              name="name"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Input
-                ref={inputRefDom as any}
-                allowClear
-                autoComplete="off"
-                maxLength={10}
-                placeholder={t('newlyAdd.pleaseClassName')}
-              />
-            </Form.Item>
-            <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
-              <Input.TextArea
-                maxLength={100}
-                showCount
-                allowClear
-                placeholder={t('newlyAdd.pleaseClassRemark')}
-                autoSize={{ minRows: 3, maxRows: 5 }}
-              />
-            </Form.Item>
-          </Form>
-        </FormBox>
-      </CommonModal>
+        <DeleteConfirm
+          isVisible={visible}
+          onChangeVisible={onChangeVisible}
+          onConfirm={onConfirm}
+          text={t('newlyAdd.confirmDelClass')}
+        />
+      </div>
+      <div
+        onClick={(e: any) => {
+          e.stopPropagation()
+        }}
+      >
+        <CommonModal
+          title={
+            visibleEditText === 'add'
+              ? t('newlyAdd.createChildClass')
+              : t('newlyAdd.editChildClass')
+          }
+          isVisible={visibleEdit}
+          onClose={editClose}
+          onConfirm={editConfirm}
+        >
+          <FormBox>
+            <Form form={form} layout="vertical">
+              <Form.Item
+                label={t('newlyAdd.className')}
+                name="name"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Input
+                  ref={inputRefDom as any}
+                  allowClear
+                  autoComplete="off"
+                  maxLength={10}
+                  placeholder={t('newlyAdd.pleaseClassName')}
+                />
+              </Form.Item>
+              <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
+                <Input.TextArea
+                  maxLength={100}
+                  showCount
+                  allowClear
+                  placeholder={t('newlyAdd.pleaseClassRemark')}
+                  autoSize={{ minRows: 3, maxRows: 5 }}
+                />
+              </Form.Item>
+            </Form>
+          </FormBox>
+        </CommonModal>
+      </div>
     </TreeBox>
   )
 }
