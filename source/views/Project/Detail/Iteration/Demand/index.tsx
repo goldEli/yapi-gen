@@ -59,7 +59,8 @@ const DemandWrap = () => {
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -98,7 +99,12 @@ const DemandWrap = () => {
     setTitleList2(projectInfo?.titleList2 || [])
   }
 
-  const getList = async (item?: any, orderVal?: any, updateState?: boolean) => {
+  const getList = async (
+    item?: any,
+    orderValue?: any,
+    orderKeyValue?: any,
+    updateState?: boolean,
+  ) => {
     if (!updateState) {
       setIsSpinning(true)
     }
@@ -107,8 +113,8 @@ const DemandWrap = () => {
       iterateIds: [iterateId],
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
-      order: orderVal.value,
-      orderKey: orderVal.key,
+      order: orderValue,
+      orderKey: orderKeyValue,
     })
     setDataList(result)
     setIsSpinning(false)
@@ -116,7 +122,7 @@ const DemandWrap = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order)
+    getList(pageObj, order, orderKey)
   }, [])
 
   useEffect(() => {
@@ -125,18 +131,18 @@ const DemandWrap = () => {
 
   useEffect(() => {
     if (isRefresh) {
-      getList({ page: 1, size: pageObj.size }, order)
+      getList({ page: 1, size: pageObj.size }, order, orderKey)
     }
   }, [isRefresh])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onClickRow = (item: any) => {
@@ -173,11 +179,9 @@ const DemandWrap = () => {
   }
 
   const updateOrderkey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(
-      { page: 1, size: pageObj.size },
-      { value: val === 2 ? 'desc' : 'asc', key },
-    )
+    setOrderKey(key)
+    setOrder(val)
+    getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
   }
 
   const onClickItem = (item: any) => {
@@ -195,7 +199,7 @@ const DemandWrap = () => {
         projectId,
       })
       message.success(t('common.prioritySuccess'))
-      getList(pageObj, order)
+      getList(pageObj, order, orderKey)
     } catch (error) {
       //
     }
@@ -205,7 +209,7 @@ const DemandWrap = () => {
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
-      getList(pageObj, order)
+      getList(pageObj, order, orderKey)
     } catch (error) {
       //
     }
@@ -216,13 +220,13 @@ const DemandWrap = () => {
   }
 
   const onUpdate = (updateState?: boolean) => {
-    getList(pageObj, order, updateState)
+    getList(pageObj, order, orderKey, updateState)
   }
 
   const columns = useDynamicColumns({
     projectId,
-    orderKey: order.key,
-    order: order.value,
+    orderKey,
+    order,
     updateOrderkey,
     onChangeStatus,
     onChangeState,
@@ -244,7 +248,7 @@ const DemandWrap = () => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
-      getList(pageObj, order)
+      getList(pageObj, order, orderKey)
     } catch (error) {
       //
     }

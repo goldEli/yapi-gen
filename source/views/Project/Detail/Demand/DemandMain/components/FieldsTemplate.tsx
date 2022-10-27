@@ -16,7 +16,6 @@ const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 350,
-  paddingRight: 20,
 })
 
 const LeftWrap = styled.div({
@@ -69,6 +68,7 @@ const CheckedItem = styled.div<{ state?: any }>(
 const CheckedWrap = styled.div({
   maxHeight: 325,
   overflow: 'auto',
+  paddingRight: 20,
 })
 
 interface Props {

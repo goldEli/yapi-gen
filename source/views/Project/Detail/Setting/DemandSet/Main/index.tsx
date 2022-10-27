@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -68,20 +69,25 @@ const CardGroupWrap = styled.div({
   flexWrap: 'wrap',
 })
 
-const CategoryCard = styled.div({
-  width: 290,
-  height: 110,
-  borderRadius: 6,
-  border: '1px solid #EBEDF0',
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '16px 16px 4px',
-  margin: '24px 24px 0 0',
-  '&:hover': {
-    border: '1px solid transparent',
-    boxShadow: '0px 4px 13px -2px rgba(0,0,0,0.08)',
+const CategoryCard = styled.div<{ isHover?: any }>(
+  {
+    width: 290,
+    height: 110,
+    borderRadius: 6,
+    border: '1px solid #EBEDF0',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '16px 16px 4px',
+    margin: '24px 24px 0 0',
   },
-})
+  ({ isHover }) => ({
+    '&:hover': {
+      border: '1px solid transparent',
+      boxShadow: '0px 4px 13px -2px rgba(0,0,0,0.08)',
+      color: isHover ? '#2877ff!important' : '',
+    },
+  }),
+)
 
 const CategoryCardHead = styled.div({
   display: 'flex',
@@ -466,6 +472,7 @@ const CardGroup = (props: CardGroupProps) => {
           </CategoryCard>
         ))}
         <CategoryCard
+          isHover
           onClick={() => setIsEdit(true)}
           style={{
             alignItems: 'center',

@@ -5,7 +5,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import PosterComponent from './PosterComponent'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const Footer = styled(Space)({
@@ -26,6 +26,7 @@ const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const { addProject, updateProject } = useModel('project')
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   const onConfirm = async () => {
     await form.validateFields()
@@ -47,7 +48,6 @@ const EditProject = (props: Props) => {
       props.onChangeVisible()
       props.onUpdate?.()
     } catch (error) {
-
       //
     }
   }
@@ -64,6 +64,9 @@ const EditProject = (props: Props) => {
     } else {
       form.resetFields()
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }, [props.details])
 
   return (
@@ -111,6 +114,8 @@ const EditProject = (props: Props) => {
             autoComplete="off"
             maxLength={30}
             placeholder={t('common.pleaseProjectName')}
+            ref={inputRefDom as any}
+            autoFocus
           />
         </Form.Item>
         <Form.Item

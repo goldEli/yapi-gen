@@ -163,7 +163,9 @@ const ProjectCard = (props: Props) => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
-    return <Menu items={menuItems} />
+    return (
+      <Menu items={menuItems} style={{ minWidth: 60, textAlign: 'center' }} />
+    )
   }
 
   const onMoreClick = (e: any) => {
