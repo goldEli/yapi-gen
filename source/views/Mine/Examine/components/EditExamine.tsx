@@ -243,11 +243,19 @@ const EditExamine = (props: Props) => {
                     </ContentWrap>
                   ) : (
                     <ContentWrap>
-                      <span>
-                        {verifyInfo.fields[m]?.value
-                          ?.map((i: any) => i.name?.trim())
-                          .join(',') || '--'}
-                      </span>
+                      {String(m).includes('custom_') ? (
+                        <span>
+                          {verifyInfo.fields[m]?.value
+                            ?.map((i: any) => i)
+                            .join('、') || '--'}
+                        </span>
+                      ) : (
+                        <span>
+                          {verifyInfo.fields[m]?.value
+                            ?.map((i: any) => i.name?.trim())
+                            .join('、') || '--'}
+                        </span>
+                      )}
                     </ContentWrap>
                   ))}
                 {m === 'priority' && (
