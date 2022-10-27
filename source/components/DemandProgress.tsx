@@ -54,7 +54,7 @@ const DemandProgress = (props: Props) => {
       <Progress
         strokeColor="#43BA9A"
         style={{ color: '#43BA9A' }}
-        width={38}
+        width={42}
         type="circle"
         percent={props?.value}
         format={percent => (percent === 100 ? '100%' : `${percent}%`)}

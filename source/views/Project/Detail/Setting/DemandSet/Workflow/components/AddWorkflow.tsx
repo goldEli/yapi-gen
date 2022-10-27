@@ -113,6 +113,9 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
     if (props?.item?.id) {
       setValue(props?.item.name)
       setNormalColor(props?.item.color)
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     }
   }, [props?.item])
 

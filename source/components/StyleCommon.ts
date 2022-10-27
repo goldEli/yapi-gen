@@ -30,7 +30,7 @@ const FormWrapDemand = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: '\'*\'',
+        content: "'*'",
       },
     '> label::before': {
       display: 'none!important',
@@ -355,7 +355,7 @@ const SetButton = styled.div<{ show?: boolean }>`
   border-left: 1px solid #d5d6d9;
   color: #bbbdbf;
   position: relative;
-  color: ${({ show }) => show ? ' rgba(40, 119, 255, 1)' : ''};
+  color: ${({ show }) => (show ? ' rgba(40, 119, 255, 1)' : '')};
   &:hover {
     color: rgba(40, 119, 255, 1);
   }
@@ -391,8 +391,9 @@ const LabNumber = styled.div<{ isActive: boolean }>`
   align-items: center;
   font-size: 12px;
 
-  color: ${({ isActive }) => isActive ? 'white' : 'rgba(150, 151, 153, 1)'};
-  background: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
+  color: ${({ isActive }) => (isActive ? 'white' : 'rgba(150, 151, 153, 1)')};
+  background: ${({ isActive }) =>
+    isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
 `
 const tabCss = css`
   display: flex;

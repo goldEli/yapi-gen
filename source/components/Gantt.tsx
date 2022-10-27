@@ -71,6 +71,9 @@ const GanttWrap = styled.div({
   '.gantt_task_cell': {
     borderRight: 'none',
   },
+  '.gantt_layout_content': {
+    boxShadow: '0px 4px 6px rgb(0 0 0 / 10%)',
+  },
 
   //   '.gantt_row:nth-child(even), .gantt_task_row:nth-child(even)': {
   //     backgroundColor: ' #f8f9fa',
@@ -122,8 +125,8 @@ const Gantt = (props: Props) => {
           task.statusTitle
             ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
             : `<span style="color: #969799;text-decoration:line-through">${t(
-              'newlyAdd.statusDel',
-            )}</span>`,
+                'newlyAdd.statusDel',
+              )}</span>`,
         ) +
         `<br/><b>${
           i18n.language === 'zh' ? t('common.startTime') + '：' : 'Star date:'

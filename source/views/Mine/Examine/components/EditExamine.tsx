@@ -233,19 +233,29 @@ const EditExamine = (props: Props) => {
                 {Array.isArray(verifyInfo.fields[m]?.value) &&
                   (m === 'tag' ? (
                     <ContentWrap>
-                      {verifyInfo.fields[m]?.value?.map((h: any) => (
-                        <ViewWrap key={h.name} color={h?.color}>
-                          {h.name}
-                        </ViewWrap>
-                      ))}
+                      {verifyInfo.fields[m]?.value?.length > 0
+                        ? verifyInfo.fields[m]?.value?.map((h: any) => (
+                            <ViewWrap key={h.name} color={h?.color}>
+                              {h.name}
+                            </ViewWrap>
+                          ))
+                        : '--'}
                     </ContentWrap>
                   ) : (
                     <ContentWrap>
-                      <span>
-                        {verifyInfo.fields[m]?.value
-                          ?.map((i: any) => i.name.trim())
-                          .join(',')}
-                      </span>
+                      {String(m).includes('custom_') ? (
+                        <span>
+                          {verifyInfo.fields[m]?.value
+                            ?.map((i: any) => i)
+                            .join('、') || '--'}
+                        </span>
+                      ) : (
+                        <span>
+                          {verifyInfo.fields[m]?.value
+                            ?.map((i: any) => i.name?.trim())
+                            .join('、') || '--'}
+                        </span>
+                      )}
                     </ContentWrap>
                   ))}
                 {m === 'priority' && (

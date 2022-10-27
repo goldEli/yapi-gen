@@ -130,9 +130,9 @@ const DemandCard = (props: Props) => {
     let menuItems = [
       {
         key: '1',
-        label:
+        label: (
           <div onClick={e => onClickMenu('edit', e)}>{t('common.edit')}</div>
-        ,
+        ),
       },
       {
         key: '2',
@@ -191,7 +191,7 @@ const DemandCard = (props: Props) => {
                     style={{ marginLeft: index ? -10 : 0, zIndex: index }}
                   >
                     <div className="item" style={{ background: '#A4ACF5' }}>
-                      {String(item.trim().slice(0, 1)).toLocaleUpperCase()}
+                      {String(item?.trim().slice(0, 1)).toLocaleUpperCase()}
                     </div>
                   </div>
                 ))}
@@ -209,21 +209,19 @@ const DemandCard = (props: Props) => {
             />
           </AvatarWrap>
         </MainWrap>
-        {hasDel && hasEdit
-          ? null
-          : (
-              <Dropdown
-                key={isMoreVisible.toString()}
-                visible={isMoreVisible}
-                overlay={menu()}
-                placement="bottomRight"
-                trigger={['hover']}
-                getPopupContainer={node => node}
-                onVisibleChange={visible => setIsMoreVisible(visible)}
-              >
-                <MoreWrap type="more" />
-              </Dropdown>
-            )}
+        {hasDel && hasEdit ? null : (
+          <Dropdown
+            key={isMoreVisible.toString()}
+            visible={isMoreVisible}
+            overlay={menu()}
+            placement="bottomRight"
+            trigger={['hover']}
+            getPopupContainer={node => node}
+            onVisibleChange={visible => setIsMoreVisible(visible)}
+          >
+            <MoreWrap type="more" />
+          </Dropdown>
+        )}
       </Wrap>
     </div>
   )

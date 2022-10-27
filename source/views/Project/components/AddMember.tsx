@@ -119,7 +119,6 @@ const AddMember = (props: Props) => {
       name: value,
     })
   }
-
   return (
     <Modal
       visible={props.value}

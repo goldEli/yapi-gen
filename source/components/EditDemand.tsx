@@ -522,6 +522,9 @@ const EditDemand = (props: Props) => {
       setProjectId(value)
       if (props?.isQuickCreate) {
         getProjectData()
+        setTimeout(() => {
+          inputRefDom.current?.focus()
+        }, 100)
       } else {
         getInit(value)
       }
@@ -906,7 +909,7 @@ const EditDemand = (props: Props) => {
       )}
       <ModalWrap
         visible={props.visible}
-        width="96%"
+        width="88%"
         footer={false}
         bodyStyle={{
           padding: '0 4px 0 24px',
@@ -1058,6 +1061,7 @@ const EditDemand = (props: Props) => {
                   <TagComponent
                     defaultList={tagList}
                     onChangeTag={onChangeTag}
+                    isQuick={props.isQuickCreate}
                     addWrap={
                       <AddWrap hasDash>
                         <IconFont type="plus" />
@@ -1196,28 +1200,34 @@ const EditDemand = (props: Props) => {
                 <PopConfirm
                   content={({ onHide }: { onHide(): void }) => {
                     return (
-                      <LevelContent
-                        onHide={onHide}
-                        record={{ project_id: projectId }}
-                        onCurrentDetail={onCurrentDetail}
-                      />
+                      projectId && (
+                        <LevelContent
+                          onHide={onHide}
+                          record={{ project_id: projectId }}
+                          onCurrentDetail={onCurrentDetail}
+                        />
+                      )
                     )
                   }}
                 >
-                  <PriorityWrap>
-                    <IconFont
-                      className="priorityIcon"
-                      type={priorityDetail?.icon}
-                      style={{
-                        fontSize: 20,
-                        color: priorityDetail?.color,
-                      }}
-                    />
-                    <div>
-                      <span>{priorityDetail?.content_txt || '--'}</span>
-                      <IconFont className="icon" type="down-icon" />
-                    </div>
-                  </PriorityWrap>
+                  {projectId ? (
+                    <PriorityWrap>
+                      <IconFont
+                        className="priorityIcon"
+                        type={priorityDetail?.icon}
+                        style={{
+                          fontSize: 20,
+                          color: priorityDetail?.color,
+                        }}
+                      />
+                      <div>
+                        <span>{priorityDetail?.content_txt || '--'}</span>
+                        <IconFont className="icon" type="down-icon" />
+                      </div>
+                    </PriorityWrap>
+                  ) : (
+                    <span style={{ cursor: 'not-allowed' }}>--</span>
+                  )}
                 </PopConfirm>
               </Form.Item>
               <Form.Item label={t('common.iterate')} name="iterateId">

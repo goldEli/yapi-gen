@@ -15,7 +15,6 @@ import {
   Popover,
   Form,
   Input,
-  Menu,
   message,
   Radio,
   Spin,
@@ -37,7 +36,6 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
     width: 300,
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
     borderRight: '1px solid #EBEDF0',
     padding: '0px 16px 10px',
     background: 'white',
@@ -72,13 +70,13 @@ const IconWrap = styled(IconFont)({
 const SortItem = styled.div<{ isActive: boolean }>(
   {
     width: '100%',
-    height: 32,
+    height: 30,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 14,
     cursor: 'pointer',
-    marginTop: 4,
+    margin: '4px 0',
     padding: '0 16px',
     '&:hover': {
       color: '#2877ff',
@@ -332,7 +330,6 @@ const WrapLeft = (props: Props) => {
       message.success(t('mark.change'))
       getList()
     } catch (error) {
-
       //
     }
   }
@@ -353,7 +350,6 @@ const WrapLeft = (props: Props) => {
       message.success(t('common.deleteSuccess'))
       getList({})
     } catch (error) {
-
       //
     }
   }
@@ -391,14 +387,14 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        {hasAdd
-          ? <div />
-          : (
-              <AddButton
-                text={t('common.createIterate')}
-                onChangeClick={onChangeClick}
-              />
-            )}
+        {hasAdd ? (
+          <div />
+        ) : (
+          <AddButton
+            text={t('common.createIterate')}
+            onChangeClick={onChangeClick}
+          />
+        )}
         <Space size={20}>
           <Popover
             visible={isSort}
@@ -412,9 +408,9 @@ const WrapLeft = (props: Props) => {
               <IconWrap type="sort" />
             </Tooltip>
           </Popover>
-          {hasFilter ? null
-            : <Divider style={{ margin: 0, height: 20 }} type="vertical" />
-          }
+          {hasFilter ? null : (
+            <Divider style={{ margin: 0, height: 20 }} type="vertical" />
+          )}
 
           {hasFilter ? null : (
             <Popover
@@ -434,8 +430,8 @@ const WrapLeft = (props: Props) => {
       </TopWrap>
       <CardGroups>
         <Spin spinning={isSpinning}>
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <div>
                 {dataList.list?.map((item: any) => (
                   <IterationCard
@@ -450,9 +446,9 @@ const WrapLeft = (props: Props) => {
                   />
                 ))}
               </div>
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </CardGroups>
     </Left>

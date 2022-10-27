@@ -193,33 +193,42 @@ const Circulation = () => {
                 {Array.isArray(i.fields[m]?.value) &&
                   (m === 'tag' ? (
                     <ContentWrap>
-                      {i.fields[m]?.value?.map((h: any) => (
-                        <ViewWrap key={h.name} color={h?.color}>
-                          {h.name}
-                        </ViewWrap>
-                      ))}
+                      {i.fields[m]?.value?.length > 0
+                        ? i.fields[m]?.value?.map((h: any) => (
+                            <ViewWrap key={h.name} color={h?.color}>
+                              {h.name}
+                            </ViewWrap>
+                          ))
+                        : '--'}
                     </ContentWrap>
                   ) : (
                     <ContentWrap>
-                      <Space size={24}>
-                        {i.fields[m]?.value?.map((n: any) => (
-                          <div key={n.id} style={{ display: 'flex' }}>
-                            <NameWrap
-                              style={{
-                                marginBottom: 0,
-                                marginRight: 8,
-                                width: 24,
-                                height: 24,
-                              }}
-                            >
-                              {String(
-                                n?.name?.trim().slice(0, 1),
-                              ).toLocaleUpperCase()}
-                            </NameWrap>
-                            <span>{n?.name?.trim()}</span>
-                          </div>
-                        ))}
-                      </Space>
+                      {String(m).includes('custom_') ? (
+                        <span>
+                          {i.fields[m]?.value?.map((n: any) => n).join('、') ||
+                            '--'}
+                        </span>
+                      ) : (
+                        <Space size={24}>
+                          {i.fields[m]?.value?.map((n: any) => (
+                            <div key={n.id} style={{ display: 'flex' }}>
+                              <NameWrap
+                                style={{
+                                  marginBottom: 0,
+                                  marginRight: 8,
+                                  width: 24,
+                                  height: 24,
+                                }}
+                              >
+                                {String(
+                                  n?.name?.trim().slice(0, 1),
+                                ).toLocaleUpperCase()}
+                              </NameWrap>
+                              <span>{n?.name?.trim()}</span>
+                            </div>
+                          ))}
+                        </Space>
+                      )}
                     </ContentWrap>
                   ))}
                 {m === 'priority' && (

@@ -765,7 +765,7 @@ export const ShapeContent = (props: any) => {
                             >
                               <ArrorItem>
                                 <span className={arron}>
-                                  {item.name.trim().charAt(0)}
+                                  {item.name?.trim().charAt(0)}
                                 </span>
                                 <span className={arrorText}>{item.name}</span>
                               </ArrorItem>

@@ -15,6 +15,7 @@ import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)({
+  paddingTop: 2,
   '.anticon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -37,7 +38,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: '\'*\'',
+        content: "'*'",
       },
     '> label::before': {
       display: 'none!important',
@@ -135,7 +136,6 @@ const EditIteration = (props: Props) => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }

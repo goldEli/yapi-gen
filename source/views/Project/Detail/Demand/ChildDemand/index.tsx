@@ -102,13 +102,14 @@ const ChildDemand = () => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -138,7 +139,8 @@ const ChildDemand = () => {
 
   const getList = async (
     item?: any,
-    orderItem?: any,
+    orderValue?: any,
+    orderKeyValue?: any,
     updateState?: boolean,
   ) => {
     if (!updateState) {
@@ -148,8 +150,8 @@ const ChildDemand = () => {
       projectId,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
-      order: orderItem.value,
-      orderKey: orderItem.key,
+      order: orderValue,
+      orderKey: orderKeyValue,
       parentId: demandId,
     })
     setDataList(result)
@@ -158,12 +160,12 @@ const ChildDemand = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order)
+    getList(pageObj, order, orderKey)
   }, [])
 
   useEffect(() => {
     if (isRefresh) {
-      getList({ page: 1, size: pageObj.size }, order)
+      getList({ page: 1, size: pageObj.size }, order, orderKey)
     }
   }, [isRefresh])
 
@@ -188,15 +190,13 @@ const ChildDemand = () => {
 
   const onUpdate = (updateState?: boolean) => {
     getDemandInfo({ projectId, id: demandId })
-    getList(pageObj, order, updateState)
+    getList(pageObj, order, orderKey, updateState)
   }
 
   const updateOrderkey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(
-      { page: 1, size: pageObj.size },
-      { value: val === 2 ? 'desc' : 'asc', key },
-    )
+    setOrderKey(key)
+    setOrder(val)
+    getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
   }
 
   const setMenu = (
@@ -223,12 +223,12 @@ const ChildDemand = () => {
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onChangeVisible = () => {
@@ -283,8 +283,8 @@ const ChildDemand = () => {
 
   const columns = useDynamicColumns({
     projectId,
-    orderKey: order.key,
-    order: order.value,
+    orderKey,
+    order,
     updateOrderkey,
     onChangeStatus,
     onChangeState,

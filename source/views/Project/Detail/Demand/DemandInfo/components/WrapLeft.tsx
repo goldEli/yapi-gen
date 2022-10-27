@@ -101,8 +101,8 @@ export const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-        ? '1px dashed #969799'
-        : '1px solid white',
+      ? '1px dashed #969799'
+      : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -200,7 +200,9 @@ const WrapLeftBox = () => {
 
   useEffect(() => {
     textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
-    return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
+    return textWrapEditor?.current?.removeEventListener('click', e =>
+      onGetViewPicture(e),
+    )
   }, [])
 
   useEffect(() => {
@@ -211,13 +213,14 @@ const WrapLeftBox = () => {
         name: i.tag?.content,
       })),
     )
+    setSchedule(demandInfo?.schedule)
   }, [demandInfo])
 
   const onChangeSchedule = async () => {
     if (
-      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id)
-      && demandInfo.status.is_start !== 1
-      && demandInfo.status.is_end !== 1
+      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
+      demandInfo.status.is_start !== 1 &&
+      demandInfo.status.is_end !== 1
     ) {
       const obj = {
         projectId,
@@ -228,7 +231,6 @@ const WrapLeftBox = () => {
         await updateTableParams(obj)
         getDemandInfo({ projectId, id: demandInfo?.id })
       } catch (error) {
-
         //
       }
     }
@@ -268,7 +270,7 @@ const WrapLeftBox = () => {
           onMouseUp={onChangeSchedule}
         >
           <SliderWrap
-            style={{ width: 320 }}
+            style={{ width: 260 }}
             value={schedule}
             tipFormatter={(value: any) => `${value}%`}
             onChange={value => setSchedule(value)}
@@ -276,13 +278,13 @@ const WrapLeftBox = () => {
               !(
                 demandInfo?.user
                   ?.map((i: any) => i.user.id)
-                  ?.includes(userInfo?.id)
-                && demandInfo.status.is_start !== 1
-                && demandInfo.status.is_end !== 1
+                  ?.includes(userInfo?.id) &&
+                demandInfo.status.is_start !== 1 &&
+                demandInfo.status.is_end !== 1
               )
             }
           />
-          <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
+          <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
             {schedule}%
           </span>
         </div>
@@ -294,9 +296,9 @@ const WrapLeftBox = () => {
             ref={textWrapEditor}
             dangerouslySetInnerHTML={{ __html: demandInfo?.info }}
           />
-        )
-          : <TextWrap>--</TextWrap>
-        }
+        ) : (
+          <TextWrap>--</TextWrap>
+        )}
       </InfoItem>
       <InfoItem>
         <Label>{t('common.tag')}</Label>

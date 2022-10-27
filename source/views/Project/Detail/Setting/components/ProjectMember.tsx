@@ -397,7 +397,7 @@ const ProjectMember = () => {
               />
             ) : (
               <NameWrap>
-                {String(record.name.trim().slice(0, 1)).toLocaleUpperCase()}
+                {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
               </NameWrap>
             )}
             <span style={{ marginLeft: 12, color: '#323233', fontSize: 14 }}>

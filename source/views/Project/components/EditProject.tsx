@@ -48,7 +48,6 @@ const EditProject = (props: Props) => {
       props.onChangeVisible()
       props.onUpdate?.()
     } catch (error) {
-
       //
     }
   }
