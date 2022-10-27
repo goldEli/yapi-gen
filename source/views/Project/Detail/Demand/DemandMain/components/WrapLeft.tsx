@@ -15,6 +15,7 @@ import {
   useContext,
   forwardRef,
   useImperativeHandle,
+  useRef,
 } from 'react'
 import {
   getTreeList,
@@ -90,12 +91,13 @@ const rightText = css`
   }
 `
 const TreeItem = (props: any) => {
+  const inputRefDom = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
-  const [isShowMore, setIsShowMore] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
+  const [visiblePop, setVisiblePop] = useState(false)
   const { projectInfo } = useModel('project')
   const btnsText = [
     {
@@ -118,7 +120,7 @@ const TreeItem = (props: any) => {
   }
   const showVisible = (id: number) => {
     close()
-    setIsShowMore(false)
+    setVisiblePop(false)
     if (id === 3) {
       setVisible(true)
     } else if (id === 1) {
@@ -132,6 +134,9 @@ const TreeItem = (props: any) => {
         remark: props.remark,
       })
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
   const onChangeVisible = () => {
     close()
@@ -179,12 +184,22 @@ const TreeItem = (props: any) => {
     props.onRest()
   }
   const content = (
-    <div>
+    <div
+      style={{
+        padding: '10px 0',
+      }}
+    >
       {props.pid === 1
         ? btnsText
             .filter(item => item.id === 1)
             .map(item => (
-              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+              <BtnsItemBox
+                onClick={(e: any) => {
+                  e.stopPropagation()
+                  showVisible(item.id)
+                }}
+                key={item.id}
+              >
                 {item.text}
               </BtnsItemBox>
             ))
@@ -192,12 +207,24 @@ const TreeItem = (props: any) => {
         ? btnsText
             .filter(item => item.id !== 1)
             .map(item => (
-              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+              <BtnsItemBox
+                onClick={(e: any) => {
+                  e.stopPropagation()
+                  showVisible(item.id)
+                }}
+                key={item.id}
+              >
                 {item.text}
               </BtnsItemBox>
             ))
         : btnsText.map(item => (
-            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+            <BtnsItemBox
+              onClick={(e: any) => {
+                e.stopPropagation()
+                showVisible(item.id)
+              }}
+              key={item.id}
+            >
               {item.text}
             </BtnsItemBox>
           ))}
@@ -221,14 +248,21 @@ const TreeItem = (props: any) => {
         ''
       ) : (
         <Popover
-          visible={isShowMore}
-          onVisibleChange={isVisible => setIsShowMore(isVisible)}
+          visible={visiblePop}
           getPopupContainer={node => node}
           placement="bottomRight"
           content={content}
           trigger="hover"
         >
-          <IconFont data-tree className={rightText} type="more" />
+          <IconFont
+            onClick={e => {
+              e.stopPropagation()
+              setVisiblePop(true)
+            }}
+            data-tree
+            className={rightText}
+            type="more"
+          />
         </Popover>
       )}
 
@@ -256,6 +290,7 @@ const TreeItem = (props: any) => {
               rules={[{ required: true, message: '' }]}
             >
               <Input
+                ref={inputRefDom as any}
                 allowClear
                 autoComplete="off"
                 maxLength={10}
@@ -392,7 +427,7 @@ const WrapLeft = (props: any, ref: any) => {
         <div className="resize_line" />
         <div className="resize_save">
           <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
-          {treeData.length > 0 && show && (
+          {treeData.length > 0 && show ? (
             <Tree
               allowDrop={(dropNode: any) => {
                 if (dropNode.dropNode.title.props.grade === 4) {
@@ -418,7 +453,7 @@ const WrapLeft = (props: any, ref: any) => {
               }}
               treeData={treeData}
             />
-          )}
+          ) : null}
         </div>
       </Left>
     )

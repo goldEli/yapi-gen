@@ -115,9 +115,9 @@ export const getShapeRight = async (params: any) => {
         type: 'time',
       }
     } else if (
-      (item.content.includes('users_name')
-        || item.content.includes('users_copysend_name'))
-      && !item.attr
+      (item.content.includes('users_name') ||
+        item.content.includes('users_copysend_name')) &&
+      !item.attr
     ) {
       return {
         ...item,
@@ -190,7 +190,7 @@ export const getShapeRight = async (params: any) => {
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
       }
-    } else if (item.title.includes('评论') && !item.attr) {
+    } else if (item.content.includes('comment') && !item.attr) {
       return {
         ...item,
         id: item.id,
@@ -224,9 +224,9 @@ export const getShapeRight = async (params: any) => {
         dvalue: item.true_value,
         children: item?.value
           ? item?.value?.map((item: any) => ({
-            name: item,
-            id: item,
-          }))
+              name: item,
+              id: item,
+            }))
           : [],
       }
     }
