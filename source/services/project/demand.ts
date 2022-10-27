@@ -101,6 +101,7 @@ export const getDemandList: any = async (params: any) => {
           categoryColor: i.category_color,
           project_id: i.project_id,
           usersNameIds: i.users_name_ids,
+          schedule: i.schedule,
         })),
         name: k.content_txt,
         id: k.status_id,

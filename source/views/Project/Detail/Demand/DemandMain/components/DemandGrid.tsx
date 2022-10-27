@@ -63,7 +63,7 @@ interface Props {
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   isSpinning?: boolean
-  onUpdate(): void
+  onUpdate(state: any): void
 }
 const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
@@ -129,7 +129,7 @@ const DemandGrid = (props: Props) => {
                           item={i}
                           onClickItem={() => onClickItem(i)}
                           indexVal={idx}
-                          onUpdate={props?.onUpdate}
+                          onUpdate={() => props?.onUpdate(true)}
                           listLength={
                             dataList?.filter((item: any) => item.id === k.id)[0]
                               ?.list?.length
