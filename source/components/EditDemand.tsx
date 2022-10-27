@@ -499,6 +499,9 @@ const EditDemand = (props: Props) => {
       setProjectId(value)
       if (props?.isQuickCreate) {
         getProjectData()
+        setTimeout(() => {
+          inputRefDom.current?.focus()
+        }, 100)
       } else {
         getInit(value)
       }
@@ -1174,22 +1177,24 @@ const EditDemand = (props: Props) => {
                     )
                   }}
                 >
-                  <PriorityWrap
-                    style={{ cursor: projectId ? 'pointer' : 'not-allowed' }}
-                  >
-                    <IconFont
-                      className="priorityIcon"
-                      type={priorityDetail?.icon}
-                      style={{
-                        fontSize: 20,
-                        color: priorityDetail?.color,
-                      }}
-                    />
-                    <div>
-                      <span>{priorityDetail?.content_txt || '--'}</span>
-                      <IconFont className="icon" type="down-icon" />
-                    </div>
-                  </PriorityWrap>
+                  {projectId ? (
+                    <PriorityWrap>
+                      <IconFont
+                        className="priorityIcon"
+                        type={priorityDetail?.icon}
+                        style={{
+                          fontSize: 20,
+                          color: priorityDetail?.color,
+                        }}
+                      />
+                      <div>
+                        <span>{priorityDetail?.content_txt || '--'}</span>
+                        <IconFont className="icon" type="down-icon" />
+                      </div>
+                    </PriorityWrap>
+                  ) : (
+                    <span style={{ cursor: 'not-allowed' }}>--</span>
+                  )}
                 </PopConfirm>
               </Form.Item>
               <Form.Item label={t('common.iterate')} name="iterateId">
