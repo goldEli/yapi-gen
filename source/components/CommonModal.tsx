@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 import { Modal, Space } from 'antd'
@@ -14,7 +15,21 @@ const ModalHeader = styled.div({
   color: '#323233',
   fontWeight: '500',
   height: 56,
-  padding: '0 24px 0 26px',
+  padding: '0 0px 0 26px',
+})
+
+const CloseWrap = styled.div({
+  width: 60,
+  height: 56,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  '&: hover': {
+    '.anticon': {
+      color: '#2877ff',
+    },
+  },
 })
 
 const ModalFooter = styled(Space)({
@@ -55,11 +70,9 @@ const CommonModal = (props: ModalProps) => {
     >
       <ModalHeader>
         <span>{props?.title}</span>
-        <IconFont
-          onClick={props?.onClose}
-          style={{ cursor: 'pointer' }}
-          type="close"
-        />
+        <CloseWrap onClick={props?.onClose}>
+          <IconFont type="close" />
+        </CloseWrap>
       </ModalHeader>
       <div style={{ padding: '0 4px 0 24px' }}>{props?.children}</div>
       {props?.isShowFooter ? null : (
