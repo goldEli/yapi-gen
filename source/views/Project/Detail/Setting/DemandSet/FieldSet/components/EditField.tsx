@@ -221,8 +221,10 @@ const EditFiled = (props: Props) => {
   }
 
   const onDelRow = (key: any) => {
-    const arr = row.filter((e, i) => e.key !== key)
-    setRow(arr)
+    if (row.length > 1) {
+      const arr = row.filter((e, i) => e.key !== key)
+      setRow(arr)
+    }
   }
 
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
@@ -351,7 +353,8 @@ const EditFiled = (props: Props) => {
                               type="close"
                               style={{
                                 fontSize: 16,
-                                cursor: 'pointer',
+                                cursor:
+                                  row?.length === 1 ? 'not-allowed' : 'pointer',
                                 color: '#969799',
                                 marginLeft: 12,
                               }}

@@ -117,6 +117,10 @@ export const getDemandList: any = async (params: any) => {
       iteration: i.iterate_name || '--',
       schedule: i.schedule,
       project_id: i.project_id,
+      category: i.category,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      isExamine: i.verify_lock === 1,
     }))
   } else {
     return {

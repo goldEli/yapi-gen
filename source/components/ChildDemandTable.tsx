@@ -13,6 +13,7 @@ import { message, Popover, Progress, Table, Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
 import {
+  CategoryWrap,
   ClickWrap,
   HiddenText,
   ListNameWrap,
@@ -60,7 +61,7 @@ const ChildDemandTable = (props: {
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo } = useModel('project')
+  const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 ||
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -145,18 +146,51 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'name',
+      width: 340,
       render: (text: string, record: any) => {
         return (
-          <HiddenText>
+          <HiddenText style={{ position: 'relative' }}>
+            <Tooltip
+              placement="top"
+              getPopupContainer={node => node}
+              title={record.categoryRemark}
+            >
+              <CategoryWrap
+                color={record.categoryColor}
+                bgColor={
+                  colorList?.filter(
+                    (k: any) => k.key === record.categoryColor,
+                  )[0]?.bgColor
+                }
+                style={{ marginLeft: 0 }}
+              >
+                {record.category}
+              </CategoryWrap>
+            </Tooltip>
             <ClickWrap
               onClick={() => onToDetail(record)}
               isName
               isClose={record.status?.content === '已关闭'}
             >
-              <Tooltip title={text}>
-                <ListNameWrap>{text}</ListNameWrap>
-              </Tooltip>
+              <OmitText
+                width={110}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
             </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                  position: 'absolute',
+                  right: 0,
+                }}
+              />
+            )}
           </HiddenText>
         )
       },
@@ -308,7 +342,7 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 1200, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxWidth: 1000, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"
