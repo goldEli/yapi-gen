@@ -247,6 +247,7 @@ const DemandMain = (props: Props) => {
               onDelete={onDelete}
               data={dataList}
               isSpinning={isSpinning}
+              onUpdate={onUpdate}
             />
           ) : (
             <DemandTable

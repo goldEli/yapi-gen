@@ -155,7 +155,7 @@ const Setting = () => {
               isActive={nowPath === item.path}
               hidden={item.isHidden}
             >
-              <IconFont type={item.icon} />
+              <IconFont type={item?.icon} />
               <div>{item.name}</div>
             </MenuItem>
           ))}

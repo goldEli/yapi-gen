@@ -68,7 +68,7 @@ export const LevelContent = (props: LevelProps) => {
           key={item.id}
         >
           <IconFont
-            type={item.icon}
+            type={item?.icon}
             style={{
               fontSize: 20,
               marginRight: '10px',

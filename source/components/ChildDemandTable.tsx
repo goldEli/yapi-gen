@@ -277,19 +277,10 @@ const ChildDemandTable = (props: {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="users_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.dealName')}
-        </NewSort>
-      ),
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       width: 120,
-      render: (text: string) => {
+      render: (text: any) => {
         return (
           <HiddenText>
             <OmitText
@@ -298,7 +289,7 @@ const ChildDemandTable = (props: {
                 getPopupContainer: node => node,
               }}
             >
-              {text || '--'}
+              {text?.join(',') || '--'}
             </OmitText>
           </HiddenText>
         )

@@ -11,6 +11,7 @@ interface Props {
   onUpdate(): void
   listLength?: any
   index?: any
+  isCard?: any
 }
 
 const DemandProgress = (props: Props) => {
@@ -45,10 +46,14 @@ const DemandProgress = (props: Props) => {
         </ProgressWrap>
       }
       getPopupContainer={node =>
-        props?.listLength < 5 || props?.index === 1 ? document.body : node
+        props?.listLength < 5 || props?.index === 1 || props?.isCard
+          ? document.body
+          : node
       }
       getTooltipContainer={node =>
-        props?.listLength < 5 || props?.index === 1 ? document.body : node
+        props?.listLength < 5 || props?.index === 1 || props?.isCard
+          ? document.body
+          : node
       }
     >
       <Progress

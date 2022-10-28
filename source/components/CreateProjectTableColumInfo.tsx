@@ -180,15 +180,15 @@ export const useDynamicColumns = (state: any) => {
             <div className={flexCss}>
               <div className={flexCss}>
                 <IconFont
-                  type={text.icon}
+                  type={text?.icon}
                   style={{
                     fontSize: 20,
                     marginRight: '8px',
-                    color: text.color,
+                    color: text?.color,
                   }}
                 />
                 <span style={{ marginRight: '5px' }}>
-                  {text.content_txt || '--'}
+                  {text?.content_txt || '--'}
                 </span>
               </div>
               <ShowWrap>

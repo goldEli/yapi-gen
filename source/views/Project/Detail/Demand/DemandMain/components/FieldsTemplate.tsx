@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable multiline-ternary */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Modal, Space, Divider } from 'antd'
+import { Checkbox, Space, Divider } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
