@@ -2,7 +2,7 @@ import { createFromIconfontCN } from '@ant-design/icons'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: [
-    'https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/svg_16144_87.f2f31877628b128d84f5a07910e17774.js',
+    'https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/svg_16144_88.392169a2b2e64e483c2770c1a4236131.js',
   ],
 })
 

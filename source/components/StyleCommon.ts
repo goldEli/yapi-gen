@@ -59,12 +59,22 @@ const DividerWrap = styled(Divider)({
   margin: 0,
 })
 
-const ListNameWrap = styled.div({
-  maxWidth: 500,
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-})
+const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+  {
+    maxWidth: 500,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    cursor: 'pointer',
+    '&: hover': {
+      color: '#2877ff',
+    },
+  },
+  ({ isClose, isName }) => ({
+    color: isClose ? '#969799' : '',
+    textDecoration: isName && isClose ? 'line-through' : '',
+  }),
+)
 
 const HiddenText = styled.div({
   display: 'flex',
@@ -254,6 +264,7 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     fontSize: 12,
     fontWeight: 400,
     marginLeft: 8,
+    flexShrink: 0,
   },
   ({ color, bgColor }) => ({
     background: bgColor,

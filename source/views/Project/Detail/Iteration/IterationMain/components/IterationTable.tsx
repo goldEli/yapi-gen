@@ -276,14 +276,11 @@ const IterationTable = (props: Props) => {
                 dataSource={props.data?.list}
                 pagination={false}
                 scroll={{
-                  x: selectColum.reduce(
-                    (totalWidth: number, item: any) => totalWidth + item.width,
-                    0,
-                  ),
+                  x: 'max-content',
                   y: tableY,
                 }}
                 showSorterTooltip={false}
-                sticky
+                tableLayout="auto"
               />
             ) : (
               <NoData />
@@ -295,6 +292,7 @@ const IterationTable = (props: Props) => {
         <Pagination
           defaultCurrent={1}
           current={props.data?.currentPage}
+          pageSize={props.data?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={props.data?.total}

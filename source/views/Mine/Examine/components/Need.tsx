@@ -90,14 +90,13 @@ const Need = (props: any) => {
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
-  const { colorList } = useModel('project')
   const { userInfo } = useModel('user')
   const { getVerifyList, getVerifyUserList, setCount, count } = useModel('mine')
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [keyword, setKeyword] = useState<string>('')
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
@@ -120,8 +119,8 @@ const Need = (props: any) => {
       order: orderVal.value,
       orderKey: orderVal.key,
     }
-    const result
-      = val ?? activeTab
+    const result =
+      val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
     setListData(result)
@@ -269,15 +268,15 @@ const Need = (props: any) => {
         </SearchWrap>
       </TabsHehavior>
 
-      {!filterState
-        && <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
-      }
+      {!filterState && (
+        <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
+      )}
 
       <div>
         <LoadingSpin spinning={isSpin}>
           <StaffTableWrap>
-            {listData?.list
-              ? listData?.list?.length ? (
+            {listData?.list ? (
+              listData?.list?.length ? (
                 <TableBox
                   rowKey="id"
                   columns={selectColum}
@@ -285,10 +284,10 @@ const Need = (props: any) => {
                   pagination={false}
                   scroll={{ x: 'max-content' }}
                 />
+              ) : (
+                <NoData />
               )
-                : <NoData />
-
-              : null}
+            ) : null}
           </StaffTableWrap>
         </LoadingSpin>
       </div>
@@ -297,6 +296,7 @@ const Need = (props: any) => {
         <Pagination
           defaultCurrent={1}
           current={listData?.currentPage}
+          pageSize={pageObj?.size}
           showSizeChanger
           showQuickJumper
           total={listData?.total}

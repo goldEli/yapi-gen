@@ -76,8 +76,8 @@ const UploadAttach = (props: Props) => {
       })
       message.success(t('common.addSuccess'))
       getDemandInfo({ projectId, id: demandId })
+      props?.onBottom?.()
     } catch (error) {
-
       //
     }
   }
@@ -92,8 +92,8 @@ const UploadAttach = (props: Props) => {
       })
       message.success(t('common.deleteSuccess'))
       getDemandInfo({ projectId, id: demandId })
+      props?.onBottom?.()
     } catch (error) {
-
       //
     }
   }

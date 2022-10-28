@@ -456,15 +456,6 @@ export const ShapeContent = (props: any) => {
     }
   }, [])
 
-  useEffect(() => {
-    const arr = optionsList?.filter((k: any) =>
-      props.row?.dealName?.split(',')?.some((j: any) => k.name === j),
-    )
-    form.setFieldsValue({
-      username: arr?.map((k: any) => k.id),
-    })
-  }, [optionsList, props?.row])
-
   const onClear = () => {
     hide()
     form.resetFields()

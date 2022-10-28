@@ -80,12 +80,22 @@ export const useDynamicColumns = (state: any) => {
       key: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => onToDetail(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
+              {text}
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                }}
+              />
+            )}
+          </div>
         )
       },
     },
@@ -99,7 +109,6 @@ export const useDynamicColumns = (state: any) => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              position: 'relative',
             }}
           >
             <Tooltip
@@ -119,26 +128,15 @@ export const useDynamicColumns = (state: any) => {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <ClickWrap
-              style={{ paddingRight: 50 }}
-              isName
-              isClose={record.status?.content === '已关闭'}
-              onClick={() => onToDetail(record)}
-            >
-              <Tooltip title={text}>
-                <ListNameWrap>{text}</ListNameWrap>
-              </Tooltip>
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                  position: 'absolute',
-                  right: 0,
-                }}
-              />
-            )}
+            <Tooltip title={text} getPopupContainer={node => node}>
+              <ListNameWrap
+                isName
+                isClose={record.status?.content === '已关闭'}
+                onClick={() => onToDetail(record)}
+              >
+                {text}
+              </ListNameWrap>
+            </Tooltip>
           </div>
         )
       },

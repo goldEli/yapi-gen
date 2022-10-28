@@ -167,16 +167,16 @@ interface Props {
 
 const ParentDemand = (props: Props) => {
   const [t] = useTranslation()
-  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand }
-    = useModel('demand')
+  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand } =
+    useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo } = useModel('project')
   const [isOpen, setIsOpen] = useState(false)
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const onChangeParent = async (item: any) => {
@@ -190,7 +190,6 @@ const ParentDemand = (props: Props) => {
       message.success(t('common.addSuccess'))
       getDemandInfo({ projectId, id: demandInfo?.id })
     } catch (error) {
-
       //
     }
   }
@@ -206,7 +205,6 @@ const ParentDemand = (props: Props) => {
       message.success(t('common.deleteSuccess'))
       getDemandInfo({ projectId, id: demandInfo?.id })
     } catch (error) {
-
       //
     }
   }

@@ -513,6 +513,7 @@ const MainTable = (props: Props) => {
         <Pagination
           defaultCurrent={1}
           current={props.projectList?.currentPage}
+          pageSize={props.projectList?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={props.projectList?.total}

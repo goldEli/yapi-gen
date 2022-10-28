@@ -115,7 +115,7 @@ const DemandCard = (props: Props) => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { projectInfo, colorList } = useModel('project')
   const hasEdit =
-    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
   const hasDel = getIsPermission(

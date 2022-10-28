@@ -15,6 +15,7 @@ import {
   CategoryWrap,
   ClickWrap,
   HiddenText,
+  ListNameWrap,
   StatusWrap,
 } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
@@ -57,7 +58,7 @@ export const useDynamicColumns = (state: any) => {
   const { userInfo } = useModel('user')
   const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
@@ -90,12 +91,22 @@ export const useDynamicColumns = (state: any) => {
       key: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => state.onClickItem(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              onClick={() => state.onClickItem(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
+              {text}
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                }}
+              />
+            )}
+          </div>
         )
       },
     },
@@ -103,14 +114,12 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 340,
       render: (text: string | number, record: any) => {
         return (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              position: 'relative',
             }}
           >
             <Tooltip
@@ -130,30 +139,15 @@ export const useDynamicColumns = (state: any) => {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <ClickWrap
-              isName
-              isClose={record.status?.content === '已关闭'}
-              onClick={() => state.onClickItem(record)}
-            >
-              <OmitText
-                width={110}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
+            <Tooltip title={text} getPopupContainer={node => node}>
+              <ListNameWrap
+                isName
+                isClose={record.status?.content === '已关闭'}
+                onClick={() => state.onClickItem(record)}
               >
                 {text}
-              </OmitText>
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                  position: 'absolute',
-                  right: 0,
-                }}
-              />
-            )}
+              </ListNameWrap>
+            </Tooltip>
           </div>
         )
       },
@@ -244,7 +238,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'demand',
       key: 'child_story_count',
-      width: 100,
+      width: 120,
       render: (text: string, record: any) => {
         return state.showChildCOntent ? (
           <ChildDemandTable value={text} row={record} />
@@ -327,7 +321,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
-      width: 200,
+      width: 180,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

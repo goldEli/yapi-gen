@@ -181,7 +181,7 @@ const CommonNeed = (props: any) => {
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(10)
+  const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
@@ -671,6 +671,7 @@ const CommonNeed = (props: any) => {
           <Pagination
             defaultCurrent={1}
             current={page}
+            pageSize={pagesize}
             showSizeChanger
             showQuickJumper
             total={total}

@@ -296,7 +296,9 @@ const TableFilter = (props: any) => {
     <CollapseWrap defaultActiveKey={['2']}>
       <Collapse.Panel header={t('components.basicFiled')} key="1">
         {filterBasicsList
-          ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+          ?.filter((k: any) =>
+            props.isIteration ? k.key !== 'iterate_name' : k,
+          )
           ?.map((i: any) => (
             <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
               {i.content_txt}
@@ -352,16 +354,18 @@ const TableFilter = (props: any) => {
   }
   return (
     <SearchLine>
-      <Wrap hidden={props.showForm}>
+      <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
         <FormWrap form={form}>
           {list
-            ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+            ?.filter((k: any) =>
+              props.isIteration ? k.key !== 'iterate_name' : k,
+            )
             ?.map((i: any) => {
               if (
-                i.type === 'select_checkbox'
-                || i.type === 'checkbox'
-                || i.type === 'select'
-                || i.type === 'radio'
+                i.type === 'select_checkbox' ||
+                i.type === 'checkbox' ||
+                i.type === 'select' ||
+                i.type === 'radio'
               ) {
                 return (
                   <SelectWrapBedeck key={i.key}>
@@ -406,8 +410,8 @@ const TableFilter = (props: any) => {
                         getPopupContainer={node => node}
                         format={(times: moment.Moment) => {
                           if (
-                            times.unix() === 0
-                            || times.unix() === 1893427200
+                            times.unix() === 0 ||
+                            times.unix() === 1893427200
                           ) {
                             return t('common.null')
                           }

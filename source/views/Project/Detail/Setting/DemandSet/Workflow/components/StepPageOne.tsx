@@ -38,7 +38,7 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -103,6 +103,7 @@ const StepPageOne = (propsOne: Props) => {
     })
     setDataSource(result)
     setIsSpinning(false)
+    return result
   }
 
   useEffect(() => {
@@ -124,11 +125,13 @@ const StepPageOne = (propsOne: Props) => {
     setIsHasDelete(false)
   }
 
-  const onSaveMethod = async (isUpdateList?: any) => {
+  const onSaveMethod = async (isUpdateList?: any, arr?: any) => {
     await sortchangeWorkflow({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
-      ids: dataSource?.list?.map((i: any) => ({ id: i.id })),
+      ids: arr
+        ? arr?.map((i: any) => ({ id: i.id }))
+        : dataSource?.list?.map((i: any) => ({ id: i.id })),
     })
     if (!isUpdateList) {
       getList(isUpdateList)
@@ -165,7 +168,10 @@ const StepPageOne = (propsOne: Props) => {
       message.success(t('common.deleteSuccess'))
       setOperationObj({})
       setIsHasDelete(false)
-      onSaveMethod()
+      const arr = dataSource?.list?.filter(
+        (i: any) => i.id !== operationObj?.id,
+      )
+      onSaveMethod('', arr)
       setTimeout(() => {
         form.resetFields()
       }, 100)
@@ -183,7 +189,10 @@ const StepPageOne = (propsOne: Props) => {
       message.success(t('common.deleteSuccess'))
       setOperationObj({})
       setIsDelVisible(false)
-      onSaveMethod()
+      const arr = dataSource?.list?.filter(
+        (i: any) => i.id !== operationObj?.id,
+      )
+      onSaveMethod('', arr)
     } catch (error) {
       //
     }

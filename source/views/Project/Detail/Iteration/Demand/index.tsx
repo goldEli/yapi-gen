@@ -4,6 +4,7 @@
 /* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable complexity */
 import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
@@ -66,7 +67,7 @@ const DemandWrap = (props: Props) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
   const [orderKey, setOrderKey] = useState<any>('')
@@ -350,14 +351,11 @@ const DemandWrap = (props: Props) => {
                 dataSource={dataList?.list}
                 pagination={false}
                 scroll={{
-                  x: selectColum.reduce(
-                    (totalWidth: number, item: any) => totalWidth + item.width,
-                    0,
-                  ),
+                  x: 'max-content',
                   y: tableY,
                 }}
                 showSorterTooltip={false}
-                sticky
+                tableLayout="auto"
               />
             ) : (
               <NoData />
@@ -369,6 +367,7 @@ const DemandWrap = (props: Props) => {
         <Pagination
           defaultCurrent={1}
           current={dataList?.currentPage}
+          pageSize={dataList?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={dataList?.total}

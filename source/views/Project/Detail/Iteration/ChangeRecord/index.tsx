@@ -66,7 +66,7 @@ const ChangeRecord = (props?: any) => {
   })
   const [checkDetail, setCheckDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
@@ -414,6 +414,7 @@ const ChangeRecord = (props?: any) => {
         <Pagination
           defaultCurrent={1}
           current={dataList?.currentPage}
+          pageSize={pageObj?.size}
           showSizeChanger
           showQuickJumper
           total={dataList?.total}

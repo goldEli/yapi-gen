@@ -172,7 +172,7 @@ const Profile = () => {
   const [lineData, setLineData] = useState<any>([])
   const [monthIndex, setMonthIndex] = useState<any>(moment().month())
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(10)
+  const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
@@ -206,12 +206,12 @@ const Profile = () => {
         demandText: k.text,
         text: `<div style="display: flex; align-items: center">
         <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
-        k.categoryColor
+          k.categoryColor
         }; background: ${
           colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
         }">${k.categoryName}</span>
         <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
-        k.text
+          k.text
         }</span>
       </div>`,
         start_date: k.start_date,
@@ -238,9 +238,9 @@ const Profile = () => {
   const init = async () => {
     const res = isMember
       ? await getMemberInfoOverviewStatistics({
-        targetId: userId,
-        projectId: id,
-      })
+          targetId: userId,
+          projectId: id,
+        })
       : await getUserInfoOverviewStatistics({ targetId: userId })
     setData(res)
     if (!isMember) {
@@ -387,10 +387,12 @@ const Profile = () => {
               <Pagination
                 defaultCurrent={1}
                 current={page}
+                pageSize={pagesize}
                 showSizeChanger
                 showQuickJumper
                 total={total}
-                showTotal={newTotal => t('common.tableTotal', { count: newTotal })
+                showTotal={newTotal =>
+                  t('common.tableTotal', { count: newTotal })
                 }
                 pageSizeOptions={['10', '20', '50']}
                 onChange={onChangePage}
@@ -461,52 +463,52 @@ const Profile = () => {
             <Center>
               <CenterRight>
                 <SecondTitle>{t('newlyAdd.hisFeed')}</SecondTitle>
-                {lineData.length < 1
-                  ? <NoData />
-                  : (
-                      <TimeLineWrap>
-                        <Timeline>
-                          {lineData.map((item: any) => (
-                            <Timeline.Item key={item.id}>
-                              <LineItem>
-                                <span>{item.createTime}</span>
-                                <span>{item.content}</span>
-                              </LineItem>
-                              <LineItem>
-                                <HiddenText>
-                                  <OmitText
-                                    width={200}
-                                    tipProps={{
-                                      getPopupContainer: node => node,
-                                    }}
-                                  >
-                                    {item.projectName}
-                                  </OmitText>
-                                </HiddenText>
-                                <HiddenText>
-                                  <OmitText
-                                    width={300}
-                                    tipProps={{
-                                      getPopupContainer: node => node,
-                                    }}
-                                  >
-                                    <span
-                                      onClick={() => onToDetail(item)}
-                                      style={{
-                                        color: 'rgba(40, 119, 255, 1)',
-                                        cursor: 'pointer',
-                                      }}
-                                    >
-                                      {item.name}
-                                    </span>
-                                  </OmitText>
-                                </HiddenText>
-                              </LineItem>
-                            </Timeline.Item>
-                          ))}
-                        </Timeline>
-                      </TimeLineWrap>
-                    )}
+                {lineData.length < 1 ? (
+                  <NoData />
+                ) : (
+                  <TimeLineWrap>
+                    <Timeline>
+                      {lineData.map((item: any) => (
+                        <Timeline.Item key={item.id}>
+                          <LineItem>
+                            <span>{item.createTime}</span>
+                            <span>{item.content}</span>
+                          </LineItem>
+                          <LineItem>
+                            <HiddenText>
+                              <OmitText
+                                width={200}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
+                                {item.projectName}
+                              </OmitText>
+                            </HiddenText>
+                            <HiddenText>
+                              <OmitText
+                                width={300}
+                                tipProps={{
+                                  getPopupContainer: node => node,
+                                }}
+                              >
+                                <span
+                                  onClick={() => onToDetail(item)}
+                                  style={{
+                                    color: 'rgba(40, 119, 255, 1)',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  {item.name}
+                                </span>
+                              </OmitText>
+                            </HiddenText>
+                          </LineItem>
+                        </Timeline.Item>
+                      ))}
+                    </Timeline>
+                  </TimeLineWrap>
+                )}
               </CenterRight>
             </Center>
           </StyledWrap>
@@ -548,10 +550,12 @@ const Profile = () => {
               <Pagination
                 defaultCurrent={1}
                 current={page}
+                pageSize={pagesize}
                 showSizeChanger
                 showQuickJumper
                 total={total}
-                showTotal={newTotal => t('common.tableTotal', { count: newTotal })
+                showTotal={newTotal =>
+                  t('common.tableTotal', { count: newTotal })
                 }
                 pageSizeOptions={['10', '20', '50']}
                 onChange={onChangePage}

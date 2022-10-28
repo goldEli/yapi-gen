@@ -7,7 +7,7 @@ import CommonModal from '@/components/CommonModal'
 import { Checkbox, Form, Input, message, Select } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { random } from 'lodash'
 import { arrayMoveImmutable } from 'array-move'
 import {
@@ -70,6 +70,7 @@ const AddWrap = styled.div({
   alignItems: 'center',
   color: '#2877ff',
   cursor: 'pointer',
+  width: 'max-content',
 })
 
 interface Props {
@@ -108,6 +109,7 @@ const EditFiled = (props: Props) => {
   const { option, updateStoryConfigField, addStoryConfigField } =
     useModel('project')
   const [checked, setChecked] = useState(false)
+  const ChooseDom = useRef<HTMLInputElement>(null)
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
   const [row, setRow] = useState([
@@ -238,6 +240,14 @@ const EditFiled = (props: Props) => {
     }
   }
 
+  const onAddChoose = () => {
+    setRow([...row, { value: '', key: new Date().getTime() * 0.21 }])
+    setTimeout(() => {
+      const dom: any = ChooseDom?.current
+      dom.scrollTop = dom.scrollHeight
+    }, 1)
+  }
+
   return (
     <CommonModal
       isVisible={props?.isVisible}
@@ -251,6 +261,7 @@ const EditFiled = (props: Props) => {
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
       <div
+        ref={ChooseDom}
         style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
       >
         <FormWrap form={form} layout="vertical">
@@ -319,14 +330,7 @@ const EditFiled = (props: Props) => {
                 )}
                 {value !== '8' && value !== '7' && (
                   <OptionsWrap>
-                    <AddWrap
-                      onClick={() =>
-                        setRow([
-                          ...row,
-                          { value: '', key: new Date().getTime() * 0.21 },
-                        ])
-                      }
-                    >
+                    <AddWrap onClick={onAddChoose}>
                       <IconFont type="plus" />
                       <span>{t('newlyAdd.addChoose')}</span>
                     </AddWrap>

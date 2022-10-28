@@ -173,6 +173,7 @@ const WrapLeftBox = () => {
   const [tagList, setTagList] = useState<any>([])
   const textWrapEditor = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const LeftDom = useRef<HTMLInputElement>(null)
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
@@ -247,8 +248,13 @@ const WrapLeftBox = () => {
     )
   }
 
+  const onBottom = () => {
+    const dom: any = LeftDom?.current
+    dom.scrollTop = dom.scrollHeight
+  }
+
   return (
-    <WrapLeft>
+    <WrapLeft ref={LeftDom}>
       {isVisible ? (
         <Viewer
           zIndex={99}
@@ -312,26 +318,26 @@ const WrapLeftBox = () => {
           }
         />
       </InfoItem>
-      <InfoItem
-        activeState
-        hidden={
-          !projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length
-        }
-      >
+      <InfoItem activeState>
         <Label>{t('common.attachment')}</Label>
         <UploadAttach
+          onBottom={onBottom}
           defaultList={demandInfo?.attachment?.map((i: any) => ({
             path: i.attachment.path,
             id: i.id,
           }))}
           canUpdate
           addWrap={
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>{t('common.add23')}</div>
-            </AddWrap>
+            projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 ? (
+              <AddWrap>
+                <IconFont type="plus" />
+                <div>{t('common.add23')}</div>
+              </AddWrap>
+            ) : (
+              (null as any)
+            )
           }
           child={isShowProgress ? null : <Children />}
         />

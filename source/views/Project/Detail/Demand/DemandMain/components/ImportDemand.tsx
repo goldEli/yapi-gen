@@ -377,8 +377,8 @@ const ImportDemand = () => {
                 }}
               >
                 <IconFont
-                  type="close-circle-fill"
-                  style={{ fontSize: 80, color: '#FF5C5E' }}
+                  type="Warning"
+                  style={{ fontSize: 80, color: '#FA9746' }}
                 />
                 <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
                   {t('newlyAdd.importError')}
@@ -393,15 +393,15 @@ const ImportDemand = () => {
                   <ContentWrap width={120} hasBg>
                     {t('newlyAdd.lineError')}
                   </ContentWrap>
-                  <ContentWrap width={616} hasBg>
+                  <ContentWrap width={616} hasBg style={{ textAlign: 'left' }}>
                     {t('newlyAdd.errorReason')}
                   </ContentWrap>
                 </ItemWrap>
-                {importExcel?.errorList
-                  && Object.keys(importExcel?.errorList)?.map((i: any) => (
+                {importExcel?.errorList &&
+                  Object.keys(importExcel?.errorList)?.map((i: any) => (
                     <ItemWrap key={i}>
                       <ContentWrap width={120}>{i}</ContentWrap>
-                      <ContentWrap width={616}>
+                      <ContentWrap width={616} style={{ textAlign: 'left' }}>
                         {importExcel?.errorList[i].join(';')}
                       </ContentWrap>
                     </ItemWrap>

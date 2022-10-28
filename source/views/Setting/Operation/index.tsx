@@ -249,7 +249,7 @@ const Operation = () => {
       form={form}
       onValuesChange={onValuesChange}
       initialValues={{
-        pageSize: 10,
+        pageSize: 20,
         page: 1,
       }}
     >
@@ -349,7 +349,7 @@ const Operation = () => {
                       t('common.tableTotal', { count: total })
                     }
                     pageSizeOptions={[10, 20, 50]}
-                    pageSize={form.getFieldValue('pageSize') || 10}
+                    pageSize={form.getFieldValue('pageSize') || 20}
                     onShowSizeChange={onShowSizeChange}
                   />
                 </Form.Item>

@@ -63,7 +63,7 @@ const ChildDemandTable = (props: {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
@@ -109,6 +109,10 @@ const ChildDemandTable = (props: {
     getList(order)
   }
 
+  const onExamine = () => {
+    message.warning(t('newlyAdd.underReview'))
+  }
+
   const columnsChild = [
     {
       title: (
@@ -125,12 +129,22 @@ const ChildDemandTable = (props: {
       width: 100,
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => onToDetail(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
+              {text}
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                }}
+              />
+            )}
+          </div>
         )
       },
     },
@@ -146,10 +160,9 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 340,
       render: (text: string, record: any) => {
         return (
-          <HiddenText style={{ position: 'relative' }}>
+          <HiddenText>
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -167,30 +180,19 @@ const ChildDemandTable = (props: {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <ClickWrap
-              onClick={() => onToDetail(record)}
-              isName
-              isClose={record.status?.content === '已关闭'}
+            <Tooltip
+              title={text}
+              getPopupContainer={node => node}
+              placement="top"
             >
-              <OmitText
-                width={110}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
+              <ListNameWrap
+                onClick={() => onToDetail(record)}
+                isName
+                isClose={record.status?.content === '已关闭'}
               >
                 {text}
-              </OmitText>
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                  position: 'absolute',
-                  right: 0,
-                }}
-              />
-            )}
+              </ListNameWrap>
+            </Tooltip>
           </HiddenText>
         )
       },
@@ -240,7 +242,7 @@ const ChildDemandTable = (props: {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit ? (
+              return isCanEdit && !record.isExamine ? (
                 <ShapeContent
                   tap={(value: any) => onChangeStatus(value)}
                   hide={onHide}
@@ -259,7 +261,8 @@ const ChildDemandTable = (props: {
             record={record}
           >
             <StatusWrap
-              isShow={isCanEdit}
+              onClick={record.isExamine ? onExamine : void 0}
+              isShow={isCanEdit || record.isExamine}
               style={{
                 color: text?.status.color,
                 border: `1px solid ${text?.status.color}`,
@@ -342,14 +345,15 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 1000, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"
               pagination={false}
               columns={columnsChild}
               dataSource={dataList?.list}
-              sticky
+              scroll={{ x: 'max-content' }}
+              tableLayout="auto"
               style={{ borderRadius: 4, overflow: 'hidden' }}
             />
           ) : (

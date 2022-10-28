@@ -86,11 +86,11 @@ const TextWarp = styled.div({
 interface Props {
   item: any
   onChangeOperation?(type: string, item: any): void
+  onToDetail(): void
 }
 
 const ProjectCard = (props: Props) => {
   const [t] = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { userInfo } = useModel('user')
 
@@ -111,9 +111,8 @@ const ProjectCard = (props: Props) => {
     'b/project/start',
   )
 
-  const onClickMenu = (e: any, type: string, item: any) => {
+  const onClickMenu = (type: string, item: any) => {
     setIsMoreVisible(false)
-    e.stopPropagation()
     props.onChangeOperation?.(type, item)
   }
 
@@ -122,7 +121,7 @@ const ProjectCard = (props: Props) => {
       {
         key: '1',
         label: (
-          <div onClick={e => onClickMenu(e, 'edit', item)}>
+          <div onClick={() => onClickMenu('edit', item)}>
             {t('common.edit')}
           </div>
         ),
@@ -130,7 +129,7 @@ const ProjectCard = (props: Props) => {
       {
         key: '2',
         label: (
-          <div onClick={e => onClickMenu(e, 'end', item)}>
+          <div onClick={() => onClickMenu('end', item)}>
             {item.status === 1 ? t('common.stop') : t('common.open')}
           </div>
         ),
@@ -138,7 +137,7 @@ const ProjectCard = (props: Props) => {
       {
         key: '3',
         label: (
-          <div onClick={e => onClickMenu(e, 'delete', item)}>
+          <div onClick={() => onClickMenu('delete', item)}>
             {t('common.del')}
           </div>
         ),
@@ -164,23 +163,21 @@ const ProjectCard = (props: Props) => {
     }
 
     return (
-      <Menu items={menuItems} style={{ minWidth: 60, textAlign: 'center' }} />
+      <Menu
+        items={menuItems}
+        style={{ minWidth: 60, textAlign: 'center', width: 'max-content' }}
+      />
     )
-  }
-
-  const onMoreClick = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
   }
 
   return (
     <Warp>
-      <ImgWrap>
+      <ImgWrap onClick={props.onToDetail}>
         <div />
         <img src={props.item.cover} alt="" />
       </ImgWrap>
       <TextWarp>
-        <NameWrap>{props.item.name}</NameWrap>
+        <NameWrap onClick={props.onToDetail}>{props.item.name}</NameWrap>
         {!hasEdit && !hasDelete && !hasStart && !hasStop ? (
           <DropdownWrap
             key={isMoreVisible.toString()}
@@ -191,11 +188,7 @@ const ProjectCard = (props: Props) => {
             getPopupContainer={node => node}
             onVisibleChange={visible => setIsMoreVisible(visible)}
           >
-            <IconFont
-              onClick={e => onMoreClick(e)}
-              style={{ fontSize: 16, color: '#BBBDBF' }}
-              type="more"
-            />
+            <IconFont style={{ fontSize: 16, color: '#BBBDBF' }} type="more" />
           </DropdownWrap>
         ) : null}
       </TextWarp>

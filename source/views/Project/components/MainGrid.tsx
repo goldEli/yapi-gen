@@ -78,13 +78,14 @@ const MainGrid = (props: Props) => {
 
   return (
     <DataWrap>
-      {!!props.projectList?.list
-        && (props.projectList?.list?.length > 0 ? (
+      {!!props.projectList?.list &&
+        (props.projectList?.list?.length > 0 ? (
           <SpaceWrap size={32}>
             {props.projectList.list?.map((item: any) => (
-              <div key={item.id} onClick={() => onToDetail(item)}>
+              <div key={item.id}>
                 <ProjectCard
                   item={item}
+                  onToDetail={() => onToDetail(item)}
                   onChangeOperation={props.onChangeOperation}
                 />
               </div>
@@ -100,14 +101,14 @@ const MainGrid = (props: Props) => {
               </AddProject>
             )}
           </SpaceWrap>
-        ) : isPermission
-          ? <NoData />
-          : (
-              <AddProject onClick={onAddClick}>
-                <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
-                <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
-              </AddProject>
-            ))}
+        ) : isPermission ? (
+          <NoData />
+        ) : (
+          <AddProject onClick={onAddClick}>
+            <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
+            <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
+          </AddProject>
+        ))}
     </DataWrap>
   )
 }
