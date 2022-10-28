@@ -52,6 +52,12 @@ const UploadAttach = (props: Props) => {
   const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
   let arr: any[] = []
+
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
+
   useEffect(() => {
     const array: any[] = []
     props.defaultList?.forEach((element: any) => {
@@ -187,6 +193,7 @@ const UploadAttach = (props: Props) => {
       showDownloadIcon: projectInfo?.projectPermissions?.filter(
         (i: any) => i.name === '附件下载',
       ).length,
+      showRemoveIcon: isCanEdit,
     },
   }
 
