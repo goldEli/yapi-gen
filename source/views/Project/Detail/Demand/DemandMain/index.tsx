@@ -127,20 +127,20 @@ const DemandMain = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdate?.()
     setIsRefresh(false)
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
     getCategoryList({ projectId, isSelect: true })
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }, [key])
 
   useEffect(() => {
     if (isRefresh) {
       getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
     }
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }, [isRefresh])
 
   useEffect(() => {
@@ -164,7 +164,7 @@ const DemandMain = (props: Props) => {
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }
 
   const onDeleteConfirm = async () => {
@@ -174,6 +174,7 @@ const DemandMain = (props: Props) => {
       setIsVisible(false)
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)
+      myTreeComponent?.current?.init()
     } catch (error) {
       //
     }
