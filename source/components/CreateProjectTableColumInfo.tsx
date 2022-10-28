@@ -13,6 +13,7 @@ import {
   StyledShape,
   CategoryWrap,
   HiddenText,
+  ListNameWrap,
 } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
@@ -124,14 +125,9 @@ export const useDynamicColumns = (state: any) => {
               isClose={record.status?.content === '已关闭'}
               onClick={() => onToDetail(record)}
             >
-              <OmitText
-                width={120}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {text}
-              </OmitText>
+              <Tooltip title={text}>
+                <ListNameWrap>{text}</ListNameWrap>
+              </Tooltip>
             </ClickWrap>
             {record.isExamine && (
               <IconFont

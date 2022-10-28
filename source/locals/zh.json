@@ -1,5 +1,6 @@
 {
   "newlyAdd": {
+    "notEnterNull": "下拉值不能为空！",
     "onlyChooseStatus": "至少选择一个添加状态！",
     "collapseClass": "折叠分类",
     "openClass": "展开分类",

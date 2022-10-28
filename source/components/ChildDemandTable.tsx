@@ -9,10 +9,16 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools'
 import { useState } from 'react'
 import { useModel } from '@/models'
-import { message, Popover, Progress, Table } from 'antd'
+import { message, Popover, Progress, Table, Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
-import { ClickWrap, HiddenText, StatusWrap } from '@/components/StyleCommon'
+import {
+  CategoryWrap,
+  ClickWrap,
+  HiddenText,
+  ListNameWrap,
+  StatusWrap,
+} from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
@@ -55,7 +61,7 @@ const ChildDemandTable = (props: {
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo } = useModel('project')
+  const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 ||
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -140,24 +146,51 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 160,
+      width: 340,
       render: (text: string, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={160}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
+          <HiddenText style={{ position: 'relative' }}>
+            <Tooltip
+              placement="top"
+              getPopupContainer={node => node}
+              title={record.categoryRemark}
             >
-              <ClickWrap
-                onClick={() => onToDetail(record)}
-                isName
-                isClose={record.status?.content === '已关闭'}
+              <CategoryWrap
+                color={record.categoryColor}
+                bgColor={
+                  colorList?.filter(
+                    (k: any) => k.key === record.categoryColor,
+                  )[0]?.bgColor
+                }
+                style={{ marginLeft: 0 }}
+              >
+                {record.category}
+              </CategoryWrap>
+            </Tooltip>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isName
+              isClose={record.status?.content === '已关闭'}
+            >
+              <OmitText
+                width={110}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
               >
                 {text}
-              </ClickWrap>
-            </OmitText>
+              </OmitText>
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                  position: 'absolute',
+                  right: 0,
+                }}
+              />
+            )}
           </HiddenText>
         )
       },
@@ -309,7 +342,7 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 800, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxWidth: 1000, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"

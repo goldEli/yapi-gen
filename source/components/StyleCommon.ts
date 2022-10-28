@@ -59,6 +59,13 @@ const DividerWrap = styled(Divider)({
   margin: 0,
 })
 
+const ListNameWrap = styled.div({
+  maxWidth: 500,
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+})
+
 const HiddenText = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -618,4 +625,5 @@ export {
   DividerWrap,
   IconFontWrap,
   FormWrapDemand,
+  ListNameWrap,
 }

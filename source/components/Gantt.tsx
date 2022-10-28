@@ -128,14 +128,24 @@ const Gantt = (props: Props) => {
                 'newlyAdd.statusDel',
               )}</span>`,
         ) +
-        `<br/><b>${
-          i18n.language === 'zh' ? t('common.startTime') + '：' : 'Star date:'
-        }</b> ` +
-        gantt.templates.tooltip_date_format(start) +
-        `<br/><b>${
-          i18n.language === 'zh' ? t('common.endTime') + '：' : 'End date:'
-        }</b> ` +
-        gantt.templates.tooltip_date_format(end)
+        `${
+          task.parent
+            ? `<br/><b>${
+                i18n.language === 'zh'
+                  ? t('common.startTime') + '：'
+                  : 'Star date:'
+              }</b> ` + gantt.templates.tooltip_date_format(start)
+            : ''
+        }` +
+        `${
+          task.parent
+            ? `<br/><b>${
+                i18n.language === 'zh'
+                  ? t('common.endTime') + '：'
+                  : 'End date:'
+              }</b> ` + gantt.templates.tooltip_date_format(end)
+            : ''
+        }`
       )
     }
 

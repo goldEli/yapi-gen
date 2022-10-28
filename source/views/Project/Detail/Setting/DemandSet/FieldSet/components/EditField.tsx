@@ -111,8 +111,8 @@ const EditFiled = (props: Props) => {
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
   const [row, setRow] = useState([
-    { value: '', key: `${random()}_${new Date()}` },
-    { value: '', key: `${random() + 100}_${new Date()}` },
+    { value: '', key: new Date().getTime() },
+    { value: '', key: new Date().getTime() + 100 },
   ])
 
   useEffect(() => {
@@ -135,8 +135,8 @@ const EditFiled = (props: Props) => {
       setValue('')
       setChecked(false)
       setRow([
-        { value: '', key: `${random()}_${new Date()}` },
-        { value: '', key: `${random() + 100}_${new Date()}` },
+        { value: '', key: new Date().getTime() },
+        { value: '', key: new Date().getTime() + 100 },
       ])
     }
   }, [props?.item])
@@ -148,8 +148,8 @@ const EditFiled = (props: Props) => {
       setValue('')
       setChecked(false)
       setRow([
-        { value: '', key: `${random()}_${new Date()}` },
-        { value: '', key: `${random() + 100}_${new Date()}` },
+        { value: '', key: new Date().getTime() },
+        { value: '', key: new Date().getTime() + 100 },
       ])
     }, 100)
   }
@@ -170,6 +170,11 @@ const EditFiled = (props: Props) => {
       contentValue = ''
     } else if (['3', '4', '5', '6'].includes(selObj?.value)) {
       // 下拉
+      const hasNull = row.filter(i => !i.value)
+      if (hasNull?.length) {
+        message.warning(t('newlyAdd.notEnterNull'))
+        return
+      }
       contentValue = row.map(i => i.value)
     } else if (selObj?.value === '7') {
       // 时间
@@ -216,8 +221,10 @@ const EditFiled = (props: Props) => {
   }
 
   const onDelRow = (key: any) => {
-    const arr = row.filter((e, i) => e.key !== key)
-    setRow(arr)
+    if (row.length > 1) {
+      const arr = row.filter((e, i) => e.key !== key)
+      setRow(arr)
+    }
   }
 
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
@@ -316,7 +323,7 @@ const EditFiled = (props: Props) => {
                       onClick={() =>
                         setRow([
                           ...row,
-                          { value: '', key: `${random()}_${new Date()}` },
+                          { value: '', key: new Date().getTime() * 0.21 },
                         ])
                       }
                     >
@@ -346,7 +353,8 @@ const EditFiled = (props: Props) => {
                               type="close"
                               style={{
                                 fontSize: 16,
-                                cursor: 'pointer',
+                                cursor:
+                                  row?.length === 1 ? 'not-allowed' : 'pointer',
                                 color: '#969799',
                                 marginLeft: 12,
                               }}
