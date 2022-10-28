@@ -159,11 +159,13 @@ const DemandBox = () => {
   const [operationItem, setOperationItem] = useState<any>({})
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [colorObj, setColorObj] = useState<any>({})
+  const [resultCategory, setResultCategory] = useState([])
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
+  const { setIsRefresh } = useModel('user')
   const {
     projectInfo,
     getCategoryList,
@@ -180,6 +182,7 @@ const DemandBox = () => {
     setIsShowProgress,
     setFilterHeight,
     updateDemandCategory,
+    setIsUpdateStatus,
   } = useModel('demand')
   const navigate = useNavigate()
   const isEdit = getIsPermission(
@@ -191,15 +194,15 @@ const DemandBox = () => {
     'b/story/delete',
   )
 
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
-      await getCategoryList({ projectId, isSelect: true })
+      await getCategoryList({ projectId })
     }
     setLoadingState(true)
   }
@@ -212,6 +215,11 @@ const DemandBox = () => {
   useEffect(() => {
     setColorObj(
       categoryList?.list?.filter((k: any) => k.id === demandInfo?.category)[0],
+    )
+    setResultCategory(
+      categoryList?.list
+        ?.filter((i: any) => i.id !== demandInfo?.category)
+        ?.filter((i: any) => i.isCheck === 1),
     )
   }, [demandInfo, categoryList])
 
@@ -241,7 +249,6 @@ const DemandBox = () => {
       const params = encryptPhp(JSON.stringify({ id: projectId, demandId }))
       navigate(`/Detail/Demand?data=${params}`)
     } catch (error) {
-
       //
     }
   }
@@ -265,7 +272,6 @@ const DemandBox = () => {
         getDemandInfo({ projectId, id: demandId })
       }
     } catch (error) {
-
       //
     }
   }
@@ -291,12 +297,13 @@ const DemandBox = () => {
       })
       message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
+      setIsUpdateStatus(true)
+      setIsRefresh(true)
       getDemandInfo({ projectId, id: demandInfo?.id })
       setTimeout(() => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -333,25 +340,23 @@ const DemandBox = () => {
         alignItems: 'flex-start',
       }}
     >
-      {categoryList?.list
-        ?.filter((i: any) => i.id !== demandInfo?.category)
-        ?.map((k: any) => (
-          <LiWrap
-            key={k.id}
-            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-            onClick={() => onClickCategory(k)}
+      {resultCategory?.map((k: any) => (
+        <LiWrap
+          key={k.id}
+          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={() => onClickCategory(k)}
+        >
+          <StatusTag
+            style={{ marginRight: 0 }}
+            color={k.color}
+            bgColor={
+              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+            }
           >
-            <StatusTag
-              style={{ marginRight: 0 }}
-              color={k.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-            >
-              {k.name}
-            </StatusTag>
-          </LiWrap>
-        ))}
+            {k.name}
+          </StatusTag>
+        </LiWrap>
+      ))}
     </div>
   )
 
@@ -378,7 +383,7 @@ const DemandBox = () => {
             <FormWrap
               form={form}
               layout="vertical"
-              style={{ paddingRight: 20 }}
+              style={{ padding: '0 20px 0 2px' }}
             >
               <Form.Item label={t('newlyAdd.beforeCategory')}>
                 <StatusTag
@@ -404,9 +409,10 @@ const DemandBox = () => {
                   allowClear
                   optionFilterProp="label"
                   onChange={onChangeSelect}
-                  options={categoryList?.list
-                    ?.filter((i: any) => i.id !== demandInfo?.category)
-                    ?.map((k: any) => ({ label: k.name, value: k.id }))}
+                  options={resultCategory?.map((k: any) => ({
+                    label: k.name,
+                    value: k.id,
+                  }))}
                 />
               </Form.Item>
               <Form.Item
@@ -447,6 +453,9 @@ const DemandBox = () => {
               onVisibleChange={visible => setIsShowChange(visible)}
             >
               <StatusTag
+                style={{
+                  cursor: resultCategory?.length > 0 ? 'pointer' : 'inherit',
+                }}
                 color={colorObj?.color}
                 bgColor={
                   colorList?.filter((i: any) => i.key === colorObj?.color)[0]
@@ -454,21 +463,26 @@ const DemandBox = () => {
                 }
               >
                 <>{colorObj?.name}</>
-                <IconFont
-                  type="down-icon"
-                  style={{
-                    fontSize: 12,
-                    marginLeft: 4,
-                    color: '43BA9A',
-                  }}
-                />
+                {resultCategory?.length > 0 && (
+                  <IconFont
+                    type="down-icon"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: 4,
+                      color: '43BA9A',
+                    }}
+                  />
+                )}
               </StatusTag>
             </Popover>
-            <Tooltip title={demandInfo?.name}>
-              <OmitText width={600}>
-                <span className="demandName">{demandInfo?.name}</span>
-              </OmitText>
-            </Tooltip>
+            <OmitText
+              width={600}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              <span className="demandName">{demandInfo?.name}</span>
+            </OmitText>
             <PopConfirm
               content={({ onHide }: { onHide(): void }) => {
                 return isCanEdit && !demandInfo?.isExamine ? (
@@ -582,6 +596,7 @@ const DemandBox = () => {
           onChangeVisible={onChangeVisible}
           demandId={operationItem.id}
           onUpdate={onUpdate}
+          isInfo={type === 'info'}
         />
       ) : null}
       {content()}

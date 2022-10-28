@@ -25,6 +25,7 @@ interface Props {
   child?: any
   onChangeShow?(state: boolean): void
   id?: any
+  onBottom?(): void
 }
 
 const UploadAttach = (props: Props) => {
@@ -75,8 +76,8 @@ const UploadAttach = (props: Props) => {
       })
       message.success(t('common.addSuccess'))
       getDemandInfo({ projectId, id: demandId })
+      props?.onBottom?.()
     } catch (error) {
-
       //
     }
   }
@@ -91,8 +92,8 @@ const UploadAttach = (props: Props) => {
       })
       message.success(t('common.deleteSuccess'))
       getDemandInfo({ projectId, id: demandId })
+      props?.onBottom?.()
     } catch (error) {
-
       //
     }
   }
@@ -159,6 +160,7 @@ const UploadAttach = (props: Props) => {
         onAddInfoAttach([result.url])
       } else {
         props.onChangeAttachment?.(result, 'add')
+        props?.onBottom?.()
       }
     }
   }
@@ -172,6 +174,7 @@ const UploadAttach = (props: Props) => {
       onDeleteInfoAttach(file)
     } else {
       props.onChangeAttachment?.(file, 'delete')
+      props?.onBottom?.()
     }
   }
 

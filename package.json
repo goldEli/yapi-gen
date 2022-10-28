@@ -107,7 +107,7 @@
   "lint-staged": {
     "*.{ts,tsx,vue}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint"
     ],
     "*.{css,less}": [
       "prettier -u --write"

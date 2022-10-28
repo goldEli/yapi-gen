@@ -52,6 +52,9 @@ const Title = styled.div({
   fontSize: 16,
   color: 'black',
   fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
+  width: 'fit-content',
 })
 
 const Subtext = styled.div({
@@ -113,7 +116,14 @@ const CompanyInfo = () => {
             <CompanyImg src={companyInfo.logo} />
             <TextWrap>
               <Title>
-                <OmitText width={400}>{companyInfo.name}</OmitText>
+                <OmitText
+                  width={400}
+                  tipProps={{
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {companyInfo.name}
+                </OmitText>
               </Title>
               <Subtext>{companyInfo.info}</Subtext>
             </TextWrap>

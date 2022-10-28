@@ -7,7 +7,7 @@ import CommonModal from '@/components/CommonModal'
 import { Checkbox, Form, Input, message, Select } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { random } from 'lodash'
 import { arrayMoveImmutable } from 'array-move'
 import {
@@ -62,8 +62,7 @@ const OptionsItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginTop: 8,
-  marginBottom: 8,
+  padding: '4px 0',
 })
 
 const AddWrap = styled.div({
@@ -71,6 +70,7 @@ const AddWrap = styled.div({
   alignItems: 'center',
   color: '#2877ff',
   cursor: 'pointer',
+  width: 'max-content',
 })
 
 interface Props {
@@ -87,28 +87,34 @@ const DragHandle = sortableHandle(() => (
       fontSize: 16,
       cursor: 'pointer',
       color: '#969799',
+      marginRight: 12,
     }}
   />
 ))
 
 // 拖拽容器
-const SortContainer = sortableContainer<any>((props: any) => <ul className="flex flex1" {...props} />)
+const SortContainer = sortableContainer<any>((props: any) => (
+  <ul className="flex flex1" {...props} />
+))
 
 // 拖拽元素
-const SortItemLi = sortableElement<any>((props: any) => <li helperClass="row-dragging" {...props} />)
+const SortItemLi = sortableElement<any>((props: any) => (
+  <li helperClass="row-dragging" {...props} />
+))
 
 const EditFiled = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { option, updateStoryConfigField, addStoryConfigField }
-    = useModel('project')
+  const { option, updateStoryConfigField, addStoryConfigField } =
+    useModel('project')
   const [checked, setChecked] = useState(false)
+  const ChooseDom = useRef<HTMLInputElement>(null)
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
   const [row, setRow] = useState([
-    { value: '', key: `${random()}_${new Date()}` },
-    { value: '', key: `${random() + 100}_${new Date()}` },
+    { value: '', key: new Date().getTime() },
+    { value: '', key: new Date().getTime() + 100 },
   ])
 
   useEffect(() => {
@@ -131,8 +137,8 @@ const EditFiled = (props: Props) => {
       setValue('')
       setChecked(false)
       setRow([
-        { value: '', key: `${random()}_${new Date()}` },
-        { value: '', key: `${random() + 100}_${new Date()}` },
+        { value: '', key: new Date().getTime() },
+        { value: '', key: new Date().getTime() + 100 },
       ])
     }
   }, [props?.item])
@@ -144,8 +150,8 @@ const EditFiled = (props: Props) => {
       setValue('')
       setChecked(false)
       setRow([
-        { value: '', key: `${random()}_${new Date()}` },
-        { value: '', key: `${random() + 100}_${new Date()}` },
+        { value: '', key: new Date().getTime() },
+        { value: '', key: new Date().getTime() + 100 },
       ])
     }, 100)
   }
@@ -162,19 +168,20 @@ const EditFiled = (props: Props) => {
     let contentValue
 
     if (['1', '2'].includes(selObj?.value)) {
-
       // 文本
       contentValue = ''
     } else if (['3', '4', '5', '6'].includes(selObj?.value)) {
-
       // 下拉
+      const hasNull = row.filter(i => !i.value)
+      if (hasNull?.length) {
+        message.warning(t('newlyAdd.notEnterNull'))
+        return
+      }
       contentValue = row.map(i => i.value)
     } else if (selObj?.value === '7') {
-
       // 时间
       contentValue = checked ? ['datetime'] : ['date']
     } else if (selObj?.value === '8') {
-
       // 整数
       contentValue = checked ? ['integer'] : ['number']
     }
@@ -195,7 +202,6 @@ const EditFiled = (props: Props) => {
         await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
       } catch (error) {
-
         //
       }
     } else {
@@ -203,7 +209,6 @@ const EditFiled = (props: Props) => {
         await addStoryConfigField(obj)
         message.success(t('common.createSuccess'))
       } catch (error) {
-
         //
       }
     }
@@ -218,8 +223,10 @@ const EditFiled = (props: Props) => {
   }
 
   const onDelRow = (key: any) => {
-    const arr = row.filter((e, i) => e.key !== key)
-    setRow(arr)
+    if (row.length > 1) {
+      const arr = row.filter((e, i) => e.key !== key)
+      setRow(arr)
+    }
   }
 
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
@@ -231,6 +238,14 @@ const EditFiled = (props: Props) => {
       ).filter((el: any) => !!el)
       setRow(newData)
     }
+  }
+
+  const onAddChoose = () => {
+    setRow([...row, { value: '', key: new Date().getTime() * 0.21 }])
+    setTimeout(() => {
+      const dom: any = ChooseDom?.current
+      dom.scrollTop = dom.scrollHeight
+    }, 1)
   }
 
   return (
@@ -245,7 +260,10 @@ const EditFiled = (props: Props) => {
       onConfirm={onConfirm}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
+      <div
+        ref={ChooseDom}
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
+      >
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>
             <Form.Item
@@ -268,6 +286,7 @@ const EditFiled = (props: Props) => {
             <Input.TextArea
               placeholder={t('newlyAdd.pleaseFields')}
               autoSize={{ minRows: 5, maxRows: 5 }}
+              maxLength={20}
             />
           </Form.Item>
           <ItemWrap>
@@ -311,13 +330,7 @@ const EditFiled = (props: Props) => {
                 )}
                 {value !== '8' && value !== '7' && (
                   <OptionsWrap>
-                    <AddWrap
-                      onClick={() => setRow([
-                        ...row,
-                        { value: '', key: `${random()}_${new Date()}` },
-                      ])
-                      }
-                    >
+                    <AddWrap onClick={onAddChoose}>
                       <IconFont type="plus" />
                       <span>{t('newlyAdd.addChoose')}</span>
                     </AddWrap>
@@ -344,8 +357,10 @@ const EditFiled = (props: Props) => {
                               type="close"
                               style={{
                                 fontSize: 16,
-                                cursor: 'pointer',
+                                cursor:
+                                  row?.length === 1 ? 'not-allowed' : 'pointer',
                                 color: '#969799',
+                                marginLeft: 12,
                               }}
                               onClick={() => onDelRow(_i.key)}
                             />

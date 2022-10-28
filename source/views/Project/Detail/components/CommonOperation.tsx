@@ -257,16 +257,14 @@ const CommonOperation = (props: Props) => {
 
   return (
     <div>
-      {isVisible
-        ? (
-            <EditProject
-              visible={isVisible}
-              onChangeVisible={() => onClickEdit(false)}
-              details={projectInfo}
-              onUpdate={props.onUpdate}
-            />
-          )
-        : null}
+      {isVisible ? (
+        <EditProject
+          visible={isVisible}
+          onChangeVisible={() => onClickEdit(false)}
+          details={projectInfo}
+          onUpdate={props.onUpdate}
+        />
+      ) : null}
       <ProjectInfoModal
         visible={infoVisible}
         onChangeVisible={() => onClickProjectInfo(false)}
@@ -279,12 +277,17 @@ const CommonOperation = (props: Props) => {
       <OperationTop>
         <ProjectInfo>
           <Tooltip title={t('newlyAdd.backList')}>
-            <BackWrap>
-              <IconFont onClick={onToProject} type="return" />
+            <BackWrap onClick={onToProject}>
+              <IconFont type="return" />
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
-          <OmitText width={152}>
+          <OmitText
+            width={152}
+            tipProps={{
+              getPopupContainer: node => node,
+            }}
+          >
             <ClickWrap
               style={{ fontSize: 14, fontWeight: 500 }}
               onClick={() => setIsVisible(true)}

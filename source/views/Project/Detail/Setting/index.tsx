@@ -116,21 +116,24 @@ const Setting = () => {
       icon: 'team',
       content: <ProjectMember />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/member')).length,
+        String(i.identity).includes('b/project/member'),
+      ).length,
     },
     {
       name: t('project.projectPermissionGroup'),
       icon: 'lock',
       content: <ProjectSet />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/role')).length,
+        String(i.identity).includes('b/project/role'),
+      ).length,
     },
     {
       name: t('newlyAdd.demandSet'),
       icon: 'settings',
       content: <DemandSet />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config')).length,
+        String(i.identity).includes('b/project/story_config'),
+      ).length,
     },
   ]
 
@@ -160,7 +163,7 @@ const Setting = () => {
               hidden={!item.isPermission}
               language={i18n.language}
             >
-              <IconFont type={item.icon} />
+              <IconFont type={item?.icon} />
               <div>{item.name}</div>
             </MenuItem>
           ))}

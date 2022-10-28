@@ -45,8 +45,8 @@ interface Props {
 
 const SearchList = (props: Props) => {
   const [t] = useTranslation()
-  const { getDepartmentSelectList, getPositionSelectList, getRoleList }
-    = useModel('staff')
+  const { getDepartmentSelectList, getPositionSelectList, getRoleList } =
+    useModel('staff')
   const [form] = Form.useForm()
   const [departmentOptions, setDepartmentOptions] = useState([])
   const [positionOptions, setPositionOptions] = useState([])
@@ -94,6 +94,7 @@ const SearchList = (props: Props) => {
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
+                allowClear
                 options={departmentOptions.map((item: any) => ({
                   label: item.name,
                   value: item.id,
@@ -114,6 +115,7 @@ const SearchList = (props: Props) => {
                 showSearch
                 optionFilterProp="label"
                 showArrow
+                allowClear
                 options={positionOptions.map((item: any) => ({
                   label: item.name,
                   value: item.id,
@@ -134,6 +136,7 @@ const SearchList = (props: Props) => {
                 showSearch
                 optionFilterProp="label"
                 showArrow
+                allowClear
                 options={roleOptions.map((item: any) => ({
                   label: item.content_txt,
                   value: item.id,

@@ -38,27 +38,28 @@ const NameWrap = styled.div({
   },
 })
 
-const ContentWrap = styled.div<{ hasTop?: any }>(
-  {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  ({ hasTop }) => ({
-    padding: hasTop ? 0 : '16px 16px 0',
-    height: hasTop ? 'calc(100% - 64px)' : 'calc(100% - 64px)',
-  }),
-)
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: 'calc(100% - 64px)',
+})
 
-const MainWrap = styled(Space)<{ hasTop?: any }>(
-  {
-    paddingLeft: 24,
-    background: 'white',
-    width: '100%',
+const MainWrap = styled.div({
+  padding: '0 24px',
+  background: 'white',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  '.ant-space-item': {
+    display: 'flex',
   },
-  ({ hasTop }) => ({
-    borderRadius: hasTop ? 0 : 4,
-  }),
-)
+})
+
+const TitleWrap = styled(Space)({
+  display: 'flex',
+  alignItems: 'center',
+})
 
 const Item = styled.div<{ activeIdx: boolean }>(
   {
@@ -174,7 +175,7 @@ const IterationWrap = () => {
     } else if (type === 'demand') {
       return <Demand />
     }
-    return <ChangeRecord />
+    return <ChangeRecord isUpdate={isUpdateState} />
   }
 
   useEffect(() => {
@@ -206,7 +207,6 @@ const IterationWrap = () => {
       const params = encryptPhp(JSON.stringify({ id: projectId }))
       navigate(`/Detail/Iteration?data=${params}`)
     } catch (error) {
-
       //
     }
   }
@@ -234,7 +234,6 @@ const IterationWrap = () => {
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
       } catch (error) {
-
         //
       }
     }
@@ -326,28 +325,30 @@ const IterationWrap = () => {
             )}
           </Space>
         </DemandInfoWrap>
-        <ContentWrap hasTop={type === 'info'}>
-          <MainWrap size={32} hasTop={type === 'info'}>
-            <Item
-              onClick={() => onChangeIdx('info')}
-              activeIdx={type === 'info'}
-            >
-              <span>{t('common.iterateSurvey')}</span>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('demand')}
-              activeIdx={type === 'demand'}
-            >
-              <span>{t('common.demand')}</span>
-              <div>{iterateInfo?.storyCount || 0}</div>
-            </Item>
-            <Item
-              onClick={() => onChangeIdx('record')}
-              activeIdx={type === 'record'}
-            >
-              <span>{t('common.changeRecord')}</span>
-              <div>{iterateInfo?.changeCount || 0}</div>
-            </Item>
+        <ContentWrap>
+          <MainWrap>
+            <TitleWrap size={32}>
+              <Item
+                onClick={() => onChangeIdx('info')}
+                activeIdx={type === 'info'}
+              >
+                <span>{t('common.iterateSurvey')}</span>
+              </Item>
+              <Item
+                onClick={() => onChangeIdx('demand')}
+                activeIdx={type === 'demand'}
+              >
+                <span>{t('common.demand')}</span>
+                <div>{iterateInfo?.storyCount || 0}</div>
+              </Item>
+              <Item
+                onClick={() => onChangeIdx('record')}
+                activeIdx={type === 'record'}
+              >
+                <span>{t('common.changeRecord')}</span>
+                <div>{iterateInfo?.changeCount || 0}</div>
+              </Item>
+            </TitleWrap>
           </MainWrap>
           {childContent()}
         </ContentWrap>

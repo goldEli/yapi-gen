@@ -43,6 +43,7 @@ export const getProjectList: any = async (params: any) => {
 
   return {
     currentPage: params.page,
+    pageSize: params.pageSize,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -258,6 +259,7 @@ export const getProjectMember: any = async (params: any) => {
   } else {
     return {
       currentPage: params.page,
+      pageSize: params.pageSize,
       total: response.data.pager.total,
       list: response.data.list.map((i: any) => ({
         id: i.id,
@@ -607,17 +609,17 @@ export const getWorkflowInfo: any = async (params: any) => {
             ? i.fixed_type.value ?? i.fixed_type.attr
             : i.fixed_type.attr,
         options:
-          i.fixed_type.attr === 'date'
-          || i.fixed_type.attr === 'number'
-          || !i.fixed_type.value
+          i.fixed_type.attr === 'date' ||
+          i.fixed_type.attr === 'number' ||
+          !i.fixed_type.value
             ? []
-            : i.fixed_type.attr === 'select'
-              && String(i.content).includes('custom_')
-              ? i.fixed_type.value?.map((fixed: any) => ({
+            : i.fixed_type.attr === 'select' &&
+              String(i.content).includes('custom_')
+            ? i.fixed_type.value?.map((fixed: any) => ({
                 label: fixed,
                 value: fixed,
               }))
-              : i.fixed_type.value?.map((fixed: any) => ({
+            : i.fixed_type.value?.map((fixed: any) => ({
                 label: fixed.content ?? fixed.name,
                 value: fixed.id,
               })),

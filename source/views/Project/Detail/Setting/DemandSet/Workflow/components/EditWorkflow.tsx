@@ -75,7 +75,6 @@ const EditWorkflow = (props: EditorProps) => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -112,7 +111,9 @@ const EditWorkflow = (props: EditorProps) => {
       onClose={onClose}
       onConfirm={onConfirm}
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
+      <div
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
+      >
         {props?.item?.categorys?.length && (
           <>
             <div style={{ color: '#323233', fontSize: 14 }}>
@@ -160,7 +161,7 @@ const EditWorkflow = (props: EditorProps) => {
             <Input.TextArea
               autoSize={{ minRows: 5, maxRows: 5 }}
               placeholder={t('newlyAdd.pleaseStatusRemark')}
-              maxLength={200}
+              maxLength={100}
             />
           </Form.Item>
           <Form.Item label={t('newlyAdd.chooseColor')} name="color">

@@ -9,7 +9,7 @@ import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -102,10 +102,31 @@ const ChildDemand = () => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo } = useModel('project')
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [dataList])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -118,7 +139,8 @@ const ChildDemand = () => {
 
   const getList = async (
     item?: any,
-    orderItem?: any,
+    orderValue?: any,
+    orderKeyValue?: any,
     updateState?: boolean,
   ) => {
     if (!updateState) {
@@ -128,8 +150,8 @@ const ChildDemand = () => {
       projectId,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
-      order: orderItem.value,
-      orderKey: orderItem.key,
+      order: orderValue,
+      orderKey: orderKeyValue,
       parentId: demandId,
     })
     setDataList(result)
@@ -138,12 +160,12 @@ const ChildDemand = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order)
+    getList(pageObj, order, orderKey)
   }, [])
 
   useEffect(() => {
     if (isRefresh) {
-      getList({ page: 1, size: pageObj.size }, order)
+      getList({ page: 1, size: pageObj.size }, order, orderKey)
     }
   }, [isRefresh])
 
@@ -168,15 +190,13 @@ const ChildDemand = () => {
 
   const onUpdate = (updateState?: boolean) => {
     getDemandInfo({ projectId, id: demandId })
-    getList(pageObj, order, updateState)
+    getList(pageObj, order, orderKey, updateState)
   }
 
   const updateOrderkey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(
-      { page: 1, size: pageObj.size },
-      { value: val === 2 ? 'desc' : 'asc', key },
-    )
+    setOrderKey(key)
+    setOrder(val)
+    getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
   }
 
   const setMenu = (
@@ -203,12 +223,12 @@ const ChildDemand = () => {
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onChangeVisible = () => {
@@ -226,7 +246,6 @@ const ChildDemand = () => {
       message.success(t('common.prioritySuccess'))
       onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -237,7 +256,6 @@ const ChildDemand = () => {
       message.success(t('common.statusSuccess'))
       onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -255,7 +273,6 @@ const ChildDemand = () => {
       setDeleteId(0)
       onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -266,14 +283,15 @@ const ChildDemand = () => {
 
   const columns = useDynamicColumns({
     projectId,
-    orderKey: order.key,
-    order: order.value,
+    orderKey,
+    order,
     updateOrderkey,
     onChangeStatus,
     onChangeState,
     rowIconFont,
     onClickItem,
     onUpdate,
+    listLength: dataList?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -329,7 +347,9 @@ const ChildDemand = () => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    dataList?.list?.length === 1 ? document.body : node
+                  }
                 >
                   {rowIconFont()}
                 </Dropdown>
@@ -362,37 +382,40 @@ const ChildDemand = () => {
         onConfirm={onDeleteConfirm}
       />
       <Operation>
-        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save')
-          ? <div />
-          : (
-              <ButtonWrap
-                onClick={() => setIsVisible(true)}
-                icon={<IconFont type="plus" />}
-              >
-                {t('project.addChildDemand')}
-              </ButtonWrap>
-            )}
+        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ? (
+          <div />
+        ) : (
+          <ButtonWrap
+            onClick={() => setIsVisible(true)}
+            icon={<IconFont type="plus" />}
+          >
+            {t('project.addChildDemand')}
+          </ButtonWrap>
+        )}
 
         <Dropdown overlay={setMenu}>
           <IconFontWrap active={isSettingState} type="settings" />
         </Dropdown>
       </Operation>
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <TableBox
                 rowKey="id"
                 columns={selectColum}
                 dataSource={dataList?.list}
                 pagination={false}
-                scroll={{ x: 'max-content' }}
+                scroll={{
+                  x: 'max-content',
+                  y: tableY,
+                }}
                 showSorterTooltip={false}
-                sticky
+                tableLayout="auto"
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 
@@ -400,6 +423,7 @@ const ChildDemand = () => {
         <Pagination
           defaultCurrent={1}
           current={dataList?.currentPage}
+          pageSize={dataList?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={dataList?.total}

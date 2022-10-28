@@ -108,16 +108,15 @@ const SetPermissionWrap = (props: {
       wrapClassName="vertical-center-modal"
     >
       <PersonalHead>
-        {data?.avatar
-          ? <img className={imgCss} src={data?.avatar} alt="" />
-          : (
-              <SetHead>
-                {String(
-                  data?.name?.substring(0, 1).trim()
-                    .slice(0, 1),
-                ).toLocaleUpperCase()}
-              </SetHead>
-            )}
+        {data?.avatar ? (
+          <img className={imgCss} src={data?.avatar} alt="" />
+        ) : (
+          <SetHead>
+            {String(
+              data?.name?.substring(0, 1)?.trim().slice(0, 1),
+            ).toLocaleUpperCase()}
+          </SetHead>
+        )}
       </PersonalHead>
       <PersonalFooter>
         <Left>

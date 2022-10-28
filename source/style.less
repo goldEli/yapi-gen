@@ -65,14 +65,6 @@
 .ant-table-tbody .ant-table-row:nth-child(odd) td {
   background-color: #f8f9fa;
 }
-[data-not-scroll] .ant-table-row {
-  &:nth-child(odd) td {
-    background-color: #fff;
-  }
-  &:nth-child(even) td {
-    background-color: #f8f9fa;
-  }
-}
 
 //table样式 --- end
 
@@ -268,8 +260,6 @@ input::-webkit-inner-spin-button {
 .row-dragging {
   display: flex;
   align-items: center;
-
-  // justify-content: space-between;
   background: #fafafa;
   border: 1px solid #ccc;
   z-index: 10000 !important;
@@ -335,6 +325,65 @@ input::-webkit-inner-spin-button {
 
 .ant-table table {
   padding-bottom: 0 !important;
+}
+
+// .ant-tag-blue {
+//   color: #646566 !important;
+//   background: white !important;
+//   border-color: #ebedf0 !important;
+//   text-align: center !important;
+//   width: -webkit-fill-available !important;
+// }
+
+// .ant-tag-blue[ant-click-animating-without-extra-node="false"] {
+//   color: #2877ff !important;
+//   background: white !important;
+//   border-color: #2877ff !important;
+// }
+
+// .ant-tag-blue:hover {
+//   color: #2877ff !important;
+//   background: #f0f4fa !important;
+//   border-color: #f0f4fa !important;
+// }
+
+.ant-tooltip-inner {
+  white-space: pre-wrap;
+}
+
+.ant-table-cell .ant-popover {
+  z-index: 2 !important;
+}
+
+.ant-modal {
+  padding-bottom: 0;
+}
+
+// 树下拉
+.ant-tree-select-dropdown {
+  padding: 2px 0 !important;
+}
+.ant-select-tree-treenode {
+  padding: 0 !important;
+}
+.ant-select-tree-treenode:hover,
+.ant-select-tree-treenode-selected {
+  background: #f2f7ff !important;
+}
+.ant-select-tree-node-content-wrapper:hover,
+.ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
+  background-color: transparent !important;
+}
+.ant-select-tree-switcher,
+.ant-select-tree-node-content-wrapper {
+  line-height: 32px !important;
+  height: 32px !important;
+}
+
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  padding: 5px 0;
+  text-align: center;
 }
 .ant-tree-node-content-wrapper-normal,
 .ant-tree-node-content-wrapper,

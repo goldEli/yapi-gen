@@ -1,11 +1,12 @@
 /* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable complexity */
 import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import EditDemand from '@/components/EditDemand'
@@ -38,6 +39,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 4,
 })
 
 const DemandWrap = () => {
@@ -47,21 +49,43 @@ const DemandWrap = () => {
   const projectId = paramsData.id
   const { iterateId } = paramsData
   const { projectInfo } = useModel('project')
-  const { getDemandList, updateDemandStatus, updatePriority, deleteDemand }
-    = useModel('demand')
+  const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
+    useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
   const [isSpinning, setIsSpinning] = useState(false)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [dataList])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -76,7 +100,12 @@ const DemandWrap = () => {
     setTitleList2(projectInfo?.titleList2 || [])
   }
 
-  const getList = async (item?: any, orderVal?: any, updateState?: boolean) => {
+  const getList = async (
+    item?: any,
+    orderValue?: any,
+    orderKeyValue?: any,
+    updateState?: boolean,
+  ) => {
     if (!updateState) {
       setIsSpinning(true)
     }
@@ -85,8 +114,8 @@ const DemandWrap = () => {
       iterateIds: [iterateId],
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
-      order: orderVal.value,
-      orderKey: orderVal.key,
+      order: orderValue,
+      orderKey: orderKeyValue,
     })
     setDataList(result)
     setIsSpinning(false)
@@ -94,7 +123,7 @@ const DemandWrap = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order)
+    getList(pageObj, order, orderKey)
   }, [])
 
   useEffect(() => {
@@ -103,18 +132,18 @@ const DemandWrap = () => {
 
   useEffect(() => {
     if (isRefresh) {
-      getList({ page: 1, size: pageObj.size }, order)
+      getList({ page: 1, size: pageObj.size }, order, orderKey)
     }
   }, [isRefresh])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order)
+    getList({ page, size }, order, orderKey)
   }
 
   const onClickRow = (item: any) => {
@@ -150,12 +179,10 @@ const DemandWrap = () => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
-  const onUpdateOrderKey = (key: any, val: any) => {
-    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
-    getList(
-      { page: 1, size: pageObj.size },
-      { value: val === 2 ? 'desc' : 'asc', key },
-    )
+  const updateOrderkey = (key: any, val: any) => {
+    setOrderKey(key)
+    setOrder(val)
+    getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
   }
 
   const onClickItem = (item: any) => {
@@ -173,9 +200,8 @@ const DemandWrap = () => {
         projectId,
       })
       message.success(t('common.prioritySuccess'))
-      getList(pageObj, order)
+      getList(pageObj, order, orderKey)
     } catch (error) {
-
       //
     }
   }
@@ -184,9 +210,8 @@ const DemandWrap = () => {
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
-      getList(pageObj, order)
+      getList(pageObj, order, orderKey)
     } catch (error) {
-
       //
     }
   }
@@ -196,20 +221,21 @@ const DemandWrap = () => {
   }
 
   const onUpdate = (updateState?: boolean) => {
-    getList(pageObj, order, updateState)
+    getList(pageObj, order, orderKey, updateState)
   }
 
   const columns = useDynamicColumns({
     projectId,
-    orderKey: order.key,
-    order: order.value,
-    onUpdateOrderKey,
+    orderKey,
+    order,
+    updateOrderkey,
     onChangeStatus,
     onChangeState,
     onClickItem,
     rowIconFont,
     showChildCOntent: true,
     onUpdate,
+    listLength: dataList?.list?.length,
   })
 
   const onChangeVisible = () => {
@@ -223,9 +249,8 @@ const DemandWrap = () => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
-      getList(pageObj, order)
+      getList(pageObj, order, orderKey)
     } catch (error) {
-
       //
     }
   }
@@ -251,7 +276,9 @@ const DemandWrap = () => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    dataList?.list?.length === 1 ? document.body : node
+                  }
                 >
                   {rowIconFont()}
                 </Dropdown>
@@ -265,7 +292,7 @@ const DemandWrap = () => {
   }, [titleList, titleList2, columns])
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
       <DeleteConfirm
         text={t('mark.del')}
         isVisible={isDelete}
@@ -281,22 +308,25 @@ const DemandWrap = () => {
           iterateId={iterateId}
         />
       ) : null}
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <TableBox
                 rowKey="id"
                 columns={selectColum}
                 dataSource={dataList?.list}
                 pagination={false}
-                scroll={{ x: 'max-content' }}
+                scroll={{
+                  x: 'max-content',
+                  y: tableY,
+                }}
                 showSorterTooltip={false}
-                sticky
+                tableLayout="auto"
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 
@@ -304,6 +334,7 @@ const DemandWrap = () => {
         <Pagination
           defaultCurrent={1}
           current={dataList?.currentPage}
+          pageSize={dataList?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={dataList?.total}

@@ -140,6 +140,9 @@ const DemoColumn = (props: { data: any }) => {
     color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
     xField: 'type',
     yField: 'count',
+    legend: {
+      itemHeight: 20,
+    },
     xAxis: {
       label: {
         autoHide: true,
@@ -185,9 +188,9 @@ const IterationInfo = () => {
                   strokeColor="#43BA9A"
                   width={125}
                   type="circle"
-                  format={percent => percent === 100 ? '100%' : `${percent}%`}
+                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
                   percent={Math.trunc(
-                    iterateInfo?.finishCount / iterateInfo?.storyCount * 100,
+                    (iterateInfo?.finishCount / iterateInfo?.storyCount) * 100,
                   )}
                   strokeWidth={12}
                 />
@@ -209,14 +212,13 @@ const IterationInfo = () => {
           </SurveyWrap>
           <SurveyWrap>
             <Title>{t('project.iterateTarget')}</Title>
-            {iterateInfo?.info
-              ? (
-                  <TargetWrap
-                    dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
-                  />
-                )
-              : <NoData />
-            }
+            {iterateInfo?.info ? (
+              <TargetWrap
+                dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
+              />
+            ) : (
+              <NoData />
+            )}
           </SurveyWrap>
         </TopWrap>
         <BottomWrap>

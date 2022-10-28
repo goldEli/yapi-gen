@@ -78,7 +78,12 @@ const StepPageTwo = () => {
         width: 200,
         dataIndex: 'name',
         render: (text: any, record: any) => (
-          <OmitText width={180}>
+          <OmitText
+            width={180}
+            tipProps={{
+              getPopupContainer: node => node,
+            }}
+          >
             {t('newlyAdd.fromReviewTo', { name: text })}
           </OmitText>
         ),
@@ -121,7 +126,6 @@ const StepPageTwo = () => {
       })
       message.success(t('common.saveSuccess'))
     } catch (error) {
-
       //
     }
   }

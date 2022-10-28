@@ -11,7 +11,13 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { CategoryWrap, ClickWrap, StatusWrap } from '@/components/StyleCommon'
+import {
+  CategoryWrap,
+  ClickWrap,
+  HiddenText,
+  ListNameWrap,
+  StatusWrap,
+} from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
@@ -51,9 +57,9 @@ export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
   const { projectInfo, colorList } = useModel('project')
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const NewSort = (props: any) => {
@@ -85,12 +91,22 @@ export const useDynamicColumns = (state: any) => {
       key: 'id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => state.onClickItem(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              onClick={() => state.onClickItem(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
+              {text}
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                }}
+              />
+            )}
+          </div>
         )
       },
     },
@@ -98,17 +114,19 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 340,
       render: (text: string | number, record: any) => {
         return (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              position: 'relative',
             }}
           >
-            <Tooltip placement="top" title={record.categoryRemark}>
+            <Tooltip
+              placement="top"
+              getPopupContainer={node => node}
+              title={record.categoryRemark}
+            >
               <CategoryWrap
                 color={record.categoryColor}
                 bgColor={
@@ -121,23 +139,15 @@ export const useDynamicColumns = (state: any) => {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <ClickWrap
-              isName
-              isClose={record.status?.content === '已关闭'}
-              onClick={() => state.onClickItem(record)}
-            >
-              <OmitText width={110}>{text}</OmitText>
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                  position: 'absolute',
-                  right: 0,
-                }}
-              />
-            )}
+            <Tooltip title={text} getPopupContainer={node => node}>
+              <ListNameWrap
+                isName
+                isClose={record.status?.content === '已关闭'}
+                onClick={() => state.onClickItem(record)}
+              >
+                {text}
+              </ListNameWrap>
+            </Tooltip>
           </div>
         )
       },
@@ -146,7 +156,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
-      width: 180,
+      width: 190,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
@@ -205,14 +215,14 @@ export const useDynamicColumns = (state: any) => {
             <PriorityWrap isShow={isCanEdit}>
               <IconFont
                 className="priorityIcon"
-                type={text.icon}
+                type={text?.icon}
                 style={{
                   fontSize: 20,
-                  color: text.color,
+                  color: text?.color,
                 }}
               />
               <div>
-                <span>{text.content_txt || '--'}</span>
+                <span>{text?.content_txt || '--'}</span>
                 <IconFont className="icon" type="down-icon" />
               </div>
             </PriorityWrap>
@@ -228,12 +238,13 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'demand',
       key: 'child_story_count',
-      width: 100,
+      width: 120,
       render: (text: string, record: any) => {
-        return state.showChildCOntent
-          ? <ChildDemandTable value={text} row={record} />
-          : <span>{text || '--'}</span>
-
+        return state.showChildCOntent ? (
+          <ChildDemandTable value={text} row={record} />
+        ) : (
+          <span>{text || '--'}</span>
+        )
       },
     },
     {
@@ -242,7 +253,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'iterate_name',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
     {
@@ -251,7 +273,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'class',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
     {
@@ -260,7 +293,18 @@ export const useDynamicColumns = (state: any) => {
       key: 'tag',
       width: 120,
       render: (text: string) => {
-        return <OmitText width={120}>{text || '--'}</OmitText>
+        return (
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
+        )
       },
     },
 
@@ -277,43 +321,45 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
-      width: 200,
+      width: 180,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
-      ,
+      ),
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: any) => {
         return (
           <div>
-            {isCanEdit
-            && record?.usersNameIds?.includes(userInfo?.id)
-            && record.status.is_start !== 1
-            && record.status.is_end !== 1 ? (
-                  <div style={{ cursor: 'pointer' }}>
-                    <DemandProgress
-                      value={record.schedule}
-                      row={record}
-                      onUpdate={onUpdate}
-                    />
-                  </div>
-                ) : (
-                  <Progress
-                    strokeColor="#43BA9A"
-                    style={{ color: '#43BA9A' }}
-                    width={38}
-                    type="circle"
-                    percent={record.schedule}
-                    format={percent => percent === 100 ? '100%' : `${percent}%`}
-                    strokeWidth={8}
-                  />
-                )}
+            {isCanEdit &&
+            record?.usersNameIds?.includes(userInfo?.id) &&
+            record.status.is_start !== 1 &&
+            record.status.is_end !== 1 ? (
+              <div style={{ cursor: 'pointer' }}>
+                <DemandProgress
+                  value={record.schedule}
+                  row={record}
+                  onUpdate={onUpdate}
+                  listLength={state.listLength}
+                  index={index}
+                />
+              </div>
+            ) : (
+              <Progress
+                strokeColor="#43BA9A"
+                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                width={38}
+                type="circle"
+                percent={record.schedule}
+                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                strokeWidth={8}
+              />
+            )}
           </div>
         )
       },
@@ -350,9 +396,9 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="expected_end_at">{t('common.expectedEnd')}</NewSort>
-      ,
+      ),
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
       width: 200,

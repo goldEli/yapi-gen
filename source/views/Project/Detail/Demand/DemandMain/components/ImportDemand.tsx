@@ -165,17 +165,26 @@ const ImportDemand = () => {
       isUpdate: tabs,
       fields: arr.join(','),
     })
-    const blob = new Blob([result.body], {
-      type: result.headers['content-type'],
-    })
-    const blobUrl = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.download = `${projectInfo?.name} - ${
-      tabs === 2 ? t('newlyAdd.importCreate') : t('newlyAdd.importUpdate')
-    }`
-    a.href = blobUrl
-    a.click()
-    setIsVisible(false)
+    if (result.body.type === 'application/json') {
+      const reader = new FileReader()
+      reader.readAsText(result.body, 'utf-8')
+      reader.onload = function () {
+        const obj = JSON.parse(reader.result as any)
+        message.error(obj.message)
+      }
+    } else {
+      const blob = new Blob([result.body], {
+        type: result.headers['content-type'],
+      })
+      const blobUrl = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.download = `${projectInfo?.name} - ${
+        tabs === 2 ? t('newlyAdd.importCreate') : t('newlyAdd.importUpdate')
+      }`
+      a.href = blobUrl
+      a.click()
+      setIsVisible(false)
+    }
   }
 
   const onChangeTabs = (value: any) => {
@@ -234,7 +243,7 @@ const ImportDemand = () => {
               {t('newlyAdd.importUpdate')}
             </TabsItem>
           </TabsWrap>
-          {tabs === 1 ? (
+          {tabs === 2 ? (
             <TextWrap>
               <div>{t('newlyAdd.importText1')}</div>
               <span>{t('newlyAdd.importText2')}</span>
@@ -368,8 +377,8 @@ const ImportDemand = () => {
                 }}
               >
                 <IconFont
-                  type="close-circle-fill"
-                  style={{ fontSize: 80, color: '#FF5C5E' }}
+                  type="Warning"
+                  style={{ fontSize: 80, color: '#FA9746' }}
                 />
                 <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
                   {t('newlyAdd.importError')}
@@ -384,15 +393,15 @@ const ImportDemand = () => {
                   <ContentWrap width={120} hasBg>
                     {t('newlyAdd.lineError')}
                   </ContentWrap>
-                  <ContentWrap width={616} hasBg>
+                  <ContentWrap width={616} hasBg style={{ textAlign: 'left' }}>
                     {t('newlyAdd.errorReason')}
                   </ContentWrap>
                 </ItemWrap>
-                {importExcel?.errorList
-                  && Object.keys(importExcel?.errorList)?.map((i: any) => (
+                {importExcel?.errorList &&
+                  Object.keys(importExcel?.errorList)?.map((i: any) => (
                     <ItemWrap key={i}>
                       <ContentWrap width={120}>{i}</ContentWrap>
-                      <ContentWrap width={616}>
+                      <ContentWrap width={616} style={{ textAlign: 'left' }}>
                         {importExcel?.errorList[i].join(';')}
                       </ContentWrap>
                     </ItemWrap>

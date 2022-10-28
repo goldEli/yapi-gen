@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { OmitText } from '@star-yun/ui'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { HiddenText } from '@/components/StyleCommon'
 
 const imgCss = css`
   width: 40px;
@@ -66,7 +67,6 @@ const SetHead = styled.div`
   background-blend-mode: normal;
   border: 1px solid #f0f2fd;
   color: white;
-  margin-right: 8px;
 `
 const PanelHeader = styled.div`
   padding: 16px 16px 22px 16px;
@@ -77,6 +77,7 @@ const PanelHeader = styled.div`
 `
 const PanelHeaderFirst = styled.div`
   display: flex;
+  align-items: center;
 `
 const PanelHeaderSecond = styled.div`
   margin-top: 16px;
@@ -131,8 +132,8 @@ interface Props {
 export const Panel = (props: Props) => {
   const { loginOut, userInfo, setIsRefresh } = useModel('user')
   const [t] = useTranslation()
-  const [personalModalVisible, setPersonalModalVisible]
-    = useState<boolean>(false)
+  const [personalModalVisible, setPersonalModalVisible] =
+    useState<boolean>(false)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [languageModeVisible, setLanguageModeVisible] = useState<boolean>(false)
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
@@ -146,7 +147,6 @@ export const Panel = (props: Props) => {
       await changeLanguage(key as LocaleKeys)
       localStorage.setItem('language', key)
     } catch (error) {
-
       //
     }
     setLanguageMode(value)
@@ -162,15 +162,15 @@ export const Panel = (props: Props) => {
     <div style={{ borderRadius: 6, overflow: 'hidden' }}>
       <LanguageLine onClick={() => changeLanguageMode(1, 'zh')}>
         <span>中文</span>
-        {languageMode === 1
-          && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
-        }
+        {languageMode === 1 && (
+          <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+        )}
       </LanguageLine>
       <LanguageLine onClick={() => changeLanguageMode(2, 'en')}>
         <span> English </span>
-        {languageMode === 2
-          && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
-        }
+        {languageMode === 2 && (
+          <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+        )}
       </LanguageLine>
     </div>
   )
@@ -188,7 +188,6 @@ export const Panel = (props: Props) => {
         getTicket()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -219,18 +218,25 @@ export const Panel = (props: Props) => {
       />
       <PanelHeader>
         <PanelHeaderFirst>
-          {userInfo.avatar
-            ? <img className={imgCss} src={userInfo.avatar} />
-            : (
-                <SetHead>
-                  {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-                </SetHead>
-              )}
+          {userInfo.avatar ? (
+            <img className={imgCss} src={userInfo.avatar} />
+          ) : (
+            <SetHead>
+              {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+            </SetHead>
+          )}
 
           <NameAndPhone>
-            <Tooltip title={userInfo?.name}>
-              <OmitText width={120}>{userInfo?.name}</OmitText>
-            </Tooltip>
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {userInfo?.name}
+              </OmitText>
+            </HiddenText>
             <span>{userInfo?.phone}</span>
           </NameAndPhone>
         </PanelHeaderFirst>

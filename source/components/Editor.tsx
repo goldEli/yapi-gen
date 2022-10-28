@@ -67,10 +67,10 @@ Boot.registerMenu(cancelfullscreenMenu)
 
 i18nAddResources('en', {
   fontSize: {
-    'default': 'Font size',
+    default: 'Font size',
   },
   fontFamily: {
-    'default': 'Font family',
+    default: 'Font family',
   },
 })
 
@@ -87,6 +87,13 @@ const Wrap = styled.div<{ minHeight?: any }>(
     },
     '.w-e-text-placeholder': {
       top: 0,
+      fontStyle: 'inherit',
+    },
+    '&: hover': {
+      borderColor: '#5297ff',
+      boxShadow: '0 0 0 2px rgb(40 119 255 / 20%)',
+      borderRightWidth: 1,
+      outline: 0,
     },
   },
   ({ minHeight }) => ({

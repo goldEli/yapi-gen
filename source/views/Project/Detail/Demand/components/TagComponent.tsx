@@ -129,9 +129,10 @@ const TagBox = (props: TagProps) => {
   useEffect(() => {
     setArr(
       tagList?.filter(
-        (i: any) => !props.checkedTags?.find(
-          (k: any) => k.content === i.content && i.color === k.color,
-        ),
+        (i: any) =>
+          !props.checkedTags?.find(
+            (k: any) => k.content === i.content && i.color === k.color,
+          ),
       ),
     )
   }, [tagList, props.checkedTags])
@@ -165,7 +166,6 @@ const TagBox = (props: TagProps) => {
         getDemandInfo({ projectId, id: demandInfo?.id })
         props.onChangeIsOpen(false)
       } catch (error) {
-
         //
       }
     } else {
@@ -218,8 +218,8 @@ interface Props {
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
   const { getTagList } = useModel('project')
-  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand }
-    = useModel('demand')
+  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand } =
+    useModel('demand')
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -239,9 +239,9 @@ const TagComponent = (props: Props) => {
   }))
 
   const { projectInfo } = useModel('project')
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
@@ -268,7 +268,6 @@ const TagComponent = (props: Props) => {
         getTagList({ projectId })
         setIsClear(false)
       } catch (error) {
-
         //
       }
     } else {
@@ -298,7 +297,6 @@ const TagComponent = (props: Props) => {
         getDemandInfo({ projectId, id: demandInfo?.id })
         getTagList({ projectId })
       } catch (error) {
-
         //
       }
     } else {

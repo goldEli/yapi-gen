@@ -17,8 +17,6 @@ import {
   LabNumber,
   ShowWrap,
   TableWrap,
-  ClickWrap,
-  CategoryWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Divider, Pagination, Spin, Tooltip } from 'antd'
@@ -26,8 +24,6 @@ import { useModel } from '@/models'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import Sort from '@/components/Sort'
-import { OmitText } from '@star-yun/ui'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -59,22 +55,11 @@ const LoadingSpin = styled(Spin)({
   },
 })
 
-const StatusWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-})
-
-const CircleWrap = styled.div({
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-  marginRight: 8,
-})
-
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
+  position: 'relative',
 })
 
 const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
@@ -105,14 +90,13 @@ const Need = (props: any) => {
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
-  const { colorList } = useModel('project')
   const { userInfo } = useModel('user')
   const { getVerifyList, getVerifyUserList, setCount, count } = useModel('mine')
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [keyword, setKeyword] = useState<string>('')
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
@@ -135,8 +119,8 @@ const Need = (props: any) => {
       order: orderVal.value,
       orderKey: orderVal.key,
     }
-    const result
-      = val ?? activeTab
+    const result =
+      val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
     setListData(result)
@@ -274,7 +258,7 @@ const Need = (props: any) => {
             style={{ height: 20, margin: '0 16px 0 24px' }}
             type="vertical"
           />
-          <Tooltip title={t('common.search')}>
+          <Tooltip title={t('common.search')} getPopupContainer={node => node}>
             <IconFontWrap
               active={!filterState}
               type="filter"
@@ -284,15 +268,15 @@ const Need = (props: any) => {
         </SearchWrap>
       </TabsHehavior>
 
-      {!filterState
-        && <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
-      }
+      {!filterState && (
+        <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
+      )}
 
       <div>
         <LoadingSpin spinning={isSpin}>
           <StaffTableWrap>
-            {listData?.list
-              ? listData?.list?.length ? (
+            {listData?.list ? (
+              listData?.list?.length ? (
                 <TableBox
                   rowKey="id"
                   columns={selectColum}
@@ -300,10 +284,10 @@ const Need = (props: any) => {
                   pagination={false}
                   scroll={{ x: 'max-content' }}
                 />
+              ) : (
+                <NoData />
               )
-                : <NoData />
-
-              : null}
+            ) : null}
           </StaffTableWrap>
         </LoadingSpin>
       </div>
@@ -312,6 +296,7 @@ const Need = (props: any) => {
         <Pagination
           defaultCurrent={1}
           current={listData?.currentPage}
+          pageSize={pageObj?.size}
           showSizeChanger
           showQuickJumper
           total={listData?.total}

@@ -93,6 +93,7 @@ const DelButton = styled.div`
   width: 15px;
   height: 15px;
   visibility: hidden;
+  z-index: 2;
   &:hover {
     background-color: #2877ff;
   }
@@ -202,6 +203,8 @@ export const NumericInput = (props: any) => {
         onPressEnter={onPress}
         onChange={e => enter(e.target.value)}
         value={value?.start}
+        onBlur={onPress}
+        allowClear
         style={{ width: '100px', border: 'none' }}
       />
       <span className={danweiCss}>{t('newlyAdd.unit')}</span>
@@ -212,6 +215,8 @@ export const NumericInput = (props: any) => {
         onChange={e => enter2(e.target.value)}
         value={value?.end}
         style={{ width: '100px', border: 'none' }}
+        onBlur={onPress}
+        allowClear
       />
       <span className={danweiCss}>{t('newlyAdd.unit')}</span>
     </>
@@ -252,13 +257,7 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, customList])
 
-  const delList = (key: string) => {
-    props.onFilter(key, 0)
-  }
-  const addList = (key: string) => {
-    props.onFilter(key, 1)
-  }
-  const confirm = async () => {
+  const confirm = async (val?: any, delKey?: any) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
@@ -270,8 +269,26 @@ const TableFilter = (props: any) => {
       }
     }
 
+    if (delKey) {
+      if (delKey?.includes('custom_')) {
+        delete customField[delKey]
+      } else {
+        delete res[delKey]
+      }
+    }
+
     props.onSearch(res, customField)
   }
+
+  const delList = (key: string) => {
+    props.onFilter(key, 0)
+    confirm('', key)
+  }
+
+  const addList = (key: string) => {
+    props.onFilter(key, 1)
+  }
+
   const onClearForm = async () => {
     form.resetFields()
     confirm()
@@ -280,7 +297,9 @@ const TableFilter = (props: any) => {
     <CollapseWrap defaultActiveKey={['2']}>
       <Collapse.Panel header={t('components.basicFiled')} key="1">
         {filterBasicsList
-          ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+          ?.filter((k: any) =>
+            props.isIteration ? k.key !== 'iterate_name' : k,
+          )
           ?.map((i: any) => (
             <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
               {i.content_txt}
@@ -316,6 +335,10 @@ const TableFilter = (props: any) => {
             : moment(dates[1]).format('YYYY-MM-DD'),
         ],
       })
+    } else {
+      form.setFieldsValue({
+        [key]: [],
+      })
     }
     confirm()
   }
@@ -332,16 +355,18 @@ const TableFilter = (props: any) => {
   }
   return (
     <SearchLine>
-      <Wrap hidden={props.showForm}>
+      <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
         <FormWrap form={form}>
           {list
-            ?.filter((k: any) => props.isIteration ? k.key !== 'iterate_name' : k)
+            ?.filter((k: any) =>
+              props.isIteration ? k.key !== 'iterate_name' : k,
+            )
             ?.map((i: any) => {
               if (
-                i.type === 'select_checkbox'
-                || i.type === 'checkbox'
-                || i.type === 'select'
-                || i.type === 'radio'
+                i.type === 'select_checkbox' ||
+                i.type === 'checkbox' ||
+                i.type === 'select' ||
+                i.type === 'radio'
               ) {
                 return (
                   <SelectWrapBedeck key={i.key}>
@@ -356,6 +381,7 @@ const TableFilter = (props: any) => {
                         placeholder={t('common.pleaseSelect')}
                         showSearch
                         onChange={confirm}
+                        allowClear
                         optionFilterProp="label"
                         options={deWeight(
                           i.children.map((v: any) => ({
@@ -379,14 +405,14 @@ const TableFilter = (props: any) => {
                         {i.contentTxt}
                       </span>
                       <DatePicker.RangePicker
-                        allowClear={false}
+                        allowClear
                         onChange={dates => onChangeTime(i.key, dates)}
                         className={rangPicker}
                         getPopupContainer={node => node}
                         format={(times: moment.Moment) => {
                           if (
-                            times.unix() === 0
-                            || times.unix() === 1893427200
+                            times.unix() === 0 ||
+                            times.unix() === 1893427200
                           ) {
                             return t('common.null')
                           }
@@ -482,6 +508,9 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item name={i.key}>
                       <Input
+                        allowClear
+                        autoComplete="off"
+                        onBlur={confirm}
                         onPressEnter={confirm}
                         style={{ border: 'none' }}
                         placeholder={t('newlyAdd.pleaseKeyword')}
@@ -508,6 +537,7 @@ const TableFilter = (props: any) => {
                         onSelect={confirm}
                         multiple
                         onChange={confirm}
+                        allowClear
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>

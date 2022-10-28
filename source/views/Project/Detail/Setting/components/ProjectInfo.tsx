@@ -112,16 +112,14 @@ const ProjectInfo = () => {
 
   return (
     <div style={{ padding: 16, height: '100%' }}>
-      {visible
-        ? (
-            <EditProject
-              visible={visible}
-              onChangeVisible={() => setVisible(!visible)}
-              details={projectInfo}
-              onUpdate={onUpdate}
-            />
-          )
-        : null}
+      {visible ? (
+        <EditProject
+          visible={visible}
+          onChangeVisible={() => setVisible(!visible)}
+          details={projectInfo}
+          onUpdate={onUpdate}
+        />
+      ) : null}
 
       <Wrap>
         <InfoLeft>
@@ -132,7 +130,14 @@ const ProjectInfo = () => {
               alignItems: 'center',
             }}
           >
-            <OmitText width={340}>{projectInfo.name}</OmitText>
+            <OmitText
+              width={340}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {projectInfo.name}
+            </OmitText>
             <ClickIcon
               hidden={getIsPermission(
                 userInfo?.company_permissions,

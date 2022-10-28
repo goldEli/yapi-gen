@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -73,6 +73,26 @@ const IterationTable = (props: Props) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const { filterHeightIterate } = useModel('iterate')
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [props.data?.list])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -122,7 +142,6 @@ const IterationTable = (props: Props) => {
       message.success(t('common.prioritySuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -133,7 +152,6 @@ const IterationTable = (props: Props) => {
       message.success(t('common.statusSuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -167,6 +185,7 @@ const IterationTable = (props: Props) => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
+    listLength: props.data?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -190,9 +209,9 @@ const IterationTable = (props: Props) => {
       },
       {
         key: '2',
-        label:
+        label: (
           <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ,
+        ),
       },
     ]
 
@@ -228,7 +247,9 @@ const IterationTable = (props: Props) => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    props.data?.list?.length === 1 ? document.body : node
+                  }
                 >
                   {rowIconFont()}
                 </Dropdown>
@@ -243,31 +264,35 @@ const IterationTable = (props: Props) => {
 
   return (
     <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId !== 'object'
-            ? <NoData />
-            : props.data?.list
-              ? props.data?.list?.length > 0 ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={props.data?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                  showSorterTooltip={false}
-                  sticky
-                />
-              )
-                : <NoData />
-
-              : null}
+          {typeof props?.hasId !== 'object' ? (
+            <NoData />
+          ) : props.data?.list ? (
+            props.data?.list?.length > 0 ? (
+              <TableBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={props.data?.list}
+                pagination={false}
+                scroll={{
+                  x: 'max-content',
+                  y: tableY,
+                }}
+                showSorterTooltip={false}
+                tableLayout="auto"
+              />
+            ) : (
+              <NoData />
+            )
+          ) : null}
         </Spin>
       </DataWrap>
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
           current={props.data?.currentPage}
+          pageSize={props.data?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={props.data?.total}

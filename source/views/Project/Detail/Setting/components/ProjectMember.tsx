@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable max-lines */
@@ -13,8 +14,17 @@ import {
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect, useRef } from 'react'
-import { Menu, Dropdown, Pagination, message, Select, Form, Spin } from 'antd'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import {
+  Menu,
+  Dropdown,
+  Pagination,
+  message,
+  Select,
+  Form,
+  Spin,
+  Space,
+} from 'antd'
 import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -77,7 +87,7 @@ const FilterWrap = styled(Form)({
   alignItems: 'center',
 })
 
-const SearchWrap = styled.div({
+const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   minHeight: 64,
@@ -155,11 +165,31 @@ const ProjectMember = () => {
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [memberList])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -250,7 +280,6 @@ const ProjectMember = () => {
         getMemberList({ all: true, projectId })
       }
     } catch (error) {
-
       //
     }
   }
@@ -297,6 +326,14 @@ const ProjectMember = () => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
+    const hasUser = memberList?.list?.filter(
+      (i: any) => i.roleName === '管理员',
+    ).length
+
+    if (hasUser === 1 && item.roleName === '管理员') {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+
     return <Menu items={menuItems} />
   }
 
@@ -309,10 +346,14 @@ const ProjectMember = () => {
   }
 
   const onToDetail = (row: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
-    )
-    navigate(`/Detail/MemberInfo/profile?data=${params}`)
+    if (row.id === userInfo.id) {
+      navigate('/mine')
+    } else {
+      const params = encryptPhp(
+        JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
+      )
+      navigate(`/Detail/MemberInfo/profile?data=${params}`)
+    }
   }
 
   const columns = [
@@ -337,7 +378,9 @@ const ProjectMember = () => {
                 overlay={() => menu(record)}
                 trigger={['hover']}
                 placement="bottom"
-                getPopupContainer={node => node}
+                getPopupContainer={node =>
+                  memberList?.list?.length === 1 ? document.body : node
+                }
               >
                 <RowIconFont type="more" />
               </Dropdown>
@@ -355,7 +398,7 @@ const ProjectMember = () => {
               />
             ) : (
               <NameWrap>
-                {String(record.name.trim().slice(0, 1)).toLocaleUpperCase()}
+                {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
               </NameWrap>
             )}
             <span style={{ marginLeft: 12, color: '#323233', fontSize: 14 }}>
@@ -475,16 +518,16 @@ const ProjectMember = () => {
       render: (text: string, record: any) => {
         return (
           <>
-            {hasCheck
-              ? '--'
-              : (
-                  <span
-                    onClick={() => onToDetail(record)}
-                    style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
-                  >
-                    {t('project.checkInfo')}
-                  </span>
-                )}
+            {hasCheck ? (
+              '--'
+            ) : (
+              <span
+                onClick={() => onToDetail(record)}
+                style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+              >
+                {t('project.checkInfo')}
+              </span>
+            )}
           </>
         )
       },
@@ -523,7 +566,6 @@ const ProjectMember = () => {
       getProjectInfo({ projectId })
       setIsEditVisible(false)
     } catch (error) {
-
       //
     }
   }
@@ -578,7 +620,7 @@ const ProjectMember = () => {
             form={form}
             onValuesChange={onValuesChange}
           >
-            <SearchWrap>
+            <SearchWrap size={16}>
               <SelectWrapBedeck>
                 <span style={{ margin: '0 16px', fontSize: '14px' }}>
                   {t('common.job')}
@@ -593,6 +635,7 @@ const ProjectMember = () => {
                     showSearch
                     options={jobList}
                     optionFilterProp="label"
+                    allowClear
                   />
                 </Form.Item>
               </SelectWrapBedeck>
@@ -609,6 +652,7 @@ const ProjectMember = () => {
                     showSearch
                     options={projectPermission}
                     optionFilterProp="label"
+                    allowClear
                   />
                 </Form.Item>
               </SelectWrapBedeck>
@@ -622,22 +666,29 @@ const ProjectMember = () => {
           </FilterWrap>
         </Header>
         <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
-          <DataWrap>
+          <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
-              {!!memberList?.list
-                && (memberList?.list?.length > 0 ? (
+              {!!memberList?.list &&
+                (memberList?.list?.length > 0 ? (
                   <TableBox
                     rowKey="id"
                     columns={columns as any}
                     dataSource={memberList?.list}
                     pagination={false}
-                    scroll={{ x: 'max-content' }}
+                    scroll={{
+                      x: columns.reduce(
+                        (totalWidth: number, item: any) =>
+                          totalWidth + item.width,
+                        0,
+                      ),
+                      y: tableY,
+                    }}
                     showSorterTooltip={false}
                     sticky
                   />
-                )
-                  : <NoData />
-                )}
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </DataWrap>
 
@@ -645,6 +696,7 @@ const ProjectMember = () => {
             <Pagination
               defaultCurrent={1}
               current={memberList?.currentPage}
+              pageSize={memberList?.pageSize || 20}
               showSizeChanger
               showQuickJumper
               total={memberList?.total}

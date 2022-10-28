@@ -7,9 +7,14 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination, Progress } from 'antd'
-import { TableWrap, PaginationWrap, ClickWrap } from '@/components/StyleCommon'
+import {
+  TableWrap,
+  PaginationWrap,
+  ClickWrap,
+  HiddenText,
+} from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
@@ -93,6 +98,7 @@ interface MoreProps {
   onChange(type: string, item: any, e: any): void
   text: string
   record?: any
+  listLength: number
 }
 
 const MoreContent = (props: MoreProps) => {
@@ -189,15 +195,17 @@ const MoreContent = (props: MoreProps) => {
             overlay={menu(props?.record)}
             trigger={['hover']}
             placement="bottomRight"
-            getPopupContainer={node => node}
+            getPopupContainer={node =>
+              props.listLength ? document.body : node
+            }
             onVisibleChange={onVisibleChange}
           >
             <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
           </Dropdown>
         </MoreWrap>
-      )
-        : <div style={{ width: 16 }} />
-      }
+      ) : (
+        <div style={{ width: 16 }} />
+      )}
     </>
   )
 }
@@ -218,6 +226,26 @@ const NewSort = (sortProps: any) => {
 const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [props.projectList?.list])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -244,6 +272,7 @@ const MainTable = (props: Props) => {
               onChange={props?.onChangeOperation}
               text={text}
               record={record}
+              listLength={props.projectList?.list?.length}
             />
             <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
               {text}
@@ -282,9 +311,18 @@ const MainTable = (props: Props) => {
       width: 200,
       render: (text: string, record: any) => {
         return (
-          <ClickWrap isName isClose={record.status === 2}>
-            <OmitText width={160}>{text}</OmitText>
-          </ClickWrap>
+          <HiddenText>
+            <ClickWrap isName isClose={record.status === 2}>
+              <OmitText
+                width={160}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
+            </ClickWrap>
+          </HiddenText>
         )
       },
     },
@@ -351,7 +389,7 @@ const MainTable = (props: Props) => {
             width={38}
             type="circle"
             percent={Number(text) * 100}
-            format={percent => percent === 100 ? '100%' : `${percent}%`}
+            format={percent => (percent === 100 ? '100%' : `${percent}%`)}
             strokeWidth={8}
           />
         )
@@ -447,28 +485,35 @@ const MainTable = (props: Props) => {
 
   return (
     <div style={{ height: '100%' }}>
-      <DataWrap>
-        {!!props.projectList?.list
-          && (props.projectList?.list?.length > 0 ? (
+      <DataWrap ref={dataWrapRef}>
+        {!!props.projectList?.list &&
+          (props.projectList?.list?.length > 0 ? (
             <TableBox
               rowKey="id"
               columns={columns}
               dataSource={props.projectList?.list}
               pagination={false}
-              scroll={{ x: 'max-content' }}
+              scroll={{
+                x: columns.reduce(
+                  (totalWidth: number, item: any) => totalWidth + item.width,
+                  0,
+                ),
+                y: tableY,
+              }}
               showSorterTooltip={false}
               onRow={onTableRow}
               sticky
             />
-          )
-            : <NoData />
-          )}
+          ) : (
+            <NoData />
+          ))}
       </DataWrap>
 
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
           current={props.projectList?.currentPage}
+          pageSize={props.projectList?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={props.projectList?.total}

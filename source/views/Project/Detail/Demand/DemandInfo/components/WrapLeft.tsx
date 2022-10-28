@@ -34,7 +34,7 @@ const TextWrapEditor = styled.div({
   display: 'flex',
   flexDirection: 'column',
   img: {
-    maxWidth: '20%',
+    maxWidth: '80%',
     height: 'auto!important',
     cursor: 'pointer',
   },
@@ -101,8 +101,8 @@ export const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     border: hasColor
       ? '1px solid #2877FF'
       : hasDash
-        ? '1px dashed #969799'
-        : '1px solid white',
+      ? '1px dashed #969799'
+      : '1px solid white',
     '.anticon > svg': {
       color: hasColor ? '#2877FF' : '#969799',
     },
@@ -173,6 +173,7 @@ const WrapLeftBox = () => {
   const [tagList, setTagList] = useState<any>([])
   const textWrapEditor = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const LeftDom = useRef<HTMLInputElement>(null)
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
@@ -200,7 +201,9 @@ const WrapLeftBox = () => {
 
   useEffect(() => {
     textWrapEditor?.current?.addEventListener('click', e => onGetViewPicture(e))
-    return textWrapEditor?.current?.removeEventListener('click', e => onGetViewPicture(e))
+    return textWrapEditor?.current?.removeEventListener('click', e =>
+      onGetViewPicture(e),
+    )
   }, [])
 
   useEffect(() => {
@@ -211,13 +214,14 @@ const WrapLeftBox = () => {
         name: i.tag?.content,
       })),
     )
+    setSchedule(demandInfo?.schedule)
   }, [demandInfo])
 
   const onChangeSchedule = async () => {
     if (
-      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id)
-      && demandInfo.status.is_start !== 1
-      && demandInfo.status.is_end !== 1
+      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
+      demandInfo.status.is_start !== 1 &&
+      demandInfo.status.is_end !== 1
     ) {
       const obj = {
         projectId,
@@ -228,7 +232,6 @@ const WrapLeftBox = () => {
         await updateTableParams(obj)
         getDemandInfo({ projectId, id: demandInfo?.id })
       } catch (error) {
-
         //
       }
     }
@@ -245,8 +248,13 @@ const WrapLeftBox = () => {
     )
   }
 
+  const onBottom = () => {
+    const dom: any = LeftDom?.current
+    dom.scrollTop = dom.scrollHeight
+  }
+
   return (
-    <WrapLeft>
+    <WrapLeft ref={LeftDom}>
       {isVisible ? (
         <Viewer
           zIndex={99}
@@ -268,7 +276,7 @@ const WrapLeftBox = () => {
           onMouseUp={onChangeSchedule}
         >
           <SliderWrap
-            style={{ width: 320 }}
+            style={{ width: 260 }}
             value={schedule}
             tipFormatter={(value: any) => `${value}%`}
             onChange={value => setSchedule(value)}
@@ -276,13 +284,13 @@ const WrapLeftBox = () => {
               !(
                 demandInfo?.user
                   ?.map((i: any) => i.user.id)
-                  ?.includes(userInfo?.id)
-                && demandInfo.status.is_start !== 1
-                && demandInfo.status.is_end !== 1
+                  ?.includes(userInfo?.id) &&
+                demandInfo.status.is_start !== 1 &&
+                demandInfo.status.is_end !== 1
               )
             }
           />
-          <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
+          <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
             {schedule}%
           </span>
         </div>
@@ -294,9 +302,9 @@ const WrapLeftBox = () => {
             ref={textWrapEditor}
             dangerouslySetInnerHTML={{ __html: demandInfo?.info }}
           />
-        )
-          : <TextWrap>--</TextWrap>
-        }
+        ) : (
+          <TextWrap>--</TextWrap>
+        )}
       </InfoItem>
       <InfoItem>
         <Label>{t('common.tag')}</Label>
@@ -310,26 +318,26 @@ const WrapLeftBox = () => {
           }
         />
       </InfoItem>
-      <InfoItem
-        activeState
-        hidden={
-          !projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length
-        }
-      >
+      <InfoItem activeState>
         <Label>{t('common.attachment')}</Label>
         <UploadAttach
+          onBottom={onBottom}
           defaultList={demandInfo?.attachment?.map((i: any) => ({
             path: i.attachment.path,
             id: i.id,
           }))}
           canUpdate
           addWrap={
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>{t('common.add23')}</div>
-            </AddWrap>
+            projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 ? (
+              <AddWrap>
+                <IconFont type="plus" />
+                <div>{t('common.add23')}</div>
+              </AddWrap>
+            ) : (
+              (null as any)
+            )
           }
           child={isShowProgress ? null : <Children />}
         />

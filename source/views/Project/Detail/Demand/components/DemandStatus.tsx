@@ -30,13 +30,14 @@ const StatusWrap = styled.div({
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { getDemandInfo, demandInfo } = useModel('demand')
+  const { getDemandInfo, demandInfo, isUpdateStatus, setIsUpdateStatus } =
+    useModel('demand')
   const [active, setActive] = useState(0)
   const { projectInfo } = useModel('project')
   const [leftList, setLeftList] = useState([])
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const onChangeIdx = (id: any) => {
@@ -52,6 +53,7 @@ const DemandStatusBox = (props: any) => {
       nId: props.sid,
     })
     setLeftList(res2)
+    setIsUpdateStatus(false)
   }
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)
@@ -61,29 +63,28 @@ const DemandStatusBox = (props: any) => {
       getDemandInfo({ projectId: props.pid, id: props.sid })
     }
   }
+
   useEffect(() => {
     init()
-  }, [])
+  }, [isUpdateStatus])
 
   return (
     <>
       {leftList?.map((i: any, index: number) => (
         <Pop
           content={({ onHide }: { onHide(): void }) => {
-            return demandInfo?.isExamine
-              ? null
-              : (
-                  <ShapeContent
-                    active={demandInfo.status.status}
-                    sid={props.sid}
-                    fromId={demandInfo?.status?.id}
-                    noleft
-                    tap={(value: any) => updateStatus(value)}
-                    hide={onHide}
-                    record={i}
-                    row={i}
-                  />
-                )
+            return demandInfo?.isExamine ? null : (
+              <ShapeContent
+                active={demandInfo.status.status}
+                sid={props.sid}
+                fromId={demandInfo?.status?.id}
+                noleft
+                tap={(value: any) => updateStatus(value)}
+                hide={onHide}
+                record={i}
+                row={i}
+              />
+            )
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>

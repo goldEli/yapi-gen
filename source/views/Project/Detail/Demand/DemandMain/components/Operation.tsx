@@ -11,7 +11,7 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Button, Divider, Popover, Space, Tooltip } from 'antd'
+import { Divider, Popover, Space, Tooltip } from 'antd'
 import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
 import ImportDemand from './ImportDemand'
@@ -72,18 +72,22 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   }),
 )
 
-const MoreWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  borderRadius: 6,
-  padding: '0 16px',
-  background: '#F0F4FA',
-  color: '#2877ff',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-})
+const MoreWrap = styled.div<{ type?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: 32,
+    borderRadius: 6,
+    padding: '0 16px',
+    fontSize: 14,
+    fontWeight: 400,
+    cursor: 'pointer',
+  },
+  ({ type }) => ({
+    background: type ? '#2877ff' : '#F0F4FA',
+    color: type ? 'white' : '#2877ff',
+  }),
+)
 
 const MoreItem = styled.div({
   display: 'flex',
@@ -114,12 +118,13 @@ interface Props {
 const Operation = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [isShow, setIsShow] = useState(false)
+  const [isShow2, setIsShow2] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
   const [filterState, setFilterState] = useState(true)
-  const { filterAll, projectInfo, categoryList, colorList }
-    = useModel('project')
+  const { filterAll, projectInfo, categoryList, colorList } =
+    useModel('project')
   const { setFilterHeight, setCreateCategory } = useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -280,6 +285,15 @@ const Operation = (props: Props) => {
     setIsShowImport(false)
   }
 
+  const onClickIcon = (value: any) => {
+    if (value === 1) {
+      setIsShow2(false)
+    } else {
+      setIsShow(false)
+    }
+    props?.onChangeIsShowLeft?.()
+  }
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <CommonModal
@@ -292,25 +306,44 @@ const Operation = (props: Props) => {
         <ImportDemand />
       </CommonModal>
       <OperationWrap>
-        <Space size={16}>
-          <Tooltip
-            visible={isShow}
-            onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getTooltipContainer={node => node}
-            title={
-              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
-            }
-          >
-            <IconFont
-              onClick={props.onChangeIsShowLeft}
-              type={props.isShowLeft ? 'outdent' : 'indent'}
-              style={{
-                fontSize: 20,
-                color: 'black',
-                cursor: 'pointer',
-              }}
-            />
-          </Tooltip>
+        <Space size={16} style={{ position: 'relative' }}>
+          {props.isShowLeft ? (
+            <Tooltip
+              visible={isShow}
+              onVisibleChange={isShow3 => setIsShow(isShow3)}
+              getTooltipContainer={node => node}
+              title={t('newlyAdd.collapseClass')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(1)}
+                type="outdent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip
+              visible={isShow2}
+              onVisibleChange={isShow1 => setIsShow2(isShow1)}
+              getTooltipContainer={node => node}
+              title={t('newlyAdd.openClass')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(2)}
+                type="indent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          )}
           {getIsPermission(
             projectInfo?.projectPermissions,
             'b/story/save',
@@ -322,9 +355,13 @@ const Operation = (props: Props) => {
               visible={isVisible}
               onVisibleChange={visible => setIsVisible(visible)}
             >
-              <Button type="primary" icon={<IconFont type="plus" />}>
-                {t('common.createDemand')}
-              </Button>
+              <MoreWrap type="create">
+                <span>{t('common.createDemand')}</span>
+                <IconFont
+                  style={{ fontSize: 16, marginLeft: 8 }}
+                  type={isVisible ? 'up' : 'down'}
+                />
+              </MoreWrap>
             </Popover>
           )}
           {hasExport && hasImport ? null : (

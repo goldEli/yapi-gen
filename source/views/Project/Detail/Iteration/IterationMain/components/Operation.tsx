@@ -32,6 +32,7 @@ const StickyWrap = styled.div({
 const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
 })
 
 const StatusTag = styled.div<{ isOpen?: boolean }>(
@@ -85,8 +86,9 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
   const [isShow, setIsShow] = useState(false)
-  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
-    = useModel('iterate')
+  const [isShow2, setIsShow2] = useState(false)
+  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate } =
+    useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -113,7 +115,6 @@ const Operation = (props: Props) => {
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
         props.onIsUpdateList?.(true)
       } catch (error) {
-
         //
       }
     }
@@ -194,6 +195,15 @@ const Operation = (props: Props) => {
     }, 42)
   }
 
+  const onClickIcon = (value: any) => {
+    if (value === 1) {
+      setIsShow2(false)
+    } else {
+      setIsShow(false)
+    }
+    props?.onChangeIsShowLeft?.()
+  }
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <Modal
@@ -215,41 +225,60 @@ const Operation = (props: Props) => {
                 __html: props.currentDetail?.info,
               }}
             />
-          )
-            : <NoData />
-          }
+          ) : (
+            <NoData />
+          )}
         </div>
       </Modal>
       <OperationWrap>
         <IterationInfo>
-          <Tooltip
-            key={isShow.toString()}
-            visible={isShow}
-            onVisibleChange={isShow1 => setIsShow(isShow1)}
-            getTooltipContainer={node => node}
-            title={
-              props.isShowLeft ? t('common.collapseMenu') : t('common.openMenu')
-            }
-          >
-            <IconFont
-              onClick={props.onChangeIsShowLeft}
-              type={props.isShowLeft ? 'outdent' : 'indent'}
-              style={{
-                fontSize: 20,
-                color: 'black',
-                cursor: 'pointer',
-                marginRight: 8,
-              }}
-            />
-          </Tooltip>
+          {props.isShowLeft ? (
+            <Tooltip
+              key={isShow.toString()}
+              visible={isShow}
+              onVisibleChange={isShow3 => setIsShow(isShow3)}
+              getTooltipContainer={node => node}
+              title={t('common.collapseMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(1)}
+                type="outdent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip
+              key={isShow2.toString()}
+              visible={isShow2}
+              onVisibleChange={isShow1 => setIsShow2(isShow1)}
+              getTooltipContainer={node => node}
+              title={t('common.openMenu')}
+            >
+              <IconFont
+                onClick={() => onClickIcon(2)}
+                type="indent"
+                style={{
+                  fontSize: 20,
+                  color: 'black',
+                  cursor: 'pointer',
+                  marginRight: 8,
+                }}
+              />
+            </Tooltip>
+          )}
           <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
             {props.currentDetail?.name}
           </span>
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
-          {hasChangeStatus
-            ? props.currentDetail?.id ? (
+          {hasChangeStatus ? (
+            props.currentDetail?.id ? (
               <StatusTag
                 style={{ cursor: 'inherit' }}
                 isOpen={props.currentDetail?.status === 1}
@@ -259,32 +288,32 @@ const Operation = (props: Props) => {
                   : t('common.Closed')}
               </StatusTag>
             ) : null
-            : (
-                <Popover
-                  placement="bottom"
-                  content={changeStatus}
-                  getPopupContainer={node => node}
-                >
-                  {props.currentDetail ? (
-                    <StatusTag isOpen={props.currentDetail?.status === 1}>
-                      {props.currentDetail?.status === 1
-                        ? t('common.opening')
-                        : t('common.Closed')}
-                      <IconFont
-                        type="down-icon"
-                        style={{
-                          fontSize: 12,
-                          marginLeft: 4,
-                          color:
+          ) : (
+            <Popover
+              placement="bottom"
+              content={changeStatus}
+              getPopupContainer={node => node}
+            >
+              {props.currentDetail ? (
+                <StatusTag isOpen={props.currentDetail?.status === 1}>
+                  {props.currentDetail?.status === 1
+                    ? t('common.opening')
+                    : t('common.Closed')}
+                  <IconFont
+                    type="down-icon"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: 4,
+                      color:
                         props.currentDetail?.status === 1
                           ? '#43BA9A'
                           : '#969799',
-                        }}
-                      />
-                    </StatusTag>
-                  ) : null}
-                </Popover>
-              )}
+                    }}
+                  />
+                </StatusTag>
+              ) : null}
+            </Popover>
+          )}
 
           <Tooltip title={t('project.iterateTarget')}>
             <IconFont

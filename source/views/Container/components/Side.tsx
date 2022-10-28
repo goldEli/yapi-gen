@@ -119,8 +119,8 @@ export const Side = () => {
   const { userInfo } = useModel('user')
   const location = useLocation()
   const { pathname } = location
-  const nowPath
-    = (pathname.split('/')[1] ? `/${pathname.split('/')[1]}` : '') || ''
+  const nowPath =
+    (pathname.split('/')[1] ? `/${pathname.split('/')[1]}` : '') || ''
 
   const navigate = useNavigate()
   const [panelVisible, setPanelVisible] = useState(false)
@@ -129,7 +129,9 @@ export const Side = () => {
   }
 
   const getIsPermission = (value: string) => {
-    return !userInfo?.company_permissions?.filter((i: any) => String(i.group_name).includes(value)).length
+    return !userInfo?.company_permissions?.filter((i: any) =>
+      String(i.group_name).includes(value),
+    ).length
   }
 
   const getMenu = () => {
@@ -198,7 +200,7 @@ export const Side = () => {
       onClick={() => onNavigation(item.path)}
       hidden={item.isHidden}
     >
-      {item.icon}
+      {item?.icon}
       {item.title}
       {item.key === '/information' && <RedLogo>{count}</RedLogo>}
       {item.key === '/mine' && <RedLogo>{count}</RedLogo>}

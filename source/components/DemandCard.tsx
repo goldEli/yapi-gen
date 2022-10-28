@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -5,20 +6,24 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
-import { Dropdown, Menu } from 'antd'
+import { Dropdown, Menu, Progress, Space } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools'
-import { CategoryWrap, ClickWrap } from './StyleCommon'
+import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
+import DemandProgress from './DemandProgress'
 
 interface Props {
   item: any
   onChangeEdit?(e: any, item: any): void
   onChangeDelete?(item: any): void
   onClickItem(): void
+  indexVal?: any
+  listLength?: any
+  onUpdate(state: any): void
 }
 
 const MoreWrap = styled(IconFont)({
@@ -106,12 +111,13 @@ const NameGroup = styled.div({
 
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
+  const { userInfo } = useModel('user')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { projectInfo, colorList } = useModel('project')
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
+  const hasEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/delete',
@@ -130,9 +136,9 @@ const DemandCard = (props: Props) => {
     let menuItems = [
       {
         key: '1',
-        label:
+        label: (
           <div onClick={e => onClickMenu('edit', e)}>{t('common.edit')}</div>
-        ,
+        ),
       },
       {
         key: '2',
@@ -167,11 +173,19 @@ const DemandCard = (props: Props) => {
           >
             {props?.item?.category}
           </CategoryWrap>
-          <ClickWrap onClick={props.onClickItem}>
-            <OmitText width={200} tipProps={{ placement: 'topLeft' }}>
-              {props.item.name}
-            </OmitText>
-          </ClickWrap>
+          <HiddenText>
+            <ClickWrap onClick={props.onClickItem}>
+              <OmitText
+                width={200}
+                tipProps={{
+                  placement: 'topLeft',
+                  getPopupContainer: node => node,
+                }}
+              >
+                {props.item.name}
+              </OmitText>
+            </ClickWrap>
+          </HiddenText>
           <AvatarWrap>
             <NameGroup>
               {props.item?.userName
@@ -183,7 +197,7 @@ const DemandCard = (props: Props) => {
                     style={{ marginLeft: index ? -10 : 0, zIndex: index }}
                   >
                     <div className="item" style={{ background: '#A4ACF5' }}>
-                      {String(item.trim().slice(0, 1)).toLocaleUpperCase()}
+                      {String(item?.trim().slice(0, 1)).toLocaleUpperCase()}
                     </div>
                   </div>
                 ))}
@@ -194,28 +208,53 @@ const DemandCard = (props: Props) => {
                 +{props.item?.userName?.length - 3}
               </div>
             </NameGroup>
-            <ChildDemandTable
-              value={props.item?.childCount}
-              row={props.item}
-              hasIcon
-            />
+            <Space size={16} style={{ display: 'flex', alignItems: 'center' }}>
+              {hasEdit &&
+              props.item?.usersNameIds?.includes(userInfo?.id) &&
+              props.item.status.is_start !== 1 &&
+              props.item.status.is_end !== 1 ? (
+                <div style={{ cursor: 'pointer' }}>
+                  <DemandProgress
+                    value={props.item?.schedule}
+                    row={props.item}
+                    onUpdate={() => props?.onUpdate(true)}
+                    listLength={props?.listLength}
+                    index={props?.indexVal}
+                    isCard
+                  />
+                </div>
+              ) : (
+                <Progress
+                  strokeColor="#43BA9A"
+                  style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                  width={38}
+                  type="circle"
+                  percent={props.item.schedule}
+                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                  strokeWidth={8}
+                />
+              )}
+              <ChildDemandTable
+                value={props.item?.childCount}
+                row={props.item}
+                hasIcon
+              />
+            </Space>
           </AvatarWrap>
         </MainWrap>
-        {hasDel && hasEdit
-          ? null
-          : (
-              <Dropdown
-                key={isMoreVisible.toString()}
-                visible={isMoreVisible}
-                overlay={menu()}
-                placement="bottomRight"
-                trigger={['hover']}
-                getPopupContainer={node => node}
-                onVisibleChange={visible => setIsMoreVisible(visible)}
-              >
-                <MoreWrap type="more" />
-              </Dropdown>
-            )}
+        {hasDel && hasEdit ? null : (
+          <Dropdown
+            key={isMoreVisible.toString()}
+            visible={isMoreVisible}
+            overlay={menu()}
+            placement="bottomRight"
+            trigger={['hover']}
+            getPopupContainer={node => node}
+            onVisibleChange={visible => setIsMoreVisible(visible)}
+          >
+            <MoreWrap type="more" />
+          </Dropdown>
+        )}
       </Wrap>
     </div>
   )

@@ -5,6 +5,28 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider } from 'antd'
 
+const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+  {
+    maxWidth: 500,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    cursor: 'pointer',
+    '&: hover': {
+      color: '#2877ff',
+    },
+  },
+  ({ isClose, isName }) => ({
+    color: isClose ? '#969799' : '',
+    textDecoration: isName && isClose ? 'line-through' : '',
+  }),
+)
+
+const HiddenText = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+})
+
 const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
@@ -21,6 +43,9 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-picker {
     border: none;
+  }
+  .ant-select-selection-placeholder {
+    color: black;
   }
 `
 
@@ -77,17 +102,6 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     '&: active': {
       background: hasColor ? '#DBEAFF' : '',
     },
-  }),
-)
-
-const HiddenText = styled.div<{ width?: number }>(
-  {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  ({ width }) => ({
-    width,
   }),
 )
 
@@ -196,6 +210,7 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     fontSize: 12,
     fontWeight: 400,
     marginLeft: 8,
+    flexShrink: 0,
   },
   ({ color, bgColor }) => ({
     background: bgColor,
@@ -305,7 +320,8 @@ const SetButton = styled.div<{ show?: boolean }>`
   height: 20px;
   border-left: 1px solid #d5d6d9;
   color: #bbbdbf;
-  color: ${({ show }) => show ? ' rgba(40, 119, 255, 1)' : ''};
+  position: relative;
+  color: ${({ show }) => (show ? ' rgba(40, 119, 255, 1)' : '')};
   &:hover {
     color: rgba(40, 119, 255, 1);
   }
@@ -341,8 +357,9 @@ const LabNumber = styled.div<{ isActive: boolean }>`
   align-items: center;
   font-size: 12px;
 
-  color: ${({ isActive }) => isActive ? 'white' : 'rgba(150, 151, 153, 1)'};
-  background: ${({ isActive }) => isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
+  color: ${({ isActive }) => (isActive ? 'white' : 'rgba(150, 151, 153, 1)')};
+  background: ${({ isActive }) =>
+    isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
 `
 const tabCss = css`
   display: flex;
@@ -564,4 +581,5 @@ export {
   AddWrap,
   DelWrap,
   SelectWrapBedeck,
+  ListNameWrap,
 }

@@ -40,7 +40,7 @@ const DemandMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(false)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [deleteId, setDeleteId] = useState(0)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
@@ -127,20 +127,20 @@ const DemandMain = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdate?.()
     setIsRefresh(false)
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
     getCategoryList({ projectId, isSelect: true })
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }, [key])
 
   useEffect(() => {
     if (isRefresh) {
       getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
     }
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }, [isRefresh])
 
   useEffect(() => {
@@ -164,7 +164,7 @@ const DemandMain = (props: Props) => {
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }
 
   const onDeleteConfirm = async () => {
@@ -174,8 +174,8 @@ const DemandMain = (props: Props) => {
       setIsVisible(false)
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)
+      myTreeComponent?.current?.init()
     } catch (error) {
-
       //
     }
   }
@@ -207,6 +207,7 @@ const DemandMain = (props: Props) => {
     () => ({
       key,
       changeKey: (value: any) => {
+        setPageObj({ page: 1, size: 10 })
         setKey(value)
       },
     }),
@@ -246,6 +247,7 @@ const DemandMain = (props: Props) => {
               onDelete={onDelete}
               data={dataList}
               isSpinning={isSpinning}
+              onUpdate={onUpdate}
             />
           ) : (
             <DemandTable

@@ -7,11 +7,11 @@ export default () => {
   const [isRefreshComment, setIsRefreshComment] = useState(false)
   const [isShowProgress, setIsShowProgress] = useState(false)
   const [percentShow, setPercentShow] = useState<boolean>(false)
+  const [isUpdateStatus, setIsUpdateStatus] = useState<any>(false)
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
   const [statusLogs, setStatusLogs] = useState<any>([])
-  const [importFields, setImportFields] = useState<any>({})
   const [importExcel, setImportExcel] = useState<any>({})
 
   const getImportExcelUpdate = async (params: any) => {
@@ -28,7 +28,7 @@ export default () => {
 
   const getLoadListFields = async (params: any) => {
     const result = await services.demand.getLoadListFields(params)
-    setImportFields(result)
+    return result
   }
 
   const getDemandInfo = async (params: any) => {
@@ -99,11 +99,12 @@ export default () => {
     updateDemandCategory,
     statusLogs,
     getStatusLogs,
-    importFields,
     getLoadListFields,
     getImportDownloadModel,
     importExcel,
     getImportExcel,
     getImportExcelUpdate,
+    setIsUpdateStatus,
+    isUpdateStatus,
   }
 }

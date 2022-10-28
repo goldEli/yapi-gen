@@ -15,6 +15,7 @@ import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
 
 const FormWrap = styled(Form)({
+  paddingTop: 2,
   '.anticon': {
     display: 'flex',
     alignItems: 'flex-start',
@@ -37,7 +38,7 @@ const FormWrap = styled(Form)({
         display: 'inline-block',
         color: '#ff4d4f',
         fontSize: 14,
-        content: '\'*\'',
+        content: "'*'",
       },
     '> label::before': {
       display: 'none!important',
@@ -135,7 +136,6 @@ const EditIteration = (props: Props) => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -163,7 +163,7 @@ const EditIteration = (props: Props) => {
   return (
     <Modal
       visible={props.visible}
-      width={524}
+      width={758}
       footer={false}
       title={props?.id ? t('project.editIterate') : t('common.createIterate')}
       onCancel={onCancel}
@@ -173,7 +173,9 @@ const EditIteration = (props: Props) => {
       keyboard={false}
       wrapClassName="vertical-center-modal"
     >
-      <div style={{ maxHeight: 464, overflowY: 'auto', paddingRight: 20 }}>
+      <div
+        style={{ maxHeight: 464, overflow: 'auto', padding: '0 20px 0 2px' }}
+      >
         <FormWrap
           form={form}
           labelCol={{ span: i18n.language === 'zh' ? 4 : 6 }}
@@ -188,7 +190,7 @@ const EditIteration = (props: Props) => {
             >
               <Input
                 autoComplete="off"
-                maxLength={100}
+                maxLength={50}
                 ref={inputRef as any}
                 autoFocus
                 placeholder={t('mark.level')}

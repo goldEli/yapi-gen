@@ -11,6 +11,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
+import NoData from '@/components/NoData'
 
 interface Props {
   visible: boolean
@@ -20,7 +21,7 @@ interface Props {
 
 const DrawerWrap = styled(Drawer)({
   '.ant-drawer-title': {
-    flex: 'initial',
+    width: '100%',
   },
   '.ant-drawer-close': {
     margin: 0,
@@ -35,7 +36,11 @@ const DrawerWrap = styled(Drawer)({
   },
 })
 
-const ButtonWrap = styled(Button)({ width: '100%', height: 32 })
+const ButtonWrap = styled(Button)({
+  width: '100%',
+  height: 32,
+  marginBottom: 16,
+})
 
 const ListWrap = styled.div({
   marginTop: 16,
@@ -89,10 +94,17 @@ const NameWrap = styled.div({
   color: 'white',
 })
 
+const HeaderWrap = styled.div({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})
+
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo }
-    = useModel('project')
+  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
+    useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
 
@@ -130,11 +142,22 @@ const Member = (props: Props) => {
         onChangeUpdate={() => getList()}
       />
       <DrawerWrap
-        title={t('project.projectMemberAll', { count: memberList?.length })}
+        title={
+          <HeaderWrap>
+            <span>
+              {t('project.projectMemberAll', { count: memberList?.length })}
+            </span>
+            <IconFont
+              onClick={props.onChangeVisible}
+              style={{ cursor: 'pointer' }}
+              type="close"
+            />
+          </HeaderWrap>
+        }
+        headerStyle={{ width: '100%' }}
+        closable={false}
         placement="right"
-        onClose={props.onChangeVisible}
         visible={props.visible}
-        headerStyle={{ padding: 16, direction: 'rtl' }}
         bodyStyle={{ padding: 0 }}
         width={320}
       >
@@ -148,24 +171,24 @@ const Member = (props: Props) => {
             projectInfo?.projectPermissions,
             'b/project/member/save',
           ) ? null : (
-              <ButtonWrap
-                type="primary"
-                onClick={() => setIsVisible(true)}
-                icon={
-                  <IconFont
-                    type="plus"
-                    style={{ color: 'white', fontSize: 16 }}
-                  />
-                }
-              >
-                {t('project.addMember1')}
-              </ButtonWrap>
-            )}
+            <ButtonWrap
+              type="primary"
+              onClick={() => setIsVisible(true)}
+              icon={
+                <IconFont
+                  type="plus"
+                  style={{ color: 'white', fontSize: 16 }}
+                />
+              }
+            >
+              {t('project.addMember1')}
+            </ButtonWrap>
+          )}
 
           <Input
             autoComplete="off"
-            style={{ marginTop: 16 }}
             onPressEnter={onChangeSearch}
+            onBlur={onChangeSearch}
             suffix={
               <IconFont
                 type="search"
@@ -176,29 +199,35 @@ const Member = (props: Props) => {
             allowClear
           />
         </div>
-        <ListWrap>
-          {memberList?.map((i: any) => (
-            <ListItem key={i.id}>
-              <div className="avatarBox">
-                {i.avatar
-                  ? <img src={i.avatar} alt="" />
-                  : (
-                      <NameWrap>
-                        {String(i.name.trim().slice(0, 1)).toLocaleUpperCase()}
-                      </NameWrap>
-                    )}
-                <div>
-                  <span>
-                    {i.name}
-                    {i.nickname ? `(${i.nickname})` : ''}
-                  </span>
-                  <span>{i.roleName}</span>
+        {memberList?.length > 0 ? (
+          <ListWrap>
+            {memberList?.map((i: any) => (
+              <ListItem key={i.id}>
+                <div className="avatarBox">
+                  {i.avatar ? (
+                    <img src={i.avatar} alt="" />
+                  ) : (
+                    <NameWrap>
+                      {String(i.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+                    </NameWrap>
+                  )}
+                  <div>
+                    <span>
+                      {i.name}
+                      {i.nickname ? `(${i.nickname})` : ''}
+                    </span>
+                    <span>{i.roleName}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="job">{i.positionName}</div>
-            </ListItem>
-          ))}
-        </ListWrap>
+                <div className="job">{i.positionName}</div>
+              </ListItem>
+            ))}
+          </ListWrap>
+        ) : (
+          <div style={{ height: 'calc(100% - 134px)' }}>
+            <NoData />
+          </div>
+        )}
       </DrawerWrap>
     </>
   )

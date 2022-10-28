@@ -7,9 +7,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import { Table, Pagination, Modal, Space, Spin } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { PaginationWrap } from '@/components/StyleCommon'
+import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -66,9 +66,29 @@ const ChangeRecord = () => {
   const [checkDetail, setCheckDetail] = useState<any>({})
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [dataList])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -108,7 +128,7 @@ const ChangeRecord = () => {
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
       return item[i]?.length ? item[i].join(',') : '--'
     } else if (i === 'status') {
-      return item[i]?.status?.content
+      return item[i]
     } else {
       return item[i] || '--'
     }
@@ -204,9 +224,15 @@ const ChangeRecord = () => {
               padding: '16px 0',
             }}
           >
-            {Object.keys(text)?.map((i: any) => i === 'custom_field'
-              ? (text[i] as any).map((k: any) => <span key={k.field}>{k.name}</span>)
-              : <span>{text[i]}</span>)}
+            {Object.keys(text)?.map((i: any) =>
+              i === 'custom_field' ? (
+                (text[i] as any).map((k: any) => (
+                  <span key={k.field}>{k.name}</span>
+                ))
+              ) : (
+                <span>{text[i]}</span>
+              ),
+            )}
           </div>
         )
       },
@@ -250,25 +276,29 @@ const ChangeRecord = () => {
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     {record.beforeField
                       ? record.fields.custom_field
-                        ?.map(
-                          (m: any) => record.beforeField[i][m.field]?.value,
-                        )
-                        ?.map((k: any) => (
-                          <span key={k}>
-                            {(Array.isArray(k) ? k.join('、') : k) || '--'}
-                          </span>
-                        ))
-                      : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
+                          ?.map(
+                            (m: any) => record.beforeField[i][m.field]?.value,
+                          )
+                          ?.map((k: any) => (
+                            <span key={k}>
+                              {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                            </span>
+                          ))
+                      : record.fields.custom_field?.map((m: any) => (
+                          <span key={m}>--</span>
+                        ))}
                   </div>
                 ) : (
-                  <OmitText
-                    tipProps={{
-                      placement: 'topLeft',
-                    }}
-                    width={300}
-                  >
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -315,25 +345,29 @@ const ChangeRecord = () => {
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     {record.afterField
                       ? record.fields.custom_field
-                        ?.map(
-                          (m: any) => record.afterField[i][m.field]?.value,
-                        )
-                        ?.map((k: any) => (
-                          <span key={k}>
-                            {(Array.isArray(k) ? k.join('、') : k) || '--'}
-                          </span>
-                        ))
-                      : record.fields.custom_field?.map((m: any) => <span key={m}>--</span>)}
+                          ?.map(
+                            (m: any) => record.afterField[i][m.field]?.value,
+                          )
+                          ?.map((k: any) => (
+                            <span key={k}>
+                              {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                            </span>
+                          ))
+                      : record.fields.custom_field?.map((m: any) => (
+                          <span key={m}>--</span>
+                        ))}
                   </div>
                 ) : (
-                  <OmitText
-                    tipProps={{
-                      placement: 'topLeft',
-                    }}
-                    width={300}
-                  >
-                    <span>{text ? fieldContent(text, i) : '--'}</span>
-                  </OmitText>
+                  <HiddenText>
+                    <OmitText
+                      width={300}
+                      tipProps={{
+                        getPopupContainer: node => node,
+                      }}
+                    >
+                      <span>{text ? fieldContent(text, i) : '--'}</span>
+                    </OmitText>
+                  </HiddenText>
                 )}
               </span>
             ))}
@@ -392,22 +426,28 @@ const ChangeRecord = () => {
           </div>
         </SpaceWrap>
       </Modal>
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
-          {!!dataList?.list
-            && (dataList?.list?.length > 0 ? (
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
               <Table
                 rowKey="id"
                 columns={columns}
                 dataSource={dataList?.list}
                 pagination={false}
-                scroll={{ x: 'max-content' }}
+                scroll={{
+                  x: columns.reduce(
+                    (totalWidth: number, item: any) => totalWidth + item.width,
+                    0,
+                  ),
+                  y: tableY,
+                }}
                 showSorterTooltip={false}
                 sticky
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 
@@ -415,6 +455,7 @@ const ChangeRecord = () => {
         <Pagination
           defaultCurrent={1}
           current={dataList?.currentPage}
+          pageSize={pageObj?.size}
           showSizeChanger
           showQuickJumper
           total={dataList?.total}

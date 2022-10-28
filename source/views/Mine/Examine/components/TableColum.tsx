@@ -87,7 +87,14 @@ export const useDynamicColumns = (state: any) => {
               {record.categoryName}
             </CategoryWrap>
             <ClickWrap onClick={() => onToDetail(record)}>
-              <OmitText width={200}>{text}</OmitText>
+              <OmitText
+                width={200}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
             </ClickWrap>
           </div>
         )
@@ -129,37 +136,37 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: any) => {
         return (
           <div onClick={() => state.onChangeOperation(record)}>
-            {text === 1 && !state.activeTab
-              ? <CanClick>{t('newlyAdd.waitExamine')}</CanClick>
-              : (
-                  <StatusWrap>
-                    <CircleWrap
-                      style={{
-                        background:
+            {text === 1 && !state.activeTab ? (
+              <CanClick>{t('newlyAdd.waitExamine')}</CanClick>
+            ) : (
+              <StatusWrap>
+                <CircleWrap
+                  style={{
+                    background:
                       text === 1
                         ? '#FA9746'
                         : text === 2
-                          ? '#43BA9A'
-                          : '#FF5C5E',
-                      }}
-                    />
-                    <ClickWrap style={{ display: 'inline' }}>
-                      {text === 1
-                        ? t('newlyAdd.waitExamine')
-                        : text === 2
-                          ? t('newlyAdd.passed')
-                          : t('newlyAdd.notPass')}
-                    </ClickWrap>
-                  </StatusWrap>
-                )}
+                        ? '#43BA9A'
+                        : '#FF5C5E',
+                  }}
+                />
+                <ClickWrap style={{ display: 'inline' }}>
+                  {text === 1
+                    ? t('newlyAdd.waitExamine')
+                    : text === 2
+                    ? t('newlyAdd.passed')
+                    : t('newlyAdd.notPass')}
+                </ClickWrap>
+              </StatusWrap>
+            )}
           </div>
         )
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="verify_at">{t('newlyAdd.examineTime')}</NewSort>
-      ,
+      ),
       dataIndex: 'verifyTime',
       key: 'verify_at',
       render: (text: string) => {

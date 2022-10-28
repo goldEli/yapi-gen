@@ -9,10 +9,16 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools'
 import { useState } from 'react'
 import { useModel } from '@/models'
-import { message, Popover, Progress, Table } from 'antd'
+import { message, Popover, Progress, Table, Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
-import { ClickWrap, StatusWrap } from '@/components/StyleCommon'
+import {
+  CategoryWrap,
+  ClickWrap,
+  HiddenText,
+  ListNameWrap,
+  StatusWrap,
+} from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
@@ -55,10 +61,10 @@ const ChildDemandTable = (props: {
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo } = useModel('project')
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const { projectInfo, colorList } = useModel('project')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const getList = async (item: any) => {
@@ -83,7 +89,6 @@ const ChildDemandTable = (props: {
       message.success(t('common.statusSuccess'))
       getList(order)
     } catch (error) {
-
       //
     }
   }
@@ -104,6 +109,10 @@ const ChildDemandTable = (props: {
     getList(order)
   }
 
+  const onExamine = () => {
+    message.warning(t('newlyAdd.underReview'))
+  }
+
   const columnsChild = [
     {
       title: (
@@ -120,12 +129,22 @@ const ChildDemandTable = (props: {
       width: 100,
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => onToDetail(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
+              {text}
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                }}
+              />
+            )}
+          </div>
         )
       },
     },
@@ -141,18 +160,40 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 160,
       render: (text: string, record: any) => {
         return (
-          <OmitText width={160} tipProps={{ placement: 'topLeft' }}>
-            <ClickWrap
-              onClick={() => onToDetail(record)}
-              isName
-              isClose={record.status?.content === '已关闭'}
+          <HiddenText>
+            <Tooltip
+              placement="top"
+              getPopupContainer={node => node}
+              title={record.categoryRemark}
             >
-              {text}
-            </ClickWrap>
-          </OmitText>
+              <CategoryWrap
+                color={record.categoryColor}
+                bgColor={
+                  colorList?.filter(
+                    (k: any) => k.key === record.categoryColor,
+                  )[0]?.bgColor
+                }
+                style={{ marginLeft: 0 }}
+              >
+                {record.category}
+              </CategoryWrap>
+            </Tooltip>
+            <Tooltip
+              title={text}
+              getPopupContainer={node => node}
+              placement="top"
+            >
+              <ListNameWrap
+                onClick={() => onToDetail(record)}
+                isName
+                isClose={record.status?.content === '已关闭'}
+              >
+                {text}
+              </ListNameWrap>
+            </Tooltip>
+          </HiddenText>
         )
       },
     },
@@ -171,11 +212,16 @@ const ChildDemandTable = (props: {
       width: 100,
       render: (text: string) => {
         return (
-          <OmitText tipProps={{ placement: 'topLeft' }} width={100}>
-            <span style={{ minWidth: 30, display: 'inline-block' }}>
+          <HiddenText>
+            <OmitText
+              width={100}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
               {text || '--'}
-            </span>
-          </OmitText>
+            </OmitText>
+          </HiddenText>
         )
       },
     },
@@ -191,12 +237,12 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'status',
-      width: 120,
+      width: 190,
       render: (text: any, record: any) => {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit ? (
+              return isCanEdit && !record.isExamine ? (
                 <ShapeContent
                   tap={(value: any) => onChangeStatus(value)}
                   hide={onHide}
@@ -215,7 +261,8 @@ const ChildDemandTable = (props: {
             record={record}
           >
             <StatusWrap
-              isShow={isCanEdit}
+              onClick={record.isExamine ? onExamine : void 0}
+              isShow={isCanEdit || record.isExamine}
               style={{
                 color: text?.status.color,
                 border: `1px solid ${text?.status.color}`,
@@ -228,61 +275,59 @@ const ChildDemandTable = (props: {
       },
     },
     {
-      title:
+      title: (
         <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
-      ,
+      ),
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: any) => {
         return (
           <div>
-            {isCanEdit
-            && record?.usersNameIds?.includes(userInfo?.id)
-            && record.status.is_start !== 1
-            && record.status.is_end !== 1 ? (
-                  <div style={{ cursor: 'pointer' }}>
-                    <DemandProgress
-                      value={record.schedule}
-                      row={record}
-                      onUpdate={onUpdate}
-                    />
-                  </div>
-                ) : (
-                  <Progress
-                    strokeColor="#43BA9A"
-                    style={{ color: '#43BA9A' }}
-                    width={38}
-                    type="circle"
-                    percent={record.schedule}
-                    format={percent => percent === 100 ? '100%' : `${percent}%`}
-                    strokeWidth={8}
-                  />
-                )}
+            {isCanEdit &&
+            record?.usersNameIds?.includes(userInfo?.id) &&
+            record.status.is_start !== 1 &&
+            record.status.is_end !== 1 ? (
+              <div style={{ cursor: 'pointer' }}>
+                <DemandProgress
+                  value={record.schedule}
+                  row={record}
+                  onUpdate={onUpdate}
+                  listLength={dataList?.list?.length}
+                  index={index}
+                />
+              </div>
+            ) : (
+              <Progress
+                strokeColor="#43BA9A"
+                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                width={38}
+                type="circle"
+                percent={record.schedule}
+                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                strokeWidth={8}
+              />
+            )}
           </div>
         )
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="users_name"
-          nowKey={order.key}
-          order={order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('common.dealName')}
-        </NewSort>
-      ),
+      title: t('common.dealName'),
       dataIndex: 'dealName',
       width: 120,
-      render: (text: string) => {
+      render: (text: any) => {
         return (
-          <OmitText tipProps={{ placement: 'topLeft' }} width={120}>
-            <span style={{ minWidth: 30, display: 'inline-block' }}>
-              {text || '--'}
-            </span>
-          </OmitText>
+          <HiddenText>
+            <OmitText
+              width={120}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text?.join(',') || '--'}
+            </OmitText>
+          </HiddenText>
         )
       },
     },
@@ -300,19 +345,20 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 720, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"
               pagination={false}
               columns={columnsChild}
               dataSource={dataList?.list}
-              sticky
+              scroll={{ x: 'max-content' }}
+              tableLayout="auto"
               style={{ borderRadius: 4, overflow: 'hidden' }}
             />
-          )
-            : <NoData />
-          }
+          ) : (
+            <NoData />
+          )}
         </div>
       }
     >

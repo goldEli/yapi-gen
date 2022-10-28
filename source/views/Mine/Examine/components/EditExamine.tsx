@@ -17,6 +17,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { OmitText } from '@star-yun/ui'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -109,7 +110,6 @@ const EditExamine = (props: Props) => {
       onClose()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -122,14 +122,55 @@ const EditExamine = (props: Props) => {
     updateMethod(3)
   }
 
+  // status: 审核状态(待审核、已通过、未通过)，type: 审核类型(依次、与、或), list: 所有人列表
+  const getStatusText = (status: any, type: any, list: any) => {
+    let statusValue: any
+    const hasPass = list?.filter((i: any) => i.status === 2)
+    const hasNotPass = list?.filter((i: any) => i.status === 3)
+    if (
+      type === 1 ||
+      status === hasNotPass[0]?.status ||
+      status === hasPass[0]?.status ||
+      (type === 2 && (hasPass.length <= 0 || hasNotPass.length <= 0)) ||
+      (hasPass.length <= 0 && hasNotPass.length <= 0)
+    ) {
+      statusValue =
+        status === 1
+          ? t('newlyAdd.waitExamine')
+          : status === 2
+          ? t('newlyAdd.passed')
+          : t('newlyAdd.notPass')
+    } else if (type === 2) {
+      if (hasNotPass.length > 0 && status !== hasNotPass[0]?.status) {
+        statusValue = '--'
+      }
+    } else {
+      if (status !== hasPass[0]?.status) {
+        statusValue = '--'
+      }
+    }
+    return statusValue === '--' ? (
+      <span>{statusValue}</span>
+    ) : (
+      <span
+        style={{
+          color:
+            status === 1 ? '#FA9746' : status === 2 ? '#43BA9A' : '#FF5C5E',
+        }}
+      >
+        {statusValue}
+      </span>
+    )
+  }
+
   return (
     <CommonModal
       isVisible={props.isVisible}
       title={t('newlyAdd.examine')}
       onClose={onClose}
       hasFooter={
-        props?.isEdit
-        && props?.item?.status === 1 && (
+        props?.isEdit &&
+        props?.item?.status === 1 && (
           <FooterWrap size={16}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button onClick={onRefuse}>{t('newlyAdd.refuse')}</Button>
@@ -140,7 +181,7 @@ const EditExamine = (props: Props) => {
         )
       }
       isShowFooter={
-        !props?.isEdit || props?.isEdit && props?.item?.status !== 1
+        !props?.isEdit || (props?.isEdit && props?.item?.status !== 1)
       }
     >
       <div
@@ -161,16 +202,73 @@ const EditExamine = (props: Props) => {
           >
             {verifyInfo?.categoryName}
           </CategoryWrap>
-          <div>{verifyInfo?.demandName}</div>
+        </ItemWrap>
+        <ItemWrap>
+          <LabelWrap>{t('common.title')}</LabelWrap>
+          <ContentWrap>{verifyInfo?.demandName}</ContentWrap>
         </ItemWrap>
         <ItemWrap>
           <LabelWrap>{t('newlyAdd.reviewStatus')}</LabelWrap>
           <ContentWrap>{verifyInfo?.statusFromTo || '--'}</ContentWrap>
         </ItemWrap>
-        <ItemWrap>
-          <LabelWrap>{t('common.dealName')}</LabelWrap>
-          <ContentWrap>{verifyInfo?.usersName || '--'}</ContentWrap>
-        </ItemWrap>
+        {verifyInfo?.id
+          ? Object.keys(verifyInfo?.fields)?.map((m: any) => (
+              <ItemWrap key={m} hidden={!verifyInfo?.fields[m]}>
+                <LabelWrap>
+                  <OmitText width={80} tipProps={{ placement: 'topLeft' }}>
+                    {verifyInfo.fields[m]?.title}
+                  </OmitText>
+                </LabelWrap>
+                {(typeof verifyInfo.fields[m]?.value === 'string' ||
+                  verifyInfo.fields[m]?.value === null) &&
+                  m !== 'priority' && (
+                    <ContentWrap>
+                      {verifyInfo.fields[m]?.value
+                        ? verifyInfo.fields[m]?.value
+                        : m === 'class'
+                        ? verifyInfo.fields[m]?.value || '未分类'
+                        : '--'}
+                    </ContentWrap>
+                  )}
+                {Array.isArray(verifyInfo.fields[m]?.value) &&
+                  (m === 'tag' ? (
+                    <ContentWrap>
+                      {verifyInfo.fields[m]?.value?.length > 0
+                        ? verifyInfo.fields[m]?.value?.map((h: any) => (
+                            <ViewWrap key={h.name} color={h?.color}>
+                              {h.name}
+                            </ViewWrap>
+                          ))
+                        : '--'}
+                    </ContentWrap>
+                  ) : (
+                    <ContentWrap>
+                      {String(m).includes('custom_') ? (
+                        <span>
+                          {verifyInfo.fields[m]?.value
+                            ?.map((i: any) => i)
+                            .join('、') || '--'}
+                        </span>
+                      ) : (
+                        <span>
+                          {verifyInfo.fields[m]?.value
+                            ?.map((i: any) => i.name?.trim())
+                            .join('、') || '--'}
+                        </span>
+                      )}
+                    </ContentWrap>
+                  ))}
+                {m === 'priority' && (
+                  <ContentWrap>
+                    {verifyInfo.fields[m]?.value?.id
+                      ? verifyInfo.fields[m]?.value?.content
+                      : '--'}
+                  </ContentWrap>
+                )}
+              </ItemWrap>
+            ))
+          : null}
+
         <ItemWrap>
           <LabelWrap>{t('newlyAdd.submitName')}</LabelWrap>
           <ContentWrap>{verifyInfo?.userName || '--'}</ContentWrap>
@@ -215,8 +313,8 @@ const EditExamine = (props: Props) => {
                         {k.operator === 1
                           ? t('newlyAdd.sequence')
                           : k.operator === 2
-                            ? t('newlyAdd.andExamine')
-                            : t('newlyAdd.orExamine')}
+                          ? t('newlyAdd.andExamine')
+                          : t('newlyAdd.orExamine')}
                       </WrapBox>
                     </div>
                     {k.verifyUsers?.map((i: any) => (
@@ -250,25 +348,14 @@ const EditExamine = (props: Props) => {
                                 alignItems: 'center',
                               }}
                             >
-                              <span
-                                style={{
-                                  color:
-                                    i.status === 1
-                                      ? '#FA9746'
-                                      : i.status === 2
-                                        ? '#43BA9A'
-                                        : '#FF5C5E',
-                                }}
-                              >
-                                {i.status === 1
-                                  ? t('newlyAdd.waitExamine')
-                                  : i.status === 2
-                                    ? t('newlyAdd.passed')
-                                    : t('newlyAdd.notPass')}
-                              </span>
-                              {i.status !== 1
-                                && <WrapBox left={16}>{i.time}</WrapBox>
-                              }
+                              {getStatusText(
+                                i.status,
+                                k.operator,
+                                k.verifyUsers,
+                              )}
+                              {i.status !== 1 && (
+                                <WrapBox left={16}>{i.time}</WrapBox>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -322,19 +409,19 @@ const EditExamine = (props: Props) => {
                                 k.status === 1
                                   ? '#FA9746'
                                   : k.status === 2
-                                    ? '#43BA9A'
-                                    : '#FF5C5E',
+                                  ? '#43BA9A'
+                                  : '#FF5C5E',
                             }}
                           >
                             {k.status === 1
                               ? t('newlyAdd.waitExamine')
                               : k.status === 2
-                                ? t('newlyAdd.passed')
-                                : t('newlyAdd.notPass')}
+                              ? t('newlyAdd.passed')
+                              : t('newlyAdd.notPass')}
                           </span>
-                          {k.status !== 1
-                            && <WrapBox left={16}>{k.time}</WrapBox>
-                          }
+                          {k.status !== 1 && (
+                            <WrapBox left={16}>{k.time}</WrapBox>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -353,9 +440,9 @@ const EditExamine = (props: Props) => {
                   <ViewWrap color={verifyInfo?.to?.color}>
                     {verifyInfo?.to?.content}
                   </ViewWrap>
-                )
-                  : <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
-                }
+                ) : (
+                  <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                )}
               </div>
             </Timeline.Item>
           </TimelineWrap>

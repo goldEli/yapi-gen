@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
@@ -9,10 +10,10 @@ import CommonModal from '@/components/CommonModal'
 import { Form, Input, message, Space, Spin, Table, Select } from 'antd'
 import ChooseColor from '../../components/ChooseColor'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
-import { CategoryWrap, ViewWrap } from '@/components/StyleCommon'
+import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
@@ -105,11 +106,15 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const [value, setValue] = useState<any>('')
   const [errorState, setErrorState] = useState(false)
   const [normalColor, setNormalColor] = useState<any>()
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (props?.item?.id) {
       setValue(props?.item.name)
       setNormalColor(props?.item.color)
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     }
   }, [props?.item])
 
@@ -165,6 +170,8 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
         maxLength={10}
+        ref={inputRefDom as any}
+        autoFocus
       />
       <ChooseColor
         color={normalColor}
@@ -252,6 +259,10 @@ const AddWorkflow = (props: Props) => {
   }, [props?.isVisible])
 
   const onConfirm = async () => {
+    if (!selectedRowKeys?.length) {
+      message.warning(t('newlyAdd.onlyChooseStatus'))
+      return
+    }
     const obj = {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
@@ -264,7 +275,6 @@ const AddWorkflow = (props: Props) => {
       props?.onClose()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -283,7 +293,6 @@ const AddWorkflow = (props: Props) => {
       message.success(t('common.addSuccess'))
       getList()
     } catch (error) {
-
       //
     }
   }
@@ -298,7 +307,6 @@ const AddWorkflow = (props: Props) => {
       getList()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -309,11 +317,13 @@ const AddWorkflow = (props: Props) => {
 
   const onAddDel = async (row: any) => {
     setOperationDelObj(row)
-    if (row.deleteData?.story_count) {
-      setIsHasDelete(true)
-    } else {
-      setIsDelVisible(true)
-    }
+    setTimeout(() => {
+      if (row.deleteData?.story_count) {
+        setIsHasDelete(true)
+      } else {
+        setIsDelVisible(true)
+      }
+    }, 100)
   }
 
   const onCloseDel = () => {
@@ -333,7 +343,6 @@ const AddWorkflow = (props: Props) => {
       onCloseDel()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -363,7 +372,6 @@ const AddWorkflow = (props: Props) => {
       onCloseHasDelete()
       props?.onUpdate()
     } catch (error) {
-
       //
     }
   }
@@ -393,10 +401,20 @@ const AddWorkflow = (props: Props) => {
       dataIndex: 'categoryName',
       render: (text: any, record: any) => (
         <>
-          {operationObj?.id === record.id
-            ? ''
-            : <OmitText width={300}>{text || '--'}</OmitText>
-          }
+          {operationObj?.id === record.id ? (
+            ''
+          ) : (
+            <HiddenText>
+              <OmitText
+                width={300}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          )}
         </>
       ),
     },
@@ -405,24 +423,24 @@ const AddWorkflow = (props: Props) => {
       dataIndex: 'action',
       render: (text: string, record: any) => (
         <>
-          {operationObj?.id === record.id
-            ? ''
-            : (
-                <Space size={16}>
-                  <span
-                    style={{ color: '#2877ff', cursor: 'pointer' }}
-                    onClick={() => onAddEdit(record)}
-                  >
-                    {t('common.edit')}
-                  </span>
-                  <span
-                    style={{ color: '#2877ff', cursor: 'pointer' }}
-                    onClick={() => onAddDel(record)}
-                  >
-                    {t('common.del')}
-                  </span>
-                </Space>
-              )}
+          {operationObj?.id === record.id ? (
+            ''
+          ) : (
+            <Space size={16}>
+              <span
+                style={{ color: '#2877ff', cursor: 'pointer' }}
+                onClick={() => onAddEdit(record)}
+              >
+                {t('common.edit')}
+              </span>
+              <span
+                style={{ color: '#2877ff', cursor: 'pointer' }}
+                onClick={() => onAddDel(record)}
+              >
+                {t('common.del')}
+              </span>
+            </Space>
+          )}
         </>
       ),
     },
@@ -431,6 +449,9 @@ const AddWorkflow = (props: Props) => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: (record: any) => ({
+      disabled: record?.deleteData?.story_count && record.isCheck,
+    }),
   }
 
   return (
@@ -485,12 +506,10 @@ const AddWorkflow = (props: Props) => {
                     getPopupContainer={node => node}
                     allowClear
                     optionFilterProp="label"
-                    options={statusWorkList?.list
-                      ?.filter((j: any) => j.id !== operationDelObj?.id)
-                      ?.map((k: any) => ({
-                        label: k.name,
-                        value: k.id,
-                      }))}
+                    options={i.status?.map((k: any) => ({
+                      label: k.content,
+                      value: k.id,
+                    }))}
                   />
                 </Form.Item>
               ))}
@@ -526,8 +545,8 @@ const AddWorkflow = (props: Props) => {
 
           <TableWrap>
             <Spin spinning={isSpinning}>
-              {!!statusWorkList?.list
-                && (statusWorkList?.list?.length > 0 ? (
+              {!!statusWorkList?.list &&
+                (statusWorkList?.list?.length > 0 ? (
                   <TableWrapBox
                     rowSelection={rowSelection}
                     dataSource={statusWorkList?.list}
@@ -536,9 +555,9 @@ const AddWorkflow = (props: Props) => {
                     pagination={false}
                     rowKey="id"
                   />
-                )
-                  : <NoData />
-                )}
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </TableWrap>
         </div>

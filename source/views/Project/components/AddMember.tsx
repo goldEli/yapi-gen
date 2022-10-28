@@ -21,9 +21,9 @@ const ModalHeader = styled.div({
   },
 })
 
-const ModalContent = styled(Select)({
+const ModalContent = styled.div({
   margin: '16px 0',
-  height: 400,
+  minHeight: 200,
   borderRadius: 6,
   boxSizing: 'border-box',
   border: '1px solid #EBEDF0',
@@ -88,8 +88,11 @@ const AddMember = (props: Props) => {
       projectId,
       userGroupId,
     }
+
     try {
-      const users = staffList?.filter((i: any) => values.name.find((k: any) => k === i.value))
+      const users = staffList?.filter((i: any) =>
+        values.name.find((k: any) => k === i.value),
+      )
       params.userIds = users?.map((i: any) => i.value)
       await addMember(params)
       message.success(t('common.addSuccess'))
@@ -102,7 +105,6 @@ const AddMember = (props: Props) => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -112,6 +114,11 @@ const AddMember = (props: Props) => {
     props.onChangeValue()
   }
 
+  const onSelectUsers = (value: any) => {
+    form.setFieldsValue({
+      name: value,
+    })
+  }
   return (
     <Modal
       visible={props.value}
@@ -137,16 +144,20 @@ const AddMember = (props: Props) => {
           noStyle
           rules={[{ required: true, message: '' }]}
         >
-          <ModalContent
-            showArrow={false}
-            mode="multiple"
-            showSearch
-            disabled={props.details?.id}
-            options={staffList?.filter(
-              (i: any) => !memberList?.find((k: any) => k.id === i.value),
-            )}
-            optionFilterProp="label"
-          />
+          <ModalContent>
+            <Select
+              style={{ width: '100%' }}
+              showArrow={false}
+              mode="multiple"
+              showSearch
+              onChange={onSelectUsers}
+              disabled={props.details?.id}
+              options={staffList?.filter(
+                (i: any) => !memberList?.find((k: any) => k.id === i.value),
+              )}
+              optionFilterProp="label"
+            />
+          </ModalContent>
         </Form.Item>
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>

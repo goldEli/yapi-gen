@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
-  padding: 24,
+  padding: 16,
   overflow: 'auto',
 })
 
@@ -60,6 +60,7 @@ interface Props {
   onDelete(item: any): void
   isSpinning?: boolean
   hasId: any
+  onUpdate(): void
 }
 
 const IterationGrid = (props: Props) => {
@@ -114,25 +115,32 @@ const IterationGrid = (props: Props) => {
                 {k.content_txt}(
                 {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
               </Title>
-              {typeof props?.hasId !== 'object'
-                ? <NoData />
-               : dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                ? dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                  .length > 0
-                  ? dataList
+              {typeof props?.hasId !== 'object' ? (
+                <NoData />
+              ) : dataList?.filter((item: any) => item.id === k.id)[0]?.list ? (
+                dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                  .length > 0 ? (
+                  dataList
                     ?.filter((item: any) => item.id === k.id)[0]
-                    ?.list?.map((i: any) => (
+                    ?.list?.map((i: any, idx: any) => (
                       <DemandCard
                         key={i.id}
                         item={i}
+                        indexVal={idx}
                         onClickItem={() => onClickItem(i)}
                         onChangeDelete={props?.onDelete}
                         onChangeEdit={props?.onChangeVisible}
+                        onUpdate={props?.onUpdate}
+                        listLength={
+                          dataList?.filter((item: any) => item.id === k.id)[0]
+                            ?.list?.length
+                        }
                       />
                     ))
-                 : <NoData />
-
-               : null}
+                ) : (
+                  <NoData />
+                )
+              ) : null}
             </StatusItemsWrap>
           ))}
         </SpaceWrap>

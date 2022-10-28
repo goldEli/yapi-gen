@@ -28,7 +28,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
 import { useModel } from '@/models'
-import { CategoryWrap, ViewWrap } from '@/components/StyleCommon'
+import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
 import { arrayMoveImmutable } from 'array-move'
 import {
   SortableContainer as sortableContainer,
@@ -38,7 +38,7 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -93,18 +93,21 @@ const StepPageOne = (propsOne: Props) => {
     list: undefined,
   })
 
-  const getList = async () => {
-    setIsSpinning(true)
+  const getList = async (isUpdateList?: any) => {
+    if (isUpdateList) {
+      setIsSpinning(true)
+    }
     const result = await getWorkflowList({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
     setDataSource(result)
     setIsSpinning(false)
+    return result
   }
 
   useEffect(() => {
-    getList()
+    getList(1)
   }, [])
 
   const onClickOperation = (row: any, type: string) => {
@@ -122,7 +125,35 @@ const StepPageOne = (propsOne: Props) => {
     setIsHasDelete(false)
   }
 
+  const onSaveMethod = async (isUpdateList?: any, arr?: any) => {
+    await sortchangeWorkflow({
+      projectId: paramsData.id,
+      categoryId: categoryItem?.id,
+      ids: arr
+        ? arr?.map((i: any) => ({ id: i.id }))
+        : dataSource?.list?.map((i: any) => ({ id: i.id })),
+    })
+    if (!isUpdateList) {
+      getList(isUpdateList)
+    }
+  }
+
+  const onSave = () => {
+    if (!dataSource?.list?.length) {
+      message.warning(t('newlyAdd.onlyDemandStatus'))
+      return
+    }
+    try {
+      onSaveMethod()
+      message.success(t('common.saveSuccess'))
+      propsOne?.onChangeStep(2)
+    } catch (error) {
+      //
+    }
+  }
+
   const onConfirmHasDelete = async () => {
+    await form.validateFields()
     const obj = {
       projectId: paramsData.id,
       id: operationObj?.id,
@@ -135,14 +166,16 @@ const StepPageOne = (propsOne: Props) => {
     try {
       await deleteStoryConfigWorkflow(obj)
       message.success(t('common.deleteSuccess'))
-      getList()
       setOperationObj({})
       setIsHasDelete(false)
+      const arr = dataSource?.list?.filter(
+        (i: any) => i.id !== operationObj?.id,
+      )
+      onSaveMethod('', arr)
       setTimeout(() => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -154,11 +187,13 @@ const StepPageOne = (propsOne: Props) => {
         id: operationObj?.id,
       })
       message.success(t('common.deleteSuccess'))
-      getList()
       setOperationObj({})
       setIsDelVisible(false)
+      const arr = dataSource?.list?.filter(
+        (i: any) => i.id !== operationObj?.id,
+      )
+      onSaveMethod('', arr)
     } catch (error) {
-
       //
     }
   }
@@ -184,9 +219,8 @@ const StepPageOne = (propsOne: Props) => {
     try {
       await updateStoryConfigWorkflow(obj)
       message.success(t('common.editS'))
-      getList()
+      onSaveMethod()
     } catch (error) {
-
       //
     }
   }
@@ -200,9 +234,8 @@ const StepPageOne = (propsOne: Props) => {
     try {
       await updateStoryConfigWorkflow(obj)
       message.success(t('common.editS'))
-      getList()
+      onSaveMethod()
     } catch (error) {
-
       //
     }
   }
@@ -219,8 +252,9 @@ const StepPageOne = (propsOne: Props) => {
   )
 
   const SortableBody = sortableContainer(
-    (props: React.HTMLAttributes<HTMLTableSectionElement>) => <tbody {...props} />
-    ,
+    (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
+      <tbody {...props} />
+    ),
   )
 
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
@@ -262,14 +296,26 @@ const StepPageOne = (propsOne: Props) => {
       title: t('newlyAdd.statusName'),
       width: 180,
       dataIndex: 'name',
-      render: (text: any, record: any) => <ViewWrap color={record?.color}>{text}</ViewWrap>
-      ,
+      render: (text: any, record: any) => (
+        <ViewWrap color={record?.color}>{text}</ViewWrap>
+      ),
     },
     {
       title: t('newlyAdd.statusRemark'),
       width: 400,
       dataIndex: 'info',
-      render: (text: any) => <OmitText width={380}>{text || '--'}</OmitText>,
+      render: (text: any) => (
+        <HiddenText>
+          <OmitText
+            width={380}
+            tipProps={{
+              getPopupContainer: node => node,
+            }}
+          >
+            {text || '--'}
+          </OmitText>
+        </HiddenText>
+      ),
     },
     {
       width: 130,
@@ -285,8 +331,9 @@ const StepPageOne = (propsOne: Props) => {
         </div>
       ),
       dataIndex: 'startStatus',
-      render: (text: any, record: any) => <Radio checked={text} onChange={e => onchangeRadio(e, record)} />
-      ,
+      render: (text: any, record: any) => (
+        <Radio checked={text} onChange={e => onchangeRadio(e, record)} />
+      ),
     },
     {
       width: 130,
@@ -335,29 +382,6 @@ const StepPageOne = (propsOne: Props) => {
     },
   ]
 
-  const onSaveMethod = async () => {
-    await sortchangeWorkflow({
-      projectId: paramsData.id,
-      categoryId: categoryItem?.id,
-      ids: dataSource?.list?.map((i: any) => ({ id: i.id })),
-    })
-  }
-
-  const onSave = () => {
-    if (!dataSource?.list?.length) {
-      message.warning(t('newlyAdd.onlyDemandStatus'))
-      return
-    }
-    try {
-      onSaveMethod()
-      message.success(t('common.saveSuccess'))
-      propsOne?.onChangeStep(2)
-    } catch (error) {
-
-      //
-    }
-  }
-
   useImperativeHandle(propsOne.onRef, () => {
     return {
       onSave: onSaveMethod,
@@ -395,7 +419,7 @@ const StepPageOne = (propsOne: Props) => {
           title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ paddingRight: 20 }}>
+          <div style={{ padding: '0 20px 0 2px' }}>
             <HasDemandText>
               {t('newlyAdd.changeNewStatus', {
                 count: operationObj?.deleteData?.story_count,
@@ -404,6 +428,7 @@ const StepPageOne = (propsOne: Props) => {
             </HasDemandText>
             <FormWrap form={form} layout="vertical">
               <Form.Item
+                rules={[{ required: true, message: '' }]}
                 name="statusId"
                 label={
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -412,8 +437,9 @@ const StepPageOne = (propsOne: Props) => {
                       color={operationObj?.deleteData?.item?.category_color}
                       bgColor={
                         colorList?.filter(
-                          k => k.key
-                            === operationObj?.deleteData?.item?.category_color,
+                          k =>
+                            k.key ===
+                            operationObj?.deleteData?.item?.category_color,
                         )[0]?.bgColor
                       }
                     >
@@ -455,14 +481,15 @@ const StepPageOne = (propsOne: Props) => {
       </div>
       <TableWrap>
         <Spin spinning={isSpinning}>
-          {!!dataSource?.list
-            && (dataSource?.list?.length > 0 ? (
+          {!!dataSource?.list &&
+            (dataSource?.list?.length > 0 ? (
               <div style={{ width: '100%' }}>
                 <Table
                   pagination={false}
                   dataSource={dataSource?.list}
                   columns={columns}
                   rowKey="index"
+                  sticky
                   components={{
                     body: {
                       wrapper: DraggableContainer,
@@ -489,9 +516,9 @@ const StepPageOne = (propsOne: Props) => {
                   {t('newlyAdd.textSort')}
                 </div>
               </div>
-            )
-              : <NoData subText={t('newlyAdd.pleaseAddStatus')} />
-            )}
+            ) : (
+              <NoData subText={t('newlyAdd.pleaseAddStatus')} />
+            ))}
         </Spin>
       </TableWrap>
       {dataSource?.list?.length > 0 && (

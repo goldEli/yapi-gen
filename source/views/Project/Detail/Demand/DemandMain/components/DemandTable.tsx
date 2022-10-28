@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Dropdown, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
@@ -61,8 +61,8 @@ const DemandTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, filterHeight }
-    = useModel('demand')
+  const { updatePriority, updateDemandStatus, filterHeight } =
+    useModel('demand')
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -73,6 +73,7 @@ const DemandTable = (props: Props) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
+  const dataWrapRef = useRef<HTMLDivElement>(null)
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -122,7 +123,6 @@ const DemandTable = (props: Props) => {
       message.success(t('common.prioritySuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -133,7 +133,6 @@ const DemandTable = (props: Props) => {
       message.success(t('common.statusSuccess'))
       props.onChangeRow?.()
     } catch (error) {
-
       //
     }
   }
@@ -168,6 +167,7 @@ const DemandTable = (props: Props) => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
+    listLength: props.data?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -191,9 +191,9 @@ const DemandTable = (props: Props) => {
       },
       {
         key: '2',
-        label:
+        label: (
           <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ,
+        ),
       },
     ]
 
@@ -232,7 +232,9 @@ const DemandTable = (props: Props) => {
                   overlay={menu(record)}
                   trigger={['hover']}
                   placement="bottomLeft"
-                  getPopupContainer={node => node}
+                  getPopupContainer={node =>
+                    props.data?.list?.length === 1 ? document.body : node
+                  }
                   onVisibleChange={visible => setIsShowMore(visible)}
                 >
                   {rowIconFont()}
@@ -246,24 +248,47 @@ const DemandTable = (props: Props) => {
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns])
 
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [props.data?.list])
+
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
   return (
     <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
-      <DataWrap>
+      <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
-          {!!props.data?.list
-            && (props.data?.list?.length > 0 ? (
+          {!!props.data?.list &&
+            (props.data?.list?.length > 0 ? (
               <TableBox
                 rowKey="id"
                 columns={selectColum}
                 dataSource={props.data?.list}
                 pagination={false}
-                scroll={{ x: 'max-content' }}
+                scroll={{
+                  x: 'max-content',
+                  y: tableY,
+                }}
                 showSorterTooltip={false}
-                sticky
+                tableLayout="auto"
               />
-            )
-              : <NoData />
-            )}
+            ) : (
+              <NoData />
+            ))}
         </Spin>
       </DataWrap>
 
@@ -271,6 +296,7 @@ const DemandTable = (props: Props) => {
         <Pagination
           defaultCurrent={1}
           current={props.data?.currentPage}
+          pageSize={props.data?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={props.data?.total}

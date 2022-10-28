@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import {
   ChartsItem,
+  HiddenText,
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
@@ -114,7 +115,7 @@ const TimeLineWrap = styled.div`
   padding: 10px 10px;
   margin-top: 10px;
   overflow-y: scroll;
-
+  overflow-x: hidden;
   height: 300px;
 `
 const LineItem = styled.div`
@@ -145,7 +146,7 @@ const Profile = () => {
   const [lineData, setLineData] = useState<any>([])
   const [monthIndex, setMonthIndex] = useState<any>(moment().month())
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(10)
+  const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const changeMonth = async () => {
@@ -153,10 +154,11 @@ const Profile = () => {
       startTime: moment()
         .startOf('month')
         .month(monthIndex)
-        .format('YYYY-MM-DD'),
-      endTime: moment().endOf('month')
+        .format('YYYY-MM-DD 00:00:00'),
+      endTime: moment()
+        .endOf('month')
         .month(monthIndex)
-        .format('YYYY-MM-DD'),
+        .format('YYYY-MM-DD 23:59:59'),
       page,
       pagesize,
     })
@@ -167,13 +169,13 @@ const Profile = () => {
         demandText: k.text,
         text: `<div style="display: flex; align-items: center">
           <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
-        k.categoryColor
-        }; background: ${
+            k.categoryColor
+          }; background: ${
           colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
         }">${k.categoryName}</span>
           <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
-        k.text
-        }</span>
+            k.text
+          }</span>
         </div>`,
         start_date: k.start_date,
         end_date: k.end_date,
@@ -310,42 +312,52 @@ const Profile = () => {
         <Center>
           <CenterRight>
             <SecondTitle>{t('mine.mineNews')}</SecondTitle>
-            {lineData.length < 1
-              ? <NoData />
-              : (
-                  <TimeLineWrap>
-                    <Timeline>
-                      {lineData.map((item: any) => (
-                        <Timeline.Item key={item.id}>
-                          <LineItem>
-                            <span>{item.created_at}</span>
-                            <span>{item.content}</span>
-                          </LineItem>
-                          <LineItem>
-                            <Tooltip title={item.feedable?.project.name}>
-                              <OmitText width={200}>
-                                {item.feedable?.project.name}
-                              </OmitText>
-                            </Tooltip>
-                            <Tooltip title={item.feedable?.project.name}>
-                              <OmitText width={300}>
-                                <span
-                                  onClick={() => onToDetail(item)}
-                                  style={{
-                                    color: 'rgba(40, 119, 255, 1)',
-                                    cursor: 'pointer',
-                                  }}
-                                >
-                                  {item.feedable?.name}
-                                </span>
-                              </OmitText>
-                            </Tooltip>
-                          </LineItem>
-                        </Timeline.Item>
-                      ))}
-                    </Timeline>
-                  </TimeLineWrap>
-                )}
+            {lineData.length < 1 ? (
+              <NoData />
+            ) : (
+              <TimeLineWrap>
+                <Timeline>
+                  {lineData.map((item: any) => (
+                    <Timeline.Item key={item.id}>
+                      <LineItem>
+                        <span>{item.created_at}</span>
+                        <span>{item.content}</span>
+                      </LineItem>
+                      <LineItem>
+                        <HiddenText>
+                          <OmitText
+                            width={200}
+                            tipProps={{
+                              getPopupContainer: node => node,
+                            }}
+                          >
+                            {item.feedable?.project.name}
+                          </OmitText>
+                        </HiddenText>
+                        <HiddenText>
+                          <OmitText
+                            width={300}
+                            tipProps={{
+                              getPopupContainer: node => node,
+                            }}
+                          >
+                            <span
+                              onClick={() => onToDetail(item)}
+                              style={{
+                                color: 'rgba(40, 119, 255, 1)',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {item.feedable?.name}
+                            </span>
+                          </OmitText>
+                        </HiddenText>
+                      </LineItem>
+                    </Timeline.Item>
+                  ))}
+                </Timeline>
+              </TimeLineWrap>
+            )}
           </CenterRight>
         </Center>
       </StyledWrap>
@@ -388,6 +400,7 @@ const Profile = () => {
           <Pagination
             defaultCurrent={1}
             current={page}
+            pageSize={pagesize}
             showSizeChanger
             showQuickJumper
             total={total}

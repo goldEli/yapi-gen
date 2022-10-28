@@ -35,32 +35,35 @@ function getTypeComponent(
   if (params?.attr === 'date') {
     child = (
       <DatePicker
+        placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showTime={params?.value[0] === 'datetime'}
         allowClear
         value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        onBlur={() => (!isModal ? void 0 : onBlur(''))}
         onChange={
           !isModal
             ? void 0
-            : (date: any) => onChange(
-                moment(date).format(
-                  params?.value[0] === 'datetime'
-                    ? 'YYYY-MM-DD hh:mm:ss'
-                    : 'YYYY-MM-DD',
-                ),
-              )
+            : (date: any) =>
+                onChange(
+                  moment(date).format(
+                    params?.value[0] === 'datetime'
+                      ? 'YYYY-MM-DD hh:mm:ss'
+                      : 'YYYY-MM-DD',
+                  ),
+                )
         }
       />
     )
   } else if (
-    params?.attr === 'text'
-    || params?.attr === 'number' && params?.value[0] === 'number'
+    params?.attr === 'text' ||
+    (params?.attr === 'number' && params?.value[0] === 'number')
   ) {
     child = (
       <Input
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value)}
+        placeholder={params.remarks || ''}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value))}
         type={params?.attr}
         allowClear
         defaultValue={defaultValue}
@@ -72,7 +75,8 @@ function getTypeComponent(
   } else if (params?.attr === 'textarea') {
     child = (
       <Input.TextArea
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
+        placeholder={params.remarks || ''}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
@@ -84,7 +88,8 @@ function getTypeComponent(
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
     child = (
       <InputNumber
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
+        placeholder={params.remarks || ''}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
@@ -95,6 +100,7 @@ function getTypeComponent(
   } else if (params?.attr === 'treeSelect') {
     child = (
       <TreeSelect
+        placeholder={params.remarks || ''}
         style={{ minWidth: 192 }}
         showArrow
         showSearch
@@ -103,13 +109,14 @@ function getTypeComponent(
         treeData={params?.value}
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
       />
     )
   } else {
     child = (
       <Select
+        placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
@@ -118,7 +125,7 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         mode={

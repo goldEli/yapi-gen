@@ -48,7 +48,7 @@ export const getDemandInfo: any = async (params: any) => {
     customField: response.data.custom_field,
     schedule: response.data.schedule,
     category: response.data.category_id,
-    'class': response.data.class_id,
+    class: response.data.class_id,
     className: response.data.class,
   }
 }
@@ -101,6 +101,7 @@ export const getDemandList: any = async (params: any) => {
           categoryColor: i.category_color,
           project_id: i.project_id,
           usersNameIds: i.users_name_ids,
+          schedule: i.schedule,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -111,14 +112,20 @@ export const getDemandList: any = async (params: any) => {
       id: i.id,
       name: i.name,
       usersNameIds: i.users_name_ids,
-      userName: i.users_name?.split(',') || [],
+      dealName: i.users_name?.split(',') || [],
       status: i.status,
       iteration: i.iterate_name || '--',
       schedule: i.schedule,
+      project_id: i.project_id,
+      category: i.category,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      isExamine: i.verify_lock === 1,
     }))
   } else {
     return {
       currentPage: params.page,
+      pageSize: params.pageSize,
       total: response.data.pager.total,
       list: response.data.list.map((i: any) => ({
         id: i.id,
@@ -142,7 +149,7 @@ export const getDemandList: any = async (params: any) => {
         tag: i.tag,
         isExamine: i.verify_lock === 1,
         category: i.category,
-        'class': i.class,
+        class: i.class,
         schedule: i.schedule,
         ...i.custom_field,
         categoryColor: i.category_color,
@@ -224,8 +231,8 @@ export const addDemand: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
 
   await http.post<any>('addDemand', {
     project_id: Number(params.projectId),
@@ -254,8 +261,8 @@ export const updateDemand: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
   await http.put<any>('updateDemand', {
     project_id: params.projectId,
     name: params.name,
@@ -357,18 +364,7 @@ export const getStoryStatusLog: any = async (params: any) => {
         }
       : null,
     changeType: i.change_type,
-    fields: {
-      tag: i.fields?.tag,
-      'class': i.fields?.class,
-      comment: i.fields?.comment,
-      priority: i.fields?.priority,
-      usersName: i.fields?.users_name,
-      iterateName: i.fields?.iterate_name,
-      customFields: i.fields?.custom_field,
-      startTime: i.fields?.expected_start_at,
-      endTime: i.fields?.expected_end_at,
-      copySendName: i.fields?.users_copysend_name,
-    },
+    fields: i.fields,
     verifyAll: {
       id: i.verify?.id,
       statusFrom: i.verify?.statusfrom
@@ -380,20 +376,15 @@ export const getStoryStatusLog: any = async (params: any) => {
 
       // 整条审核的状态  1-待审核  2-已通过 3-未通过
       verifyStatus: i.verify?.verify_status,
-
-      // 是否开启审核
-      isVerify: i.verify?.statusconfig?.is_verify,
       verify: {
-
         // 1：固定审核流程；2：用户指定审核人
-        verifyType: i.verify?.statusconfig?.verify?.verify_type,
+        verifyType: i.verify?.verify?.verify_type,
         fixedUser: {
-          comment: i.verify?.statusconfig?.verify?.fixedUser?.verify_opinion,
-          verifyStatus:
-            i.verify?.statusconfig?.verify?.fixedUser?.verify_status,
-          userName: i.verify?.statusconfig?.verify?.fixedUser?.user_name,
+          comment: i.verify?.verify?.fixedUser?.verify_opinion,
+          verifyStatus: i.verify?.verify?.fixedUser?.verify_status,
+          userName: i.verify?.verify?.fixedUser?.user_name,
         },
-        process: i.verify?.statusconfig?.verify?.process?.map((k: any) => ({
+        process: i.verify?.verify?.process?.map((k: any) => ({
           operator: k.operator,
           verifyUsers: k.verify_users?.map((j: any) => ({
             id: j.id,

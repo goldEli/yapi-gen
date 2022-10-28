@@ -15,6 +15,7 @@ import {
   useContext,
   forwardRef,
   useImperativeHandle,
+  useRef,
 } from 'react'
 import {
   getTreeList,
@@ -90,6 +91,7 @@ const rightText = css`
   }
 `
 const TreeItem = (props: any) => {
+  const inputRefDom = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
@@ -119,6 +121,7 @@ const TreeItem = (props: any) => {
   const showVisible = (id: number) => {
     setVisiblePop(false)
     close()
+    setVisiblePop(false)
     if (id === 3) {
       setVisible(true)
     } else if (id === 1) {
@@ -132,6 +135,9 @@ const TreeItem = (props: any) => {
         remark: props.remark,
       })
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
   const onChangeVisible = () => {
     close()
@@ -181,28 +187,45 @@ const TreeItem = (props: any) => {
   const content = (
     <div
       style={{
-        padding: '4px 0',
-        borderRadius: '8px',
+        padding: '10px 0',
       }}
     >
       {props.pid === 1
         ? btnsText
-          .filter(item => item.id === 1)
-          .map(item => (
-            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
-              {item.text}
-            </BtnsItemBox>
-          ))
-        : props.level === 4
-          ? btnsText
-            .filter(item => item.id !== 1)
+            .filter(item => item.id === 1)
             .map(item => (
-              <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+              <BtnsItemBox
+                onClick={(e: any) => {
+                  e.stopPropagation()
+                  showVisible(item.id)
+                }}
+                key={item.id}
+              >
                 {item.text}
               </BtnsItemBox>
             ))
-          : btnsText.map(item => (
-            <BtnsItemBox onClick={() => showVisible(item.id)} key={item.id}>
+        : props.level === 4
+        ? btnsText
+            .filter(item => item.id !== 1)
+            .map(item => (
+              <BtnsItemBox
+                onClick={(e: any) => {
+                  e.stopPropagation()
+                  showVisible(item.id)
+                }}
+                key={item.id}
+              >
+                {item.text}
+              </BtnsItemBox>
+            ))
+        : btnsText.map(item => (
+            <BtnsItemBox
+              onClick={(e: any) => {
+                e.stopPropagation()
+                showVisible(item.id)
+              }}
+              key={item.id}
+            >
               {item.text}
             </BtnsItemBox>
           ))}
@@ -215,72 +238,90 @@ const TreeItem = (props: any) => {
           whiteSpace: 'nowrap',
         }}
       >
-        {/* <Tooltip title={props.name}>{props.name}</Tooltip> */}
         {props.name}
       </span>
       <span className={centerText}>{props.story_count}</span>
-      {props.pid === 0
-      || getIsPermission(
+      {props.pid === 0 ||
+      getIsPermission(
         projectInfo?.projectPermissions,
         'b/project/story/class',
-      )
-        ? ''
-        : (
-            <Popover
-              getPopupContainer={node => node}
-              placement="bottomRight"
-              content={content}
-              trigger="hover"
-              visible={visiblePop}
-            >
-              <IconFont
-                onClick={() => setVisiblePop(true)}
-                data-tree
-                className={rightText}
-                type="more"
-              />
-            </Popover>
-          )}
+      ) ? (
+        ''
+      ) : (
+        <Popover
+          visible={visiblePop}
+          getPopupContainer={node => node}
+          placement="bottomRight"
+          content={content}
+          trigger="hover"
+        >
+          <IconFont
+            onClick={e => {
+              e.stopPropagation()
+              setVisiblePop(true)
+            }}
+            data-tree
+            className={rightText}
+            type="more"
+          />
+        </Popover>
+      )}
 
-      <DeleteConfirm
-        isVisible={visible}
-        onChangeVisible={onChangeVisible}
-        onConfirm={onConfirm}
-        text={t('newlyAdd.confirmDelClass')}
-      />
-      <CommonModal
-        title={
-          visibleEditText === 'add'
-            ? t('newlyAdd.createChildClass')
-            : t('newlyAdd.editChildClass')
-        }
-        isVisible={visibleEdit}
-        onClose={editClose}
-        onConfirm={editConfirm}
+      <div
+        onClick={(e: any) => {
+          e.stopPropagation()
+        }}
       >
-        <FormBox>
-          <Form form={form} layout="vertical">
-            <Form.Item
-              label={t('newlyAdd.className')}
-              name="name"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Input
-                maxLength={10}
-                placeholder={t('newlyAdd.pleaseClassName')}
-              />
-            </Form.Item>
-            <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
-              <Input.TextArea
-                maxLength={200}
-                showCount
-                placeholder={t('newlyAdd.pleaseClassRemark')}
-                autoSize={{ minRows: 3, maxRows: 5 }}
-              />
-            </Form.Item>
-          </Form>
-        </FormBox>
-      </CommonModal>
+        <DeleteConfirm
+          isVisible={visible}
+          onChangeVisible={onChangeVisible}
+          onConfirm={onConfirm}
+          text={t('newlyAdd.confirmDelClass')}
+        />
+      </div>
+      <div
+        onClick={(e: any) => {
+          e.stopPropagation()
+        }}
+      >
+        <CommonModal
+          title={
+            visibleEditText === 'add'
+              ? t('newlyAdd.createChildClass')
+              : t('newlyAdd.editChildClass')
+          }
+          isVisible={visibleEdit}
+          onClose={editClose}
+          onConfirm={editConfirm}
+        >
+          <FormBox>
+            <Form form={form} layout="vertical">
+              <Form.Item
+                label={t('newlyAdd.className')}
+                name="name"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Input
+                  ref={inputRefDom as any}
+                  allowClear
+                  autoComplete="off"
+                  maxLength={10}
+                  placeholder={t('newlyAdd.pleaseClassName')}
+                />
+              </Form.Item>
+              <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
+                <Input.TextArea
+                  maxLength={100}
+                  showCount
+                  allowClear
+                  placeholder={t('newlyAdd.pleaseClassRemark')}
+                  autoSize={{ minRows: 3, maxRows: 5 }}
+                />
+              </Form.Item>
+            </Form>
+          </FormBox>
+        </CommonModal>
+      </div>
     </TreeBox>
   )
 }
@@ -289,10 +330,13 @@ const WrapLeft = (props: any, ref: any) => {
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
+  const [show, setShow] = useState<any>(false)
   const init = async () => {
+    setShow(false)
     const res = await getTreeList({ id: props.projectId })
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setTreeData(filterTreeData(res))
+    setShow(true)
   }
 
   function filterTreeData(data: any) {
@@ -320,12 +364,6 @@ const WrapLeft = (props: any, ref: any) => {
     const start = info.dragNode.title.props
     const end = info.node.title.props
     const isDropToGap = info.dropToGap
-
-    // console.log(info, '信息')
-    // console.log(isDropToGap, '是否间隙')
-
-    // console.log(start, '起点')
-    // console.log(end, '终点')
 
     if (start.pid === 0) {
       return
@@ -402,9 +440,16 @@ const WrapLeft = (props: any, ref: any) => {
         <div className="resize_line" />
         <div className="resize_save">
           <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
-          {treeData.length > 0 && (
+          {treeData.length > 0 && show ? (
             <Tree
+              allowDrop={(dropNode: any) => {
+                if (dropNode.dropNode.title.props.grade === 4) {
+                  return false
+                }
+                return true
+              }}
               defaultExpandAll
+              autoExpandParent
               onDrop={onDrop}
               onSelect={onSelect}
               draggable={(node: any) => {
@@ -421,7 +466,7 @@ const WrapLeft = (props: any, ref: any) => {
               }}
               treeData={treeData}
             />
-          )}
+          ) : null}
         </div>
       </Left>
     )

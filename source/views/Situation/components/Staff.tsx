@@ -24,6 +24,9 @@ const DemoColumn = (props: any) => {
     xField: 'type',
     yField: 'sales',
     appendPadding: 20,
+    legend: {
+      itemHeight: 20,
+    },
     label: {
       position: 'top',
       style: {

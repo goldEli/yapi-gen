@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -68,20 +69,25 @@ const CardGroupWrap = styled.div({
   flexWrap: 'wrap',
 })
 
-const CategoryCard = styled.div({
-  width: 290,
-  height: 110,
-  borderRadius: 6,
-  border: '1px solid #EBEDF0',
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '16px 16px 4px',
-  margin: '24px 24px 0 0',
-  '&:hover': {
-    border: '1px solid transparent',
-    boxShadow: '0px 4px 13px -2px rgba(0,0,0,0.08)',
+const CategoryCard = styled.div<{ isHover?: any }>(
+  {
+    width: 290,
+    height: 110,
+    borderRadius: 6,
+    border: '1px solid #EBEDF0',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '16px 16px 4px',
+    margin: '24px 24px 0 0',
   },
-})
+  ({ isHover }) => ({
+    '&:hover': {
+      border: '1px solid transparent',
+      boxShadow: '0px 4px 13px -2px rgba(0,0,0,0.08)',
+      color: isHover ? '#2877ff!important' : '',
+    },
+  }),
+)
 
 const CategoryCardHead = styled.div({
   display: 'flex',
@@ -188,20 +194,26 @@ const MoreWrap = (props: MoreWrapProps) => {
   }
 
   const menu = () => {
-    const menuItems = [
+    let menuItems = [
       {
         key: '1',
-        label:
+        label: (
           <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
-        ,
+        ),
       },
       {
         key: '2',
-        label:
+        label: (
           <div onClick={() => onClickMenu('delete')}>{t('common.del')}</div>
-        ,
+        ),
       },
     ]
+    if (
+      props?.row.isCheck === 1 &&
+      props?.list?.filter((i: any) => i.isCheck === 1)?.length === 1
+    ) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
     return <Menu items={menuItems} />
   }
 
@@ -214,7 +226,6 @@ const MoreWrap = (props: MoreWrapProps) => {
       message.success(t('common.deleteSuccess'))
       getCategoryList({ projectId: paramsData.id })
     } catch (error) {
-
       //
     }
   }
@@ -234,10 +245,9 @@ const MoreWrap = (props: MoreWrapProps) => {
     params.oldId = props.row.id
     try {
       await changeStoryConfigCategory(params)
-      message.success(t('newlyAdd.dateMoveSuccess'))
+      await onDeleteConfirm()
       onCloseHasDelete()
     } catch (error) {
-
       //
     }
   }
@@ -249,6 +259,9 @@ const MoreWrap = (props: MoreWrapProps) => {
         categoryId: value,
       })
       setDisable(false)
+      form.setFieldsValue({
+        statusId: '',
+      })
     } else {
       form.resetFields()
       setDisable(true)
@@ -273,7 +286,7 @@ const MoreWrap = (props: MoreWrapProps) => {
           title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ paddingRight: 20 }}>
+          <div style={{ padding: '0 20px 0 2px' }}>
             <HasDemandText>
               {t('newlyAdd.hasMoveType', { hasDemand: props?.row?.hasDemand })}
             </HasDemandText>
@@ -293,9 +306,10 @@ const MoreWrap = (props: MoreWrapProps) => {
                   onChange={onChangeSelect}
                   options={props?.list
                     ?.filter(
-                      (i: any) => i.id !== props?.row?.id
-                        && i?.statusCount
-                        && i.isCheck === 1,
+                      (i: any) =>
+                        i.id !== props?.row?.id &&
+                        i?.statusCount &&
+                        i.isCheck === 1,
                     )
                     ?.map((k: any) => ({ label: k.name, value: k.id }))}
                 />
@@ -347,8 +361,8 @@ const CardGroup = (props: CardGroupProps) => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { colorList, changeCategoryStatus, getCategoryList, projectInfo }
-    = useModel('project')
+  const { colorList, changeCategoryStatus, getCategoryList, projectInfo } =
+    useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
@@ -364,7 +378,6 @@ const CardGroup = (props: CardGroupProps) => {
       message.success(t('common.statusSuccess'))
       getCategoryList({ projectId: paramsData.id })
     } catch (error) {
-
       //
     }
   }
@@ -420,7 +433,14 @@ const CardGroup = (props: CardGroupProps) => {
                 }
                 color={item.color}
               >
-                <OmitText width={150}>{item.name}</OmitText>
+                <OmitText
+                  width={150}
+                  tipProps={{
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {item.name}
+                </OmitText>
               </CategoryName>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Switch
@@ -439,7 +459,7 @@ const CardGroup = (props: CardGroupProps) => {
               <span className="set" onClick={() => onToWorkFlow(item)}>
                 {t('newlyAdd.workflowSet')}
               </span>
-              {item?.statusCount ? null : (
+              {!item?.statusCount && (
                 <div className="warning">
                   <IconFont
                     type="fillwarning"
@@ -452,6 +472,7 @@ const CardGroup = (props: CardGroupProps) => {
           </CategoryCard>
         ))}
         <CategoryCard
+          isHover
           onClick={() => setIsEdit(true)}
           style={{
             alignItems: 'center',
