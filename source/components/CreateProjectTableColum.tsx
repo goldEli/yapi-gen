@@ -94,7 +94,7 @@ export const useDynamicColumns = (state: any) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
               onClick={() => state.onClickItem(record)}
-              isClose={record.status?.content === '已关闭'}
+              isClose={record.status?.is_end === 1}
             >
               {text}
             </ClickWrap>
@@ -142,7 +142,7 @@ export const useDynamicColumns = (state: any) => {
             <Tooltip title={text} getPopupContainer={node => node}>
               <ListNameWrap
                 isName
-                isClose={record.status?.content === '已关闭'}
+                isClose={record.status?.is_end === 1}
                 onClick={() => state.onClickItem(record)}
               >
                 {text}

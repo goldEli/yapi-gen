@@ -101,7 +101,7 @@ const ExcessiveBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 24px;
-  height: 22px;
+  flex-wrap: wrap;
 `
 const StyledShape2 = styled.div`
   padding: 1px 8px 1px 8px;
@@ -704,11 +704,6 @@ export const ShapeContent = (props: any) => {
                 >
                   {props.noleft ? props?.active?.content : fromText?.content}
                 </StyledShape2>
-                {/* <img
-                  style={{ width: '40px', height: '15px', margin: '0px 8px' }}
-                  src={arrows}
-                  alt=""
-                /> */}
                 <IconFont
                   style={{
                     fontSize: '50px',
@@ -733,7 +728,6 @@ export const ShapeContent = (props: any) => {
               <AuditBox>
                 <div
                   style={{
-                    width: '56px',
                     height: '22px',
                     fontSize: '14px',
                     fontWeight: 500,

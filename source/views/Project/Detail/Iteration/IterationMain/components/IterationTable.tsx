@@ -263,7 +263,7 @@ const IterationTable = (props: Props) => {
   }, [titleList, titleList2, titleList3, columns])
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
+    <Content style={{ height: 'calc(100% - 64px)' }}>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {typeof props?.hasId !== 'object' ? (
