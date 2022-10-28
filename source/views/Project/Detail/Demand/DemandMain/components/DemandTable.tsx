@@ -269,7 +269,7 @@ const DemandTable = (props: Props) => {
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+    <Content style={{ height: 'calc(100% - 52px)' }}>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
