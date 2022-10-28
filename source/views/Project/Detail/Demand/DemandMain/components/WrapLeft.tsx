@@ -84,7 +84,7 @@ const rightText = css`
   box-sizing: border-box;
   visibility: hidden;
   font-size: 16px;
-  margin-left: 30px;
+  margin-left: auto;
   color: #969799;
   &:hover {
     color: #2877ff;
