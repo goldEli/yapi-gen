@@ -9,10 +9,15 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools'
 import { useState } from 'react'
 import { useModel } from '@/models'
-import { message, Popover, Progress, Table } from 'antd'
+import { message, Popover, Progress, Table, Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
-import { ClickWrap, HiddenText, StatusWrap } from '@/components/StyleCommon'
+import {
+  ClickWrap,
+  HiddenText,
+  ListNameWrap,
+  StatusWrap,
+} from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
@@ -140,24 +145,18 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 160,
       render: (text: string, record: any) => {
         return (
           <HiddenText>
-            <OmitText
-              width={160}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isName
+              isClose={record.status?.content === '已关闭'}
             >
-              <ClickWrap
-                onClick={() => onToDetail(record)}
-                isName
-                isClose={record.status?.content === '已关闭'}
-              >
-                {text}
-              </ClickWrap>
-            </OmitText>
+              <Tooltip title={text}>
+                <ListNameWrap>{text}</ListNameWrap>
+              </Tooltip>
+            </ClickWrap>
           </HiddenText>
         )
       },
@@ -309,7 +308,7 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 800, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxWidth: 1200, maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"

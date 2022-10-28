@@ -5,6 +5,13 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider } from 'antd'
 
+const ListNameWrap = styled.div({
+  maxWidth: 500,
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+})
+
 const HiddenText = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -561,4 +568,5 @@ export {
   AddWrap,
   DelWrap,
   SelectWrapBedeck,
+  ListNameWrap,
 }

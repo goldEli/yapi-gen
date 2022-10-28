@@ -272,6 +272,7 @@ const EditDemand = (props: Props) => {
     createCategory,
     setCreateCategory,
     updateDemandCategory,
+    setIsUpdateStatus,
   } = useModel('demand')
   const {
     memberList,
@@ -302,6 +303,7 @@ const EditDemand = (props: Props) => {
   const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
   const [currentCategory, setCurrentCategory] = useState<any>({})
   const [allDemandList, setAllDemandList] = useState<any>([])
+  const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
 
   const getList = async (value?: any) => {
     const result = await getDemandList({
@@ -510,7 +512,63 @@ const EditDemand = (props: Props) => {
     }
   }, [props?.visible])
 
-  const onSaveDemand = async (hasNext?: number) => {
+  const onSaveDemand = async (values: any, hasNext?: any) => {
+    if (props?.demandId) {
+      await updateDemand({
+        projectId,
+        id: demandInfo.id,
+        ...values,
+      })
+      message.success(t('common.editSuccess'))
+      setIsUpdateStatus(true)
+    } else {
+      await addDemand({
+        projectId,
+        ...values,
+      })
+      message.success(t('common.createSuccess'))
+    }
+    setIsRefresh(true)
+    setAttachList([])
+    setTagList([])
+    setHtml('')
+    setPriorityDetail({})
+    getList()
+    setIsShowFields(false)
+    if (!props?.isQuickCreate) {
+      props.onUpdate?.()
+    } else {
+      setIsUpdateCreate(true)
+    }
+    if (!hasNext) {
+      setChangeCategoryFormData({})
+      setCreateCategory({})
+      props.onChangeVisible()
+      setTimeout(() => {
+        form.resetFields()
+        form1.resetFields()
+      }, 100)
+    } else {
+      form.resetFields()
+      form.setFieldsValue({
+        projectId,
+        type: 'need',
+      })
+      form1.resetFields()
+      if (props?.isChild) {
+        form.setFieldsValue({
+          parentId: allDemandList?.filter(
+            (i: any) => i.value === Number(paramsData?.demandId),
+          )[0]?.value,
+        })
+      }
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    }
+  }
+
+  const onSaveCategory = async (hasNext?: number) => {
     await form.validateFields()
     const values = form.getFieldsValue()
     const values1 = form1.getFieldsValue()
@@ -550,60 +608,20 @@ const EditDemand = (props: Props) => {
     })
     values.category = categoryObj?.id
     values.customField = values1
-    try {
-      if (props?.demandId) {
-        await updateDemand({
+    if (props?.demandId && JSON.stringify(changeCategoryFormData) !== '{}') {
+      try {
+        await updateDemandCategory({
           projectId,
-          id: demandInfo.id,
-          ...values,
+          id: demandInfo?.id,
+          ...changeCategoryFormData,
         })
-        message.success(t('common.editSuccess'))
-      } else {
-        await addDemand({
-          projectId,
-          ...values,
-        })
-        message.success(t('common.createSuccess'))
+        setCurrentCategory({})
+        onSaveDemand(values, hasNext)
+      } catch (error) {
+        //
       }
-      setIsRefresh(true)
-      setAttachList([])
-      setTagList([])
-      setHtml('')
-      setPriorityDetail({})
-      getList()
-      setIsShowFields(false)
-      if (!props?.isQuickCreate) {
-        props.onUpdate?.()
-      } else {
-        setIsUpdateCreate(true)
-      }
-      if (!hasNext) {
-        setCreateCategory({})
-        props.onChangeVisible()
-        setTimeout(() => {
-          form.resetFields()
-          form1.resetFields()
-        }, 100)
-      } else {
-        form.resetFields()
-        form.setFieldsValue({
-          projectId,
-          type: 'need',
-        })
-        form1.resetFields()
-        if (props?.isChild) {
-          form.setFieldsValue({
-            parentId: allDemandList?.filter(
-              (i: any) => i.value === Number(paramsData?.demandId),
-            )[0]?.value,
-          })
-        }
-        setTimeout(() => {
-          inputRefDom.current?.focus()
-        }, 100)
-      }
-    } catch (error) {
-      //
+    } else {
+      onSaveDemand(values, hasNext)
     }
   }
 
@@ -705,6 +723,7 @@ const EditDemand = (props: Props) => {
     setHtml('')
     setPriorityDetail({})
     setCreateCategory({})
+    setChangeCategoryFormData({})
     setIsShowFields(false)
   }
 
@@ -798,21 +817,12 @@ const EditDemand = (props: Props) => {
 
   const onConfirmCategory = async () => {
     await changeCategoryForm.validateFields()
-    try {
-      await updateDemandCategory({
-        projectId,
-        id: demandInfo?.id,
-        ...changeCategoryForm.getFieldsValue(),
-      })
-      setIsShowChangeCategory(false)
-      setCategoryObj(currentCategory)
-      setCurrentCategory({})
-      setTimeout(() => {
-        changeCategoryForm.resetFields()
-      }, 100)
-    } catch (error) {
-      //
-    }
+    setIsShowChangeCategory(false)
+    setCategoryObj(currentCategory)
+    setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
+    setTimeout(() => {
+      changeCategoryForm.resetFields()
+    }, 100)
   }
 
   return (
@@ -1013,7 +1023,7 @@ const EditDemand = (props: Props) => {
                   autoComplete="off"
                   ref={inputRefDom as any}
                   placeholder={t('common.pleaseDemandName')}
-                  maxLength={100}
+                  maxLength={50}
                   autoFocus
                 />
               </Form.Item>
@@ -1276,11 +1286,11 @@ const EditDemand = (props: Props) => {
           <Space size={16}>
             <Button onClick={onCancel}>{t('common.cancel')}</Button>
             {!props?.demandId && (
-              <AddButtonWrap onClick={() => onSaveDemand(1)}>
+              <AddButtonWrap onClick={() => onSaveCategory(1)}>
                 {t('common.finishToAdd')}
               </AddButtonWrap>
             )}
-            <Button type="primary" onClick={() => onSaveDemand()}>
+            <Button type="primary" onClick={() => onSaveCategory()}>
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
             </Button>
           </Space>

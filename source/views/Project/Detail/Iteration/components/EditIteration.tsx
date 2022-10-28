@@ -190,7 +190,7 @@ const EditIteration = (props: Props) => {
             >
               <Input
                 autoComplete="off"
-                maxLength={100}
+                maxLength={50}
                 ref={inputRef as any}
                 autoFocus
                 placeholder={t('mark.level')}
