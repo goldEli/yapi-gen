@@ -63,7 +63,7 @@ const ChildDemandTable = (props: {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 

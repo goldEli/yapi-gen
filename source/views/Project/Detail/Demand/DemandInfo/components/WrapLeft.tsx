@@ -312,14 +312,7 @@ const WrapLeftBox = () => {
           }
         />
       </InfoItem>
-      <InfoItem
-        activeState
-        hidden={
-          !projectInfo?.projectPermissions?.filter(
-            (i: any) => i.name === '附件上传',
-          ).length
-        }
-      >
+      <InfoItem activeState>
         <Label>{t('common.attachment')}</Label>
         <UploadAttach
           defaultList={demandInfo?.attachment?.map((i: any) => ({
@@ -328,10 +321,16 @@ const WrapLeftBox = () => {
           }))}
           canUpdate
           addWrap={
-            <AddWrap>
-              <IconFont type="plus" />
-              <div>{t('common.add23')}</div>
-            </AddWrap>
+            projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 ? (
+              <AddWrap>
+                <IconFont type="plus" />
+                <div>{t('common.add23')}</div>
+              </AddWrap>
+            ) : (
+              (null as any)
+            )
           }
           child={isShowProgress ? null : <Children />}
         />

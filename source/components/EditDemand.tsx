@@ -1056,23 +1056,18 @@ const EditDemand = (props: Props) => {
                   />
                 </Form.Item>
               )}
-              {projectId && (
-                <Form.Item
-                  label={
-                    <div style={{ fontWeight: 'bold' }}>
-                      {t('common.attachment')}
-                    </div>
-                  }
-                  name="attachments"
-                >
-                  {!projectInfo?.projectPermissions?.filter(
-                    (i: any) => i.name === '附件上传',
-                  ).length ? (
-                    <AddWrap onClick={onAdd} hasColor>
-                      <IconFont type="plus" />
-                      <div>{t('common.add23')}</div>
-                    </AddWrap>
-                  ) : (
+              {projectId &&
+                projectInfo?.projectPermissions?.filter(
+                  (i: any) => i.name === '附件上传',
+                ).length > 0 && (
+                  <Form.Item
+                    label={
+                      <div style={{ fontWeight: 'bold' }}>
+                        {t('common.attachment')}
+                      </div>
+                    }
+                    name="attachments"
+                  >
                     <UploadAttach
                       child={isShow ? <Children /> : ''}
                       onChangeShow={setIsShow}
@@ -1086,9 +1081,8 @@ const EditDemand = (props: Props) => {
                         </AddWrap>
                       }
                     />
-                  )}
-                </Form.Item>
-              )}
+                  </Form.Item>
+                )}
             </FormWrap>
           </LeftWrap>
           <RightWrap>

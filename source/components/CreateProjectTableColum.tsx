@@ -58,7 +58,7 @@ export const useDynamicColumns = (state: any) => {
   const { userInfo } = useModel('user')
   const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 ||
+    projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 

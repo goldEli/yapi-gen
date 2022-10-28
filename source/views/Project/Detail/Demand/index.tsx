@@ -194,9 +194,9 @@ const DemandBox = () => {
     'b/story/delete',
   )
 
-  const isCanEdit
-    = projectInfo.projectPermissions?.length > 0
-    || projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
   const init = async () => {
@@ -249,7 +249,6 @@ const DemandBox = () => {
       const params = encryptPhp(JSON.stringify({ id: projectId, demandId }))
       navigate(`/Detail/Demand?data=${params}`)
     } catch (error) {
-
       //
     }
   }
@@ -273,7 +272,6 @@ const DemandBox = () => {
         getDemandInfo({ projectId, id: demandId })
       }
     } catch (error) {
-
       //
     }
   }
@@ -306,7 +304,6 @@ const DemandBox = () => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
