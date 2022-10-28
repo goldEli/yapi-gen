@@ -129,12 +129,22 @@ const ChildDemandTable = (props: {
       width: 100,
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            onClick={() => onToDetail(record)}
-            isClose={record.status?.content === '已关闭'}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              onClick={() => onToDetail(record)}
+              isClose={record.status?.content === '已关闭'}
+            >
+              {text}
+            </ClickWrap>
+            {record.isExamine && (
+              <IconFont
+                type="review"
+                style={{
+                  fontSize: 46,
+                }}
+              />
+            )}
+          </div>
         )
       },
     },
@@ -150,10 +160,9 @@ const ChildDemandTable = (props: {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 340,
       render: (text: string, record: any) => {
         return (
-          <HiddenText style={{ position: 'relative' }}>
+          <HiddenText>
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -171,30 +180,19 @@ const ChildDemandTable = (props: {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <ClickWrap
-              onClick={() => onToDetail(record)}
-              isName
-              isClose={record.status?.content === '已关闭'}
+            <Tooltip
+              title={text}
+              getPopupContainer={node => node}
+              placement="top"
             >
-              <OmitText
-                width={110}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
+              <ListNameWrap
+                onClick={() => onToDetail(record)}
+                isName
+                isClose={record.status?.content === '已关闭'}
               >
                 {text}
-              </OmitText>
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                  position: 'absolute',
-                  right: 0,
-                }}
-              />
-            )}
+              </ListNameWrap>
+            </Tooltip>
           </HiddenText>
         )
       },
@@ -347,14 +345,15 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxWidth: 1000, maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxHeight: 310, overflow: 'auto' }}>
           {!!dataList?.list && dataList?.list.length ? (
             <Table
               rowKey="id"
               pagination={false}
               columns={columnsChild}
               dataSource={dataList?.list}
-              sticky
+              scroll={{ x: 'max-content' }}
+              tableLayout="auto"
               style={{ borderRadius: 4, overflow: 'hidden' }}
             />
           ) : (

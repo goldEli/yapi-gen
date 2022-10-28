@@ -41,7 +41,7 @@ const IterationMain = (props: Props) => {
   })
   const [searchParams] = useSearchParams()
   const [isVisible, setIsVisible] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData

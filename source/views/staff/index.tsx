@@ -89,7 +89,7 @@ const Staff = () => {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(10)
+  const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [keyword, setKeyword] = useState<string>('')
   const [searchGroups, setSearchGroups] = useState<any>({

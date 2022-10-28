@@ -40,7 +40,7 @@ const DemandMain = (props: Props) => {
   const [isGrid, setIsGrid] = useState(false)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [deleteId, setDeleteId] = useState(0)
   const [dataList, setDataList] = useState<any>({
     list: undefined,

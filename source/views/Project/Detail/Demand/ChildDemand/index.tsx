@@ -103,7 +103,7 @@ const ChildDemand = () => {
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const { projectInfo } = useModel('project')
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -407,14 +407,11 @@ const ChildDemand = () => {
                 dataSource={dataList?.list}
                 pagination={false}
                 scroll={{
-                  x: selectColum.reduce(
-                    (totalWidth: number, item: any) => totalWidth + item.width,
-                    0,
-                  ),
+                  x: 'max-content',
                   y: tableY,
                 }}
                 showSorterTooltip={false}
-                sticky
+                tableLayout="auto"
               />
             ) : (
               <NoData />
@@ -426,6 +423,7 @@ const ChildDemand = () => {
         <Pagination
           defaultCurrent={1}
           current={dataList?.currentPage}
+          pageSize={dataList?.pageSize || 20}
           showSizeChanger
           showQuickJumper
           total={dataList?.total}

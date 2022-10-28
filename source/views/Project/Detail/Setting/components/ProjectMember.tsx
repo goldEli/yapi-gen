@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable max-lines */
@@ -164,7 +165,7 @@ const ProjectMember = () => {
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 10 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
@@ -695,6 +696,7 @@ const ProjectMember = () => {
             <Pagination
               defaultCurrent={1}
               current={memberList?.currentPage}
+              pageSize={memberList?.pageSize || 20}
               showSizeChanger
               showQuickJumper
               total={memberList?.total}

@@ -125,6 +125,7 @@ export const getDemandList: any = async (params: any) => {
   } else {
     return {
       currentPage: params.page,
+      pageSize: params.pageSize,
       total: response.data.pager.total,
       list: response.data.list.map((i: any) => ({
         id: i.id,
