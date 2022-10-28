@@ -6,8 +6,9 @@ import log from '@jihe/secure-log'
 import 'antd/dist/antd.css'
 import './style.less'
 import styled from '@emotion/styled'
-import { store } from '../source/store'
+import { store } from '../store'
 import { Provider as RtkProvider } from 'react-redux'
+import WaterMarkContent from './components/WaterMarkContent'
 
 export const Loading = styled.div`
   width: 100%;
@@ -25,7 +26,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
     <RtkProvider store={store}>
       <Provider>
-        <Routes />
+        <WaterMarkContent>
+          <Routes />
+        </WaterMarkContent>
       </Provider>
     </RtkProvider>
   </BrowserRouter>,

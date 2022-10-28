@@ -1,36 +1,42 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react'
+import React, { useState } from 'react'
 import { pusher } from '@/components/LongLinke'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from '../../../store'
 import {
   decrement,
   increment,
   incrementByAmount,
-} from '../../store/counterSlice'
+  getMovieData,
+} from '../../../store/counterSlice'
 
 const index = () => {
-  const count = useSelector((state: any) => state.counter.value)
+  const { value: count, list } = useSelector((state: any) => state.counter)
   const dispatch = useDispatch()
-  const channel = pusher.subscribe('testmyabeyance')
+  const channel = pusher.subscribe('private-snowy-pine-462.39')
 
   channel.bind('App\\Events\\Myabeyance', (data: any) => {
 
     // console.log(data)
 
     alert(data)
-    pusher.send_event('testmyabeyance', { name: '杨一' })
+    pusher.send_event('private-snowy-pine-462.39', { name: '我又给你发消息  ' })
   })
   channel.bind('pusher:subscription_succeeded', (members: any) => {
 
     // console.log(members)
-    // alert('successfully subscribed!')
+    alert('successfully subscribed!')
   })
 
   const send = () => {
-    pusher.send_event('testmyabeyance', { name: '杨一' })
+    pusher.send_event('private-snowy-pine-462.39', { name: '杨一' })
+    dispatch(increment)
+    dispatch(getMovieData())
   }
+
+  // console.log(list)
+
   return (
-    <div>
+    <>
       <div>
         <button
           aria-label="Increment value"
@@ -38,7 +44,7 @@ const index = () => {
         >
           Increment
         </button>
-        <span>{count}</span>
+        <button onClick={send}>{count}</button>
         <button
           aria-label="Decrement value"
           onClick={() => {
@@ -50,7 +56,10 @@ const index = () => {
           Decrement
         </button>
       </div>
-    </div>
+      <ul>
+        {list.map((item: any) => <li key={item.albumId}>{item.name}</li>)}
+      </ul>
+    </>
   )
 }
 
