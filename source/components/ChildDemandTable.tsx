@@ -109,6 +109,10 @@ const ChildDemandTable = (props: {
     getList(order)
   }
 
+  const onExamine = () => {
+    message.warning(t('newlyAdd.underReview'))
+  }
+
   const columnsChild = [
     {
       title: (
@@ -240,7 +244,7 @@ const ChildDemandTable = (props: {
         return (
           <PopConfirm
             content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit ? (
+              return isCanEdit && !record.isExamine ? (
                 <ShapeContent
                   tap={(value: any) => onChangeStatus(value)}
                   hide={onHide}
@@ -259,7 +263,8 @@ const ChildDemandTable = (props: {
             record={record}
           >
             <StatusWrap
-              isShow={isCanEdit}
+              onClick={record.isExamine ? onExamine : void 0}
+              isShow={isCanEdit || record.isExamine}
               style={{
                 color: text?.status.color,
                 border: `1px solid ${text?.status.color}`,
