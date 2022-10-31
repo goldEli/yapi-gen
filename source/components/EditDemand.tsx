@@ -335,10 +335,6 @@ const EditDemand = (props: Props) => {
   const getInfo = async (id: any, treeArr?: any, categoryData?: any) => {
     const res = await getDemandInfo({ projectId: id, id: props?.demandId })
     setDemandInfo(res)
-    const memberArr = await getMemberList({
-      all: true,
-      projectId: res.projectId,
-    })
     if (res) {
       form.setFieldsValue(res)
       setSchedule(res?.schedule)
@@ -397,12 +393,12 @@ const EditDemand = (props: Props) => {
       form.setFieldsValue({
         copySendIds: getCommonUser(
           res?.copySend?.map((i: any) => i.copysend),
-          memberArr,
+          memberList,
         ),
         attachments: res?.attachment.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
           res?.user?.map((i: any) => i.user),
-          memberArr,
+          memberList,
         ),
         tagIds: res?.tag?.map((i: any) => ({
           id: i.id,
@@ -460,7 +456,7 @@ const EditDemand = (props: Props) => {
       ...getNestedChildren(classTree, 0),
     ])
     if (!props?.isQuickCreate) {
-      getProjectInfo({ projectId: value || projectId })
+      // getProjectInfo({ projectId: value || projectId })
     }
 
     if (props?.demandId) {
@@ -668,10 +664,6 @@ const EditDemand = (props: Props) => {
       })
       setTagList(comResult)
     }
-  }
-
-  const onAdd = () => {
-    message.warning(t('common.pleaseProject'))
   }
 
   const Children = () => {

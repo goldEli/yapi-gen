@@ -633,6 +633,7 @@ const CommonNeed = (props: any) => {
               {manyListData?.map((item: any, index: any) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <div
+                  hidden={!item.list.length}
                   key={index}
                   style={{
                     background: 'white',
