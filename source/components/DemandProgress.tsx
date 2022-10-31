@@ -46,12 +46,12 @@ const DemandProgress = (props: Props) => {
         </ProgressWrap>
       }
       getPopupContainer={node =>
-        props?.listLength < 5 || props?.index === 1 || props?.isCard
+        props?.listLength < 5 || [0, 1].includes(props?.index) || props?.isCard
           ? document.body
           : node
       }
       getTooltipContainer={node =>
-        props?.listLength < 5 || props?.index === 1 || props?.isCard
+        props?.listLength < 5 || [0, 1].includes(props?.index) || props?.isCard
           ? document.body
           : node
       }
