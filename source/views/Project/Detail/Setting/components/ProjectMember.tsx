@@ -31,7 +31,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
@@ -347,12 +347,12 @@ const ProjectMember = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      navigate('/mine')
+      openDetail('/mine')
     } else {
       const params = encryptPhp(
         JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
       )
-      navigate(`/Detail/MemberInfo/profile?data=${params}`)
+      openDetail(`/Detail/MemberInfo/profile?data=${params}`)
     }
   }
 

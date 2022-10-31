@@ -528,6 +528,8 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form}
+                scrollToFirstError
+                onFinish={confirm}
               >
                 {rightList?.fields?.map((i: any) => {
                   if (i.type === 'area') {
@@ -541,6 +543,7 @@ export const ShapeContent = (props: any) => {
                             message: '',
                           },
                         ]}
+                        style={{ marginTop: 2 }}
                       >
                         <Input.TextArea
                           maxLength={200}
@@ -846,7 +849,9 @@ export const ShapeContent = (props: any) => {
           <ButtonFooter>
             <Button
               disabled={!rightList.user_has_auth}
-              onClick={confirm}
+              onClick={() => {
+                form.submit()
+              }}
               style={{ marginLeft: '16px' }}
               type="primary"
             >

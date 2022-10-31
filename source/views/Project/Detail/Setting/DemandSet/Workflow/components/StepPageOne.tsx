@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
@@ -394,6 +395,10 @@ const StepPageOne = (propsOne: Props) => {
     }
   })
 
+  const onUpdateEdit = () => {
+    onSaveMethod()
+  }
+
   return (
     <>
       {isAddVisible && (
@@ -408,7 +413,7 @@ const StepPageOne = (propsOne: Props) => {
           item={operationObj}
           isVisible={isVisible}
           onClose={onClose}
-          onUpdate={() => getList()}
+          onUpdate={onUpdateEdit}
         />
       )}
       <DeleteConfirm
