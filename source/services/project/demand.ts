@@ -403,6 +403,7 @@ export const getLoadListFields: any = async (params: any) => {
   const response: any = await http.get<any>('getLoadListFields', {
     project_id: params.projectId,
     is_update: params.isUpdate,
+    type: params?.type,
   })
 
   return {
@@ -465,5 +466,39 @@ export const getImportExcelUpdate: any = async (params: any) => {
 }
 
 export const getExportExcel: any = async (params: any) => {
-  //
+  const response = await http.post(
+    'getExportExcel',
+    {
+      search: {
+        project_id: params?.projectId,
+        keyword: params?.searchValue,
+        iterate_id: params?.iterateId,
+        status: params?.statusId,
+        priority: params?.priorityId,
+        user_id: params?.userId,
+        tag: params?.tagId,
+        created_at: params?.createdAtId,
+        expected_start_at: params?.expectedStartAtId,
+        expected_end_at: params?.expectedendat,
+        updated_at: params?.updatedat,
+        finish_at: params?.finishAt,
+        users_name: params?.usersnameId,
+        users_copysend_name: params?.usersCopysendNameId,
+        all: params?.all ? 1 : 0,
+        panel: params?.panel ? 1 : 0,
+        class_ids: params.class_ids,
+        class_id: params.class_id,
+        category_id: params.category_id,
+        schedule_start: params.schedule_start,
+        schedule_end: params.schedule_end,
+        custom_field: params?.custom_field,
+      },
+      pagesize: params?.pageSize,
+      page: params?.page,
+      orderkey: params?.orderKey,
+      order: params?.order,
+    },
+    { responseType: 'blob' },
+  )
+  return response
 }

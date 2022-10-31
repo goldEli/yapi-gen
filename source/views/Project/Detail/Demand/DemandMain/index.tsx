@@ -127,20 +127,17 @@ const DemandMain = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdate?.()
     setIsRefresh(false)
-    // myTreeComponent?.current?.init()
   }
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order, true)
     getCategoryList({ projectId, isSelect: true })
-    // myTreeComponent?.current?.init()
   }, [key])
 
   useEffect(() => {
     if (isRefresh) {
       getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
     }
-    // myTreeComponent?.current?.init()
   }, [isRefresh])
 
   useEffect(() => {
@@ -164,7 +161,6 @@ const DemandMain = (props: Props) => {
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
-    // myTreeComponent?.current?.init()
   }
 
   const onDeleteConfirm = async () => {
@@ -240,6 +236,16 @@ const DemandMain = (props: Props) => {
             settingState={isSettingState}
             onChangeSetting={setIsSettingState}
             isShowLeft={isShowLeft}
+            otherParams={{
+              page: pageObj.page,
+              pageSize: pageObj.size,
+              orderKey: order.key,
+              order: order.value,
+              classId: key,
+              all: isGrid,
+              panel: isGrid,
+            }}
+            dataLength={dataList?.total}
           />
           {isGrid ? (
             <DemandGrid

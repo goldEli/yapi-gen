@@ -13,13 +13,6 @@ export default () => {
   const [createCategory, setCreateCategory] = useState<any>({})
   const [statusLogs, setStatusLogs] = useState<any>([])
   const [importExcel, setImportExcel] = useState<any>({})
-  const [exportExcel, setExportExcel] = useState<any>({})
-
-  const getExportExcel = async (params: any) => {
-    setExportExcel({})
-    const result = await services.demand.getExportExcel(params)
-    setExportExcel(result)
-  }
 
   const getImportExcelUpdate = async (params: any) => {
     setImportExcel({})
@@ -70,6 +63,7 @@ export default () => {
     updateTableParams,
     updateDemandCategory,
     getImportDownloadModel,
+    getExportExcel,
   } = services.demand
 
   return {
@@ -114,6 +108,5 @@ export default () => {
     setIsUpdateStatus,
     isUpdateStatus,
     getExportExcel,
-    exportExcel,
   }
 }
