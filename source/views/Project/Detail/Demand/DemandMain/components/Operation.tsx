@@ -14,6 +14,7 @@ import IconFont from '@/components/IconFont'
 import { Divider, Popover, Space, Tooltip } from 'antd'
 import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
+import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 
 const OperationWrap = styled.div({
@@ -122,10 +123,12 @@ const Operation = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
+  const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
-  const { filterAll, projectInfo, categoryList, colorList }
-    = useModel('project')
-  const { setFilterHeight, setCreateCategory } = useModel('demand')
+  const { filterAll, projectInfo, categoryList, colorList } =
+    useModel('project')
+  const { setFilterHeight, setCreateCategory, getLoadListFields } =
+    useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -273,7 +276,7 @@ const Operation = (props: Props) => {
         </MoreItem>
       )}
       {hasExport ? null : (
-        <MoreItem>
+        <MoreItem onClick={() => setIsShowExport(true)}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
           <span>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
@@ -305,6 +308,9 @@ const Operation = (props: Props) => {
       >
         <ImportDemand />
       </CommonModal>
+      {isShowExport ? (
+        <ExportDemand isShowExport={isShowExport} onClose={setIsShowExport} />
+      ) : null}
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (

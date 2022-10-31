@@ -1,3 +1,5 @@
+/* eslint-disable no-negated-condition */
+/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable multiline-ternary */
 import CommonModal from '@/components/CommonModal'
@@ -79,6 +81,8 @@ interface Props {
 
   // 1是更新，2是新建
   importState?: any
+  // 是否是导出
+  isExport: boolean
 }
 
 const FieldsTemplate = (props: Props) => {
@@ -86,9 +90,7 @@ const FieldsTemplate = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { getLoadListFields } = useModel('demand')
-  const [checkList, setCheckList] = useState<CheckboxValueType[]>(
-    props?.importState === 2 ? ['name', 'category'] : ['id'],
-  )
+  const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
   const [checkAll, setCheckAll] = useState(false)
@@ -96,10 +98,14 @@ const FieldsTemplate = (props: Props) => {
   const [importFields, setImportFields] = useState<any>({})
 
   const getList = async () => {
-    const result = await getLoadListFields({
+    let params: any = {
       projectId,
       isUpdate: props?.importState,
-    })
+    }
+    if (props.isExport) {
+      params.type = 2
+    }
+    const result = await getLoadListFields(params)
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
     const customKeys = result?.customFields?.map((k: any) => k.field)
@@ -113,6 +119,11 @@ const FieldsTemplate = (props: Props) => {
 
   useEffect(() => {
     getList()
+    if (props.isExport) {
+      setCheckList(['name'])
+    } else {
+      setCheckList(props?.importState === 2 ? ['name', 'category'] : ['id'])
+    }
   }, [])
 
   const [t] = useTranslation()
@@ -153,25 +164,30 @@ const FieldsTemplate = (props: Props) => {
       return res
     }, [])
 
+    // 获取右侧选择字段是否可删除
+    const getItemState = (field: string) => {
+      let resultVal: boolean
+      if (props.isExport) {
+        resultVal = field === 'name'
+      } else {
+        resultVal =
+          props?.importState === 2
+            ? ['name', 'category'].includes(field)
+            : field === 'id'
+      }
+      return resultVal
+    }
+
     return (
       <CheckedWrap>
         {all.map((item: any) => (
-          <CheckedItem
-            key={item.field}
-            state={
-              props?.importState === 2
-                ? ['name', 'category_id'].includes(item.field)
-                : item.field === 'id'
-            }
-          >
+          <CheckedItem key={item.field} state={getItemState(item.field)}>
             <IconFont
               style={{ fontSize: 12, marginRight: '8px', color: '#969799' }}
               type="move"
             />
             <span>{item.name}</span>
-            {(props?.importState === 1
-              ? item.field !== 'id'
-              : !['name', 'category_id'].includes(item.field)) && (
+            {!getItemState(item.field) && (
               <ShowWrap style={{ marginLeft: 'auto' }}>
                 <IconFont
                   style={{ fontSize: 12 }}
@@ -215,13 +231,16 @@ const FieldsTemplate = (props: Props) => {
 
   const onAllChecked = (e: any) => {
     const { checked } = e.target
-    setCheckList(
-      checked
-        ? importFields?.baseFields?.map((k: any) => k.field)
-        : props?.importState === 2
-        ? ['name', 'category']
-        : ['id'],
-    )
+    let checkNormal: any
+    if (checked) {
+      checkNormal = importFields?.baseFields?.map((k: any) => k.field)
+    } else if (!props.isExport) {
+      checkNormal = props?.importState === 2 ? ['name', 'category'] : ['id']
+    } else {
+      checkNormal = ['name']
+    }
+
+    setCheckList(checkNormal)
     setCheckList2(
       checked
         ? importFields?.timeAndPersonFields?.map((k: any) => k.field)

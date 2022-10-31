@@ -201,6 +201,7 @@ const ImportDemand = () => {
           importState={tabs}
           onClose={() => setIsVisible(false)}
           onConfirm={onConfirmTemplate}
+          isExport={false}
         />
       )}
       <StepWrap>

@@ -109,6 +109,7 @@ const urls = {
   getImportExcelUpdate: '/b/story/import_story_update_excel',
   getMemberGantt: '/b/project/member/info/overview_gantt_chart',
   getUserGantt: '/b/user/info/overview_gantt_chart',
+  getExportExcel: '/b/story/export_story_excel',
 }
 
 export default urls

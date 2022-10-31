@@ -134,7 +134,6 @@ client.config({
         return data
       }
       if (
-
         // data.code === '00000' ||
         data.code === 'A0204' ||
         data.code === 'A0203' ||
@@ -151,7 +150,13 @@ client.config({
           getTicket()
         }, 500)
       }
-      if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
+      // A0414：导出限制5000提示
+      if (
+        data.code !== '00000' &&
+        data.code !== 1 &&
+        data.code !== 0 &&
+        data.code !== 'A0414'
+      ) {
         message.error(data.message)
         throw new Error(data.code)
       }
