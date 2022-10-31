@@ -456,7 +456,7 @@ const EditDemand = (props: Props) => {
       ...getNestedChildren(classTree, 0),
     ])
     if (!props?.isQuickCreate) {
-      // getProjectInfo({ projectId: value || projectId })
+      getProjectInfo({ projectId: value || projectId })
     }
 
     if (props?.demandId) {
