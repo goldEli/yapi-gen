@@ -370,10 +370,6 @@ const UploadAttach = (props: Props) => {
   return (
     <div className="123">
       <Warp fileList={fileList} {...uploadProps}>
-        {/* <img
-          src="https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/dev/origin_2.webp/file/origin_2.webp"
-          alt=""
-        /> */}
         {props.addWrap}
       </Warp>
       <Modal
