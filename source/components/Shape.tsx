@@ -528,8 +528,8 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form}
-                scrollToFirstError
-                onFinish={confirm}
+                // scrollToFirstError
+                // onFinish={confirm}
               >
                 {rightList?.fields?.map((i: any) => {
                   if (i.type === 'area') {
@@ -816,6 +816,8 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form2}
+                scrollToFirstError
+                onFinish={confirm}
               >
                 <Form.Item
                   style={{ paddingRight: '24px' }}
@@ -851,6 +853,7 @@ export const ShapeContent = (props: any) => {
               disabled={!rightList.user_has_auth}
               onClick={() => {
                 form.submit()
+                form2.submit()
               }}
               style={{ marginLeft: '16px' }}
               type="primary"
