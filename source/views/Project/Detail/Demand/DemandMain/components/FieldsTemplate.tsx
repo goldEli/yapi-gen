@@ -160,7 +160,7 @@ const FieldsTemplate = (props: Props) => {
             key={item.field}
             state={
               props?.importState === 2
-                ? ['name', 'category_id'].includes(item.field)
+                ? ['name', 'category'].includes(item.field)
                 : item.field === 'id'
             }
           >
@@ -171,7 +171,7 @@ const FieldsTemplate = (props: Props) => {
             <span>{item.name}</span>
             {(props?.importState === 1
               ? item.field !== 'id'
-              : !['name', 'category_id'].includes(item.field)) && (
+              : !['name', 'category'].includes(item.field)) && (
               <ShowWrap style={{ marginLeft: 'auto' }}>
                 <IconFont
                   style={{ fontSize: 12 }}
