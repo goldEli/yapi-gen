@@ -1075,7 +1075,12 @@ const EditDemand = (props: Props) => {
                       onChangeAttachment={onChangeAttachment}
                       onBottom={onBottom}
                       addWrap={
-                        <AddWrap hasColor>
+                        <AddWrap
+                          style={{
+                            marginBottom: '20px',
+                          }}
+                          hasColor
+                        >
                           <IconFont type="plus" />
                           <div>{t('common.add23')}</div>
                         </AddWrap>

@@ -2,8 +2,8 @@ import { ReactNode, useMemo } from 'react'
 
 const SvgTextBg = (props: any) => {
   const {
-    text = '定星科技',
-    fontSize = 32,
+    text = '成都定星科技技术服务有限公司',
+    fontSize = 40,
     fillOpacity = '0.1',
     fillColor = '#083a7b',
   } = props

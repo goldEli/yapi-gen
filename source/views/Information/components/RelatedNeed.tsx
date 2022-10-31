@@ -81,6 +81,7 @@ const RelatedNeed = (props: any) => {
     }
 
     setShow(false)
+    setShowNeed(true)
     lessForm.resetFields()
   }
 
@@ -122,109 +123,110 @@ const RelatedNeed = (props: any) => {
         <IconFont type="plus" />
         <div>关联需求</div>
       </AddWrap>
-      {!show
-        ? (
-            <div>
-              {chooseList.map((item: any) => (
-                <InnerLine key={item.key}>
-                  <span>{item.label}</span>
-                  <IconFont
-                    onClick={() => del(item)}
-                    data-close
-                    className={rightText}
-                    type="close"
-                  />
-                </InnerLine>
-              ))}
-            </div>
-          )
-        : (
-            <div
+      {!show ? (
+        <div>
+          {chooseList.map((item: any) => (
+            <InnerLine key={item.key}>
+              <span>{item.label}</span>
+              <IconFont
+                onClick={() => del(item)}
+                data-close
+                className={rightText}
+                type="close"
+              />
+            </InnerLine>
+          ))}
+        </div>
+      ) : (
+        <div
+          style={{
+            background: '#F2F2F4',
+            borderRadius: '6px 6px 6px 6px',
+            padding: '24px',
+          }}
+        >
+          <Form form={lessForm} layout="vertical">
+            <Form.Item
+              name="project"
+              label="选择项目"
+              rules={[
+                {
+                  required: true,
+                  message: '',
+                },
+              ]}
+            >
+              <Select
+                onSelect={onSelect}
+                labelInValue
+                placeholder="Please select favourite colors"
+              >
+                {projectList.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.title}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: '',
+                },
+              ]}
+              name="needs"
+              label="管理需求"
+            >
+              <Select
+                disabled={showNeed}
+                showSearch
+                labelInValue
+                mode="multiple"
+                placeholder="Please select favourite colors"
+              >
+                {demandList.map((item: any) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Form>
+          <div
+            style={{
+              textAlign: 'right',
+            }}
+          >
+            <span
+              onClick={() => {
+                setShowNeed(true)
+                setShow(false)
+              }}
               style={{
-                background: '#F2F2F4',
-                borderRadius: '6px 6px 6px 6px',
-                padding: '24px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#2877FF',
+                cursor: 'pointer',
               }}
             >
-              <Form form={lessForm} layout="vertical">
-                <Form.Item
-                  name="project"
-                  label="选择项目"
-                  rules={[
-                    {
-                      required: true,
-                      message: '',
-                    },
-                  ]}
-                >
-                  <Select
-                    onSelect={onSelect}
-                    labelInValue
-                    placeholder="Please select favourite colors"
-                  >
-                    {projectList.map((item: any) => (
-                      <Option key={item.id} value={item.id}>
-                        {item.title}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: '',
-                    },
-                  ]}
-                  name="needs"
-                  label="管理需求"
-                >
-                  <Select
-                    disabled={showNeed}
-                    showSearch
-                    labelInValue
-                    mode="multiple"
-                    placeholder="Please select favourite colors"
-                  >
-                    {demandList.map((item: any) => (
-                      <Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Form>
-              <div
-                style={{
-                  textAlign: 'right',
-                }}
-              >
-                <span
-                  onClick={() => setShow(false)}
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    color: '#2877FF',
-                    cursor: 'pointer',
-                  }}
-                >
               取消
-                </span>
-                <span
-                  onClick={confirm}
-                  style={{
-                    marginLeft: '24px',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    color: '#2877FF',
-                    cursor: 'pointer',
-                  }}
-                >
+            </span>
+            <span
+              onClick={confirm}
+              style={{
+                marginLeft: '24px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#2877FF',
+                cursor: 'pointer',
+              }}
+            >
               完成
-                </span>
-              </div>
-            </div>
-          )}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
