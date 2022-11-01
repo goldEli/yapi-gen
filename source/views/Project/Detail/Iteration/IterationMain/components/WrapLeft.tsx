@@ -213,8 +213,8 @@ const WrapLeft = (props: Props) => {
 
   const options = [
     { label: '已开启', value: 1 },
-    { label: '已完成', value: 3 },
-    { label: '已关闭', value: 2 },
+    { label: '已完成', value: 2 },
+    { label: '已关闭', value: 3 },
   ]
 
   const onConfirmFilter = () => {
@@ -316,7 +316,7 @@ const WrapLeft = (props: Props) => {
       await updateIterateStatus({
         projectId,
         id: item.id,
-        status: item.status !== 1,
+        status: item.status,
       })
       message.success(t('mark.change'))
       getList()

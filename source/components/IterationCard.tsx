@@ -172,7 +172,7 @@ const IterationCard = (props: Props) => {
     if (status === 1) {
       name = '已开启'
     } else {
-      name = status === 2 ? '已关闭' : '已完成'
+      name = status === 3 ? '已关闭' : '已完成'
     }
     return name
   }

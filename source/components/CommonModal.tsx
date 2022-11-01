@@ -51,6 +51,7 @@ interface ModalProps {
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean
+  hasTop?: any
 }
 
 const CommonModal = (props: ModalProps) => {
@@ -70,9 +71,12 @@ const CommonModal = (props: ModalProps) => {
     >
       <ModalHeader>
         <span>{props?.title}</span>
-        <CloseWrap onClick={props?.onClose}>
-          <IconFont type="close" />
-        </CloseWrap>
+        <Space size={4}>
+          {props.hasTop}
+          <CloseWrap onClick={props?.onClose}>
+            <IconFont type="close" />
+          </CloseWrap>
+        </Space>
       </ModalHeader>
       <div style={{ padding: '0 4px 0 24px' }}>{props?.children}</div>
       {props?.isShowFooter ? null : (

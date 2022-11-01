@@ -11,6 +11,7 @@ import IterationMain from './IterationMain'
 import IterationInfo from './IterationInfo'
 import ChangeRecord from './ChangeRecord'
 import Demand from './Demand'
+import Achieve from './Achieve'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
@@ -201,6 +202,11 @@ const IterationWrap = () => {
     'b/story/get',
   )
 
+  const isCanCheck = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/achieve/info',
+  )
+
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.status,
@@ -237,6 +243,8 @@ const IterationWrap = () => {
           checkList3={titleList3}
         />
       )
+    } else if (type === 'achieve') {
+      return <Achieve />
     }
     return <ChangeRecord isUpdate={isUpdateState} />
   }
@@ -323,7 +331,7 @@ const IterationWrap = () => {
         await updateIterateStatus({
           projectId,
           id: iterateInfo?.id,
-          status: val === 1,
+          status: val,
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
@@ -358,12 +366,12 @@ const IterationWrap = () => {
         <StatusTag status={1}>已开启</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(3)}>
-        <StatusTag status={3}>已完成</StatusTag>
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(2)}>
+        <StatusTag status={2}>已完成</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag status={2}>已关闭</StatusTag>
+      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(3)}>
+        <StatusTag status={3}>已关闭</StatusTag>
       </LiWrap>
     </div>
   )
@@ -374,7 +382,7 @@ const IterationWrap = () => {
     if (status === 1) {
       name = '已开启'
     } else {
-      name = status === 2 ? '已关闭' : '已完成'
+      name = status === 3 ? '已关闭' : '已完成'
     }
     return name
   }
@@ -423,7 +431,7 @@ const IterationWrap = () => {
                         color:
                           iterateInfo?.status === 1
                             ? '#2877FF'
-                            : iterateInfo?.status === 3
+                            : iterateInfo?.status === 2
                             ? '#43BA9A'
                             : '#969799',
                       }}
@@ -462,6 +470,15 @@ const IterationWrap = () => {
                 <span>{t('common.demand')}</span>
                 <div>{iterateInfo?.storyCount || 0}</div>
               </Item>
+              {isCanCheck ? null : (
+                <Item
+                  onClick={() => onChangeIdx('achieve')}
+                  activeIdx={type === 'achieve'}
+                >
+                  <span>迭代成果</span>
+                </Item>
+              )}
+
               <Item
                 onClick={() => onChangeIdx('record')}
                 activeIdx={type === 'record'}

@@ -17,6 +17,7 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { StatusTag } from '@/components/StyleCommon'
+import EditAchievements from '../../components/EditAchievements'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -100,6 +101,10 @@ const Operation = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/iterate/status',
   )
+  const isCanCheck = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/achieve/info',
+  )
 
   const onChangeStatus = async (val: number) => {
     if (val !== props.currentDetail?.status) {
@@ -107,7 +112,7 @@ const Operation = (props: Props) => {
         await updateIterateStatus({
           projectId,
           id: props.currentDetail?.id,
-          status: val === 1,
+          status: val,
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
@@ -131,12 +136,12 @@ const Operation = (props: Props) => {
         <StatusTag status={1}>已开启</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(3)}>
-        <StatusTag status={3}>已完成</StatusTag>
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(2)}>
+        <StatusTag status={2}>已完成</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag status={2}>已关闭</StatusTag>
+      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(3)}>
+        <StatusTag status={3}>已关闭</StatusTag>
       </LiWrap>
     </div>
   )
@@ -212,7 +217,7 @@ const Operation = (props: Props) => {
     if (status === 1) {
       name = '已开启'
     } else {
-      name = status === 2 ? '已关闭' : '已完成'
+      name = status === 3 ? '已关闭' : '已完成'
     }
     return name
   }
@@ -306,7 +311,7 @@ const Operation = (props: Props) => {
                       color:
                         props.currentDetail?.status === 1
                           ? '#2877FF'
-                          : props.currentDetail?.status === 3
+                          : props.currentDetail?.status === 2
                           ? '#43BA9A'
                           : '#969799',
                     }}
@@ -319,9 +324,14 @@ const Operation = (props: Props) => {
           <Tooltip title={t('project.iterateTarget')}>
             <IconWrap onClick={() => setVisible(true)} type="detail" />
           </Tooltip>
-          <Tooltip title="迭代成果">
-            <IconWrap onClick={() => setIsAchievements(true)} type="detail" />
-          </Tooltip>
+          {isCanCheck ? null : (
+            <Tooltip title="迭代成果">
+              <IconWrap
+                onClick={() => setIsAchievements(true)}
+                type="iteration"
+              />
+            </Tooltip>
+          )}
         </IterationInfo>
         <OperationGroup
           onChangeFilter={onChangeFilter}
@@ -343,6 +353,15 @@ const Operation = (props: Props) => {
           isIteration
         />
       )}
+      {isAchievements ? (
+        <EditAchievements
+          isAchievements={isAchievements}
+          onClose={() => setIsAchievements(false)}
+          projectId={projectId}
+          id={props.currentDetail?.id}
+          isInfo={false}
+        />
+      ) : null}
     </StickyWrap>
   )
 }

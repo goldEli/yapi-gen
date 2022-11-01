@@ -239,8 +239,6 @@ const ExamineItem = (props: Props) => {
     })
   }
 
-  // console.log(props?.options, '列表')
-
   return (
     <Timeline.Item>
       <ItemWrap>

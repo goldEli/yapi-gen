@@ -2,9 +2,13 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
-import { Form, Input, message, Progress, Select } from 'antd'
+import { Form, Input, message, Select } from 'antd'
 import { useRef, useState, useEffect, useImperativeHandle } from 'react'
-import { AddWrap, FormWrapDemand } from '@/components/StyleCommon'
+import {
+  AddWrap,
+  FormWrapDemand,
+  ProgressWrapUpload,
+} from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import Editor from '@/components/Editor'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
@@ -18,35 +22,6 @@ const LeftWrap = styled.div({
   width: 'calc(100% - 410px)',
 })
 
-const ProgressWrap = styled(Progress)({
-  '.ant-progress-status-exception .ant-progress-bg': {
-    backgroundColor: '#ff5c5e',
-    height: '2px !important',
-  },
-  '.ant-progress-status-exception .ant-progress-text': {
-    color: '#ff5c5e',
-  },
-  '.ant-progress-success-bg .ant-progress-bg': {
-    backgroundColor: '#2877ff',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-bg': {
-    backgroundColor: '#43ba9a',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-text': {
-    color: '#43ba9a',
-  },
-  '.ant-progress-inner': {
-    height: '2px !important',
-    minWidth: 200,
-  },
-  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
-    {
-      fontSize: 10,
-    },
-})
-
 interface ChildrenProps {
   uploadStatus: any
   percentVal: any
@@ -55,7 +30,7 @@ interface ChildrenProps {
 
 const Children = (props: ChildrenProps) => {
   return (
-    <ProgressWrap
+    <ProgressWrapUpload
       status={props.uploadStatus}
       percent={props.percentVal}
       size="small"
@@ -98,7 +73,7 @@ const EditLeft = (props: Props) => {
       result.path = result.url
       form.setFieldsValue({
         attachments: [
-          ...form.getFieldValue('attachments') || [],
+          ...(form.getFieldValue('attachments') || []),
           ...[result.url],
         ],
       })
@@ -116,7 +91,7 @@ const EditLeft = (props: Props) => {
   const onChangeTag = (result: any, type: string) => {
     if (type === 'add') {
       form.setFieldsValue({
-        tagIds: [...form.getFieldValue('tagIds') || [], ...[result]],
+        tagIds: [...(form.getFieldValue('tagIds') || []), ...[result]],
       })
       setTagList([...tagList, ...[result]])
     } else {
@@ -288,39 +263,36 @@ const EditLeft = (props: Props) => {
           >
             {projectInfo?.projectPermissions?.filter(
               (i: any) => i.name === '附件上传',
-            ).length
-              ? (
-                  <UploadAttach
-                    child={
-                      isShow
-                        ? (
-                            <Children
-                              percentShow={percentShow}
-                              uploadStatus={uploadStatus}
-                              percentVal={percentVal}
-                            />
-                          )
-                        : ''
-
-                    }
-                    onChangeShow={setIsShow}
-                    defaultList={attachList}
-                    onChangeAttachment={onChangeAttachment}
-                    onBottom={onBottom}
-                    addWrap={
-                      <AddWrap hasColor>
-                        <IconFont type="plus" />
-                        <div>{t('common.add23')}</div>
-                      </AddWrap>
-                    }
-                  />
-                )
-              : (
-                  <AddWrap onClick={onAdd} hasColor>
+            ).length ? (
+              <UploadAttach
+                child={
+                  isShow ? (
+                    <Children
+                      percentShow={percentShow}
+                      uploadStatus={uploadStatus}
+                      percentVal={percentVal}
+                    />
+                  ) : (
+                    ''
+                  )
+                }
+                onChangeShow={setIsShow}
+                defaultList={attachList}
+                onChangeAttachment={onChangeAttachment}
+                onBottom={onBottom}
+                addWrap={
+                  <AddWrap hasColor>
                     <IconFont type="plus" />
                     <div>{t('common.add23')}</div>
                   </AddWrap>
-                )}
+                }
+              />
+            ) : (
+              <AddWrap onClick={onAdd} hasColor>
+                <IconFont type="plus" />
+                <div>{t('common.add23')}</div>
+              </AddWrap>
+            )}
           </Form.Item>
         )}
       </FormWrapDemand>

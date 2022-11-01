@@ -37,8 +37,8 @@ export const addIterate: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
 
   await http.post<any>('addIterate', {
     name: params.iterationName,
@@ -56,8 +56,8 @@ export const updateIterate: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-      ? ''
-      : element.innerHTML
+    ? ''
+    : element.innerHTML
 
   await http.patch<any>('editIterate', {
     name: params.iterationName,
@@ -143,4 +143,33 @@ export const getIterateStatistics: any = async (params: any) => {
       count: i.story_count,
     })),
   }
+}
+
+export const getAchieveInfo: any = async (params: any) => {
+  const response = await http.get<any>('getAchieveInfo', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+
+  return {
+    info: response.data.achieve_desc,
+    attachList: response.data.iterate_attachment,
+  }
+}
+
+export const updateAchieve: any = async (params: any) => {
+  const element = document.createElement('div')
+  element.innerHTML = params?.info
+  const hasImg = Array.from(element.getElementsByTagName('img'))
+  const info = hasImg.length
+    ? params?.info
+    : element.innerText.trim() === ''
+    ? ''
+    : element.innerHTML
+  await http.post<any>('updateAchieve', {
+    project_id: params.projectId,
+    iterate_id: params.id,
+    achieve_desc: info,
+    attachment: params.attachList?.map((i: any) => i.path),
+  })
 }

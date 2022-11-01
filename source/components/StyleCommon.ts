@@ -5,8 +5,55 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Input, Slider, Divider, Form } from 'antd'
+import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
+
+const editButton = css`
+  padding: 0 16px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f2f2f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #646566;
+  cursor: pointer;
+  font-size: 14px;
+  width: fit-content;
+  &:hover {
+    background-color: #f0f4fa;
+    color: #2877ff;
+  }
+`
+
+const ProgressWrapUpload = styled(Progress)({
+  '.ant-progress-status-exception .ant-progress-bg': {
+    backgroundColor: '#ff5c5e',
+    height: '2px !important',
+  },
+  '.ant-progress-status-exception .ant-progress-text': {
+    color: '#ff5c5e',
+  },
+  '.ant-progress-success-bg .ant-progress-bg': {
+    backgroundColor: '#2877ff',
+    height: '2px !important',
+  },
+  '.ant-progress-status-success .ant-progress-bg': {
+    backgroundColor: '#43ba9a',
+    height: '2px !important',
+  },
+  '.ant-progress-status-success .ant-progress-text': {
+    color: '#43ba9a',
+  },
+  '.ant-progress-inner': {
+    height: '2px !important',
+    minWidth: 200,
+  },
+  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
+    {
+      fontSize: 10,
+    },
+})
 
 const StatusTag = styled.div<{ status: number }>(
   {
@@ -20,8 +67,8 @@ const StatusTag = styled.div<{ status: number }>(
     width: 'fit-content',
   },
   ({ status }) => ({
-    color: status === 1 ? '#2877FF' : status === 3 ? '#43BA9A' : '#969799',
-    background: status === 1 ? '#F2F7FF' : status === 3 ? '#EDF7F4' : '#F2F2F4',
+    color: status === 1 ? '#2877FF' : status === 2 ? '#43BA9A' : '#969799',
+    background: status === 1 ? '#F2F7FF' : status === 2 ? '#EDF7F4' : '#F2F2F4',
   }),
 )
 
@@ -659,4 +706,6 @@ export {
   FormWrapDemand,
   ListNameWrap,
   StatusTag,
+  ProgressWrapUpload,
+  editButton,
 }

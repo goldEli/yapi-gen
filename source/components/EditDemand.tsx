@@ -1,3 +1,5 @@
+// 创建需求和编辑需求的弹窗
+
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
@@ -16,7 +18,6 @@ import {
   Select,
   Space,
   message,
-  Progress,
   TreeSelect,
   DatePicker,
   Popover,
@@ -35,9 +36,14 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
-import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
+import {
+  PriorityWrap,
+  SliderWrap,
+  AddWrap,
+  ProgressWrapUpload,
+} from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
-import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
+import { decryptPhp } from '@/tools/cryptoPhp'
 import CommonModal from './CommonModal'
 
 const ShowLabel = styled.div({
@@ -147,35 +153,6 @@ const AddButtonWrap = styled.div({
   color: '#2877FF',
   padding: '0 16px',
   cursor: 'pointer',
-})
-
-export const ProgressWrap = styled(Progress)({
-  '.ant-progress-status-exception .ant-progress-bg': {
-    backgroundColor: '#ff5c5e',
-    height: '2px !important',
-  },
-  '.ant-progress-status-exception .ant-progress-text': {
-    color: '#ff5c5e',
-  },
-  '.ant-progress-success-bg .ant-progress-bg': {
-    backgroundColor: '#2877ff',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-bg': {
-    backgroundColor: '#43ba9a',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-text': {
-    color: '#43ba9a',
-  },
-  '.ant-progress-inner': {
-    height: '2px !important',
-    minWidth: 200,
-  },
-  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
-    {
-      fontSize: 10,
-    },
 })
 
 const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
@@ -691,7 +668,7 @@ const EditDemand = (props: Props) => {
 
   const Children = () => {
     return (
-      <ProgressWrap
+      <ProgressWrapUpload
         status={uploadStatus}
         percent={percentVal}
         size="small"

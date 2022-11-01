@@ -110,6 +110,8 @@ const urls = {
   getMemberGantt: '/b/project/member/info/overview_gantt_chart',
   getUserGantt: '/b/user/info/overview_gantt_chart',
   getExportExcel: '/b/story/export_story_excel',
+  getAchieveInfo: '/b/iterate/achieve/info',
+  updateAchieve: '/b/iterate/achieve',
 }
 
 export default urls

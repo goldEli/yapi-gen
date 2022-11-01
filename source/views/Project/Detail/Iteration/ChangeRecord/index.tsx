@@ -115,7 +115,8 @@ const ChangeRecord = (props?: any) => {
     getList({ page: 1, size: pageObj.size }, order)
   }, [])
 
-  const onClickCheck = (item: any) => {
+  const onClickCheck = (item: any, key: any) => {
+    item.key = key
     setCheckDetail(item)
     setIsVisible(true)
   }
@@ -253,10 +254,10 @@ const ChangeRecord = (props?: any) => {
           >
             {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
-                {i === 'info' ? (
+                {i === 'info' || i === 'achieve_desc' ? (
                   <span
                     style={{ cursor: 'pointer', color: '#2877ff' }}
-                    onClick={() => onClickCheck(record)}
+                    onClick={() => onClickCheck(record, i)}
                   >
                     {text
                       ? text[i]?.length
@@ -306,10 +307,10 @@ const ChangeRecord = (props?: any) => {
           >
             {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
-                {i === 'info' ? (
+                {i === 'info' || i === 'achieve_desc' ? (
                   <span
                     style={{ cursor: 'pointer', color: '#2877ff' }}
-                    onClick={() => onClickCheck(record)}
+                    onClick={() => onClickCheck(record, i)}
                   >
                     {text
                       ? text[i]?.length
@@ -370,7 +371,10 @@ const ChangeRecord = (props?: any) => {
             <div
               style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
-                __html: checkDetail?.beforeField?.info,
+                __html:
+                  checkDetail.key === 'info'
+                    ? checkDetail?.beforeField?.info
+                    : checkDetail?.beforeField?.achieve_desc,
               }}
             />
           </div>
@@ -379,7 +383,10 @@ const ChangeRecord = (props?: any) => {
             <div
               style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
-                __html: checkDetail?.afterField?.info,
+                __html:
+                  checkDetail.key === 'info'
+                    ? checkDetail?.afterField?.info
+                    : checkDetail?.afterField?.achieve_desc,
               }}
             />
           </div>

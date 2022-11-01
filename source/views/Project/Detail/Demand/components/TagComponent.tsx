@@ -383,7 +383,7 @@ const TagComponent = (props: Props) => {
                 color: '#969799',
                 fontSize: 14,
               }}
-              type="close-circle-fill"
+              type="close-solid"
               onClick={() => onDeleteInfoDemand(i)}
             />
           ) : null}
