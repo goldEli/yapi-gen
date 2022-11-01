@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -28,6 +29,7 @@ interface Props {
   onChangeShow?(state: boolean): void
   id?: any
   onBottom?(): void
+  onChange?(arr: any): void
 }
 const First = styled.div``
 const Second = styled.div`
@@ -221,6 +223,10 @@ const UploadAttach = (props: Props) => {
     })
     setFileList(array)
   }, [props.defaultList])
+
+  useEffect(() => {
+    props.onChange?.(fileList)
+  }, [fileList])
 
   const onAddInfoAttach = async (url: any) => {
     try {

@@ -94,8 +94,6 @@ const Information = () => {
   }
 
   const editConfirm = async (e: any) => {
-
-    // console.log(e)
     return
     editClose()
   }
@@ -198,21 +196,21 @@ const Information = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : (
-            <Popover content={content}>
-              <AddButton>
-                <IconFont
-                  style={{
-                    marginRight: 8,
-                    fontSize: 14,
-                    fontWeight: 400,
-                    color: 'white',
-                  }}
-                  type="plus"
-                />
-                <span>写日志</span>
-              </AddButton>
-            </Popover>
-          )}
+          <Popover content={content}>
+            <AddButton>
+              <IconFont
+                style={{
+                  marginRight: 8,
+                  fontSize: 14,
+                  fontWeight: 400,
+                  color: 'white',
+                }}
+                type="plus"
+              />
+              <span>写日志</span>
+            </AddButton>
+          </Popover>
+        )}
         <Menu>
           {menuList.map(item => (
             <MenuItem

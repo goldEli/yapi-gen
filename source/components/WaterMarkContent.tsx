@@ -3,12 +3,12 @@ import { ReactNode, useMemo } from 'react'
 const SvgTextBg = (props: any) => {
   const {
     text = '成都定星科技技术服务有限公司',
-    fontSize = 40,
+    fontSize = 25,
     fillOpacity = '0.1',
-    fillColor = '#083a7b',
+    fillColor = '#1c1e20',
   } = props
   const res = `
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300px" height="180px" viewBox="0 0 180 180">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200px" height="180px" viewBox="0 0 180 180">
         <text x="-100" y="-30" fill='${fillColor}'  transform = "rotate(-35 220 -220)" fill-opacity='${fillOpacity}' font-size='${fontSize}'> ${text}</text>
       </svg>`
 

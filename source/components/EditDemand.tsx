@@ -148,7 +148,7 @@ const AddButtonWrap = styled.div({
   cursor: 'pointer',
 })
 
-const ProgressWrap = styled(Progress)({
+export const ProgressWrap = styled(Progress)({
   '.ant-progress-status-exception .ant-progress-bg': {
     backgroundColor: '#ff5c5e',
     height: '2px !important',
