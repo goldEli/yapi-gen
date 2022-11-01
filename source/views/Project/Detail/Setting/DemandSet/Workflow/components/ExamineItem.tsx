@@ -10,7 +10,7 @@ import { Input, Popover, Space, Timeline } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const AddWrap = styled.div({
+export const AddWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -74,7 +74,7 @@ const MenuWrap = styled.div({
   color: '#646566',
 })
 
-const IconFontWrap = styled(IconFont)({
+export const IconFontWrap = styled(IconFont)({
   fontSize: 14,
   color: '#BBBDBF',
   cursor: 'pointer',
@@ -84,7 +84,7 @@ const IconFontWrap = styled(IconFont)({
   top: -5,
 })
 
-const NewNameWrap = styled.div({
+export const NewNameWrap = styled.div({
   position: 'relative',
   overflow: 'inherit',
   '&: hover': {
@@ -102,7 +102,7 @@ const IconfontCloseWrap = styled(IconFont)({
   margin: '4px 0 0 12px',
 })
 
-const ItemWrap = styled.div({
+export const ItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   '.changeSize': {
@@ -121,7 +121,7 @@ interface ChoosePersonProps {
   options: any
 }
 
-const ChoosePerson = (props: ChoosePersonProps) => {
+export const ChoosePerson = (props: ChoosePersonProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState('')
 
@@ -238,6 +238,8 @@ const ExamineItem = (props: Props) => {
       type: 'update',
     })
   }
+
+  // console.log(props?.options, '列表')
 
   return (
     <Timeline.Item>

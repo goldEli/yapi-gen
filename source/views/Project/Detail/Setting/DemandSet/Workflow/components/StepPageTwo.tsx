@@ -126,7 +126,6 @@ const StepPageTwo = () => {
       })
       message.success(t('common.saveSuccess'))
     } catch (error) {
-
       //
     }
   }

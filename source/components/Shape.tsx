@@ -493,6 +493,8 @@ export const ShapeContent = (props: any) => {
     onClear()
   }
 
+  // console.log(rightList)
+
   return (
     <Contain>
       {props.noleft ? null : (

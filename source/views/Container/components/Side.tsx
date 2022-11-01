@@ -11,6 +11,7 @@ import sideLogo from '/logo.svg'
 import { useModel } from '@/models'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { useSelector, useDispatch } from 'react-redux'
 
 const imgCss = css`
   width: 40px;
@@ -69,6 +70,7 @@ type MenuType = {
 }
 
 const SideEach = styled.div`
+  position: relative;
   cursor: pointer;
   border-radius: 8px;
   width: 64px;
@@ -96,7 +98,23 @@ const activeCss = css`
   font-weight: bold;
 `
 
+export const RedLogo = styled.span`
+  width: 23px;
+  height: 16px;
+  background: #ff5c5e;
+  border-radius: 10px 10px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-size: 12px;
+`
+
 export const Side = () => {
+  const count = useSelector((state: any) => state.counter.value)
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
   const location = useLocation()
@@ -133,7 +151,7 @@ export const Side = () => {
         isHidden: getIsPermission('项目'),
       },
       {
-        key: '/organization',
+        key: '/mine',
         title: t('container.mine'),
         icon: <IconFont type="my" style={{ fontSize: 20 }} />,
         path: '/mine',
@@ -146,6 +164,20 @@ export const Side = () => {
         path: '/staff',
         isHidden: getIsPermission('员工'),
       },
+      {
+        key: '/information',
+        title: t('container.information'),
+        icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
+        path: '/Information/send/1',
+        isHidden: getIsPermission('员工'),
+      },
+      {
+        key: '/test',
+        title: '测试',
+        icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
+        path: '/test',
+        isHidden: getIsPermission('员工'),
+      },
     ]
     return menu
   }
@@ -155,6 +187,8 @@ export const Side = () => {
       return nowPath === '/Project' || nowPath === '/Detail' ? activeCss : ''
     } else if (path === '/staff') {
       return nowPath === '/staff' || nowPath === '/MemberInfo' ? activeCss : ''
+    } else if (path === '/Information/send/1') {
+      return nowPath === '/Information' ? activeCss : ''
     }
     return nowPath === path ? activeCss : ''
   }
@@ -168,6 +202,8 @@ export const Side = () => {
     >
       {item?.icon}
       {item.title}
+      {item.key === '/information' && <RedLogo>{count}</RedLogo>}
+      {item.key === '/mine' && <RedLogo>{count}</RedLogo>}
     </SideEach>
   ))
 

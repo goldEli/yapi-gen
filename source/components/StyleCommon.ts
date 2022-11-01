@@ -347,12 +347,14 @@ const PaginationWrap = styled.div`
   align-items: center;
   padding-right: 16px;
 `
+
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
   padding: 16px 24px;
   background: #f5f7fa;
 `
+
 const StaffTableWrap2 = styled(StaffTableWrap)`
   padding-top: 0;
 `

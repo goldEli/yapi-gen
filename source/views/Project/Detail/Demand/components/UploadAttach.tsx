@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { useModel } from '@/models'
-import { message, Upload, type UploadProps } from 'antd'
+import { message, Modal, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -10,6 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
 import { getParamsData } from '@/tools'
+import IconFont from '@/components/IconFont'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -26,9 +29,160 @@ interface Props {
   onChangeShow?(state: boolean): void
   id?: any
   onBottom?(): void
+  onChange?(arr: any): void
+}
+const First = styled.div``
+const Second = styled.div`
+  display: none;
+`
+const BigWrap = styled.div`
+  &:hover {
+    ${Second} {
+      display: block;
+    }
+    ${First} {
+      display: none;
+    }
+  }
+`
+
+const Gred = styled.div`
+  cursor: pointer;
+  border-radius: 8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  transition: all 1s;
+`
+const GredParent = styled.div`
+  &:hover {
+    ${Gred} {
+      opacity: 0.6;
+      transition: all 1s;
+    }
+  }
+`
+const ListItem = (props: any) => {
+  const {
+    file: { url, name, user, time },
+    onDownload,
+    onRemove,
+    onPreview,
+  } = props
+  // onPreview()
+  const Download = () => {
+    onDownload(props.file)
+  }
+  const Remove = () => {
+    onRemove(props.file)
+  }
+  const Preview = () => {
+    onPreview(props.file)
+  }
+
+  return (
+    <BigWrap
+      style={{
+        display: 'flex',
+        marginBottom: '16px',
+      }}
+    >
+      <GredParent
+        style={{
+          marginRight: '8px',
+          position: 'relative',
+        }}
+      >
+        <img
+          style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+          }}
+          src={url}
+          alt=""
+        />
+        <Gred onClick={Preview}>
+          <IconFont style={{ fontSize: 18, color: 'white' }} type="zoomin" />
+        </Gred>
+      </GredParent>
+      <div>
+        <div
+          style={{
+            height: '22px',
+            fontSize: '14px',
+            fontWeight: 400,
+            color: '#323233',
+            lineHeight: '22px',
+          }}
+        >
+          {name}
+        </div>
+        <First
+          style={{
+            height: '20px',
+            fontSize: '12px',
+            fontWeight: 400,
+            color: '#969799',
+            lineHeight: '20px',
+          }}
+        >
+          <span
+            style={{
+              marginRight: '12px',
+            }}
+          >
+            {user}
+          </span>
+          <span>2022-08-25 15:20:29</span>
+        </First>
+        <Second
+          style={{
+            height: '20px',
+          }}
+        >
+          <span
+            onClick={Download}
+            style={{
+              marginRight: '12px',
+              cursor: 'pointer',
+            }}
+          >
+            <IconFont
+              style={{ fontSize: 18, color: '#969799' }}
+              type="download"
+            />
+          </span>
+          <span
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={Remove}
+          >
+            <IconFont
+              style={{ fontSize: 18, color: '#969799' }}
+              type="delete"
+            />
+          </span>
+        </Second>
+      </div>
+    </BigWrap>
+  )
 }
 
 const UploadAttach = (props: Props) => {
+  const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  const [previewImage, setPreviewImage] = useState('')
+  const [previewTitle, setPreviewTitle] = useState('')
   const [t] = useTranslation()
   const { uploadFile, cos } = useModel('cos')
   const {
@@ -51,6 +205,7 @@ const UploadAttach = (props: Props) => {
   }
   const { projectInfo } = useModel('project')
   const [fileList, setFileList] = useState<any>([])
+
   let arr: any[] = []
 
   const isCanEdit =
@@ -66,11 +221,18 @@ const UploadAttach = (props: Props) => {
         url: element.path,
         uid: element.id,
         status: 'done',
+        time: new Date(),
+        user: '杨一',
       }
+
       array.push(obj)
     })
     setFileList(array)
   }, [props.defaultList])
+
+  useEffect(() => {
+    props.onChange?.(fileList)
+  }, [fileList])
 
   const onAddInfoAttach = async (url: any) => {
     try {
@@ -170,9 +332,18 @@ const UploadAttach = (props: Props) => {
       }
     }
   }
+  const handlePreview = async (file: any) => {
+    setPreviewImage(file.url)
+
+    setPreviewTitle(file.name)
+  }
 
   const onDownload = (file: any) => {
     downloadIamge(file.url, file.name)
+  }
+  const onPreview = (file: any) => {
+    setPreviewOpen(true)
+    handlePreview(file)
   }
 
   const onRemove = (file: any) => {
@@ -189,19 +360,39 @@ const UploadAttach = (props: Props) => {
     customRequest: onUploadFileClick,
     onDownload,
     onRemove,
+    onPreview,
     showUploadList: {
       showDownloadIcon: projectInfo?.projectPermissions?.filter(
         (i: any) => i.name === '附件下载',
       ).length,
       showRemoveIcon: isCanEdit,
     },
+    itemRender: (e: any, file: any) => {
+      return (
+        <ListItem
+          file={file}
+          onDownload={onDownload}
+          onRemove={onRemove}
+          onPreview={onPreview}
+        />
+      )
+    },
   }
 
+  const handleCancel = () => setPreviewOpen(false)
   return (
     <div className="123">
-      <Warp {...uploadProps} fileList={fileList}>
+      <Warp fileList={fileList} {...uploadProps}>
         {props.addWrap}
       </Warp>
+      <Modal
+        visible={previewOpen}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
       {props.child}
     </div>
   )

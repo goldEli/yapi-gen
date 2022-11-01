@@ -96,8 +96,8 @@ const TreeItem = (props: any) => {
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
-  const [visibleEditText, setVisibleEditText] = useState('')
   const [visiblePop, setVisiblePop] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
   const { projectInfo } = useModel('project')
   const btnsText = [
     {
@@ -119,6 +119,7 @@ const TreeItem = (props: any) => {
     form.resetFields()
   }
   const showVisible = (id: number) => {
+    setVisiblePop(false)
     close()
     setVisiblePop(false)
     if (id === 3) {

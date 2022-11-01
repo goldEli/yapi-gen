@@ -92,7 +92,6 @@ const EditorCategory = (props: EditorProps) => {
         message.success(t('common.editSuccess'))
         onReset()
       } catch (error) {
-
         //
       }
     } else {
@@ -101,7 +100,6 @@ const EditorCategory = (props: EditorProps) => {
         message.success(t('common.createSuccess'))
         onReset()
       } catch (error) {
-
         //
       }
     }

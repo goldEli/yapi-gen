@@ -45,8 +45,8 @@ interface Props {
 
 const SearchList = (props: Props) => {
   const [t] = useTranslation()
-  const { getDepartmentSelectList, getPositionSelectList, getRoleList }
-    = useModel('staff')
+  const { getDepartmentSelectList, getPositionSelectList, getRoleList } =
+    useModel('staff')
   const [form] = Form.useForm()
   const [departmentOptions, setDepartmentOptions] = useState([])
   const [positionOptions, setPositionOptions] = useState([])
