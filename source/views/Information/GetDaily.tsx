@@ -20,11 +20,13 @@ import {
 import { DataWrap, TableBox, tableWrapP } from '../staff'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
+import { getDailyList } from '@/services/daily'
+import { useParams } from 'react-router-dom'
 
 const Get = () => {
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
-
+  const { id: urlId = '' } = useParams<any>()
   // const [listData, setListData] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
@@ -258,16 +260,13 @@ const Get = () => {
     setPagesize(size)
   }
   const confirm = () => {
-
     // console.log();
   }
   const onChange = (e: any) => {
-
     // console.log(`checked = ${e.target.checked}`)
   }
   const onChangeTime = (key: any, dates: any) => {
     if (dates) {
-
       //   form.setFieldsValue({
       //     [key]: [
       //       moment(dates[0]).unix()
@@ -281,6 +280,21 @@ const Get = () => {
     }
     confirm()
   }
+
+  const init = async () => {
+    const obj = {
+      type: urlId,
+      keyword,
+      order,
+      orderkey: orderKey,
+      page,
+      pagesize,
+    }
+    const res = await getDailyList(obj)
+  }
+  useEffect(() => {
+    init()
+  }, [urlId])
 
   return (
     <div>
@@ -311,8 +325,7 @@ const Get = () => {
               i18n.language === 'zh'
                 ? {
                     最近一周: [
-                      moment(new Date()).startOf('days')
-                        .subtract(6, 'days'),
+                      moment(new Date()).startOf('days').subtract(6, 'days'),
                       moment(new Date()).endOf('days'),
                     ],
                     最近一月: [
@@ -336,8 +349,7 @@ const Get = () => {
                   }
                 : {
                     'Last Week': [
-                      moment(new Date()).startOf('days')
-                        .subtract(6, 'days'),
+                      moment(new Date()).startOf('days').subtract(6, 'days'),
                       moment(new Date()).endOf('days'),
                     ],
                     'Last Month': [
@@ -396,20 +408,19 @@ const Get = () => {
           <DataWrap>
             <Spin spinning={isSpinning}>
               {
-                !!listData
-                  && (listData?.length > 0
-                    ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={columnsData}
-                          dataSource={listData}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                          sticky
-                        />
-                      )
-                    : <NoData />
-                  )
+                !!listData &&
+                  (listData?.length > 0 ? (
+                    <TableBox
+                      rowKey="id"
+                      columns={columnsData}
+                      dataSource={listData}
+                      pagination={false}
+                      scroll={{ x: 'max-content' }}
+                      sticky
+                    />
+                  ) : (
+                    <NoData />
+                  ))
 
                 //   <TableBox
                 //     rowKey="id"

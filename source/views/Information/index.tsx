@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -9,10 +10,11 @@ import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
-import { Form, Popover } from 'antd'
+import { Form, message, Popover } from 'antd'
 import WhiteDay from './components/WhiteDay'
 import { RedLogo } from '../Container/components/Side'
 import { useSelector } from 'react-redux'
+import { writeDaily } from '@/services/daily'
 
 const Wrap = styled.div`
   height: 100%;
@@ -76,28 +78,6 @@ type MenuList = {
 }
 
 const Information = () => {
-  const count = useSelector((state: any) => state.counter.value)
-  const [t] = useTranslation()
-  const { pathname } = useLocation()
-  const nowPath2 = Number(pathname.split('/')[3]) || ''
-  const navigate = useNavigate()
-  const { userInfo } = useModel('user')
-  const [visibleEdit, setVisibleEdit] = useState(false)
-  const [visibleEditText, setVisibleEditText] = useState('')
-
-  const changeActive = (value: MenuList) => {
-    navigate(value.path)
-  }
-
-  const editClose = () => {
-    setVisibleEdit(false)
-  }
-
-  const editConfirm = async (e: any) => {
-    return
-    editClose()
-  }
-
   const menuList = [
     {
       id: 1,
@@ -151,14 +131,50 @@ const Information = () => {
       name: '写日报',
     },
     {
-      id: 1,
+      id: 2,
       name: '写周报',
     },
     {
-      id: 1,
+      id: 3,
       name: '写月报',
     },
   ]
+  const count = useSelector((state: any) => state.counter.value)
+  const [t] = useTranslation()
+  const { pathname } = useLocation()
+  const nowPath2 = Number(pathname.split('/')[3]) || ''
+  const navigate = useNavigate()
+  const { userInfo } = useModel('user')
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
+
+  const changeActive = (value: MenuList) => {
+    navigate(value.path)
+  }
+
+  const editClose = () => {
+    setVisibleEdit(false)
+  }
+
+  const editConfirm = async (params: any) => {
+    const obj = {
+      finish_content: params.info,
+      plan_content: params.info2,
+      copysend: params.people,
+      files: params.attachments.map((item: any) => item.url),
+      story_ids: params.needs,
+      type: writeDailyInner[
+        writeDailyInner.findIndex((item: any) => item.name === visibleEditText)
+      ].id,
+    }
+
+    const res = await writeDaily(obj, 1)
+    if (res.code === 0) {
+      message.success('成功')
+      editClose()
+    }
+  }
+
   const WriteDaily = styled.div`
     cursor: pointer;
     display: flex;

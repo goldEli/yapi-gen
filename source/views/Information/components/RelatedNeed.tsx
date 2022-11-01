@@ -107,6 +107,10 @@ const RelatedNeed = (props: any) => {
   useEffect(() => {
     init()
   }, [])
+  useEffect(() => {
+    setChooseList(props.initValue)
+    props.onChange(props.initValue.map((item: any) => item.value))
+  }, [props.initValue])
 
   const onSelect = async (i: any) => {
     lessForm.setFieldsValue({

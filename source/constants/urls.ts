@@ -109,6 +109,12 @@ const urls = {
   getImportExcelUpdate: '/b/story/import_story_update_excel',
   getMemberGantt: '/b/project/member/info/overview_gantt_chart',
   getUserGantt: '/b/user/info/overview_gantt_chart',
+  getDailyList: '/b/report/list',
+  addDaily: '/b/report/add',
+  editDaily: '/b/report/update',
+  getReportDetail: '/b/report/info',
+  getReportContent: '/b/report/comment/add',
+  getReceiveList: '/b/report/copysend/list',
 }
 
 export default urls

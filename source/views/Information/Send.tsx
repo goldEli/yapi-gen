@@ -1,3 +1,6 @@
+/* eslint-disable no-negated-condition */
+/* eslint-disable react/no-danger */
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
@@ -19,6 +22,7 @@ import Sort from '@/components/Sort'
 import WhiteDay from './components/WhiteDay'
 import { useParams } from 'react-router-dom'
 import LookDay from './components/LookDay'
+import { getDailyList } from '@/services/daily'
 
 const titleList = {
   2: '修改日报',
@@ -29,15 +33,16 @@ const Send = () => {
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
-
-  // const [listData, setListData] = useState<any>([])
+  const [listData, setListData] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
-  const [order, setOrder] = useState<any>(3)
+  const [order, setOrder] = useState<any>('')
   const [page, setPage] = useState<number>(1)
+  const [created_at, setCreated_at] = useState<any>([])
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const [editId, setEditId] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
 
@@ -70,111 +75,10 @@ const Send = () => {
       </Sort>
     )
   }
-  const listData = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '2',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '3',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '4',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '5',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '6',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '7',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '8',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '9',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-      state: true,
-    },
-  ]
+
   const columnsData: any = [
     {
-      width: 200,
+      width: 100,
       title: <NewSort fixedKey="name">标题</NewSort>,
       dataIndex: 'name',
       key: 'name',
@@ -183,59 +87,62 @@ const Send = () => {
       },
     },
     {
-      title: <NewSort fixedKey="gender">内容摘要</NewSort>,
-      dataIndex: 'gender',
-      key: 'gender',
-      width: 200,
-    },
-    {
-      title: <NewSort fixedKey="email">附件</NewSort>,
-      dataIndex: 'email',
-      key: 'email',
+      title: <NewSort fixedKey="finish_content">内容摘要</NewSort>,
+      dataIndex: 'finish_content',
+      key: 'finish_content',
       width: 200,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <span dangerouslySetInnerHTML={{ __html: text || '--' }} />
       },
     },
     {
-      title: <NewSort fixedKey="phone">关联需求</NewSort>,
-      dataIndex: 'phone',
-      key: 'phone',
+      title: <NewSort fixedKey="file_count">附件数量</NewSort>,
+      dataIndex: 'file_count',
+      key: 'file_count',
+      width: 200,
+      render: (text: string) => {
+        return <span>{`${text}个`}</span>
+      },
+    },
+    {
+      title: <NewSort fixedKey="story_count">关联需求</NewSort>,
+      dataIndex: 'story_count',
+      key: 'story_count',
       width: 150,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <span>{`${text}个`}</span>
       },
     },
     {
-      title: <NewSort fixedKey="department_name">创建日期</NewSort>,
-      dataIndex: 'department_name',
-      key: 'department_name',
+      title: <NewSort fixedKey="created_at">创建日期</NewSort>,
+      dataIndex: 'created_at',
+      key: 'created_at',
       width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
     },
     {
-      title: <NewSort fixedKey="position_name">抄送人</NewSort>,
-      dataIndex: 'position_name',
-      key: 'position_name',
+      title: '抄送人',
+      dataIndex: 'copysend_user',
+      key: 'copysend_user',
       width: 120,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any) => {
+        return <span>{text.join('  ；  ') || '--'}</span>
       },
     },
     {
-      title: <NewSort fixedKey="role_name">已阅</NewSort>,
-      dataIndex: 'role_name',
-      key: 'role_name',
+      title: '已阅',
+      dataIndex: 'read_user',
+      key: 'read_user',
       width: 170,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any) => {
+        return <span>{text.join('  ；  ') || '--'}</span>
       },
     },
 
     {
-      title: <NewSort fixedKey="created_at">操作</NewSort>,
+      title: '操作',
       dataIndex: 'created_at',
       key: 'created_at',
       width: 120,
@@ -243,26 +150,25 @@ const Send = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ textAlign: 'right' }}>
-            {record.state
-              ? (
-                  <span
-                    onClick={() => {
-                      setVisibleEdit(true)
-                      setVisibleEditText(
-                        titleList[urlId as unknown as keyof typeof titleList],
-                      )
-                    }}
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: ' 400',
-                      color: '#2877FF',
-                      cursor: 'pointer',
-                    }}
-                  >
+            {!(record.read_user.length > 0) ? (
+              <span
+                onClick={() => {
+                  setVisibleEdit(true)
+                  setVisibleEditText(
+                    titleList[urlId as unknown as keyof typeof titleList],
+                  )
+                  setEditId(record.id)
+                }}
+                style={{
+                  fontSize: '14px',
+                  fontWeight: ' 400',
+                  color: '#2877FF',
+                  cursor: 'pointer',
+                }}
+              >
                 修改
-                  </span>
-                )
-              : null}
+              </span>
+            ) : null}
 
             <span
               onClick={openShow}
@@ -297,22 +203,28 @@ const Send = () => {
     setPagesize(size)
   }
   const onChangeTime = (key: any, dates: any) => {
-    if (dates) {
-
-      //   form.setFieldsValue({
-      //     [key]: [
-      //       moment(dates[0]).unix()
-      //         ? moment(dates[0]).format('YYYY-MM-DD')
-      //         : '1970-01-01',
-      //       moment(dates[1]).unix() === 1893427200
-      //         ? '2030-01-01'
-      //         : moment(dates[1]).format('YYYY-MM-DD'),
-      //     ],
-      //   })
-    }
-    confirm()
+    setCreated_at(dates)
   }
 
+  const init = async () => {
+    const srr = [undefined, undefined, 1, 2, 3]
+    const obj = {
+      type: srr[urlId as unknown as number],
+      keyword,
+      order,
+      orderkey: orderKey,
+      page,
+      pagesize,
+      created_at,
+    }
+    const res = await getDailyList(obj)
+
+    setListData(res.list)
+    setTotal(res.total)
+  }
+  useEffect(() => {
+    init()
+  }, [urlId, orderKey, order, page, pagesize, keyword, created_at])
   return (
     <div>
       <div
@@ -331,6 +243,7 @@ const Send = () => {
           <DatePicker.RangePicker
             allowClear={false}
             className={rangPicker}
+            onChange={onChangeTime}
             getPopupContainer={node => node}
             format={(times: moment.Moment) => {
               if (times.unix() === 0 || times.unix() === 1893427200) {
@@ -342,8 +255,7 @@ const Send = () => {
               i18n.language === 'zh'
                 ? {
                     最近一周: [
-                      moment(new Date()).startOf('days')
-                        .subtract(6, 'days'),
+                      moment(new Date()).startOf('days').subtract(6, 'days'),
                       moment(new Date()).endOf('days'),
                     ],
                     最近一月: [
@@ -367,8 +279,7 @@ const Send = () => {
                   }
                 : {
                     'Last Week': [
-                      moment(new Date()).startOf('days')
-                        .subtract(6, 'days'),
+                      moment(new Date()).startOf('days').subtract(6, 'days'),
                       moment(new Date()).endOf('days'),
                     ],
                     'Last Month': [
@@ -411,20 +322,19 @@ const Send = () => {
           <DataWrap>
             <Spin spinning={isSpinning}>
               {
-                !!listData
-                  && (listData?.length > 0
-                    ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={columnsData}
-                          dataSource={listData}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                          sticky
-                        />
-                      )
-                    : <NoData />
-                  )
+                !!listData &&
+                  (listData?.length > 0 ? (
+                    <TableBox
+                      rowKey="id"
+                      columns={columnsData}
+                      dataSource={listData}
+                      pagination={false}
+                      scroll={{ x: 'max-content' }}
+                      sticky
+                    />
+                  ) : (
+                    <NoData />
+                  ))
 
                 //   <TableBox
                 //     rowKey="id"
@@ -454,7 +364,17 @@ const Send = () => {
         </PaginationWrap>
       </div>
       {/* // 写日志的表单D */}
+      {/* {visibleEdit ? (
+        <WhiteDay
+          editId={editId}
+          visibleEditText={visibleEditText}
+          visibleEdit={visibleEdit}
+          editClose={editClose}
+          editConfirm={editConfirm}
+        />
+      ) : null} */}
       <WhiteDay
+        editId={editId}
         visibleEditText={visibleEditText}
         visibleEdit={visibleEdit}
         editClose={editClose}

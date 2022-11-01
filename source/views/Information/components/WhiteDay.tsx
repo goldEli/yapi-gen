@@ -7,10 +7,11 @@ import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import IconFont from '@/components/IconFont'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AddWrap } from '@/components/StyleCommon'
 import { ProgressWrap } from '@/components/EditDemand'
 import { useModel } from '@/models'
+import { getReportDetail } from '@/services/daily'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -48,6 +49,8 @@ const WhiteDay = (props: any) => {
   const [form] = Form.useForm()
   const [isShow, setIsShow] = useState(false)
   const [attachList, setAttachList] = useState<any>([])
+  const [peopleValue, setPeopleValue] = useState<any>([])
+  const [needValue, setNeedValue] = useState<any>([])
   const leftDom = useRef<HTMLInputElement>(null)
   const confirm = async () => {
     const data: any = await form.validateFields()
@@ -94,6 +97,49 @@ const WhiteDay = (props: any) => {
     )
   }
 
+  const setDefaultValue = async () => {
+    const res = await getReportDetail(props.editId)
+
+    form.setFieldsValue({
+      info: res.data.info.finish_content,
+      info2: res.data.info.plan_content,
+    })
+    setPeopleValue(
+      res.data.copysend_list.map((item: any) => {
+        return {
+          avatar: item.avatar,
+          id: item.user_id,
+          name: item.name,
+          nickname: '',
+          positionName: null,
+          roleName: '',
+        }
+      }),
+    )
+    setNeedValue(
+      res.data.story_list.map((item: any) => {
+        return {
+          key: item.associate,
+          value: item.associate,
+          label: item.name,
+        }
+      }),
+    )
+    setAttachList(
+      res.data.files.map((item: any) => {
+        return {
+          path: item.associate,
+          id: item.id,
+        }
+      }),
+    )
+  }
+  useEffect(() => {
+    if (props.editId) {
+      setDefaultValue()
+    }
+  }, [props.editId])
+
   return (
     <CommonModal
       width={784}
@@ -103,7 +149,13 @@ const WhiteDay = (props: any) => {
       onConfirm={confirm}
       confirmText="提交"
     >
-      <div ref={leftDom}>
+      <div
+        style={{
+          height: '680px',
+          overflow: 'scroll',
+        }}
+        ref={leftDom}
+      >
         <Form form={form} layout="vertical">
           <Form.Item label={<LabelTitle title="今日完成工作" />} name="info">
             <Editor height={240} />
@@ -112,7 +164,7 @@ const WhiteDay = (props: any) => {
             <Editor height={240} />
           </Form.Item>
           <Form.Item label={<LabelTitle title="抄送人" />} name="people">
-            <ChoosePeople />
+            <ChoosePeople initValue={peopleValue} />
           </Form.Item>
           <Form.Item label={<LabelTitle title="附件" />} name="attachments">
             <UploadAttach
@@ -135,7 +187,7 @@ const WhiteDay = (props: any) => {
             />
           </Form.Item>
           <Form.Item label={<LabelTitle title="关联需求" />} name="needs">
-            <RelatedNeed />
+            <RelatedNeed initValue={needValue} />
           </Form.Item>
         </Form>
       </div>
