@@ -207,7 +207,7 @@ const DemandMain = (props: Props) => {
     () => ({
       key,
       changeKey: (value: any) => {
-        setPageObj({ page: 1, size: 10 })
+        setPageObj({ page: 1, size: 20 })
         setKey(value)
       },
     }),
