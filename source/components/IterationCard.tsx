@@ -1,3 +1,5 @@
+// 迭代主页对应左侧迭代卡片
+
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from 'react'
@@ -7,6 +9,7 @@ import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { StatusTag } from './StyleCommon'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -82,20 +85,6 @@ const TimeWrap = styled.div({
   lineHeight: '20px',
 })
 
-const StatusTag = styled.div<{ isOpen: boolean }>(
-  {
-    height: 20,
-    borderRadius: 6,
-    padding: '0 8px',
-    width: 'fit-content',
-    fontSize: 12,
-  },
-  ({ isOpen }) => ({
-    color: isOpen ? '#43BA9A' : '#969799',
-    background: isOpen ? '#EDF7F4' : '#F2F2F4',
-  }),
-)
-
 interface Props {
   item: any
   onClickInfo(): void
@@ -143,9 +132,9 @@ const IterationCard = (props: Props) => {
     let menuItems = [
       {
         key: '1',
-        label:
+        label: (
           <div onClick={e => onClickMenu(e, 'edit')}>{t('common.edit')}</div>
-        ,
+        ),
       },
       {
         key: '2',
@@ -157,9 +146,9 @@ const IterationCard = (props: Props) => {
       },
       {
         key: '3',
-        label:
+        label: (
           <div onClick={e => onClickMenu(e, 'del')}>{t('common.del')} </div>
-        ,
+        ),
       },
     ]
     if (hasEdit) {
@@ -177,6 +166,17 @@ const IterationCard = (props: Props) => {
     return <Menu items={menuItems} />
   }
 
+  // 获取迭代状态对应名称
+  const onGetStatusName = (status: any) => {
+    let name: any
+    if (status === 1) {
+      name = '已开启'
+    } else {
+      name = status === 2 ? '已关闭' : '已完成'
+    }
+    return name
+  }
+
   return (
     <CardWrap onClick={props.onClickItem} active={props.isActive}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -186,9 +186,9 @@ const IterationCard = (props: Props) => {
           width={48}
           type="circle"
           percent={Math.trunc(
-            props.item.finishCount / props.item.storyCount * 100,
+            (props.item.finishCount / props.item.storyCount) * 100,
           )}
-          format={percent => percent === 100 ? '100%' : `${percent}%`}
+          format={percent => (percent === 100 ? '100%' : `${percent}%`)}
           strokeWidth={13}
         />
         <InfoContent>
@@ -196,8 +196,8 @@ const IterationCard = (props: Props) => {
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
-          <StatusTag isOpen={props.item.status === 1}>
-            {props.item.status === 1 ? t('common.opening') : t('common.Closed')}
+          <StatusTag status={props.item.status}>
+            {onGetStatusName(props.item.status)}
           </StatusTag>
         </InfoContent>
       </div>
@@ -205,21 +205,19 @@ const IterationCard = (props: Props) => {
         <span>{t('common.info')}</span>
         <IconFont type="right" />
       </DetailWrap>
-      {hasDel && hasEdit && hasChangeStatus
-        ? null
-        : (
-            <Dropdown
-              key={isVisible.toString()}
-              visible={isVisible}
-              overlay={menu(props?.item)}
-              placement="bottomRight"
-              trigger={['hover']}
-              getPopupContainer={node => node}
-              onVisibleChange={onVisibleChange}
-            >
-              <MoreWrap type="more" />
-            </Dropdown>
-          )}
+      {hasDel && hasEdit && hasChangeStatus ? null : (
+        <Dropdown
+          key={isVisible.toString()}
+          visible={isVisible}
+          overlay={menu(props?.item)}
+          placement="bottomRight"
+          trigger={['hover']}
+          getPopupContainer={node => node}
+          onVisibleChange={onVisibleChange}
+        >
+          <MoreWrap type="more" />
+        </Dropdown>
+      )}
     </CardWrap>
   )
 }

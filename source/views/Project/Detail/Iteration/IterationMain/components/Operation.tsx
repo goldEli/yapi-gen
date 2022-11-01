@@ -1,3 +1,5 @@
+// 迭代右侧的操作栏
+
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
@@ -14,6 +16,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import { StatusTag } from '@/components/StyleCommon'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -35,23 +38,6 @@ const IterationInfo = styled.div({
   position: 'relative',
 })
 
-const StatusTag = styled.div<{ isOpen?: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    cursor: 'pointer',
-    width: 'fit-content',
-  },
-  ({ isOpen }) => ({
-    color: isOpen ? '#43BA9A' : '#969799',
-    background: isOpen ? '#EDF7F4' : '#F2F2F4',
-  }),
-)
-
 const LiWrap = styled.div<{ color: any }>(
   {
     cursor: 'pointer',
@@ -66,6 +52,17 @@ const LiWrap = styled.div<{ color: any }>(
     '&: hover': {
       background: color,
     },
+  }),
+)
+
+const IconWrap = styled(IconFont)<{ color?: string }>(
+  {
+    fontSize: 20,
+    cursor: 'pointer',
+    marginLeft: 8,
+  },
+  ({ color }) => ({
+    color: color || '#969799',
   }),
 )
 
@@ -85,10 +82,11 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
+  const [isAchievements, setIsAchievements] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
-  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate }
-    = useModel('iterate')
+  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate } =
+    useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -115,7 +113,6 @@ const Operation = (props: Props) => {
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
         props.onIsUpdateList?.(true)
       } catch (error) {
-
         //
       }
     }
@@ -130,12 +127,16 @@ const Operation = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
-        <StatusTag isOpen>{t('common.opening')}</StatusTag>
+      <LiWrap color="#F0F4FA" onClick={() => onChangeStatus(1)}>
+        <StatusTag status={1}>已开启</StatusTag>
+      </LiWrap>
+
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(3)}>
+        <StatusTag status={3}>已完成</StatusTag>
       </LiWrap>
 
       <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
+        <StatusTag status={2}>已关闭</StatusTag>
       </LiWrap>
     </div>
   )
@@ -205,6 +206,17 @@ const Operation = (props: Props) => {
     props?.onChangeIsShowLeft?.()
   }
 
+  // 获取迭代状态对应名称
+  const onGetStatusName = (status: any) => {
+    let name: any
+    if (status === 1) {
+      name = '已开启'
+    } else {
+      name = status === 2 ? '已关闭' : '已完成'
+    }
+    return name
+  }
+
   return (
     <StickyWrap ref={stickyWrapDom}>
       <Modal
@@ -226,9 +238,9 @@ const Operation = (props: Props) => {
                 __html: props.currentDetail?.info,
               }}
             />
-          )
-            : <NoData />
-          }
+          ) : (
+            <NoData />
+          )}
         </div>
       </Modal>
       <OperationWrap>
@@ -241,15 +253,10 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('common.collapseMenu')}
             >
-              <IconFont
+              <IconWrap
                 onClick={() => onClickIcon(1)}
                 type="outdent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
+                color="black"
               />
             </Tooltip>
           ) : (
@@ -260,15 +267,10 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('common.openMenu')}
             >
-              <IconFont
+              <IconWrap
                 onClick={() => onClickIcon(2)}
                 type="indent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
+                color="black"
               />
             </Tooltip>
           )}
@@ -278,55 +280,47 @@ const Operation = (props: Props) => {
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
-          {hasChangeStatus
-            ? props.currentDetail?.id ? (
+          {hasChangeStatus ? (
+            props.currentDetail?.id ? (
               <StatusTag
                 style={{ cursor: 'inherit' }}
-                isOpen={props.currentDetail?.status === 1}
+                status={props.currentDetail?.status}
               >
-                {props.currentDetail?.status === 1
-                  ? t('common.opening')
-                  : t('common.Closed')}
+                {onGetStatusName(props.currentDetail?.status)}
               </StatusTag>
             ) : null
-            : (
-                <Popover
-                  placement="bottom"
-                  content={changeStatus}
-                  getPopupContainer={node => node}
-                >
-                  {props.currentDetail ? (
-                    <StatusTag isOpen={props.currentDetail?.status === 1}>
-                      {props.currentDetail?.status === 1
-                        ? t('common.opening')
-                        : t('common.Closed')}
-                      <IconFont
-                        type="down-icon"
-                        style={{
-                          fontSize: 12,
-                          marginLeft: 4,
-                          color:
+          ) : (
+            <Popover
+              placement="bottom"
+              content={changeStatus}
+              getPopupContainer={node => node}
+            >
+              {props.currentDetail ? (
+                <StatusTag status={props.currentDetail?.status}>
+                  {onGetStatusName(props.currentDetail?.status)}
+                  <IconFont
+                    type="down-icon"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: 4,
+                      color:
                         props.currentDetail?.status === 1
+                          ? '#2877FF'
+                          : props.currentDetail?.status === 3
                           ? '#43BA9A'
                           : '#969799',
-                        }}
-                      />
-                    </StatusTag>
-                  ) : null}
-                </Popover>
-              )}
+                    }}
+                  />
+                </StatusTag>
+              ) : null}
+            </Popover>
+          )}
 
           <Tooltip title={t('project.iterateTarget')}>
-            <IconFont
-              onClick={() => setVisible(true)}
-              type="detail"
-              style={{
-                fontSize: 20,
-                color: '#969799',
-                cursor: 'pointer',
-                marginLeft: 8,
-              }}
-            />
+            <IconWrap onClick={() => setVisible(true)} type="detail" />
+          </Tooltip>
+          <Tooltip title="迭代成果">
+            <IconWrap onClick={() => setIsAchievements(true)} type="detail" />
           </Tooltip>
         </IterationInfo>
         <OperationGroup

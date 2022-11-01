@@ -1,3 +1,5 @@
+// 迭代主页左侧模块
+
 /* eslint-disable no-negated-condition */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
@@ -16,9 +18,9 @@ import {
   Form,
   Input,
   message,
-  Radio,
   Spin,
   Tooltip,
+  Checkbox,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -148,18 +150,6 @@ const WrapLeft = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/iterate/store',
   )
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/iterate/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/iterate/del',
-  )
-  const hasChangeStatus = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/iterate/status',
-  )
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/get',
@@ -222,8 +212,9 @@ const WrapLeft = (props: Props) => {
   }, [isUpdateList, props.updateState])
 
   const options = [
-    { label: t('common.open'), value: 1 },
-    { label: t('common.stop'), value: 2 },
+    { label: '已开启', value: 1 },
+    { label: '已完成', value: 3 },
+    { label: '已关闭', value: 2 },
   ]
 
   const onConfirmFilter = () => {
@@ -287,7 +278,7 @@ const WrapLeft = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('common.status')} name="status">
-          <Radio.Group options={options} />
+          <Checkbox.Group options={options} />
         </Form.Item>
         <div
           style={{

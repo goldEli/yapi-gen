@@ -1,3 +1,5 @@
+// 迭代主页
+
 /* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
@@ -18,7 +20,12 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { DividerWrap, IconFontWrap, MyInput } from '@/components/StyleCommon'
+import {
+  DividerWrap,
+  IconFontWrap,
+  MyInput,
+  StatusTag,
+} from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -107,23 +114,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
       color: activeIdx ? 'white' : '#2877FF',
       background: activeIdx ? '#2877FF' : '#F0F4FA',
     },
-  }),
-)
-
-const StatusTag = styled.div<{ isOpen: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    cursor: 'pointer',
-    width: 'fit-content',
-  },
-  ({ isOpen }) => ({
-    color: isOpen ? '#43BA9A' : '#969799',
-    background: isOpen ? '#EDF7F4' : '#F2F2F4',
   }),
 )
 
@@ -364,15 +354,30 @@ const IterationWrap = () => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
-        <StatusTag isOpen>{t('common.opening')}</StatusTag>
+      <LiWrap color="#F0F4FA" onClick={() => onChangeStatus(1)}>
+        <StatusTag status={1}>已开启</StatusTag>
+      </LiWrap>
+
+      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(3)}>
+        <StatusTag status={3}>已完成</StatusTag>
       </LiWrap>
 
       <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
+        <StatusTag status={2}>已关闭</StatusTag>
       </LiWrap>
     </div>
   )
+
+  // 获取迭代状态对应名称
+  const onGetStatusName = (status: any) => {
+    let name: any
+    if (status === 1) {
+      name = '已开启'
+    } else {
+      name = status === 2 ? '已关闭' : '已完成'
+    }
+    return name
+  }
 
   const content = () => {
     if (!type) {
@@ -398,10 +403,8 @@ const IterationWrap = () => {
           <NameWrap>
             <span className="name">{iterateInfo.name}</span>
             {hasChangeStatus ? (
-              <StatusTag isOpen={iterateInfo?.status === 1}>
-                {iterateInfo?.status === 1
-                  ? t('common.opening')
-                  : t('common.Closed')}
+              <StatusTag status={iterateInfo?.status}>
+                {onGetStatusName(iterateInfo?.status)}
               </StatusTag>
             ) : (
               <Popover
@@ -410,17 +413,19 @@ const IterationWrap = () => {
                 getPopupContainer={node => node}
               >
                 {iterateInfo ? (
-                  <StatusTag isOpen={iterateInfo?.status === 1}>
-                    {iterateInfo?.status === 1
-                      ? t('common.opening')
-                      : t('common.Closed')}
+                  <StatusTag status={iterateInfo?.status}>
+                    {onGetStatusName(iterateInfo?.status)}
                     <IconFont
                       type="down-icon"
                       style={{
                         fontSize: 12,
                         marginLeft: 4,
                         color:
-                          iterateInfo?.status === 1 ? '#43BA9A' : '#969799',
+                          iterateInfo?.status === 1
+                            ? '#2877FF'
+                            : iterateInfo?.status === 3
+                            ? '#43BA9A'
+                            : '#969799',
                       }}
                     />
                   </StatusTag>

@@ -1,3 +1,5 @@
+// 使用多次的公共方法
+
 /* eslint-disable consistent-return */
 /* eslint-disable max-params */
 /* eslint-disable complexity */
@@ -41,28 +43,29 @@ function getTypeComponent(
         allowClear
         value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        onBlur={() => (!isModal ? void 0 : onBlur(''))}
         onChange={
           !isModal
             ? void 0
-            : (date: any) => onChange(
-                moment(date).format(
-                  params?.value[0] === 'datetime'
-                    ? 'YYYY-MM-DD hh:mm:ss'
-                    : 'YYYY-MM-DD',
-                ),
-              )
+            : (date: any) =>
+                onChange(
+                  moment(date).format(
+                    params?.value[0] === 'datetime'
+                      ? 'YYYY-MM-DD hh:mm:ss'
+                      : 'YYYY-MM-DD',
+                  ),
+                )
         }
       />
     )
   } else if (
-    params?.attr === 'text'
-    || params?.attr === 'number' && params?.value[0] === 'number'
+    params?.attr === 'text' ||
+    (params?.attr === 'number' && params?.value[0] === 'number')
   ) {
     child = (
       <Input
         placeholder={params.remarks || ''}
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value)}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value))}
         type={params?.attr}
         allowClear
         defaultValue={defaultValue}
@@ -75,7 +78,7 @@ function getTypeComponent(
     child = (
       <Input.TextArea
         placeholder={params.remarks || ''}
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
@@ -88,7 +91,7 @@ function getTypeComponent(
     child = (
       <InputNumber
         placeholder={params.remarks || ''}
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
@@ -108,7 +111,7 @@ function getTypeComponent(
         treeData={params?.value}
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur(defaultValue)}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
       />
     )
@@ -124,7 +127,7 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur(defaultValue)}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         mode={

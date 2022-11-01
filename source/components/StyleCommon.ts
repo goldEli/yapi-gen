@@ -1,3 +1,5 @@
+// 两次以上的公共样式
+
 /* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -5,6 +7,23 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form } from 'antd'
 import IconFont from './IconFont'
+
+const StatusTag = styled.div<{ status: number }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+    width: 'fit-content',
+  },
+  ({ status }) => ({
+    color: status === 1 ? '#2877FF' : status === 3 ? '#43BA9A' : '#969799',
+    background: status === 1 ? '#F2F7FF' : status === 3 ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
 
 const FormWrapDemand = styled(Form)({
   padding: '0 20px 0 2px',
@@ -637,4 +656,5 @@ export {
   IconFontWrap,
   FormWrapDemand,
   ListNameWrap,
+  StatusTag,
 }
