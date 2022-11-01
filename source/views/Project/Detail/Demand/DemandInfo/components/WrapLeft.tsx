@@ -15,11 +15,10 @@ import DemandStatus from '../../components/DemandStatus'
 import UploadAttach from '../../components/UploadAttach'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { Progress } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { SliderWrap } from '@/components/StyleCommon'
+import { SliderWrap, ProgressWrapUpload } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
 
 const WrapLeft = styled.div({
@@ -123,35 +122,6 @@ export const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const ProgressWrap = styled(Progress)({
-  '.ant-progress-status-exception .ant-progress-bg': {
-    backgroundColor: '#ff5c5e',
-    height: '2px !important',
-  },
-  '.ant-progress-status-exception .ant-progress-text': {
-    color: '#ff5c5e',
-  },
-  '.ant-progress-success-bg .ant-progress-bg': {
-    backgroundColor: '#2877ff',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-bg': {
-    backgroundColor: '#43ba9a',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-text': {
-    color: '#43ba9a',
-  },
-  '.ant-progress-inner': {
-    height: '2px !important',
-    minWidth: 200,
-  },
-  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
-    {
-      fontSize: 10,
-    },
-})
-
 const WrapLeftBox = () => {
   const [t] = useTranslation()
   const {
@@ -239,7 +209,7 @@ const WrapLeftBox = () => {
 
   const Children = (item: any) => {
     return (
-      <ProgressWrap
+      <ProgressWrapUpload
         status={uploadStatus}
         percent={percentVal}
         size="small"
