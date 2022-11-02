@@ -15,21 +15,17 @@ import Achieve from './Achieve'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Popover, Tooltip, Dropdown, Menu } from 'antd'
+import { Space, Button, message, Tooltip, Dropdown, Menu } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import {
-  DividerWrap,
-  IconFontWrap,
-  MyInput,
-  StatusTag,
-} from '@/components/StyleCommon'
+import { DividerWrap, IconFontWrap, MyInput } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
+import IterationStatus from './components/IterationStatus'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -114,23 +110,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
     div: {
       color: activeIdx ? 'white' : '#2877FF',
       background: activeIdx ? '#2877FF' : '#F0F4FA',
-    },
-  }),
-)
-
-const LiWrap = styled.div<{ color: any }>(
-  {
-    cursor: 'pointer',
-    padding: '0 16px',
-    width: '100%',
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    background: 'white',
-  },
-  ({ color }) => ({
-    '&: hover': {
-      background: color,
     },
   }),
 )
@@ -353,40 +332,6 @@ const IterationWrap = () => {
     setTitleList3(list3)
   }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}
-    >
-      <LiWrap color="#F0F4FA" onClick={() => onChangeStatus(1)}>
-        <StatusTag status={1}>已开启</StatusTag>
-      </LiWrap>
-
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag status={2}>已完成</StatusTag>
-      </LiWrap>
-
-      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(3)}>
-        <StatusTag status={3}>已关闭</StatusTag>
-      </LiWrap>
-    </div>
-  )
-
-  // 获取迭代状态对应名称
-  const onGetStatusName = (status: any) => {
-    let name: any
-    if (status === 1) {
-      name = '已开启'
-    } else {
-      name = status === 3 ? '已关闭' : '已完成'
-    }
-    return name
-  }
-
   const content = () => {
     if (!type) {
       return (
@@ -410,36 +355,11 @@ const IterationWrap = () => {
         <DemandInfoWrap>
           <NameWrap>
             <span className="name">{iterateInfo.name}</span>
-            {hasChangeStatus ? (
-              <StatusTag status={iterateInfo?.status}>
-                {onGetStatusName(iterateInfo?.status)}
-              </StatusTag>
-            ) : (
-              <Popover
-                placement="bottom"
-                content={changeStatus}
-                getPopupContainer={node => node}
-              >
-                {iterateInfo ? (
-                  <StatusTag status={iterateInfo?.status}>
-                    {onGetStatusName(iterateInfo?.status)}
-                    <IconFont
-                      type="down-icon"
-                      style={{
-                        fontSize: 12,
-                        marginLeft: 4,
-                        color:
-                          iterateInfo?.status === 1
-                            ? '#2877FF'
-                            : iterateInfo?.status === 2
-                            ? '#43BA9A'
-                            : '#969799',
-                      }}
-                    />
-                  </StatusTag>
-                ) : null}
-              </Popover>
-            )}
+            <IterationStatus
+              hasChangeStatus={hasChangeStatus}
+              iterateInfo={iterateInfo}
+              onChangeStatus={onChangeStatus}
+            />
           </NameWrap>
           <Space size={16}>
             {hasEdit ? null : (

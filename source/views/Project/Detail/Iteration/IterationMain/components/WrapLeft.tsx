@@ -183,9 +183,7 @@ const WrapLeft = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdateList?.(false)
     setIsRefreshList(false)
-    if (obj) {
-      props.onCurrentDetail(result?.list[0])
-    } else if (!props.currentDetail?.id) {
+    if (obj || !props.currentDetail?.id) {
       props.onCurrentDetail(result?.list[0])
     } else {
       const current = props.currentDetail?.id
@@ -310,18 +308,20 @@ const WrapLeft = (props: Props) => {
     props.onChangeVisible()
   }
 
-  const onChangeEnd = async (e: any, item: any) => {
+  const onChangeStatus = async (value: any, e: any, item: any) => {
     e.stopPropagation()
-    try {
-      await updateIterateStatus({
-        projectId,
-        id: item.id,
-        status: item.status,
-      })
-      message.success(t('mark.change'))
-      getList()
-    } catch (error) {
-      //
+    if (value !== item?.status) {
+      try {
+        await updateIterateStatus({
+          projectId,
+          id: item?.id,
+          status: value,
+        })
+        message.success(t('common.editS'))
+        getList()
+      } catch (error) {
+        //
+      }
     }
   }
 
@@ -432,8 +432,10 @@ const WrapLeft = (props: Props) => {
                     onClickItem={() => onClickItem(item)}
                     isActive={item.id === props.currentDetail?.id}
                     onChangeEdit={onChangeEdit}
-                    onChangeEnd={onChangeEnd}
                     onChangeDelete={onChangeDelete}
+                    onChangeStatus={(value: any, e: any) =>
+                      onChangeStatus(value, e, item)
+                    }
                   />
                 ))}
               </div>

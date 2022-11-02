@@ -10,6 +10,7 @@ import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { StatusTag } from './StyleCommon'
+import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -91,8 +92,8 @@ interface Props {
   onClickItem?(): void
   isActive?: boolean
   onChangeEdit(e: any, item: any): void
-  onChangeEnd(e: any, item: any): void
   onChangeDelete(e: any, item: any): void
+  onChangeStatus(value: any, e: any): void
 }
 
 const IterationCard = (props: Props) => {
@@ -123,8 +124,6 @@ const IterationCard = (props: Props) => {
       props?.onChangeEdit(e, props?.item)
     } else if (type === 'del') {
       props?.onChangeDelete(e, props?.item)
-    } else {
-      props?.onChangeEnd(e, props?.item)
     }
   }
 
@@ -139,14 +138,6 @@ const IterationCard = (props: Props) => {
       {
         key: '2',
         label: (
-          <div onClick={e => onClickMenu(e, 'other')}>
-            {item.status === 1 ? t('common.close') : t('common.open')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label: (
           <div onClick={e => onClickMenu(e, 'del')}>{t('common.del')} </div>
         ),
       },
@@ -155,26 +146,11 @@ const IterationCard = (props: Props) => {
       menuItems = menuItems.filter((i: any) => i.key !== '1')
     }
 
-    if (hasChangeStatus) {
+    if (hasDel) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-
     return <Menu items={menuItems} />
-  }
-
-  // 获取迭代状态对应名称
-  const onGetStatusName = (status: any) => {
-    let name: any
-    if (status === 1) {
-      name = '已开启'
-    } else {
-      name = status === 3 ? '已关闭' : '已完成'
-    }
-    return name
   }
 
   return (
@@ -196,9 +172,14 @@ const IterationCard = (props: Props) => {
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
-          <StatusTag status={props.item.status}>
+          <IterationStatus
+            iterateInfo={props.item}
+            hasChangeStatus={hasChangeStatus}
+            onChangeStatus={props.onChangeStatus}
+          />
+          {/* <StatusTag status={props.item.status}>
             {onGetStatusName(props.item.status)}
-          </StatusTag>
+          </StatusTag> */}
         </InfoContent>
       </div>
       <DetailWrap onClick={props.onClickInfo}>

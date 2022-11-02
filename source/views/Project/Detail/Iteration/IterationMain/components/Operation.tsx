@@ -10,14 +10,14 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Modal, message, Tooltip } from 'antd'
+import { Modal, message, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { StatusTag } from '@/components/StyleCommon'
 import EditAchievements from '../../components/EditAchievements'
+import IterationStatus from '../../components/IterationStatus'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -38,23 +38,6 @@ const IterationInfo = styled.div({
   alignItems: 'center',
   position: 'relative',
 })
-
-const LiWrap = styled.div<{ color: any }>(
-  {
-    cursor: 'pointer',
-    padding: '0 16px',
-    width: '100%',
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    background: 'white',
-  },
-  ({ color }) => ({
-    '&: hover': {
-      background: color,
-    },
-  }),
-)
 
 const IconWrap = styled(IconFont)<{ color?: string }>(
   {
@@ -123,29 +106,6 @@ const Operation = (props: Props) => {
     }
   }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}
-    >
-      <LiWrap color="#F0F4FA" onClick={() => onChangeStatus(1)}>
-        <StatusTag status={1}>已开启</StatusTag>
-      </LiWrap>
-
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag status={2}>已完成</StatusTag>
-      </LiWrap>
-
-      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(3)}>
-        <StatusTag status={3}>已关闭</StatusTag>
-      </LiWrap>
-    </div>
-  )
-
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.status,
@@ -211,17 +171,6 @@ const Operation = (props: Props) => {
     props?.onChangeIsShowLeft?.()
   }
 
-  // 获取迭代状态对应名称
-  const onGetStatusName = (status: any) => {
-    let name: any
-    if (status === 1) {
-      name = '已开启'
-    } else {
-      name = status === 3 ? '已关闭' : '已完成'
-    }
-    return name
-  }
-
   return (
     <StickyWrap ref={stickyWrapDom}>
       <Modal
@@ -279,48 +228,17 @@ const Operation = (props: Props) => {
               />
             </Tooltip>
           )}
-          <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
+          <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
             {props.currentDetail?.name}
           </span>
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
-          {hasChangeStatus ? (
-            props.currentDetail?.id ? (
-              <StatusTag
-                style={{ cursor: 'inherit' }}
-                status={props.currentDetail?.status}
-              >
-                {onGetStatusName(props.currentDetail?.status)}
-              </StatusTag>
-            ) : null
-          ) : (
-            <Popover
-              placement="bottom"
-              content={changeStatus}
-              getPopupContainer={node => node}
-            >
-              {props.currentDetail ? (
-                <StatusTag status={props.currentDetail?.status}>
-                  {onGetStatusName(props.currentDetail?.status)}
-                  <IconFont
-                    type="down-icon"
-                    style={{
-                      fontSize: 12,
-                      marginLeft: 4,
-                      color:
-                        props.currentDetail?.status === 1
-                          ? '#2877FF'
-                          : props.currentDetail?.status === 2
-                          ? '#43BA9A'
-                          : '#969799',
-                    }}
-                  />
-                </StatusTag>
-              ) : null}
-            </Popover>
-          )}
-
+          <IterationStatus
+            hasChangeStatus={hasChangeStatus}
+            iterateInfo={props.currentDetail}
+            onChangeStatus={onChangeStatus}
+          />
           <Tooltip title={t('project.iterateTarget')}>
             <IconWrap onClick={() => setVisible(true)} type="detail" />
           </Tooltip>
