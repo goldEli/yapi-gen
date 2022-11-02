@@ -43,6 +43,7 @@ function getTypeComponent(
         allowClear
         value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
+        open={isModal}
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={
           !isModal
@@ -68,6 +69,7 @@ function getTypeComponent(
       <Input
         placeholder={params.remarks || ''}
         onBlur={e => (!isModal ? void 0 : onBlur(e.target.value))}
+        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
         type={params?.attr}
         allowClear
         defaultValue={defaultValue}
@@ -115,6 +117,7 @@ function getTypeComponent(
         ref={inputRef}
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
+        defaultOpen={isModal}
       />
     )
   } else if (String(params?.attr)?.includes('fixed_')) {
@@ -134,6 +137,7 @@ function getTypeComponent(
         onChange={onChange}
         options={params?.value}
         mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
+        defaultOpen={isModal}
       />
     )
   } else {
@@ -151,6 +155,7 @@ function getTypeComponent(
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
+        defaultOpen={isModal}
         mode={
           ['select_checkbox', 'checkbox'].includes(params?.attr)
             ? 'multiple'

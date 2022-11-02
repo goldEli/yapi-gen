@@ -9,18 +9,24 @@ import { Input, Button, message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
-import { getParamsData, getNestedChildren, getTypeComponent } from '@/tools'
+import { getParamsData, getNestedChildren } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
-import { AddWrap, HiddenText } from '@/components/StyleCommon'
+import {
+  AddWrap,
+  HiddenText,
+  IconFontWrapEdit,
+  CanOperation,
+} from '@/components/StyleCommon'
 import ParentDemand from '../../components/ParentDemand'
 import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
+import TableQuickEdit from '@/components/TableQuickEdit'
 
 const WrapRight = styled.div({
   width: '424px',
@@ -190,137 +196,6 @@ const SetHead = styled.div`
   margin-top: 24;
 `
 
-const IconfontWrap = styled(IconFont)({
-  marginLeft: 8,
-  color: '#2877ff',
-  visibility: 'hidden',
-})
-
-const CanOperation = styled.div<{ isCanEdit?: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    cursor: 'pointer',
-    minWidth: 60,
-    minHeight: 32,
-    borderRadius: 4,
-    padding: '0 8px',
-  },
-  ({ isCanEdit }) => ({
-    '&: hover': {
-      background: isCanEdit ? '#F0F4FA' : '',
-      [IconfontWrap.toString()]: {
-        visibility: 'visible',
-      },
-    },
-  }),
-)
-
-interface Props {
-  text: any
-  keyText: any
-  type: string
-  value?: any
-  defaultText?: any
-  isCustom?: boolean
-  remarks?: any
-}
-
-const QuickEdit = (props: Props) => {
-  const [isShowControl, setIsShowControl] = useState(false)
-  const inputRef = useRef<any>(null)
-  const { updateTableParams, demandInfo, getDemandInfo } = useModel('demand')
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { projectInfo } = useModel('project')
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
-
-  useEffect(() => {
-    if (isShowControl) {
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
-    }
-  }, [isShowControl])
-
-  // 操作框改变
-  const onChange = async (newValue: any, type: any) => {
-    const obj: any = {
-      projectId,
-      id: demandInfo?.id,
-    }
-    if (props?.isCustom) {
-      obj.otherParams = {
-        custom_field: { [props?.keyText]: newValue },
-      }
-    } else {
-      obj.otherParams = { [props?.keyText]: newValue || '' }
-    }
-    try {
-      await updateTableParams(obj)
-      getDemandInfo({ projectId, id: demandInfo?.id })
-      if (type === 1) {
-        setIsShowControl(false)
-      }
-    } catch (error) {
-      //
-    }
-  }
-
-  // 操作框失焦
-  const onBlur = (val: any) => {
-    if (val === props?.defaultText) {
-      setIsShowControl(false)
-    } else {
-      let resultVal: any
-      if (
-        ['select_checkbox', 'checkbox', 'fixed_select'].includes(props?.type) &&
-        !val
-      ) {
-        resultVal = []
-      } else {
-        resultVal = val || ''
-      }
-      onChange(resultVal, 1)
-    }
-  }
-
-  const onClick = () => {
-    setIsShowControl(true)
-  }
-
-  return (
-    <>
-      {isShowControl ? (
-        <>
-          {getTypeComponent(
-            {
-              attr: props?.type,
-              value: props?.value,
-              remarks: props?.remarks,
-            },
-            true,
-            props?.defaultText,
-            inputRef,
-            onBlur,
-            onChange,
-          )}
-        </>
-      ) : (
-        <CanOperation onClick={onClick} isCanEdit={isCanEdit}>
-          <span>{props?.text}</span>
-          <IconfontWrap type="down-icon" />
-        </CanOperation>
-      )}
-    </>
-  )
-}
-
 const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -477,12 +352,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           <InfoItem>
             <Label>{t('common.dealName')}</Label>
             <ContentWrap>
-              <QuickEdit
-                text={
-                  demandInfo?.user?.length
-                    ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
-                    : '--'
-                }
+              <TableQuickEdit
+                item={demandInfo}
+                isInfo
                 keyText="users"
                 type="fixed_select"
                 defaultText={
@@ -494,7 +366,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   label: i.name,
                   value: i.id,
                 }))}
-              />
+              >
+                {demandInfo?.user?.length
+                  ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
+                  : '--'}
+              </TableQuickEdit>
             </ContentWrap>
           </InfoItem>
           <InfoItem>
@@ -528,12 +404,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           <InfoItem>
             <Label>{t('common.iterate')}</Label>
             <ContentWrap>
-              <QuickEdit
-                text={
-                  demandInfo?.iterateName === '--'
-                    ? '--'
-                    : demandInfo?.iterateName
-                }
+              <TableQuickEdit
+                item={demandInfo}
+                isInfo
                 keyText="iterate_id"
                 type="fixed_radio"
                 defaultText={
@@ -547,7 +420,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     label: i.name,
                     value: i.id,
                   }))}
-              />
+              >
+                {demandInfo?.iterateName === '--'
+                  ? '--'
+                  : demandInfo?.iterateName}
+              </TableQuickEdit>
             </ContentWrap>
           </InfoItem>
           <InfoItem>
@@ -564,17 +441,18 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             </Label>
 
             <ContentWrap>
-              <QuickEdit
-                text={
-                  demandInfo?.className
-                    ? demandInfo?.className
-                    : t('newlyAdd.unclassified')
-                }
+              <TableQuickEdit
+                item={demandInfo}
+                isInfo
                 keyText="class_id"
                 type="treeSelect"
                 defaultText={demandInfo?.class}
                 value={classTreeData}
-              />
+              >
+                {demandInfo?.className
+                  ? demandInfo?.className
+                  : t('newlyAdd.unclassified')}
+              </TableQuickEdit>
             </ContentWrap>
           </InfoItem>
           <InfoItem>
@@ -610,7 +488,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     type={demandInfo?.priority?.icon}
                   />
                   <span>{demandInfo?.priority?.content_txt || '--'}</span>
-                  {isCanEdit && <IconfontWrap type="down-icon" />}
+                  {isCanEdit && <IconFontWrapEdit type="down-icon" />}
                 </CanOperation>
               </div>
             </Popconfirm>
@@ -618,38 +496,38 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           <InfoItem>
             <Label>{t('common.start')}</Label>
             <ContentWrap>
-              <QuickEdit
-                text={demandInfo?.expectedStart || '--'}
+              <TableQuickEdit
+                item={demandInfo}
+                isInfo
                 keyText="expected_start_at"
                 type="date"
                 defaultText={demandInfo?.expectedStart || ''}
                 value={['date']}
-              />
+              >
+                {demandInfo?.expectedStart || '--'}
+              </TableQuickEdit>
             </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.end')}</Label>
             <ContentWrap>
-              <QuickEdit
-                text={demandInfo?.expectedEnd || '--'}
+              <TableQuickEdit
+                item={demandInfo}
                 keyText="expected_end_at"
                 type="date"
                 defaultText={demandInfo?.expectedEnd || ''}
                 value={['date']}
-              />
+              >
+                {demandInfo?.expectedEnd || '--'}
+              </TableQuickEdit>
             </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.copySend')}</Label>
             <ContentWrap>
-              <QuickEdit
-                text={
-                  demandInfo?.copySend?.length
-                    ? demandInfo?.copySend
-                        ?.map((i: any) => i.copysend.name)
-                        .join('、')
-                    : '--'
-                }
+              <TableQuickEdit
+                item={demandInfo}
+                isInfo
                 keyText="copysend"
                 type="fixed_select"
                 defaultText={
@@ -661,7 +539,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   label: i.name,
                   value: i.id,
                 }))}
-              />
+              >
+                {demandInfo?.copySend?.length
+                  ? demandInfo?.copySend
+                      ?.map((i: any) => i.copysend.name)
+                      .join('、')
+                  : '--'}
+              </TableQuickEdit>
             </ContentWrap>
           </InfoItem>
           {fieldList?.list?.map((i: any) => (
@@ -678,21 +562,22 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 </OmitText>
               </Label>
               <ContentWrap>
-                <QuickEdit
-                  text={
-                    Array.isArray(demandInfo?.customField?.[i.content]?.value)
-                      ? demandInfo?.customField?.[i.content]?.value?.length > 0
-                        ? demandInfo?.customField?.[i.content]?.value.join('、')
-                        : '--'
-                      : demandInfo?.customField?.[i.content]?.value || '--'
-                  }
+                <TableQuickEdit
+                  item={demandInfo}
+                  isInfo
                   keyText={i.content}
                   type={i.type?.attr}
                   defaultText={demandInfo?.customField?.[i.content]?.value}
                   value={i.type?.value}
                   isCustom
                   remarks={i.remarks}
-                />
+                >
+                  {Array.isArray(demandInfo?.customField?.[i.content]?.value)
+                    ? demandInfo?.customField?.[i.content]?.value?.length > 0
+                      ? demandInfo?.customField?.[i.content]?.value.join('、')
+                      : '--'
+                    : demandInfo?.customField?.[i.content]?.value || '--'}
+                </TableQuickEdit>
               </ContentWrap>
             </InfoItem>
           ))}

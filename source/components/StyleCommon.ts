@@ -8,6 +8,38 @@ import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 
+const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
+  {
+    marginLeft: 16,
+    color: '#2877ff',
+    visibility: 'hidden',
+  },
+  ({ isTable }) => ({
+    fontSize: isTable ? 20 : 14,
+  }),
+)
+
+const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    minWidth: 60,
+    minHeight: 32,
+    borderRadius: 4,
+    padding: '0 8px',
+  },
+  ({ isCanEdit, isTable }) => ({
+    justifyContent: isTable ? 'flex-start' : 'space-between',
+    '&: hover': {
+      background: isCanEdit ? '#F0F4FA' : '',
+      [IconFontWrapEdit.toString()]: {
+        visibility: 'visible',
+      },
+    },
+  }),
+)
+
 const editButton = css`
   padding: 0 16px;
   height: 32px;
@@ -708,4 +740,6 @@ export {
   StatusTag,
   ProgressWrapUpload,
   editButton,
+  CanOperation,
+  IconFontWrapEdit,
 }

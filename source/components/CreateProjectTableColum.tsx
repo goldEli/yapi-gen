@@ -23,7 +23,7 @@ import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from './DemandProgress'
-import { useState } from 'react'
+import TableQuickEdit from './TableQuickEdit'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -140,15 +140,23 @@ export const useDynamicColumns = (state: any) => {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <Tooltip title={text} getPopupContainer={node => node}>
-              <ListNameWrap
-                isName
-                isClose={record.status?.is_end === 1}
-                onClick={() => state.onClickItem(record)}
-              >
-                {text}
-              </ListNameWrap>
-            </Tooltip>
+            <TableQuickEdit
+              type="text"
+              defaultText={text}
+              keyText="name"
+              item={record}
+              onUpdate={onUpdate}
+            >
+              <Tooltip title={text} getPopupContainer={node => node}>
+                <ListNameWrap
+                  isName
+                  isClose={record.status?.is_end === 1}
+                  onClick={() => state.onClickItem(record)}
+                >
+                  {text}
+                </ListNameWrap>
+              </Tooltip>
+            </TableQuickEdit>
           </div>
         )
       },
@@ -253,18 +261,26 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'iteration',
       key: 'iterate_name',
       width: 120,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={120}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
-          </HiddenText>
+          <TableQuickEdit
+            type="fixed_radio"
+            defaultText={text}
+            keyText="iterate_name"
+            item={record}
+            onUpdate={onUpdate}
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
         )
       },
     },
