@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
@@ -20,123 +22,36 @@ import {
 import { DataWrap, TableBox, tableWrapP } from '../staff'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
-import { getDailyList } from '@/services/daily'
+import { getReceiveList } from '@/services/daily'
 import { useParams } from 'react-router-dom'
+import { getStaffList2 } from '@/services/staff'
 
+const srr = [
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  1,
+  2,
+  3,
+]
 const Get = () => {
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
-  // const [listData, setListData] = useState<any>([])
+  const [listData, setListData] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(10)
+  const [created_at, setCreated_at] = useState<any>([])
+  const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
-
-  const listData = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '2',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '3',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '4',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '5',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '6',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '7',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '8',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-    },
-    {
-      key: '9',
-      name: '胡彦斌',
-      gender: 32,
-      email: '西湖区湖底公园1号',
-      phone: '胡彦斌',
-      department_name: 32,
-      position_name: '西湖区湖底公园1号',
-      role_name: '胡彦斌',
-      created_at: 32,
-      state: true,
-    },
-  ]
+  const [options, setOptions] = useState<any>([])
+  const [userId, setUserId] = useState<any>('')
+  const [status, setStatus] = useState<any>(true)
 
   const NewSort = (props: any) => {
     return (
@@ -153,7 +68,7 @@ const Get = () => {
 
   const columnsData: any = [
     {
-      width: 200,
+      width: 100,
       title: <NewSort fixedKey="name">标题</NewSort>,
       dataIndex: 'name',
       key: 'name',
@@ -162,33 +77,36 @@ const Get = () => {
       },
     },
     {
-      title: <NewSort fixedKey="gender">内容摘要</NewSort>,
-      dataIndex: 'gender',
-      key: 'gender',
-      width: 200,
-    },
-    {
-      title: <NewSort fixedKey="email">附件</NewSort>,
-      dataIndex: 'email',
-      key: 'email',
+      title: <NewSort fixedKey="finish_content">内容摘要</NewSort>,
+      dataIndex: 'finish_content',
+      key: 'finish_content',
       width: 200,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <span dangerouslySetInnerHTML={{ __html: text || '--' }} />
       },
     },
     {
-      title: <NewSort fixedKey="phone">关联需求</NewSort>,
-      dataIndex: 'phone',
-      key: 'phone',
+      title: <NewSort fixedKey="file_count">附件数量</NewSort>,
+      dataIndex: 'file_count',
+      key: 'file_count',
+      width: 200,
+      render: (text: string) => {
+        return <span>{`${text}个`}</span>
+      },
+    },
+    {
+      title: <NewSort fixedKey="story_count">关联需求</NewSort>,
+      dataIndex: 'story_count',
+      key: 'story_count',
       width: 150,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return <span>{`${text}个`}</span>
       },
     },
     {
-      title: <NewSort fixedKey="department_name">创建日期</NewSort>,
-      dataIndex: 'department_name',
-      key: 'department_name',
+      title: <NewSort fixedKey="created_at">创建日期</NewSort>,
+      dataIndex: 'created_at',
+      key: 'created_at',
       width: 160,
       render: (text: string) => {
         return <span>{text || '--'}</span>
@@ -207,20 +125,20 @@ const Get = () => {
               style={{
                 width: '8px',
                 height: '8px',
-                background: record.state ? 'red' : '#43BA9A',
+                background: record.status === 1 ? 'red' : '#43BA9A',
                 display: 'inline-block',
                 borderRadius: '50%',
                 marginRight: '8px',
               }}
             />
-            <span>{record.state ? '已阅' : '未读'}</span>
+            <span>{record.status === 1 ? '已阅' : '未读'}</span>
           </div>
         )
       },
     },
 
     {
-      title: <NewSort fixedKey="created_at">操作</NewSort>,
+      title: '操作',
       dataIndex: 'created_at',
       key: 'created_at',
       width: 180,
@@ -259,42 +177,72 @@ const Get = () => {
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
   }
-  const confirm = () => {
-    // console.log();
+  const confirm = (e: any) => {
+    setUserId(e)
   }
   const onChange = (e: any) => {
-    // console.log(`checked = ${e.target.checked}`)
+    setStatus(e.target.checked)
   }
   const onChangeTime = (key: any, dates: any) => {
-    if (dates) {
-      //   form.setFieldsValue({
-      //     [key]: [
-      //       moment(dates[0]).unix()
-      //         ? moment(dates[0]).format('YYYY-MM-DD')
-      //         : '1970-01-01',
-      //       moment(dates[1]).unix() === 1893427200
-      //         ? '2030-01-01'
-      //         : moment(dates[1]).format('YYYY-MM-DD'),
-      //     ],
-      //   })
-    }
-    confirm()
+    setCreated_at(dates)
   }
 
   const init = async () => {
     const obj = {
-      type: urlId,
+      type: srr[urlId as unknown as number],
       keyword,
       order,
       orderkey: orderKey,
       page,
       pagesize,
+      created_at,
+      userId,
+      status,
     }
-    const res = await getDailyList(obj)
+    const res = await getReceiveList(obj)
+
+    setListData(res.list)
+    setTotal(res.total)
+  }
+  const init2 = async () => {
+    const obj = {
+      type: srr[urlId as unknown as number],
+      keyword: '',
+      order: 0,
+      orderkey: '',
+      page: 1,
+      pagesize: 20,
+      created_at: [],
+      userId: '',
+      status: true,
+    }
+    const res = await getReceiveList(obj)
+
+    setListData(res.list)
+    setTotal(res.total)
   }
   useEffect(() => {
     init()
+  }, [orderKey, order, page, pagesize, keyword, created_at, userId, status])
+  useEffect(() => {
+    init2()
   }, [urlId])
+
+  const getList = async () => {
+    const result = await getStaffList2({ all: 1 })
+
+    setOptions(
+      result.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id,
+        }
+      }),
+    )
+  }
+  useEffect(() => {
+    getList()
+  }, [])
 
   return (
     <div>
@@ -312,8 +260,9 @@ const Get = () => {
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '14px' }}>创建时间</span>
           <DatePicker.RangePicker
-            allowClear={false}
+            allowClear
             className={rangPicker}
+            onChange={onChangeTime}
             getPopupContainer={node => node}
             format={(times: moment.Moment) => {
               if (times.unix() === 0 || times.unix() === 1893427200) {
@@ -379,14 +328,13 @@ const Get = () => {
           <span style={{ margin: '0 16px', fontSize: '14px' }}>发送人</span>
 
           <SelectWrap
+            allowClear
             showArrow
-            mode="multiple"
             style={{ width: '100%' }}
             placeholder={t('common.pleaseSelect')}
-            showSearch
             onChange={confirm}
             optionFilterProp="label"
-            options={[]}
+            options={options}
           />
         </SelectWrapBedeck>
         <Checkbox onChange={onChange}>只看未阅</Checkbox>
@@ -407,30 +355,19 @@ const Get = () => {
         <StaffTableWrap style={{ height: '100%' }}>
           <DataWrap>
             <Spin spinning={isSpinning}>
-              {
-                !!listData &&
-                  (listData?.length > 0 ? (
-                    <TableBox
-                      rowKey="id"
-                      columns={columnsData}
-                      dataSource={listData}
-                      pagination={false}
-                      scroll={{ x: 'max-content' }}
-                      sticky
-                    />
-                  ) : (
-                    <NoData />
-                  ))
-
-                //   <TableBox
-                //     rowKey="id"
-                //     columns={columnsData}
-                //     dataSource={listData}
-                //     pagination={false}
-                //     scroll={{ x: 'max-content' }}
-                //     sticky
-                //   />
-              }
+              {!!listData &&
+                (listData?.length > 0 ? (
+                  <TableBox
+                    rowKey="id"
+                    columns={columnsData}
+                    dataSource={listData}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                    sticky
+                  />
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </DataWrap>
         </StaffTableWrap>

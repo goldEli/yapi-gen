@@ -62,7 +62,6 @@ const RelatedNeed = (props: any) => {
   const [chooseList, setChooseList] = useState<any>([])
   const [projectList, setProjectList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
-  const [projectId, setProjectId] = useState<any>(null)
   const [show, setShow] = useState<boolean>(false)
   const [showNeed, setShowNeed] = useState<boolean>(true)
 
@@ -90,7 +89,7 @@ const RelatedNeed = (props: any) => {
     const newData = structuredClone(chooseList)
     newData.splice(index, 1)
     setChooseList(newData)
-    props.onChange(newData)
+    props.onChange(newData.map((k: any) => k.value))
   }
 
   const init = async () => {

@@ -2,6 +2,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
+import { getReportDetail } from '@/services/daily'
+import {
+  BigWrap,
+  First,
+  Gred,
+  GredParent,
+  Second,
+} from '@/views/Project/Detail/Demand/components/UploadAttach'
 import {
   IconFontWrap,
   NewNameWrap,
@@ -10,20 +18,10 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
 import { use } from 'i18next'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { InnerLine } from './RelatedNeed'
 import { LabelTitle } from './WhiteDay'
-
-const move = keyframes`
-  0% {
-      transform: translate(100%);
-    }
-  
-    100% {
-      transform: translateX(-100%);
-    }
-`
 
 const GrepWrap = styled.div`
   position: fixed;
@@ -41,13 +39,14 @@ const FormWrap = styled.div<{ left: any }>`
   background: #ffffff;
   border-radius: 8px;
   position: absolute;
-  left: ${({ left }) => left};
+  left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
-  transition: all 1s linear;
-  /* animation: ${move} 2s ease infinite; */
+
+  transform: translate(-50%, -50%) rotateY(${({ left }) => left}deg);
+  transition: all 2s linear;
   box-sizing: border-box;
   padding: 24px;
+  transform-style: preserve-3d;
   padding-top: 0px;
 `
 const HiddenWrap = styled.div`
@@ -80,13 +79,60 @@ const Arrow2 = styled(Arrow)`
 
 const article = '<div>我是富文本内容<span >123</span></div>'
 const LookDay = (props: any) => {
-  const [left, setLeft] = useState('50%')
-  const onChangeLeft = (value: any) => {
+  const [left, setLeft] = useState(0)
+  const [attachList, setAttachList] = useState<any>([])
+  const [peopleValue, setPeopleValue] = useState<any>([])
+  const [needValue, setNeedValue] = useState<any>([])
+  const [article1, setArticle1] = useState<any>([])
+  const [article2, setArticle2] = useState<any>([])
+  const [title, setTitle] = useState<any>('')
+
+  const onChangeLeft = (value: any, type: any) => {
     setLeft(value)
     setTimeout(() => {
-      setLeft('50%')
+      props.onChange(type, props.editId)
+      setLeft(0)
     }, 1000)
   }
+
+  const setDefaultValue = async () => {
+    const res = await getReportDetail(props.editId)
+
+    setTitle(res.data.info.name)
+    setArticle1(res.data.info.finish_content)
+    setArticle2(res.data.info.plan_content)
+    const arr = res.data.copysend_list.map((item: any) => ({
+      avatar: item.avatar,
+      id: item.user_id,
+      name: item.name,
+      status: item.status,
+    }))
+    setPeopleValue(arr)
+    setNeedValue(
+      res.data.story_list.map((item: any) => {
+        return {
+          key: item.associate,
+          value: Number(item.associate),
+          label: item.name,
+        }
+      }),
+    )
+    setAttachList(
+      res.data.files.map((item: any) => {
+        return {
+          path: item.associate,
+          id: item.id,
+          time: item.created_at,
+        }
+      }),
+    )
+  }
+  useEffect(() => {
+    if (props.editId && props.visible) {
+      setDefaultValue()
+    }
+  }, [props.editId, props.visible])
+
   if (!props.visible) {
     return null
   }
@@ -103,7 +149,7 @@ const LookDay = (props: any) => {
               justifyContent: 'space-between',
             }}
           >
-            <span>何飞的日报2022-08-25</span>
+            <span>{title}</span>
             <span
               style={{
                 cursor: 'pointer',
@@ -116,168 +162,240 @@ const LookDay = (props: any) => {
               />
             </span>
           </div>
-          <LabelTitle title="今日完成工作" />
-          <div dangerouslySetInnerHTML={{ __html: article }} />
-          <LabelTitle title="明日计划工作" />
-          <div dangerouslySetInnerHTML={{ __html: article }} />
-          <LabelTitle title="抄送人" />
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              height: '840px',
+              overflow: 'scroll',
             }}
           >
-            {[1, 2, 3]?.map((i: any) => (
-              <div
-                key={i.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
+            <LabelTitle title="今日完成工作" />
+            <div dangerouslySetInnerHTML={{ __html: article1 }} />
+            <LabelTitle title="明日计划工作" />
+            <div dangerouslySetInnerHTML={{ __html: article2 }} />
+            <LabelTitle title="抄送人" />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
+              {peopleValue?.map((i: any) => (
                 <div
+                  key={i.id}
                   style={{
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    marginRight: '24px',
                   }}
                 >
-                  <NewNameWrap>
-                    {i.avatar ? (
-                      <img
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 16,
-                        }}
-                        src={i.avatar}
-                      />
-                    ) : (
-                      <NameWrap style={{ margin: 0 }}>
-                        {/* {String(
-                            i?.substring(0, 1).trim()
-                              .slice(0, 1),
-                          ).toLocaleUpperCase()} */}
-                        12
-                      </NameWrap>
-                    )}
-                  </NewNameWrap>
-                  <span>{i}</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      marginRight: '24px',
+                    }}
+                  >
+                    <NewNameWrap>
+                      {i.avatar ? (
+                        <img
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: 16,
+                          }}
+                          src={i.avatar}
+                        />
+                      ) : (
+                        <NameWrap style={{ margin: 0 }}>
+                          {String(
+                            i.name.substring(0, 1).trim().slice(0, 1),
+                          ).toLocaleUpperCase()}
+                        </NameWrap>
+                      )}
+                    </NewNameWrap>
+                    <span>{i.name}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <LabelTitle title="附件" />
-          <div dangerouslySetInnerHTML={{ __html: article }} />
-          <LabelTitle title="关联需求" />
-          <div>
-            {[1, 23].map((item: any) => (
-              <InnerLine key={item}>
-                <span>{item}</span>
-              </InnerLine>
-            ))}
-          </div>
-          <LabelTitle title="已阅" />
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {[1, 2, 3]?.map((i: any) => (
-              <div
-                key={i.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <div
+            <LabelTitle title="附件" />
+            <div>
+              {attachList.map((item: any) => (
+                <BigWrap
+                  key={item.id}
                   style={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    marginRight: '24px',
+                    marginBottom: '16px',
                   }}
                 >
-                  <NewNameWrap>
-                    {i.avatar ? (
-                      <img
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 16,
-                        }}
-                        src={i.avatar}
+                  <GredParent
+                    style={{
+                      marginRight: '8px',
+                      position: 'relative',
+                    }}
+                  >
+                    <img
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                      }}
+                      src={item.path}
+                      alt=""
+                    />
+                    <Gred>
+                      <IconFont
+                        style={{ fontSize: 18, color: 'white' }}
+                        type="zoomin"
                       />
-                    ) : (
-                      <NameWrap style={{ margin: 0 }}>
-                        {/* {String(
+                    </Gred>
+                  </GredParent>
+                  <div>
+                    <div
+                      style={{
+                        height: '22px',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        color: '#323233',
+                        lineHeight: '22px',
+                      }}
+                    >
+                      {item.path.split('/').at(-1)}
+                    </div>
+                    <div
+                      style={{
+                        height: '20px',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        color: '#969799',
+                        lineHeight: '20px',
+                      }}
+                    >
+                      <span
+                        style={{
+                          marginRight: '12px',
+                        }}
+                      >
+                        杨一
+                      </span>
+                      <span>{item.time}</span>
+                    </div>
+                  </div>
+                </BigWrap>
+              ))}
+            </div>
+            <LabelTitle title="关联需求" />
+            <div>
+              {needValue.map((item: any) => (
+                <InnerLine key={item.key}>
+                  <span>{item.label}</span>
+                </InnerLine>
+              ))}
+            </div>
+            <LabelTitle title="已阅" />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              {peopleValue
+                .filter((k: any) => k.status === 1)
+                ?.map((i: any) => (
+                  <div
+                    key={i.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginRight: '24px',
+                      }}
+                    >
+                      <NewNameWrap>
+                        {i.avatar ? (
+                          <img
+                            style={{
+                              width: 32,
+                              height: 32,
+                              borderRadius: 16,
+                            }}
+                            src={i.avatar}
+                          />
+                        ) : (
+                          <NameWrap style={{ margin: 0 }}>
+                            {String(
+                              i.name.substring(0, 1).trim().slice(0, 1),
+                            ).toLocaleUpperCase()}
+                          </NameWrap>
+                        )}
+                      </NewNameWrap>
+                      <span>{i.name}</span>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            <LabelTitle title="评论" />
+            <div>
+              <Input placeholder="Basic usage" />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: '24px',
+                marginTop: '12px',
+                marginBottom: '4px',
+              }}
+            >
+              <NameWrap style={{ margin: 0 }}>
+                {/* {String(
                             i?.substring(0, 1).trim()
                               .slice(0, 1),
                           ).toLocaleUpperCase()} */}
-                        12
-                      </NameWrap>
-                    )}
-                  </NewNameWrap>
-                  <span>{i}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <LabelTitle title="评论" />
-          <div>
-            <Input placeholder="Basic usage" />
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: '24px',
-              marginTop: '12px',
-              marginBottom: '4px',
-            }}
-          >
-            <NameWrap style={{ margin: 0 }}>
-              {/* {String(
-                            i?.substring(0, 1).trim()
-                              .slice(0, 1),
-                          ).toLocaleUpperCase()} */}
-              12
-            </NameWrap>
-            <span
+                12
+              </NameWrap>
+              <span
+                style={{
+                  margin: '0 10px',
+                }}
+              >
+                张三
+              </span>
+              <span
+                style={{
+                  color: '#969799',
+                }}
+              >
+                2022-06-20 15:30
+              </span>
+            </div>
+            <div
               style={{
-                margin: '0 10px',
+                paddingLeft: '40px',
               }}
             >
-              张三
-            </span>
-            <span
-              style={{
-                color: '#969799',
-              }}
-            >
-              2022-06-20 15:30
-            </span>
-          </div>
-          <div
-            style={{
-              paddingLeft: '40px',
-            }}
-          >
-            评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-            评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-            评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
+              评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
+              评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
+              评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
+            </div>
           </div>
         </FormWrap>
       </HiddenWrap>
 
-      <Arrow onClick={() => onChangeLeft('-100%')}>
+      <Arrow onClick={() => onChangeLeft(-180, 1)}>
         <IconFont type="left" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow>
-      <Arrow2 onClick={() => onChangeLeft('180%')}>
+      <Arrow2 onClick={() => onChangeLeft(180, 2)}>
         <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow2>
     </GrepWrap>,

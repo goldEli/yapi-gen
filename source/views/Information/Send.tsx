@@ -11,7 +11,7 @@ import {
   PaginationWrap,
   StaffTableWrap,
 } from '@/components/StyleCommon'
-import { DatePicker, Pagination, Spin } from 'antd'
+import { DatePicker, message, Pagination, Spin } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
@@ -22,27 +22,31 @@ import Sort from '@/components/Sort'
 import WhiteDay from './components/WhiteDay'
 import { useParams } from 'react-router-dom'
 import LookDay from './components/LookDay'
-import { getDailyList } from '@/services/daily'
+import { getDailyList, writeDaily } from '@/services/daily'
 
 const titleList = {
   2: '修改日报',
   3: '修改周报',
   4: '修改月报',
 }
+const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
   const [listData, setListData] = useState<any>([])
+  const [changeIds, setChangeIds] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>('')
   const [page, setPage] = useState<number>(1)
   const [created_at, setCreated_at] = useState<any>([])
-  const [pagesize, setPagesize] = useState<number>(10)
+  const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [editId, setEditId] = useState('')
+  const [showId, setShowId] = useState('')
+  const [editType, setEditType] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
 
@@ -50,8 +54,23 @@ const Send = () => {
     setVisibleEdit(false)
   }
 
-  const editConfirm = async (e: any) => {
-    editClose()
+  const editConfirm = async (params: any, needId: any) => {
+    const obj = {
+      id: needId,
+      finish_content: params.info,
+      plan_content: params.info2,
+      copysend: params.people,
+      files: params.attachments.map((item: any) => item.url),
+      story_ids: params.needs,
+      type: editType,
+    }
+
+    const res = await writeDaily(obj, 2)
+    if (res.code === 0) {
+      message.success('成功')
+      editClose()
+      init()
+    }
   }
   const lookClose = () => {
     setVisibleLook(false)
@@ -60,9 +79,7 @@ const Send = () => {
   const lookConfirm = async (e: any) => {
     editClose()
   }
-  const openShow = () => {
-    setVisibleLook(true)
-  }
+
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -158,6 +175,7 @@ const Send = () => {
                     titleList[urlId as unknown as keyof typeof titleList],
                   )
                   setEditId(record.id)
+                  setEditType(record.type)
                 }}
                 style={{
                   fontSize: '14px',
@@ -171,7 +189,10 @@ const Send = () => {
             ) : null}
 
             <span
-              onClick={openShow}
+              onClick={() => {
+                setVisibleLook(true)
+                setShowId(record.id)
+              }}
               style={{
                 fontSize: '14px',
                 fontWeight: ' 400',
@@ -207,7 +228,6 @@ const Send = () => {
   }
 
   const init = async () => {
-    const srr = [undefined, undefined, 1, 2, 3]
     const obj = {
       type: srr[urlId as unknown as number],
       keyword,
@@ -218,13 +238,51 @@ const Send = () => {
       created_at,
     }
     const res = await getDailyList(obj)
-
+    setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)
   }
+  const init2 = async () => {
+    const obj = {
+      type: srr[urlId as unknown as number],
+      keyword: '',
+      order: 0,
+      orderkey: '',
+      page: 1,
+      pagesize: 20,
+      created_at: [],
+    }
+    const res = await getDailyList(obj)
+    setChangeIds(res.list.map((item: any) => item.id))
+    setListData(res.list)
+    setTotal(res.total)
+  }
+  const changePage = (e: any, id: any) => {
+    const index = changeIds.findIndex((k: any) => k === id)
+    const start = changeIds.at(0)
+    const end = changeIds.at(-1)
+
+    if (e === 1) {
+      if (id === start) {
+        setShowId(end)
+        return
+      }
+      setShowId(changeIds[index - 1])
+    } else {
+      if (id === end) {
+        setShowId(start)
+        return
+      }
+      setShowId(changeIds[index + 1])
+    }
+  }
+
   useEffect(() => {
     init()
-  }, [urlId, orderKey, order, page, pagesize, keyword, created_at])
+  }, [orderKey, order, page, pagesize, keyword, created_at])
+  useEffect(() => {
+    init2()
+  }, [urlId])
   return (
     <div>
       <div
@@ -241,7 +299,7 @@ const Send = () => {
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '14px' }}>创建时间</span>
           <DatePicker.RangePicker
-            allowClear={false}
+            allowClear
             className={rangPicker}
             onChange={onChangeTime}
             getPopupContainer={node => node}
@@ -364,15 +422,6 @@ const Send = () => {
         </PaginationWrap>
       </div>
       {/* // 写日志的表单D */}
-      {/* {visibleEdit ? (
-        <WhiteDay
-          editId={editId}
-          visibleEditText={visibleEditText}
-          visibleEdit={visibleEdit}
-          editClose={editClose}
-          editConfirm={editConfirm}
-        />
-      ) : null} */}
       <WhiteDay
         editId={editId}
         visibleEditText={visibleEditText}
@@ -380,7 +429,10 @@ const Send = () => {
         editClose={editClose}
         editConfirm={editConfirm}
       />
+
       <LookDay
+        onChange={changePage}
+        editId={showId}
         visible={visibleLook}
         onEditClose={lookClose}
         editConfirm={lookConfirm}

@@ -51,11 +51,12 @@ const WhiteDay = (props: any) => {
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
+  const [title, setTitle] = useState<any>([])
   const leftDom = useRef<HTMLInputElement>(null)
   const confirm = async () => {
     const data: any = await form.validateFields()
 
-    props.editConfirm(data)
+    props.editConfirm(data, props.editId)
     form.resetFields()
   }
   const close = () => {
@@ -99,7 +100,7 @@ const WhiteDay = (props: any) => {
 
   const setDefaultValue = async () => {
     const res = await getReportDetail(props.editId)
-
+    setTitle(res.data.info.name)
     form.setFieldsValue({
       info: res.data.info.finish_content,
       info2: res.data.info.plan_content,
@@ -120,7 +121,7 @@ const WhiteDay = (props: any) => {
       res.data.story_list.map((item: any) => {
         return {
           key: item.associate,
-          value: item.associate,
+          value: Number(item.associate),
           label: item.name,
         }
       }),
@@ -135,15 +136,15 @@ const WhiteDay = (props: any) => {
     )
   }
   useEffect(() => {
-    if (props.editId) {
+    if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
-  }, [props.editId])
+  }, [props.editId, props.visibleEdit])
 
   return (
     <CommonModal
       width={784}
-      title={props.visibleEditText}
+      title={props.editId ? title : props.visibleEditText}
       isVisible={props.visibleEdit}
       onClose={close}
       onConfirm={confirm}

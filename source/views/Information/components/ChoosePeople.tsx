@@ -47,8 +47,6 @@ const ChoosePeople = (props: any) => {
   const getList = async () => {
     const result = await getStaffList2({ all: 1 })
 
-    // console.log(result, '成员')
-
     setOptions(result)
   }
 
