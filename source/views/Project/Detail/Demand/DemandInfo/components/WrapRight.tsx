@@ -79,20 +79,22 @@ const Label = styled.div({
   color: '#969799',
   fontSize: 14,
   fontWeight: 400,
-  minWidth: 120,
+  minWidth: 110,
   height: 32,
   lineHeight: '32px',
 })
 
-const ContentWrap = styled.div({
-  color: '#323233',
-  fontSize: 14,
-  display: 'flex',
-  flexDirection: 'column',
-  img: {
-    maxWidth: '20%',
+const ContentWrap = styled.div<{ notHover?: any }>(
+  {
+    color: '#323233',
+    fontSize: 14,
+    display: 'flex',
+    flexDirection: 'column',
   },
-})
+  ({ notHover }) => ({
+    paddingLeft: notHover ? 8 : 0,
+  }),
+)
 
 const CommentItem = styled.div<{ isShow?: boolean }>(
   {
@@ -187,20 +189,29 @@ const SetHead = styled.div`
   margin-right: 8px;
   margin-top: 24;
 `
-const DownPriority = styled.div<{ isShow?: boolean; isMargin?: boolean }>(
+
+const IconfontWrap = styled(IconFont)({
+  marginLeft: 8,
+  color: '#2877ff',
+  visibility: 'hidden',
+})
+
+const CanOperation = styled.div<{ isCanEdit?: any }>(
   {
-    '.icon': {
-      marginLeft: 8,
-      visibility: 'hidden',
-      fontSize: 16,
-      color: '#2877ff',
-    },
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    cursor: 'pointer',
+    minWidth: 60,
+    minHeight: 32,
+    borderRadius: 4,
+    padding: '0 8px',
   },
-  ({ isShow, isMargin }) => ({
-    marginLeft: isMargin ? 8 : 0,
+  ({ isCanEdit }) => ({
     '&: hover': {
-      '.icon': {
-        visibility: isShow ? 'visible' : 'hidden',
+      background: isCanEdit ? '#F0F4FA' : '',
+      [IconfontWrap.toString()]: {
+        visibility: 'visible',
       },
     },
   }),
@@ -210,11 +221,12 @@ interface Props {
   text: any
   keyText: any
   type: string
-  value: any
+  value?: any
   defaultText?: any
   isCustom?: boolean
   remarks?: any
 }
+
 const QuickEdit = (props: Props) => {
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<any>(null)
@@ -222,6 +234,11 @@ const QuickEdit = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { projectInfo } = useModel('project')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   useEffect(() => {
     if (isShowControl) {
@@ -231,7 +248,8 @@ const QuickEdit = (props: Props) => {
     }
   }, [isShowControl])
 
-  const onChange = async (newValue: any) => {
+  // 操作框改变
+  const onChange = async (newValue: any, type: any) => {
     const obj: any = {
       projectId,
       id: demandInfo?.id,
@@ -241,28 +259,38 @@ const QuickEdit = (props: Props) => {
         custom_field: { [props?.keyText]: newValue },
       }
     } else {
-      obj.otherParams = { [props?.keyText]: newValue }
+      obj.otherParams = { [props?.keyText]: newValue || '' }
     }
     try {
       await updateTableParams(obj)
       getDemandInfo({ projectId, id: demandInfo?.id })
-      setIsShowControl(false)
+      if (type === 1) {
+        setIsShowControl(false)
+      }
     } catch (error) {
       //
     }
   }
 
+  // 操作框失焦
   const onBlur = (val: any) => {
     if (val === props?.defaultText) {
       setIsShowControl(false)
     } else {
-      const resultVal: any =
-        ['select_checkbox', 'checkbox'].includes(props?.type) && !val ? [] : val
-      onChange(resultVal)
+      let resultVal: any
+      if (
+        ['select_checkbox', 'checkbox', 'fixed_select'].includes(props?.type) &&
+        !val
+      ) {
+        resultVal = []
+      } else {
+        resultVal = val || ''
+      }
+      onChange(resultVal, 1)
     }
   }
 
-  const onMouseEnter = () => {
+  const onClick = () => {
     setIsShowControl(true)
   }
 
@@ -284,7 +312,10 @@ const QuickEdit = (props: Props) => {
           )}
         </>
       ) : (
-        <span onMouseEnter={onMouseEnter}>{props?.text}</span>
+        <CanOperation onClick={onClick} isCanEdit={isCanEdit}>
+          <span>{props?.text}</span>
+          <IconfontWrap type="down-icon" />
+        </CanOperation>
       )}
     </>
   )
@@ -311,7 +342,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     updatePriority,
   } = useModel('demand')
   const { userInfo } = useModel('user')
-  const { projectInfo, fieldList, getFieldList } = useModel('project')
+  const { projectInfo, fieldList, getFieldList, memberList } =
+    useModel('project')
+  const { selectIterate } = useModel('iterate')
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -444,43 +477,83 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           <InfoItem>
             <Label>{t('common.dealName')}</Label>
             <ContentWrap>
-              {demandInfo?.user?.length
-                ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
-                : '--'}
+              <QuickEdit
+                text={
+                  demandInfo?.user?.length
+                    ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
+                    : '--'
+                }
+                keyText="users"
+                type="fixed_select"
+                defaultText={
+                  demandInfo?.user?.length
+                    ? demandInfo?.user?.map((i: any) => i.user.id)
+                    : []
+                }
+                value={memberList?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              />
             </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.createName')}</Label>
-            <ContentWrap>{demandInfo?.userName || '--'}</ContentWrap>
+            <ContentWrap notHover>{demandInfo?.userName || '--'}</ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.createTime')}</Label>
-            <ContentWrap>{demandInfo?.createdTime || '--'}</ContentWrap>
+            <ContentWrap notHover>
+              {demandInfo?.createdTime || '--'}
+            </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.finishTime')}</Label>
-            <ContentWrap>{demandInfo?.finishTime || '--'}</ContentWrap>
+            <ContentWrap notHover>{demandInfo?.finishTime || '--'}</ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.parentDemand')}</Label>
-            <ParentDemand
-              isRight
-              addWrap={
-                <AddWrap>
-                  <IconFont type="plus" />
-                  <div>{t('common.add23')}</div>
-                </AddWrap>
-              }
-            />
+            <div style={{ paddingLeft: 4 }}>
+              <ParentDemand
+                isRight
+                addWrap={
+                  <AddWrap>
+                    <IconFont type="plus" />
+                    <div>{t('common.add23')}</div>
+                  </AddWrap>
+                }
+              />
+            </div>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.iterate')}</Label>
-            <ContentWrap>{demandInfo?.iterateName}</ContentWrap>
+            <ContentWrap>
+              <QuickEdit
+                text={
+                  demandInfo?.iterateName === '--'
+                    ? '--'
+                    : demandInfo?.iterateName
+                }
+                keyText="iterate_id"
+                type="fixed_radio"
+                defaultText={
+                  demandInfo?.iterateName === '--'
+                    ? ''
+                    : demandInfo?.iterateName
+                }
+                value={selectIterate?.list
+                  ?.filter((k: any) => k.status === 1)
+                  ?.map((i: any) => ({
+                    label: i.name,
+                    value: i.id,
+                  }))}
+              />
+            </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>
               <OmitText
-                width={110}
+                width={100}
                 tipProps={{
                   placement: 'topLeft',
                   getPopupContainer: node => node,
@@ -527,33 +600,68 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   alignItems: 'center',
                 }}
               >
-                <IconFont
-                  style={{ fontSize: 20, color: demandInfo?.priority?.color }}
-                  type={demandInfo?.priority?.icon}
-                />
-                <DownPriority isShow={isCanEdit} isMargin>
+                <CanOperation isCanEdit={isCanEdit}>
+                  <IconFont
+                    style={{
+                      fontSize: 20,
+                      color: demandInfo?.priority?.color,
+                      marginRight: 4,
+                    }}
+                    type={demandInfo?.priority?.icon}
+                  />
                   <span>{demandInfo?.priority?.content_txt || '--'}</span>
-                  <IconFont className="icon" type="down-icon" />
-                </DownPriority>
+                  {isCanEdit && <IconfontWrap type="down-icon" />}
+                </CanOperation>
               </div>
             </Popconfirm>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.start')}</Label>
-            <ContentWrap>{demandInfo?.expectedStart || '--'}</ContentWrap>
+            <ContentWrap>
+              <QuickEdit
+                text={demandInfo?.expectedStart || '--'}
+                keyText="expected_start_at"
+                type="date"
+                defaultText={demandInfo?.expectedStart || ''}
+                value={['date']}
+              />
+            </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.end')}</Label>
-            <ContentWrap>{demandInfo?.expectedEnd || '--'}</ContentWrap>
+            <ContentWrap>
+              <QuickEdit
+                text={demandInfo?.expectedEnd || '--'}
+                keyText="expected_end_at"
+                type="date"
+                defaultText={demandInfo?.expectedEnd || ''}
+                value={['date']}
+              />
+            </ContentWrap>
           </InfoItem>
           <InfoItem>
             <Label>{t('common.copySend')}</Label>
             <ContentWrap>
-              {demandInfo?.copySend?.length
-                ? demandInfo?.copySend
-                    ?.map((i: any) => i.copysend?.name)
-                    .join('、')
-                : '--'}
+              <QuickEdit
+                text={
+                  demandInfo?.copySend?.length
+                    ? demandInfo?.copySend
+                        ?.map((i: any) => i.copysend.name)
+                        .join('、')
+                    : '--'
+                }
+                keyText="copysend"
+                type="fixed_select"
+                defaultText={
+                  demandInfo?.copySend?.length
+                    ? demandInfo?.copySend?.map((i: any) => i.copysend.id)
+                    : []
+                }
+                value={memberList?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              />
             </ContentWrap>
           </InfoItem>
           {fieldList?.list?.map((i: any) => (

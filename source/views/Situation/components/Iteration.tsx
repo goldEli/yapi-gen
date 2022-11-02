@@ -66,7 +66,7 @@ const Iteration = (props: any) => {
             <span className={title2Css}>{t('situation.openIterate')}</span>
           </ChartsItem>
           <ChartsItem>
-            <span className={title1Css}>1000</span>
+            <span className={title1Css}>{data?.finish_count ?? 0}</span>
             <span className={title2Css}>完成迭代</span>
           </ChartsItem>
           <ChartsItem>

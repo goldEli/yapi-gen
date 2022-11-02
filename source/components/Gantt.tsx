@@ -71,10 +71,6 @@ const GanttWrap = styled.div({
   '.gantt_task_cell': {
     borderRight: 'none',
   },
-  '.gantt_layout_content': {
-    boxShadow: '0px 4px 6px rgb(0 0 0 / 10%)',
-  },
-
   //   '.gantt_row:nth-child(even), .gantt_task_row:nth-child(even)': {
   //     backgroundColor: ' #f8f9fa',
   //   },

@@ -104,8 +104,8 @@ const EditRight = (props: Props) => {
             : 'YYYY-MM-DD',
         )
       } else if (
-        obj?.type?.attr === 'select_checkbox'
-        || obj?.type?.attr === 'checkbox'
+        obj?.type?.attr === 'select_checkbox' ||
+        obj?.type?.attr === 'checkbox'
       ) {
         values1[obj.content] = values1[obj.content]?.length
           ? values1[obj.content]
@@ -151,13 +151,13 @@ const EditRight = (props: Props) => {
           ?.length
       ) {
         form.setFieldsValue({
-          'class': '',
+          class: '',
         })
       }
       const form1Obj: any = {}
       for (const key in props.demandInfo?.customField) {
-        form1Obj[key]
-          = props.demandInfo?.customField[key]?.attr === 'date'
+        form1Obj[key] =
+          props.demandInfo?.customField[key]?.attr === 'date'
             ? props.demandInfo?.customField[key]?.value
               ? moment(props.demandInfo?.customField[key]?.value)
               : ''
@@ -246,30 +246,30 @@ const EditRight = (props: Props) => {
   return (
     <RightWrap>
       <FormWrapDemand layout="vertical" form={form}>
-        {props?.demandId
-          ? <Form.Item label={t('newlyAdd.demandProgress')} name="schedule">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <SliderWrap
-                  style={{ width: 330 }}
-                  value={schedule}
-                  tipFormatter={(value: any) => `${value}%`}
-                  onChange={value => onChangeSetSchedule(value)}
-                  disabled={
-                    !(
-                      props.demandInfo?.user
-                        ?.map((i: any) => i.user.id)
-                        ?.includes(userInfo?.id)
-                    && props.demandInfo.status.is_start !== 1
-                    && props.demandInfo.status.is_end !== 1
-                    )
-                  }
-                />
-                <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
-                  {schedule}%
-                </span>
-              </div>
-            </Form.Item>
-          : null}
+        {props?.demandId ? (
+          <Form.Item label={t('newlyAdd.demandProgress')} name="schedule">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <SliderWrap
+                style={{ width: 330 }}
+                value={schedule}
+                tipFormatter={(value: any) => `${value}%`}
+                onChange={value => onChangeSetSchedule(value)}
+                disabled={
+                  !(
+                    props.demandInfo?.user
+                      ?.map((i: any) => i.user.id)
+                      ?.includes(userInfo?.id) &&
+                    props.demandInfo.status.is_start !== 1 &&
+                    props.demandInfo.status.is_end !== 1
+                  )
+                }
+              />
+              <span style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}>
+                {schedule}%
+              </span>
+            </div>
+          </Form.Item>
+        ) : null}
         <Form.Item label={t('common.dealName')} name="userIds">
           <Select
             style={{ width: '100%' }}
@@ -321,10 +321,11 @@ const EditRight = (props: Props) => {
             options={
               props?.demandId
                 ? props.parentList?.filter(
-                  (k: any) => k.value !== props?.demandId
-                      && k.parentId !== props?.demandId
-                      && k.parentId !== props.demandInfo?.parentId,
-                )
+                    (k: any) =>
+                      k.value !== props?.demandId &&
+                      k.parentId !== props?.demandId &&
+                      k.parentId !== props.demandInfo?.parentId,
+                  )
                 : props.parentList
             }
             getPopupContainer={node => node}
@@ -393,33 +394,33 @@ const EditRight = (props: Props) => {
             }))}
           />
         </Form.Item>
-        {fieldList?.list
-          ? <>
-              {!isShowFields && (
-                <ShowLabel onClick={() => setIsShowFields(true)}>
-                  {t('newlyAdd.open')}
-                </ShowLabel>
-              )}
-              <FormWrapDemand
-                layout="vertical"
-                form={fieldsForm}
-                style={{ display: isShowFields ? 'block' : 'none' }}
-              >
-                {fieldList?.list?.map((i: any) => (
-                  <div style={{ display: 'flex' }} key={i.content}>
-                    <Form.Item label={i.name} name={i.content}>
-                      {getTypeComponent(i.type)}
-                    </Form.Item>
-                  </div>
-                ))}
-              </FormWrapDemand>
-              {isShowFields
-                ? <ShowLabel onClick={() => setIsShowFields(false)}>
-                    {t('newlyAdd.close')}
-                  </ShowLabel>
-                : null}
-            </>
-          : null}
+        {fieldList?.list ? (
+          <>
+            {!isShowFields && (
+              <ShowLabel onClick={() => setIsShowFields(true)}>
+                {t('newlyAdd.open')}
+              </ShowLabel>
+            )}
+            <FormWrapDemand
+              layout="vertical"
+              form={fieldsForm}
+              style={{ display: isShowFields ? 'block' : 'none' }}
+            >
+              {fieldList?.list?.map((i: any) => (
+                <div style={{ display: 'flex' }} key={i.content}>
+                  <Form.Item label={i.name} name={i.content}>
+                    {getTypeComponent(i.type)}
+                  </Form.Item>
+                </div>
+              ))}
+            </FormWrapDemand>
+            {isShowFields ? (
+              <ShowLabel onClick={() => setIsShowFields(false)}>
+                {t('newlyAdd.close')}
+              </ShowLabel>
+            ) : null}
+          </>
+        ) : null}
       </FormWrapDemand>
     </RightWrap>
   )

@@ -43,17 +43,19 @@ function getTypeComponent(
         allowClear
         value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
-        onBlur={() => (!isModal ? void 0 : onBlur(''))}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={
           !isModal
             ? void 0
             : (date: any) =>
                 onChange(
-                  moment(date).format(
-                    params?.value[0] === 'datetime'
-                      ? 'YYYY-MM-DD hh:mm:ss'
-                      : 'YYYY-MM-DD',
-                  ),
+                  date
+                    ? moment(date).format(
+                        params?.value[0] === 'datetime'
+                          ? 'YYYY-MM-DD hh:mm:ss'
+                          : 'YYYY-MM-DD',
+                      )
+                    : '',
                 )
         }
       />
@@ -113,6 +115,25 @@ function getTypeComponent(
         ref={inputRef}
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={onChange}
+      />
+    )
+  } else if (String(params?.attr)?.includes('fixed_')) {
+    // 之前固定字段的修改
+    child = (
+      <Select
+        placeholder={params.remarks}
+        style={{ width: '100%', minWidth: 192 }}
+        showSearch
+        showArrow
+        optionFilterProp="label"
+        getPopupContainer={node => node}
+        allowClear
+        value={defaultValue}
+        ref={inputRef}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
+        onChange={onChange}
+        options={params?.value}
+        mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
       />
     )
   } else {
