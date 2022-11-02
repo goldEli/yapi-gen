@@ -398,15 +398,17 @@ const ImportDemand = () => {
                     {t('newlyAdd.errorReason')}
                   </ContentWrap>
                 </ItemWrap>
-                {importExcel?.errorList &&
-                  Object.keys(importExcel?.errorList)?.map((i: any) => (
-                    <ItemWrap key={i}>
-                      <ContentWrap width={120}>{i}</ContentWrap>
-                      <ContentWrap width={616} style={{ textAlign: 'left' }}>
-                        {importExcel?.errorList[i].join(';')}
-                      </ContentWrap>
-                    </ItemWrap>
-                  ))}
+                <div style={{ maxHeight: 200, overflow: 'auto' }}>
+                  {importExcel?.errorList &&
+                    Object.keys(importExcel?.errorList)?.map((i: any) => (
+                      <ItemWrap key={i}>
+                        <ContentWrap width={120}>{i}</ContentWrap>
+                        <ContentWrap width={616} style={{ textAlign: 'left' }}>
+                          {importExcel?.errorList[i].join(';')}
+                        </ContentWrap>
+                      </ItemWrap>
+                    ))}
+                </div>
               </div>
               <div
                 style={{
