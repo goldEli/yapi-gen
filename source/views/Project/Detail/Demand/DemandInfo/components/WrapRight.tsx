@@ -513,6 +513,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             <Label>{t('common.end')}</Label>
             <ContentWrap>
               <TableQuickEdit
+                isInfo
                 item={demandInfo}
                 keyText="expected_end_at"
                 type="date"

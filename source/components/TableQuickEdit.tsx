@@ -118,7 +118,7 @@ const TableQuickEdit = (props: Props) => {
               ? setIsShowControl(true)
               : void 0
           }
-          isTable={!props?.isInfo || props.type !== 'text'}
+          isTable={!props.isInfo}
           isCanEdit={isCanEdit}
         >
           {props.children}
