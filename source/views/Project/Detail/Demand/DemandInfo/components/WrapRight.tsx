@@ -17,14 +17,20 @@ import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
 import { getParamsData, getNestedChildren, getTypeComponent } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
-import { AddWrap, HiddenText } from '@/components/StyleCommon'
+import {
+  AddWrap,
+  CanOperation,
+  HiddenText,
+  IconFontWrapEdit,
+} from '@/components/StyleCommon'
 import ParentDemand from '../../components/ParentDemand'
 import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
 
 const WrapRight = styled.div({
-  width: '424px',
+  width: '100%',
   height: '100%',
+  paddingLeft: 24,
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -222,6 +228,11 @@ const QuickEdit = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { projectInfo } = useModel('project')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   useEffect(() => {
     if (isShowControl) {
@@ -231,7 +242,7 @@ const QuickEdit = (props: Props) => {
     }
   }, [isShowControl])
 
-  const onChange = async (newValue: any) => {
+  const onChange = async (newValue: any, type: any) => {
     const obj: any = {
       projectId,
       id: demandInfo?.id,
@@ -246,7 +257,9 @@ const QuickEdit = (props: Props) => {
     try {
       await updateTableParams(obj)
       getDemandInfo({ projectId, id: demandInfo?.id })
-      setIsShowControl(false)
+      if (type === 1) {
+        setIsShowControl(false)
+      }
     } catch (error) {
       //
     }
@@ -256,9 +269,16 @@ const QuickEdit = (props: Props) => {
     if (val === props?.defaultText) {
       setIsShowControl(false)
     } else {
-      const resultVal: any =
-        ['select_checkbox', 'checkbox'].includes(props?.type) && !val ? [] : val
-      onChange(resultVal)
+      let resultVal: any
+      if (
+        ['select_checkbox', 'checkbox', 'fixed_select'].includes(props?.type) &&
+        !val
+      ) {
+        resultVal = []
+      } else {
+        resultVal = val || ''
+      }
+      onChange(resultVal, 1)
     }
   }
 
@@ -284,7 +304,12 @@ const QuickEdit = (props: Props) => {
           )}
         </>
       ) : (
-        <span onMouseEnter={onMouseEnter}>{props?.text}</span>
+        <CanOperation onClick={onMouseEnter} isCanEdit={isCanEdit}>
+          <span>{props.text}</span>
+          {isCanEdit ? (
+            <IconFontWrapEdit isTable={false} type="down-icon" />
+          ) : null}
+        </CanOperation>
       )}
     </>
   )

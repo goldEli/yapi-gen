@@ -25,8 +25,8 @@ import Viewer from 'react-viewer'
 const WrapLeft = styled.div({
   width: '100%',
   height: '100%',
-  // overflow: 'auto',
-  // paddingBottom: 24,
+  overflow: 'auto',
+  paddingBottom: 24,
 })
 
 const TextWrapEditor = styled.div({
@@ -263,7 +263,7 @@ const WrapLeftBox = () => {
     >
       <div className="resize_bar2" />
       <div className="resize_line" />
-      <div className="resize_save">
+      <div className="resize_save2">
         <WrapLeft ref={LeftDom}>
           {isVisible ? (
             <Viewer
