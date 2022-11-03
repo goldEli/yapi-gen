@@ -398,7 +398,7 @@ const ImportDemand = () => {
                     {t('newlyAdd.errorReason')}
                   </ContentWrap>
                 </ItemWrap>
-                <div style={{ maxHeight: 200, overflow: 'auto' }}>
+                <div style={{ maxHeight: 228, overflow: 'auto' }}>
                   {importExcel?.errorList &&
                     Object.keys(importExcel?.errorList)?.map((i: any) => (
                       <ItemWrap key={i}>
