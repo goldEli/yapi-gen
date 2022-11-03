@@ -130,8 +130,11 @@ const DemandMain = (props: Props) => {
   }
 
   useEffect(() => {
-    getList(isGrid, searchItems, pageObj, order, true)
     getCategoryList({ projectId, isSelect: true })
+  }, [])
+
+  useEffect(() => {
+    getList(isGrid, searchItems, pageObj, order, true)
   }, [key])
 
   useEffect(() => {

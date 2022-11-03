@@ -164,8 +164,8 @@ interface ItemProps {
 }
 
 const PermissionItem = (props: ItemProps) => {
-  const keys
-    = props.value?.filter(
+  const keys =
+    props.value?.filter(
       (i: any) => !!props.item.children.find((item: any) => item.value === i),
     ) || []
 
@@ -268,12 +268,6 @@ const ProjectSet = () => {
 
   useEffect(() => {
     init(true)
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      init(true)
-    }
   }, [isRefresh])
 
   const onSavePermission = async () => {
@@ -291,7 +285,6 @@ const ProjectSet = () => {
       message.success(t('common.saveSuccess'))
       getProjectInfo({ projectId })
     } catch (error) {
-
       //
     }
   }
@@ -315,7 +308,6 @@ const ProjectSet = () => {
       init(false, result?.data?.id)
       setAddValue('')
     } catch (error) {
-
       //
     }
   }
@@ -354,7 +346,6 @@ const ProjectSet = () => {
       message.success(t('common.deleteSuccess'))
       init(true)
     } catch (error) {
-
       //
     }
   }

@@ -428,7 +428,7 @@ const EditDemand = (props: Props) => {
       ],
       ...getNestedChildren(classTree, 0),
     ])
-    if (!props?.isQuickCreate) {
+    if (props?.isQuickCreate) {
       getProjectInfo({ projectId: value || projectId })
     }
 
@@ -481,8 +481,8 @@ const EditDemand = (props: Props) => {
       hisCategoryData = JSON.parse(
         decryptPhp(localStorage.getItem('quickCreateData') as any),
       )
+      getInit(hisCategoryData?.projectId, hisCategoryData?.categoryId)
     }
-    getInit(hisCategoryData?.projectId, hisCategoryData?.categoryId)
     setTimeout(() => {
       inputRefDom.current?.focus()
     }, 100)
@@ -524,7 +524,6 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.createSuccess'))
     }
-    setIsRefresh(true)
     setAttachList([])
     setTagList([])
     setHtml('')

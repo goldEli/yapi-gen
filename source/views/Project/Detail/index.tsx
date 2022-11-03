@@ -1,3 +1,5 @@
+// 项目详情主页
+
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
@@ -31,6 +33,7 @@ const Detail = () => {
     setFilterAll,
     setIsRefreshIterateList,
     isRefreshIterateList,
+    setSelectTreeData,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
@@ -79,6 +82,7 @@ const Detail = () => {
       }
     })
   }
+
   const getTreeData = async () => {
     const res = await getTreeList({ id: projectId })
 
@@ -88,6 +92,7 @@ const Detail = () => {
     })
 
     const newTreeData = filterTreeData(res)
+    setSelectTreeData(newTreeData[0].children)
     const newLieBieData = filArr2(res2.list)
     if (projectInfo?.filterFelid) {
       const allList = projectInfo?.filterFelid?.map((item: any) => {
@@ -209,18 +214,11 @@ const Detail = () => {
 
   useEffect(() => {
     getProjectInfo({ projectId })
-    getProjectCoverList()
     getPermissionList()
+    getProjectCoverList()
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
     getIterateList()
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      getProjectInfo({ projectId })
-      getPermissionList()
-    }
   }, [isRefresh])
 
   useEffect(() => {
@@ -230,11 +228,10 @@ const Detail = () => {
   }, [isRefreshIterateList])
 
   useEffect(() => {
-    getTreeData()
-  }, [memberList, selectIterate, projectInfo])
-  useEffect(() => {
-    getTreeData()
-  }, [])
+    if (projectInfo.id) {
+      getTreeData()
+    }
+  }, [projectInfo])
 
   return (
     <Wrap>

@@ -58,7 +58,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
-  const { projectInfo, colorList } = useModel('project')
+  const { projectInfo, colorList, selectTreeData } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -305,7 +305,7 @@ export const useDynamicColumns = (state: any) => {
             keyText="class_id"
             item={record}
             onUpdate={onUpdate}
-            value={[]}
+            value={selectTreeData}
           >
             <HiddenText>
               <OmitText
