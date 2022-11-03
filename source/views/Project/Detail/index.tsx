@@ -214,13 +214,6 @@ const Detail = () => {
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
     getIterateList()
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      getProjectInfo({ projectId })
-      getPermissionList()
-    }
   }, [isRefresh])
 
   useEffect(() => {
@@ -230,11 +223,10 @@ const Detail = () => {
   }, [isRefreshIterateList])
 
   useEffect(() => {
-    getTreeData()
-  }, [memberList, selectIterate, projectInfo])
-  useEffect(() => {
-    getTreeData()
-  }, [])
+    if (projectInfo.id) {
+      getTreeData()
+    }
+  }, [projectInfo])
 
   return (
     <Wrap>
