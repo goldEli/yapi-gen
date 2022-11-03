@@ -34,12 +34,14 @@ const Detail = () => {
     setIsRefreshIterateList,
     isRefreshIterateList,
     setSelectTreeData,
+    getFieldList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isRefresh } = useModel('user')
+
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
     const arr = result.list?.map((i: any) => ({
@@ -66,6 +68,7 @@ const Detail = () => {
     }))
     return newData
   }
+
   const filArr = (data: any) => {
     return data?.map((item: any) => {
       return {
@@ -74,6 +77,7 @@ const Detail = () => {
       }
     })
   }
+
   const filArr2 = (data: any) => {
     return data?.map((item: any) => {
       return {
@@ -212,6 +216,10 @@ const Detail = () => {
     }
   }
 
+  const getFieldData = async () => {
+    await getFieldList({ projectId })
+  }
+
   useEffect(() => {
     getProjectInfo({ projectId })
     getPermissionList()
@@ -219,6 +227,7 @@ const Detail = () => {
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
     getIterateList()
+    getFieldData()
   }, [isRefresh])
 
   useEffect(() => {

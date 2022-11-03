@@ -112,7 +112,6 @@ const EditDemand = (props: Props) => {
     getProjectInfo,
     getCategoryList,
     categoryList,
-    colorList,
     getFieldList,
     getMemberList,
   } = useModel('project')
@@ -204,7 +203,6 @@ const EditDemand = (props: Props) => {
         props.onChangeVisible()
       }
     } catch (error) {
-
       //
     }
   }
@@ -229,8 +227,8 @@ const EditDemand = (props: Props) => {
   }
 
   const getInit = async (value?: any, categoryId?: any) => {
-    const [classTree, categoryData, allDemandArr, memberArr]
-      = await Promise.all([
+    const [classTree, categoryData, allDemandArr, memberArr] =
+      await Promise.all([
         getTreeList({ id: value || projectId, isTree: 1 }),
         getCategoryList({ projectId: value || projectId, isSelect: true }),
         getList(value || projectId),
@@ -297,7 +295,6 @@ const EditDemand = (props: Props) => {
 
   useEffect(() => {
     if (props?.visible) {
-
       // 创建需求带入的需求类别
       setCategoryObj(createCategory)
       let value: any
