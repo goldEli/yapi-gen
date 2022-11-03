@@ -29,6 +29,7 @@ import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 
 const WrapRight = styled.div({
+  minWidth: '400px',
   width: '100%',
   height: '100%',
   paddingLeft: 24,
