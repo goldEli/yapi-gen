@@ -57,6 +57,7 @@ function getTypeComponent(
                           : 'YYYY-MM-DD',
                       )
                     : '',
+                  1,
                 )
         }
       />
@@ -83,6 +84,7 @@ function getTypeComponent(
       <Input.TextArea
         placeholder={params.remarks || ''}
         onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
+        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
@@ -96,6 +98,7 @@ function getTypeComponent(
       <InputNumber
         placeholder={params.remarks || ''}
         onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
+        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
@@ -116,7 +119,7 @@ function getTypeComponent(
         value={defaultValue}
         ref={inputRef}
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
-        onChange={onChange}
+        onChange={value => onChange(value, 1)}
         defaultOpen={isModal}
       />
     )
@@ -134,7 +137,9 @@ function getTypeComponent(
         value={defaultValue}
         ref={inputRef}
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
-        onChange={onChange}
+        onChange={value =>
+          onChange(value, params.attr === 'fixed_select' ? '' : 1)
+        }
         options={params?.value}
         mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
         defaultOpen={isModal}
@@ -153,7 +158,12 @@ function getTypeComponent(
         value={defaultValue}
         ref={inputRef}
         onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
-        onChange={onChange}
+        onChange={value =>
+          onChange(
+            value,
+            ['select_checkbox', 'checkbox'].includes(params?.attr) ? '' : 1,
+          )
+        }
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         defaultOpen={isModal}
         mode={

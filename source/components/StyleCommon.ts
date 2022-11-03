@@ -24,15 +24,15 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
     display: 'flex',
     alignItems: 'center',
     cursor: 'pointer',
-    minWidth: 60,
     minHeight: 32,
     borderRadius: 4,
     padding: '0 8px',
   },
   ({ isCanEdit, isTable }) => ({
     justifyContent: isTable ? 'flex-start' : 'space-between',
+    minWidth: isTable ? 0 : 60,
     '&: hover': {
-      background: isCanEdit ? '#F0F4FA' : '',
+      background: isTable ? '' : isCanEdit ? '#F0F4FA' : '',
       [IconFontWrapEdit.toString()]: {
         visibility: 'visible',
       },
