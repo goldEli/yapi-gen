@@ -530,8 +530,17 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form}
-                scrollToFirstError
                 onFinish={confirm}
+                onFinishFailed={() => {
+                  const errorList = (document as any).querySelectorAll(
+                    '.ant-form-item-has-error',
+                  )
+
+                  errorList[0].scrollIntoView({
+                    block: 'center',
+                    behavior: 'smooth',
+                  })
+                }}
               >
                 {rightList?.fields?.map((i: any) => {
                   if (i.type === 'area') {
