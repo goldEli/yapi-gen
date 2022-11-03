@@ -130,3 +130,14 @@ export const getReceiveList: any = async (params: any) => {
   }
   return obj
 }
+
+// 评论
+export const addComment: any = async (params: any) => {
+  const response: any = await http.post<any>(
+    `/b/report/comment/add/${params.id}`,
+    {
+      content: params.content,
+    },
+  )
+  return response
+}

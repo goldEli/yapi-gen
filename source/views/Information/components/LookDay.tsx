@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
-import { getReportDetail } from '@/services/daily'
+import { addComment, getReportDetail } from '@/services/daily'
 import {
   BigWrap,
   First,
@@ -16,9 +16,9 @@ import {
 } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Input } from 'antd'
+import { Input, message, Modal } from 'antd'
 import { use } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { InnerLine } from './RelatedNeed'
 import { LabelTitle } from './WhiteDay'
@@ -41,16 +41,18 @@ const FormWrap = styled.div<{ left: any }>`
   position: absolute;
   left: 50%;
   top: 50%;
-
   transform: translate(-50%, -50%) rotateY(${({ left }) => left}deg);
   transition: all 2s linear;
   box-sizing: border-box;
   padding: 24px;
-  transform-style: preserve-3d;
   padding-top: 0px;
 `
 const HiddenWrap = styled.div`
-  overflow: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transform-origin: 100px 100px;
+  perspective-origin: center;
+  /* overflow: hidden; */
   width: 784px;
   height: 898px;
   border-radius: 8px;
@@ -77,7 +79,6 @@ const Arrow2 = styled(Arrow)`
   left: 80%;
 `
 
-const article = '<div>我是富文本内容<span >123</span></div>'
 const LookDay = (props: any) => {
   const [left, setLeft] = useState(0)
   const [attachList, setAttachList] = useState<any>([])
@@ -85,13 +86,23 @@ const LookDay = (props: any) => {
   const [needValue, setNeedValue] = useState<any>([])
   const [article1, setArticle1] = useState<any>([])
   const [article2, setArticle2] = useState<any>([])
+  const [contentList, setContentList] = useState<any>([])
   const [title, setTitle] = useState<any>('')
+  const [value, setValue] = useState('')
+  const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  const [previewImage, setPreviewImage] = useState('')
+  const [previewTitle, setPreviewTitle] = useState('')
+  const messagesEndRef = useRef<any>(null)
+  const onChangeLeft = (values: any, type: any) => {
+    if (type === 1) {
+      // setLeft(values - 360)
+    } else {
+      // setLeft(values + 360)
+    }
 
-  const onChangeLeft = (value: any, type: any) => {
-    setLeft(value)
     setTimeout(() => {
       props.onChange(type, props.editId)
-      setLeft(0)
+      // setLeft(0)
     }, 1000)
   }
 
@@ -126,6 +137,7 @@ const LookDay = (props: any) => {
         }
       }),
     )
+    setContentList(res.data.comment_list)
   }
   useEffect(() => {
     if (props.editId && props.visible) {
@@ -133,6 +145,22 @@ const LookDay = (props: any) => {
     }
   }, [props.editId, props.visible])
 
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
+  }
+  const sendComment = async () => {
+    const res = await addComment({
+      id: props.editId,
+      content: value,
+    })
+    if (res.code === 0) {
+      message.success('评论成功')
+      setDefaultValue()
+      setValue('')
+      scrollToBottom()
+    }
+  }
+  const handleCancel = () => setPreviewOpen(false)
   if (!props.visible) {
     return null
   }
@@ -163,6 +191,7 @@ const LookDay = (props: any) => {
             </span>
           </div>
           <div
+            ref={messagesEndRef}
             style={{
               height: '840px',
               overflow: 'scroll',
@@ -232,6 +261,11 @@ const LookDay = (props: any) => {
                   }}
                 >
                   <GredParent
+                    onClick={() => {
+                      setPreviewOpen(true)
+                      setPreviewImage(item.path)
+                      setPreviewTitle(item.path.split('/').at(-1))
+                    }}
                     style={{
                       marginRight: '8px',
                       position: 'relative',
@@ -346,58 +380,101 @@ const LookDay = (props: any) => {
             </div>
             <LabelTitle title="评论" />
             <div>
-              <Input placeholder="Basic usage" />
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginRight: '24px',
-                marginTop: '12px',
-                marginBottom: '4px',
-              }}
-            >
-              <NameWrap style={{ margin: 0 }}>
-                {/* {String(
-                            i?.substring(0, 1).trim()
-                              .slice(0, 1),
-                          ).toLocaleUpperCase()} */}
-                12
-              </NameWrap>
-              <span
+              <Input.TextArea
+                autoSize={{ minRows: 1, maxRows: 10 }}
+                placeholder="请输入"
+                value={value}
+                onChange={e => setValue(e.target.value)}
+              />
+              <button
+                onClick={sendComment}
                 style={{
-                  margin: '0 10px',
+                  width: '40px',
+                  height: '24px',
+                  background: '#2877FF',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  color: '#FFFFFF',
+                  marginTop: '8px',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
                 }}
               >
-                张三
-              </span>
-              <span
-                style={{
-                  color: '#969799',
-                }}
-              >
-                2022-06-20 15:30
-              </span>
+                评论
+              </button>
             </div>
-            <div
-              style={{
-                paddingLeft: '40px',
-              }}
-            >
-              评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-              评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-              评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-            </div>
+            {contentList.map((item: any) => (
+              <div key={item.id}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginRight: '24px',
+                    marginTop: '12px',
+                    marginBottom: '4px',
+                  }}
+                >
+                  {item.avatar ? (
+                    <img
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                      }}
+                      src={item.avatar}
+                    />
+                  ) : (
+                    <NameWrap style={{ margin: 0 }}>
+                      {String(
+                        item.name.substring(0, 1).trim().slice(0, 1),
+                      ).toLocaleUpperCase()}
+                    </NameWrap>
+                  )}
+                  <span
+                    style={{
+                      margin: '0 10px',
+                    }}
+                  >
+                    {item.name}
+                  </span>
+                  <span
+                    style={{
+                      color: '#969799',
+                    }}
+                  >
+                    {item.created_at}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    paddingLeft: '40px',
+                    width: '100%',
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {item.content}
+                </div>
+              </div>
+            ))}
           </div>
         </FormWrap>
       </HiddenWrap>
 
-      <Arrow onClick={() => onChangeLeft(-180, 1)}>
+      <Arrow onClick={() => onChangeLeft(0, 1)}>
         <IconFont type="left" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow>
-      <Arrow2 onClick={() => onChangeLeft(180, 2)}>
+      <Arrow2 onClick={() => onChangeLeft(360, 2)}>
         <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow2>
+      <Modal
+        visible={previewOpen}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
     </GrepWrap>,
     document.body,
   )

@@ -25,6 +25,7 @@ import Sort from '@/components/Sort'
 import { getReceiveList } from '@/services/daily'
 import { useParams } from 'react-router-dom'
 import { getStaffList2 } from '@/services/staff'
+import LookDay from './components/LookDay'
 
 const srr = [
   undefined,
@@ -52,7 +53,9 @@ const Get = () => {
   const [options, setOptions] = useState<any>([])
   const [userId, setUserId] = useState<any>('')
   const [status, setStatus] = useState<any>(true)
-
+  const [changeIds, setChangeIds] = useState<any>([])
+  const [showId, setShowId] = useState('')
+  const [visibleLook, setVisibleLook] = useState(false)
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -82,7 +85,14 @@ const Get = () => {
       key: 'finish_content',
       width: 200,
       render: (text: string) => {
-        return <span dangerouslySetInnerHTML={{ __html: text || '--' }} />
+        return (
+          <span
+            style={{
+              width: '200px',
+            }}
+            dangerouslySetInnerHTML={{ __html: text || '--' }}
+          />
+        )
       },
     },
     {
@@ -125,7 +135,7 @@ const Get = () => {
               style={{
                 width: '8px',
                 height: '8px',
-                background: record.status === 1 ? 'red' : '#43BA9A',
+                background: record.status === 1 ? '#43BA9A' : 'red',
                 display: 'inline-block',
                 borderRadius: '50%',
                 marginRight: '8px',
@@ -147,6 +157,10 @@ const Get = () => {
         return (
           <div>
             <span
+              onClick={() => {
+                setVisibleLook(true)
+                setShowId(record.id)
+              }}
               style={{
                 fontSize: '14px',
                 fontWeight: ' 400',
@@ -187,6 +201,29 @@ const Get = () => {
     setCreated_at(dates)
   }
 
+  const changePage = (e: any, id: any) => {
+    const index = changeIds.findIndex((k: any) => k === id)
+    const start = changeIds.at(0)
+    const end = changeIds.at(-1)
+
+    if (e === 1) {
+      if (id === start) {
+        setShowId(end)
+        return
+      }
+      setShowId(changeIds[index - 1])
+    } else {
+      if (id === end) {
+        setShowId(start)
+        return
+      }
+      setShowId(changeIds[index + 1])
+    }
+  }
+  const lookClose = () => {
+    setVisibleLook(false)
+  }
+
   const init = async () => {
     const obj = {
       type: srr[urlId as unknown as number],
@@ -200,7 +237,7 @@ const Get = () => {
       status,
     }
     const res = await getReceiveList(obj)
-
+    setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)
   }
@@ -217,7 +254,7 @@ const Get = () => {
       status: true,
     }
     const res = await getReceiveList(obj)
-
+    setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)
   }
@@ -254,7 +291,7 @@ const Get = () => {
           alignItems: 'center',
           paddingLeft: '24px',
           paddingRight: '40px',
-          justifyContent: 'space-between',
+          gap: '20px',
         }}
       >
         <SelectWrapBedeck>
@@ -339,6 +376,9 @@ const Get = () => {
         </SelectWrapBedeck>
         <Checkbox onChange={onChange}>只看未阅</Checkbox>
         <MyInput
+          style={{
+            marginLeft: 'auto',
+          }}
           suffix={
             <IconFont
               type="search"
@@ -386,6 +426,12 @@ const Get = () => {
           />
         </PaginationWrap>
       </div>
+      <LookDay
+        onChange={changePage}
+        editId={showId}
+        visible={visibleLook}
+        onEditClose={lookClose}
+      />
     </div>
   )
 }

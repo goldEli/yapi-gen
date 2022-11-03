@@ -176,11 +176,15 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
 }
 
 export const post = <Payload, Result = any>(
-  key: UrlKeys,
+  key: UrlKeys | string,
   data?: any,
   options?: any,
 ) => {
-  return client.post<Payload, Result>(urls[key], data, options)
+  return client.post<Payload, Result>(
+    urls[key as UrlKeys] || key,
+    data,
+    options,
+  )
 }
 
 export const put = <Payload, Result = any>(

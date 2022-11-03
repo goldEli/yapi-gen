@@ -109,7 +109,14 @@ const Send = () => {
       key: 'finish_content',
       width: 200,
       render: (text: string) => {
-        return <span dangerouslySetInnerHTML={{ __html: text || '--' }} />
+        return (
+          <span
+            style={{
+              width: '200px',
+            }}
+            dangerouslySetInnerHTML={{ __html: text || '--' }}
+          />
+        )
       },
     },
     {
