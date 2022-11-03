@@ -8,7 +8,7 @@ import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
@@ -16,7 +16,6 @@ import { storyConfigCategoryList } from '@/services/project'
 const Wrap = styled.div({
   height: '100%',
   overflow: 'auto',
-  backgroundColor: '#ffffff',
 })
 
 const Detail = () => {
