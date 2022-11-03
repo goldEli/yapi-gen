@@ -4,7 +4,7 @@ import * as services from '@/services'
 export default () => {
   const [loginInfo, setLoginInfo] = useState<any>({})
   const [userInfo, setUserInfo] = useState<any>({})
-  const [isRefresh, setIsRefresh] = useState<any>({})
+  const [isRefresh, setIsRefresh] = useState<any>(false)
 
   const getLoginDetail = async () => {
     const result = await services.user.getLoginDetail()

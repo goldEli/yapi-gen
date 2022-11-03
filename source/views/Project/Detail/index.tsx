@@ -209,8 +209,8 @@ const Detail = () => {
 
   useEffect(() => {
     getProjectInfo({ projectId })
-    getProjectCoverList()
     getPermissionList()
+    getProjectCoverList()
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
     getIterateList()

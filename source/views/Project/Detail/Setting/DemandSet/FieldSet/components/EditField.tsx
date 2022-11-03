@@ -122,9 +122,9 @@ const EditFiled = (props: Props) => {
       form.setFieldsValue(props?.item)
       setValue(props?.item?.type)
       if (['3', '4', '5', '6'].includes(props?.item?.type)) {
-        const values = props?.item?.values?.map((i: any) => ({
+        const values = props?.item?.values?.map((i: any, index: any) => ({
           value: i,
-          key: `${random() + Number(i) * 10}_${new Date()}`,
+          key: new Date().getTime() * (index + 0.2),
         }))
         setRow(values)
       } else if (props?.item?.type === '7') {
