@@ -47,7 +47,8 @@ const DemandInfo = () => {
   return (
     <Wrap>
       <WrapLeft />
-      <DividerWrap type="vertical" />
+
+      {/* <DividerWrap type="vertical" /> */}
       <WrapRight onUpdate={onUpdate} />
     </Wrap>
   )

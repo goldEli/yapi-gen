@@ -294,6 +294,17 @@ input::-webkit-inner-spin-button {
   opacity: 0;
   overflow: scroll;
 }
+.resize_bar2 {
+  width: 200px;
+  // max-width: 1000px;
+  min-width: 600px;
+  height: inherit;
+  resize: horizontal;
+  cursor: ew-resize;
+  cursor: col-resize;
+  opacity: 0;
+  overflow: scroll;
+}
 /* 拖拽线 */
 .resize_line {
   position: absolute;
@@ -309,6 +320,14 @@ input::-webkit-inner-spin-button {
   border-left: 1px dashed skyblue;
 }
 .resize_bar::-webkit-scrollbar {
+  width: 200px;
+  height: inherit;
+}
+.resize_bar2:hover ~ .resize_line,
+.resize_bar2:active ~ .resize_line {
+  border-left: 1px dashed skyblue;
+}
+.resize_bar2::-webkit-scrollbar {
   width: 200px;
   height: inherit;
 }
