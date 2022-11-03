@@ -89,7 +89,7 @@ const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getLoadListFields } = useModel('demand')
+  const { getLoadListFields, getExportFields } = useModel('demand')
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
@@ -98,15 +98,12 @@ const FieldsTemplate = (props: Props) => {
   const [fields, setFields] = useState<any>({})
 
   const getList = async () => {
-    // 还需要接入导出接口
-    let params: any = {
-      projectId,
-      isUpdate: props?.importState,
-    }
-    if (props.isExport) {
-      params.type = 2
-    }
-    const result = await getLoadListFields(params)
+    const result = props?.isExport
+      ? await getExportFields({ projectId })
+      : await getLoadListFields({
+          projectId,
+          isUpdate: props?.importState,
+        })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
     const customKeys = result?.customFields?.map((k: any) => k.field)

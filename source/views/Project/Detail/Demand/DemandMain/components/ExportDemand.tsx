@@ -24,7 +24,7 @@ const ExportDemand = (props: Props) => {
   const onConfirmTemplate = async (arr: any) => {
     const params = {
       projectId,
-      fields: arr.join(','),
+      fields: arr,
       ...props.otherParams,
       ...props.searchGroups,
     }

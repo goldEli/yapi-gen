@@ -31,6 +31,11 @@ export default () => {
     return result
   }
 
+  const getExportFields = async (params: any) => {
+    const result = await services.demand.getExportFields(params)
+    return result
+  }
+
   const getDemandInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     setDemandInfo(result)
@@ -108,5 +113,6 @@ export default () => {
     setIsUpdateStatus,
     isUpdateStatus,
     getExportExcel,
+    getExportFields,
   }
 }
