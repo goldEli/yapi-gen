@@ -28,6 +28,7 @@ import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
 
 const WrapRight = styled.div({
+  minWidth: '400px',
   width: '100%',
   height: '100%',
   paddingLeft: 24,

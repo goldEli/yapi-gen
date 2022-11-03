@@ -16,6 +16,7 @@ import { storyConfigCategoryList } from '@/services/project'
 const Wrap = styled.div({
   height: '100%',
   overflow: 'auto',
+  backgroundColor: '#ffffff',
 })
 
 const Detail = () => {
