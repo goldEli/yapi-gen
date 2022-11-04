@@ -101,6 +101,7 @@ export const getDemandList: any = async (params: any) => {
           categoryColor: i.category_color,
           project_id: i.project_id,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           schedule: i.schedule,
         })),
         name: k.content_txt,
@@ -112,6 +113,7 @@ export const getDemandList: any = async (params: any) => {
       id: i.id,
       name: i.name,
       usersNameIds: i.users_name_ids,
+      usersCopySendIds: i.users_copysend_name_ids,
       dealName: i.users_name?.split(',') || [],
       status: i.status,
       iteration: i.iterate_name,
@@ -156,6 +158,7 @@ export const getDemandList: any = async (params: any) => {
         categoryRemark: i.category_remark,
         project_id: i.project_id,
         usersNameIds: i.users_name_ids,
+        usersCopySendIds: i.users_copysend_name_ids,
       })),
     }
   }

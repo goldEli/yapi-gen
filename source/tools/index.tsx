@@ -25,6 +25,19 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
+// 需求分类树
+function filterTreeData(data: any) {
+  const newData = data.map((item: any) => ({
+    title: item.name,
+    value: item.id,
+    children:
+      item.children && item.children.length
+        ? filterTreeData(item.children)
+        : null,
+  }))
+  return newData
+}
+
 function getTypeComponent(
   params: any,
   isModal?: any,
@@ -145,7 +158,11 @@ function getTypeComponent(
         defaultOpen={isModal}
       />
     )
-  } else {
+  } else if (
+    ['select_checkbox', 'checkbox', 'select', 'radio'].includes(
+      String(params?.attr),
+    )
+  ) {
     child = (
       <Select
         placeholder={params.remarks || ''}
@@ -242,4 +259,5 @@ export {
   transData,
   getTypeComponent,
   getNestedChildren,
+  filterTreeData,
 }

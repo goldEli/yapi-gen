@@ -11,9 +11,10 @@ import styled from '@emotion/styled'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
-import { getParamsData } from '@/tools'
+import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
+import { getStaffList } from '@/services/staff'
 
 const Wrap = styled.div({
   height: '100%',
@@ -34,6 +35,7 @@ const Detail = () => {
     setIsRefreshIterateList,
     isRefreshIterateList,
     setSelectTreeData,
+    setSelectAllStaffData,
     getFieldList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
@@ -55,18 +57,6 @@ const Detail = () => {
   const getIterateList = async () => {
     await getIterateSelectList({ projectId, all: true })
     setIsRefreshIterateList(false)
-  }
-
-  function filterTreeData(data: any) {
-    const newData = data.map((item: any) => ({
-      title: item.name,
-      value: item.id,
-      children:
-        item.children && item.children.length
-          ? filterTreeData(item.children)
-          : null,
-    }))
-    return newData
   }
 
   const filArr = (data: any) => {
@@ -220,6 +210,12 @@ const Detail = () => {
     await getFieldList({ projectId })
   }
 
+  // 获取公司员工
+  const getStaffData = async () => {
+    const options = await getStaffList({ all: 1 })
+    setSelectAllStaffData(options)
+  }
+
   useEffect(() => {
     getProjectInfo({ projectId })
     getPermissionList()
@@ -228,6 +224,7 @@ const Detail = () => {
     getTagList({ projectId })
     getIterateList()
     getFieldData()
+    getStaffData()
   }, [isRefresh])
 
   useEffect(() => {

@@ -58,8 +58,14 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
-  const { projectInfo, colorList, selectTreeData, fieldList, memberList } =
-    useModel('project')
+  const {
+    projectInfo,
+    colorList,
+    selectTreeData,
+    fieldList,
+    memberList,
+    selectAllStaffData,
+  } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -428,14 +434,11 @@ export const useDynamicColumns = (state: any) => {
         return (
           <TableQuickEdit
             type="fixed_select"
-            defaultText={record?.usersNameIds || []}
+            defaultText={record?.usersCopySendIds || []}
             keyText="copysend"
             item={record}
             onUpdate={onUpdate}
-            value={memberList?.map((i: any) => ({
-              label: i.name,
-              value: i.id,
-            }))}
+            value={selectAllStaffData}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
