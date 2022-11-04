@@ -1,5 +1,4 @@
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable array-callback-return */

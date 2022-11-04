@@ -216,10 +216,9 @@ const CommonNeed = (props: any) => {
       custom_field: customField,
     })
   }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
   const init = async (updateState?: boolean, pageNumber?: any) => {
     if (!updateState) {

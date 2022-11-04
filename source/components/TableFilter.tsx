@@ -257,7 +257,6 @@ const TableFilter = (props: any) => {
   }, [list, customList])
 
   const confirm = async (val?: any, delKey?: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))

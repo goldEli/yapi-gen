@@ -35,9 +35,8 @@ const Main = styled.div`
 export const Container = () => {
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo }
-    = useModel('user')
+  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo } =
+    useModel('user')
   const {
     i18n: { language },
   } = useTranslation()
@@ -56,9 +55,9 @@ export const Container = () => {
   }
 
   useEffect(() => {
-    const languageParams
-      = (localStorage.getItem('language') as 'zh' | 'en')
-      || ((new URLSearchParams(location.search).get('language') || 'zh') as
+    const languageParams =
+      (localStorage.getItem('language') as 'zh' | 'en') ||
+      ((new URLSearchParams(location.search).get('language') || 'zh') as
         | 'zh'
         | 'en')
     localStorage.setItem('language', languageParams)
@@ -104,9 +103,9 @@ export const Container = () => {
           </Main>
           <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
         </Wrap>
-      )
-        : <NoPermission />
-      }
+      ) : (
+        <NoPermission />
+      )}
     </ConfigProvider>
   )
 }

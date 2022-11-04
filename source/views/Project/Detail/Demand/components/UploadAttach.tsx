@@ -2,7 +2,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
-// eslint-disable-next-line @typescript-eslint/no-shadow
 import { useModel } from '@/models'
 import { message, Modal, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'

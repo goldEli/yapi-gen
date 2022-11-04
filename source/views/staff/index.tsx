@@ -171,10 +171,9 @@ const Staff = () => {
       setIsStaffPersonalVisible(false)
     }
   }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
 
   const columns = useDynamicColumns({
