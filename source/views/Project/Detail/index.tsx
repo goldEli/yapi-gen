@@ -223,10 +223,14 @@ const Detail = () => {
   }, [isRefreshIterateList])
 
   useEffect(() => {
-    if (projectInfo.id) {
+    if (
+      projectInfo.id &&
+      selectIterate?.list?.length > 0 &&
+      memberList?.length > 0
+    ) {
       getTreeData()
     }
-  }, [projectInfo])
+  }, [projectInfo, selectIterate, memberList])
 
   return (
     <Wrap>
