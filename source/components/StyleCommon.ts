@@ -4,6 +4,39 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider } from 'antd'
+import IconFont from './IconFont'
+
+const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
+  {
+    marginLeft: 16,
+    color: '#2877ff',
+    visibility: 'hidden',
+  },
+  ({ isTable }) => ({
+    fontSize: isTable ? 20 : 14,
+  }),
+)
+
+const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    minHeight: 32,
+    borderRadius: 4,
+    padding: '0 8px',
+  },
+  ({ isCanEdit, isTable }) => ({
+    justifyContent: isTable ? 'flex-start' : 'space-between',
+    minWidth: isTable ? 0 : 60,
+    '&: hover': {
+      background: isTable ? '' : isCanEdit ? '#F0F4FA' : '',
+      [IconFontWrapEdit.toString()]: {
+        visibility: 'visible',
+      },
+    },
+  }),
+)
 
 const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
@@ -580,4 +613,6 @@ export {
   DelWrap,
   SelectWrapBedeck,
   ListNameWrap,
+  CanOperation,
+  IconFontWrapEdit,
 }

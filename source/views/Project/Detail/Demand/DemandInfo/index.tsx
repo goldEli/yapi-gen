@@ -15,7 +15,7 @@ const DividerWrap = styled(Divider)({
 
 const Wrap = styled.div({
   display: 'flex',
-  justifyContent: 'space-between',
+  // justifyContent: 'space-between',
   padding: '0 24px',
   background: 'white',
   height: 'calc(100% - 50px)',
@@ -47,7 +47,8 @@ const DemandInfo = () => {
   return (
     <Wrap>
       <WrapLeft />
-      <DividerWrap type="vertical" />
+
+      {/* <DividerWrap type="vertical" /> */}
       <WrapRight onUpdate={onUpdate} />
     </Wrap>
   )

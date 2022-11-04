@@ -8,7 +8,7 @@ import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
@@ -209,18 +209,11 @@ const Detail = () => {
 
   useEffect(() => {
     getProjectInfo({ projectId })
-    getProjectCoverList()
     getPermissionList()
+    getProjectCoverList()
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
     getIterateList()
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      getProjectInfo({ projectId })
-      getPermissionList()
-    }
   }, [isRefresh])
 
   useEffect(() => {
@@ -230,11 +223,14 @@ const Detail = () => {
   }, [isRefreshIterateList])
 
   useEffect(() => {
-    getTreeData()
-  }, [memberList, selectIterate, projectInfo])
-  useEffect(() => {
-    getTreeData()
-  }, [])
+    if (
+      projectInfo.id &&
+      selectIterate?.list?.length > 0 &&
+      memberList?.length > 0
+    ) {
+      getTreeData()
+    }
+  }, [projectInfo, selectIterate, memberList])
 
   return (
     <Wrap>

@@ -455,7 +455,7 @@ const EditDemand = (props: Props) => {
       ],
       ...getNestedChildren(classTree, 0),
     ])
-    if (!props?.isQuickCreate) {
+    if (props?.isQuickCreate) {
       getProjectInfo({ projectId: value || projectId })
     }
 
@@ -524,7 +524,6 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.createSuccess'))
     }
-    setIsRefresh(true)
     setAttachList([])
     setTagList([])
     setHtml('')

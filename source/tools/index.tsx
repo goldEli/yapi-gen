@@ -41,28 +41,34 @@ function getTypeComponent(
         allowClear
         value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur('')}
+        open={isModal}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
         onChange={
           !isModal
             ? void 0
-            : (date: any) => onChange(
-                moment(date).format(
-                  params?.value[0] === 'datetime'
-                    ? 'YYYY-MM-DD hh:mm:ss'
-                    : 'YYYY-MM-DD',
-                ),
-              )
+            : (date: any) =>
+                onChange(
+                  date
+                    ? moment(date).format(
+                        params?.value[0] === 'datetime'
+                          ? 'YYYY-MM-DD hh:mm:ss'
+                          : 'YYYY-MM-DD',
+                      )
+                    : '',
+                  1,
+                )
         }
       />
     )
   } else if (
-    params?.attr === 'text'
-    || params?.attr === 'number' && params?.value[0] === 'number'
+    params?.attr === 'text' ||
+    (params?.attr === 'number' && params?.value[0] === 'number')
   ) {
     child = (
       <Input
         placeholder={params.remarks || ''}
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value)}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value))}
+        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
         type={params?.attr}
         allowClear
         defaultValue={defaultValue}
@@ -75,7 +81,8 @@ function getTypeComponent(
     child = (
       <Input.TextArea
         placeholder={params.remarks || ''}
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
+        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
@@ -88,7 +95,8 @@ function getTypeComponent(
     child = (
       <InputNumber
         placeholder={params.remarks || ''}
-        onBlur={e => !isModal ? void 0 : onBlur(e.target.value || '')}
+        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
+        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
@@ -108,8 +116,9 @@ function getTypeComponent(
         treeData={params?.value}
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur(defaultValue)}
-        onChange={onChange}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
+        onChange={value => onChange(value, 1)}
+        defaultOpen={isModal}
       />
     )
   } else {
@@ -124,8 +133,14 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => !isModal ? void 0 : onBlur(defaultValue)}
-        onChange={onChange}
+        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
+        onChange={value =>
+          onChange(
+            value,
+            ['select_checkbox', 'checkbox'].includes(params?.attr) ? '' : 1,
+          )
+        }
+        defaultOpen={isModal}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
         mode={
           ['select_checkbox', 'checkbox'].includes(params?.attr)

@@ -23,7 +23,8 @@ import { SliderWrap } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
 
 const WrapLeft = styled.div({
-  width: 'calc(100% - 472px)',
+  width: '100%',
+  height: '100%',
   overflow: 'auto',
   paddingBottom: 24,
 })
@@ -254,95 +255,106 @@ const WrapLeftBox = () => {
   }
 
   return (
-    <WrapLeft ref={LeftDom}>
-      {isVisible ? (
-        <Viewer
-          zIndex={99}
-          visible={isVisible}
-          images={pictureList?.imageArray}
-          activeIndex={pictureList?.index}
-          onClose={() => setIsVisible(false)}
-        />
-      ) : null}
+    <div
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 250px)',
+      }}
+    >
+      <div className="resize_bar2" />
+      <div className="resize_line" />
+      <div className="resize_save2">
+        <WrapLeft ref={LeftDom}>
+          {isVisible ? (
+            <Viewer
+              zIndex={99}
+              visible={isVisible}
+              images={pictureList?.imageArray}
+              activeIndex={pictureList?.index}
+              onClose={() => setIsVisible(false)}
+            />
+          ) : null}
 
-      <InfoItem>
-        <Label>{t('project.demandStatus')}</Label>
-        <DemandStatus pid={projectId} sid={demandId} />
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('newlyAdd.demandProgress')}</Label>
-        <div
-          style={{ display: 'flex', alignItems: 'center' }}
-          onMouseUp={onChangeSchedule}
-        >
-          <SliderWrap
-            style={{ width: 260 }}
-            value={schedule}
-            tipFormatter={(value: any) => `${value}%`}
-            onChange={value => setSchedule(value)}
-            disabled={
-              !(
-                demandInfo?.user
-                  ?.map((i: any) => i.user.id)
-                  ?.includes(userInfo?.id) &&
-                demandInfo.status.is_start !== 1 &&
-                demandInfo.status.is_end !== 1
-              )
-            }
-          />
-          <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
-            {schedule}%
-          </span>
-        </div>
-      </InfoItem>
-      <InfoItem activeState>
-        <Label>{t('mine.demandInfo')}</Label>
-        {demandInfo?.info ? (
-          <TextWrapEditor
-            ref={textWrapEditor}
-            dangerouslySetInnerHTML={{ __html: demandInfo?.info }}
-          />
-        ) : (
-          <TextWrap>--</TextWrap>
-        )}
-      </InfoItem>
-      <InfoItem>
-        <Label>{t('common.tag')}</Label>
-        <TagComponent
-          defaultList={tagList}
-          canAdd
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
-        />
-      </InfoItem>
-      <InfoItem activeState>
-        <Label>{t('common.attachment')}</Label>
-        <UploadAttach
-          onBottom={onBottom}
-          defaultList={demandInfo?.attachment?.map((i: any) => ({
-            path: i.attachment.path,
-            id: i.id,
-          }))}
-          canUpdate
-          addWrap={
-            projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length > 0 ? (
-              <AddWrap>
-                <IconFont type="plus" />
-                <div>{t('common.add23')}</div>
-              </AddWrap>
+          <InfoItem>
+            <Label>{t('project.demandStatus')}</Label>
+            <DemandStatus pid={projectId} sid={demandId} />
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('newlyAdd.demandProgress')}</Label>
+            <div
+              style={{ display: 'flex', alignItems: 'center' }}
+              onMouseUp={onChangeSchedule}
+            >
+              <SliderWrap
+                style={{ width: 260 }}
+                value={schedule}
+                tipFormatter={(value: any) => `${value}%`}
+                onChange={value => setSchedule(value)}
+                disabled={
+                  !(
+                    demandInfo?.user
+                      ?.map((i: any) => i.user.id)
+                      ?.includes(userInfo?.id) &&
+                    demandInfo.status.is_start !== 1 &&
+                    demandInfo.status.is_end !== 1
+                  )
+                }
+              />
+              <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
+                {schedule}%
+              </span>
+            </div>
+          </InfoItem>
+          <InfoItem activeState>
+            <Label>{t('mine.demandInfo')}</Label>
+            {demandInfo?.info ? (
+              <TextWrapEditor
+                ref={textWrapEditor}
+                dangerouslySetInnerHTML={{ __html: demandInfo?.info }}
+              />
             ) : (
-              (null as any)
-            )
-          }
-          child={isShowProgress ? null : <Children />}
-        />
-      </InfoItem>
-    </WrapLeft>
+              <TextWrap>--</TextWrap>
+            )}
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.tag')}</Label>
+            <TagComponent
+              defaultList={tagList}
+              canAdd
+              addWrap={
+                <AddWrap hasDash>
+                  <IconFont type="plus" />
+                </AddWrap>
+              }
+            />
+          </InfoItem>
+          <InfoItem activeState>
+            <Label>{t('common.attachment')}</Label>
+            <UploadAttach
+              onBottom={onBottom}
+              defaultList={demandInfo?.attachment?.map((i: any) => ({
+                path: i.attachment.path,
+                id: i.id,
+              }))}
+              canUpdate
+              addWrap={
+                projectInfo?.projectPermissions?.filter(
+                  (i: any) => i.name === '附件上传',
+                ).length > 0 ? (
+                  <AddWrap>
+                    <IconFont type="plus" />
+                    <div>{t('common.add23')}</div>
+                  </AddWrap>
+                ) : (
+                  (null as any)
+                )
+              }
+              child={isShowProgress ? null : <Children />}
+            />
+          </InfoItem>
+        </WrapLeft>
+      </div>
+    </div>
   )
 }
 
