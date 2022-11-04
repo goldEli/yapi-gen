@@ -101,7 +101,7 @@ const ExcessiveBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 24px;
-  height: 22px;
+  flex-wrap: wrap;
 `
 const StyledShape2 = styled.div`
   padding: 1px 8px 1px 8px;
@@ -530,6 +530,19 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form}
+                onFinish={confirm}
+                onFinishFailed={() => {
+                  setTimeout(() => {
+                    const errorList = (document as any).querySelectorAll(
+                      '.ant-form-item-has-error',
+                    )
+
+                    errorList[0].scrollIntoView({
+                      block: 'center',
+                      behavior: 'smooth',
+                    })
+                  }, 100)
+                }}
               >
                 {rightList?.fields?.map((i: any) => {
                   if (i.type === 'area') {
@@ -543,6 +556,7 @@ export const ShapeContent = (props: any) => {
                             message: '',
                           },
                         ]}
+                        style={{ marginTop: 2 }}
                       >
                         <Input.TextArea
                           maxLength={200}
@@ -706,11 +720,6 @@ export const ShapeContent = (props: any) => {
                 >
                   {props.noleft ? props?.active?.content : fromText?.content}
                 </StyledShape2>
-                {/* <img
-                  style={{ width: '40px', height: '15px', margin: '0px 8px' }}
-                  src={arrows}
-                  alt=""
-                /> */}
                 <IconFont
                   style={{
                     fontSize: '50px',
@@ -735,7 +744,6 @@ export const ShapeContent = (props: any) => {
               <AuditBox>
                 <div
                   style={{
-                    width: '56px',
                     height: '22px',
                     fontSize: '14px',
                     fontWeight: 500,
@@ -821,6 +829,19 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form2}
+                onFinish={confirm}
+                onFinishFailed={() => {
+                  setTimeout(() => {
+                    const errorList = (document as any).querySelectorAll(
+                      '.ant-form-item-has-error',
+                    )
+
+                    errorList[0].scrollIntoView({
+                      block: 'center',
+                      behavior: 'smooth',
+                    })
+                  }, 100)
+                }}
               >
                 <Form.Item
                   style={{ paddingRight: '24px' }}
@@ -854,7 +875,10 @@ export const ShapeContent = (props: any) => {
           <ButtonFooter>
             <Button
               disabled={!rightList.user_has_auth}
-              onClick={confirm}
+              onClick={() => {
+                form.submit()
+                form2.submit()
+              }}
               style={{ marginLeft: '16px' }}
               type="primary"
             >

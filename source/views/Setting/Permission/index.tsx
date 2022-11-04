@@ -268,12 +268,6 @@ const Permission = () => {
 
   useEffect(() => {
     init(true)
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      init(true)
-    }
   }, [isRefresh])
 
   const onSavePermission = async () => {
@@ -291,7 +285,6 @@ const Permission = () => {
 
       //
     } catch (error) {
-
       //
     }
   }
@@ -313,7 +306,6 @@ const Permission = () => {
 
       //
     } catch (error) {
-
       //
     }
   }
@@ -348,7 +340,6 @@ const Permission = () => {
       message.success(t('common.deleteSuccess'))
       init()
     } catch (error) {
-
       //
     }
   }

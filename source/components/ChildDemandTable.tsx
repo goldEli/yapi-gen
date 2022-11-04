@@ -132,7 +132,7 @@ const ChildDemandTable = (props: {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
               onClick={() => onToDetail(record)}
-              isClose={record.status?.content === '已关闭'}
+              isClose={record.status?.is_end === 1}
             >
               {text}
             </ClickWrap>
@@ -188,7 +188,7 @@ const ChildDemandTable = (props: {
               <ListNameWrap
                 onClick={() => onToDetail(record)}
                 isName
-                isClose={record.status?.content === '已关闭'}
+                isClose={record.status?.is_end === 1}
               >
                 {text}
               </ListNameWrap>

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
@@ -126,13 +127,18 @@ const StepPageOne = (propsOne: Props) => {
   }
 
   const onSaveMethod = async (isUpdateList?: any, arr?: any) => {
-    await sortchangeWorkflow({
-      projectId: paramsData.id,
-      categoryId: categoryItem?.id,
-      ids: arr
-        ? arr?.map((i: any) => ({ id: i.id }))
-        : dataSource?.list?.map((i: any) => ({ id: i.id })),
-    })
+    const len = arr
+      ? arr?.length
+      : dataSource?.list?.map((i: any) => ({ id: i.id }))?.length
+    if (len) {
+      await sortchangeWorkflow({
+        projectId: paramsData.id,
+        categoryId: categoryItem?.id,
+        ids: arr
+          ? arr?.map((i: any) => ({ id: i.id }))
+          : dataSource?.list?.map((i: any) => ({ id: i.id })),
+      })
+    }
     if (!isUpdateList) {
       getList(isUpdateList)
     }
@@ -389,6 +395,10 @@ const StepPageOne = (propsOne: Props) => {
     }
   })
 
+  const onUpdateEdit = () => {
+    onSaveMethod()
+  }
+
   return (
     <>
       {isAddVisible && (
@@ -403,7 +413,7 @@ const StepPageOne = (propsOne: Props) => {
           item={operationObj}
           isVisible={isVisible}
           onClose={onClose}
-          onUpdate={() => getList()}
+          onUpdate={onUpdateEdit}
         />
       )}
       <DeleteConfirm

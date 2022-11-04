@@ -22,7 +22,7 @@ import {
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, openDetail } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
@@ -201,12 +201,12 @@ const Staff = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      navigate('/mine')
+      openDetail('/mine')
     } else {
       const params = encryptPhp(
         JSON.stringify({ id: '', isMember: false, userId: row.id }),
       )
-      navigate(`/MemberInfo/profile?data=${params}`)
+      openDetail(`/MemberInfo/profile?data=${params}`)
     }
   }
 

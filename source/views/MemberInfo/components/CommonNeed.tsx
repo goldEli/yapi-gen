@@ -629,39 +629,46 @@ const CommonNeed = (props: any) => {
       {isMany ? (
         <div>
           <LoadingSpin spinning={isSpin}>
-            <StaffTableWrap2>
-              {manyListData?.map((item: any, index: any) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <div
-                  key={index}
-                  style={{
-                    background: 'white',
-                    borderRadius: 6,
-                    marginTop: 16,
-                  }}
-                >
-                  <TableTitle>
-                    <span>
-                      {item.status_name}（{item.list.length}）
-                    </span>
-                  </TableTitle>
+            {manyListData?.length ? (
+              <StaffTableWrap2>
+                {manyListData?.map((item: any, index: any) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <div
+                    hidden={!item.list.length}
+                    key={index}
+                    style={{
+                      background: 'white',
+                      borderRadius: 6,
+                      marginTop: 16,
+                    }}
+                  >
+                    <TableTitle>
+                      <span>
+                        {item.status_name}（{item.list.length}）
+                      </span>
+                    </TableTitle>
 
-                  {item.list ? (
-                    item?.list?.length ? (
-                      <TableBox
-                        rowKey="id"
-                        columns={selectColum}
-                        dataSource={item.list}
-                        pagination={false}
-                        scroll={{ x: 'max-content' }}
-                      />
-                    ) : (
-                      <NoData />
-                    )
-                  ) : null}
-                </div>
-              ))}
-            </StaffTableWrap2>
+                    {item.list ? (
+                      item?.list?.length ? (
+                        <TableBox
+                          rowKey="id"
+                          columns={selectColum}
+                          dataSource={item.list}
+                          pagination={false}
+                          scroll={{ x: 'max-content' }}
+                        />
+                      ) : (
+                        <NoData />
+                      )
+                    ) : null}
+                  </div>
+                ))}
+              </StaffTableWrap2>
+            ) : (
+              <div style={{ padding: 16 }}>
+                <NoData />
+              </div>
+            )}
           </LoadingSpin>
         </div>
       ) : null}

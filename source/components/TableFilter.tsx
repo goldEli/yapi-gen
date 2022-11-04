@@ -294,7 +294,7 @@ const TableFilter = (props: any) => {
     confirm()
   }
   const content = (
-    <CollapseWrap defaultActiveKey={['2']}>
+    <CollapseWrap defaultActiveKey={['1', '2', '3']}>
       <Collapse.Panel header={t('components.basicFiled')} key="1">
         {filterBasicsList
           ?.filter((k: any) =>
