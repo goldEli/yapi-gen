@@ -18,7 +18,9 @@ export default defineConfig(config => {
         files: [
           {
             match: /.*/u,
-            attrs: {},
+            attrs: {
+              rel: 'preload',
+            },
           },
         ],
       }) as unknown as Plugin,
