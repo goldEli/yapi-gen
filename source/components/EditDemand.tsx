@@ -4,7 +4,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 /* eslint-disable max-lines */
-/* eslint-disable no-negated-condition */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -491,19 +490,20 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     if (props?.visible) {
       setCategoryObj(createCategory)
-      const value = !props?.notGetPath
-        ? paramsData?.id
-        : props?.isQuickCreate
-        ? null
-        : props?.projectId
-      setProjectId(value)
+      let resultValue
+      if (props?.notGetPath) {
+        resultValue = props?.isQuickCreate ? null : props?.projectId
+      } else {
+        resultValue = paramsData?.id
+      }
+      setProjectId(resultValue)
       if (props?.isQuickCreate) {
         getProjectData()
         setTimeout(() => {
           inputRefDom.current?.focus()
         }, 100)
       } else {
-        getInit(value)
+        getInit(resultValue)
       }
     }
   }, [props?.visible])
@@ -530,20 +530,12 @@ const EditDemand = (props: Props) => {
     setPriorityDetail({})
     getList()
     setIsShowFields(false)
-    if (!props?.isQuickCreate) {
-      props.onUpdate?.()
-    } else {
+    if (props?.isQuickCreate) {
       setIsUpdateCreate(true)
-    }
-    if (!hasNext) {
-      setChangeCategoryFormData({})
-      setCreateCategory({})
-      props.onChangeVisible()
-      setTimeout(() => {
-        form.resetFields()
-        form1.resetFields()
-      }, 100)
     } else {
+      props.onUpdate?.()
+    }
+    if (hasNext) {
       form.resetFields()
       form.setFieldsValue({
         projectId,
@@ -559,6 +551,14 @@ const EditDemand = (props: Props) => {
       }
       setTimeout(() => {
         inputRefDom.current?.focus()
+      }, 100)
+    } else {
+      setChangeCategoryFormData({})
+      setCreateCategory({})
+      props.onChangeVisible()
+      setTimeout(() => {
+        form.resetFields()
+        form1.resetFields()
       }, 100)
     }
   }
@@ -750,16 +750,16 @@ const EditDemand = (props: Props) => {
   }
 
   const onClickCategory = (item: any) => {
-    if (!props.demandId) {
-      setCategoryObj(item)
-      setIsShowPop(false)
-    } else {
+    if (props.demandId) {
       changeCategoryForm.setFieldsValue({
         categoryId: item.id,
       })
       setCurrentCategory(item)
       onChangeSelect(item.id)
       setIsShowChangeCategory(true)
+    } else {
+      setCategoryObj(item)
+      setIsShowPop(false)
     }
   }
 

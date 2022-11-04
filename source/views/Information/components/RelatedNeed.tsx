@@ -1,4 +1,3 @@
-/* eslint-disable no-negated-condition */
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import { getDemandList, getProjectList } from '@/services/daily'
@@ -123,21 +122,7 @@ const RelatedNeed = (props: any) => {
         <IconFont type="plus" />
         <div>关联需求</div>
       </AddWrap>
-      {!show ? (
-        <div>
-          {chooseList.map((item: any) => (
-            <InnerLine key={item.key}>
-              <span>{item.label}</span>
-              <IconFont
-                onClick={() => del(item)}
-                data-close
-                className={rightText}
-                type="close"
-              />
-            </InnerLine>
-          ))}
-        </div>
-      ) : (
+      {show ? (
         <div
           style={{
             background: '#F2F2F4',
@@ -225,6 +210,20 @@ const RelatedNeed = (props: any) => {
               完成
             </span>
           </div>
+        </div>
+      ) : (
+        <div>
+          {chooseList.map((item: any) => (
+            <InnerLine key={item.key}>
+              <span>{item.label}</span>
+              <IconFont
+                onClick={() => del(item)}
+                data-close
+                className={rightText}
+                type="close"
+              />
+            </InnerLine>
+          ))}
         </div>
       )}
     </div>

@@ -1,5 +1,4 @@
 /* eslint-disable no-undefined */
-/* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */

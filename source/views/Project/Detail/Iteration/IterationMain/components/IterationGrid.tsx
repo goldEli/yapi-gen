@@ -1,4 +1,3 @@
-/* eslint-disable no-negated-condition */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -115,32 +114,34 @@ const IterationGrid = (props: Props) => {
                 {k.content_txt}(
                 {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
               </Title>
-              {typeof props?.hasId !== 'object' ? (
+              {typeof props?.hasId === 'object' ? (
+                dataList?.filter((item: any) => item.id === k.id)[0]?.list ? (
+                  dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                    .length > 0 ? (
+                    dataList
+                      ?.filter((item: any) => item.id === k.id)[0]
+                      ?.list?.map((i: any, idx: any) => (
+                        <DemandCard
+                          key={i.id}
+                          item={i}
+                          indexVal={idx}
+                          onClickItem={() => onClickItem(i)}
+                          onChangeDelete={props?.onDelete}
+                          onChangeEdit={props?.onChangeVisible}
+                          onUpdate={props?.onUpdate}
+                          listLength={
+                            dataList?.filter((item: any) => item.id === k.id)[0]
+                              ?.list?.length
+                          }
+                        />
+                      ))
+                  ) : (
+                    <NoData />
+                  )
+                ) : null
+              ) : (
                 <NoData />
-              ) : dataList?.filter((item: any) => item.id === k.id)[0]?.list ? (
-                dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                  .length > 0 ? (
-                  dataList
-                    ?.filter((item: any) => item.id === k.id)[0]
-                    ?.list?.map((i: any, idx: any) => (
-                      <DemandCard
-                        key={i.id}
-                        item={i}
-                        indexVal={idx}
-                        onClickItem={() => onClickItem(i)}
-                        onChangeDelete={props?.onDelete}
-                        onChangeEdit={props?.onChangeVisible}
-                        onUpdate={props?.onUpdate}
-                        listLength={
-                          dataList?.filter((item: any) => item.id === k.id)[0]
-                            ?.list?.length
-                        }
-                      />
-                    ))
-                ) : (
-                  <NoData />
-                )
-              ) : null}
+              )}
             </StatusItemsWrap>
           ))}
         </SpaceWrap>
