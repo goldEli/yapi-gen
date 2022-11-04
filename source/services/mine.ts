@@ -1,4 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */

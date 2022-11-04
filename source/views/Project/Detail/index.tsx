@@ -1,6 +1,5 @@
 // 项目详情主页
 
-/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -93,13 +92,13 @@ const Detail = () => {
         if (item.content === 'iterate_name') {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...selectIterate.list?.map((i: any) => {
+            ...(selectIterate.list?.map((i: any) => {
               return {
                 id: i.id,
                 content: i.name,
                 content_txt: i.name,
               }
-            }),
+            }) || []),
           ]
         }
         if (item.content === 'priority' || item.content === 'tag') {
@@ -115,13 +114,13 @@ const Detail = () => {
         ) {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...memberList?.map((k: any) => {
+            ...(memberList?.map((k: any) => {
               return {
                 id: k.id,
                 content: k.name,
                 content_txt: k.name,
               }
-            }),
+            }) || []),
           ]
         }
         return item
