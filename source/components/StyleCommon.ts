@@ -23,12 +23,13 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
-    cursor: 'pointer',
+
     minHeight: 32,
     borderRadius: 4,
     padding: '0 8px',
   },
   ({ isCanEdit, isTable }) => ({
+    cursor: isCanEdit ? 'pointer' : 'inherit',
     justifyContent: isTable ? 'flex-start' : 'space-between',
     minWidth: isTable ? 0 : 60,
     '&: hover': {

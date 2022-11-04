@@ -359,6 +359,7 @@ export const setPermission: any = async (params: any) => {
 export const storyConfigField: any = async (params: any) => {
   const response: any = await http.get<any>('storyConfigField', {
     project_id: params.projectId,
+    k: params?.key,
   })
 
   return {

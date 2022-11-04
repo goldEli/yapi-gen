@@ -43,10 +43,15 @@ const TableQuickEdit = (props: Props) => {
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
   let projectId: any
+  let canClick: any
+  const isCan =
+    props.isInfo ||
+    !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
 
   if (props.isMineOrHis) {
     isCanEdit = props?.item?.project?.isEdit
     projectId = props?.item?.project_id
+    canClick = isCan && isCanEdit
   } else {
     isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
@@ -54,11 +59,12 @@ const TableQuickEdit = (props: Props) => {
         ?.length > 0
     const paramsData = getParamsData(searchParams)
     projectId = paramsData.id
+    canClick = isCan && isCanEdit
   }
 
   // 我的模块及他的模块并且是自定义字段
   const getIsCustomValues = async () => {
-    const response = await getFieldList({ projectId })
+    const response = await getFieldList({ projectId, key: props.keyText })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
@@ -208,12 +214,7 @@ const TableQuickEdit = (props: Props) => {
         <CanOperation
           onClick={() =>
             // 详情和列表上不是文本的可点击整个元素
-            props.isInfo ||
-            !['text', 'textarea', 'number', 'integer'].includes(
-              String(props.type),
-            )
-              ? setIsShowControl(true)
-              : void 0
+            canClick ? setIsShowControl(true) : void 0
           }
           isTable={!props.isInfo}
           isCanEdit={isCanEdit}
