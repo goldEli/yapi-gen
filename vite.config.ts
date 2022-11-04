@@ -51,6 +51,9 @@ export default defineConfig(config => {
         'Cache-Control': 'public, max-age=31536000',
       },
     },
+    build: {
+      modulePreload: true,
+    },
     envDir: './environments/',
     envPrefix: '__',
     base: env.__URL_ALIAS__,
