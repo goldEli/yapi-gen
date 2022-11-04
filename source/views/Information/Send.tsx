@@ -235,6 +235,7 @@ const Send = () => {
   }
 
   const init = async () => {
+    setIsSpinning(true)
     const obj = {
       type: srr[urlId as unknown as number],
       keyword,
@@ -245,11 +246,15 @@ const Send = () => {
       created_at,
     }
     const res = await getDailyList(obj)
+    if (res) {
+      setIsSpinning(false)
+    }
     setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)
   }
   const init2 = async () => {
+    setIsSpinning(true)
     const obj = {
       type: srr[urlId as unknown as number],
       keyword: '',
@@ -260,6 +265,9 @@ const Send = () => {
       created_at: [],
     }
     const res = await getDailyList(obj)
+    if (res) {
+      setIsSpinning(false)
+    }
     setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)

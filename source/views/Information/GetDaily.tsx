@@ -225,6 +225,7 @@ const Get = () => {
   }
 
   const init = async () => {
+    setIsSpinning(true)
     const obj = {
       type: srr[urlId as unknown as number],
       keyword,
@@ -237,11 +238,15 @@ const Get = () => {
       status,
     }
     const res = await getReceiveList(obj)
+    if (res) {
+      setIsSpinning(false)
+    }
     setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)
   }
   const init2 = async () => {
+    setIsSpinning(true)
     const obj = {
       type: srr[urlId as unknown as number],
       keyword: '',
@@ -254,6 +259,9 @@ const Get = () => {
       status: true,
     }
     const res = await getReceiveList(obj)
+    if (res) {
+      setIsSpinning(false)
+    }
     setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)

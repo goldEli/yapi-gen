@@ -2,13 +2,13 @@ import { ReactNode, useMemo } from 'react'
 
 const SvgTextBg = (props: any) => {
   const {
-    text = '成都定星科技技术服务有限公司',
-    fontSize = 25,
-    fillOpacity = '0.1',
-    fillColor = '#1c1e20',
+    text = '成都定星科技 李钟硕 18866686868',
+    fontSize = 12,
+    fillOpacity = '0.5',
+    fillColor = '#D5D6D9',
   } = props
   const res = `
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200px" height="180px" viewBox="0 0 180 180">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300px" height="180px" viewBox="0 0 180 180">
         <text x="-100" y="-30" fill='${fillColor}'  transform = "rotate(-35 220 -220)" fill-opacity='${fillOpacity}' font-size='${fontSize}'> ${text}</text>
       </svg>`
 
@@ -47,7 +47,10 @@ const WaterMarkContent = (props: any) => {
     [text, fontSize, fillOpacity, fillColor],
   )
   return (
-    <div style={{ position: 'relative', width: '100%', height: ' 100%' }}>
+    <div
+      dada-water
+      style={{ position: 'relative', width: '100%', height: ' 100%' }}
+    >
       {props.children}
       <SvgTextBg {...memoInfo} />
     </div>

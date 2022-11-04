@@ -148,8 +148,9 @@ export const useDynamicColumns = (state: any) => {
                       borderRadius: '10px 10px 10px 10px',
                       color: '#FFFFFF',
                       textAlign: 'center',
-                      lineHeight: '20px',
+                      lineHeight: '15px',
                       fontSize: '12px',
+                      border: '2px solid #FFFFFF',
                     }}
                   >
                     新

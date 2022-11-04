@@ -95,9 +95,9 @@ const LookDay = (props: any) => {
   const messagesEndRef = useRef<any>(null)
   const onChangeLeft = (values: any, type: any) => {
     if (type === 1) {
-      // setLeft(values - 360)
+      setLeft(values - 360)
     } else {
-      // setLeft(values + 360)
+      setLeft(values + 360)
     }
 
     setTimeout(() => {
