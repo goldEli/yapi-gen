@@ -1,6 +1,5 @@
 // 项目详情主页
 
-/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -11,9 +10,10 @@ import styled from '@emotion/styled'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
-import { getParamsData } from '@/tools'
+import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
+import { getStaffList } from '@/services/staff'
 
 const Wrap = styled.div({
   height: '100%',
@@ -34,6 +34,7 @@ const Detail = () => {
     setIsRefreshIterateList,
     isRefreshIterateList,
     setSelectTreeData,
+    setSelectAllStaffData,
     getFieldList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
@@ -55,18 +56,6 @@ const Detail = () => {
   const getIterateList = async () => {
     await getIterateSelectList({ projectId, all: true })
     setIsRefreshIterateList(false)
-  }
-
-  function filterTreeData(data: any) {
-    const newData = data.map((item: any) => ({
-      title: item.name,
-      value: item.id,
-      children:
-        item.children && item.children.length
-          ? filterTreeData(item.children)
-          : null,
-    }))
-    return newData
   }
 
   const filArr = (data: any) => {
@@ -103,13 +92,13 @@ const Detail = () => {
         if (item.content === 'iterate_name') {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...selectIterate.list?.map((i: any) => {
+            ...(selectIterate.list?.map((i: any) => {
               return {
                 id: i.id,
                 content: i.name,
                 content_txt: i.name,
               }
-            }),
+            }) || []),
           ]
         }
         if (item.content === 'priority' || item.content === 'tag') {
@@ -125,13 +114,13 @@ const Detail = () => {
         ) {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...memberList?.map((k: any) => {
+            ...(memberList?.map((k: any) => {
               return {
                 id: k.id,
                 content: k.name,
                 content_txt: k.name,
               }
-            }),
+            }) || []),
           ]
         }
         return item
@@ -220,6 +209,12 @@ const Detail = () => {
     await getFieldList({ projectId })
   }
 
+  // 获取公司员工
+  const getStaffData = async () => {
+    const options = await getStaffList({ all: 1 })
+    setSelectAllStaffData(options)
+  }
+
   useEffect(() => {
     getProjectInfo({ projectId })
     getPermissionList()
@@ -228,6 +223,7 @@ const Detail = () => {
     getTagList({ projectId })
     getIterateList()
     getFieldData()
+    getStaffData()
   }, [isRefresh])
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 /* eslint-disable no-undefined */
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
@@ -223,9 +222,9 @@ export const getShapeRight = async (params: any) => {
         type: item.attr,
         dvalue: item.true_value,
         children: item?.value
-          ? item?.value?.map((item: any) => ({
-              name: item,
-              id: item,
+          ? item?.value?.map((k: any) => ({
+              name: k,
+              id: k,
             }))
           : [],
       }

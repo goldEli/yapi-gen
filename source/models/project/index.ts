@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 export default () => {
   const [t] = useTranslation()
   const [selectTreeData, setSelectTreeData] = useState<any>([])
+  const [selectAllStaffData, setSelectAllStaffData] = useState<any>([])
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
   })
@@ -75,6 +76,7 @@ export default () => {
   const getFieldList = async (params: any) => {
     const result = await services.project.storyConfigField(params)
     setFieldList(result)
+    return result
   }
 
   const getProjectList = async (params: any) => {
@@ -207,5 +209,7 @@ export default () => {
     setFieldList,
     setSelectTreeData,
     selectTreeData,
+    setSelectAllStaffData,
+    selectAllStaffData,
   }
 }

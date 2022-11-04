@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines */
-/* eslint-disable no-negated-condition */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
@@ -258,7 +257,6 @@ const TableFilter = (props: any) => {
   }, [list, customList])
 
   const confirm = async (val?: any, delKey?: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))

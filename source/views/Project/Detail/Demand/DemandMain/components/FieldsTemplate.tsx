@@ -1,9 +1,8 @@
-/* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable multiline-ternary */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider, message } from 'antd'
+import { Checkbox, Space, Divider } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -232,10 +231,10 @@ const FieldsTemplate = (props: Props) => {
     let checkNormal: any
     if (checked) {
       checkNormal = fields?.baseFields?.map((k: any) => k.field)
-    } else if (!props.isExport) {
-      checkNormal = props?.importState === 2 ? ['name', 'category'] : ['id']
-    } else {
+    } else if (props.isExport) {
       checkNormal = ['name']
+    } else {
+      checkNormal = props?.importState === 2 ? ['name', 'category'] : ['id']
     }
 
     setCheckList(checkNormal)

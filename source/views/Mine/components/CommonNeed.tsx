@@ -118,19 +118,21 @@ const MoreWrap = (props: MoreWrapProps) => {
   )
   return (
     <ShowWrap>
-      <Dropdown
-        key={isMoreVisible.toString()}
-        visible={isMoreVisible}
-        onVisibleChange={visible => setIsMoreVisible(visible)}
-        trigger={['hover']}
-        overlay={menu}
-        placement="bottomLeft"
-        getPopupContainer={node =>
-          props.listLength === 1 ? document.body : node
-        }
-      >
-        <RowIconFont type="more" />
-      </Dropdown>
+      {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
+        <Dropdown
+          key={isMoreVisible.toString()}
+          visible={isMoreVisible}
+          onVisibleChange={visible => setIsMoreVisible(visible)}
+          trigger={['hover']}
+          overlay={menu}
+          placement="bottomLeft"
+          getPopupContainer={node =>
+            props.listLength === 1 ? document.body : node
+          }
+        >
+          <RowIconFont type="more" />
+        </Dropdown>
+      )}
     </ShowWrap>
   )
 }
@@ -214,12 +216,11 @@ const CommonNeed = (props: any) => {
       custom_field: customField,
     })
   }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
-  const init = async (pageNumber?: any, updateState?: boolean) => {
+  const init = async (updateState?: boolean, pageNumber?: any) => {
     if (!updateState) {
       setIsSpin(true)
     }
@@ -382,7 +383,7 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     setPage(1)
-    init(1)
+    init(false, 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
