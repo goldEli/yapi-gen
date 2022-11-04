@@ -112,6 +112,7 @@ const urls = {
   getExportExcel: '/b/story/export_story_excel',
   getAchieveInfo: '/b/iterate/achieve/info',
   updateAchieve: '/b/iterate/achieve',
+  getExportFields: '/b/story/get_story_export_fields',
 }
 
 export default urls

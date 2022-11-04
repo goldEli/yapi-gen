@@ -266,7 +266,7 @@ const EditDemand = (props: Props) => {
     workList,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
-  const { setIsRefresh, userInfo } = useModel('user')
+  const { userInfo } = useModel('user')
   const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const LeftDom = useRef<HTMLInputElement>(null)

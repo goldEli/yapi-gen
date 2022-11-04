@@ -403,7 +403,18 @@ export const getLoadListFields: any = async (params: any) => {
   const response: any = await http.get<any>('getLoadListFields', {
     project_id: params.projectId,
     is_update: params.isUpdate,
-    type: params?.type,
+  })
+
+  return {
+    baseFields: response.data.base_fields,
+    timeAndPersonFields: response.data.time_person_fields,
+    customFields: response.data.custom_fields,
+  }
+}
+
+export const getExportFields: any = async (params: any) => {
+  const response: any = await http.get<any>('getExportFields', {
+    project_id: params.projectId,
   })
 
   return {
@@ -497,6 +508,7 @@ export const getExportExcel: any = async (params: any) => {
       page: params?.page,
       orderkey: params?.orderKey,
       order: params?.order,
+      fields: params.fields,
     },
     { responseType: 'blob' },
   )

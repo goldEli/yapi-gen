@@ -29,8 +29,10 @@ import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 
 const WrapRight = styled.div({
-  width: '424px',
+  minWidth: '400px',
+  width: '100%',
   height: '100%',
+  paddingLeft: 24,
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -512,6 +514,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             <Label>{t('common.end')}</Label>
             <ContentWrap>
               <TableQuickEdit
+                isInfo
                 item={demandInfo}
                 keyText="expected_end_at"
                 type="date"

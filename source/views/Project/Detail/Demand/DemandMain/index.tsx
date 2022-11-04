@@ -134,7 +134,7 @@ const DemandMain = (props: Props) => {
   }, [])
 
   useEffect(() => {
-    getList(isGrid, searchItems, pageObj, order, true)
+    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
   }, [key])
 
   useEffect(() => {
@@ -206,11 +206,11 @@ const DemandMain = (props: Props) => {
     () => ({
       key,
       changeKey: (value: any) => {
-        setPageObj({ page: 1, size: 20 })
+        setPageObj({ page: 1, size: pageObj.size })
         setKey(value)
       },
     }),
-    [key],
+    [key, pageObj.size],
   )
 
   return (

@@ -530,8 +530,19 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form}
-                scrollToFirstError
                 onFinish={confirm}
+                onFinishFailed={() => {
+                  setTimeout(() => {
+                    const errorList = (document as any).querySelectorAll(
+                      '.ant-form-item-has-error',
+                    )
+
+                    errorList[0].scrollIntoView({
+                      block: 'center',
+                      behavior: 'smooth',
+                    })
+                  }, 100)
+                }}
               >
                 {rightList?.fields?.map((i: any) => {
                   if (i.type === 'area') {
@@ -818,6 +829,19 @@ export const ShapeContent = (props: any) => {
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form2}
+                onFinish={confirm}
+                onFinishFailed={() => {
+                  setTimeout(() => {
+                    const errorList = (document as any).querySelectorAll(
+                      '.ant-form-item-has-error',
+                    )
+
+                    errorList[0].scrollIntoView({
+                      block: 'center',
+                      behavior: 'smooth',
+                    })
+                  }, 100)
+                }}
               >
                 <Form.Item
                   style={{ paddingRight: '24px' }}
@@ -853,6 +877,7 @@ export const ShapeContent = (props: any) => {
               disabled={!rightList.user_has_auth}
               onClick={() => {
                 form.submit()
+                form2.submit()
               }}
               style={{ marginLeft: '16px' }}
               type="primary"

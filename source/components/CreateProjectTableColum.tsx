@@ -58,7 +58,8 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
-  const { projectInfo, colorList, selectTreeData } = useModel('project')
+  const { projectInfo, colorList, selectTreeData, fieldList, memberList } =
+    useModel('project')
   const { selectIterate } = useModel('iterate')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -356,8 +357,28 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'dealName',
       key: 'users_name',
       width: 180,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any, record: any) => {
+        return (
+          <>
+            {record?.usersNameIds?.includes(userInfo?.id) ? (
+              <TableQuickEdit
+                type="fixed_select"
+                defaultText={record?.usersNameIds || []}
+                keyText="users"
+                item={record}
+                onUpdate={onUpdate}
+                value={memberList?.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              >
+                <span>{text || '--'}</span>
+              </TableQuickEdit>
+            ) : (
+              <span>{text || '--'}</span>
+            )}
+          </>
+        )
       },
     },
     {
@@ -403,8 +424,22 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
       width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersNameIds || []}
+            keyText="copysend"
+            item={record}
+            onUpdate={onUpdate}
+            value={memberList?.map((i: any) => ({
+              label: i.name,
+              value: i.id,
+            }))}
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -491,22 +526,24 @@ export const useDynamicColumns = (state: any) => {
         dataIndex: element.value,
         key: element.value,
         render: (text: any, record: any) => {
+          const currentFields = fieldList?.list?.filter(
+            (i: any) => i.content === element.value,
+          )[0]
           return (
             <TableQuickEdit
-              type={element.type?.attr}
-              defaultText={text}
+              type={currentFields?.type.attr}
+              defaultText={text?.value}
               keyText={element.value}
               item={record}
               onUpdate={onUpdate}
-              value={element.type?.value}
-              remarks={element.remarks}
+              value={currentFields.type?.value}
+              remarks={currentFields.remarks}
+              isCustom
             >
               <span>
-                {text?.value
-                  ? Array.isArray(text?.value)
-                    ? text?.value?.join('、')
-                    : text?.value
-                  : '--'}
+                {(Array.isArray(text?.value)
+                  ? text?.value?.join('、')
+                  : text?.value) || '--'}
               </span>
             </TableQuickEdit>
           )
