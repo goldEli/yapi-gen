@@ -4,7 +4,6 @@
 /* eslint-disable no-lonely-if */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */

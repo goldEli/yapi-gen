@@ -1,5 +1,3 @@
-/* eslint-disable complexity */
-/* eslint-disable no-negated-condition */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Pagination, Dropdown, Menu, message, Spin } from 'antd'
@@ -72,7 +70,6 @@ const IterationTable = (props: Props) => {
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
-  const { filterHeightIterate } = useModel('iterate')
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -266,26 +263,28 @@ const IterationTable = (props: Props) => {
     <Content style={{ height: 'calc(100% - 64px)' }}>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId !== 'object' ? (
+          {typeof props?.hasId === 'object' ? (
+            props.data?.list ? (
+              props.data?.list?.length > 0 ? (
+                <TableBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={props.data?.list}
+                  pagination={false}
+                  scroll={{
+                    x: 'max-content',
+                    y: tableY,
+                  }}
+                  showSorterTooltip={false}
+                  tableLayout="auto"
+                />
+              ) : (
+                <NoData />
+              )
+            ) : null
+          ) : (
             <NoData />
-          ) : props.data?.list ? (
-            props.data?.list?.length > 0 ? (
-              <TableBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={props.data?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-              />
-            ) : (
-              <NoData />
-            )
-          ) : null}
+          )}
         </Spin>
       </DataWrap>
       <PaginationWrap>

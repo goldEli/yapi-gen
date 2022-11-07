@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-negated-condition */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Form, Input, message, Popover, Tooltip, Tree } from 'antd'
+import { Form, Input, message, Popover, Tree } from 'antd'
 import {
   useEffect,
   useState,
@@ -33,11 +31,9 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 
 const Left = styled.div`
-  /* max-width: 500px; */
   height: calc(100vh - 64px);
   background-color: #fff;
   position: relative;
-  /* float: left; */
 `
 
 const TitleWrap = styled.div({

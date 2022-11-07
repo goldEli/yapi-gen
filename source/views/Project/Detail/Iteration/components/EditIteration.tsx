@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Modal, Form, Input, Space, message } from 'antd'

@@ -3,7 +3,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
-/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
@@ -125,7 +124,7 @@ const Need = (props: any) => {
         : await getVerifyUserList(params)
     setListData(result)
     setCount({
-      verifyUser: !(val ?? activeTab) ? result?.total : result?.otherCount,
+      verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
       verify: val ?? activeTab ? result?.total : result?.otherCount,
     })
     setIsSpin(false)

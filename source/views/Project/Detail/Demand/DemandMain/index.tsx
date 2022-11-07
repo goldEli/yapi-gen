@@ -236,6 +236,16 @@ const DemandMain = (props: Props) => {
             settingState={isSettingState}
             onChangeSetting={setIsSettingState}
             isShowLeft={isShowLeft}
+            otherParams={{
+              page: pageObj.page,
+              pageSize: pageObj.size,
+              orderKey: order.key,
+              order: order.value,
+              classId: key,
+              all: isGrid,
+              panel: isGrid,
+            }}
+            dataLength={dataList?.total}
           />
           {isGrid ? (
             <DemandGrid

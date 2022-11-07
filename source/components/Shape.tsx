@@ -1,7 +1,4 @@
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable array-callback-return */
@@ -340,7 +337,6 @@ const NumericInput = (props: any) => {
   )
 }
 
-// eslint-disable-next-line complexity
 export const ShapeContent = (props: any) => {
   const [t] = useTranslation()
   const {

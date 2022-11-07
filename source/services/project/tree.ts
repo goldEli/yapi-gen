@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -32,7 +31,7 @@ export const getTreeList = async (params: any) => {
           id: -1,
           story_count: res.data[1]?.story_count,
         },
-        ...transData(newData, 'id', 'parent_id', 'children') ?? [],
+        ...(transData(newData, 'id', 'parent_id', 'children') ?? []),
       ],
     },
   ]

@@ -1,8 +1,9 @@
+// 创建需求和编辑需求的弹窗
+
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 /* eslint-disable max-lines */
-/* eslint-disable no-negated-condition */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -16,7 +17,6 @@ import {
   Select,
   Space,
   message,
-  Progress,
   TreeSelect,
   DatePicker,
   Popover,
@@ -35,8 +35,15 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
-import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
+import {
+  PriorityWrap,
+  SliderWrap,
+  AddWrap,
+  ProgressWrapUpload,
+} from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
+import { getStaffList } from '@/services/staff'
+import { decryptPhp } from '@/tools/cryptoPhp'
 import CommonModal from './CommonModal'
 
 const ShowLabel = styled.div({
@@ -148,35 +155,6 @@ const AddButtonWrap = styled.div({
   cursor: 'pointer',
 })
 
-export const ProgressWrap = styled(Progress)({
-  '.ant-progress-status-exception .ant-progress-bg': {
-    backgroundColor: '#ff5c5e',
-    height: '2px !important',
-  },
-  '.ant-progress-status-exception .ant-progress-text': {
-    color: '#ff5c5e',
-  },
-  '.ant-progress-success-bg .ant-progress-bg': {
-    backgroundColor: '#2877ff',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-bg': {
-    backgroundColor: '#43ba9a',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-text': {
-    color: '#43ba9a',
-  },
-  '.ant-progress-inner': {
-    height: '2px !important',
-    minWidth: 200,
-  },
-  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
-    {
-      fontSize: 10,
-    },
-})
-
 const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
   {
     height: 22,
@@ -273,6 +251,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory,
     updateDemandCategory,
     setIsUpdateStatus,
+    setIsOpenEditDemand,
   } = useModel('demand')
   const {
     memberList,
@@ -286,9 +265,10 @@ const EditDemand = (props: Props) => {
     colorList,
     getWorkflowList,
     workList,
+    selectAllStaffData,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
-  const { setIsRefresh, userInfo } = useModel('user')
+  const { userInfo } = useModel('user')
   const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const LeftDom = useRef<HTMLInputElement>(null)
@@ -393,7 +373,7 @@ const EditDemand = (props: Props) => {
       form.setFieldsValue({
         copySendIds: getCommonUser(
           res?.copySend?.map((i: any) => i.copysend),
-          memberList,
+          selectAllStaffData,
         ),
         attachments: res?.attachment.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
@@ -422,17 +402,13 @@ const EditDemand = (props: Props) => {
       form.resetFields()
       form1.resetFields()
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
 
-  const getProjectData = async () => {
-    const res = await getProjectList({
-      self: 1,
-      all: 1,
-    })
-    setProjectList(res.data)
-  }
-
-  const getInit = async (value?: any) => {
+  const getInit = async (value?: any, categoryId?: any) => {
+    setIsOpenEditDemand(true)
     const [classTree, categoryData, allDemandArr] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
@@ -480,8 +456,35 @@ const EditDemand = (props: Props) => {
         )
       }
       if (props?.isQuickCreate) {
-        setCategoryObj(categoryData?.list[0])
+        if (categoryId) {
+          setCategoryObj(
+            categoryData?.list?.filter((i: any) => i.id === categoryId)[0],
+          )
+          form.setFieldsValue({
+            type: 'need',
+          })
+        } else {
+          setCategoryObj(categoryData?.list[0])
+        }
       }
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    }
+  }
+
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.data)
+    let hisCategoryData: any
+    if (localStorage.getItem('quickCreateData')) {
+      hisCategoryData = JSON.parse(
+        decryptPhp(localStorage.getItem('quickCreateData') as any),
+      )
+      getInit(hisCategoryData?.projectId, hisCategoryData?.categoryId)
     }
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -491,19 +494,20 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     if (props?.visible) {
       setCategoryObj(createCategory)
-      const value = !props?.notGetPath
-        ? paramsData?.id
-        : props?.isQuickCreate
-        ? null
-        : props?.projectId
-      setProjectId(value)
+      let resultValue
+      if (props?.notGetPath) {
+        resultValue = props?.isQuickCreate ? null : props?.projectId
+      } else {
+        resultValue = paramsData?.id
+      }
+      setProjectId(resultValue)
       if (props?.isQuickCreate) {
         getProjectData()
         setTimeout(() => {
           inputRefDom.current?.focus()
         }, 100)
       } else {
-        getInit(value)
+        getInit(resultValue)
       }
     }
   }, [props?.visible])
@@ -530,20 +534,13 @@ const EditDemand = (props: Props) => {
     setPriorityDetail({})
     getList()
     setIsShowFields(false)
-    if (!props?.isQuickCreate) {
-      props.onUpdate?.()
-    } else {
+    setIsOpenEditDemand(false)
+    if (props?.isQuickCreate) {
       setIsUpdateCreate(true)
-    }
-    if (!hasNext) {
-      setChangeCategoryFormData({})
-      setCreateCategory({})
-      props.onChangeVisible()
-      setTimeout(() => {
-        form.resetFields()
-        form1.resetFields()
-      }, 100)
     } else {
+      props.onUpdate?.()
+    }
+    if (hasNext) {
       form.resetFields()
       form.setFieldsValue({
         projectId,
@@ -559,6 +556,14 @@ const EditDemand = (props: Props) => {
       }
       setTimeout(() => {
         inputRefDom.current?.focus()
+      }, 100)
+    } else {
+      setChangeCategoryFormData({})
+      setCreateCategory({})
+      props.onChangeVisible()
+      setTimeout(() => {
+        form.resetFields()
+        form1.resetFields()
       }, 100)
     }
   }
@@ -667,7 +672,7 @@ const EditDemand = (props: Props) => {
 
   const Children = () => {
     return (
-      <ProgressWrap
+      <ProgressWrapUpload
         status={uploadStatus}
         percent={percentVal}
         size="small"
@@ -688,7 +693,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     form.setFieldsValue({
       users: [],
-      copysend: [],
     })
     getInit(value)
   }
@@ -700,7 +704,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     form.setFieldsValue({
       users: [],
-      copysend: [],
     })
   }
 
@@ -716,6 +719,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsShowFields(false)
+    setIsOpenEditDemand(false)
   }
 
   const titleText = () => {
@@ -750,16 +754,16 @@ const EditDemand = (props: Props) => {
   }
 
   const onClickCategory = (item: any) => {
-    if (!props.demandId) {
-      setCategoryObj(item)
-      setIsShowPop(false)
-    } else {
+    if (props.demandId) {
       changeCategoryForm.setFieldsValue({
         categoryId: item.id,
       })
       setCurrentCategory(item)
       onChangeSelect(item.id)
       setIsShowChangeCategory(true)
+    } else {
+      setCategoryObj(item)
+      setIsShowPop(false)
     }
   }
 
@@ -1232,11 +1236,7 @@ const EditDemand = (props: Props) => {
                   placeholder={t('common.pleaseChooseCopySend')}
                   getPopupContainer={node => node}
                   optionFilterProp="label"
-                  disabled={!projectId}
-                  options={memberList?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
+                  options={selectAllStaffData}
                 />
               </Form.Item>
             </FormWrap>

@@ -11,9 +11,10 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Divider, Popover, Space, Tooltip } from 'antd'
+import { Divider, message, Popover, Space, Tooltip } from 'antd'
 import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
+import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 
 const OperationWrap = styled.div({
@@ -113,6 +114,8 @@ interface Props {
   onChangeSetting(val: boolean): void
   onChangeIsShowLeft?(): void
   isShowLeft?: boolean
+  otherParams: any
+  dataLength: any
 }
 
 const Operation = (props: Props) => {
@@ -122,6 +125,7 @@ const Operation = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
+  const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const { filterAll, projectInfo, categoryList, colorList } =
     useModel('project')
@@ -264,6 +268,18 @@ const Operation = (props: Props) => {
     setIsVisibleMore(false)
   }
 
+  const onExportClick = () => {
+    if (props.dataLength > 5000) {
+      message.warning(
+        '导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！',
+      )
+      return
+    }
+    setIsVisible(false)
+    setIsShowExport(true)
+    setIsVisibleMore(false)
+  }
+
   const moreOperation = (
     <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
       {hasImport ? null : (
@@ -273,7 +289,7 @@ const Operation = (props: Props) => {
         </MoreItem>
       )}
       {hasExport ? null : (
-        <MoreItem>
+        <MoreItem onClick={onExportClick}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
           <span>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
@@ -305,6 +321,14 @@ const Operation = (props: Props) => {
       >
         <ImportDemand />
       </CommonModal>
+      {isShowExport ? (
+        <ExportDemand
+          isShowExport={isShowExport}
+          onClose={setIsShowExport}
+          searchGroups={searchGroups}
+          otherParams={props.otherParams}
+        />
+      ) : null}
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (

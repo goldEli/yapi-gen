@@ -53,8 +53,6 @@ const SetHead = styled.div`
   border: 1px solid white;
   color: white;
 `
-
-// eslint-disable-next-line complexity
 const SetPermissionWrap = (props: {
   data: any
   isVisible: boolean

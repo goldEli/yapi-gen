@@ -1,7 +1,5 @@
-/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -27,6 +25,7 @@ const TableWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  overflowX: 'hidden',
 })
 
 const TableWrapBox = styled(Table)({
@@ -160,6 +159,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       }}
     >
       <Input
+        ref={inputRefDom as any}
         style={{
           width: 196,
           margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
@@ -170,7 +170,6 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
         maxLength={10}
-        ref={inputRefDom as any}
         autoFocus
       />
       <ChooseColor
@@ -406,7 +405,7 @@ const AddWorkflow = (props: Props) => {
           ) : (
             <HiddenText>
               <OmitText
-                width={300}
+                width={220}
                 tipProps={{
                   getPopupContainer: node => node,
                 }}

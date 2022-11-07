@@ -65,7 +65,8 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.2",
     "typescript": "^4.6.3",
-    "vite": "^2.9.9"
+    "vite": "^3.2.2",
+    "vite-plugin-prefetch-inject": "^0.1.0"
   },
   "name": "@jihe/template-react",
   "prettier": "@jihe/prettier-config",
@@ -101,7 +102,16 @@
         }
       ],
       "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/member-delimiter-style": 0
+      "@typescript-eslint/member-delimiter-style": 0,
+      "complexity": [
+        2,
+        10
+      ],
+      "react-hooks/exhaustive-deps": 0,
+      "max-lines": [
+        2,
+        800
+      ]
     }
   },
   "lint-staged": {

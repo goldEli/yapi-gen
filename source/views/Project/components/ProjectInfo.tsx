@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'

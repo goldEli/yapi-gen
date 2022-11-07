@@ -1,4 +1,3 @@
-/* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
@@ -194,7 +193,7 @@ const Send = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ textAlign: 'right' }}>
-            {!(record.read_user.length > 0) ? (
+            {record.read_user.length > 0 ? null : (
               <span
                 onClick={() => {
                   setVisibleEdit(true)
@@ -213,7 +212,7 @@ const Send = () => {
               >
                 修改
               </span>
-            ) : null}
+            )}
 
             <span
               onClick={() => {
@@ -235,10 +234,9 @@ const Send = () => {
       },
     },
   ]
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
   const onPressEnter = (e: any) => {
     setKeyword(e.target.value)

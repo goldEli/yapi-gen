@@ -1,5 +1,4 @@
 /* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'

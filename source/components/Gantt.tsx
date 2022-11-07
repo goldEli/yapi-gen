@@ -1,7 +1,5 @@
 /* eslint-disable prefer-template */
 /* eslint-disable operator-linebreak */
-/* eslint-disable complexity */
-/* eslint-disable no-console */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
@@ -71,10 +69,6 @@ const GanttWrap = styled.div({
   '.gantt_task_cell': {
     borderRight: 'none',
   },
-  '.gantt_layout_content': {
-    boxShadow: '0px 4px 6px rgb(0 0 0 / 10%)',
-  },
-
   //   '.gantt_row:nth-child(even), .gantt_task_row:nth-child(even)': {
   //     backgroundColor: ' #f8f9fa',
   //   },

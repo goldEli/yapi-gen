@@ -111,10 +111,11 @@ const EditProject = (props: Props) => {
           name="name"
         >
           <Input
+            allowClear
+            ref={inputRefDom as any}
             autoComplete="off"
             maxLength={30}
             placeholder={t('common.pleaseProjectName')}
-            ref={inputRefDom as any}
             autoFocus
           />
         </Form.Item>

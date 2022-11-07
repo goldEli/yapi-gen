@@ -1,4 +1,5 @@
-/* eslint-disable no-unsafe-optional-chaining */
+// 项目详情主页
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -9,9 +10,10 @@ import styled from '@emotion/styled'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
-import { getParamsData } from '@/tools'
+import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
+import { getStaffList } from '@/services/staff'
 
 const Wrap = styled.div({
   height: '100%',
@@ -31,12 +33,17 @@ const Detail = () => {
     setFilterAll,
     setIsRefreshIterateList,
     isRefreshIterateList,
+    setSelectTreeData,
+    setSelectAllStaffData,
+    getFieldList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
+  const { isOpenEditDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isRefresh } = useModel('user')
+
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
     const arr = result.list?.map((i: any) => ({
@@ -52,17 +59,6 @@ const Detail = () => {
     setIsRefreshIterateList(false)
   }
 
-  function filterTreeData(data: any) {
-    const newData = data.map((item: any) => ({
-      title: item.name,
-      value: item.id,
-      children:
-        item.children && item.children.length
-          ? filterTreeData(item.children)
-          : null,
-    }))
-    return newData
-  }
   const filArr = (data: any) => {
     return data?.map((item: any) => {
       return {
@@ -71,6 +67,7 @@ const Detail = () => {
       }
     })
   }
+
   const filArr2 = (data: any) => {
     return data?.map((item: any) => {
       return {
@@ -79,6 +76,7 @@ const Detail = () => {
       }
     })
   }
+
   const getTreeData = async () => {
     const res = await getTreeList({ id: projectId })
 
@@ -88,19 +86,20 @@ const Detail = () => {
     })
 
     const newTreeData = filterTreeData(res)
+    setSelectTreeData(newTreeData[0].children)
     const newLieBieData = filArr2(res2.list)
     if (projectInfo?.filterFelid) {
       const allList = projectInfo?.filterFelid?.map((item: any) => {
         if (item.content === 'iterate_name') {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...selectIterate.list?.map((i: any) => {
+            ...(selectIterate.list?.map((i: any) => {
               return {
                 id: i.id,
                 content: i.name,
                 content_txt: i.name,
               }
-            }),
+            }) || []),
           ]
         }
         if (item.content === 'priority' || item.content === 'tag') {
@@ -116,13 +115,13 @@ const Detail = () => {
         ) {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...memberList?.map((k: any) => {
+            ...(memberList?.map((k: any) => {
               return {
                 id: k.id,
                 content: k.name,
                 content_txt: k.name,
               }
-            }),
+            }) || []),
           ]
         }
         return item
@@ -207,6 +206,16 @@ const Detail = () => {
     }
   }
 
+  const getFieldData = async () => {
+    await getFieldList({ projectId })
+  }
+
+  // 获取公司员工
+  const getStaffData = async () => {
+    const options = await getStaffList({ all: 1 })
+    setSelectAllStaffData(options)
+  }
+
   useEffect(() => {
     getProjectInfo({ projectId })
     getPermissionList()
@@ -214,6 +223,8 @@ const Detail = () => {
     getMemberList({ all: true, projectId })
     getTagList({ projectId })
     getIterateList()
+    getFieldData()
+    getStaffData()
   }, [isRefresh])
 
   useEffect(() => {
@@ -226,11 +237,12 @@ const Detail = () => {
     if (
       projectInfo.id &&
       selectIterate?.list?.length > 0 &&
-      memberList?.length > 0
+      memberList?.length > 0 &&
+      !isOpenEditDemand
     ) {
       getTreeData()
     }
-  }, [projectInfo, selectIterate, memberList])
+  }, [projectInfo, selectIterate, memberList, isOpenEditDemand])
 
   return (
     <Wrap>

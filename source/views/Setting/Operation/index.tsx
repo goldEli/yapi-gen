@@ -1,6 +1,5 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
-/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'

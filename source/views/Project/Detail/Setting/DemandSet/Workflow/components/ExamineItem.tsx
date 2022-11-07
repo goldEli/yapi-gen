@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
@@ -238,8 +237,6 @@ const ExamineItem = (props: Props) => {
       type: 'update',
     })
   }
-
-  // console.log(props?.options, '列表')
 
   return (
     <Timeline.Item>

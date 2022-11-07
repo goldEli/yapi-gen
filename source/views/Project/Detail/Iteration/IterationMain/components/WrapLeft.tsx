@@ -1,11 +1,11 @@
-/* eslint-disable no-negated-condition */
+// 迭代主页左侧模块
+
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-/* eslint-disable complexity */
 import AddButton from '@/components/AddButton'
 import IterationCard from '@/components/IterationCard'
 import IconFont from '@/components/IconFont'
@@ -16,9 +16,9 @@ import {
   Form,
   Input,
   message,
-  Radio,
   Spin,
   Tooltip,
+  Checkbox,
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -148,18 +148,6 @@ const WrapLeft = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/iterate/store',
   )
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/iterate/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/iterate/del',
-  )
-  const hasChangeStatus = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/iterate/status',
-  )
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/get',
@@ -193,9 +181,7 @@ const WrapLeft = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdateList?.(false)
     setIsRefreshList(false)
-    if (obj) {
-      props.onCurrentDetail(result?.list[0])
-    } else if (!props.currentDetail?.id) {
+    if (obj || !props.currentDetail?.id) {
       props.onCurrentDetail(result?.list[0])
     } else {
       const current = props.currentDetail?.id
@@ -222,8 +208,9 @@ const WrapLeft = (props: Props) => {
   }, [isUpdateList, props.updateState])
 
   const options = [
-    { label: t('common.open'), value: 1 },
-    { label: t('common.stop'), value: 2 },
+    { label: '已开启', value: 1 },
+    { label: '已完成', value: 2 },
+    { label: '已关闭', value: 3 },
   ]
 
   const onConfirmFilter = () => {
@@ -287,7 +274,7 @@ const WrapLeft = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('common.status')} name="status">
-          <Radio.Group options={options} />
+          <Checkbox.Group options={options} />
         </Form.Item>
         <div
           style={{
@@ -319,18 +306,20 @@ const WrapLeft = (props: Props) => {
     props.onChangeVisible()
   }
 
-  const onChangeEnd = async (e: any, item: any) => {
+  const onChangeStatus = async (value: any, e: any, item: any) => {
     e.stopPropagation()
-    try {
-      await updateIterateStatus({
-        projectId,
-        id: item.id,
-        status: item.status !== 1,
-      })
-      message.success(t('mark.change'))
-      getList()
-    } catch (error) {
-      //
+    if (value !== item?.status) {
+      try {
+        await updateIterateStatus({
+          projectId,
+          id: item?.id,
+          status: value,
+        })
+        message.success(t('common.editS'))
+        getList()
+      } catch (error) {
+        //
+      }
     }
   }
 
@@ -441,8 +430,10 @@ const WrapLeft = (props: Props) => {
                     onClickItem={() => onClickItem(item)}
                     isActive={item.id === props.currentDetail?.id}
                     onChangeEdit={onChangeEdit}
-                    onChangeEnd={onChangeEnd}
                     onChangeDelete={onChangeDelete}
+                    onChangeStatus={(value: any, e: any) =>
+                      onChangeStatus(value, e, item)
+                    }
                   />
                 ))}
               </div>

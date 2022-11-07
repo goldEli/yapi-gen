@@ -11,14 +11,14 @@ const initialState: CounterState = {
   list: [],
   value: 0,
 }
-const getMovieListApi = () => fetch(
-  'https://pcw-api.iqiyi.com/search/recommend/list?channel_id=1&data_type=1&mode=24&page_id=1&ret_num=48',
-).then(res => res.json())
+const getMovieListApi = () =>
+  fetch(
+    'https://pcw-api.iqiyi.com/search/recommend/list?channel_id=1&data_type=1&mode=24&page_id=1&ret_num=48',
+  ).then(res => res.json())
 
 export const getMovieData = createAsyncThunk(
   'counter/getMovieData',
   async value => {
-
     // console.log(value)
 
     const res = await getMovieListApi()
@@ -31,7 +31,6 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     increment: state => {
-
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -48,16 +47,13 @@ export const counterSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(getMovieData.pending, state => {
-
         // console.log('🚀 ~ 进行中！')
       })
       .addCase(getMovieData.fulfilled, (state, { payload }) => {
-
         // console.log('🚀 ~ fulfilled', payload)
         state.list = payload.data.list
       })
       .addCase(getMovieData.rejected, (state, err) => {
-
         // console.log('🚀 ~ rejected', err)
       })
   },

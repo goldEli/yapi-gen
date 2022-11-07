@@ -1,3 +1,5 @@
+// 迭代右侧的操作栏
+
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
@@ -8,12 +10,14 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { Popover, Modal, message, Tooltip } from 'antd'
+import { Modal, message, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
+import EditAchievements from '../../components/EditAchievements'
+import IterationStatus from '../../components/IterationStatus'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -35,37 +39,14 @@ const IterationInfo = styled.div({
   position: 'relative',
 })
 
-const StatusTag = styled.div<{ isOpen?: boolean }>(
+const IconWrap = styled(IconFont)<{ color?: string }>(
   {
-    height: 22,
-    borderRadius: 6,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
+    fontSize: 20,
     cursor: 'pointer',
-    width: 'fit-content',
-  },
-  ({ isOpen }) => ({
-    color: isOpen ? '#43BA9A' : '#969799',
-    background: isOpen ? '#EDF7F4' : '#F2F2F4',
-  }),
-)
-
-const LiWrap = styled.div<{ color: any }>(
-  {
-    cursor: 'pointer',
-    padding: '0 16px',
-    width: '100%',
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    background: 'white',
+    marginLeft: 8,
   },
   ({ color }) => ({
-    '&: hover': {
-      background: color,
-    },
+    color: color || '#969799',
   }),
 )
 
@@ -85,6 +66,7 @@ const Operation = (props: Props) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [visible, setVisible] = useState(false)
+  const [isAchievements, setIsAchievements] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
   const { updateIterateStatus, getIterateInfo, setFilterHeightIterate } =
@@ -102,6 +84,10 @@ const Operation = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/iterate/status',
   )
+  const isCanCheck = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/achieve/info',
+  )
 
   const onChangeStatus = async (val: number) => {
     if (val !== props.currentDetail?.status) {
@@ -109,7 +95,7 @@ const Operation = (props: Props) => {
         await updateIterateStatus({
           projectId,
           id: props.currentDetail?.id,
-          status: val === 1,
+          status: val,
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
@@ -119,25 +105,6 @@ const Operation = (props: Props) => {
       }
     }
   }
-
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}
-    >
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
-        <StatusTag isOpen>{t('common.opening')}</StatusTag>
-      </LiWrap>
-
-      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
-      </LiWrap>
-    </div>
-  )
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
@@ -240,15 +207,10 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('common.collapseMenu')}
             >
-              <IconFont
+              <IconWrap
                 onClick={() => onClickIcon(1)}
                 type="outdent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
+                color="black"
               />
             </Tooltip>
           ) : (
@@ -259,74 +221,35 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('common.openMenu')}
             >
-              <IconFont
+              <IconWrap
                 onClick={() => onClickIcon(2)}
                 type="indent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
+                color="black"
               />
             </Tooltip>
           )}
-          <span style={{ fontSize: 14, color: 'black', marginRight: 8 }}>
+          <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
             {props.currentDetail?.name}
           </span>
           <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
             {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
           </span>
-          {hasChangeStatus ? (
-            props.currentDetail?.id ? (
-              <StatusTag
-                style={{ cursor: 'inherit' }}
-                isOpen={props.currentDetail?.status === 1}
-              >
-                {props.currentDetail?.status === 1
-                  ? t('common.opening')
-                  : t('common.Closed')}
-              </StatusTag>
-            ) : null
-          ) : (
-            <Popover
-              placement="bottom"
-              content={changeStatus}
-              getPopupContainer={node => node}
-            >
-              {props.currentDetail ? (
-                <StatusTag isOpen={props.currentDetail?.status === 1}>
-                  {props.currentDetail?.status === 1
-                    ? t('common.opening')
-                    : t('common.Closed')}
-                  <IconFont
-                    type="down-icon"
-                    style={{
-                      fontSize: 12,
-                      marginLeft: 4,
-                      color:
-                        props.currentDetail?.status === 1
-                          ? '#43BA9A'
-                          : '#969799',
-                    }}
-                  />
-                </StatusTag>
-              ) : null}
-            </Popover>
-          )}
-
+          <IterationStatus
+            hasChangeStatus={hasChangeStatus}
+            iterateInfo={props.currentDetail}
+            onChangeStatus={onChangeStatus}
+          />
           <Tooltip title={t('project.iterateTarget')}>
-            <IconFont
-              onClick={() => setVisible(true)}
-              type="detail"
-              style={{
-                fontSize: 20,
-                color: '#969799',
-                cursor: 'pointer',
-                marginLeft: 8,
-              }}
-            />
+            <IconWrap onClick={() => setVisible(true)} type="detail" />
           </Tooltip>
+          {isCanCheck ? null : (
+            <Tooltip title="迭代成果">
+              <IconWrap
+                onClick={() => setIsAchievements(true)}
+                type="iteration"
+              />
+            </Tooltip>
+          )}
         </IterationInfo>
         <OperationGroup
           onChangeFilter={onChangeFilter}
@@ -348,6 +271,15 @@ const Operation = (props: Props) => {
           isIteration
         />
       )}
+      {isAchievements ? (
+        <EditAchievements
+          isAchievements={isAchievements}
+          onClose={() => setIsAchievements(false)}
+          projectId={projectId}
+          id={props.currentDetail?.id}
+          isInfo={false}
+        />
+      ) : null}
     </StickyWrap>
   )
 }

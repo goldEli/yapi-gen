@@ -1,4 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
@@ -451,6 +450,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             categoryColor: i.category_color,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             class: i.class,
             project: {
               isPublic: i.project.is_public,
@@ -494,6 +494,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             category: i.category,
             categoryColor: i.category_color,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             class: i.class,
             project: {
               isPublic: i.project.is_public,
@@ -572,6 +573,7 @@ export const getMineCreacteList: any = async (params: any) => {
           categoryColor: i.category_color,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
@@ -647,6 +649,7 @@ export const getMineFinishList: any = async (params: any) => {
           categoryColor: i.category_color,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
@@ -721,6 +724,7 @@ export const getMineNeedList: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           class: i.class,
           project: {
             isPublic: i.project.is_public,

@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
-/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -147,7 +146,6 @@ const MoreWrap = (props: MoreWrapProps) => {
   )
 }
 
-// eslint-disable-next-line complexity
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -231,10 +229,9 @@ const CommonNeed = (props: any) => {
       custom_field: customField,
     })
   }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
   const init = async (pageNumber?: any, updateState?: boolean) => {
     if (!updateState) {

@@ -13,6 +13,8 @@ export default () => {
   const [createCategory, setCreateCategory] = useState<any>({})
   const [statusLogs, setStatusLogs] = useState<any>([])
   const [importExcel, setImportExcel] = useState<any>({})
+  // 编辑需求弹窗是否开启，用于调用多接口限制
+  const [isOpenEditDemand, setIsOpenEditDemand] = useState(false)
 
   const getImportExcelUpdate = async (params: any) => {
     setImportExcel({})
@@ -28,6 +30,11 @@ export default () => {
 
   const getLoadListFields = async (params: any) => {
     const result = await services.demand.getLoadListFields(params)
+    return result
+  }
+
+  const getExportFields = async (params: any) => {
+    const result = await services.demand.getExportFields(params)
     return result
   }
 
@@ -63,6 +70,7 @@ export default () => {
     updateTableParams,
     updateDemandCategory,
     getImportDownloadModel,
+    getExportExcel,
   } = services.demand
 
   return {
@@ -106,5 +114,9 @@ export default () => {
     getImportExcelUpdate,
     setIsUpdateStatus,
     isUpdateStatus,
+    getExportExcel,
+    getExportFields,
+    setIsOpenEditDemand,
+    isOpenEditDemand,
   }
 }

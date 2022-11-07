@@ -7,9 +7,8 @@ import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import IconFont from '@/components/IconFont'
+import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
-import { AddWrap } from '@/components/StyleCommon'
-import { ProgressWrap } from '@/components/EditDemand'
 import { useModel } from '@/models'
 import { getReportDetail } from '@/services/daily'
 
@@ -92,7 +91,7 @@ const WhiteDay = (props: any) => {
   }
   const Children = () => {
     return (
-      <ProgressWrap
+      <ProgressWrapUpload
         status={uploadStatus}
         percent={percentVal}
         size="small"

@@ -2,7 +2,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
-// eslint-disable-next-line @typescript-eslint/no-shadow
 import { useModel } from '@/models'
 import { message, Modal, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
@@ -30,6 +29,10 @@ interface Props {
   id?: any
   onBottom?(): void
   onChange?(arr: any): void
+  // 是否是迭代上传
+  isIteration?: boolean
+  // 迭代上传是否可以删除
+  isCanUpdate?: boolean
 }
 export const First = styled.div``
 export const Second = styled.div`
@@ -78,8 +81,19 @@ const ListItem = (props: any) => {
     onDownload,
     onRemove,
     onPreview,
+    isCanUpdate,
+    isIteration,
   } = props
-  // onPreview()
+  const { projectInfo } = useModel('project')
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
+  const isDownload = projectInfo?.projectPermissions?.filter(
+    (i: any) => i.name === '附件下载',
+  ).length
+  const isShowDel = isIteration ? isCanUpdate : isCanEdit
+
   const Download = () => {
     onDownload(props.file)
   }
@@ -152,29 +166,34 @@ const ListItem = (props: any) => {
             height: '20px',
           }}
         >
-          <span
-            onClick={Download}
-            style={{
-              marginRight: '12px',
-              cursor: 'pointer',
-            }}
-          >
-            <IconFont
-              style={{ fontSize: 18, color: '#969799' }}
-              type="download"
-            />
-          </span>
-          <span
-            style={{
-              cursor: 'pointer',
-            }}
-            onClick={Remove}
-          >
-            <IconFont
-              style={{ fontSize: 18, color: '#969799' }}
-              type="delete"
-            />
-          </span>
+          {isDownload && (
+            <span
+              onClick={Download}
+              style={{
+                marginRight: '12px',
+                cursor: 'pointer',
+              }}
+            >
+              <IconFont
+                style={{ fontSize: 18, color: '#969799' }}
+                type="download"
+              />
+            </span>
+          )}
+
+          {isShowDel && (
+            <span
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={Remove}
+            >
+              <IconFont
+                style={{ fontSize: 18, color: '#969799' }}
+                type="delete"
+              />
+            </span>
+          )}
         </Second>
       </div>
     </BigWrap>
@@ -205,15 +224,10 @@ const UploadAttach = (props: Props) => {
     projectId = paramsData.id
     demandId = paramsData.demandId
   }
-  const { projectInfo } = useModel('project')
+
   const [fileList, setFileList] = useState<any>([])
 
   let arr: any[] = []
-
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
 
   useEffect(() => {
     const array: any[] = []
@@ -363,12 +377,12 @@ const UploadAttach = (props: Props) => {
     onDownload,
     onRemove,
     onPreview,
-    showUploadList: {
-      showDownloadIcon: projectInfo?.projectPermissions?.filter(
-        (i: any) => i.name === '附件下载',
-      ).length,
-      showRemoveIcon: isCanEdit,
-    },
+    // showUploadList: {
+    //   showDownloadIcon: projectInfo?.projectPermissions?.filter(
+    //     (i: any) => i.name === '附件下载',
+    //   ).length,
+    //   showRemoveIcon: props.isIteration ? props?.isCanUpdate : isCanEdit,
+    // },
     itemRender: (e: any, file: any) => {
       return (
         <ListItem
@@ -376,6 +390,8 @@ const UploadAttach = (props: Props) => {
           onDownload={onDownload}
           onRemove={onRemove}
           onPreview={onPreview}
+          isIteration={props.isIteration}
+          isCanUpdate={props?.isCanUpdate}
         />
       )
     },

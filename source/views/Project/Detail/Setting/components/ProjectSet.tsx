@@ -13,7 +13,7 @@ import {
 } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
@@ -210,6 +210,7 @@ const PermissionItem = (props: ItemProps) => {
 
 const ProjectSet = () => {
   const [t] = useTranslation()
+  const inputRefDom = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
@@ -267,12 +268,6 @@ const ProjectSet = () => {
 
   useEffect(() => {
     init(true)
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      init(true)
-    }
   }, [isRefresh])
 
   const onSavePermission = async () => {
@@ -324,6 +319,9 @@ const ProjectSet = () => {
     if (type === 'edit') {
       setIsVisible(true)
       setAddValue(item.name)
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     } else {
       setIsDelete(true)
     }
@@ -413,6 +411,8 @@ const ProjectSet = () => {
           </ModalHeader>
           <div style={{ margin: '24px 0' }}>
             <Input
+              ref={inputRefDom as any}
+              autoFocus
               autoComplete="off"
               maxLength={10}
               value={addValue}

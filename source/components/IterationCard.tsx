@@ -1,3 +1,5 @@
+// 迭代主页对应左侧迭代卡片
+
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from 'react'
@@ -7,6 +9,8 @@ import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { StatusTag } from './StyleCommon'
+import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -82,28 +86,14 @@ const TimeWrap = styled.div({
   lineHeight: '20px',
 })
 
-const StatusTag = styled.div<{ isOpen: boolean }>(
-  {
-    height: 20,
-    borderRadius: 6,
-    padding: '0 8px',
-    width: 'fit-content',
-    fontSize: 12,
-  },
-  ({ isOpen }) => ({
-    color: isOpen ? '#43BA9A' : '#969799',
-    background: isOpen ? '#EDF7F4' : '#F2F2F4',
-  }),
-)
-
 interface Props {
   item: any
   onClickInfo(): void
   onClickItem?(): void
   isActive?: boolean
   onChangeEdit(e: any, item: any): void
-  onChangeEnd(e: any, item: any): void
   onChangeDelete(e: any, item: any): void
+  onChangeStatus(value: any, e: any): void
 }
 
 const IterationCard = (props: Props) => {
@@ -134,8 +124,6 @@ const IterationCard = (props: Props) => {
       props?.onChangeEdit(e, props?.item)
     } else if (type === 'del') {
       props?.onChangeDelete(e, props?.item)
-    } else {
-      props?.onChangeEnd(e, props?.item)
     }
   }
 
@@ -143,35 +131,23 @@ const IterationCard = (props: Props) => {
     let menuItems = [
       {
         key: '1',
-        label:
+        label: (
           <div onClick={e => onClickMenu(e, 'edit')}>{t('common.edit')}</div>
-        ,
+        ),
       },
       {
         key: '2',
         label: (
-          <div onClick={e => onClickMenu(e, 'other')}>
-            {item.status === 1 ? t('common.close') : t('common.open')}
-          </div>
-        ),
-      },
-      {
-        key: '3',
-        label:
           <div onClick={e => onClickMenu(e, 'del')}>{t('common.del')} </div>
-        ,
+        ),
       },
     ]
     if (hasEdit) {
       menuItems = menuItems.filter((i: any) => i.key !== '1')
     }
 
-    if (hasChangeStatus) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
     if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
     return <Menu items={menuItems} />
@@ -186,9 +162,9 @@ const IterationCard = (props: Props) => {
           width={48}
           type="circle"
           percent={Math.trunc(
-            props.item.finishCount / props.item.storyCount * 100,
+            (props.item.finishCount / props.item.storyCount) * 100,
           )}
-          format={percent => percent === 100 ? '100%' : `${percent}%`}
+          format={percent => (percent === 100 ? '100%' : `${percent}%`)}
           strokeWidth={13}
         />
         <InfoContent>
@@ -196,30 +172,33 @@ const IterationCard = (props: Props) => {
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
-          <StatusTag isOpen={props.item.status === 1}>
-            {props.item.status === 1 ? t('common.opening') : t('common.Closed')}
-          </StatusTag>
+          <IterationStatus
+            iterateInfo={props.item}
+            hasChangeStatus={hasChangeStatus}
+            onChangeStatus={props.onChangeStatus}
+          />
+          {/* <StatusTag status={props.item.status}>
+            {onGetStatusName(props.item.status)}
+          </StatusTag> */}
         </InfoContent>
       </div>
       <DetailWrap onClick={props.onClickInfo}>
         <span>{t('common.info')}</span>
         <IconFont type="right" />
       </DetailWrap>
-      {hasDel && hasEdit && hasChangeStatus
-        ? null
-        : (
-            <Dropdown
-              key={isVisible.toString()}
-              visible={isVisible}
-              overlay={menu(props?.item)}
-              placement="bottomRight"
-              trigger={['hover']}
-              getPopupContainer={node => node}
-              onVisibleChange={onVisibleChange}
-            >
-              <MoreWrap type="more" />
-            </Dropdown>
-          )}
+      {hasDel && hasEdit && hasChangeStatus ? null : (
+        <Dropdown
+          key={isVisible.toString()}
+          visible={isVisible}
+          overlay={menu(props?.item)}
+          placement="bottomRight"
+          trigger={['hover']}
+          getPopupContainer={node => node}
+          onVisibleChange={onVisibleChange}
+        >
+          <MoreWrap type="more" />
+        </Dropdown>
+      )}
     </CardWrap>
   )
 }

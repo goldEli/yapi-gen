@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 /* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'

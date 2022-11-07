@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,

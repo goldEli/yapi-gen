@@ -24,6 +24,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
 import { useModel } from '@/models'
+import TableQuickEdit from './TableQuickEdit'
 
 const flexCss = css`
   display: flex;
@@ -128,36 +129,45 @@ export const useDynamicColumns = (state: any) => {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <Tooltip title={text} getPopupContainer={node => node}>
-              <ListNameWrap
-                isName
-                isClose={record.status?.is_end === 1}
-                onClick={() => onToDetail(record)}
-              >
-                {text}
-                {record.new === 1 && (
-                  <span
-                    style={{
-                      position: 'relative',
-                      display: 'inline-block',
-                      left: '1px',
-                      top: '-10px',
-                      width: '28px',
-                      height: '20px',
-                      background: '#FF5C5E',
-                      borderRadius: '10px 10px 10px 10px',
-                      color: '#FFFFFF',
-                      textAlign: 'center',
-                      lineHeight: '15px',
-                      fontSize: '12px',
-                      border: '2px solid #FFFFFF',
-                    }}
-                  >
-                    新
-                  </span>
-                )}
-              </ListNameWrap>
-            </Tooltip>
+            <TableQuickEdit
+              type="text"
+              defaultText={text}
+              keyText="name"
+              item={record}
+              onUpdate={onUpdate}
+              isMineOrHis
+            >
+              <Tooltip title={text} getPopupContainer={node => node}>
+                <ListNameWrap
+                  isName
+                  isClose={record.status?.is_end === 1}
+                  onClick={() => onToDetail(record)}
+                >
+                  {text}
+                  {record.new === 1 && (
+                    <span
+                      style={{
+                        position: 'relative',
+                        display: 'inline-block',
+                        left: '1px',
+                        top: '-10px',
+                        width: '28px',
+                        height: '20px',
+                        background: '#FF5C5E',
+                        borderRadius: '10px 10px 10px 10px',
+                        color: '#FFFFFF',
+                        textAlign: 'center',
+                        lineHeight: '15px',
+                        fontSize: '12px',
+                        border: '2px solid #FFFFFF',
+                      }}
+                    >
+                      新
+                    </span>
+                  )}
+                </ListNameWrap>
+              </Tooltip>
+            </TableQuickEdit>
           </div>
         )
       },
@@ -218,8 +228,19 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
       dataIndex: 'iteration',
       key: 'iterate_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_radio"
+            defaultText={text}
+            keyText="iterate_id"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            {text || '--'}
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -227,18 +248,27 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'class',
       key: 'class',
       width: 120,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={120}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
-          </HiddenText>
+          <TableQuickEdit
+            type="treeSelect"
+            defaultText={text}
+            keyText="class_id"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
         )
       },
     },
@@ -292,8 +322,25 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any, record: any) => {
+        return (
+          <>
+            {record?.usersNameIds?.includes(userInfo?.id) ? (
+              <TableQuickEdit
+                type="fixed_select"
+                defaultText={record?.usersNameIds || []}
+                keyText="users"
+                item={record}
+                onUpdate={onUpdate}
+                isMineOrHis
+              >
+                <span>{text || '--'}</span>
+              </TableQuickEdit>
+            ) : (
+              <span>{text || '--'}</span>
+            )}
+          </>
+        )
       },
     },
     {
@@ -337,8 +384,19 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.copySend'),
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersCopySendIds || []}
+            keyText="copysend"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -357,8 +415,20 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedStart',
       key: 'expected_start_at',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="date"
+            defaultText={text}
+            keyText="expected_start_at"
+            item={record}
+            onUpdate={onUpdate}
+            value={['datetime']}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -367,8 +437,20 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="date"
+            defaultText={text}
+            keyText="expected_end_at"
+            item={record}
+            onUpdate={onUpdate}
+            value={['datetime']}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -397,15 +479,23 @@ export const useDynamicColumns = (state: any) => {
         title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
         dataIndex: element.value,
         key: element.value,
-        render: (text: any) => {
+        render: (text: any, record: any) => {
           return (
-            <span>
-              {text?.value
-                ? Array.isArray(text?.value)
+            <TableQuickEdit
+              defaultText={text?.value}
+              keyText={element.value}
+              item={record}
+              onUpdate={onUpdate}
+              isCustom
+              isMineOrHis
+              type={record[element.value]?.attr}
+            >
+              <span>
+                {(Array.isArray(text?.value)
                   ? text?.value?.join('、')
-                  : text?.value
-                : '--'}
-            </span>
+                  : text?.value) || '--'}
+              </span>
+            </TableQuickEdit>
           )
         },
       })
