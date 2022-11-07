@@ -47,8 +47,6 @@ const ChoosePeople = (props: any) => {
   const getList = async () => {
     const result = await getStaffList2({ all: 1 })
 
-    // console.log(result, '成员')
-
     setOptions(result)
   }
 
@@ -63,6 +61,9 @@ const ChoosePeople = (props: any) => {
     confirm()
   }, [allMemberList])
 
+  useEffect(() => {
+    setAllMemberList(props.initValue)
+  }, [props.initValue])
   const onDelCheckPerson = async (id: any) => {
     await onChangeList(id, 'del')
   }

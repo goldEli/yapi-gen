@@ -113,6 +113,12 @@ const urls = {
   getAchieveInfo: '/b/iterate/achieve/info',
   updateAchieve: '/b/iterate/achieve',
   getExportFields: '/b/story/get_story_export_fields',
+  getDailyList: '/b/report/list',
+  addDaily: '/b/report/add',
+  editDaily: '/b/report/update',
+  getReportDetail: '/b/report/info',
+  getReportContent: '/b/report/comment/add',
+  getReceiveList: '/b/report/copysend/list',
 }
 
 export default urls

@@ -144,6 +144,27 @@ export const useDynamicColumns = (state: any) => {
                   onClick={() => onToDetail(record)}
                 >
                   {text}
+                  {record.new === 1 && (
+                    <span
+                      style={{
+                        position: 'relative',
+                        display: 'inline-block',
+                        left: '1px',
+                        top: '-10px',
+                        width: '28px',
+                        height: '20px',
+                        background: '#FF5C5E',
+                        borderRadius: '10px 10px 10px 10px',
+                        color: '#FFFFFF',
+                        textAlign: 'center',
+                        lineHeight: '15px',
+                        fontSize: '12px',
+                        border: '2px solid #FFFFFF',
+                      }}
+                    >
+                      新
+                    </span>
+                  )}
                 </ListNameWrap>
               </Tooltip>
             </TableQuickEdit>

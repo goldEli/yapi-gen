@@ -34,11 +34,12 @@ interface Props {
   // 迭代上传是否可以删除
   isCanUpdate?: boolean
 }
-const First = styled.div``
-const Second = styled.div`
+export const First = styled.div``
+export const Second = styled.div`
   display: none;
 `
-const BigWrap = styled.div`
+
+export const BigWrap = styled.div`
   &:hover {
     ${Second} {
       display: block;
@@ -49,7 +50,7 @@ const BigWrap = styled.div`
   }
 `
 
-const Gred = styled.div`
+export const Gred = styled.div`
   cursor: pointer;
   border-radius: 8px;
   position: absolute;
@@ -65,7 +66,7 @@ const Gred = styled.div`
   opacity: 0;
   transition: all 1s;
 `
-const GredParent = styled.div`
+export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
@@ -73,6 +74,7 @@ const GredParent = styled.div`
     }
   }
 `
+
 const ListItem = (props: any) => {
   const {
     file: { url, name, user, time },

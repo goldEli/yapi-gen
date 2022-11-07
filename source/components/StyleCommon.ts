@@ -160,6 +160,7 @@ const DividerWrap = styled(Divider)({
 
 const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
+    padding: '10px 20px',
     maxWidth: 500,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

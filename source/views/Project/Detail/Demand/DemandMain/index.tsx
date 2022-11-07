@@ -202,16 +202,13 @@ const DemandMain = (props: Props) => {
     getList(isGrid, searchItems, pageObj, order, true, state)
   }
 
-  const keyValue = useMemo(
-    () => ({
-      key,
-      changeKey: (value: any) => {
-        setPageObj({ page: 1, size: pageObj.size })
-        setKey(value)
-      },
-    }),
-    [key, pageObj.size],
-  )
+  const keyValue = {
+    key,
+    changeKey: (value: any) => {
+      setPageObj({ page: 1, size: pageObj.size })
+      setKey(value)
+    },
+  }
 
   return (
     <TreeContext.Provider value={keyValue}>
