@@ -103,12 +103,12 @@ export const getReceiveList: any = async (params: any) => {
       keyword: params.keyword,
       created_at: params.created_at,
       user_id: params.userId,
+      status: params.status ? 2 : 1,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
     page: params.page,
     pagesize: params.pagesize,
-    status: params.status ? 1 : 2,
   })
   const newList = response.data.list.map((item: any) => {
     return {

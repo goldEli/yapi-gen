@@ -247,7 +247,7 @@ export const addDemand: any = async (params: any) => {
     users: params?.userIds,
     copysend: params?.copySendIds,
     tag: params?.tagIds,
-    attachment: params?.attachments,
+    attachment: params?.attachments.map((item: any) => item.url),
     custom_field: params?.customField,
     category_id: params?.category,
     class_id: params?.class,

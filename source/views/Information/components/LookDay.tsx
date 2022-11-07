@@ -84,6 +84,7 @@ const Arrow2 = styled(Arrow)`
 `
 
 const LookDay = (props: any) => {
+  const myArea = useRef<any>(null)
   const [left, setLeft] = useState(0)
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
@@ -150,7 +151,8 @@ const LookDay = (props: any) => {
   }
   const sendComment = async () => {
     if (!value) {
-      message.error('请填写评论')
+      myArea.current.focus()
+
       return
     }
     const res = await addComment({
@@ -386,6 +388,7 @@ const LookDay = (props: any) => {
               <LabelTitle title="评论" />
               <div>
                 <Input.TextArea
+                  ref={myArea}
                   autoSize={{ minRows: 1, maxRows: 10 }}
                   placeholder="请输入"
                   value={value}
