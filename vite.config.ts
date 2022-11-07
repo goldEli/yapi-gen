@@ -18,7 +18,9 @@ export default defineConfig(config => {
         files: [
           {
             match: /.*/u,
-            attrs: {},
+            attrs: {
+              rel: 'preload',
+            },
           },
         ],
       }) as unknown as Plugin,
@@ -48,6 +50,9 @@ export default defineConfig(config => {
       headers: {
         'Cache-Control': 'public, max-age=31536000',
       },
+    },
+    build: {
+      modulePreload: true,
     },
     envDir: './environments/',
     envPrefix: '__',
