@@ -263,7 +263,7 @@ const Information = () => {
                 />
               )}
               {item.name}
-              {item.state === 2 && <RedLogo2>{count}</RedLogo2>}
+              {/* {item.state === 2 && <RedLogo2>{count}</RedLogo2>} */}
             </MenuItem>
           ))}
         </Menu>

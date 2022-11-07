@@ -202,8 +202,8 @@ export const Side = () => {
     >
       {item?.icon}
       {item.title}
-      {item.key === '/information' && <RedLogo>{count}</RedLogo>}
-      {item.key === '/mine' && <RedLogo>{count}</RedLogo>}
+      {/* {item.key === '/information' && <RedLogo>{count}</RedLogo>} */}
+      {/* {item.key === '/mine' && <RedLogo>{count}</RedLogo>} */}
     </SideEach>
   ))
 
