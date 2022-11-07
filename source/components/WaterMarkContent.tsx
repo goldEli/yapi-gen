@@ -1,8 +1,10 @@
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useModel } from '@/models'
 
 const SvgTextBg = (props: any) => {
+  const { userInfo } = useModel('user')
   const {
-    text = '成都定星科技 李钟硕 18866686868',
+    text = ` ${userInfo?.company_name}${userInfo.name}${userInfo.phone} `,
     fontSize = 12,
     fillOpacity = '0.5',
     fillColor = '#D5D6D9',

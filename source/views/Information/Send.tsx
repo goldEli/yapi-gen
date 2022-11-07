@@ -317,7 +317,11 @@ const Send = () => {
     init2()
   }, [urlId])
   return (
-    <div>
+    <div
+      style={{
+        height: 'calc(100% - 64px)',
+      }}
+    >
       <div
         style={{
           height: '52px',
@@ -408,34 +412,29 @@ const Send = () => {
           allowClear
         />
       </div>
-      <div className={tableWrapP} style={{ height: `calc(100% - ${180}px)` }}>
-        <StaffTableWrap style={{ height: '100%' }}>
+      <div className={tableWrapP} style={{ height: `calc(100% - ${50}px)` }}>
+        <StaffTableWrap
+          style={{
+            height: 'calc(100% - 50px)',
+            overflow: 'hidden',
+            padding: '16px 24px 0',
+          }}
+        >
           <DataWrap>
             <Spin spinning={isSpinning}>
-              {
-                !!listData &&
-                  (listData?.length > 0 ? (
-                    <TableBox
-                      rowKey="id"
-                      columns={columnsData}
-                      dataSource={listData}
-                      pagination={false}
-                      scroll={{ x: 'max-content' }}
-                      sticky
-                    />
-                  ) : (
-                    <NoData />
-                  ))
-
-                //   <TableBox
-                //     rowKey="id"
-                //     columns={columnsData}
-                //     dataSource={listData}
-                //     pagination={false}
-                //     scroll={{ x: 'max-content' }}
-                //     sticky
-                //   />
-              }
+              {!!listData &&
+                (listData?.length > 0 ? (
+                  <TableBox
+                    rowKey="id"
+                    columns={columnsData}
+                    dataSource={listData}
+                    pagination={false}
+                    scroll={{ x: 'max-content' }}
+                    sticky
+                  />
+                ) : (
+                  <NoData />
+                ))}
             </Spin>
           </DataWrap>
         </StaffTableWrap>

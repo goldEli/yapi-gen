@@ -292,7 +292,11 @@ const Get = () => {
   }, [])
 
   return (
-    <div>
+    <div
+      style={{
+        height: 'calc(100% - 64px)',
+      }}
+    >
       <div
         style={{
           height: '52px',
@@ -401,8 +405,14 @@ const Get = () => {
           allowClear
         />
       </div>
-      <div className={tableWrapP} style={{ height: `calc(100% - ${180}px)` }}>
-        <StaffTableWrap style={{ height: '100%' }}>
+      <div className={tableWrapP} style={{ height: `calc(100% - ${50}px)` }}>
+        <StaffTableWrap
+          style={{
+            height: 'calc(100% - 50px)',
+            overflow: 'hidden',
+            padding: '16px 24px 0',
+          }}
+        >
           <DataWrap>
             <Spin spinning={isSpinning}>
               {!!listData &&

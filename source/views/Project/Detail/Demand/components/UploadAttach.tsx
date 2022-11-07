@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
 import { getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
+import moment from 'moment'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -159,7 +160,7 @@ const ListItem = (props: any) => {
           >
             {user}
           </span>
-          <span>2022-08-25 15:20:29</span>
+          <span>{time}</span>
         </First>
         <Second
           style={{
@@ -201,6 +202,7 @@ const ListItem = (props: any) => {
 }
 
 const UploadAttach = (props: Props) => {
+  const { userInfo } = useModel('user')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
@@ -237,8 +239,8 @@ const UploadAttach = (props: Props) => {
         url: element.path,
         uid: element.id,
         status: 'done',
-        time: new Date(),
-        user: '杨一',
+        time: moment(new Date()).format('yyyy-MM-DD hh:mm:ss'),
+        user: userInfo?.name,
       }
 
       array.push(obj)
