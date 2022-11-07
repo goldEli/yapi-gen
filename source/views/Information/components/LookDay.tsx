@@ -16,7 +16,7 @@ import {
 } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Input, message, Modal } from 'antd'
+import { Input, message, Modal, Spin } from 'antd'
 import { use } from 'i18next'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
@@ -60,6 +60,10 @@ const HiddenWrap = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 const Arrow = styled.div`
   display: flex;
@@ -92,21 +96,14 @@ const LookDay = (props: any) => {
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
+  const [isSpinning, setIsSpinning] = useState(true)
   const messagesEndRef = useRef<any>(null)
   const onChangeLeft = (values: any, type: any) => {
-    if (type === 1) {
-      setLeft(values - 360)
-    } else {
-      setLeft(values + 360)
-    }
-
-    setTimeout(() => {
-      props.onChange(type, props.editId)
-      // setLeft(0)
-    }, 1000)
+    props.onChange(type, props.editId)
   }
 
   const setDefaultValue = async () => {
+    setIsSpinning(false)
     const res = await getReportDetail(props.editId)
 
     setTitle(res.data.info.name)
@@ -138,6 +135,9 @@ const LookDay = (props: any) => {
       }),
     )
     setContentList(res.data.comment_list)
+    setTimeout(() => {
+      setIsSpinning(true)
+    }, 1000)
   }
   useEffect(() => {
     if (props.editId && props.visible) {
@@ -149,6 +149,10 @@ const LookDay = (props: any) => {
     messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
   }
   const sendComment = async () => {
+    if (!value) {
+      message.error('请填写评论')
+      return
+    }
     const res = await addComment({
       id: props.editId,
       content: value,
@@ -168,178 +172,50 @@ const LookDay = (props: any) => {
   return ReactDOM.createPortal(
     <GrepWrap>
       <HiddenWrap>
-        <FormWrap left={left}>
-          <div
-            style={{
-              height: '56px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span>{title}</span>
-            <span
-              style={{
-                cursor: 'pointer',
-              }}
-              onClick={() => props.onEditClose()}
-            >
-              <IconFont
-                type="close"
-                style={{ color: '#323233', fontSize: 20 }}
-              />
-            </span>
-          </div>
-          <div
-            ref={messagesEndRef}
-            style={{
-              height: '840px',
-              overflow: 'scroll',
-            }}
-          >
-            <LabelTitle title="今日完成工作" />
-            <div dangerouslySetInnerHTML={{ __html: article1 }} />
-            <LabelTitle title="明日计划工作" />
-            <div dangerouslySetInnerHTML={{ __html: article2 }} />
-            <LabelTitle title="抄送人" />
+        {isSpinning ? (
+          <FormWrap left={left}>
             <div
               style={{
+                height: '56px',
                 display: 'flex',
                 alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '10px',
+                justifyContent: 'space-between',
               }}
             >
-              {peopleValue?.map((i: any) => (
-                <div
-                  key={i.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      marginRight: '24px',
-                    }}
-                  >
-                    <NewNameWrap>
-                      {i.avatar ? (
-                        <img
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: 16,
-                          }}
-                          src={i.avatar}
-                        />
-                      ) : (
-                        <NameWrap style={{ margin: 0 }}>
-                          {String(
-                            i.name.substring(0, 1).trim().slice(0, 1),
-                          ).toLocaleUpperCase()}
-                        </NameWrap>
-                      )}
-                    </NewNameWrap>
-                    <span>{i.name}</span>
-                  </div>
-                </div>
-              ))}
+              <span>{title}</span>
+              <span
+                style={{
+                  cursor: 'pointer',
+                }}
+                onClick={() => props.onEditClose()}
+              >
+                <IconFont
+                  type="close"
+                  style={{ color: '#323233', fontSize: 20 }}
+                />
+              </span>
             </div>
-
-            <LabelTitle title="附件" />
-            <div>
-              {attachList.map((item: any) => (
-                <BigWrap
-                  key={item.id}
-                  style={{
-                    display: 'flex',
-                    marginBottom: '16px',
-                  }}
-                >
-                  <GredParent
-                    onClick={() => {
-                      setPreviewOpen(true)
-                      setPreviewImage(item.path)
-                      setPreviewTitle(item.path.split('/').at(-1))
-                    }}
-                    style={{
-                      marginRight: '8px',
-                      position: 'relative',
-                    }}
-                  >
-                    <img
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                      }}
-                      src={item.path}
-                      alt=""
-                    />
-                    <Gred>
-                      <IconFont
-                        style={{ fontSize: 18, color: 'white' }}
-                        type="zoomin"
-                      />
-                    </Gred>
-                  </GredParent>
-                  <div>
-                    <div
-                      style={{
-                        height: '22px',
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        color: '#323233',
-                        lineHeight: '22px',
-                      }}
-                    >
-                      {item.path.split('/').at(-1)}
-                    </div>
-                    <div
-                      style={{
-                        height: '20px',
-                        fontSize: '12px',
-                        fontWeight: 400,
-                        color: '#969799',
-                        lineHeight: '20px',
-                      }}
-                    >
-                      <span
-                        style={{
-                          marginRight: '12px',
-                        }}
-                      >
-                        杨一
-                      </span>
-                      <span>{item.time}</span>
-                    </div>
-                  </div>
-                </BigWrap>
-              ))}
-            </div>
-            <LabelTitle title="关联需求" />
-            <div>
-              {needValue.map((item: any) => (
-                <InnerLine key={item.key}>
-                  <span>{item.label}</span>
-                </InnerLine>
-              ))}
-            </div>
-            <LabelTitle title="已阅" />
             <div
+              ref={messagesEndRef}
               style={{
-                display: 'flex',
-                alignItems: 'center',
+                height: '840px',
+                overflow: 'scroll',
               }}
             >
-              {peopleValue
-                .filter((k: any) => k.status === 1)
-                ?.map((i: any) => (
+              <LabelTitle title="今日完成工作" />
+              <div dangerouslySetInnerHTML={{ __html: article1 }} />
+              <LabelTitle title="明日计划工作" />
+              <div dangerouslySetInnerHTML={{ __html: article2 }} />
+              <LabelTitle title="抄送人" />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                }}
+              >
+                {peopleValue?.map((i: any) => (
                   <div
                     key={i.id}
                     style={{
@@ -377,88 +253,220 @@ const LookDay = (props: any) => {
                     </div>
                   </div>
                 ))}
-            </div>
-            <LabelTitle title="评论" />
-            <div>
-              <Input.TextArea
-                autoSize={{ minRows: 1, maxRows: 10 }}
-                placeholder="请输入"
-                value={value}
-                onChange={e => setValue(e.target.value)}
-              />
-              <button
-                onClick={sendComment}
+              </div>
+
+              <LabelTitle title="附件" />
+              <div>
+                {attachList.map((item: any) => (
+                  <BigWrap
+                    key={item.id}
+                    style={{
+                      display: 'flex',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <GredParent
+                      onClick={() => {
+                        setPreviewOpen(true)
+                        setPreviewImage(item.path)
+                        setPreviewTitle(item.path.split('/').at(-1))
+                      }}
+                      style={{
+                        marginRight: '8px',
+                        position: 'relative',
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                        }}
+                        src={item.path}
+                        alt=""
+                      />
+                      <Gred>
+                        <IconFont
+                          style={{ fontSize: 18, color: 'white' }}
+                          type="zoomin"
+                        />
+                      </Gred>
+                    </GredParent>
+                    <div>
+                      <div
+                        style={{
+                          height: '22px',
+                          fontSize: '14px',
+                          fontWeight: 400,
+                          color: '#323233',
+                          lineHeight: '22px',
+                        }}
+                      >
+                        {item.path.split('/').at(-1)}
+                      </div>
+                      <div
+                        style={{
+                          height: '20px',
+                          fontSize: '12px',
+                          fontWeight: 400,
+                          color: '#969799',
+                          lineHeight: '20px',
+                        }}
+                      >
+                        <span
+                          style={{
+                            marginRight: '12px',
+                          }}
+                        >
+                          杨一
+                        </span>
+                        <span>{item.time}</span>
+                      </div>
+                    </div>
+                  </BigWrap>
+                ))}
+              </div>
+              <LabelTitle title="关联需求" />
+              <div>
+                {needValue.map((item: any) => (
+                  <InnerLine key={item.key}>
+                    <span>{item.label}</span>
+                  </InnerLine>
+                ))}
+              </div>
+              <LabelTitle title="已阅" />
+              <div
                 style={{
-                  width: '40px',
-                  height: '24px',
-                  background: '#2877FF',
-                  fontSize: '12px',
-                  fontWeight: '400',
-                  color: '#FFFFFF',
-                  marginTop: '8px',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
-                评论
-              </button>
-            </div>
-            {contentList.map((item: any) => (
-              <div key={item.id}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginRight: '24px',
-                    marginTop: '12px',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {item.avatar ? (
-                    <img
+                {peopleValue
+                  .filter((k: any) => k.status === 1)
+                  ?.map((i: any) => (
+                    <div
+                      key={i.id}
                       style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
+                        display: 'flex',
+                        alignItems: 'center',
                       }}
-                      src={item.avatar}
-                    />
-                  ) : (
-                    <NameWrap style={{ margin: 0 }}>
-                      {String(
-                        item.name.substring(0, 1).trim().slice(0, 1),
-                      ).toLocaleUpperCase()}
-                    </NameWrap>
-                  )}
-                  <span
-                    style={{
-                      margin: '0 10px',
-                    }}
-                  >
-                    {item.name}
-                  </span>
-                  <span
-                    style={{
-                      color: '#969799',
-                    }}
-                  >
-                    {item.created_at}
-                  </span>
-                </div>
-                <div
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          marginRight: '24px',
+                        }}
+                      >
+                        <NewNameWrap>
+                          {i.avatar ? (
+                            <img
+                              style={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: 16,
+                              }}
+                              src={i.avatar}
+                            />
+                          ) : (
+                            <NameWrap style={{ margin: 0 }}>
+                              {String(
+                                i.name.substring(0, 1).trim().slice(0, 1),
+                              ).toLocaleUpperCase()}
+                            </NameWrap>
+                          )}
+                        </NewNameWrap>
+                        <span>{i.name}</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <LabelTitle title="评论" />
+              <div>
+                <Input.TextArea
+                  autoSize={{ minRows: 1, maxRows: 10 }}
+                  placeholder="请输入"
+                  value={value}
+                  onChange={e => setValue(e.target.value)}
+                />
+                <button
+                  onClick={sendComment}
                   style={{
-                    paddingLeft: '40px',
-                    width: '100%',
-                    wordBreak: 'break-all',
+                    width: '40px',
+                    height: '24px',
+                    background: '#2877FF',
+                    fontSize: '12px',
+                    fontWeight: '400',
+                    color: '#FFFFFF',
+                    marginTop: '8px',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
                   }}
                 >
-                  {item.content}
-                </div>
+                  评论
+                </button>
               </div>
-            ))}
-          </div>
-        </FormWrap>
+              {contentList.map((item: any) => (
+                <div key={item.id}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginRight: '24px',
+                      marginTop: '12px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {item.avatar ? (
+                      <img
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 16,
+                        }}
+                        src={item.avatar}
+                      />
+                    ) : (
+                      <NameWrap style={{ margin: 0 }}>
+                        {String(
+                          item.name.substring(0, 1).trim().slice(0, 1),
+                        ).toLocaleUpperCase()}
+                      </NameWrap>
+                    )}
+                    <span
+                      style={{
+                        margin: '0 10px',
+                      }}
+                    >
+                      {item.name}
+                    </span>
+                    <span
+                      style={{
+                        color: '#969799',
+                      }}
+                    >
+                      {item.created_at}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      paddingLeft: '40px',
+                      width: '100%',
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    {item.content}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </FormWrap>
+        ) : (
+          <Spin tip="加载中" size="large" />
+        )}
       </HiddenWrap>
 
       <Arrow onClick={() => onChangeLeft(0, 1)}>

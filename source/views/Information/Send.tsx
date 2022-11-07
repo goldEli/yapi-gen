@@ -11,7 +11,7 @@ import {
   PaginationWrap,
   StaffTableWrap,
 } from '@/components/StyleCommon'
-import { DatePicker, message, Pagination, Spin } from 'antd'
+import { DatePicker, message, Pagination, Spin, Tooltip } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
@@ -113,6 +113,9 @@ const Send = () => {
           <span
             style={{
               width: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
             }}
             dangerouslySetInnerHTML={{ __html: text || '--' }}
           />
@@ -152,7 +155,24 @@ const Send = () => {
       key: 'copysend_user',
       width: 120,
       render: (text: any) => {
-        return <span>{text.join('  ；  ') || '--'}</span>
+        return (
+          <Tooltip
+            title={text.join('  ；  ') || '--'}
+            getPopupContainer={node => node}
+          >
+            <span
+              style={{
+                display: 'inline-block',
+                width: '100px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {text.join('  ；  ') || '--'}
+            </span>
+          </Tooltip>
+        )
       },
     },
     {

@@ -89,6 +89,9 @@ const Get = () => {
           <span
             style={{
               width: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
             }}
             dangerouslySetInnerHTML={{ __html: text || '--' }}
           />

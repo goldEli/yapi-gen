@@ -62,6 +62,9 @@ const WhiteDay = (props: any) => {
   const close = () => {
     form.resetFields()
     props.editClose()
+    setAttachList([])
+    setPeopleValue([])
+    setNeedValue([])
   }
 
   const onChangeAttachment = (result: any, type: string) => {
