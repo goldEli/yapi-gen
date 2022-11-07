@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable consistent-return */
@@ -30,12 +31,16 @@ interface Props {
   id?: any
   onBottom?(): void
   onChange?(arr: any): void
+
   // 是否是迭代上传
   isIteration?: boolean
+
   // 迭代上传是否可以删除
   isCanUpdate?: boolean
 }
+
 export const First = styled.div``
+
 export const Second = styled.div`
   display: none;
 `
@@ -67,6 +72,7 @@ export const Gred = styled.div`
   opacity: 0;
   transition: all 1s;
 `
+
 export const GredParent = styled.div`
   &:hover {
     ${Gred} {
@@ -118,19 +124,47 @@ const ListItem = (props: any) => {
           position: 'relative',
         }}
       >
-        <img
-          style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '8px',
-            cursor: 'pointer',
-          }}
-          src={url}
-          alt=""
-        />
-        <Gred onClick={Preview}>
-          <IconFont style={{ fontSize: 18, color: 'white' }} type="zoomin" />
-        </Gred>
+        {(name.split('.').at(-1) === 'png' ||
+          name.split('.').at(-1) === 'webp') && (
+          <img
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+            src={url}
+            alt=""
+          />
+        )}
+        {name.split('.').at(-1) === 'xlsx' && (
+          <IconFont
+            style={{
+              fontSize: 40,
+              color: 'white',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+            type="colorXLS-76p4mekd"
+          />
+        )}
+        {name.split('.').at(-1) === 'pdf' && (
+          <IconFont
+            style={{
+              fontSize: 40,
+              color: 'white',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+            type="colorPDF"
+          />
+        )}
+        {(name.split('.').at(-1) === 'png' ||
+          name.split('.').at(-1) === 'webp') && (
+          <Gred onClick={Preview}>
+            <IconFont style={{ fontSize: 18, color: 'white' }} type="zoomin" />
+          </Gred>
+        )}
       </GredParent>
       <div>
         <div
@@ -167,7 +201,7 @@ const ListItem = (props: any) => {
             height: '20px',
           }}
         >
-          {isDownload && (
+          {isDownload ? (
             <span
               onClick={Download}
               style={{
@@ -180,9 +214,9 @@ const ListItem = (props: any) => {
                 type="download"
               />
             </span>
-          )}
+          ) : null}
 
-          {isShowDel && (
+          {isShowDel ? (
             <span
               style={{
                 cursor: 'pointer',
@@ -194,7 +228,7 @@ const ListItem = (props: any) => {
                 type="delete"
               />
             </span>
-          )}
+          ) : null}
         </Second>
       </div>
     </BigWrap>
@@ -228,7 +262,6 @@ const UploadAttach = (props: Props) => {
   }
 
   const [fileList, setFileList] = useState<any>([])
-
   let arr: any[] = []
 
   useEffect(() => {
@@ -379,6 +412,7 @@ const UploadAttach = (props: Props) => {
     onDownload,
     onRemove,
     onPreview,
+
     // showUploadList: {
     //   showDownloadIcon: projectInfo?.projectPermissions?.filter(
     //     (i: any) => i.name === '附件下载',
