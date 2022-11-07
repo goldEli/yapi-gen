@@ -1,6 +1,5 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-vars */

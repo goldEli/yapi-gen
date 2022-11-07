@@ -1,7 +1,5 @@
 /* eslint-disable prefer-template */
 /* eslint-disable operator-linebreak */
-/* eslint-disable complexity */
-/* eslint-disable no-console */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */

@@ -1,8 +1,6 @@
-/* eslint-disable max-lines */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
-/* eslint-disable complexity */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'

@@ -1,6 +1,5 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
-/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */

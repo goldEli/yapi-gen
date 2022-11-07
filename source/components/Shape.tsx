@@ -337,7 +337,6 @@ const NumericInput = (props: any) => {
   )
 }
 
-// eslint-disable-next-line complexity
 export const ShapeContent = (props: any) => {
   const [t] = useTranslation()
   const {

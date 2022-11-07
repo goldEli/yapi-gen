@@ -1,10 +1,8 @@
-/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable max-params */
 /* eslint-disable no-undefined */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable complexity */
 import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'

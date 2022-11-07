@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */

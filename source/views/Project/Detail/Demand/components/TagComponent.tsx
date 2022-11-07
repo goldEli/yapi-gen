@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'

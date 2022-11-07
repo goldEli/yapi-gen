@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconFont from '@/components/IconFont'

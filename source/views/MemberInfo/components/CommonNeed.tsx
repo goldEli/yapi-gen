@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
-/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -147,7 +146,6 @@ const MoreWrap = (props: MoreWrapProps) => {
   )
 }
 
-// eslint-disable-next-line complexity
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()

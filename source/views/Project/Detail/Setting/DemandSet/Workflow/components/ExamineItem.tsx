@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable max-len */

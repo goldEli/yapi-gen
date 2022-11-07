@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */

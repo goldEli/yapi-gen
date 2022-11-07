@@ -4,7 +4,6 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Form, Input, message, Popover, Tree } from 'antd'

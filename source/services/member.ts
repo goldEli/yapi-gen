@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable complexity */
-/* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable max-lines */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */

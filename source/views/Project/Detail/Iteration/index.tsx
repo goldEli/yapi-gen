@@ -1,6 +1,5 @@
 // 迭代主页
 
-/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable complexity */

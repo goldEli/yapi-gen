@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable multiline-ternary */
 import CommonModal from '@/components/CommonModal'

@@ -52,7 +52,6 @@ const SetHead = styled.div`
   color: white;
 `
 
-// eslint-disable-next-line complexity
 export const StaffPersonal = (props: {
   data: any
   isVisible: boolean

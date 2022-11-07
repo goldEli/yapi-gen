@@ -1,6 +1,5 @@
 // 两次以上的公共样式
 
-/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'

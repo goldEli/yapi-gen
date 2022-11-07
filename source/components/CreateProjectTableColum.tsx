@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */

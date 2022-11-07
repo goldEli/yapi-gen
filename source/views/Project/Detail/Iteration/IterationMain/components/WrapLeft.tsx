@@ -6,7 +6,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-/* eslint-disable complexity */
 import AddButton from '@/components/AddButton'
 import IterationCard from '@/components/IterationCard'
 import IconFont from '@/components/IconFont'

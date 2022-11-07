@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
