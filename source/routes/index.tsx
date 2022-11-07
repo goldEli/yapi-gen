@@ -104,10 +104,6 @@ const routes = [
         element: lazy(() => import('@/views/Situation')),
       },
       {
-        path: '/test',
-        element: lazy(() => import('@/views/testLongLink')),
-      },
-      {
         path: '/Information',
         element: lazy(() => import('@/views/Information')),
         children: [

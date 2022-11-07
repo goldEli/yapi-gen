@@ -170,13 +170,6 @@ export const Side = () => {
         path: '/Information/send/1',
         isHidden: getIsPermission('员工'),
       },
-      {
-        key: '/test',
-        title: '测试',
-        icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
-        path: '/test',
-        isHidden: getIsPermission('员工'),
-      },
     ]
     return menu
   }
