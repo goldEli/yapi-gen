@@ -33,6 +33,7 @@ const MainIndex = (props: Props) => {
     await setSwiperData(res.data)
     setLoadingState(true)
   }
+
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps

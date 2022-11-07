@@ -13,6 +13,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { getStaffList } from '@/services/staff'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -93,6 +94,7 @@ const MemberInfo = () => {
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
   const { getMainInfo, mainInfo } = useModel('member')
+  const { setSelectAllStaffData } = useModel('project')
 
   const menuList = [
     {
@@ -117,8 +119,15 @@ const MemberInfo = () => {
     },
   ]
 
+  // 获取公司员工
+  const getStaffData = async () => {
+    const options = await getStaffList({ all: 1 })
+    setSelectAllStaffData(options)
+  }
+
   useEffect(() => {
     getMainInfo({ userId })
+    getStaffData()
   }, [])
 
   const changeActive = (value: any) => {

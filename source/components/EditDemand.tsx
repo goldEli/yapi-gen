@@ -42,6 +42,7 @@ import {
   ProgressWrapUpload,
 } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
+import { getStaffList } from '@/services/staff'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import CommonModal from './CommonModal'
 
@@ -250,6 +251,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory,
     updateDemandCategory,
     setIsUpdateStatus,
+    setIsOpenEditDemand,
   } = useModel('demand')
   const {
     memberList,
@@ -263,6 +265,7 @@ const EditDemand = (props: Props) => {
     colorList,
     getWorkflowList,
     workList,
+    selectAllStaffData,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const { userInfo } = useModel('user')
@@ -370,7 +373,7 @@ const EditDemand = (props: Props) => {
       form.setFieldsValue({
         copySendIds: getCommonUser(
           res?.copySend?.map((i: any) => i.copysend),
-          memberList,
+          selectAllStaffData,
         ),
         attachments: res?.attachment.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
@@ -405,6 +408,7 @@ const EditDemand = (props: Props) => {
   }
 
   const getInit = async (value?: any, categoryId?: any) => {
+    setIsOpenEditDemand(true)
     const [classTree, categoryData, allDemandArr] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
@@ -530,6 +534,7 @@ const EditDemand = (props: Props) => {
     setPriorityDetail({})
     getList()
     setIsShowFields(false)
+    setIsOpenEditDemand(false)
     if (props?.isQuickCreate) {
       setIsUpdateCreate(true)
     } else {
@@ -688,7 +693,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     form.setFieldsValue({
       users: [],
-      copysend: [],
     })
     getInit(value)
   }
@@ -700,7 +704,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     form.setFieldsValue({
       users: [],
-      copysend: [],
     })
   }
 
@@ -716,6 +719,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsShowFields(false)
+    setIsOpenEditDemand(false)
   }
 
   const titleText = () => {
@@ -1232,11 +1236,7 @@ const EditDemand = (props: Props) => {
                   placeholder={t('common.pleaseChooseCopySend')}
                   getPopupContainer={node => node}
                   optionFilterProp="label"
-                  disabled={!projectId}
-                  options={memberList?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
+                  options={selectAllStaffData}
                 />
               </Form.Item>
             </FormWrap>

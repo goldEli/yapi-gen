@@ -1,4 +1,3 @@
-/* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */

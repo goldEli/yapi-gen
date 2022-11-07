@@ -23,6 +23,7 @@ export const getStaffList: any = async (params: any) => {
     return response.data.map((i: any) => ({
       label: i.name,
       value: i.id,
+      id: i.id,
     }))
   } else {
     return {

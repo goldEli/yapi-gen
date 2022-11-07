@@ -38,6 +38,7 @@ const Detail = () => {
     getFieldList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
+  const { isOpenEditDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -236,11 +237,12 @@ const Detail = () => {
     if (
       projectInfo.id &&
       selectIterate?.list?.length > 0 &&
-      memberList?.length > 0
+      memberList?.length > 0 &&
+      !isOpenEditDemand
     ) {
       getTreeData()
     }
-  }, [projectInfo, selectIterate, memberList])
+  }, [projectInfo, selectIterate, memberList, isOpenEditDemand])
 
   return (
     <Wrap>
