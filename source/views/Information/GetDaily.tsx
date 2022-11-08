@@ -74,7 +74,7 @@ const Get = () => {
   const columnsData: any = [
     {
       width: 100,
-      title: <NewSort fixedKey="name">标题</NewSort>,
+      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
       render: (text: string | number) => {
@@ -82,7 +82,7 @@ const Get = () => {
       },
     },
     {
-      title: <NewSort fixedKey="finish_content">内容摘要</NewSort>,
+      title: <NewSort fixedKey="finish_content">{t('p2.synopsis')}</NewSort>,
       dataIndex: 'finish_content',
       key: 'finish_content',
       width: 200,
@@ -101,7 +101,9 @@ const Get = () => {
       },
     },
     {
-      title: <NewSort fixedKey="file_count">附件数量</NewSort>,
+      title: (
+        <NewSort fixedKey="file_count">{t('p2.NumberOfAttachments')}</NewSort>
+      ),
       dataIndex: 'file_count',
       key: 'file_count',
       width: 200,
@@ -110,7 +112,9 @@ const Get = () => {
       },
     },
     {
-      title: <NewSort fixedKey="story_count">关联需求</NewSort>,
+      title: (
+        <NewSort fixedKey="story_count">{t('p2.RelatedRequirements')}</NewSort>
+      ),
       dataIndex: 'story_count',
       key: 'story_count',
       width: 150,
@@ -119,7 +123,7 @@ const Get = () => {
       },
     },
     {
-      title: <NewSort fixedKey="created_at">创建日期</NewSort>,
+      title: <NewSort fixedKey="created_at">{t('p2.dateCreated')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
       width: 160,
@@ -129,7 +133,7 @@ const Get = () => {
     },
 
     {
-      title: <NewSort fixedKey="role_name">我的阅读状态</NewSort>,
+      title: <NewSort fixedKey="role_name">{t('p2.MyReadingStatus')}</NewSort>,
       dataIndex: 'role_name',
       key: 'role_name',
       width: 170,
@@ -153,7 +157,7 @@ const Get = () => {
     },
 
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       dataIndex: 'created_at',
       key: 'created_at',
       width: 180,
@@ -173,7 +177,7 @@ const Get = () => {
                 cursor: 'pointer',
               }}
             >
-              查看
+              {t('p2.show')}
             </span>
           </div>
         )
@@ -314,7 +318,10 @@ const Get = () => {
         }}
       >
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>创建时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {' '}
+            {t('p2.dateCreated')}
+          </span>
           <DatePicker.RangePicker
             allowClear
             className={rangPicker}
@@ -381,7 +388,9 @@ const Get = () => {
         </SelectWrapBedeck>
 
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>发送人</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('p2.sender')}
+          </span>
 
           <SelectWrap
             allowClear
@@ -393,7 +402,7 @@ const Get = () => {
             options={options}
           />
         </SelectWrapBedeck>
-        <Checkbox onChange={onChange}>只看未阅</Checkbox>
+        <Checkbox onChange={onChange}> {t('p2.OnlySee')}</Checkbox>
         <MyInput
           style={{
             marginLeft: 'auto',

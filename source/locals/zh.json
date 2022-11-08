@@ -5,7 +5,31 @@
     "addAdjunct": "添加附件",
     "managingDemand": "管理需求",
     "haveRead": "已阅",
-    "RelatedRequirements": "关联需求"
+    "RelatedRequirements": "关联需求",
+    "whiteDay": "写日志",
+    "synopsis": "内容摘要",
+    "NumberOfAttachments": "附件数量",
+    "dateCreated": "创建日期",
+    "MyReadingStatus": "我的阅读状态",
+    "show": "查看",
+    "edit": "修改",
+    "sender": "发送人",
+    "OnlySee": "只看未阅",
+    "dayList": {
+      "t1": "我发出的",
+      "t2": "发出日报",
+      "t3": "发出周报",
+      "t4": "发出月报",
+      "t5": "我收到的",
+      "t6": "接收日报",
+      "t7": "接收周报",
+      "t8": "接收月报"
+    },
+    "whiteList": {
+      "t1": "写日报",
+      "t2": "写周报",
+      "t3": "写月报"
+    }
   },
   "newlyAdd": {
     "notEnterNull": "下拉值不能为空！",

@@ -5,7 +5,31 @@
     "addAdjunct": "add attachment",
     "managingDemand": "managing Demand",
     "haveRead": "have read",
-    "RelatedRequirements": "Related Requirements"
+    "RelatedRequirements": "Related Requirements",
+    "whiteDay": "keep a journal",
+    "synopsis": "synopsis",
+    "NumberOfAttachments": "Number of attachments",
+    "dateCreated": "date created",
+    "MyReadingStatus": "My reading status",
+    "show": "show",
+    "edit": "edit",
+    "sender": "sender",
+    "OnlySee": "Only see not read",
+    "dayList": {
+      "t1": "From me ",
+      "t2": "Send out the daily newspaper ",
+      "t3": "Send out a weekly report",
+      "t4": "Issue monthly report ",
+      "t5": "I received ",
+      "t6": "Receive daily newspaper ",
+      "t7": "Receive weekly report ",
+      "t8": "Receive Monthly Report"
+    },
+    "whiteList": {
+      "t1": "Write daily ",
+      "t2": "Write a weekly ",
+      "t3": "Write the monthly "
+    }
   },
   "newlyAdd": {
     "notEnterNull": "The drop-down value cannot be empty!",
