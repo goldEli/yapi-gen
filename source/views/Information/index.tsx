@@ -228,7 +228,7 @@ const Information = () => {
           'b/user/fast/create',
         ) ? null : (
           <Popover visible={showPop} content={content}>
-            <AddButton>
+            <AddButton onClick={() => setShowPop(!showPop)}>
               <IconFont
                 style={{
                   marginRight: 8,
@@ -238,7 +238,7 @@ const Information = () => {
                 }}
                 type="plus"
               />
-              <span onClick={() => setShowPop(true)}>写日志</span>
+              <span>写日志</span>
             </AddButton>
           </Popover>
         )}

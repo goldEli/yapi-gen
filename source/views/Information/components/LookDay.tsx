@@ -17,7 +17,7 @@ import {
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Input, message, Modal, Spin } from 'antd'
-import { use } from 'i18next'
+import { t, use } from 'i18next'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { InnerLine } from './RelatedNeed'
@@ -214,11 +214,11 @@ const LookDay = (props: any) => {
                 overflow: 'scroll',
               }}
             >
-              <LabelTitle title="今日完成工作" />
+              <LabelTitle title={t('p2.todayFinish')} />
               <div dangerouslySetInnerHTML={{ __html: article1 }} />
-              <LabelTitle title="明日计划工作" />
+              <LabelTitle title={t('p2.tomorrowFinish')} />
               <div dangerouslySetInnerHTML={{ __html: article2 }} />
-              <LabelTitle title="抄送人" />
+              <LabelTitle title={t('common.copySend')} />
               <div
                 style={{
                   display: 'flex',
@@ -267,7 +267,7 @@ const LookDay = (props: any) => {
                 ))}
               </div>
 
-              <LabelTitle title="附件" />
+              <LabelTitle title={t('common.attachment')} />
               <div>
                 {attachList.map((item: any) => (
                   <BigWrap
@@ -387,7 +387,7 @@ const LookDay = (props: any) => {
                   </BigWrap>
                 ))}
               </div>
-              <LabelTitle title="关联需求" />
+              <LabelTitle title={t('p2.RelatedRequirements')} />
               <div>
                 {needValue.map((item: any) => (
                   <InnerLine key={item.key}>
@@ -395,7 +395,7 @@ const LookDay = (props: any) => {
                   </InnerLine>
                 ))}
               </div>
-              <LabelTitle title="已阅" />
+              <LabelTitle title={t('p2.haveRead')} />
               <div
                 style={{
                   display: 'flex',
@@ -443,12 +443,12 @@ const LookDay = (props: any) => {
                     </div>
                   ))}
               </div>
-              <LabelTitle title="评论" />
+              <LabelTitle title={t('common.comment')} />
               <div>
                 <Input.TextArea
                   ref={myArea}
                   autoSize={{ minRows: 1, maxRows: 10 }}
-                  placeholder="请输入"
+                  placeholder={t('common.pleaseEnter')}
                   value={value}
                   onChange={e => setValue(e.target.value)}
                 />
@@ -467,7 +467,7 @@ const LookDay = (props: any) => {
                     cursor: 'pointer',
                   }}
                 >
-                  评论
+                  {t('common.comment') as unknown as string}
                 </button>
               </div>
               {contentList.map((item: any) => (
@@ -526,7 +526,7 @@ const LookDay = (props: any) => {
             </div>
           </FormWrap>
         ) : (
-          <Spin tip="加载中" size="large" />
+          <Spin tip={t('common.loading') as unknown as string} size="large" />
         )}
       </HiddenWrap>
 

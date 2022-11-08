@@ -123,7 +123,7 @@ const RelatedNeed = (props: any) => {
     <div>
       <AddWrap onClick={() => setShow(true)} hasColor>
         <IconFont type="plus" />
-        <div>关联需求</div>
+        <div>{t('p2.RelatedRequirements')}</div>
       </AddWrap>
       {show ? (
         <div
@@ -136,7 +136,7 @@ const RelatedNeed = (props: any) => {
           <Form form={lessForm} layout="vertical">
             <Form.Item
               name="project"
-              label="选择项目"
+              label={t('common.chooseProject')}
               rules={[
                 {
                   required: true,
@@ -164,7 +164,7 @@ const RelatedNeed = (props: any) => {
                 },
               ]}
               name="needs"
-              label="管理需求"
+              label={t('p2.managingDemand')}
             >
               <Select
                 disabled={showNeed}
@@ -190,6 +190,7 @@ const RelatedNeed = (props: any) => {
               onClick={() => {
                 setShowNeed(true)
                 setShow(false)
+                lessForm.resetFields()
               }}
               style={{
                 fontSize: '14px',

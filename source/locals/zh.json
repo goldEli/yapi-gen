@@ -1,4 +1,12 @@
 {
+  "p2": {
+    "todayFinish": "今日完成工作",
+    "tomorrowFinish": "明日计划工作",
+    "addAdjunct": "添加附件",
+    "managingDemand": "管理需求",
+    "haveRead": "已阅",
+    "RelatedRequirements": "关联需求"
+  },
   "newlyAdd": {
     "notEnterNull": "下拉值不能为空！",
     "onlyChooseStatus": "至少选择一个添加状态！",

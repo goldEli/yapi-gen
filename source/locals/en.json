@@ -1,4 +1,12 @@
 {
+  "p2": {
+    "todayFinish": "Get Your Work Done Today",
+    "tomorrowFinish": "Planned Work for Tomorrow",
+    "addAdjunct": "add attachment",
+    "managingDemand": "managing Demand",
+    "haveRead": "have read",
+    "RelatedRequirements": "Related Requirements"
+  },
   "newlyAdd": {
     "notEnterNull": "The drop-down value cannot be empty!",
     "onlyChooseStatus": "Select at least one adding status!",

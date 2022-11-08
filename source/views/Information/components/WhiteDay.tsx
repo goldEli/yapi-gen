@@ -11,6 +11,7 @@ import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { getReportDetail } from '@/services/daily'
+import { t } from 'i18next'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -151,7 +152,7 @@ const WhiteDay = (props: any) => {
       isVisible={props.visibleEdit}
       onClose={close}
       onConfirm={confirm}
-      confirmText="提交"
+      confirmText={t('newlyAdd.submit')}
     >
       <div
         style={{
@@ -162,16 +163,28 @@ const WhiteDay = (props: any) => {
         ref={leftDom}
       >
         <Form form={form} layout="vertical">
-          <Form.Item label={<LabelTitle title="今日完成工作" />} name="info">
+          <Form.Item
+            label={<LabelTitle title={t('p2.todayFinish')} />}
+            name="info"
+          >
             <Editor height={240} />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
+          <Form.Item
+            label={<LabelTitle title={t('p2.tomorrowFinish')} />}
+            name="info2"
+          >
             <Editor height={240} />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="抄送人" />} name="people">
+          <Form.Item
+            label={<LabelTitle title={t('common.copySend')} />}
+            name="people"
+          >
             <ChoosePeople initValue={peopleValue} />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="附件" />} name="attachments">
+          <Form.Item
+            label={<LabelTitle title={t('common.attachment')} />}
+            name="attachments"
+          >
             <UploadAttach
               child={isShow ? <Children /> : ''}
               onChangeShow={setIsShow}
@@ -186,12 +199,15 @@ const WhiteDay = (props: any) => {
                   hasColor
                 >
                   <IconFont type="plus" />
-                  <div>添加附件</div>
+                  <div>{t('p2.addAdjunct') as unknown as string}</div>
                 </AddWrap>
               }
             />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="关联需求" />} name="needs">
+          <Form.Item
+            label={<LabelTitle title={t('p2.managingDemand')} />}
+            name="needs"
+          >
             <RelatedNeed initValue={needValue} />
           </Form.Item>
         </Form>
