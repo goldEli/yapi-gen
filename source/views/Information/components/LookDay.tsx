@@ -82,7 +82,9 @@ const Arrow = styled.div`
 const Arrow2 = styled(Arrow)`
   left: 80%;
 `
-
+const imgs = ['png', 'webp']
+const fils = ['xlsx', 'pdf']
+const fils2 = fils.concat(imgs)
 const LookDay = (props: any) => {
   const myArea = useRef<any>(null)
   const [left, setLeft] = useState(0)
@@ -184,7 +186,15 @@ const LookDay = (props: any) => {
                 justifyContent: 'space-between',
               }}
             >
-              <span>{title}</span>
+              <span
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  color: '#323233',
+                }}
+              >
+                {title}
+              </span>
               <span
                 style={{
                   cursor: 'pointer',
@@ -278,22 +288,70 @@ const LookDay = (props: any) => {
                         position: 'relative',
                       }}
                     >
-                      <img
-                        style={{
-                          width: '40px',
-                          height: '40px',
-                          borderRadius: '8px',
-                          cursor: 'pointer',
-                        }}
-                        src={item.path}
-                        alt=""
-                      />
-                      <Gred>
-                        <IconFont
-                          style={{ fontSize: 18, color: 'white' }}
-                          type="zoomin"
+                      {imgs.includes(item.path.split('.').at(-1)) && (
+                        <img
+                          style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                          }}
+                          src={item.path}
+                          alt=""
                         />
-                      </Gred>
+                      )}
+                      {item.path.split('.').at(-1) === 'xlsx' && (
+                        <IconFont
+                          style={{
+                            fontSize: 40,
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                          }}
+                          type="colorXLS-76p4mekd"
+                        />
+                      )}
+                      {item.path.split('.').at(-1) === 'pdf' && (
+                        <IconFont
+                          style={{
+                            fontSize: 40,
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                          }}
+                          type="colorPDF"
+                        />
+                      )}
+                      {item.path.split('.').at(-1) === 'word' && (
+                        <IconFont
+                          style={{
+                            fontSize: 40,
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                          }}
+                          type="colorDOC-76p4mioh"
+                        />
+                      )}
+                      {!fils2.includes(item.path.split('.').at(-1)) && (
+                        <IconFont
+                          style={{
+                            fontSize: 40,
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                          }}
+                          type="colorunknown"
+                        />
+                      )}
+                      {imgs.includes(item.path.split('.').at(-1)) && (
+                        <Gred>
+                          <IconFont
+                            style={{ fontSize: 18, color: 'white' }}
+                            type="zoomin"
+                          />
+                        </Gred>
+                      )}
                     </GredParent>
                     <div>
                       <div

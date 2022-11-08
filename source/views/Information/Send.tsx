@@ -194,7 +194,7 @@ const Send = () => {
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'right', width: '72px' }}>
             {record.read_user.length > 0 ? null : (
               <span
                 onClick={() => {
@@ -251,6 +251,10 @@ const Send = () => {
     setPagesize(size)
   }
   const onChangeTime = (key: any, dates: any) => {
+    if (dates[0] === '' && dates[1] === '') {
+      dates[0] = undefined
+      dates[1] = undefined
+    }
     setCreated_at(dates)
   }
 

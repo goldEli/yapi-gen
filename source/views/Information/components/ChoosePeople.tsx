@@ -128,7 +128,7 @@ const ChoosePeople = (props: any) => {
                   margin: '-20px 8px 0',
                   color: '#BBBDBF',
                 }}
-                type={tagMenuList?.filter((k: any) => k.value === 1)[0]?.icon}
+                type=""
               />
             )}
           </div>
