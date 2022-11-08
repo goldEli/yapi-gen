@@ -2,7 +2,7 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable multiline-ternary */
-import { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
@@ -46,6 +46,8 @@ const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
 `
+
+export const DailyContext: any = React.createContext('')
 
 const MenuItem = styled.div<{ active?: boolean }>(
   {
@@ -146,7 +148,14 @@ const Information = () => {
   const { userInfo } = useModel('user')
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
-
+  const [id, setId] = useState(1)
+  const keyValue = {
+    id,
+    change: () => {
+      const value = id + 1
+      setId(value)
+    },
+  }
   const changeActive = (value: MenuList) => {
     navigate(value.path)
   }
@@ -171,6 +180,7 @@ const Information = () => {
     if (res.code === 0) {
       message.success('成功')
       editClose()
+      keyValue.change()
     }
   }
 
@@ -287,7 +297,9 @@ const Information = () => {
         >
           {title}
         </div>
-        <Outlet />
+        <DailyContext.Provider value={keyValue}>
+          <Outlet />
+        </DailyContext.Provider>
       </Main>
       {/* // 写日志的表单D */}
       <WhiteDay

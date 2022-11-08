@@ -11,7 +11,7 @@ import {
   StaffTableWrap,
 } from '@/components/StyleCommon'
 import { Checkbox, DatePicker, Pagination, Spin } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import {
@@ -26,6 +26,7 @@ import { getReceiveList } from '@/services/daily'
 import { useParams } from 'react-router-dom'
 import { getStaffList2 } from '@/services/staff'
 import LookDay from './components/LookDay'
+import { DailyContext } from '.'
 
 const srr = [
   undefined,
@@ -52,10 +53,11 @@ const Get = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [options, setOptions] = useState<any>([])
   const [userId, setUserId] = useState<any>('')
-  const [status, setStatus] = useState<any>(true)
+  const [status, setStatus] = useState<any>(false)
   const [changeIds, setChangeIds] = useState<any>([])
   const [showId, setShowId] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
+
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -258,7 +260,7 @@ const Get = () => {
       pagesize: 20,
       created_at: [],
       userId: '',
-      status: true,
+      status: false,
     }
     const res = await getReceiveList(obj)
     if (res) {

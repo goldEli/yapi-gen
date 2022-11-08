@@ -11,7 +11,7 @@ import {
   StaffTableWrap,
 } from '@/components/StyleCommon'
 import { DatePicker, message, Pagination, Spin, Tooltip } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { rangPicker, SelectWrapBedeck } from '@/components/TableFilter'
@@ -22,6 +22,7 @@ import WhiteDay from './components/WhiteDay'
 import { useParams } from 'react-router-dom'
 import LookDay from './components/LookDay'
 import { getDailyList, writeDaily } from '@/services/daily'
+import { DailyContext } from '.'
 
 const titleList = {
   2: '修改日报',
@@ -48,6 +49,7 @@ const Send = () => {
   const [editType, setEditType] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
+  const context: any = useContext(DailyContext)
 
   const editClose = () => {
     setVisibleEdit(false)
@@ -315,7 +317,7 @@ const Send = () => {
   }, [orderKey, order, page, pagesize, keyword, created_at])
   useEffect(() => {
     init2()
-  }, [urlId])
+  }, [urlId, context.id])
   return (
     <div
       style={{

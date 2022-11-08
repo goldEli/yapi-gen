@@ -103,7 +103,8 @@ export const getReceiveList: any = async (params: any) => {
       keyword: params.keyword,
       created_at: params.created_at,
       user_id: params.userId,
-      status: params.status ? 2 : 1,
+      // eslint-disable-next-line no-undefined
+      status: params.status ? 2 : undefined,
     },
     order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
     orderkey: params.orderkey,
