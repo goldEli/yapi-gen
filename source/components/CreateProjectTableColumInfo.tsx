@@ -25,12 +25,17 @@ import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
 import { useModel } from '@/models'
 import TableQuickEdit from './TableQuickEdit'
+import styled from '@emotion/styled'
 
-const flexCss = css`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
+const Wrap = styled.div<{ isEdit?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  ({ isEdit }) => ({
+    cursor: isEdit ? 'inherit' : 'pointer',
+  }),
+)
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
@@ -190,20 +195,32 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      render: (text: any, record: Record<string, string | number>) => {
+      render: (text: any, record: any) => {
         return (
           <Pop
-            content={({ onHide }: { onHide(): void }) => (
-              <LevelContent
-                onTap={state.updatePriority}
-                onHide={onHide}
-                record={record}
-              />
-            )}
+            content={({ onHide }: { onHide(): void }) =>
+              record.project?.isPublic !== 1 &&
+              !record.project?.isUserMember ? null : (
+                <LevelContent
+                  onTap={state.updatePriority}
+                  onHide={onHide}
+                  record={record}
+                />
+              )
+            }
             record={record}
           >
-            <div className={flexCss}>
-              <div className={flexCss}>
+            <Wrap
+              isEdit={
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              }
+            >
+              <Wrap
+                isEdit={
+                  record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember
+                }
+              >
                 <IconFont
                   type={text?.icon}
                   style={{
@@ -215,11 +232,14 @@ export const useDynamicColumns = (state: any) => {
                 <span style={{ marginRight: '5px' }}>
                   {text?.content_txt || '--'}
                 </span>
-              </div>
-              <ShowWrap>
-                <IconFont style={{ color: '#2877ff' }} type="down-icon" />
-              </ShowWrap>
-            </div>
+              </Wrap>
+              {record.project?.isPublic !== 1 &&
+              !record.project?.isUserMember ? null : (
+                <ShowWrap>
+                  <IconFont style={{ color: '#2877ff' }} type="down-icon" />
+                </ShowWrap>
+              )}
+            </Wrap>
           </Pop>
         )
       },
@@ -293,7 +313,6 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {/* {text || '--'} */}
                 {text?.split(',') || '--'}
               </OmitText>
             </HiddenText>
@@ -309,7 +328,9 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) => {
-              return record.isExamine ? null : (
+              return record.isExamine ||
+                (record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember) ? null : (
                 <ShapeContent
                   tap={(value: any) => state.updateStatus(value)}
                   hide={onHide}
@@ -321,7 +342,14 @@ export const useDynamicColumns = (state: any) => {
             record={record}
           >
             <StyledShape
-              style={{ width: 'fit-content' }}
+              style={{
+                width: 'fit-content',
+                cursor:
+                  record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember
+                    ? 'inherit'
+                    : 'pointer',
+              }}
               onClick={record.isExamine ? onExamine : void 0}
               color={text?.status.color}
             >

@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { StatusTag } from '@/components/StyleCommon'
 import { Popover } from 'antd'
 import IconFont from '@/components/IconFont'
+import { useState } from 'react'
 
 const LiWrap = styled.div<{ color: any }>(
   {
@@ -32,6 +33,8 @@ interface Props {
 }
 
 const IterationStatus = (props: Props) => {
+  const [isVisible, setIsVisible] = useState(false)
+
   // 获取迭代状态对应名称
   const onGetStatusName = (status: any) => {
     let name: any
@@ -43,6 +46,11 @@ const IterationStatus = (props: Props) => {
     return name
   }
 
+  const onClick = (value: any, e: any) => {
+    setIsVisible(false)
+    props.onChangeStatus(value, e)
+  }
+
   const changeStatus = (
     <div
       style={{
@@ -52,15 +60,15 @@ const IterationStatus = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="#F0F4FA" onClick={e => props.onChangeStatus(1, e)}>
+      <LiWrap color="#F0F4FA" onClick={e => onClick(1, e)}>
         <StatusTag status={1}>已开启</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#EDF7F4" onClick={e => props.onChangeStatus(2, e)}>
+      <LiWrap color="#EDF7F4" onClick={e => onClick(2, e)}>
         <StatusTag status={2}>已完成</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#F2F2F4" onClick={e => props.onChangeStatus(3, e)}>
+      <LiWrap color="#F2F2F4" onClick={e => onClick(3, e)}>
         <StatusTag status={3}>已关闭</StatusTag>
       </LiWrap>
     </div>
@@ -80,6 +88,8 @@ const IterationStatus = (props: Props) => {
           placement="bottom"
           content={changeStatus}
           getPopupContainer={node => node}
+          visible={isVisible}
+          onVisibleChange={visible => setIsVisible(visible)}
         >
           {props.iterateInfo ? (
             <StatusTag status={props.iterateInfo?.status}>

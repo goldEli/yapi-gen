@@ -11,9 +11,10 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Divider, message, Popover, Space, Tooltip } from 'antd'
+import { Divider, Popover, Space, Tooltip } from 'antd'
 import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
+import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 
@@ -127,6 +128,8 @@ const Operation = (props: Props) => {
   const [isShowImport, setIsShowImport] = useState(false)
   const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
+  // 导出超出限制提示
+  const [exceedState, setExceedState] = useState(false)
   const { filterAll, projectInfo, categoryList, colorList } =
     useModel('project')
   const { setFilterHeight, setCreateCategory } = useModel('demand')
@@ -270,9 +273,8 @@ const Operation = (props: Props) => {
 
   const onExportClick = () => {
     if (props.dataLength > 5000) {
-      message.warning(
-        '导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！',
-      )
+      setIsVisibleMore(false)
+      setExceedState(true)
       return
     }
     setIsVisible(false)
@@ -312,6 +314,13 @@ const Operation = (props: Props) => {
 
   return (
     <StickyWrap ref={stickyWrapDom}>
+      <DeleteConfirm
+        onConfirm={() => setExceedState(false)}
+        onChangeVisible={() => setExceedState(false)}
+        isVisible={exceedState}
+        title="提示"
+        text="导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！"
+      />
       <CommonModal
         isVisible={isShowImport}
         width={784}
