@@ -64,6 +64,7 @@ export const useDynamicColumns = (state: any) => {
     fieldList,
     memberList,
     selectAllStaffData,
+    tagList,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const isCanEdit =
@@ -332,18 +333,30 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'tag',
       key: 'tag',
       width: 120,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={120}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
-          </HiddenText>
+          <TableQuickEdit
+            keyText="tag"
+            type="fixed_select"
+            value={tagList?.map((i: any) => ({
+              label: i.content,
+              value: i.content,
+            }))}
+            defaultText={text?.split(',') || []}
+            item={record}
+            onUpdate={onUpdate}
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
         )
       },
     },

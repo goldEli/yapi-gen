@@ -276,8 +276,29 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
       key: 'tag',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            keyText="tag"
+            type="fixed_select"
+            defaultText={text?.split(',') || []}
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {/* {text || '--'} */}
+                {text?.split(',') || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
+        )
       },
     },
     {
