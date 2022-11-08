@@ -42,8 +42,7 @@ import {
   ProgressWrapUpload,
 } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
-import { getStaffList } from '@/services/staff'
-import { decryptPhp } from '@/tools/cryptoPhp'
+import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
 import CommonModal from './CommonModal'
 
 const ShowLabel = styled.div({
@@ -565,6 +564,19 @@ const EditDemand = (props: Props) => {
         form.resetFields()
         form1.resetFields()
       }, 100)
+    }
+
+    if (props.isQuickCreate) {
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(
+          JSON.stringify({
+            projectId,
+            type: 'need',
+            categoryId: categoryObj?.id,
+          }),
+        ),
+      )
     }
   }
 

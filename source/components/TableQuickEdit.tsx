@@ -8,7 +8,7 @@ import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { filterTreeData, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { getIterateList } from '@/services/project/iterate'
-import { getProjectMember } from '@/services/project'
+import { getProjectMember, getTagList } from '@/services/project'
 import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
 import { useModel } from '@/models'
@@ -38,7 +38,8 @@ const TableQuickEdit = (props: Props) => {
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
-  const { projectInfo, getFieldList } = useModel('project')
+  const [selectTagList, setSelectTagList] = useState<any>([])
+  const { projectInfo, getFieldList, tagList } = useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
@@ -47,6 +48,10 @@ const TableQuickEdit = (props: Props) => {
   const isCan =
     props.isInfo ||
     !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
+
+  const isShowIcon =
+    !props.isInfo &&
+    ['text', 'textarea', 'number', 'integer'].includes(String(props.type))
 
   if (props.isMineOrHis) {
     isCanEdit = props?.item?.project?.isEdit
@@ -79,8 +84,8 @@ const TableQuickEdit = (props: Props) => {
     }, 100)
   }
 
-  // 我的模块自定义模块并且是缺失下拉数据的： 迭代、处理人、抄送人、需求分类
-  const getDefectSelectValues = async () => {
+  // 我的模块自定义模块并且是缺失下拉数据的： 迭代、处理人、抄送人、需求分类、标签
+  const getDefaultSelectValues = async () => {
     let resultValue = {
       attr: props?.type,
       value: [],
@@ -109,6 +114,14 @@ const TableQuickEdit = (props: Props) => {
       // 获取需求分类的下拉数据
       const response = await getTreeList({ id: projectId })
       resultValue.value = filterTreeData(response)[0].children
+    } else if (props.keyText === 'tag') {
+      // 获取标签下拉数据
+      const response: any = await getTagList({ projectId })
+      setSelectTagList(response)
+      resultValue.value = response?.map((i: any) => ({
+        label: i.content,
+        value: i.content,
+      }))
     }
 
     setParams(resultValue)
@@ -129,11 +142,12 @@ const TableQuickEdit = (props: Props) => {
         String(props?.type),
       )
     ) {
-      // 我的模块自定义模块并且是缺失下拉数据的： 迭代、处理人、抄送人、需求分类
-      getDefectSelectValues()
+      // 我的模块自定义模块并且是缺失下拉数据的： 迭代、处理人、抄送人、需求分类、标签
+      getDefaultSelectValues()
     } else {
       // 项目及详情中自带相应参数或者是之前的固定参数
       resultValue = {
+        // 特殊判断标签，提交格式特殊
         value: props.value,
         remarks: props.remarks,
         attr: props.type,
@@ -147,6 +161,9 @@ const TableQuickEdit = (props: Props) => {
 
   useEffect(() => {
     if (isShowControl) {
+      if (props.keyText === 'tag') {
+        setSelectTagList(tagList)
+      }
       setNormalParams()
     }
   }, [isShowControl])
@@ -160,6 +177,16 @@ const TableQuickEdit = (props: Props) => {
     if (props?.isCustom) {
       obj.otherParams = {
         custom_field: { [props?.keyText]: newValue },
+      }
+    } else if (props.keyText === 'tag') {
+      obj.otherParams = {
+        [props?.keyText]:
+          selectTagList
+            ?.filter((i: any) => newValue.some((k: any) => k === i.content))
+            ?.map((i: any) => ({
+              name: i.content,
+              color: i.color,
+            })) || [],
       }
     } else {
       obj.otherParams = { [props?.keyText]: newValue || '' }
@@ -195,6 +222,7 @@ const TableQuickEdit = (props: Props) => {
       } else {
         resultVal = val || ''
       }
+
       onChange(resultVal, 1)
     }
   }
@@ -223,12 +251,7 @@ const TableQuickEdit = (props: Props) => {
           {isCanEdit ? (
             <IconFontWrapEdit
               onClick={() => setIsShowControl(true)}
-              isTable={
-                !props.isInfo &&
-                ['text', 'textarea', 'number', 'integer'].includes(
-                  String(props.type),
-                )
-              }
+              isTable={isShowIcon}
               type={
                 props?.isInfo ||
                 !['text', 'textarea', 'number', 'integer'].includes(
