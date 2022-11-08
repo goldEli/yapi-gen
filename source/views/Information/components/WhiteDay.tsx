@@ -75,7 +75,8 @@ const WhiteDay = (props: any) => {
           ...[result.url],
         ],
       })
-      setAttachList([...attachList, ...[result]])
+
+      setAttachList((oldAttachList: any) => oldAttachList.concat([result]))
     } else {
       const arr = attachList
       const comResult = arr.filter((i: any) => i.id !== result.uid)

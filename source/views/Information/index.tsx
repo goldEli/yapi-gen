@@ -195,7 +195,11 @@ const Information = () => {
     setVisibleEditText(item.name)
   }
   const content = (
-    <div>
+    <div
+      style={{
+        padding: '4px 0',
+      }}
+    >
       {writeDailyInner.map((item: any) => (
         <WriteDaily onClick={() => onWriteDaily(item)} key={item.id}>
           {item.name}

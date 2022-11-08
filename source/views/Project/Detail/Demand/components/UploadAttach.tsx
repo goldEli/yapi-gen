@@ -263,7 +263,6 @@ const UploadAttach = (props: Props) => {
 
   const [fileList, setFileList] = useState<any>([])
   let arr: any[] = []
-
   useEffect(() => {
     const array: any[] = []
     props.defaultList?.forEach((element: any) => {
@@ -383,6 +382,7 @@ const UploadAttach = (props: Props) => {
       }
     }
   }
+
   const handlePreview = async (file: any) => {
     setPreviewImage(file.url)
 
@@ -412,13 +412,6 @@ const UploadAttach = (props: Props) => {
     onDownload,
     onRemove,
     onPreview,
-
-    // showUploadList: {
-    //   showDownloadIcon: projectInfo?.projectPermissions?.filter(
-    //     (i: any) => i.name === '附件下载',
-    //   ).length,
-    //   showRemoveIcon: props.isIteration ? props?.isCanUpdate : isCanEdit,
-    // },
     itemRender: (e: any, file: any) => {
       return (
         <ListItem
@@ -435,8 +428,8 @@ const UploadAttach = (props: Props) => {
 
   const handleCancel = () => setPreviewOpen(false)
   return (
-    <div className="123">
-      <Warp fileList={fileList} {...uploadProps}>
+    <div>
+      <Warp multiple fileList={fileList} {...uploadProps}>
         {props.addWrap}
       </Warp>
       <Modal
