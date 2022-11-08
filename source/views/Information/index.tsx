@@ -148,6 +148,7 @@ const Information = () => {
   const { userInfo } = useModel('user')
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
+  const [showPop, setShowPop] = useState(false)
   const [id, setId] = useState(1)
   const keyValue = {
     id,
@@ -206,6 +207,7 @@ const Information = () => {
   }
   const content = (
     <div
+      onClick={() => setShowPop(false)}
       style={{
         padding: '4px 0',
       }}
@@ -225,7 +227,7 @@ const Information = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : (
-          <Popover content={content}>
+          <Popover visible={showPop} content={content}>
             <AddButton>
               <IconFont
                 style={{
@@ -236,7 +238,7 @@ const Information = () => {
                 }}
                 type="plus"
               />
-              <span>写日志</span>
+              <span onClick={() => setShowPop(true)}>写日志</span>
             </AddButton>
           </Popover>
         )}

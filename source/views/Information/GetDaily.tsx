@@ -170,7 +170,6 @@ const Get = () => {
                 fontSize: '14px',
                 fontWeight: ' 400',
                 color: '#2877FF',
-                marginLeft: '16px',
                 cursor: 'pointer',
               }}
             >
@@ -202,6 +201,10 @@ const Get = () => {
     setStatus(e.target.checked)
   }
   const onChangeTime = (key: any, dates: any) => {
+    if (dates[0] === '' && dates[1] === '') {
+      dates[0] = undefined
+      dates[1] = undefined
+    }
     setCreated_at(dates)
   }
 

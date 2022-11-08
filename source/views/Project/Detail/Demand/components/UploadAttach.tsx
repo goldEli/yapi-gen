@@ -82,6 +82,9 @@ export const GredParent = styled.div`
   }
 `
 
+const imgs = ['png', 'webp']
+const fils = ['xlsx', 'pdf']
+const fils2 = fils.concat(imgs)
 const ListItem = (props: any) => {
   const {
     file: { url, name, user, time },
@@ -124,8 +127,7 @@ const ListItem = (props: any) => {
           position: 'relative',
         }}
       >
-        {(name.split('.').at(-1) === 'png' ||
-          name.split('.').at(-1) === 'webp') && (
+        {imgs.includes(name.split('.').at(-1)) && (
           <img
             style={{
               width: '40px',
@@ -159,8 +161,29 @@ const ListItem = (props: any) => {
             type="colorPDF"
           />
         )}
-        {(name.split('.').at(-1) === 'png' ||
-          name.split('.').at(-1) === 'webp') && (
+        {name.split('.').at(-1) === 'word' && (
+          <IconFont
+            style={{
+              fontSize: 40,
+              color: 'white',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+            type="colorDOC-76p4mioh"
+          />
+        )}
+        {!fils2.includes(name.split('.').at(-1)) && (
+          <IconFont
+            style={{
+              fontSize: 40,
+              color: 'white',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+            type="colorunknown"
+          />
+        )}
+        {imgs.includes(name.split('.').at(-1)) && (
           <Gred onClick={Preview}>
             <IconFont style={{ fontSize: 18, color: 'white' }} type="zoomin" />
           </Gred>
