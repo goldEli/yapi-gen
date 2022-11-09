@@ -164,7 +164,7 @@ const WhiteDay = (props: any) => {
     >
       <div
         style={{
-          height: '680px',
+          height: '60vh',
           overflow: 'scroll',
           paddingRight: '10px',
         }}
