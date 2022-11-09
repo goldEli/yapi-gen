@@ -24,6 +24,7 @@ import LookDay from './components/LookDay'
 import { getDailyList, writeDaily } from '@/services/daily'
 import { DailyContext } from '.'
 import CommonInput from '@/components/CommonInput'
+import RangePicker from '@/components/RangePicker'
 
 const titleList = {
   2: '修改日报',
@@ -258,12 +259,17 @@ const Send = () => {
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
   }
-  const onChangeTime = (key: any, dates: any) => {
-    if (dates[0] === '' && dates[1] === '') {
-      dates[0] = undefined
-      dates[1] = undefined
+  const onChangeTime = (dates: any) => {
+    if (dates === null) {
+      const date = [undefined, undefined]
+      setCreated_at(date)
+      return
     }
-    setCreated_at(dates)
+    const date = []
+    date[0] = moment(dates[0]).format('YYYY-MM-DD')
+    date[1] = moment(dates[1]).format('YYYY-MM-DD')
+
+    setCreated_at(date)
   }
 
   const init = async () => {
@@ -351,69 +357,7 @@ const Send = () => {
           <span style={{ margin: '0 16px', fontSize: '14px' }}>
             {t('p2.dateCreated')}
           </span>
-          <DatePicker.RangePicker
-            allowClear
-            className={rangPicker}
-            onChange={onChangeTime}
-            getPopupContainer={node => node}
-            format={(times: moment.Moment) => {
-              if (times.unix() === 0 || times.unix() === 1893427200) {
-                return t('common.null')
-              }
-              return times.format('YYYY-MM-DD')
-            }}
-            ranges={
-              i18n.language === 'zh'
-                ? {
-                    最近一周: [
-                      moment(new Date()).startOf('days').subtract(6, 'days'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    最近一月: [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(1, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    最近三月: [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(3, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    今天开始: [
-                      moment(new Date()).startOf('days'),
-                      moment(1893427200 * 1000),
-                    ],
-                    今天截止: [moment(0), moment(new Date()).endOf('days')],
-                    空: [moment(0), moment(0)],
-                  }
-                : {
-                    'Last Week': [
-                      moment(new Date()).startOf('days').subtract(6, 'days'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    'Last Month': [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(1, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    'Last March': [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(3, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    'Start today': [
-                      moment(new Date()).startOf('days'),
-                      moment(1893427200 * 1000),
-                    ],
-                    'Due today': [moment(0), moment(new Date()).endOf('days')],
-                    Empty: [moment(0), moment(0)],
-                  }
-            }
-          />
+          <RangePicker isShowQuick onChange={onChangeTime} />
         </SelectWrapBedeck>
         <CommonInput
           placeholder={t('p2.search')}
