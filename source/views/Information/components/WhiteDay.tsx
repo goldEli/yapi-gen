@@ -59,18 +59,20 @@ const WhiteDay = (props: any) => {
   const [needValue, setNeedValue] = useState<any>([])
   const [title, setTitle] = useState<any>([])
   const leftDom = useRef<HTMLInputElement>(null)
-  const confirm = async () => {
-    const data: any = await form.validateFields()
 
-    props.editConfirm(data, props.editId)
-    form.resetFields()
-  }
   const close = () => {
     form.resetFields()
     props.editClose()
     setAttachList([])
     setPeopleValue([])
     setNeedValue([])
+  }
+
+  const confirm = async () => {
+    const data: any = await form.validateFields()
+
+    props.editConfirm(data, props.editId)
+    close()
   }
 
   const onChangeAttachment = (result: any, type: string) => {
