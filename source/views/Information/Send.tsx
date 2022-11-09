@@ -49,6 +49,7 @@ const Send = () => {
   const [editType, setEditType] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
+  const [type, setType] = useState('')
   const context: any = useContext(DailyContext)
 
   const editClose = () => {
@@ -208,6 +209,7 @@ const Send = () => {
                   )
                   setEditId(record.id)
                   setEditType(record.type)
+                  setType(record.type)
                 }}
                 style={{
                   fontSize: '14px',
@@ -224,6 +226,7 @@ const Send = () => {
               onClick={() => {
                 setVisibleLook(true)
                 setShowId(record.id)
+                setType(record.type)
               }}
               style={{
                 fontSize: '14px',
@@ -420,7 +423,7 @@ const Send = () => {
           }
           onPressEnter={onPressEnter}
           onBlur={onPressEnter}
-          placeholder={t('common.pleaseSearchDemand')}
+          placeholder={t('p2.search')}
           allowClear
         />
       </div>
@@ -472,6 +475,7 @@ const Send = () => {
         visibleEdit={visibleEdit}
         editClose={editClose}
         editConfirm={editConfirm}
+        type={type}
       />
 
       <LookDay
@@ -480,6 +484,7 @@ const Send = () => {
         visible={visibleLook}
         onEditClose={lookClose}
         editConfirm={lookConfirm}
+        type={type}
       />
     </div>
   )

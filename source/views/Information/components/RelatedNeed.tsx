@@ -149,7 +149,7 @@ const RelatedNeed = (props: any) => {
               <Select
                 onSelect={onSelect}
                 labelInValue
-                placeholder="Please select favourite colors"
+                placeholder={t('common.pleaseSelect')}
               >
                 {projectList.map((item: any) => (
                   <Option key={item.id} value={item.id}>
@@ -164,7 +164,7 @@ const RelatedNeed = (props: any) => {
                 showSearch
                 labelInValue
                 mode="multiple"
-                placeholder="Please select favourite colors"
+                placeholder={t('common.pleaseSelect')}
               >
                 {demandList.map((item: any) => (
                   <Option key={item.id} value={item.id}>

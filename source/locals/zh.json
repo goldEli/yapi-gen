@@ -1,7 +1,14 @@
 {
   "p2": {
-    "todayFinish": "今日完成工作",
-    "tomorrowFinish": "明日计划工作",
+    "title": {
+      "t1d": "今日完成工作",
+      "t1t": "明日计划工作",
+      "t2d": "本周完成工作",
+      "t2t": "下周完成工作",
+      "t3d": "本月完成工作",
+      "t3t": "下月完成工作"
+    },
+    "search": "搜索日志内容",
     "addAdjunct": "添加附件",
     "managingDemand": "管理需求",
     "haveRead": "已阅",

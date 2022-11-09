@@ -1,7 +1,14 @@
 {
   "p2": {
-    "todayFinish": "Get Your Work Done Today",
-    "tomorrowFinish": "Planned Work for Tomorrow",
+    "title": {
+      "t1d": "Get your work done today ",
+      "t1t": "Project Work for Tomorrow ",
+      "t2d": "Get the job done this week ",
+      "t2t": "Finish work next week ",
+      "t3d": "Finish the job this month ",
+      "t3t": "Work to be completed next month"
+    },
+    "search": "search daily",
     "addAdjunct": "add attachment",
     "managingDemand": "managing Demand",
     "haveRead": "have read",

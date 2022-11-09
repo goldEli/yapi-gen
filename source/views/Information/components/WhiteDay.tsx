@@ -45,6 +45,12 @@ export const LabelTitle = (props: any) => {
 }
 
 const WhiteDay = (props: any) => {
+  const texts: any = [
+    '',
+    { name: t('p2.title.t1d'), name2: t('p2.title.t1t') },
+    { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
+    { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
+  ]
   const { percentShow, percentVal, uploadStatus } = useModel('demand')
   const [form] = Form.useForm()
   const [isShow, setIsShow] = useState(false)
@@ -164,14 +170,16 @@ const WhiteDay = (props: any) => {
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            label={<LabelTitle title={t('p2.todayFinish')} />}
+            label={<LabelTitle title={texts[props.type]?.name} />}
             name="info"
+            rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Editor height={240} />
           </Form.Item>
           <Form.Item
-            label={<LabelTitle title={t('p2.tomorrowFinish')} />}
+            label={<LabelTitle title={texts[props.type]?.name2} />}
             name="info2"
+            rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Editor height={240} />
           </Form.Item>

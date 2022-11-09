@@ -57,7 +57,7 @@ const Get = () => {
   const [changeIds, setChangeIds] = useState<any>([])
   const [showId, setShowId] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
-
+  const [type, setType] = useState('')
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -169,6 +169,7 @@ const Get = () => {
               onClick={() => {
                 setVisibleLook(true)
                 setShowId(record.id)
+                setType(record.type)
               }}
               style={{
                 fontSize: '14px',
@@ -415,7 +416,7 @@ const Get = () => {
           }
           onPressEnter={onPressEnter}
           onBlur={onPressEnter}
-          placeholder={t('common.pleaseSearchDemand')}
+          placeholder={t('p2.search')}
           allowClear
         />
       </div>
@@ -465,6 +466,7 @@ const Get = () => {
         editId={showId}
         visible={visibleLook}
         onEditClose={lookClose}
+        type={type}
       />
     </div>
   )

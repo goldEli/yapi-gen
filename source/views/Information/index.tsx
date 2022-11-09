@@ -151,6 +151,7 @@ const Information = () => {
   const [visibleEditText, setVisibleEditText] = useState('')
   const [showPop, setShowPop] = useState(false)
   const [id, setId] = useState(1)
+  const [type, setType] = useState('')
   const keyValue = {
     id,
     change: () => {
@@ -205,6 +206,7 @@ const Information = () => {
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)
     setVisibleEditText(item.name)
+    setType(item.id)
   }
   const content = (
     <div
@@ -310,6 +312,7 @@ const Information = () => {
         visibleEdit={visibleEdit}
         editClose={editClose}
         editConfirm={editConfirm}
+        type={type}
       />
     </Wrap>
   )
