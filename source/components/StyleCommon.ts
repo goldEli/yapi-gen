@@ -62,10 +62,15 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
-
     minHeight: 32,
     borderRadius: 4,
     padding: '0 8px',
+    '.children': {
+      maxWidth: '60%',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
   },
   ({ isCanEdit, isTable }) => ({
     cursor: isCanEdit ? 'pointer' : 'inherit',

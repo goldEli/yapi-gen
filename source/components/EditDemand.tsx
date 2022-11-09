@@ -1045,7 +1045,7 @@ const EditDemand = (props: Props) => {
                 }
                 name="info"
               >
-                <Editor height={360} />
+                <Editor height={292} />
               </Form.Item>
               {projectId && (
                 <Form.Item

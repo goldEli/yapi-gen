@@ -6,6 +6,12 @@ import { getIsPermission } from '@/tools/index'
 import { DividerWrap, IconFontWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 
+const IconWrap = styled(IconFontWrap)({
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
 interface Props {
   onChangeFilter?(): void
   onChangeGrid?(val: boolean): void
@@ -47,14 +53,14 @@ const OperationGroup = (props: Props) => {
   return (
     <SpaceWrap size={16}>
       <Tooltip title={t('common.board')}>
-        <IconFontWrap
+        <IconWrap
           onClick={() => props.onChangeGrid?.(true)}
           active={props.isGrid}
           type="layout"
         />
       </Tooltip>
       <Tooltip title={t('common.list')}>
-        <IconFontWrap
+        <IconWrap
           onClick={() => props.onChangeGrid?.(false)}
           active={!props.isGrid}
           type="unorderedlist"
@@ -63,29 +69,25 @@ const OperationGroup = (props: Props) => {
 
       {hasFilter ? null : <DividerWrap type="vertical" />}
 
-      {hasFilter
-        ? null
-        : (
-            <Tooltip title={t('common.search')}>
-              <IconFontWrap
-                active={!props.filterState}
-                type="filter"
-                onClick={props.onChangeFilter}
-              />
-            </Tooltip>
-          )}
+      {hasFilter ? null : (
+        <Tooltip title={t('common.search')}>
+          <IconWrap
+            active={!props.filterState}
+            type="filter"
+            onClick={props.onChangeFilter}
+          />
+        </Tooltip>
+      )}
 
       {props.isGrid ? null : <DividerWrap type="vertical" />}
 
-      {props.isGrid
-        ? null
-        : (
-            <Dropdown overlay={menu} trigger={['click']}>
-              <Tooltip title={t('common.tableFieldSet')}>
-                <IconFontWrap active={props.settingState} type="settings" />
-              </Tooltip>
-            </Dropdown>
-          )}
+      {props.isGrid ? null : (
+        <Dropdown overlay={menu} trigger={['click']}>
+          <Tooltip title={t('common.tableFieldSet')}>
+            <IconWrap active={props.settingState} type="settings" />
+          </Tooltip>
+        </Dropdown>
+      )}
     </SpaceWrap>
   )
 }

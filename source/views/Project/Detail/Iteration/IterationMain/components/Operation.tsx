@@ -175,14 +175,18 @@ const Operation = (props: Props) => {
   return (
     <StickyWrap ref={stickyWrapDom}>
       <CommonModal
-        width={548}
+        width={784}
         isVisible={visible}
         onClose={() => setVisible(false)}
         title={t('project.iterateTarget')}
         isShowFooter
       >
         <div
-          style={{ maxHeight: 436, overflow: 'auto', padding: '0 20px 16px 0' }}
+          style={{
+            overflow: 'auto',
+            padding: '0 20px 16px 0',
+            minHeight: 400,
+          }}
         >
           {props.currentDetail?.info ? (
             <div

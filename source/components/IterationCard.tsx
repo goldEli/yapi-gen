@@ -9,7 +9,6 @@ import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
-import { StatusTag } from './StyleCommon'
 import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
 
 const MoreWrap = styled(IconFont)({
@@ -165,7 +164,7 @@ const IterationCard = (props: Props) => {
             (props.item.finishCount / props.item.storyCount) * 100,
           )}
           format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-          strokeWidth={13}
+          strokeWidth={8}
         />
         <InfoContent>
           <TitleWrap>{props.item.name}</TitleWrap>
@@ -177,9 +176,6 @@ const IterationCard = (props: Props) => {
             hasChangeStatus={hasChangeStatus}
             onChangeStatus={props.onChangeStatus}
           />
-          {/* <StatusTag status={props.item.status}>
-            {onGetStatusName(props.item.status)}
-          </StatusTag> */}
         </InfoContent>
       </div>
       <DetailWrap onClick={props.onClickInfo}>

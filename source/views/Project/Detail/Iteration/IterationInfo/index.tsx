@@ -31,7 +31,7 @@ const SurveyWrap = styled.div({
 
 const Title = styled.div({
   fontSize: 16,
-  lineHeight: '20px',
+  lineHeight: '16px',
   color: '#323233',
   fontWeight: 'bold',
   paddingLeft: 8,

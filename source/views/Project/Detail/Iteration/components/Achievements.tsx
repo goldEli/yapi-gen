@@ -192,6 +192,7 @@ const Achievements = (props: Props) => {
                 hasColor
                 style={{
                   marginBottom: '20px',
+                  height: 32,
                 }}
               >
                 <IconFont type="plus" />
