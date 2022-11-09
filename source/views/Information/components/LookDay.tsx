@@ -78,6 +78,9 @@ const Arrow = styled.div`
   background: #969799;
   border-radius: 50%;
   cursor: pointer;
+  &:hover {
+    background-color: #bbbdbf;
+  }
 `
 const Arrow2 = styled(Arrow)`
   left: 80%;
@@ -210,8 +213,9 @@ const LookDay = (props: any) => {
             <div
               ref={messagesEndRef}
               style={{
-                height: '840px',
+                height: '800px',
                 overflow: 'scroll',
+                paddingRight: '5px',
               }}
             >
               <LabelTitle title={t('p2.todayFinish')} />
@@ -238,7 +242,6 @@ const LookDay = (props: any) => {
                     <div
                       style={{
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
                         marginRight: '24px',
                       }}
@@ -247,8 +250,8 @@ const LookDay = (props: any) => {
                         {i.avatar ? (
                           <img
                             style={{
-                              width: 32,
-                              height: 32,
+                              width: 24,
+                              height: 24,
                               borderRadius: 16,
                             }}
                             src={i.avatar}
@@ -261,7 +264,14 @@ const LookDay = (props: any) => {
                           </NameWrap>
                         )}
                       </NewNameWrap>
-                      <span>{i.name}</span>
+                      <span
+                        style={{
+                          marginLeft: '4px',
+                          color: '#646566',
+                        }}
+                      >
+                        {i.name}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -359,7 +369,7 @@ const LookDay = (props: any) => {
                           height: '22px',
                           fontSize: '14px',
                           fontWeight: 400,
-                          color: '#323233',
+                          color: '#646566',
                           lineHeight: '22px',
                         }}
                       >
@@ -415,7 +425,6 @@ const LookDay = (props: any) => {
                       <div
                         style={{
                           display: 'flex',
-                          flexDirection: 'column',
                           alignItems: 'center',
                           marginRight: '24px',
                         }}
@@ -424,8 +433,8 @@ const LookDay = (props: any) => {
                           {i.avatar ? (
                             <img
                               style={{
-                                width: 32,
-                                height: 32,
+                                width: 24,
+                                height: 24,
                                 borderRadius: 16,
                               }}
                               src={i.avatar}
@@ -438,7 +447,14 @@ const LookDay = (props: any) => {
                             </NameWrap>
                           )}
                         </NewNameWrap>
-                        <span>{i.name}</span>
+                        <span
+                          style={{
+                            marginLeft: '4px',
+                            color: '#646566',
+                          }}
+                        >
+                          {i.name}
+                        </span>
                       </div>
                     </div>
                   ))}

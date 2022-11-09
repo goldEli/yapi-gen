@@ -132,6 +132,9 @@ const EditorBox = (props: Props) => {
           'Verdana',
         ],
       },
+      fontSize: {
+        fontSizeList: ['12px', '16px', '40px'],
+      },
       uploadImage: {
         async customUpload(
           file: File,

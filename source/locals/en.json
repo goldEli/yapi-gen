@@ -15,6 +15,7 @@
     "edit": "edit",
     "sender": "sender",
     "OnlySee": "Only see not read",
+    "new": "new",
     "dayList": {
       "t1": "From me ",
       "t2": "Send out the daily newspaper ",
@@ -413,7 +414,7 @@
     "project": "Project",
     "mine": "Mine",
     "staff": "Staff",
-    "information": "Log Information",
+    "information": "Information",
     "companyManagement": "Company Management",
     "setting": "Settings"
   },

@@ -22,7 +22,7 @@ export const LabelTitle = (props: any) => {
         margin: '24px 0 8px 0',
       }}
     >
-      <div
+      {/* <div
         style={{
           width: '3px',
           height: '16px',
@@ -31,11 +31,11 @@ export const LabelTitle = (props: any) => {
           display: 'inline-block',
           marginRight: '8px',
         }}
-      />
+      /> */}
       <span
         style={{
           fontWeight: 'bold',
-          fontSize: '18px',
+          fontSize: '14px',
         }}
       >
         {props.title}

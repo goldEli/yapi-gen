@@ -150,7 +150,7 @@ const Get = () => {
                 marginRight: '8px',
               }}
             />
-            <span>{record.status === 1 ? '已阅' : '未读'}</span>
+            <span>{record.status === 1 ? t('p2.haveRead') : '未读'}</span>
           </div>
         )
       },

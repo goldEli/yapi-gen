@@ -199,7 +199,7 @@ const RelatedNeed = (props: any) => {
                 cursor: 'pointer',
               }}
             >
-              取消
+              {t('common.cancel')}
             </span>
             <span
               onClick={confirm}
@@ -211,7 +211,7 @@ const RelatedNeed = (props: any) => {
                 cursor: 'pointer',
               }}
             >
-              完成
+              {t('container.finish')}
             </span>
           </div>
         </div>

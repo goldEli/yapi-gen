@@ -162,7 +162,7 @@ export const useDynamicColumns = (state: any) => {
                         border: '2px solid #FFFFFF',
                       }}
                     >
-                      新
+                      {t('p2.new')}
                     </span>
                   )}
                 </ListNameWrap>

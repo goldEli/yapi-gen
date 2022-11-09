@@ -93,7 +93,7 @@ const ChoosePeople = (props: any) => {
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'column',
+
                 alignItems: 'center',
               }}
             >
@@ -101,8 +101,8 @@ const ChoosePeople = (props: any) => {
                 {i.avatar ? (
                   <img
                     style={{
-                      width: 32,
-                      height: 32,
+                      width: 24,
+                      height: 24,
                       borderRadius: 16,
                     }}
                     src={i.avatar}
@@ -119,7 +119,9 @@ const ChoosePeople = (props: any) => {
                   onClick={() => onDelCheckPerson(i.id)}
                 />
               </NewNameWrap>
-              <span>{i.name}</span>
+              <span style={{ marginLeft: '4px', color: '#646566' }}>
+                {i.name}
+              </span>
             </div>
             {index !== allMemberList?.length - 1 && (
               <IconFont
