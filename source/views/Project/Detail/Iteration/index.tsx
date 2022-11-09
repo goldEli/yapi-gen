@@ -407,45 +407,47 @@ const IterationWrap = () => {
                 <div>{iterateInfo?.changeCount || 0}</div>
               </Item>
             </TitleWrap>
-            <OperationWrap size={16}>
-              <CommonInput
-                placeholder={t('common.pleaseSearchDemand')}
-                onChangeSearch={onPressEnter}
-              />
-              {hasFilter ? null : <DividerWrap type="vertical" />}
+            {type === 'demand' ? (
+              <OperationWrap size={16}>
+                <CommonInput
+                  placeholder={t('common.pleaseSearchDemand')}
+                  onChangeSearch={onPressEnter}
+                />
+                {hasFilter ? null : <DividerWrap type="vertical" />}
 
-              {hasFilter ? null : (
-                <Tooltip title={t('common.search')}>
-                  <IconFontWrap
-                    active={!filterState}
-                    type="filter"
-                    onClick={() => setFilterState(!filterState)}
-                  />
-                </Tooltip>
-              )}
-              <DividerWrap type="vertical" />
-              <Dropdown
-                overlay={
-                  <Menu
-                    items={[
-                      {
-                        key: '1',
-                        label: (
-                          <div onClick={() => setSettingState(true)}>
-                            {t('common.setField')}
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                }
-                trigger={['click']}
-              >
-                <Tooltip title={t('common.tableFieldSet')}>
-                  <IconFontWrap active={settingState} type="settings" />
-                </Tooltip>
-              </Dropdown>
-            </OperationWrap>
+                {hasFilter ? null : (
+                  <Tooltip title={t('common.search')}>
+                    <IconFontWrap
+                      active={!filterState}
+                      type="filter"
+                      onClick={() => setFilterState(!filterState)}
+                    />
+                  </Tooltip>
+                )}
+                <DividerWrap type="vertical" />
+                <Dropdown
+                  overlay={
+                    <Menu
+                      items={[
+                        {
+                          key: '1',
+                          label: (
+                            <div onClick={() => setSettingState(true)}>
+                              {t('common.setField')}
+                            </div>
+                          ),
+                        },
+                      ]}
+                    />
+                  }
+                  trigger={['click']}
+                >
+                  <Tooltip title={t('common.tableFieldSet')}>
+                    <IconFontWrap active={settingState} type="settings" />
+                  </Tooltip>
+                </Dropdown>
+              </OperationWrap>
+            ) : null}
           </MainWrap>
           {settingState ? (
             <OptionalFeld
