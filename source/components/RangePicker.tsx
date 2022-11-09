@@ -4,7 +4,6 @@ import { css } from '@emotion/css'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { DateQuickWrap } from './StyleCommon'
-import { useState } from 'react'
 
 const rangPicker = css`
   .ant-picker-panel-container {
