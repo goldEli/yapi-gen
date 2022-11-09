@@ -20,6 +20,9 @@ const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
   },
+  img: {
+    maxWidth: '100%',
+  },
 })
 
 const TitleWrap = styled(Space)({

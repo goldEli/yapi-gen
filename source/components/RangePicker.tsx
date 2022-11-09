@@ -129,7 +129,7 @@ const RangePicker = (props: Props) => {
       className={rangPicker}
       getPopupContainer={node => node}
       format={(times: moment.Moment) => {
-        if (times.unix() === 0 || times.unix() === 1893427200) {
+        if (times.unix() === -28800 || times.unix() === 1893427200) {
           return t('common.null')
         }
         return times.format('YYYY-MM-DD')

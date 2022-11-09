@@ -21,6 +21,9 @@ const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
   },
+  img: {
+    maxWidth: '100%',
+  },
 })
 
 const TitleWrap = styled(Space)({
@@ -396,6 +399,8 @@ const ChangeRecord = () => {
         onCancel={() => setIsVisible(false)}
         bodyStyle={{
           padding: '8px 24px 24px',
+          maxHeight: 640,
+          overflow: 'auto',
         }}
         destroyOnClose
         maskClosable={false}
@@ -409,7 +414,7 @@ const ChangeRecord = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <div
-              style={{ maxHeight: 400, overflow: 'auto' }}
+              style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.beforeField?.info,
               }}
@@ -418,7 +423,7 @@ const ChangeRecord = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <div
-              style={{ maxHeight: 400, overflow: 'auto' }}
+              style={{ display: 'flex', flexDirection: 'column' }}
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.afterField?.info,
               }}

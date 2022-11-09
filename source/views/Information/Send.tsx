@@ -41,7 +41,7 @@ const Send = () => {
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>('')
   const [page, setPage] = useState<number>(1)
-  const [created_at, setCreated_at] = useState<any>([])
+  const [created_at, setCreated_at] = useState<any>(null)
   const [pagesize, setPagesize] = useState<number>(20)
   const [total, setTotal] = useState<number>()
   const [isSpinning, setIsSpinning] = useState(false)
@@ -261,8 +261,7 @@ const Send = () => {
   }
   const onChangeTime = (dates: any) => {
     if (dates === null) {
-      const date = [undefined, undefined]
-      setCreated_at(date)
+      setCreated_at(null)
       return
     }
     const date = []
@@ -274,14 +273,16 @@ const Send = () => {
 
   const init = async () => {
     setIsSpinning(true)
-    const obj = {
+    const obj: any = {
       type: srr[urlId as unknown as number],
       keyword,
       order,
       orderkey: orderKey,
       page,
       pagesize,
-      created_at,
+    }
+    if (created_at) {
+      obj.created_at = created_at
     }
     const res = await getDailyList(obj)
     if (res) {
@@ -357,7 +358,13 @@ const Send = () => {
           <span style={{ margin: '0 16px', fontSize: '14px' }}>
             {t('p2.dateCreated')}
           </span>
-          <RangePicker isShowQuick onChange={onChangeTime} />
+          <RangePicker
+            isShowQuick
+            dateValue={
+              created_at ? [moment(created_at[0]), moment(created_at[1])] : null
+            }
+            onChange={onChangeTime}
+          />
         </SelectWrapBedeck>
         <CommonInput
           placeholder={t('p2.search')}
