@@ -27,6 +27,7 @@ import { useParams } from 'react-router-dom'
 import { getStaffList2 } from '@/services/staff'
 import LookDay from './components/LookDay'
 import { DailyContext } from '.'
+import CommonInput from '@/components/CommonInput'
 
 const srr = [
   undefined,
@@ -184,8 +185,8 @@ const Get = () => {
     setOrderKey(key)
     setOrder(orderVal)
   }
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
   }
 
   const onChangePage = (newPage: any) => {
@@ -394,20 +395,9 @@ const Get = () => {
           />
         </SelectWrapBedeck>
         <Checkbox onChange={onChange}>只看未阅</Checkbox>
-        <MyInput
-          style={{
-            marginLeft: 'auto',
-          }}
-          suffix={
-            <IconFont
-              type="search"
-              style={{ color: '#BBBDBF', fontSize: 20 }}
-            />
-          }
-          onPressEnter={onPressEnter}
-          onBlur={onPressEnter}
+        <CommonInput
           placeholder={t('common.pleaseSearchDemand')}
-          allowClear
+          onChangeSearch={onPressEnter}
         />
       </div>
       <div className={tableWrapP} style={{ height: `calc(100% - ${50}px)` }}>

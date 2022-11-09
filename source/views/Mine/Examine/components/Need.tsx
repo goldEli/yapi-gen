@@ -28,6 +28,7 @@ import EditExamine from './EditExamine'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { openDetail } from '@/tools'
 import { useDynamicColumns } from './TableColum'
+import CommonInput from '@/components/CommonInput'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -149,20 +150,9 @@ const Need = (props: any) => {
     getList(pageObj, order, keyword, params)
   }
 
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
-    getList(pageObj, order, e.target.value, searchParams)
-  }
-
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: item.projectId,
-        demandId: item.demandId,
-      }),
-    )
-    openDetail(`/Detail/Demand?data=${params}`)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
+    getList(pageObj, order, value, searchParams)
   }
 
   const onChangeOperation = (record: any) => {
@@ -240,18 +230,9 @@ const Need = (props: any) => {
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
-          <MyInput
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
+          <CommonInput
             placeholder={t('common.pleaseSearchDemand')}
-            allowClear
-            defaultValue={keyword}
-            onBlur={onPressEnter}
+            onChangeSearch={onPressEnter}
           />
           <Divider
             style={{ height: 20, margin: '0 16px 0 24px' }}

@@ -5,7 +5,6 @@ import IconFont from './IconFont'
 
 const MyInput = styled(Input)`
   font-size: 14px;
-  width: 240px;
   height: 32px;
   background: rgba(245, 246, 247, 1);
   background-blend-mode: normal;
@@ -26,6 +25,7 @@ const MyInput = styled(Input)`
 interface Props {
   onChangeSearch?(val: string): void
   placeholder: string
+  width?: any
 }
 
 const CommonInput = (props: Props) => {
@@ -40,6 +40,7 @@ const CommonInput = (props: Props) => {
 
   return (
     <MyInput
+      style={{ width: props.width || 240 }}
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={

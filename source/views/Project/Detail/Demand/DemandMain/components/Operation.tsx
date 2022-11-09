@@ -17,6 +17,7 @@ import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
+import CommonInput from '@/components/CommonInput'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -418,16 +419,9 @@ const Operation = (props: Props) => {
         </Space>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <MyInput
-            onPressEnter={(e: any) => onChangeSearch?.(e.target.value)}
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 16 }}
-              />
-            }
+          <CommonInput
             placeholder={t('common.pleaseSearchDemand')}
-            allowClear
+            onChangeSearch={onChangeSearch}
           />
           <DividerWrap type="vertical" />
           <OperationGroup

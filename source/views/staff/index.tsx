@@ -29,6 +29,7 @@ import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
+import CommonInput from '@/components/CommonInput'
 
 export const tableWrapP = css`
   display: flex;
@@ -291,9 +292,9 @@ const Staff = () => {
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
   }
-  const onPressEnter = (e: any) => {
+  const onPressEnter = (value: any) => {
     setPage(1)
-    setKeyword(e.target.value)
+    setKeyword(value)
   }
   useEffect(() => {
     init()
@@ -369,19 +370,11 @@ const Staff = () => {
     >
       <StaffHeader>{t('staff.companyStaff')}</StaffHeader>
       <Hehavior>
-        <div style={{ display: 'flex' }}>
-          <MyInput
-            style={{ width: 292 }}
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
-            onBlur={onPressEnter}
+        <div style={{ display: 'flex', marginLeft: 24 }}>
+          <CommonInput
+            width={292}
             placeholder={t('staff.pleaseKey')}
-            allowClear
+            onChangeSearch={onPressEnter}
           />
         </div>
         <div

@@ -31,6 +31,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
+import CommonInput from '@/components/CommonInput'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -370,8 +371,8 @@ const CommonNeed = (props: any) => {
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
   }
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
   }
 
   useEffect(() => {
@@ -466,17 +467,9 @@ const CommonNeed = (props: any) => {
           </div>
           <SearchWrap>
             <div style={{ marginRight: 16 }}>
-              <MyInput
-                suffix={
-                  <IconFont
-                    type="search"
-                    style={{ color: '#BBBDBF', fontSize: 20 }}
-                  />
-                }
-                onPressEnter={onPressEnter}
-                onBlur={onPressEnter}
+              <CommonInput
                 placeholder={t('common.pleaseSearchDemand')}
-                allowClear
+                onChangeSearch={onPressEnter}
               />
             </div>
             <div style={{ display: 'flex' }}>

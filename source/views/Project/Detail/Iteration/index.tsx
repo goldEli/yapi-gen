@@ -25,6 +25,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import IterationStatus from './components/IterationStatus'
+import CommonInput from '@/components/CommonInput'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -319,9 +320,9 @@ const IterationWrap = () => {
     }
   }
 
-  const onPressEnter = (e: any) => {
+  const onPressEnter = (value: any) => {
     let obj = JSON.parse(JSON.stringify(searchGroups))
-    obj.searchVal = e.target.value
+    obj.searchVal = value
     setSearchGroups(obj)
   }
 
@@ -407,17 +408,9 @@ const IterationWrap = () => {
               </Item>
             </TitleWrap>
             <OperationWrap size={16}>
-              <MyInput
-                suffix={
-                  <IconFont
-                    type="search"
-                    style={{ color: '#BBBDBF', fontSize: 20 }}
-                  />
-                }
-                onPressEnter={onPressEnter}
-                onBlur={onPressEnter}
+              <CommonInput
                 placeholder={t('common.pleaseSearchDemand')}
-                allowClear
+                onChangeSearch={onPressEnter}
               />
               {hasFilter ? null : <DividerWrap type="vertical" />}
 

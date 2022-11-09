@@ -23,6 +23,7 @@ import { useParams } from 'react-router-dom'
 import LookDay from './components/LookDay'
 import { getDailyList, writeDaily } from '@/services/daily'
 import { DailyContext } from '.'
+import CommonInput from '@/components/CommonInput'
 
 const titleList = {
   2: '修改日报',
@@ -240,8 +241,8 @@ const Send = () => {
     setOrderKey(key)
     setOrder(orderVal)
   }
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
   }
 
   const onChangePage = (newPage: any) => {
@@ -405,17 +406,9 @@ const Send = () => {
             }
           />
         </SelectWrapBedeck>
-        <MyInput
-          suffix={
-            <IconFont
-              type="search"
-              style={{ color: '#BBBDBF', fontSize: 20 }}
-            />
-          }
-          onPressEnter={onPressEnter}
-          onBlur={onPressEnter}
+        <CommonInput
           placeholder={t('common.pleaseSearchDemand')}
-          allowClear
+          onChangeSearch={onPressEnter}
         />
       </div>
       <div className={tableWrapP} style={{ height: `calc(100% - ${50}px)` }}>
