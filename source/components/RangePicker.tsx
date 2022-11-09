@@ -4,7 +4,6 @@ import { css } from '@emotion/css'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { DateQuickWrap } from './StyleCommon'
-import { useState } from 'react'
 
 const rangPicker = css`
   .ant-picker-panel-container {
@@ -32,7 +31,6 @@ interface Props {
 
 const RangePicker = (props: Props) => {
   const [t, i18n] = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
   const valuesArr = [
     [
       moment(new Date()).startOf('days').subtract(6, 'days'),
@@ -58,10 +56,12 @@ const RangePicker = (props: Props) => {
   // 点击快捷操作
   const onClickDate = (idx: any) => {
     props.onChange(valuesArr[idx])
-    setIsOpen(false)
   }
 
-  // const
+  // 时间改变后
+  const onChangeDate = (values: any) => {
+    props.onChange(values)
+  }
 
   // 判断当前是否匹配
   const getIsMatching = (idx: any) => {
@@ -125,7 +125,7 @@ const RangePicker = (props: Props) => {
       value={props.dateValue}
       allowClear
       style={{ width: props.isWidth ? '' : '100%' }}
-      onChange={props.onChange}
+      onChange={onChangeDate}
       className={rangPicker}
       getPopupContainer={node => node}
       format={(times: moment.Moment) => {
