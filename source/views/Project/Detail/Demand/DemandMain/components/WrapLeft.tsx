@@ -364,7 +364,7 @@ const WrapLeft = (props: any, ref: any) => {
       title: item.name,
       children:
         item.children && item.children.length
-          ? filterTreeData(item.children)
+          ? filterTreeData2(item.children)
           : null,
     }))
     return newData
