@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -327,11 +328,13 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
+  const { setSelectTreeData } = useModel('project')
   const init = async () => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setSelectTreeData(filterTreeData(res)[0].children)
     setTreeData(filterTreeData(res))
+
     setShow(true)
   }
 

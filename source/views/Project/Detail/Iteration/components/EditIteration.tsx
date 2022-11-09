@@ -205,7 +205,7 @@ const EditIteration = (props: Props) => {
             >
               <RangePicker
                 isShowQuick={false}
-                value={form.getFieldValue('time')}
+                dateValue={form.getFieldValue('time')}
                 onChange={(_values: any) => onChangePicker(_values)}
               />
             </Form.Item>

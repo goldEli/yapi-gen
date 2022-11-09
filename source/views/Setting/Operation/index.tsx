@@ -296,6 +296,8 @@ const Operation = () => {
             </span>
             <Form.Item name="times" noStyle>
               <RangePicker
+                isShowQuick
+                dateValue={form.getFieldValue('times')}
                 onChange={(_values: any) => onChangePicker(_values)}
               />
             </Form.Item>

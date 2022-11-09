@@ -4,6 +4,7 @@ import { css } from '@emotion/css'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { DateQuickWrap } from './StyleCommon'
+import { useState } from 'react'
 
 const rangPicker = css`
   .ant-picker-panel-container {
@@ -25,12 +26,13 @@ const rangPicker = css`
 interface Props {
   onChange(values: any): void
   isWidth?: boolean
-  value?: any
+  dateValue?: any
   isShowQuick?: boolean
 }
 
 const RangePicker = (props: Props) => {
   const [t, i18n] = useTranslation()
+  const [isOpen, setIsOpen] = useState(false)
   const valuesArr = [
     [
       moment(new Date()).startOf('days').subtract(6, 'days'),
@@ -56,16 +58,19 @@ const RangePicker = (props: Props) => {
   // 点击快捷操作
   const onClickDate = (idx: any) => {
     props.onChange(valuesArr[idx])
+    setIsOpen(false)
   }
+
+  // const
 
   // 判断当前是否匹配
   const getIsMatching = (idx: any) => {
     const startTime = moment(valuesArr[idx][0]).format('YYYY-MM-DD')
     const endTime = moment(valuesArr[idx][1]).format('YYYY-MM-DD')
-    if (props.value) {
+    if (props.dateValue) {
       return (
-        moment(props.value[0]).format('YYYY-MM-DD') === startTime &&
-        moment(props.value[1]).format('YYYY-MM-DD') === endTime
+        moment(props.dateValue[0]).format('YYYY-MM-DD') === startTime &&
+        moment(props.dateValue[1]).format('YYYY-MM-DD') === endTime
       )
     }
     return false
@@ -117,7 +122,7 @@ const RangePicker = (props: Props) => {
 
   return (
     <DatePicker.RangePicker
-      value={props.value}
+      value={props.dateValue}
       allowClear
       style={{ width: props.isWidth ? '' : '100%' }}
       onChange={props.onChange}

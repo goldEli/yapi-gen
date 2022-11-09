@@ -335,7 +335,7 @@ const TableFilter = (props: any) => {
       })
     } else {
       form.setFieldsValue({
-        [key]: [],
+        [key]: null,
       })
     }
     confirm()
@@ -398,24 +398,22 @@ const TableFilter = (props: any) => {
               } else if (i.type === 'time' || i.type === 'date') {
                 return (
                   <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
                     <Form.Item name={i.key}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                          {i.contentTxt}
-                        </span>
-                        <RangePicker
-                          isShowQuick
-                          value={
-                            form.getFieldValue(i.key)
-                              ? [
-                                  moment(form.getFieldValue(i.key)?.[0]),
-                                  moment(form.getFieldValue(i.key)[1]),
-                                ]
-                              : []
-                          }
-                          onChange={dates => onChangeTime(i.key, dates)}
-                        />
-                      </div>
+                      <RangePicker
+                        isShowQuick
+                        dateValue={
+                          form.getFieldValue(i.key)
+                            ? [
+                                moment(form.getFieldValue(i.key)[0]),
+                                moment(form.getFieldValue(i.key)[1]),
+                              ]
+                            : null
+                        }
+                        onChange={dates => onChangeTime(i.key, dates)}
+                      />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.key)}>
                       <IconFont type="close" style={{ fontSize: '12px' }} />

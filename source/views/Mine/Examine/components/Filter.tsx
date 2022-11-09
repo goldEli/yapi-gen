@@ -117,7 +117,7 @@ const SearchList = (props: Props) => {
           <Form.Item name="time">
             <RangePicker
               isShowQuick
-              value={form.getFieldValue('time')}
+              dateValue={form.getFieldValue('time')}
               onChange={onConfirm}
             />
           </Form.Item>
@@ -129,7 +129,7 @@ const SearchList = (props: Props) => {
           <Form.Item name="verifyTime">
             <RangePicker
               isShowQuick
-              value={form.getFieldValue('verifyTime')}
+              dateValue={form.getFieldValue('verifyTime')}
               onChange={onConfirm}
             />
           </Form.Item>
