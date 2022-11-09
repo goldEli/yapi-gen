@@ -10,6 +10,7 @@ import {
   GredParent,
   Second,
 } from '@/views/Project/Detail/Demand/components/UploadAttach'
+import { TextareaWrap } from '@/views/Project/Detail/Demand/DemandInfo/components/WrapRight'
 import {
   IconFontWrap,
   NewNameWrap,
@@ -496,30 +497,32 @@ const LookDay = (props: any) => {
               </div>
               <LabelTitle title={t('common.comment')} />
               <div>
-                <Input.TextArea
-                  ref={myArea}
-                  autoSize={{ minRows: 1, maxRows: 10 }}
-                  placeholder={t('common.pleaseEnter')}
-                  value={value}
-                  onChange={e => setValue(e.target.value)}
-                />
-                <button
-                  onClick={sendComment}
-                  style={{
-                    width: '40px',
-                    height: '24px',
-                    background: '#2877FF',
-                    fontSize: '12px',
-                    fontWeight: '400',
-                    color: '#FFFFFF',
-                    marginTop: '8px',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {t('common.comment') as unknown as string}
-                </button>
+                <TextareaWrap>
+                  <Input.TextArea
+                    ref={myArea}
+                    autoSize={{ minRows: 1, maxRows: 10 }}
+                    placeholder={t('common.pleaseEnter')}
+                    value={value}
+                    onChange={e => setValue(e.target.value)}
+                  />
+                  <button
+                    onClick={sendComment}
+                    style={{
+                      width: '40px',
+                      height: '24px',
+                      background: '#2877FF',
+                      fontSize: '12px',
+                      fontWeight: '400',
+                      color: '#FFFFFF',
+                      marginTop: '8px',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {t('common.comment') as unknown as string}
+                  </button>
+                </TextareaWrap>
               </div>
               {contentList.length < 1 ? (
                 <Kong />
