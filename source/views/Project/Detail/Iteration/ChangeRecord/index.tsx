@@ -15,6 +15,15 @@ import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
+
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 600,
+  overflow: 'auto',
+  paddingRight: 16,
+})
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -352,26 +361,25 @@ const ChangeRecord = (props?: any) => {
 
   return (
     <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
-      <Modal
-        visible={isVisible}
+      <CommonModal
+        isVisible={isVisible}
         title={t('project.changeInfo')}
-        footer={false}
         width={1080}
-        onCancel={() => setIsVisible(false)}
-        bodyStyle={{ padding: '8px 24px 24px' }}
-        destroyOnClose
-        maskClosable={false}
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
+        onClose={() => setIsVisible(false)}
+        isShowFooter
       >
         <SpaceWrap
           size={32}
-          style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
+          style={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'flex-start',
+            paddingRight: 16,
+          }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
-            <div
-              style={{ display: 'flex', flexDirection: 'column' }}
+            <ContentWrap
               dangerouslySetInnerHTML={{
                 __html:
                   checkDetail.key === 'info'
@@ -382,8 +390,7 @@ const ChangeRecord = (props?: any) => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
-            <div
-              style={{ display: 'flex', flexDirection: 'column' }}
+            <ContentWrap
               dangerouslySetInnerHTML={{
                 __html:
                   checkDetail.key === 'info'
@@ -393,7 +400,7 @@ const ChangeRecord = (props?: any) => {
             />
           </div>
         </SpaceWrap>
-      </Modal>
+      </CommonModal>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&

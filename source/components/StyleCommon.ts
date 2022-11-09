@@ -7,6 +7,24 @@ import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 
+const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    '&: hover': {
+      '.anticon': {
+        color: '#2877ff',
+      },
+    },
+  },
+  ({ width, height, isRight }) => ({
+    width,
+    height,
+    justifyContent: isRight ? 'right' : 'center',
+  }),
+)
+
 const DateQuickWrap = styled.div<{ isActive?: any }>(
   {
     padding: '0 14px',
@@ -766,4 +784,5 @@ export {
   CanOperation,
   IconFontWrapEdit,
   DateQuickWrap,
+  CloseWrap,
 }

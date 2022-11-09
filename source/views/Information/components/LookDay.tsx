@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
+import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
@@ -591,14 +592,18 @@ const LookDay = (props: any) => {
       <Arrow2 onClick={() => onChangeLeft(360, 2)}>
         <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow2>
-      <Modal
-        visible={previewOpen}
+      <CommonModal
+        isVisible={previewOpen}
         title={previewTitle}
-        footer={null}
-        onCancel={handleCancel}
+        onClose={handleCancel}
+        isShowFooter
       >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+        <img
+          alt="example"
+          style={{ width: '100%', paddingBottom: 16 }}
+          src={previewImage}
+        />
+      </CommonModal>
     </GrepWrap>,
     document.body,
   )

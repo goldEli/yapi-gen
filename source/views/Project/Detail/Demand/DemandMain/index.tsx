@@ -200,6 +200,7 @@ const DemandMain = (props: Props) => {
 
   const onUpdate = (state?: boolean) => {
     getList(isGrid, searchItems, pageObj, order, true, state)
+    myTreeComponent?.current?.init()
   }
 
   const keyValue = {

@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -87,16 +88,12 @@ export const StaffPersonal = (props: {
   }
 
   return (
-    <Modal
+    <CommonModal
       width={420}
-      footer={null}
-      onCancel={() => props.onClose()}
+      onClose={() => props.onClose()}
       title={t('staff.setPermission')}
-      visible={props.isVisible}
-      maskClosable={false}
-      destroyOnClose
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      isVisible={props.isVisible}
+      onConfirm={onConfirm}
     >
       <PersonalHead>
         {data?.avatar ? (
@@ -142,12 +139,6 @@ export const StaffPersonal = (props: {
           </RightLine>
         </Right>
       </PersonalFooter>
-      <Footer>
-        <Button type="primary" onClick={onConfirm}>
-          {t('common.confirm')}
-        </Button>
-        <Button onClick={() => props.onClose()}>{t('common.cancel')}</Button>
-      </Footer>
-    </Modal>
+    </CommonModal>
   )
 }

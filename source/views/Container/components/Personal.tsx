@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import head from '/logo.png'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -85,39 +86,38 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
     },
   ]
   return (
-    <Modal
-      width={420}
-      footer={null}
-      onCancel={() => props.close()}
+    <CommonModal
+      onClose={() => props.close()}
+      isVisible={props.visible}
       title={t('container.personInfo')}
-      visible={props.visible}
-      maskClosable={false}
-      destroyOnClose
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      isShowFooter={true}
     >
       {isShow ? <Spin /> : null}
       {!isShow && (
-        <>
+        <div style={{ paddingBottom: 16 }}>
           <PersonalHead>
-            {userInfo.avatar
-              ? <img className={imgCss} src={userInfo.avatar} />
-              : (
-                  <SetHead>
-                    {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-                  </SetHead>
-                )}
+            {userInfo.avatar ? (
+              <img className={imgCss} src={userInfo.avatar} />
+            ) : (
+              <SetHead>
+                {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+              </SetHead>
+            )}
           </PersonalHead>
           <PersonalFooter>
             <Left>
-              {labelList.map(item => <Line key={item.label}>{item.label ? item.label : '-'}</Line>)}
+              {labelList.map(item => (
+                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
+              ))}
             </Left>
             <Right>
-              {labelList.map(item => <Line key={item.label}>{item.value ? item.value : '-'}</Line>)}
+              {labelList.map(item => (
+                <Line key={item.label}>{item.value ? item.value : '-'}</Line>
+              ))}
             </Right>
           </PersonalFooter>
-        </>
+        </div>
       )}
-    </Modal>
+    </CommonModal>
   )
 }

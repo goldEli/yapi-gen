@@ -40,6 +40,7 @@ import {
   SliderWrap,
   AddWrap,
   ProgressWrapUpload,
+  CloseWrap,
 } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
 import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
@@ -101,7 +102,7 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingRight: 24,
+  paddingRight: 0,
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -963,7 +964,9 @@ const EditDemand = (props: Props) => {
               </Popover>
             )}
           </div>
-          <IconFont type="close" onClick={onCancel} />
+          <CloseWrap width={60} height={52} onClick={onCancel}>
+            <IconFont type="close" />
+          </CloseWrap>
         </ModalHeader>
         <ModalContent>
           <LeftWrap ref={LeftDom}>

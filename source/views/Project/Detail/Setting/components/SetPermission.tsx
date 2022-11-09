@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -94,16 +95,12 @@ const SetPermissionWrap = (props: {
   }
 
   return (
-    <Modal
+    <CommonModal
       width={420}
-      footer={null}
-      onCancel={() => props.onClose()}
+      onClose={() => props.onClose()}
       title={t('setting.editPermission1')}
-      visible={props.isVisible}
-      maskClosable={false}
-      destroyOnClose
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      isVisible={props.isVisible}
+      onConfirm={onConfirm}
     >
       <PersonalHead>
         {data?.avatar ? (
@@ -145,13 +142,7 @@ const SetPermissionWrap = (props: {
           </RightLine>
         </Right>
       </PersonalFooter>
-      <Footer>
-        <Button type="primary" onClick={onConfirm}>
-          {t('common.confirm')}
-        </Button>
-        <Button onClick={() => props.onClose()}>{t('common.cancel')}</Button>
-      </Footer>
-    </Modal>
+    </CommonModal>
   )
 }
 

@@ -16,6 +16,7 @@ import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -41,6 +42,14 @@ const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   borderRadius: 6,
+})
+
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 600,
+  overflow: 'auto',
+  paddingRight: 16,
 })
 
 const NewSort = (sortProps: any) => {
@@ -391,30 +400,25 @@ const ChangeRecord = () => {
   }
   return (
     <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
-      <Modal
-        visible={isVisible}
+      <CommonModal
+        isVisible={isVisible}
         title={t('project.changeInfo')}
-        footer={false}
         width={1080}
-        onCancel={() => setIsVisible(false)}
-        bodyStyle={{
-          padding: '8px 24px 24px',
-          maxHeight: 640,
-          overflow: 'auto',
-        }}
-        destroyOnClose
-        maskClosable={false}
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
+        onClose={() => setIsVisible(false)}
+        isShowFooter
       >
         <SpaceWrap
           size={32}
-          style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
+          style={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'flex-start',
+            paddingRight: 16,
+          }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
-            <div
-              style={{ display: 'flex', flexDirection: 'column' }}
+            <ContentWrap
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.beforeField?.info,
               }}
@@ -422,15 +426,14 @@ const ChangeRecord = () => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
-            <div
-              style={{ display: 'flex', flexDirection: 'column' }}
+            <ContentWrap
               dangerouslySetInnerHTML={{
                 __html: checkDetail?.afterField?.info,
               }}
             />
           </div>
         </SpaceWrap>
-      </Modal>
+      </CommonModal>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&

@@ -427,7 +427,7 @@ const StepPageOne = (propsOne: Props) => {
           title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ padding: '0 20px 0 2px' }}>
+          <div style={{ padding: '0 16px 0 2px' }}>
             <HasDemandText>
               {t('newlyAdd.changeNewStatus', {
                 count: operationObj?.deleteData?.story_count,

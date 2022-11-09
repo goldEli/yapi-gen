@@ -14,6 +14,7 @@ import type { Task } from 'cos-js-sdk-v5'
 import { getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
 import moment from 'moment'
+import CommonModal from '@/components/CommonModal'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -455,14 +456,19 @@ const UploadAttach = (props: Props) => {
       <Warp multiple fileList={fileList} {...uploadProps}>
         {props.addWrap}
       </Warp>
-      <Modal
-        visible={previewOpen}
+      <CommonModal
+        width={600}
+        isVisible={previewOpen}
         title={previewTitle}
-        footer={null}
-        onCancel={handleCancel}
+        onClose={handleCancel}
+        isShowFooter
       >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+        <img
+          alt="example"
+          style={{ width: '100%', paddingBottom: 16 }}
+          src={previewImage}
+        />
+      </CommonModal>
       {props.child}
     </div>
   )

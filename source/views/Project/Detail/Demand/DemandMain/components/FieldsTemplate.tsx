@@ -309,7 +309,7 @@ const FieldsTemplate = (props: Props) => {
         </LeftWrap>
         <Divider
           type="vertical"
-          style={{ background: '#EBEDF0', margin: '0 16px', height: 350 }}
+          style={{ background: '#EBEDF0', margin: '0 16px 0 4px', height: 350 }}
         />
         <RightWrap>
           <LabelWrap>{t('components.currentFiled')}</LabelWrap>

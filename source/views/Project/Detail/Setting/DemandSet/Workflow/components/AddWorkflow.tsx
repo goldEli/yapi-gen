@@ -470,7 +470,7 @@ const AddWorkflow = (props: Props) => {
           title={t('newlyAdd.newStatus')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ paddingRight: 20 }}>
+          <div style={{ paddingRight: 16 }}>
             <HasDemandText>
               {t('newlyAdd.changeNewStatus', {
                 count: operationDelObj?.deleteData?.story_count,
@@ -529,37 +529,37 @@ const AddWorkflow = (props: Props) => {
             <span style={{ width: '45%' }}>{t('newlyAdd.demandCategory')}</span>
             <span style={{ width: '15%' }}>{t('newlyAdd.operation')}</span>
           </TableTitle>
-          {isAdd ? (
-            <AddActiveWrap
-              hasMargin
-              onClose={() => setIsAdd(false)}
-              onConfirm={obj => onAddConfirm(obj)}
-            />
-          ) : null}
-          {!isAdd && (
-            <div onClick={() => setIsAdd(true)}>
-              <AddWrap />
-            </div>
-          )}
-
-          <TableWrap>
-            <Spin spinning={isSpinning}>
-              {!!statusWorkList?.list &&
-                (statusWorkList?.list?.length > 0 ? (
-                  <TableWrapBox
-                    rowSelection={rowSelection}
-                    dataSource={statusWorkList?.list}
-                    columns={columns}
-                    showHeader={false}
-                    pagination={false}
-                    rowKey="id"
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </TableWrap>
         </div>
+        {isAdd ? (
+          <AddActiveWrap
+            hasMargin
+            onClose={() => setIsAdd(false)}
+            onConfirm={obj => onAddConfirm(obj)}
+          />
+        ) : null}
+        {!isAdd && (
+          <div onClick={() => setIsAdd(true)}>
+            <AddWrap />
+          </div>
+        )}
+
+        <TableWrap style={{ paddingRight: 4 }}>
+          <Spin spinning={isSpinning}>
+            {!!statusWorkList?.list &&
+              (statusWorkList?.list?.length > 0 ? (
+                <TableWrapBox
+                  rowSelection={rowSelection}
+                  dataSource={statusWorkList?.list}
+                  columns={columns}
+                  showHeader={false}
+                  pagination={false}
+                  rowKey="id"
+                />
+              ) : (
+                <NoData />
+              ))}
+          </Spin>
+        </TableWrap>
       </CommonModal>
     </>
   )

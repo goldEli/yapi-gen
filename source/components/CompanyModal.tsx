@@ -79,7 +79,13 @@ const CompanyModal = (props: Props) => {
     >
       <Space
         size={16}
-        style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          maxHeight: 600,
+          overflow: 'auto',
+        }}
       >
         {companyList.map(i => (
           <CompanyCard

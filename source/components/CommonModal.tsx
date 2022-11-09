@@ -6,6 +6,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
+import { CloseWrap } from './StyleCommon'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -16,20 +17,6 @@ const ModalHeader = styled.div({
   fontWeight: '500',
   height: 56,
   padding: '0 0px 0 26px',
-})
-
-const CloseWrap = styled.div({
-  width: 60,
-  height: 56,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  '&: hover': {
-    '.anticon': {
-      color: '#2877ff',
-    },
-  },
 })
 
 const ModalFooter = styled(Space)({
@@ -73,12 +60,12 @@ const CommonModal = (props: ModalProps) => {
         <span>{props?.title}</span>
         <Space size={4}>
           {props.hasTop}
-          <CloseWrap onClick={props?.onClose}>
+          <CloseWrap onClick={props?.onClose} width={60} height={52}>
             <IconFont type="close" />
           </CloseWrap>
         </Space>
       </ModalHeader>
-      <div style={{ padding: '0 20px 0 24px' }}>{props?.children}</div>
+      <div style={{ padding: '0 4px 0 24px' }}>{props?.children}</div>
       {props?.isShowFooter ? null : (
         <>
           {props?.hasFooter ? (

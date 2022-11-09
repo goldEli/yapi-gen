@@ -262,7 +262,7 @@ const EditFiled = (props: Props) => {
     >
       <div
         ref={ChooseDom}
-        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 16px 0 2px' }}
       >
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>

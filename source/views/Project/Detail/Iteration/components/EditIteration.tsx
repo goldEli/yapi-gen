@@ -12,6 +12,7 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
 
 const FormWrap = styled(Form)({
   paddingTop: 2,
@@ -160,17 +161,12 @@ const EditIteration = (props: Props) => {
   }, [props.visible])
 
   return (
-    <Modal
-      visible={props.visible}
+    <CommonModal
+      isVisible={props.visible}
       width={758}
-      footer={false}
       title={props?.id ? t('project.editIterate') : t('common.createIterate')}
-      onCancel={onCancel}
-      bodyStyle={{ padding: '16px 4px 16px 24px' }}
-      destroyOnClose
-      maskClosable={false}
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      onClose={onCancel}
+      onConfirm={onConfirm}
     >
       <div
         style={{ maxHeight: 464, overflow: 'auto', padding: '0 20px 0 2px' }}
@@ -218,14 +214,7 @@ const EditIteration = (props: Props) => {
           </div>
         </FormWrap>
       </div>
-
-      <ModalFooter size={16}>
-        <Button onClick={onCancel}>{t('common.cancel')}</Button>
-        <Button type="primary" onClick={onConfirm}>
-          {t('common.confirm2')}
-        </Button>
-      </ModalFooter>
-    </Modal>
+    </CommonModal>
   )
 }
 

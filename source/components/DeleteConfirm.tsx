@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Modal, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
+import { CloseWrap } from './StyleCommon'
 
 interface Props {
   isVisible: boolean
@@ -61,11 +63,9 @@ const DeleteConfirm = (props: Props) => {
           <IconFont style={{ fontSize: 24, color: '#FA9746' }} type="Warning" />
           <div>{props.title ? props.title : t('components.deleteConfirm')}</div>
         </Title>
-        <IconFont
-          style={{ fontSize: 16, color: '#323233' }}
-          onClick={props.onChangeVisible}
-          type="close"
-        />
+        <CloseWrap width={30} isRight onClick={props?.onChangeVisible}>
+          <IconFont style={{ fontSize: 16 }} type="close" />
+        </CloseWrap>
       </ModalHeader>
       <ModalContent>{props.text}</ModalContent>
       <ModalFooter size={16}>

@@ -360,8 +360,8 @@ const WrapLeft = (props: any, ref: any) => {
 
   function filterTreeData2(data: any) {
     const newData = data.map((item: any) => ({
-      key: item.key,
-      title: item.name,
+      value: item.key,
+      label: item.name,
       children:
         item.children && item.children.length
           ? filterTreeData2(item.children)

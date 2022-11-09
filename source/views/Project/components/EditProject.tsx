@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
 
 const Footer = styled(Space)({
   height: 56,
@@ -70,21 +71,15 @@ const EditProject = (props: Props) => {
   }, [props.details])
 
   return (
-    <Modal
-      width={420}
+    <CommonModal
       title={
         props.details?.id ? t('project.editProject') : t('common.createProject')
       }
-      visible={props.visible}
-      footer={false}
-      onCancel={props.onChangeVisible}
-      bodyStyle={{ padding: '16px 24px 0' }}
-      destroyOnClose
-      maskClosable={false}
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      isVisible={props.visible}
+      onClose={props.onChangeVisible}
+      onConfirm={onConfirm}
     >
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" style={{ paddingRight: 20 }}>
         <Form.Item
           label={t('project.projectPoster')}
           rules={[{ required: true, message: '' }]}
@@ -140,13 +135,7 @@ const EditProject = (props: Props) => {
           </Select>
         </Form.Item>
       </Form>
-      <Footer size={16}>
-        <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
-        <Button type="primary" onClick={onConfirm}>
-          {t('common.confirm')}
-        </Button>
-      </Footer>
-    </Modal>
+    </CommonModal>
   )
 }
 

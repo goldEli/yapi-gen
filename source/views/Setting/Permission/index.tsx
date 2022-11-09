@@ -20,6 +20,7 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
 
 const Header = styled.div({
   height: 64,
@@ -375,31 +376,18 @@ const Permission = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      <Modal
-        footer={false}
-        visible={isVisible}
-        title={false}
-        closable={false}
-        bodyStyle={{ padding: '16px 24px' }}
+      <CommonModal
+        isVisible={isVisible}
+        title={
+          operationDetail.id
+            ? t('setting.editPermission')
+            : t('setting.createPermission')
+        }
         width={420}
-        maskClosable={false}
-        destroyOnClose
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
+        onClose={onClose}
+        isShowFooter
       >
-        <ModalHeader>
-          <span>
-            {operationDetail.id
-              ? t('setting.editPermission')
-              : t('setting.createPermission')}
-          </span>
-          <IconFont
-            onClick={onClose}
-            style={{ cursor: 'pointer' }}
-            type="close"
-          />
-        </ModalHeader>
-        <div style={{ margin: '24px 0' }}>
+        <div style={{ margin: '0 16px 24px 0' }}>
           <Input
             autoComplete="off"
             value={addValue}
@@ -407,13 +395,13 @@ const Permission = () => {
             placeholder={t('setting.pleaseEnterName')}
           />
         </div>
-        <ModalFooter size={16}>
+        <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
           <Button onClick={onClose}>{t('common.cancel')}</Button>
           <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
             {t('common.confirm2')}
           </Button>
         </ModalFooter>
-      </Modal>
+      </CommonModal>
       <Header>
         <span>{t('setting.permissionManagement')}</span>
       </Header>

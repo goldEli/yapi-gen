@@ -285,7 +285,7 @@ export const updateDemand: any = async (params: any) => {
     users: params.userIds,
     copysend: params.copySendIds,
     tag: params.tagIds,
-    attachment: params.attachments,
+    attachment: params.attachments.map((item: any) => item.url),
     id: params.id,
     custom_field: params?.customField,
     class_id: params?.class,

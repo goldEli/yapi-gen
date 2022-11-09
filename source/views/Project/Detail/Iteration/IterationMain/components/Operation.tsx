@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import EditAchievements from '../../components/EditAchievements'
 import IterationStatus from '../../components/IterationStatus'
+import CommonModal from '@/components/CommonModal'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -173,19 +174,16 @@ const Operation = (props: Props) => {
 
   return (
     <StickyWrap ref={stickyWrapDom}>
-      <Modal
+      <CommonModal
         width={548}
-        visible={visible}
-        onCancel={() => setVisible(false)}
+        isVisible={visible}
+        onClose={() => setVisible(false)}
         title={t('project.iterateTarget')}
-        footer={false}
-        destroyOnClose
-        maskClosable={false}
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
-        bodyStyle={{ padding: '16px 4px 16px 24px' }}
+        isShowFooter
       >
-        <div style={{ maxHeight: 436, overflow: 'auto', paddingRight: 20 }}>
+        <div
+          style={{ maxHeight: 436, overflow: 'auto', padding: '0 20px 16px 0' }}
+        >
           {props.currentDetail?.info ? (
             <div
               dangerouslySetInnerHTML={{
@@ -196,7 +194,7 @@ const Operation = (props: Props) => {
             <NoData />
           )}
         </div>
-      </Modal>
+      </CommonModal>
       <OperationWrap>
         <IterationInfo>
           {props.isShowLeft ? (
