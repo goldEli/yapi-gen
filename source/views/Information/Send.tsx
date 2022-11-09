@@ -343,7 +343,7 @@ const Send = () => {
           display: 'flex',
           alignItems: 'center',
           paddingLeft: '24px',
-          paddingRight: '40px',
+          paddingRight: '24px',
           justifyContent: 'space-between',
         }}
       >

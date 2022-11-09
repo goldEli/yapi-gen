@@ -10,7 +10,7 @@ import {
   PaginationWrap,
   StaffTableWrap,
 } from '@/components/StyleCommon'
-import { Checkbox, DatePicker, Pagination, Spin } from 'antd'
+import { Checkbox, DatePicker, Pagination, Space, Spin } from 'antd'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
@@ -314,97 +314,102 @@ const Get = () => {
           background: '#FFFFFF',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           paddingLeft: '24px',
-          paddingRight: '40px',
+          paddingRight: '24px',
           gap: '20px',
         }}
       >
-        <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>
-            {' '}
-            {t('p2.dateCreated')}
-          </span>
-          <DatePicker.RangePicker
-            allowClear
-            className={rangPicker}
-            onChange={onChangeTime}
-            getPopupContainer={node => node}
-            format={(times: moment.Moment) => {
-              if (times.unix() === 0 || times.unix() === 1893427200) {
-                return t('common.null')
+        <Space size={16} style={{ display: 'flex', alignItems: 'center' }}>
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('p2.dateCreated')}
+            </span>
+            <DatePicker.RangePicker
+              allowClear
+              className={rangPicker}
+              onChange={onChangeTime}
+              getPopupContainer={node => node}
+              format={(times: moment.Moment) => {
+                if (times.unix() === 0 || times.unix() === 1893427200) {
+                  return t('common.null')
+                }
+                return times.format('YYYY-MM-DD')
+              }}
+              ranges={
+                i18n.language === 'zh'
+                  ? {
+                      最近一周: [
+                        moment(new Date()).startOf('days').subtract(6, 'days'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      最近一月: [
+                        moment(new Date())
+                          .startOf('months')
+                          .subtract(1, 'months'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      最近三月: [
+                        moment(new Date())
+                          .startOf('months')
+                          .subtract(3, 'months'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      今天开始: [
+                        moment(new Date()).startOf('days'),
+                        moment(1893427200 * 1000),
+                      ],
+                      今天截止: [moment(0), moment(new Date()).endOf('days')],
+                      空: [moment(0), moment(0)],
+                    }
+                  : {
+                      'Last Week': [
+                        moment(new Date()).startOf('days').subtract(6, 'days'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      'Last Month': [
+                        moment(new Date())
+                          .startOf('months')
+                          .subtract(1, 'months'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      'Last March': [
+                        moment(new Date())
+                          .startOf('months')
+                          .subtract(3, 'months'),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      'Start today': [
+                        moment(new Date()).startOf('days'),
+                        moment(1893427200 * 1000),
+                      ],
+                      'Due today': [
+                        moment(0),
+                        moment(new Date()).endOf('days'),
+                      ],
+                      Empty: [moment(0), moment(0)],
+                    }
               }
-              return times.format('YYYY-MM-DD')
-            }}
-            ranges={
-              i18n.language === 'zh'
-                ? {
-                    最近一周: [
-                      moment(new Date()).startOf('days').subtract(6, 'days'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    最近一月: [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(1, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    最近三月: [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(3, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    今天开始: [
-                      moment(new Date()).startOf('days'),
-                      moment(1893427200 * 1000),
-                    ],
-                    今天截止: [moment(0), moment(new Date()).endOf('days')],
-                    空: [moment(0), moment(0)],
-                  }
-                : {
-                    'Last Week': [
-                      moment(new Date()).startOf('days').subtract(6, 'days'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    'Last Month': [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(1, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    'Last March': [
-                      moment(new Date())
-                        .startOf('months')
-                        .subtract(3, 'months'),
-                      moment(new Date()).endOf('days'),
-                    ],
-                    'Start today': [
-                      moment(new Date()).startOf('days'),
-                      moment(1893427200 * 1000),
-                    ],
-                    'Due today': [moment(0), moment(new Date()).endOf('days')],
-                    Empty: [moment(0), moment(0)],
-                  }
-            }
-          />
-        </SelectWrapBedeck>
+            />
+          </SelectWrapBedeck>
 
-        <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>
-            {t('p2.sender')}
-          </span>
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('p2.sender')}
+            </span>
 
-          <SelectWrap
-            allowClear
-            showArrow
-            style={{ width: '100%' }}
-            placeholder={t('common.pleaseSelect')}
-            onChange={confirm}
-            optionFilterProp="label"
-            options={options}
-          />
-        </SelectWrapBedeck>
-        <Checkbox onChange={onChange}>只看未阅</Checkbox>
+            <SelectWrap
+              allowClear
+              showArrow
+              style={{ width: '100%' }}
+              placeholder={t('common.pleaseSelect')}
+              onChange={confirm}
+              optionFilterProp="label"
+              options={options}
+            />
+          </SelectWrapBedeck>
+          <Checkbox onChange={onChange}>只看未阅</Checkbox>
+        </Space>
         <CommonInput
           placeholder={t('p2.search')}
           onChangeSearch={onPressEnter}
