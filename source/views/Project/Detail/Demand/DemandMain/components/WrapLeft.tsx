@@ -332,7 +332,7 @@ const WrapLeft = (props: any, ref: any) => {
   const init = async () => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    setSelectTreeData(filterTreeData(res)[0].children)
+    setSelectTreeData(filterTreeData2(res)[0].children)
     setTreeData(filterTreeData(res))
 
     setShow(true)
@@ -350,6 +350,18 @@ const WrapLeft = (props: any, ref: any) => {
           {...item}
         />
       ),
+      children:
+        item.children && item.children.length
+          ? filterTreeData(item.children)
+          : null,
+    }))
+    return newData
+  }
+
+  function filterTreeData2(data: any) {
+    const newData = data.map((item: any) => ({
+      key: item.key,
+      title: item.name,
       children:
         item.children && item.children.length
           ? filterTreeData(item.children)
