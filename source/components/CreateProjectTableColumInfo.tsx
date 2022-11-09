@@ -373,22 +373,16 @@ export const useDynamicColumns = (state: any) => {
       key: 'users_name',
       render: (text: any, record: any) => {
         return (
-          <>
-            {record?.usersNameIds?.includes(userInfo?.id) ? (
-              <TableQuickEdit
-                type="fixed_select"
-                defaultText={record?.usersNameIds || []}
-                keyText="users"
-                item={record}
-                onUpdate={onUpdate}
-                isMineOrHis
-              >
-                <span>{text || '--'}</span>
-              </TableQuickEdit>
-            ) : (
-              <span>{text || '--'}</span>
-            )}
-          </>
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersNameIds || []}
+            keyText="users"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
         )
       },
     },

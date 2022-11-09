@@ -378,7 +378,7 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: any) => {
         return (
           <>
-            {record?.usersNameIds?.includes(userInfo?.id) ? (
+            {isCanEdit ? (
               <TableQuickEdit
                 type="fixed_select"
                 defaultText={record?.usersNameIds || []}
