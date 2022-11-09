@@ -79,49 +79,50 @@ type MenuList = {
 }
 
 const Information = () => {
+  const [t] = useTranslation()
   const menuList = [
     {
       id: 1,
-      name: '我发出的',
+      name: t('p2.dayList.t1'),
       path: 'send/1',
       state: 1,
     },
     {
       id: 2,
-      name: '发出日报',
+      name: t('p2.dayList.t2'),
       path: 'send/2',
     },
     {
       id: 3,
-      name: '发出周报',
+      name: t('p2.dayList.t3'),
       path: 'send/3',
     },
     {
       id: 4,
-      name: '发出月报',
+      name: t('p2.dayList.t4'),
       path: 'send/4',
     },
     {
       id: 5,
-      name: '我收到的',
+      name: t('p2.dayList.t5'),
       path: 'get/5',
       state: 2,
     },
     {
       id: 6,
-      name: '接收日报',
+      name: t('p2.dayList.t6'),
       path: 'get/6',
       isPermission: false,
     },
     {
       id: 7,
-      name: '接收周报',
+      name: t('p2.dayList.t7'),
       path: 'get/7',
       isPermission: false,
     },
     {
       id: 8,
-      name: '接收月报',
+      name: t('p2.dayList.t8'),
       path: 'get/8',
       isPermission: false,
     },
@@ -129,19 +130,19 @@ const Information = () => {
   const writeDailyInner = [
     {
       id: 1,
-      name: '写日报',
+      name: t('p2.whiteList.t1'),
     },
     {
       id: 2,
-      name: '写周报',
+      name: t('p2.whiteList.t2'),
     },
     {
       id: 3,
-      name: '写月报',
+      name: t('p2.whiteList.t3'),
     },
   ]
   const count = useSelector((state: any) => state.counter.value)
-  const [t] = useTranslation()
+
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const navigate = useNavigate()
@@ -150,6 +151,7 @@ const Information = () => {
   const [visibleEditText, setVisibleEditText] = useState('')
   const [showPop, setShowPop] = useState(false)
   const [id, setId] = useState(1)
+  const [type, setType] = useState('')
   const keyValue = {
     id,
     change: () => {
@@ -204,6 +206,7 @@ const Information = () => {
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)
     setVisibleEditText(item.name)
+    setType(item.id)
   }
   const content = (
     <div
@@ -228,7 +231,7 @@ const Information = () => {
           'b/user/fast/create',
         ) ? null : (
           <Popover visible={showPop} content={content}>
-            <AddButton>
+            <AddButton onClick={() => setShowPop(!showPop)}>
               <IconFont
                 style={{
                   marginRight: 8,
@@ -238,7 +241,7 @@ const Information = () => {
                 }}
                 type="plus"
               />
-              <span onClick={() => setShowPop(true)}>写日志</span>
+              <span>{t('p2.whiteDay')}</span>
             </AddButton>
           </Popover>
         )}
@@ -309,6 +312,7 @@ const Information = () => {
         visibleEdit={visibleEdit}
         editClose={editClose}
         editConfirm={editConfirm}
+        type={type}
       />
     </Wrap>
   )

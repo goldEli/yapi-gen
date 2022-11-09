@@ -23,6 +23,7 @@ import { useParams } from 'react-router-dom'
 import LookDay from './components/LookDay'
 import { getDailyList, writeDaily } from '@/services/daily'
 import { DailyContext } from '.'
+import CommonInput from '@/components/CommonInput'
 
 const titleList = {
   2: '修改日报',
@@ -49,6 +50,7 @@ const Send = () => {
   const [editType, setEditType] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
+  const [type, setType] = useState('')
   const context: any = useContext(DailyContext)
 
   const editClose = () => {
@@ -97,7 +99,7 @@ const Send = () => {
   const columnsData: any = [
     {
       width: 100,
-      title: <NewSort fixedKey="name">标题</NewSort>,
+      title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
       render: (text: string | number) => {
@@ -105,7 +107,7 @@ const Send = () => {
       },
     },
     {
-      title: <NewSort fixedKey="finish_content">内容摘要</NewSort>,
+      title: <NewSort fixedKey="finish_content">{t('p2.synopsis')}</NewSort>,
       dataIndex: 'finish_content',
       key: 'finish_content',
       width: 200,
@@ -124,7 +126,9 @@ const Send = () => {
       },
     },
     {
-      title: <NewSort fixedKey="file_count">附件数量</NewSort>,
+      title: (
+        <NewSort fixedKey="file_count">{t('p2.NumberOfAttachments')}</NewSort>
+      ),
       dataIndex: 'file_count',
       key: 'file_count',
       width: 200,
@@ -133,7 +137,9 @@ const Send = () => {
       },
     },
     {
-      title: <NewSort fixedKey="story_count">关联需求</NewSort>,
+      title: (
+        <NewSort fixedKey="story_count">{t('p2.RelatedRequirements')}</NewSort>
+      ),
       dataIndex: 'story_count',
       key: 'story_count',
       width: 150,
@@ -142,7 +148,7 @@ const Send = () => {
       },
     },
     {
-      title: <NewSort fixedKey="created_at">创建日期</NewSort>,
+      title: <NewSort fixedKey="created_at">{t('p2.dateCreated')}</NewSort>,
       dataIndex: 'created_at',
       key: 'created_at',
       width: 160,
@@ -151,7 +157,7 @@ const Send = () => {
       },
     },
     {
-      title: '抄送人',
+      title: t('common.copySend'),
       dataIndex: 'copysend_user',
       key: 'copysend_user',
       width: 120,
@@ -177,7 +183,7 @@ const Send = () => {
       },
     },
     {
-      title: '已阅',
+      title: t('p2.haveRead'),
       dataIndex: 'read_user',
       key: 'read_user',
       width: 170,
@@ -187,7 +193,7 @@ const Send = () => {
     },
 
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       dataIndex: 'created_at',
       key: 'created_at',
       width: 120,
@@ -204,6 +210,7 @@ const Send = () => {
                   )
                   setEditId(record.id)
                   setEditType(record.type)
+                  setType(record.type)
                 }}
                 style={{
                   fontSize: '14px',
@@ -212,7 +219,7 @@ const Send = () => {
                   cursor: 'pointer',
                 }}
               >
-                修改
+                {t('p2.edit')}
               </span>
             )}
 
@@ -220,6 +227,7 @@ const Send = () => {
               onClick={() => {
                 setVisibleLook(true)
                 setShowId(record.id)
+                setType(record.type)
               }}
               style={{
                 fontSize: '14px',
@@ -229,7 +237,7 @@ const Send = () => {
                 cursor: 'pointer',
               }}
             >
-              查看
+              {t('p2.show')}
             </span>
           </div>
         )
@@ -240,8 +248,8 @@ const Send = () => {
     setOrderKey(key)
     setOrder(orderVal)
   }
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
   }
 
   const onChangePage = (newPage: any) => {
@@ -340,7 +348,9 @@ const Send = () => {
         }}
       >
         <SelectWrapBedeck>
-          <span style={{ margin: '0 16px', fontSize: '14px' }}>创建时间</span>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('p2.dateCreated')}
+          </span>
           <DatePicker.RangePicker
             allowClear
             className={rangPicker}
@@ -405,17 +415,9 @@ const Send = () => {
             }
           />
         </SelectWrapBedeck>
-        <MyInput
-          suffix={
-            <IconFont
-              type="search"
-              style={{ color: '#BBBDBF', fontSize: 20 }}
-            />
-          }
-          onPressEnter={onPressEnter}
-          onBlur={onPressEnter}
-          placeholder={t('common.pleaseSearchDemand')}
-          allowClear
+        <CommonInput
+          placeholder={t('p2.search')}
+          onChangeSearch={onPressEnter}
         />
       </div>
       <div className={tableWrapP} style={{ height: `calc(100% - ${50}px)` }}>
@@ -466,6 +468,7 @@ const Send = () => {
         visibleEdit={visibleEdit}
         editClose={editClose}
         editConfirm={editConfirm}
+        type={type}
       />
 
       <LookDay
@@ -474,6 +477,7 @@ const Send = () => {
         visible={visibleLook}
         onEditClose={lookClose}
         editConfirm={lookConfirm}
+        type={type}
       />
     </div>
   )

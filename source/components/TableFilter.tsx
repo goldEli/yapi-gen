@@ -468,7 +468,7 @@ const TableFilter = (props: any) => {
                         style={{ minWidth: '200px', border: 'none' }}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         treeData={i.children}
-                        placeholder="Please select"
+                        placeholder={t('common.pleaseSelect')}
                         treeDefaultExpandAll
                         onSelect={confirm}
                         multiple

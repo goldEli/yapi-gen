@@ -11,6 +11,7 @@ import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { getReportDetail } from '@/services/daily'
+import { t } from 'i18next'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -21,7 +22,7 @@ export const LabelTitle = (props: any) => {
         margin: '24px 0 8px 0',
       }}
     >
-      <div
+      {/* <div
         style={{
           width: '3px',
           height: '16px',
@@ -30,11 +31,11 @@ export const LabelTitle = (props: any) => {
           display: 'inline-block',
           marginRight: '8px',
         }}
-      />
+      /> */}
       <span
         style={{
           fontWeight: 'bold',
-          fontSize: '18px',
+          fontSize: '14px',
         }}
       >
         {props.title}
@@ -44,6 +45,12 @@ export const LabelTitle = (props: any) => {
 }
 
 const WhiteDay = (props: any) => {
+  const texts: any = [
+    '',
+    { name: t('p2.title.t1d'), name2: t('p2.title.t1t') },
+    { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
+    { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
+  ]
   const { percentShow, percentVal, uploadStatus } = useModel('demand')
   const [form] = Form.useForm()
   const [isShow, setIsShow] = useState(false)
@@ -151,7 +158,7 @@ const WhiteDay = (props: any) => {
       isVisible={props.visibleEdit}
       onClose={close}
       onConfirm={confirm}
-      confirmText="提交"
+      confirmText={t('newlyAdd.submit')}
     >
       <div
         style={{
@@ -162,16 +169,30 @@ const WhiteDay = (props: any) => {
         ref={leftDom}
       >
         <Form form={form} layout="vertical">
-          <Form.Item label={<LabelTitle title="今日完成工作" />} name="info">
+          <Form.Item
+            label={<LabelTitle title={texts[props.type]?.name} />}
+            name="info"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
             <Editor height={240} />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="明日计划工作" />} name="info2">
+          <Form.Item
+            label={<LabelTitle title={texts[props.type]?.name2} />}
+            name="info2"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
             <Editor height={240} />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="抄送人" />} name="people">
+          <Form.Item
+            label={<LabelTitle title={t('common.copySend')} />}
+            name="people"
+          >
             <ChoosePeople initValue={peopleValue} />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="附件" />} name="attachments">
+          <Form.Item
+            label={<LabelTitle title={t('common.attachment')} />}
+            name="attachments"
+          >
             <UploadAttach
               child={isShow ? <Children /> : ''}
               onChangeShow={setIsShow}
@@ -186,12 +207,15 @@ const WhiteDay = (props: any) => {
                   hasColor
                 >
                   <IconFont type="plus" />
-                  <div>添加附件</div>
+                  <div>{t('p2.addAdjunct') as unknown as string}</div>
                 </AddWrap>
               }
             />
           </Form.Item>
-          <Form.Item label={<LabelTitle title="关联需求" />} name="needs">
+          <Form.Item
+            label={<LabelTitle title={t('p2.managingDemand')} />}
+            name="needs"
+          >
             <RelatedNeed initValue={needValue} />
           </Form.Item>
         </Form>
