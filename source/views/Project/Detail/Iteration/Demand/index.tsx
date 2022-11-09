@@ -40,7 +40,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
-  borderRadius: 4,
+  borderRadius: 6,
 })
 
 interface Props {

@@ -53,10 +53,9 @@ const NameWrap = styled.div({
 })
 
 const ContentWrap = styled.div({
-  padding: 16,
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 72px)',
+  height: 'calc(100% - 84px)',
 })
 
 const MainWrap = styled(Space)({

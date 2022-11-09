@@ -5,6 +5,7 @@ import { DatePicker, Form, Input, Select } from 'antd'
 import moment from 'moment'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
+import RangePicker from '@/components/RangePicker'
 
 const rangPicker = css`
   .ant-picker-panel-container {
@@ -114,72 +115,10 @@ const SearchList = (props: Props) => {
             {t('newlyAdd.submitTime')}
           </span>
           <Form.Item name="time">
-            <DatePicker.RangePicker
+            <RangePicker
+              isShowQuick
+              value={form.getFieldValue('time')}
               onChange={onConfirm}
-              className={rangPicker}
-              getPopupContainer={node => node}
-              format={(times: moment.Moment) => {
-                if (times.unix() === 0 || times.unix() === 1893427200) {
-                  return t('common.null')
-                }
-                return times.format('YYYY-MM-DD')
-              }}
-              ranges={
-                i18n.language === 'zh'
-                  ? {
-                      最近一周: [
-                        moment(new Date()).startOf('days')
-                          .subtract(6, 'days'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      最近一月: [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(1, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      最近三月: [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(3, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      今天开始: [
-                        moment(new Date()).startOf('days'),
-                        moment(1893427200 * 1000),
-                      ],
-                      今天截止: [moment(0), moment(new Date()).endOf('days')],
-                      空: [moment(0), moment(0)],
-                    }
-                  : {
-                      'Last Week': [
-                        moment(new Date()).startOf('days')
-                          .subtract(6, 'days'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      'Last Month': [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(1, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      'Last March': [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(3, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      'Start today': [
-                        moment(new Date()).startOf('days'),
-                        moment(1893427200 * 1000),
-                      ],
-                      'Due today': [
-                        moment(0),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      Empty: [moment(0), moment(0)],
-                    }
-              }
             />
           </Form.Item>
         </SelectWrapBedeck>
@@ -188,72 +127,10 @@ const SearchList = (props: Props) => {
             {t('newlyAdd.examineTime')}
           </span>
           <Form.Item name="verifyTime">
-            <DatePicker.RangePicker
+            <RangePicker
+              isShowQuick
+              value={form.getFieldValue('verifyTime')}
               onChange={onConfirm}
-              className={rangPicker}
-              getPopupContainer={node => node}
-              format={(times: moment.Moment) => {
-                if (times.unix() === 0 || times.unix() === 1893427200) {
-                  return t('common.null')
-                }
-                return times.format('YYYY-MM-DD')
-              }}
-              ranges={
-                i18n.language === 'zh'
-                  ? {
-                      最近一周: [
-                        moment(new Date()).startOf('days')
-                          .subtract(6, 'days'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      最近一月: [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(1, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      最近三月: [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(3, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      今天开始: [
-                        moment(new Date()).startOf('days'),
-                        moment(1893427200 * 1000),
-                      ],
-                      今天截止: [moment(0), moment(new Date()).endOf('days')],
-                      空: [moment(0), moment(0)],
-                    }
-                  : {
-                      'Last Week': [
-                        moment(new Date()).startOf('days')
-                          .subtract(6, 'days'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      'Last Month': [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(1, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      'Last March': [
-                        moment(new Date())
-                          .startOf('months')
-                          .subtract(3, 'months'),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      'Start today': [
-                        moment(new Date()).startOf('days'),
-                        moment(1893427200 * 1000),
-                      ],
-                      'Due today': [
-                        moment(0),
-                        moment(new Date()).endOf('days'),
-                      ],
-                      Empty: [moment(0), moment(0)],
-                    }
-              }
             />
           </Form.Item>
         </SelectWrapBedeck>

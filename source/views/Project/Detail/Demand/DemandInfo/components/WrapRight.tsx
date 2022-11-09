@@ -31,7 +31,7 @@ const WrapRight = styled.div({
   minWidth: '400px',
   width: '100%',
   height: '100%',
-  paddingLeft: 24,
+  padding: '16px 0 0 24px',
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(

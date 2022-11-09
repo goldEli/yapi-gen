@@ -227,7 +227,8 @@ const WrapLeftBox = () => {
     <div
       style={{
         position: 'relative',
-        height: 'calc(100vh - 250px)',
+        height: 'calc(100vh - 242px)',
+        margin: '16px 0',
       }}
     >
       <div className="resize_bar2" />

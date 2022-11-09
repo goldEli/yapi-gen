@@ -7,6 +7,28 @@ import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 
+const DateQuickWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 14px',
+    height: 20,
+    borderRadius: 6,
+    cursor: 'pointer',
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: '18px',
+    marginTop: 16,
+    '&: hover': {
+      border: '1px solid  #F0F4FA',
+      background: '#F0F4FA',
+      color: '#2877ff',
+    },
+  },
+  ({ isActive }) => ({
+    border: isActive ? '1px solid #2877ff' : '1px solid #EBEDF0',
+    color: isActive ? '#2877ff' : '#646566',
+  }),
+)
+
 const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
   {
     marginLeft: 16,
@@ -743,4 +765,5 @@ export {
   editButton,
   CanOperation,
   IconFontWrapEdit,
+  DateQuickWrap,
 }

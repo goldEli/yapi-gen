@@ -10,7 +10,7 @@ import { useModel } from '@/models'
 const wrap = css`
   height: calc(100% - 24px);
   background: white;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow-x: auto;
   padding: 24px 4px 24px 24px;
 `

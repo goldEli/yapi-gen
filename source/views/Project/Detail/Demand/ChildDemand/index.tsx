@@ -71,6 +71,7 @@ const DataWrap = styled.div({
   height: 'calc(100% - 92px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 6,
 })
 
 const ChildDemand = () => {
@@ -363,7 +364,7 @@ const ChildDemand = () => {
   }, [titleList, titleList2, titleList3, columns])
 
   return (
-    <div style={{ height: 'calc(100% - 50px)' }}>
+    <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
       {isVisible ? (
         <EditDemand
           visible={isVisible}

@@ -12,6 +12,7 @@ import { getProjectMember, getTagList } from '@/services/project'
 import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
 import { useModel } from '@/models'
+import { message } from 'antd'
 
 interface Props {
   children: any
@@ -198,6 +199,7 @@ const TableQuickEdit = (props: Props) => {
       } else {
         props.onUpdate?.()
       }
+      message.success('编辑成功！')
       if (type === 1) {
         setIsShowControl(false)
       }
