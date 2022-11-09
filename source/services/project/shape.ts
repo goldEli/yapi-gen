@@ -4,6 +4,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
+import { filter } from 'lodash'
 import { getTreeList } from './tree'
 
 function filterTreeData(data: any) {
@@ -67,10 +68,12 @@ export const getShapeRight = async (params: any) => {
     },
   })
 
-  const filterIterateList = iterateList.data.map((item: any) => ({
-    id: item.id,
-    name: item.name,
-  }))
+  const filterIterateList = iterateList.data
+    .map((item: any) => ({
+      id: item.id,
+      name: item.name,
+    }))
+    .filter((item: any) => item.status === 1)
 
   // console.log(filterIterateList, '迭代列表')
 

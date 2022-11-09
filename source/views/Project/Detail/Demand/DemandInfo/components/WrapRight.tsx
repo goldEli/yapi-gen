@@ -164,9 +164,9 @@ const TextWrap = styled.div({
   },
 })
 
-const TextareaWrap = styled.div({
+export const TextareaWrap = styled.div({
   marginTop: 67,
-  height: 179,
+  minHeight: 79,
   borderRadius: 6,
   border: '1px solid #EBEDF0',
   padding: 16,
