@@ -250,7 +250,7 @@ const FieldsTemplate = (props: Props) => {
       title={props?.title}
       isVisible={props?.visible}
       width={784}
-      confirmText={t('newlyAdd.downloadTemplate')}
+      confirmText={props.isExport ? '导出需求' : t('newlyAdd.downloadTemplate')}
       onClose={onClose}
       onConfirm={onConfirm}
     >
