@@ -5,6 +5,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
 import { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
@@ -28,7 +29,17 @@ const rightText = css`
     color: #2877ff;
   }
 `
-
+const WrapDiv = styled.div`
+  .ant-form-item-row {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+  }
+  .ant-form-item-label {
+    padding: 0px !important;
+    padding-right: 12px !important;
+  }
+`
 const list = [
   {
     title: '普通会员',
@@ -126,24 +137,15 @@ const RelatedNeed = (props: any) => {
         <div>{t('p2.RelatedRequirements')}</div>
       </AddWrap>
       {show ? (
-        <div
+        <WrapDiv
           style={{
             background: '#F2F2F4',
             borderRadius: '6px 6px 6px 6px',
             padding: '24px',
           }}
         >
-          <Form form={lessForm} layout="vertical">
-            <Form.Item
-              name="project"
-              label={t('common.chooseProject')}
-              rules={[
-                {
-                  required: true,
-                  message: '',
-                },
-              ]}
-            >
+          <Form form={lessForm}>
+            <Form.Item name="project" label={t('common.chooseProject')}>
               <Select
                 onSelect={onSelect}
                 labelInValue
@@ -156,16 +158,7 @@ const RelatedNeed = (props: any) => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
-              rules={[
-                {
-                  required: true,
-                  message: '',
-                },
-              ]}
-              name="needs"
-              label={t('p2.managingDemand')}
-            >
+            <Form.Item name="needs" label={t('p2.managingDemand')}>
               <Select
                 disabled={showNeed}
                 showSearch
@@ -214,7 +207,7 @@ const RelatedNeed = (props: any) => {
               {t('container.finish')}
             </span>
           </div>
-        </div>
+        </WrapDiv>
       ) : (
         <div>
           {chooseList.map((item: any) => (
