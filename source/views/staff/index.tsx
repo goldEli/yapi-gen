@@ -61,6 +61,7 @@ export const DataWrap = styled.div({
   overflowX: 'auto',
   height: '100%',
   overflow: 'hidden',
+  borderRadius: '6px',
 })
 
 const RowIconFont = styled(IconFont)({

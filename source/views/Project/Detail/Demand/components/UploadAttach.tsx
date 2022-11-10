@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useModel } from '@/models'
-import { message, Modal, Upload, type UploadProps } from 'antd'
+import { message, Modal, notification, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -15,6 +16,7 @@ import { getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
 import moment from 'moment'
 import CommonModal from '@/components/CommonModal'
+import useWatchLine from '@/hooks/useWatchLine'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -132,8 +134,8 @@ const ListItem = (props: any) => {
           <img
             style={{
               width: '40px',
-              height: '40px',
-              borderRadius: '8px',
+              height: '42px',
+              borderRadius: '4px',
               cursor: 'pointer',
             }}
             src={url}
@@ -260,6 +262,7 @@ const ListItem = (props: any) => {
 }
 
 const UploadAttach = (props: Props) => {
+  const b = useWatchLine()
   const { userInfo } = useModel('user')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [previewImage, setPreviewImage] = useState('')
@@ -304,6 +307,20 @@ const UploadAttach = (props: Props) => {
     setFileList(array)
   }, [props.defaultList])
 
+  useEffect(() => {
+    if (!b) {
+      notification.open({
+        message: '未连接到互联网',
+        description: `
+        请试试以下办法：
+        检查网线、调制解调器和路由器
+        
+        `,
+        placement: 'top',
+        duration: null,
+      })
+    }
+  }, [b])
   useEffect(() => {
     props.onChange?.(fileList)
   }, [fileList])

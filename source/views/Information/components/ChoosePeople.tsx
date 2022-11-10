@@ -119,7 +119,13 @@ const ChoosePeople = (props: any) => {
                   onClick={() => onDelCheckPerson(i.id)}
                 />
               </NewNameWrap>
-              <span style={{ marginLeft: '4px', color: '#646566' }}>
+              <span
+                style={{
+                  marginLeft: '4px',
+                  color: '#646566',
+                  fontSize: '12px',
+                }}
+              >
                 {i.name}
               </span>
             </div>

@@ -25,7 +25,7 @@ import ReactDOM from 'react-dom'
 import { InnerLine } from './RelatedNeed'
 import { LabelTitle } from './WhiteDay'
 
-const GrepWrap = styled.div`
+export const GrepWrap = styled.div`
   position: fixed;
   top: 0;
   right: 0;
@@ -35,7 +35,16 @@ const GrepWrap = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.45);
 `
-const Kong = () => <span> - {t('newlyAdd.null') as string} - </span>
+const Kong = () => (
+  <span
+    style={{
+      color: '#646566',
+    }}
+  >
+    {' '}
+    - {t('newlyAdd.null') as string} -{' '}
+  </span>
+)
 
 const FormWrap = styled.div<{ left: any }>`
   width: 784px;
@@ -575,6 +584,7 @@ const LookDay = (props: any) => {
                         paddingLeft: '40px',
                         width: '100%',
                         wordBreak: 'break-all',
+                        color: '#646566',
                       }}
                     >
                       {item.content}

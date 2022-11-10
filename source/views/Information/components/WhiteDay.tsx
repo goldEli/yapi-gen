@@ -19,7 +19,6 @@ export const LabelTitle = (props: any) => {
       style={{
         display: 'flex',
         alignItems: 'center',
-        margin: '24px 0 8px 0',
       }}
     >
       {/* <div
@@ -105,7 +104,7 @@ const WhiteDay = (props: any) => {
         status={uploadStatus}
         percent={percentVal}
         size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
+        style={{ display: percentShow ? 'block' : 'none', width: '50%' }}
       />
     )
   }
@@ -166,7 +165,7 @@ const WhiteDay = (props: any) => {
         style={{
           height: '600px',
           overflow: 'scroll',
-          paddingRight: '16px',
+          paddingRight: '4px',
         }}
         ref={leftDom}
       >

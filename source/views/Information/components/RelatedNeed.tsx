@@ -39,6 +39,9 @@ const WrapDiv = styled.div`
     padding: 0px !important;
     padding-right: 12px !important;
   }
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
 `
 const list = [
   {

@@ -142,7 +142,6 @@ const Information = () => {
     },
   ]
   const count = useSelector((state: any) => state.counter.value)
-
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const navigate = useNavigate()
@@ -230,7 +229,7 @@ const Information = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : (
-          <Popover visible={showPop} content={content}>
+          <Popover placement="bottomLeft" visible={showPop} content={content}>
             <AddButton onClick={() => setShowPop(!showPop)}>
               <IconFont
                 style={{
