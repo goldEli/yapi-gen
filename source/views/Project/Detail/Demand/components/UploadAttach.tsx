@@ -61,7 +61,7 @@ export const BigWrap = styled.div`
 
 export const Gred = styled.div`
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px;
   position: absolute;
   left: 0;
   right: 0;

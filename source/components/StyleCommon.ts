@@ -258,7 +258,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    height: 26,
+    height: 32,
     boxSizing: 'border-box',
     cursor: 'pointer',
     borderRadius: 6,

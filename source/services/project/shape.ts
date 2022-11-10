@@ -72,10 +72,9 @@ export const getShapeRight = async (params: any) => {
     .map((item: any) => ({
       id: item.id,
       name: item.name,
+      status: item.status,
     }))
     .filter((item: any) => item.status === 1)
-
-  // console.log(filterIterateList, '迭代列表')
 
   // 标签
   const getTagList = await http.get<any>('getTagList', {

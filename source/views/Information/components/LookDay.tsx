@@ -23,7 +23,6 @@ import { t, use } from 'i18next'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { InnerLine } from './RelatedNeed'
-import { LabelTitle } from './WhiteDay'
 
 export const GrepWrap = styled.div`
   position: fixed;
@@ -98,6 +97,38 @@ const Arrow = styled.div`
 const Arrow2 = styled(Arrow)`
   left: 80%;
 `
+
+const LabelTitle = (props: any) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '24px',
+        marginBottom: '12px',
+      }}
+    >
+      {/* <div
+        style={{
+          width: '3px',
+          height: '16px',
+
+          background: '#2877FF',
+          display: 'inline-block',
+          marginRight: '8px',
+        }}
+      /> */}
+      <span
+        style={{
+          fontWeight: 'bold',
+          fontSize: '14px',
+        }}
+      >
+        {props.title}
+      </span>
+    </div>
+  )
+}
 const imgs = ['png', 'webp']
 const fils = ['xlsx', 'pdf']
 const fils2 = fils.concat(imgs)

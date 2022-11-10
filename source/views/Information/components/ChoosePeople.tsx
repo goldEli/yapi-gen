@@ -108,7 +108,7 @@ const ChoosePeople = (props: any) => {
                     src={i.avatar}
                   />
                 ) : (
-                  <NameWrap style={{ margin: 0 }}>
+                  <NameWrap style={{ margin: 0, width: 24, height: 24 }}>
                     {String(
                       i?.name?.substring(0, 1).trim().slice(0, 1),
                     ).toLocaleUpperCase()}
