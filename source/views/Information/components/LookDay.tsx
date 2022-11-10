@@ -576,66 +576,64 @@ const LookDay = (props: any) => {
                   </button>
                 </TextareaWrap>
               </div>
-              {contentList.length < 1 ? (
-                <Kong />
-              ) : (
-                contentList.map((item: any) => (
-                  <div key={item.id}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginRight: '24px',
-                        marginTop: '12px',
-                        marginBottom: '4px',
-                      }}
-                    >
-                      {item.avatar ? (
-                        <img
+              {contentList.length < 1
+                ? ''
+                : contentList.map((item: any) => (
+                    <div key={item.id}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '24px',
+                          marginTop: '12px',
+                          marginBottom: '4px',
+                        }}
+                      >
+                        {item.avatar ? (
+                          <img
+                            style={{
+                              width: 32,
+                              height: 32,
+                              borderRadius: 16,
+                            }}
+                            src={item.avatar}
+                          />
+                        ) : (
+                          <NameWrap style={{ margin: 0 }}>
+                            {String(
+                              item.name.substring(0, 1).trim().slice(0, 1),
+                            ).toLocaleUpperCase()}
+                          </NameWrap>
+                        )}
+                        <span
                           style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: 16,
+                            margin: '0 10px',
                           }}
-                          src={item.avatar}
-                        />
-                      ) : (
-                        <NameWrap style={{ margin: 0 }}>
-                          {String(
-                            item.name.substring(0, 1).trim().slice(0, 1),
-                          ).toLocaleUpperCase()}
-                        </NameWrap>
-                      )}
-                      <span
+                        >
+                          {item.name}
+                        </span>
+                        <span
+                          style={{
+                            color: '#969799',
+                            fontSize: '12px',
+                          }}
+                        >
+                          {item.created_at}
+                        </span>
+                      </div>
+                      <div
                         style={{
-                          margin: '0 10px',
+                          paddingLeft: '40px',
+                          width: '100%',
+                          wordBreak: 'break-all',
+                          color: '#646566',
+                          marginTop: '-8px',
                         }}
                       >
-                        {item.name}
-                      </span>
-                      <span
-                        style={{
-                          color: '#969799',
-                          fontSize: '12px',
-                        }}
-                      >
-                        {item.created_at}
-                      </span>
+                        {item.content}
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        paddingLeft: '40px',
-                        width: '100%',
-                        wordBreak: 'break-all',
-                        color: '#646566',
-                        marginTop: '-8px',
-                      }}
-                    >
-                      {item.content}
-                    </div>
-                  </div>
-                ))
-              )}
+                  ))}
             </div>
           </FormWrap>
         ) : (

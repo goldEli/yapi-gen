@@ -169,7 +169,7 @@ export const TextareaWrap = styled.div({
   minHeight: 79,
   borderRadius: 6,
   border: '1px solid #EBEDF0',
-  padding: 16,
+  padding: 8,
   textAlign: 'right',
   marginBottom: 20,
   '.ant-input': {

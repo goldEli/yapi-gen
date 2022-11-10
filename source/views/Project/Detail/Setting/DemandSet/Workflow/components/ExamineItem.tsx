@@ -51,6 +51,7 @@ const PersonWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   marginTop: 8,
+  '::-webkit-scrollbar': { display: 'none' },
 })
 
 const MenuItemWrap = styled.span({

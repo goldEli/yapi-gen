@@ -163,7 +163,7 @@ const WhiteDay = (props: any) => {
     >
       <div
         style={{
-          height: '600px',
+          height: '60vh',
           overflow: 'scroll',
           paddingRight: '24px',
         }}
@@ -175,14 +175,14 @@ const WhiteDay = (props: any) => {
             name="info"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Editor height={240} />
+            <Editor height={150} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name2} />}
             name="info2"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Editor height={240} />
+            <Editor height={150} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.copySend')} />}
