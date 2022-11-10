@@ -13,6 +13,7 @@ import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
 import { useModel } from '@/models'
 import { message } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   children: any
@@ -36,6 +37,7 @@ interface Props {
 }
 
 const TableQuickEdit = (props: Props) => {
+  const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
@@ -199,7 +201,7 @@ const TableQuickEdit = (props: Props) => {
       } else {
         props.onUpdate?.()
       }
-      message.success('编辑成功！')
+      message.success(t('common.editSuccess'))
       if (type === 1) {
         setIsShowControl(false)
       }
