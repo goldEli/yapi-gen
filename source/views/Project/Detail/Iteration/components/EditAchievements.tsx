@@ -3,9 +3,19 @@ import CommonModal from '@/components/CommonModal'
 import { createRef, useEffect, useState } from 'react'
 import Achievements from './Achievements'
 import { useModel } from '@/models'
-import { editButton } from '@/components/StyleCommon'
-import { message } from 'antd'
+import { Button, message, Space } from 'antd'
 import { getIsPermission } from '@/tools'
+import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
+
+const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  height: 80,
+  padding: '0 24px',
+})
 
 interface Props {
   isAchievements: boolean
@@ -17,6 +27,7 @@ interface Props {
 }
 
 const EditAchievements = (props: Props) => {
+  const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const childRef: any = createRef()
   const { updateAchieve, getAchieveInfo, getIterateInfo } = useModel('iterate')
@@ -66,16 +77,17 @@ const EditAchievements = (props: Props) => {
       isVisible={props.isAchievements}
       width={784}
       title={isEdit ? '编辑迭代成果' : '迭代成果'}
-      hasTop={
-        !isEdit && !isCanEdit ? (
-          <div className={editButton} onClick={() => setIsEdit(true)}>
-            编辑
-          </div>
-        ) : null
-      }
-      isShowFooter={!isEdit}
       onClose={onClose}
       onConfirm={onConfirm}
+      hasFooter={
+        !isEdit && !isCanEdit ? (
+          <ModalFooter size={16}>
+            <Button onClick={() => setIsEdit(true)} type="primary">
+              {t('common.edit')}
+            </Button>
+          </ModalFooter>
+        ) : null
+      }
     >
       {props.isAchievements && (
         <Achievements
