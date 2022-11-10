@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { Navigate, useRoutes } from 'react-router-dom'
 import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
@@ -21,6 +21,10 @@ const routes = [
     path: '',
     element: <Container />,
     children: [
+      {
+        path: '/',
+        element: <Navigate to="/staff" />,
+      },
       {
         path: '/staff',
         element: lazy(() => import('@/views/staff')),

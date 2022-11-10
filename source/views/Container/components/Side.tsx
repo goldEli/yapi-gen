@@ -166,7 +166,7 @@ export const Side = () => {
       {
         key: '/information',
         title: t('container.information'),
-        icon: <IconFont type="staff" style={{ fontSize: 20 }} />,
+        icon: <IconFont type="log" style={{ fontSize: 20 }} />,
         path: '/Information/send/1',
         isHidden: getIsPermission('员工'),
       },
