@@ -361,7 +361,7 @@ const Get = () => {
               options={options}
             />
           </SelectWrapBedeck>
-          <Checkbox onChange={onChange}>只看未阅</Checkbox>
+          <Checkbox onChange={onChange}>{t('p2.OnlySee')}</Checkbox>
         </Space>
         <CommonInput
           placeholder={t('p2.search')}
