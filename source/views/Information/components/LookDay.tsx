@@ -34,6 +34,7 @@ export const GrepWrap = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.45);
 `
+
 const Kong = () => (
   <span
     style={{
@@ -373,8 +374,8 @@ const LookDay = (props: any) => {
                           <img
                             style={{
                               width: '40px',
-                              height: '40px',
-                              borderRadius: '8px',
+                              height: '42px',
+                              borderRadius: '4px',
                               cursor: 'pointer',
                             }}
                             src={item.path}
@@ -460,7 +461,7 @@ const LookDay = (props: any) => {
                               marginRight: '12px',
                             }}
                           >
-                            杨一
+                            
                           </span>
                           <span>{item.time}</span>
                         </div>
