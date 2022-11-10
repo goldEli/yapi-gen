@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
+import { TextWrapEditor } from '@/components/StyleCommon'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -53,7 +54,7 @@ const SurveyBox = styled.div({
   flexDirection: 'column',
 })
 
-const TargetWrap = styled.div({
+const TargetWrap = styled(TextWrapEditor)({
   marginTop: 22,
   height: 200,
   overflow: 'auto',

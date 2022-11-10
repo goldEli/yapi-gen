@@ -101,7 +101,6 @@ const ItemWrap = styled.div({
 
 const IconFontWrap = styled(IconFont)({
   fontSize: 16,
-  visibility: 'hidden',
   cursor: 'pointer',
   '&: hover': {
     color: '#2877ff',
@@ -113,11 +112,6 @@ const FilesItems = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  '&: hover': {
-    [IconFontWrap.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 const ImportDemand = () => {

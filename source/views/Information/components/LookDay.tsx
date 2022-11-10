@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
-import { NameWrap } from '@/components/StyleCommon'
+import { NameWrap, TextWrapEditor } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
 import {
   BigWrap,
@@ -280,14 +280,18 @@ const LookDay = (props: any) => {
             >
               <LabelTitle title={texts[props.type]?.name} />
               {article1 ? (
-                <div dangerouslySetInnerHTML={{ __html: article1 }} />
+                <TextWrapEditor
+                  dangerouslySetInnerHTML={{ __html: article1 }}
+                />
               ) : (
                 <Kong />
               )}
 
               <LabelTitle title={texts[props.type]?.name2} />
               {article2 ? (
-                <div dangerouslySetInnerHTML={{ __html: article2 }} />
+                <TextWrapEditor
+                  dangerouslySetInnerHTML={{ __html: article2 }}
+                />
               ) : (
                 <Kong />
               )}

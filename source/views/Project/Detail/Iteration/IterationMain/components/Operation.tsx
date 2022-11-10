@@ -19,6 +19,7 @@ import NoData from '@/components/NoData'
 import EditAchievements from '../../components/EditAchievements'
 import IterationStatus from '../../components/IterationStatus'
 import CommonModal from '@/components/CommonModal'
+import { TextWrapEditor } from '@/components/StyleCommon'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -189,7 +190,7 @@ const Operation = (props: Props) => {
           }}
         >
           {props.currentDetail?.info ? (
-            <div
+            <TextWrapEditor
               dangerouslySetInnerHTML={{
                 __html: props.currentDetail?.info,
               }}

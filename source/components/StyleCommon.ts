@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 // 两次以上的公共样式
 
 /* eslint-disable complexity */
@@ -6,6 +7,12 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
+
+const TextWrapEditor = styled.div({
+  p: {
+    marginBottom: '0px!important',
+  },
+})
 
 const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
   {
@@ -790,4 +797,5 @@ export {
   IconFontWrapEdit,
   DateQuickWrap,
   CloseWrap,
+  TextWrapEditor,
 }

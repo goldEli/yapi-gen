@@ -7,7 +7,11 @@
 import { Table, Pagination, Modal, Space, Spin } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
+import {
+  HiddenText,
+  PaginationWrap,
+  TextWrapEditor,
+} from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -17,12 +21,12 @@ import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 
-const ContentWrap = styled.div({
+const ContentWrap = styled(TextWrapEditor)({
   display: 'flex',
   flexDirection: 'column',
   maxHeight: 600,
   overflow: 'auto',
-  paddingRight: 16,
+  padding: '0 24px 16px',
 })
 
 const SpaceWrap = styled(Space)({

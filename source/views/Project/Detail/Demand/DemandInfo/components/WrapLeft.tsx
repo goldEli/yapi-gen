@@ -20,13 +20,6 @@ import { getParamsData } from '@/tools'
 import { SliderWrap, ProgressWrapUpload } from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
 
-const WrapLeft = styled.div({
-  width: '100%',
-  height: '100%',
-  overflow: 'auto',
-  paddingBottom: 24,
-})
-
 const TextWrapEditor = styled.div({
   color: '#323233',
   fontSize: 14,
@@ -40,6 +33,13 @@ const TextWrapEditor = styled.div({
   p: {
     marginBottom: '0px!important',
   },
+})
+
+const WrapLeft = styled.div({
+  width: '100%',
+  height: '100%',
+  overflow: 'auto',
+  paddingBottom: 24,
 })
 
 const InfoItem = styled.div<{ activeState?: any }>(

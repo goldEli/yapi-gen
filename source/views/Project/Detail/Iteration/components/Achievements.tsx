@@ -7,7 +7,11 @@
 import Editor from '@/components/Editor'
 import UploadAttach from '../../Demand/components/UploadAttach'
 import { css } from '@emotion/css'
-import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
+import {
+  AddWrap,
+  ProgressWrapUpload,
+  TextWrapEditor,
+} from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useModel } from '@/models'
@@ -37,11 +41,8 @@ const label = css`
   margin-bottom: 8px;
 `
 
-const EditorBox = styled.div({
+const EditorBox = styled(TextWrapEditor)({
   margin: '8px 0 24px 0',
-  p: {
-    marginBottom: '0px!important',
-  },
 })
 
 interface Props {
