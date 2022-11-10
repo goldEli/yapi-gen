@@ -101,6 +101,7 @@ const ItemWrap = styled.div({
 
 const IconFontWrap = styled(IconFont)({
   fontSize: 16,
+  color: '#969799',
   cursor: 'pointer',
   '&: hover': {
     color: '#2877ff',
