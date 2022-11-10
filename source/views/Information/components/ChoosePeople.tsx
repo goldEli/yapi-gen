@@ -158,7 +158,9 @@ const ChoosePeople = (props: any) => {
         >
           <AddWrap
             style={{
-              marginLeft: allMemberList?.length ? '40px' : 0,
+              marginLeft: allMemberList?.length ? '40px' : '10px',
+              width: '24px',
+              height: '24px',
             }}
           >
             <IconFont

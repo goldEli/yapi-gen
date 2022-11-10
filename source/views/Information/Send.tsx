@@ -229,6 +229,7 @@ const Send = () => {
                 setVisibleLook(true)
                 setShowId(record.id)
                 setType(record.type)
+                init()
               }}
               style={{
                 fontSize: '14px',

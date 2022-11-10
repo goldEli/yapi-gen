@@ -56,7 +56,8 @@ const FormWrap = styled.div<{ left: any }>`
   transform: translate(-50%, -50%) rotateY(${({ left }) => left}deg);
   transition: all 2s linear;
   box-sizing: border-box;
-  padding: 24px;
+  padding-left: 24px;
+  padding-right: 4px;
   padding-top: 0px;
 `
 const HiddenWrap = styled.div`
@@ -266,7 +267,7 @@ const LookDay = (props: any) => {
               style={{
                 height: '800px',
                 overflow: 'scroll',
-                paddingRight: '5px',
+                paddingRight: '24px',
               }}
             >
               <LabelTitle title={texts[props.type]?.name} />
@@ -321,7 +322,9 @@ const LookDay = (props: any) => {
                               src={i.avatar}
                             />
                           ) : (
-                            <NameWrap style={{ margin: 0 }}>
+                            <NameWrap
+                              style={{ margin: 0, width: 24, height: 24 }}
+                            >
                               {String(
                                 i.name.substring(0, 1).trim().slice(0, 1),
                               ).toLocaleUpperCase()}
@@ -516,7 +519,9 @@ const LookDay = (props: any) => {
                                 src={i.avatar}
                               />
                             ) : (
-                              <NameWrap style={{ margin: 0 }}>
+                              <NameWrap
+                                style={{ margin: 0, width: 24, height: 24 }}
+                              >
                                 {String(
                                   i.name.substring(0, 1).trim().slice(0, 1),
                                 ).toLocaleUpperCase()}
@@ -538,7 +543,11 @@ const LookDay = (props: any) => {
               </div>
               <LabelTitle title={t('common.comment')} />
               <div>
-                <TextareaWrap>
+                <TextareaWrap
+                  style={{
+                    marginTop: '0px',
+                  }}
+                >
                   <Input.TextArea
                     ref={myArea}
                     autoSize={{ minRows: 1, maxRows: 10 }}
