@@ -229,7 +229,9 @@ const Send = () => {
                 setVisibleLook(true)
                 setShowId(record.id)
                 setType(record.type)
-                init()
+                setTimeout(() => {
+                  init()
+                }, 1000)
               }}
               style={{
                 fontSize: '14px',
