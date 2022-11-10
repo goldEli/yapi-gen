@@ -8,6 +8,9 @@
       "t3d": "Finish the job this month ",
       "t3t": "Work to be completed next month"
     },
+    "m1": "Description ",
+    "d1": " Edit iteration result ",
+    "d2": " iteration result ",
     "search": "search daily",
     "addAdjunct": "add attachment",
     "managingDemand": "managing Demand",

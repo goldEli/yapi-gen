@@ -22,6 +22,7 @@ interface Props {
   onClose(): void
   id: any
   projectId: any
+
   // 是否从详情过来
   isInfo: boolean
 }
@@ -38,7 +39,7 @@ const EditAchievements = (props: Props) => {
   )
 
   useEffect(() => {
-    setIsEdit(props.isInfo ? true : false)
+    setIsEdit(!!props.isInfo)
   }, [])
 
   // 关闭迭代成果弹窗
@@ -56,7 +57,7 @@ const EditAchievements = (props: Props) => {
         id: props.id,
         ...params,
       })
-      message.success('编辑成功！')
+      message.success(t('common.editSuccess') as string)
       onClose()
       childRef?.current?.reset()
       if (props.isInfo) {
@@ -76,7 +77,7 @@ const EditAchievements = (props: Props) => {
     <CommonModal
       isVisible={props.isAchievements}
       width={784}
-      title={isEdit ? '编辑迭代成果' : '迭代成果'}
+      title={isEdit ? t('p2.d1') : t('p2.d2')}
       onClose={onClose}
       onConfirm={onConfirm}
       hasFooter={
@@ -89,7 +90,7 @@ const EditAchievements = (props: Props) => {
         ) : null
       }
     >
-      {props.isAchievements && (
+      {props.isAchievements ? (
         <Achievements
           onRef={childRef}
           isEdit={isEdit}
@@ -98,7 +99,7 @@ const EditAchievements = (props: Props) => {
           id={props.id}
           isReadonly={props.isInfo}
         />
-      )}
+      ) : null}
     </CommonModal>
   )
 }

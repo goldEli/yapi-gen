@@ -17,6 +17,7 @@ import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { getIsPermission } from '@/tools'
+import { t } from 'i18next'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -159,7 +160,7 @@ const Achievements = (props: Props) => {
     <Wrap ref={WrapDom} isModal={props?.isModal}>
       {props.isEdit ? (
         <div className={labelWrap}>
-          <span className={label}>描述</span>
+          <span className={label}>{t('p2.m1') as string}</span>
           <Editor value={html} onChangeValue={setHtml} height={280} />
         </div>
       ) : (
@@ -170,7 +171,7 @@ const Achievements = (props: Props) => {
         />
       )}
       <div className={labelWrap}>
-        <span className={label}>附件</span>
+        <span className={label}>{t('common.attachment') as string}</span>
         <UploadAttach
           child={
             isShow ? (
@@ -197,7 +198,7 @@ const Achievements = (props: Props) => {
                 }}
               >
                 <IconFont type="plus" />
-                <div>添加附件</div>
+                <div>{t('p2.addAdjunct') as string}</div>
               </AddWrap>
             ) : (
               (null as any)

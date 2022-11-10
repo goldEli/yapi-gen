@@ -49,14 +49,14 @@ const Kong = () => (
 
 const FormWrap = styled.div<{ left: any }>`
   width: 784px;
-  height: 898px;
+  height: 90vh;
   background: #ffffff;
   border-radius: 8px;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%) rotateY(${({ left }) => left}deg);
-  transition: all 2s linear;
+
   box-sizing: border-box;
   padding-left: 24px;
   padding-right: 4px;
@@ -69,7 +69,7 @@ const HiddenWrap = styled.div`
   perspective-origin: center;
   /* overflow: hidden; */
   width: 784px;
-  height: 898px;
+  height: 90vh;
   border-radius: 8px;
   position: absolute;
   left: 50%;
@@ -273,7 +273,7 @@ const LookDay = (props: any) => {
             <div
               ref={messagesEndRef}
               style={{
-                height: '800px',
+                height: 'calc(100% - 100px)',
                 overflow: 'scroll',
                 paddingRight: '24px',
               }}
@@ -609,7 +609,9 @@ const LookDay = (props: any) => {
                             src={item.avatar}
                           />
                         ) : (
-                          <NameWrap style={{ margin: 0 }}>
+                          <NameWrap
+                            style={{ margin: 0, width: 24, height: 24 }}
+                          >
                             {String(
                               item.name.substring(0, 1).trim().slice(0, 1),
                             ).toLocaleUpperCase()}
