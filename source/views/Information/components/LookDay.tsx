@@ -16,6 +16,7 @@ import {
   IconFontWrap,
   NewNameWrap,
 } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
+import { css } from '@emotion/css'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Input, message, Modal, Spin } from 'antd'
@@ -99,7 +100,11 @@ const Arrow = styled.div`
 const Arrow2 = styled(Arrow)`
   left: 80%;
 `
-
+const hover = css`
+  &:hover {
+    color: #2877ff !important;
+  }
+`
 const LabelTitle = (props: any) => {
   return (
     <div
@@ -259,6 +264,7 @@ const LookDay = (props: any) => {
                 onClick={() => props.onEditClose()}
               >
                 <IconFont
+                  className={hover}
                   type="close"
                   style={{ color: '#323233', fontSize: 20 }}
                 />
@@ -566,7 +572,7 @@ const LookDay = (props: any) => {
                       fontSize: '12px',
                       fontWeight: '400',
                       color: '#FFFFFF',
-                      marginTop: '8px',
+                      marginTop: '14px',
                       border: 'none',
                       borderRadius: '5px',
                       cursor: 'pointer',
@@ -592,8 +598,8 @@ const LookDay = (props: any) => {
                         {item.avatar ? (
                           <img
                             style={{
-                              width: 32,
-                              height: 32,
+                              width: 24,
+                              height: 24,
                               borderRadius: 16,
                             }}
                             src={item.avatar}

@@ -175,14 +175,14 @@ const WhiteDay = (props: any) => {
             name="info"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Editor height={150} />
+            <Editor height={178} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name2} />}
             name="info2"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Editor height={150} />
+            <Editor height={178} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.copySend')} />}
