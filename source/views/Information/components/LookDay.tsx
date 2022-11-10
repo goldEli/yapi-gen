@@ -254,6 +254,7 @@ const LookDay = (props: any) => {
               <span
                 style={{
                   cursor: 'pointer',
+                  marginRight: '24px',
                 }}
                 onClick={() => props.onEditClose()}
               >
@@ -615,6 +616,7 @@ const LookDay = (props: any) => {
                       <span
                         style={{
                           color: '#969799',
+                          fontSize: '12px',
                         }}
                       >
                         {item.created_at}
@@ -626,6 +628,7 @@ const LookDay = (props: any) => {
                         width: '100%',
                         wordBreak: 'break-all',
                         color: '#646566',
+                        marginTop: '-8px',
                       }}
                     >
                       {item.content}

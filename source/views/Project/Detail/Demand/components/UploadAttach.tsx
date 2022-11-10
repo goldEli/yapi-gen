@@ -227,34 +227,30 @@ const ListItem = (props: any) => {
             height: '20px',
           }}
         >
-          {isDownload ? (
-            <span
-              onClick={Download}
-              style={{
-                marginRight: '12px',
-                cursor: 'pointer',
-              }}
-            >
-              <IconFont
-                style={{ fontSize: 18, color: '#969799' }}
-                type="download"
-              />
-            </span>
-          ) : null}
+          <span
+            onClick={Download}
+            style={{
+              marginRight: '12px',
+              cursor: 'pointer',
+            }}
+          >
+            <IconFont
+              style={{ fontSize: 18, color: '#969799' }}
+              type="download"
+            />
+          </span>
 
-          {isShowDel ? (
-            <span
-              style={{
-                cursor: 'pointer',
-              }}
-              onClick={Remove}
-            >
-              <IconFont
-                style={{ fontSize: 18, color: '#969799' }}
-                type="delete"
-              />
-            </span>
-          ) : null}
+          <span
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={Remove}
+          >
+            <IconFont
+              style={{ fontSize: 18, color: '#969799' }}
+              type="delete"
+            />
+          </span>
         </Second>
       </div>
     </BigWrap>
