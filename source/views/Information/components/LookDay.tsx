@@ -605,7 +605,9 @@ const LookDay = (props: any) => {
                             src={item.avatar}
                           />
                         ) : (
-                          <NameWrap style={{ margin: 0 }}>
+                          <NameWrap
+                            style={{ margin: 0, width: 24, height: 24 }}
+                          >
                             {String(
                               item.name.substring(0, 1).trim().slice(0, 1),
                             ).toLocaleUpperCase()}
