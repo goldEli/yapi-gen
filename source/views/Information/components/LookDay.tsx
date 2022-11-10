@@ -461,7 +461,7 @@ const LookDay = (props: any) => {
                               marginRight: '12px',
                             }}
                           >
-                            
+                            {item.name ?? ''}
                           </span>
                           <span>{item.time}</span>
                         </div>
