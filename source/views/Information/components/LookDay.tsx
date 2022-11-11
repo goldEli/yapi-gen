@@ -158,6 +158,7 @@ const LookDay = (props: any) => {
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
   const [isSpinning, setIsSpinning] = useState(true)
+  const [name, setName] = useState('')
   const messagesEndRef = useRef<any>(null)
   const onChangeLeft = (values: any, type: any) => {
     props.onChange(type, props.editId)
@@ -171,6 +172,7 @@ const LookDay = (props: any) => {
     const res = await getReportDetail(props.editId)
 
     setTitle(res.data.info.name)
+    setName(res.data.info.user_name)
     setArticle1(res.data.info.finish_content)
     setArticle2(res.data.info.plan_content)
     const arr = res.data.copysend_list.map((item: any) => ({
@@ -474,7 +476,7 @@ const LookDay = (props: any) => {
                               marginRight: '12px',
                             }}
                           >
-                            {item.name ?? ''}
+                            {name}
                           </span>
                           <span>{item.time}</span>
                         </div>
