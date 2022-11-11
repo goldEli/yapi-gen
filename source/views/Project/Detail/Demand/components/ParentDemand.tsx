@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */

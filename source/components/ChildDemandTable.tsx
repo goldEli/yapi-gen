@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-undefined */
 import { useTranslation } from 'react-i18next'

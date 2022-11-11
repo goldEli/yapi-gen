@@ -154,7 +154,6 @@ client.config({
         message.error(data.message)
         throw new Error(data.code)
       }
-      // eslint-disable-next-line consistent-return
       return {
         code: Number(data.code),
         data: data.data,

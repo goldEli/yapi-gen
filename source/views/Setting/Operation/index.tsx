@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */

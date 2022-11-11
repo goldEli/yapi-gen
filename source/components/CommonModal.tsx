@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 import { Modal, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'

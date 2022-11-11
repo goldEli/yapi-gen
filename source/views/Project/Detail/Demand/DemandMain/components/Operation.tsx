@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/indent */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'

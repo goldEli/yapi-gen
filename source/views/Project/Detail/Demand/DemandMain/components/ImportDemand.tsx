@@ -3,7 +3,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { StepBoxWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'

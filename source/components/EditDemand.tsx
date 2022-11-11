@@ -4,7 +4,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 /* eslint-disable max-lines */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/no-unstable-nested-components */

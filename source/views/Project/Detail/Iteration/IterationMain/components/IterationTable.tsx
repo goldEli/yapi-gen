@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Pagination, Dropdown, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'

@@ -201,7 +201,6 @@ export const getSearchField: any = async (params: any) => {
   const filterCustomList = filter_fidlds.filter(
     (item: any) => item.group_name === '自定义字段',
   )
-  // eslint-disable-next-line consistent-return
 
   return {
     filterAllList,

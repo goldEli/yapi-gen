@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-handler-names */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'

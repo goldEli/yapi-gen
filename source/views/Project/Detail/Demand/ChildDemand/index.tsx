@@ -1,6 +1,5 @@
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */

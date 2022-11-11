@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import ProjectCard from '@/components/ProjectCard'
 import styled from '@emotion/styled'

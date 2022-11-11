@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
