@@ -1059,14 +1059,7 @@ const EditDemand = (props: Props) => {
                     onChangeTag={onChangeTag}
                     isQuick={props.isQuickCreate}
                     addWrap={
-                      <AddWrap
-                        style={{
-                          width: '32px',
-                          paddingLeft: '7px',
-                          boxSizing: 'border-box',
-                        }}
-                        hasDash
-                      >
+                      <AddWrap hasDash>
                         <IconFont type="plus" />
                       </AddWrap>
                     }

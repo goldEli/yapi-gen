@@ -11,7 +11,7 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getParamsData } from '@/tools'
+import { computedAccuracy, getParamsData } from '@/tools'
 import { TextWrapEditor } from '@/components/StyleCommon'
 
 const TopWrap = styled.div({
@@ -189,8 +189,11 @@ const IterationInfo = () => {
                   width={125}
                   type="circle"
                   format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                  percent={Math.trunc(
-                    (iterateInfo?.finishCount / iterateInfo?.storyCount) * 100,
+                  percent={computedAccuracy(
+                    Math.trunc(
+                      iterateInfo?.finishCount / iterateInfo?.storyCount,
+                    ),
+                    100,
                   )}
                   strokeWidth={12}
                 />

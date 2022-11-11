@@ -72,12 +72,6 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
     minHeight: 32,
     borderRadius: 4,
     padding: '0 8px',
-    '.children': {
-      maxWidth: '60%',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
   },
   ({ isCanEdit, isTable }) => ({
     cursor: isCanEdit ? 'pointer' : 'inherit',
@@ -261,15 +255,15 @@ const DelWrap = styled.span({
   textDecoration: 'line-through',
 })
 
+// 添加符号 例： 标签添加与附件添加
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    height: 32,
+    justifyContent: 'center',
     boxSizing: 'border-box',
     cursor: 'pointer',
     borderRadius: 6,
-    width: 'fit-content',
     '.anticon': {
       fontSize: 16,
       alignItems: 'center',
@@ -283,6 +277,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     },
   },
   ({ hasColor, hasDash }) => ({
+    width: hasDash ? 22 : 'fit-content',
+    height: hasDash ? 22 : 32,
     padding: hasDash ? '0 4px' : hasColor ? '0 8px' : 0,
     color: hasColor ? '#2877FF' : '#969799',
     border: hasDash ? '1px dashed #969799' : '1px solid white',
