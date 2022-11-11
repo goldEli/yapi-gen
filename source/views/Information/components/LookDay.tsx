@@ -11,17 +11,14 @@ import {
   GredParent,
   Second,
 } from '@/views/Project/Detail/Demand/components/UploadAttach'
-import { TextareaWrap } from '@/views/Project/Detail/Demand/DemandInfo/components/WrapRight'
-import {
-  IconFontWrap,
-  NewNameWrap,
-} from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
+
+import { NewNameWrap } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { css } from '@emotion/css'
-import { keyframes } from '@emotion/react'
+
 import styled from '@emotion/styled'
 import { Input, message, Modal, Spin } from 'antd'
-import { t, use } from 'i18next'
-import React, { useEffect, useRef, useState } from 'react'
+import { t } from 'i18next'
+import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { InnerLine } from './RelatedNeed'
 
@@ -560,12 +557,16 @@ const LookDay = (props: any) => {
               </div>
               <LabelTitle title={t('common.comment')} />
               <div>
-                <TextareaWrap
+                <div
                   style={{
                     marginTop: '0px',
+                    position: 'relative',
                   }}
                 >
                   <Input.TextArea
+                    style={{
+                      paddingBottom: '40px',
+                    }}
                     ref={myArea}
                     autoSize={{ minRows: 1, maxRows: 10 }}
                     placeholder={t('common.pleaseEnter')}
@@ -585,11 +586,14 @@ const LookDay = (props: any) => {
                       border: 'none',
                       borderRadius: '5px',
                       cursor: 'pointer',
+                      position: 'absolute',
+                      bottom: '8px',
+                      right: '8px',
                     }}
                   >
                     {t('common.comment') as unknown as string}
                   </button>
-                </TextareaWrap>
+                </div>
               </div>
               {contentList.length < 1
                 ? ''
