@@ -110,7 +110,7 @@ const Get = () => {
       key: 'file_count',
       width: 200,
       render: (text: string) => {
-        return <span>{`${text}${t('p2.g')}`}</span>
+        return <span>{`${text}${t('p2.ge')}`}</span>
       },
     },
     {
@@ -121,7 +121,7 @@ const Get = () => {
       key: 'story_count',
       width: 150,
       render: (text: string) => {
-        return <span>{`${text}${t('p2.g')}`}</span>
+        return <span>{`${text}${t('p2.ge')}`}</span>
       },
     },
     {

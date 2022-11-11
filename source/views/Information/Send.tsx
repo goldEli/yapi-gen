@@ -134,7 +134,7 @@ const Send = () => {
       key: 'file_count',
       width: 200,
       render: (text: string) => {
-        return <span>{`${text}${t('p2.g')}`}</span>
+        return <span>{`${text}${t('p2.ge')}`}</span>
       },
     },
     {
@@ -145,7 +145,7 @@ const Send = () => {
       key: 'story_count',
       width: 150,
       render: (text: string) => {
-        return <span>{`${text}${t('p2.g')}`}</span>
+        return <span>{`${text}${t('p2.ge')}`}</span>
       },
     },
     {
