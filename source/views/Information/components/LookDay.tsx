@@ -568,6 +568,7 @@ const LookDay = (props: any) => {
                   <Input.TextArea
                     style={{
                       paddingBottom: '40px',
+                      marginLeft: '3px',
                     }}
                     ref={myArea}
                     autoSize={{ minRows: 1, maxRows: 10 }}
