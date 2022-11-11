@@ -17,7 +17,11 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { SliderWrap, ProgressWrapUpload } from '@/components/StyleCommon'
+import {
+  SliderWrap,
+  ProgressWrapUpload,
+  AddWrap,
+} from '@/components/StyleCommon'
 import Viewer from 'react-viewer'
 
 const TextWrapEditor = styled.div({
@@ -72,55 +76,6 @@ const TextWrap = styled.div({
     maxWidth: '20%',
   },
 })
-
-export const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    height: 26,
-    boxSizing: 'border-box',
-    cursor: 'pointer',
-    borderRadius: 6,
-    width: 'fit-content',
-    '.anticon': {
-      fontSize: 16,
-      alignItems: 'center',
-      svg: {
-        margin: 0,
-      },
-    },
-    div: {
-      fontSize: 14,
-      fontWeight: 400,
-    },
-  },
-  ({ hasColor, hasDash }) => ({
-    padding: hasColor || hasDash ? '0 4px' : 0,
-    color: hasColor ? '#2877FF' : '#969799',
-    border: hasColor
-      ? '1px solid #2877FF'
-      : hasDash
-      ? '1px dashed #969799'
-      : '1px solid white',
-    '.anticon > svg': {
-      color: hasColor ? '#2877FF' : '#969799',
-    },
-    '.anticon ': {
-      marginRight: hasDash ? 0 : 4,
-    },
-    '&: hover': {
-      border: hasDash ? '1px dashed #2877ff' : '',
-      '.anticon': {
-        svg: {
-          color: '#2877ff',
-        },
-      },
-      div: {
-        color: '#2877ff',
-      },
-    },
-  }),
-)
 
 const WrapLeftBox = () => {
   const [t] = useTranslation()
