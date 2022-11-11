@@ -144,7 +144,7 @@ const ChoosePeople = (props: any) => {
         <Popover
           key={isOpen.toString()}
           visible={isOpen}
-          placement="bottomRight"
+          placement="topRight"
           trigger="click"
           onVisibleChange={visible => setIsOpen(visible)}
           getTooltipContainer={node => node}

@@ -57,7 +57,7 @@ const WhiteDay = (props: any) => {
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
   const [title, setTitle] = useState<any>([])
-  const leftDom = useRef<HTMLInputElement>(null)
+  const leftDom: any = useRef<HTMLInputElement>(null)
   const ed1: any = useRef(null)
 
   const close = () => {
@@ -153,6 +153,11 @@ const WhiteDay = (props: any) => {
       setDefaultValue()
     }
   }, [props.editId, props.visibleEdit])
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      leftDom.current.scrollTop = leftDom.current.scrollHeight
+    }, 200)
+  }
 
   return (
     <CommonModal
@@ -219,7 +224,7 @@ const WhiteDay = (props: any) => {
             label={<LabelTitle title={t('p2.managingDemand')} />}
             name="needs"
           >
-            <RelatedNeed initValue={needValue} />
+            <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
           </Form.Item>
         </Form>
       </div>

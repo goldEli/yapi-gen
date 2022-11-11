@@ -180,6 +180,9 @@ export const TextareaWrap = styled.div({
     border: 'none',
     boxShadow: 'none',
   },
+  '&:hover': {
+    border: '1px solid #2877ff',
+  },
 })
 
 const SetHead = styled.div`

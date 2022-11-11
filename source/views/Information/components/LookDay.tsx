@@ -213,7 +213,9 @@ const LookDay = (props: any) => {
   }, [props.editId, props.visible])
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
+    setTimeout(() => {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
+    }, 200)
   }
   const sendComment = async () => {
     if (!value) {

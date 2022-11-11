@@ -33,7 +33,7 @@ const WrapDiv = styled.div`
   .ant-form-item-row {
     display: flex;
     flex-direction: row !important;
-    align-items: center;
+    /* align-items: center; */
   }
   .ant-form-item-label {
     padding: 0px !important;
@@ -41,6 +41,9 @@ const WrapDiv = styled.div`
   }
   .ant-form-item {
     margin-bottom: 16px;
+  }
+  .ant-form-item-explain {
+    display: none;
   }
 `
 const list = [
@@ -135,7 +138,13 @@ const RelatedNeed = (props: any) => {
 
   return (
     <div>
-      <AddWrap onClick={() => setShow(true)} hasColor>
+      <AddWrap
+        onClick={() => {
+          setShow(true)
+          props.onBootom()
+        }}
+        hasColor
+      >
         <IconFont type="plus" />
         <div>{t('p2.RelatedRequirements')}</div>
       </AddWrap>
@@ -148,7 +157,11 @@ const RelatedNeed = (props: any) => {
           }}
         >
           <Form form={lessForm}>
-            <Form.Item name="project" label={t('common.chooseProject')}>
+            <Form.Item
+              rules={[{ required: true, message: '' }]}
+              name="project"
+              label={t('common.chooseProject')}
+            >
               <Select
                 onSelect={onSelect}
                 labelInValue
@@ -161,7 +174,11 @@ const RelatedNeed = (props: any) => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="needs" label={t('p2.managingDemand')}>
+            <Form.Item
+              rules={[{ required: true, message: '' }]}
+              name="needs"
+              label={t('p2.managingDemand')}
+            >
               <Select
                 disabled={showNeed}
                 showSearch
