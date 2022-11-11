@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -41,7 +40,7 @@ const filArr2 = (data: any) => {
 export const getSearchField: any = async (params: any) => {
   // 成员列表
   if (params === 0) {
-    return
+    return null
   }
 
   const res = await getTreeList({ id: params })

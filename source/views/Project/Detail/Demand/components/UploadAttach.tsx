@@ -2,7 +2,6 @@
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useModel } from '@/models'
 import { message, Modal, notification, Upload, type UploadProps } from 'antd'
@@ -376,6 +375,8 @@ const UploadAttach = (props: Props) => {
       message.warning(t('project.uploadMax'))
       return Upload.LIST_IGNORE
     }
+
+    return ''
   }
 
   const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {

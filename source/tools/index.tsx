@@ -1,6 +1,5 @@
 // 使用多次的公共方法
 
-/* eslint-disable consistent-return */
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -196,7 +195,7 @@ function getTypeComponent(
 
 function arrayFlagLevel(array: any, grade: any) {
   if (!array || !array.length) {
-    return
+    return ''
   }
   array.forEach((item: any) => {
     item.grade = grade
