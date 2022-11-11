@@ -1,4 +1,5 @@
 import { createFromIconfontCN } from '@ant-design/icons'
+import { forwardRef, type CSSProperties } from 'react'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: [
@@ -6,4 +7,21 @@ const IconFont = createFromIconfontCN({
   ],
 })
 
-export default IconFont
+const Icon = (
+  props: {
+    type: string
+    className?: string
+    style?: CSSProperties
+    [key: string]: any
+  },
+  ref: any,
+) => (
+  <IconFont
+    ref={ref}
+    type={props.type}
+    className={props.className}
+    style={props.style}
+  />
+)
+
+export default forwardRef(Icon)
