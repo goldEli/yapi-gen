@@ -166,8 +166,11 @@ const LookDay = (props: any) => {
     props.onChange(type, props.editId)
   }
 
-  const setDefaultValue = async () => {
-    setIsSpinning(false)
+  const setDefaultValue = async (status?: number) => {
+    if (status !== 1) {
+      setIsSpinning(false)
+    }
+
     const res = await getReportDetail(props.editId)
 
     setTitle(res.data.info.name)
@@ -224,7 +227,7 @@ const LookDay = (props: any) => {
     })
     if (res.code === 0) {
       message.success(t('p2.conSuccess') as string)
-      setDefaultValue()
+      setDefaultValue(1)
       setValue('')
       scrollToBottom()
     }
