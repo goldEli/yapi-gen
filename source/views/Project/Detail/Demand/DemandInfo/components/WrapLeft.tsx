@@ -43,7 +43,7 @@ const WrapLeft = styled.div({
   width: '100%',
   height: '100%',
   overflow: 'auto',
-  paddingBottom: 24,
+  padding: '0 20px 24px 0',
 })
 
 const InfoItem = styled.div<{ activeState?: any }>(
@@ -215,6 +215,13 @@ const WrapLeftBox = () => {
                 value={schedule}
                 tipFormatter={(value: any) => `${value}%`}
                 onChange={value => setSchedule(value)}
+                tooltipVisible={
+                  demandInfo?.user
+                    ?.map((i: any) => i.user.id)
+                    ?.includes(userInfo?.id) &&
+                  demandInfo.status.is_start !== 1 &&
+                  demandInfo.status.is_end !== 1
+                }
                 disabled={
                   !(
                     demandInfo?.user

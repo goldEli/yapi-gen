@@ -264,7 +264,7 @@ function getDecimal(num: any) {
 // 解决计算精度丢失问题 value: 数量，phase：计算的倍数
 // 目前只考虑了1以下的数量计算
 function computedAccuracy(value: any, phase: any) {
-  const decimal = getDecimal(String(value).split('.')[1].length)
+  const decimal = getDecimal(String(value).split('.')[1]?.length)
   return (Number(String(value).split('.')[1]) * phase) / Number(decimal)
 }
 
