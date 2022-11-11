@@ -92,23 +92,21 @@ const CompanyWrap = styled.div<{ active: boolean }>(
   }),
 )
 
-const IconFontWrap = styled(IconFont)<{ active: boolean }>(
-  {
-    width: 24,
-    height: 24,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    '&: hover': {
-      background: '#F0F4FA',
-    },
-  },
-  ({ active }) => ({
-    background: active ? '#f0f4fa' : 'white',
-  }),
-)
+const IconFontWrap = styled(IconFont)<{ 'data-active'?: boolean }>`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    background: #f0f4fa;
+  }
+  ${props => ({
+    background: props['data-active'] ? '#f0f4fa' : 'white',
+  })}
+`
 
 const Item = styled.div<{ active: boolean }>(
   {
@@ -182,7 +180,6 @@ const NoPermission = () => {
         getTicket()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -196,9 +193,9 @@ const NoPermission = () => {
           active={i.id === activeId}
         >
           <div>{i.name}</div>
-          {i.id === activeId
-            && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
-          }
+          {i.id === activeId && (
+            <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+          )}
         </Item>
       ))}
     </div>
@@ -240,7 +237,7 @@ const NoPermission = () => {
                 className="icon"
                 type="swap"
                 style={{ fontSize: 20 }}
-                active={isVisible}
+                data-active={isVisible}
               />
             </Tooltip>
           </Popover>
