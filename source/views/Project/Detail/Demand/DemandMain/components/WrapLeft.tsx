@@ -253,7 +253,7 @@ const TreeItem = (props: any) => {
           trigger="hover"
         >
           <IconFont
-            onClick={e => {
+            onClick={(e: any) => {
               e.stopPropagation()
               setVisiblePop(true)
             }}

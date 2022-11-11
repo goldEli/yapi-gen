@@ -110,7 +110,7 @@ const Get = () => {
       key: 'file_count',
       width: 200,
       render: (text: string) => {
-        return <span>{`${text}${t('p2.g')}`}</span>
+        return <span>{`${text}${t('p2.ge')}`}</span>
       },
     },
     {
@@ -121,7 +121,7 @@ const Get = () => {
       key: 'story_count',
       width: 150,
       render: (text: string) => {
-        return <span>{`${text}${t('p2.g')}`}</span>
+        return <span>{`${text}${t('p2.ge')}`}</span>
       },
     },
     {
@@ -363,7 +363,7 @@ const Get = () => {
               options={options}
             />
           </SelectWrapBedeck>
-          <Checkbox onChange={onChange}>只看未阅</Checkbox>
+          <Checkbox onChange={onChange}>{t('p2.OnlySee')}</Checkbox>
         </Space>
         <CommonInput
           placeholder={t('p2.search')}

@@ -199,7 +199,7 @@ const MoreContent = (props: MoreProps) => {
             }
             onVisibleChange={onVisibleChange}
           >
-            <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
+            <RowIconFont onClick={(e: any) => onChangeVisible(e)} type="more" />
           </Dropdown>
         </MoreWrap>
       ) : (
