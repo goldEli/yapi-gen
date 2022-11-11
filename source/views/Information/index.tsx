@@ -229,7 +229,14 @@ const Information = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : (
-          <Popover placement="bottomLeft" visible={showPop} content={content}>
+          <Popover
+            placement="bottomLeft"
+            trigger="hover"
+            onVisibleChange={visible => setShowPop(visible)}
+            visible={showPop}
+            content={content}
+            getPopupContainer={node => node}
+          >
             <AddButton onClick={() => setShowPop(!showPop)}>
               <IconFont
                 style={{

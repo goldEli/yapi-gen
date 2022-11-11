@@ -58,6 +58,7 @@ const WhiteDay = (props: any) => {
   const [needValue, setNeedValue] = useState<any>([])
   const [title, setTitle] = useState<any>([])
   const leftDom = useRef<HTMLInputElement>(null)
+  const ed1: any = useRef(null)
 
   const close = () => {
     form.resetFields()
@@ -146,6 +147,7 @@ const WhiteDay = (props: any) => {
       }),
     )
   }
+
   useEffect(() => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
@@ -173,14 +175,14 @@ const WhiteDay = (props: any) => {
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name} />}
             name="info"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: t('common.pleaseEnter') }]}
           >
-            <Editor height={178} />
+            <Editor ref={ed1} height={178} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name2} />}
             name="info2"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: t('common.pleaseEnter') }]}
           >
             <Editor height={178} />
           </Form.Item>

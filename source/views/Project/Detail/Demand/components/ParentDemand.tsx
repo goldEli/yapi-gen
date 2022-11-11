@@ -224,10 +224,6 @@ const ParentDemand = (props: Props) => {
             color: '#323233',
             fontSize: 14,
             cursor: isCanEdit ? 'pointer' : 'inherit',
-            maxWidth: '60%',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
           }}
         >
           {demandInfo?.parentName}

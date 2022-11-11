@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -105,7 +105,7 @@ const Wrap = styled.div<{ minHeight?: any }>(
   }),
 )
 
-const EditorBox = (props: Props) => {
+const EditorBox = (props: Props, ref: any) => {
   const [t, i18n] = useTranslation()
   const [key, setKey] = useState(1)
   const customParseLinkUrl = (url: string): string => {
@@ -209,6 +209,9 @@ const EditorBox = (props: Props) => {
     props.onChange?.(e.getHtml())
   }
 
+  useImperativeHandle(ref, () => {
+    return {}
+  })
   return (
     <Wrap id="editorWrap" minHeight={props?.height}>
       <Toolbar
@@ -230,4 +233,4 @@ const EditorBox = (props: Props) => {
   )
 }
 
-export default EditorBox
+export default forwardRef(EditorBox)
