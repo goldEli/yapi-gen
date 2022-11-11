@@ -49,10 +49,7 @@ const WaterMarkContent = (props: any) => {
     [text, fontSize, fillOpacity, fillColor],
   )
   return (
-    <div
-      dada-water
-      style={{ position: 'relative', width: '100%', height: ' 100%' }}
-    >
+    <div style={{ position: 'relative', width: '100%', height: ' 100%' }}>
       {props.children}
       <SvgTextBg {...memoInfo} />
     </div>
