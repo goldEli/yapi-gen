@@ -37,6 +37,7 @@ function filterTreeData(data: any) {
   return newData
 }
 
+// 自定义字段返回相应组件和快捷编辑的组件
 function getTypeComponent(
   params: any,
   isModal?: any,
@@ -251,6 +252,22 @@ function getNestedChildren(arr: any, parent?: any) {
   return resArr
 }
 
+// 计算小数需要的倍数
+function getDecimal(num: any) {
+  let val = '1'
+  for (var i = 0; i < num; i++) {
+    val += '0'
+  }
+  return val
+}
+
+// 解决计算精度丢失问题 value: 数量，phase：计算的倍数
+// 目前只考虑了1以下的数量计算
+function computedAccuracy(value: any, phase: any) {
+  const decimal = getDecimal(String(value).split('.')[1].length)
+  return (Number(String(value).split('.')[1]) * phase) / Number(decimal)
+}
+
 export {
   getIsPermission,
   openDetail,
@@ -259,4 +276,5 @@ export {
   getTypeComponent,
   getNestedChildren,
   filterTreeData,
+  computedAccuracy,
 }

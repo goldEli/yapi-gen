@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useModel } from '@/models'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, computedAccuracy } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -387,7 +387,7 @@ const MainTable = (props: Props) => {
             style={{ color: '#43BA9A' }}
             width={38}
             type="circle"
-            percent={Number(text) * 100}
+            percent={computedAccuracy(text, 100)}
             format={percent => (percent === 100 ? '100%' : `${percent}%`)}
             strokeWidth={8}
           />
