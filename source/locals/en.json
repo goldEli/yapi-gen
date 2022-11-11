@@ -1,5 +1,7 @@
 {
   "p2": {
+    "exportFields": "Export Demand Field Selection",
+    "editAchievements": "Editing achievements",
     "title": {
       "t1d": "Get your work done today ",
       "t1t": "Project Work for Tomorrow ",
@@ -8,6 +10,9 @@
       "t3d": "Finish the job this month ",
       "t3t": "Work to be completed next month"
     },
+    "noRead": "not read ",
+    "conSuccess": "Comment success ",
+    "ge": "count ",
     "m1": "Description ",
     "d1": " Edit iteration result ",
     "d2": " iteration result ",
@@ -390,7 +395,8 @@
     "pleaseChooseDeal": "Please select a handler",
     "add23": "Add",
     "finishCreate": "Finish and create the next one",
-    "confirm2": "Confirm"
+    "confirm2": "Confirm",
+    "finished": "Completed"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",

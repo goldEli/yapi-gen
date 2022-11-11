@@ -6,6 +6,7 @@ import Achievements from '../components/Achievements'
 import { editButton } from '@/components/StyleCommon'
 import EditAchievements from '../components/EditAchievements'
 import { useModel } from '@/models'
+import { useTranslation } from 'react-i18next'
 
 const wrap = css`
   height: calc(100% - 24px);
@@ -16,6 +17,7 @@ const wrap = css`
 `
 
 const Achieve = () => {
+  const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -53,7 +55,7 @@ const Achieve = () => {
             }}
           >
             <span onClick={() => setIsEdit(true)} className={editButton}>
-              编辑成果
+              {t('p2.editAchievements')}
             </span>
           </div>
         )}

@@ -8,6 +8,7 @@ import { StatusTag } from '@/components/StyleCommon'
 import { Popover } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const LiWrap = styled.div<{ color: any }>(
   {
@@ -33,15 +34,16 @@ interface Props {
 }
 
 const IterationStatus = (props: Props) => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
 
   // 获取迭代状态对应名称
   const onGetStatusName = (status: any) => {
     let name: any
     if (status === 1) {
-      name = '已开启'
+      name = t('common.opening1')
     } else {
-      name = status === 3 ? '已关闭' : '已完成'
+      name = status === 3 ? t('common.Closed') : t('common.finished')
     }
     return name
   }
@@ -61,15 +63,15 @@ const IterationStatus = (props: Props) => {
       }}
     >
       <LiWrap color="#F0F4FA" onClick={e => onClick(1, e)}>
-        <StatusTag status={1}>已开启</StatusTag>
+        <StatusTag status={1}>{t('common.opening1')}</StatusTag>
       </LiWrap>
 
       <LiWrap color="#EDF7F4" onClick={e => onClick(2, e)}>
-        <StatusTag status={2}>已完成</StatusTag>
+        <StatusTag status={2}>{t('common.finished')}</StatusTag>
       </LiWrap>
 
       <LiWrap color="#F2F2F4" onClick={e => onClick(3, e)}>
-        <StatusTag status={3}>已关闭</StatusTag>
+        <StatusTag status={3}>{t('common.Closed')}</StatusTag>
       </LiWrap>
     </div>
   )

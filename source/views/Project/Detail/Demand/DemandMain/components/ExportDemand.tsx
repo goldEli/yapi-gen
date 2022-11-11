@@ -43,7 +43,7 @@ const ExportDemand = (props: Props) => {
   return (
     <FieldsTemplate
       visible={props.isShowExport}
-      title="导出需求字段选择"
+      title={t('p2.exportFields')}
       importState={2}
       onClose={() => props.onClose(false)}
       onConfirm={onConfirmTemplate}

@@ -180,7 +180,7 @@ const Information = () => {
 
     const res = await writeDaily(obj, 1)
     if (res.code === 0) {
-      message.success('成功')
+      message.success(t('setting.success'))
       editClose()
       keyValue.change()
     }

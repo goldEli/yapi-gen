@@ -223,7 +223,7 @@ const LookDay = (props: any) => {
       content: value,
     })
     if (res.code === 0) {
-      message.success('评论成功')
+      message.success(t('p2.conSuccess') as string)
       setDefaultValue()
       setValue('')
       scrollToBottom()

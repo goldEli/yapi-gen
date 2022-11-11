@@ -110,7 +110,7 @@ const Get = () => {
       key: 'file_count',
       width: 200,
       render: (text: string) => {
-        return <span>{`${text}个`}</span>
+        return <span>{`${text}${t('p2.g')}`}</span>
       },
     },
     {
@@ -121,7 +121,7 @@ const Get = () => {
       key: 'story_count',
       width: 150,
       render: (text: string) => {
-        return <span>{`${text}个`}</span>
+        return <span>{`${text}${t('p2.g')}`}</span>
       },
     },
     {
@@ -152,7 +152,9 @@ const Get = () => {
                 marginRight: '8px',
               }}
             />
-            <span>{record.status === 1 ? t('p2.haveRead') : '未读'}</span>
+            <span>
+              {record.status === 1 ? t('p2.haveRead') : t('p2.noRead')}
+            </span>
           </div>
         )
       },

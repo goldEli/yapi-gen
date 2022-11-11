@@ -1,5 +1,7 @@
 {
   "p2": {
+    "exportFields": "导出需求字段选择",
+    "editAchievements": "编辑成果",
     "title": {
       "t1d": "今日完成工作",
       "t1t": "明日计划工作",
@@ -8,6 +10,9 @@
       "t3d": "本月完成工作",
       "t3t": "下月完成工作"
     },
+    "noRead": "未读",
+    "conSuccess": "评论成功",
+    "ge": "个",
     "m1": "描述",
     "d1": "编辑迭代成果",
     "d2": "迭代成果",
@@ -391,7 +396,8 @@
     "pleaseChooseDeal": "请选择处理人",
     "add23": "添加",
     "finishCreate": "完成并创建下一个",
-    "confirm2": "确认"
+    "confirm2": "确认",
+    "finished": "已完成"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",
