@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
@@ -359,14 +358,11 @@ const TableFilter = (props: any) => {
             ?.filter((k: any) =>
               props.isIteration ? k.key !== 'iterate_name' : k,
             )
-            ?.map((i: any) => {
-              if (
-                i.type === 'select_checkbox' ||
-                i.type === 'checkbox' ||
-                i.type === 'select' ||
-                i.type === 'radio'
-              ) {
-                return (
+            ?.map((i: any) => (
+              <div key={i.key}>
+                {['select_checkbox', 'checkbox', 'select', 'radio'].includes(
+                  i.type,
+                ) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -394,9 +390,8 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'time' || i.type === 'date') {
-                return (
+                )}
+                {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -419,9 +414,8 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'number') {
-                return (
+                )}
+                {i.type === 'number' && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -433,9 +427,8 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'text' || i.type === 'textarea') {
-                return (
+                )}
+                {['text', 'textarea'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -454,9 +447,8 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'tree') {
-                return (
+                )}
+                {i.type === 'tree' && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -478,9 +470,9 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              }
-            })}
+                )}
+              </div>
+            ))}
 
           <PopoverWrap
             placement="bottom"
