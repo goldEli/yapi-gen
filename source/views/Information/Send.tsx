@@ -11,7 +11,14 @@ import {
   StaffTableWrap,
 } from '@/components/StyleCommon'
 import { DatePicker, message, Pagination, Spin, Tooltip } from 'antd'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { rangPicker, SelectWrapBedeck } from '@/components/TableFilter'
@@ -33,7 +40,8 @@ const titleList = {
 }
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
-  const [t, i18n] = useTranslation()
+  const dataWrapRef = useRef<HTMLDivElement>(null)
+  const [t] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
   const [listData, setListData] = useState<any>([])
@@ -53,7 +61,21 @@ const Send = () => {
   const [visibleEditText, setVisibleEditText] = useState('')
   const [type, setType] = useState('')
   const context: any = useContext(DailyContext)
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
 
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [listData])
   const editClose = () => {
     setVisibleEdit(false)
   }
@@ -340,6 +362,8 @@ const Send = () => {
   useEffect(() => {
     init2()
   }, [urlId, context.id])
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
   return (
     <div
       style={{
@@ -382,7 +406,7 @@ const Send = () => {
             padding: '16px 16px 0',
           }}
         >
-          <DataWrap>
+          <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!listData &&
                 (listData?.length > 0 ? (
@@ -391,7 +415,14 @@ const Send = () => {
                     columns={columnsData}
                     dataSource={listData}
                     pagination={false}
-                    scroll={{ x: 'max-content' }}
+                    scroll={{
+                      x: columnsData.reduce(
+                        (totalWidth: number, item: any) =>
+                          totalWidth + item.width,
+                        0,
+                      ),
+                      y: tableY,
+                    }}
                     sticky
                   />
                 ) : (

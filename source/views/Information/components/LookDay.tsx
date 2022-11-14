@@ -11,10 +11,8 @@ import {
   GredParent,
   Second,
 } from '@/views/Project/Detail/Demand/components/UploadAttach'
-
 import { NewNameWrap } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { css } from '@emotion/css'
-
 import styled from '@emotion/styled'
 import { Input, message, Modal, Spin } from 'antd'
 import { t } from 'i18next'
@@ -158,6 +156,7 @@ const LookDay = (props: any) => {
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
   const [isSpinning, setIsSpinning] = useState(true)
+  const [name, setName] = useState('')
   const messagesEndRef = useRef<any>(null)
   const onChangeLeft = (values: any, type: any) => {
     props.onChange(type, props.editId)
@@ -171,6 +170,7 @@ const LookDay = (props: any) => {
     const res = await getReportDetail(props.editId)
 
     setTitle(res.data.info.name)
+    setName(res.data.info.user_name)
     setArticle1(res.data.info.finish_content)
     setArticle2(res.data.info.plan_content)
     const arr = res.data.copysend_list.map((item: any) => ({
@@ -235,7 +235,22 @@ const LookDay = (props: any) => {
   if (!props.visible) {
     return null
   }
-
+  const downloadIamge = (src: string, name1: string) => {
+    let urls = ''
+    urls = `${src}?t=${new Date().getTime()}`
+    fetch(urls).then(response => {
+      response.blob().then(myBlob => {
+        const href = URL.createObjectURL(myBlob)
+        const a = document.createElement('a')
+        a.href = href
+        a.download = name1
+        a.click()
+      })
+    })
+  }
+  const onDownload = (url: string, name1: string) => {
+    downloadIamge(url, name1)
+  }
   return ReactDOM.createPortal(
     <GrepWrap>
       <HiddenWrap>
@@ -460,7 +475,7 @@ const LookDay = (props: any) => {
                         >
                           {item.path.split('/').at(-1)}
                         </div>
-                        <div
+                        <First
                           style={{
                             height: '20px',
                             fontSize: '12px',
@@ -474,10 +489,30 @@ const LookDay = (props: any) => {
                               marginRight: '12px',
                             }}
                           >
-                            {item.name ?? ''}
+                            {name}
                           </span>
                           <span>{item.time}</span>
-                        </div>
+                        </First>
+                        <Second
+                          style={{
+                            height: '20px',
+                          }}
+                        >
+                          <span
+                            onClick={() =>
+                              onDownload(item.path, item.path.split('/').at(-1))
+                            }
+                            style={{
+                              marginRight: '12px',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <IconFont
+                              style={{ fontSize: 18, color: '#969799' }}
+                              type="download"
+                            />
+                          </span>
+                        </Second>
                       </div>
                     </BigWrap>
                   ))
@@ -490,7 +525,9 @@ const LookDay = (props: any) => {
                 ) : (
                   needValue.map((item: any) => (
                     <InnerLine key={item.key}>
-                      <span>{item.label}</span>
+                      <span>
+                        【{item.value}】{item.label}
+                      </span>
                     </InnerLine>
                   ))
                 )}
@@ -566,10 +603,11 @@ const LookDay = (props: any) => {
                   <Input.TextArea
                     style={{
                       paddingBottom: '40px',
+                      marginLeft: '3px',
                     }}
                     ref={myArea}
                     autoSize={{ minRows: 1, maxRows: 10 }}
-                    placeholder={t('common.pleaseEnter')}
+                    placeholder={t('p2.pComment', { inner: name })}
                     value={value}
                     onChange={e => setValue(e.target.value)}
                   />
@@ -644,7 +682,7 @@ const LookDay = (props: any) => {
                       </div>
                       <div
                         style={{
-                          paddingLeft: '40px',
+                          paddingLeft: '34px',
                           width: '100%',
                           wordBreak: 'break-all',
                           color: '#646566',

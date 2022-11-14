@@ -202,6 +202,7 @@ const WhiteDay = (props: any) => {
             name="attachments"
           >
             <UploadAttach
+              power
               child={isShow ? <Children /> : ''}
               onChangeShow={setIsShow}
               defaultList={attachList}

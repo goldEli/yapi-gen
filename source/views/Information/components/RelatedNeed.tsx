@@ -232,7 +232,9 @@ const RelatedNeed = (props: any) => {
         <div>
           {chooseList.map((item: any) => (
             <InnerLine key={item.key}>
-              <span>{item.label}</span>
+              <span>
+                【{item.value}】{item.label}
+              </span>
               <IconFont
                 onClick={() => del(item)}
                 data-close

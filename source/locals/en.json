@@ -2,6 +2,7 @@
   "p2": {
     "exportFields": "Export Demand Field Selection",
     "editAchievements": "Editing achievements",
+    "pComment": "Comment on {{inner}} 's log",
     "title": {
       "t1d": "Get your work done today ",
       "t1t": "Project Work for Tomorrow ",

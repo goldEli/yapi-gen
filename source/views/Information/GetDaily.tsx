@@ -11,7 +11,14 @@ import {
   StaffTableWrap,
 } from '@/components/StyleCommon'
 import { Checkbox, DatePicker, Pagination, Space, Spin } from 'antd'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import {
@@ -42,6 +49,7 @@ const srr = [
   3,
 ]
 const Get = () => {
+  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [t, i18n] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
@@ -60,6 +68,21 @@ const Get = () => {
   const [showId, setShowId] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [type, setType] = useState('')
+  const [dataWrapHeight, setDataWrapHeight] = useState(0)
+  const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  useLayoutEffect(() => {
+    if (dataWrapRef.current) {
+      const currentHeight = dataWrapRef.current.clientHeight
+      if (currentHeight !== dataWrapHeight) {
+        setDataWrapHeight(currentHeight)
+      }
+
+      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
+      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
+        setTableWrapHeight(tableBody.clientHeight)
+      }
+    }
+  }, [listData])
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -313,7 +336,8 @@ const Get = () => {
   useEffect(() => {
     getList()
   }, [])
-
+  const tableY =
+    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
   return (
     <div
       style={{
@@ -378,7 +402,7 @@ const Get = () => {
             padding: '16px 16px 0',
           }}
         >
-          <DataWrap>
+          <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!listData &&
                 (listData?.length > 0 ? (
@@ -387,7 +411,14 @@ const Get = () => {
                     columns={columnsData}
                     dataSource={listData}
                     pagination={false}
-                    scroll={{ x: 'max-content' }}
+                    scroll={{
+                      x: columnsData.reduce(
+                        (totalWidth: number, item: any) =>
+                          totalWidth + item.width,
+                        0,
+                      ),
+                      y: tableY,
+                    }}
                     sticky
                   />
                 ) : (
