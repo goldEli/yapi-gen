@@ -156,6 +156,7 @@ const LookDay = (props: any) => {
   const [previewImage, setPreviewImage] = useState('')
   const [previewTitle, setPreviewTitle] = useState('')
   const [isSpinning, setIsSpinning] = useState(true)
+  const [inputStatus, setInputStatus] = useState<any>('')
   const [name, setName] = useState('')
   const messagesEndRef = useRef<any>(null)
   const onChangeLeft = (values: any, type: any) => {
@@ -205,6 +206,8 @@ const LookDay = (props: any) => {
   }
   useEffect(() => {
     if (props.editId && props.visible) {
+      setInputStatus('')
+      setValue('')
       setDefaultValue()
     }
   }, [props.editId, props.visible])
@@ -215,11 +218,13 @@ const LookDay = (props: any) => {
     }, 200)
   }
   const sendComment = async () => {
-    if (!value) {
+    if (!value.trim()) {
+      setInputStatus('error')
       myArea.current.focus()
-
+      setValue('')
       return
     }
+    setInputStatus('')
     const res = await addComment({
       id: props.editId,
       content: value,
@@ -601,15 +606,20 @@ const LookDay = (props: any) => {
                   }}
                 >
                   <Input.TextArea
+                    status={inputStatus}
                     style={{
                       paddingBottom: '40px',
                       marginLeft: '3px',
                     }}
+                    maxLength={400}
                     ref={myArea}
                     autoSize={{ minRows: 1, maxRows: 10 }}
                     placeholder={t('p2.pComment', { inner: name })}
                     value={value}
-                    onChange={e => setValue(e.target.value)}
+                    onChange={e => {
+                      setInputStatus('')
+                      setValue(e.target.value)
+                    }}
                   />
                   <button
                     onClick={sendComment}
