@@ -23,6 +23,7 @@ import NoData from '@/components/NoData'
 import { ShapeContent } from '@/components/Shape'
 import IconFont from './IconFont'
 import DemandProgress from './DemandProgress'
+import TableQuickEdit from './TableQuickEdit'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -42,6 +43,8 @@ const ChildDemandTable = (props: {
   row: any
   id?: any
   hasIcon?: boolean
+  // 是否是从我的模块或者他的模块使用
+  isMineOrHis?: boolean
 }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -58,12 +61,22 @@ const ChildDemandTable = (props: {
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const { userInfo } = useModel('user')
+  const { selectIterate } = useModel('iterate')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo, colorList } = useModel('project')
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+  const { projectInfo, colorList, getProjectInfo, memberList } =
+    useModel('project')
+  let isCanEdit: any
+
+  // 获取是否有编辑需求的权限 --- 主要用于他的/我的
+  const getProjectEdit = () => {
+    if (props.isMineOrHis) {
+      getProjectInfo({ projectId })
+    }
+    isCanEdit =
+      projectInfo.projectPermissions?.length > 0 &&
+      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+        ?.length > 0
+  }
 
   const getList = async (item: any) => {
     const result = await getDemandList({
@@ -78,6 +91,7 @@ const ChildDemandTable = (props: {
 
   const onChildClick = async () => {
     getList(order)
+    getProjectEdit()
     setIsVisible(!isVisible)
   }
 
@@ -160,7 +174,12 @@ const ChildDemandTable = (props: {
       dataIndex: 'name',
       render: (text: string, record: any) => {
         return (
-          <HiddenText>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -178,20 +197,26 @@ const ChildDemandTable = (props: {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <Tooltip
-              title={text}
-              getPopupContainer={node => node}
-              placement="top"
+            <TableQuickEdit
+              type="text"
+              defaultText={text}
+              keyText="name"
+              item={record}
+              onUpdate={onUpdate}
+              isMineOrHis={props.isMineOrHis}
+              projectPermissions={projectInfo.projectPermissions}
             >
-              <ListNameWrap
-                onClick={() => onToDetail(record)}
-                isName
-                isClose={record.status?.is_end === 1}
-              >
-                {text}
-              </ListNameWrap>
-            </Tooltip>
-          </HiddenText>
+              <Tooltip title={text} getPopupContainer={node => node}>
+                <ListNameWrap
+                  isName
+                  isClose={record.status?.is_end === 1}
+                  onClick={() => onToDetail(record)}
+                >
+                  {text}
+                </ListNameWrap>
+              </Tooltip>
+            </TableQuickEdit>
+          </div>
         )
       },
     },
@@ -208,18 +233,38 @@ const ChildDemandTable = (props: {
       ),
       dataIndex: 'iteration',
       width: 100,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={100}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
-          </HiddenText>
+          <TableQuickEdit
+            type="fixed_radio"
+            defaultText={text}
+            keyText="iterate_id"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis={props.isMineOrHis}
+            projectPermissions={projectInfo.projectPermissions}
+            value={
+              props.isMineOrHis
+                ? []
+                : selectIterate?.list
+                    ?.filter((k: any) => k.status === 1)
+                    ?.map((i: any) => ({
+                      label: i.name,
+                      value: i.id,
+                    }))
+            }
+          >
+            <HiddenText>
+              <OmitText
+                width={100}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
         )
       },
     },
@@ -313,19 +358,28 @@ const ChildDemandTable = (props: {
     {
       title: t('common.dealName'),
       dataIndex: 'dealName',
-      width: 120,
-      render: (text: any) => {
+      width: 150,
+      render: (text: any, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={120}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text?.join(',') || '--'}
-            </OmitText>
-          </HiddenText>
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersNameIds || []}
+            keyText="users"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis={props.isMineOrHis}
+            projectPermissions={projectInfo.projectPermissions}
+            value={
+              props.isMineOrHis
+                ? []
+                : memberList?.map((i: any) => ({
+                    label: i.name,
+                    value: i.id,
+                  }))
+            }
+          >
+            <span>{text?.join(',') || '--'}</span>
+          </TableQuickEdit>
         )
       },
     },

@@ -237,7 +237,7 @@ const Information = () => {
             content={content}
             getPopupContainer={node => node}
           >
-            <AddButton onClick={() => setShowPop(!showPop)}>
+            <AddButton>
               <IconFont
                 style={{
                   marginRight: 8,
