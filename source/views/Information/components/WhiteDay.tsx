@@ -155,8 +155,11 @@ const WhiteDay = (props: any) => {
   }, [props.editId, props.visibleEdit])
   const scrollToBottom = () => {
     setTimeout(() => {
-      leftDom.current.scrollTop = leftDom.current.scrollHeight
-    }, 200)
+      leftDom.current.scrollTo({
+        top: leftDom.current.scrollHeight,
+        behavior: 'smooth',
+      })
+    })
   }
 
   return (

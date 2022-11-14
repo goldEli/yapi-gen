@@ -10,7 +10,7 @@ import {
   PaginationWrap,
   StaffTableWrap,
 } from '@/components/StyleCommon'
-import { Checkbox, DatePicker, Pagination, Space, Spin } from 'antd'
+import { Checkbox, DatePicker, Pagination, Space, Spin, Tooltip } from 'antd'
 import {
   useContext,
   useEffect,
@@ -113,15 +113,23 @@ const Get = () => {
       width: 200,
       render: (text: string) => {
         return (
-          <span
-            style={{
-              width: '200px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-            dangerouslySetInnerHTML={{ __html: text || '--' }}
-          />
+          <Tooltip
+            placement="topLeft"
+            title={text || '--'}
+            getPopupContainer={node => node}
+          >
+            <span
+              style={{
+                display: 'block',
+                width: '100%',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {text}
+            </span>
+          </Tooltip>
         )
       },
     },
@@ -378,6 +386,7 @@ const Get = () => {
             </span>
 
             <SelectWrap
+              showSearch
               allowClear
               showArrow
               style={{ width: '100%' }}

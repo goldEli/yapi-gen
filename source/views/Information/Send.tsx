@@ -136,15 +136,23 @@ const Send = () => {
       width: 200,
       render: (text: string) => {
         return (
-          <span
-            style={{
-              width: '200px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-            dangerouslySetInnerHTML={{ __html: text || '--' }}
-          />
+          <Tooltip
+            placement="topLeft"
+            title={text || '--'}
+            getPopupContainer={node => node}
+          >
+            <span
+              style={{
+                display: 'block',
+                width: '100%',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {text}
+            </span>
+          </Tooltip>
         )
       },
     },
