@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'

@@ -1,7 +1,6 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Table, Pagination, Modal, Space, Spin } from 'antd'

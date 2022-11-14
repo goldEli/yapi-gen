@@ -1,8 +1,6 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
-/* eslint-disable consistent-return */
-/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'

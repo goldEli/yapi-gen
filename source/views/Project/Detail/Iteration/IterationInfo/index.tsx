@@ -60,6 +60,7 @@ const TargetWrap = styled(TextWrapEditor)({
   overflow: 'auto',
   color: '#646566',
   fontSize: 14,
+  paddingRight: 20,
 })
 
 const BottomWrap = styled.div({
@@ -213,7 +214,7 @@ const IterationInfo = () => {
               </SurveyBox>
             </SurveyContent>
           </SurveyWrap>
-          <SurveyWrap>
+          <SurveyWrap style={{ paddingRight: 4 }}>
             <Title>{t('project.iterateTarget')}</Title>
             {iterateInfo?.info ? (
               <TargetWrap

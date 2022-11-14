@@ -232,7 +232,7 @@ const TableQuickEdit = (props: Props) => {
   }
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {isShowControl ? (
         getTypeComponent(
           params,
@@ -251,7 +251,7 @@ const TableQuickEdit = (props: Props) => {
           isTable={!props.isInfo}
           isCanEdit={isCanEdit}
         >
-          <span className="children">{props.children}</span>
+          {props.children}
           {isCanEdit ? (
             <IconFontWrapEdit
               onClick={() => setIsShowControl(true)}

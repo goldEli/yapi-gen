@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -41,7 +40,7 @@ const filArr2 = (data: any) => {
 export const getSearchField: any = async (params: any) => {
   // 成员列表
   if (params === 0) {
-    return
+    return null
   }
 
   const res = await getTreeList({ id: params })
@@ -201,7 +200,6 @@ export const getSearchField: any = async (params: any) => {
   const filterCustomList = filter_fidlds.filter(
     (item: any) => item.group_name === '自定义字段',
   )
-  // eslint-disable-next-line consistent-return
 
   return {
     filterAllList,

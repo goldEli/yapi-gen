@@ -1,6 +1,5 @@
 // 使用多次的公共方法
 
-/* eslint-disable consistent-return */
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -196,7 +195,7 @@ function getTypeComponent(
 
 function arrayFlagLevel(array: any, grade: any) {
   if (!array || !array.length) {
-    return
+    return ''
   }
   array.forEach((item: any) => {
     item.grade = grade
@@ -264,7 +263,7 @@ function getDecimal(num: any) {
 // 解决计算精度丢失问题 value: 数量，phase：计算的倍数
 // 目前只考虑了1以下的数量计算
 function computedAccuracy(value: any, phase: any) {
-  const decimal = getDecimal(String(value).split('.')[1].length)
+  const decimal = getDecimal(String(value).split('.')[1]?.length)
   return (Number(String(value).split('.')[1]) * phase) / Number(decimal)
 }
 

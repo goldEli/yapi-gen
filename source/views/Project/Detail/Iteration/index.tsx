@@ -1,7 +1,6 @@
 // 迭代主页
 
 /* eslint-disable camelcase */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */

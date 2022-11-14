@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -107,16 +106,16 @@ export const getStaffList2: any = async (params: any) => {
     pagesize: params.pagesize,
   })
 
-  if (params.all) {
-    return response.data.map((i: any) => ({
-      avatar: i.avatar,
-      id: i.id,
-      name: i.name,
-      nickname: i.nickname,
-      positionName: null,
-      roleName: i.role_name,
-    }))
-  }
+  return params.all
+    ? response.data.map((i: any) => ({
+        avatar: i.avatar,
+        id: i.id,
+        name: i.name,
+        nickname: i.nickname,
+        positionName: null,
+        roleName: i.role_name,
+      }))
+    : null
 }
 
 export const updateStaff: any = async (params: any) => {

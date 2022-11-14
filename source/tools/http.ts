@@ -1,5 +1,4 @@
 /* eslint-disable no-undefined */
-/* eslint-disable consistent-return */
 /* eslint-disable no-lonely-if */
 /* eslint-disable require-atomic-updates */
 /* eslint-disable complexity */
@@ -154,7 +153,6 @@ client.config({
         message.error(data.message)
         throw new Error(data.code)
       }
-      // eslint-disable-next-line consistent-return
       return {
         code: Number(data.code),
         data: data.data,

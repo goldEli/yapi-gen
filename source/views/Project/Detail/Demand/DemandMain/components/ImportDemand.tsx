@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
-/* eslint-disable consistent-return */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { StepBoxWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
@@ -141,6 +139,7 @@ const ImportDemand = () => {
       message.warning(t('project.incorrectFormat'))
       return Upload.LIST_IGNORE
     }
+    return ''
   }
 
   const onUploadFileClick = async (option: any) => {
@@ -256,7 +255,7 @@ const ImportDemand = () => {
           <span>{t('newlyAdd.importSuccess')}</span>
         </StepBoxWrap>
       </StepWrap>
-      {step === 1 ? (
+      {step === 1 && (
         <>
           <TabsWrap>
             <TabsItem active={tabs === 2} onClick={() => onChangeTabs(2)}>
@@ -266,7 +265,7 @@ const ImportDemand = () => {
               {t('newlyAdd.importUpdate')}
             </TabsItem>
           </TabsWrap>
-          {tabs === 2 ? (
+          {tabs === 2 && (
             <TextWrap>
               <div>{t('newlyAdd.importText1')}</div>
               <span>{t('newlyAdd.importText2')}</span>
@@ -278,7 +277,8 @@ const ImportDemand = () => {
               <span>{t('newlyAdd.importText8')}</span>
               <span>{t('newlyAdd.importText9')}</span>
             </TextWrap>
-          ) : (
+          )}
+          {tabs === 1 && (
             <TextWrap>
               <div>{t('newlyAdd.importText1')}</div>
               <span>{t('newlyAdd.importText10')}</span>
@@ -365,7 +365,7 @@ const ImportDemand = () => {
             </UploadDragger>
           )}
         </>
-      ) : null}
+      )}
 
       {step === 2 ? (
         <>

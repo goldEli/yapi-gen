@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 import { useState } from 'react'
 import styled from '@emotion/styled'

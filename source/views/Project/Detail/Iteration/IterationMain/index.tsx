@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable multiline-ternary */
 import Operation from './components/Operation'
 import IterationTable from './components/IterationTable'
 import IterationGrid from './components/IterationGrid'

@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */

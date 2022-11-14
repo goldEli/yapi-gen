@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */

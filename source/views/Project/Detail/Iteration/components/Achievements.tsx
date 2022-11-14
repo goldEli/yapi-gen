@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 // 抽调查看成果弹窗及详情成果展示公共部分
 
 /* eslint-disable react/no-danger */
@@ -18,6 +19,7 @@ import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { getIsPermission } from '@/tools'
 import { t } from 'i18next'
+import NoData from '@/components/NoData'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -163,49 +165,63 @@ const Achievements = (props: Props) => {
           <span className={label}>{t('p2.m1') as string}</span>
           <Editor value={html} onChangeValue={setHtml} height={280} />
         </div>
-      ) : (
+      ) : html ? (
         <EditorBox
           dangerouslySetInnerHTML={{
             __html: html || '--',
           }}
         />
+      ) : null}
+      {attachList?.length || props.isEdit ? (
+        <div className={labelWrap}>
+          <span className={label}>{t('common.attachment') as string}</span>
+          <UploadAttach
+            child={
+              isShow ? (
+                <Children
+                  uploadStatus={uploadStatus}
+                  percentShow={percentShow}
+                  percentVal={percentVal}
+                />
+              ) : null
+            }
+            onChangeShow={setIsShow}
+            defaultList={attachList}
+            onChangeAttachment={onChangeAttachment}
+            onBottom={onBottom}
+            isIteration
+            isCanUpdate={!isCanEdit && props.isEdit}
+            addWrap={
+              !isCanEdit && props.isEdit ? (
+                <AddWrap
+                  hasColor
+                  style={{
+                    marginBottom: '20px',
+                    height: 32,
+                  }}
+                >
+                  <IconFont type="plus" />
+                  <div>{t('p2.addAdjunct') as string}</div>
+                </AddWrap>
+              ) : (
+                (null as any)
+              )
+            }
+          />
+        </div>
+      ) : null}
+      {attachList?.length || html || props.isEdit ? null : (
+        <div
+          style={{
+            width: '100%',
+            minHeight: 400,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <NoData />
+        </div>
       )}
-      <div className={labelWrap}>
-        <span className={label}>{t('common.attachment') as string}</span>
-        <UploadAttach
-          child={
-            isShow ? (
-              <Children
-                uploadStatus={uploadStatus}
-                percentShow={percentShow}
-                percentVal={percentVal}
-              />
-            ) : null
-          }
-          onChangeShow={setIsShow}
-          defaultList={attachList}
-          onChangeAttachment={onChangeAttachment}
-          onBottom={onBottom}
-          isIteration
-          isCanUpdate={!isCanEdit && props.isEdit}
-          addWrap={
-            !isCanEdit && props.isEdit ? (
-              <AddWrap
-                hasColor
-                style={{
-                  marginBottom: '20px',
-                  height: 32,
-                }}
-              >
-                <IconFont type="plus" />
-                <div>{t('p2.addAdjunct') as string}</div>
-              </AddWrap>
-            ) : (
-              (null as any)
-            )
-          }
-        />
-      </div>
     </Wrap>
   )
 }

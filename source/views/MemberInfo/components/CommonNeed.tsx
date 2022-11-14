@@ -5,7 +5,6 @@
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,

@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/no-unused-expressions */

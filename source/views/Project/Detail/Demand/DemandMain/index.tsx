@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable max-params */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
 import React, { useState, useEffect, useMemo, useRef } from 'react'

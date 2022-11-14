@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Popover, Upload, Space, message } from 'antd'
@@ -143,6 +142,7 @@ const PosterComponent = (props: Props) => {
       message.warning(t('project.incorrectFormat'))
       return Upload.LIST_IGNORE
     }
+    return ''
   }
 
   const onUploadFileClick = async (option: UploadRequestOption) => {

@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'

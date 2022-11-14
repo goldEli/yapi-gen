@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable camelcase */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -28,7 +27,7 @@ import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 
 const WrapRight = styled.div({
-  minWidth: '400px',
+  minWidth: '200px',
   width: '100%',
   height: '100%',
   padding: '16px 0 0 24px',
@@ -97,6 +96,8 @@ const ContentWrap = styled.div<{ notHover?: any }>(
     fontSize: 14,
     display: 'flex',
     flexDirection: 'column',
+    maxWidth: '98%',
+    wordBreak: 'break-all',
   },
   ({ notHover }) => ({
     paddingLeft: notHover ? 8 : 0,

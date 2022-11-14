@@ -2,7 +2,6 @@
 
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import styled from '@emotion/styled'

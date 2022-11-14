@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Dropdown, Menu } from 'antd'

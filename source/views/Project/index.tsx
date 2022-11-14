@@ -1,5 +1,4 @@
 /* eslint-disable max-params */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
 import styled from '@emotion/styled'

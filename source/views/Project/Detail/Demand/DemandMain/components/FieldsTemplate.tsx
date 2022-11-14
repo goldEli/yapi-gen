@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable multiline-ternary */
 import CommonModal from '@/components/CommonModal'
 import { Checkbox, Space, Divider } from 'antd'
 import IconFont from '@/components/IconFont'

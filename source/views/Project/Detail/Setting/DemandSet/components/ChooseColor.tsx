@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
@@ -83,9 +82,9 @@ const ChooseColor = (props: ChooseColorProps) => {
           color={props?.color}
           onClick={() => setIsChooseColor(true)}
         />
-      )
-        : <img style={{ height: 32, cursor: 'pointer' }} src={colorImg} alt="" />
-      }
+      ) : (
+        <img style={{ height: 32, cursor: 'pointer' }} src={colorImg} alt="" />
+      )}
     </Popover>
   )
 }

@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -13,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 
 const DemandCheckedItem = styled.div({
-  height: 22,
+  minHeight: 22,
   lineHeight: '22px',
   padding: '0 8px 0 0',
   fontSize: 12,
@@ -45,7 +44,7 @@ const MaxWrap = styled.div({
   flexDirection: 'column',
   maxHeight: 200,
   overflow: 'auto',
-  width: 360,
+  maxWidth: 236,
 })
 
 const DemandItem = styled.div<{ isActive?: boolean }>(
@@ -55,6 +54,7 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
     padding: '8px 0',
     cursor: 'pointer',
     paddingLeft: 16,
+    wordBreak: 'break-all',
     '&:hover': {
       background: '#F0F4FA',
       span: {
@@ -69,7 +69,7 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
 
 const SearchInput = styled(Input)`
   font-size: 14px;
-  min-width: 240px;
+  min-width: 210px;
   height: 32px;
   background: rgba(245, 246, 247, 1);
   background-blend-mode: normal;
@@ -89,7 +89,10 @@ const SearchInput = styled(Input)`
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
-    left: isRight ? '40px!important' : 0,
+    left: isRight ? '10px!important' : 0,
+  },
+  '.ant-popover-content': {
+    maxWidth: 240,
   },
 }))
 
@@ -215,19 +218,21 @@ const ParentDemand = (props: Props) => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <DemandCheckedItem
-        onClick={isCanEdit ? onDeleteInfoDemand : void 0}
-        hidden={!demandInfo?.parentId}
-      >
+      <DemandCheckedItem hidden={!demandInfo?.parentId}>
         <div
           style={{
             color: '#323233',
             fontSize: 14,
-            cursor: isCanEdit ? 'pointer' : 'inherit',
           }}
         >
           {demandInfo?.parentName}
-          {isCanEdit ? <IconFont className="icon" type="close" /> : null}
+          {isCanEdit ? (
+            <IconFont
+              onClick={isCanEdit ? onDeleteInfoDemand : void 0}
+              className="icon"
+              type="close"
+            />
+          ) : null}
         </div>
       </DemandCheckedItem>
       {isCanEdit ? (

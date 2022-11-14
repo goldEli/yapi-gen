@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
