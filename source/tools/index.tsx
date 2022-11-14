@@ -81,7 +81,7 @@ function getTypeComponent(
     child = (
       <Input
         placeholder={params.remarks || ''}
-        // onBlur={e => (isModal ? onBlur(e.target.value) : void 0)}
+        onBlur={e => (isModal ? onBlur(e.target.value) : void 0)}
         onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
         type={params?.attr}
         allowClear
