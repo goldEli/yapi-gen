@@ -34,6 +34,9 @@ interface Props {
   onUpdate?(): void
   // 是否是从我的模块或者他的模块使用
   isMineOrHis?: any
+
+  // 他的/我的子需求列表使用 --- 用于判断是否有编辑权限
+  projectPermissions?: any
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -57,7 +60,11 @@ const TableQuickEdit = (props: Props) => {
     ['text', 'textarea', 'number', 'integer'].includes(String(props.type))
 
   if (props.isMineOrHis) {
-    isCanEdit = props?.item?.project?.isEdit
+    isCanEdit =
+      props?.item?.project?.isEdit ||
+      props?.projectPermissions?.filter(
+        (i: any) => i.identity === 'b/story/update',
+      )
     projectId = props?.item?.project_id
     canClick = isCan && isCanEdit
   } else {

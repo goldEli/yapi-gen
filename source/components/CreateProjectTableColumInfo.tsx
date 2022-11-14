@@ -185,7 +185,12 @@ export const useDynamicColumns = (state: any) => {
       key: 'child_story_count',
       render: (text: string, record: any) => {
         return (
-          <ChildDemandTable id={record.project_id} value={text} row={record} />
+          <ChildDemandTable
+            id={record.project_id}
+            value={text}
+            row={record}
+            isMineOrHis
+          />
         )
       },
     },

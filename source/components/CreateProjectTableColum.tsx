@@ -375,25 +375,19 @@ export const useDynamicColumns = (state: any) => {
       width: 180,
       render: (text: any, record: any) => {
         return (
-          <>
-            {isCanEdit ? (
-              <TableQuickEdit
-                type="fixed_select"
-                defaultText={record?.usersNameIds || []}
-                keyText="users"
-                item={record}
-                onUpdate={onUpdate}
-                value={memberList?.map((i: any) => ({
-                  label: i.name,
-                  value: i.id,
-                }))}
-              >
-                <span>{text || '--'}</span>
-              </TableQuickEdit>
-            ) : (
-              <span>{text || '--'}</span>
-            )}
-          </>
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersNameIds || []}
+            keyText="users"
+            item={record}
+            onUpdate={onUpdate}
+            value={memberList?.map((i: any) => ({
+              label: i.name,
+              value: i.id,
+            }))}
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
         )
       },
     },
