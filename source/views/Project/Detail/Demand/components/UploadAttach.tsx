@@ -24,6 +24,7 @@ const Warp = styled(Upload)({
 })
 
 interface Props {
+  power?: boolean
   addWrap: React.ReactElement
   onChangeAttachment?(arr: any, type: string): void
   defaultList?: any
@@ -97,14 +98,22 @@ const ListItem = (props: any) => {
     isIteration,
   } = props
   const { projectInfo } = useModel('project')
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
-  const isDownload = projectInfo?.projectPermissions?.filter(
-    (i: any) => i.name === '附件下载',
-  ).length
-  const isShowDel = isIteration ? isCanUpdate : isCanEdit
+  let isDownload
+  let isShowDel
+
+  if (props.power) {
+    isDownload = true
+    isShowDel = true
+  } else {
+    const isCanEdit =
+      projectInfo.projectPermissions?.length > 0 &&
+      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+        ?.length > 0
+    isDownload = projectInfo?.projectPermissions?.filter(
+      (i: any) => i.name === '附件下载',
+    ).length
+    isShowDel = isIteration ? isCanUpdate : isCanEdit
+  }
 
   const Download = () => {
     onDownload(props.file)
@@ -226,30 +235,34 @@ const ListItem = (props: any) => {
             height: '20px',
           }}
         >
-          <span
-            onClick={Download}
-            style={{
-              marginRight: '12px',
-              cursor: 'pointer',
-            }}
-          >
-            <IconFont
-              style={{ fontSize: 18, color: '#969799' }}
-              type="download"
-            />
-          </span>
+          {isDownload ? (
+            <span
+              onClick={Download}
+              style={{
+                marginRight: '12px',
+                cursor: 'pointer',
+              }}
+            >
+              <IconFont
+                style={{ fontSize: 18, color: '#969799' }}
+                type="download"
+              />
+            </span>
+          ) : null}
 
-          <span
-            style={{
-              cursor: 'pointer',
-            }}
-            onClick={Remove}
-          >
-            <IconFont
-              style={{ fontSize: 18, color: '#969799' }}
-              type="delete"
-            />
-          </span>
+          {isShowDel ? (
+            <span
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={Remove}
+            >
+              <IconFont
+                style={{ fontSize: 18, color: '#969799' }}
+                type="delete"
+              />
+            </span>
+          ) : null}
         </Second>
       </div>
     </BigWrap>
@@ -454,6 +467,7 @@ const UploadAttach = (props: Props) => {
     itemRender: (e: any, file: any) => {
       return (
         <ListItem
+          power={props.power}
           file={file}
           onDownload={onDownload}
           onRemove={onRemove}

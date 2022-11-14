@@ -525,7 +525,9 @@ const LookDay = (props: any) => {
                 ) : (
                   needValue.map((item: any) => (
                     <InnerLine key={item.key}>
-                      <span>{item.label}</span>
+                      <span>
+                        【{item.value}】{item.label}
+                      </span>
                     </InnerLine>
                   ))
                 )}
@@ -605,7 +607,7 @@ const LookDay = (props: any) => {
                     }}
                     ref={myArea}
                     autoSize={{ minRows: 1, maxRows: 10 }}
-                    placeholder={t('common.pleaseEnter')}
+                    placeholder={t('p2.pComment', { inner: name })}
                     value={value}
                     onChange={e => setValue(e.target.value)}
                   />

@@ -2,6 +2,7 @@
   "p2": {
     "exportFields": "导出需求字段选择",
     "editAchievements": "编辑成果",
+    "pComment": "评论{{inner}}的日志",
     "title": {
       "t1d": "今日完成工作",
       "t1t": "明日计划工作",
