@@ -11,10 +11,8 @@ import {
   GredParent,
   Second,
 } from '@/views/Project/Detail/Demand/components/UploadAttach'
-
 import { NewNameWrap } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { css } from '@emotion/css'
-
 import styled from '@emotion/styled'
 import { Input, message, Modal, Spin } from 'antd'
 import { t } from 'i18next'
@@ -237,7 +235,22 @@ const LookDay = (props: any) => {
   if (!props.visible) {
     return null
   }
-
+  const downloadIamge = (src: string, name1: string) => {
+    let urls = ''
+    urls = `${src}?t=${new Date().getTime()}`
+    fetch(urls).then(response => {
+      response.blob().then(myBlob => {
+        const href = URL.createObjectURL(myBlob)
+        const a = document.createElement('a')
+        a.href = href
+        a.download = name1
+        a.click()
+      })
+    })
+  }
+  const onDownload = (url: string, name1: string) => {
+    downloadIamge(url, name1)
+  }
   return ReactDOM.createPortal(
     <GrepWrap>
       <HiddenWrap>
@@ -462,7 +475,7 @@ const LookDay = (props: any) => {
                         >
                           {item.path.split('/').at(-1)}
                         </div>
-                        <div
+                        <First
                           style={{
                             height: '20px',
                             fontSize: '12px',
@@ -479,7 +492,27 @@ const LookDay = (props: any) => {
                             {name}
                           </span>
                           <span>{item.time}</span>
-                        </div>
+                        </First>
+                        <Second
+                          style={{
+                            height: '20px',
+                          }}
+                        >
+                          <span
+                            onClick={() =>
+                              onDownload(item.path, item.path.split('/').at(-1))
+                            }
+                            style={{
+                              marginRight: '12px',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <IconFont
+                              style={{ fontSize: 18, color: '#969799' }}
+                              type="download"
+                            />
+                          </span>
+                        </Second>
                       </div>
                     </BigWrap>
                   ))
@@ -647,7 +680,7 @@ const LookDay = (props: any) => {
                       </div>
                       <div
                         style={{
-                          paddingLeft: '40px',
+                          paddingLeft: '34px',
                           width: '100%',
                           wordBreak: 'break-all',
                           color: '#646566',

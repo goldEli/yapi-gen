@@ -365,6 +365,7 @@ const UploadAttach = (props: Props) => {
       })
     })
   }
+
   const onUploadBefore = (file: any) => {
     if (props?.defaultList.length >= 20) {
       message.warning(t('common.limitToast'))
