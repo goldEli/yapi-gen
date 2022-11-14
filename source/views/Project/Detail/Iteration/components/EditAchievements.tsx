@@ -73,6 +73,16 @@ const EditAchievements = (props: Props) => {
     }
   }
 
+  // 获取操作按钮
+  const getFooter =
+    !isEdit && !isCanEdit ? (
+      <ModalFooter size={16}>
+        <Button onClick={() => setIsEdit(true)} type="primary">
+          {t('common.edit')}
+        </Button>
+      </ModalFooter>
+    ) : null
+
   return (
     <CommonModal
       isVisible={props.isAchievements}
@@ -80,15 +90,8 @@ const EditAchievements = (props: Props) => {
       title={isEdit ? t('p2.d1') : t('p2.d2')}
       onClose={onClose}
       onConfirm={onConfirm}
-      hasFooter={
-        !isEdit && !isCanEdit ? (
-          <ModalFooter size={16}>
-            <Button onClick={() => setIsEdit(true)} type="primary">
-              {t('common.edit')}
-            </Button>
-          </ModalFooter>
-        ) : null
-      }
+      hasFooter={getFooter}
+      isShowFooter={isCanEdit}
     >
       {props.isAchievements ? (
         <Achievements

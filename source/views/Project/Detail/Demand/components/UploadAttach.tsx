@@ -101,6 +101,7 @@ const ListItem = (props: any) => {
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
+
   const isDownload = projectInfo?.projectPermissions?.filter(
     (i: any) => i.name === '附件下载',
   ).length

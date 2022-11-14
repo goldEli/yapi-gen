@@ -245,7 +245,7 @@ const Operation = (props: Props) => {
             <IconWrap onClick={() => setVisible(true)} type="detail" />
           </Tooltip>
           {isCanCheck ? null : (
-            <Tooltip title="迭代成果">
+            <Tooltip title={t('p2.d2')}>
               <IconWrap
                 onClick={() => setIsAchievements(true)}
                 type="iteration"

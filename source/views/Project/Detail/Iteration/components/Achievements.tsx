@@ -172,7 +172,7 @@ const Achievements = (props: Props) => {
           }}
         />
       ) : null}
-      {attachList?.length || props.isEdit ? (
+      {(attachList?.length || props.isEdit) && (
         <div className={labelWrap}>
           <span className={label}>{t('common.attachment') as string}</span>
           <UploadAttach
@@ -209,7 +209,7 @@ const Achievements = (props: Props) => {
             }
           />
         </div>
-      ) : null}
+      )}
       {attachList?.length || html || props.isEdit ? null : (
         <div
           style={{

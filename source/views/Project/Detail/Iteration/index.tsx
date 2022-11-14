@@ -394,7 +394,7 @@ const IterationWrap = () => {
                   onClick={() => onChangeIdx('achieve')}
                   activeIdx={type === 'achieve'}
                 >
-                  <span>迭代成果</span>
+                  <span>{t('p2.d2')}</span>
                 </Item>
               )}
 
