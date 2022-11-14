@@ -624,7 +624,6 @@ const LookDay = (props: any) => {
                   <button
                     onClick={sendComment}
                     style={{
-                      width: '40px',
                       height: '24px',
                       background: '#2877FF',
                       fontSize: '12px',

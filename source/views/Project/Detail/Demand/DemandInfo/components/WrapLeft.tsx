@@ -210,17 +210,18 @@ const WrapLeftBox = () => {
               onMouseUp={onChangeSchedule}
             >
               <SliderWrap
-                style={{ width: 260 }}
-                value={schedule}
-                tipFormatter={(value: any) => `${value}%`}
-                onChange={value => setSchedule(value)}
-                tooltipVisible={
+                isDisabled={
                   demandInfo?.user
                     ?.map((i: any) => i.user.id)
                     ?.includes(userInfo?.id) &&
                   demandInfo.status.is_start !== 1 &&
                   demandInfo.status.is_end !== 1
                 }
+                style={{ width: 260 }}
+                value={schedule}
+                tipFormatter={(value: any) => `${value}%`}
+                onChange={value => setSchedule(value)}
+                tooltipVisible={false}
                 disabled={
                   !(
                     demandInfo?.user

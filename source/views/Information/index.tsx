@@ -190,7 +190,8 @@ const Information = () => {
     display: flex;
     align-items: center;
     padding-left: 16px;
-    width: 128px;
+    min-width: 128px;
+    padding-right: 20px;
     height: 32px;
     &:hover {
       background: #f0f4fa;

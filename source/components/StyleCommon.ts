@@ -342,31 +342,37 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
-const SliderWrap = styled(Slider)({
-  margin: '0!important',
-  '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
-    height: '8px!important',
-  },
-  '.ant-slider-rail': {
-    backgroundColor: '#F2F2F4!important',
-    borderRadius: 10,
-  },
-  '.ant-slider-track': {
-    backgroundColor: '#43BA9A!important',
-  },
-  '.ant-slider-handle': {
-    width: 20,
-    height: 20,
-    border: '1px solid #EBEDF0!important',
-    marginTop: -7,
-    '&: hover': {
-      border: '1px solid #2877FF!important',
+const SliderWrap = styled(Slider)<{ isDisabled?: boolean }>(
+  {
+    margin: '0!important',
+    '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
+      height: '8px!important',
+    },
+    '.ant-slider-rail': {
+      backgroundColor: '#F2F2F4!important',
+      borderRadius: 10,
+    },
+    '.ant-slider-track': {
+      backgroundColor: '#43BA9A!important',
+    },
+    '.ant-slider-handle': {
+      width: 20,
+      height: 20,
+      border: '1px solid #EBEDF0!important',
+      marginTop: -7,
+    },
+    '.ant-slider-handle:focus': {
+      boxShadow: 'none',
     },
   },
-  '.ant-slider-handle:focus': {
-    boxShadow: 'none',
-  },
-})
+  ({ isDisabled }) => ({
+    '.ant-slider-handle': {
+      '&: hover': {
+        border: isDisabled ? '1px solid #2877FF!important' : '',
+      },
+    },
+  }),
+)
 
 const NameWrap = styled.div({
   width: 32,

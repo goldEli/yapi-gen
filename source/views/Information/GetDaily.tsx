@@ -386,6 +386,7 @@ const Get = () => {
             </span>
 
             <SelectWrap
+              showSearch
               allowClear
               showArrow
               style={{ width: '100%' }}
