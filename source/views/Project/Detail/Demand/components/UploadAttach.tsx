@@ -212,58 +212,81 @@ const ListItem = (props: any) => {
         >
           {name}
         </div>
-        <First
-          style={{
-            height: '20px',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: '#969799',
-            lineHeight: '20px',
-          }}
-        >
-          <span
+        {!isDownload && !isShowDel ? (
+          <div
             style={{
-              marginRight: '12px',
+              height: '20px',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: '#969799',
+              lineHeight: '20px',
             }}
           >
-            {user}
-          </span>
-          <span>{time}</span>
-        </First>
-        <Second
-          style={{
-            height: '20px',
-          }}
-        >
-          {isDownload ? (
             <span
-              onClick={Download}
               style={{
                 marginRight: '12px',
-                cursor: 'pointer',
               }}
             >
-              <IconFont
-                style={{ fontSize: 18, color: '#969799' }}
-                type="download"
-              />
+              {user}
             </span>
-          ) : null}
-
-          {isShowDel ? (
-            <span
+            <span>{time}</span>
+          </div>
+        ) : (
+          <>
+            <First
               style={{
-                cursor: 'pointer',
+                height: '20px',
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#969799',
+                lineHeight: '20px',
               }}
-              onClick={Remove}
             >
-              <IconFont
-                style={{ fontSize: 18, color: '#969799' }}
-                type="delete"
-              />
-            </span>
-          ) : null}
-        </Second>
+              <span
+                style={{
+                  marginRight: '12px',
+                }}
+              >
+                {user}
+              </span>
+              <span>{time}</span>
+            </First>
+            <Second
+              style={{
+                height: '20px',
+              }}
+            >
+              {isDownload ? (
+                <span
+                  onClick={Download}
+                  style={{
+                    marginRight: '12px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <IconFont
+                    style={{ fontSize: 18, color: '#969799' }}
+                    type="download"
+                  />
+                </span>
+              ) : null}
+
+              {isShowDel ? (
+                <span
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                  onClick={Remove}
+                >
+                  <IconFont
+                    style={{ fontSize: 18, color: '#969799' }}
+                    type="delete"
+                  />
+                </span>
+              ) : null}
+            </Second>{' '}
+          </>
+        )}
       </div>
     </BigWrap>
   )
