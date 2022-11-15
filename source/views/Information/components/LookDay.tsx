@@ -201,9 +201,12 @@ const LookDay = (props: any) => {
       }),
     )
     setContentList(res.data.comment_list)
-    setTimeout(() => {
-      setIsSpinning(true)
-    }, 400)
+
+    if (res.code === 0) {
+      setTimeout(() => {
+        setIsSpinning(true)
+      }, 200)
+    }
   }
   useEffect(() => {
     if (props.editId && props.visible) {

@@ -160,16 +160,16 @@ const RelatedNeed = (props: any) => {
               label={t('common.chooseProject')}
             >
               <Select
+                optionFilterProp="label"
+                showSearch
                 onSelect={onSelect}
                 labelInValue
                 placeholder={t('common.pleaseSelect')}
-              >
-                {projectList.map((item: any) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.title}
-                  </Option>
-                ))}
-              </Select>
+                options={projectList.map((i: any) => ({
+                  label: i.title,
+                  value: i.id,
+                }))}
+              ></Select>
             </Form.Item>
             <Form.Item
               rules={[{ required: true, message: t('p2.need2') }]}
@@ -178,17 +178,16 @@ const RelatedNeed = (props: any) => {
             >
               <Select
                 disabled={showNeed}
+                optionFilterProp="label"
                 showSearch
                 labelInValue
                 mode="multiple"
                 placeholder={t('common.pleaseSelect')}
-              >
-                {demandList.map((item: any) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>
+                options={demandList.map((i: any) => ({
+                  label: i.name,
+                  value: i.id,
+                }))}
+              ></Select>
             </Form.Item>
           </Form>
           <div

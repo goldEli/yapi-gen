@@ -12,6 +12,7 @@ const TextWrapEditor = styled.div({
   p: {
     marginBottom: '0px!important',
   },
+  img: { maxWidth: '600px' },
 })
 
 const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
