@@ -148,6 +148,8 @@ const CommonNeed = (props: any) => {
     getMineCreacteList,
     getMineFinishList,
     getMineNeedList,
+    isUpdateCreate,
+    setIsUpdateCreate,
   } = useModel('mine')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -231,6 +233,7 @@ const CommonNeed = (props: any) => {
       const res = await getMineNoFinishList(params)
       setManyListData(res)
       setIsSpin(false)
+      setIsUpdateCreate(false)
     }
 
     if (!isMany) {
@@ -256,6 +259,7 @@ const CommonNeed = (props: any) => {
       setListData(res)
       setTotal(res?.pager?.total)
       setIsSpin(false)
+      setIsUpdateCreate(false)
     }
   }
 
@@ -390,7 +394,7 @@ const CommonNeed = (props: any) => {
   }, [props.id])
 
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh || isUpdateCreate) {
       init()
       getShowkey()
       if (props?.id) {
@@ -398,7 +402,7 @@ const CommonNeed = (props: any) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRefresh])
+  }, [isRefresh, isUpdateCreate])
 
   const showModal = () => {
     setIsModalVisible(true)
