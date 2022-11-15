@@ -8,7 +8,6 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  MyInput,
   SetButton,
   tabCss,
   TabsHehavior,

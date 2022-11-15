@@ -1,6 +1,6 @@
 import { getIsPermission, getParamsData } from '@/tools'
 import { css } from '@emotion/css'
-import { createRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Achievements from '../components/Achievements'
 import { editButton } from '@/components/StyleCommon'

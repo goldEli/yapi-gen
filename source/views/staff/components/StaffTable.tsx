@@ -12,7 +12,6 @@ const flexCss = css`
 `
 
 const SetHead = styled.div`
-  // margin-left: 32px;
   margin-right: 12px;
   width: 32px;
   height: 32px;

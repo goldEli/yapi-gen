@@ -8,7 +8,6 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  MyInput,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -24,8 +23,6 @@ import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import { openDetail } from '@/tools'
 import { useDynamicColumns } from './TableColum'
 import CommonInput from '@/components/CommonInput'
 
@@ -70,18 +67,6 @@ const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
     color: active ? '#2877FF' : '#969799',
   }),
 )
-
-const CanClick = styled.div({
-  height: 24,
-  borderRadius: 6,
-  padding: '0 8px',
-  cursor: 'pointer',
-  color: 'white',
-  fontSize: 12,
-  background: '#2877ff',
-  lineHeight: '24px',
-  width: 'fit-content',
-})
 
 const Need = (props: any) => {
   const [t] = useTranslation()
@@ -201,7 +186,7 @@ const Need = (props: any) => {
 
   return (
     <>
-      {isVisible ? (
+      {isVisible && (
         <EditExamine
           isVisible={isVisible}
           onClose={() => setIsVisible(false)}
@@ -209,7 +194,7 @@ const Need = (props: any) => {
           isEdit={!activeTab}
           onUpdate={onUpdate}
         />
-      ) : null}
+      )}
       <TabsHehavior
         style={{ padding: '0 24px', justifyContent: 'space-between' }}
       >

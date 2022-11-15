@@ -4,28 +4,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import IconFont from '@/components/IconFont'
-import {
-  MyInput,
-  PaginationWrap,
-  StaffTableWrap,
-} from '@/components/StyleCommon'
-import { Checkbox, DatePicker, Pagination, Space, Spin, Tooltip } from 'antd'
-import {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { PaginationWrap, StaffTableWrap } from '@/components/StyleCommon'
+import { Checkbox, Pagination, Space, Spin, Tooltip } from 'antd'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import {
-  rangPicker,
-  SelectWrap,
-  SelectWrapBedeck,
-} from '@/components/TableFilter'
+import { SelectWrap, SelectWrapBedeck } from '@/components/TableFilter'
 import { DataWrap, TableBox, tableWrapP } from '../staff'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
@@ -33,7 +17,6 @@ import { getReceiveList } from '@/services/daily'
 import { useParams } from 'react-router-dom'
 import { getStaffList2 } from '@/services/staff'
 import LookDay from './components/LookDay'
-import { DailyContext } from '.'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
 
@@ -50,7 +33,7 @@ const srr = [
 ]
 const Get = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
   const [listData, setListData] = useState<any>([])

@@ -4,7 +4,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useModel } from '@/models'
-import { message, Modal, notification, Upload, type UploadProps } from 'antd'
+import { message, notification, Upload, type UploadProps } from 'antd'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/styled'

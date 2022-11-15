@@ -21,16 +21,6 @@ export const LabelTitle = (props: any) => {
         alignItems: 'center',
       }}
     >
-      {/* <div
-        style={{
-          width: '3px',
-          height: '16px',
-
-          background: '#2877FF',
-          display: 'inline-block',
-          marginRight: '8px',
-        }}
-      /> */}
       <span
         style={{
           fontWeight: 'bold',

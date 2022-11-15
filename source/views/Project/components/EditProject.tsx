@@ -1,20 +1,11 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Modal, Form, Input, Select, Space, message } from 'antd'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { Form, Input, Select, message } from 'antd'
 import PosterComponent from './PosterComponent'
-import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
-
-const Footer = styled(Space)({
-  height: 56,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-})
 
 interface Props {
   visible: boolean

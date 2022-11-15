@@ -4,24 +4,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import IconFont from '@/components/IconFont'
-import {
-  MyInput,
-  PaginationWrap,
-  StaffTableWrap,
-} from '@/components/StyleCommon'
-import { DatePicker, message, Pagination, Spin, Tooltip } from 'antd'
-import {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { PaginationWrap, StaffTableWrap } from '@/components/StyleCommon'
+import { message, Pagination, Spin, Tooltip } from 'antd'
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import { rangPicker, SelectWrapBedeck } from '@/components/TableFilter'
+import { SelectWrapBedeck } from '@/components/TableFilter'
 import { DataWrap, TableBox, tableWrapP } from '../staff'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'

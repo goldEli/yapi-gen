@@ -53,7 +53,7 @@ const MainIndex = (props: Props) => {
 
   return (
     <>
-      {isMember ? (
+      {isMember && (
         <CommonNeed
           id={projectId}
           isMember={isMember}
@@ -61,7 +61,8 @@ const MainIndex = (props: Props) => {
           type={props?.type}
           subTitle={props?.subTitle}
         />
-      ) : (
+      )}
+      {!isMember && (
         <>
           <StaffHeader>{props?.title}</StaffHeader>
           <MainWrap>

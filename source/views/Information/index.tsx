@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
-import { Form, message, Popover } from 'antd'
+import { message, Popover } from 'antd'
 import WhiteDay from './components/WhiteDay'
 import { RedLogo } from '../Container/components/Side'
 import { useSelector } from 'react-redux'

@@ -9,7 +9,7 @@ import sideLogo from '/logo.svg'
 import { useModel } from '@/models'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const imgCss = css`
   width: 40px;

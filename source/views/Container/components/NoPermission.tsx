@@ -36,7 +36,6 @@ const SetHead = styled.div`
   font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
-  /* border: 2px solid rgba(40, 119, 255, 0.16); */
   border: 1px solid #f0f2fd;
   color: white;
   margin-right: 8px;

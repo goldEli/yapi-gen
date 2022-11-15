@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import projectImg from '/projectImg.png'
-import { Dropdown, Space } from 'antd'
+import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',

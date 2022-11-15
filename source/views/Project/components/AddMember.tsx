@@ -9,7 +9,6 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import CommonModal from '@/components/CommonModal'
 
 const ModalHeader = styled.div({
   display: 'flex',

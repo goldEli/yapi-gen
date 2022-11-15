@@ -5,7 +5,6 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
 import { useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
 import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
@@ -148,7 +147,7 @@ const RelatedNeed = (props: any) => {
         <IconFont type="plus" />
         <div>{t('p2.RelatedRequirements')}</div>
       </AddWrap>
-      {show ? (
+      {show && (
         <WrapDiv
           style={{
             background: '#F2F2F4',
@@ -228,7 +227,8 @@ const RelatedNeed = (props: any) => {
             </span>
           </div>
         </WrapDiv>
-      ) : (
+      )}
+      {!show && (
         <div>
           {chooseList.map((item: any) => (
             <InnerLine key={item.key}>

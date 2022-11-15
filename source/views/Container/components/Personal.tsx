@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable max-len */
 import { useState } from 'react'
-import { Modal, Spin } from 'antd'
+import { Spin } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import head from '/logo.png'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
@@ -90,7 +89,7 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       onClose={() => props.close()}
       isVisible={props.visible}
       title={t('container.personInfo')}
-      isShowFooter={true}
+      isShowFooter
     >
       {isShow ? <Spin /> : null}
       {!isShow && (

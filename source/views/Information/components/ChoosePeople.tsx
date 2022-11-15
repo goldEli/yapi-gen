@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { NameWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { Popover, Space } from 'antd'
+import { Popover } from 'antd'
 import {
   AddWrap,
   ChoosePerson,
@@ -18,11 +18,6 @@ const ChoosePeople = (props: any) => {
   const [options, setOptions] = useState<any>([])
   const [isOpen, setIsOpen] = useState(false)
 
-  const tagMenuList = [
-    { name: t('newlyAdd.sequence'), value: 1, icon: 'right' },
-    { name: t('newlyAdd.andExamine'), value: 2, icon: 'and' },
-    { name: t('newlyAdd.orExamine'), value: 3, icon: 'line' },
-  ]
   const confirm = () => {
     const ids = allMemberList.map((item: any) => item.id)
 

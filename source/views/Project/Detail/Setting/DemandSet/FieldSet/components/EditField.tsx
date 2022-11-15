@@ -7,7 +7,6 @@ import { Checkbox, Form, Input, message, Select } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
-import { random } from 'lodash'
 import { arrayMoveImmutable } from 'array-move'
 import {
   SortableContainer as sortableContainer,

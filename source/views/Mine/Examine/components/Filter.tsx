@@ -1,29 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { SearchLine, SelectWrapBedeck } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
-import { DatePicker, Form, Input, Select } from 'antd'
+import { Form, Input, Select } from 'antd'
 import moment from 'moment'
-import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
-
-const rangPicker = css`
-  .ant-picker-panel-container {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  .ant-picker-footer {
-    min-width: inherit;
-    width: max-content;
-  }
-  .ant-picker-ranges {
-    display: flex;
-    flex-direction: column;
-  }
-  .ant-tag {
-    margin-right: 0;
-  }
-`
 
 const ClearForm = styled.div({
   display: 'flex',
@@ -63,7 +44,7 @@ interface Props {
 
 const SearchList = (props: Props) => {
   const [form] = Form.useForm()
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
 
   const onConfirm = async () => {
     const values = form.getFieldsValue()

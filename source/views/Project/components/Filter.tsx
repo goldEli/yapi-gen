@@ -107,7 +107,7 @@ const Filter = (props: Props) => {
   )
   return (
     <Wrap>
-      {props.show ? (
+      {props.show && (
         <WrapLeft size={48}>
           <TitleBox
             onClick={() => props.onChangeType(0)}
@@ -122,7 +122,7 @@ const Filter = (props: Props) => {
             {t('project.companyAll')}
           </TitleBox>
         </WrapLeft>
-      ) : null}
+      )}
 
       <WrapRight>
         <Space size={12}>

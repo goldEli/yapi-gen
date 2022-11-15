@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, Space, message } from 'antd'
+import { Form, Input, Space, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import Editor from '@/components/Editor'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -50,14 +49,6 @@ const FormWrap = styled(Form)({
   '.ant-form-item-control-input': {
     minHeight: 'inherit',
   },
-})
-
-const ModalFooter = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: '0 24px',
 })
 
 interface Props {

@@ -1,4 +1,4 @@
-import { Button, Modal, Select } from 'antd'
+import { Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
@@ -15,14 +15,6 @@ const PersonalHead = styled.div`
 const PersonalFooter = styled.div`
   display: flex;
   justify-content: space-around;
-`
-const Footer = styled.footer`
-  align-items: center;
-  margin-top: 36px;
-  display: flex;
-  flex-direction: row-reverse;
-  height: 56px;
-  gap: 16px;
 `
 const Left = styled.div``
 const Line = styled.div`

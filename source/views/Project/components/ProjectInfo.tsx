@@ -1,4 +1,3 @@
-import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'

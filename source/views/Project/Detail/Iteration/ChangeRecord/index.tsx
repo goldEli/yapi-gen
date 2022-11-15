@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Table, Pagination, Modal, Space, Spin } from 'antd'
+import { Table, Pagination, Space, Spin } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import {
