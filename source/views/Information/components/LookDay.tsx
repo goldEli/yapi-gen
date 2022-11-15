@@ -396,11 +396,6 @@ const LookDay = (props: any) => {
                       }}
                     >
                       <GredParent
-                        onClick={() => {
-                          setPreviewOpen(true)
-                          setPreviewImage(item.path)
-                          setPreviewTitle(item.path.split('/').at(-1))
-                        }}
                         style={{
                           marginRight: '8px',
                           position: 'relative',
@@ -463,7 +458,13 @@ const LookDay = (props: any) => {
                           />
                         )}
                         {imgs.includes(item.path.split('.').at(-1)) && (
-                          <Gred>
+                          <Gred
+                            onClick={() => {
+                              setPreviewOpen(true)
+                              setPreviewImage(item.path)
+                              setPreviewTitle(item.path.split('/').at(-1))
+                            }}
+                          >
                             <IconFont
                               style={{ fontSize: 18, color: 'white' }}
                               type="zoomin"

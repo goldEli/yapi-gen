@@ -248,6 +248,7 @@ const TreeItem = (props: any) => {
         <Popover
           visible={visiblePop}
           getPopupContainer={node => node}
+          onVisibleChange={visible1 => setVisiblePop(visible1)}
           placement="bottomRight"
           content={content}
           trigger="hover"
