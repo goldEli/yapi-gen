@@ -85,7 +85,7 @@ export const GredParent = styled.div`
   }
 `
 
-const imgs = ['png', 'webp']
+const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const fils = ['xlsx', 'pdf']
 const fils2 = fils.concat(imgs)
 const ListItem = (props: any) => {

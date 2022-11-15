@@ -3,7 +3,7 @@ import { AddWrap } from '@/components/StyleCommon'
 import { getDemandList, getProjectList } from '@/services/daily'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Form, Select } from 'antd'
+import { Form, message, Select } from 'antd'
 import { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { useTranslation } from 'react-i18next'
@@ -41,9 +41,6 @@ const WrapDiv = styled.div`
   }
   .ant-form-item {
     margin-bottom: 16px;
-  }
-  .ant-form-item-explain {
-    display: none;
   }
 `
 const list = [
@@ -98,6 +95,7 @@ const RelatedNeed = (props: any) => {
     setShow(false)
     setShowNeed(true)
     lessForm.resetFields()
+    message.success(t('p2.need3'))
   }
 
   const del = (item: any) => {
@@ -158,7 +156,7 @@ const RelatedNeed = (props: any) => {
         >
           <Form form={lessForm}>
             <Form.Item
-              rules={[{ required: true, message: '' }]}
+              rules={[{ required: true, message: t('p2.need1') }]}
               name="project"
               label={t('common.chooseProject')}
             >
@@ -175,7 +173,7 @@ const RelatedNeed = (props: any) => {
               </Select>
             </Form.Item>
             <Form.Item
-              rules={[{ required: true, message: '' }]}
+              rules={[{ required: true, message: t('p2.need2') }]}
               name="needs"
               label={t('p2.managingDemand')}
             >

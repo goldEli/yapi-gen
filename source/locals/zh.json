@@ -3,6 +3,9 @@
     "exportFields": "导出需求字段选择",
     "editAchievements": "编辑成果",
     "pComment": "评论{{inner}}的日志",
+    "need1": "请选择关联项目",
+    "need2": "请选择关联需求",
+    "need3": "需求关联成功",
     "title": {
       "t1d": "今日完成工作",
       "t1t": "明日计划工作",

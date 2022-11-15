@@ -161,6 +161,15 @@ const WhiteDay = (props: any) => {
       })
     })
   }
+  const onValidator = (rule: any, value: any) => {
+    // eslint-disable-next-line no-undefined
+    if (value === '<p><br></p>' || value.trim() === '') {
+      return Promise.reject(
+        new Error('The two passwords that you entered do not match!'),
+      )
+    }
+    return Promise.resolve()
+  }
 
   return (
     <CommonModal
@@ -183,14 +192,28 @@ const WhiteDay = (props: any) => {
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name} />}
             name="info"
-            rules={[{ required: true, message: t('common.pleaseEnter') }]}
+            rules={[
+              {
+                required: true,
+                message: t('common.pleaseEnter'),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
           >
             <Editor ref={ed1} height={178} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name2} />}
             name="info2"
-            rules={[{ required: true, message: t('common.pleaseEnter') }]}
+            rules={[
+              {
+                required: true,
+                message: t('common.pleaseEnter'),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
           >
             <Editor height={178} />
           </Form.Item>
