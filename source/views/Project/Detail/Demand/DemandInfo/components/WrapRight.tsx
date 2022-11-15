@@ -218,7 +218,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [addValue, setAddValue] = useState('')
   const [activeTabs, setActiveTabs] = useState(1)
-  const [classTreeData, setClassTreeData] = useState<any>([])
   const {
     getCommentList,
     addComment,
@@ -229,9 +228,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     updatePriority,
   } = useModel('demand')
   const { userInfo } = useModel('user')
-  const { projectInfo, fieldList, getFieldList, memberList } =
-    useModel('project')
-  const { selectIterate } = useModel('iterate')
+  const { projectInfo, fieldList, getFieldList } = useModel('project')
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -261,24 +258,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     await getFieldList({ projectId })
   }
 
-  const getTreeData = async () => {
-    const classTree = await getTreeList({ id: projectId, isTree: 1 })
-    setClassTreeData([
-      ...[
-        {
-          title: t('newlyAdd.unclassified'),
-          key: 0,
-          value: 0,
-          children: [],
-        },
-      ],
-      ...getNestedChildren(classTree, 0),
-    ])
-  }
-
   useEffect(() => {
     getFieldData()
-    getTreeData()
     getList()
   }, [])
 
@@ -374,10 +355,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     ? demandInfo?.user?.map((i: any) => i.user.id)
                     : []
                 }
-                value={memberList?.map((i: any) => ({
-                  label: i.name,
-                  value: i.id,
-                }))}
               >
                 {demandInfo?.user?.length
                   ? demandInfo?.user?.map((i: any) => i.user.name).join('、')
@@ -426,12 +403,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     ? ''
                     : demandInfo?.iterateName
                 }
-                value={selectIterate?.list
-                  ?.filter((k: any) => k.status === 1)
-                  ?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
               >
                 {demandInfo?.iterateName === '--'
                   ? '--'
@@ -459,7 +430,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 keyText="class_id"
                 type="treeSelect"
                 defaultText={demandInfo?.class}
-                value={classTreeData}
               >
                 {demandInfo?.className
                   ? demandInfo?.className
@@ -548,10 +518,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     ? demandInfo?.copySend?.map((i: any) => i.copysend.id)
                     : []
                 }
-                value={memberList?.map((i: any) => ({
-                  label: i.name,
-                  value: i.id,
-                }))}
               >
                 {demandInfo?.copySend?.length
                   ? demandInfo?.copySend
