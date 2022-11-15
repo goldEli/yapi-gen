@@ -240,7 +240,7 @@ const TableQuickEdit = (props: Props) => {
 
   return (
     <div style={{ width: '100%' }}>
-      {isShowControl ? (
+      {isShowControl &&
         getTypeComponent(
           params,
           true,
@@ -248,8 +248,8 @@ const TableQuickEdit = (props: Props) => {
           inputRef,
           onBlur,
           onChange,
-        )
-      ) : (
+        )}
+      {!isShowControl && (
         <CanOperation
           onClick={() =>
             // 详情和列表上不是文本的可点击整个元素
@@ -259,7 +259,7 @@ const TableQuickEdit = (props: Props) => {
           isCanEdit={isCanEdit}
         >
           {props.children}
-          {isCanEdit ? (
+          {isCanEdit && (
             <IconFontWrapEdit
               onClick={() => setIsShowControl(true)}
               isTable={isShowIcon}
@@ -272,7 +272,7 @@ const TableQuickEdit = (props: Props) => {
                   : 'edit-square'
               }
             />
-          ) : null}
+          )}
         </CanOperation>
       )}
     </div>

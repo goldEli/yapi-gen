@@ -4,7 +4,6 @@ import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
-import { css } from '@emotion/css'
 import {
   ClickWrap,
   ShowWrap,

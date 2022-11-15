@@ -126,7 +126,7 @@ const IterationCard = (props: Props) => {
     }
   }
 
-  const menu = (item: any) => {
+  const menu = () => {
     let menuItems = [
       {
         key: '1',
@@ -182,11 +182,11 @@ const IterationCard = (props: Props) => {
         <span>{t('common.info')}</span>
         <IconFont type="right" />
       </DetailWrap>
-      {hasDel && hasEdit && hasChangeStatus ? null : (
+      {!(hasDel && hasEdit && hasChangeStatus) && (
         <Dropdown
           key={isVisible.toString()}
           visible={isVisible}
-          overlay={menu(props?.item)}
+          overlay={menu()}
           placement="bottomRight"
           trigger={['hover']}
           getPopupContainer={node => node}

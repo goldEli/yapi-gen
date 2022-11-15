@@ -13,7 +13,7 @@ interface Props {
 
 const SearchComponent = (props: Props) => (
   <Space size={24}>
-    {props.isPermission ? null : (
+    {!props.isPermission && (
       <AddButton
         text={props.text}
         onChangeClick={(e: any) => props.onChangeVisible?.(e)}

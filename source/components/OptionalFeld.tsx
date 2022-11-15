@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
-import { Checkbox, Divider, Modal, Space } from 'antd'
+import { Checkbox, Divider, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -38,7 +38,6 @@ const Wrap = styled.div`
 const Left = styled.div`
   width: 524px;
   height: 350px;
-  /* border-right: 1px solid #f1f2f4; */
   overflow: scroll;
 `
 const Right = styled.div`
@@ -203,7 +202,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               </Space>
             </CheckboxGroup>
           </ItemWrap>
-          {plainOptions3?.length ? (
+          {plainOptions3?.length > 0 && (
             <ItemWrap>
               <div className={text}>{t('newlyAdd.customFields')}</div>
               <CheckboxGroup value={checkList3} onChange={onChange3}>
@@ -216,7 +215,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                 </Space>
               </CheckboxGroup>
             </ItemWrap>
-          ) : null}
+          )}
         </Left>
         <Divider
           type="vertical"

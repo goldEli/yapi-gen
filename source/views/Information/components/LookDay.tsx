@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable complexity */
 import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
 import { NameWrap, TextWrapEditor } from '@/components/StyleCommon'
@@ -259,7 +260,7 @@ const LookDay = (props: any) => {
   return ReactDOM.createPortal(
     <GrepWrap>
       <HiddenWrap>
-        {isSpinning ? (
+        {isSpinning && (
           <FormWrap left={left}>
             <div
               style={{
@@ -310,13 +311,12 @@ const LookDay = (props: any) => {
               )}
 
               <LabelTitle title={texts[props.type]?.name2} />
-              {article2 ? (
+              {article2 && (
                 <TextWrapEditor
                   dangerouslySetInnerHTML={{ __html: article2 }}
                 />
-              ) : (
-                <Kong />
               )}
+              {!article2 && <Kong />}
 
               <LabelTitle title={t('common.copySend')} />
               <div
@@ -704,7 +704,8 @@ const LookDay = (props: any) => {
                   ))}
             </div>
           </FormWrap>
-        ) : (
+        )}
+        {!isSpinning && (
           <Spin tip={t('common.loading') as unknown as string} size="large" />
         )}
       </HiddenWrap>

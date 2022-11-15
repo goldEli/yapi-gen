@@ -65,11 +65,10 @@ const CommonModal = (props: ModalProps) => {
         </Space>
       </ModalHeader>
       <div style={{ padding: '0 4px 0 24px' }}>{props?.children}</div>
-      {props?.isShowFooter ? null : (
+      {!props?.isShowFooter && (
         <>
-          {props?.hasFooter ? (
-            props?.hasFooter
-          ) : (
+          {props?.hasFooter}
+          {!props.hasFooter && (
             <ModalFooter size={16}>
               <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
               <Button onClick={props?.onConfirm} type="primary">

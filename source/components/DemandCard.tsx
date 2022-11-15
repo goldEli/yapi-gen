@@ -241,7 +241,7 @@ const DemandCard = (props: Props) => {
             </Space>
           </AvatarWrap>
         </MainWrap>
-        {hasDel && hasEdit ? null : (
+        {!(hasDel && hasEdit) && (
           <Dropdown
             key={isMoreVisible.toString()}
             visible={isMoreVisible}

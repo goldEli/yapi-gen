@@ -162,27 +162,34 @@ const TextWrap = styled.div({
     WebkitLineClamp: 4,
     WebkitBoxOrient: 'vertical',
     paddingRight: 30,
+    flexWrap: 'wrap',
+    wordBreak: 'break-all',
   },
+})
+
+const ButtonWrap = styled.div({
+  width: '92%',
+  background: 'white',
+  paddingBottom: 7,
 })
 
 export const TextareaWrap = styled.div({
   marginTop: 67,
-  minHeight: 79,
-  borderRadius: 6,
-  border: '1px solid #EBEDF0',
-  padding: 8,
   textAlign: 'right',
   marginBottom: 20,
+  position: 'relative',
+  paddingRight: 20,
+  overflow: 'hidden',
   '.ant-input': {
-    border: 'none',
-    padding: 0,
+    padding: '8px 8px 40px 8px',
   },
   '.ant-input:focus,.ant-input:active': {
-    border: 'none',
     boxShadow: 'none',
   },
-  '&:hover': {
-    border: '1px solid #2877ff',
+  [ButtonWrap.toString()]: {
+    position: 'absolute',
+    right: 28,
+    bottom: 1,
   },
 })
 
@@ -352,7 +359,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         </div>
       </TitleWrap>
       {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
-      {activeTabs === 1 ? (
+      {activeTabs === 1 && (
         <div style={{ maxHeight: 'calc(100% - 100px)', overflow: 'auto' }}>
           <InfoItem>
             <Label>{t('common.dealName')}</Label>
@@ -588,7 +595,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             </InfoItem>
           ))}
         </div>
-      ) : (
+      )}
+      {activeTabs !== 1 && (
         <div
           style={{
             maxHeight: `calc(100% - ${isComment ? 80 : 320}px)`,
@@ -664,14 +672,16 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         <TextareaWrap>
           <Input.TextArea
             placeholder={t('mark.editCom')}
-            autoSize={{ minRows: 5, maxRows: 5 }}
+            autoSize={{ minRows: 3, maxRows: 5 }}
             value={addValue}
             onChange={(e: any) => setAddValue(e.target.value)}
             onPressEnter={onPressEnter}
           />
-          <Button type="primary" onClick={() => onAddComment(addValue)}>
-            {t('project.replay')}
-          </Button>
+          <ButtonWrap>
+            <Button type="primary" onClick={() => onAddComment(addValue)}>
+              {t('project.replay')}
+            </Button>
+          </ButtonWrap>
         </TextareaWrap>
       )}
     </WrapRight>

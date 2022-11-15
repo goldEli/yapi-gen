@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Modal, Space } from 'antd'
-import styled from '@emotion/styled'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { Space } from 'antd'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
@@ -11,24 +9,6 @@ interface Props {
   onChangeState(): void
   visible: boolean
 }
-
-const ContentWrap = styled.div({
-  boxSizing: 'border-box',
-  padding: '10px',
-  maxHeight: 400,
-  overflow: 'auto',
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'start',
-  gap: '16px',
-})
-
-const FooterWrap = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  paddingTop: 16,
-})
 
 const CompanyModal = (props: Props) => {
   const [t] = useTranslation()

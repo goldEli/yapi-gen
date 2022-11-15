@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { DatePicker, Space } from 'antd'
+import { DatePicker } from 'antd'
 import { css } from '@emotion/css'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'

@@ -67,9 +67,9 @@ const OperationGroup = (props: Props) => {
         />
       </Tooltip>
 
-      {hasFilter ? null : <DividerWrap type="vertical" />}
+      {!hasFilter && <DividerWrap type="vertical" />}
 
-      {hasFilter ? null : (
+      {!hasFilter && (
         <Tooltip title={t('common.search')}>
           <IconWrap
             active={!props.filterState}
@@ -79,9 +79,9 @@ const OperationGroup = (props: Props) => {
         </Tooltip>
       )}
 
-      {props.isGrid ? null : <DividerWrap type="vertical" />}
+      {!props.isGrid && <DividerWrap type="vertical" />}
 
-      {props.isGrid ? null : (
+      {!props.isGrid && (
         <Dropdown overlay={menu} trigger={['click']}>
           <Tooltip title={t('common.tableFieldSet')}>
             <IconWrap active={props.settingState} type="settings" />

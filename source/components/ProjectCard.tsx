@@ -176,7 +176,7 @@ const ProjectCard = (props: Props) => {
       </ImgWrap>
       <TextWarp>
         <NameWrap onClick={props.onToDetail}>{props.item.name}</NameWrap>
-        {!hasEdit && !hasDelete && !hasStart && !hasStop ? (
+        {!hasEdit && !hasDelete && !hasStart && !hasStop && (
           <DropdownWrap
             key={isMoreVisible.toString()}
             visible={isMoreVisible}
@@ -188,7 +188,7 @@ const ProjectCard = (props: Props) => {
           >
             <IconFont style={{ fontSize: 16, color: '#BBBDBF' }} type="more" />
           </DropdownWrap>
-        ) : null}
+        )}
       </TextWarp>
     </Warp>
   )
