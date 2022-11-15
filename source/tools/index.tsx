@@ -49,7 +49,6 @@ function getTypeComponent(
   if (params?.attr === 'date') {
     child = (
       <DatePicker
-        getPopupContainer={node => node}
         placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showTime={params?.value[0] === 'datetime'}
