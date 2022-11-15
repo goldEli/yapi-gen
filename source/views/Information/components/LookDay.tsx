@@ -203,7 +203,7 @@ const LookDay = (props: any) => {
     setContentList(res.data.comment_list)
     setTimeout(() => {
       setIsSpinning(true)
-    }, 1000)
+    }, 400)
   }
   useEffect(() => {
     if (props.editId && props.visible) {
@@ -215,7 +215,10 @@ const LookDay = (props: any) => {
 
   const scrollToBottom = () => {
     setTimeout(() => {
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
+      messagesEndRef.current.scrollTo({
+        top: messagesEndRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
     }, 200)
   }
   const sendComment = async () => {
@@ -260,7 +263,7 @@ const LookDay = (props: any) => {
   return ReactDOM.createPortal(
     <GrepWrap>
       <HiddenWrap>
-        {isSpinning && (
+        {isSpinning ? (
           <FormWrap left={left}>
             <div
               style={{
@@ -311,11 +314,11 @@ const LookDay = (props: any) => {
               )}
 
               <LabelTitle title={texts[props.type]?.name2} />
-              {article2 && (
+              {article2 ? (
                 <TextWrapEditor
                   dangerouslySetInnerHTML={{ __html: article2 }}
                 />
-              )}
+              ) : null}
               {!article2 && <Kong />}
 
               <LabelTitle title={t('common.copySend')} />
@@ -393,11 +396,6 @@ const LookDay = (props: any) => {
                       }}
                     >
                       <GredParent
-                        onClick={() => {
-                          setPreviewOpen(true)
-                          setPreviewImage(item.path)
-                          setPreviewTitle(item.path.split('/').at(-1))
-                        }}
                         style={{
                           marginRight: '8px',
                           position: 'relative',
@@ -460,7 +458,13 @@ const LookDay = (props: any) => {
                           />
                         )}
                         {imgs.includes(item.path.split('.').at(-1)) && (
-                          <Gred>
+                          <Gred
+                            onClick={() => {
+                              setPreviewOpen(true)
+                              setPreviewImage(item.path)
+                              setPreviewTitle(item.path.split('/').at(-1))
+                            }}
+                          >
                             <IconFont
                               style={{ fontSize: 18, color: 'white' }}
                               type="zoomin"
@@ -704,7 +708,7 @@ const LookDay = (props: any) => {
                   ))}
             </div>
           </FormWrap>
-        )}
+        ) : null}
         {!isSpinning && (
           <Spin tip={t('common.loading') as unknown as string} size="large" />
         )}

@@ -28,6 +28,8 @@ import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '../../../../../../../store'
+import { changeId } from '../../../../../../../store/counterSlice'
 
 const Left = styled.div`
   height: calc(100vh - 64px);
@@ -246,6 +248,7 @@ const TreeItem = (props: any) => {
         <Popover
           visible={visiblePop}
           getPopupContainer={node => node}
+          onVisibleChange={visible1 => setVisiblePop(visible1)}
           placement="bottomRight"
           content={content}
           trigger="hover"
@@ -322,6 +325,9 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: any, ref: any) => {
+  const { value: valueId } = useSelector(store => store.counter)
+  const dispatch = useDispatch()
+
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
@@ -430,6 +436,7 @@ const WrapLeft = (props: any, ref: any) => {
     } = e
 
     context.changeKey(selectLine.id)
+    dispatch(changeId(selectLine.id))
   }
 
   useEffect(() => {
@@ -451,6 +458,7 @@ const WrapLeft = (props: any, ref: any) => {
           <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
           {treeData.length > 0 && show ? (
             <Tree
+              selectedKeys={[valueId]}
               allowDrop={(dropNode: any) => {
                 if (dropNode.dropNode.title.props.grade === 4) {
                   return false

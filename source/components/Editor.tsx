@@ -205,8 +205,8 @@ const EditorBox = (props: Props, ref: any) => {
 
   const onChange = (e: any) => {
     i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
-    props.onChangeValue?.(e.getHtml())
-    props.onChange?.(e.getHtml())
+    props.onChangeValue?.(e.getHtml().trim())
+    props.onChange?.(e.getHtml().trim())
   }
 
   useImperativeHandle(ref, () => {

@@ -18,14 +18,14 @@ export const getTreeList = async (params: any) => {
   const treeData = [
     {
       name: '全部分类',
-      key: '0',
+      key: 0,
       id: 0,
       pid: 1,
       parent_id: 0,
       story_count: res.data[0]?.story_count,
       children: [
         {
-          key: '-1',
+          key: -1,
           name: '未分类',
           pid: 0,
           id: -1,
