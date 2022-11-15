@@ -118,7 +118,7 @@ const Send = () => {
       },
     },
     {
-      title: <NewSort fixedKey="finish_content">{t('p2.synopsis')}</NewSort>,
+      title: t('p2.synopsis'),
       dataIndex: 'finish_content',
       key: 'finish_content',
       width: 200,
@@ -336,7 +336,9 @@ const Send = () => {
     const index = changeIds.findIndex((k: any) => k === id)
     const start = changeIds.at(0)
     const end = changeIds.at(-1)
-
+    setTimeout(() => {
+      init()
+    }, 1000)
     if (e === 1) {
       if (id === start) {
         setShowId(end)
@@ -350,9 +352,6 @@ const Send = () => {
       }
       setShowId(changeIds[index + 1])
     }
-    setTimeout(() => {
-      init()
-    }, 1000)
   }
 
   useEffect(() => {

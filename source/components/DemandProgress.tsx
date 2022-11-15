@@ -38,6 +38,7 @@ const DemandProgress = (props: Props) => {
       content={
         <ProgressWrap onMouseUp={onChangeSchedule}>
           <SliderWrap
+            isDisabled
             style={{ width: 246 }}
             value={schedule}
             tipFormatter={(value: any) => `${value}%`}

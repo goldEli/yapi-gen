@@ -1,3 +1,4 @@
+import useWatchLine from '@/hooks/useWatchLine'
 /* eslint-disable no-undefined */
 /* eslint-disable no-lonely-if */
 /* eslint-disable require-atomic-updates */
@@ -62,6 +63,10 @@ client.config({
   },
   requestInterceptors: [
     async (options: any) => {
+      const line = window.navigator.onLine
+      if (!line) {
+        location.reload()
+      }
       await isCheckTicket(
         options.url ===
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
