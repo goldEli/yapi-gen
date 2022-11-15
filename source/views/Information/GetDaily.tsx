@@ -256,6 +256,9 @@ const Get = () => {
       }
       setShowId(changeIds[index + 1])
     }
+    setTimeout(() => {
+      init()
+    }, 1000)
   }
   const lookClose = () => {
     setVisibleLook(false)
