@@ -55,16 +55,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
-  const {
-    projectInfo,
-    colorList,
-    selectTreeData,
-    fieldList,
-    memberList,
-    selectAllStaffData,
-    tagList,
-  } = useModel('project')
-  const { selectIterate } = useModel('iterate')
+  const { projectInfo, colorList, fieldList } = useModel('project')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -276,12 +267,6 @@ export const useDynamicColumns = (state: any) => {
             keyText="iterate_id"
             item={record}
             onUpdate={onUpdate}
-            value={selectIterate?.list
-              ?.filter((k: any) => k.status === 1)
-              ?.map((i: any) => ({
-                label: i.name,
-                value: i.id,
-              }))}
           >
             <HiddenText>
               <OmitText
@@ -310,7 +295,6 @@ export const useDynamicColumns = (state: any) => {
             keyText="class_id"
             item={record}
             onUpdate={onUpdate}
-            value={selectTreeData}
           >
             <HiddenText>
               <OmitText
@@ -336,10 +320,6 @@ export const useDynamicColumns = (state: any) => {
           <TableQuickEdit
             keyText="tag"
             type="fixed_select"
-            value={tagList?.map((i: any) => ({
-              label: i.content,
-              value: i.content,
-            }))}
             defaultText={text?.split(',') || []}
             item={record}
             onUpdate={onUpdate}
@@ -381,10 +361,6 @@ export const useDynamicColumns = (state: any) => {
             keyText="users"
             item={record}
             onUpdate={onUpdate}
-            value={memberList?.map((i: any) => ({
-              label: i.name,
-              value: i.id,
-            }))}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -442,7 +418,6 @@ export const useDynamicColumns = (state: any) => {
             keyText="copysend"
             item={record}
             onUpdate={onUpdate}
-            value={selectAllStaffData}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>

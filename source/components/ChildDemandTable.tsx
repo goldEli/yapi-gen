@@ -61,10 +61,8 @@ const ChildDemandTable = (props: {
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
   const { userInfo } = useModel('user')
-  const { selectIterate } = useModel('iterate')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo, colorList, getProjectInfo, memberList } =
-    useModel('project')
+  const { projectInfo, colorList, getProjectInfo } = useModel('project')
   let isCanEdit: any
 
   // 获取是否有编辑需求的权限 --- 主要用于他的/我的
@@ -243,16 +241,6 @@ const ChildDemandTable = (props: {
             onUpdate={onUpdate}
             isMineOrHis={props.isMineOrHis}
             projectPermissions={projectInfo.projectPermissions}
-            value={
-              props.isMineOrHis
-                ? []
-                : selectIterate?.list
-                    ?.filter((k: any) => k.status === 1)
-                    ?.map((i: any) => ({
-                      label: i.name,
-                      value: i.id,
-                    }))
-            }
           >
             <HiddenText>
               <OmitText
@@ -369,14 +357,6 @@ const ChildDemandTable = (props: {
             onUpdate={onUpdate}
             isMineOrHis={props.isMineOrHis}
             projectPermissions={projectInfo.projectPermissions}
-            value={
-              props.isMineOrHis
-                ? []
-                : memberList?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))
-            }
           >
             <span>{text?.join(',') || '--'}</span>
           </TableQuickEdit>

@@ -94,7 +94,7 @@ const TableQuickEdit = (props: Props) => {
     }, 100)
   }
 
-  // 我的模块自定义模块并且是缺失下拉数据的： 迭代、处理人、抄送人、需求分类、标签
+  //  迭代、处理人、抄送人、需求分类、标签
   const getDefaultSelectValues = async () => {
     let resultValue = {
       attr: props?.type,
@@ -146,26 +146,18 @@ const TableQuickEdit = (props: Props) => {
     if (props?.isMineOrHis && props?.isCustom) {
       // 我的模块及他的模块并且是自定义字段
       getIsCustomValues()
-    } else if (
-      props?.isMineOrHis &&
-      ['fixed_radio', 'treeSelect', 'fixed_select'].includes(
-        String(props?.type),
-      )
-    ) {
-      // 我的模块自定义模块并且是缺失下拉数据的： 迭代、处理人、抄送人、需求分类、标签
-      getDefaultSelectValues()
-    } else {
-      // 项目及详情中自带相应参数或者是之前的固定参数
+    } else if (props.isCustom) {
       resultValue = {
-        // 特殊判断标签，提交格式特殊
+        attr: props?.type,
         value: props.value,
-        remarks: props.remarks,
-        attr: props.type,
       }
       setParams(resultValue)
       setTimeout(() => {
         inputRef.current?.focus()
       }, 100)
+    } else {
+      // 项目及详情中自带相应参数或者是之前的固定参数
+      getDefaultSelectValues()
     }
   }
 

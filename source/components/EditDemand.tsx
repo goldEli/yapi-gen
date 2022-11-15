@@ -266,7 +266,7 @@ const EditDemand = (props: Props) => {
     workList,
     selectAllStaffData,
   } = useModel('project')
-  const { selectIterate } = useModel('iterate')
+  const { getIterateSelectList, selectIterate } = useModel('iterate')
   const { userInfo } = useModel('user')
   const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -317,19 +317,6 @@ const EditDemand = (props: Props) => {
     if (res) {
       form.setFieldsValue(res)
       setSchedule(res?.schedule)
-      if (treeArr?.find((j: any) => j.id === res.class)?.length) {
-        form.setFieldsValue({
-          class: '',
-        })
-      }
-      if (categoryData?.find((j: any) => j.id === res.category)?.length) {
-        setCategoryObj({})
-      } else {
-        setCategoryObj(
-          categoryData?.filter((i: any) => i.id === res.category)[0],
-        )
-      }
-
       const form1Obj: any = {}
       for (const key in res?.customField) {
         form1Obj[key] =
@@ -367,8 +354,18 @@ const EditDemand = (props: Props) => {
           endTime: moment(res.expectedStart || 0),
         })
       }
-      const parentArr = demandList
 
+      const resultIterate = selectIterate?.list?.filter(
+        (k: any) => k.status === 1,
+      )
+      const parentArr = demandList
+      if (categoryData?.find((j: any) => j.id === res.category)?.length) {
+        setCategoryObj({})
+      } else {
+        setCategoryObj(
+          categoryData?.filter((i: any) => i.id === res.category)[0],
+        )
+      }
       form.setFieldsValue({
         copySendIds: getCommonUser(
           res?.copySend?.map((i: any) => i.copysend),
@@ -384,19 +381,20 @@ const EditDemand = (props: Props) => {
           color: i.tag?.color,
           name: i.tag?.content,
         })),
+        iterateId: resultIterate.filter((i: any) => i.id === res?.iterateId)
+          .length
+          ? res?.iterateId
+          : null,
+        parentId: parentArr?.filter((i: any) => i.value === res?.parentId)
+          .length
+          ? res?.parentId
+          : null,
+        class:
+          res.class === 0 ||
+          JSON.stringify(treeArr?.find((j: any) => j.id === res.class)) !== '{}'
+            ? res.class
+            : null,
       })
-      if (
-        selectIterate?.list?.filter((i: any) => i.id === res?.iterateId).length
-      ) {
-        form.setFieldsValue({
-          iterateId: res?.iterateId,
-        })
-      }
-      if (parentArr?.filter((i: any) => i.value === res?.parentId).length) {
-        form.setFieldsValue({
-          parentId: res?.parentId,
-        })
-      }
     } else {
       form.resetFields()
       form1.resetFields()
@@ -417,14 +415,15 @@ const EditDemand = (props: Props) => {
         all: true,
         projectId: value || projectId,
       }),
+      getIterateSelectList({ projectId: value || projectId, all: true }),
     ])
     setAllDemandList(allDemandArr)
     setClassTreeData([
       ...[
         {
           title: t('newlyAdd.unclassified'),
-          key: 0,
-          value: 0,
+          key: -1,
+          value: -1,
           children: [],
         },
       ],

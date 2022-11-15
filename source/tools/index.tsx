@@ -58,19 +58,7 @@ function getTypeComponent(
         open={isModal}
         onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={
-          isModal
-            ? (date: any) =>
-                onChange(
-                  date
-                    ? moment(date).format(
-                        params?.value[0] === 'datetime'
-                          ? 'YYYY-MM-DD hh:mm:ss'
-                          : 'YYYY-MM-DD',
-                      )
-                    : '',
-                  1,
-                )
-            : void 0
+          isModal ? (date, dateString) => onChange(dateString, 1) : void 0
         }
       />
     )
