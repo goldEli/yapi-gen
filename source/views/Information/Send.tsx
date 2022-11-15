@@ -350,6 +350,9 @@ const Send = () => {
       }
       setShowId(changeIds[index + 1])
     }
+    setTimeout(() => {
+      init()
+    }, 1000)
   }
 
   useEffect(() => {
