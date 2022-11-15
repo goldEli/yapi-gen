@@ -162,7 +162,12 @@ const Achievements = (props: Props) => {
       {props.isEdit ? (
         <div className={labelWrap}>
           <span className={label}>{t('p2.m1') as string}</span>
-          <Editor value={html} onChangeValue={setHtml} height={280} />
+          <Editor
+            value={html}
+            onChangeValue={setHtml}
+            height={280}
+            placeholder={t('p2.pleaseEditText')}
+          />
         </div>
       ) : html ? (
         <EditorBox

@@ -22,6 +22,7 @@ interface Props {
   onChange?(value: string): void
   onChangeValue?(value: string): void
   height?: number
+  placeholder?: any
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -120,7 +121,7 @@ const EditorBox = (props: Props, ref: any) => {
   const [editConfig, setEditConfig] = useState(toolbarConfig)
 
   const editorConfig: Partial<IEditorConfig> = {
-    placeholder: t('components.pleaseContent'),
+    placeholder: props.placeholder ?? t('components.pleaseContent'),
     MENU_CONF: {
       fontFamily: {
         fontFamilyList: [

@@ -1,5 +1,6 @@
 {
   "p2": {
+    "pleaseEditText": "请编辑成果内容",
     "exportFields": "导出需求字段选择",
     "editAchievements": "编辑成果",
     "pComment": "评论{{inner}}的日志",
