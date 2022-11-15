@@ -30,6 +30,8 @@ import { StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
+import { useDispatch } from '../../../../../store'
+import { changeId } from '../../../../../store/counterSlice'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -146,6 +148,7 @@ const LiWrap = styled.div<{ color: any }>(
 )
 
 const DemandBox = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [isShowChange, setIsShowChange] = useState(false)
@@ -207,6 +210,9 @@ const DemandBox = () => {
   useEffect(() => {
     init()
     setFilterHeight(52)
+    return () => {
+      dispatch(changeId(0))
+    }
   }, [])
 
   useEffect(() => {

@@ -215,7 +215,10 @@ const LookDay = (props: any) => {
 
   const scrollToBottom = () => {
     setTimeout(() => {
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight
+      messagesEndRef.current.scrollTo({
+        top: messagesEndRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
     }, 200)
   }
   const sendComment = async () => {
@@ -260,7 +263,7 @@ const LookDay = (props: any) => {
   return ReactDOM.createPortal(
     <GrepWrap>
       <HiddenWrap>
-        {isSpinning && (
+        {isSpinning ? (
           <FormWrap left={left}>
             <div
               style={{
@@ -311,11 +314,11 @@ const LookDay = (props: any) => {
               )}
 
               <LabelTitle title={texts[props.type]?.name2} />
-              {article2 && (
+              {article2 ? (
                 <TextWrapEditor
                   dangerouslySetInnerHTML={{ __html: article2 }}
                 />
-              )}
+              ) : null}
               {!article2 && <Kong />}
 
               <LabelTitle title={t('common.copySend')} />
@@ -704,7 +707,7 @@ const LookDay = (props: any) => {
                   ))}
             </div>
           </FormWrap>
-        )}
+        ) : null}
         {!isSpinning && (
           <Spin tip={t('common.loading') as unknown as string} size="large" />
         )}
