@@ -368,7 +368,7 @@ const SetConfig = (props: Props) => {
         'datetime',
       ].includes(type)
         ? moment(value).format(
-            type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+            type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
           )
         : value
     } else {
@@ -377,7 +377,7 @@ const SetConfig = (props: Props) => {
         'datetime',
       ].includes(type)
         ? moment(value).format(
-            type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+            type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
           )
         : value
     }

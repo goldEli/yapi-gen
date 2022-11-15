@@ -429,7 +429,7 @@ const EditDemand = (props: Props) => {
       ],
       ...getNestedChildren(classTree, 0),
     ])
-    if (props?.isQuickCreate) {
+    if (props?.isQuickCreate || props?.notGetPath) {
       getProjectInfo({ projectId: value || projectId })
     }
 
@@ -605,7 +605,7 @@ const EditDemand = (props: Props) => {
       if (obj?.type?.attr === 'date' && values1[k]) {
         values1[obj.content] = moment(values1[obj.content]).format(
           obj?.type?.value[0] === 'datetime'
-            ? 'YYYY-MM-DD hh:mm:ss'
+            ? 'YYYY-MM-DD HH:mm:ss'
             : 'YYYY-MM-DD',
         )
       } else if (
@@ -1045,26 +1045,33 @@ const EditDemand = (props: Props) => {
               >
                 <Editor height={292} />
               </Form.Item>
-              {projectId && (
-                <Form.Item
-                  label={
-                    <div style={{ fontWeight: 'bold' }}>{t('common.tag')}</div>
-                  }
-                  name="tagIds"
-                >
-                  <TagComponent
-                    defaultList={tagList}
-                    onChangeTag={onChangeTag}
-                    isQuick={props.isQuickCreate}
-                    addWrap={
-                      <AddWrap hasDash>
-                        <IconFont type="plus" />
-                      </AddWrap>
-                    }
-                  />
-                </Form.Item>
-              )}
               {projectId &&
+                projectInfo.projectPermissions?.length > 0 &&
+                projectInfo.projectPermissions?.filter(
+                  (i: any) => i.name === '编辑需求',
+                )?.length > 0 && (
+                  <Form.Item
+                    label={
+                      <div style={{ fontWeight: 'bold' }}>
+                        {t('common.tag')}
+                      </div>
+                    }
+                    name="tagIds"
+                  >
+                    <TagComponent
+                      defaultList={tagList}
+                      onChangeTag={onChangeTag}
+                      isQuick={props.isQuickCreate}
+                      addWrap={
+                        <AddWrap hasDash>
+                          <IconFont type="plus" />
+                        </AddWrap>
+                      }
+                    />
+                  </Form.Item>
+                )}
+              {projectId &&
+                projectInfo.projectPermissions?.length > 0 &&
                 projectInfo?.projectPermissions?.filter(
                   (i: any) => i.name === '附件上传',
                 ).length > 0 && (

@@ -235,11 +235,11 @@ const TableQuickEdit = (props: Props) => {
       {isShowControl &&
         getTypeComponent(
           params,
+          onChange,
           true,
           props?.defaultText,
           inputRef,
           onBlur,
-          onChange,
         )}
       {!isShowControl && (
         <CanOperation

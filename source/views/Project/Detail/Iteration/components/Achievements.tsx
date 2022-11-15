@@ -23,12 +23,11 @@ import NoData from '@/components/NoData'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
-    minHeight: 400,
     overflowY: 'auto',
     paddingRight: 16,
   },
   ({ isModal }) => ({
-    maxHeight: isModal ? 680 : '100%',
+    height: isModal ? '30vw' : 'calc(100% - 40px)',
   }),
 )
 

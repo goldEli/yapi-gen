@@ -189,13 +189,15 @@ const IterationInfo = () => {
                   strokeColor="#43BA9A"
                   width={125}
                   type="circle"
-                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                  percent={computedAccuracy(
-                    Math.trunc(
+                  format={percent =>
+                    Number(percent) === 100 ? '100%' : `${percent}%`
+                  }
+                  percent={
+                    computedAccuracy(
                       iterateInfo?.finishCount / iterateInfo?.storyCount,
-                    ),
-                    100,
-                  )}
+                      100,
+                    ) as any
+                  }
                   strokeWidth={12}
                 />
                 <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>

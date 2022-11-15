@@ -195,25 +195,15 @@ const ChildDemandTable = (props: {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <TableQuickEdit
-              type="text"
-              defaultText={text}
-              keyText="name"
-              item={record}
-              onUpdate={onUpdate}
-              isMineOrHis={props.isMineOrHis}
-              projectPermissions={projectInfo.projectPermissions}
-            >
-              <Tooltip title={text} getPopupContainer={node => node}>
-                <ListNameWrap
-                  isName
-                  isClose={record.status?.is_end === 1}
-                  onClick={() => onToDetail(record)}
-                >
-                  {text}
-                </ListNameWrap>
-              </Tooltip>
-            </TableQuickEdit>
+            <Tooltip title={text} getPopupContainer={node => node}>
+              <ListNameWrap
+                isName
+                isClose={record.status?.is_end === 1}
+                onClick={() => onToDetail(record)}
+              >
+                {text}
+              </ListNameWrap>
+            </Tooltip>
           </div>
         )
       },
@@ -233,26 +223,16 @@ const ChildDemandTable = (props: {
       width: 100,
       render: (text: string, record: any) => {
         return (
-          <TableQuickEdit
-            type="fixed_radio"
-            defaultText={text}
-            keyText="iterate_id"
-            item={record}
-            onUpdate={onUpdate}
-            isMineOrHis={props.isMineOrHis}
-            projectPermissions={projectInfo.projectPermissions}
-          >
-            <HiddenText>
-              <OmitText
-                width={100}
-                tipProps={{
-                  getPopupContainer: node => node,
-                }}
-              >
-                {text || '--'}
-              </OmitText>
-            </HiddenText>
-          </TableQuickEdit>
+          <HiddenText>
+            <OmitText
+              width={100}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              {text || '--'}
+            </OmitText>
+          </HiddenText>
         )
       },
     },
@@ -271,37 +251,16 @@ const ChildDemandTable = (props: {
       width: 190,
       render: (text: any, record: any) => {
         return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit && !record.isExamine ? (
-                <ShapeContent
-                  tap={(value: any) => onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              ) : null
+          <StatusWrap
+            onClick={record.isExamine ? onExamine : void 0}
+            isShow={isCanEdit || record.isExamine}
+            style={{
+              color: text?.status.color,
+              border: `1px solid ${text?.status.color}`,
             }}
-            record={record}
           >
-            <StatusWrap
-              onClick={record.isExamine ? onExamine : void 0}
-              isShow={isCanEdit || record.isExamine}
-              style={{
-                color: text?.status.color,
-                border: `1px solid ${text?.status.color}`,
-              }}
-            >
-              {text?.status.content}
-            </StatusWrap>
-          </PopConfirm>
+            {text?.status.content}
+          </StatusWrap>
         )
       },
     },
@@ -314,32 +273,15 @@ const ChildDemandTable = (props: {
       width: 120,
       render: (text: string, record: any, index: any) => {
         return (
-          <div>
-            {isCanEdit &&
-            record?.usersNameIds?.includes(userInfo?.id) &&
-            record.status.is_start !== 1 &&
-            record.status.is_end !== 1 ? (
-              <div style={{ cursor: 'pointer' }}>
-                <DemandProgress
-                  value={record.schedule}
-                  row={record}
-                  onUpdate={onUpdate}
-                  listLength={dataList?.list?.length}
-                  index={index}
-                />
-              </div>
-            ) : (
-              <Progress
-                strokeColor="#43BA9A"
-                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
-                width={38}
-                type="circle"
-                percent={record.schedule}
-                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                strokeWidth={8}
-              />
-            )}
-          </div>
+          <Progress
+            strokeColor="#43BA9A"
+            style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+            width={38}
+            type="circle"
+            percent={record.schedule}
+            format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+            strokeWidth={8}
+          />
         )
       },
     },
@@ -348,19 +290,7 @@ const ChildDemandTable = (props: {
       dataIndex: 'dealName',
       width: 150,
       render: (text: any, record: any) => {
-        return (
-          <TableQuickEdit
-            type="fixed_select"
-            defaultText={record?.usersNameIds || []}
-            keyText="users"
-            item={record}
-            onUpdate={onUpdate}
-            isMineOrHis={props.isMineOrHis}
-            projectPermissions={projectInfo.projectPermissions}
-          >
-            <span>{text?.join(',') || '--'}</span>
-          </TableQuickEdit>
-        )
+        return <span>{text?.join(',') || '--'}</span>
       },
     },
   ]

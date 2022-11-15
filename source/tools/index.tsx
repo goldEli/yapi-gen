@@ -39,11 +39,11 @@ function filterTreeData(data: any) {
 // 自定义字段返回相应组件和快捷编辑的组件
 function getTypeComponent(
   params: any,
+  onChange?: any,
   isModal?: any,
   defaultValue?: any,
   inputRef?: any,
   onBlur?: any,
-  onChange?: any,
 ) {
   let child: any = null
   if (params?.attr === 'date') {
@@ -58,7 +58,19 @@ function getTypeComponent(
         open={isModal}
         onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={
-          isModal ? (date, dateString) => onChange(dateString, 1) : void 0
+          isModal
+            ? (date: any) =>
+                onChange(
+                  date
+                    ? moment(date).format(
+                        params?.value[0] === 'datetime'
+                          ? 'YYYY-MM-DD HH:mm:ss'
+                          : 'YYYY-MM-DD',
+                      )
+                    : '',
+                  1,
+                )
+            : void 0
         }
       />
     )
@@ -242,7 +254,7 @@ function getNestedChildren(arr: any, parent?: any) {
 // 计算小数需要的倍数
 function getDecimal(num: any) {
   let val = '1'
-  for (var i = 0; i < num; i++) {
+  for (let i = 0; i < num; i++) {
     val += '0'
   }
   return val
@@ -251,8 +263,12 @@ function getDecimal(num: any) {
 // 解决计算精度丢失问题 value: 数量，phase：计算的倍数
 // 目前只考虑了1以下的数量计算
 function computedAccuracy(value: any, phase: any) {
-  const decimal = getDecimal(String(value).split('.')[1]?.length)
-  return (Number(String(value).split('.')[1]) * phase) / Number(decimal)
+  const decimal =
+    String(value).indexOf('.') > -1
+      ? getDecimal(String(value).split('.')[1]?.length)
+      : value
+
+  return ((Number(decimal) * phase) / Number(decimal) || 0).toFixed(0)
 }
 
 export {

@@ -386,8 +386,10 @@ const MainTable = (props: Props) => {
             style={{ color: '#43BA9A' }}
             width={38}
             type="circle"
-            percent={computedAccuracy(text, 100)}
-            format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+            percent={computedAccuracy(Number(text), 100) as any}
+            format={percent =>
+              Number(percent) === 100 ? '100%' : `${percent}%`
+            }
             strokeWidth={8}
           />
         )

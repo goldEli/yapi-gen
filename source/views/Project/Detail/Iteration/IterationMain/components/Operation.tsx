@@ -185,7 +185,7 @@ const Operation = (props: Props) => {
           style={{
             overflow: 'auto',
             padding: '0 20px 16px 0',
-            minHeight: 400,
+            height: '30vw',
           }}
         >
           {props.currentDetail?.info ? (
