@@ -160,7 +160,9 @@ const CommonNeed = (props: any) => {
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
-  const [manyListData, setManyListData] = useState<any>([])
+  const [manyListData, setManyListData] = useState<any>({
+    list: undefined,
+  })
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -223,6 +225,8 @@ const CommonNeed = (props: any) => {
     if (!updateState) {
       setIsSpin(true)
     }
+    setListData({ list: undefined })
+    setManyListData({ list: undefined })
 
     if (isMany) {
       const params = {
@@ -231,7 +235,7 @@ const CommonNeed = (props: any) => {
         panelDate: isMany ? 1 : '',
       }
       const res = await getMineNoFinishList(params)
-      setManyListData(res)
+      setManyListData({ list: res })
       setIsSpin(false)
       setIsUpdateCreate(false)
     }
@@ -582,51 +586,53 @@ const CommonNeed = (props: any) => {
       {isMany ? (
         <div>
           <LoadingSpin spinning={isSpin}>
-            {manyListData?.length ? (
-              <StaffTableWrap2>
-                {manyListData?.map((item: any, index: any) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <div
-                    hidden={!item.list.length}
-                    key={index}
-                    style={{
-                      background: 'white',
-                      borderRadius: 6,
-                      marginTop: 16,
-                    }}
-                  >
-                    <TableTitle>
-                      <span>
-                        {item.status_name}（{item.list.length}）
-                      </span>
-                    </TableTitle>
+            {manyListData.list ? (
+              manyListData.list?.length ? (
+                <StaffTableWrap2>
+                  {manyListData.list?.map((item: any, index: any) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <div
+                      hidden={!item.list.length}
+                      key={index}
+                      style={{
+                        background: 'white',
+                        borderRadius: 6,
+                        marginTop: 16,
+                      }}
+                    >
+                      <TableTitle>
+                        <span>
+                          {item.status_name}（{item.list.length}）
+                        </span>
+                      </TableTitle>
 
-                    {item.list ? (
-                      item?.list?.length ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={selectColum}
-                          dataSource={item.list}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                        />
-                      ) : (
-                        <NoData />
-                      )
-                    ) : null}
-                  </div>
-                ))}
-              </StaffTableWrap2>
-            ) : (
-              <div style={{ padding: 16 }}>
-                <NoData />
-              </div>
-            )}
+                      {item.list ? (
+                        item?.list?.length ? (
+                          <TableBox
+                            rowKey="id"
+                            columns={selectColum}
+                            dataSource={item.list}
+                            pagination={false}
+                            scroll={{ x: 'max-content' }}
+                          />
+                        ) : (
+                          <NoData />
+                        )
+                      ) : null}
+                    </div>
+                  ))}
+                </StaffTableWrap2>
+              ) : (
+                <div style={{ padding: 16 }}>
+                  <NoData />
+                </div>
+              )
+            ) : null}
           </LoadingSpin>
         </div>
       ) : null}
 
-      {!isMany && (
+      {!isMany && listData?.list?.length && (
         <PaginationWrap style={{ paddingRight: 24 }}>
           <Pagination
             defaultCurrent={1}

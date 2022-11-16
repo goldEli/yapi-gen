@@ -189,13 +189,18 @@ const FormWrapDemand = styled(Form)({
   },
 })
 
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
+const IconFontWrap = styled(IconFont)<{ active?: boolean; isHover?: any }>(
   {
     fontSize: 20,
     cursor: 'pointer',
   },
   ({ active }) => ({
     color: active ? '#2877FF' : '#969799',
+  }),
+  ({ isHover }) => ({
+    '&: hover': {
+      color: isHover ? '#2877FF' : '#969799',
+    },
   }),
 )
 
@@ -240,6 +245,7 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-form-item {
     margin-bottom: 0;
+    padding-top: 0 !important;
   }
   .ant-picker {
     border: none;

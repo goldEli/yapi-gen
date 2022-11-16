@@ -411,7 +411,7 @@ const IterationWrap = () => {
                 <div>{iterateInfo?.changeCount || 0}</div>
               </Item>
             </TitleWrap>
-            {type === 'demand' ? (
+            {type === 'demand' && (
               <OperationWrap size={16}>
                 <CommonInput
                   placeholder={t('common.pleaseSearchDemand')}
@@ -422,6 +422,7 @@ const IterationWrap = () => {
                 {hasFilter ? null : (
                   <Tooltip title={t('common.search')}>
                     <IconFontWrap
+                      isHover
                       active={!filterState}
                       type="filter"
                       onClick={() => setFilterState(!filterState)}
@@ -447,11 +448,15 @@ const IterationWrap = () => {
                   trigger={['click']}
                 >
                   <Tooltip title={t('common.tableFieldSet')}>
-                    <IconFontWrap active={settingState} type="settings" />
+                    <IconFontWrap
+                      isHover
+                      active={settingState}
+                      type="settings"
+                    />
                   </Tooltip>
                 </Dropdown>
               </OperationWrap>
-            ) : null}
+            )}
           </MainWrap>
           {settingState ? (
             <OptionalFeld
