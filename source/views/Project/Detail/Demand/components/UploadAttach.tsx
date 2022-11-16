@@ -293,7 +293,6 @@ const ListItem = (props: any) => {
 }
 
 const UploadAttach = (props: Props) => {
-  const b = useWatchLine()
   const { userInfo } = useModel('user')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [previewImage, setPreviewImage] = useState('')
@@ -338,20 +337,6 @@ const UploadAttach = (props: Props) => {
     setFileList(array)
   }, [props.defaultList])
 
-  useEffect(() => {
-    if (!b) {
-      notification.open({
-        message: '未连接到互联网',
-        description: `
-        请试试以下办法：
-        检查网线、调制解调器和路由器
-        
-        `,
-        placement: 'top',
-        duration: null,
-      })
-    }
-  }, [b])
   useEffect(() => {
     props.onChange?.(fileList)
   }, [fileList])
