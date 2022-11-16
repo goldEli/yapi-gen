@@ -36,8 +36,10 @@ const getCosSign = async (): Promise<any> => {
     bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
   })
   if (response.code !== 1) {
+    location.reload()
     throw new Error(response.msg)
   }
+
   return response
 }
 
@@ -45,10 +47,6 @@ export const cos = new COS({
   getAuthorization: async (options: unknown, callback: any) => {
     const response = await getCosSign()
 
-    if (response.code !== 1) {
-      location.reload()
-      return
-    }
     callback({
       TmpSecretId: response.data.credentials.tmpSecretId,
       TmpSecretKey: response.data.credentials.tmpSecretKey,
