@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Table, Pagination, Space, Spin } from 'antd'
+import { Pagination, Space, Spin } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import {
@@ -118,6 +118,7 @@ const ChangeRecord = (props?: any) => {
     setDataList(result)
     setIsSpinning(false)
     setIsRefresh(false)
+    props.onChangeUpdate()
   }
 
   useEffect(() => {

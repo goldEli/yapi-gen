@@ -223,7 +223,12 @@ const IterationWrap = () => {
     } else if (type === 'achieve') {
       return <Achieve />
     }
-    return <ChangeRecord isUpdate={isUpdateState} />
+    return (
+      <ChangeRecord
+        isUpdate={isUpdateState}
+        onChangeUpdate={() => setIsUpdateState(false)}
+      />
+    )
   }
 
   const getSearchKey = async (key?: any, typeVal?: number) => {
@@ -312,6 +317,7 @@ const IterationWrap = () => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
+        setIsUpdateState(true)
       } catch (error) {
         //
       }
