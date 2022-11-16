@@ -7,12 +7,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
 import COS, { type Task, type UploadFileItemResult } from 'cos-js-sdk-v5'
+import moment from 'moment'
 
 export function getUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c =>
-
     // @ts-expect-error
-    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16))
+    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16),
+  )
 }
 
 /**
@@ -56,8 +57,7 @@ export const cos = new COS({
 
 // 获取文件后缀
 export function getFileSuffix(name: string, withDot = false) {
-  const fileSuffix = name.split('.').pop()
-    ?.toLowerCase()
+  const fileSuffix = name.split('.').pop()?.toLowerCase()
   return fileSuffix?.length ? `${withDot ? '.' : ''}${fileSuffix}` : ''
 }
 
@@ -80,6 +80,7 @@ export const uploadFile = (file: File, username: string, space: string) => {
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
             url: `https://${data.Location}`,
+            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
           })
         }
       },
@@ -115,6 +116,7 @@ export const uploadFileByTask = (
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
             url: '',
+            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
           },
         })
       },
