@@ -155,7 +155,20 @@ const RelatedNeed = (props: any) => {
         >
           <Form form={lessForm}>
             <Form.Item
-              rules={[{ required: true, message: t('p2.need1') }]}
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span
+                      style={{
+                        fontSize: '12px',
+                      }}
+                    >
+                      {t('p2.need1')}
+                    </span>
+                  ),
+                },
+              ]}
               name="project"
               label={t('common.chooseProject')}
             >
@@ -172,7 +185,20 @@ const RelatedNeed = (props: any) => {
               ></Select>
             </Form.Item>
             <Form.Item
-              rules={[{ required: true, message: t('p2.need2') }]}
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <span
+                      style={{
+                        fontSize: '12px',
+                      }}
+                    >
+                      {t('p2.need2')}
+                    </span>
+                  ),
+                },
+              ]}
               name="needs"
               label={t('p2.managingDemand')}
             >
