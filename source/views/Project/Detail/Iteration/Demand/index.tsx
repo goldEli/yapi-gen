@@ -25,8 +25,9 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
   },
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {

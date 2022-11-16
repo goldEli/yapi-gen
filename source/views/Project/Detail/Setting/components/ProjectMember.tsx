@@ -65,6 +65,10 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
+  },
   '.ant-table table': {
     paddingBottom: 0,
   },
@@ -162,7 +166,7 @@ const ProjectMember = () => {
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 2 })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
@@ -673,15 +677,11 @@ const ProjectMember = () => {
                     dataSource={memberList?.list}
                     pagination={false}
                     scroll={{
-                      x: columns.reduce(
-                        (totalWidth: number, item: any) =>
-                          totalWidth + item.width,
-                        0,
-                      ),
+                      x: 'max-content',
                       y: tableY,
                     }}
+                    tableLayout="auto"
                     showSorterTooltip={false}
-                    sticky
                   />
                 ) : (
                   <NoData />

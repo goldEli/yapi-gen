@@ -4,13 +4,17 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { PaginationWrap, StaffTableWrap } from '@/components/StyleCommon'
+import {
+  PaginationWrap,
+  StaffTableWrap,
+  TableWrap,
+} from '@/components/StyleCommon'
 import { Checkbox, Pagination, Space, Spin, Tooltip } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { SelectWrap, SelectWrapBedeck } from '@/components/TableFilter'
-import { DataWrap, TableBox, tableWrapP } from '../staff'
+import { DataWrap, tableWrapP } from '../staff'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
 import { getReceiveList } from '@/services/daily'
@@ -19,6 +23,17 @@ import { getStaffList2 } from '@/services/staff'
 import LookDay from './components/LookDay'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
+import styled from '@emotion/styled'
+
+const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
+  },
+  '.ant-table table': {
+    paddingBottom: 0,
+  },
+})
 
 const srr = [
   undefined,
@@ -405,14 +420,11 @@ const Get = () => {
                     dataSource={listData}
                     pagination={false}
                     scroll={{
-                      x: columnsData.reduce(
-                        (totalWidth: number, item: any) =>
-                          totalWidth + item.width,
-                        0,
-                      ),
+                      x: 'max-content',
                       y: tableY,
                     }}
-                    sticky
+                    tableLayout="auto"
+                    showSorterTooltip={false}
                   />
                 ) : (
                   <NoData />

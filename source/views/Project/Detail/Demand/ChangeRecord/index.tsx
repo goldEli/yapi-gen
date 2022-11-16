@@ -10,6 +10,7 @@ import styled from '@emotion/styled'
 import {
   HiddenText,
   PaginationWrap,
+  TableWrap,
   TextWrapEditor,
 } from '@/components/StyleCommon'
 import { useModel } from '@/models'
@@ -55,6 +56,13 @@ const ContentWrap = styled(TextWrapEditor)({
   padding: '0 24px 16px',
 })
 
+const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
+  },
+})
+
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -81,7 +89,7 @@ const ChangeRecord = () => {
   const [checkDetail, setCheckDetail] = useState<any>({})
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 5 })
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
@@ -441,20 +449,17 @@ const ChangeRecord = () => {
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
-              <Table
+              <TableBox
                 rowKey="id"
                 columns={columns}
                 dataSource={dataList?.list}
                 pagination={false}
                 scroll={{
-                  x: columns.reduce(
-                    (totalWidth: number, item: any) => totalWidth + item.width,
-                    0,
-                  ),
+                  x: 'max-content',
                   y: tableY,
                 }}
+                tableLayout="auto"
                 showSorterTooltip={false}
-                sticky
               />
             ) : (
               <NoData />

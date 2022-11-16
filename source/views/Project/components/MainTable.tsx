@@ -37,6 +37,10 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
+  },
   '.ant-table-thead > tr > th:nth-child(1)': {
     paddingLeft: 64,
   },
@@ -494,15 +498,12 @@ const MainTable = (props: Props) => {
               dataSource={props.projectList?.list}
               pagination={false}
               scroll={{
-                x: columns.reduce(
-                  (totalWidth: number, item: any) => totalWidth + item.width,
-                  0,
-                ),
+                x: 'max-content',
                 y: tableY,
               }}
+              tableLayout="auto"
               showSorterTooltip={false}
               onRow={onTableRow}
-              sticky
             />
           ) : (
             <NoData />

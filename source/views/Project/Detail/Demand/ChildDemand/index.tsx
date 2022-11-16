@@ -59,6 +59,10 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
+  },
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',
@@ -410,8 +414,8 @@ const ChildDemand = () => {
                   x: 'max-content',
                   y: tableY,
                 }}
-                showSorterTooltip={false}
                 tableLayout="auto"
+                showSorterTooltip={false}
               />
             ) : (
               <NoData />

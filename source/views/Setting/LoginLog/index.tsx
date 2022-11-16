@@ -3,7 +3,11 @@
 import styled from '@emotion/styled'
 import { Table, Select, Pagination, Form, Spin, Space } from 'antd'
 import moment from 'moment'
-import { PaginationWrap, SelectWrapBedeck } from '@/components/StyleCommon'
+import {
+  PaginationWrap,
+  SelectWrapBedeck,
+  TableWrap,
+} from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import Sort from '@/components/Sort'
@@ -73,6 +77,13 @@ const StatusWrap = styled.div({
     color: '#323233',
     fontSize: 14,
     fontWeight: 400,
+  },
+})
+
+const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
   },
 })
 
@@ -338,7 +349,7 @@ const LoginLog = () => {
       form={form}
       onValuesChange={onValuesChange}
       initialValues={{
-        pageSize: 20,
+        pageSize: 2,
         page: 1,
       }}
     >
@@ -389,21 +400,17 @@ const LoginLog = () => {
           <Spin spinning={isSpinning}>
             {!!dataList?.list &&
               (dataList?.list?.length > 0 ? (
-                <Table
+                <TableBox
                   rowKey="id"
                   columns={columns}
                   dataSource={dataList.list}
                   pagination={false}
                   scroll={{
-                    x: columns.reduce(
-                      (totalWidth: number, item: any) =>
-                        totalWidth + item.width,
-                      0,
-                    ),
+                    x: 'max-content',
                     y: tableY,
                   }}
+                  tableLayout="auto"
                   showSorterTooltip={false}
-                  sticky
                 />
               ) : (
                 <NoData />

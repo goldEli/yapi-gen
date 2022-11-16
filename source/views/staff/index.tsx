@@ -26,7 +26,6 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate } from 'react-router-dom'
 import CommonInput from '@/components/CommonInput'
 
 export const tableWrapP = css`
@@ -69,7 +68,11 @@ const RowIconFont = styled(IconFont)({
   color: '#2877ff',
 })
 
-export const TableBox = styled(TableWrap)({
+const TableBox = styled(TableWrap)({
+  height: '100%',
+  '.ant-table, .ant-table-content,.ant-table-container': {
+    height: '100%',
+  },
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',
@@ -82,14 +85,13 @@ export const TableBox = styled(TableWrap)({
 
 const Staff = () => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(20)
+  const [pagesize, setPagesize] = useState<number>(2)
   const [total, setTotal] = useState<number>()
   const [keyword, setKeyword] = useState<string>('')
   const [searchGroups, setSearchGroups] = useState<any>({
@@ -423,14 +425,10 @@ const Staff = () => {
                     dataSource={listData}
                     pagination={false}
                     scroll={{
-                      x: selectColum.reduce(
-                        (totalWidth: number, item: any) =>
-                          totalWidth + item.width,
-                        0,
-                      ),
+                      x: 'max-content',
                       y: tableY,
                     }}
-                    sticky
+                    tableLayout="auto"
                   />
                 ) : (
                   <NoData />
