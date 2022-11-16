@@ -98,7 +98,15 @@ const Get = () => {
         return (
           <Tooltip
             placement="topLeft"
-            title={text.trim().slice(0, 100) || '--'}
+            title={
+              (
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: text.trim().slice(0, 100),
+                  }}
+                />
+              ) || '--'
+            }
             getPopupContainer={node => node}
           >
             <span
