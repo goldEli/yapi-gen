@@ -102,7 +102,12 @@ const WhiteDay = (props: any) => {
 
   const setDefaultValue = async () => {
     const res = await getReportDetail(props.editId)
-    setTitle(res.data.info.name)
+
+    const newTitle =
+      localStorage.getItem('language') === 'zh'
+        ? `${t('p2.edit')}${res.data.info.name.split('的')[1]}`
+        : `${t('p2.edit')}${res.data.info.name.split('of')[1]}`
+    setTitle(newTitle)
     form.setFieldsValue({
       info: res.data.info.finish_content,
       info2: res.data.info.plan_content,

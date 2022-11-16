@@ -329,7 +329,7 @@ const UploadAttach = (props: Props) => {
         url: element.path,
         uid: element.id,
         status: 'done',
-        time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
+        time: element.time,
         user: userInfo?.name,
       }
 

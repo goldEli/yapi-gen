@@ -7,6 +7,7 @@ declare namespace Models.Files {
     size: number
     formattedSize: string
     suffix: string
+    time: string
   }
 
   export interface FileUploadTask {
