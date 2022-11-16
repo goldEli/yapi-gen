@@ -44,6 +44,11 @@ const getCosSign = async (): Promise<any> => {
 export const cos = new COS({
   getAuthorization: async (options: unknown, callback: any) => {
     const response = await getCosSign()
+
+    if (response.code !== 1) {
+      location.reload()
+      return
+    }
     callback({
       TmpSecretId: response.data.credentials.tmpSecretId,
       TmpSecretKey: response.data.credentials.tmpSecretKey,
