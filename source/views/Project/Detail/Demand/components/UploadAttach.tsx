@@ -498,6 +498,7 @@ const UploadAttach = (props: Props) => {
   }
 
   const handleCancel = () => setPreviewOpen(false)
+
   return (
     <div>
       <Warp multiple fileList={fileList} {...uploadProps}>
