@@ -126,7 +126,7 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 

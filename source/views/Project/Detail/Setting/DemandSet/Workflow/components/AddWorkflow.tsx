@@ -73,7 +73,7 @@ const HasDemandText = styled.div({
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 interface Props {

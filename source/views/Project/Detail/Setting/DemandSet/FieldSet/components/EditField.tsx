@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 
@@ -31,7 +31,7 @@ const ItemWrap = styled.div<{ notMargin?: boolean }>(
   },
   ({ notMargin }) => ({
     '.ant-form-item': {
-      margin: notMargin ? '0!important' : '24px 0 0 0',
+      margin: notMargin ? '0!important' : '22px 0 0 0',
     },
   }),
 )
