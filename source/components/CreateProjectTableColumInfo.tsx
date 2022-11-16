@@ -287,7 +287,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text || '--'}
+                {text || t('newlyAdd.unclassified')}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>

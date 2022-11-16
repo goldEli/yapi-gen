@@ -287,7 +287,7 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'class',
       key: 'class',
       width: 120,
-      render: (text: string, record: any) => {
+      render: (text: any, record: any) => {
         return (
           <TableQuickEdit
             type="treeSelect"
@@ -303,7 +303,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text || '--'}
+                {text || t('newlyAdd.unclassified')}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>

@@ -5,7 +5,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
-import { filterTreeData, getParamsData, getTypeComponent } from '@/tools'
+import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { getIterateList } from '@/services/project/iterate'
 import { getProjectMember, getTagList } from '@/services/project'
@@ -96,7 +96,7 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签
   const getDefaultSelectValues = async () => {
-    let resultValue = {
+    let resultValue: any = {
       attr: props?.type,
       value: [],
     }
@@ -122,8 +122,18 @@ const TableQuickEdit = (props: Props) => {
       resultValue.value = response
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
-      const response = await getTreeList({ id: projectId })
-      resultValue.value = filterTreeData(response)[0].children
+      const response = await getTreeList({ id: projectId, isTree: 1 })
+      resultValue.value = [
+        ...[
+          {
+            title: t('newlyAdd.unclassified'),
+            key: 0,
+            value: 0,
+            children: [],
+          },
+        ],
+        ...getNestedChildren(response, 0),
+      ]
     } else if (props.keyText === 'tag') {
       // 获取标签下拉数据
       const response: any = await getTagList({ projectId })
@@ -191,7 +201,9 @@ const TableQuickEdit = (props: Props) => {
             })) || [],
       }
     } else {
-      obj.otherParams = { [props?.keyText]: newValue || '' }
+      obj.otherParams = {
+        [props?.keyText]: newValue || newValue === 0 ? newValue : '',
+      }
     }
     try {
       await updateTableParams(obj)

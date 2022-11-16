@@ -422,8 +422,8 @@ const EditDemand = (props: Props) => {
       ...[
         {
           title: t('newlyAdd.unclassified'),
-          key: -1,
-          value: -1,
+          key: 0,
+          value: 0,
           children: [],
         },
       ],

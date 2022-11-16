@@ -13,8 +13,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
-import { getParamsData, getNestedChildren } from '@/tools'
-import { getTreeList } from '@/services/project/tree'
+import { getParamsData } from '@/tools'
 import {
   AddWrap,
   HiddenText,
