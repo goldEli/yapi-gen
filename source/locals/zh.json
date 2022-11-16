@@ -1,5 +1,7 @@
 {
   "p2": {
+    "toast": "提示",
+    "exportDemandText": "导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！",
     "pleaseEditText": "请编辑成果内容",
     "exportFields": "导出需求字段选择",
     "editAchievements": "编辑成果",

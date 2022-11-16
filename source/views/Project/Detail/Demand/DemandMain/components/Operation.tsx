@@ -317,8 +317,8 @@ const Operation = (props: Props) => {
         onConfirm={() => setExceedState(false)}
         onChangeVisible={() => setExceedState(false)}
         isVisible={exceedState}
-        title="提示"
-        text="导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！"
+        title={t('p2.toast')}
+        text={t('p2.exportDemandText')}
       />
       <CommonModal
         isVisible={isShowImport}

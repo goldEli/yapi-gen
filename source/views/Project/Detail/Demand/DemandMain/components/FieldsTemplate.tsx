@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider } from 'antd'
+import { Checkbox, Space, Divider, Button } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { ShowWrap } from '@/components/StyleCommon'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
+// import { AsyncButton as  } from '@staryuntech/ant-pro'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -70,6 +71,15 @@ const CheckedWrap = styled.div({
   paddingRight: 20,
 })
 
+const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  height: 80,
+  padding: '0 24px',
+})
+
 interface Props {
   visible: boolean
   title: string
@@ -80,6 +90,8 @@ interface Props {
   importState?: any
   // 是否是导出
   isExport: boolean
+  // 导出按钮loading状态
+  isSpin?: any
 }
 
 const FieldsTemplate = (props: Props) => {
@@ -249,13 +261,19 @@ const FieldsTemplate = (props: Props) => {
       title={props?.title}
       isVisible={props?.visible}
       width={784}
-      confirmText={
-        props.isExport
-          ? t('newlyAdd.exportDemand')
-          : t('newlyAdd.downloadTemplate')
-      }
+      confirmText={!props.isExport && (t('newlyAdd.downloadTemplate') as any)}
       onClose={onClose}
       onConfirm={onConfirm}
+      hasFooter={
+        props.isExport && (
+          <ModalFooter size={16}>
+            <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
+            <Button loading={props.isSpin} onClick={onConfirm} type="primary">
+              {t('newlyAdd.exportDemand')}
+            </Button>
+          </ModalFooter>
+        )
+      }
     >
       <Wrap>
         <LeftWrap>
