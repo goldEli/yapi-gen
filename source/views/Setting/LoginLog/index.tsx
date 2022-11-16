@@ -6,7 +6,7 @@ import moment from 'moment'
 import {
   PaginationWrap,
   SelectWrapBedeck,
-  TableWrap,
+  TableStyleBox,
 } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
@@ -77,13 +77,6 @@ const StatusWrap = styled.div({
     color: '#323233',
     fontSize: 14,
     fontWeight: 400,
-  },
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
   },
 })
 
@@ -400,7 +393,7 @@ const LoginLog = () => {
           <Spin spinning={isSpinning}>
             {!!dataList?.list &&
               (dataList?.list?.length > 0 ? (
-                <TableBox
+                <TableStyleBox
                   rowKey="id"
                   columns={columns}
                   dataSource={dataList.list}

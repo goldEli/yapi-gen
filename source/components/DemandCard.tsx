@@ -21,7 +21,6 @@ interface Props {
   onChangeDelete?(item: any): void
   onClickItem(): void
   indexVal?: any
-  listLength?: any
   onUpdate(state: any): void
 }
 
@@ -217,7 +216,6 @@ const DemandCard = (props: Props) => {
                     value={props.item?.schedule}
                     row={props.item}
                     onUpdate={() => props?.onUpdate(true)}
-                    listLength={props?.listLength}
                     index={props?.indexVal}
                     isCard
                   />

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import {
-  TableWrap,
+  TableStyleBox,
   PaginationWrap,
   SelectWrapBedeck,
 } from '@/components/StyleCommon'
@@ -62,24 +62,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
-  '.ant-table table': {
-    paddingBottom: 0,
-  },
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 const FilterWrap = styled(Form)({
@@ -671,7 +653,10 @@ const ProjectMember = () => {
             <Spin spinning={isSpinning}>
               {!!memberList?.list &&
                 (memberList?.list?.length > 0 ? (
-                  <TableBox
+                  <TableStyleBox
+                    isPadding
+                    isBottom
+                    isHover={RowIconFont.toString()}
                     rowKey="id"
                     columns={columns as any}
                     dataSource={memberList?.list}

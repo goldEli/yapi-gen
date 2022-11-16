@@ -129,10 +129,6 @@ const DemandGrid = (props: Props) => {
                           onClickItem={() => onClickItem(i)}
                           indexVal={idx}
                           onUpdate={() => props?.onUpdate(true)}
-                          listLength={
-                            dataList?.filter((item: any) => item.id === k.id)[0]
-                              ?.list?.length
-                          }
                         />
                       ))
                   ) : (

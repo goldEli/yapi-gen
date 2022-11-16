@@ -112,6 +112,7 @@ export const SelectWrapBedeck = styled.div`
   }
   .ant-form-item {
     margin-bottom: 0;
+    padding-top: 0 !important;
   }
   .ant-picker {
     border: none;

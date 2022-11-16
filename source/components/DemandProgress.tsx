@@ -9,7 +9,6 @@ interface Props {
   value: number
   row?: any
   onUpdate(): void
-  listLength?: any
   index?: any
   isCard?: any
 }
@@ -46,16 +45,8 @@ const DemandProgress = (props: Props) => {
           />
         </ProgressWrap>
       }
-      getPopupContainer={node =>
-        props?.listLength < 5 || [0, 1].includes(props?.index) || props?.isCard
-          ? document.body
-          : node
-      }
-      getTooltipContainer={node =>
-        props?.listLength < 5 || [0, 1].includes(props?.index) || props?.isCard
-          ? document.body
-          : node
-      }
+      getPopupContainer={node => node}
+      getTooltipContainer={node => node}
     >
       <Progress
         strokeColor="#43BA9A"

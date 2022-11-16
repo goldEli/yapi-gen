@@ -189,13 +189,18 @@ const FormWrapDemand = styled(Form)({
   },
 })
 
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
+const IconFontWrap = styled(IconFont)<{ active?: boolean; isHover?: any }>(
   {
     fontSize: 20,
     cursor: 'pointer',
   },
   ({ active }) => ({
     color: active ? '#2877FF' : '#969799',
+  }),
+  ({ isHover }) => ({
+    '&: hover': {
+      color: isHover ? '#2877FF' : '#969799',
+    },
   }),
 )
 
@@ -240,6 +245,7 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-form-item {
     margin-bottom: 0;
+    padding-top: 0 !important;
   }
   .ant-picker {
     border: none;
@@ -486,7 +492,7 @@ const PaginationWrap = styled.div`
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
-  padding: 16px 24px;
+  padding: 16px 24px 0px;
   background: #f5f7fa;
 `
 
@@ -747,6 +753,37 @@ const PriorityWrap = styled.div<{ status?: any }>({
   },
 })
 
+// 表格-滚动条居底
+const TableStyleBox = styled(TableWrap)<{
+  isPadding?: any
+  isBottom?: any
+  isHover?: any
+}>(
+  {
+    height: '100%',
+    '.ant-table, .ant-table-content,.ant-table-container': {
+      height: '100%',
+    },
+  },
+  ({ isPadding }) => ({
+    '.ant-table-thead > tr > th:nth-child(1)': {
+      paddingLeft: isPadding ? 64 : 0,
+    },
+  }),
+  ({ isBottom }) => ({
+    '.ant-table table': {
+      paddingBottom: isBottom,
+    },
+  }),
+  ({ isHover }) => ({
+    '.ant-table-row:hover': {
+      [isHover]: {
+        visibility: 'visible',
+      },
+    },
+  }),
+)
+
 export {
   PriorityWrap,
   StatusWrap,
@@ -801,4 +838,5 @@ export {
   DateQuickWrap,
   CloseWrap,
   TextWrapEditor,
+  TableStyleBox,
 }

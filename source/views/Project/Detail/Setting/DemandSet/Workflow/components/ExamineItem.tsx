@@ -293,13 +293,14 @@ const ExamineItem = (props: Props) => {
         )}
       </ItemWrap>
       <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
-        <Space size={0}>
+        <Space size={0} style={{ flexWrap: 'wrap' }}>
           {examineList?.map((i: any, index: any) => (
             <div
               key={i.id}
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                marginBottom: 4,
               }}
             >
               <div
@@ -343,35 +344,36 @@ const ExamineItem = (props: Props) => {
               )}
             </div>
           ))}
+          {props?.options?.length > 0 && (
+            <Popover
+              key={isOpen.toString()}
+              visible={isOpen}
+              placement="bottomRight"
+              trigger="click"
+              onVisibleChange={visible => setIsOpen(visible)}
+              getTooltipContainer={node => node}
+              content={
+                <ChoosePerson
+                  onChangeValue={obj => onAddPerson(obj)}
+                  options={props?.options}
+                />
+              }
+              getPopupContainer={node => node}
+            >
+              <AddWrap
+                style={{
+                  marginLeft: examineList?.length ? '40px' : 0,
+                }}
+              >
+                <IconFont
+                  className="icon"
+                  type="plus"
+                  onClick={() => setIsOpen(true)}
+                />
+              </AddWrap>
+            </Popover>
+          )}
         </Space>
-
-        <Popover
-          key={isOpen.toString()}
-          visible={isOpen}
-          placement="bottomRight"
-          trigger="click"
-          onVisibleChange={visible => setIsOpen(visible)}
-          getTooltipContainer={node => node}
-          content={
-            <ChoosePerson
-              onChangeValue={obj => onAddPerson(obj)}
-              options={props?.options}
-            />
-          }
-          getPopupContainer={node => node}
-        >
-          <AddWrap
-            style={{
-              marginLeft: examineList?.length ? '40px' : 0,
-            }}
-          >
-            <IconFont
-              className="icon"
-              type="plus"
-              onClick={() => setIsOpen(true)}
-            />
-          </AddWrap>
-        </Popover>
       </ItemWrap>
     </Timeline.Item>
   )

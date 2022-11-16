@@ -512,7 +512,7 @@ const UploadAttach = (props: Props) => {
       >
         <img
           alt="example"
-          style={{ width: '100%', paddingBottom: 16 }}
+          style={{ maxWidth: '100%', padding: '0 20px 16px 0' }}
           src={previewImage}
         />
       </CommonModal>

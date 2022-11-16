@@ -223,7 +223,12 @@ const IterationWrap = () => {
     } else if (type === 'achieve') {
       return <Achieve />
     }
-    return <ChangeRecord isUpdate={isUpdateState} />
+    return (
+      <ChangeRecord
+        isUpdate={isUpdateState}
+        onChangeUpdate={() => setIsUpdateState(false)}
+      />
+    )
   }
 
   const getSearchKey = async (key?: any, typeVal?: number) => {
@@ -312,6 +317,7 @@ const IterationWrap = () => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
+        setIsUpdateState(true)
       } catch (error) {
         //
       }
@@ -405,7 +411,7 @@ const IterationWrap = () => {
                 <div>{iterateInfo?.changeCount || 0}</div>
               </Item>
             </TitleWrap>
-            {type === 'demand' ? (
+            {type === 'demand' && (
               <OperationWrap size={16}>
                 <CommonInput
                   placeholder={t('common.pleaseSearchDemand')}
@@ -416,6 +422,7 @@ const IterationWrap = () => {
                 {hasFilter ? null : (
                   <Tooltip title={t('common.search')}>
                     <IconFontWrap
+                      isHover
                       active={!filterState}
                       type="filter"
                       onClick={() => setFilterState(!filterState)}
@@ -441,11 +448,15 @@ const IterationWrap = () => {
                   trigger={['click']}
                 >
                   <Tooltip title={t('common.tableFieldSet')}>
-                    <IconFontWrap active={settingState} type="settings" />
+                    <IconFontWrap
+                      isHover
+                      active={settingState}
+                      type="settings"
+                    />
                   </Tooltip>
                 </Dropdown>
               </OperationWrap>
-            ) : null}
+            )}
           </MainWrap>
           {settingState ? (
             <OptionalFeld

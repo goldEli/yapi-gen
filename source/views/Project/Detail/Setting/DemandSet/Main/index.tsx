@@ -456,7 +456,7 @@ const CardGroup = (props: CardGroupProps) => {
               <span className="set" onClick={() => onToWorkFlow(item)}>
                 {t('newlyAdd.workflowSet')}
               </span>
-              {!item?.statusCount && (
+              {item?.statusCount === 0 && (
                 <div className="warning">
                   <IconFont
                     type="fillwarning"

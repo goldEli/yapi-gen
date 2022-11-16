@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Pagination, Dropdown, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -24,18 +24,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 const DataWrap = styled.div({
@@ -185,7 +173,6 @@ const IterationTable = (props: Props) => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
-    listLength: props.data?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -269,7 +256,8 @@ const IterationTable = (props: Props) => {
           {typeof props?.hasId === 'object' ? (
             props.data?.list ? (
               props.data?.list?.length > 0 ? (
-                <TableBox
+                <TableStyleBox
+                  isHover={RowIconFont.toString()}
                   rowKey="id"
                   columns={selectColum}
                   dataSource={props.data?.list}
