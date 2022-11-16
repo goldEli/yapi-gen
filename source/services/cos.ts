@@ -35,6 +35,11 @@ const getCosSign = async (): Promise<any> => {
     app_id: import.meta.env.__COS_SIGN_APP_ID__,
     bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
   })
+  const line = window.navigator.onLine
+  if (!line) {
+    location.reload()
+  }
+
   if (response.code !== 1) {
     location.reload()
     throw new Error(response.msg)
