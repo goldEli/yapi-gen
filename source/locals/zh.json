@@ -6,6 +6,7 @@
     "exportFields": "导出需求字段选择",
     "editAchievements": "编辑成果",
     "pComment": "评论{{inner}}的日志",
+    "only1": "请输入",
     "need1": "请选择关联项目",
     "need2": "请选择关联需求",
     "need3": "需求关联成功",

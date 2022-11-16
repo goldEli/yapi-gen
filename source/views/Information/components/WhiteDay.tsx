@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form } from 'antd'
+import { Form, message } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import Editor from '@/components/Editor'
 import ChoosePeople from './ChoosePeople'
@@ -46,6 +46,7 @@ const WhiteDay = (props: any) => {
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
+  const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
   const ed1: any = useRef(null)
@@ -147,6 +148,9 @@ const WhiteDay = (props: any) => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
+    setTimeout(() => {
+      ed1?.current?.focus()
+    }, 500)
   }, [props.editId, props.visibleEdit])
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -163,6 +167,8 @@ const WhiteDay = (props: any) => {
         new Error('The two passwords that you entered do not match!'),
       )
     }
+
+    setColorState(false)
     return Promise.resolve()
   }
 
@@ -183,34 +189,68 @@ const WhiteDay = (props: any) => {
         }}
         ref={leftDom}
       >
+        <input
+          ref={ed1}
+          type="text"
+          style={{
+            position: 'absolute',
+            opacity: 0,
+          }}
+        />
         <Form form={form} layout="vertical">
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name} />}
             name="info"
             rules={[
               {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
                 required: true,
-                message: t('common.pleaseEnter'),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <Editor ref={ed1} height={178} />
-          </Form.Item>
-          <Form.Item
-            label={<LabelTitle title={texts[props.type]?.name2} />}
-            name="info2"
-            rules={[
-              {
-                required: true,
-                message: t('common.pleaseEnter'),
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                    {texts[props.type]?.name}
+                  </div>
+                ),
                 whitespace: true,
                 validator: onValidator,
               },
             ]}
           >
             <Editor height={178} />
+          </Form.Item>
+          <Form.Item
+            label={<LabelTitle title={texts[props.type]?.name2} />}
+            name="info2"
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: true,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                    {texts[props.type]?.name2}
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+          >
+            <Editor color={colorState} height={178} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.copySend')} />}

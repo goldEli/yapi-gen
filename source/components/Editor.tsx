@@ -23,6 +23,7 @@ interface Props {
   onChangeValue?(value: string): void
   height?: number
   placeholder?: any
+  color?: boolean
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -75,7 +76,7 @@ i18nAddResources('en', {
   },
 })
 
-const Wrap = styled.div<{ minHeight?: any }>(
+const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
@@ -92,8 +93,6 @@ const Wrap = styled.div<{ minHeight?: any }>(
       fontStyle: 'inherit',
     },
     '&: hover': {
-      borderColor: '#5297ff',
-      boxShadow: '0 0 0 2px rgb(40 119 255 / 20%)',
       borderRightWidth: 1,
       outline: 0,
       marginLeft: '2px',
@@ -103,6 +102,9 @@ const Wrap = styled.div<{ minHeight?: any }>(
     '.w-e-text-container [data-slate-editor]': {
       minHeight: minHeight || 120,
     },
+  }),
+  ({ red }) => ({
+    borderColor: red ? 'red' : '',
   }),
 )
 
@@ -214,7 +216,7 @@ const EditorBox = (props: Props, ref: any) => {
     return {}
   })
   return (
-    <Wrap id="editorWrap" minHeight={props?.height}>
+    <Wrap red={props.color} id="editorWrap" minHeight={props?.height}>
       <Toolbar
         key={key}
         editor={editor}
