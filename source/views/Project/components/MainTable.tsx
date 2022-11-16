@@ -6,7 +6,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination, Progress } from 'antd'
 import {
-  TableWrap,
+  TableStyleBox,
   PaginationWrap,
   ClickWrap,
   HiddenText,
@@ -34,21 +34,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 const MoreWrap = styled.div({
@@ -488,7 +473,9 @@ const MainTable = (props: Props) => {
       <DataWrap ref={dataWrapRef}>
         {!!props.projectList?.list &&
           (props.projectList?.list?.length > 0 ? (
-            <TableBox
+            <TableStyleBox
+              isPadding
+              isHover={RowIconFont.toString()}
               rowKey="id"
               columns={columns}
               dataSource={props.projectList?.list}

@@ -7,7 +7,7 @@
 import {
   PaginationWrap,
   StaffTableWrap,
-  TableWrap,
+  TableStyleBox,
 } from '@/components/StyleCommon'
 import { Checkbox, Pagination, Space, Spin, Tooltip } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -24,16 +24,6 @@ import LookDay from './components/LookDay'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
 import styled from '@emotion/styled'
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
-  '.ant-table table': {
-    paddingBottom: 0,
-  },
-})
 
 const srr = [
   undefined,
@@ -422,7 +412,8 @@ const Get = () => {
             <Spin spinning={isSpinning}>
               {!!listData &&
                 (listData?.length > 0 ? (
-                  <TableBox
+                  <TableStyleBox
+                    isBottom
                     rowKey="id"
                     columns={columnsData}
                     dataSource={listData}

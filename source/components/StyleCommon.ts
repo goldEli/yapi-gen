@@ -486,7 +486,7 @@ const PaginationWrap = styled.div`
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
-  padding: 16px 24px;
+  padding: 16px 24px 0px;
   background: #f5f7fa;
 `
 
@@ -747,6 +747,37 @@ const PriorityWrap = styled.div<{ status?: any }>({
   },
 })
 
+// 表格-滚动条居底
+const TableStyleBox = styled(TableWrap)<{
+  isPadding?: any
+  isBottom?: any
+  isHover?: any
+}>(
+  {
+    height: '100%',
+    '.ant-table, .ant-table-content,.ant-table-container': {
+      height: '100%',
+    },
+  },
+  ({ isPadding }) => ({
+    '.ant-table-thead > tr > th:nth-child(1)': {
+      paddingLeft: isPadding ? 64 : 0,
+    },
+  }),
+  ({ isBottom }) => ({
+    '.ant-table table': {
+      paddingBottom: isBottom,
+    },
+  }),
+  ({ isHover }) => ({
+    '.ant-table-row:hover': {
+      [isHover]: {
+        visibility: 'visible',
+      },
+    },
+  }),
+)
+
 export {
   PriorityWrap,
   StatusWrap,
@@ -801,4 +832,5 @@ export {
   DateQuickWrap,
   CloseWrap,
   TextWrapEditor,
+  TableStyleBox,
 }

@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 import {
   HiddenText,
   PaginationWrap,
-  TableWrap,
+  TableStyleBox,
   TextWrapEditor,
 } from '@/components/StyleCommon'
 import { useModel } from '@/models'
@@ -54,13 +54,6 @@ const ContentWrap = styled(TextWrapEditor)({
   maxHeight: 600,
   overflow: 'auto',
   padding: '0 24px 16px',
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
 })
 
 const NewSort = (sortProps: any) => {
@@ -449,7 +442,7 @@ const ChangeRecord = () => {
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
-              <TableBox
+              <TableStyleBox
                 rowKey="id"
                 columns={columns}
                 dataSource={dataList?.list}

@@ -7,7 +7,7 @@ import moment from 'moment'
 import {
   PaginationWrap,
   SelectWrapBedeck,
-  TableWrap,
+  TableStyleBox,
 } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -63,13 +63,6 @@ const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   borderRadius: 4,
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
 })
 
 const NewSort = (sortProps: any) => {
@@ -325,7 +318,7 @@ const Operation = () => {
           <Spin spinning={isSpinning}>
             {!!dataList?.list &&
               (dataList?.list?.length > 0 ? (
-                <TableBox
+                <TableStyleBox
                   rowKey="id"
                   columns={columns}
                   dataSource={dataList.list}

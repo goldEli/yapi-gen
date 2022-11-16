@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Dropdown, Menu } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -32,18 +32,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 interface Props {
@@ -276,7 +264,8 @@ const DemandTable = (props: Props) => {
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
             (props.data?.list?.length > 0 ? (
-              <TableBox
+              <TableStyleBox
+                isHover={RowIconFont.toString()}
                 rowKey="id"
                 columns={selectColum}
                 dataSource={props.data?.list}

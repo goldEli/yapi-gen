@@ -35,6 +35,7 @@ const Side = styled.div`
   width: 220px;
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
+  border-right: 1px solid #ecedef;
 `
 const Main = styled.div({
   width: 'calc(100% - 220px)',

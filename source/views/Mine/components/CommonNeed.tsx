@@ -39,6 +39,9 @@ const RowIconFont = styled(IconFont)({
 })
 
 const TableBox = styled(TableWrap)({
+  '.ant-table-content': {
+    minHeight: '460px',
+  },
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',
@@ -452,100 +455,93 @@ const CommonNeed = (props: any) => {
 
   return (
     <>
-      <div style={{ borderLeft: '1px solid #EBEDF0' }}>
-        <TabsHehavior
-          style={{ padding: '0 24px', justifyContent: 'space-between' }}
-        >
-          <div className={tabCss}>
-            <TabsItem isActive>
-              <div>{props?.subTitle}</div>
-            </TabsItem>
-            <LabNumber isActive>{total ?? 0}</LabNumber>
+      <TabsHehavior
+        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      >
+        <div className={tabCss}>
+          <TabsItem isActive>
+            <div>{props?.subTitle}</div>
+          </TabsItem>
+          <LabNumber isActive>{total ?? 0}</LabNumber>
+        </div>
+        <SearchWrap>
+          <div style={{ marginRight: 16 }}>
+            <CommonInput
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+            />
           </div>
-          <SearchWrap>
-            <div style={{ marginRight: 16 }}>
-              <CommonInput
-                placeholder={t('common.pleaseSearchDemand')}
-                onChangeSearch={onPressEnter}
-              />
-            </div>
-            <div style={{ display: 'flex' }}>
-              {props?.isMember ? null : (
-                <>
-                  <SetButton
-                    onClick={() => {
-                      onChangeMany(false)
-                    }}
-                  >
-                    <Tooltip
-                      title={t('common.list')}
-                      getPopupContainer={node => node}
-                    >
-                      <IconFont
-                        type="unorderedlist"
-                        style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-                      />
-                    </Tooltip>
-                  </SetButton>
-                  {props?.type === 'abeyance' && (
-                    <SetButton
-                      onClick={() => {
-                        onChangeMany(true)
-                      }}
-                    >
-                      <Tooltip
-                        title={t('common.timeList')}
-                        getPopupContainer={node => node}
-                      >
-                        <IconFont
-                          type="database"
-                          style={{
-                            fontSize: 20,
-                            color: isMany ? '#4388ff' : '',
-                          }}
-                        />
-                      </Tooltip>
-                    </SetButton>
-                  )}
-                </>
-              )}
-
-              {props.id !== 0 && (
-                <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+          <div style={{ display: 'flex' }}>
+            {props?.isMember ? null : (
+              <>
+                <SetButton
+                  onClick={() => {
+                    onChangeMany(false)
+                  }}
+                >
                   <Tooltip
-                    title={t('common.search')}
+                    title={t('common.list')}
                     getPopupContainer={node => node}
                   >
                     <IconFont
-                      type="filter"
-                      style={{
-                        fontSize: 20,
-                        color: isShowSearch ? '#2877ff' : '',
-                      }}
+                      type="unorderedlist"
+                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
                     />
                   </Tooltip>
                 </SetButton>
-              )}
-
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                trigger={['click']}
-              >
-                <SetButton>
-                  <Tooltip
-                    title={t('common.tableFieldSet')}
-                    getPopupContainer={node => node}
+                {props?.type === 'abeyance' && (
+                  <SetButton
+                    onClick={() => {
+                      onChangeMany(true)
+                    }}
                   >
-                    <IconFont type="settings" style={{ fontSize: 20 }} />
-                  </Tooltip>
-                </SetButton>
-              </Dropdown>
-            </div>
-          </SearchWrap>
-        </TabsHehavior>
-      </div>
+                    <Tooltip
+                      title={t('common.timeList')}
+                      getPopupContainer={node => node}
+                    >
+                      <IconFont
+                        type="database"
+                        style={{
+                          fontSize: 20,
+                          color: isMany ? '#4388ff' : '',
+                        }}
+                      />
+                    </Tooltip>
+                  </SetButton>
+                )}
+              </>
+            )}
 
+            {props.id !== 0 && (
+              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+                <Tooltip
+                  title={t('common.search')}
+                  getPopupContainer={node => node}
+                >
+                  <IconFont
+                    type="filter"
+                    style={{
+                      fontSize: 20,
+                      color: isShowSearch ? '#2877ff' : '',
+                    }}
+                  />
+                </Tooltip>
+              </SetButton>
+            )}
+
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+              <SetButton>
+                <Tooltip
+                  title={t('common.tableFieldSet')}
+                  getPopupContainer={node => node}
+                >
+                  <IconFont type="settings" style={{ fontSize: 20 }} />
+                </Tooltip>
+              </SetButton>
+            </Dropdown>
+          </div>
+        </SearchWrap>
+      </TabsHehavior>
       {isShowSearch && props.id !== 0 ? (
         <div style={{ borderLeft: '1px solid #EBEDF0' }}>
           <TableFilter
@@ -565,11 +561,14 @@ const CommonNeed = (props: any) => {
               {listData?.list ? (
                 listData?.list?.length ? (
                   <TableBox
+                    scroll={{
+                      x: 'max-content',
+                    }}
+                    tableLayout="auto"
                     rowKey="id"
                     columns={selectColum}
                     dataSource={listData?.list}
                     pagination={false}
-                    scroll={{ x: 'max-content' }}
                   />
                 ) : (
                   <NoData />

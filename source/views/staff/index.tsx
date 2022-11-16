@@ -15,7 +15,7 @@ import {
   PaginationWrap,
   StaffTableWrap,
   SetButton,
-  TableWrap,
+  TableStyleBox,
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -66,21 +66,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  height: '100%',
-  '.ant-table, .ant-table-content,.ant-table-container': {
-    height: '100%',
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
-  '.ant-table table': {
-    paddingBottom: 0,
-  },
 })
 
 const Staff = () => {
@@ -412,14 +397,15 @@ const Staff = () => {
           style={{
             height: 'calc(100% - 50px)',
             overflow: 'hidden',
-            padding: '16px 24px 0',
           }}
         >
           <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!listData &&
                 (listData?.length > 0 ? (
-                  <TableBox
+                  <TableStyleBox
+                    isHover={RowIconFont.toString()}
+                    isBottom
                     rowKey="id"
                     columns={selectColum}
                     dataSource={listData}
