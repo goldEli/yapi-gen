@@ -260,17 +260,6 @@ function getDecimal(num: any) {
   return val
 }
 
-// 解决计算精度丢失问题 value: 数量，phase：计算的倍数
-// 目前只考虑了1以下的数量计算
-function computedAccuracy(value: any, phase: any) {
-  const decimal =
-    String(value).indexOf('.') > -1
-      ? getDecimal(String(value).split('.')[1]?.length)
-      : value
-
-  return ((Number(decimal) * phase) / Number(decimal) || 0).toFixed(0)
-}
-
 export {
   getIsPermission,
   openDetail,
@@ -279,5 +268,4 @@ export {
   getTypeComponent,
   getNestedChildren,
   filterTreeData,
-  computedAccuracy,
 }
