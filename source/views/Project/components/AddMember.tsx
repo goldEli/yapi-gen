@@ -60,6 +60,7 @@ const AddMember = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
+  const [nameIds, setNameIds] = useState<any>([])
 
   const getList = async () => {
     const result = await getStaffList({ all: 1 })
@@ -72,7 +73,8 @@ const AddMember = (props: Props) => {
 
   const onConfirm = async () => {
     const values = form.getFieldsValue()
-    if (!form.getFieldValue('name')) {
+
+    if (nameIds.length <= 0) {
       message.warning(t('project.memberNull'))
       return
     }
@@ -91,13 +93,14 @@ const AddMember = (props: Props) => {
 
     try {
       const users = staffList?.filter((i: any) =>
-        values.name.find((k: any) => k === i.value),
+        nameIds.find((k: any) => k === i.value),
       )
       params.userIds = users?.map((i: any) => i.value)
       await addMember(params)
       message.success(t('common.addSuccess'))
       props.onChangeValue()
       props.onChangeUpdate()
+      setNameIds([])
       setIsRefreshMember(true)
       getMemberList({ all: true, projectId })
       getProjectInfo({ projectId })
@@ -115,10 +118,12 @@ const AddMember = (props: Props) => {
   }
 
   const onSelectUsers = (value: any) => {
+    setNameIds(value)
     form.setFieldsValue({
       name: value,
     })
   }
+
   return (
     <Modal
       visible={props.value}
@@ -139,26 +144,21 @@ const AddMember = (props: Props) => {
         <IconFont onClick={onClose} type="close" />
       </ModalHeader>
       <Form form={form}>
-        <Form.Item
-          name="name"
-          noStyle
-          rules={[{ required: true, message: '' }]}
-        >
-          <ModalContent>
-            <Select
-              style={{ width: '100%' }}
-              showArrow={false}
-              mode="multiple"
-              showSearch
-              onChange={onSelectUsers}
-              disabled={props.details?.id}
-              options={staffList?.filter(
-                (i: any) => !memberList?.find((k: any) => k.id === i.value),
-              )}
-              optionFilterProp="label"
-            />
-          </ModalContent>
-        </Form.Item>
+        <ModalContent>
+          <Select
+            style={{ width: '100%' }}
+            showArrow={false}
+            mode="multiple"
+            showSearch
+            onChange={onSelectUsers}
+            value={nameIds}
+            disabled={props.details?.id}
+            options={staffList?.filter(
+              (i: any) => !memberList?.find((k: any) => k.id === i.value),
+            )}
+            optionFilterProp="label"
+          />
+        </ModalContent>
         <ModalFooter>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>

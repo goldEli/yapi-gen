@@ -1,5 +1,7 @@
 {
   "p2": {
+    "toast": "Tips",
+    "exportDemandText": "The exported requirements will be exported according to the current filtering conditions. The system can only export 5000 requirements at a time. Please control the requirements within 5000 through filtering before exporting!",
     "pleaseEditText": "Please edit the results",
     "exportFields": "Export Demand Field Selection",
     "editAchievements": "Editing achievements",

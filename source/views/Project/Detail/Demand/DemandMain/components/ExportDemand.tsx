@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useModel } from '@/models'
+import { useState } from 'react'
 
 interface Props {
   // 是否是导出功能
@@ -19,6 +20,7 @@ const ExportDemand = (props: Props) => {
   const projectId = paramsData.id
   const { getExportExcel } = useModel('demand')
   const { projectInfo } = useModel('project')
+  const [isSpin, setIsSpin] = useState(false)
 
   // 下载导出模板
   const onConfirmTemplate = async (arr: any) => {
@@ -28,6 +30,7 @@ const ExportDemand = (props: Props) => {
       ...props.otherParams,
       ...props.searchGroups,
     }
+    setIsSpin(true)
     const result = await getExportExcel(params)
     const blob = new Blob([result.body], {
       type: result.headers['content-type'],
@@ -38,6 +41,7 @@ const ExportDemand = (props: Props) => {
     a.href = blobUrl
     a.click()
     props.onClose(false)
+    setIsSpin(false)
   }
 
   return (
@@ -48,6 +52,7 @@ const ExportDemand = (props: Props) => {
       onClose={() => props.onClose(false)}
       onConfirm={onConfirmTemplate}
       isExport
+      isSpin={isSpin}
     />
   )
 }
