@@ -100,7 +100,6 @@ interface MoreProps {
   onChange(type: string, item: any, e: any): void
   text: string
   record?: any
-  listLength: number
 }
 
 const MoreContent = (props: MoreProps) => {
@@ -197,9 +196,7 @@ const MoreContent = (props: MoreProps) => {
             overlay={menu(props?.record)}
             trigger={['hover']}
             placement="bottomRight"
-            getPopupContainer={node =>
-              props.listLength ? document.body : node
-            }
+            getPopupContainer={node => node}
             onVisibleChange={onVisibleChange}
           >
             <RowIconFont onClick={(e: any) => onChangeVisible(e)} type="more" />
@@ -274,7 +271,6 @@ const MainTable = (props: Props) => {
               onChange={props?.onChangeOperation}
               text={text}
               record={record}
-              listLength={props.projectList?.list?.length}
             />
             <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
               {text}

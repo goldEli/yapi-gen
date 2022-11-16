@@ -84,7 +84,6 @@ interface MoreWrapProps {
   record: any
   onShowEdit(): void
   onShowDel(): void
-  listLength: number
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -134,9 +133,7 @@ const MoreWrap = (props: MoreWrapProps) => {
           trigger={['hover']}
           overlay={menu}
           placement="bottomLeft"
-          getPopupContainer={node =>
-            props.listLength === 1 ? document.body : node
-          }
+          getPopupContainer={node => node}
         >
           <RowIconFont type="more" />
         </Dropdown>
@@ -322,7 +319,6 @@ const CommonNeed = (props: any) => {
     updatePriority,
     init,
     plainOptions3,
-    listLength: listData?.list?.length,
   })
 
   const selectColum: any = useMemo(() => {
@@ -347,7 +343,6 @@ const CommonNeed = (props: any) => {
                   record={record}
                   onShowEdit={() => showEdit(record)}
                   onShowDel={() => showDel(record)}
-                  listLength={listData?.list?.length}
                 />
               ) : null}
             </>

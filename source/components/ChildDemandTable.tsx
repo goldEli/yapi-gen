@@ -18,12 +18,8 @@ import {
   StatusWrap,
 } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
-import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
-import { ShapeContent } from '@/components/Shape'
 import IconFont from './IconFont'
-import DemandProgress from './DemandProgress'
-import TableQuickEdit from './TableQuickEdit'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -60,7 +56,6 @@ const ChildDemandTable = (props: {
     list: undefined,
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
-  const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo, colorList, getProjectInfo } = useModel('project')
   let isCanEdit: any
@@ -93,16 +88,6 @@ const ChildDemandTable = (props: {
     setIsVisible(!isVisible)
   }
 
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getList(order)
-    } catch (error) {
-      //
-    }
-  }
-
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     getList({ value: val === 2 ? 'desc' : 'asc', key })
@@ -113,10 +98,6 @@ const ChildDemandTable = (props: {
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
     )
     openDetail(`/Detail/Demand?data=${params}`)
-  }
-
-  const onUpdate = () => {
-    getList(order)
   }
 
   const onExamine = () => {

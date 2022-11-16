@@ -185,7 +185,6 @@ const IterationTable = (props: Props) => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
-    listLength: props.data?.list?.length,
   })
 
   const hasEdit = getIsPermission(

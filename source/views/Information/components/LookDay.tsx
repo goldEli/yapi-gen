@@ -724,6 +724,7 @@ const LookDay = (props: any) => {
         <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow2>
       <CommonModal
+        width={600}
         isVisible={previewOpen}
         title={previewTitle}
         onClose={handleCancel}
@@ -731,7 +732,7 @@ const LookDay = (props: any) => {
       >
         <img
           alt="example"
-          style={{ width: '100%', paddingBottom: 16 }}
+          style={{ maxWidth: '100%', padding: '0 20px 16px 0' }}
           src={previewImage}
         />
       </CommonModal>

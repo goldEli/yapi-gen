@@ -128,10 +128,6 @@ const IterationGrid = (props: Props) => {
                           onChangeDelete={props?.onDelete}
                           onChangeEdit={props?.onChangeVisible}
                           onUpdate={props?.onUpdate}
-                          listLength={
-                            dataList?.filter((item: any) => item.id === k.id)[0]
-                              ?.list?.length
-                          }
                         />
                       ))
                   ) : (

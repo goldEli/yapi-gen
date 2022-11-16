@@ -262,7 +262,6 @@ const DemandWrap = (props: Props) => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate,
-    listLength: dataList?.list?.length,
   })
 
   const onChangeVisible = () => {

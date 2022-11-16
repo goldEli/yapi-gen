@@ -295,7 +295,6 @@ const ChildDemand = () => {
     rowIconFont,
     onClickItem,
     onUpdate,
-    listLength: dataList?.list?.length,
   })
 
   const hasEdit = getIsPermission(
