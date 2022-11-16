@@ -136,6 +136,7 @@ const Send = () => {
       title: t('p2.synopsis'),
       dataIndex: 'finish_content',
       key: 'finish_content',
+      width: 200,
       render: (text: string) => {
         return (
           <Tooltip
@@ -154,7 +155,7 @@ const Send = () => {
             <span
               style={{
                 display: 'block',
-                width: '40%',
+                width: '200px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',

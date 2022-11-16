@@ -127,7 +127,7 @@ const Get = () => {
             <span
               style={{
                 display: 'block',
-                width: '100%',
+                width: '200px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
