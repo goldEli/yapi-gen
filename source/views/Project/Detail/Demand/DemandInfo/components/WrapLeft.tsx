@@ -182,7 +182,7 @@ const WrapLeftBox = () => {
           <InfoItem activeState>
             <Label>{t('mine.demandInfo')}</Label>
             {demandInfo?.info ? (
-              <EditorInfoReview info={demandInfo} />
+              <EditorInfoReview info={demandInfo?.info} />
             ) : (
               <TextWrap>--</TextWrap>
             )}

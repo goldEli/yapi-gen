@@ -71,7 +71,7 @@ const EditorInfoReview = (props: Props) => {
       ) : null}
       <TextWrapEditor
         ref={textWrapEditor}
-        dangerouslySetInnerHTML={{ __html: props.info?.info }}
+        dangerouslySetInnerHTML={{ __html: props.info }}
       />
     </>
   )

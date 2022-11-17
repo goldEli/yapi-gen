@@ -1,8 +1,9 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
+import EditorInfoReview from '@/components/EditorInfoReview'
 import IconFont from '@/components/IconFont'
-import { NameWrap, TextWrapEditor } from '@/components/StyleCommon'
+import { NameWrap } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
 import {
   BigWrap,
@@ -321,19 +322,13 @@ const LookDay = (props: any) => {
             >
               <LabelTitle title={texts[props.type]?.name} />
               {article1 ? (
-                <TextWrapEditor
-                  dangerouslySetInnerHTML={{ __html: article1 }}
-                />
+                <EditorInfoReview info={article1 || '--'} />
               ) : (
                 <Kong />
               )}
 
               <LabelTitle title={texts[props.type]?.name2} />
-              {article2 ? (
-                <TextWrapEditor
-                  dangerouslySetInnerHTML={{ __html: article2 }}
-                />
-              ) : null}
+              {article2 ? <EditorInfoReview info={article2 || '--'} /> : null}
               {!article2 && <Kong />}
 
               <LabelTitle title={t('common.copySend')} />

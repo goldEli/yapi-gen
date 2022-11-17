@@ -8,11 +8,7 @@
 import Editor from '@/components/Editor'
 import UploadAttach from '../../Demand/components/UploadAttach'
 import { css } from '@emotion/css'
-import {
-  AddWrap,
-  ProgressWrapUpload,
-  TextWrapEditor,
-} from '@/components/StyleCommon'
+import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useModel } from '@/models'
@@ -20,6 +16,7 @@ import styled from '@emotion/styled'
 import { getIsPermission } from '@/tools'
 import { t } from 'i18next'
 import NoData from '@/components/NoData'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -42,10 +39,6 @@ const label = css`
   font-weight: 500;
   margin-bottom: 8px;
 `
-
-const EditorBox = styled(TextWrapEditor)({
-  margin: '8px 0 24px 0',
-})
 
 interface Props {
   isEdit?: boolean
@@ -173,11 +166,7 @@ const Achievements = (props: Props) => {
           />
         </div>
       ) : html ? (
-        <EditorBox
-          dangerouslySetInnerHTML={{
-            __html: html || '--',
-          }}
-        />
+        <EditorInfoReview info={html || '--'} />
       ) : null}
       {(attachList?.length || props.isEdit) && (
         <div className={labelWrap}>

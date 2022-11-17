@@ -12,7 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
-import { TextWrapEditor } from '@/components/StyleCommon'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -54,7 +54,7 @@ const SurveyBox = styled.div({
   flexDirection: 'column',
 })
 
-const TargetWrap = styled(TextWrapEditor)({
+const TargetWrap = styled.div({
   marginTop: 22,
   height: 200,
   overflow: 'auto',
@@ -216,9 +216,9 @@ const IterationInfo = () => {
           <SurveyWrap style={{ paddingRight: 4 }}>
             <Title>{t('project.iterateTarget')}</Title>
             {iterateInfo?.info ? (
-              <TargetWrap
-                dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
-              />
+              <TargetWrap>
+                <EditorInfoReview info={iterateInfo.info || '--'} />
+              </TargetWrap>
             ) : (
               <NoData />
             )}

@@ -10,7 +10,6 @@ import {
   HiddenText,
   PaginationWrap,
   TableStyleBox,
-  TextWrapEditor,
 } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -20,8 +19,9 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
-const ContentWrap = styled(TextWrapEditor)({
+const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   maxHeight: 600,
@@ -383,26 +383,28 @@ const ChangeRecord = (props?: any) => {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>{t('project.changeBefore')}</TitleWrap>
-            <ContentWrap
-              dangerouslySetInnerHTML={{
-                __html:
+            <TitleWrap>{t('project.changeBefore')}</TitleWrap>=
+            <ContentWrap>
+              <EditorInfoReview
+                info={
                   checkDetail.key === 'info'
                     ? checkDetail?.beforeField?.info
-                    : checkDetail?.beforeField?.achieve_desc,
-              }}
-            />
+                    : checkDetail?.beforeField?.achieve_desc
+                }
+              />
+            </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
-            <ContentWrap
-              dangerouslySetInnerHTML={{
-                __html:
+            <ContentWrap>
+              <EditorInfoReview
+                info={
                   checkDetail.key === 'info'
                     ? checkDetail?.afterField?.info
-                    : checkDetail?.afterField?.achieve_desc,
-              }}
-            />
+                    : checkDetail?.afterField?.achieve_desc
+                }
+              />
+            </ContentWrap>
           </div>
         </SpaceWrap>
       </CommonModal>

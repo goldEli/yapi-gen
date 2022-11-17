@@ -4,14 +4,13 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { Table, Pagination, Space, Spin } from 'antd'
+import { Pagination, Space, Spin } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import {
   HiddenText,
   PaginationWrap,
   TableStyleBox,
-  TextWrapEditor,
 } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -21,6 +20,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -48,7 +48,7 @@ const DataWrap = styled.div({
   borderRadius: 6,
 })
 
-const ContentWrap = styled(TextWrapEditor)({
+const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   maxHeight: 600,
@@ -422,19 +422,15 @@ const ChangeRecord = () => {
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
-            <ContentWrap
-              dangerouslySetInnerHTML={{
-                __html: checkDetail?.beforeField?.info,
-              }}
-            />
+            <ContentWrap>
+              <EditorInfoReview info={checkDetail?.beforeField?.info} />
+            </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
-            <ContentWrap
-              dangerouslySetInnerHTML={{
-                __html: checkDetail?.afterField?.info,
-              }}
-            />
+            <ContentWrap>
+              <EditorInfoReview info={checkDetail?.afterField?.info} />
+            </ContentWrap>
           </div>
         </SpaceWrap>
       </CommonModal>
