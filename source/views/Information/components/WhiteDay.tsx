@@ -139,6 +139,7 @@ const WhiteDay = (props: any) => {
         return {
           path: item.associate,
           id: item.id,
+          time: item.created_at,
         }
       }),
     )
