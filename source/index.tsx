@@ -19,11 +19,13 @@ export const Loading = styled.div`
 `
 
 import '@/locals'
+import GlobalStyle from './components/GlobalStyle'
 
 log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
+    <GlobalStyle />
     <RtkProvider store={store}>
       <Provider>
         <WaterMarkContent>
