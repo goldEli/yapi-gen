@@ -1,7 +1,6 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
 import { NameWrap, TextWrapEditor } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
@@ -15,10 +14,11 @@ import {
 import { NewNameWrap } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Input, message, Modal, Spin } from 'antd'
+import { Input, message, Spin } from 'antd'
 import { t } from 'i18next'
 import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
+import Viewer from 'react-viewer'
 import { InnerLine } from './RelatedNeed'
 
 export const GrepWrap = styled.div`
@@ -63,7 +63,6 @@ const HiddenWrap = styled.div`
   transform-style: preserve-3d;
   transform-origin: 100px 100px;
   perspective-origin: center;
-  /* overflow: hidden; */
   width: 784px;
   height: 90vh;
   border-radius: 8px;
@@ -111,16 +110,6 @@ const LabelTitle = (props: any) => {
         marginBottom: '12px',
       }}
     >
-      {/* <div
-        style={{
-          width: '3px',
-          height: '16px',
-
-          background: '#2877FF',
-          display: 'inline-block',
-          marginRight: '8px',
-        }}
-      /> */}
       <span
         style={{
           fontWeight: 'bold',
@@ -154,8 +143,10 @@ const LookDay = (props: any) => {
   const [title, setTitle] = useState<any>('')
   const [value, setValue] = useState('')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
-  const [previewImage, setPreviewImage] = useState('')
-  const [previewTitle, setPreviewTitle] = useState('')
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
   const [isSpinning, setIsSpinning] = useState(true)
   const [inputStatus, setInputStatus] = useState<any>('')
   const [name, setName] = useState('')
@@ -243,10 +234,11 @@ const LookDay = (props: any) => {
       scrollToBottom()
     }
   }
-  const handleCancel = () => setPreviewOpen(false)
+
   if (!props.visible) {
     return null
   }
+
   const downloadIamge = (src: string, name1: string) => {
     let urls = ''
     urls = `${src}?t=${new Date().getTime()}`
@@ -263,8 +255,28 @@ const LookDay = (props: any) => {
   const onDownload = (url: string, name1: string) => {
     downloadIamge(url, name1)
   }
+
+  const onReview = (item: any) => {
+    setPictureList({
+      imageArray: attachList?.map((k: any, index: any) => ({
+        src: k.path,
+        index,
+      })),
+      index: attachList?.findIndex((i: any) => i.path === item.path),
+    })
+    setPreviewOpen(true)
+  }
   return ReactDOM.createPortal(
     <GrepWrap>
+      {previewOpen ? (
+        <Viewer
+          zIndex={99999}
+          visible={previewOpen}
+          images={pictureList?.imageArray}
+          activeIndex={pictureList?.index}
+          onClose={() => setPreviewOpen(false)}
+        />
+      ) : null}
       <HiddenWrap>
         {isSpinning ? (
           <FormWrap left={left}>
@@ -463,9 +475,10 @@ const LookDay = (props: any) => {
                         {imgs.includes(item.path.split('.').at(-1)) && (
                           <Gred
                             onClick={() => {
-                              setPreviewOpen(true)
-                              setPreviewImage(item.path)
-                              setPreviewTitle(item.path.split('/').at(-1))
+                              onReview(item)
+                              // setPreviewOpen(true)
+                              // setPreviewImage(item.path)
+                              // setPreviewTitle(item.path.split('/').at(-1))
                             }}
                           >
                             <IconFont
@@ -722,7 +735,7 @@ const LookDay = (props: any) => {
       <Arrow2 onClick={() => onChangeLeft(360, 2)}>
         <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow2>
-      <CommonModal
+      {/* <CommonModal
         width={600}
         isVisible={previewOpen}
         title={previewTitle}
@@ -734,7 +747,7 @@ const LookDay = (props: any) => {
           style={{ maxWidth: '100%', padding: '0 20px 16px 0' }}
           src={previewImage}
         />
-      </CommonModal>
+      </CommonModal> */}
     </GrepWrap>,
     document.body,
   )

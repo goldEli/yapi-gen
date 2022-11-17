@@ -16,6 +16,7 @@ import IconFont from '@/components/IconFont'
 import moment from 'moment'
 import CommonModal from '@/components/CommonModal'
 import useWatchLine from '@/hooks/useWatchLine'
+import Viewer from 'react-viewer'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -203,11 +204,11 @@ const ListItem = (props: any) => {
       <div>
         <div
           style={{
-            // height: '22px',
             fontSize: '14px',
             fontWeight: 400,
             color: '#323233',
             lineHeight: '22px',
+            wordBreak: 'break-all',
           }}
         >
           {name}
@@ -295,8 +296,10 @@ const ListItem = (props: any) => {
 const UploadAttach = (props: Props) => {
   const { userInfo } = useModel('user')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
-  const [previewImage, setPreviewImage] = useState('')
-  const [previewTitle, setPreviewTitle] = useState('')
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
   const [t] = useTranslation()
   const { uploadFile, cos } = useModel('cos')
   const {
@@ -398,6 +401,11 @@ const UploadAttach = (props: Props) => {
       return Upload.LIST_IGNORE
     }
 
+    if (String(file.name).length >= 130) {
+      message.warning(t('p2.maxUploadText'))
+      return Upload.LIST_IGNORE
+    }
+
     return ''
   }
   const checkLine = () => {
@@ -481,18 +489,19 @@ const UploadAttach = (props: Props) => {
     }
   }
 
-  const handlePreview = async (file: any) => {
-    setPreviewImage(file.url)
-
-    setPreviewTitle(file.name)
-  }
-
   const onDownload = (file: any) => {
     downloadIamge(file.url, file.name)
   }
+
   const onPreview = (file: any) => {
+    const arrList = fileList?.filter((i: any) =>
+      imgs.includes(String(i.name).split('.').at(-1) as string),
+    )
+    setPictureList({
+      imageArray: arrList?.map((k: any, index: any) => ({ src: k.url, index })),
+      index: arrList?.findIndex((i: any) => i.url === file.url),
+    })
     setPreviewOpen(true)
-    handlePreview(file)
   }
 
   const onRemove = (file: any) => {
@@ -525,26 +534,20 @@ const UploadAttach = (props: Props) => {
     },
   }
 
-  const handleCancel = () => setPreviewOpen(false)
-
   return (
     <div>
+      {previewOpen ? (
+        <Viewer
+          zIndex={99999}
+          visible={previewOpen}
+          images={pictureList?.imageArray}
+          activeIndex={pictureList?.index}
+          onClose={() => setPreviewOpen(false)}
+        />
+      ) : null}
       <Warp multiple fileList={fileList} {...uploadProps}>
         {props.addWrap}
       </Warp>
-      <CommonModal
-        width={600}
-        isVisible={previewOpen}
-        title={previewTitle}
-        onClose={handleCancel}
-        isShowFooter
-      >
-        <img
-          alt="example"
-          style={{ maxWidth: '100%', padding: '0 20px 16px 0' }}
-          src={previewImage}
-        />
-      </CommonModal>
       {props.child}
     </div>
   )

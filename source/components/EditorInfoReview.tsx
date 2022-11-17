@@ -62,7 +62,7 @@ const EditorInfoReview = (props: Props) => {
     <>
       {isVisible ? (
         <Viewer
-          zIndex={99}
+          zIndex={9999}
           visible={isVisible}
           images={pictureList?.imageArray}
           activeIndex={pictureList?.index}

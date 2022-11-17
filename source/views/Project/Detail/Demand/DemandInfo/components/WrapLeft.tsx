@@ -201,28 +201,30 @@ const WrapLeftBox = () => {
           </InfoItem>
           <InfoItem activeState>
             <Label>{t('common.attachment')}</Label>
-            <UploadAttach
-              onBottom={onBottom}
-              defaultList={demandInfo?.attachment?.map((i: any) => ({
-                path: i.attachment.path,
-                id: i.id,
-                time: i.attachment.created_at,
-              }))}
-              canUpdate
-              addWrap={
-                projectInfo?.projectPermissions?.filter(
-                  (i: any) => i.name === '附件上传',
-                ).length > 0 ? (
-                  <AddWrap>
-                    <IconFont type="plus" />
-                    <div>{t('common.add23')}</div>
-                  </AddWrap>
-                ) : (
-                  (null as any)
-                )
-              }
-              child={isShowProgress ? null : <Children />}
-            />
+            <div style={{ width: 'calc(100% - 120px)' }}>
+              <UploadAttach
+                onBottom={onBottom}
+                defaultList={demandInfo?.attachment?.map((i: any) => ({
+                  path: i.attachment.path,
+                  id: i.id,
+                  time: i.attachment.created_at,
+                }))}
+                canUpdate
+                addWrap={
+                  projectInfo?.projectPermissions?.filter(
+                    (i: any) => i.name === '附件上传',
+                  ).length > 0 ? (
+                    <AddWrap>
+                      <IconFont type="plus" />
+                      <div>{t('common.add23')}</div>
+                    </AddWrap>
+                  ) : (
+                    (null as any)
+                  )
+                }
+                child={isShowProgress ? null : <Children />}
+              />
+            </div>
           </InfoItem>
         </WrapLeft>
       </div>

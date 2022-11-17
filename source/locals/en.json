@@ -1,5 +1,6 @@
 {
   "p2": {
+    "maxUploadText": "The maximum length of a file name is 130 words!",
     "nameNotNull": "The demand title cannot be empty!",
     "toast": "Tips",
     "exportDemandText": "The exported requirements will be exported according to the current filtering conditions. The system can only export 5000 requirements at a time. Please control the requirements within 5000 through filtering before exporting!",
