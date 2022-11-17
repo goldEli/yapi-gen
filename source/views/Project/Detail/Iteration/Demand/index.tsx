@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -289,18 +290,7 @@ const DemandWrap = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <Dropdown
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    dataList?.list?.length === 1 ? document.body : node
-                  }
-                >
-                  {rowIconFont()}
-                </Dropdown>
-              )}
+              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
             </div>
           )
         },
@@ -331,7 +321,6 @@ const DemandWrap = (props: Props) => {
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <TableStyleBox
-                isHover={RowIconFont.toString()}
                 rowKey="id"
                 columns={selectColum}
                 dataSource={dataList?.list}

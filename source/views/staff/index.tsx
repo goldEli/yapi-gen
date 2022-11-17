@@ -27,6 +27,7 @@ import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonInput from '@/components/CommonInput'
+import MoreDropdown from '@/components/MoreDropdown'
 
 export const tableWrapP = css`
   display: flex;
@@ -59,13 +60,6 @@ export const DataWrap = styled.div({
   height: '100%',
   overflow: 'hidden',
   borderRadius: '6px',
-})
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
 })
 
 const Staff = () => {
@@ -216,9 +210,7 @@ const Staff = () => {
                 'b/user/update',
               )}
             >
-              <Dropdown overlay={menuTable(record)} placement="bottomLeft">
-                <RowIconFont type="more" />
-              </Dropdown>
+              <MoreDropdown menu={menuTable(record)} />
             </div>
           )
         },
@@ -404,7 +396,6 @@ const Staff = () => {
               {!!listData &&
                 (listData?.length > 0 ? (
                   <TableStyleBox
-                    isHover={RowIconFont.toString()}
                     isBottom
                     rowKey="id"
                     columns={selectColum}

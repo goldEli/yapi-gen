@@ -107,6 +107,7 @@ export default () => {
     updateDemandCategory,
     statusLogs,
     getStatusLogs,
+    setStatusLogs,
     getLoadListFields,
     getImportDownloadModel,
     importExcel,

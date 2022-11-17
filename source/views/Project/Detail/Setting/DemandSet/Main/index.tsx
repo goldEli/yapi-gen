@@ -13,6 +13,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Wrap = styled.div({
   padding: 16,
@@ -74,7 +75,7 @@ const CategoryCard = styled.div<{ isHover?: any }>(
     border: '1px solid #EBEDF0',
     display: 'flex',
     flexDirection: 'column',
-    padding: '16px 16px 4px',
+    padding: '16px 0 4px 16px',
     margin: '24px 24px 0 0',
   },
   ({ isHover }) => ({
@@ -90,6 +91,9 @@ const CategoryCardHead = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  '.dropdownIcon': {
+    visibility: 'visible',
+  },
 })
 
 const DivWrap = styled.div({
@@ -144,16 +148,6 @@ const HasDemandText = styled.div({
   color: '#FF5C5E',
   fontWeight: 400,
   fontSize: 12,
-})
-
-const IconFontWrap = styled(IconFont)({
-  fontSize: 20,
-  color: '#969799',
-  marginLeft: 16,
-  cursor: 'pointer',
-  '&: hover': {
-    color: '#2877ff',
-  },
 })
 
 interface MoreWrapProps {
@@ -334,18 +328,13 @@ const MoreWrap = (props: MoreWrapProps) => {
           </div>
         </CommonModal>
       )}
-
-      <Dropdown
-        key={isMoreVisible.toString()}
-        visible={isMoreVisible}
-        onVisibleChange={visible => setIsMoreVisible(visible)}
-        trigger={['hover']}
-        overlay={menu}
-        placement="bottomLeft"
-        getPopupContainer={node => node}
-      >
-        <IconFontWrap type="more" />
-      </Dropdown>
+      <MoreDropdown
+        isMoreVisible={isMoreVisible}
+        onChangeVisible={setIsMoreVisible}
+        menu={menu}
+        size={20}
+        color="#969799"
+      />
     </>
   )
 }

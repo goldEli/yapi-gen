@@ -30,23 +30,17 @@ import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import CommonInput from '@/components/CommonInput'
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
-})
+import MoreDropdown from '@/components/MoreDropdown'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
     minHeight: '460px',
   },
   '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
+    [ShowWrap.toString()]: {
       visibility: 'visible',
     },
-    [ShowWrap.toString()]: {
+    '.dropdownIcon': {
       visibility: 'visible',
     },
   },
@@ -119,17 +113,11 @@ const MoreWrap = (props: MoreWrapProps) => {
   return (
     <ShowWrap>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
-        <Dropdown
-          key={isMoreVisible.toString()}
-          visible={isMoreVisible}
-          onVisibleChange={visible => setIsMoreVisible(visible)}
-          trigger={['hover']}
-          overlay={menu}
-          placement="bottomLeft"
-          getPopupContainer={node => node}
-        >
-          <RowIconFont type="more" />
-        </Dropdown>
+        <MoreDropdown
+          isMoreVisible={isMoreVisible}
+          onChangeVisible={setIsMoreVisible}
+          menu={menu}
+        />
       )}
     </ShowWrap>
   )

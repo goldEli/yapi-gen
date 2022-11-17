@@ -33,6 +33,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -356,18 +357,7 @@ const ProjectMember = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {hasDel && hasEdit ? null : (
-              <Dropdown
-                overlay={() => menu(record)}
-                trigger={['hover']}
-                placement="bottom"
-                getPopupContainer={node =>
-                  memberList?.list?.length === 1 ? document.body : node
-                }
-              >
-                <RowIconFont type="more" />
-              </Dropdown>
-            )}
+            {hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />}
             {record.avatar ? (
               <img
                 src={record.avatar}
@@ -656,7 +646,6 @@ const ProjectMember = () => {
                   <TableStyleBox
                     isPadding
                     isBottom
-                    isHover={RowIconFont.toString()}
                     rowKey="id"
                     columns={columns as any}
                     dataSource={memberList?.list}

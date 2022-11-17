@@ -1,17 +1,13 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import IconFont from './IconFont'
-import { Dropdown, Menu } from 'antd'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
-
-const DropdownWrap = styled(Dropdown)({
-  display: 'none',
-  cursor: 'pointer',
-})
+import MoreDropdown from './MoreDropdown'
+import { Menu } from 'antd'
+import IconFont from './IconFont'
 
 const ImgWrap = styled.div({
   height: 104,
@@ -20,6 +16,7 @@ const ImgWrap = styled.div({
   justifyContent: 'center',
   width: '100%',
   position: 'relative',
+  cursor: 'pointer',
   div: {
     width: '100%',
     height: '100%',
@@ -42,11 +39,10 @@ const Warp = styled.div({
   height: 144,
   width: 220,
   overflow: 'hidden',
-  cursor: 'pointer',
   '&: hover': {
     boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
-    [DropdownWrap.toString()]: {
-      display: 'block',
+    '.dropdownIcon': {
+      visibility: 'visible',
       svg: {
         color: '#2877ff',
       },
@@ -66,6 +62,7 @@ const NameWrap = styled.div({
   overflow: 'hidden',
   fontSize: 14,
   fontWeight: 400,
+  cursor: 'pointer',
   color: 'black',
   '&: hover': {
     color: '#2877ff',
@@ -76,7 +73,7 @@ const TextWarp = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 16px',
+  padding: '0 6px 0 16px',
   height: 40,
   background: 'white',
 })
@@ -177,17 +174,11 @@ const ProjectCard = (props: Props) => {
       <TextWarp>
         <NameWrap onClick={props.onToDetail}>{props.item.name}</NameWrap>
         {!hasEdit && !hasDelete && !hasStart && !hasStop && (
-          <DropdownWrap
-            key={isMoreVisible.toString()}
-            visible={isMoreVisible}
-            overlay={() => menu(props.item)}
-            trigger={['hover']}
-            placement="bottomRight"
-            getPopupContainer={node => node}
-            onVisibleChange={visible => setIsMoreVisible(visible)}
-          >
-            <IconFont style={{ fontSize: 16, color: '#BBBDBF' }} type="more" />
-          </DropdownWrap>
+          <MoreDropdown
+            isMoreVisible={isMoreVisible}
+            menu={() => menu(props.item)}
+            onChangeVisible={setIsMoreVisible}
+          />
         )}
       </TextWarp>
     </Warp>

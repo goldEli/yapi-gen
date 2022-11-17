@@ -14,6 +14,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Warp = styled.div({
   padding: 16,
@@ -59,13 +60,6 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
-const IconWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  right: 10,
-  fontSize: '16px!important',
-})
-
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -76,6 +70,10 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
+    '.dropdownIcon': {
+      position: 'absolute',
+      right: 0,
+    },
     '.name': {
       fontSize: 14,
       color: 'black',
@@ -90,8 +88,8 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       '.name': {
         color: '#2877FF',
       },
-      [IconWrap.toString()]: {
-        display: 'block',
+      '.dropdownIcon': {
+        visibility: 'visible',
       },
     },
   },
@@ -426,21 +424,12 @@ const ProjectSet = () => {
                           ? t('setting.systemGroup')
                           : t('setting.customGroup')}
                       </span>
-                      <Dropdown
-                        key={isMoreVisible.toString()}
-                        visible={isMoreVisible}
-                        overlay={() => menu(item)}
-                        placement="bottomRight"
-                        trigger={['hover']}
-                        getPopupContainer={node => node}
-                        onVisibleChange={visible => setIsMoreVisible(visible)}
-                      >
-                        <IconWrap
-                          type="more"
-                          hidden={item.type === 1}
-                          style={{ color: '#2877ff', fontSize: 16 }}
-                        />
-                      </Dropdown>
+                      <MoreDropdown
+                        isHidden={item.type === 1}
+                        isMoreVisible={isMoreVisible}
+                        onChangeVisible={setIsMoreVisible}
+                        menu={menu(item)}
+                      />
                     </MenuItem>
                   ))}
                 </MenuItems>

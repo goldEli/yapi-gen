@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
+import MoreDropdown from '@/components/MoreDropdown'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -34,11 +35,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const MoreWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
 })
 
 const StatusWrap = styled.div({
@@ -162,32 +158,16 @@ const MoreContent = (props: MoreProps) => {
     return <Menu items={menuItems} />
   }
 
-  const onChangeVisible = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
-  }
-
-  const onVisibleChange = (visible: any) => {
-    setIsVisible(visible)
-  }
-
   return (
     <>
-      {!hasDelete && !hasEdit && !hasStart && !hasStop ? (
-        <MoreWrap>
-          <Dropdown
-            key={isVisible.toString()}
-            visible={isVisible}
-            overlay={menu(props?.record)}
-            trigger={['hover']}
-            placement="bottomRight"
-            getPopupContainer={node => node}
-            onVisibleChange={onVisibleChange}
-          >
-            <RowIconFont onClick={(e: any) => onChangeVisible(e)} type="more" />
-          </Dropdown>
-        </MoreWrap>
-      ) : (
+      {!hasDelete && !hasEdit && !hasStart && !hasStop && (
+        <MoreDropdown
+          isMoreVisible={isVisible}
+          menu={menu(props?.record)}
+          onChangeVisible={setIsVisible}
+        />
+      )}
+      {!(!hasDelete && !hasEdit && !hasStart && !hasStop) && (
         <div style={{ width: 16 }} />
       )}
     </>
@@ -257,7 +237,7 @@ const MainTable = (props: Props) => {
               text={text}
               record={record}
             />
-            <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
+            <ClickWrap isClose={record.status === 2} style={{ marginLeft: 16 }}>
               {text}
             </ClickWrap>
           </div>
@@ -475,7 +455,6 @@ const MainTable = (props: Props) => {
           (props.projectList?.list?.length > 0 ? (
             <TableStyleBox
               isPadding
-              isHover={RowIconFont.toString()}
               rowKey="id"
               columns={columns}
               dataSource={props.projectList?.list}

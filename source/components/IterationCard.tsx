@@ -10,6 +10,7 @@ import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
+import MoreDropdown from './MoreDropdown'
 
 const MoreWrap = styled(IconFont)({
   display: 'none',
@@ -41,10 +42,15 @@ const CardWrap = styled.div<{ active?: boolean }>(
     position: 'relative',
     border: '1px solid #EBEDF0',
     cursor: 'pointer',
+    '.dropdownIcon': {
+      position: 'absolute',
+      top: 10,
+      right: 6,
+    },
     '&: hover': {
       border: '1px solid #2877ff',
-      [MoreWrap.toString()]: {
-        display: 'block',
+      '.dropdownIcon': {
+        visibility: 'visible',
       },
       [DetailWrap.toString()]: {
         color: '#2877ff',
@@ -183,17 +189,22 @@ const IterationCard = (props: Props) => {
         <IconFont type="right" />
       </DetailWrap>
       {!(hasDel && hasEdit && hasChangeStatus) && (
-        <Dropdown
-          key={isVisible.toString()}
-          visible={isVisible}
-          overlay={menu()}
-          placement="bottomRight"
-          trigger={['hover']}
-          getPopupContainer={node => node}
-          onVisibleChange={onVisibleChange}
-        >
-          <MoreWrap type="more" />
-        </Dropdown>
+        // <Dropdown
+        //   key={isVisible.toString()}
+        //   visible={isVisible}
+        //   overlay={menu()}
+        //   placement="bottomRight"
+        //   trigger={['hover']}
+        //   getPopupContainer={node => node}
+        //   onVisibleChange={onVisibleChange}
+        // >
+        //   <MoreWrap type="more" />
+        // </Dropdown>
+        <MoreDropdown
+          isMoreVisible={isVisible}
+          menu={menu()}
+          onChangeVisible={setIsVisible}
+        />
       )}
     </CardWrap>
   )

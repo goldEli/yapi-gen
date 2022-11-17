@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -143,10 +144,6 @@ const DemandTable = (props: Props) => {
     props.onDelete(item)
   }
 
-  const rowIconFont = () => {
-    return <RowIconFont type="more" />
-  }
-
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -155,7 +152,6 @@ const DemandTable = (props: Props) => {
     onChangeStatus,
     onChangeState,
     onClickItem,
-    rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
   })
@@ -216,19 +212,11 @@ const DemandTable = (props: Props) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {hasEdit && hasDel ? null : (
-                <Dropdown
-                  key={isShowMore.toString()}
-                  visible={isShowMore}
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    props.data?.list?.length === 1 ? document.body : node
-                  }
-                  onVisibleChange={visible => setIsShowMore(visible)}
-                >
-                  {rowIconFont()}
-                </Dropdown>
+                <MoreDropdown
+                  isMoreVisible={isShowMore}
+                  menu={menu(record)}
+                  onChangeVisible={setIsShowMore}
+                />
               )}
             </div>
           )
@@ -265,7 +253,6 @@ const DemandTable = (props: Props) => {
           {!!props.data?.list &&
             (props.data?.list?.length > 0 ? (
               <TableStyleBox
-                isHover={RowIconFont.toString()}
                 rowKey="id"
                 columns={selectColum}
                 dataSource={props.data?.list}

@@ -777,7 +777,7 @@ const TableStyleBox = styled(TableWrap)<{
   }),
   ({ isHover }) => ({
     '.ant-table-row:hover': {
-      [isHover]: {
+      '.dropdownIcon': {
         visibility: 'visible',
       },
     },

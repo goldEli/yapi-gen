@@ -182,6 +182,11 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框改变
   const onChange = async (newValue: any, type: any) => {
+    if (props.keyText === 'name' && newValue.length <= 0) {
+      message.warning(t('p2.nameNotNull'))
+      setIsShowControl(false)
+      return
+    }
     const obj: any = {
       projectId,
       id: props.item?.id,

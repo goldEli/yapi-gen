@@ -20,6 +20,7 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import EditDemand from '@/components/EditDemand'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Operation = styled.div({
   display: 'flex',
@@ -102,6 +103,7 @@ const ChildDemand = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
+  const [isShowMore, setIsShowMore] = useState(false)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -333,18 +335,7 @@ const ChildDemand = () => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <Dropdown
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    dataList?.list?.length === 1 ? document.body : node
-                  }
-                >
-                  {rowIconFont()}
-                </Dropdown>
-              )}
+              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
             </div>
           )
         },
@@ -393,7 +384,6 @@ const ChildDemand = () => {
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <TableStyleBox
-                isHover={RowIconFont.toString()}
                 rowKey="id"
                 columns={selectColum}
                 dataSource={dataList?.list}
