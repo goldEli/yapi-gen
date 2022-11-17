@@ -478,7 +478,6 @@ const LookDay = (props: any) => {
                       <div>
                         <div
                           style={{
-                            height: '22px',
                             fontSize: '14px',
                             fontWeight: 400,
                             color: '#646566',

@@ -179,12 +179,12 @@ const WhiteDay = (props: any) => {
       title={props.editId ? title : props.visibleEditText}
       isVisible={props.visibleEdit}
       onClose={close}
-      onConfirm={confirm}
+      onConfirm={() => form.submit()}
       confirmText={t('newlyAdd.submit')}
     >
       <div
         style={{
-          height: '60vh',
+          height: 'calc(90vh - 136px)',
           overflow: 'scroll',
           paddingRight: '24px',
         }}
@@ -198,7 +198,23 @@ const WhiteDay = (props: any) => {
             opacity: 0,
           }}
         />
-        <Form form={form} layout="vertical">
+        <Form
+          form={form}
+          onFinish={confirm}
+          layout="vertical"
+          onFinishFailed={() => {
+            setTimeout(() => {
+              const errorList = (document as any).querySelectorAll(
+                '.ant-form-item-has-error',
+              )
+
+              errorList[0].scrollIntoView({
+                block: 'center',
+                behavior: 'smooth',
+              })
+            }, 100)
+          }}
+        >
           <Form.Item
             label={<LabelTitle title={texts[props.type]?.name} />}
             name="info"

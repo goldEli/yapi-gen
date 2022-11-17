@@ -71,7 +71,7 @@ export const Gred = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  height: 40px;
   opacity: 0;
   transition: all 1s;
 `
@@ -203,7 +203,7 @@ const ListItem = (props: any) => {
       <div>
         <div
           style={{
-            height: '22px',
+            // height: '22px',
             fontSize: '14px',
             fontWeight: 400,
             color: '#323233',
