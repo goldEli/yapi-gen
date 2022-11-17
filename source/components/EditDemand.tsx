@@ -334,6 +334,7 @@ const EditDemand = (props: Props) => {
         res?.attachment.map((i: any) => ({
           path: i.attachment.path,
           id: i.id,
+          time: i.created_at,
         })),
       )
       setTagList(

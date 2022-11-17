@@ -90,10 +90,12 @@ const Achievements = (props: Props) => {
 
   const setValue = (obj: any) => {
     setHtml(obj.info)
+
     setAttachList(
       obj.attachList?.map((i: any) => ({
         path: i.attachment.path,
         id: i.id,
+        time: i.created_at,
       })) || [],
     )
   }

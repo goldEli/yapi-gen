@@ -407,7 +407,7 @@ const UploadAttach = (props: Props) => {
     if (!line) {
       location.reload()
     }
-    setTimeout(() => {
+    setInterval(() => {
       if (!line) {
         location.reload()
       }
