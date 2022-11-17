@@ -6,6 +6,7 @@
     "exportFields": "Export Demand Field Selection",
     "editAchievements": "Editing achievements",
     "pComment": "Comment on {{inner}} 's log",
+    "only1": "Please enter ",
     "need1": " Please select associated items ",
     "need2": " Please select associated requirements ",
     "need3": " Requirement association successful ",
