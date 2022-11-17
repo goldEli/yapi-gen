@@ -400,8 +400,7 @@ const UploadAttach = (props: Props) => {
 
     return ''
   }
-
-  const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
+  const checkLine = () => {
     const line = window.navigator.onLine
 
     if (!line) {
@@ -412,6 +411,11 @@ const UploadAttach = (props: Props) => {
         location.reload()
       }
     }, 2000)
+  }
+
+  const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
+    checkLine()
+
     const fileSpeed = list[list.length - 1].percent
     const num = fileSpeed === 0 ? fileSpeed : (fileSpeed * 100).toFixed(2)
     setUploadStatus(list[list.length - 1].state)
