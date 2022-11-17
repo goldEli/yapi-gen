@@ -767,7 +767,7 @@ const TableStyleBox = styled(TableWrap)<{
   },
   ({ isPadding }) => ({
     '.ant-table-thead > tr > th:nth-child(1)': {
-      paddingLeft: isPadding ? 64 : 0,
+      paddingLeft: isPadding ? 64 : 16,
     },
   }),
   ({ isBottom }) => ({

@@ -148,7 +148,7 @@ const ProjectMember = () => {
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 2 })
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)

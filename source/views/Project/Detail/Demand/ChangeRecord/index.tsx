@@ -82,7 +82,7 @@ const ChangeRecord = () => {
   const [checkDetail, setCheckDetail] = useState<any>({})
   const [isVisible, setIsVisible] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [pageObj, setPageObj] = useState({ page: 1, size: 5 })
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
