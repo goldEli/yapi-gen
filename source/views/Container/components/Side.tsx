@@ -167,7 +167,7 @@ export const Side = () => {
         title: t('container.information'),
         icon: <IconFont type="log" style={{ fontSize: 20 }} />,
         path: '/Information/send/1',
-        isHidden: true,
+        isHidden: false,
       },
     ]
     return menu
