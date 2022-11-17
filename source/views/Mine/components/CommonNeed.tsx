@@ -98,13 +98,13 @@ const MoreWrap = (props: MoreWrapProps) => {
         {
           key: '1',
           label: (
-            <span onClick={() => onClickMenu('edit')}>{t('common.edit')}</span>
+            <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
           ),
         },
         {
           key: '2',
           label: (
-            <span onClick={() => onClickMenu('del')}>{t('common.del')}</span>
+            <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>
           ),
         },
       ]}

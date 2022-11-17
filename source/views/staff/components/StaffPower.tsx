@@ -13,6 +13,7 @@ const PersonalHead = styled.div`
 const PersonalFooter = styled.div`
   display: flex;
   justify-content: space-around;
+  padding-right: 20px;
 `
 const Left = styled.div``
 const Line = styled.div`

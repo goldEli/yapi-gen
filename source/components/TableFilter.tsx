@@ -268,11 +268,14 @@ const TableFilter = (props: any) => {
     if (delKey) {
       if (delKey?.includes('custom_')) {
         delete customField[delKey]
+        delete res[delKey]
       } else {
         delete res[delKey]
       }
+      form.setFieldsValue({
+        [delKey]: null,
+      })
     }
-
     props.onSearch(res, customField)
   }
 

@@ -69,13 +69,20 @@ export function getFileSuffix(name: string, withDot = false) {
   return fileSuffix?.length ? `${withDot ? '.' : ''}${fileSuffix}` : ''
 }
 
-export const uploadFile = (file: File, username: string, space: string) => {
+export const uploadFile = (
+  file: File,
+  username: string,
+  space: string,
+  fileName?: any,
+) => {
   return new Promise<Models.Files.File>((resolve, reject) => {
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${file.name}`,
+      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
+        fileName || file.name
+      }`,
       onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)

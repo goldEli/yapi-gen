@@ -435,11 +435,35 @@ const UploadAttach = (props: Props) => {
     }
   }, [])
 
+  // 上传附件
   const onUploadFileClick = async (option: UploadRequestOption) => {
     const { file } = option
     if (file instanceof File) {
+      const fileName = file.name
+      let newName = file.name
+
       props?.onChangeShow?.(true)
-      const result: any = await uploadFile(file, file.name, 'file')
+
+      const list = fileList as any[]
+      let i = 1
+
+      while (
+        list.some(
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          fileItem =>
+            String(fileItem.name).toLowerCase() ===
+            String(newName).toLowerCase(),
+        )
+      ) {
+        newName = fileName
+          .split('.')
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          .map((nameSlice, index, array) =>
+            array.length - 2 === index ? `${nameSlice}(${i++})` : nameSlice,
+          )
+          .join('.')
+      }
+      const result: any = await uploadFile(file, file.name, 'file', newName)
       option.onSuccess?.(result)
       result.url = decodeURIComponent(result.url)
       const items = [result.url]

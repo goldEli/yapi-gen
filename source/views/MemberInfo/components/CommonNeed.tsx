@@ -99,14 +99,12 @@ const MoreWrap = (props: MoreWrapProps) => {
       {
         key: '1',
         label: (
-          <span onClick={() => onClickMenu('edit')}>{t('common.edit')}</span>
+          <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
         ),
       },
       {
         key: '2',
-        label: (
-          <span onClick={() => onClickMenu('del')}>{t('common.del')}</span>
-        ),
+        label: <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>,
       },
     ]
 
@@ -121,7 +119,8 @@ const MoreWrap = (props: MoreWrapProps) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
   return (
-    <ShowWrap>
+    // <ShowWrap>
+    <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
         <MoreDropdown
           isMoreVisible={isMoreVisible}
@@ -129,7 +128,8 @@ const MoreWrap = (props: MoreWrapProps) => {
           menu={menu}
         />
       )}
-    </ShowWrap>
+    </>
+    // </ShowWrap>
   )
 }
 

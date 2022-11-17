@@ -169,9 +169,9 @@ const Staff = () => {
         {
           key: '1',
           label: (
-            <span onClick={() => controlStaffPersonalVisible(record)}>
+            <div onClick={() => controlStaffPersonalVisible(record)}>
               {t('staff.setPermission')}
-            </span>
+            </div>
           ),
         },
       ]}

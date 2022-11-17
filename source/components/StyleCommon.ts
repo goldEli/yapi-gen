@@ -764,6 +764,11 @@ const TableStyleBox = styled(TableWrap)<{
     '.ant-table, .ant-table-content,.ant-table-container': {
       height: '100%',
     },
+    '.ant-table-row:hover': {
+      '.dropdownIcon': {
+        visibility: 'visible',
+      },
+    },
   },
   ({ isPadding }) => ({
     '.ant-table-thead > tr > th:nth-child(1)': {
@@ -773,13 +778,6 @@ const TableStyleBox = styled(TableWrap)<{
   ({ isBottom }) => ({
     '.ant-table table': {
       paddingBottom: isBottom,
-    },
-  }),
-  ({ isHover }) => ({
-    '.ant-table-row:hover': {
-      '.dropdownIcon': {
-        visibility: 'visible',
-      },
     },
   }),
 )
