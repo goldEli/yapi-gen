@@ -216,6 +216,9 @@ const WhiteDay = (props: any) => {
           }}
         >
           <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
             label={<LabelTitle title={texts[props.type]?.name} />}
             name="info"
             rules={[
@@ -243,6 +246,9 @@ const WhiteDay = (props: any) => {
             <Editor height={178} />
           </Form.Item>
           <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
             label={<LabelTitle title={texts[props.type]?.name2} />}
             name="info2"
             rules={[
