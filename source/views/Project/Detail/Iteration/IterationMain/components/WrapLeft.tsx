@@ -207,9 +207,9 @@ const WrapLeft = (props: Props) => {
   }, [isUpdateList, props.updateState])
 
   const options = [
-    { label: '已开启', value: 1 },
-    { label: '已完成', value: 2 },
-    { label: '已关闭', value: 3 },
+    { label: t('common.opening1'), value: 1 },
+    { label: t('common.finished'), value: 2 },
+    { label: t('common.Closed'), value: 3 },
   ]
 
   const onConfirmFilter = () => {

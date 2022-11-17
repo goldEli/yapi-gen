@@ -90,10 +90,12 @@ const Achievements = (props: Props) => {
 
   const setValue = (obj: any) => {
     setHtml(obj.info)
+
     setAttachList(
       obj.attachList?.map((i: any) => ({
         path: i.attachment.path,
         id: i.id,
+        time: i.attachment.created_at,
       })) || [],
     )
   }
@@ -103,6 +105,7 @@ const Achievements = (props: Props) => {
       projectId: props.projectId,
       id: props.id,
     })
+
     setValue(result)
   }
 

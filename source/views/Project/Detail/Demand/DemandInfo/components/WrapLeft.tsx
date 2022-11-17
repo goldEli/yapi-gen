@@ -206,6 +206,7 @@ const WrapLeftBox = () => {
               defaultList={demandInfo?.attachment?.map((i: any) => ({
                 path: i.attachment.path,
                 id: i.id,
+                time: i.attachment.created_at,
               }))}
               canUpdate
               addWrap={

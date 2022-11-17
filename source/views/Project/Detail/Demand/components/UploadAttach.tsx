@@ -71,7 +71,7 @@ export const Gred = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  height: 40px;
   opacity: 0;
   transition: all 1s;
 `
@@ -203,7 +203,7 @@ const ListItem = (props: any) => {
       <div>
         <div
           style={{
-            height: '22px',
+            // height: '22px',
             fontSize: '14px',
             fontWeight: 400,
             color: '#323233',
@@ -400,18 +400,22 @@ const UploadAttach = (props: Props) => {
 
     return ''
   }
-
-  const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
+  const checkLine = () => {
     const line = window.navigator.onLine
 
     if (!line) {
       location.reload()
     }
-    setTimeout(() => {
+    setInterval(() => {
       if (!line) {
         location.reload()
       }
     }, 2000)
+  }
+
+  const onTasksUpdate = useCallback(({ list }: { list: Task[] }) => {
+    checkLine()
+
     const fileSpeed = list[list.length - 1].percent
     const num = fileSpeed === 0 ? fileSpeed : (fileSpeed * 100).toFixed(2)
     setUploadStatus(list[list.length - 1].state)
