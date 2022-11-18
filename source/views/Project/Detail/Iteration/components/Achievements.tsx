@@ -24,7 +24,7 @@ const Wrap = styled.div<{ isModal: any }>(
     paddingRight: 16,
   },
   ({ isModal }) => ({
-    height: isModal ? '30vw' : 'calc(100% - 40px)',
+    height: isModal ? '60vh' : 'calc(100% - 40px)',
   }),
 )
 

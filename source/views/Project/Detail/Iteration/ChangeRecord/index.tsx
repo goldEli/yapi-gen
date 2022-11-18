@@ -383,7 +383,7 @@ const ChangeRecord = (props?: any) => {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>{t('project.changeBefore')}</TitleWrap>=
+            <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <ContentWrap>
               <EditorInfoReview
                 info={
