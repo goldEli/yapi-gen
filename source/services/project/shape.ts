@@ -1,11 +1,10 @@
 /* eslint-disable no-undefined */
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable complexity */
-/* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
+import { filter } from 'lodash'
 import { getTreeList } from './tree'
 
 function filterTreeData(data: any) {
@@ -69,12 +68,13 @@ export const getShapeRight = async (params: any) => {
     },
   })
 
-  const filterIterateList = iterateList.data.map((item: any) => ({
-    id: item.id,
-    name: item.name,
-  }))
-
-  // console.log(filterIterateList, '迭代列表')
+  const filterIterateList = iterateList.data
+    .map((item: any) => ({
+      id: item.id,
+      name: item.name,
+      status: item.status,
+    }))
+    .filter((item: any) => item.status === 1)
 
   // 标签
   const getTagList = await http.get<any>('getTagList', {
@@ -223,9 +223,9 @@ export const getShapeRight = async (params: any) => {
         type: item.attr,
         dvalue: item.true_value,
         children: item?.value
-          ? item?.value?.map((item: any) => ({
-              name: item,
-              id: item,
+          ? item?.value?.map((k: any) => ({
+              name: k,
+              id: k,
             }))
           : [],
       }

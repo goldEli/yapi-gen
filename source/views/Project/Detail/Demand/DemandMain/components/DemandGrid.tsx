@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
 import { Space, Spin } from 'antd'
@@ -130,10 +129,6 @@ const DemandGrid = (props: Props) => {
                           onClickItem={() => onClickItem(i)}
                           indexVal={idx}
                           onUpdate={() => props?.onUpdate(true)}
-                          listLength={
-                            dataList?.filter((item: any) => item.id === k.id)[0]
-                              ?.list?.length
-                          }
                         />
                       ))
                   ) : (

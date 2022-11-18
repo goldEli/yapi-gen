@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
@@ -38,6 +37,7 @@ const MainIndex = (props: Props) => {
     await setSwiperData(res.data)
     setLoadingState(true)
   }
+
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,7 +53,7 @@ const MainIndex = (props: Props) => {
 
   return (
     <>
-      {isMember ? (
+      {isMember && (
         <CommonNeed
           id={projectId}
           isMember={isMember}
@@ -61,7 +61,8 @@ const MainIndex = (props: Props) => {
           type={props?.type}
           subTitle={props?.subTitle}
         />
-      ) : (
+      )}
+      {!isMember && (
         <>
           <StaffHeader>{props?.title}</StaffHeader>
           <MainWrap>

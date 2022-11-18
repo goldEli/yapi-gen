@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Divider } from 'antd'
 import styled from '@emotion/styled'
 import WrapRight from './components/WrapRight'
 import WrapLeft from './components/WrapLeft'
@@ -8,17 +7,13 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { getParamsData } from '@/tools'
 
-const DividerWrap = styled(Divider)({
-  margin: '0 24px',
-  height: '100%',
-})
-
 const Wrap = styled.div({
   display: 'flex',
-  // justifyContent: 'space-between',
-  padding: '0 24px',
+  padding: '0 4px 0 24px',
   background: 'white',
-  height: 'calc(100% - 50px)',
+  height: 'calc(100% - 64px)',
+  margin: 16,
+  borderRadius: 6,
 })
 
 const DemandInfo = () => {

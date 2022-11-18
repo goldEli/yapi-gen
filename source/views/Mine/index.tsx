@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable multiline-ternary */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
@@ -8,6 +7,7 @@ import EditDemand from '@/components/EditDemand'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { getStaffList } from '@/services/staff'
 
 const AddButton = styled.div({
   height: 32,
@@ -35,6 +35,7 @@ const Side = styled.div`
   width: 220px;
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
+  border-right: 1px solid #ecedef;
 `
 const Main = styled.div({
   width: 'calc(100% - 220px)',
@@ -77,6 +78,7 @@ const MineBox = () => {
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
   const { userInfo } = useModel('user')
+  const { setSelectAllStaffData } = useModel('project')
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
@@ -84,6 +86,16 @@ const MineBox = () => {
   const controlquickCreateVisible = () => {
     setQuickCreateVisible(true)
   }
+
+  // 获取公司员工
+  const getStaffData = async () => {
+    const options = await getStaffList({ all: 1 })
+    setSelectAllStaffData(options)
+  }
+
+  useEffect(() => {
+    getStaffData()
+  }, [])
 
   const menuList = [
     {
@@ -146,19 +158,19 @@ const MineBox = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : (
-            <AddButton onClick={controlquickCreateVisible}>
-              <IconFont
-                style={{
-                  marginRight: 8,
-                  fontSize: 14,
-                  fontWeight: 400,
-                  color: 'white',
-                }}
-                type="plus"
-              />
-              <span>{t('mine.quickCreate')}</span>
-            </AddButton>
-          )}
+          <AddButton onClick={controlquickCreateVisible}>
+            <IconFont
+              style={{
+                marginRight: 8,
+                fontSize: 14,
+                fontWeight: 400,
+                color: 'white',
+              }}
+              type="plus"
+            />
+            <span>{t('mine.quickCreate')}</span>
+          </AddButton>
+        )}
         <Menu>
           {menuList.map(item => (
             <MenuItem

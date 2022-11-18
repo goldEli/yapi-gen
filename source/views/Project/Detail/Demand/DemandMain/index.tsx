@@ -2,10 +2,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable max-params */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
@@ -200,18 +199,16 @@ const DemandMain = (props: Props) => {
 
   const onUpdate = (state?: boolean) => {
     getList(isGrid, searchItems, pageObj, order, true, state)
+    myTreeComponent?.current?.init()
   }
 
-  const keyValue = useMemo(
-    () => ({
-      key,
-      changeKey: (value: any) => {
-        setPageObj({ page: 1, size: pageObj.size })
-        setKey(value)
-      },
-    }),
-    [key, pageObj.size],
-  )
+  const keyValue = {
+    key,
+    changeKey: (value: any) => {
+      setPageObj({ page: 1, size: pageObj.size })
+      setKey(value)
+    },
+  }
 
   return (
     <TreeContext.Provider value={keyValue}>
@@ -239,6 +236,16 @@ const DemandMain = (props: Props) => {
             settingState={isSettingState}
             onChangeSetting={setIsSettingState}
             isShowLeft={isShowLeft}
+            otherParams={{
+              page: pageObj.page,
+              pageSize: pageObj.size,
+              orderKey: order.key,
+              order: order.value,
+              classId: key,
+              all: isGrid,
+              panel: isGrid,
+            }}
+            dataLength={dataList?.total}
           />
           {isGrid ? (
             <DemandGrid

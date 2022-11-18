@@ -1,13 +1,10 @@
-/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
-/* eslint-disable max-lines */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import {
-  TableWrap,
+  TableStyleBox,
   PaginationWrap,
   SelectWrapBedeck,
 } from '@/components/StyleCommon'
@@ -36,6 +33,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -65,20 +63,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  '.ant-table table': {
-    paddingBottom: 0,
-  },
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 const FilterWrap = styled(Form)({
@@ -373,18 +357,7 @@ const ProjectMember = () => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {hasDel && hasEdit ? null : (
-              <Dropdown
-                overlay={() => menu(record)}
-                trigger={['hover']}
-                placement="bottom"
-                getPopupContainer={node =>
-                  memberList?.list?.length === 1 ? document.body : node
-                }
-              >
-                <RowIconFont type="more" />
-              </Dropdown>
-            )}
+            {hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />}
             {record.avatar ? (
               <img
                 src={record.avatar}
@@ -670,21 +643,19 @@ const ProjectMember = () => {
             <Spin spinning={isSpinning}>
               {!!memberList?.list &&
                 (memberList?.list?.length > 0 ? (
-                  <TableBox
+                  <TableStyleBox
+                    isPadding
+                    isBottom
                     rowKey="id"
                     columns={columns as any}
                     dataSource={memberList?.list}
                     pagination={false}
                     scroll={{
-                      x: columns.reduce(
-                        (totalWidth: number, item: any) =>
-                          totalWidth + item.width,
-                        0,
-                      ),
+                      x: 'max-content',
                       y: tableY,
                     }}
+                    tableLayout="auto"
                     showSorterTooltip={false}
-                    sticky
                   />
                 ) : (
                   <NoData />

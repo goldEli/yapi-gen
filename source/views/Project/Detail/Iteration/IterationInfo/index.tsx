@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -13,6 +12,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -32,7 +32,7 @@ const SurveyWrap = styled.div({
 
 const Title = styled.div({
   fontSize: 16,
-  lineHeight: '20px',
+  lineHeight: '16px',
   color: '#323233',
   fontWeight: 'bold',
   paddingLeft: 8,
@@ -60,6 +60,7 @@ const TargetWrap = styled.div({
   overflow: 'auto',
   color: '#646566',
   fontSize: 14,
+  paddingRight: 20,
 })
 
 const BottomWrap = styled.div({
@@ -188,9 +189,11 @@ const IterationInfo = () => {
                   strokeColor="#43BA9A"
                   width={125}
                   type="circle"
-                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+                  format={percent =>
+                    Number(percent) === 100 ? '100%' : `${percent}%`
+                  }
                   percent={Math.trunc(
-                    (iterateInfo?.finishCount / iterateInfo?.storyCount) * 100,
+                    (iterateInfo.finishCount / iterateInfo.storyCount) * 100,
                   )}
                   strokeWidth={12}
                 />
@@ -210,12 +213,12 @@ const IterationInfo = () => {
               </SurveyBox>
             </SurveyContent>
           </SurveyWrap>
-          <SurveyWrap>
+          <SurveyWrap style={{ paddingRight: 4 }}>
             <Title>{t('project.iterateTarget')}</Title>
             {iterateInfo?.info ? (
-              <TargetWrap
-                dangerouslySetInnerHTML={{ __html: iterateInfo.info }}
-              />
+              <TargetWrap>
+                <EditorInfoReview info={iterateInfo.info || '--'} />
+              </TargetWrap>
             ) : (
               <NoData />
             )}

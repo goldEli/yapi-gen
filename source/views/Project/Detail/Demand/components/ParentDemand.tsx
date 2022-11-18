@@ -1,11 +1,10 @@
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Input, message, Popover } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -13,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 
 const DemandCheckedItem = styled.div({
-  height: 22,
+  minHeight: 22,
   lineHeight: '22px',
   padding: '0 8px 0 0',
   fontSize: 12,
@@ -45,7 +44,7 @@ const MaxWrap = styled.div({
   flexDirection: 'column',
   maxHeight: 200,
   overflow: 'auto',
-  width: 360,
+  maxWidth: 236,
 })
 
 const DemandItem = styled.div<{ isActive?: boolean }>(
@@ -55,6 +54,7 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
     padding: '8px 0',
     cursor: 'pointer',
     paddingLeft: 16,
+    wordBreak: 'break-all',
     '&:hover': {
       background: '#F0F4FA',
       span: {
@@ -69,7 +69,7 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
 
 const SearchInput = styled(Input)`
   font-size: 14px;
-  min-width: 240px;
+  min-width: 210px;
   height: 32px;
   background: rgba(245, 246, 247, 1);
   background-blend-mode: normal;
@@ -89,7 +89,10 @@ const SearchInput = styled(Input)`
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
-    left: isRight ? '40px!important' : 0,
+    left: isRight ? '10px!important' : 0,
+  },
+  '.ant-popover-content': {
+    maxWidth: 240,
   },
 }))
 
@@ -104,6 +107,7 @@ const TagBox = (props: DemandProps) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [demandList, setDemandList] = useState<any>([])
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   const getList = async () => {
     const result = await getDemandList({ projectId, all: true })
@@ -116,6 +120,9 @@ const TagBox = (props: DemandProps) => {
 
   useEffect(() => {
     getList()
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }, [])
 
   const [value, setValue] = useState('')
@@ -123,6 +130,7 @@ const TagBox = (props: DemandProps) => {
     <DemandWrap>
       <div style={{ padding: '16px 16px 4px 16px' }}>
         <SearchInput
+          ref={inputRefDom as any}
           onPressEnter={(e: any) => setValue(e.target.value)}
           onChange={e => setValue(e.target.value)}
           suffix={
@@ -134,6 +142,7 @@ const TagBox = (props: DemandProps) => {
           allowClear
           value={value}
           placeholder={t('common.searchParent')}
+          autoFocus
         />
       </div>
       <MaxWrap>
@@ -167,6 +176,7 @@ const ParentDemand = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo } = useModel('project')
+  const [isOpen, setIsOpen] = useState(false)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -202,32 +212,42 @@ const ParentDemand = (props: Props) => {
     }
   }
 
+  const onVisibleOpenChange = (visible: any) => {
+    setIsOpen(visible)
+  }
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <DemandCheckedItem
-        onClick={isCanEdit ? onDeleteInfoDemand : void 0}
-        hidden={!demandInfo?.parentId}
-      >
+      <DemandCheckedItem hidden={!demandInfo?.parentId}>
         <div
           style={{
             color: '#323233',
             fontSize: 14,
-            cursor: isCanEdit ? 'pointer' : 'inherit',
           }}
         >
           {demandInfo?.parentName}
-          {isCanEdit ? <IconFont className="icon" type="close" /> : null}
+          {isCanEdit ? (
+            <IconFont
+              onClick={isCanEdit ? onDeleteInfoDemand : void 0}
+              className="icon"
+              type="close"
+            />
+          ) : null}
         </div>
       </DemandCheckedItem>
       {isCanEdit ? (
         <PopoverWrap
+          visible={isOpen}
           placement="bottom"
           trigger="click"
-          content={<TagBox tap={onChangeParent} />}
+          onVisibleChange={onVisibleOpenChange}
+          content={isOpen ? <TagBox tap={onChangeParent} /> : null}
           getPopupContainer={node => node}
           isRight={props?.isRight}
         >
-          <div hidden={demandInfo?.parentId}>{props.addWrap}</div>
+          <div hidden={demandInfo?.parentId} onClick={() => setIsOpen(!isOpen)}>
+            {props.addWrap}
+          </div>
         </PopoverWrap>
       ) : null}
     </div>

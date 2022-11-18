@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
@@ -8,7 +7,6 @@ import { Checkbox, Form, Input, message, Select } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
-import { random } from 'lodash'
 import { arrayMoveImmutable } from 'array-move'
 import {
   SortableContainer as sortableContainer,
@@ -22,7 +20,7 @@ import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 
@@ -33,7 +31,7 @@ const ItemWrap = styled.div<{ notMargin?: boolean }>(
   },
   ({ notMargin }) => ({
     '.ant-form-item': {
-      margin: notMargin ? '0!important' : '24px 0 0 0',
+      margin: notMargin ? '0!important' : '22px 0 0 0',
     },
   }),
 )
@@ -262,7 +260,7 @@ const EditFiled = (props: Props) => {
     >
       <div
         ref={ChooseDom}
-        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 16px 0 2px' }}
       >
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>

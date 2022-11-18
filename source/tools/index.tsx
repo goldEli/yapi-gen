@@ -1,8 +1,8 @@
-/* eslint-disable consistent-return */
+// 使用多次的公共方法
+
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-negated-condition */
 import { decryptPhp } from './cryptoPhp'
 import { Select, Input, DatePicker, InputNumber, TreeSelect } from 'antd'
 import moment from 'moment'
@@ -12,10 +12,10 @@ function getIsPermission(arr: any, value: string) {
 }
 
 function openDetail(url: string) {
-  if (import.meta.env.MODE !== 'production') {
-    window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}${url}`)
-  } else {
+  if (import.meta.env.MODE === 'production') {
     window.open(`${window.origin}${url}`)
+  } else {
+    window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}${url}`)
   }
 }
 
@@ -23,13 +23,27 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
+// 需求分类树
+function filterTreeData(data: any) {
+  const newData = data.map((item: any) => ({
+    title: item.name,
+    value: item.id,
+    children:
+      item.children && item.children.length
+        ? filterTreeData(item.children)
+        : null,
+  }))
+  return newData
+}
+
+// 自定义字段返回相应组件和快捷编辑的组件
 function getTypeComponent(
   params: any,
+  onChange?: any,
   isModal?: any,
   defaultValue?: any,
   inputRef?: any,
   onBlur?: any,
-  onChange?: any,
 ) {
   let child: any = null
   if (params?.attr === 'date') {
@@ -42,21 +56,21 @@ function getTypeComponent(
         value={defaultValue ? moment(defaultValue) : ('' as any)}
         ref={inputRef}
         open={isModal}
-        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
+        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={
-          !isModal
-            ? void 0
-            : (date: any) =>
+          isModal
+            ? (date: any) =>
                 onChange(
                   date
                     ? moment(date).format(
                         params?.value[0] === 'datetime'
-                          ? 'YYYY-MM-DD hh:mm:ss'
+                          ? 'YYYY-MM-DD HH:mm:ss'
                           : 'YYYY-MM-DD',
                       )
                     : '',
                   1,
                 )
+            : void 0
         }
       />
     )
@@ -67,8 +81,8 @@ function getTypeComponent(
     child = (
       <Input
         placeholder={params.remarks || ''}
-        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value))}
-        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
+        onBlur={e => (isModal ? onBlur(e.target.value) : void 0)}
+        onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
         type={params?.attr}
         allowClear
         defaultValue={defaultValue}
@@ -81,8 +95,8 @@ function getTypeComponent(
     child = (
       <Input.TextArea
         placeholder={params.remarks || ''}
-        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
-        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
+        onBlur={e => (isModal ? onBlur(e.target.value || '') : void 0)}
+        onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
         allowClear
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
@@ -95,8 +109,8 @@ function getTypeComponent(
     child = (
       <InputNumber
         placeholder={params.remarks || ''}
-        onBlur={e => (!isModal ? void 0 : onBlur(e.target.value || ''))}
-        onPressEnter={(e: any) => (!isModal ? void 0 : onBlur(e.target.value))}
+        onBlur={e => (isModal ? onBlur(e.target.value || '') : void 0)}
+        onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
         step={1}
         style={{ width: '100%', minWidth: 192 }}
         defaultValue={defaultValue}
@@ -116,12 +130,38 @@ function getTypeComponent(
         treeData={params?.value}
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
+        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={value => onChange(value, 1)}
         defaultOpen={isModal}
       />
     )
-  } else {
+  } else if (String(params?.attr)?.includes('fixed_')) {
+    // 之前固定字段的修改
+    child = (
+      <Select
+        placeholder={params.remarks}
+        style={{ width: '100%', minWidth: 192 }}
+        showSearch
+        showArrow
+        optionFilterProp="label"
+        getPopupContainer={node => node}
+        allowClear
+        value={defaultValue}
+        ref={inputRef}
+        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
+        onChange={value =>
+          onChange(value, params.attr === 'fixed_select' ? '' : 1)
+        }
+        options={params?.value}
+        mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
+        defaultOpen={isModal}
+      />
+    )
+  } else if (
+    ['select_checkbox', 'checkbox', 'select', 'radio'].includes(
+      String(params?.attr),
+    )
+  ) {
     child = (
       <Select
         placeholder={params.remarks || ''}
@@ -133,15 +173,15 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => (!isModal ? void 0 : onBlur(defaultValue))}
+        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={value =>
           onChange(
             value,
             ['select_checkbox', 'checkbox'].includes(params?.attr) ? '' : 1,
           )
         }
-        defaultOpen={isModal}
         options={params?.value?.map((i: any) => ({ label: i, value: i }))}
+        defaultOpen={isModal}
         mode={
           ['select_checkbox', 'checkbox'].includes(params?.attr)
             ? 'multiple'
@@ -155,7 +195,7 @@ function getTypeComponent(
 
 function arrayFlagLevel(array: any, grade: any) {
   if (!array || !array.length) {
-    return
+    return ''
   }
   array.forEach((item: any) => {
     item.grade = grade
@@ -211,6 +251,15 @@ function getNestedChildren(arr: any, parent?: any) {
   return resArr
 }
 
+// 计算小数需要的倍数
+function getDecimal(num: any) {
+  let val = '1'
+  for (let i = 0; i < num; i++) {
+    val += '0'
+  }
+  return val
+}
+
 export {
   getIsPermission,
   openDetail,
@@ -218,4 +267,5 @@ export {
   transData,
   getTypeComponent,
   getNestedChildren,
+  filterTreeData,
 }

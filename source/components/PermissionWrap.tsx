@@ -1,4 +1,5 @@
-/* eslint-disable no-negated-condition */
+// 暂无权限页面
+
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
 import empty from '/empty.svg'

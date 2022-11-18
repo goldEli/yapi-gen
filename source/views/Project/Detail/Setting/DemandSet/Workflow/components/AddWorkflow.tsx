@@ -1,9 +1,6 @@
-/* eslint-disable max-lines */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import CommonModal from '@/components/CommonModal'
@@ -27,6 +24,7 @@ const TableWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  overflowX: 'hidden',
 })
 
 const TableWrapBox = styled(Table)({
@@ -75,7 +73,7 @@ const HasDemandText = styled.div({
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 interface Props {
@@ -160,6 +158,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       }}
     >
       <Input
+        ref={inputRefDom as any}
         style={{
           width: 196,
           margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
@@ -170,7 +169,6 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         onChange={e => onChangeInpValue(e.target.value)}
         value={value}
         maxLength={10}
-        ref={inputRefDom as any}
         autoFocus
       />
       <ChooseColor
@@ -406,7 +404,7 @@ const AddWorkflow = (props: Props) => {
           ) : (
             <HiddenText>
               <OmitText
-                width={300}
+                width={220}
                 tipProps={{
                   getPopupContainer: node => node,
                 }}
@@ -471,7 +469,7 @@ const AddWorkflow = (props: Props) => {
           title={t('newlyAdd.newStatus')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ paddingRight: 20 }}>
+          <div style={{ paddingRight: 16 }}>
             <HasDemandText>
               {t('newlyAdd.changeNewStatus', {
                 count: operationDelObj?.deleteData?.story_count,
@@ -530,37 +528,37 @@ const AddWorkflow = (props: Props) => {
             <span style={{ width: '45%' }}>{t('newlyAdd.demandCategory')}</span>
             <span style={{ width: '15%' }}>{t('newlyAdd.operation')}</span>
           </TableTitle>
-          {isAdd ? (
-            <AddActiveWrap
-              hasMargin
-              onClose={() => setIsAdd(false)}
-              onConfirm={obj => onAddConfirm(obj)}
-            />
-          ) : null}
-          {!isAdd && (
-            <div onClick={() => setIsAdd(true)}>
-              <AddWrap />
-            </div>
-          )}
-
-          <TableWrap>
-            <Spin spinning={isSpinning}>
-              {!!statusWorkList?.list &&
-                (statusWorkList?.list?.length > 0 ? (
-                  <TableWrapBox
-                    rowSelection={rowSelection}
-                    dataSource={statusWorkList?.list}
-                    columns={columns}
-                    showHeader={false}
-                    pagination={false}
-                    rowKey="id"
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </TableWrap>
         </div>
+        {isAdd ? (
+          <AddActiveWrap
+            hasMargin
+            onClose={() => setIsAdd(false)}
+            onConfirm={obj => onAddConfirm(obj)}
+          />
+        ) : null}
+        {!isAdd && (
+          <div onClick={() => setIsAdd(true)}>
+            <AddWrap />
+          </div>
+        )}
+
+        <TableWrap style={{ paddingRight: 4 }}>
+          <Spin spinning={isSpinning}>
+            {!!statusWorkList?.list &&
+              (statusWorkList?.list?.length > 0 ? (
+                <TableWrapBox
+                  rowSelection={rowSelection}
+                  dataSource={statusWorkList?.list}
+                  columns={columns}
+                  showHeader={false}
+                  pagination={false}
+                  rowKey="id"
+                />
+              ) : (
+                <NoData />
+              ))}
+          </Spin>
+        </TableWrap>
       </CommonModal>
     </>
   )

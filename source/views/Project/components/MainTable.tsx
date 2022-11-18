@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
-/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
@@ -8,7 +6,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu, Dropdown, Pagination, Progress } from 'antd'
 import {
-  TableWrap,
+  TableStyleBox,
   PaginationWrap,
   ClickWrap,
   HiddenText,
@@ -22,6 +20,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
+import MoreDropdown from '@/components/MoreDropdown'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -36,22 +35,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
-})
-
-const MoreWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
 })
 
 const StatusWrap = styled.div({
@@ -98,7 +81,6 @@ interface MoreProps {
   onChange(type: string, item: any, e: any): void
   text: string
   record?: any
-  listLength: number
 }
 
 const MoreContent = (props: MoreProps) => {
@@ -176,34 +158,16 @@ const MoreContent = (props: MoreProps) => {
     return <Menu items={menuItems} />
   }
 
-  const onChangeVisible = (e: any) => {
-    e.stopPropagation()
-    setIsVisible(!isVisible)
-  }
-
-  const onVisibleChange = (visible: any) => {
-    setIsVisible(visible)
-  }
-
   return (
     <>
-      {!hasDelete && !hasEdit && !hasStart && !hasStop ? (
-        <MoreWrap>
-          <Dropdown
-            key={isVisible.toString()}
-            visible={isVisible}
-            overlay={menu(props?.record)}
-            trigger={['hover']}
-            placement="bottomRight"
-            getPopupContainer={node =>
-              props.listLength ? document.body : node
-            }
-            onVisibleChange={onVisibleChange}
-          >
-            <RowIconFont onClick={e => onChangeVisible(e)} type="more" />
-          </Dropdown>
-        </MoreWrap>
-      ) : (
+      {!hasDelete && !hasEdit && !hasStart && !hasStop && (
+        <MoreDropdown
+          isMoreVisible={isVisible}
+          menu={menu(props?.record)}
+          onChangeVisible={setIsVisible}
+        />
+      )}
+      {!(!hasDelete && !hasEdit && !hasStart && !hasStop) && (
         <div style={{ width: 16 }} />
       )}
     </>
@@ -272,9 +236,8 @@ const MainTable = (props: Props) => {
               onChange={props?.onChangeOperation}
               text={text}
               record={record}
-              listLength={props.projectList?.list?.length}
             />
-            <ClickWrap isClose={record.status === 2} style={{ marginLeft: 32 }}>
+            <ClickWrap isClose={record.status === 2} style={{ marginLeft: 16 }}>
               {text}
             </ClickWrap>
           </div>
@@ -388,8 +351,10 @@ const MainTable = (props: Props) => {
             style={{ color: '#43BA9A' }}
             width={38}
             type="circle"
-            percent={Number(text) * 100}
-            format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+            percent={Math.trunc(Number(text) * 100)}
+            format={percent =>
+              Number(percent) === 100 ? '100%' : `${percent}%`
+            }
             strokeWidth={8}
           />
         )
@@ -488,21 +453,19 @@ const MainTable = (props: Props) => {
       <DataWrap ref={dataWrapRef}>
         {!!props.projectList?.list &&
           (props.projectList?.list?.length > 0 ? (
-            <TableBox
+            <TableStyleBox
+              isPadding
               rowKey="id"
               columns={columns}
               dataSource={props.projectList?.list}
               pagination={false}
               scroll={{
-                x: columns.reduce(
-                  (totalWidth: number, item: any) => totalWidth + item.width,
-                  0,
-                ),
+                x: 'max-content',
                 y: tableY,
               }}
+              tableLayout="auto"
               showSorterTooltip={false}
               onRow={onTableRow}
-              sticky
             />
           ) : (
             <NoData />

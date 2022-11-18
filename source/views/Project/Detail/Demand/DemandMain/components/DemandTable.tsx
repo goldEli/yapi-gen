@@ -1,10 +1,9 @@
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Dropdown, Menu } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -15,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -33,14 +33,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 interface Props {
@@ -152,10 +144,6 @@ const DemandTable = (props: Props) => {
     props.onDelete(item)
   }
 
-  const rowIconFont = () => {
-    return <RowIconFont type="more" />
-  }
-
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -164,10 +152,8 @@ const DemandTable = (props: Props) => {
     onChangeStatus,
     onChangeState,
     onClickItem,
-    rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
-    listLength: props.data?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -226,19 +212,11 @@ const DemandTable = (props: Props) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {hasEdit && hasDel ? null : (
-                <Dropdown
-                  key={isShowMore.toString()}
-                  visible={isShowMore}
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    props.data?.list?.length === 1 ? document.body : node
-                  }
-                  onVisibleChange={visible => setIsShowMore(visible)}
-                >
-                  {rowIconFont()}
-                </Dropdown>
+                <MoreDropdown
+                  isMoreVisible={isShowMore}
+                  menu={menu(record)}
+                  onChangeVisible={setIsShowMore}
+                />
               )}
             </div>
           )
@@ -274,7 +252,7 @@ const DemandTable = (props: Props) => {
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
             (props.data?.list?.length > 0 ? (
-              <TableBox
+              <TableStyleBox
                 rowKey="id"
                 columns={selectColum}
                 dataSource={props.data?.list}

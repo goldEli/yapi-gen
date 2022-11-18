@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 
@@ -75,7 +75,6 @@ const EditWorkflow = (props: EditorProps) => {
         form.resetFields()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -113,7 +112,7 @@ const EditWorkflow = (props: EditorProps) => {
       onConfirm={onConfirm}
     >
       <div
-        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 20px 0 2px' }}
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 16px 0 2px' }}
       >
         {props?.item?.categorys?.length && (
           <>

@@ -1,5 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable consistent-return */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
@@ -42,7 +40,7 @@ const filArr2 = (data: any) => {
 export const getSearchField: any = async (params: any) => {
   // 成员列表
   if (params === 0) {
-    return
+    return null
   }
 
   const res = await getTreeList({ id: params })
@@ -202,7 +200,6 @@ export const getSearchField: any = async (params: any) => {
   const filterCustomList = filter_fidlds.filter(
     (item: any) => item.group_name === '自定义字段',
   )
-  // eslint-disable-next-line consistent-return
 
   return {
     filterAllList,
@@ -424,6 +421,7 @@ export const getMineNoFinishList: any = async (params: any) => {
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            new: i.is_new,
             id: i.id,
             name: i.name,
             demand: i.child_story_count,
@@ -450,6 +448,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             categoryColor: i.category_color,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             class: i.class,
             project: {
               isPublic: i.project.is_public,
@@ -468,6 +467,7 @@ export const getMineNoFinishList: any = async (params: any) => {
     return {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
+            new: i.is_new,
             id: i.id,
             name: i.name,
             demand: i.child_story_count,
@@ -492,6 +492,7 @@ export const getMineNoFinishList: any = async (params: any) => {
             category: i.category,
             categoryColor: i.category_color,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             class: i.class,
             project: {
               isPublic: i.project.is_public,
@@ -570,6 +571,7 @@ export const getMineCreacteList: any = async (params: any) => {
           categoryColor: i.category_color,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
@@ -645,6 +647,7 @@ export const getMineFinishList: any = async (params: any) => {
           categoryColor: i.category_color,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           class: i.class,
           project: {
             isPublic: i.project.is_public,
@@ -719,6 +722,7 @@ export const getMineNeedList: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           class: i.class,
           project: {
             isPublic: i.project.is_public,

@@ -1,33 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Modal, Space } from 'antd'
-import styled from '@emotion/styled'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { Space } from 'antd'
 import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import CommonModal from './CommonModal'
 
 interface Props {
   onChangeState(): void
   visible: boolean
 }
-
-const ContentWrap = styled.div({
-  boxSizing: 'border-box',
-  padding: '10px',
-  maxHeight: 400,
-  overflow: 'auto',
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'start',
-  gap: '16px',
-})
-
-const FooterWrap = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  paddingTop: 16,
-})
 
 const CompanyModal = (props: Props) => {
   const [t] = useTranslation()
@@ -69,19 +50,23 @@ const CompanyModal = (props: Props) => {
     }
   }
   return (
-    <Modal
-      visible={props.visible}
-      width={750}
+    <CommonModal
+      isVisible={props.visible}
       title={t('components.changeCompany')}
-      onCancel={props.onChangeState}
-      footer={false}
-      bodyStyle={{ padding: 16 }}
-      maskClosable={false}
-      destroyOnClose
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      onClose={props.onChangeState}
+      onConfirm={confirm}
+      width={750}
     >
-      <ContentWrap>
+      <Space
+        size={16}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          maxHeight: 600,
+          overflow: 'auto',
+        }}
+      >
         {companyList.map(i => (
           <CompanyCard
             logo={i.logo}
@@ -91,14 +76,8 @@ const CompanyModal = (props: Props) => {
             show={i.id === activeId}
           />
         ))}
-      </ContentWrap>
-      <FooterWrap size={16}>
-        <Button onClick={props.onChangeState}>{t('common.cancel')}</Button>
-        <Button type="primary" onClick={confirm}>
-          {t('common.confirm')}
-        </Button>
-      </FooterWrap>
-    </Modal>
+      </Space>
+    </CommonModal>
   )
 }
 

@@ -1,12 +1,6 @@
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
@@ -340,7 +334,6 @@ const NumericInput = (props: any) => {
   )
 }
 
-// eslint-disable-next-line complexity
 export const ShapeContent = (props: any) => {
   const [t] = useTranslation()
   const {
@@ -406,6 +399,7 @@ export const ShapeContent = (props: any) => {
       toId: activeID,
     })
     setRightList(res)
+
     const form1Obj: any = {}
     for (const key in res?.fields) {
       form1Obj[res?.fields[key].content] =
@@ -426,6 +420,7 @@ export const ShapeContent = (props: any) => {
       fromId: props.fromId,
       toId: props.row.id,
     })
+
     setRightList(res)
     const form1Obj: any = {}
     for (const key in res?.fields) {
@@ -493,6 +488,8 @@ export const ShapeContent = (props: any) => {
     onClear()
   }
 
+  // console.log(rightList)
+
   return (
     <Contain>
       {props.noleft ? null : (
@@ -542,9 +539,9 @@ export const ShapeContent = (props: any) => {
                   }, 100)
                 }}
               >
-                {rightList?.fields?.map((i: any) => {
-                  if (i.type === 'area') {
-                    return (
+                {rightList?.fields?.map((i: any) => (
+                  <div key={i.content}>
+                    {i.type === 'area' && (
                       <Form.Item
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -562,9 +559,9 @@ export const ShapeContent = (props: any) => {
                           placeholder={t('project.pleaseComment')}
                         />
                       </Form.Item>
-                    )
-                  } else if (i.type === 'select' || i.type === 'radio') {
-                    return (
+                    )}
+
+                    {['select', 'radio'].includes(i.type) && (
                       <Form.Item
                         initialValue={i.true_value === 0 ? '' : i.true_value}
                         label={<LabelComponent title={i.title} />}
@@ -586,12 +583,8 @@ export const ShapeContent = (props: any) => {
                           optionFilterProp="label"
                         />
                       </Form.Item>
-                    )
-                  } else if (
-                    i.type === 'select_checkbox' ||
-                    i.type === 'checkbox'
-                  ) {
-                    return (
+                    )}
+                    {['select_checkbox', 'checkbox'].includes(i.type) && (
                       <Form.Item
                         initialValue={i.true_value ?? []}
                         label={<LabelComponent title={i.title} />}
@@ -614,13 +607,8 @@ export const ShapeContent = (props: any) => {
                           optionFilterProp="label"
                         />
                       </Form.Item>
-                    )
-                  } else if (
-                    i.type === 'date' ||
-                    i.type === 'time' ||
-                    i.type === 'datetime'
-                  ) {
-                    return (
+                    )}
+                    {['date', 'time', 'datetime'].includes(i.type) && (
                       <Form.Item
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -633,9 +621,8 @@ export const ShapeContent = (props: any) => {
                       >
                         <DateInput type={i.type} dvalue={i.true_value} />
                       </Form.Item>
-                    )
-                  } else if (i.type === 'tag') {
-                    return (
+                    )}
+                    {i.type === 'tag' && (
                       <Form.Item
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -648,9 +635,8 @@ export const ShapeContent = (props: any) => {
                       >
                         <TagSelect dvalue={i.true_value} options={i.children} />
                       </Form.Item>
-                    )
-                  } else if (i.type === 'number') {
-                    return (
+                    )}
+                    {i.type === 'number' && (
                       <Form.Item
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -663,24 +649,8 @@ export const ShapeContent = (props: any) => {
                       >
                         <NumericInput type={i.value[0]} />
                       </Form.Item>
-                    )
-                  } else if (i.type === 'text' || i.type === 'textarea') {
-                    return (
-                      <Form.Item
-                        label={<LabelComponent title={i.title} />}
-                        name={i.content}
-                        rules={[
-                          {
-                            required: i.is_must === 1,
-                            message: '',
-                          },
-                        ]}
-                      >
-                        <Input placeholder={i.remarks} />
-                      </Form.Item>
-                    )
-                  } else if (i.type === 'tree') {
-                    return (
+                    )}
+                    {i.type === 'tree' && (
                       <Form.Item
                         initialValue={i.true_value ?? []}
                         label={<LabelComponent title={i.title} />}
@@ -700,9 +670,23 @@ export const ShapeContent = (props: any) => {
                           treeDefaultExpandAll
                         />
                       </Form.Item>
-                    )
-                  }
-                })}
+                    )}
+                    {['text', 'textarea'].includes(i.type) && (
+                      <Form.Item
+                        label={<LabelComponent title={i.title} />}
+                        name={i.content}
+                        rules={[
+                          {
+                            required: i.is_must === 1,
+                            message: '',
+                          },
+                        ]}
+                      >
+                        <Input placeholder={i.remarks} />
+                      </Form.Item>
+                    )}
+                  </div>
+                ))}
               </Form>
             </FormWrap>
             {rightList?.is_verify ? (

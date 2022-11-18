@@ -1,5 +1,5 @@
+import useWatchLine from '@/hooks/useWatchLine'
 /* eslint-disable no-undefined */
-/* eslint-disable consistent-return */
 /* eslint-disable no-lonely-if */
 /* eslint-disable require-atomic-updates */
 /* eslint-disable complexity */
@@ -63,6 +63,10 @@ client.config({
   },
   requestInterceptors: [
     async (options: any) => {
+      const line = window.navigator.onLine
+      if (!line) {
+        location.reload()
+      }
       await isCheckTicket(
         options.url ===
           `${import.meta.env.__API_ORIGIN__}/api/auth/checkTicket` ||
@@ -134,7 +138,6 @@ client.config({
         return data
       }
       if (
-
         // data.code === '00000' ||
         data.code === 'A0204' ||
         data.code === 'A0203' ||
@@ -147,6 +150,7 @@ client.config({
         setTimeout(() => {
           localStorage.removeItem('agileToken')
           localStorage.removeItem('saveRouter')
+          localStorage.removeItem('quickCreateData')
           getTicket()
         }, 500)
       }
@@ -154,7 +158,6 @@ client.config({
         message.error(data.message)
         throw new Error(data.code)
       }
-      // eslint-disable-next-line consistent-return
       return {
         code: Number(data.code),
         data: data.data,
@@ -177,11 +180,15 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
 }
 
 export const post = <Payload, Result = any>(
-  key: UrlKeys,
+  key: UrlKeys | string,
   data?: any,
   options?: any,
 ) => {
-  return client.post<Payload, Result>(urls[key], data, options)
+  return client.post<Payload, Result>(
+    urls[key as UrlKeys] || key,
+    data,
+    options,
+  )
 }
 
 export const put = <Payload, Result = any>(

@@ -1,6 +1,4 @@
-/* eslint-disable complexity */
 /* eslint-disable camelcase */
-/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
@@ -10,7 +8,7 @@ import { Input, Popover, Space, Timeline } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const AddWrap = styled.div({
+export const AddWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -52,6 +50,7 @@ const PersonWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   marginTop: 8,
+  '::-webkit-scrollbar': { display: 'none' },
 })
 
 const MenuItemWrap = styled.span({
@@ -74,7 +73,7 @@ const MenuWrap = styled.div({
   color: '#646566',
 })
 
-const IconFontWrap = styled(IconFont)({
+export const IconFontWrap = styled(IconFont)({
   fontSize: 14,
   color: '#BBBDBF',
   cursor: 'pointer',
@@ -84,7 +83,7 @@ const IconFontWrap = styled(IconFont)({
   top: -5,
 })
 
-const NewNameWrap = styled.div({
+export const NewNameWrap = styled.div({
   position: 'relative',
   overflow: 'inherit',
   '&: hover': {
@@ -102,7 +101,7 @@ const IconfontCloseWrap = styled(IconFont)({
   margin: '4px 0 0 12px',
 })
 
-const ItemWrap = styled.div({
+export const ItemWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   '.changeSize': {
@@ -121,7 +120,7 @@ interface ChoosePersonProps {
   options: any
 }
 
-const ChoosePerson = (props: ChoosePersonProps) => {
+export const ChoosePerson = (props: ChoosePersonProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState('')
 
@@ -294,13 +293,14 @@ const ExamineItem = (props: Props) => {
         )}
       </ItemWrap>
       <ItemWrap style={{ alignItems: 'flex-start', marginTop: 8 }}>
-        <Space size={0}>
+        <Space size={0} style={{ flexWrap: 'wrap' }}>
           {examineList?.map((i: any, index: any) => (
             <div
               key={i.id}
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                marginBottom: 4,
               }}
             >
               <div
@@ -344,35 +344,36 @@ const ExamineItem = (props: Props) => {
               )}
             </div>
           ))}
+          {props?.options?.length > 0 && (
+            <Popover
+              key={isOpen.toString()}
+              visible={isOpen}
+              placement="bottomRight"
+              trigger="click"
+              onVisibleChange={visible => setIsOpen(visible)}
+              getTooltipContainer={node => node}
+              content={
+                <ChoosePerson
+                  onChangeValue={obj => onAddPerson(obj)}
+                  options={props?.options}
+                />
+              }
+              getPopupContainer={node => node}
+            >
+              <AddWrap
+                style={{
+                  marginLeft: examineList?.length ? '40px' : 0,
+                }}
+              >
+                <IconFont
+                  className="icon"
+                  type="plus"
+                  onClick={() => setIsOpen(true)}
+                />
+              </AddWrap>
+            </Popover>
+          )}
         </Space>
-
-        <Popover
-          key={isOpen.toString()}
-          visible={isOpen}
-          placement="bottomRight"
-          trigger="click"
-          onVisibleChange={visible => setIsOpen(visible)}
-          getTooltipContainer={node => node}
-          content={
-            <ChoosePerson
-              onChangeValue={obj => onAddPerson(obj)}
-              options={props?.options}
-            />
-          }
-          getPopupContainer={node => node}
-        >
-          <AddWrap
-            style={{
-              marginLeft: examineList?.length ? '40px' : 0,
-            }}
-          >
-            <IconFont
-              className="icon"
-              type="plus"
-              onClick={() => setIsOpen(true)}
-            />
-          </AddWrap>
-        </Popover>
       </ItemWrap>
     </Timeline.Item>
   )

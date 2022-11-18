@@ -1,10 +1,7 @@
-/* eslint-disable complexity */
-/* eslint-disable no-negated-condition */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Pagination, Dropdown, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -16,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Content = styled.div({
   padding: 16,
@@ -27,14 +25,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
 })
 
 const DataWrap = styled.div({
@@ -72,7 +62,6 @@ const IterationTable = (props: Props) => {
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
-  const { filterHeightIterate } = useModel('iterate')
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -185,7 +174,6 @@ const IterationTable = (props: Props) => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
-    listLength: props.data?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -242,18 +230,7 @@ const IterationTable = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <Dropdown
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    props.data?.list?.length === 1 ? document.body : node
-                  }
-                >
-                  {rowIconFont()}
-                </Dropdown>
-              )}
+              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
             </div>
           )
         },
@@ -266,26 +243,28 @@ const IterationTable = (props: Props) => {
     <Content style={{ height: 'calc(100% - 64px)' }}>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId !== 'object' ? (
+          {typeof props?.hasId === 'object' ? (
+            props.data?.list ? (
+              props.data?.list?.length > 0 ? (
+                <TableStyleBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={props.data?.list}
+                  pagination={false}
+                  scroll={{
+                    x: 'max-content',
+                    y: tableY,
+                  }}
+                  showSorterTooltip={false}
+                  tableLayout="auto"
+                />
+              ) : (
+                <NoData />
+              )
+            ) : null
+          ) : (
             <NoData />
-          ) : props.data?.list ? (
-            props.data?.list?.length > 0 ? (
-              <TableBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={props.data?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-              />
-            ) : (
-              <NoData />
-            )
-          ) : null}
+          )}
         </Spin>
       </DataWrap>
       <PaginationWrap>

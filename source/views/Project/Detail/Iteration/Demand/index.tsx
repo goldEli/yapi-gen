@@ -1,11 +1,11 @@
+/* eslint-disable camelcase */
+/* eslint-disable max-params */
 /* eslint-disable no-undefined */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable complexity */
 import IconFont from '@/components/IconFont'
 import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -24,25 +25,21 @@ const RowIconFont = styled(IconFont)({
   color: '#2877ff',
 })
 
-const TableBox = styled(TableWrap)({
-  '.ant-table-thead > tr > th:nth-child(1)': {
-    paddingLeft: 64,
-  },
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
-})
-
 const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
-  borderRadius: 4,
+  borderRadius: 6,
 })
 
-const DemandWrap = () => {
+interface Props {
+  searchGroups: any
+  checkList: any
+  checkList2: any
+  checkList3: any
+}
+
+const DemandWrap = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -63,8 +60,6 @@ const DemandWrap = () => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isSpinning, setIsSpinning] = useState(false)
-  const [titleList, setTitleList] = useState<any[]>([])
-  const [titleList2, setTitleList2] = useState<any[]>([])
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -95,55 +90,71 @@ const DemandWrap = () => {
     'b/story/delete',
   )
 
-  const getShowkey = () => {
-    setTitleList(projectInfo?.titleList || [])
-    setTitleList2(projectInfo?.titleList2 || [])
-  }
-
   const getList = async (
     item?: any,
     orderValue?: any,
     orderKeyValue?: any,
+    searchParamsObj?: any,
     updateState?: boolean,
   ) => {
     if (!updateState) {
       setIsSpinning(true)
     }
-    const result = await getDemandList({
+    let params = {
       projectId,
-      iterateIds: [iterateId],
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
       order: orderValue,
       orderKey: orderKeyValue,
-    })
+      searchValue: searchParamsObj.searchVal,
+      statusIds: searchParamsObj.statusId,
+      iterateIds: [iterateId],
+      priorityIds: searchParamsObj.priorityId,
+      userId: searchParamsObj.userId,
+      tagIds: searchParamsObj.tagId,
+      startTime: searchParamsObj.createdAtId,
+      expectedStart: searchParamsObj.expectedStartAtId,
+      expectedEnd: searchParamsObj.expectedendat,
+      updatedTime: searchParamsObj.updatedat,
+      endTime: searchParamsObj.finishAt,
+      usersNameId: searchParamsObj.usersnameId,
+      copySendId: searchParamsObj.usersCopysendNameId,
+      class_ids: searchParamsObj.class_ids,
+      category_id: searchParamsObj.category_id,
+      schedule_start: searchParamsObj.schedule_start,
+      schedule_end: searchParamsObj.schedule_end,
+      custom_field: searchParamsObj?.custom_field,
+    }
+
+    const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
     setIsRefresh(false)
   }
 
   useEffect(() => {
-    getList(pageObj, order, orderKey)
-  }, [])
-
-  useEffect(() => {
-    getShowkey()
-  }, [projectInfo])
+    getList(pageObj, order, orderKey, props.searchGroups)
+  }, [props.searchGroups])
 
   useEffect(() => {
     if (isRefresh) {
-      getList({ page: 1, size: pageObj.size }, order, orderKey)
+      getList(
+        { page: 1, size: pageObj.size },
+        order,
+        orderKey,
+        props.searchGroups,
+      )
     }
   }, [isRefresh])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order, orderKey)
+    getList({ page, size }, order, orderKey, props.searchGroups)
   }
 
   const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
-    getList({ page, size }, order, orderKey)
+    getList({ page, size }, order, orderKey, props.searchGroups)
   }
 
   const onClickRow = (item: any) => {
@@ -182,7 +193,12 @@ const DemandWrap = () => {
   const updateOrderkey = (key: any, val: any) => {
     setOrderKey(key)
     setOrder(val)
-    getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
+    getList(
+      { page: 1, size: pageObj.size },
+      val === 2 ? 'desc' : 'asc',
+      key,
+      props.searchGroups,
+    )
   }
 
   const onClickItem = (item: any) => {
@@ -200,7 +216,7 @@ const DemandWrap = () => {
         projectId,
       })
       message.success(t('common.prioritySuccess'))
-      getList(pageObj, order, orderKey)
+      getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //
     }
@@ -210,7 +226,7 @@ const DemandWrap = () => {
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
-      getList(pageObj, order, orderKey)
+      getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //
     }
@@ -221,7 +237,7 @@ const DemandWrap = () => {
   }
 
   const onUpdate = (updateState?: boolean) => {
-    getList(pageObj, order, orderKey, updateState)
+    getList(pageObj, order, orderKey, props.searchGroups, updateState)
   }
 
   const columns = useDynamicColumns({
@@ -235,7 +251,6 @@ const DemandWrap = () => {
     rowIconFont,
     showChildCOntent: true,
     onUpdate,
-    listLength: dataList?.list?.length,
   })
 
   const onChangeVisible = () => {
@@ -249,14 +264,18 @@ const DemandWrap = () => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
-      getList(pageObj, order, orderKey)
+      getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //
     }
   }
 
   const selectColum: any = useMemo(() => {
-    const arr: any = [...titleList, ...titleList2]
+    const arr: any = [
+      ...(props?.checkList || []),
+      ...(props?.checkList2 || []),
+      ...(props?.checkList3 || []),
+    ]
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -271,25 +290,14 @@ const DemandWrap = () => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <Dropdown
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    dataList?.list?.length === 1 ? document.body : node
-                  }
-                >
-                  {rowIconFont()}
-                </Dropdown>
-              )}
+              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
             </div>
           )
         },
       },
     ]
     return [...arrList, ...newList]
-  }, [titleList, titleList2, columns])
+  }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
   return (
     <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
@@ -312,7 +320,7 @@ const DemandWrap = () => {
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
-              <TableBox
+              <TableStyleBox
                 rowKey="id"
                 columns={selectColum}
                 dataSource={dataList?.list}

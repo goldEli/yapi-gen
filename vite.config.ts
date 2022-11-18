@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
+import injectPrefetch from 'vite-plugin-prefetch-inject'
 import react from '@vitejs/plugin-react'
 import profile from './package.json'
 
@@ -13,6 +14,16 @@ export default defineConfig(config => {
           plugins: ['@emotion/babel-plugin'],
         },
       }),
+      injectPrefetch({
+        files: [
+          {
+            match: /.*/u,
+            attrs: {
+              rel: 'preload',
+            },
+          },
+        ],
+      }) as unknown as Plugin,
     ],
     define: {
       __VERSION__: JSON.stringify(profile.version),
@@ -32,6 +43,16 @@ export default defineConfig(config => {
     server: {
       host: '0.0.0.0',
       port: 8000,
+    },
+
+    preview: {
+      port: 8080,
+      headers: {
+        'Cache-Control': 'public, max-age=31536000',
+      },
+    },
+    build: {
+      modulePreload: true,
     },
     envDir: './environments/',
     envPrefix: '__',

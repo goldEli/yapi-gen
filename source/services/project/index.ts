@@ -1,5 +1,4 @@
 /* eslint-disable max-lines */
-/* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -120,21 +119,14 @@ export const getProjectInfo: any = async (params: any) => {
 
   const plainOptions3 = response.data.storyConfig.display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '自定义字段')
-    .map(
-      (item: {
-        title: any
-        content: any
-        is_default_display: any
-        content_txt: any
-      }) => {
-        return {
-          label: item.title,
-          value: item.content,
-          is_default_display: item.is_default_display,
-          labelTxt: item.content_txt,
-        }
-      },
-    )
+    .map((item: any) => {
+      return {
+        label: item.title,
+        value: item.content,
+        is_default_display: item.is_default_display,
+        labelTxt: item.content_txt,
+      }
+    })
 
   const titleList: any[] = []
   plainOptions
@@ -366,6 +358,7 @@ export const setPermission: any = async (params: any) => {
 export const storyConfigField: any = async (params: any) => {
   const response: any = await http.get<any>('storyConfigField', {
     project_id: params.projectId,
+    k: params?.key,
   })
 
   return {

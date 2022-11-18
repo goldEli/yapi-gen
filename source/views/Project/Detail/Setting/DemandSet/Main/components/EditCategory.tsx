@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 
@@ -92,7 +92,6 @@ const EditorCategory = (props: EditorProps) => {
         message.success(t('common.editSuccess'))
         onReset()
       } catch (error) {
-
         //
       }
     } else {
@@ -101,7 +100,6 @@ const EditorCategory = (props: EditorProps) => {
         message.success(t('common.createSuccess'))
         onReset()
       } catch (error) {
-
         //
       }
     }
@@ -138,7 +136,7 @@ const EditorCategory = (props: EditorProps) => {
       <FormWrap
         form={form}
         layout="vertical"
-        style={{ padding: '0 20px 0 2px' }}
+        style={{ padding: '0 16px 0 2px' }}
       >
         <Form.Item
           label={t('newlyAdd.categoryName')}

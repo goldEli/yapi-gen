@@ -1,5 +1,3 @@
-/* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 import { useState } from 'react'
 import styled from '@emotion/styled'
@@ -184,7 +182,7 @@ export const Panel = (props: Props) => {
       await loginOut()
       setTimeout(() => {
         localStorage.removeItem('agileToken')
-
+        localStorage.removeItem('quickCreateData')
         getTicket()
       }, 100)
     } catch (error) {

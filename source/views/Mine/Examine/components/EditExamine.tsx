@@ -3,7 +3,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable multiline-ternary */
 import { Input, message, Space, Timeline } from 'antd'
 import {
   CategoryWrap,
@@ -301,7 +300,7 @@ const EditExamine = (props: Props) => {
         </div>
         {verifyInfo?.verify && (
           <TimelineWrap>
-            {verifyInfo?.verify?.verifyType === 1 ? (
+            {verifyInfo?.verify?.verifyType === 1 && (
               <>
                 {verifyInfo?.verify?.process?.map((k: any, index: any) => (
                   <Timeline.Item key={index}>
@@ -365,7 +364,8 @@ const EditExamine = (props: Props) => {
                   </Timeline.Item>
                 ))}
               </>
-            ) : (
+            )}
+            {verifyInfo?.verify?.verifyType !== 1 && (
               <Timeline.Item>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <WrapBox size={16} color="#323233" right={16}>

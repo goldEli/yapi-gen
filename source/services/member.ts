@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable complexity */
-/* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -66,9 +65,10 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             category: i.category,
             categoryColor: i.category_color,
-            'class': i.class,
+            class: i.class,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -109,9 +109,10 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             category: i.category,
             categoryColor: i.category_color,
-            'class': i.class,
+            class: i.class,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -184,9 +185,10 @@ export const getUserInfoCreateStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           category: i.category,
           categoryColor: i.category_color,
-          'class': i.class,
+          class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -258,9 +260,10 @@ export const getUserInfoFinishStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           category: i.category,
           categoryColor: i.category_color,
-          'class': i.class,
+          class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -388,9 +391,10 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             category: i.category,
             categoryColor: i.category_color,
-            'class': i.class,
+            class: i.class,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -431,9 +435,10 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
             usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
             category: i.category,
             categoryColor: i.category_color,
-            'class': i.class,
+            class: i.class,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -506,9 +511,10 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           category: i.category,
           categoryColor: i.category_color,
-          'class': i.class,
+          class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -580,9 +586,10 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           category: i.category,
           categoryColor: i.category_color,
-          'class': i.class,
+          class: i.class,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,

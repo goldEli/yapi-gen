@@ -1,7 +1,5 @@
-/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-undefined */
 import { useTranslation } from 'react-i18next'
@@ -20,11 +18,8 @@ import {
   StatusWrap,
 } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
-import PopConfirm from '@/components/Popconfirm'
 import NoData from '@/components/NoData'
-import { ShapeContent } from '@/components/Shape'
 import IconFont from './IconFont'
-import DemandProgress from './DemandProgress'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -44,6 +39,8 @@ const ChildDemandTable = (props: {
   row: any
   id?: any
   hasIcon?: boolean
+  // 是否是从我的模块或者他的模块使用
+  isMineOrHis?: boolean
 }) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -59,13 +56,20 @@ const ChildDemandTable = (props: {
     list: undefined,
   })
   const { getDemandList, updateDemandStatus } = useModel('demand')
-  const { userInfo } = useModel('user')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo, colorList } = useModel('project')
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+  const { projectInfo, colorList, getProjectInfo } = useModel('project')
+  let isCanEdit: any
+
+  // 获取是否有编辑需求的权限 --- 主要用于他的/我的
+  const getProjectEdit = () => {
+    if (props.isMineOrHis) {
+      getProjectInfo({ projectId })
+    }
+    isCanEdit =
+      projectInfo.projectPermissions?.length > 0 &&
+      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+        ?.length > 0
+  }
 
   const getList = async (item: any) => {
     const result = await getDemandList({
@@ -80,17 +84,8 @@ const ChildDemandTable = (props: {
 
   const onChildClick = async () => {
     getList(order)
+    getProjectEdit()
     setIsVisible(!isVisible)
-  }
-
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getList(order)
-    } catch (error) {
-      //
-    }
   }
 
   const onUpdateOrderKey = (key: any, val: any) => {
@@ -103,10 +98,6 @@ const ChildDemandTable = (props: {
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
     )
     openDetail(`/Detail/Demand?data=${params}`)
-  }
-
-  const onUpdate = () => {
-    getList(order)
   }
 
   const onExamine = () => {
@@ -162,7 +153,12 @@ const ChildDemandTable = (props: {
       dataIndex: 'name',
       render: (text: string, record: any) => {
         return (
-          <HiddenText>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -180,20 +176,16 @@ const ChildDemandTable = (props: {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <Tooltip
-              title={text}
-              getPopupContainer={node => node}
-              placement="top"
-            >
+            <Tooltip title={text} getPopupContainer={node => node}>
               <ListNameWrap
-                onClick={() => onToDetail(record)}
                 isName
                 isClose={record.status?.is_end === 1}
+                onClick={() => onToDetail(record)}
               >
                 {text}
               </ListNameWrap>
             </Tooltip>
-          </HiddenText>
+          </div>
         )
       },
     },
@@ -210,7 +202,7 @@ const ChildDemandTable = (props: {
       ),
       dataIndex: 'iteration',
       width: 100,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <HiddenText>
             <OmitText
@@ -240,37 +232,16 @@ const ChildDemandTable = (props: {
       width: 190,
       render: (text: any, record: any) => {
         return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return isCanEdit && !record.isExamine ? (
-                <ShapeContent
-                  tap={(value: any) => onChangeStatus(value)}
-                  hide={onHide}
-                  row={record}
-                  record={{
-                    id: record.id,
-                    project_id: projectId,
-                    status: {
-                      id: record.status.id,
-                      can_changes: record.status.can_changes,
-                    },
-                  }}
-                />
-              ) : null
+          <StatusWrap
+            onClick={record.isExamine ? onExamine : void 0}
+            isShow={isCanEdit || record.isExamine}
+            style={{
+              color: text?.status.color,
+              border: `1px solid ${text?.status.color}`,
             }}
-            record={record}
           >
-            <StatusWrap
-              onClick={record.isExamine ? onExamine : void 0}
-              isShow={isCanEdit || record.isExamine}
-              style={{
-                color: text?.status.color,
-                border: `1px solid ${text?.status.color}`,
-              }}
-            >
-              {text?.status.content}
-            </StatusWrap>
-          </PopConfirm>
+            {text?.status.content}
+          </StatusWrap>
         )
       },
     },
@@ -283,52 +254,24 @@ const ChildDemandTable = (props: {
       width: 120,
       render: (text: string, record: any, index: any) => {
         return (
-          <div>
-            {isCanEdit &&
-            record?.usersNameIds?.includes(userInfo?.id) &&
-            record.status.is_start !== 1 &&
-            record.status.is_end !== 1 ? (
-              <div style={{ cursor: 'pointer' }}>
-                <DemandProgress
-                  value={record.schedule}
-                  row={record}
-                  onUpdate={onUpdate}
-                  listLength={dataList?.list?.length}
-                  index={index}
-                />
-              </div>
-            ) : (
-              <Progress
-                strokeColor="#43BA9A"
-                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
-                width={38}
-                type="circle"
-                percent={record.schedule}
-                format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                strokeWidth={8}
-              />
-            )}
-          </div>
+          <Progress
+            strokeColor="#43BA9A"
+            style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+            width={38}
+            type="circle"
+            percent={record.schedule}
+            format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+            strokeWidth={8}
+          />
         )
       },
     },
     {
       title: t('common.dealName'),
       dataIndex: 'dealName',
-      width: 120,
-      render: (text: any) => {
-        return (
-          <HiddenText>
-            <OmitText
-              width={120}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text?.join(',') || '--'}
-            </OmitText>
-          </HiddenText>
-        )
+      width: 150,
+      render: (text: any, record: any) => {
+        return <span>{text?.join(',') || '--'}</span>
       },
     },
   ]

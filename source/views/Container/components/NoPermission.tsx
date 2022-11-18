@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -37,7 +36,6 @@ const SetHead = styled.div`
   font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
-  /* border: 2px solid rgba(40, 119, 255, 0.16); */
   border: 1px solid #f0f2fd;
   color: white;
   margin-right: 8px;
@@ -92,23 +90,21 @@ const CompanyWrap = styled.div<{ active: boolean }>(
   }),
 )
 
-const IconFontWrap = styled(IconFont)<{ active: boolean }>(
-  {
-    width: 24,
-    height: 24,
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    '&: hover': {
-      background: '#F0F4FA',
-    },
-  },
-  ({ active }) => ({
-    background: active ? '#f0f4fa' : 'white',
-  }),
-)
+const IconFontWrap = styled(IconFont)<{ 'data-active'?: boolean }>`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    background: #f0f4fa;
+  }
+  ${props => ({
+    background: props['data-active'] ? '#f0f4fa' : 'white',
+  })}
+`
 
 const Item = styled.div<{ active: boolean }>(
   {
@@ -178,10 +174,10 @@ const NoPermission = () => {
       await loginOut()
       setTimeout(() => {
         localStorage.removeItem('agileToken')
+        localStorage.removeItem('quickCreateData')
         getTicket()
       }, 100)
     } catch (error) {
-
       //
     }
   }
@@ -195,9 +191,9 @@ const NoPermission = () => {
           active={i.id === activeId}
         >
           <div>{i.name}</div>
-          {i.id === activeId
-            && <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
-          }
+          {i.id === activeId && (
+            <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+          )}
         </Item>
       ))}
     </div>
@@ -239,7 +235,7 @@ const NoPermission = () => {
                 className="icon"
                 type="swap"
                 style={{ fontSize: 20 }}
-                active={isVisible}
+                data-active={isVisible}
               />
             </Tooltip>
           </Popover>

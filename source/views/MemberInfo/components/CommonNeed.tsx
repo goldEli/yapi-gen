@@ -2,16 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
-/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable multiline-ternary */
 import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  MyInput,
   SetButton,
   tabCss,
   TabsHehavior,
@@ -35,20 +32,18 @@ import NoData from '@/components/NoData'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
-})
+import CommonInput from '@/components/CommonInput'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const TableBox = styled(TableWrap)({
+  '.ant-table-content': {
+    minHeight: '460px',
+  },
   '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
+    [ShowWrap.toString()]: {
       visibility: 'visible',
     },
-    [ShowWrap.toString()]: {
+    '.dropdownIcon': {
       visibility: 'visible',
     },
   },
@@ -86,7 +81,6 @@ interface MoreWrapProps {
   record: any
   onShowEdit(): void
   onShowDel(): void
-  listLength: number
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -105,14 +99,12 @@ const MoreWrap = (props: MoreWrapProps) => {
       {
         key: '1',
         label: (
-          <span onClick={() => onClickMenu('edit')}>{t('common.edit')}</span>
+          <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
         ),
       },
       {
         key: '2',
-        label: (
-          <span onClick={() => onClickMenu('del')}>{t('common.del')}</span>
-        ),
+        label: <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>,
       },
     ]
 
@@ -127,27 +119,20 @@ const MoreWrap = (props: MoreWrapProps) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
   return (
-    <ShowWrap>
+    // <ShowWrap>
+    <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
-        <Dropdown
-          key={isMoreVisible.toString()}
-          visible={isMoreVisible}
-          onVisibleChange={visible => setIsMoreVisible(visible)}
-          trigger={['hover']}
-          overlay={menu}
-          placement="bottomLeft"
-          getPopupContainer={node =>
-            props.listLength === 1 ? document.body : node
-          }
-        >
-          <RowIconFont type="more" />
-        </Dropdown>
+        <MoreDropdown
+          isMoreVisible={isMoreVisible}
+          onChangeVisible={setIsMoreVisible}
+          menu={menu}
+        />
       )}
-    </ShowWrap>
+    </>
+    // </ShowWrap>
   )
 }
 
-// eslint-disable-next-line complexity
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -176,7 +161,9 @@ const CommonNeed = (props: any) => {
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
-  const [manyListData, setManyListData] = useState<any>([])
+  const [manyListData, setManyListData] = useState<any>({
+    list: undefined,
+  })
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -231,16 +218,16 @@ const CommonNeed = (props: any) => {
       custom_field: customField,
     })
   }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
   const init = async (pageNumber?: any, updateState?: boolean) => {
     if (!updateState) {
       setIsSpin(true)
     }
-
+    setListData({ list: undefined })
+    setManyListData({ list: undefined })
     if (isMany) {
       const params = {
         projectId: props.id,
@@ -251,7 +238,7 @@ const CommonNeed = (props: any) => {
       const res = isMember
         ? await getMemberInfoAbeyanceStory(params)
         : await getUserInfoAbeyanceStory(params)
-      setManyListData(res)
+      setManyListData({ list: res })
       setIsSpin(false)
     }
 
@@ -326,7 +313,6 @@ const CommonNeed = (props: any) => {
     updatePriority,
     init,
     plainOptions3,
-    listLength: listData?.list?.length,
   })
 
   const selectColum: any = useMemo(() => {
@@ -351,7 +337,6 @@ const CommonNeed = (props: any) => {
                   record={record}
                   onShowEdit={() => showEdit(record)}
                   onShowDel={() => showDel(record)}
-                  listLength={listData?.list?.length}
                 />
               ) : null}
             </>
@@ -406,8 +391,8 @@ const CommonNeed = (props: any) => {
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
   }
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
   }
 
   useEffect(() => {
@@ -490,107 +475,93 @@ const CommonNeed = (props: any) => {
 
   return (
     <>
-      <div style={{ borderLeft: '1px solid #EBEDF0' }}>
-        <TabsHehavior
-          style={{ padding: '0 24px', justifyContent: 'space-between' }}
-        >
-          <div className={tabCss}>
-            <TabsItem isActive>
-              <div>{props?.subTitle}</div>
-            </TabsItem>
-            <LabNumber isActive>{total ?? 0}</LabNumber>
+      <TabsHehavior
+        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      >
+        <div className={tabCss}>
+          <TabsItem isActive>
+            <div>{props?.subTitle}</div>
+          </TabsItem>
+          <LabNumber isActive>{total ?? 0}</LabNumber>
+        </div>
+        <SearchWrap>
+          <div style={{ marginRight: 16 }}>
+            <CommonInput
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+            />
           </div>
-          <SearchWrap>
-            <div style={{ marginRight: 16 }}>
-              <MyInput
-                suffix={
-                  <IconFont
-                    type="search"
-                    style={{ color: '#BBBDBF', fontSize: 20 }}
-                  />
-                }
-                onPressEnter={onPressEnter}
-                onBlur={onPressEnter}
-                placeholder={t('common.pleaseSearchDemand')}
-                allowClear
-              />
-            </div>
-            <div style={{ display: 'flex' }}>
-              {props?.isMember ? null : (
-                <>
-                  <SetButton
-                    onClick={() => {
-                      onChangeMany(false)
-                    }}
-                  >
-                    <Tooltip
-                      title={t('common.list')}
-                      getPopupContainer={node => node}
-                    >
-                      <IconFont
-                        type="unorderedlist"
-                        style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-                      />
-                    </Tooltip>
-                  </SetButton>
-                  {props?.type === 'abeyance' && (
-                    <SetButton
-                      onClick={() => {
-                        onChangeMany(true)
-                      }}
-                    >
-                      <Tooltip
-                        title={t('common.timeList')}
-                        getPopupContainer={node => node}
-                      >
-                        <IconFont
-                          type="database"
-                          style={{
-                            fontSize: 20,
-                            color: isMany ? '#4388ff' : '',
-                          }}
-                        />
-                      </Tooltip>
-                    </SetButton>
-                  )}
-                </>
-              )}
-
-              {props.id !== 0 && (
-                <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+          <div style={{ display: 'flex' }}>
+            {props?.isMember ? null : (
+              <>
+                <SetButton
+                  onClick={() => {
+                    onChangeMany(false)
+                  }}
+                >
                   <Tooltip
-                    title={t('common.search')}
+                    title={t('common.list')}
                     getPopupContainer={node => node}
                   >
                     <IconFont
-                      type="filter"
-                      style={{
-                        fontSize: 20,
-                        color: isShowSearch ? '#2877ff' : '',
-                      }}
+                      type="unorderedlist"
+                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
                     />
                   </Tooltip>
                 </SetButton>
-              )}
-
-              <Dropdown
-                overlay={menu}
-                placement="bottomLeft"
-                trigger={['click']}
-              >
-                <SetButton>
-                  <Tooltip
-                    title={t('common.tableFieldSet')}
-                    getPopupContainer={node => node}
+                {props?.type === 'abeyance' && (
+                  <SetButton
+                    onClick={() => {
+                      onChangeMany(true)
+                    }}
                   >
-                    <IconFont type="settings" style={{ fontSize: 20 }} />
-                  </Tooltip>
-                </SetButton>
-              </Dropdown>
-            </div>
-          </SearchWrap>
-        </TabsHehavior>
-      </div>
+                    <Tooltip
+                      title={t('common.timeList')}
+                      getPopupContainer={node => node}
+                    >
+                      <IconFont
+                        type="database"
+                        style={{
+                          fontSize: 20,
+                          color: isMany ? '#4388ff' : '',
+                        }}
+                      />
+                    </Tooltip>
+                  </SetButton>
+                )}
+              </>
+            )}
+
+            {props.id !== 0 && (
+              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
+                <Tooltip
+                  title={t('common.search')}
+                  getPopupContainer={node => node}
+                >
+                  <IconFont
+                    type="filter"
+                    style={{
+                      fontSize: 20,
+                      color: isShowSearch ? '#2877ff' : '',
+                    }}
+                  />
+                </Tooltip>
+              </SetButton>
+            )}
+
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+              <SetButton>
+                <Tooltip
+                  title={t('common.tableFieldSet')}
+                  getPopupContainer={node => node}
+                >
+                  <IconFont type="settings" style={{ fontSize: 20 }} />
+                </Tooltip>
+              </SetButton>
+            </Dropdown>
+          </div>
+        </SearchWrap>
+      </TabsHehavior>
 
       {isShowSearch && props.id !== 0 ? (
         <div style={{ borderLeft: '1px solid #EBEDF0' }}>
@@ -629,51 +600,53 @@ const CommonNeed = (props: any) => {
       {isMany ? (
         <div>
           <LoadingSpin spinning={isSpin}>
-            {manyListData?.length ? (
-              <StaffTableWrap2>
-                {manyListData?.map((item: any, index: any) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <div
-                    hidden={!item.list.length}
-                    key={index}
-                    style={{
-                      background: 'white',
-                      borderRadius: 6,
-                      marginTop: 16,
-                    }}
-                  >
-                    <TableTitle>
-                      <span>
-                        {item.status_name}（{item.list.length}）
-                      </span>
-                    </TableTitle>
+            {manyListData.list ? (
+              manyListData.list?.length ? (
+                <StaffTableWrap2>
+                  {manyListData.list?.map((item: any, index: any) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <div
+                      hidden={!item.list.length}
+                      key={index}
+                      style={{
+                        background: 'white',
+                        borderRadius: 6,
+                        marginTop: 16,
+                      }}
+                    >
+                      <TableTitle>
+                        <span>
+                          {item.status_name}（{item.list.length}）
+                        </span>
+                      </TableTitle>
 
-                    {item.list ? (
-                      item?.list?.length ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={selectColum}
-                          dataSource={item.list}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                        />
-                      ) : (
-                        <NoData />
-                      )
-                    ) : null}
-                  </div>
-                ))}
-              </StaffTableWrap2>
-            ) : (
-              <div style={{ padding: 16 }}>
-                <NoData />
-              </div>
-            )}
+                      {item.list ? (
+                        item?.list?.length ? (
+                          <TableBox
+                            rowKey="id"
+                            columns={selectColum}
+                            dataSource={item.list}
+                            pagination={false}
+                            scroll={{ x: 'max-content' }}
+                          />
+                        ) : (
+                          <NoData />
+                        )
+                      ) : null}
+                    </div>
+                  ))}
+                </StaffTableWrap2>
+              ) : (
+                <div style={{ padding: 16 }}>
+                  <NoData />
+                </div>
+              )
+            ) : null}
           </LoadingSpin>
         </div>
       ) : null}
 
-      {!isMany && (
+      {!isMany && listData?.list?.length && (
         <PaginationWrap style={{ paddingRight: 24 }}>
           <Pagination
             defaultCurrent={1}

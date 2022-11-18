@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
-/* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip, Table } from 'antd'
+import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -16,9 +14,8 @@ import {
   Hehavior,
   PaginationWrap,
   StaffTableWrap,
-  MyInput,
   SetButton,
-  TableWrap,
+  TableStyleBox,
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -29,14 +26,16 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useNavigate } from 'react-router-dom'
+import CommonInput from '@/components/CommonInput'
+import MoreDropdown from '@/components/MoreDropdown'
 
-const tableWrapP = css`
+export const tableWrapP = css`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
 `
+
 const Reset = styled.div`
   height: 32px;
   background: white;
@@ -55,34 +54,16 @@ const Reset = styled.div`
   }
 `
 
-const DataWrap = styled.div({
+export const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   height: '100%',
   overflow: 'hidden',
-})
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
-})
-
-const TableBox = styled(TableWrap)({
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
-  '.ant-table table': {
-    paddingBottom: 0,
-  },
+  borderRadius: '6px',
 })
 
 const Staff = () => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
@@ -170,10 +151,9 @@ const Staff = () => {
       setIsStaffPersonalVisible(false)
     }
   }
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const updateOrderkey = (key: any, order: any) => {
+  const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
-    setOrder(order)
+    setOrder(orderVal)
   }
 
   const columns = useDynamicColumns({
@@ -189,9 +169,9 @@ const Staff = () => {
         {
           key: '1',
           label: (
-            <span onClick={() => controlStaffPersonalVisible(record)}>
+            <div onClick={() => controlStaffPersonalVisible(record)}>
               {t('staff.setPermission')}
-            </span>
+            </div>
           ),
         },
       ]}
@@ -230,9 +210,7 @@ const Staff = () => {
                 'b/user/update',
               )}
             >
-              <Dropdown overlay={menuTable(record)} placement="bottomLeft">
-                <RowIconFont type="more" />
-              </Dropdown>
+              <MoreDropdown menu={menuTable(record)} />
             </div>
           )
         },
@@ -292,9 +270,9 @@ const Staff = () => {
   const onShowSizeChange = (current: any, size: any) => {
     setPagesize(size)
   }
-  const onPressEnter = (e: any) => {
+  const onPressEnter = (value: any) => {
     setPage(1)
-    setKeyword(e.target.value)
+    setKeyword(value)
   }
   useEffect(() => {
     init()
@@ -370,19 +348,11 @@ const Staff = () => {
     >
       <StaffHeader>{t('staff.companyStaff')}</StaffHeader>
       <Hehavior>
-        <div style={{ display: 'flex' }}>
-          <MyInput
-            style={{ width: 292 }}
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
-            onBlur={onPressEnter}
+        <div style={{ display: 'flex', marginLeft: 24 }}>
+          <CommonInput
+            width={292}
             placeholder={t('staff.pleaseKey')}
-            allowClear
+            onChangeSearch={onPressEnter}
           />
         </div>
         <div
@@ -419,27 +389,23 @@ const Staff = () => {
           style={{
             height: 'calc(100% - 50px)',
             overflow: 'hidden',
-            padding: '16px 24px 0',
           }}
         >
           <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!listData &&
                 (listData?.length > 0 ? (
-                  <TableBox
+                  <TableStyleBox
+                    isBottom
                     rowKey="id"
                     columns={selectColum}
                     dataSource={listData}
                     pagination={false}
                     scroll={{
-                      x: selectColum.reduce(
-                        (totalWidth: number, item: any) =>
-                          totalWidth + item.width,
-                        0,
-                      ),
+                      x: 'max-content',
                       y: tableY,
                     }}
-                    sticky
+                    tableLayout="auto"
                   />
                 ) : (
                   <NoData />

@@ -2,16 +2,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import {
-  Checkbox,
-  Modal,
-  Input,
-  Space,
-  message,
-  Menu,
-  Dropdown,
-  Spin,
-} from 'antd'
+import { Checkbox, Input, Space, message, Menu, Dropdown, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -20,6 +11,8 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Header = styled.div({
   height: 64,
@@ -97,6 +90,10 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
+    '.dropdownIcon': {
+      position: 'absolute',
+      right: 0,
+    },
     '.name': {
       fontSize: 14,
       color: 'black',
@@ -111,8 +108,8 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       '.name': {
         color: '#2877FF',
       },
-      [IconWrap.toString()]: {
-        display: 'block',
+      '.dropdownIcon': {
+        visibility: 'visible',
       },
     },
   },
@@ -313,6 +310,7 @@ const Permission = () => {
   const onClickMenu = (e: any, type: string, item: any) => {
     e.stopPropagation()
     setOperationDetail(item)
+    setIsMoreVisible(false)
     if (type === 'edit') {
       setIsVisible(true)
       setAddValue(item.name)
@@ -375,31 +373,18 @@ const Permission = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      <Modal
-        footer={false}
-        visible={isVisible}
-        title={false}
-        closable={false}
-        bodyStyle={{ padding: '16px 24px' }}
+      <CommonModal
+        isVisible={isVisible}
+        title={
+          operationDetail.id
+            ? t('setting.editPermission')
+            : t('setting.createPermission')
+        }
         width={420}
-        maskClosable={false}
-        destroyOnClose
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
+        onClose={onClose}
+        isShowFooter
       >
-        <ModalHeader>
-          <span>
-            {operationDetail.id
-              ? t('setting.editPermission')
-              : t('setting.createPermission')}
-          </span>
-          <IconFont
-            onClick={onClose}
-            style={{ cursor: 'pointer' }}
-            type="close"
-          />
-        </ModalHeader>
-        <div style={{ margin: '24px 0' }}>
+        <div style={{ margin: '0 16px 24px 0' }}>
           <Input
             autoComplete="off"
             value={addValue}
@@ -407,13 +392,13 @@ const Permission = () => {
             placeholder={t('setting.pleaseEnterName')}
           />
         </div>
-        <ModalFooter size={16}>
+        <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
           <Button onClick={onClose}>{t('common.cancel')}</Button>
           <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
             {t('common.confirm2')}
           </Button>
         </ModalFooter>
-      </Modal>
+      </CommonModal>
       <Header>
         <span>{t('setting.permissionManagement')}</span>
       </Header>
@@ -435,21 +420,12 @@ const Permission = () => {
                         ? t('setting.systemGroup')
                         : t('setting.customGroup')}
                     </span>
-                    <Dropdown
-                      key={isMoreVisible.toString()}
-                      visible={isMoreVisible}
-                      overlay={() => menu(item)}
-                      placement="bottomRight"
-                      trigger={['hover']}
-                      getPopupContainer={node => node}
-                      onVisibleChange={visible => setIsMoreVisible(visible)}
-                    >
-                      <IconWrap
-                        type="more"
-                        hidden={item.type === 1}
-                        style={{ color: '#2877ff', fontSize: 16 }}
-                      />
-                    </Dropdown>
+                    <MoreDropdown
+                      isHidden={item.type === 1}
+                      isMoreVisible={isMoreVisible}
+                      onChangeVisible={setIsMoreVisible}
+                      menu={menu(item)}
+                    />
                   </MenuItem>
                 ))}
               </MenuItems>

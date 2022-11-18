@@ -1,6 +1,4 @@
 /* eslint-disable no-undefined */
-/* eslint-disable no-negated-condition */
-/* eslint-disable complexity */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -101,6 +99,7 @@ export const getDemandList: any = async (params: any) => {
           categoryColor: i.category_color,
           project_id: i.project_id,
           usersNameIds: i.users_name_ids,
+          usersCopySendIds: i.users_copysend_name_ids,
           schedule: i.schedule,
         })),
         name: k.content_txt,
@@ -112,9 +111,10 @@ export const getDemandList: any = async (params: any) => {
       id: i.id,
       name: i.name,
       usersNameIds: i.users_name_ids,
+      usersCopySendIds: i.users_copysend_name_ids,
       dealName: i.users_name?.split(',') || [],
       status: i.status,
-      iteration: i.iterate_name || '--',
+      iteration: i.iterate_name,
       schedule: i.schedule,
       project_id: i.project_id,
       category: i.category,
@@ -132,7 +132,7 @@ export const getDemandList: any = async (params: any) => {
         name: i.name,
         demand: i.child_story_count,
         priority: i.priority,
-        iteration: i.iterate_name || '--',
+        iteration: i.iterate_name,
         status: i.status,
         dealName: i.users_name || '--',
         time: i.created_at,
@@ -156,6 +156,7 @@ export const getDemandList: any = async (params: any) => {
         categoryRemark: i.category_remark,
         project_id: i.project_id,
         usersNameIds: i.users_name_ids,
+        usersCopySendIds: i.users_copysend_name_ids,
       })),
     }
   }
@@ -246,7 +247,7 @@ export const addDemand: any = async (params: any) => {
     users: params?.userIds,
     copysend: params?.copySendIds,
     tag: params?.tagIds,
-    attachment: params?.attachments,
+    attachment: params?.attachments.map((item: any) => item.url),
     custom_field: params?.customField,
     category_id: params?.category,
     class_id: params?.class,
@@ -284,7 +285,7 @@ export const updateDemand: any = async (params: any) => {
     users: params.userIds,
     copysend: params.copySendIds,
     tag: params.tagIds,
-    attachment: params.attachments,
+    attachment: params.attachments.map((item: any) => item.url),
     id: params.id,
     custom_field: params?.customField,
     class_id: params?.class,
@@ -412,6 +413,18 @@ export const getLoadListFields: any = async (params: any) => {
   }
 }
 
+export const getExportFields: any = async (params: any) => {
+  const response: any = await http.get<any>('getExportFields', {
+    project_id: params.projectId,
+  })
+
+  return {
+    baseFields: response.data.base_fields,
+    timeAndPersonFields: response.data.time_person_fields,
+    customFields: response.data.custom_fields,
+  }
+}
+
 export const getImportDownloadModel: any = async (params: any) => {
   const response = await http.get(
     'getImportDownloadModel',
@@ -462,4 +475,43 @@ export const getImportExcelUpdate: any = async (params: any) => {
       : 0,
     errorList: response.data.error_list ? response.data.error_list : {},
   }
+}
+
+export const getExportExcel: any = async (params: any) => {
+  const response = await http.post(
+    'getExportExcel',
+    {
+      search: {
+        project_id: params?.projectId,
+        keyword: params?.searchValue,
+        iterate_id: params?.iterateId,
+        status: params?.statusId,
+        priority: params?.priorityId,
+        user_id: params?.userId,
+        tag: params?.tagId,
+        created_at: params?.createdAtId,
+        expected_start_at: params?.expectedStartAtId,
+        expected_end_at: params?.expectedendat,
+        updated_at: params?.updatedat,
+        finish_at: params?.finishAt,
+        users_name: params?.usersnameId,
+        users_copysend_name: params?.usersCopysendNameId,
+        all: params?.all ? 1 : 0,
+        panel: params?.panel ? 1 : 0,
+        class_ids: params.class_ids,
+        class_id: params.class_id,
+        category_id: params.category_id,
+        schedule_start: params.schedule_start,
+        schedule_end: params.schedule_end,
+        custom_field: params?.custom_field,
+      },
+      pagesize: params?.pageSize,
+      page: params?.page,
+      orderkey: params?.orderKey,
+      order: params?.order,
+      fields: params.fields,
+    },
+    { responseType: 'blob' },
+  )
+  return response
 }

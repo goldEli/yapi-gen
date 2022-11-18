@@ -1,8 +1,7 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
-import { Checkbox, Modal, Space } from 'antd'
+import { Checkbox, Divider, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -11,6 +10,7 @@ const CheckboxGroup = Checkbox.Group
 import styled from '@emotion/styled'
 import { ShowWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
+import CommonModal from './CommonModal'
 
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -33,19 +33,16 @@ const CheckedItem = styled.div({
   },
 })
 const Wrap = styled.div`
-  width: 784px;
-
   display: flex;
 `
 const Left = styled.div`
   width: 524px;
   height: 350px;
-  border-right: 1px solid #f1f2f4;
   overflow: scroll;
 `
 const Right = styled.div`
   box-sizing: border-box;
-  padding: 0 0 0 24px;
+  padding: 0 16px 0 24px;
   width: 240px;
   height: 350px;
   overflow: scroll;
@@ -168,16 +165,12 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   ])
 
   return (
-    <Modal
-      width={800}
+    <CommonModal
+      isVisible={props.isVisible}
+      width={784}
       title={t('components.showFiled')}
-      visible={props.isVisible}
-      onCancel={props.onClose}
-      onOk={handleOk}
-      maskClosable={false}
-      destroyOnClose
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      onClose={props.onClose}
+      onConfirm={handleOk}
     >
       <Wrap>
         <Left>
@@ -209,7 +202,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               </Space>
             </CheckboxGroup>
           </ItemWrap>
-          {plainOptions3?.length ? (
+          {plainOptions3?.length > 0 && (
             <ItemWrap>
               <div className={text}>{t('newlyAdd.customFields')}</div>
               <CheckboxGroup value={checkList3} onChange={onChange3}>
@@ -222,13 +215,17 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                 </Space>
               </CheckboxGroup>
             </ItemWrap>
-          ) : null}
+          )}
         </Left>
+        <Divider
+          type="vertical"
+          style={{ background: '#EBEDF0', margin: '0 16px 0 4px', height: 350 }}
+        />
         <Right>
           <div className={text}>{t('components.currentFiled')}</div>
           {allList}
         </Right>
       </Wrap>
-    </Modal>
+    </CommonModal>
   )
 }

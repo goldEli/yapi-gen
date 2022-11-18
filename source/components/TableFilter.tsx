@@ -1,10 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable max-lines */
-/* eslint-disable no-negated-condition */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
 /* eslint-disable max-len */
@@ -13,7 +9,6 @@ import styled from '@emotion/styled'
 import {
   Form,
   Select,
-  DatePicker,
   Button,
   Popover,
   Collapse,
@@ -25,6 +20,7 @@ import moment from 'moment'
 import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
+import RangePicker from './RangePicker'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -47,7 +43,7 @@ const FormWrap = styled(Form)({
   },
 })
 
-const SelectWrap = styled(Select)`
+export const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
     color: black;
   }
@@ -62,7 +58,7 @@ const SelectWrap = styled(Select)`
   }
 `
 
-const rangPicker = css`
+export const rangPicker = css`
   .ant-picker-panel-container {
     display: flex;
     flex-direction: row-reverse;
@@ -79,6 +75,7 @@ const rangPicker = css`
     margin-right: 0;
   }
 `
+
 const DelButton = styled.div`
   color: white;
   border-radius: 50%;
@@ -98,7 +95,7 @@ const DelButton = styled.div`
   }
 `
 
-const SelectWrapBedeck = styled.div`
+export const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;
@@ -115,6 +112,7 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-form-item {
     margin-bottom: 0;
+    padding-top: 0 !important;
   }
   .ant-picker {
     border: none;
@@ -257,7 +255,6 @@ const TableFilter = (props: any) => {
   }, [list, customList])
 
   const confirm = async (val?: any, delKey?: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))
@@ -271,11 +268,14 @@ const TableFilter = (props: any) => {
     if (delKey) {
       if (delKey?.includes('custom_')) {
         delete customField[delKey]
+        delete res[delKey]
       } else {
         delete res[delKey]
       }
+      form.setFieldsValue({
+        [delKey]: null,
+      })
     }
-
     props.onSearch(res, customField)
   }
 
@@ -336,7 +336,7 @@ const TableFilter = (props: any) => {
       })
     } else {
       form.setFieldsValue({
-        [key]: [],
+        [key]: null,
       })
     }
     confirm()
@@ -360,14 +360,11 @@ const TableFilter = (props: any) => {
             ?.filter((k: any) =>
               props.isIteration ? k.key !== 'iterate_name' : k,
             )
-            ?.map((i: any) => {
-              if (
-                i.type === 'select_checkbox' ||
-                i.type === 'checkbox' ||
-                i.type === 'select' ||
-                i.type === 'radio'
-              ) {
-                return (
+            ?.map((i: any) => (
+              <div key={i.key}>
+                {['select_checkbox', 'checkbox', 'select', 'radio'].includes(
+                  i.type,
+                ) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -395,98 +392,32 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'time' || i.type === 'date') {
-                return (
+                )}
+                {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
                     <Form.Item name={i.key}>
-                      <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                        {i.contentTxt}
-                      </span>
-                      <DatePicker.RangePicker
-                        allowClear
-                        onChange={dates => onChangeTime(i.key, dates)}
-                        className={rangPicker}
-                        getPopupContainer={node => node}
-                        format={(times: moment.Moment) => {
-                          if (
-                            times.unix() === 0 ||
-                            times.unix() === 1893427200
-                          ) {
-                            return t('common.null')
-                          }
-                          return times.format('YYYY-MM-DD')
-                        }}
-                        ranges={
-                          i18n.language === 'zh'
-                            ? {
-                                最近一周: [
-                                  moment(new Date())
-                                    .startOf('days')
-                                    .subtract(6, 'days'),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                最近一月: [
-                                  moment(new Date())
-                                    .startOf('months')
-                                    .subtract(1, 'months'),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                最近三月: [
-                                  moment(new Date())
-                                    .startOf('months')
-                                    .subtract(3, 'months'),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                今天开始: [
-                                  moment(new Date()).startOf('days'),
-                                  moment(1893427200 * 1000),
-                                ],
-                                今天截止: [
-                                  moment(0),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                空: [moment(0), moment(0)],
-                              }
-                            : {
-                                'Last Week': [
-                                  moment(new Date())
-                                    .startOf('days')
-                                    .subtract(6, 'days'),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                'Last Month': [
-                                  moment(new Date())
-                                    .startOf('months')
-                                    .subtract(1, 'months'),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                'Last March': [
-                                  moment(new Date())
-                                    .startOf('months')
-                                    .subtract(3, 'months'),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                'Start today': [
-                                  moment(new Date()).startOf('days'),
-                                  moment(1893427200 * 1000),
-                                ],
-                                'Due today': [
-                                  moment(0),
-                                  moment(new Date()).endOf('days'),
-                                ],
-                                Empty: [moment(0), moment(0)],
-                              }
+                      <RangePicker
+                        isShowQuick
+                        dateValue={
+                          form.getFieldValue(i.key)
+                            ? [
+                                moment(form.getFieldValue(i.key)[0]),
+                                moment(form.getFieldValue(i.key)[1]),
+                              ]
+                            : null
                         }
+                        onChange={dates => onChangeTime(i.key, dates)}
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.key)}>
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'number') {
-                return (
+                )}
+                {i.type === 'number' && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -498,9 +429,8 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'text' || i.type === 'textarea') {
-                return (
+                )}
+                {['text', 'textarea'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -519,9 +449,8 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              } else if (i.type === 'tree') {
-                return (
+                )}
+                {i.type === 'tree' && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -531,7 +460,7 @@ const TableFilter = (props: any) => {
                         style={{ minWidth: '200px', border: 'none' }}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         treeData={i.children}
-                        placeholder="Please select"
+                        placeholder={t('common.pleaseSelect')}
                         treeDefaultExpandAll
                         onSelect={confirm}
                         multiple
@@ -543,9 +472,9 @@ const TableFilter = (props: any) => {
                       <IconFont type="close" style={{ fontSize: '12px' }} />
                     </DelButton>
                   </SelectWrapBedeck>
-                )
-              }
-            })}
+                )}
+              </div>
+            ))}
 
           <PopoverWrap
             placement="bottom"

@@ -1,6 +1,4 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -35,15 +33,15 @@ const Main = styled.div`
 export const Container = () => {
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo }
-    = useModel('user')
+  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo } =
+    useModel('user')
   const {
     i18n: { language },
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
   message.config({
     duration: 0.8,
+    maxCount: 1,
   })
 
   const init = async () => {
@@ -56,9 +54,9 @@ export const Container = () => {
   }
 
   useEffect(() => {
-    const languageParams
-      = (localStorage.getItem('language') as 'zh' | 'en')
-      || ((new URLSearchParams(location.search).get('language') || 'zh') as
+    const languageParams =
+      (localStorage.getItem('language') as 'zh' | 'en') ||
+      ((new URLSearchParams(location.search).get('language') || 'zh') as
         | 'zh'
         | 'en')
     localStorage.setItem('language', languageParams)
@@ -104,9 +102,9 @@ export const Container = () => {
           </Main>
           <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
         </Wrap>
-      )
-        : <NoPermission />
-      }
+      ) : (
+        <NoPermission />
+      )}
     </ConfigProvider>
   )
 }

@@ -1,19 +1,11 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Modal, Form, Input, Select, Space, message } from 'antd'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import { Form, Input, Select, message } from 'antd'
 import PosterComponent from './PosterComponent'
-import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-
-const Footer = styled(Space)({
-  height: 56,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-})
+import CommonModal from '@/components/CommonModal'
 
 interface Props {
   visible: boolean
@@ -70,21 +62,15 @@ const EditProject = (props: Props) => {
   }, [props.details])
 
   return (
-    <Modal
-      width={420}
+    <CommonModal
       title={
         props.details?.id ? t('project.editProject') : t('common.createProject')
       }
-      visible={props.visible}
-      footer={false}
-      onCancel={props.onChangeVisible}
-      bodyStyle={{ padding: '16px 24px 0' }}
-      destroyOnClose
-      maskClosable={false}
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      isVisible={props.visible}
+      onClose={props.onChangeVisible}
+      onConfirm={onConfirm}
     >
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" style={{ paddingRight: 20 }}>
         <Form.Item
           label={t('project.projectPoster')}
           rules={[{ required: true, message: '' }]}
@@ -111,10 +97,11 @@ const EditProject = (props: Props) => {
           name="name"
         >
           <Input
+            allowClear
+            ref={inputRefDom as any}
             autoComplete="off"
             maxLength={30}
             placeholder={t('common.pleaseProjectName')}
-            ref={inputRefDom as any}
             autoFocus
           />
         </Form.Item>
@@ -139,13 +126,7 @@ const EditProject = (props: Props) => {
           </Select>
         </Form.Item>
       </Form>
-      <Footer size={16}>
-        <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
-        <Button type="primary" onClick={onConfirm}>
-          {t('common.confirm')}
-        </Button>
-      </Footer>
-    </Modal>
+    </CommonModal>
   )
 }
 

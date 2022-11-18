@@ -1,10 +1,8 @@
-/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Modal, Form, Input, Space, message } from 'antd'
+import { Form, Input, Space, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import Editor from '@/components/Editor'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -13,6 +11,7 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
 
 const FormWrap = styled(Form)({
   paddingTop: 2,
@@ -50,14 +49,6 @@ const FormWrap = styled(Form)({
   '.ant-form-item-control-input': {
     minHeight: 'inherit',
   },
-})
-
-const ModalFooter = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: '0 24px',
 })
 
 interface Props {
@@ -161,17 +152,12 @@ const EditIteration = (props: Props) => {
   }, [props.visible])
 
   return (
-    <Modal
-      visible={props.visible}
+    <CommonModal
+      isVisible={props.visible}
       width={758}
-      footer={false}
       title={props?.id ? t('project.editIterate') : t('common.createIterate')}
-      onCancel={onCancel}
-      bodyStyle={{ padding: '16px 4px 16px 24px' }}
-      destroyOnClose
-      maskClosable={false}
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      onClose={onCancel}
+      onConfirm={onConfirm}
     >
       <div
         style={{ maxHeight: 464, overflow: 'auto', padding: '0 20px 0 2px' }}
@@ -206,7 +192,7 @@ const EditIteration = (props: Props) => {
             >
               <RangePicker
                 isShowQuick={false}
-                value={form.getFieldValue('time')}
+                dateValue={form.getFieldValue('time')}
                 onChange={(_values: any) => onChangePicker(_values)}
               />
             </Form.Item>
@@ -219,14 +205,7 @@ const EditIteration = (props: Props) => {
           </div>
         </FormWrap>
       </div>
-
-      <ModalFooter size={16}>
-        <Button onClick={onCancel}>{t('common.cancel')}</Button>
-        <Button type="primary" onClick={onConfirm}>
-          {t('common.confirm2')}
-        </Button>
-      </ModalFooter>
-    </Modal>
+    </CommonModal>
   )
 }
 

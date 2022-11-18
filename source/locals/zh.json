@@ -1,4 +1,62 @@
 {
+  "p2": {
+    "maxUploadText": "最大支持130个字长度的文件名！",
+    "nameNotNull": "需求标题不能为空！",
+    "toast": "提示",
+    "exportDemandText": "导出需求会根据当前筛选条件进行导出，系统一次性最多只能导出5000个需求，请通过筛选将需求控制在5000个以内，再进行导出！",
+    "pleaseEditText": "请编辑成果内容",
+    "exportFields": "导出需求字段选择",
+    "editAchievements": "编辑成果",
+    "pComment": "评论{{inner}}的日志",
+    "only1": "请输入",
+    "need1": "请选择关联项目",
+    "need2": "请选择关联需求",
+    "need3": "需求关联成功",
+    "title": {
+      "t1d": "今日完成工作",
+      "t1t": "明日计划工作",
+      "t2d": "本周完成工作",
+      "t2t": "下周完成工作",
+      "t3d": "本月完成工作",
+      "t3t": "下月完成工作"
+    },
+    "noRead": "未读",
+    "conSuccess": "评论成功",
+    "ge": "个",
+    "m1": "描述",
+    "d1": "编辑迭代成果",
+    "d2": "迭代成果",
+    "search": "搜索日志内容",
+    "addAdjunct": "添加附件",
+    "managingDemand": "关联需求",
+    "haveRead": "已阅",
+    "RelatedRequirements": "关联需求",
+    "whiteDay": "写日志",
+    "synopsis": "内容摘要",
+    "NumberOfAttachments": "附件数量",
+    "dateCreated": "创建日期",
+    "MyReadingStatus": "我的阅读状态",
+    "show": "查看",
+    "edit": "修改",
+    "sender": "发送人",
+    "OnlySee": "只看未阅",
+    "new": "新",
+    "dayList": {
+      "t1": "我发出的",
+      "t2": "发出日报",
+      "t3": "发出周报",
+      "t4": "发出月报",
+      "t5": "我收到的",
+      "t6": "接收日报",
+      "t7": "接收周报",
+      "t8": "接收月报"
+    },
+    "whiteList": {
+      "t1": "写日报",
+      "t2": "写周报",
+      "t3": "写月报"
+    }
+  },
   "newlyAdd": {
     "notEnterNull": "下拉值不能为空！",
     "onlyChooseStatus": "至少选择一个添加状态！",
@@ -348,7 +406,8 @@
     "pleaseChooseDeal": "请选择处理人",
     "add23": "添加",
     "finishCreate": "完成并创建下一个",
-    "confirm2": "确认"
+    "confirm2": "确认",
+    "finished": "已完成"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",
@@ -382,6 +441,7 @@
     "project": "项目",
     "mine": "我的",
     "staff": "员工",
+    "information": "日志",
     "companyManagement": "公司管理",
     "setting": "设置"
   },

@@ -1,10 +1,59 @@
 /* eslint-disable max-lines */
+// 两次以上的公共样式
+
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { Table, Input, Slider } from 'antd'
+import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
+
+const TextWrapEditor = styled.div({
+  p: {
+    marginBottom: '0px!important',
+  },
+  img: { maxWidth: '100%' },
+})
+
+const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    '&: hover': {
+      '.anticon': {
+        color: '#2877ff',
+      },
+    },
+  },
+  ({ width, height, isRight }) => ({
+    width,
+    height,
+    justifyContent: isRight ? 'right' : 'center',
+  }),
+)
+
+const DateQuickWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 14px',
+    height: 20,
+    borderRadius: 6,
+    cursor: 'pointer',
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: '18px',
+    marginTop: 16,
+    '&: hover': {
+      border: '1px solid  #F0F4FA',
+      background: '#F0F4FA',
+      color: '#2877ff',
+    },
+  },
+  ({ isActive }) => ({
+    border: isActive ? '1px solid #2877ff' : '1px solid #EBEDF0',
+    color: isActive ? '#2877ff' : '#646566',
+  }),
+)
 
 const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
   {
@@ -21,12 +70,12 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
-    cursor: 'pointer',
     minHeight: 32,
     borderRadius: 4,
     padding: '0 8px',
   },
   ({ isCanEdit, isTable }) => ({
+    cursor: isCanEdit ? 'pointer' : 'inherit',
     justifyContent: isTable ? 'flex-start' : 'space-between',
     minWidth: isTable ? 0 : 60,
     '&: hover': {
@@ -38,8 +87,131 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
   }),
 )
 
+const editButton = css`
+  padding: 0 16px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f2f2f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #646566;
+  cursor: pointer;
+  font-size: 14px;
+  width: fit-content;
+  &:hover {
+    background-color: #f0f4fa;
+    color: #2877ff;
+  }
+`
+
+const ProgressWrapUpload = styled(Progress)({
+  '.ant-progress-status-exception .ant-progress-bg': {
+    backgroundColor: '#ff5c5e',
+    height: '2px !important',
+  },
+  '.ant-progress-status-exception .ant-progress-text': {
+    color: '#ff5c5e',
+  },
+  '.ant-progress-success-bg .ant-progress-bg': {
+    backgroundColor: '#2877ff',
+    height: '2px !important',
+  },
+  '.ant-progress-status-success .ant-progress-bg': {
+    backgroundColor: '#43ba9a',
+    height: '2px !important',
+  },
+  '.ant-progress-status-success .ant-progress-text': {
+    color: '#43ba9a',
+  },
+  '.ant-progress-inner': {
+    height: '2px !important',
+    minWidth: 200,
+  },
+  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
+    {
+      fontSize: 10,
+    },
+})
+
+const StatusTag = styled.div<{ status: number }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+    width: 'fit-content',
+  },
+  ({ status }) => ({
+    color: status === 1 ? '#2877FF' : status === 2 ? '#43BA9A' : '#969799',
+    background: status === 1 ? '#F2F7FF' : status === 2 ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
+
+const FormWrapDemand = styled(Form)({
+  padding: '0 20px 0 2px',
+  '.labelIcon': {
+    display: 'flex',
+    alignItems: 'flex-start',
+    svg: {
+      fontSize: 16,
+      color: '#969799',
+      margin: '3px 8px 0 0',
+    },
+  },
+  '.ant-form-item-label': {
+    '> label::after': {
+      display: 'none',
+    },
+    '> label': {
+      display: 'flex',
+      alignItems: 'flex-start',
+    },
+    '.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after':
+      {
+        display: 'inline-block',
+        color: '#ff4d4f',
+        fontSize: 14,
+        content: "'*'",
+      },
+    '> label::before': {
+      display: 'none!important',
+    },
+  },
+  '.ant-form-item': {
+    width: '100%',
+  },
+  '.ant-form-item-control-input': {
+    minHeight: 'inherit',
+  },
+})
+
+const IconFontWrap = styled(IconFont)<{ active?: boolean; isHover?: any }>(
+  {
+    fontSize: 20,
+    cursor: 'pointer',
+  },
+  ({ active }) => ({
+    color: active ? '#2877FF' : '#969799',
+  }),
+  ({ isHover }) => ({
+    '&: hover': {
+      color: isHover ? '#2877FF' : '#969799',
+    },
+  }),
+)
+
+const DividerWrap = styled(Divider)({
+  height: 20,
+  margin: 0,
+})
+
 const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
+    padding: '10px 20px',
     maxWidth: 500,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -73,6 +245,7 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-form-item {
     margin-bottom: 0;
+    padding-top: 0 !important;
   }
   .ant-picker {
     border: none;
@@ -89,15 +262,15 @@ const DelWrap = styled.span({
   textDecoration: 'line-through',
 })
 
+// 添加符号 例： 标签添加与附件添加
 const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    height: 26,
+    justifyContent: 'center',
     boxSizing: 'border-box',
     cursor: 'pointer',
     borderRadius: 6,
-    width: 'fit-content',
     '.anticon': {
       fontSize: 16,
       alignItems: 'center',
@@ -111,6 +284,8 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
     },
   },
   ({ hasColor, hasDash }) => ({
+    width: hasDash ? 22 : 'fit-content',
+    height: hasDash ? 22 : 32,
     padding: hasDash ? '0 4px' : hasColor ? '0 8px' : 0,
     color: hasColor ? '#2877FF' : '#969799',
     border: hasDash ? '1px dashed #969799' : '1px solid white',
@@ -174,31 +349,37 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
-const SliderWrap = styled(Slider)({
-  margin: '0!important',
-  '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
-    height: '8px!important',
-  },
-  '.ant-slider-rail': {
-    backgroundColor: '#F2F2F4!important',
-    borderRadius: 10,
-  },
-  '.ant-slider-track': {
-    backgroundColor: '#43BA9A!important',
-  },
-  '.ant-slider-handle': {
-    width: 20,
-    height: 20,
-    border: '1px solid #EBEDF0!important',
-    marginTop: -7,
-    '&: hover': {
-      border: '1px solid #2877FF!important',
+const SliderWrap = styled(Slider)<{ isDisabled?: boolean }>(
+  {
+    margin: '0!important',
+    '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
+      height: '8px!important',
+    },
+    '.ant-slider-rail': {
+      backgroundColor: '#F2F2F4!important',
+      borderRadius: 10,
+    },
+    '.ant-slider-track': {
+      backgroundColor: '#43BA9A!important',
+    },
+    '.ant-slider-handle': {
+      width: 20,
+      height: 20,
+      border: '1px solid #EBEDF0!important',
+      marginTop: -7,
+    },
+    '.ant-slider-handle:focus': {
+      boxShadow: 'none',
     },
   },
-  '.ant-slider-handle:focus': {
-    boxShadow: 'none',
-  },
-})
+  ({ isDisabled }) => ({
+    '.ant-slider-handle': {
+      '&: hover': {
+        border: isDisabled ? '1px solid #2877FF!important' : '',
+      },
+    },
+  }),
+)
 
 const NameWrap = styled.div({
   width: 32,
@@ -307,12 +488,14 @@ const PaginationWrap = styled.div`
   align-items: center;
   padding-right: 16px;
 `
+
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
-  padding: 16px 24px;
+  padding: 16px 24px 0px;
   background: #f5f7fa;
 `
+
 const StaffTableWrap2 = styled(StaffTableWrap)`
   padding-top: 0;
 `
@@ -570,6 +753,35 @@ const PriorityWrap = styled.div<{ status?: any }>({
   },
 })
 
+// 表格-滚动条居底
+const TableStyleBox = styled(TableWrap)<{
+  isPadding?: any
+  isBottom?: any
+  isHover?: any
+}>(
+  {
+    height: '100%',
+    '.ant-table, .ant-table-content,.ant-table-container': {
+      height: '100%',
+    },
+    '.ant-table-row:hover': {
+      '.dropdownIcon': {
+        visibility: 'visible',
+      },
+    },
+  },
+  ({ isPadding }) => ({
+    '.ant-table-thead > tr > th:nth-child(1)': {
+      paddingLeft: isPadding ? 64 : 16,
+    },
+  }),
+  ({ isBottom }) => ({
+    '.ant-table table': {
+      paddingBottom: isBottom,
+    },
+  }),
+)
+
 export {
   PriorityWrap,
   StatusWrap,
@@ -612,7 +824,17 @@ export {
   AddWrap,
   DelWrap,
   SelectWrapBedeck,
+  DividerWrap,
+  IconFontWrap,
+  FormWrapDemand,
   ListNameWrap,
+  StatusTag,
+  ProgressWrapUpload,
+  editButton,
   CanOperation,
   IconFontWrapEdit,
+  DateQuickWrap,
+  CloseWrap,
+  TextWrapEditor,
+  TableStyleBox,
 }

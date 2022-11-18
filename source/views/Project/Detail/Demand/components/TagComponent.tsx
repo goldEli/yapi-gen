@@ -1,8 +1,7 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Input, message, Popover, Space } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
@@ -118,6 +117,7 @@ const TagBox = (props: TagProps) => {
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
+  const inputRefDom = useRef<HTMLInputElement>(null)
   let projectId: any
   if (props?.id) {
     projectId = props?.id
@@ -147,6 +147,12 @@ const TagBox = (props: TagProps) => {
       setValue('')
     }
   }, [props.isClear])
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
+  }, [])
 
   const onPressEnter = (val: any) => {
     setValue(val)
@@ -178,6 +184,7 @@ const TagBox = (props: TagProps) => {
     <TagWrap title="">
       <div style={{ padding: '0px 16px' }}>
         <SearchInput
+          ref={inputRefDom as any}
           onPressEnter={(e: any) => onPressEnter(e.target.value)}
           onChange={e => setValue(e.target.value)}
           suffix={
@@ -189,6 +196,7 @@ const TagBox = (props: TagProps) => {
           allowClear
           value={value}
           placeholder={t('common.searchOrCreate')}
+          autoFocus
         />
       </div>
       <div style={{ maxHeight: 200, overflow: 'auto', marginTop: 4 }}>
@@ -373,7 +381,7 @@ const TagComponent = (props: Props) => {
                 color: '#969799',
                 fontSize: 14,
               }}
-              type="close-circle-fill"
+              type="close-solid"
               onClick={() => onDeleteInfoDemand(i)}
             />
           ) : null}
@@ -386,16 +394,18 @@ const TagComponent = (props: Props) => {
           trigger="click"
           onVisibleChange={onVisibleOpenChange}
           content={
-            <TagBox
-              isClear={isClear}
-              tap={onAddDemandTags}
-              canAdd={props.canAdd}
-              onChangeIsClear={setIsClear}
-              onChangeIsOpen={setIsOpen}
-              onChangeTag={props.onChangeTag}
-              checkedTags={checkedTags}
-              id={props?.id}
-            />
+            isOpen ? (
+              <TagBox
+                isClear={isClear}
+                tap={onAddDemandTags}
+                canAdd={props.canAdd}
+                onChangeIsClear={setIsClear}
+                onChangeIsOpen={setIsOpen}
+                onChangeTag={props.onChangeTag}
+                checkedTags={checkedTags}
+                id={props?.id}
+              />
+            ) : null
           }
           getPopupContainer={node => node}
         >

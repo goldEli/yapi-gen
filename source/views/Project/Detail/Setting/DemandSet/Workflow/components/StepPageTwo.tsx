@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-/* eslint-disable multiline-ternary */
 /* eslint-disable max-len */
 import styled from '@emotion/styled'
 import { Table, Space, Checkbox, message } from 'antd'
@@ -126,7 +125,6 @@ const StepPageTwo = () => {
       })
       message.success(t('common.saveSuccess'))
     } catch (error) {
-
       //
     }
   }

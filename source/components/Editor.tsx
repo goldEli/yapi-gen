@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -22,6 +22,8 @@ interface Props {
   onChange?(value: string): void
   onChangeValue?(value: string): void
   height?: number
+  placeholder?: any
+  color?: boolean
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -74,14 +76,15 @@ i18nAddResources('en', {
   },
 })
 
-const Wrap = styled.div<{ minHeight?: any }>(
+const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: 6,
     border: '1px solid #ebedf0',
     zIndex: 100,
-    overflow: 'hidden',
+    marginLeft: '2px',
+    padding: '1px',
     '.w-e-text-container [data-slate-editor] p': {
       margin: 0,
     },
@@ -90,10 +93,9 @@ const Wrap = styled.div<{ minHeight?: any }>(
       fontStyle: 'inherit',
     },
     '&: hover': {
-      borderColor: '#5297ff',
-      boxShadow: '0 0 0 2px rgb(40 119 255 / 20%)',
       borderRightWidth: 1,
       outline: 0,
+      marginLeft: '2px',
     },
   },
   ({ minHeight }) => ({
@@ -101,9 +103,12 @@ const Wrap = styled.div<{ minHeight?: any }>(
       minHeight: minHeight || 120,
     },
   }),
+  ({ red }) => ({
+    borderColor: red ? 'red' : '',
+  }),
 )
 
-const EditorBox = (props: Props) => {
+const EditorBox = (props: Props, ref: any) => {
   const [t, i18n] = useTranslation()
   const [key, setKey] = useState(1)
   const customParseLinkUrl = (url: string): string => {
@@ -118,7 +123,7 @@ const EditorBox = (props: Props) => {
   const [editConfig, setEditConfig] = useState(toolbarConfig)
 
   const editorConfig: Partial<IEditorConfig> = {
-    placeholder: t('components.pleaseContent'),
+    placeholder: props.placeholder ?? t('components.pleaseContent'),
     MENU_CONF: {
       fontFamily: {
         fontFamilyList: [
@@ -131,6 +136,9 @@ const EditorBox = (props: Props) => {
           'Times New Roman',
           'Verdana',
         ],
+      },
+      fontSize: {
+        fontSizeList: ['12px', '16px', '40px'],
       },
       uploadImage: {
         async customUpload(
@@ -200,12 +208,15 @@ const EditorBox = (props: Props) => {
 
   const onChange = (e: any) => {
     i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
-    props.onChangeValue?.(e.getHtml())
-    props.onChange?.(e.getHtml())
+    props.onChangeValue?.(e.getHtml().trim())
+    props.onChange?.(e.getHtml().trim())
   }
 
+  useImperativeHandle(ref, () => {
+    return {}
+  })
   return (
-    <Wrap id="editorWrap" minHeight={props?.height}>
+    <Wrap red={props.color} id="editorWrap" minHeight={props?.height}>
       <Toolbar
         key={key}
         editor={editor}
@@ -225,4 +236,4 @@ const EditorBox = (props: Props) => {
   )
 }
 
-export default EditorBox
+export default forwardRef(EditorBox)

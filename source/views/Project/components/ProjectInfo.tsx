@@ -1,8 +1,7 @@
-/* eslint-disable complexity */
-import { Modal } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
 
 const InfoItem = styled.div({
   display: 'flex',
@@ -50,19 +49,15 @@ const ProjectInfo = (props: Props) => {
   const [t] = useTranslation()
   const { projectInfo } = useModel('project')
   return (
-    <Modal
-      width={420}
+    <CommonModal
       title={t('project.projectInformation')}
-      visible={props.visible}
-      footer={false}
-      onCancel={props.onChangeVisible}
-      bodyStyle={{ padding: '16px 4px 16px 24px' }}
-      maskClosable={false}
-      destroyOnClose
-      keyboard={false}
-      wrapClassName="vertical-center-modal"
+      isVisible={props.visible}
+      onClose={props.onChangeVisible}
+      isShowFooter={true}
     >
-      <div style={{ maxHeight: 544, overflow: 'auto', paddingRight: 20 }}>
+      <div
+        style={{ maxHeight: 544, overflow: 'auto', padding: '0 16px 16px 0' }}
+      >
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
           <div>{projectInfo.name}</div>
@@ -107,7 +102,7 @@ const ProjectInfo = (props: Props) => {
           <div>{projectInfo.memberCount || 0}</div>
         </InfoItem>
       </div>
-    </Modal>
+    </CommonModal>
   )
 }
 

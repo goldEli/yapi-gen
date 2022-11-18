@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
-/* eslint-disable consistent-return */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { StepBoxWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
@@ -98,6 +97,22 @@ const ItemWrap = styled.div({
   alignItems: 'center',
 })
 
+const IconFontWrap = styled(IconFont)({
+  fontSize: 16,
+  color: '#969799',
+  cursor: 'pointer',
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
+const FilesItems = styled.div({
+  marginTop: 24,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})
+
 const ImportDemand = () => {
   const [step, setStep] = useState(1)
   const [tabs, setTabs] = useState(2)
@@ -124,6 +139,7 @@ const ImportDemand = () => {
       message.warning(t('project.incorrectFormat'))
       return Upload.LIST_IGNORE
     }
+    return ''
   }
 
   const onUploadFileClick = async (option: any) => {
@@ -192,6 +208,11 @@ const ImportDemand = () => {
     setFileList([])
   }
 
+  // 删除已上传的文件
+  const onDelFile = (item: any) => {
+    setFileList(fileList?.filter((i: any) => i.uid !== item.uid))
+  }
+
   return (
     <Wrap language={i18n.language}>
       {isVisible && (
@@ -201,6 +222,7 @@ const ImportDemand = () => {
           importState={tabs}
           onClose={() => setIsVisible(false)}
           onConfirm={onConfirmTemplate}
+          isExport={false}
         />
       )}
       <StepWrap>
@@ -233,7 +255,7 @@ const ImportDemand = () => {
           <span>{t('newlyAdd.importSuccess')}</span>
         </StepBoxWrap>
       </StepWrap>
-      {step === 1 ? (
+      {step === 1 && (
         <>
           <TabsWrap>
             <TabsItem active={tabs === 2} onClick={() => onChangeTabs(2)}>
@@ -243,7 +265,7 @@ const ImportDemand = () => {
               {t('newlyAdd.importUpdate')}
             </TabsItem>
           </TabsWrap>
-          {tabs === 2 ? (
+          {tabs === 2 && (
             <TextWrap>
               <div>{t('newlyAdd.importText1')}</div>
               <span>{t('newlyAdd.importText2')}</span>
@@ -255,7 +277,8 @@ const ImportDemand = () => {
               <span>{t('newlyAdd.importText8')}</span>
               <span>{t('newlyAdd.importText9')}</span>
             </TextWrap>
-          ) : (
+          )}
+          {tabs === 1 && (
             <TextWrap>
               <div>{t('newlyAdd.importText1')}</div>
               <span>{t('newlyAdd.importText10')}</span>
@@ -277,22 +300,22 @@ const ImportDemand = () => {
           {fileList?.length > 0 ? (
             <>
               {fileList?.map((ele: any) => (
-                <div
-                  key={ele.uid}
-                  style={{
-                    marginTop: 24,
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <IconFont
-                    style={{ fontSize: 24, marginRight: 4 }}
-                    type="colorXLS"
+                <FilesItems key={ele.uid}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <IconFont
+                      style={{ fontSize: 24, marginRight: 4 }}
+                      type="colorXLS"
+                    />
+                    <span>
+                      {ele.name} ({formatFileSize(ele.size)})
+                    </span>
+                  </div>
+                  <IconFontWrap
+                    type="close"
+                    style={{ fontSize: 16 }}
+                    onClick={() => onDelFile(ele)}
                   />
-                  <span>
-                    {ele.name} ({formatFileSize(ele.size)})
-                  </span>
-                </div>
+                </FilesItems>
               ))}
               <div
                 style={{
@@ -342,7 +365,7 @@ const ImportDemand = () => {
             </UploadDragger>
           )}
         </>
-      ) : null}
+      )}
 
       {step === 2 ? (
         <>

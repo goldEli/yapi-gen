@@ -1,9 +1,9 @@
+// 创建需求和编辑需求的弹窗
+
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 /* eslint-disable max-lines */
-/* eslint-disable no-negated-condition */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/no-unstable-nested-components */
@@ -16,7 +16,6 @@ import {
   Select,
   Space,
   message,
-  Progress,
   TreeSelect,
   DatePicker,
   Popover,
@@ -35,8 +34,15 @@ import { useSearchParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
-import { PriorityWrap, SliderWrap, AddWrap } from '@/components/StyleCommon'
+import {
+  PriorityWrap,
+  SliderWrap,
+  AddWrap,
+  ProgressWrapUpload,
+  CloseWrap,
+} from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
+import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
 import CommonModal from './CommonModal'
 
 const ShowLabel = styled.div({
@@ -95,7 +101,7 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingRight: 24,
+  paddingRight: 0,
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -146,35 +152,6 @@ const AddButtonWrap = styled.div({
   color: '#2877FF',
   padding: '0 16px',
   cursor: 'pointer',
-})
-
-const ProgressWrap = styled(Progress)({
-  '.ant-progress-status-exception .ant-progress-bg': {
-    backgroundColor: '#ff5c5e',
-    height: '2px !important',
-  },
-  '.ant-progress-status-exception .ant-progress-text': {
-    color: '#ff5c5e',
-  },
-  '.ant-progress-success-bg .ant-progress-bg': {
-    backgroundColor: '#2877ff',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-bg': {
-    backgroundColor: '#43ba9a',
-    height: '2px !important',
-  },
-  '.ant-progress-status-success .ant-progress-text': {
-    color: '#43ba9a',
-  },
-  '.ant-progress-inner': {
-    height: '2px !important',
-    minWidth: 200,
-  },
-  '.ant-progress-small.ant-progress-line,.ant-progress-small.ant-progress-line .ant-progress-text .anticon':
-    {
-      fontSize: 10,
-    },
 })
 
 const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
@@ -273,6 +250,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory,
     updateDemandCategory,
     setIsUpdateStatus,
+    setIsOpenEditDemand,
   } = useModel('demand')
   const {
     memberList,
@@ -286,9 +264,10 @@ const EditDemand = (props: Props) => {
     colorList,
     getWorkflowList,
     workList,
+    selectAllStaffData,
   } = useModel('project')
-  const { selectIterate } = useModel('iterate')
-  const { setIsRefresh, userInfo } = useModel('user')
+  const { getIterateSelectList, selectIterate } = useModel('iterate')
+  const { userInfo } = useModel('user')
   const { getProjectList, setIsUpdateCreate } = useModel('mine')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const LeftDom = useRef<HTMLInputElement>(null)
@@ -338,19 +317,6 @@ const EditDemand = (props: Props) => {
     if (res) {
       form.setFieldsValue(res)
       setSchedule(res?.schedule)
-      if (treeArr?.find((j: any) => j.id === res.class)?.length) {
-        form.setFieldsValue({
-          class: '',
-        })
-      }
-      if (categoryData?.find((j: any) => j.id === res.category)?.length) {
-        setCategoryObj({})
-      } else {
-        setCategoryObj(
-          categoryData?.filter((i: any) => i.id === res.category)[0],
-        )
-      }
-
       const form1Obj: any = {}
       for (const key in res?.customField) {
         form1Obj[key] =
@@ -368,6 +334,7 @@ const EditDemand = (props: Props) => {
         res?.attachment.map((i: any) => ({
           path: i.attachment.path,
           id: i.id,
+          time: i.attachment.created_at,
         })),
       )
       setTagList(
@@ -388,12 +355,22 @@ const EditDemand = (props: Props) => {
           endTime: moment(res.expectedStart || 0),
         })
       }
-      const parentArr = demandList
 
+      const resultIterate = selectIterate?.list?.filter(
+        (k: any) => k.status === 1,
+      )
+      const parentArr = demandList
+      if (categoryData?.find((j: any) => j.id === res.category)?.length) {
+        setCategoryObj({})
+      } else {
+        setCategoryObj(
+          categoryData?.filter((i: any) => i.id === res.category)[0],
+        )
+      }
       form.setFieldsValue({
         copySendIds: getCommonUser(
           res?.copySend?.map((i: any) => i.copysend),
-          memberList,
+          selectAllStaffData,
         ),
         attachments: res?.attachment.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
@@ -405,34 +382,31 @@ const EditDemand = (props: Props) => {
           color: i.tag?.color,
           name: i.tag?.content,
         })),
+        iterateId: resultIterate.filter((i: any) => i.id === res?.iterateId)
+          .length
+          ? res?.iterateId
+          : null,
+        parentId: parentArr?.filter((i: any) => i.value === res?.parentId)
+          .length
+          ? res?.parentId
+          : null,
+        class:
+          res.class === 0 ||
+          JSON.stringify(treeArr?.find((j: any) => j.id === res.class)) !== '{}'
+            ? res.class
+            : null,
       })
-      if (
-        selectIterate?.list?.filter((i: any) => i.id === res?.iterateId).length
-      ) {
-        form.setFieldsValue({
-          iterateId: res?.iterateId,
-        })
-      }
-      if (parentArr?.filter((i: any) => i.value === res?.parentId).length) {
-        form.setFieldsValue({
-          parentId: res?.parentId,
-        })
-      }
     } else {
       form.resetFields()
       form1.resetFields()
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }
 
-  const getProjectData = async () => {
-    const res = await getProjectList({
-      self: 1,
-      all: 1,
-    })
-    setProjectList(res.data)
-  }
-
-  const getInit = async (value?: any) => {
+  const getInit = async (value?: any, categoryId?: any) => {
+    setIsOpenEditDemand(true)
     const [classTree, categoryData, allDemandArr] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
@@ -442,6 +416,7 @@ const EditDemand = (props: Props) => {
         all: true,
         projectId: value || projectId,
       }),
+      getIterateSelectList({ projectId: value || projectId, all: true }),
     ])
     setAllDemandList(allDemandArr)
     setClassTreeData([
@@ -455,7 +430,7 @@ const EditDemand = (props: Props) => {
       ],
       ...getNestedChildren(classTree, 0),
     ])
-    if (props?.isQuickCreate) {
+    if (props?.isQuickCreate || props?.notGetPath) {
       getProjectInfo({ projectId: value || projectId })
     }
 
@@ -480,8 +455,35 @@ const EditDemand = (props: Props) => {
         )
       }
       if (props?.isQuickCreate) {
-        setCategoryObj(categoryData?.list[0])
+        if (categoryId) {
+          setCategoryObj(
+            categoryData?.list?.filter((i: any) => i.id === categoryId)[0],
+          )
+          form.setFieldsValue({
+            type: 'need',
+          })
+        } else {
+          setCategoryObj(categoryData?.list[0])
+        }
       }
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    }
+  }
+
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.data)
+    let hisCategoryData: any
+    if (localStorage.getItem('quickCreateData')) {
+      hisCategoryData = JSON.parse(
+        decryptPhp(localStorage.getItem('quickCreateData') as any),
+      )
+      getInit(hisCategoryData?.projectId, hisCategoryData?.categoryId)
     }
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -491,19 +493,20 @@ const EditDemand = (props: Props) => {
   useEffect(() => {
     if (props?.visible) {
       setCategoryObj(createCategory)
-      const value = !props?.notGetPath
-        ? paramsData?.id
-        : props?.isQuickCreate
-        ? null
-        : props?.projectId
-      setProjectId(value)
+      let resultValue
+      if (props?.notGetPath) {
+        resultValue = props?.isQuickCreate ? null : props?.projectId
+      } else {
+        resultValue = paramsData?.id
+      }
+      setProjectId(resultValue)
       if (props?.isQuickCreate) {
         getProjectData()
         setTimeout(() => {
           inputRefDom.current?.focus()
         }, 100)
       } else {
-        getInit(value)
+        getInit(resultValue)
       }
     }
   }, [props?.visible])
@@ -530,20 +533,13 @@ const EditDemand = (props: Props) => {
     setPriorityDetail({})
     getList()
     setIsShowFields(false)
-    if (!props?.isQuickCreate) {
-      props.onUpdate?.()
-    } else {
+    setIsOpenEditDemand(false)
+    if (props?.isQuickCreate) {
       setIsUpdateCreate(true)
-    }
-    if (!hasNext) {
-      setChangeCategoryFormData({})
-      setCreateCategory({})
-      props.onChangeVisible()
-      setTimeout(() => {
-        form.resetFields()
-        form1.resetFields()
-      }, 100)
     } else {
+      props.onUpdate?.()
+    }
+    if (hasNext) {
       form.resetFields()
       form.setFieldsValue({
         projectId,
@@ -560,6 +556,27 @@ const EditDemand = (props: Props) => {
       setTimeout(() => {
         inputRefDom.current?.focus()
       }, 100)
+    } else {
+      setChangeCategoryFormData({})
+      setCreateCategory({})
+      props.onChangeVisible()
+      setTimeout(() => {
+        form.resetFields()
+        form1.resetFields()
+      }, 100)
+    }
+
+    if (props.isQuickCreate) {
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(
+          JSON.stringify({
+            projectId,
+            type: 'need',
+            categoryId: categoryObj?.id,
+          }),
+        ),
+      )
     }
   }
 
@@ -589,7 +606,7 @@ const EditDemand = (props: Props) => {
       if (obj?.type?.attr === 'date' && values1[k]) {
         values1[obj.content] = moment(values1[obj.content]).format(
           obj?.type?.value[0] === 'datetime'
-            ? 'YYYY-MM-DD hh:mm:ss'
+            ? 'YYYY-MM-DD HH:mm:ss'
             : 'YYYY-MM-DD',
         )
       } else if (
@@ -636,7 +653,7 @@ const EditDemand = (props: Props) => {
           ...[result.url],
         ],
       })
-      setAttachList([...attachList, ...[result]])
+      setAttachList((oldAttachList: any) => oldAttachList.concat([result]))
     } else {
       const arr = attachList
       const comResult = arr.filter((i: any) => i.id !== result.uid)
@@ -667,7 +684,7 @@ const EditDemand = (props: Props) => {
 
   const Children = () => {
     return (
-      <ProgressWrap
+      <ProgressWrapUpload
         status={uploadStatus}
         percent={percentVal}
         size="small"
@@ -688,7 +705,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     form.setFieldsValue({
       users: [],
-      copysend: [],
     })
     getInit(value)
   }
@@ -700,7 +716,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     form.setFieldsValue({
       users: [],
-      copysend: [],
     })
   }
 
@@ -716,6 +731,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsShowFields(false)
+    setIsOpenEditDemand(false)
   }
 
   const titleText = () => {
@@ -750,16 +766,16 @@ const EditDemand = (props: Props) => {
   }
 
   const onClickCategory = (item: any) => {
-    if (!props.demandId) {
-      setCategoryObj(item)
-      setIsShowPop(false)
-    } else {
+    if (props.demandId) {
       changeCategoryForm.setFieldsValue({
         categoryId: item.id,
       })
       setCurrentCategory(item)
       onChangeSelect(item.id)
       setIsShowChangeCategory(true)
+    } else {
+      setCategoryObj(item)
+      setIsShowPop(false)
     }
   }
 
@@ -947,7 +963,9 @@ const EditDemand = (props: Props) => {
               </Popover>
             )}
           </div>
-          <IconFont type="close" onClick={onCancel} />
+          <CloseWrap width={60} height={52} onClick={onCancel}>
+            <IconFont type="close" />
+          </CloseWrap>
         </ModalHeader>
         <ModalContent>
           <LeftWrap ref={LeftDom}>
@@ -1026,28 +1044,35 @@ const EditDemand = (props: Props) => {
                 }
                 name="info"
               >
-                <Editor height={360} />
+                <Editor height={292} />
               </Form.Item>
-              {projectId && (
-                <Form.Item
-                  label={
-                    <div style={{ fontWeight: 'bold' }}>{t('common.tag')}</div>
-                  }
-                  name="tagIds"
-                >
-                  <TagComponent
-                    defaultList={tagList}
-                    onChangeTag={onChangeTag}
-                    isQuick={props.isQuickCreate}
-                    addWrap={
-                      <AddWrap hasDash>
-                        <IconFont type="plus" />
-                      </AddWrap>
-                    }
-                  />
-                </Form.Item>
-              )}
               {projectId &&
+                projectInfo.projectPermissions?.length > 0 &&
+                projectInfo.projectPermissions?.filter(
+                  (i: any) => i.name === '编辑需求',
+                )?.length > 0 && (
+                  <Form.Item
+                    label={
+                      <div style={{ fontWeight: 'bold' }}>
+                        {t('common.tag')}
+                      </div>
+                    }
+                    name="tagIds"
+                  >
+                    <TagComponent
+                      defaultList={tagList}
+                      onChangeTag={onChangeTag}
+                      isQuick={props.isQuickCreate}
+                      addWrap={
+                        <AddWrap hasDash>
+                          <IconFont type="plus" />
+                        </AddWrap>
+                      }
+                    />
+                  </Form.Item>
+                )}
+              {projectId &&
+                projectInfo.projectPermissions?.length > 0 &&
                 projectInfo?.projectPermissions?.filter(
                   (i: any) => i.name === '附件上传',
                 ).length > 0 && (
@@ -1066,7 +1091,12 @@ const EditDemand = (props: Props) => {
                       onChangeAttachment={onChangeAttachment}
                       onBottom={onBottom}
                       addWrap={
-                        <AddWrap hasColor>
+                        <AddWrap
+                          style={{
+                            marginBottom: '20px',
+                          }}
+                          hasColor
+                        >
                           <IconFont type="plus" />
                           <div>{t('common.add23')}</div>
                         </AddWrap>
@@ -1227,11 +1257,7 @@ const EditDemand = (props: Props) => {
                   placeholder={t('common.pleaseChooseCopySend')}
                   getPopupContainer={node => node}
                   optionFilterProp="label"
-                  disabled={!projectId}
-                  options={memberList?.map((i: any) => ({
-                    label: i.name,
-                    value: i.id,
-                  }))}
+                  options={selectAllStaffData}
                 />
               </Form.Item>
             </FormWrap>

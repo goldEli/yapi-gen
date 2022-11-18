@@ -1,12 +1,9 @@
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
 /* eslint-disable react/jsx-handler-names */
 import { ShapeContent } from '@/components/Shape'
 import { LevelContent } from '@/components/Level'
 import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
-import { css } from '@emotion/css'
 import {
   ClickWrap,
   ShowWrap,
@@ -24,12 +21,18 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
 import { useModel } from '@/models'
+import TableQuickEdit from './TableQuickEdit'
+import styled from '@emotion/styled'
 
-const flexCss = css`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
+const Wrap = styled.div<{ isEdit?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  ({ isEdit }) => ({
+    cursor: isEdit ? 'inherit' : 'pointer',
+  }),
+)
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
@@ -128,15 +131,45 @@ export const useDynamicColumns = (state: any) => {
                 {record.category}
               </CategoryWrap>
             </Tooltip>
-            <Tooltip title={text} getPopupContainer={node => node}>
-              <ListNameWrap
-                isName
-                isClose={record.status?.is_end === 1}
-                onClick={() => onToDetail(record)}
-              >
-                {text}
-              </ListNameWrap>
-            </Tooltip>
+            <TableQuickEdit
+              type="text"
+              defaultText={text}
+              keyText="name"
+              item={record}
+              onUpdate={onUpdate}
+              isMineOrHis
+            >
+              <Tooltip title={text} getPopupContainer={node => node}>
+                <ListNameWrap
+                  isName
+                  isClose={record.status?.is_end === 1}
+                  onClick={() => onToDetail(record)}
+                >
+                  {text}
+                  {record.new === 1 && (
+                    <span
+                      style={{
+                        position: 'relative',
+                        display: 'inline-block',
+                        left: '1px',
+                        top: '-10px',
+                        width: '28px',
+                        height: '20px',
+                        background: '#FF5C5E',
+                        borderRadius: '10px 10px 10px 10px',
+                        color: '#FFFFFF',
+                        textAlign: 'center',
+                        lineHeight: '15px',
+                        fontSize: '12px',
+                        border: '2px solid #FFFFFF',
+                      }}
+                    >
+                      {t('p2.new')}
+                    </span>
+                  )}
+                </ListNameWrap>
+              </Tooltip>
+            </TableQuickEdit>
           </div>
         )
       },
@@ -151,7 +184,12 @@ export const useDynamicColumns = (state: any) => {
       key: 'child_story_count',
       render: (text: string, record: any) => {
         return (
-          <ChildDemandTable id={record.project_id} value={text} row={record} />
+          <ChildDemandTable
+            id={record.project_id}
+            value={text}
+            row={record}
+            isMineOrHis
+          />
         )
       },
     },
@@ -159,20 +197,32 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
-      render: (text: any, record: Record<string, string | number>) => {
+      render: (text: any, record: any) => {
         return (
           <Pop
-            content={({ onHide }: { onHide(): void }) => (
-              <LevelContent
-                onTap={state.updatePriority}
-                onHide={onHide}
-                record={record}
-              />
-            )}
+            content={({ onHide }: { onHide(): void }) =>
+              record.project?.isPublic !== 1 &&
+              !record.project?.isUserMember ? null : (
+                <LevelContent
+                  onTap={state.updatePriority}
+                  onHide={onHide}
+                  record={record}
+                />
+              )
+            }
             record={record}
           >
-            <div className={flexCss}>
-              <div className={flexCss}>
+            <Wrap
+              isEdit={
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              }
+            >
+              <Wrap
+                isEdit={
+                  record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember
+                }
+              >
                 <IconFont
                   type={text?.icon}
                   style={{
@@ -184,11 +234,14 @@ export const useDynamicColumns = (state: any) => {
                 <span style={{ marginRight: '5px' }}>
                   {text?.content_txt || '--'}
                 </span>
-              </div>
-              <ShowWrap>
-                <IconFont style={{ color: '#2877ff' }} type="down-icon" />
-              </ShowWrap>
-            </div>
+              </Wrap>
+              {record.project?.isPublic !== 1 &&
+              !record.project?.isUserMember ? null : (
+                <ShowWrap>
+                  <IconFont style={{ color: '#2877ff' }} type="down-icon" />
+                </ShowWrap>
+              )}
+            </Wrap>
           </Pop>
         )
       },
@@ -197,8 +250,19 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
       dataIndex: 'iteration',
       key: 'iterate_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_radio"
+            defaultText={text}
+            keyText="iterate_id"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            {text || '--'}
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -206,18 +270,27 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'class',
       key: 'class',
       width: 120,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
-          <HiddenText>
-            <OmitText
-              width={120}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text || '--'}
-            </OmitText>
-          </HiddenText>
+          <TableQuickEdit
+            type="treeSelect"
+            defaultText={text}
+            keyText="class_id"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || t('newlyAdd.unclassified')}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
         )
       },
     },
@@ -225,8 +298,28 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
       key: 'tag',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            keyText="tag"
+            type="fixed_select"
+            defaultText={text?.split(',') || []}
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text?.split(',') || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -237,7 +330,9 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) => {
-              return record.isExamine ? null : (
+              return record.isExamine ||
+                (record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember) ? null : (
                 <ShapeContent
                   tap={(value: any) => state.updateStatus(value)}
                   hide={onHide}
@@ -249,7 +344,14 @@ export const useDynamicColumns = (state: any) => {
             record={record}
           >
             <StyledShape
-              style={{ width: 'fit-content' }}
+              style={{
+                width: 'fit-content',
+                cursor:
+                  record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember
+                    ? 'inherit'
+                    : 'pointer',
+              }}
               onClick={record.isExamine ? onExamine : void 0}
               color={text?.status.color}
             >
@@ -271,8 +373,19 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersNameIds || []}
+            keyText="users"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -293,7 +406,6 @@ export const useDynamicColumns = (state: any) => {
                   value={record.schedule}
                   row={record}
                   onUpdate={onUpdate}
-                  listLength={state.listLength}
                   index={index}
                 />
               </div>
@@ -316,8 +428,19 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.copySend'),
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.usersCopySendIds || []}
+            keyText="copysend"
+            item={record}
+            onUpdate={onUpdate}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -336,8 +459,20 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedStart',
       key: 'expected_start_at',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="date"
+            defaultText={text}
+            keyText="expected_start_at"
+            item={record}
+            onUpdate={onUpdate}
+            value={['datetime']}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -346,8 +481,20 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="date"
+            defaultText={text}
+            keyText="expected_end_at"
+            item={record}
+            onUpdate={onUpdate}
+            value={['datetime']}
+            isMineOrHis
+          >
+            <span>{text || '--'}</span>
+          </TableQuickEdit>
+        )
       },
     },
     {
@@ -376,15 +523,23 @@ export const useDynamicColumns = (state: any) => {
         title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
         dataIndex: element.value,
         key: element.value,
-        render: (text: any) => {
+        render: (text: any, record: any) => {
           return (
-            <span>
-              {text?.value
-                ? Array.isArray(text?.value)
+            <TableQuickEdit
+              defaultText={text?.value}
+              keyText={element.value}
+              item={record}
+              onUpdate={onUpdate}
+              isCustom
+              isMineOrHis
+              type={record[element.value]?.attr}
+            >
+              <span>
+                {(Array.isArray(text?.value)
                   ? text?.value?.join('、')
-                  : text?.value
-                : '--'}
-            </span>
+                  : text?.value) || '--'}
+              </span>
+            </TableQuickEdit>
           )
         },
       })

@@ -1,8 +1,5 @@
-/* eslint-disable max-lines */
 /* eslint-disable camelcase */
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -55,7 +52,7 @@ const TableWrap = styled.div({
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 
@@ -429,7 +426,7 @@ const StepPageOne = (propsOne: Props) => {
           title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ padding: '0 20px 0 2px' }}>
+          <div style={{ padding: '0 16px 0 2px' }}>
             <HasDemandText>
               {t('newlyAdd.changeNewStatus', {
                 count: operationObj?.deleteData?.story_count,

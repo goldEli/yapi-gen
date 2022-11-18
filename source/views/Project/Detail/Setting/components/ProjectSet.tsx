@@ -1,19 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import {
-  Checkbox,
-  Space,
-  Modal,
-  Input,
-  Menu,
-  Dropdown,
-  message,
-  Spin,
-} from 'antd'
+import { Checkbox, Space, Input, Menu, Dropdown, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useModel } from '@/models'
 import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
@@ -22,6 +13,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import CommonModal from '@/components/CommonModal'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Warp = styled.div({
   padding: 16,
@@ -67,13 +60,6 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
-const IconWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  right: 10,
-  fontSize: '16px!important',
-})
-
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -84,6 +70,10 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
+    '.dropdownIcon': {
+      position: 'absolute',
+      right: 0,
+    },
     '.name': {
       fontSize: 14,
       color: 'black',
@@ -98,8 +88,8 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       '.name': {
         color: '#2877FF',
       },
-      [IconWrap.toString()]: {
-        display: 'block',
+      '.dropdownIcon': {
+        visibility: 'visible',
       },
     },
   },
@@ -210,6 +200,7 @@ const PermissionItem = (props: ItemProps) => {
 
 const ProjectSet = () => {
   const [t] = useTranslation()
+  const inputRefDom = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])
@@ -267,12 +258,6 @@ const ProjectSet = () => {
 
   useEffect(() => {
     init(true)
-  }, [])
-
-  useEffect(() => {
-    if (isRefresh) {
-      init(true)
-    }
   }, [isRefresh])
 
   const onSavePermission = async () => {
@@ -324,6 +309,9 @@ const ProjectSet = () => {
     if (type === 'edit') {
       setIsVisible(true)
       setAddValue(item.name)
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     } else {
       setIsDelete(true)
     }
@@ -387,32 +375,21 @@ const ProjectSet = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        <Modal
-          footer={false}
-          visible={isVisible}
-          title={false}
-          closable={false}
-          bodyStyle={{ padding: '16px 24px' }}
+        <CommonModal
+          isVisible={isVisible}
+          title={
+            operationDetail.id
+              ? t('setting.editPermission')
+              : t('setting.createPermission')
+          }
           width={420}
-          maskClosable={false}
-          destroyOnClose
-          keyboard={false}
-          wrapClassName="vertical-center-modal"
+          onClose={onClose}
+          isShowFooter
         >
-          <ModalHeader>
-            <span>
-              {operationDetail.id
-                ? t('setting.editPermission')
-                : t('setting.createPermission')}
-            </span>
-            <IconFont
-              onClick={onClose}
-              style={{ cursor: 'pointer' }}
-              type="close"
-            />
-          </ModalHeader>
-          <div style={{ margin: '24px 0' }}>
+          <div style={{ margin: ' 0 20px 24px 0' }}>
             <Input
+              ref={inputRefDom as any}
+              autoFocus
               autoComplete="off"
               maxLength={10}
               value={addValue}
@@ -420,13 +397,13 @@ const ProjectSet = () => {
               placeholder={t('setting.pleaseEnterName')}
             />
           </div>
-          <ModalFooter size={16}>
+          <ModalFooter size={16} style={{ padding: '0 20px 24px 0' }}>
             <Button onClick={onClose}>{t('common.cancel')}</Button>
             <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
               {t('common.confirm2')}
             </Button>
           </ModalFooter>
-        </Modal>
+        </CommonModal>
         <Warp>
           <Spin spinning={isSpinning}>
             <SetMain>
@@ -447,21 +424,12 @@ const ProjectSet = () => {
                           ? t('setting.systemGroup')
                           : t('setting.customGroup')}
                       </span>
-                      <Dropdown
-                        key={isMoreVisible.toString()}
-                        visible={isMoreVisible}
-                        overlay={() => menu(item)}
-                        placement="bottomRight"
-                        trigger={['hover']}
-                        getPopupContainer={node => node}
-                        onVisibleChange={visible => setIsMoreVisible(visible)}
-                      >
-                        <IconWrap
-                          type="more"
-                          hidden={item.type === 1}
-                          style={{ color: '#2877ff', fontSize: 16 }}
-                        />
-                      </Dropdown>
+                      <MoreDropdown
+                        isHidden={item.type === 1}
+                        isMoreVisible={isMoreVisible}
+                        onChangeVisible={setIsMoreVisible}
+                        menu={menu(item)}
+                      />
                     </MenuItem>
                   ))}
                 </MenuItems>

@@ -1,14 +1,16 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
-/* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Table, Pagination, Modal, Space, Spin } from 'antd'
+import { Pagination, Space, Spin } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
+import {
+  HiddenText,
+  PaginationWrap,
+  TableStyleBox,
+} from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -16,10 +18,23 @@ import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
+import EditorInfoReview from '@/components/EditorInfoReview'
+
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 600,
+  overflow: 'auto',
+  padding: '0 24px 16px',
+})
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
+  },
+  img: {
+    maxWidth: '100%',
   },
 })
 
@@ -103,6 +118,7 @@ const ChangeRecord = (props?: any) => {
     setDataList(result)
     setIsSpinning(false)
     setIsRefresh(false)
+    props.onChangeUpdate()
   }
 
   useEffect(() => {
@@ -115,7 +131,8 @@ const ChangeRecord = (props?: any) => {
     getList({ page: 1, size: pageObj.size }, order)
   }, [])
 
-  const onClickCheck = (item: any) => {
+  const onClickCheck = (item: any, key: any) => {
+    item.key = key
     setCheckDetail(item)
     setIsVisible(true)
   }
@@ -253,10 +270,10 @@ const ChangeRecord = (props?: any) => {
           >
             {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
-                {i === 'info' ? (
+                {i === 'info' || i === 'achieve_desc' ? (
                   <span
                     style={{ cursor: 'pointer', color: '#2877ff' }}
-                    onClick={() => onClickCheck(record)}
+                    onClick={() => onClickCheck(record, i)}
                   >
                     {text
                       ? text[i]?.length
@@ -306,10 +323,10 @@ const ChangeRecord = (props?: any) => {
           >
             {Object.keys(record?.fields).map((i: any) => (
               <span key={i}>
-                {i === 'info' ? (
+                {i === 'info' || i === 'achieve_desc' ? (
                   <span
                     style={{ cursor: 'pointer', color: '#2877ff' }}
-                    onClick={() => onClickCheck(record)}
+                    onClick={() => onClickCheck(record, i)}
                   >
                     {text
                       ? text[i]?.length
@@ -349,60 +366,63 @@ const ChangeRecord = (props?: any) => {
 
   return (
     <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
-      <Modal
-        visible={isVisible}
+      <CommonModal
+        isVisible={isVisible}
         title={t('project.changeInfo')}
-        footer={false}
         width={1080}
-        onCancel={() => setIsVisible(false)}
-        bodyStyle={{ padding: '8px 24px 24px' }}
-        destroyOnClose
-        maskClosable={false}
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
+        onClose={() => setIsVisible(false)}
+        isShowFooter
       >
         <SpaceWrap
           size={32}
-          style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
+          style={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'flex-start',
+            paddingRight: 16,
+          }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>{t('project.changeBefore')}</TitleWrap>
-            <div
-              style={{ display: 'flex', flexDirection: 'column' }}
-              dangerouslySetInnerHTML={{
-                __html: checkDetail?.beforeField?.info,
-              }}
-            />
+            <TitleWrap>{t('project.changeBefore')}</TitleWrap>=
+            <ContentWrap>
+              <EditorInfoReview
+                info={
+                  checkDetail.key === 'info'
+                    ? checkDetail?.beforeField?.info
+                    : checkDetail?.beforeField?.achieve_desc
+                }
+              />
+            </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
-            <div
-              style={{ display: 'flex', flexDirection: 'column' }}
-              dangerouslySetInnerHTML={{
-                __html: checkDetail?.afterField?.info,
-              }}
-            />
+            <ContentWrap>
+              <EditorInfoReview
+                info={
+                  checkDetail.key === 'info'
+                    ? checkDetail?.afterField?.info
+                    : checkDetail?.afterField?.achieve_desc
+                }
+              />
+            </ContentWrap>
           </div>
         </SpaceWrap>
-      </Modal>
+      </CommonModal>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
-              <Table
+              <TableStyleBox
                 rowKey="id"
                 columns={columns}
                 dataSource={dataList?.list}
                 pagination={false}
                 scroll={{
-                  x: columns.reduce(
-                    (totalWidth: number, item: any) => totalWidth + item.width,
-                    0,
-                  ),
+                  x: 'max-content',
                   y: tableY,
                 }}
+                tableLayout="auto"
                 showSorterTooltip={false}
-                sticky
               />
             ) : (
               <NoData />

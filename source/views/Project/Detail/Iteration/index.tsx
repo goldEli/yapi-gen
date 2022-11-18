@@ -1,4 +1,6 @@
-/* eslint-disable multiline-ternary */
+// 迭代主页
+
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -7,16 +9,21 @@ import IterationMain from './IterationMain'
 import IterationInfo from './IterationInfo'
 import ChangeRecord from './ChangeRecord'
 import Demand from './Demand'
+import Achieve from './Achieve'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Popover } from 'antd'
+import { Space, Button, message, Tooltip, Dropdown, Menu } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import IconFont from '@/components/IconFont'
+import { DividerWrap, IconFontWrap } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import TableFilter from '@/components/TableFilter'
+import { OptionalFeld } from '@/components/OptionalFeld'
+import IterationStatus from './components/IterationStatus'
+import CommonInput from '@/components/CommonInput'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -61,6 +68,11 @@ const TitleWrap = styled(Space)({
   alignItems: 'center',
 })
 
+const OperationWrap = styled(Space)({
+  display: 'flex',
+  alignItems: 'center',
+})
+
 const Item = styled.div<{ activeIdx: boolean }>(
   {
     display: 'flex',
@@ -100,43 +112,11 @@ const Item = styled.div<{ activeIdx: boolean }>(
   }),
 )
 
-const StatusTag = styled.div<{ isOpen: boolean }>(
-  {
-    height: 22,
-    borderRadius: 6,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    cursor: 'pointer',
-    width: 'fit-content',
-  },
-  ({ isOpen }) => ({
-    color: isOpen ? '#43BA9A' : '#969799',
-    background: isOpen ? '#EDF7F4' : '#F2F2F4',
-  }),
-)
-
-const LiWrap = styled.div<{ color: any }>(
-  {
-    cursor: 'pointer',
-    padding: '0 16px',
-    width: '100%',
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    background: 'white',
-  },
-  ({ color }) => ({
-    '&: hover': {
-      background: color,
-    },
-  }),
-)
-
 const IterationWrap = () => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
+  const [filterState, setFilterState] = useState(true)
+  const [settingState, setSettingState] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -153,7 +133,32 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo } = useModel('project')
+  const { projectInfo, filterAll } = useModel('project')
+  const [searchList, setSearchList] = useState<any[]>([])
+  const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
+  const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
+  const [filterCustomList, setFilterCustomList] = useState<any[]>([])
+  const [plainOptions, setPlainOptions] = useState<any>([])
+  const [plainOptions2, setPlainOptions2] = useState<any>([])
+  const [plainOptions3, setPlainOptions3] = useState<any>([])
+  const [titleList, setTitleList] = useState<any[]>([])
+  const [titleList2, setTitleList2] = useState<any[]>([])
+  const [titleList3, setTitleList3] = useState<any[]>([])
+  const [searchGroups, setSearchGroups] = useState<any>({
+    statusId: [],
+    priorityId: [],
+    iterateId: [],
+    tagId: [],
+    userId: [],
+    usersnameId: [],
+    usersCopysendNameId: [],
+    createdAtId: [],
+    expectedStartAtId: [],
+    expectedendat: [],
+    updatedat: [],
+    finishAt: [],
+    searchVal: '',
+  })
 
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -169,13 +174,88 @@ const IterationWrap = () => {
     'b/iterate/del',
   )
 
+  const hasFilter = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/get',
+  )
+
+  const isCanCheck = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/iterate/achieve/info',
+  )
+
+  const onFilterSearch = (e: any, customField: any) => {
+    const params = {
+      statusId: e.status,
+      priorityId: e.priority,
+      iterateId: e.iterate_name,
+      tagId: e.tag,
+      userId: e.user_name,
+      usersnameId: e.users_name,
+      usersCopysendNameId: e.users_copysend_name,
+      createdAtId: e.created_at,
+      expectedStartAtId: e.expected_start_at,
+      expectedendat: e.expected_end_at,
+      updatedat: e.updated_at,
+      finishAt: e.finish_at,
+      class_ids: e.class,
+      category_id: e.category,
+      schedule_start: e.schedule?.start,
+      schedule_end: e.schedule?.end,
+      custom_field: customField,
+    }
+
+    setSearchGroups(params)
+  }
+
   const childContent = () => {
     if (type === 'info') {
       return <IterationInfo />
     } else if (type === 'demand') {
-      return <Demand />
+      return (
+        <Demand
+          searchGroups={searchGroups}
+          checkList={titleList}
+          checkList2={titleList2}
+          checkList3={titleList3}
+        />
+      )
+    } else if (type === 'achieve') {
+      return <Achieve />
     }
-    return <ChangeRecord isUpdate={isUpdateState} />
+    return (
+      <ChangeRecord
+        isUpdate={isUpdateState}
+        onChangeUpdate={() => setIsUpdateState(false)}
+      />
+    )
+  }
+
+  const getSearchKey = async (key?: any, typeVal?: number) => {
+    if (key && typeVal === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && typeVal === 1) {
+      const addList = filterAll?.filter((item: any) => item.content === key)
+
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+
+    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
+    setPlainOptions(projectInfo.plainOptions)
+    setPlainOptions2(projectInfo.plainOptions2)
+    setPlainOptions3(projectInfo.plainOptions3)
+    setTitleList(projectInfo.titleList)
+    setTitleList2(projectInfo.titleList2)
+    setTitleList3(projectInfo.titleList3)
   }
 
   useEffect(() => {
@@ -184,6 +264,10 @@ const IterationWrap = () => {
       getIterateInfo({ projectId, id: iterateId })
     }
   }, [])
+
+  useEffect(() => {
+    getSearchKey()
+  }, [projectInfo, filterAll])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -229,34 +313,28 @@ const IterationWrap = () => {
         await updateIterateStatus({
           projectId,
           id: iterateInfo?.id,
-          status: val === 1,
+          status: val,
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
+        setIsUpdateState(true)
       } catch (error) {
         //
       }
     }
   }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}
-    >
-      <LiWrap color="#EDF7F4" onClick={() => onChangeStatus(1)}>
-        <StatusTag isOpen>{t('common.opening')}</StatusTag>
-      </LiWrap>
+  const onPressEnter = (value: any) => {
+    let obj = JSON.parse(JSON.stringify(searchGroups))
+    obj.searchVal = value
+    setSearchGroups(obj)
+  }
 
-      <LiWrap color="#F2F2F4" onClick={() => onChangeStatus(2)}>
-        <StatusTag isOpen={false}>{t('common.Closed')}</StatusTag>
-      </LiWrap>
-    </div>
-  )
+  const getCheckList = (list: any[], list2: any[], list3: any[]) => {
+    setTitleList(list)
+    setTitleList2(list2)
+    setTitleList3(list3)
+  }
 
   const content = () => {
     if (!type) {
@@ -281,36 +359,11 @@ const IterationWrap = () => {
         <DemandInfoWrap>
           <NameWrap>
             <span className="name">{iterateInfo.name}</span>
-            {hasChangeStatus ? (
-              <StatusTag isOpen={iterateInfo?.status === 1}>
-                {iterateInfo?.status === 1
-                  ? t('common.opening')
-                  : t('common.Closed')}
-              </StatusTag>
-            ) : (
-              <Popover
-                placement="bottom"
-                content={changeStatus}
-                getPopupContainer={node => node}
-              >
-                {iterateInfo ? (
-                  <StatusTag isOpen={iterateInfo?.status === 1}>
-                    {iterateInfo?.status === 1
-                      ? t('common.opening')
-                      : t('common.Closed')}
-                    <IconFont
-                      type="down-icon"
-                      style={{
-                        fontSize: 12,
-                        marginLeft: 4,
-                        color:
-                          iterateInfo?.status === 1 ? '#43BA9A' : '#969799',
-                      }}
-                    />
-                  </StatusTag>
-                ) : null}
-              </Popover>
-            )}
+            <IterationStatus
+              hasChangeStatus={hasChangeStatus}
+              iterateInfo={iterateInfo}
+              onChangeStatus={onChangeStatus}
+            />
           </NameWrap>
           <Space size={16}>
             {hasEdit ? null : (
@@ -341,6 +394,15 @@ const IterationWrap = () => {
                 <span>{t('common.demand')}</span>
                 <div>{iterateInfo?.storyCount || 0}</div>
               </Item>
+              {isCanCheck ? null : (
+                <Item
+                  onClick={() => onChangeIdx('achieve')}
+                  activeIdx={type === 'achieve'}
+                >
+                  <span>{t('p2.d2')}</span>
+                </Item>
+              )}
+
               <Item
                 onClick={() => onChangeIdx('record')}
                 activeIdx={type === 'record'}
@@ -349,7 +411,77 @@ const IterationWrap = () => {
                 <div>{iterateInfo?.changeCount || 0}</div>
               </Item>
             </TitleWrap>
+            {type === 'demand' && (
+              <OperationWrap size={16}>
+                <CommonInput
+                  placeholder={t('common.pleaseSearchDemand')}
+                  onChangeSearch={onPressEnter}
+                />
+                {hasFilter ? null : <DividerWrap type="vertical" />}
+
+                {hasFilter ? null : (
+                  <Tooltip title={t('common.search')}>
+                    <IconFontWrap
+                      isHover
+                      active={!filterState}
+                      type="filter"
+                      onClick={() => setFilterState(!filterState)}
+                    />
+                  </Tooltip>
+                )}
+                <DividerWrap type="vertical" />
+                <Dropdown
+                  overlay={
+                    <Menu
+                      items={[
+                        {
+                          key: '1',
+                          label: (
+                            <div onClick={() => setSettingState(true)}>
+                              {t('common.setField')}
+                            </div>
+                          ),
+                        },
+                      ]}
+                    />
+                  }
+                  trigger={['click']}
+                >
+                  <Tooltip title={t('common.tableFieldSet')}>
+                    <IconFontWrap
+                      isHover
+                      active={settingState}
+                      type="settings"
+                    />
+                  </Tooltip>
+                </Dropdown>
+              </OperationWrap>
+            )}
           </MainWrap>
+          {settingState ? (
+            <OptionalFeld
+              plainOptions={plainOptions}
+              plainOptions2={plainOptions2}
+              plainOptions3={plainOptions3}
+              checkList={titleList}
+              checkList2={titleList2}
+              checkList3={titleList3}
+              isVisible={settingState}
+              onClose={() => setSettingState(false)}
+              getCheckList={getCheckList}
+            />
+          ) : null}
+          {filterState ? null : (
+            <TableFilter
+              onFilter={getSearchKey}
+              onSearch={onFilterSearch}
+              list={searchList}
+              basicsList={filterBasicsList}
+              specialList={filterSpecialList}
+              customList={filterCustomList}
+              isIteration
+            />
+          )}
           {childContent()}
         </ContentWrap>
       </div>

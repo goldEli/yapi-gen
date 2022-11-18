@@ -22,6 +22,7 @@ export const getStaffList: any = async (params: any) => {
     return response.data.map((i: any) => ({
       label: i.name,
       value: i.id,
+      id: i.id,
     }))
   } else {
     return {
@@ -88,6 +89,33 @@ export const getStaffList: any = async (params: any) => {
       pager: response.data.pager,
     }
   }
+}
+
+export const getStaffList2: any = async (params: any) => {
+  const response = await http.get('getStaffList', {
+    search: {
+      job_id: params?.jobId,
+      department_id: params?.departmentId,
+      user_group_id: params?.userGroupId,
+      keyword: params?.keyword,
+      all: params.all,
+    },
+    order: params.order === 1 ? 'asc' : params.order === 2 ? 'desc' : '',
+    orderkey: params.orderkey,
+    page: params.page,
+    pagesize: params.pagesize,
+  })
+
+  return params.all
+    ? response.data.map((i: any) => ({
+        avatar: i.avatar,
+        id: i.id,
+        name: i.name,
+        nickname: i.nickname,
+        positionName: null,
+        roleName: i.role_name,
+      }))
+    : null
 }
 
 export const updateStaff: any = async (params: any) => {

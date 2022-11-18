@@ -2,15 +2,12 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
-/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  MyInput,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -26,9 +23,8 @@ import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import { openDetail } from '@/tools'
 import { useDynamicColumns } from './TableColum'
+import CommonInput from '@/components/CommonInput'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -72,18 +68,6 @@ const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
   }),
 )
 
-const CanClick = styled.div({
-  height: 24,
-  borderRadius: 6,
-  padding: '0 8px',
-  cursor: 'pointer',
-  color: 'white',
-  fontSize: 12,
-  background: '#2877ff',
-  lineHeight: '24px',
-  width: 'fit-content',
-})
-
 const Need = (props: any) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
@@ -125,7 +109,7 @@ const Need = (props: any) => {
         : await getVerifyUserList(params)
     setListData(result)
     setCount({
-      verifyUser: !(val ?? activeTab) ? result?.total : result?.otherCount,
+      verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
       verify: val ?? activeTab ? result?.total : result?.otherCount,
     })
     setIsSpin(false)
@@ -150,20 +134,9 @@ const Need = (props: any) => {
     getList(pageObj, order, keyword, params)
   }
 
-  const onPressEnter = (e: any) => {
-    setKeyword(e.target.value)
-    getList(pageObj, order, e.target.value, searchParams)
-  }
-
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: item.projectId,
-        demandId: item.demandId,
-      }),
-    )
-    openDetail(`/Detail/Demand?data=${params}`)
+  const onPressEnter = (value: any) => {
+    setKeyword(value)
+    getList(pageObj, order, value, searchParams)
   }
 
   const onChangeOperation = (record: any) => {
@@ -213,7 +186,7 @@ const Need = (props: any) => {
 
   return (
     <>
-      {isVisible ? (
+      {isVisible && (
         <EditExamine
           isVisible={isVisible}
           onClose={() => setIsVisible(false)}
@@ -221,7 +194,7 @@ const Need = (props: any) => {
           isEdit={!activeTab}
           onUpdate={onUpdate}
         />
-      ) : null}
+      )}
       <TabsHehavior
         style={{ padding: '0 24px', justifyContent: 'space-between' }}
       >
@@ -241,18 +214,9 @@ const Need = (props: any) => {
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
-          <MyInput
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 20 }}
-              />
-            }
-            onPressEnter={onPressEnter}
+          <CommonInput
             placeholder={t('common.pleaseSearchDemand')}
-            allowClear
-            defaultValue={keyword}
-            onBlur={onPressEnter}
+            onChangeSearch={onPressEnter}
           />
           <Divider
             style={{ height: 20, margin: '0 16px 0 24px' }}

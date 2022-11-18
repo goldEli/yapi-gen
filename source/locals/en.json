@@ -1,4 +1,62 @@
 {
+  "p2": {
+    "maxUploadText": "The maximum length of a file name is 130 words!",
+    "nameNotNull": "The demand title cannot be empty!",
+    "toast": "Tips",
+    "exportDemandText": "The exported requirements will be exported according to the current filtering conditions. The system can only export 5000 requirements at a time. Please control the requirements within 5000 through filtering before exporting!",
+    "pleaseEditText": "Please edit the results",
+    "exportFields": "Export Demand Field Selection",
+    "editAchievements": "Editing achievements",
+    "pComment": "Comment on {{inner}} 's log",
+    "only1": "Please enter ",
+    "need1": " Please select associated items ",
+    "need2": " Please select associated requirements ",
+    "need3": " Requirement association successful ",
+    "title": {
+      "t1d": "Get your work done today ",
+      "t1t": "Project Work for Tomorrow ",
+      "t2d": "Get the job done this week ",
+      "t2t": "Finish work next week ",
+      "t3d": "Finish the job this month ",
+      "t3t": "Work to be completed next month"
+    },
+    "noRead": "Not read ",
+    "conSuccess": "Comment success ",
+    "ge": "Count ",
+    "m1": "Description ",
+    "d1": " Edit iteration result ",
+    "d2": " Iteration result ",
+    "search": "Search daily",
+    "addAdjunct": "Add attachment",
+    "managingDemand": "Managing Demand",
+    "haveRead": "Have read",
+    "RelatedRequirements": "Related Requirements",
+    "whiteDay": "Keep a journal",
+    "synopsis": "Synopsis",
+    "NumberOfAttachments": "Number of attachments",
+    "dateCreated": "Date created",
+    "MyReadingStatus": "My reading status",
+    "show": "Show",
+    "edit": "Edit",
+    "sender": "Sender",
+    "OnlySee": "Only see not read",
+    "new": "New",
+    "dayList": {
+      "t1": "From me ",
+      "t2": "Send out the daily newspaper ",
+      "t3": "Send out a weekly report",
+      "t4": "Issue monthly report ",
+      "t5": "I received ",
+      "t6": "Receive daily newspaper ",
+      "t7": "Receive weekly report ",
+      "t8": "Receive Monthly Report"
+    },
+    "whiteList": {
+      "t1": "Write daily ",
+      "t2": "Write a weekly ",
+      "t3": "Write the monthly "
+    }
+  },
   "newlyAdd": {
     "notEnterNull": "The drop-down value cannot be empty!",
     "onlyChooseStatus": "Select at least one adding status!",
@@ -347,7 +405,8 @@
     "pleaseChooseDeal": "Please select a handler",
     "add23": "Add",
     "finishCreate": "Finish and create the next one",
-    "confirm2": "Confirm"
+    "confirm2": "Confirm",
+    "finished": "Completed"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",
@@ -381,6 +440,7 @@
     "project": "Project",
     "mine": "Mine",
     "staff": "Staff",
+    "information": "Log",
     "companyManagement": "Company Management",
     "setting": "Settings"
   },

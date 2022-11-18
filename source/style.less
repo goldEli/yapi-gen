@@ -17,6 +17,10 @@
 @border-color-base: #d5d6d9;
 @text-color: #323233;
 
+.react-viewer-transition {
+  transition: inherit !important;
+}
+
 .vertical-center-modal {
   display: flex;
   align-items: center;
@@ -202,6 +206,7 @@ textarea {
   background-color: transparent;
 }
 .ant-tree .ant-tree-treenode {
+  padding-right: 20px;
   box-sizing: border-box;
   width: 100%;
   &:hover {
@@ -279,8 +284,7 @@ input::-webkit-inner-spin-button {
   right: 5px;
   bottom: 0;
   left: 0;
-  padding: 16px;
-  padding-right: 0px;
+  padding-left: 16px;
   overflow-x: hidden;
 }
 .resize_save2 {
@@ -292,9 +296,9 @@ input::-webkit-inner-spin-button {
   padding-right: 0px;
 }
 .resize_bar {
-  width: 200px;
+  width: 240px;
   max-width: 700px;
-  min-width: 200px;
+  min-width: 240px;
   height: inherit;
   resize: horizontal;
   cursor: ew-resize;
@@ -354,26 +358,6 @@ input::-webkit-inner-spin-button {
   padding-bottom: 0 !important;
 }
 
-// .ant-tag-blue {
-//   color: #646566 !important;
-//   background: white !important;
-//   border-color: #ebedf0 !important;
-//   text-align: center !important;
-//   width: -webkit-fill-available !important;
-// }
-
-// .ant-tag-blue[ant-click-animating-without-extra-node="false"] {
-//   color: #2877ff !important;
-//   background: white !important;
-//   border-color: #2877ff !important;
-// }
-
-// .ant-tag-blue:hover {
-//   color: #2877ff !important;
-//   background: #f0f4fa !important;
-//   border-color: #f0f4fa !important;
-// }
-
 .ant-tooltip-inner {
   white-space: pre-wrap;
 }
@@ -414,8 +398,9 @@ input::-webkit-inner-spin-button {
   min-width: 60px;
 }
 
-.ant-dropdown-menu-title-content {
+.ant-dropdown-menu-title-content div {
   padding: 0 12px;
+  white-space: pre;
 }
 
 .ant-tree-node-content-wrapper-normal,
@@ -428,4 +413,8 @@ input::-webkit-inner-spin-button {
 .ant-collapse-content-box {
   max-height: 200px;
   overflow-y: auto;
+}
+
+.ant-picker-range-separator svg {
+  margin: 0 !important;
 }

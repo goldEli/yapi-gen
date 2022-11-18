@@ -1,6 +1,5 @@
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
-/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-empty-function */
 /* eslint-disable react/no-unstable-nested-components */
@@ -8,7 +7,7 @@
 import IconFont from '@/components/IconFont'
 import { Button, Menu, Dropdown, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableWrap, PaginationWrap } from '@/components/StyleCommon'
+import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -21,6 +20,7 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import EditDemand from '@/components/EditDemand'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const Operation = styled.div({
   display: 'flex',
@@ -59,18 +59,11 @@ const RowIconFont = styled(IconFont)({
   color: '#2877ff',
 })
 
-const TableBox = styled(TableWrap)({
-  '.ant-table-row:hover': {
-    [RowIconFont.toString()]: {
-      visibility: 'visible',
-    },
-  },
-})
-
 const DataWrap = styled.div({
   height: 'calc(100% - 92px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 6,
 })
 
 const ChildDemand = () => {
@@ -110,6 +103,7 @@ const ChildDemand = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
+  const [isShowMore, setIsShowMore] = useState(false)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -291,7 +285,6 @@ const ChildDemand = () => {
     rowIconFont,
     onClickItem,
     onUpdate,
-    listLength: dataList?.list?.length,
   })
 
   const hasEdit = getIsPermission(
@@ -342,18 +335,7 @@ const ChildDemand = () => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
-                <Dropdown
-                  overlay={menu(record)}
-                  trigger={['hover']}
-                  placement="bottomLeft"
-                  getPopupContainer={node =>
-                    dataList?.list?.length === 1 ? document.body : node
-                  }
-                >
-                  {rowIconFont()}
-                </Dropdown>
-              )}
+              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
             </div>
           )
         },
@@ -363,7 +345,7 @@ const ChildDemand = () => {
   }, [titleList, titleList2, titleList3, columns])
 
   return (
-    <div style={{ height: 'calc(100% - 50px)' }}>
+    <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
       {isVisible ? (
         <EditDemand
           visible={isVisible}
@@ -401,7 +383,7 @@ const ChildDemand = () => {
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
-              <TableBox
+              <TableStyleBox
                 rowKey="id"
                 columns={selectColum}
                 dataSource={dataList?.list}
@@ -410,8 +392,8 @@ const ChildDemand = () => {
                   x: 'max-content',
                   y: tableY,
                 }}
-                showSorterTooltip={false}
                 tableLayout="auto"
+                showSorterTooltip={false}
               />
             ) : (
               <NoData />

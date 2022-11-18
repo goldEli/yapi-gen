@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import Pop from '@/components/Popconfirm'
 import styled from '@emotion/styled'
-import { Divider, message, Space } from 'antd'
+import { Divider, message } from 'antd'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

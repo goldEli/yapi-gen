@@ -1,15 +1,17 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
-/* eslint-disable complexity */
-/* eslint-disable multiline-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { Table, Pagination, Modal, Space, Spin } from 'antd'
+import { Pagination, Space, Spin } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { HiddenText, PaginationWrap } from '@/components/StyleCommon'
+import {
+  HiddenText,
+  PaginationWrap,
+  TableStyleBox,
+} from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
@@ -17,10 +19,15 @@ import { OmitText } from '@star-yun/ui'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
+import CommonModal from '@/components/CommonModal'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
     width: '48.5%',
+  },
+  img: {
+    maxWidth: '100%',
   },
 })
 
@@ -38,6 +45,15 @@ const DataWrap = styled.div({
   height: 'calc(100% - 40px)',
   background: 'white',
   overflowX: 'auto',
+  borderRadius: 6,
+})
+
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 600,
+  overflow: 'auto',
+  padding: '0 24px 16px',
 })
 
 const NewSort = (sortProps: any) => {
@@ -387,63 +403,52 @@ const ChangeRecord = () => {
     getList({ page, size }, order)
   }
   return (
-    <div style={{ height: 'calc(100% - 50px)' }}>
-      <Modal
-        visible={isVisible}
+    <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
+      <CommonModal
+        isVisible={isVisible}
         title={t('project.changeInfo')}
-        footer={false}
         width={1080}
-        onCancel={() => setIsVisible(false)}
-        bodyStyle={{
-          padding: '8px 24px 24px',
-        }}
-        destroyOnClose
-        maskClosable={false}
-        keyboard={false}
-        wrapClassName="vertical-center-modal"
+        onClose={() => setIsVisible(false)}
+        isShowFooter
       >
         <SpaceWrap
           size={32}
-          style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}
+          style={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'flex-start',
+            paddingRight: 16,
+          }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
-            <div
-              style={{ maxHeight: 400, overflow: 'auto' }}
-              dangerouslySetInnerHTML={{
-                __html: checkDetail?.beforeField?.info,
-              }}
-            />
+            <ContentWrap>
+              <EditorInfoReview info={checkDetail?.beforeField?.info} />
+            </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
-            <div
-              style={{ maxHeight: 400, overflow: 'auto' }}
-              dangerouslySetInnerHTML={{
-                __html: checkDetail?.afterField?.info,
-              }}
-            />
+            <ContentWrap>
+              <EditorInfoReview info={checkDetail?.afterField?.info} />
+            </ContentWrap>
           </div>
         </SpaceWrap>
-      </Modal>
+      </CommonModal>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
-              <Table
+              <TableStyleBox
                 rowKey="id"
                 columns={columns}
                 dataSource={dataList?.list}
                 pagination={false}
                 scroll={{
-                  x: columns.reduce(
-                    (totalWidth: number, item: any) => totalWidth + item.width,
-                    0,
-                  ),
+                  x: 'max-content',
                   y: tableY,
                 }}
+                tableLayout="auto"
                 showSorterTooltip={false}
-                sticky
               />
             ) : (
               <NoData />

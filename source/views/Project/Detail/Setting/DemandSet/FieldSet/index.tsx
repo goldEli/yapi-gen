@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -104,8 +103,8 @@ const SetBreadcrumb = () => {
 
 const FieldSet = () => {
   const [t] = useTranslation()
-  const { getFieldList, fieldList, option, deleteStoryConfigField }
-    = useModel('project')
+  const { getFieldList, fieldList, option, deleteStoryConfigField } =
+    useModel('project')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
@@ -155,7 +154,6 @@ const FieldSet = () => {
       message.success(t('common.deleteSuccess'))
       getList()
     } catch (error) {
-
       //
     }
   }
@@ -251,8 +249,8 @@ const FieldSet = () => {
         </ItemWrap>
         <TableWrap>
           <Spin spinning={isSpinning}>
-            {!!fieldList?.list
-              && (fieldList?.list?.length > 0 ? (
+            {!!fieldList?.list &&
+              (fieldList?.list?.length > 0 ? (
                 <Table
                   rowKey="id"
                   pagination={false}
@@ -260,9 +258,9 @@ const FieldSet = () => {
                   dataSource={fieldList?.list}
                   sticky
                 />
-              )
-                : <NoData />
-              )}
+              ) : (
+                <NoData />
+              ))}
           </Spin>
         </TableWrap>
       </ContentWrap>

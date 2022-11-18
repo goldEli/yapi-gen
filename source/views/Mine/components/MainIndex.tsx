@@ -4,7 +4,6 @@ import { StaffHeader } from '@/components/StyleCommon'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
-import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const MainIndex = (props: Props) => {
-  const [t] = useTranslation()
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
@@ -33,6 +31,7 @@ const MainIndex = (props: Props) => {
     await setSwiperData(res.data)
     setLoadingState(true)
   }
+
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps

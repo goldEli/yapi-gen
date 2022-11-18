@@ -7,12 +7,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
 import COS, { type Task, type UploadFileItemResult } from 'cos-js-sdk-v5'
+import moment from 'moment'
 
 export function getUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c =>
-
     // @ts-expect-error
-    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16))
+    (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16),
+  )
 }
 
 /**
@@ -34,15 +35,23 @@ const getCosSign = async (): Promise<any> => {
     app_id: import.meta.env.__COS_SIGN_APP_ID__,
     bucket_id: import.meta.env.__COS_SIGN_BUCKET_ID__,
   })
+  const line = window.navigator.onLine
+  if (!line) {
+    location.reload()
+  }
+
   if (response.code !== 1) {
+    location.reload()
     throw new Error(response.msg)
   }
+
   return response
 }
 
 export const cos = new COS({
   getAuthorization: async (options: unknown, callback: any) => {
     const response = await getCosSign()
+
     callback({
       TmpSecretId: response.data.credentials.tmpSecretId,
       TmpSecretKey: response.data.credentials.tmpSecretKey,
@@ -56,18 +65,24 @@ export const cos = new COS({
 
 // 获取文件后缀
 export function getFileSuffix(name: string, withDot = false) {
-  const fileSuffix = name.split('.').pop()
-    ?.toLowerCase()
+  const fileSuffix = name.split('.').pop()?.toLowerCase()
   return fileSuffix?.length ? `${withDot ? '.' : ''}${fileSuffix}` : ''
 }
 
-export const uploadFile = (file: File, username: string, space: string) => {
+export const uploadFile = (
+  file: File,
+  username: string,
+  space: string,
+  fileName?: any,
+) => {
   return new Promise<Models.Files.File>((resolve, reject) => {
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${file.name}`,
+      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
+        fileName || file.name
+      }`,
       onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)
@@ -80,6 +95,7 @@ export const uploadFile = (file: File, username: string, space: string) => {
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
             url: `https://${data.Location}`,
+            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
           })
         }
       },
@@ -115,6 +131,7 @@ export const uploadFileByTask = (
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
             url: '',
+            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
           },
         })
       },

@@ -4,6 +4,7 @@ import * as services from '@/services'
 export default () => {
   const [loginInfo, setLoginInfo] = useState<any>({})
   const [userInfo, setUserInfo] = useState<any>({})
+  // 更新语言后： 接口有翻译的接口需要刷新
   const [isRefresh, setIsRefresh] = useState<any>(false)
 
   const getLoginDetail = async () => {

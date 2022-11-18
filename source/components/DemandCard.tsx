@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -15,6 +14,7 @@ import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import DemandProgress from './DemandProgress'
+import MoreDropdown from './MoreDropdown'
 
 interface Props {
   item: any
@@ -22,18 +22,8 @@ interface Props {
   onChangeDelete?(item: any): void
   onClickItem(): void
   indexVal?: any
-  listLength?: any
   onUpdate(state: any): void
 }
-
-const MoreWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  top: 16,
-  right: 16,
-  cursor: 'pointer',
-  color: '#BBBDBF',
-})
 
 const Wrap = styled.div({
   width: '100%',
@@ -45,11 +35,19 @@ const Wrap = styled.div({
   position: 'relative',
   marginTop: 16,
   overflow: 'hidden',
+  '.dropdownIcon': {
+    position: 'absolute',
+    top: 8,
+    right: 0,
+  },
   '&: hover': {
     border: '1px solid #2877ff',
     borderLeft: 'none',
-    [MoreWrap.toString()]: {
-      display: 'block',
+    '.dropdownIcon': {
+      position: 'absolute',
+      top: 16,
+      right: 0,
+      visibility: 'visible',
     },
   },
 })
@@ -218,7 +216,6 @@ const DemandCard = (props: Props) => {
                     value={props.item?.schedule}
                     row={props.item}
                     onUpdate={() => props?.onUpdate(true)}
-                    listLength={props?.listLength}
                     index={props?.indexVal}
                     isCard
                   />
@@ -242,18 +239,12 @@ const DemandCard = (props: Props) => {
             </Space>
           </AvatarWrap>
         </MainWrap>
-        {hasDel && hasEdit ? null : (
-          <Dropdown
-            key={isMoreVisible.toString()}
-            visible={isMoreVisible}
-            overlay={menu()}
-            placement="bottomRight"
-            trigger={['hover']}
-            getPopupContainer={node => node}
-            onVisibleChange={visible => setIsMoreVisible(visible)}
-          >
-            <MoreWrap type="more" />
-          </Dropdown>
+        {!(hasDel && hasEdit) && (
+          <MoreDropdown
+            isMoreVisible={isMoreVisible}
+            menu={menu()}
+            onChangeVisible={setIsMoreVisible}
+          />
         )}
       </Wrap>
     </div>

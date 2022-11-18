@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 
@@ -13,7 +12,7 @@ const Wrap = styled.div<{ show: boolean }>`
   align-items: center;
   cursor: pointer;
   ${Arrow} {
-    visibility: ${({ show }) => show ? 'visible' : 'hidden'};
+    visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   }
   &:hover {
     ${Arrow} {

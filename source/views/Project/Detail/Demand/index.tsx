@@ -1,7 +1,5 @@
-/* eslint-disable max-lines */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -18,7 +16,7 @@ import ChildDemand from './ChildDemand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Tooltip, Popover, Form, Select } from 'antd'
+import { Space, Button, message, Popover, Form, Select } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
 import { useModel } from '@/models'
@@ -32,6 +30,8 @@ import { StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
+import { useDispatch } from '../../../../../store'
+import { changeId } from '../../../../../store/counterSlice'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -54,10 +54,9 @@ const NameWrap = styled.div({
 })
 
 const ContentWrap = styled.div({
-  padding: 16,
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 72px)',
+  height: 'calc(100% - 84px)',
 })
 
 const MainWrap = styled(Space)({
@@ -127,7 +126,7 @@ const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
-    margin: '24px 0 0 0',
+    margin: '22px 0 0 0',
   },
 })
 
@@ -149,6 +148,7 @@ const LiWrap = styled.div<{ color: any }>(
 )
 
 const DemandBox = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [isShowChange, setIsShowChange] = useState(false)
@@ -210,6 +210,9 @@ const DemandBox = () => {
   useEffect(() => {
     init()
     setFilterHeight(52)
+    return () => {
+      dispatch(changeId(0))
+    }
   }, [])
 
   useEffect(() => {

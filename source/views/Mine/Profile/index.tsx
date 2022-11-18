@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-/* eslint-disable complexity */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
 import { useModel } from '@/models'
@@ -13,7 +12,7 @@ import {
   PaginationWrap,
   SecondTitle,
 } from '@/components/StyleCommon'
-import { Timeline, message, Pagination, Tooltip } from 'antd'
+import { Timeline, message, Pagination } from 'antd'
 import Gantt from '@/components/Gantt'
 import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'

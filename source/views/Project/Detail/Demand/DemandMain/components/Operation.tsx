@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/indent */
-/* eslint-disable multiline-ternary */
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
@@ -12,9 +11,11 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Divider, Popover, Space, Tooltip } from 'antd'
-import { MyInput } from '@/components/StyleCommon'
 import CommonModal from '@/components/CommonModal'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
+import CommonInput from '@/components/CommonInput'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -113,6 +114,8 @@ interface Props {
   onChangeSetting(val: boolean): void
   onChangeIsShowLeft?(): void
   isShowLeft?: boolean
+  otherParams: any
+  dataLength: any
 }
 
 const Operation = (props: Props) => {
@@ -122,9 +125,12 @@ const Operation = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
+  const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
-  const { filterAll, projectInfo, categoryList, colorList }
-    = useModel('project')
+  // 导出超出限制提示
+  const [exceedState, setExceedState] = useState(false)
+  const { filterAll, projectInfo, categoryList, colorList } =
+    useModel('project')
   const { setFilterHeight, setCreateCategory } = useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -264,6 +270,17 @@ const Operation = (props: Props) => {
     setIsVisibleMore(false)
   }
 
+  const onExportClick = () => {
+    if (props.dataLength > 5000) {
+      setIsVisibleMore(false)
+      setExceedState(true)
+      return
+    }
+    setIsVisible(false)
+    setIsShowExport(true)
+    setIsVisibleMore(false)
+  }
+
   const moreOperation = (
     <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
       {hasImport ? null : (
@@ -273,7 +290,7 @@ const Operation = (props: Props) => {
         </MoreItem>
       )}
       {hasExport ? null : (
-        <MoreItem>
+        <MoreItem onClick={onExportClick}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
           <span>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
@@ -296,6 +313,13 @@ const Operation = (props: Props) => {
 
   return (
     <StickyWrap ref={stickyWrapDom}>
+      <DeleteConfirm
+        onConfirm={() => setExceedState(false)}
+        onChangeVisible={() => setExceedState(false)}
+        isVisible={exceedState}
+        title={t('p2.toast')}
+        text={t('p2.exportDemandText')}
+      />
       <CommonModal
         isVisible={isShowImport}
         width={784}
@@ -305,6 +329,14 @@ const Operation = (props: Props) => {
       >
         <ImportDemand />
       </CommonModal>
+      {isShowExport ? (
+        <ExportDemand
+          isShowExport={isShowExport}
+          onClose={setIsShowExport}
+          searchGroups={searchGroups}
+          otherParams={props.otherParams}
+        />
+      ) : null}
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (
@@ -385,16 +417,9 @@ const Operation = (props: Props) => {
         </Space>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <MyInput
-            onPressEnter={(e: any) => onChangeSearch?.(e.target.value)}
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 16 }}
-              />
-            }
+          <CommonInput
             placeholder={t('common.pleaseSearchDemand')}
-            allowClear
+            onChangeSearch={onChangeSearch}
           />
           <DividerWrap type="vertical" />
           <OperationGroup

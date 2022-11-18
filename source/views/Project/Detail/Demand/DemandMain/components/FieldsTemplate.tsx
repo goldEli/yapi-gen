@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable multiline-ternary */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider } from 'antd'
+import { Checkbox, Space, Divider, Button } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -11,6 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { ShowWrap } from '@/components/StyleCommon'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
+// import { AsyncButton as  } from '@staryuntech/ant-pro'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -71,6 +71,15 @@ const CheckedWrap = styled.div({
   paddingRight: 20,
 })
 
+const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  height: 80,
+  padding: '0 24px',
+})
+
 interface Props {
   visible: boolean
   title: string
@@ -79,36 +88,45 @@ interface Props {
 
   // 1是更新，2是新建
   importState?: any
+  // 是否是导出
+  isExport: boolean
+  // 导出按钮loading状态
+  isSpin?: any
 }
 
 const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getLoadListFields } = useModel('demand')
-  const [checkList, setCheckList] = useState<CheckboxValueType[]>(
-    props?.importState === 2 ? ['name', 'category'] : ['id'],
-  )
+  const { getLoadListFields, getExportFields } = useModel('demand')
+  const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
   const [checkAll, setCheckAll] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
-  const [importFields, setImportFields] = useState<any>({})
+  const [fields, setFields] = useState<any>({})
 
   const getList = async () => {
-    const result = await getLoadListFields({
-      projectId,
-      isUpdate: props?.importState,
-    })
+    const result = props?.isExport
+      ? await getExportFields({ projectId })
+      : await getLoadListFields({
+          projectId,
+          isUpdate: props?.importState,
+        })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
     const customKeys = result?.customFields?.map((k: any) => k.field)
+    if (props.isExport) {
+      setCheckList(['name'])
+    } else {
+      setCheckList(props?.importState === 2 ? ['name', 'category'] : ['id'])
+    }
     setCheckList(basicKeys || [])
     setCheckList2(otherKeys || [])
     setCheckList3(customKeys || [])
     setIndeterminate(false)
     setCheckAll(true)
-    setImportFields(result)
+    setFields(result)
   }
 
   useEffect(() => {
@@ -139,12 +157,26 @@ const FieldsTemplate = (props: Props) => {
     setIndeterminate(true)
   }
 
+  // 获取右侧选择字段是否可删除
+  const getItemState = (field: string) => {
+    let resultVal: boolean
+    if (props.isExport) {
+      resultVal = field === 'name'
+    } else {
+      resultVal =
+        props?.importState === 2
+          ? ['name', 'category'].includes(field)
+          : field === 'id'
+    }
+    return resultVal
+  }
+
   const allList = useMemo(() => {
     const arr = [...checkList, ...checkList2, ...checkList3]
     const arr2 = [
-      ...(importFields?.baseFields || []),
-      ...(importFields?.timeAndPersonFields || []),
-      ...(importFields?.customFields || []),
+      ...(fields?.baseFields || []),
+      ...(fields?.timeAndPersonFields || []),
+      ...(fields?.customFields || []),
     ]
     const all = arr2.reduce((res: { name: string; field: string }[], item) => {
       if (arr.includes(item.field)) {
@@ -156,22 +188,13 @@ const FieldsTemplate = (props: Props) => {
     return (
       <CheckedWrap>
         {all.map((item: any) => (
-          <CheckedItem
-            key={item.field}
-            state={
-              props?.importState === 2
-                ? ['name', 'category'].includes(item.field)
-                : item.field === 'id'
-            }
-          >
+          <CheckedItem key={item.field} state={getItemState(item.field)}>
             <IconFont
               style={{ fontSize: 12, marginRight: '8px', color: '#969799' }}
               type="move"
             />
             <span>{item.name}</span>
-            {(props?.importState === 1
-              ? item.field !== 'id'
-              : !['name', 'category'].includes(item.field)) && (
+            {!getItemState(item.field) && (
               <ShowWrap style={{ marginLeft: 'auto' }}>
                 <IconFont
                   style={{ fontSize: 12 }}
@@ -184,13 +207,13 @@ const FieldsTemplate = (props: Props) => {
         ))}
       </CheckedWrap>
     )
-  }, [checkList, checkList2, checkList3, importFields])
+  }, [checkList, checkList2, checkList3, fields])
 
   const onIsCheckAll = (length: any) => {
     const allKeys = [
-      ...(importFields?.baseFields || []),
-      ...(importFields?.timeAndPersonFields || []),
-      ...(importFields?.customFields || []),
+      ...(fields?.baseFields || []),
+      ...(fields?.timeAndPersonFields || []),
+      ...(fields?.customFields || []),
     ].length
     setCheckAll(allKeys === length)
     setIndeterminate(allKeys !== length)
@@ -215,21 +238,20 @@ const FieldsTemplate = (props: Props) => {
 
   const onAllChecked = (e: any) => {
     const { checked } = e.target
-    setCheckList(
-      checked
-        ? importFields?.baseFields?.map((k: any) => k.field)
-        : props?.importState === 2
-        ? ['name', 'category']
-        : ['id'],
-    )
+    let checkNormal: any
+    if (checked) {
+      checkNormal = fields?.baseFields?.map((k: any) => k.field)
+    } else if (props.isExport) {
+      checkNormal = ['name']
+    } else {
+      checkNormal = props?.importState === 2 ? ['name', 'category'] : ['id']
+    }
+
+    setCheckList(checkNormal)
     setCheckList2(
-      checked
-        ? importFields?.timeAndPersonFields?.map((k: any) => k.field)
-        : [],
+      checked ? fields?.timeAndPersonFields?.map((k: any) => k.field) : [],
     )
-    setCheckList3(
-      checked ? importFields?.customFields?.map((k: any) => k.field) : [],
-    )
+    setCheckList3(checked ? fields?.customFields?.map((k: any) => k.field) : [])
     setIndeterminate(!checked)
     setCheckAll(checked)
   }
@@ -239,9 +261,19 @@ const FieldsTemplate = (props: Props) => {
       title={props?.title}
       isVisible={props?.visible}
       width={784}
-      confirmText={t('newlyAdd.downloadTemplate')}
+      confirmText={!props.isExport && (t('newlyAdd.downloadTemplate') as any)}
       onClose={onClose}
       onConfirm={onConfirm}
+      hasFooter={
+        props.isExport && (
+          <ModalFooter size={16}>
+            <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
+            <Button loading={props.isSpin} onClick={onConfirm} type="primary">
+              {t('newlyAdd.exportDemand')}
+            </Button>
+          </ModalFooter>
+        )
+      }
     >
       <Wrap>
         <LeftWrap>
@@ -257,13 +289,9 @@ const FieldsTemplate = (props: Props) => {
             <LabelWrap>{t('components.basicFiled')}</LabelWrap>
             <Checkbox.Group value={checkList} onChange={onChange}>
               <Space style={{ flexWrap: 'wrap' }}>
-                {importFields?.baseFields?.map((item: any) => (
+                {fields?.baseFields?.map((item: any) => (
                   <Checkbox
-                    disabled={
-                      props?.importState === 2
-                        ? ['name', 'category'].includes(item.field)
-                        : item.field === 'id'
-                    }
+                    disabled={getItemState(item.field)}
                     key={item.field}
                     value={item.field}
                   >
@@ -277,7 +305,7 @@ const FieldsTemplate = (props: Props) => {
             <LabelWrap>{t('components.personOrTime')}</LabelWrap>
             <Checkbox.Group value={checkList2} onChange={onChange2}>
               <Space style={{ flexWrap: 'wrap' }}>
-                {importFields?.timeAndPersonFields?.map((item: any) => (
+                {fields?.timeAndPersonFields?.map((item: any) => (
                   <Checkbox key={item.field} value={item.field}>
                     {item.name}
                   </Checkbox>
@@ -285,12 +313,12 @@ const FieldsTemplate = (props: Props) => {
               </Space>
             </Checkbox.Group>
           </ItemWrap>
-          {importFields?.customFields?.length ? (
+          {fields?.customFields?.length ? (
             <ItemWrap>
               <LabelWrap>{t('newlyAdd.customFields')}</LabelWrap>
               <Checkbox.Group value={checkList3} onChange={onChange3}>
                 <Space style={{ flexWrap: 'wrap' }}>
-                  {importFields?.customFields?.map((item: any) => (
+                  {fields?.customFields?.map((item: any) => (
                     <Checkbox key={item.field} value={item.field}>
                       {item.name}
                     </Checkbox>
@@ -302,7 +330,7 @@ const FieldsTemplate = (props: Props) => {
         </LeftWrap>
         <Divider
           type="vertical"
-          style={{ background: '#EBEDF0', margin: '0 16px', height: 350 }}
+          style={{ background: '#EBEDF0', margin: '0 16px 0 4px', height: 350 }}
         />
         <RightWrap>
           <LabelWrap>{t('components.currentFiled')}</LabelWrap>

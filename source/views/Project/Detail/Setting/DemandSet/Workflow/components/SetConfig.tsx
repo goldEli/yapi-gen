@@ -3,8 +3,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable no-lonely-if */
 /* eslint-disable camelcase */
-/* eslint-disable multiline-ternary */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -370,7 +368,7 @@ const SetConfig = (props: Props) => {
         'datetime',
       ].includes(type)
         ? moment(value).format(
-            type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+            type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
           )
         : value
     } else {
@@ -379,7 +377,7 @@ const SetConfig = (props: Props) => {
         'datetime',
       ].includes(type)
         ? moment(value).format(
-            type === 'datetime' ? 'YYYY-MM-DD hh:mm:ss' : 'YYYY-MM-DD',
+            type === 'datetime' ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
           )
         : value
     }
@@ -714,7 +712,7 @@ const SetConfig = (props: Props) => {
       width={820}
       confirmText={t('newlyAdd.submit')}
     >
-      <div style={{ height: 544, overflowY: 'auto', paddingRight: 20 }}>
+      <div style={{ height: 544, overflowY: 'auto', paddingRight: 16 }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>

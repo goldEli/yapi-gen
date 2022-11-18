@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
@@ -14,7 +13,6 @@ import {
 } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 
-// eslint-disable-next-line consistent-return
 const DemoColumn = (props: any) => {
   const { data: res } = props
   const config = {

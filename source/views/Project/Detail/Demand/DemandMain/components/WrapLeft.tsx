@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-negated-condition */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable multiline-ternary */
 /* eslint-disable no-undefined */
-/* eslint-disable consistent-return */
-/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Form, Input, message, Popover, Tooltip, Tree } from 'antd'
+import { Form, Input, message, Popover, Tree } from 'antd'
 import {
   useEffect,
   useState,
@@ -31,13 +28,13 @@ import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '../../../../../../../store'
+import { changeId } from '../../../../../../../store/counterSlice'
 
 const Left = styled.div`
-  /* max-width: 500px; */
   height: calc(100vh - 64px);
   background-color: #fff;
   position: relative;
-  /* float: left; */
 `
 
 const TitleWrap = styled.div({
@@ -96,8 +93,8 @@ const TreeItem = (props: any) => {
   const [form] = Form.useForm()
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
-  const [visibleEditText, setVisibleEditText] = useState('')
   const [visiblePop, setVisiblePop] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
   const { projectInfo } = useModel('project')
   const btnsText = [
     {
@@ -119,6 +116,7 @@ const TreeItem = (props: any) => {
     form.resetFields()
   }
   const showVisible = (id: number) => {
+    setVisiblePop(false)
     close()
     setVisiblePop(false)
     if (id === 3) {
@@ -250,12 +248,13 @@ const TreeItem = (props: any) => {
         <Popover
           visible={visiblePop}
           getPopupContainer={node => node}
+          onVisibleChange={visible1 => setVisiblePop(visible1)}
           placement="bottomRight"
           content={content}
           trigger="hover"
         >
           <IconFont
-            onClick={e => {
+            onClick={(e: any) => {
               e.stopPropagation()
               setVisiblePop(true)
             }}
@@ -326,15 +325,20 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: any, ref: any) => {
+  const { value: valueId } = useSelector(store => store.counter)
+  const dispatch = useDispatch()
+
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
+  const { setSelectTreeData } = useModel('project')
   const init = async () => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setSelectTreeData(filterTreeData2(res)[0].children)
     setTreeData(filterTreeData(res))
+
     setShow(true)
   }
 
@@ -353,6 +357,18 @@ const WrapLeft = (props: any, ref: any) => {
       children:
         item.children && item.children.length
           ? filterTreeData(item.children)
+          : null,
+    }))
+    return newData
+  }
+
+  function filterTreeData2(data: any) {
+    const newData = data.map((item: any) => ({
+      value: item.key,
+      label: item.name,
+      children:
+        item.children && item.children.length
+          ? filterTreeData2(item.children)
           : null,
     }))
     return newData
@@ -420,6 +436,7 @@ const WrapLeft = (props: any, ref: any) => {
     } = e
 
     context.changeKey(selectLine.id)
+    dispatch(changeId(selectLine.id))
   }
 
   useEffect(() => {
@@ -441,6 +458,7 @@ const WrapLeft = (props: any, ref: any) => {
           <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
           {treeData.length > 0 && show ? (
             <Tree
+              selectedKeys={[valueId]}
               allowDrop={(dropNode: any) => {
                 if (dropNode.dropNode.title.props.grade === 4) {
                   return false
