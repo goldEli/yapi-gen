@@ -75,7 +75,8 @@ export const uploadFile = (
   space: string,
   fileName?: any,
 ) => {
-  return new Promise<Models.Files.File>((resolve, reject) => {
+  let id = ''
+  return new Promise<any>((resolve, reject) => {
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
@@ -83,39 +84,7 @@ export const uploadFile = (
       Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
         fileName || file.name
       }`,
-      onFileFinish(error: Error, data: UploadFileItemResult) {
-        if (error) {
-          reject(error)
-        } else {
-          resolve({
-            space,
-            id: getUUID(),
-            name: file.name,
-            size: file.size,
-            formattedSize: formatFileSize(file.size),
-            suffix: getFileSuffix(file.name),
-            url: `https://${data.Location}`,
-            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
-          })
-        }
-      },
-    })
-  })
-}
-
-export const uploadFileByTask = (
-  file: File,
-  username: string,
-  space: string,
-) => {
-  let id = ''
-  return new Promise<Models.Files.FileUploadTask>((resolve, reject) => {
-    cos.uploadFile({
-      Body: file,
-      Bucket: import.meta.env.__COS_BUCKET__,
-      Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${file.name}`,
-      onTaskReady(taskId: string) {
+      onTaskReady(taskId) {
         id = taskId
       },
       onTaskStart(task: Task) {
@@ -131,11 +100,10 @@ export const uploadFileByTask = (
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
             url: '',
-            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
           },
         })
       },
-      onFileFinish(error: Error, data: { Location: string }) {
+      onFileFinish(error: Error, data) {
         if (error) {
           reject(error)
         } else {
@@ -144,6 +112,55 @@ export const uploadFileByTask = (
             url: `https://${data.Location}`,
           })
         }
+      },
+    })
+  })
+}
+
+export const uploadFileByTask = (
+  file: File,
+  username: string,
+  space: string,
+) => {
+  let id = ''
+  let url = ''
+  return new Promise<Models.Files.FileUploadTask>((resolve, reject) => {
+    cos.uploadFile({
+      Body: file,
+      Bucket: import.meta.env.__COS_BUCKET__,
+      Region: import.meta.env.__COS_REGION__,
+      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${file.name}`,
+      onTaskReady(taskId: string) {
+        id = taskId
+      },
+
+      onFileFinish(error: Error, data: { Location: string }) {
+        url = `https://${data.Location}`
+        if (error) {
+          reject(error)
+        } else {
+          cos.emit('task-over', {
+            id,
+            url: `https://${data.Location}`,
+          })
+        }
+      },
+      onTaskStart(task: Task) {
+        resolve({
+          id: task.id,
+          state: task.state,
+          loaded: task.loaded,
+          percent: task.percent,
+          file: {
+            id: getUUID(),
+            name: file.name,
+            size: file.size,
+            formattedSize: formatFileSize(file.size),
+            suffix: getFileSuffix(file.name),
+            url,
+            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
+          },
+        })
       },
     })
   })

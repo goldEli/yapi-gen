@@ -79,7 +79,7 @@ const Send = () => {
       finish_content: params.info,
       plan_content: params.info2,
       copysend: params.people,
-      files: params.attachments.map((item: any) => item.url),
+      files: params.attachments,
       story_ids: params.needs,
       type: editType,
     }
