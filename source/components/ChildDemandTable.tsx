@@ -55,7 +55,7 @@ const ChildDemandTable = (props: {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const { getDemandList, updateDemandStatus } = useModel('demand')
+  const { getDemandList } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { projectInfo, colorList, getProjectInfo } = useModel('project')
   let isCanEdit: any
