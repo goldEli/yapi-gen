@@ -438,8 +438,6 @@ const EditDemand = (props: Props) => {
       setCategoryObj({})
       getInfo(value || projectId, classTree, categoryData?.list)
     } else {
-      form.resetFields()
-      form1.resetFields()
       form.setFieldsValue({
         projectId: value,
       })
@@ -502,9 +500,6 @@ const EditDemand = (props: Props) => {
       setProjectId(resultValue)
       if (props?.isQuickCreate) {
         getProjectData()
-        setTimeout(() => {
-          inputRefDom.current?.focus()
-        }, 100)
       } else {
         getInit(resultValue)
       }

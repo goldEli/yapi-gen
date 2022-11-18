@@ -24,6 +24,7 @@ interface Props {
   height?: number
   placeholder?: any
   color?: boolean
+  autoFocus?: boolean
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -108,7 +109,7 @@ const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
   }),
 )
 
-const EditorBox = (props: Props, ref: any) => {
+const EditorBox = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [key, setKey] = useState(1)
   const customParseLinkUrl = (url: string): string => {
@@ -157,6 +158,7 @@ const EditorBox = (props: Props, ref: any) => {
         parseLinkUrl: customParseLinkUrl,
       },
     },
+    autoFocus: props.autoFocus,
   }
 
   editorConfig.customPaste = (
@@ -212,9 +214,6 @@ const EditorBox = (props: Props, ref: any) => {
     props.onChange?.(e.getHtml().trim())
   }
 
-  useImperativeHandle(ref, () => {
-    return {}
-  })
   return (
     <Wrap red={props.color} id="editorWrap" minHeight={props?.height}>
       <Toolbar

@@ -49,7 +49,6 @@ const WhiteDay = (props: any) => {
   const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const ed1: any = useRef(null)
 
   const close = () => {
     form.resetFields()
@@ -149,9 +148,6 @@ const WhiteDay = (props: any) => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
-    setTimeout(() => {
-      ed1?.current?.focus()
-    }, 500)
   }, [props.editId, props.visibleEdit])
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -190,14 +186,6 @@ const WhiteDay = (props: any) => {
         }}
         ref={leftDom}
       >
-        <input
-          ref={ed1}
-          type="text"
-          style={{
-            position: 'absolute',
-            opacity: 0,
-          }}
-        />
         <Form
           form={form}
           onFinish={confirm}
@@ -243,7 +231,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor height={178} />
+            <Editor height={178} autoFocus />
           </Form.Item>
           <Form.Item
             style={{
