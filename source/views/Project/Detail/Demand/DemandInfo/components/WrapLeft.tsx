@@ -128,6 +128,7 @@ const WrapLeftBox = () => {
     const dom: any = LeftDom?.current
     dom.scrollTop = dom.scrollHeight
   }
+  const onChangeAttachment = (result: any) => {}
 
   return (
     <div
@@ -205,11 +206,12 @@ const WrapLeftBox = () => {
               <UploadAttach
                 onBottom={onBottom}
                 defaultList={demandInfo?.attachment?.map((i: any) => ({
-                  path: i.attachment.path,
+                  url: i.attachment.path,
                   id: i.id,
                   time: i.attachment.created_at,
                 }))}
                 canUpdate
+                onChangeAttachment={onChangeAttachment}
                 addWrap={
                   projectInfo?.projectPermissions?.filter(
                     (i: any) => i.name === '附件上传',
@@ -222,7 +224,6 @@ const WrapLeftBox = () => {
                     (null as any)
                   )
                 }
-                child={isShowProgress ? null : <Children />}
               />
             </div>
           </InfoItem>

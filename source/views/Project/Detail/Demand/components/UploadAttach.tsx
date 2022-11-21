@@ -92,7 +92,10 @@ const RedCss = styled(BlueCss)`
   color: #ff5c5e;
   margin-left: 12px;
 `
-
+const NumStyle = styled.div`
+  font-size: 12px;
+  color: #969799;
+`
 const Card = styled.div`
   position: relative;
   width: 372px;
@@ -426,24 +429,20 @@ const UploadAttach = (props: any) => {
               </Second>
               <Third>
                 {i.state === 'uploading' && (
-                  <div>{Number((i.percent * 100).toFixed(2))}%</div>
+                  <NumStyle>{Number((i.percent * 100).toFixed(2))}%</NumStyle>
                 )}
                 {i.state === 'paused' && (
-                  <div>{Number((i.percent * 100).toFixed(2))}%</div>
+                  <NumStyle>{Number((i.percent * 100).toFixed(2))}%</NumStyle>
                 )}
 
                 {i.state === 'error' && (
-                  <>
-                    <BlueCss onClick={() => onTapRestart(i.id)}>重传</BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
-                  </>
+                  <NumStyle>{Number((i.percent * 100).toFixed(2))}%</NumStyle>
                 )}
-                {i.state === 'success' && <></>}
               </Third>
               <div>
                 <div
                   style={{
-                    width: '200px',
+                    width: '220px',
                     fontSize: '14px',
                     fontWeight: 400,
                     color: '#323233',
@@ -477,7 +476,15 @@ const UploadAttach = (props: any) => {
                   )}
                   {i.state === 'paused' && <span>已暂停</span>}
 
-                  {i.state === 'error' && <RedCss>上传失败</RedCss>}
+                  {i.state === 'error' && (
+                    <RedCss
+                      style={{
+                        margin: 0,
+                      }}
+                    >
+                      上传失败
+                    </RedCss>
+                  )}
                   {i.state === 'success' && (
                     <>
                       <span>{bytesToSize(i.file?.size)}</span>

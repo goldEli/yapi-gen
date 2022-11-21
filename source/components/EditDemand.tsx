@@ -332,7 +332,7 @@ const EditDemand = (props: Props) => {
       setHtml(res.info)
       setAttachList(
         res?.attachment.map((i: any) => ({
-          path: i.attachment.path,
+          url: i.attachment.path,
           id: i.id,
           time: i.attachment.created_at,
         })),
@@ -644,24 +644,10 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  const onChangeAttachment = (result: any, type: string) => {
-    if (type === 'add') {
-      result.path = result.url
-      form.setFieldsValue({
-        attachments: [
-          ...(form.getFieldValue('attachments') || []),
-          ...[result.url],
-        ],
-      })
-      setAttachList((oldAttachList: any) => oldAttachList.concat([result]))
-    } else {
-      const arr = attachList
-      const comResult = arr.filter((i: any) => i.id !== result.uid)
-      form.setFieldsValue({
-        attachments: comResult.map((i: any) => i.path),
-      })
-      setAttachList(comResult)
-    }
+  const onChangeAttachment = (result: any) => {
+    form.setFieldsValue({
+      attachments: result,
+    })
   }
 
   const onChangeTag = (result: any, type: string) => {
@@ -680,17 +666,6 @@ const EditDemand = (props: Props) => {
       })
       setTagList(comResult)
     }
-  }
-
-  const Children = () => {
-    return (
-      <ProgressWrapUpload
-        status={uploadStatus}
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
-      />
-    )
   }
 
   const onChangeSetSchedule = (val: any) => {
@@ -1085,8 +1060,6 @@ const EditDemand = (props: Props) => {
                     name="attachments"
                   >
                     <UploadAttach
-                      child={isShow ? <Children /> : ''}
-                      onChangeShow={setIsShow}
                       defaultList={attachList}
                       onChangeAttachment={onChangeAttachment}
                       onBottom={onBottom}
