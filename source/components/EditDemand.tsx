@@ -221,11 +221,10 @@ interface Props {
 }
 
 const EditDemand = (props: Props) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const [changeCategoryForm] = Form.useForm()
-  const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
@@ -329,7 +328,6 @@ const EditDemand = (props: Props) => {
       form1.setFieldsValue(form1Obj)
 
       setPriorityDetail(res.priority)
-      setHtml(res.info)
       setAttachList(
         res?.attachment.map((i: any) => ({
           path: i.attachment.path,
@@ -524,7 +522,6 @@ const EditDemand = (props: Props) => {
     }
     setAttachList([])
     setTagList([])
-    setHtml('')
     setPriorityDetail({})
     getList()
     setIsShowFields(false)
@@ -721,7 +718,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     setAttachList([])
     setTagList([])
-    setHtml('')
     setPriorityDetail({})
     setCreateCategory({})
     setChangeCategoryFormData({})

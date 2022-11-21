@@ -32,7 +32,7 @@ export const getIterateList: any = async (params: any) => {
 
 export const addIterate: any = async (params: any) => {
   const element = document.createElement('div')
-  element.innerHTML = params?.info
+  element.innerHTML = params?.info || ''
   const hasImg = Array.from(element.getElementsByTagName('img'))
   const info = hasImg.length
     ? params?.info
@@ -51,7 +51,7 @@ export const addIterate: any = async (params: any) => {
 
 export const updateIterate: any = async (params: any) => {
   const element = document.createElement('div')
-  element.innerHTML = params?.info
+  element.innerHTML = params?.info || ''
   const hasImg = Array.from(element.getElementsByTagName('img'))
   const info = hasImg.length
     ? params?.info
@@ -159,7 +159,7 @@ export const getAchieveInfo: any = async (params: any) => {
 
 export const updateAchieve: any = async (params: any) => {
   const element = document.createElement('div')
-  element.innerHTML = params?.info
+  element.innerHTML = params?.info || ''
   const hasImg = Array.from(element.getElementsByTagName('img'))
   const info = hasImg.length
     ? params?.info
