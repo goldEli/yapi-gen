@@ -438,6 +438,30 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
   }),
 )
 
+const CanOperationCategory = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    width: 'fit-content',
+    '.title': {
+      '::before': {
+        content: "'#'",
+      },
+      '::after': {
+        content: "'#'",
+      },
+    },
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
+  }),
+)
+
 const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
     cursor: 'pointer',
@@ -843,4 +867,5 @@ export {
   CloseWrap,
   TextWrapEditor,
   TableStyleBox,
+  CanOperationCategory,
 }

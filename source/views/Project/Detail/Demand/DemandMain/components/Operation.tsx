@@ -16,6 +16,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
+import { CanOperationCategory } from '@/components/StyleCommon'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -54,22 +55,6 @@ const LiWrap = styled.div<{ color: any }>(
     '&: hover': {
       background: color,
     },
-  }),
-)
-
-const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    width: 'fit-content',
-  },
-  ({ color, bgColor }) => ({
-    color,
-    background: bgColor,
   }),
 )
 
@@ -250,15 +235,15 @@ const Operation = (props: Props) => {
           color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
           onClick={(e: any) => onChangeCategory(e, k)}
         >
-          <StatusTag
+          <CanOperationCategory
             style={{ marginRight: 0 }}
             color={k.color}
             bgColor={
               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
             }
           >
-            {k.name}
-          </StatusTag>
+            <span className="title">{k.name}</span>
+          </CanOperationCategory>
         </LiWrap>
       ))}
     </div>

@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import ChooseColor from '../../components/ChooseColor'
 import { useModel } from '@/models'
-import { ViewWrap } from '@/components/StyleCommon'
+import { ViewWrap, CategoryWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
@@ -17,23 +17,6 @@ const FormWrap = styled(Form)({
     margin: '22px 0 0 0',
   },
 })
-
-const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    padding: '0 8px',
-    marginRight: 8,
-    lineHeight: '22px',
-    fontSize: 12,
-    fontWeight: 400,
-    marginLeft: 8,
-  },
-  ({ color, bgColor }) => ({
-    background: bgColor,
-    color,
-  }),
-)
 
 interface EditorProps {
   isVisible: boolean

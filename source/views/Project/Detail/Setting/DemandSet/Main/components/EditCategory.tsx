@@ -25,6 +25,12 @@ const ViewWrap = styled.div<{ color: string; bgColor: string }>(
     lineHeight: '22px',
     fontSize: 12,
     fontWeight: 400,
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ color, bgColor }) => ({
     background: bgColor,

@@ -40,6 +40,7 @@ import {
   AddWrap,
   ProgressWrapUpload,
   CloseWrap,
+  CanOperationCategory,
 } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
 import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
@@ -153,24 +154,6 @@ const AddButtonWrap = styled.div({
   padding: '0 16px',
   cursor: 'pointer',
 })
-
-const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    cursor: 'pointer',
-    marginRight: 8,
-    width: 'fit-content',
-  },
-  ({ color, bgColor }) => ({
-    color,
-    background: bgColor,
-  }),
-)
 
 const LiWrap = styled.div<{ color: any }>(
   {
@@ -782,15 +765,15 @@ const EditDemand = (props: Props) => {
             color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
             onClick={() => onClickCategory(k)}
           >
-            <StatusTag
-              style={{ marginRight: 0 }}
+            <CanOperationCategory
+              style={{ marginRight: 0, cursor: 'pointer' }}
               color={k.color}
               bgColor={
                 colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
               }
             >
-              {k.name}
-            </StatusTag>
+              <span className="title">{k.name}</span>
+            </CanOperationCategory>
           </LiWrap>
         ))}
     </div>
@@ -833,15 +816,16 @@ const EditDemand = (props: Props) => {
             style={{ padding: '0 20px 0 2px' }}
           >
             <Form.Item label={t('newlyAdd.beforeCategory')}>
-              <StatusTag
+              <CanOperationCategory
+                style={{ marginRight: 8, cursor: 'pointer' }}
                 color={categoryObj?.color}
                 bgColor={
                   colorList?.filter((i: any) => i.key === categoryObj?.color)[0]
                     ?.bgColor
                 }
               >
-                <>{categoryObj?.name}</>
-              </StatusTag>
+                <span className="title">{categoryObj?.name}</span>
+              </CanOperationCategory>
             </Form.Item>
             <Form.Item
               label={t('newlyAdd.afterCategory')}
@@ -914,7 +898,8 @@ const EditDemand = (props: Props) => {
                 getPopupContainer={node => node}
                 onVisibleChange={visible => setIsShowPop(visible)}
               >
-                <StatusTag
+                <CanOperationCategory
+                  style={{ marginRight: 8, cursor: 'pointer' }}
                   color={
                     categoryList?.list?.filter(
                       (i: any) => i.id === categoryObj?.id,
@@ -930,13 +915,13 @@ const EditDemand = (props: Props) => {
                     )[0]?.bgColor
                   }
                 >
-                  <>
+                  <span className="title">
                     {
                       categoryList?.list?.filter(
                         (i: any) => i.id === categoryObj?.id,
                       )[0]?.name
                     }
-                  </>
+                  </span>
                   <IconFont
                     type="down-icon"
                     style={{
@@ -945,7 +930,7 @@ const EditDemand = (props: Props) => {
                       color: '43BA9A',
                     }}
                   />
-                </StatusTag>
+                </CanOperationCategory>
               </Popover>
             )}
           </div>

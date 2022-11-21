@@ -126,10 +126,18 @@ const DivWrap = styled.div({
 const CategoryName = styled.div<{ bgColor?: string; color?: string }>(
   {
     height: 22,
+    display: 'flex',
+    alignItems: 'center',
     borderRadius: '11px',
     padding: '0 8px',
     fontSize: 12,
     lineHeight: '22px',
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ bgColor, color }) => ({
     background: bgColor,
