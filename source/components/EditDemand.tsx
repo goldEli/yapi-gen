@@ -523,8 +523,6 @@ const EditDemand = (props: Props) => {
       message.success(t('common.createSuccess'))
     }
     setAttachList([])
-    setTagList([])
-    setPriorityDetail({})
     getList()
     setIsShowFields(false)
     setIsOpenEditDemand(false)
@@ -534,19 +532,14 @@ const EditDemand = (props: Props) => {
       props.onUpdate?.()
     }
     if (hasNext) {
-      form.resetFields()
       form.setFieldsValue({
-        projectId,
-        type: 'need',
+        info: '',
+        name: '',
       })
-      form1.resetFields()
-      if (props?.isChild) {
-        form.setFieldsValue({
-          parentId: allDemandList?.filter(
-            (i: any) => i.value === Number(paramsData?.demandId),
-          )[0]?.value,
-        })
-      }
+      // 直接修改form，富文本字段值更新，视图未更新，所以先清除再赋值
+      const formValues = form.getFieldsValue()
+      form.resetFields()
+      form.setFieldsValue(formValues)
       setTimeout(() => {
         inputRefDom.current?.focus()
       }, 100)
