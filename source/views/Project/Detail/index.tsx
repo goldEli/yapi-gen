@@ -244,9 +244,20 @@ const Detail = () => {
     }
   }, [projectInfo, selectIterate, memberList, isOpenEditDemand])
 
+  // 切换项目后刷新相应接口
+  const onChangeProject = () => {
+    getProjectInfo({ projectId })
+    getPermissionList()
+    getProjectCoverList()
+    getMemberList({ all: true, projectId })
+    getTagList({ projectId })
+    getIterateList()
+    getFieldData()
+  }
+
   return (
     <Wrap>
-      <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
+      <CommonOperation onUpdate={onChangeProject} />
       <Outlet />
     </Wrap>
   )
