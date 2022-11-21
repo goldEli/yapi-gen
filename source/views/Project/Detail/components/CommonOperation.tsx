@@ -45,25 +45,57 @@ const Tabs = styled(Space)({
   alignItems: 'center',
 })
 
-const TabsItem = styled.div<{ isActive: boolean }>(
+const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    cursor: 'pointer',
-    color: '#323233',
-    div: {
+    position: 'relative',
+    '.titleBox': {
       fontSize: 18,
       height: 62,
       lineHeight: '62px',
-    },
-    '&: hover': {
-      color: '#2877ff',
+      display: 'flex',
+      '&: hover': {
+        span: {
+          color: '#2877ff',
+          cursor: 'pointer',
+        },
+      },
+      '.text': {
+        position: 'absolute',
+        zIndex: 2,
+        fontSize: 12,
+        top: 12,
+        right: -50,
+        display: 'flex',
+        padding: '0 4px 0 2px',
+        height: 20,
+        lineHeight: '20px',
+        whiteSpace: 'nowrap',
+        background: '#F4F4F6',
+        borderTopRightRadius: 4,
+        borderBottomRightRadius: 4,
+        div: {
+          display: 'inline-block',
+          borderTop: '10px solid transparent',
+          borderBottom: '10px solid transparent',
+          borderRight: '7px solid #F4F4F6',
+          width: 0,
+          height: 0,
+          position: 'absolute',
+          left: -7,
+          top: 0,
+        },
+      },
     },
   },
-  ({ isActive }) => ({
-    div: {
-      color: String(isActive ? '#2877FF' : ''),
+  ({ isActive, isPlan }) => ({
+    color: isPlan ? '#969799' : '#323233',
+    '.titleBox': {
+      span: {
+        color: String(isActive ? '#2877FF' : ''),
+      },
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
       fontWeight: isActive ? 500 : 400,
     },
@@ -172,6 +204,8 @@ const CommonOperation = (props: Props) => {
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
     { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
+    { name: '缺陷', type: 'Defect', hasPath: ['Defect'], isPlan: true },
+    { name: '报表', type: 'Report', hasPath: ['Report'], isPlan: true },
     {
       name: t('container.setting'),
       type: 'Set',
@@ -310,13 +344,22 @@ const CommonOperation = (props: Props) => {
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
+              isPlan={i.isPlan}
               onClick={() => onToModel(i)}
               key={i.type}
               isActive={
                 i.hasPath?.filter(k => pathname.includes(k))?.length > 0
               }
             >
-              <div>{i.name}</div>
+              <div className="titleBox">
+                <span>{i.name}</span>
+                {i.isPlan && (
+                  <div className="text">
+                    {t('version2.2.1.developed')}
+                    <div />
+                  </div>
+                )}
+              </div>
             </TabsItem>
           ))}
         </Tabs>

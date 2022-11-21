@@ -101,6 +101,14 @@ const routes = [
               },
             ],
           },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/Project/Detail/Defect')),
+          },
+          {
+            path: 'Report',
+            element: lazy(() => import('@/views/Project/Detail/Report')),
+          },
         ],
       },
       {
