@@ -206,7 +206,7 @@ const Profile = () => {
           k.categoryColor
         }; background: ${
           colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">${k.categoryName}</span>
+        }">#${k.categoryName}#</span>
         <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
           k.text
         }</span>

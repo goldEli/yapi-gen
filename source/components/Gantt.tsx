@@ -69,9 +69,6 @@ const GanttWrap = styled.div({
   '.gantt_task_cell': {
     borderRight: 'none',
   },
-  //   '.gantt_row:nth-child(even), .gantt_task_row:nth-child(even)': {
-  //     backgroundColor: ' #f8f9fa',
-  //   },
   '#status': {
     padding: '4px 8px',
     borderRadius: 6,

@@ -425,6 +425,12 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     fontWeight: 400,
     marginLeft: 8,
     flexShrink: 0,
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ color, bgColor }) => ({
     background: bgColor,
