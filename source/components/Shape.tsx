@@ -462,7 +462,7 @@ export const ShapeContent = (props: any) => {
 
   const confirm = async () => {
     const res2 = await form.validateFields()
-    const res = structuredClone(res2)
+    const res = JSON.parse(JSON.stringify(res2))
     for (const key in res) {
       if (typeof res[key] === 'undefined') {
         res[key] = null
