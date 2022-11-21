@@ -8,6 +8,7 @@ export default () => {
   const [isShowProgress, setIsShowProgress] = useState(false)
   const [percentShow, setPercentShow] = useState<boolean>(false)
   const [isUpdateStatus, setIsUpdateStatus] = useState<any>(false)
+  const [isUpdateChangeLog, setIsUpdateChangeLog] = useState<any>(false)
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
@@ -119,5 +120,7 @@ export default () => {
     getExportFields,
     setIsOpenEditDemand,
     isOpenEditDemand,
+    setIsUpdateChangeLog,
+    isUpdateChangeLog,
   }
 }

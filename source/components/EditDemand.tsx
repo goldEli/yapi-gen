@@ -250,6 +250,7 @@ const EditDemand = (props: Props) => {
     updateDemandCategory,
     setIsUpdateStatus,
     setIsOpenEditDemand,
+    setIsUpdateChangeLog,
   } = useModel('demand')
   const {
     memberList,
@@ -513,6 +514,7 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.editSuccess'))
       setIsUpdateStatus(true)
+      setIsUpdateChangeLog(true)
     } else {
       await addDemand({
         projectId,
