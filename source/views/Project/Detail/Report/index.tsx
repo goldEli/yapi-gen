@@ -1,8 +1,7 @@
-import { useTranslation } from 'react-i18next'
+import WaitingDeveloped from '@/components/WaitingDeveloped'
 
 const ReportMain = () => {
-  const [t] = useTranslation()
-  return <>{t('version2.2.1.report')}</>
+  return <WaitingDeveloped />
 }
 
 export default ReportMain

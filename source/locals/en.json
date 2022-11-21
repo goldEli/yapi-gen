@@ -1,4 +1,10 @@
 {
+  "version2.2.1": {
+    "defect": "缺陷",
+    "report": "报表",
+    "developed": "待开发",
+    "waitingPlan": "功能筹备中，敬请期待"
+  },
   "p2": {
     "maxUploadText": "The maximum length of a file name is 130 words!",
     "nameNotNull": "The demand title cannot be empty!",

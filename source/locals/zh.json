@@ -2,7 +2,8 @@
   "version2.2.1": {
     "defect": "缺陷",
     "report": "报表",
-    "developed": "待开发"
+    "developed": "待开发",
+    "waitingPlan": "功能筹备中，敬请期待"
   },
   "p2": {
     "maxUploadText": "最大支持130个字长度的文件名！",

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import empty from '/empty.svg'
 import { useTranslation } from 'react-i18next'
+import IconFont from './IconFont'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -12,10 +12,6 @@ const Wrap = styled.div({
   width: '100%',
   borderRadius: 6,
   padding: 16,
-  img: {
-    width: 240,
-    marginBottom: 35,
-  },
   div: {
     color: '#323233',
     fontSize: 18,
@@ -27,13 +23,13 @@ const NoData = (props?: any) => {
   const [t] = useTranslation()
   return (
     <Wrap>
-      <img src={empty} alt="" />
+      <IconFont type="noData" style={{ fontSize: 200 }} />
       <div>{t('components.noData')}</div>
-      {props?.subText
-        ? <span style={{ color: '#969799', fontSize: 14, marginTop: 8 }}>
-            {props?.subText}
-          </span>
-        : null}
+      {props?.subText ? (
+        <span style={{ color: '#969799', fontSize: 14, marginTop: 8 }}>
+          {props?.subText}
+        </span>
+      ) : null}
     </Wrap>
   )
 }
