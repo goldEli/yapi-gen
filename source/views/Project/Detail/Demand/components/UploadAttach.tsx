@@ -96,7 +96,7 @@ const NumStyle = styled.div`
   font-size: 12px;
   color: #969799;
 `
-const Card = styled.div`
+export const Card = styled.div`
   position: relative;
   width: 372px;
   min-height: 60px;
