@@ -3,7 +3,6 @@ import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Popover, Space } from 'antd'
 import { useState } from 'react'
-import colorImg from '/colorImg.png'
 
 const ChooseColorWrap = styled.div<{ color?: string }>(
   {
@@ -66,6 +65,7 @@ const ChooseColor = (props: ChooseColorProps) => {
       ))}
     </Space>
   )
+
   const onVisibleChange = (visible: any) => {
     setIsChooseColor(visible)
   }
@@ -77,14 +77,10 @@ const ChooseColor = (props: ChooseColorProps) => {
       content={colorStatus}
       onVisibleChange={onVisibleChange}
     >
-      {props?.color ? (
-        <ChooseColorWrap
-          color={props?.color}
-          onClick={() => setIsChooseColor(true)}
-        />
-      ) : (
-        <img style={{ height: 32, cursor: 'pointer' }} src={colorImg} alt="" />
-      )}
+      <ChooseColorWrap
+        color={props?.color}
+        onClick={() => setIsChooseColor(true)}
+      />
     </Popover>
   )
 }

@@ -32,7 +32,7 @@ const EditWorkflow = (props: EditorProps) => {
   const [form] = Form.useForm()
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
-  const [normalColor, setNormalColor] = useState<any>('')
+  const [normalColor, setNormalColor] = useState<any>('#2877FF')
   const { colorList, updateStoryConfigWorkflow } = useModel('project')
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const EditWorkflow = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('')
+      setNormalColor('#2877FF')
       setStatus(false)
     }, 100)
   }
