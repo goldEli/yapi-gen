@@ -22,6 +22,8 @@ import {
   AddWrap,
 } from '@/components/StyleCommon'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
+import { off } from 'process'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -128,7 +130,72 @@ const WrapLeftBox = () => {
     const dom: any = LeftDom?.current
     dom.scrollTop = dom.scrollHeight
   }
-  const onChangeAttachment = (result: any) => {}
+
+  const onAddInfoAttach = async (url: any) => {
+    try {
+      await addInfoDemand({
+        projectId,
+        demandId,
+        type: 'attachment',
+        targetId: url,
+      })
+
+      getDemandInfo({ projectId, id: demandId })
+      onBottom?.()
+    } catch (error) {
+      //
+    }
+  }
+
+  const onDeleteInfoAttach = async (file: any) => {
+    try {
+      await deleteInfoDemand({
+        projectId,
+        demandId,
+        type: 'attachment',
+        targetId: file,
+      })
+
+      getDemandInfo({ projectId, id: demandId })
+      onBottom?.()
+    } catch (error) {
+      //
+    }
+  }
+
+  const onChangeAttachment = (result: any) => {
+    const nowLength = result.length
+    let defaultLength = demandInfo?.attachment.length
+
+    // if (nowLength > defaultLength) {
+    //   if (defaultLength === 0 && nowLength >= 1) {
+    //     result.forEach((i: any) => {
+    //       onAddInfoAttach([i])
+    //     })
+    //     return
+    //   }
+
+    //   const arr = demandInfo?.attachment.filter((i: any) => {
+    //     return result.some((item: any) => i.attachment.path === item)
+    //   })
+
+    //   Array.from(new Set(arr)).forEach((i: any) => {
+    //     onAddInfoAttach([i])
+    //   })
+    // }
+
+    // if (nowLength < defaultLength) {
+    //   if (defaultLength === 1) {
+    //     onDeleteInfoAttach(demandInfo?.attachment[0]?.id)
+    //     return
+    //   }
+    //   const arr = demandInfo?.attachment.filter((i: any) => {
+    //     return result.some((item: any) => i.attachment.path !== item)
+    //   })
+
+    //   onDeleteInfoAttach(arr[0]?.id)
+    // }
+  }
 
   return (
     <div

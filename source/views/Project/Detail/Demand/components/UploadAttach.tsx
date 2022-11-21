@@ -145,8 +145,6 @@ const fils = ['xlsx', 'pdf']
 const fils2 = fils.concat(imgs)
 
 const UploadAttach = (props: any) => {
-  // console.log(props.value, props.defaultList, '默认值')
-
   const { userInfo } = useModel('user')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [pictureList, setPictureList] = useState({
@@ -396,6 +394,7 @@ const UploadAttach = (props: any) => {
                   </Gred>
                 )}
               </GredParent>
+
               <Second>
                 {i.state === 'uploading' && (
                   <>
@@ -417,14 +416,19 @@ const UploadAttach = (props: any) => {
                   </>
                 )}
                 {i.state === 'success' && (
-                  <>
-                    <BlueCss
-                      onClick={() => onDownload(i.file.url, i.file.name)}
-                    >
-                      下载
-                    </BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>删除</RedCss>
-                  </>
+                  <span>
+                    {!!isDownload && (
+                      <BlueCss
+                        onClick={() => onDownload(i.file.url, i.file.name)}
+                      >
+                        下载
+                      </BlueCss>
+                    )}
+
+                    {!!isShowDel && (
+                      <RedCss onClick={() => onTapRemove(i.id)}>删除</RedCss>
+                    )}
+                  </span>
                 )}
               </Second>
               <Third>

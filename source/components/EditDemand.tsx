@@ -1046,37 +1046,33 @@ const EditDemand = (props: Props) => {
                     />
                   </Form.Item>
                 )}
-              {projectId &&
-                projectInfo.projectPermissions?.length > 0 &&
-                projectInfo?.projectPermissions?.filter(
-                  (i: any) => i.name === '附件上传',
-                ).length > 0 && (
-                  <Form.Item
-                    label={
-                      <div style={{ fontWeight: 'bold' }}>
-                        {t('common.attachment')}
-                      </div>
+              {projectId && (
+                <Form.Item
+                  label={
+                    <div style={{ fontWeight: 'bold' }}>
+                      {t('common.attachment')}
+                    </div>
+                  }
+                  name="attachments"
+                >
+                  <UploadAttach
+                    defaultList={attachList}
+                    onChangeAttachment={onChangeAttachment}
+                    onBottom={onBottom}
+                    addWrap={
+                      <AddWrap
+                        style={{
+                          marginBottom: '20px',
+                        }}
+                        hasColor
+                      >
+                        <IconFont type="plus" />
+                        <div>{t('common.add23')}</div>
+                      </AddWrap>
                     }
-                    name="attachments"
-                  >
-                    <UploadAttach
-                      defaultList={attachList}
-                      onChangeAttachment={onChangeAttachment}
-                      onBottom={onBottom}
-                      addWrap={
-                        <AddWrap
-                          style={{
-                            marginBottom: '20px',
-                          }}
-                          hasColor
-                        >
-                          <IconFont type="plus" />
-                          <div>{t('common.add23')}</div>
-                        </AddWrap>
-                      }
-                    />
-                  </Form.Item>
-                )}
+                  />
+                </Form.Item>
+              )}
             </FormWrap>
           </LeftWrap>
           <RightWrap>
