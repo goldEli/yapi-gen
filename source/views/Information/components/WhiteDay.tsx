@@ -89,13 +89,6 @@ const WhiteDay = (props: any) => {
     form.setFieldsValue({
       info: res.data.info.finish_content,
       info2: res.data.info.plan_content,
-      attachments: res.data.files.map((item: any) => {
-        return {
-          url: item.associate,
-          id: item.id,
-          time: item.created_at,
-        }
-      }),
     })
     setAttachList(
       res.data.files.map((item: any) => {

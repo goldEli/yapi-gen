@@ -12,10 +12,11 @@ import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
-import { getParamsData } from '@/tools'
+import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
 import moment from 'moment'
 import Viewer from 'react-viewer'
+import { css } from '@emotion/react'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -26,16 +27,29 @@ const Warp = styled(Upload)({
 export const First = styled.div``
 
 export const Second = styled.div`
-  display: none;
+  visibility: hidden;
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  opacity: 0;
+  transition: all 1s;
+`
+
+export const Third = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 30px;
 `
 
 export const BigWrap = styled.div`
+  display: flex;
   &:hover {
     ${Second} {
-      display: block;
+      visibility: visible;
+      opacity: 1;
     }
     ${First} {
-      display: none;
+      /* display: none; */
     }
   }
 `
@@ -58,6 +72,7 @@ export const Gred = styled.div`
 `
 
 export const GredParent = styled.div`
+  margin-right: 12px;
   position: relative;
   &:hover {
     ${Gred} {
@@ -67,12 +82,35 @@ export const GredParent = styled.div`
   }
 `
 
-const StyledProgress = styled(Progress)({
-  // '& .ant-progress-outer .ant-progress-inner .ant-progress-bg': {
-  //   height: '4px !important',
-  //   background: '#43BA9A',
-  // },
-})
+const BlueCss = styled.span`
+  font-size: 12px;
+  color: #2877ff;
+  cursor: pointer;
+`
+
+const RedCss = styled(BlueCss)`
+  color: #ff5c5e;
+  margin-left: 12px;
+`
+
+const Card = styled.div`
+  position: relative;
+  width: 372px;
+  min-height: 60px;
+  background: #ffffff;
+  box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
+  border-radius: 6px 6px 6px 6px;
+  opacity: 1;
+  margin: 0 16px 16px 10px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+`
+
+const StyledProgress = styled(Progress)`
+  .ant-progress-bg {
+    height: 2px !important;
+  }
+`
 const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
@@ -251,17 +289,19 @@ const UploadAttach = (props: any) => {
       const arr: any[] = []
       props.defaultList.forEach((i: any, index: any) => {
         const obj = {
-          id: index,
+          id: i.id ?? index,
           state: 'success',
           loaded: 4598,
           percent: 1,
+
           file: {
-            id: '8c419aca-dd38-4047-853e-b6dc89613df0',
-            name: 'swiper_show.webp',
+            id: index,
+            name: i.url.split('/').at(-1),
             size: 4598,
             formattedSize: '4.49KB',
-            suffix: 'webp',
+            suffix: i.url.split('.').at(-1),
             url: i.url,
+            time: i.time,
           },
         }
         arr.push(obj)
@@ -269,7 +309,7 @@ const UploadAttach = (props: any) => {
 
       setFileList(arr)
     } else {
-      // setFileList([])
+      setFileList([])
     }
   }
   useEffect(() => {
@@ -293,6 +333,7 @@ const UploadAttach = (props: any) => {
   useEffect(() => {
     checkList()
   }, [fileList])
+
   // console.log(fileList)
 
   return (
@@ -316,18 +357,8 @@ const UploadAttach = (props: any) => {
       </Warp>
       <div>
         {fileList.map((i: any) => (
-          <div
-            style={{
-              position: 'relative',
-            }}
-            key={i.id}
-          >
-            <BigWrap
-              style={{
-                display: 'flex',
-                marginBottom: '16px',
-              }}
-            >
+          <Card key={i.id}>
+            <BigWrap>
               <GredParent>
                 {imgs.includes(i.file.suffix) && (
                   <img
@@ -362,42 +393,57 @@ const UploadAttach = (props: any) => {
                   </Gred>
                 )}
               </GredParent>
-              <div
-                style={{
-                  position: 'absolute',
-                  right: ' 20px',
-                  top: ' 50%',
-                  transform: 'translate(50%, -50%)',
-                }}
-              >
+              <Second>
                 {i.state === 'uploading' && (
                   <>
-                    <a onClick={() => onTapPause(i.id)}>暂停</a>
-                    <a onClick={() => onTapRemove(i.id)}>删除</a>
-                    <div>{Number((i.percent * 100).toFixed(2))}%</div>
+                    <BlueCss onClick={() => onTapPause(i.id)}>暂停</BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
                   </>
                 )}
                 {i.state === 'paused' && (
                   <>
-                    <a onClick={() => onTapRestart(i.id)}>开始</a>
-                    <a onClick={() => onTapRemove(i.id)}>删除</a>
-                    <div>{Number((i.percent * 100).toFixed(2))}%</div>
+                    <BlueCss onClick={() => onTapRestart(i.id)}>开始</BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
                   </>
                 )}
 
                 {i.state === 'error' && (
                   <>
-                    <a onClick={() => onTapRestart(i.id)}>开始</a>
-                    <a onClick={() => onTapRemove(i.id)}>删除</a>
+                    <BlueCss onClick={() => onTapRestart(i.id)}>重传</BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
                   </>
                 )}
                 {i.state === 'success' && (
-                  <a onClick={() => onTapRemove(i.id)}>删除</a>
+                  <>
+                    <BlueCss
+                      onClick={() => onDownload(i.file.url, i.file.name)}
+                    >
+                      下载
+                    </BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>删除</RedCss>
+                  </>
                 )}
-              </div>
+              </Second>
+              <Third>
+                {i.state === 'uploading' && (
+                  <div>{Number((i.percent * 100).toFixed(2))}%</div>
+                )}
+                {i.state === 'paused' && (
+                  <div>{Number((i.percent * 100).toFixed(2))}%</div>
+                )}
+
+                {i.state === 'error' && (
+                  <>
+                    <BlueCss onClick={() => onTapRestart(i.id)}>重传</BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
+                  </>
+                )}
+                {i.state === 'success' && <></>}
+              </Third>
               <div>
                 <div
                   style={{
+                    width: '200px',
                     fontSize: '14px',
                     fontWeight: 400,
                     color: '#323233',
@@ -407,38 +453,41 @@ const UploadAttach = (props: any) => {
                 >
                   {i.file.name}
                 </div>
-                {!isDownload && !isShowDel ? (
-                  <div
-                    style={{
-                      height: '20px',
-                      fontSize: '12px',
-                      fontWeight: 400,
-                      color: '#969799',
-                      lineHeight: '20px',
-                    }}
-                  >
-                    <span
-                      style={{
-                        marginRight: '12px',
-                      }}
-                    >
-                      {userInfo?.name}
-                    </span>
-                    <span>
-                      {moment(new Date()).format('yyyy-MM-DD HH:mm:ss')}
-                    </span>
-                  </div>
-                ) : (
-                  <>
-                    <First
-                      style={{
-                        height: '20px',
-                        fontSize: '12px',
-                        fontWeight: 400,
-                        color: '#969799',
-                        lineHeight: '20px',
-                      }}
-                    >
+                <First
+                  style={{
+                    height: '20px',
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    color: '#969799',
+                    lineHeight: '20px',
+                  }}
+                >
+                  {i.state === 'uploading' && (
+                    <>
+                      <span>{bytesToSize(i.loaded)}</span>
+                      <span
+                        style={{
+                          margin: '0 6px 0 6px',
+                        }}
+                      >
+                        /
+                      </span>
+                      <span>{bytesToSize(i.file?.size)}</span>
+                    </>
+                  )}
+                  {i.state === 'paused' && <span>已暂停</span>}
+
+                  {i.state === 'error' && <RedCss>上传失败</RedCss>}
+                  {i.state === 'success' && (
+                    <>
+                      <span>{bytesToSize(i.file?.size)}</span>
+                      <span
+                        style={{
+                          margin: '0 6px 0 6px',
+                        }}
+                      >
+                        ·
+                      </span>
                       <span
                         style={{
                           marginRight: '12px',
@@ -446,46 +495,10 @@ const UploadAttach = (props: any) => {
                       >
                         {userInfo?.name}
                       </span>
-                      <span>
-                        {moment(new Date()).format('yyyy-MM-DD HH:mm:ss')}
-                      </span>
-                    </First>
-                    <Second
-                      style={{
-                        height: '20px',
-                      }}
-                    >
-                      {isDownload ? (
-                        <span
-                          onClick={() => onDownload(i.file.url, i.file.name)}
-                          style={{
-                            marginRight: '12px',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          <IconFont
-                            style={{ fontSize: 18, color: '#969799' }}
-                            type="download"
-                          />
-                        </span>
-                      ) : null}
-
-                      {isShowDel ? (
-                        <span
-                          style={{
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => onTapRemove(i.id)}
-                        >
-                          <IconFont
-                            style={{ fontSize: 18, color: '#969799' }}
-                            type="delete"
-                          />
-                        </span>
-                      ) : null}
-                    </Second>
-                  </>
-                )}
+                      <span>{i.file.time}</span>
+                    </>
+                  )}
+                </First>
               </div>
             </BigWrap>
             {i.state !== 'success' && (
@@ -495,7 +508,7 @@ const UploadAttach = (props: any) => {
                 showInfo={false}
               />
             )}
-          </div>
+          </Card>
         ))}
       </div>
     </div>

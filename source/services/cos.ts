@@ -100,6 +100,7 @@ export const uploadFile = (
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
             url: '',
+            time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
           },
         })
       },

@@ -260,6 +260,29 @@ function getDecimal(num: any) {
   return val
 }
 
+function bytesToSize(size: number) {
+  let num
+  if (size < 0.1 * 1024) {
+    num = `${size.toFixed(2)}B`
+  } else if (size < 0.1 * 1024 * 1024) {
+    num = `${(size / 1024).toFixed(2)}KB`
+  } else if (size < 0.1 * 1024 * 1024 * 1024) {
+    num = `${(size / (1024 * 1024)).toFixed(2)}MB`
+  } else {
+    num = `${(size / (1024 * 1024 * 1024)).toFixed(2)}GB`
+  }
+  let sizeStr = num + '',
+    index = sizeStr.indexOf('.'),
+    dou = sizeStr.substr(index + 1, 2)
+
+  if (dou === '00')
+    return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2)
+
+  return num
+}
+
+// 14.24GB
+
 export {
   getIsPermission,
   openDetail,
@@ -268,4 +291,5 @@ export {
   getTypeComponent,
   getNestedChildren,
   filterTreeData,
+  bytesToSize,
 }
