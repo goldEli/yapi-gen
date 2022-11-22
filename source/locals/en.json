@@ -1,5 +1,14 @@
 {
   "p2": {
+    "begin": " begin",
+    "pause": " Pause ",
+    "cancel": " Cancel ",
+    "retransmission": " retransmission",
+    "download": " download",
+    "delete": " Delete ",
+    "paused": " paused",
+    "fail": " Upload failed ",
+    "retransmission": " retransmission",
     "maxUploadText": "The maximum length of a file name is 130 words!",
     "nameNotNull": "The demand title cannot be empty!",
     "toast": "Tips",

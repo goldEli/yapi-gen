@@ -163,40 +163,6 @@ const WrapLeftBox = () => {
     }
   }
 
-  const onChangeAttachment = (result: any) => {
-    const nowLength = result.length
-    let defaultLength = demandInfo?.attachment.length
-
-    // if (nowLength > defaultLength) {
-    //   if (defaultLength === 0 && nowLength >= 1) {
-    //     result.forEach((i: any) => {
-    //       onAddInfoAttach([i])
-    //     })
-    //     return
-    //   }
-
-    //   const arr = demandInfo?.attachment.filter((i: any) => {
-    //     return result.some((item: any) => i.attachment.path === item)
-    //   })
-
-    //   Array.from(new Set(arr)).forEach((i: any) => {
-    //     onAddInfoAttach([i])
-    //   })
-    // }
-
-    // if (nowLength < defaultLength) {
-    //   if (defaultLength === 1) {
-    //     onDeleteInfoAttach(demandInfo?.attachment[0]?.id)
-    //     return
-    //   }
-    //   const arr = demandInfo?.attachment.filter((i: any) => {
-    //     return result.some((item: any) => i.attachment.path !== item)
-    //   })
-
-    //   onDeleteInfoAttach(arr[0]?.id)
-    // }
-  }
-
   return (
     <div
       style={{
@@ -278,7 +244,9 @@ const WrapLeftBox = () => {
                   time: i.attachment.created_at,
                 }))}
                 canUpdate
-                onChangeAttachment={onChangeAttachment}
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
                 addWrap={
                   projectInfo?.projectPermissions?.filter(
                     (i: any) => i.name === '附件上传',

@@ -76,6 +76,7 @@ export const uploadFile = (
   fileName?: any,
 ) => {
   let id = ''
+  let files: any = ''
   return new Promise<any>((resolve, reject) => {
     cos.uploadFile({
       Body: file,
@@ -88,6 +89,19 @@ export const uploadFile = (
         id = taskId
       },
       onTaskStart(task: Task) {
+        files = {
+          id: task.id,
+          state: task.state,
+          loaded: task.loaded,
+          percent: task.percent,
+
+          name: file.name,
+          size: file.size,
+          formattedSize: formatFileSize(file.size),
+          suffix: getFileSuffix(file.name),
+
+          time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
+        }
         resolve({
           id: task.id,
           state: task.state,
@@ -110,6 +124,7 @@ export const uploadFile = (
         } else {
           cos.emit('task-over', {
             id,
+            files,
             url: `https://${data.Location}`,
           })
         }

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
@@ -8,6 +9,7 @@ import { addComment, getReportDetail } from '@/services/daily'
 import {
   BigWrap,
   Card,
+  fileIconMap,
   First,
   Gred,
   GredParent,
@@ -415,62 +417,32 @@ const LookDay = (props: any) => {
                             <img
                               style={{
                                 width: '40px',
-                                height: '42px',
+                                height: '40px',
                                 borderRadius: '4px',
-                                cursor: 'pointer',
                               }}
                               src={item.path}
                               alt=""
                             />
                           )}
-                          {item.path.split('.').at(-1) === 'xlsx' && (
+                          {!imgs.includes(item.path.split('.').at(-1)) && (
                             <IconFont
                               style={{
                                 fontSize: 40,
                                 color: 'white',
                                 borderRadius: '8px',
-                                cursor: 'pointer',
                               }}
-                              type="colorXLS-76p4mekd"
+                              type={
+                                fileIconMap[item.path.split('.').at(-1)] ||
+                                'colorunknown'
+                              }
                             />
                           )}
-                          {item.path.split('.').at(-1) === 'pdf' && (
-                            <IconFont
-                              style={{
-                                fontSize: 40,
-                                color: 'white',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                              }}
-                              type="colorPDF"
-                            />
-                          )}
-                          {item.path.split('.').at(-1) === 'word' && (
-                            <IconFont
-                              style={{
-                                fontSize: 40,
-                                color: 'white',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                              }}
-                              type="colorDOC-76p4mioh"
-                            />
-                          )}
-                          {!fils2.includes(item.path.split('.').at(-1)) && (
-                            <IconFont
-                              style={{
-                                fontSize: 40,
-                                color: 'white',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                              }}
-                              type="colorunknown"
-                            />
-                          )}
+
                           {imgs.includes(item.path.split('.').at(-1)) && (
                             <Gred
                               onClick={() => {
                                 onReview(item)
+
                                 // setPreviewOpen(true)
                                 // setPreviewImage(item.path)
                                 // setPreviewTitle(item.path.split('/').at(-1))
@@ -486,10 +458,12 @@ const LookDay = (props: any) => {
                         <div>
                           <div
                             style={{
+                              width: 'calc(100% - 50px)',
                               fontSize: '14px',
                               fontWeight: 400,
                               color: '#646566',
                               lineHeight: '22px',
+                              wordBreak: 'break-all',
                             }}
                           >
                             {item.path.split('/').at(-1)}
@@ -527,9 +501,11 @@ const LookDay = (props: any) => {
                               style={{
                                 marginRight: '12px',
                                 cursor: 'pointer',
+                                fontSize: '12px',
+                                color: '#2877ff',
                               }}
                             >
-                              下载
+                              {t('p2.download') as unknown as string}
                             </span>
                           </Second>
                         </div>

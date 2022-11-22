@@ -97,8 +97,9 @@ const NumStyle = styled.div`
   color: #969799;
 `
 export const Card = styled.div`
+  flex: 1;
   position: relative;
-  width: 372px;
+  min-width: 372px;
   min-height: 60px;
   background: #ffffff;
   box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
@@ -114,7 +115,7 @@ const StyledProgress = styled(Progress)`
     height: 2px !important;
   }
 `
-const fileIconMap: Record<string, string> = {
+export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
   ppt: 'colorppt',
@@ -134,12 +135,14 @@ const fileIconMap: Record<string, string> = {
   zip: 'zip',
   rar: 'zip',
 }
+
 const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
   {
     success: 'success',
     error: 'exception',
     uploading: 'active',
   }
+
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const fils = ['xlsx', 'pdf']
 const fils2 = fils.concat(imgs)
@@ -221,6 +224,7 @@ const UploadAttach = (props: any) => {
 
   const onUploadFileClick = async ({ file }: { file: any }) => {
     const result: any = await uploadFile(file, file.name, 'file')
+
     setFileList((tasks: any) => [result].concat(...tasks))
   }
 
@@ -247,6 +251,10 @@ const UploadAttach = (props: any) => {
   const onTapRemove = (id: string) => {
     cos.cancelTask(id)
     setFileList(fileList.filter((i: { id: string }) => i.id !== id))
+
+    if (props.canUpdate) {
+      props.del(id)
+    }
   }
 
   const onTapRestart = (id: string) => cos.restartTask(id)
@@ -269,6 +277,9 @@ const UploadAttach = (props: any) => {
   }, [])
 
   const onTaskOver = useCallback((data: { id: string; url: string }) => {
+    if (props.canUpdate) {
+      props.add([data.url])
+    }
     setFileList((currentTasks: any[]) =>
       currentTasks.map(i => {
         if (i.id !== data.id) {
@@ -292,14 +303,14 @@ const UploadAttach = (props: any) => {
         const obj = {
           id: i.id ?? index,
           state: 'success',
-          loaded: 4598,
+          loaded: '',
           percent: 1,
 
           file: {
             id: index,
             name: i.url.split('/').at(-1),
-            size: 4598,
-            formattedSize: '4.49KB',
+            size: 0,
+            formattedSize: '',
             suffix: i.url.split('.').at(-1),
             url: i.url,
             time: i.time,
@@ -328,7 +339,9 @@ const UploadAttach = (props: any) => {
   const checkList = () => {
     const state = fileList.every((i: any) => i.state === 'success')
     if (state) {
-      props.onChangeAttachment(fileList.map((i: any) => i.file.url))
+      if (!props.canUpdate) {
+        props.onChangeAttachment(fileList.map((i: any) => i.file.url))
+      }
     }
   }
   useEffect(() => {
@@ -356,7 +369,12 @@ const UploadAttach = (props: any) => {
       >
         {props.addWrap}
       </Warp>
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+        }}
+      >
         {fileList.map((i: any) => (
           <Card key={i.id}>
             <BigWrap>
@@ -365,9 +383,8 @@ const UploadAttach = (props: any) => {
                   <img
                     style={{
                       width: '40px',
-                      height: '42px',
+                      height: '40px',
                       borderRadius: '4px',
-                      cursor: 'pointer',
                     }}
                     alt=""
                     src={i.file.url}
@@ -379,7 +396,6 @@ const UploadAttach = (props: any) => {
                       fontSize: 40,
                       color: 'white',
                       borderRadius: '8px',
-                      cursor: 'pointer',
                     }}
                     type={fileIconMap[i.file.suffix] || 'colorunknown'}
                   />
@@ -398,21 +414,34 @@ const UploadAttach = (props: any) => {
               <Second>
                 {i.state === 'uploading' && (
                   <>
-                    <BlueCss onClick={() => onTapPause(i.id)}>暂停</BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
+                    <BlueCss onClick={() => onTapPause(i.id)}>
+                      {t('p2.pause')}
+                    </BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>
+                      {t('p2.cancel')}
+                    </RedCss>
                   </>
                 )}
                 {i.state === 'paused' && (
                   <>
-                    <BlueCss onClick={() => onTapRestart(i.id)}>开始</BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
+                    <BlueCss onClick={() => onTapRestart(i.id)}>
+                      {t('p2.begin')}
+                    </BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>
+                      {t('p2.cancel')}
+                    </RedCss>
                   </>
                 )}
 
                 {i.state === 'error' && (
                   <>
-                    <BlueCss onClick={() => onTapRestart(i.id)}>重传</BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>取消</RedCss>
+                    <BlueCss onClick={() => onTapRestart(i.id)}>
+                      {t('p2.retransmission')}
+                    </BlueCss>
+                    <RedCss onClick={() => onTapRemove(i.id)}>
+                      {' '}
+                      {t('p2.cancel')}
+                    </RedCss>
                   </>
                 )}
                 {i.state === 'success' && (
@@ -421,12 +450,14 @@ const UploadAttach = (props: any) => {
                       <BlueCss
                         onClick={() => onDownload(i.file.url, i.file.name)}
                       >
-                        下载
+                        {t('p2.download')}
                       </BlueCss>
                     )}
 
                     {!!isShowDel && (
-                      <RedCss onClick={() => onTapRemove(i.id)}>删除</RedCss>
+                      <RedCss onClick={() => onTapRemove(i.id)}>
+                        {t('p2.delete')}
+                      </RedCss>
                     )}
                   </span>
                 )}
@@ -446,7 +477,7 @@ const UploadAttach = (props: any) => {
               <div>
                 <div
                   style={{
-                    width: '220px',
+                    width: 'calc(100% - 80px)',
                     fontSize: '14px',
                     fontWeight: 400,
                     color: '#323233',
@@ -478,7 +509,7 @@ const UploadAttach = (props: any) => {
                       <span>{bytesToSize(i.file?.size)}</span>
                     </>
                   )}
-                  {i.state === 'paused' && <span>已暂停</span>}
+                  {i.state === 'paused' && <span> {t('p2.paused')}</span>}
 
                   {i.state === 'error' && (
                     <RedCss
@@ -486,19 +517,19 @@ const UploadAttach = (props: any) => {
                         margin: 0,
                       }}
                     >
-                      上传失败
+                      {t('p2.fail')}
                     </RedCss>
                   )}
                   {i.state === 'success' && (
                     <>
-                      <span>{bytesToSize(i.file?.size)}</span>
-                      <span
+                      {/* <span>{bytesToSize(i.file?.size) ?? ''}</span> */}
+                      {/* <span
                         style={{
                           margin: '0 6px 0 6px',
                         }}
                       >
                         ·
-                      </span>
+                      </span> */}
                       <span
                         style={{
                           marginRight: '12px',
