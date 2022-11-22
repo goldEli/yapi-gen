@@ -275,7 +275,10 @@ const IterationTable = (props: Props) => {
           </SecondButton>
         </div>
       )}
-      <DataWrap ref={dataWrapRef} hasCreate={hasCreate}>
+      <DataWrap
+        ref={dataWrapRef}
+        hasCreate={hasCreate || props.hasId?.status !== 1}
+      >
         <Spin spinning={props?.isSpinning}>
           {typeof props?.hasId === 'object' ? (
             props.data?.list ? (

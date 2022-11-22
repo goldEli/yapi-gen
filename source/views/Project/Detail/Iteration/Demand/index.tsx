@@ -340,7 +340,10 @@ const DemandWrap = (props: Props) => {
           </SecondButton>
         </div>
       )}
-      <DataWrap ref={dataWrapRef} hasCreate={hasCreate}>
+      <DataWrap
+        ref={dataWrapRef}
+        hasCreate={hasCreate || iterateInfo?.status !== 1}
+      >
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
