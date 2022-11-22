@@ -1,3 +1,5 @@
+// 颜色选择组件
+
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
