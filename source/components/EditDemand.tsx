@@ -264,7 +264,6 @@ const EditDemand = (props: Props) => {
   const [isShowFields, setIsShowFields] = useState(false)
   const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
   const [currentCategory, setCurrentCategory] = useState<any>({})
-  const [allDemandList, setAllDemandList] = useState<any>([])
   const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
 
   const getList = async (value?: any) => {
@@ -400,7 +399,6 @@ const EditDemand = (props: Props) => {
       }),
       getIterateSelectList({ projectId: value || projectId, all: true }),
     ])
-    setAllDemandList(allDemandArr)
     setClassTreeData([
       ...[
         {
@@ -446,12 +444,24 @@ const EditDemand = (props: Props) => {
           setCategoryObj(categoryData?.list[0])
         }
       }
+
+      if (props?.iterateId) {
+        setCategoryObj(categoryData?.list[0])
+        form.setFieldsValue({
+          iterateId: selectIterate?.list
+            ?.filter((k: any) => k.status === 1)
+            .filter((i: any) => i.id === props?.iterateId).length
+            ? props?.iterateId
+            : null,
+        })
+      }
       setTimeout(() => {
         inputRefDom.current?.focus()
       }, 100)
     }
   }
 
+  // 获取项目数据
   const getProjectData = async () => {
     const res = await getProjectList({
       self: 1,

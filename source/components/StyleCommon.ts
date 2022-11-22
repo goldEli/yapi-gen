@@ -1,12 +1,39 @@
-/* eslint-disable max-lines */
 // 两次以上的公共样式
-
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
+
+// 次按钮样式
+const SecondButton = styled(Button)`
+  height: 32px;
+  border-radius: 6px;
+  background: #f0f4fa;
+  cursor: pointer;
+  padding: 0 16px;
+  color: #2877ff;
+  display: flex;
+  align-items: center;
+  svg {
+    font-size: 16px;
+  }
+  div {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  &:hover {
+    background: #2877ff;
+    color: white;
+  }
+  &:focus {
+    background: #1763e5;
+    color: white;
+  }
+`
 
 const TextWrapEditor = styled.div({
   p: {
@@ -868,4 +895,5 @@ export {
   TextWrapEditor,
   TableStyleBox,
   CanOperationCategory,
+  SecondButton,
 }

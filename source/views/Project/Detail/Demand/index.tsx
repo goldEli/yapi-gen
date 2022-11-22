@@ -462,8 +462,9 @@ const DemandBox = () => {
                 )}
               </CanOperationCategory>
             </Popover>
+            <div className="demandName">【{demandInfo?.id}】</div>
             <OmitText
-              width={600}
+              width={800}
               tipProps={{
                 getPopupContainer: node => node,
               }}
