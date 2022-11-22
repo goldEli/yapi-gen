@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import { getDemandList, getProjectList } from '@/services/daily'
@@ -6,8 +7,6 @@ import styled from '@emotion/styled'
 import { Form, message, Select } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
-const { Option } = Select
 
 export const InnerLine = styled.div`
   &:hover {
@@ -32,7 +31,6 @@ const WrapDiv = styled.div`
   .ant-form-item-row {
     display: flex;
     flex-direction: row !important;
-    /* align-items: center; */
   }
   .ant-form-item-label {
     padding: 0px !important;
@@ -42,32 +40,7 @@ const WrapDiv = styled.div`
     margin-bottom: 16px;
   }
 `
-const list = [
-  {
-    title: '普通会员',
-    id: 1,
-  },
-  {
-    title: '飞机',
-    id: 2,
-  },
-  {
-    title: '大炮',
-    id: 30,
-  },
-  {
-    title: '坦克',
-    id: 5,
-  },
-  {
-    title: '直升机',
-    id: 3,
-  },
-  {
-    title: '战斗机',
-    id: 4,
-  },
-]
+
 const RelatedNeed = (props: any) => {
   const [lessForm] = Form.useForm()
   const [t] = useTranslation()
@@ -111,9 +84,6 @@ const RelatedNeed = (props: any) => {
   }
   const getNeedList = async (value: any) => {
     const res = await getDemandList(value)
-
-    // console.log(res)
-
     setDemandList(res.data)
   }
   useEffect(() => {

@@ -1,3 +1,5 @@
+// 我的模块-所有页面公用列表及查询
+
 /* eslint-disable camelcase */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
@@ -369,13 +371,11 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init(false, 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
@@ -391,7 +391,6 @@ const CommonNeed = (props: any) => {
         getSearchKey()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefresh, isUpdateCreate])
 
   const showModal = () => {

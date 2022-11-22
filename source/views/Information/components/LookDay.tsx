@@ -1,6 +1,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
+/* eslint-disable react/jsx-no-leaked-render */
 import EditorInfoReview from '@/components/EditorInfoReview'
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
@@ -269,7 +270,7 @@ const LookDay = (props: any) => {
   }
   return ReactDOM.createPortal(
     <GrepWrap>
-      {previewOpen ? (
+      {previewOpen && (
         <Viewer
           zIndex={99999}
           visible={previewOpen}
@@ -277,9 +278,9 @@ const LookDay = (props: any) => {
           activeIndex={pictureList?.index}
           onClose={() => setPreviewOpen(false)}
         />
-      ) : null}
+      )}
       <HiddenWrap>
-        {isSpinning ? (
+        {isSpinning && (
           <FormWrap left={left}>
             <div
               style={{
@@ -471,9 +472,6 @@ const LookDay = (props: any) => {
                           <Gred
                             onClick={() => {
                               onReview(item)
-                              // setPreviewOpen(true)
-                              // setPreviewImage(item.path)
-                              // setPreviewTitle(item.path.split('/').at(-1))
                             }}
                           >
                             <IconFont
@@ -718,7 +716,7 @@ const LookDay = (props: any) => {
                   ))}
             </div>
           </FormWrap>
-        ) : null}
+        )}
         {!isSpinning && (
           <Spin tip={t('common.loading') as unknown as string} size="large" />
         )}
@@ -730,19 +728,6 @@ const LookDay = (props: any) => {
       <Arrow2 onClick={() => onChangeLeft(360, 2)}>
         <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
       </Arrow2>
-      {/* <CommonModal
-        width={600}
-        isVisible={previewOpen}
-        title={previewTitle}
-        onClose={handleCancel}
-        isShowFooter
-      >
-        <img
-          alt="example"
-          style={{ maxWidth: '100%', padding: '0 20px 16px 0' }}
-          src={previewImage}
-        />
-      </CommonModal> */}
     </GrepWrap>,
     document.body,
   )

@@ -1,3 +1,5 @@
+// 他的模块-他的概况
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
@@ -248,7 +250,6 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthIndex, page, pagesize])
 
   const forMateMonth = useMemo(() => {

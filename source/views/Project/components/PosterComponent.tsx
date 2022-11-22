@@ -1,3 +1,5 @@
+// 项目上传封面组件
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Popover, Upload, Space, message } from 'antd'

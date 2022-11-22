@@ -1,3 +1,5 @@
+// 我的模块-我的概况
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
@@ -23,8 +25,6 @@ import Loading from '@/components/Loading'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -212,7 +212,6 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthIndex, page, pagesize])
 
   const forMateMonth = useMemo(() => {

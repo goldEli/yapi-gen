@@ -198,10 +198,6 @@ const Information = () => {
       color: #2877ff;
     }
   `
-  const RedLogo2 = styled(RedLogo)`
-    right: 10px;
-    top: 14px;
-  `
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)
     setVisibleEditText(item.name)

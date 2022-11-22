@@ -1,6 +1,7 @@
+// 日志选人组件
+
 import { useEffect, useMemo, useState } from 'react'
 import { NameWrap } from '@/components/StyleCommon'
-import { useTranslation } from 'react-i18next'
 import { Popover } from 'antd'
 import {
   AddWrap,
@@ -13,7 +14,6 @@ import IconFont from '@/components/IconFont'
 import { getStaffList2 } from '@/services/staff'
 
 const ChoosePeople = (props: any) => {
-  const [t] = useTranslation()
   const [allMemberList, setAllMemberList] = useState<any>([])
   const [options, setOptions] = useState<any>([])
   const [isOpen, setIsOpen] = useState(false)

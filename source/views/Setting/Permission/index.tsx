@@ -1,8 +1,10 @@
+// 权限设置
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Input, Space, message, Menu, Dropdown, Spin } from 'antd'
+import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -73,13 +75,6 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
-const IconWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  right: 10,
-  fontSize: '16px!important',
-})
-
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -138,14 +133,6 @@ const MainWrapItem = styled.div({
   padding: '24px 0',
   display: 'flex',
   alignItems: 'center',
-})
-
-const ModalHeader = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: 16,
-  color: '#323233',
 })
 
 const ModalFooter = styled(Space)({
