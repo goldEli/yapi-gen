@@ -26,6 +26,8 @@ interface Props {
   onChangeSearch?(val: string): void
   placeholder: string
   width?: any
+  autoFocus?: boolean
+  ref?: any
 }
 
 const CommonInput = (props: Props) => {
@@ -40,6 +42,7 @@ const CommonInput = (props: Props) => {
 
   return (
     <MyInput
+      ref={props?.ref}
       style={{ width: props.width || 240 }}
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
@@ -48,6 +51,7 @@ const CommonInput = (props: Props) => {
       }
       placeholder={props.placeholder}
       allowClear
+      autoFocus={props?.autoFocus}
     />
   )
 }

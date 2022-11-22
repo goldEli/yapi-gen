@@ -36,6 +36,7 @@ const Detail = () => {
     setSelectTreeData,
     setSelectAllStaffData,
     getFieldList,
+    isChangeProject,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const { isOpenEditDemand } = useModel('demand')
@@ -225,7 +226,7 @@ const Detail = () => {
     getIterateList()
     getFieldData()
     getStaffData()
-  }, [isRefresh])
+  }, [isRefresh, isChangeProject])
 
   useEffect(() => {
     if (isRefreshIterateList) {
@@ -242,23 +243,18 @@ const Detail = () => {
     ) {
       getTreeData()
     }
-  }, [projectInfo, selectIterate, memberList, isOpenEditDemand])
-
-  // 切换项目后刷新相应接口
-  const onChangeProject = () => {
-    getProjectInfo({ projectId })
-    getPermissionList()
-    getProjectCoverList()
-    getMemberList({ all: true, projectId })
-    getTagList({ projectId })
-    getIterateList()
-    getFieldData()
-  }
+  }, [
+    projectInfo,
+    selectIterate,
+    memberList,
+    isOpenEditDemand,
+    isChangeProject,
+  ])
 
   return (
     <Wrap>
-      <CommonOperation onUpdate={onChangeProject} />
-      <Outlet />
+      <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
+      <Outlet key={isChangeProject} />
     </Wrap>
   )
 }

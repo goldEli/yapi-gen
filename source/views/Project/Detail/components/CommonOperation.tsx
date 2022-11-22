@@ -10,9 +10,9 @@ import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
 import { getIsPermission, getParamsData } from '@/tools/index'
-import { ClickWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import HaveSearchAndList from '@/components/HaveSearchAndList'
 
 const OperationTop = styled.div({
   height: 64,
@@ -37,7 +37,7 @@ const ImgWrap = styled.img({
   width: 86,
   height: 40,
   borderRadius: 4,
-  marginRight: 16,
+  marginRight: 8,
 })
 
 const Tabs = styled(Space)({
@@ -149,12 +149,18 @@ const MenuItems = styled.div({
   },
 })
 
-const ClickIcon = styled(IconFont)({
+const ProjectNameWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  padding: '0 8px',
+  cursor: 'pointer',
+  borderRadius: 6,
   color: '#323233',
-  fontSize: 16,
-  marginLeft: 8,
-  '&: hover': {
-    color: '#2877ff',
+  fontSize: 14,
+  fontWeight: 500,
+  '&:hover': {
+    background: '#F4F5F5',
   },
 })
 
@@ -204,8 +210,18 @@ const CommonOperation = (props: Props) => {
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
     { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
-    { name: '缺陷', type: 'Defect', hasPath: ['Defect'], isPlan: true },
-    { name: '报表', type: 'Report', hasPath: ['Report'], isPlan: true },
+    {
+      name: t('version2.2.1.defect'),
+      type: 'Defect',
+      hasPath: ['Defect'],
+      isPlan: true,
+    },
+    {
+      name: t('version2.2.1.report'),
+      type: 'Report',
+      hasPath: ['Report'],
+      isPlan: true,
+    },
     {
       name: t('container.setting'),
       type: 'Set',
@@ -291,14 +307,14 @@ const CommonOperation = (props: Props) => {
 
   return (
     <div>
-      {isVisible ? (
+      {isVisible && (
         <EditProject
           visible={isVisible}
           onChangeVisible={() => onClickEdit(false)}
           details={projectInfo}
           onUpdate={props.onUpdate}
         />
-      ) : null}
+      )}
       <ProjectInfoModal
         visible={infoVisible}
         onChangeVisible={() => onClickProjectInfo(false)}
@@ -316,30 +332,23 @@ const CommonOperation = (props: Props) => {
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
-          <OmitText
-            width={152}
-            tipProps={{
-              getPopupContainer: node => node,
-            }}
-          >
-            <ClickWrap
-              style={{ fontSize: 14, fontWeight: 500 }}
-              onClick={() => setIsVisible(true)}
-            >
-              {projectInfo.name}
-            </ClickWrap>
-          </OmitText>
-          <Tooltip title={t('project.editProject')}>
-            <ClickIcon
-              hidden={getIsPermission(
-                userInfo?.company_permissions,
-                'b/project/update',
-              )}
-              style={{ fontSize: 20 }}
-              type="edit-square"
-              onClick={() => setIsVisible(true)}
-            />
-          </Tooltip>
+          <HaveSearchAndList
+            placeholder={t('version2.2.1.searchProject')}
+            addWrap={
+              <ProjectNameWrap>
+                <OmitText
+                  width={152}
+                  tipProps={{
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {projectInfo.name}
+                </OmitText>
+                <IconFont type="down" style={{ fontSize: 20, marginLeft: 8 }} />
+              </ProjectNameWrap>
+            }
+            projectId={projectId}
+          />
         </ProjectInfo>
         <Tabs size={60}>
           {tabsList.map(i => (

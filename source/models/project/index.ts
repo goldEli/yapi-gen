@@ -28,6 +28,8 @@ export default () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  // 改变项目-项目id
+  const [isChangeProject, setIsChangeProject] = useState(0)
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -211,5 +213,7 @@ export default () => {
     selectTreeData,
     setSelectAllStaffData,
     selectAllStaffData,
+    setIsChangeProject,
+    isChangeProject,
   }
 }

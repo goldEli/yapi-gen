@@ -2,9 +2,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Menu, Dropdown, Pagination, Progress } from 'antd'
+import { Menu, Pagination, Progress } from 'antd'
 import {
   TableStyleBox,
   PaginationWrap,
@@ -29,13 +28,6 @@ interface Props {
   onUpdateOrderKey(item: any): void
   order: any
 }
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
-})
 
 const StatusWrap = styled.div({
   display: 'flex',
