@@ -1,7 +1,7 @@
 // 包含搜素和下拉列表的组件
 
 /* eslint-disable @typescript-eslint/naming-convention */
-
+/* eslint-disable react/jsx-no-leaked-render */
 import { useModel } from '@/models'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'

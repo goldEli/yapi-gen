@@ -1,3 +1,5 @@
+// 筛选公用的时间组件
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import { DatePicker } from 'antd'
 import { css } from '@emotion/css'
@@ -30,7 +32,7 @@ interface Props {
 }
 
 const RangePicker = (props: Props) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const valuesArr = [
     [
       moment(new Date()).startOf('days').subtract(6, 'days'),

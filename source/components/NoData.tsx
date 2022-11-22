@@ -1,3 +1,6 @@
+// 暂无数据
+
+/* eslint-disable react/jsx-no-leaked-render */
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
@@ -25,11 +28,11 @@ const NoData = (props?: any) => {
     <Wrap>
       <IconFont type="noData" style={{ fontSize: 200 }} />
       <div>{t('components.noData')}</div>
-      {props?.subText ? (
+      {props?.subText && (
         <span style={{ color: '#969799', fontSize: 14, marginTop: 8 }}>
           {props?.subText}
         </span>
-      ) : null}
+      )}
     </Wrap>
   )
 }

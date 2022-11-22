@@ -1,3 +1,5 @@
+// 公用切换优先级
+
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -46,7 +48,6 @@ export const LevelContent = (props: LevelProps) => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record])
 
   const changeState = (value: any) => {

@@ -1,3 +1,5 @@
+// 项目卡片
+
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
@@ -7,7 +9,6 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from './MoreDropdown'
 import { Menu } from 'antd'
-import IconFont from './IconFont'
 
 const ImgWrap = styled.div({
   height: 104,

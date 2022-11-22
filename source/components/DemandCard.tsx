@@ -1,11 +1,14 @@
+/* eslint-disable complexity */
+/* eslint-disable react/jsx-no-leaked-render */
+// 需求卡片
+
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import IconFont from './IconFont'
-import { Dropdown, Menu, Progress, Space } from 'antd'
+import { Menu, Progress, Space } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useState } from 'react'
@@ -207,20 +210,12 @@ const DemandCard = (props: Props) => {
               </div>
             </NameGroup>
             <Space size={16} style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit &&
-              props.item?.usersNameIds?.includes(userInfo?.id) &&
-              props.item.status.is_start !== 1 &&
-              props.item.status.is_end !== 1 ? (
-                <div style={{ cursor: 'pointer' }}>
-                  <DemandProgress
-                    value={props.item?.schedule}
-                    row={props.item}
-                    onUpdate={() => props?.onUpdate(true)}
-                    index={props?.indexVal}
-                    isCard
-                  />
-                </div>
-              ) : (
+              {!(
+                hasEdit &&
+                props.item?.usersNameIds?.includes(userInfo?.id) &&
+                props.item.status.is_start !== 1 &&
+                props.item.status.is_end !== 1
+              ) && (
                 <Progress
                   strokeColor="#43BA9A"
                   style={{ color: '#43BA9A', cursor: 'not-allowed' }}
@@ -231,6 +226,20 @@ const DemandCard = (props: Props) => {
                   strokeWidth={8}
                 />
               )}
+              {hasEdit &&
+                props.item?.usersNameIds?.includes(userInfo?.id) &&
+                props.item.status.is_start !== 1 &&
+                props.item.status.is_end !== 1 && (
+                  <div style={{ cursor: 'pointer' }}>
+                    <DemandProgress
+                      value={props.item?.schedule}
+                      row={props.item}
+                      onUpdate={() => props?.onUpdate(true)}
+                      index={props?.indexVal}
+                      isCard
+                    />
+                  </div>
+                )}
               <ChildDemandTable
                 value={props.item?.childCount}
                 row={props.item}

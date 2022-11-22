@@ -1,3 +1,5 @@
+// 公用删除确认弹窗
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Modal, Space } from 'antd'

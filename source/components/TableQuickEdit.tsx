@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-leaked-render */
+// 需求列表快捷编辑组件
+
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-// 需求列表快捷编辑组件
-
 import { useEffect, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'

@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+// 搜索组件 带有input和操作按钮
+
 import AddButton from './AddButton'
 import { Space } from 'antd'
 import CommonInput from './CommonInput'

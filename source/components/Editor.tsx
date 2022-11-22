@@ -1,6 +1,8 @@
+// 公用富文本
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,

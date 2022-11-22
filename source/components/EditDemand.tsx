@@ -1192,7 +1192,7 @@ const EditDemand = (props: Props) => {
                     )
                   }}
                 >
-                  {projectId ? (
+                  {projectId && (
                     <PriorityWrap>
                       <IconFont
                         className="priorityIcon"
@@ -1207,7 +1207,8 @@ const EditDemand = (props: Props) => {
                         <IconFont className="icon" type="down-icon" />
                       </div>
                     </PriorityWrap>
-                  ) : (
+                  )}
+                  {!projectId && (
                     <span style={{ cursor: 'not-allowed' }}>--</span>
                   )}
                 </PopConfirm>
