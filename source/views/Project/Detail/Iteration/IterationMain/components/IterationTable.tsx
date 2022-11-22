@@ -271,7 +271,7 @@ const IterationTable = (props: Props) => {
         <div style={{ padding: '10px 0 10px 16px', background: 'white' }}>
           <SecondButton onClick={() => setIsEdit(true)}>
             <IconFont type="plus" />
-            <div>创建需求</div>
+            <div>{t('common.createDemand')}</div>
           </SecondButton>
         </div>
       )}
