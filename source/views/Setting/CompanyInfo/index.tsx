@@ -73,7 +73,7 @@ const InfoBottom = styled.div({
   marginTop: 40,
 })
 
-const BottomTitle = styled.div({
+export const BottomTitle = styled.div({
   fontSize: 14,
   color: 'black',
   fontWeight: 400,

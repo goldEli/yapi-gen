@@ -29,33 +29,7 @@ interface Props {
   autoFocus?: boolean
 }
 
-const toolbarConfig: Partial<IToolbarConfig> = {
-  toolbarKeys: [
-    'headerSelect',
-    'bold',
-
-    // 'italic',
-    // 'underline',
-    'color',
-    'bgColor',
-    'fontSize',
-
-    // 'fontFamily',
-    // 'indent',
-    // 'delIndent',
-    // 'insertLink',
-    'bulletedList',
-    'numberedList',
-    'uploadImage',
-    'justifyLeft',
-    'justifyRight',
-    'justifyCenter',
-
-    // 'justifyJustify',
-    // 'fullScreen',
-    'customFullScreen',
-  ],
-}
+const toolbarConfig: Partial<IToolbarConfig> = {}
 
 Boot.registerParseElemHtml({
   selector: 'v-start',

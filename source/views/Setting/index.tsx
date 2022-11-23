@@ -142,6 +142,15 @@ const Setting = () => {
         'b/company/login_logs',
       ),
     },
+    {
+      name: t('v2_1_1.configuration'),
+      icon: 'solution',
+      path: 'universal',
+      isHidden: getIsPermission(
+        userInfo?.company_permissions,
+        'b/company/login_logs',
+      ),
+    },
   ]
 
   return (
