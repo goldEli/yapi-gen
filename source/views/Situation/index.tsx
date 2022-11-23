@@ -13,6 +13,7 @@ import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -41,6 +42,8 @@ const Head = styled.div`
 `
 
 const Situation = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
   const { getGlobalGeneral, userInfo } = useModel('user')
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
@@ -150,6 +153,7 @@ const Situation = () => {
       },
     }
     setGeneralData(dateObj)
+    asyncSetTtile('概况')
   }
   useEffect(() => {
     init()
