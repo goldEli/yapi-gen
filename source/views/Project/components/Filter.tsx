@@ -6,19 +6,15 @@ import styled from '@emotion/styled'
 import { Space, Checkbox, Divider, Dropdown, Menu, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
+import CommonInput from '@/components/CommonInput'
 
 const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 52,
+  height: 64,
   background: 'white',
   padding: '0 24px',
-})
-
-const WrapLeft = styled(Space)({
-  display: 'flex',
-  alignItems: 'center',
 })
 
 const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
@@ -45,21 +41,6 @@ const WrapRight = styled.div({
   },
 })
 
-const TitleBox = styled.div<{ idx: boolean }>(
-  {
-    height: 50,
-    lineHeight: '50px',
-    color: '#323233',
-    fontWeight: 400,
-    fontSize: 14,
-    cursor: 'pointer',
-  },
-  ({ idx }) => ({
-    borderBottom: idx ? '2px solid #2877FF' : '2px solid white',
-    color: idx ? '#2877FF' : '#323233',
-  }),
-)
-
 const MainTitle = styled.div({
   fontSize: 14,
   color: '#323233',
@@ -73,15 +54,13 @@ const TotalText = styled.div({
 })
 
 interface Props {
-  total: number
   sort: string
   isGrid: boolean
   activeType: number
   onChangeSort(val: string): void
   onChangeFormat(val: boolean): void
   onChangeHidden(val: boolean): void
-  onChangeType(val: number): void
-  show: boolean
+  onChangeSearch?(val: string): void
 }
 
 const Filter = (props: Props) => {
@@ -110,23 +89,10 @@ const Filter = (props: Props) => {
   )
   return (
     <Wrap>
-      {props.show && (
-        <WrapLeft size={48}>
-          <TitleBox
-            onClick={() => props.onChangeType(0)}
-            idx={!props.activeType}
-          >
-            {t('project.mineJoin')}
-          </TitleBox>
-          <TitleBox
-            onClick={() => props.onChangeType(1)}
-            idx={props.activeType === 1}
-          >
-            {t('project.companyAll')}
-          </TitleBox>
-        </WrapLeft>
-      )}
-
+      <CommonInput
+        placeholder={t('mark.searchP')}
+        onChangeSearch={props.onChangeSearch}
+      />
       <WrapRight>
         <Space size={12}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -149,8 +115,6 @@ const Filter = (props: Props) => {
             </Dropdown>
           </div>
         </Space>
-        <Divider style={{ height: 20 }} type="vertical" />
-        <TotalText>{t('project.allProject', { count: props.total })}</TotalText>
         <Divider style={{ height: 20 }} type="vertical" />
         <Space size={12}>
           <Tooltip title={t('common.thumbnail')}>

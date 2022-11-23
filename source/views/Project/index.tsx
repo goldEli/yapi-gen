@@ -270,7 +270,17 @@ const Project = () => {
               'b/project/save',
             )}
           />
-          <WrapRight></WrapRight>
+          <WrapRight>
+            <Filter
+              sort={order.key}
+              isGrid={isGrid}
+              activeType={activeType}
+              onChangeSort={onChangeSort}
+              onChangeFormat={onChangeGrid}
+              onChangeHidden={onChangeHidden}
+              onChangeSearch={onChangeSearch}
+            />
+          </WrapRight>
         </Wrap>
 
         {/* <SearchWrap>
