@@ -15,6 +15,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Header = styled.div({
   height: 64,
@@ -199,7 +200,9 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const Permission = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c2'))
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])

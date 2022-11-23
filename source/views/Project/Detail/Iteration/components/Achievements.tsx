@@ -71,6 +71,7 @@ const Achievements = (props: Props) => {
   const WrapDom = useRef<HTMLInputElement>(null)
   const { uploadStatus, percentShow, percentVal } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
+  const [newAttachList, setNewAttachList] = useState<any>([])
   const [isShow, setIsShow] = useState(false)
   const [html, setHtml] = useState('')
   const { getAchieveInfo, achieveInfo } = useModel('iterate')
@@ -86,7 +87,7 @@ const Achievements = (props: Props) => {
 
     setAttachList(
       obj.attachList?.map((i: any) => ({
-        path: i.attachment.path,
+        url: i.attachment.path,
         id: i.id,
         time: i.attachment.created_at,
       })) || [],
@@ -115,15 +116,8 @@ const Achievements = (props: Props) => {
   }, [achieveInfo])
 
   // 修改附件编辑或删除
-  const onChangeAttachment = (result: any, type: string) => {
-    if (type === 'add') {
-      result.path = result.url
-      setAttachList((oldAttachList: any) => oldAttachList.concat([result]))
-    } else {
-      const arr = attachList
-      const comResult = arr.filter((i: any) => i.id !== result.uid)
-      setAttachList(comResult)
-    }
+  const onChangeAttachment = (result: any) => {
+    setNewAttachList(result)
   }
 
   const onBottom = () => {
@@ -134,7 +128,7 @@ const Achievements = (props: Props) => {
   // 向父级提交附件及描述
   const onConfirm = () => {
     const params = {
-      attachList,
+      attachList: newAttachList,
       info: html,
     }
     return params
@@ -144,6 +138,7 @@ const Achievements = (props: Props) => {
   const onReset = () => {
     setHtml('')
     setAttachList([])
+    setNewAttachList([])
   }
 
   useImperativeHandle(props.onRef, () => {
@@ -172,16 +167,6 @@ const Achievements = (props: Props) => {
         <div className={labelWrap}>
           <span className={label}>{t('common.attachment') as string}</span>
           <UploadAttach
-            child={
-              isShow ? (
-                <Children
-                  uploadStatus={uploadStatus}
-                  percentShow={percentShow}
-                  percentVal={percentVal}
-                />
-              ) : null
-            }
-            onChangeShow={setIsShow}
             defaultList={attachList}
             onChangeAttachment={onChangeAttachment}
             onBottom={onBottom}

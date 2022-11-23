@@ -24,6 +24,8 @@ import {
   AddWrap,
 } from '@/components/StyleCommon'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
+import { off } from 'process'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -131,6 +133,38 @@ const WrapLeftBox = () => {
     dom.scrollTop = dom.scrollHeight
   }
 
+  const onAddInfoAttach = async (url: any) => {
+    try {
+      await addInfoDemand({
+        projectId,
+        demandId,
+        type: 'attachment',
+        targetId: url,
+      })
+
+      getDemandInfo({ projectId, id: demandId })
+      onBottom?.()
+    } catch (error) {
+      //
+    }
+  }
+
+  const onDeleteInfoAttach = async (file: any) => {
+    try {
+      await deleteInfoDemand({
+        projectId,
+        demandId,
+        type: 'attachment',
+        targetId: file,
+      })
+
+      getDemandInfo({ projectId, id: demandId })
+      onBottom?.()
+    } catch (error) {
+      //
+    }
+  }
+
   return (
     <div
       style={{
@@ -207,11 +241,14 @@ const WrapLeftBox = () => {
               <UploadAttach
                 onBottom={onBottom}
                 defaultList={demandInfo?.attachment?.map((i: any) => ({
-                  path: i.attachment.path,
+                  url: i.attachment.path,
                   id: i.id,
                   time: i.attachment.created_at,
                 }))}
                 canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
                 addWrap={
                   projectInfo?.projectPermissions?.filter(
                     (i: any) => i.name === '附件上传',
@@ -224,7 +261,6 @@ const WrapLeftBox = () => {
                     (null as any)
                   )
                 }
-                child={isShowProgress ? null : <Children />}
               />
             </div>
           </InfoItem>

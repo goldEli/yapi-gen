@@ -17,6 +17,7 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import WrapLeftBox from './components/WrapLeft'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Content = styled.div<{ isGrid: boolean }>(
   {
@@ -40,6 +41,8 @@ const WrapRight = styled.div`
 
 const Project = () => {
   const [t] = useTranslation()
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(t('title.project'))
   const [isGrid, setIsGrid] = useState(true)
   const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
@@ -8,6 +9,8 @@ import { NameWrap } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
 import {
   BigWrap,
+  Card,
+  fileIconMap,
   First,
   Gred,
   GredParent,
@@ -399,139 +402,116 @@ const LookDay = (props: any) => {
                   <Kong />
                 ) : (
                   attachList.map((item: any) => (
-                    <BigWrap
-                      key={item.id}
-                      style={{
-                        display: 'flex',
-                        marginBottom: '16px',
-                      }}
-                    >
-                      <GredParent
+                    <Card key={item.id}>
+                      <BigWrap
                         style={{
-                          marginRight: '8px',
-                          position: 'relative',
+                          display: 'flex',
                         }}
                       >
-                        {imgs.includes(item.path.split('.').at(-1)) && (
-                          <img
-                            style={{
-                              width: '40px',
-                              height: '42px',
-                              borderRadius: '4px',
-                              cursor: 'pointer',
-                            }}
-                            src={item.path}
-                            alt=""
-                          />
-                        )}
-                        {item.path.split('.').at(-1) === 'xlsx' && (
-                          <IconFont
-                            style={{
-                              fontSize: 40,
-                              color: 'white',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                            }}
-                            type="colorXLS-76p4mekd"
-                          />
-                        )}
-                        {item.path.split('.').at(-1) === 'pdf' && (
-                          <IconFont
-                            style={{
-                              fontSize: 40,
-                              color: 'white',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                            }}
-                            type="colorPDF"
-                          />
-                        )}
-                        {item.path.split('.').at(-1) === 'word' && (
-                          <IconFont
-                            style={{
-                              fontSize: 40,
-                              color: 'white',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                            }}
-                            type="colorDOC-76p4mioh"
-                          />
-                        )}
-                        {!fils2.includes(item.path.split('.').at(-1)) && (
-                          <IconFont
-                            style={{
-                              fontSize: 40,
-                              color: 'white',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                            }}
-                            type="colorunknown"
-                          />
-                        )}
-                        {imgs.includes(item.path.split('.').at(-1)) && (
-                          <Gred
-                            onClick={() => {
-                              onReview(item)
-                            }}
-                          >
-                            <IconFont
-                              style={{ fontSize: 18, color: 'white' }}
-                              type="zoomin"
-                            />
-                          </Gred>
-                        )}
-                      </GredParent>
-                      <div>
-                        <div
+                        <GredParent
                           style={{
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            color: '#646566',
-                            lineHeight: '22px',
+                            marginRight: '8px',
+                            position: 'relative',
                           }}
                         >
-                          {item.path.split('/').at(-1)}
+                          {imgs.includes(item.path.split('.').at(-1)) && (
+                            <img
+                              style={{
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '4px',
+                              }}
+                              src={item.path}
+                              alt=""
+                            />
+                          )}
+                          {!imgs.includes(item.path.split('.').at(-1)) && (
+                            <IconFont
+                              style={{
+                                fontSize: 40,
+                                color: 'white',
+                                borderRadius: '8px',
+                              }}
+                              type={
+                                fileIconMap[item.path.split('.').at(-1)] ||
+                                'colorunknown'
+                              }
+                            />
+                          )}
+
+                          {imgs.includes(item.path.split('.').at(-1)) && (
+                            <Gred
+                              onClick={() => {
+                                onReview(item)
+
+                                // setPreviewOpen(true)
+                                // setPreviewImage(item.path)
+                                // setPreviewTitle(item.path.split('/').at(-1))
+                              }}
+                            >
+                              <IconFont
+                                style={{ fontSize: 18, color: 'white' }}
+                                type="zoomin"
+                              />
+                            </Gred>
+                          )}
+                        </GredParent>
+                        <div>
+                          <div
+                            style={{
+                              width: 'calc(100% - 50px)',
+                              fontSize: '14px',
+                              fontWeight: 400,
+                              color: '#646566',
+                              lineHeight: '22px',
+                              wordBreak: 'break-all',
+                            }}
+                          >
+                            {item.path.split('/').at(-1)}
+                          </div>
+                          <First
+                            style={{
+                              height: '20px',
+                              fontSize: '12px',
+                              fontWeight: 400,
+                              color: '#969799',
+                              lineHeight: '20px',
+                            }}
+                          >
+                            <span
+                              style={{
+                                marginRight: '12px',
+                              }}
+                            >
+                              {name}
+                            </span>
+                            <span>{item.time}</span>
+                          </First>
+                          <Second
+                            style={{
+                              height: '20px',
+                            }}
+                          >
+                            <span
+                              onClick={() =>
+                                onDownload(
+                                  item.path,
+                                  item.path.split('/').at(-1),
+                                )
+                              }
+                              style={{
+                                marginRight: '12px',
+                                cursor: 'pointer',
+                                fontSize: '12px',
+                                color: '#2877ff',
+                              }}
+                            >
+                              {t('p2.download') as unknown as string}
+                            </span>
+                          </Second>
                         </div>
-                        <First
-                          style={{
-                            height: '20px',
-                            fontSize: '12px',
-                            fontWeight: 400,
-                            color: '#969799',
-                            lineHeight: '20px',
-                          }}
-                        >
-                          <span
-                            style={{
-                              marginRight: '12px',
-                            }}
-                          >
-                            {name}
-                          </span>
-                          <span>{item.time}</span>
-                        </First>
-                        <Second
-                          style={{
-                            height: '20px',
-                          }}
-                        >
-                          <span
-                            onClick={() =>
-                              onDownload(item.path, item.path.split('/').at(-1))
-                            }
-                            style={{
-                              marginRight: '12px',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            <IconFont
-                              style={{ fontSize: 18, color: '#969799' }}
-                              type="download"
-                            />
-                          </span>
-                        </Second>
-                      </div>
-                    </BigWrap>
+                      </BigWrap>
+                    </Card>
                   ))
                 )}
               </div>

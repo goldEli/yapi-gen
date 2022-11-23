@@ -23,6 +23,7 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import EditDemand from '@/components/EditDemand'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Content = styled.div({
   padding: 16,
@@ -61,6 +62,8 @@ interface Props {
 }
 
 const IterationTable = (props: Props) => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -79,7 +82,7 @@ const IterationTable = (props: Props) => {
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [isEdit, setIsEdit] = useState(false)
-
+  asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight

@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { getReportDetail } from '@/services/daily'
 import { t } from 'i18next'
+import moment from 'moment'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -65,39 +66,15 @@ const WhiteDay = (props: any) => {
     close()
   }
 
-  const onChangeAttachment = (result: any, type: string) => {
-    if (type === 'add') {
-      result.path = result.url
-      form.setFieldsValue({
-        attachments: [
-          ...(form.getFieldValue('attachments') || []),
-          ...[result.url],
-        ],
-      })
-
-      setAttachList((oldAttachList: any) => oldAttachList.concat([result]))
-    } else {
-      const arr = attachList
-      const comResult = arr.filter((i: any) => i.id !== result.uid)
-      form.setFieldsValue({
-        attachments: comResult.map((i: any) => i.path),
-      })
-      setAttachList(comResult)
-    }
+  const onChangeAttachment = (result: any) => {
+    form.setFieldsValue({
+      attachments: result,
+    })
   }
+
   const onBottom = () => {
     const dom: any = leftDom?.current
     dom.scrollTop = dom.scrollHeight
-  }
-  const Children = () => {
-    return (
-      <ProgressWrapUpload
-        status={uploadStatus}
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none', width: '50%' }}
-      />
-    )
   }
 
   const setDefaultValue = async () => {
@@ -112,6 +89,15 @@ const WhiteDay = (props: any) => {
       info: res.data.info.finish_content,
       info2: res.data.info.plan_content,
     })
+    setAttachList(
+      res.data.files.map((item: any) => {
+        return {
+          url: item.associate,
+          id: item.id,
+          time: item.created_at,
+        }
+      }),
+    )
     setPeopleValue(
       res.data.copysend_list.map((item: any) => {
         return {
@@ -130,15 +116,6 @@ const WhiteDay = (props: any) => {
           key: item.associate,
           value: Number(item.associate),
           label: item.name,
-        }
-      }),
-    )
-    setAttachList(
-      res.data.files.map((item: any) => {
-        return {
-          path: item.associate,
-          id: item.id,
-          time: item.created_at,
         }
       }),
     )
@@ -274,8 +251,6 @@ const WhiteDay = (props: any) => {
           >
             <UploadAttach
               power
-              child={isShow ? <Children /> : ''}
-              onChangeShow={setIsShow}
               defaultList={attachList}
               onChangeAttachment={onChangeAttachment}
               onBottom={onBottom}

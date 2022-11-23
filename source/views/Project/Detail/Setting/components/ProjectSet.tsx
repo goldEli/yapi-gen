@@ -17,6 +17,7 @@ import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Warp = styled.div({
   padding: 16,
@@ -201,6 +202,7 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const ProjectSet = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -227,7 +229,7 @@ const ProjectSet = () => {
   } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
-
+  asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })

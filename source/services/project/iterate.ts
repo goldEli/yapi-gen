@@ -170,6 +170,6 @@ export const updateAchieve: any = async (params: any) => {
     project_id: params.projectId,
     iterate_id: params.id,
     achieve_desc: info,
-    attachment: params.attachList?.map((i: any) => i.path),
+    attachment: params.attachList,
   })
 }

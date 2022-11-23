@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div({
   padding: 24,
@@ -102,11 +103,12 @@ const ClickIcon = styled(IconFont)({
 })
 
 const ProjectInfo = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const { projectInfo, getProjectInfo } = useModel('project')
   const { userInfo } = useModel('user')
-
+  asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   const onUpdate = () => {
     getProjectInfo({ projectId: projectInfo.id })
   }

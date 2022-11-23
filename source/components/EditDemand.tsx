@@ -313,7 +313,7 @@ const EditDemand = (props: Props) => {
       setPriorityDetail(res.priority)
       setAttachList(
         res?.attachment.map((i: any) => ({
-          path: i.attachment.path,
+          url: i.attachment.path,
           id: i.id,
           time: i.attachment.created_at,
         })),
@@ -624,24 +624,10 @@ const EditDemand = (props: Props) => {
     })
   }
 
-  const onChangeAttachment = (result: any, type: string) => {
-    if (type === 'add') {
-      result.path = result.url
-      form.setFieldsValue({
-        attachments: [
-          ...(form.getFieldValue('attachments') || []),
-          ...[result.url],
-        ],
-      })
-      setAttachList((oldAttachList: any) => oldAttachList.concat([result]))
-    } else {
-      const arr = attachList
-      const comResult = arr.filter((i: any) => i.id !== result.uid)
-      form.setFieldsValue({
-        attachments: comResult.map((i: any) => i.path),
-      })
-      setAttachList(comResult)
-    }
+  const onChangeAttachment = (result: any) => {
+    form.setFieldsValue({
+      attachments: result,
+    })
   }
 
   const onChangeTag = (result: any, type: string) => {
@@ -660,17 +646,6 @@ const EditDemand = (props: Props) => {
       })
       setTagList(comResult)
     }
-  }
-
-  const Children = () => {
-    return (
-      <ProgressWrapUpload
-        status={uploadStatus}
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
-      />
-    )
   }
 
   const onChangeSetSchedule = (val: any) => {
@@ -1052,39 +1027,33 @@ const EditDemand = (props: Props) => {
                     />
                   </Form.Item>
                 )}
-              {projectId &&
-                projectInfo.projectPermissions?.length > 0 &&
-                projectInfo?.projectPermissions?.filter(
-                  (i: any) => i.name === '附件上传',
-                ).length > 0 && (
-                  <Form.Item
-                    label={
-                      <div style={{ fontWeight: 'bold' }}>
-                        {t('common.attachment')}
-                      </div>
+              {projectId && (
+                <Form.Item
+                  label={
+                    <div style={{ fontWeight: 'bold' }}>
+                      {t('common.attachment')}
+                    </div>
+                  }
+                  name="attachments"
+                >
+                  <UploadAttach
+                    defaultList={attachList}
+                    onChangeAttachment={onChangeAttachment}
+                    onBottom={onBottom}
+                    addWrap={
+                      <AddWrap
+                        style={{
+                          marginBottom: '20px',
+                        }}
+                        hasColor
+                      >
+                        <IconFont type="plus" />
+                        <div>{t('common.add23')}</div>
+                      </AddWrap>
                     }
-                    name="attachments"
-                  >
-                    <UploadAttach
-                      child={isShow ? <Children /> : ''}
-                      onChangeShow={setIsShow}
-                      defaultList={attachList}
-                      onChangeAttachment={onChangeAttachment}
-                      onBottom={onBottom}
-                      addWrap={
-                        <AddWrap
-                          style={{
-                            marginBottom: '20px',
-                          }}
-                          hasColor
-                        >
-                          <IconFont type="plus" />
-                          <div>{t('common.add23')}</div>
-                        </AddWrap>
-                      }
-                    />
-                  </Form.Item>
-                )}
+                  />
+                </Form.Item>
+              )}
             </FormWrap>
           </LeftWrap>
           <RightWrap>

@@ -27,6 +27,7 @@ import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -108,6 +109,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const ProjectMember = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -143,7 +145,7 @@ const ProjectMember = () => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-
+  asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight

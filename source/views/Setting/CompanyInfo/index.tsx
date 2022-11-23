@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Header = styled.div({
   height: 64,
@@ -72,7 +73,7 @@ const InfoBottom = styled.div({
   marginTop: 40,
 })
 
-const BottomTitle = styled.div({
+export const BottomTitle = styled.div({
   fontSize: 14,
   color: 'black',
   fontWeight: 400,
@@ -105,7 +106,9 @@ const CardWrap = styled.div({
 })
 
 const CompanyInfo = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c1'))
   const { companyInfo } = useModel('setting')
   return (
     <div style={{ height: '100%' }}>

@@ -13,6 +13,7 @@ import WhiteDay from './components/WhiteDay'
 import { RedLogo } from '../Container/components/Side'
 import { useSelector } from 'react-redux'
 import { writeDaily } from '@/services/daily'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div`
   height: 100%;
@@ -78,7 +79,10 @@ type MenuList = {
 }
 
 const Information = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c6'))
   const menuList = [
     {
       id: 1,
@@ -170,7 +174,7 @@ const Information = () => {
       finish_content: params.info,
       plan_content: params.info2,
       copysend: params.people,
-      files: params.attachments.map((item: any) => item.url),
+      files: params.attachments,
       story_ids: params.needs,
       type: writeDailyInner[
         writeDailyInner.findIndex((item: any) => item.name === visibleEditText)

@@ -150,11 +150,12 @@ export const Panel = (props: Props) => {
     }
     setLanguageMode(value)
     setLanguageModeVisible(false)
-    clear()
+
     setTimeout(() => {
       setIsRefresh(true)
     }, 100)
     props.onChange?.()
+    clear()
   }
 
   const content = (
