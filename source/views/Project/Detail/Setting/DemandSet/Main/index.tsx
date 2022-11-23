@@ -16,6 +16,7 @@ import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div({
   padding: 16,
@@ -354,6 +355,7 @@ interface CardGroupProps {
 }
 
 const CardGroup = (props: CardGroupProps) => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
@@ -363,7 +365,7 @@ const CardGroup = (props: CardGroupProps) => {
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
   const activeTabs = Number(paramsData.type) || 0
-
+  asyncSetTtile(`${t('title.a8')}【${projectInfo.name}】`)
   const onChangeStatus = async (item: any, state: any) => {
     try {
       await changeCategoryStatus({

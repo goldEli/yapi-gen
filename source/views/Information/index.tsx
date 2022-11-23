@@ -80,8 +80,9 @@ type MenuList = {
 
 const Information = () => {
   const asyncSetTtile = useSetTitle()
-  asyncSetTtile('日志')
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c6'))
   const menuList = [
     {
       id: 1,

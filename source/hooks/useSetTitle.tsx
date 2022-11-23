@@ -8,7 +8,7 @@ const useSetTitle = () => {
     return () => {
       //   document.title = 'IFUN 敏捷研发系统'
     }
-  }, [])
+  }, [localStorage.getItem('language')])
 
   return asyncSetTtile
 }

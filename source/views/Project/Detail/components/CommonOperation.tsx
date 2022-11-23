@@ -15,6 +15,7 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const OperationTop = styled.div({
   height: 64,
@@ -309,14 +310,14 @@ const CommonOperation = (props: Props) => {
 
   return (
     <div>
-      {isVisible && (
+      {isVisible ? (
         <EditProject
           visible={isVisible}
           onChangeVisible={() => onClickEdit(false)}
           details={projectInfo}
           onUpdate={props.onUpdate}
         />
-      )}
+      ) : null}
       <ProjectInfoModal
         visible={infoVisible}
         onChangeVisible={() => onClickProjectInfo(false)}
@@ -364,12 +365,12 @@ const CommonOperation = (props: Props) => {
             >
               <div className="titleBox">
                 <span>{i.name}</span>
-                {i.isPlan && (
+                {i.isPlan ? (
                   <div className="text">
                     {t('version2.2.1.developed')}
                     <div />
                   </div>
-                )}
+                ) : null}
               </div>
             </TabsItem>
           ))}

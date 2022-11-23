@@ -25,6 +25,7 @@ import Loading from '@/components/Loading'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -130,7 +131,10 @@ const GatteWrap = styled.div`
   border-radius: 6px;
 `
 const Profile = () => {
+  const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
+  asyncSetTtile(t('title.a9'))
+
   const {
     getMineChartsList,
     getUserFeedList,

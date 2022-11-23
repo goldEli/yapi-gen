@@ -17,6 +17,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const SearchWrap = styled.div({
   height: 64,
@@ -34,6 +35,8 @@ const Content = styled.div({
 
 const Project = () => {
   const [t] = useTranslation()
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(t('title.project'))
   const [isGrid, setIsGrid] = useState(true)
   const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)

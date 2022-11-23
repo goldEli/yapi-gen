@@ -47,6 +47,7 @@ const Situation = () => {
   const asyncSetTtile = useSetTitle()
 
   const [t] = useTranslation()
+  asyncSetTtile(t('title.general'))
   const { getGlobalGeneral, userInfo } = useModel('user')
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [generalData, setGeneralData] = useState<any>()
@@ -155,7 +156,6 @@ const Situation = () => {
       },
     }
     setGeneralData(dateObj)
-    asyncSetTtile('概况')
   }
   useEffect(() => {
     init()

@@ -17,6 +17,7 @@ import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Header = styled.div({
   height: 'auto',
@@ -81,7 +82,9 @@ const NewSort = (sortProps: any) => {
 }
 
 const Operation = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c3'))
   const typeList = [
     { label: t('common.add'), value: 'POST' },
     { label: t('common.edit'), value: 'PUT' },

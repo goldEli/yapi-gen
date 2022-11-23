@@ -30,6 +30,7 @@ import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 export const tableWrapP = css`
   display: flex;
@@ -65,7 +66,10 @@ export const DataWrap = styled.div({
 })
 
 const Staff = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.b5'))
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
