@@ -1,12 +1,13 @@
-/* eslint-disable react/jsx-no-leaked-render */
 // 项目筛选
 
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Space, Checkbox, Divider, Dropdown, Menu, Tooltip } from 'antd'
+import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import CommonInput from '@/components/CommonInput'
+import { HoverWrap } from '@/components/StyleCommon'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -16,20 +17,6 @@ const Wrap = styled.div({
   background: 'white',
   padding: '0 24px',
 })
-
-const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    color: '#969799',
-    fontSize: 20,
-    cursor: 'pointer',
-    '&: hover': {
-      color: '#2877FF',
-    },
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
-  }),
-)
 
 const WrapRight = styled.div({
   display: 'flex',
@@ -43,16 +30,9 @@ const WrapRight = styled.div({
 
 const MainTitle = styled.div({
   fontSize: 14,
-  color: '#323233',
-  fontWeight: 400,
-})
-
-const TotalText = styled.div({
-  fontSize: 12,
   color: '#969799',
   fontWeight: 400,
 })
-
 interface Props {
   sort: string
   isGrid: boolean
@@ -87,6 +67,29 @@ const Filter = (props: Props) => {
       ]}
     />
   )
+
+  const menuFormat = (
+    <Menu
+      items={[
+        {
+          key: 'list',
+          label: (
+            <div onClick={() => props.onChangeFormat(false)}>
+              {t('version2.projectList')}
+            </div>
+          ),
+        },
+        {
+          key: 'thumbnail',
+          label: (
+            <div onClick={() => props.onChangeFormat(true)}>
+              {t('common.thumbnail')}
+            </div>
+          ),
+        },
+      ]}
+    />
+  )
   return (
     <Wrap>
       <CommonInput
@@ -94,43 +97,43 @@ const Filter = (props: Props) => {
         onChangeSearch={props.onChangeSearch}
       />
       <WrapRight>
-        <Space size={12}>
+        <Space size={8}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Checkbox onChange={e => props.onChangeHidden(e.target.checked)} />
             <MainTitle style={{ marginLeft: 8 }}>
               {t('project.hiddenProject')}
             </MainTitle>
           </div>
+          <Divider
+            style={{ height: 16, margin: '0 0 0 8px' }}
+            type="vertical"
+          />
           <div
             hidden={!props.isGrid}
             style={{ display: 'flex', alignItems: 'center' }}
           >
-            <MainTitle style={{ marginRight: 12 }}>
-              {props.sort === 'name'
-                ? t('common.projectName')
-                : t('common.createTime')}
-            </MainTitle>
             <Dropdown overlay={menu} getPopupContainer={node => node}>
-              <IconfontWrap type="sort" />
+              <HoverWrap>
+                <IconFont type="sort" />
+                <div>
+                  {props.sort === 'name'
+                    ? t('common.projectName')
+                    : t('common.createTime')}
+                </div>
+              </HoverWrap>
             </Dropdown>
           </div>
-        </Space>
-        <Divider style={{ height: 20 }} type="vertical" />
-        <Space size={12}>
-          <Tooltip title={t('common.thumbnail')}>
-            <IconfontWrap
-              onClick={() => props.onChangeFormat(true)}
-              active={props.isGrid}
-              type="app-store"
-            />
-          </Tooltip>
-          <Tooltip title={t('common.list')}>
-            <IconfontWrap
-              onClick={() => props.onChangeFormat(false)}
-              active={!props.isGrid}
-              type="unorderedlist"
-            />
-          </Tooltip>
+          <Divider style={{ height: 16, margin: 0 }} type="vertical" />
+          <Dropdown overlay={menuFormat} getPopupContainer={node => node}>
+            <HoverWrap style={{ color: '#2877ff' }}>
+              <IconFont type={props.isGrid ? 'app-store' : 'unorderedlist'} />
+              <div>
+                {props.isGrid
+                  ? t('common.thumbnail')
+                  : t('version2.projectList')}
+              </div>
+            </HoverWrap>
+          </Dropdown>
         </Space>
       </WrapRight>
     </Wrap>

@@ -11,7 +11,8 @@
     "createGroup": "创建分组",
     "deleteGroupText": "确认删除该分组？",
     "groupName": "分组名称",
-    "pleaseGroupName": "请输入分组名称"
+    "pleaseGroupName": "请输入分组名称",
+    "projectList": "项目列表"
   },
   "p2": {
     "maxUploadText": "最大支持130个字长度的文件名！",

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 项目列表页左侧
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -6,12 +7,14 @@ import AddButton from '@/components/AddButton'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import styled from '@emotion/styled'
-import { Form, Input, Menu } from 'antd'
-import { useState } from 'react'
+import { Form, Input, Menu, message } from 'antd'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap } from '@/components/StyleCommon'
+import NoData from '@/components/NoData'
+import { useModel } from '@/models'
 
 const WrapLeft = styled.div`
   width: 220px;
@@ -21,6 +24,8 @@ const WrapLeft = styled.div`
   background: white;
   height: 100%;
   padding: 24px 0;
+  box-shadow: 1px 0px 0px 0px #ecedef;
+  z-index: 1;
 `
 
 const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
@@ -35,6 +40,7 @@ const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
     alignItems: 'center',
     width: '100%',
     '&:hover': {
+      background: '#F4F5F5',
       color: '#2877ff',
       '.dropdownIcon': {
         visibility: 'visible',
@@ -79,15 +85,35 @@ interface Props {
   onChangeType(val: number): void
   activeType: number
   isPermission?: boolean
+  onChangeGroup(value: any): void
 }
 
 const WrapLeftBox = (props: Props) => {
   const [t] = useTranslation()
+  const {
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
+  } = useModel('project')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
+  const [groupId, setGroupId] = useState<any>(null)
   const [operationObj, setOperationObj] = useState<any>({})
   const [form] = Form.useForm()
+  const [groupList, setGroupList] = useState<any>({
+    list: undefined,
+  })
+
+  const getGroupData = async () => {
+    const result = await getGroupList()
+    setGroupList(result)
+  }
+
+  useEffect(() => {
+    getGroupData()
+  }, [])
 
   // 点击下拉项
   const onClickMenu = (type: any, item: any) => {
@@ -95,19 +121,53 @@ const WrapLeftBox = (props: Props) => {
     setOperationObj(item)
     if (type === 'edit') {
       setIsVisible(true)
+      form.setFieldsValue({ name: item.name })
     } else {
       setIsDeleteVisible(true)
     }
   }
 
+  // 操作成功后，清除
+  const onUpdateGroup = () => {
+    setIsDeleteVisible(false)
+    setIsVisible(false)
+    setOperationObj({})
+    form.resetFields()
+  }
+
   // 确认删除分组
   const onDeleteConfirm = async () => {
-    //
+    try {
+      await deleteProjectGroup({ id: operationObj?.id })
+      message.success(t('common.deleteSuccess'))
+      onUpdateGroup()
+    } catch (error) {
+      //
+    }
   }
 
   // 创建分组和编辑分组
   const onConfirm = async () => {
     await form.validateFields()
+    const values = form.getFieldsValue()
+    if (operationObj?.id) {
+      values.id = operationObj?.id
+      try {
+        await updateProjectGroup(values)
+        message.success(t('common.editSuccess'))
+        onUpdateGroup()
+      } catch (error) {
+        //
+      }
+    } else {
+      try {
+        await addProjectGroup(values)
+        message.success(t('common.createSuccess'))
+        onUpdateGroup()
+      } catch (error) {
+        //
+      }
+    }
   }
 
   // 更多操作
@@ -144,12 +204,24 @@ const WrapLeftBox = (props: Props) => {
     setOperationObj({})
   }
 
+  // 点击切分组
+  const onChangeGroup = (item: any) => {
+    props.onChangeGroup(item.id)
+    setGroupId(item.id)
+  }
+
+  // 点击切换我参与的或企业所有
+  const onChangeType = (value: number) => {
+    setGroupId(null)
+    props.onChangeType(value)
+  }
+
   return (
     <WrapLeft>
       {isDeleteVisible && (
         <DeleteConfirm
           isVisible={isDeleteVisible}
-          text="确认删除该分组？"
+          text={t('version2.deleteGroupText')}
           onChangeVisible={() => onClose('del')}
           onConfirm={onDeleteConfirm}
         />
@@ -195,17 +267,14 @@ const WrapLeftBox = (props: Props) => {
         />
       )}
       <TitleBox
-        onClick={() => props.onChangeType(0)}
+        onClick={() => onChangeType(0)}
         idx={!props.activeType}
         style={{ marginTop: 24 }}
       >
         <IconFont type="user-check" style={{ fontSize: 18, marginRight: 8 }} />
         {t('project.mineJoin')}
       </TitleBox>
-      <TitleBox
-        onClick={() => props.onChangeType(1)}
-        idx={props.activeType === 1}
-      >
+      <TitleBox onClick={() => onChangeType(1)} idx={props.activeType === 1}>
         <IconFont
           type="records-center"
           style={{ fontSize: 18, marginRight: 8 }}
@@ -223,15 +292,25 @@ const WrapLeftBox = (props: Props) => {
         </CloseWrap>
       </GroupBox>
       <GroupItems isPermission={props.isPermission}>
-        <TitleBox isSpace>
-          XXXX
-          <MoreDropdown
-            onChangeVisible={setIsMoreVisible}
-            menu={menu({ name: '121212', id: 1 })}
-            isMoreVisible={isMoreVisible}
-            color="#969799"
-          />
-        </TitleBox>
+        {!!groupList.list &&
+          groupList.list?.length > 0 &&
+          groupList.list?.map((item: any) => (
+            <TitleBox
+              isSpace
+              onClick={() => onChangeGroup(item)}
+              key={item.id}
+              idx={item.id === groupId}
+            >
+              {item.name}
+              <MoreDropdown
+                onChangeVisible={setIsMoreVisible}
+                menu={menu(item)}
+                isMoreVisible={isMoreVisible}
+                color="#969799"
+              />
+            </TitleBox>
+          ))}
+        {!(!!groupList.list && groupList.list?.length > 0) && <NoData />}
       </GroupItems>
     </WrapLeft>
   )

@@ -141,6 +141,10 @@ export default () => {
     addStoryConfigStatus,
     deleteStoryConfigStatus,
     updateStoryConfigStatus,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
   } = services.project
 
   return {
@@ -215,5 +219,9 @@ export default () => {
     selectAllStaffData,
     setIsChangeProject,
     isChangeProject,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
   }
 }

@@ -119,6 +119,10 @@ const urls = {
   getReportDetail: '/b/report/info',
   getReportContent: '/b/report/comment/add',
   getReceiveList: '/b/report/copysend/list',
+  getGroupList: '/b/project/getGroupList',
+  addProjectGroup: '/b/project/group/save',
+  updateProjectGroup: '/b/project/group/update',
+  deleteProjectGroup: '/b/project/group/delete',
 }
 
 export default urls

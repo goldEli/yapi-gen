@@ -127,8 +127,8 @@ const EditProject = (props: Props) => {
             <Select.Option value={1}>{t('project.companyOpen')}</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item label={t('version2.projectGroup')} name="projectGroup">
-          <Select placeholder={t('common.pleaseSelect')} />
+        <Form.Item label={t('version2.projectGroup')} name="groupIds">
+          <Select placeholder={t('common.pleaseSelect')} mode="multiple" />
         </Form.Item>
       </Form>
     </CommonModal>
