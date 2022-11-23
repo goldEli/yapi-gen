@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable max-len */
 // 他的模块-他的概况
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -168,7 +170,7 @@ const Profile = () => {
     mainInfo,
   } = useModel('member')
   const { userInfo } = useModel('user')
-  const { colorList } = useModel('project')
+  const { colorList, projectInfo } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -180,7 +182,11 @@ const Profile = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId, id } = paramsData
-  asyncSetTtile(`${t('title.a3')}【${mainInfo.name}】`)
+  asyncSetTtile(
+    `${t('title.a3')}【${mainInfo.name}】${
+      projectInfo.name ? `-【 ${projectInfo.name}】` : ''
+    } `,
+  )
   const changeMonth = async () => {
     const params: any = {
       startTime: moment()

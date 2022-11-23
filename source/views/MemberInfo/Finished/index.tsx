@@ -8,7 +8,12 @@ const Finish = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const { mainInfo } = useModel('member')
-  asyncSetTtile(`${t('title.a6')}【${mainInfo.name}】`)
+  const { projectInfo } = useModel('project')
+  asyncSetTtile(
+    `${t('title.a6')}【${mainInfo.name}】${
+      projectInfo.name ? `-【 ${projectInfo.name}】` : ''
+    }`,
+  )
   return (
     <MainIndex
       title={t('newlyAdd.hisFinish')}

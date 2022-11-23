@@ -9,7 +9,12 @@ const Carbon = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const { mainInfo } = useModel('member')
-  asyncSetTtile(`${t('title.a4')}【${mainInfo.name}】`)
+  const { projectInfo } = useModel('project')
+  asyncSetTtile(
+    `${t('title.a4')}【${mainInfo.name}】${
+      projectInfo.name ? `-【 ${projectInfo.name}】` : ''
+    }`,
+  )
 
   return (
     <MainIndex

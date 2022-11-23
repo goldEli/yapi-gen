@@ -9,7 +9,12 @@ const Create = () => {
   const [t] = useTranslation()
   const asyncSetTtile = useSetTitle()
   const { mainInfo } = useModel('member')
-  asyncSetTtile(`${t('title.a5')}【${mainInfo.name}】`)
+  const { projectInfo } = useModel('project')
+  asyncSetTtile(
+    `${t('title.a5')}【${mainInfo.name}】${
+      projectInfo.name ? `-【 ${projectInfo.name}】` : ''
+    }`,
+  )
   return (
     <MainIndex
       title={t('newlyAdd.hisCreate')}
