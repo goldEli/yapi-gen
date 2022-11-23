@@ -2,9 +2,9 @@
 
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
-import empty from '/empty.svg'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
+import IconFont from './IconFont'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -31,7 +31,6 @@ const PermissionWrap = ({
   permission,
   isType,
   children,
-  isPadding,
 }: {
   auth: any
   hasWidth?: boolean
@@ -61,7 +60,7 @@ const PermissionWrap = ({
 
   return (
     <Wrap style={{ height: hasWidth ? 'calc(100vh - 64px)' : '100%' }}>
-      <img src={empty} alt="" />
+      <IconFont type="noData" style={{ fontSize: 200 }} />
       <div>{t('components.noPermission')}</div>
     </Wrap>
   )

@@ -3,13 +3,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Input, message, Popover } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { message } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import HaveSearchAndList from '@/components/HaveSearchAndList'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -34,135 +34,6 @@ const DemandCheckedItem = styled.div({
   },
 })
 
-const DemandWrap = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-})
-
-const MaxWrap = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  maxHeight: 200,
-  overflow: 'auto',
-  maxWidth: 236,
-})
-
-const DemandItem = styled.div<{ isActive?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '8px 0',
-    cursor: 'pointer',
-    paddingLeft: 16,
-    wordBreak: 'break-all',
-    '&:hover': {
-      background: '#F0F4FA',
-      span: {
-        color: '#2877ff',
-      },
-    },
-  },
-  ({ isActive }) => ({
-    background: isActive ? '#F0F4FA' : 'white',
-  }),
-)
-
-const SearchInput = styled(Input)`
-  font-size: 14px;
-  min-width: 210px;
-  height: 32px;
-  background: rgba(245, 246, 247, 1);
-  background-blend-mode: normal;
-  mix-blend-mode: normal;
-  display: flex;
-  justify-content: flex-start;
-
-  padding: 5px 12px 5px 12px;
-  border: none;
-  input {
-    background: rgba(245, 246, 247, 1);
-    &::placeholder {
-      font-size: 14px;
-    }
-  }
-`
-
-const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
-  '.ant-popover-placement-bottom': {
-    left: isRight ? '10px!important' : 0,
-  },
-  '.ant-popover-content': {
-    maxWidth: 240,
-  },
-}))
-
-interface DemandProps {
-  tap?(item: any): void
-}
-
-const TagBox = (props: DemandProps) => {
-  const [t] = useTranslation()
-  const { getDemandList, demandInfo } = useModel('demand')
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const [demandList, setDemandList] = useState<any>([])
-  const inputRefDom = useRef<HTMLInputElement>(null)
-
-  const getList = async () => {
-    const result = await getDemandList({ projectId, all: true })
-    const arr = result.map((i: any) => ({
-      label: i.name,
-      value: i.id,
-    }))
-    setDemandList(arr)
-  }
-
-  useEffect(() => {
-    getList()
-    setTimeout(() => {
-      inputRefDom.current?.focus()
-    }, 100)
-  }, [])
-
-  const [value, setValue] = useState('')
-  return (
-    <DemandWrap>
-      <div style={{ padding: '16px 16px 4px 16px' }}>
-        <SearchInput
-          ref={inputRefDom as any}
-          onPressEnter={(e: any) => setValue(e.target.value)}
-          onChange={e => setValue(e.target.value)}
-          suffix={
-            <IconFont
-              type="search"
-              style={{ color: '#BBBDBF', fontSize: 16 }}
-            />
-          }
-          allowClear
-          value={value}
-          placeholder={t('common.searchParent')}
-          autoFocus
-        />
-      </div>
-      <MaxWrap>
-        {demandList
-          ?.filter((item: any) => item.value !== demandInfo?.id)
-          ?.filter((k: any) => String(k.label).includes(value))
-          ?.map((i: any) => (
-            <DemandItem
-              onClick={() => props.tap?.(i)}
-              isActive={i.value === demandInfo.parentId}
-              key={i.value}
-            >
-              {i.label}
-            </DemandItem>
-          ))}
-      </MaxWrap>
-    </DemandWrap>
-  )
-}
-
 interface Props {
   addWrap: React.ReactElement
   isRight?: any
@@ -170,32 +41,15 @@ interface Props {
 
 const ParentDemand = (props: Props) => {
   const [t] = useTranslation()
-  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand } =
-    useModel('demand')
+  const { demandInfo, getDemandInfo, deleteInfoDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo } = useModel('project')
-  const [isOpen, setIsOpen] = useState(false)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
-
-  const onChangeParent = async (item: any) => {
-    try {
-      await addInfoDemand({
-        projectId,
-        demandId: demandInfo?.id,
-        type: 'parent',
-        targetId: [item.value],
-      })
-      message.success(t('common.addSuccess'))
-      getDemandInfo({ projectId, id: demandInfo?.id })
-    } catch (error) {
-      //
-    }
-  }
 
   const onDeleteInfoDemand = async () => {
     try {
@@ -212,10 +66,6 @@ const ParentDemand = (props: Props) => {
     }
   }
 
-  const onVisibleOpenChange = (visible: any) => {
-    setIsOpen(visible)
-  }
-
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <DemandCheckedItem hidden={!demandInfo?.parentId}>
@@ -226,30 +76,26 @@ const ParentDemand = (props: Props) => {
           }}
         >
           {demandInfo?.parentName}
-          {isCanEdit ? (
+          {isCanEdit && (
             <IconFont
               onClick={isCanEdit ? onDeleteInfoDemand : void 0}
               className="icon"
               type="close"
             />
-          ) : null}
+          )}
         </div>
       </DemandCheckedItem>
-      {isCanEdit ? (
-        <PopoverWrap
-          visible={isOpen}
-          placement="bottom"
-          trigger="click"
-          onVisibleChange={onVisibleOpenChange}
-          content={isOpen ? <TagBox tap={onChangeParent} /> : null}
-          getPopupContainer={node => node}
-          isRight={props?.isRight}
-        >
-          <div hidden={demandInfo?.parentId} onClick={() => setIsOpen(!isOpen)}>
-            {props.addWrap}
-          </div>
-        </PopoverWrap>
-      ) : null}
+      {isCanEdit && (
+        <HaveSearchAndList
+          isRight
+          addWrap={props.addWrap}
+          isHidden={demandInfo?.parentId}
+          projectId={projectId}
+          demandId={demandInfo?.id}
+          isOperationParent
+          placeholder={t('common.searchParent')}
+        />
+      )}
     </div>
   )
 }

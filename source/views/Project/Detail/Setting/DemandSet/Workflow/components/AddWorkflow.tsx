@@ -1,3 +1,5 @@
+// 需求设置-添加工作流弹窗
+
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -103,7 +105,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState<any>('')
   const [errorState, setErrorState] = useState(false)
-  const [normalColor, setNormalColor] = useState<any>()
+  const [normalColor, setNormalColor] = useState<any>('#2877FF')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -119,7 +121,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const onReset = () => {
     props?.onClose?.()
     setValue('')
-    setNormalColor('')
+    setNormalColor('#2877FF')
     setErrorState(false)
   }
 

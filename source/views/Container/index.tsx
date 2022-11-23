@@ -1,15 +1,16 @@
+// 整体页面结构
+
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
 import { useModel } from '@/models'
-// eslint-disable-next-line no-duplicate-imports
-import { useNavigate } from 'react-router-dom'
 import { changeLanguage, loadedAntdLocals } from '@/locals'
 import NoPermission from './components/NoPermission'
 import { useTranslation } from 'react-i18next'
@@ -63,13 +64,11 @@ export const Container = () => {
     changeLanguage(languageParams)
 
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     setIsNextVisible(loginInfo.admin_first_login)
     const { company_permissions } = userInfo
-    // eslint-disable-next-line complexity
     if (!sessionStorage.getItem('saveRouter')) {
       company_permissions?.forEach((element: any) => {
         if (element.group_name.includes('概况')) {
@@ -94,7 +93,7 @@ export const Container = () => {
 
   return (
     <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
-      {userInfo?.company_permissions?.length ? (
+      {userInfo?.company_permissions?.length && (
         <Wrap>
           <Side />
           <Main>
@@ -102,9 +101,8 @@ export const Container = () => {
           </Main>
           <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
         </Wrap>
-      ) : (
-        <NoPermission />
       )}
+      {!userInfo?.company_permissions?.length && <NoPermission />}
     </ConfigProvider>
   )
 }

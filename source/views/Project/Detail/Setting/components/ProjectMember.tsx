@@ -1,3 +1,5 @@
+// 项目设置-项目成员
+
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -12,16 +14,7 @@ import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import {
-  Menu,
-  Dropdown,
-  Pagination,
-  message,
-  Select,
-  Form,
-  Spin,
-  Space,
-} from 'antd'
+import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
 import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -56,13 +49,6 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   padding: 16,
-})
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
 })
 
 const FilterWrap = styled(Form)({

@@ -1,6 +1,6 @@
-/* eslint-disable complexity */
 // 抽调查看成果弹窗及详情成果展示公共部分
 
+/* eslint-disable complexity */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-unstable-nested-components */
@@ -24,7 +24,7 @@ const Wrap = styled.div<{ isModal: any }>(
     paddingRight: 16,
   },
   ({ isModal }) => ({
-    height: isModal ? '30vw' : 'calc(100% - 40px)',
+    height: isModal ? '60vh' : 'calc(100% - 40px)',
   }),
 )
 

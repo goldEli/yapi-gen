@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import { useState } from 'react'
 import * as services from '@/services'
 
@@ -8,10 +9,13 @@ export default () => {
   const [isShowProgress, setIsShowProgress] = useState(false)
   const [percentShow, setPercentShow] = useState<boolean>(false)
   const [isUpdateStatus, setIsUpdateStatus] = useState<any>(false)
+  const [isUpdateChangeLog, setIsUpdateChangeLog] = useState<any>(false)
   const [percentVal, setPercentVal] = useState<any>()
   const [uploadStatus, setUploadStatus] = useState<any>('normal')
   const [createCategory, setCreateCategory] = useState<any>({})
-  const [statusLogs, setStatusLogs] = useState<any>([])
+  const [statusLogs, setStatusLogs] = useState<any>({
+    list: undefined,
+  })
   const [importExcel, setImportExcel] = useState<any>({})
   // 编辑需求弹窗是否开启，用于调用多接口限制
   const [isOpenEditDemand, setIsOpenEditDemand] = useState(false)
@@ -51,7 +55,7 @@ export default () => {
 
   const getStatusLogs = async (params: any) => {
     const result = await services.demand.getStoryStatusLog(params)
-    setStatusLogs(result)
+    setStatusLogs({ list: result })
   }
 
   const {
@@ -119,5 +123,7 @@ export default () => {
     getExportFields,
     setIsOpenEditDemand,
     isOpenEditDemand,
+    setIsUpdateChangeLog,
+    isUpdateChangeLog,
   }
 }

@@ -1,3 +1,5 @@
+// 公司成员详情编辑弹窗
+
 import { Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
@@ -70,7 +72,6 @@ export const StaffPersonal = (props: {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleChange = (value: any) => {

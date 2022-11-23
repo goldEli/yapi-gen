@@ -1,3 +1,5 @@
+// 项目详情页面
+
 /* eslint-disable max-params */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-len */
@@ -232,7 +234,7 @@ const Project = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        {isVisible ? (
+        {isVisible && (
           <EditProject
             visible={isVisible}
             onChangeVisible={() => setIsVisible(!isVisible)}
@@ -241,7 +243,7 @@ const Project = () => {
               getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
             }
           />
-        ) : null}
+        )}
         <SearchWrap>
           <SearchComponent
             placeholder={t('mark.searchP')}

@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+// 个人信息弹窗
+
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'

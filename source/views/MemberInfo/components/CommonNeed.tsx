@@ -1,3 +1,5 @@
+// 他的模块所有页面公用列表及查询
+
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
@@ -119,7 +121,6 @@ const MoreWrap = (props: MoreWrapProps) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
   return (
-    // <ShowWrap>
     <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
         <MoreDropdown
@@ -129,7 +130,6 @@ const MoreWrap = (props: MoreWrapProps) => {
         />
       )}
     </>
-    // </ShowWrap>
   )
 }
 
@@ -345,7 +345,6 @@ const CommonNeed = (props: any) => {
       },
     ]
     return [...arrList, ...newList]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
   const getShowkey = async () => {
@@ -397,13 +396,11 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init(1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
@@ -419,7 +416,6 @@ const CommonNeed = (props: any) => {
         getSearchKey()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefresh])
 
   const showModal = () => {
@@ -563,7 +559,7 @@ const CommonNeed = (props: any) => {
         </SearchWrap>
       </TabsHehavior>
 
-      {isShowSearch && props.id !== 0 ? (
+      {isShowSearch && props.id !== 0 && (
         <div style={{ borderLeft: '1px solid #EBEDF0' }}>
           <TableFilter
             onFilter={getSearchKey}
@@ -574,13 +570,13 @@ const CommonNeed = (props: any) => {
             customList={filterCustomList}
           />
         </div>
-      ) : null}
+      )}
       {!isMany && (
         <div>
           <LoadingSpin spinning={isSpin}>
             <StaffTableWrap>
               {listData?.list ? (
-                listData?.list?.length ? (
+                listData?.list?.length > 0 ? (
                   <TableBox
                     rowKey="id"
                     columns={selectColum}
@@ -597,11 +593,11 @@ const CommonNeed = (props: any) => {
         </div>
       )}
 
-      {isMany ? (
+      {isMany && (
         <div>
           <LoadingSpin spinning={isSpin}>
-            {manyListData.list ? (
-              manyListData.list?.length ? (
+            {manyListData.list &&
+              (manyListData.list?.length > 0 ? (
                 <StaffTableWrap2>
                   {manyListData.list?.map((item: any, index: any) => (
                     // eslint-disable-next-line react/no-array-index-key
@@ -621,7 +617,7 @@ const CommonNeed = (props: any) => {
                       </TableTitle>
 
                       {item.list ? (
-                        item?.list?.length ? (
+                        item?.list?.length > 0 ? (
                           <TableBox
                             rowKey="id"
                             columns={selectColum}
@@ -640,13 +636,12 @@ const CommonNeed = (props: any) => {
                 <div style={{ padding: 16 }}>
                   <NoData />
                 </div>
-              )
-            ) : null}
+              ))}
           </LoadingSpin>
         </div>
-      ) : null}
+      )}
 
-      {!isMany && listData?.list?.length && (
+      {!isMany && listData?.list?.length > 0 && (
         <PaginationWrap style={{ paddingRight: 24 }}>
           <Pagination
             defaultCurrent={1}
@@ -662,7 +657,7 @@ const CommonNeed = (props: any) => {
           />
         </PaginationWrap>
       )}
-      {isModalVisible ? (
+      {isModalVisible && (
         <OptionalFeld
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
@@ -674,8 +669,8 @@ const CommonNeed = (props: any) => {
           onClose={close2}
           getCheckList={getCheckList}
         />
-      ) : null}
-      {isVisible ? (
+      )}
+      {isVisible && (
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
@@ -684,7 +679,7 @@ const CommonNeed = (props: any) => {
           onUpdate={onUpdate}
           notGetPath
         />
-      ) : null}
+      )}
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}

@@ -1,4 +1,11 @@
 {
+  "version2.2.1": {
+    "defect": "缺陷",
+    "report": "报表",
+    "developed": "待开发",
+    "waitingPlan": "功能筹备中，敬请期待",
+    "searchProject": "搜索项目(按Enter搜索)"
+  },
   "p2": {
     "begin": " begin",
     "pause": " Pause ",

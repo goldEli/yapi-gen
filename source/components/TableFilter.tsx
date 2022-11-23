@@ -1,9 +1,10 @@
+// 公用列表筛选组件
+
 /* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-/* eslint-disable max-len */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import {
@@ -37,7 +38,6 @@ const FormWrap = styled(Form)({
   gap: '16px',
   display: 'flex',
   flexWrap: 'wrap',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   '.ant-form-item': {
     margin: 0,
   },

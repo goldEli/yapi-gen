@@ -817,7 +817,7 @@ export const getPeopleList: any = async (params: any) => {
 // 快速创建
 export const addQuicklyCreate: any = async (params: any) => {
   const element = document.createElement('div')
-  element.innerHTML = params?.info
+  element.innerHTML = params?.info || ''
   const hasImg = Array.from(element.getElementsByTagName('img'))
   const info = hasImg.length
     ? params?.info

@@ -7,10 +7,12 @@ import { decryptPhp } from './cryptoPhp'
 import { Select, Input, DatePicker, InputNumber, TreeSelect } from 'antd'
 import moment from 'moment'
 
+// 获取权限
 function getIsPermission(arr: any, value: string) {
   return !arr?.filter((i: any) => i.identity === value).length
 }
 
+// 新开页面
 function openDetail(url: string) {
   if (import.meta.env.MODE === 'production') {
     window.open(`${window.origin}${url}`)
@@ -19,6 +21,7 @@ function openDetail(url: string) {
   }
 }
 
+// 解密地址栏参数
 function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }

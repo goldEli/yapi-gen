@@ -1,6 +1,7 @@
+// 日志选人组件
+
 import { useEffect, useMemo, useState } from 'react'
 import { NameWrap } from '@/components/StyleCommon'
-import { useTranslation } from 'react-i18next'
 import { Popover } from 'antd'
 import {
   AddWrap,
@@ -13,7 +14,6 @@ import IconFont from '@/components/IconFont'
 import { getStaffList2 } from '@/services/staff'
 
 const ChoosePeople = (props: any) => {
-  const [t] = useTranslation()
   const [allMemberList, setAllMemberList] = useState<any>([])
   const [options, setOptions] = useState<any>([])
   const [isOpen, setIsOpen] = useState(false)
@@ -26,7 +26,7 @@ const ChoosePeople = (props: any) => {
 
   // 更新流转审核线并过滤人员下拉
   const onChangeList = async (obj: any, type: string) => {
-    const newList = structuredClone(allMemberList)
+    const newList = JSON.parse(JSON.stringify(allMemberList))
 
     if (type === 'add') {
       newList.push(obj)

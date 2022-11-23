@@ -1,3 +1,5 @@
+// 他的模块-他的概况
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
@@ -206,7 +208,7 @@ const Profile = () => {
           k.categoryColor
         }; background: ${
           colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">${k.categoryName}</span>
+        }">#${k.categoryName}#</span>
         <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
           k.text
         }</span>
@@ -248,7 +250,6 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthIndex, page, pagesize])
 
   const forMateMonth = useMemo(() => {

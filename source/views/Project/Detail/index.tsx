@@ -36,6 +36,7 @@ const Detail = () => {
     setSelectTreeData,
     setSelectAllStaffData,
     getFieldList,
+    isChangeProject,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const { isOpenEditDemand } = useModel('demand')
@@ -225,7 +226,7 @@ const Detail = () => {
     getIterateList()
     getFieldData()
     getStaffData()
-  }, [isRefresh])
+  }, [isRefresh, isChangeProject])
 
   useEffect(() => {
     if (isRefreshIterateList) {
@@ -242,12 +243,18 @@ const Detail = () => {
     ) {
       getTreeData()
     }
-  }, [projectInfo, selectIterate, memberList, isOpenEditDemand])
+  }, [
+    projectInfo,
+    selectIterate,
+    memberList,
+    isOpenEditDemand,
+    isChangeProject,
+  ])
 
   return (
     <Wrap>
       <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
-      <Outlet />
+      <Outlet key={isChangeProject} />
     </Wrap>
   )
 }

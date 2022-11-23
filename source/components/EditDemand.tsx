@@ -40,6 +40,7 @@ import {
   AddWrap,
   ProgressWrapUpload,
   CloseWrap,
+  CanOperationCategory,
 } from '@/components/StyleCommon'
 import { getTreeList } from '@/services/project/tree'
 import { decryptPhp, encryptPhp } from '@/tools/cryptoPhp'
@@ -154,24 +155,6 @@ const AddButtonWrap = styled.div({
   cursor: 'pointer',
 })
 
-const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    cursor: 'pointer',
-    marginRight: 8,
-    width: 'fit-content',
-  },
-  ({ color, bgColor }) => ({
-    color,
-    background: bgColor,
-  }),
-)
-
 const LiWrap = styled.div<{ color: any }>(
   {
     cursor: 'pointer',
@@ -221,11 +204,10 @@ interface Props {
 }
 
 const EditDemand = (props: Props) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const [changeCategoryForm] = Form.useForm()
-  const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
@@ -251,6 +233,7 @@ const EditDemand = (props: Props) => {
     updateDemandCategory,
     setIsUpdateStatus,
     setIsOpenEditDemand,
+    setIsUpdateChangeLog,
   } = useModel('demand')
   const {
     memberList,
@@ -281,7 +264,6 @@ const EditDemand = (props: Props) => {
   const [isShowFields, setIsShowFields] = useState(false)
   const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
   const [currentCategory, setCurrentCategory] = useState<any>({})
-  const [allDemandList, setAllDemandList] = useState<any>([])
   const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
 
   const getList = async (value?: any) => {
@@ -329,7 +311,6 @@ const EditDemand = (props: Props) => {
       form1.setFieldsValue(form1Obj)
 
       setPriorityDetail(res.priority)
-      setHtml(res.info)
       setAttachList(
         res?.attachment.map((i: any) => ({
           url: i.attachment.path,
@@ -418,7 +399,6 @@ const EditDemand = (props: Props) => {
       }),
       getIterateSelectList({ projectId: value || projectId, all: true }),
     ])
-    setAllDemandList(allDemandArr)
     setClassTreeData([
       ...[
         {
@@ -438,8 +418,6 @@ const EditDemand = (props: Props) => {
       setCategoryObj({})
       getInfo(value || projectId, classTree, categoryData?.list)
     } else {
-      form.resetFields()
-      form1.resetFields()
       form.setFieldsValue({
         projectId: value,
       })
@@ -466,12 +444,24 @@ const EditDemand = (props: Props) => {
           setCategoryObj(categoryData?.list[0])
         }
       }
+
+      if (props?.iterateId) {
+        setCategoryObj(categoryData?.list[0])
+        form.setFieldsValue({
+          iterateId: selectIterate?.list
+            ?.filter((k: any) => k.status === 1)
+            .filter((i: any) => i.id === props?.iterateId).length
+            ? props?.iterateId
+            : null,
+        })
+      }
       setTimeout(() => {
         inputRefDom.current?.focus()
       }, 100)
     }
   }
 
+  // 获取项目数据
   const getProjectData = async () => {
     const res = await getProjectList({
       self: 1,
@@ -502,9 +492,6 @@ const EditDemand = (props: Props) => {
       setProjectId(resultValue)
       if (props?.isQuickCreate) {
         getProjectData()
-        setTimeout(() => {
-          inputRefDom.current?.focus()
-        }, 100)
       } else {
         getInit(resultValue)
       }
@@ -520,6 +507,7 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.editSuccess'))
       setIsUpdateStatus(true)
+      setIsUpdateChangeLog(true)
     } else {
       await addDemand({
         projectId,
@@ -528,9 +516,6 @@ const EditDemand = (props: Props) => {
       message.success(t('common.createSuccess'))
     }
     setAttachList([])
-    setTagList([])
-    setHtml('')
-    setPriorityDetail({})
     getList()
     setIsShowFields(false)
     setIsOpenEditDemand(false)
@@ -540,19 +525,14 @@ const EditDemand = (props: Props) => {
       props.onUpdate?.()
     }
     if (hasNext) {
-      form.resetFields()
       form.setFieldsValue({
-        projectId,
-        type: 'need',
+        info: '',
+        name: '',
       })
-      form1.resetFields()
-      if (props?.isChild) {
-        form.setFieldsValue({
-          parentId: allDemandList?.filter(
-            (i: any) => i.value === Number(paramsData?.demandId),
-          )[0]?.value,
-        })
-      }
+      // 直接修改form，富文本字段值更新，视图未更新，所以先清除再赋值
+      const formValues = form.getFieldsValue()
+      form.resetFields()
+      form.setFieldsValue(formValues)
       setTimeout(() => {
         inputRefDom.current?.focus()
       }, 100)
@@ -701,7 +681,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     setAttachList([])
     setTagList([])
-    setHtml('')
     setPriorityDetail({})
     setCreateCategory({})
     setChangeCategoryFormData({})
@@ -771,15 +750,15 @@ const EditDemand = (props: Props) => {
             color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
             onClick={() => onClickCategory(k)}
           >
-            <StatusTag
-              style={{ marginRight: 0 }}
+            <CanOperationCategory
+              style={{ marginRight: 0, cursor: 'pointer' }}
               color={k.color}
               bgColor={
                 colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
               }
             >
-              {k.name}
-            </StatusTag>
+              <span className="title">{k.name}</span>
+            </CanOperationCategory>
           </LiWrap>
         ))}
     </div>
@@ -822,15 +801,16 @@ const EditDemand = (props: Props) => {
             style={{ padding: '0 20px 0 2px' }}
           >
             <Form.Item label={t('newlyAdd.beforeCategory')}>
-              <StatusTag
+              <CanOperationCategory
+                style={{ marginRight: 8, cursor: 'pointer' }}
                 color={categoryObj?.color}
                 bgColor={
                   colorList?.filter((i: any) => i.key === categoryObj?.color)[0]
                     ?.bgColor
                 }
               >
-                <>{categoryObj?.name}</>
-              </StatusTag>
+                <span className="title">{categoryObj?.name}</span>
+              </CanOperationCategory>
             </Form.Item>
             <Form.Item
               label={t('newlyAdd.afterCategory')}
@@ -903,7 +883,8 @@ const EditDemand = (props: Props) => {
                 getPopupContainer={node => node}
                 onVisibleChange={visible => setIsShowPop(visible)}
               >
-                <StatusTag
+                <CanOperationCategory
+                  style={{ marginRight: 8, cursor: 'pointer' }}
                   color={
                     categoryList?.list?.filter(
                       (i: any) => i.id === categoryObj?.id,
@@ -919,13 +900,13 @@ const EditDemand = (props: Props) => {
                     )[0]?.bgColor
                   }
                 >
-                  <>
+                  <span className="title">
                     {
                       categoryList?.list?.filter(
                         (i: any) => i.id === categoryObj?.id,
                       )[0]?.name
                     }
-                  </>
+                  </span>
                   <IconFont
                     type="down-icon"
                     style={{
@@ -934,7 +915,7 @@ const EditDemand = (props: Props) => {
                       color: '43BA9A',
                     }}
                   />
-                </StatusTag>
+                </CanOperationCategory>
               </Popover>
             )}
           </div>
@@ -1180,7 +1161,7 @@ const EditDemand = (props: Props) => {
                     )
                   }}
                 >
-                  {projectId ? (
+                  {projectId && (
                     <PriorityWrap>
                       <IconFont
                         className="priorityIcon"
@@ -1195,7 +1176,8 @@ const EditDemand = (props: Props) => {
                         <IconFont className="icon" type="down-icon" />
                       </div>
                     </PriorityWrap>
-                  ) : (
+                  )}
+                  {!projectId && (
                     <span style={{ cursor: 'not-allowed' }}>--</span>
                   )}
                 </PopConfirm>

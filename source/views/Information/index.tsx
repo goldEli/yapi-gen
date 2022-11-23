@@ -201,7 +201,6 @@ const Information = () => {
       color: #2877ff;
     }
   `
-
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)
     setVisibleEditText(item.name)

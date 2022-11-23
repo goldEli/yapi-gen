@@ -1,8 +1,10 @@
+// 需求设置主页
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Switch, Form, Select, message } from 'antd'
+import { Button, Menu, Switch, Form, Select, message } from 'antd'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
@@ -126,10 +128,18 @@ const DivWrap = styled.div({
 const CategoryName = styled.div<{ bgColor?: string; color?: string }>(
   {
     height: 22,
+    display: 'flex',
+    alignItems: 'center',
     borderRadius: '11px',
     padding: '0 8px',
     fontSize: 12,
     lineHeight: '22px',
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ bgColor, color }) => ({
     background: bgColor,

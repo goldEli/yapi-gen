@@ -23,7 +23,6 @@ import { getStaffList2 } from '@/services/staff'
 import LookDay from './components/LookDay'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
-import styled from '@emotion/styled'
 
 const srr = [
   undefined,

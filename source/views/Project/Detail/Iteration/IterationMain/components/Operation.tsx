@@ -185,7 +185,7 @@ const Operation = (props: Props) => {
           style={{
             overflow: 'auto',
             padding: '0 20px 16px 0',
-            height: '30vw',
+            height: '60vh',
           }}
         >
           {props.currentDetail?.info ? (
@@ -226,27 +226,32 @@ const Operation = (props: Props) => {
               />
             </Tooltip>
           )}
-          <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
-            {props.currentDetail?.name}
-          </span>
-          <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
-            {props.currentDetail?.createdTime}-{props.currentDetail?.endTime}
-          </span>
-          <IterationStatus
-            hasChangeStatus={hasChangeStatus}
-            iterateInfo={props.currentDetail}
-            onChangeStatus={onChangeStatus}
-          />
-          <Tooltip title={t('project.iterateTarget')}>
-            <IconWrap onClick={() => setVisible(true)} type="detail" />
-          </Tooltip>
-          {isCanCheck ? null : (
-            <Tooltip title={t('p2.d2')}>
-              <IconWrap
-                onClick={() => setIsAchievements(true)}
-                type="iteration"
+          {props.currentDetail?.id && (
+            <>
+              <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
+                {props.currentDetail?.name}
+              </span>
+              <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
+                {props.currentDetail?.createdTime}-
+                {props.currentDetail?.endTime}
+              </span>
+              <IterationStatus
+                hasChangeStatus={hasChangeStatus}
+                iterateInfo={props.currentDetail}
+                onChangeStatus={onChangeStatus}
               />
-            </Tooltip>
+              <Tooltip title={t('project.iterateTarget')}>
+                <IconWrap onClick={() => setVisible(true)} type="detail" />
+              </Tooltip>
+              {isCanCheck ? null : (
+                <Tooltip title={t('p2.d2')}>
+                  <IconWrap
+                    onClick={() => setIsAchievements(true)}
+                    type="iteration"
+                  />
+                </Tooltip>
+              )}
+            </>
           )}
         </IterationInfo>
         <OperationGroup

@@ -1,3 +1,5 @@
+// 公司成员主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -276,13 +278,11 @@ const Staff = () => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, searchGroups, orderKey, order])
 
   const rest = debounce(

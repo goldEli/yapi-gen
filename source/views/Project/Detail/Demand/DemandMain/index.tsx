@@ -1,3 +1,5 @@
+// 需求主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
@@ -17,11 +19,11 @@ import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
 
-const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
+const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
   height: 'calc(100vh - 64px)',
   overflowY: 'auto',
-}))
+})
 
 interface Props {
   onChangeVisible(e: any): void

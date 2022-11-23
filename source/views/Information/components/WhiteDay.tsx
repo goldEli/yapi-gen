@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form, message } from 'antd'
+import { Form } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import Editor from '@/components/Editor'
 import ChoosePeople from './ChoosePeople'
@@ -50,7 +50,6 @@ const WhiteDay = (props: any) => {
   const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const ed1: any = useRef(null)
 
   const close = () => {
     form.resetFields()
@@ -126,9 +125,6 @@ const WhiteDay = (props: any) => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
-    setTimeout(() => {
-      ed1?.current?.focus()
-    }, 500)
   }, [props.editId, props.visibleEdit])
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -139,7 +135,6 @@ const WhiteDay = (props: any) => {
     })
   }
   const onValidator = (rule: any, value: any) => {
-    // eslint-disable-next-line no-undefined
     if (value === '<p><br></p>' || value.trim() === '') {
       return Promise.reject(
         new Error('The two passwords that you entered do not match!'),
@@ -167,14 +162,6 @@ const WhiteDay = (props: any) => {
         }}
         ref={leftDom}
       >
-        <input
-          ref={ed1}
-          type="text"
-          style={{
-            position: 'absolute',
-            opacity: 0,
-          }}
-        />
         <Form
           form={form}
           onFinish={confirm}
@@ -220,7 +207,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor height={178} />
+            <Editor height={178} autoFocus />
           </Form.Item>
           <Form.Item
             style={{

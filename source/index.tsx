@@ -1,3 +1,5 @@
+// 主页面
+
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from '@/models'

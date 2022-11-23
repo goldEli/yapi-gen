@@ -1,3 +1,5 @@
+// 迭代详情-迭代变更记录
+
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -383,7 +385,7 @@ const ChangeRecord = (props?: any) => {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <TitleWrap>{t('project.changeBefore')}</TitleWrap>=
+            <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <ContentWrap>
               <EditorInfoReview
                 info={

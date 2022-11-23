@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react/jsx-no-leaked-render */
 // 富文本上传后的图片查看
+
+/* eslint-disable @typescript-eslint/naming-convention */
 
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
@@ -60,7 +62,7 @@ const EditorInfoReview = (props: Props) => {
 
   return (
     <>
-      {isVisible ? (
+      {isVisible && (
         <Viewer
           zIndex={9999}
           visible={isVisible}
@@ -68,7 +70,7 @@ const EditorInfoReview = (props: Props) => {
           activeIndex={pictureList?.index}
           onClose={() => setIsVisible(false)}
         />
-      ) : null}
+      )}
       <TextWrapEditor
         ref={textWrapEditor}
         dangerouslySetInnerHTML={{ __html: props.info }}

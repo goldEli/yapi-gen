@@ -1,3 +1,5 @@
+// 我的审核主页
+
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
@@ -29,7 +31,6 @@ const Examine = () => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type])
 
   const getProjectId = (value: any) => {

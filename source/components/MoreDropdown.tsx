@@ -1,4 +1,4 @@
-// 更多的点点，加宽hover区域
+// 更多的点点、列表每列的操作图标，加宽hover区域
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'

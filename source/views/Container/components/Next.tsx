@@ -1,3 +1,5 @@
+// 初次进入项目引导
+
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable camelcase */
 import { useMemo, useState } from 'react'
@@ -127,9 +129,9 @@ const Next = (props: { visible: boolean; close(): void }) => {
               {t('container.next')}
             </ButtonWrapBorder>
           )}
-          {active !== inform.length - 1
-            && <ButtonWrap onClick={next}>{t('container.prev')}</ButtonWrap>
-          }
+          {active !== inform.length - 1 && (
+            <ButtonWrap onClick={next}>{t('container.prev')}</ButtonWrap>
+          )}
           {active === inform.length - 1 && (
             <ButtonWrap onClick={() => props.close()}>
               {t('container.finish')}

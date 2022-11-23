@@ -1,6 +1,7 @@
+// 项目设置-项目信息
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-/* eslint-disable max-len */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'

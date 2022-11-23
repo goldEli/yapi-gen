@@ -1,3 +1,5 @@
+// 项目-公用操作栏
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -10,9 +12,9 @@ import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
 import { getIsPermission, getParamsData } from '@/tools/index'
-import { ClickWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import HaveSearchAndList from '@/components/HaveSearchAndList'
 
 const OperationTop = styled.div({
   height: 64,
@@ -37,7 +39,7 @@ const ImgWrap = styled.img({
   width: 86,
   height: 40,
   borderRadius: 4,
-  marginRight: 16,
+  marginRight: 8,
 })
 
 const Tabs = styled(Space)({
@@ -45,25 +47,57 @@ const Tabs = styled(Space)({
   alignItems: 'center',
 })
 
-const TabsItem = styled.div<{ isActive: boolean }>(
+const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    cursor: 'pointer',
-    color: '#323233',
-    div: {
+    position: 'relative',
+    '.titleBox': {
       fontSize: 18,
       height: 62,
       lineHeight: '62px',
-    },
-    '&: hover': {
-      color: '#2877ff',
+      display: 'flex',
+      '&: hover': {
+        span: {
+          color: '#2877ff',
+          cursor: 'pointer',
+        },
+      },
+      '.text': {
+        position: 'absolute',
+        zIndex: 2,
+        fontSize: 12,
+        top: 12,
+        right: -50,
+        display: 'flex',
+        padding: '0 4px 0 2px',
+        height: 20,
+        lineHeight: '20px',
+        whiteSpace: 'nowrap',
+        background: '#F4F4F6',
+        borderTopRightRadius: 4,
+        borderBottomRightRadius: 4,
+        div: {
+          display: 'inline-block',
+          borderTop: '10px solid transparent',
+          borderBottom: '10px solid transparent',
+          borderRight: '7px solid #F4F4F6',
+          width: 0,
+          height: 0,
+          position: 'absolute',
+          left: -7,
+          top: 0,
+        },
+      },
     },
   },
-  ({ isActive }) => ({
-    div: {
-      color: String(isActive ? '#2877FF' : ''),
+  ({ isActive, isPlan }) => ({
+    color: isPlan ? '#969799' : '#323233',
+    '.titleBox': {
+      span: {
+        color: String(isActive ? '#2877FF' : ''),
+      },
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
       fontWeight: isActive ? 500 : 400,
     },
@@ -117,12 +151,18 @@ const MenuItems = styled.div({
   },
 })
 
-const ClickIcon = styled(IconFont)({
+const ProjectNameWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  padding: '0 8px',
+  cursor: 'pointer',
+  borderRadius: 6,
   color: '#323233',
-  fontSize: 16,
-  marginLeft: 8,
-  '&: hover': {
-    color: '#2877ff',
+  fontSize: 14,
+  fontWeight: 500,
+  '&:hover': {
+    background: '#F4F5F5',
   },
 })
 
@@ -172,6 +212,18 @@ const CommonOperation = (props: Props) => {
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
     { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
+    {
+      name: t('version2.2.1.defect'),
+      type: 'Defect',
+      hasPath: ['Defect'],
+      isPlan: true,
+    },
+    {
+      name: t('version2.2.1.report'),
+      type: 'Report',
+      hasPath: ['Report'],
+      isPlan: true,
+    },
     {
       name: t('container.setting'),
       type: 'Set',
@@ -257,14 +309,14 @@ const CommonOperation = (props: Props) => {
 
   return (
     <div>
-      {isVisible ? (
+      {isVisible && (
         <EditProject
           visible={isVisible}
           onChangeVisible={() => onClickEdit(false)}
           details={projectInfo}
           onUpdate={props.onUpdate}
         />
-      ) : null}
+      )}
       <ProjectInfoModal
         visible={infoVisible}
         onChangeVisible={() => onClickProjectInfo(false)}
@@ -282,41 +334,43 @@ const CommonOperation = (props: Props) => {
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
-          <OmitText
-            width={152}
-            tipProps={{
-              getPopupContainer: node => node,
-            }}
-          >
-            <ClickWrap
-              style={{ fontSize: 14, fontWeight: 500 }}
-              onClick={() => setIsVisible(true)}
-            >
-              {projectInfo.name}
-            </ClickWrap>
-          </OmitText>
-          <Tooltip title={t('project.editProject')}>
-            <ClickIcon
-              hidden={getIsPermission(
-                userInfo?.company_permissions,
-                'b/project/update',
-              )}
-              style={{ fontSize: 20 }}
-              type="edit-square"
-              onClick={() => setIsVisible(true)}
-            />
-          </Tooltip>
+          <HaveSearchAndList
+            placeholder={t('version2.2.1.searchProject')}
+            addWrap={
+              <ProjectNameWrap>
+                <OmitText
+                  width={152}
+                  tipProps={{
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {projectInfo.name}
+                </OmitText>
+                <IconFont type="down" style={{ fontSize: 20, marginLeft: 8 }} />
+              </ProjectNameWrap>
+            }
+            projectId={projectId}
+          />
         </ProjectInfo>
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
+              isPlan={i.isPlan}
               onClick={() => onToModel(i)}
               key={i.type}
               isActive={
                 i.hasPath?.filter(k => pathname.includes(k))?.length > 0
               }
             >
-              <div>{i.name}</div>
+              <div className="titleBox">
+                <span>{i.name}</span>
+                {i.isPlan && (
+                  <div className="text">
+                    {t('version2.2.1.developed')}
+                    <div />
+                  </div>
+                )}
+              </div>
             </TabsItem>
           ))}
         </Tabs>
