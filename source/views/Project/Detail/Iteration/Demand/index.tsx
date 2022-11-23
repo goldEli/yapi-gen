@@ -123,7 +123,7 @@ const DemandWrap = (props: Props) => {
       pageSize: item ? item.size : 10,
       order: orderValue,
       orderKey: orderKeyValue,
-      searchValue: searchParamsObj?.searchVal || '',
+      searchValue: searchParamsObj?.searchVal,
       statusIds: searchParamsObj?.statusId,
       iterateIds: [iterateId],
       priorityIds: searchParamsObj?.priorityId,
