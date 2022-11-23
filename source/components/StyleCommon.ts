@@ -43,21 +43,26 @@ const TextWrapEditor = styled.div({
   img: { maxWidth: '100%' },
 })
 
-const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
+const CloseWrap = styled.div<{ width?: any; height?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
+    borderRadius: 6,
+    '.anticon': {
+      color: '#646566',
+    },
     '&: hover': {
+      background: '#F4F5F5',
       '.anticon': {
-        color: '#2877ff',
+        color: '#323233',
       },
     },
   },
-  ({ width, height, isRight }) => ({
+  ({ width, height }) => ({
     width,
     height,
-    justifyContent: isRight ? 'right' : 'center',
   }),
 )
 

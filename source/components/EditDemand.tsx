@@ -102,7 +102,7 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingRight: 0,
+  paddingRight: 16,
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -944,7 +944,7 @@ const EditDemand = (props: Props) => {
               </Popover>
             )}
           </div>
-          <CloseWrap width={60} height={52} onClick={onCancel}>
+          <CloseWrap width={32} height={32} onClick={onCancel}>
             <IconFont type="close" />
           </CloseWrap>
         </ModalHeader>
