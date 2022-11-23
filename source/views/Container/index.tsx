@@ -66,28 +66,57 @@ export const Container = () => {
     init()
   }, [])
 
+  const jumpList = [
+    {
+      name: '概况',
+      path: '/Situation',
+    },
+    {
+      name: '项目',
+      path: '/Project',
+    },
+    {
+      name: '我的',
+      path: '/mine',
+    },
+    {
+      name: '员工',
+      path: '/staff',
+    },
+    {
+      name: '消息',
+      path: '/Situation',
+    },
+
+    {
+      name: '公司管理',
+      path: '/Setting',
+    },
+    {
+      name: '日志',
+      path: '/Situation',
+    },
+  ]
+
   useEffect(() => {
     setIsNextVisible(loginInfo.admin_first_login)
     const { company_permissions } = userInfo
-    if (!sessionStorage.getItem('saveRouter')) {
-      company_permissions?.forEach((element: any) => {
-        if (element.group_name.includes('概况')) {
-          sessionStorage.setItem('saveRouter', '首次登录')
-          navigate('/Situation')
-        } else if (element.group_name.includes('项目')) {
-          sessionStorage.setItem('saveRouter', '首次登录')
-          navigate('/Project')
-        } else if (element.group_name.includes('我的')) {
-          sessionStorage.setItem('saveRouter', '首次登录')
-          navigate('/mine')
-        } else if (element.group_name.includes('员工')) {
-          sessionStorage.setItem('saveRouter', '首次登录')
-          navigate('/staff')
-        } else if (element.group_name.includes('公司管理')) {
-          sessionStorage.setItem('saveRouter', '首次登录')
-          navigate('/Setting')
+
+    const routerMap = Array.from(
+      new Set(company_permissions?.map((i: any) => i.group_name)),
+    )
+
+    if (routerMap.length >= 1) {
+      routerMap.concat('日志')
+      if (!sessionStorage.getItem('saveRouter')) {
+        for (let i = 0; i <= jumpList.length; i++) {
+          if (routerMap?.includes(jumpList[i].name)) {
+            sessionStorage.setItem('saveRouter', '首次登录')
+            navigate(jumpList[i].path)
+            break
+          }
         }
-      })
+      }
     }
   }, [loginInfo, userInfo])
 
