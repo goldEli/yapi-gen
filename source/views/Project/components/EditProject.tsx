@@ -120,12 +120,15 @@ const EditProject = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('project.isPublic')} name="isPublic">
-          <Select placeholder={t('project.pleaseSelect')} defaultValue={[2]}>
+          <Select placeholder={t('common.pleaseSelect')} defaultValue={[2]}>
             <Select.Option value={2}>
               {t('common.privateProject')}
             </Select.Option>
             <Select.Option value={1}>{t('project.companyOpen')}</Select.Option>
           </Select>
+        </Form.Item>
+        <Form.Item label={t('version2.projectGroup')} name="projectGroup">
+          <Select placeholder={t('common.pleaseSelect')} />
         </Form.Item>
       </Form>
     </CommonModal>

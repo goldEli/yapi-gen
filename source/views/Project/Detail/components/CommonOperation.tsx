@@ -213,13 +213,13 @@ const CommonOperation = (props: Props) => {
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
     { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
     {
-      name: t('version2.2.1.defect'),
+      name: t('version2defect'),
       type: 'Defect',
       hasPath: ['Defect'],
       isPlan: true,
     },
     {
-      name: t('version2.2.1.report'),
+      name: t('version2report'),
       type: 'Report',
       hasPath: ['Report'],
       isPlan: true,
@@ -335,7 +335,7 @@ const CommonOperation = (props: Props) => {
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
           <HaveSearchAndList
-            placeholder={t('version2.2.1.searchProject')}
+            placeholder={t('version2searchProject')}
             addWrap={
               <ProjectNameWrap>
                 <OmitText
@@ -366,7 +366,7 @@ const CommonOperation = (props: Props) => {
                 <span>{i.name}</span>
                 {i.isPlan && (
                   <div className="text">
-                    {t('version2.2.1.developed')}
+                    {t('version2developed')}
                     <div />
                   </div>
                 )}

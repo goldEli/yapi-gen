@@ -55,7 +55,7 @@ const CloseWrap = styled.div<{ width?: any; height?: any }>(
     },
     '&: hover': {
       background: '#F4F5F5',
-      '.anticon': {
+      svg: {
         color: '#323233',
       },
     },

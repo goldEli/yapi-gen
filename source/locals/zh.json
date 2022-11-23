@@ -1,10 +1,17 @@
 {
-  "version2.2.1": {
+  "version2": {
     "defect": "缺陷",
     "report": "报表",
     "developed": "待开发",
     "waitingPlan": "功能筹备中，敬请期待",
-    "searchProject": "搜索项目(按Enter搜索)"
+    "searchProject": "搜索项目(按Enter搜索)",
+    "projectGroup": "项目分组",
+    "editGroup": "编辑分组",
+    "deleteGroup": "删除分组",
+    "createGroup": "创建分组",
+    "deleteGroupText": "确认删除该分组？",
+    "groupName": "分组名称",
+    "pleaseGroupName": "请输入分组名称"
   },
   "p2": {
     "maxUploadText": "最大支持130个字长度的文件名！",
@@ -503,7 +510,7 @@
     "pleaseProjectInfo": "请输入项目描述",
     "isPublic": "公开/私有",
     "companyOpen": "企业公开",
-    "mineJoin": "我参与的项目",
+    "mineJoin": "我参与的",
     "companyAll": "企业全部",
     "hiddenProject": "隐藏结束项目",
     "allProject": "共{{count}}个项目",

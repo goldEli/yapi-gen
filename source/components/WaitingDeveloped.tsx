@@ -23,7 +23,7 @@ const WaitingDeveloped = () => {
   return (
     <Wrap>
       <IconFont type="planning" style={{ fontSize: 220 }} />
-      <div>{t('version2.2.1.waitingPlan')}</div>
+      <div>{t('version2waitingPlan')}</div>
     </Wrap>
   )
 }

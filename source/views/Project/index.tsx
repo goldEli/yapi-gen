@@ -17,20 +17,34 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import CommonInput from '@/components/CommonInput'
+import AddButton from '@/components/AddButton'
+import IconFont from '@/components/IconFont'
+import WrapLeftBox from './components/WrapLeft'
 
-const SearchWrap = styled.div({
-  height: 64,
-  display: 'flex',
-  alignItems: 'center',
-  paddingLeft: 24,
-  background: 'white',
-})
+// const SearchWrap = styled.div({
+//   height: 64,
+//   display: 'flex',
+//   alignItems: 'center',
+//   paddingLeft: 24,
+//   background: 'white',
+// })
 
-const Content = styled.div({
-  padding: '16px 16px 0 16px',
-  background: '#F5F7FA',
-  height: 'calc(100% - 116px)',
-})
+// const Content = styled.div({
+//   padding: '16px 16px 0 16px',
+//   background: '#F5F7FA',
+//   height: 'calc(100% - 116px)',
+// })
+
+const Wrap = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`
+
+const WrapRight = styled.div`
+  width: calc(100% - 220px);
+`
 
 const Project = () => {
   const [t] = useTranslation()
@@ -94,6 +108,7 @@ const Project = () => {
   useEffect(() => {
     init()
   }, [])
+
   const onChangeType = (type: number) => {
     setActiveType(type)
     getList(type, isGrid, isHidden, searchVal, order, {
@@ -244,7 +259,21 @@ const Project = () => {
             }
           />
         )}
-        <SearchWrap>
+
+        <Wrap>
+          <WrapLeftBox
+            onAddClick={onAddClick}
+            onChangeType={onChangeType}
+            activeType={activeType}
+            isPermission={getIsPermission(
+              userInfo?.company_permissions,
+              'b/project/save',
+            )}
+          />
+          <WrapRight></WrapRight>
+        </Wrap>
+
+        {/* <SearchWrap>
           <SearchComponent
             placeholder={t('mark.searchP')}
             text={t('common.createProject')}
@@ -288,7 +317,7 @@ const Project = () => {
               />
             )}
           </Spin>
-        </Content>
+        </Content> */}
       </PermissionWrap>
     </div>
   )
