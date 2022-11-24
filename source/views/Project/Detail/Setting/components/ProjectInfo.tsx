@@ -20,6 +20,7 @@ const Wrap = styled.div({
   width: '100%',
   borderRadius: 6,
   display: 'flex',
+  flexDirection: 'column',
 })
 
 const InfoLeft = styled.div({
@@ -28,6 +29,7 @@ const InfoLeft = styled.div({
   width: 396,
   fontSize: 16,
   color: 'black',
+  marginBottom: 40,
   img: {
     width: '100%',
     height: 186,
@@ -46,9 +48,15 @@ const SubText = styled.div({
 const InfoRight = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  marginLeft: 55,
 })
-
+const Title = styled.div({
+  fontSize: 14,
+  fontWeight: 'bold',
+  color: 'black',
+  paddingLeft: 10,
+  borderLeft: '3px solid #2877FF',
+  lineHeight: '18px',
+})
 const InfoItem = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -69,7 +77,7 @@ const InfoItem = styled.div({
 const CardGroup = styled(Space)({
   display: 'flex',
   alignItems: 'center',
-  marginTop: 24,
+  marginTop: 16,
 })
 
 const CardItem = styled.div({
@@ -102,6 +110,9 @@ const ClickIcon = styled(IconFont)({
   },
 })
 
+const Line = styled.div`
+  flex: 1;
+`
 const ProjectInfo = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -126,7 +137,31 @@ const ProjectInfo = () => {
 
       <Wrap>
         <InfoLeft>
-          <img src={projectInfo.cover} alt="" />
+          <Title>{t('v2_1_1.projectInformation')}</Title>
+          <CardGroup size={24}>
+            <CardItem>
+              <div>{projectInfo.demandCount || 0}</div>
+              <span>{t('common.demand')}</span>
+            </CardItem>
+            <CardItem>
+              <div>{projectInfo.iterateCount || 0}</div>
+              <span>{t('project.iterateEdition')}</span>
+            </CardItem>
+            <CardItem>
+              <div>{projectInfo.memberCount || 0}</div>
+              <span>{t('project.projectMember')}</span>
+            </CardItem>
+          </CardGroup>
+          {/* <img src={projectInfo.cover} alt="" /> */}
+        </InfoLeft>
+        <InfoRight>
+          <Title
+            style={{
+              marginBottom: 16,
+            }}
+          >
+            {t('project.projectInformation')}
+          </Title>
           <div
             style={{
               display: 'flex',
@@ -139,7 +174,16 @@ const ProjectInfo = () => {
                 getPopupContainer: node => node,
               }}
             >
-              {projectInfo.name}
+              <span
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  color: '#323233',
+                }}
+              >
+                {' '}
+                {projectInfo.name}
+              </span>
             </OmitText>
             <ClickIcon
               hidden={getIsPermission(
@@ -155,52 +199,54 @@ const ProjectInfo = () => {
             />
           </div>
           <SubText>{projectInfo.info || '--'}</SubText>
-        </InfoLeft>
-        <InfoRight>
-          <InfoItem>
-            <div>{t('project.projectId')}</div>
-            <span>{projectInfo.id}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.createName')}：</div>
-            <span>{projectInfo.userName || '--'}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.createTime')}：</div>
-            <span>{projectInfo.createTime || '--'}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.endTime')}：</div>
-            <span>{projectInfo.endTime || '--'}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('project.projectStatus')}：</div>
-            <span>
-              {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
-            </span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.permission')}：</div>
-            <span>
-              {projectInfo.isPublic === 1
-                ? t('project.companyOpen')
-                : t('common.privateProject')}
-            </span>
-          </InfoItem>
-          <CardGroup size={24}>
-            <CardItem>
-              <div>{projectInfo.demandCount || 0}</div>
-              <span>{t('common.demand')}</span>
-            </CardItem>
-            <CardItem>
-              <div>{projectInfo.iterateCount || 0}</div>
-              <span>{t('project.iterateEdition')}</span>
-            </CardItem>
-            <CardItem>
-              <div>{projectInfo.memberCount || 0}</div>
-              <span>{t('project.projectMember')}</span>
-            </CardItem>
-          </CardGroup>
+          <div
+            style={{
+              display: 'flex',
+              marginTop: '24px',
+            }}
+          >
+            <Line>
+              {' '}
+              <InfoItem>
+                <div>{t('project.projectId')}</div>
+                <span>{projectInfo.id}</span>
+              </InfoItem>
+              <InfoItem>
+                <div>{t('common.createName')}：</div>
+                <span>{projectInfo.userName || '--'}</span>
+              </InfoItem>
+            </Line>
+            <Line>
+              {' '}
+              <InfoItem>
+                <div>{t('common.createTime')}：</div>
+                <span>{projectInfo.createTime || '--'}</span>
+              </InfoItem>
+              <InfoItem>
+                <div>{t('common.endTime')}：</div>
+                <span>{projectInfo.endTime || '--'}</span>
+              </InfoItem>
+            </Line>
+            <Line>
+              {' '}
+              <InfoItem>
+                <div>{t('project.projectStatus')}：</div>
+                <span>
+                  {projectInfo.status === 1
+                    ? t('common.open')
+                    : t('common.stop')}
+                </span>
+              </InfoItem>
+              <InfoItem>
+                <div>{t('common.permission')}：</div>
+                <span>
+                  {projectInfo.isPublic === 1
+                    ? t('project.companyOpen')
+                    : t('common.privateProject')}
+                </span>
+              </InfoItem>
+            </Line>
+          </div>
         </InfoRight>
       </Wrap>
     </div>
