@@ -79,8 +79,8 @@ const RelatedNeed = (props: any) => {
 
   const confirm = async () => {
     const data = await lessForm.validateFields()
-    const newData = structuredClone(data)
-    const historyData = structuredClone(chooseList)
+    const newData = JSON.parse(JSON.stringify(data))
+    const historyData = JSON.parse(JSON.stringify(chooseList))
     if (historyData.length >= 1) {
       props.onChange(
         historyData.concat(newData.needs).map((item: any) => item.value),
@@ -99,7 +99,7 @@ const RelatedNeed = (props: any) => {
 
   const del = (item: any) => {
     const index = chooseList.findIndex((i: any) => i.key === item.key)
-    const newData = structuredClone(chooseList)
+    const newData = JSON.parse(JSON.stringify(chooseList))
     newData.splice(index, 1)
     setChooseList(newData)
     props.onChange(newData.map((k: any) => k.value))

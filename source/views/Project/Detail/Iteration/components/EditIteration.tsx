@@ -62,7 +62,6 @@ const EditIteration = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
-  const [html, setHtml] = useState('')
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const {
@@ -83,8 +82,10 @@ const EditIteration = (props: Props) => {
 
   useEffect(() => {
     if (props.id && iterateInfo) {
-      setHtml(iterateInfo?.info)
-      form.setFieldsValue({ iterationName: iterateInfo.name })
+      form.setFieldsValue({
+        iterationName: iterateInfo.name,
+        info: iterateInfo?.info,
+      })
       if (iterateInfo?.createdTime || iterateInfo?.startTime) {
         form.setFieldsValue({
           time: [
@@ -99,7 +100,6 @@ const EditIteration = (props: Props) => {
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
-    values.info = html
     try {
       if (props?.id) {
         await updateIterate({
@@ -117,7 +117,6 @@ const EditIteration = (props: Props) => {
       }
       props.onChangeVisible()
       props.onUpdate?.(true)
-      setHtml('')
       setIsRefreshIterateList(true)
       if (props.id) {
         getIterateInfo({ projectId, id: props.id })
@@ -134,7 +133,6 @@ const EditIteration = (props: Props) => {
   const onCancel = () => {
     props.onChangeVisible()
     form.resetFields()
-    setHtml('')
   }
 
   const onChangePicker = (_values: any) => {
@@ -199,8 +197,8 @@ const EditIteration = (props: Props) => {
           </div>
           <div style={{ display: 'flex' }}>
             <IconFont type="detail" />
-            <Form.Item label={t('project.iterateTarget')}>
-              <Editor value={html} onChangeValue={setHtml} />
+            <Form.Item label={t('project.iterateTarget')} name="info">
+              <Editor />
             </Form.Item>
           </div>
         </FormWrap>

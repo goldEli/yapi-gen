@@ -192,7 +192,7 @@ const DemandWrap = (props: Props) => {
 
   const updateOrderkey = (key: any, val: any) => {
     setOrderKey(key)
-    setOrder(val)
+    setOrder(val === 2 ? 'desc' : 'asc')
     getList(
       { page: 1, size: pageObj.size },
       val === 2 ? 'desc' : 'asc',
