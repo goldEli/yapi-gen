@@ -221,11 +221,10 @@ interface Props {
 }
 
 const EditDemand = (props: Props) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const [changeCategoryForm] = Form.useForm()
-  const [html, setHtml] = useState('')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
   const [demandList, setDemandList] = useState<any>([])
@@ -251,6 +250,7 @@ const EditDemand = (props: Props) => {
     updateDemandCategory,
     setIsUpdateStatus,
     setIsOpenEditDemand,
+    setIsUpdateChangeLog,
   } = useModel('demand')
   const {
     memberList,
@@ -329,12 +329,14 @@ const EditDemand = (props: Props) => {
       form1.setFieldsValue(form1Obj)
 
       setPriorityDetail(res.priority)
-      setHtml(res.info)
       setAttachList(
         res?.attachment.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
-          time: i.attachment.created_at,
+          size: i.attachment.size,
+          time: i.created_at,
+          name: i.attachment.name,
+          suffix: i.attachment.ext,
         })),
       )
       setTagList(
@@ -438,8 +440,6 @@ const EditDemand = (props: Props) => {
       setCategoryObj({})
       getInfo(value || projectId, classTree, categoryData?.list)
     } else {
-      form.resetFields()
-      form1.resetFields()
       form.setFieldsValue({
         projectId: value,
       })
@@ -502,9 +502,6 @@ const EditDemand = (props: Props) => {
       setProjectId(resultValue)
       if (props?.isQuickCreate) {
         getProjectData()
-        setTimeout(() => {
-          inputRefDom.current?.focus()
-        }, 100)
       } else {
         getInit(resultValue)
       }
@@ -520,6 +517,7 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.editSuccess'))
       setIsUpdateStatus(true)
+      setIsUpdateChangeLog(true)
     } else {
       await addDemand({
         projectId,
@@ -529,7 +527,6 @@ const EditDemand = (props: Props) => {
     }
     setAttachList([])
     setTagList([])
-    setHtml('')
     setPriorityDetail({})
     getList()
     setIsShowFields(false)
@@ -645,8 +642,18 @@ const EditDemand = (props: Props) => {
   }
 
   const onChangeAttachment = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        name: i.name,
+        size: i.size,
+        ext: i.ext,
+        ctime: i.ctime,
+      }
+    })
+
     form.setFieldsValue({
-      attachments: result,
+      attachments: arr,
     })
   }
 
@@ -701,7 +708,6 @@ const EditDemand = (props: Props) => {
     form1.resetFields()
     setAttachList([])
     setTagList([])
-    setHtml('')
     setPriorityDetail({})
     setCreateCategory({})
     setChangeCategoryFormData({})

@@ -591,7 +591,7 @@ const CommonNeed = (props: any) => {
           <LoadingSpin spinning={isSpin}>
             <StaffTableWrap>
               {listData?.list ? (
-                listData?.list?.length ? (
+                listData?.list?.length > 0 ? (
                   <TableBox
                     rowKey="id"
                     columns={selectColum}
@@ -611,8 +611,8 @@ const CommonNeed = (props: any) => {
       {isMany ? (
         <div>
           <LoadingSpin spinning={isSpin}>
-            {manyListData.list ? (
-              manyListData.list?.length ? (
+            {manyListData.list &&
+              (manyListData.list?.length > 0 ? (
                 <StaffTableWrap2>
                   {manyListData.list?.map((item: any, index: any) => (
                     // eslint-disable-next-line react/no-array-index-key
@@ -632,7 +632,7 @@ const CommonNeed = (props: any) => {
                       </TableTitle>
 
                       {item.list ? (
-                        item?.list?.length ? (
+                        item?.list?.length > 0 ? (
                           <TableBox
                             rowKey="id"
                             columns={selectColum}
@@ -651,13 +651,12 @@ const CommonNeed = (props: any) => {
                 <div style={{ padding: 16 }}>
                   <NoData />
                 </div>
-              )
-            ) : null}
+              ))}
           </LoadingSpin>
         </div>
       ) : null}
 
-      {!isMany && listData?.list?.length && (
+      {!isMany && listData?.list?.length > 0 && (
         <PaginationWrap style={{ paddingRight: 24 }}>
           <Pagination
             defaultCurrent={1}

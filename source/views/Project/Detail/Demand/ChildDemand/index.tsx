@@ -103,7 +103,6 @@ const ChildDemand = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
-  const [isShowMore, setIsShowMore] = useState(false)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -189,7 +188,7 @@ const ChildDemand = () => {
 
   const updateOrderkey = (key: any, val: any) => {
     setOrderKey(key)
-    setOrder(val)
+    setOrder(val === 2 ? 'desc' : 'asc')
     getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
   }
 

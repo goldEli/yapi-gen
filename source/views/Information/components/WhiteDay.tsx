@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
 import { Form, message } from 'antd'
@@ -50,7 +52,6 @@ const WhiteDay = (props: any) => {
   const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const ed1: any = useRef(null)
 
   const close = () => {
     form.resetFields()
@@ -68,8 +69,20 @@ const WhiteDay = (props: any) => {
   }
 
   const onChangeAttachment = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        created_at: i.ctime,
+        configurations: {
+          name: i.name,
+          ext: i.ext,
+          size: i.size,
+        },
+      }
+    })
+
     form.setFieldsValue({
-      attachments: result,
+      attachments: arr,
     })
   }
 
@@ -90,12 +103,16 @@ const WhiteDay = (props: any) => {
       info: res.data.info.finish_content,
       info2: res.data.info.plan_content,
     })
+
     setAttachList(
       res.data.files.map((item: any) => {
         return {
           url: item.associate,
           id: item.id,
+          size: item.configurations.size,
           time: item.created_at,
+          name: item.configurations.name,
+          suffix: item.configurations.ext,
         }
       }),
     )
@@ -126,9 +143,6 @@ const WhiteDay = (props: any) => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
-    setTimeout(() => {
-      ed1?.current?.focus()
-    }, 500)
   }, [props.editId, props.visibleEdit])
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -167,14 +181,6 @@ const WhiteDay = (props: any) => {
         }}
         ref={leftDom}
       >
-        <input
-          ref={ed1}
-          type="text"
-          style={{
-            position: 'absolute',
-            opacity: 0,
-          }}
-        />
         <Form
           form={form}
           onFinish={confirm}
@@ -220,7 +226,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor height={178} />
+            <Editor height={178} autoFocus />
           </Form.Item>
           <Form.Item
             style={{

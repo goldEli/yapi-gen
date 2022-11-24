@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Dropdown, Menu } from 'antd'
+import { Pagination, message, Spin, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -28,13 +28,6 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
 })
 
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
-})
-
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
@@ -53,8 +46,7 @@ const DemandTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, filterHeight } =
-    useModel('demand')
+  const { updatePriority, updateDemandStatus } = useModel('demand')
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -136,11 +128,12 @@ const DemandTable = (props: Props) => {
   }
 
   const onPropsChangeVisible = (e: any, item: any) => {
-    props.onChangeVisible(e, item)
     setIsShowMore(false)
+    props.onChangeVisible(e, item)
   }
 
   const onPropsChangeDelete = (item: any) => {
+    setIsShowMore(false)
     props.onDelete(item)
   }
 
