@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Input } from 'antd'
+import { Drawer, Input, Popover } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import AddMember from './AddMember'
@@ -13,6 +13,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
+import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 
 interface Props {
   visible: boolean
@@ -83,7 +84,7 @@ const ListItem = styled.div({
     backgroundColor: '#f8f9fa',
   },
 })
-
+const MoreWrap2 = styled(MoreWrap)``
 const NameWrap = styled.div({
   width: 32,
   height: 32,
@@ -108,7 +109,7 @@ const Member = (props: Props) => {
     useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [memberList, setMemberList] = useState<any>([])
-
+  const [isVisibleMore, setIsVisibleMore] = useState(false)
   const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -117,6 +118,29 @@ const Member = (props: Props) => {
     })
     setMemberList(result)
     setIsRefreshMember(false)
+  }
+  const moreOperation = (values: any) => {
+    // console.log(values)
+
+    return (
+      <div
+        style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}
+      >
+        <div
+          onClick={() => {
+            // console.log(values, '当前数据')
+          }}
+        >
+          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
+          <span>{t('newlyAdd.importDemand')}</span>
+        </div>
+
+        <div>
+          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
+          <span>{t('newlyAdd.exportDemand')}</span>
+        </div>
+      </div>
+    )
   }
 
   useEffect(() => {
@@ -220,7 +244,20 @@ const Member = (props: Props) => {
                     <span>{i.roleName}</span>
                   </div>
                 </div>
-                <div className="job">{i.positionName}</div>
+                <Popover
+                  content={moreOperation(i)}
+                  placement="bottom"
+                  getPopupContainer={node => node}
+                >
+                  <MoreWrap2>
+                    <div className="job">{i.positionName}</div>
+                    <IconFont
+                      ro-te
+                      style={{ fontSize: 16, marginLeft: 8 }}
+                      type="up"
+                    />
+                  </MoreWrap2>
+                </Popover>
               </ListItem>
             ))}
           </ListWrap>

@@ -60,7 +60,7 @@ const LiWrap = styled.div<{ color: any }>(
   }),
 )
 
-const MoreWrap = styled.div<{ type?: any }>(
+export const MoreWrap = styled.div<{ type?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
