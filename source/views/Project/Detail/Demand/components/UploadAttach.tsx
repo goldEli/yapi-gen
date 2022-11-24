@@ -278,7 +278,7 @@ const UploadAttach = (props: any) => {
 
   const onTaskOver = useCallback((data: { id: string; url: string }) => {
     if (props.canUpdate) {
-      props.add([data.url])
+      props.add({ data })
     }
     setFileList((currentTasks: any[]) =>
       currentTasks.map(i => {
@@ -308,8 +308,8 @@ const UploadAttach = (props: any) => {
 
           file: {
             id: index,
-            name: i.url.split('/').at(-1),
-            size: 0,
+            name: i.name,
+            size: i.size,
             formattedSize: '',
             suffix: i.url.split('.').at(-1),
             url: i.url,
@@ -340,7 +340,17 @@ const UploadAttach = (props: any) => {
     const state = fileList.every((i: any) => i.state === 'success')
     if (state) {
       if (!props.canUpdate) {
-        props.onChangeAttachment(fileList.map((i: any) => i.file.url))
+        props.onChangeAttachment(
+          fileList.map((i: any) => {
+            return {
+              url: i.file.url,
+              name: i.file.name,
+              size: i.file.size,
+              ext: i.file.suffix,
+              ctime: i.file.time,
+            }
+          }),
+        )
       }
     }
   }
@@ -477,7 +487,6 @@ const UploadAttach = (props: any) => {
               <div>
                 <div
                   style={{
-                    width: 'calc(100% - 80px)',
                     fontSize: '14px',
                     fontWeight: 400,
                     color: '#323233',
@@ -522,14 +531,14 @@ const UploadAttach = (props: any) => {
                   )}
                   {i.state === 'success' && (
                     <>
-                      {/* <span>{bytesToSize(i.file?.size) ?? ''}</span> */}
-                      {/* <span
+                      <span>{bytesToSize(i.file?.size) ?? ''}</span>
+                      <span
                         style={{
                           margin: '0 6px 0 6px',
                         }}
                       >
                         ·
-                      </span> */}
+                      </span>
                       <span
                         style={{
                           marginRight: '12px',
