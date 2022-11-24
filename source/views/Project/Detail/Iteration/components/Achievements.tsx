@@ -90,7 +90,7 @@ const Achievements = (props: Props) => {
         url: i.attachment.path,
         id: i.id,
         size: i.attachment.size,
-        time: i.attachment.created_at,
+        time: i.created_at,
         name: i.attachment.name,
         suffix: i.attachment.ext,
       })) || [],
