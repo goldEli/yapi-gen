@@ -20,7 +20,6 @@ import { LevelContent } from '@/components/Level'
 import IconFont from '@/components/IconFont'
 import { getNestedChildren, getTypeComponent } from '@/tools'
 import moment from 'moment'
-import { filter } from 'lodash'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -50,7 +49,9 @@ interface Props {
   // 迭代id
   iterateId?: any
   // 需求详情
-  demandInfo?: any
+  info?: any
+  //是否来自子需求
+  isChild?: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -60,6 +61,7 @@ const EditDemandRIght = (props: Props) => {
   const { userInfo } = useModel('user')
   const { selectAllStaffData, memberList, fieldList } = useModel('project')
   const { selectIterate } = useModel('iterate')
+  const { demandInfo } = useModel('demand')
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [priorityDetail, setPriorityDetail] = useState<any>({})
@@ -90,74 +92,98 @@ const EditDemandRIght = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId && props.demandInfo?.id) {
-      setSchedule(props.demandInfo?.schedule)
+    if (props?.demandId && props.info?.id) {
+      setSchedule(props.info?.schedule)
       const form1Obj: any = {}
-      for (const key in props.demandInfo?.customField) {
+      for (const key in props.info?.customField) {
         form1Obj[key] =
-          props.demandInfo?.customField[key]?.attr === 'date'
-            ? props.demandInfo?.customField[key]?.value
-              ? moment(props.demandInfo?.customField[key]?.value)
+          props.info?.customField[key]?.attr === 'date'
+            ? props.info?.customField[key]?.value
+              ? moment(props.info?.customField[key]?.value)
               : ''
-            : props.demandInfo?.customField[key]?.value
+            : props.info?.customField[key]?.value
       }
       form1.setFieldsValue(form1Obj)
-      setPriorityDetail(props.demandInfo.priority)
-      if (props.demandInfo?.expectedStart) {
+      setPriorityDetail(props.info.priority)
+      if (props.info?.expectedStart) {
         form.setFieldsValue({
-          startTime: moment(props.demandInfo.expectedStart || 0),
+          startTime: moment(props.info.expectedStart || 0),
         })
       }
 
-      if (props.demandInfo?.expectedEnd) {
+      if (props.info?.expectedEnd) {
         form.setFieldsValue({
-          endTime: moment(props.demandInfo.expectedStart || 0),
+          endTime: moment(props.info.expectedStart || 0),
         })
       }
+
+      let hasIterateId: any
+      let hasChild: any
+      // 如果是迭代创建或编辑，默认填入迭代
+      if (props.iterateId) {
+        hasIterateId = selectIterate?.list
+          ?.filter((k: any) => k.status === 1)
+          .filter((i: any) => i.id === props?.iterateId).length
+          ? props?.iterateId
+          : null
+      }
+      // 如果是子需求创建或编辑，默认父需求填入当前需求id
+      if (props.isChild) {
+        hasChild = props.parentList?.filter(
+          (i: any) => i.value === Number(demandInfo?.id),
+        )[0]?.value
+      }
+
       form.setFieldsValue({
         copySendIds: getCommonUser(
-          props.demandInfo?.copySend?.map((i: any) => i.copysend),
+          props.info?.copySend?.map((i: any) => i.copysend),
           selectAllStaffData,
         ),
-        attachments: props.demandInfo?.attachment?.map(
-          (i: any) => i.attachment.path,
-        ),
+        attachments: props.info?.attachment?.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
-          props.demandInfo?.user?.map((i: any) => i.user),
+          props.info?.user?.map((i: any) => i.user),
           memberList,
         ),
-
-        iterateId: selectIterate?.list
-          ?.filter((k: any) => k.status === 1)
-          ?.filter((i: any) => i.id === props.demandInfo?.iterateId).length
-          ? props.demandInfo?.iterateId
+        iterateId: props.iterateId
+          ? hasIterateId
+          : selectIterate?.list
+              ?.filter((k: any) => k.status === 1)
+              ?.filter((i: any) => i.id === props.info?.iterateId).length
+          ? props.info?.iterateId
           : null,
-        parentId: props.parentList?.filter(
-          (i: any) => i.value === props.demandInfo?.parentId,
-        ).length
-          ? props.demandInfo?.parentId
+        parentId: props.isChild
+          ? hasChild
+          : props.parentList?.filter(
+              (i: any) => i.value === props.info?.parentId,
+            ).length
+          ? props.info?.parentId
           : null,
-        class: props.treeArr?.filter(
-          (j: any) => j.id === props.demandInfo.class,
-        )?.length
-          ? props.demandInfo.class
-          : props.demandInfo.class === 0
+        class: props.treeArr?.filter((j: any) => j.id === props.info.class)
+          ?.length
+          ? props.info.class
+          : props.info.class === 0
           ? 0
           : null,
       })
     } else {
-      form.setFieldsValue({
-        iterateId: selectIterate?.list
-          ?.filter((k: any) => k.status === 1)
-          .filter((i: any) => i.id === props?.iterateId).length
-          ? props?.iterateId
-          : null,
-        parentId: props.parentList?.filter(
-          (i: any) => i.value === Number(props.demandInfo?.id),
-        )[0]?.value,
-      })
+      if (props.isChild) {
+        form.setFieldsValue({
+          parentId: props.parentList?.filter(
+            (i: any) => i.value === Number(demandInfo?.id),
+          )[0]?.value,
+        })
+      }
+      if (props.iterateId) {
+        form.setFieldsValue({
+          iterateId: selectIterate?.list
+            ?.filter((k: any) => k.status === 1)
+            .filter((i: any) => i.id === props?.iterateId).length
+            ? props?.iterateId
+            : null,
+        })
+      }
     }
-  }, [props?.demandId, props.demandInfo])
+  }, [props?.demandId, props.info, props.parentList, selectIterate])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -179,7 +205,8 @@ const EditDemandRIght = (props: Props) => {
   const onConfirm = () => {
     const values = form.getFieldsValue()
     const customValues = form1.getFieldsValue()
-    values.priority = priorityDetail
+    values.priority =
+      JSON.stringify(priorityDetail) === '{}' ? null : priorityDetail
 
     Object.keys(customValues)?.forEach((k: any) => {
       customValues[k] = customValues[k] ? customValues[k] : ''
@@ -237,11 +264,11 @@ const EditDemandRIght = (props: Props) => {
                 onChange={value => onChangeSetSchedule(value)}
                 disabled={
                   !(
-                    props.demandInfo?.user
+                    props.info?.user
                       ?.map((i: any) => i.user.id)
                       ?.includes(userInfo?.id) &&
-                    props.demandInfo.status.is_start !== 1 &&
-                    props.demandInfo.status.is_end !== 1
+                    props.info.status.is_start !== 1 &&
+                    props.info.status.is_end !== 1
                   )
                 }
               />
@@ -305,7 +332,7 @@ const EditDemandRIght = (props: Props) => {
                     (k: any) =>
                       k.value !== props?.demandId &&
                       k.parentId !== props?.demandId &&
-                      k.parentId !== props.demandInfo?.parentId,
+                      k.parentId !== props.info?.parentId,
                   )
                 : props.parentList
             }

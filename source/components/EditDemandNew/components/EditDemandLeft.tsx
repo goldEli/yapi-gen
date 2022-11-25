@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
 import Editor from '@/components/Editor'
@@ -41,7 +42,7 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const { projectInfo, getProjectInfo } = useModel('project')
+  const { projectInfo, getProjectInfo, setFieldList } = useModel('project')
   const { getProjectList } = useModel('mine')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
@@ -147,7 +148,12 @@ const EditDemandLeft = (props: Props) => {
 
   // 切换项目
   const onSelectProjectName = (value: any) => {
+    onReset()
+    setFieldList({ list: undefined })
     getProjectInfo({ projectId: value })
+    form.setFieldsValue({
+      projectId: value,
+    })
     props.onChangeProjectId(value)
     props.onGetDataAll(value)
     props.onResetForm()
@@ -155,9 +161,10 @@ const EditDemandLeft = (props: Props) => {
 
   // 删除项目
   const onClearProjectId = () => {
+    onReset()
     props.onChangeProjectId(null)
-    form.resetFields()
     props.onResetForm()
+    setFieldList({ list: undefined })
   }
 
   // 修改标签

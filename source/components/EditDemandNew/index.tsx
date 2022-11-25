@@ -245,7 +245,7 @@ const EditDemand = (props: Props) => {
         )
       }
       // 如果是快速创建没有缓存数据，取列表第一个
-      if ((props?.isQuickCreate && categoryId) || props?.iterateId) {
+      if ((props?.isQuickCreate && !categoryId) || props?.iterateId) {
         setCategoryObj(categoryData?.list[0])
       }
     }
@@ -474,6 +474,7 @@ const EditDemand = (props: Props) => {
   // 左侧项目切换清除右侧form表单
   const onResetForm = () => {
     rightDom.current.reset()
+    setCategoryObj({})
   }
 
   return (
@@ -631,7 +632,8 @@ const EditDemand = (props: Props) => {
             onRef={rightDom}
             treeArr={treeArr}
             iterateId={props.iterateId}
-            demandInfo={demandInfo}
+            info={demandInfo}
+            isChild={props.isChild}
           />
         </ModalContent>
 
