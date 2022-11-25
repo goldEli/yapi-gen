@@ -31,6 +31,8 @@ interface Props {
   onResetForm(): void
   onRef: any
   demandId?: any
+  // 需求详情
+  demandInfo?: any
 }
 
 const EditDemandLeft = (props: Props) => {
@@ -39,7 +41,6 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const { demandInfo } = useModel('demand')
   const { projectInfo, getProjectInfo } = useModel('project')
   const { getProjectList } = useModel('mine')
   const [attachList, setAttachList] = useState<any>([])
@@ -117,14 +118,14 @@ const EditDemandLeft = (props: Props) => {
   useEffect(() => {
     if (props?.demandId) {
       setTagList(
-        demandInfo?.tag?.map((i: any) => ({
+        props.demandInfo?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       )
       setAttachList(
-        demandInfo?.attachment?.map((i: any) => ({
+        props.demandInfo?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
           time: i.attachment.created_at,
@@ -133,16 +134,16 @@ const EditDemandLeft = (props: Props) => {
         })),
       )
       form.setFieldsValue({
-        name: demandInfo?.name,
-        info: demandInfo?.info,
-        tagIds: demandInfo?.tag?.map((i: any) => ({
+        name: props.demandInfo?.name,
+        info: props.demandInfo?.info,
+        tagIds: props.demandInfo?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       })
     }
-  }, [props?.demandId, demandInfo])
+  }, [props?.demandId, props.demandInfo])
 
   // 切换项目
   const onSelectProjectName = (value: any) => {

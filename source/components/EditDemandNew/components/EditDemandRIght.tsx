@@ -49,13 +49,14 @@ interface Props {
   treeArr: any
   // 迭代id
   iterateId?: any
+  // 需求详情
+  demandInfo?: any
 }
 
 const EditDemandRIght = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
-  const { demandInfo } = useModel('demand')
   const { userInfo } = useModel('user')
   const { selectAllStaffData, memberList, fieldList } = useModel('project')
   const { selectIterate } = useModel('iterate')
@@ -74,81 +75,73 @@ const EditDemandRIght = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.treeArr?.length > 0) {
-      setClassTreeData([
-        ...[
-          {
-            title: t('newlyAdd.unclassified'),
-            key: 0,
-            value: 0,
-            children: [],
-          },
-        ],
-        ...getNestedChildren(props.treeArr, 0),
-      ])
-    } else {
-      setClassTreeData([
+    setClassTreeData([
+      ...[
         {
           title: t('newlyAdd.unclassified'),
           key: 0,
           value: 0,
           children: [],
         },
-      ])
-    }
+      ],
+      ...getNestedChildren(props.treeArr, 0),
+    ])
   }, [props.treeArr])
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId && props.parentList && props.treeArr) {
-      setSchedule(demandInfo?.schedule)
+    if (props?.demandId && props.demandInfo?.id) {
+      setSchedule(props.demandInfo?.schedule)
       const form1Obj: any = {}
-      for (const key in demandInfo?.customField) {
+      for (const key in props.demandInfo?.customField) {
         form1Obj[key] =
-          demandInfo?.customField[key]?.attr === 'date'
-            ? demandInfo?.customField[key]?.value
-              ? moment(demandInfo?.customField[key]?.value)
+          props.demandInfo?.customField[key]?.attr === 'date'
+            ? props.demandInfo?.customField[key]?.value
+              ? moment(props.demandInfo?.customField[key]?.value)
               : ''
-            : demandInfo?.customField[key]?.value
+            : props.demandInfo?.customField[key]?.value
       }
       form1.setFieldsValue(form1Obj)
-      setPriorityDetail(demandInfo.priority)
-      if (demandInfo?.expectedStart) {
+      setPriorityDetail(props.demandInfo.priority)
+      if (props.demandInfo?.expectedStart) {
         form.setFieldsValue({
-          startTime: moment(demandInfo.expectedStart || 0),
+          startTime: moment(props.demandInfo.expectedStart || 0),
         })
       }
 
-      if (demandInfo?.expectedEnd) {
+      if (props.demandInfo?.expectedEnd) {
         form.setFieldsValue({
-          endTime: moment(demandInfo.expectedStart || 0),
+          endTime: moment(props.demandInfo.expectedStart || 0),
         })
       }
       form.setFieldsValue({
         copySendIds: getCommonUser(
-          demandInfo?.copySend?.map((i: any) => i.copysend),
+          props.demandInfo?.copySend?.map((i: any) => i.copysend),
           selectAllStaffData,
         ),
-        attachments: demandInfo?.attachment?.map((i: any) => i.attachment.path),
+        attachments: props.demandInfo?.attachment?.map(
+          (i: any) => i.attachment.path,
+        ),
         userIds: getCommonUser(
-          demandInfo?.user?.map((i: any) => i.user),
+          props.demandInfo?.user?.map((i: any) => i.user),
           memberList,
         ),
 
         iterateId: selectIterate?.list
           ?.filter((k: any) => k.status === 1)
-          ?.filter((i: any) => i.id === demandInfo?.iterateId).length
-          ? demandInfo?.iterateId
+          ?.filter((i: any) => i.id === props.demandInfo?.iterateId).length
+          ? props.demandInfo?.iterateId
           : null,
         parentId: props.parentList?.filter(
-          (i: any) => i.value === demandInfo?.parentId,
+          (i: any) => i.value === props.demandInfo?.parentId,
         ).length
-          ? demandInfo?.parentId
+          ? props.demandInfo?.parentId
           : null,
-        class: props.treeArr?.filter((j: any) => j.id === demandInfo.class)
-          ?.length
-          ? demandInfo.class
-          : demandInfo.class === 0
+        class: props.treeArr?.filter(
+          (j: any) => j.id === props.demandInfo.class,
+        )?.length
+          ? props.demandInfo.class
+          : props.demandInfo.class === 0
           ? 0
           : null,
       })
@@ -160,11 +153,11 @@ const EditDemandRIght = (props: Props) => {
           ? props?.iterateId
           : null,
         parentId: props.parentList?.filter(
-          (i: any) => i.value === Number(demandInfo?.id),
+          (i: any) => i.value === Number(props.demandInfo?.id),
         )[0]?.value,
       })
     }
-  }, [props?.demandId, props.parentList, props.treeArr])
+  }, [props?.demandId, props.demandInfo])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -186,6 +179,7 @@ const EditDemandRIght = (props: Props) => {
   const onConfirm = () => {
     const values = form.getFieldsValue()
     const customValues = form1.getFieldsValue()
+    values.priority = priorityDetail
 
     Object.keys(customValues)?.forEach((k: any) => {
       customValues[k] = customValues[k] ? customValues[k] : ''
@@ -243,11 +237,11 @@ const EditDemandRIght = (props: Props) => {
                 onChange={value => onChangeSetSchedule(value)}
                 disabled={
                   !(
-                    demandInfo?.user
+                    props.demandInfo?.user
                       ?.map((i: any) => i.user.id)
                       ?.includes(userInfo?.id) &&
-                    demandInfo.status.is_start !== 1 &&
-                    demandInfo.status.is_end !== 1
+                    props.demandInfo.status.is_start !== 1 &&
+                    props.demandInfo.status.is_end !== 1
                   )
                 }
               />
@@ -311,7 +305,7 @@ const EditDemandRIght = (props: Props) => {
                     (k: any) =>
                       k.value !== props?.demandId &&
                       k.parentId !== props?.demandId &&
-                      k.parentId !== demandInfo?.parentId,
+                      k.parentId !== props.demandInfo?.parentId,
                   )
                 : props.parentList
             }

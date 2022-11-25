@@ -144,6 +144,8 @@ const EditDemand = (props: Props) => {
   const [treeArr, setTreeArr] = useState([])
   // 父需求列表
   const [parentList, setParentList] = useState<any>([])
+  // 需求详情
+  const [demandInfo, setDemandInfo] = useState<any>({})
   const [searchParams] = useSearchParams()
   let paramsData: any
   if (!props?.notGetPath) {
@@ -216,6 +218,7 @@ const EditDemand = (props: Props) => {
         projectId: value || projectId,
         id: props?.demandId,
       })
+      setDemandInfo(res)
       if (
         categoryData?.list?.filter((j: any) => j.id === res.category)?.length
       ) {
@@ -346,12 +349,12 @@ const EditDemand = (props: Props) => {
 
   // 关闭弹窗
   const onCancel = () => {
+    leftDom.current?.reset()
+    rightDom.current?.reset()
     props.onChangeVisible()
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
-    leftDom.current.reset()
-    rightDom.current.reset()
   }
 
   // 保存数据
@@ -619,6 +622,7 @@ const EditDemand = (props: Props) => {
             onResetForm={onResetForm}
             onRef={leftDom}
             demandId={props.demandId}
+            demandInfo={demandInfo}
           />
           <EditDemandRIght
             projectId={projectId}
@@ -627,6 +631,7 @@ const EditDemand = (props: Props) => {
             onRef={rightDom}
             treeArr={treeArr}
             iterateId={props.iterateId}
+            demandInfo={demandInfo}
           />
         </ModalContent>
 

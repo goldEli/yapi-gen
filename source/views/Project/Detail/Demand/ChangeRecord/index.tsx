@@ -73,7 +73,8 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getDemandChangeLog, isUpdateChangeLog } = useModel('demand')
+  const { getDemandChangeLog, isUpdateChangeLog, setIsUpdateChangeLog } =
+    useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -121,6 +122,7 @@ const ChangeRecord = () => {
     setDataList(result)
     setIsSpinning(false)
     setIsRefresh(false)
+    setIsUpdateChangeLog(false)
   }
 
   useEffect(() => {
