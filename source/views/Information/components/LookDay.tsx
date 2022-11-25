@@ -7,6 +7,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
+import { bytesToSize } from '@/tools'
 import {
   BigWrap,
   Card,
@@ -192,7 +193,10 @@ const LookDay = (props: any) => {
         return {
           path: item.associate,
           id: item.id,
+          size: item.configurations.size,
           time: item.created_at,
+          name: item.configurations.name,
+          suffix: item.configurations.ext,
         }
       }),
     )
@@ -443,10 +447,6 @@ const LookDay = (props: any) => {
                             <Gred
                               onClick={() => {
                                 onReview(item)
-
-                                // setPreviewOpen(true)
-                                // setPreviewImage(item.path)
-                                // setPreviewTitle(item.path.split('/').at(-1))
                               }}
                             >
                               <IconFont
@@ -478,6 +478,14 @@ const LookDay = (props: any) => {
                               lineHeight: '20px',
                             }}
                           >
+                            <span>{bytesToSize(item?.size) ?? ''}</span>
+                            <span
+                              style={{
+                                margin: '0 6px 0 6px',
+                              }}
+                            >
+                              ·
+                            </span>
                             <span
                               style={{
                                 marginRight: '12px',

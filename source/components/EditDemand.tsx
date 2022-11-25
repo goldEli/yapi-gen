@@ -315,7 +315,10 @@ const EditDemand = (props: Props) => {
         res?.attachment.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
-          time: i.attachment.created_at,
+          size: i.attachment.size,
+          time: i.created_at,
+          name: i.attachment.name,
+          suffix: i.attachment.ext,
         })),
       )
       setTagList(
@@ -625,8 +628,18 @@ const EditDemand = (props: Props) => {
   }
 
   const onChangeAttachment = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        name: i.name,
+        size: i.size,
+        ext: i.ext,
+        ctime: i.ctime,
+      }
+    })
+
     form.setFieldsValue({
-      attachments: result,
+      attachments: arr,
     })
   }
 
