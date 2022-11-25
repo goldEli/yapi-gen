@@ -67,10 +67,10 @@ const EditDemandRIght = (props: Props) => {
   // 处理人相关的下拉
   const getCommonUser = (arr: any, memberArr: any) => {
     let res: any[] = []
-    if (arr.length) {
+    if (arr?.length > 0) {
       res = memberArr?.filter((i: any) => arr.some((k: any) => k.id === i.id))
     }
-    return res.length ? res.map((i: any) => i.id) : []
+    return res?.length ? res.map((i: any) => i.id) : []
   }
 
   useEffect(() => {
@@ -86,12 +86,21 @@ const EditDemandRIght = (props: Props) => {
         ],
         ...getNestedChildren(props.treeArr, 0),
       ])
+    } else {
+      setClassTreeData([
+        {
+          title: t('newlyAdd.unclassified'),
+          key: 0,
+          value: 0,
+          children: [],
+        },
+      ])
     }
   }, [props.treeArr])
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId) {
+    if (props?.demandId && props.parentList && props.treeArr) {
       setSchedule(demandInfo?.schedule)
       const form1Obj: any = {}
       for (const key in demandInfo?.customField) {
@@ -120,7 +129,7 @@ const EditDemandRIght = (props: Props) => {
           demandInfo?.copySend?.map((i: any) => i.copysend),
           selectAllStaffData,
         ),
-        attachments: demandInfo?.attachment.map((i: any) => i.attachment.path),
+        attachments: demandInfo?.attachment?.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
           demandInfo?.user?.map((i: any) => i.user),
           memberList,
@@ -136,13 +145,12 @@ const EditDemandRIght = (props: Props) => {
         ).length
           ? demandInfo?.parentId
           : null,
-        class:
-          demandInfo.class === 0 ||
-          JSON.stringify(
-            props.treeArr?.find((j: any) => j.id === demandInfo.class),
-          ) !== '{}'
-            ? demandInfo.class
-            : null,
+        class: props.treeArr?.filter((j: any) => j.id === demandInfo.class)
+          ?.length
+          ? demandInfo.class
+          : demandInfo.class === 0
+          ? 0
+          : null,
       })
     } else {
       form.setFieldsValue({
@@ -156,7 +164,7 @@ const EditDemandRIght = (props: Props) => {
         )[0]?.value,
       })
     }
-  }, [props?.demandId, props.parentList])
+  }, [props?.demandId, props.parentList, props.treeArr])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {

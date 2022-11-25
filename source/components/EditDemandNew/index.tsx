@@ -387,11 +387,11 @@ const EditDemand = (props: Props) => {
     } else {
       setChangeCategoryFormData({})
       setCreateCategory({})
-      props.onChangeVisible()
       setTimeout(() => {
-        leftDom.current.reset()
-        rightDom.current.reset()
+        leftDom.current?.reset()
+        rightDom.current?.reset()
       }, 100)
+      props.onChangeVisible()
     }
 
     if (props.isQuickCreate) {
@@ -615,7 +615,7 @@ const EditDemand = (props: Props) => {
             isQuickCreate={props?.isQuickCreate}
             projectId={projectId}
             onChangeProjectId={setProjectId}
-            onGetDataAll={(values: any) => getInit(values, categoryObj?.id)}
+            onGetDataAll={getInit}
             onResetForm={onResetForm}
             onRef={leftDom}
             demandId={props.demandId}

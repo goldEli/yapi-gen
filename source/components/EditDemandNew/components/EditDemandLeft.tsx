@@ -26,7 +26,7 @@ interface Props {
   // 修改项目id
   onChangeProjectId(value: any): void
   // 修改项目id后更新相应数据
-  onGetDataAll(values: any): void
+  onGetDataAll(values: any, categoryId?: any): void
   // 清除右侧的form表单
   onResetForm(): void
   onRef: any
@@ -96,7 +96,10 @@ const EditDemandLeft = (props: Props) => {
       form.setFieldsValue(hisCategoryData)
       getProjectInfo({ projectId: hisCategoryData?.projectId })
       props.onChangeProjectId(hisCategoryData?.projectId)
-      props.onGetDataAll(hisCategoryData?.projectId)
+      props.onGetDataAll(
+        hisCategoryData?.projectId,
+        hisCategoryData?.categoryId,
+      )
     }
 
     setTimeout(() => {
@@ -121,10 +124,12 @@ const EditDemandLeft = (props: Props) => {
         })),
       )
       setAttachList(
-        demandInfo?.attachment.map((i: any) => ({
+        demandInfo?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
           time: i.attachment.created_at,
+          name: i.attachment.name,
+          size: i.attachment.size,
         })),
       )
       form.setFieldsValue({
@@ -137,7 +142,7 @@ const EditDemandLeft = (props: Props) => {
         })),
       })
     }
-  }, [props?.demandId])
+  }, [props?.demandId, demandInfo])
 
   // 切换项目
   const onSelectProjectName = (value: any) => {
