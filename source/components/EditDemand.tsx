@@ -293,7 +293,12 @@ const EditDemand = (props: Props) => {
     return res.length ? res.map((i: any) => i.id) : []
   }
 
-  const getInfo = async (id: any, treeArr?: any, categoryData?: any) => {
+  const getInfo = async (
+    id: any,
+    treeArr?: any,
+    categoryData?: any,
+    allDemandArr?: any,
+  ) => {
     const res = await getDemandInfo({ projectId: id, id: props?.demandId })
     setDemandInfo(res)
     if (res) {
@@ -370,15 +375,15 @@ const EditDemand = (props: Props) => {
           .length
           ? res?.iterateId
           : null,
-        parentId: parentArr?.filter((i: any) => i.value === res?.parentId)
+        parentId: allDemandArr?.filter((i: any) => i.value === res?.parentId)
           .length
           ? res?.parentId
           : null,
-        class:
-          res.class === 0 ||
-          JSON.stringify(treeArr?.find((j: any) => j.id === res.class)) !== '{}'
-            ? res.class
-            : null,
+        class: treeArr?.filter((j: any) => j.id === res.class)?.length
+          ? res.class
+          : res.class === 0
+          ? 0
+          : null,
       })
     } else {
       form.resetFields()
@@ -419,7 +424,7 @@ const EditDemand = (props: Props) => {
 
     if (props?.demandId) {
       setCategoryObj({})
-      getInfo(value || projectId, classTree, categoryData?.list)
+      getInfo(value || projectId, classTree, categoryData?.list, allDemandArr)
     } else {
       form.setFieldsValue({
         projectId: value,
