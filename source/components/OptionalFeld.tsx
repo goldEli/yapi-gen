@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-shadow */
 // 可配置的表格字段弹窗
 
@@ -14,6 +17,12 @@ import styled from '@emotion/styled'
 import { ShowWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
+import { arrayMoveImmutable } from 'array-move'
 
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -44,7 +53,7 @@ const Left = styled.div`
 `
 const Right = styled.div`
   box-sizing: border-box;
-  padding: 0 16px 0 24px;
+  padding: 0 16px 0 0px;
   width: 240px;
   height: 350px;
   overflow: scroll;
@@ -84,12 +93,31 @@ type OptionalFeldProps = {
   onClose(): void
   isVisible: boolean
 }
+const DragHandle = sortableHandle(() => (
+  <IconFont
+    type="move"
+    style={{
+      fontSize: 16,
+      cursor: 'pointer',
+      color: '#969799',
+      marginRight: 12,
+    }}
+  />
+))
+
+const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
+
+// 拖拽元素
+const SortItemLi = sortableElement<any>((props: any) => (
+  <div helperClass="row-dragging" {...props} />
+))
 
 export const OptionalFeld = (props: OptionalFeldProps) => {
   const [t] = useTranslation()
   const { plainOptions, plainOptions2 } = props
   const plainOptions3 = props?.plainOptions3 || []
-  const [all, setAll] = useState<any>([])
+  const [all, setAll] = useState<any>(props.allTitleList)
+  const [allShow, setAllShow] = useState<any>([])
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props.checkList,
   )
@@ -101,13 +129,17 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   )
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
+
+    setAll(Array.from(new Set(all.concat(list))))
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
+    setAll(Array.from(new Set(all.concat(list))))
   }
 
   const onChange3 = (list: CheckboxValueType[]) => {
     setCheckList3(list)
+    setAll(Array.from(new Set(all.concat(list))))
   }
 
   function del(value: string) {
@@ -124,44 +156,45 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   }
 
   const handleOk = () => {
-    props.getCheckList(
-      checkList,
-      checkList2,
-      checkList3,
-      all.map((i: any) => i.value),
-    )
+    let news = allList.map((i: any) => i.value)
+
+    props.getCheckList(checkList, checkList2, checkList3, news)
     props.onClose()
   }
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(
+        all.slice(),
+        oldIndex,
+        newIndex,
+      ).filter((el: any) => !!el)
+
+      setAll(newData)
+    }
+  }
+
   const allList = useMemo(() => {
-    const arr = [...checkList, ...checkList2, ...checkList3]
+    const newArr = [...checkList, ...checkList2, ...checkList3]
     const arr2 = [...plainOptions, ...plainOptions2, ...plainOptions3]
 
-    const all = arr2.reduce(
-      (res: { labelTxt: string; label: string; value: string }[], item) => {
-        if (arr.includes(item.value)) {
-          res.push(item)
-        }
-        return res
-      },
-      [],
-    )
-    setAll(all)
-    return all.map(item => (
-      <CheckedItem key={item.value}>
-        <IconFont style={{ fontSize: 12, marginRight: '8px' }} type="move" />
-        <span>{item.labelTxt}</span>
-        {item.value !== 'name' && (
-          <ShowWrap style={{ marginLeft: 'auto' }}>
-            <IconFont
-              style={{ fontSize: 12 }}
-              type="close"
-              onClick={() => del(item.value)}
-            />
-          </ShowWrap>
-        )}
-      </CheckedItem>
-    ))
+    const newList = all.filter((i: any) => {
+      if (newArr.includes(i)) {
+        return i
+      }
+    })
+
+    const alls: any[] = []
+
+    newList.forEach((i: any) => {
+      const result = arr2.find(item => {
+        return item.value === i
+      })
+      alls.push(result)
+    })
+
+    return alls
   }, [
+    all,
     checkList,
     checkList2,
     checkList3,
@@ -232,7 +265,33 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
         />
         <Right>
           <div className={text}>{t('components.currentFiled')}</div>
-          {allList}
+          <SortContainer
+            helperClass="row-dragging"
+            useDragHandle
+            onSortEnd={(values: any) => onSortEnd(values)}
+          >
+            {allList.map((item: any, idx: number) => (
+              <SortItemLi
+                helperClass="row-dragging"
+                key={item.value}
+                index={idx}
+              >
+                <CheckedItem key={item.value}>
+                  <DragHandle />
+                  <span>{item.labelTxt}</span>
+                  {item.value !== 'name' && (
+                    <ShowWrap style={{ marginLeft: 'auto' }}>
+                      <IconFont
+                        style={{ fontSize: 12 }}
+                        type="close"
+                        onClick={() => del(item.value)}
+                      />
+                    </ShowWrap>
+                  )}
+                </CheckedItem>
+              </SortItemLi>
+            ))}
+          </SortContainer>
         </Right>
       </Wrap>
     </CommonModal>
