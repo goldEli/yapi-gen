@@ -38,7 +38,7 @@
     "search": "搜索日志内容",
     "addAdjunct": "添加附件",
     "managingDemand": "关联需求",
-    "haveRead": "已阅",
+    "haveRead": "已读",
     "RelatedRequirements": "关联需求",
     "whiteDay": "写日志",
     "synopsis": "内容摘要",
@@ -48,7 +48,7 @@
     "show": "查看",
     "edit": "修改",
     "sender": "发送人",
-    "OnlySee": "只看未阅",
+    "OnlySee": "只看未读",
     "new": "新",
     "dayList": {
       "t1": "我发出的",
