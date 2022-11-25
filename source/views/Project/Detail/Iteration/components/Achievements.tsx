@@ -38,6 +38,7 @@ const label = css`
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
+  margin-top: 24px;
 `
 
 interface Props {
@@ -84,6 +85,7 @@ const Achievements = (props: Props) => {
 
   const setValue = (obj: any) => {
     setHtml(obj.info)
+    // console.log(obj.attachList)
 
     setAttachList(
       obj.attachList?.map((i: any) => ({

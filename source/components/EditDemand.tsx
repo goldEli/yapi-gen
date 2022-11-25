@@ -314,6 +314,7 @@ const EditDemand = (props: Props) => {
             : res?.customField[key]?.value
       }
       form1.setFieldsValue(form1Obj)
+      // console.log(res?.attachment)
 
       setPriorityDetail(res.priority)
       setAttachList(

@@ -256,6 +256,10 @@ const UploadAttach = (props: any) => {
       props.del(id)
     }
   }
+  const onTapClose = (id: string) => {
+    cos.cancelTask(id)
+    setFileList(fileList.filter((i: { id: string }) => i.id !== id))
+  }
 
   const onTapRestart = (id: string) => cos.restartTask(id)
 
@@ -314,6 +318,7 @@ const UploadAttach = (props: any) => {
             suffix: i.url.split('.').at(-1),
             url: i.url,
             time: i.time,
+            username: i.username ?? userInfo?.name,
           },
         }
         arr.push(obj)
@@ -427,7 +432,7 @@ const UploadAttach = (props: any) => {
                     <BlueCss onClick={() => onTapPause(i.id)}>
                       {t('p2.pause')}
                     </BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>
+                    <RedCss onClick={() => onTapClose(i.id)}>
                       {t('p2.cancel')}
                     </RedCss>
                   </>
@@ -437,7 +442,7 @@ const UploadAttach = (props: any) => {
                     <BlueCss onClick={() => onTapRestart(i.id)}>
                       {t('p2.begin')}
                     </BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>
+                    <RedCss onClick={() => onTapClose(i.id)}>
                       {t('p2.cancel')}
                     </RedCss>
                   </>
@@ -515,7 +520,7 @@ const UploadAttach = (props: any) => {
                       >
                         /
                       </span>
-                      <span>{bytesToSize(i.file?.size)}</span>
+                      <span>{bytesToSize(i.file?.size)}xx</span>
                     </>
                   )}
                   {i.state === 'paused' && <span> {t('p2.paused')}</span>}
@@ -544,7 +549,7 @@ const UploadAttach = (props: any) => {
                           marginRight: '12px',
                         }}
                       >
-                        {userInfo?.name}
+                        {i.file.username}
                       </span>
                       <span>{i.file.time}</span>
                     </>

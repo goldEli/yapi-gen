@@ -265,15 +265,9 @@ function getDecimal(num: any) {
 
 function bytesToSize(size: number) {
   let num
-  if (size < 0.1 * 1024) {
-    num = `${size.toFixed(2)}B`
-  } else if (size < 0.1 * 1024 * 1024) {
-    num = `${(size / 1024).toFixed(2)}KB`
-  } else if (size < 0.1 * 1024 * 1024 * 1024) {
-    num = `${(size / (1024 * 1024)).toFixed(2)}MB`
-  } else {
-    num = `${(size / (1024 * 1024 * 1024)).toFixed(2)}GB`
-  }
+
+  num = `${(size / (1024 * 1024)).toFixed(2)}MB`
+
   let sizeStr = num + '',
     index = sizeStr.indexOf('.'),
     dou = sizeStr.substr(index + 1, 2)
