@@ -38,6 +38,7 @@ const label = css`
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
+  margin-top: 24px;
 `
 
 interface Props {
