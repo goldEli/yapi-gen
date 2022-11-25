@@ -20,6 +20,7 @@ import { LevelContent } from '@/components/Level'
 import IconFont from '@/components/IconFont'
 import { getNestedChildren, getTypeComponent } from '@/tools'
 import moment from 'moment'
+import { filter } from 'lodash'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -46,6 +47,8 @@ interface Props {
   parentList: any
   // 需求分类
   treeArr: any
+  // 迭代id
+  iterateId?: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -88,7 +91,7 @@ const EditDemandRIght = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (demandInfo?.id) {
+    if (props?.demandId) {
       setSchedule(demandInfo?.schedule)
       const form1Obj: any = {}
       for (const key in demandInfo?.customField) {
@@ -141,8 +144,19 @@ const EditDemandRIght = (props: Props) => {
             ? demandInfo.class
             : null,
       })
+    } else {
+      form.setFieldsValue({
+        iterateId: selectIterate?.list
+          ?.filter((k: any) => k.status === 1)
+          .filter((i: any) => i.id === props?.iterateId).length
+          ? props?.iterateId
+          : null,
+        parentId: props.parentList?.filter(
+          (i: any) => i.value === Number(demandInfo?.id),
+        )[0]?.value,
+      })
     }
-  }, [demandInfo])
+  }, [props?.demandId, props.parentList])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -164,6 +178,26 @@ const EditDemandRIght = (props: Props) => {
   const onConfirm = () => {
     const values = form.getFieldsValue()
     const customValues = form1.getFieldsValue()
+
+    Object.keys(customValues)?.forEach((k: any) => {
+      customValues[k] = customValues[k] ? customValues[k] : ''
+      const obj = fieldList?.list?.filter((i: any) => k === i.content)[0]
+      if (obj?.type?.attr === 'date' && customValues[k]) {
+        customValues[obj.content] = moment(customValues[obj.content]).format(
+          obj?.type?.value[0] === 'datetime'
+            ? 'YYYY-MM-DD HH:mm:ss'
+            : 'YYYY-MM-DD',
+        )
+      } else if (
+        obj?.type?.attr === 'select_checkbox' ||
+        obj?.type?.attr === 'checkbox'
+      ) {
+        customValues[obj.content] = customValues[obj.content]?.length
+          ? customValues[obj.content]
+          : []
+      }
+    })
+
     return { ...values, ...{ customField: customValues } }
   }
 
@@ -171,12 +205,20 @@ const EditDemandRIght = (props: Props) => {
   const onReset = () => {
     form.resetFields()
     form1.resetFields()
+    setPriorityDetail({})
+    setIsShowFields(false)
+  }
+
+  // 提交参数后的操作
+  const onSubmitUpdate = () => {
+    setIsShowFields(false)
   }
 
   useImperativeHandle(props.onRef, () => {
     return {
       confirm: onConfirm,
       reset: onReset,
+      update: onSubmitUpdate,
     }
   })
 

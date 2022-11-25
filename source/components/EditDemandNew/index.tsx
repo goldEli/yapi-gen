@@ -2,19 +2,21 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Form, Modal, Popover, Select, Space } from 'antd'
+import { Form, message, Modal, Popover, Select, Space } from 'antd'
 import EditDemandLeft from './components/EditDemandLeft'
 import EditDemandRIght from './components/EditDemandRIght'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useTranslation } from 'react-i18next'
-import { createRef, useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import { CanOperationCategory, CloseWrap, FormWrapDemand } from '../StyleCommon'
 import { useModel } from '@/models'
 import IconFont from '../IconFont'
 import CommonModal from '../CommonModal'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData, getNestedChildren } from '@/tools'
+import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
+import moment from 'moment'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -123,6 +125,7 @@ interface Props {
 const EditDemand = (props: Props) => {
   const [t] = useTranslation()
   const rightDom: any = createRef()
+  const leftDom: any = createRef()
   // 需求类别切换提交表单
   const [changeCategoryForm] = Form.useForm()
   // 点击需求类别是否展示popover弹层
@@ -158,11 +161,17 @@ const EditDemand = (props: Props) => {
   } = useModel('project')
   const {
     setCreateCategory,
+    setIsUpdateStatus,
     setIsOpenEditDemand,
+    setIsUpdateChangeLog,
     getDemandList,
     createCategory,
     getDemandInfo,
+    updateDemandCategory,
+    updateDemand,
+    addDemand,
   } = useModel('demand')
+  const { setIsUpdateCreate } = useModel('mine')
 
   // 获取需求列表
   const getList = async (value?: any) => {
@@ -341,11 +350,103 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
+    leftDom.current.reset()
+    rightDom.current.reset()
+  }
+
+  // 保存数据
+  const onSaveDemand = async (values: any, hasNext?: any) => {
+    if (props?.demandId) {
+      await updateDemand({
+        projectId,
+        id: props?.demandId,
+        ...values,
+      })
+      message.success(t('common.editSuccess'))
+      setIsUpdateStatus(true)
+      setIsUpdateChangeLog(true)
+    } else {
+      await addDemand({
+        projectId,
+        ...values,
+      })
+      message.success(t('common.createSuccess'))
+    }
+    // 更新父需求列表
+    getList()
+    // 是否是快捷创建，是则要刷新相应的列表接口
+    if (props?.isQuickCreate) {
+      setIsUpdateCreate(true)
+    } else {
+      props.onUpdate?.()
+    }
+    // 是否是完成并创建下一个
+    if (hasNext) {
+      leftDom.current.update()
+      rightDom.current.update()
+    } else {
+      setChangeCategoryFormData({})
+      setCreateCategory({})
+      props.onChangeVisible()
+      setTimeout(() => {
+        leftDom.current.reset()
+        rightDom.current.reset()
+      }, 100)
+    }
+
+    if (props.isQuickCreate) {
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(
+          JSON.stringify({
+            projectId,
+            type: 'need',
+            categoryId: categoryObj?.id,
+          }),
+        ),
+      )
+    }
   }
 
   // 先调用保存需求类别接口，再保存需求
   const onSaveCategory = async (hasNext?: number) => {
-    //
+    const leftValues = await leftDom.current.confirm()
+    const rightValues = rightDom.current.confirm()
+
+    if (rightValues.startTime) {
+      rightValues.expectedStart = moment(rightValues.startTime).format(
+        'YYYY-MM-DD',
+      )
+    }
+    if (rightValues.endTime) {
+      rightValues.expectedEnd = moment(rightValues.endTime).format('YYYY-MM-DD')
+    }
+
+    if (props.iterateId) {
+      rightValues.iterateId = props.iterateId
+    }
+
+    if (rightValues.priority?.id) {
+      rightValues.priority = rightValues.priority?.id
+    }
+
+    leftValues.category = categoryObj?.id
+
+    if (props?.demandId && JSON.stringify(changeCategoryFormData) !== '{}') {
+      try {
+        await updateDemandCategory({
+          projectId,
+          id: props?.demandId,
+          ...changeCategoryFormData,
+        })
+        setCurrentCategory({})
+        onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+      } catch (error) {
+        //
+      }
+    } else {
+      onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+    }
   }
 
   // 修改需求类别的确认
@@ -516,6 +617,8 @@ const EditDemand = (props: Props) => {
             onChangeProjectId={setProjectId}
             onGetDataAll={(values: any) => getInit(values, categoryObj?.id)}
             onResetForm={onResetForm}
+            onRef={leftDom}
+            demandId={props.demandId}
           />
           <EditDemandRIght
             projectId={projectId}
@@ -523,6 +626,7 @@ const EditDemand = (props: Props) => {
             parentList={parentList}
             onRef={rightDom}
             treeArr={treeArr}
+            iterateId={props.iterateId}
           />
         </ModalContent>
 

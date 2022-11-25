@@ -9,7 +9,7 @@ import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import styled from '@emotion/styled'
 import { Form, Input, Select } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const LeftWrap = styled.div({
@@ -29,6 +29,8 @@ interface Props {
   onGetDataAll(values: any): void
   // 清除右侧的form表单
   onResetForm(): void
+  onRef: any
+  demandId?: any
 }
 
 const EditDemandLeft = (props: Props) => {
@@ -42,6 +44,43 @@ const EditDemandLeft = (props: Props) => {
   const { getProjectList } = useModel('mine')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
+
+  // 提交参数
+  const onConfirm = async () => {
+    await form.validateFields()
+    return { ...form.getFieldsValue() }
+  }
+
+  // 清空左侧参数
+  const onReset = () => {
+    form.resetFields()
+    setAttachList([])
+    setTagList([])
+  }
+
+  // 提交参数后的操作
+  const onSubmitUpdate = () => {
+    setAttachList([])
+    form.setFieldsValue({
+      info: '',
+      name: '',
+    })
+    // 直接修改form，富文本字段值更新，视图未更新，所以先清除再赋值
+    const formValues = form.getFieldsValue()
+    form.resetFields()
+    form.setFieldsValue(formValues)
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
+  }
+
+  useImperativeHandle(props.onRef, () => {
+    return {
+      confirm: onConfirm,
+      reset: onReset,
+      update: onSubmitUpdate,
+    }
+  })
 
   // 获取项目数据
   const getProjectData = async () => {
@@ -73,7 +112,7 @@ const EditDemandLeft = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (demandInfo?.id) {
+    if (props?.demandId) {
       setTagList(
         demandInfo?.tag?.map((i: any) => ({
           id: i.id,
@@ -98,7 +137,7 @@ const EditDemandLeft = (props: Props) => {
         })),
       })
     }
-  }, [demandInfo])
+  }, [props?.demandId])
 
   // 切换项目
   const onSelectProjectName = (value: any) => {
