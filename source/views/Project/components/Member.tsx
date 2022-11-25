@@ -44,9 +44,13 @@ const ButtonWrap = styled(Button)({
   marginBottom: 16,
 })
 
-const ListWrap = styled.div({
-  marginTop: 16,
-})
+const ListWrap = styled.div`
+  margin-top: 16;
+  & .ant-popover-inner {
+    position: relative !important;
+    top: -3px !important;
+  }
+`
 
 const ListItem = styled.div({
   display: 'flex',
@@ -84,7 +88,29 @@ const ListItem = styled.div({
     backgroundColor: '#f8f9fa',
   },
 })
-const MoreWrap2 = styled(MoreWrap)``
+const MoreWrap2 = styled(MoreWrap)`
+  background-color: transparent;
+  &:hover {
+    .job {
+      color: #2877ff;
+    }
+    .job1 {
+      transform: rotate(180deg);
+    }
+  }
+`
+const Item = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  width: '116px',
+  height: '32px',
+  fontSize: '14px',
+  paddingLeft: '16px',
+  cursor: 'pointer',
+  '&:hover': {
+    color: '#2877FF',
+  },
+})
 const NameWrap = styled.div({
   width: 32,
   height: 32,
@@ -121,24 +147,20 @@ const Member = (props: Props) => {
   }
   const moreOperation = (values: any) => {
     // console.log(values)
-
+    const arr = ['管理员', ' 编辑者', '参与者', '自定义权限组']
+    const onChangeRule = (i: any) => {
+      // console.log(values, i)
+      getList()
+    }
     return (
       <div
         style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}
       >
-        <div
-          onClick={() => {
-            // console.log(values, '当前数据')
-          }}
-        >
-          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
-          <span>{t('newlyAdd.importDemand')}</span>
-        </div>
-
-        <div>
-          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
-          <span>{t('newlyAdd.exportDemand')}</span>
-        </div>
+        {arr.map((i: any) => (
+          <Item onClick={() => onChangeRule(i)} key={i}>
+            {i}
+          </Item>
+        ))}
       </div>
     )
   }
@@ -246,16 +268,21 @@ const Member = (props: Props) => {
                 </div>
                 <Popover
                   content={moreOperation(i)}
-                  placement="bottom"
+                  placement="bottomRight"
                   getPopupContainer={node => node}
                 >
                   <MoreWrap2>
-                    <div className="job">{i.positionName}</div>
-                    <IconFont
-                      ro-te
-                      style={{ fontSize: 16, marginLeft: 8 }}
-                      type="up"
-                    />
+                    <div
+                      style={{
+                        marginRight: '8px',
+                      }}
+                      className="job"
+                    >
+                      {i.positionName}
+                    </div>
+                    <span className="job1">
+                      <IconFont style={{ fontSize: 16 }} type="down" />
+                    </span>
                   </MoreWrap2>
                 </Popover>
               </ListItem>

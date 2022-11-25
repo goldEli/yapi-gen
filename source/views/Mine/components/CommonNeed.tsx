@@ -167,6 +167,7 @@ const CommonNeed = (props: any) => {
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -295,7 +296,7 @@ const CommonNeed = (props: any) => {
   })
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2, ...titleList3]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -330,6 +331,7 @@ const CommonNeed = (props: any) => {
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
+    setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
     setIsRefresh(false)
   }
 
@@ -404,10 +406,12 @@ const CommonNeed = (props: any) => {
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
     list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const onChangeVisible = () => {
@@ -637,6 +641,7 @@ const CommonNeed = (props: any) => {
       )}
       {isModalVisible ? (
         <OptionalFeld
+          allTitleList={allTitleList}
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
           plainOptions3={plainOptions3}

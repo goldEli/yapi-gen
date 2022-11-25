@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 // 可配置的表格字段弹窗
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
-import { Checkbox, Divider, Space } from 'antd'
+import { Checkbox, Col, Divider, Row, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -71,12 +72,14 @@ type OptionalFeldProps = {
     is_default_display?: number
   }[]
   checkList: CheckboxValueType[]
+  allTitleList?: CheckboxValueType[]
   checkList2: CheckboxValueType[]
   checkList3?: CheckboxValueType[]
   getCheckList(
     checkList: CheckboxValueType[],
     checkList2: CheckboxValueType[],
     checkList3?: CheckboxValueType[],
+    allList?: CheckboxValueType[],
   ): void
   onClose(): void
   isVisible: boolean
@@ -86,7 +89,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const [t] = useTranslation()
   const { plainOptions, plainOptions2 } = props
   const plainOptions3 = props?.plainOptions3 || []
-
+  const [all, setAll] = useState<any>([])
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props.checkList,
   )
@@ -121,12 +124,18 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   }
 
   const handleOk = () => {
-    props.getCheckList(checkList, checkList2, checkList3)
+    props.getCheckList(
+      checkList,
+      checkList2,
+      checkList3,
+      all.map((i: any) => i.value),
+    )
     props.onClose()
   }
   const allList = useMemo(() => {
     const arr = [...checkList, ...checkList2, ...checkList3]
     const arr2 = [...plainOptions, ...plainOptions2, ...plainOptions3]
+
     const all = arr2.reduce(
       (res: { labelTxt: string; label: string; value: string }[], item) => {
         if (arr.includes(item.value)) {
@@ -136,7 +145,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       },
       [],
     )
-
+    setAll(all)
     return all.map(item => (
       <CheckedItem key={item.value}>
         <IconFont style={{ fontSize: 12, marginRight: '8px' }} type="move" />
@@ -174,42 +183,45 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
           <ItemWrap>
             <div className={text}>{t('components.basicFiled')}</div>
             <CheckboxGroup value={checkList} onChange={onChange}>
-              <Space style={{ flexWrap: 'wrap' }}>
+              <Row gutter={[0, 10]}>
                 {plainOptions.map(item => (
-                  <Checkbox
-                    disabled={item.value === 'name'}
-                    key={item.label}
-                    value={item.value}
-                  >
-                    {item.labelTxt}
-                  </Checkbox>
+                  <Col key={item.label} span={8}>
+                    <Checkbox
+                      disabled={item.value === 'name'}
+                      value={item.value}
+                    >
+                      {item.labelTxt}
+                    </Checkbox>
+                  </Col>
                 ))}
-              </Space>
+              </Row>
             </CheckboxGroup>
           </ItemWrap>
           <ItemWrap>
             <div className={text}>{t('components.personOrTime')}</div>
             <CheckboxGroup value={checkList2} onChange={onChange2}>
-              <Space style={{ flexWrap: 'wrap' }}>
+              <Row gutter={[0, 10]}>
+                {/* <Space style={{ flexWrap: 'wrap' }}> */}
                 {plainOptions2.map(item => (
-                  <Checkbox key={item.label} value={item.value}>
-                    {item.labelTxt}
-                  </Checkbox>
+                  <Col key={item.label} span={8}>
+                    <Checkbox value={item.value}>{item.labelTxt}</Checkbox>
+                  </Col>
                 ))}
-              </Space>
+                {/* </Space> */}
+              </Row>
             </CheckboxGroup>
           </ItemWrap>
           {plainOptions3?.length > 0 && (
             <ItemWrap>
               <div className={text}>{t('newlyAdd.customFields')}</div>
               <CheckboxGroup value={checkList3} onChange={onChange3}>
-                <Space style={{ flexWrap: 'wrap' }}>
+                <Row gutter={[0, 10]}>
                   {plainOptions3?.map(item => (
-                    <Checkbox key={item.label} value={item.value}>
-                      {item.label}
-                    </Checkbox>
+                    <Col key={item.label} span={8}>
+                      <Checkbox value={item.value}>{item.label}</Checkbox>
+                    </Col>
                   ))}
-                </Space>
+                </Row>
               </CheckboxGroup>
             </ItemWrap>
           )}
