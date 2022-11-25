@@ -170,6 +170,7 @@ const WrapLeftBox = () => {
       //
     }
   }
+  // console.log(demandInfo?.attachment);
 
   return (
     <div
