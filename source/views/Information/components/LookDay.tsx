@@ -466,7 +466,7 @@ const LookDay = (props: any) => {
                               wordBreak: 'break-all',
                             }}
                           >
-                            {item.path.split('/').at(-1)}
+                            {item.name}
                           </div>
                           <First
                             style={{

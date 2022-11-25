@@ -84,6 +84,7 @@ const Achievements = (props: Props) => {
 
   const setValue = (obj: any) => {
     setHtml(obj.info)
+    // console.log(obj.attachList)
 
     setAttachList(
       obj.attachList?.map((i: any) => ({
