@@ -418,7 +418,7 @@ const LookDay = (props: any) => {
                             position: 'relative',
                           }}
                         >
-                          {imgs.includes(item.path.split('.').at(-1)) && (
+                          {imgs.includes(item.suffix) && (
                             <img
                               style={{
                                 width: '40px',
@@ -429,21 +429,18 @@ const LookDay = (props: any) => {
                               alt=""
                             />
                           )}
-                          {!imgs.includes(item.path.split('.').at(-1)) && (
+                          {!imgs.includes(item.suffix) && (
                             <IconFont
                               style={{
                                 fontSize: 40,
                                 color: 'white',
                                 borderRadius: '8px',
                               }}
-                              type={
-                                fileIconMap[item.path.split('.').at(-1)] ||
-                                'colorunknown'
-                              }
+                              type={fileIconMap[item.suffix] || 'colorunknown'}
                             />
                           )}
 
-                          {imgs.includes(item.path.split('.').at(-1)) && (
+                          {imgs.includes(item.suffix) && (
                             <Gred
                               onClick={() => {
                                 onReview(item)
