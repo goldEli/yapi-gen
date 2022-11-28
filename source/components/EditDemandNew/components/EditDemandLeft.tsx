@@ -42,11 +42,12 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const { projectInfo, getProjectInfo, setFieldList } = useModel('project')
+  const { projectInfo, getProjectInfo, setFieldList, tagList } =
+    useModel('project')
   const { getProjectList } = useModel('mine')
   const { filterParams } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
-  const [tagList, setTagList] = useState<any>([])
+  const [tagCheckedList, setTagCheckedList] = useState<any>([])
 
   // 提交参数
   const onConfirm = async () => {
@@ -58,7 +59,7 @@ const EditDemandLeft = (props: Props) => {
   const onReset = () => {
     form.resetFields()
     setAttachList([])
-    setTagList([])
+    setTagCheckedList([])
   }
 
   // 提交参数后的操作
@@ -114,12 +115,25 @@ const EditDemandLeft = (props: Props) => {
     if (props?.isQuickCreate) {
       getProjectData()
     }
+    // 创建回填筛选数据 --- 标签
+    if (filterParams?.tagId?.length) {
+      const resultArr = filterParams?.tagId?.filter((i: any) => i !== -1)
+      setTagCheckedList(
+        tagList
+          ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
+          ?.map((i: any) => ({
+            id: i.id,
+            color: i.color,
+            name: i.content,
+          })),
+      )
+    }
   }, [])
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
     if (props?.demandId) {
-      setTagList(
+      setTagCheckedList(
         props.demandInfo?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
@@ -177,16 +191,16 @@ const EditDemandLeft = (props: Props) => {
       form.setFieldsValue({
         tagIds: [...(form.getFieldValue('tagIds') || []), ...[result]],
       })
-      setTagList([...tagList, ...[result]])
+      setTagCheckedList([...tagCheckedList, ...[result]])
     } else {
-      const arr = tagList
+      const arr = tagCheckedList
       const comResult = arr.filter(
         (i: any) => !(i.name === result.content && i.color === result.color),
       )
       form.setFieldsValue({
         tagIds: comResult,
       })
-      setTagList(comResult)
+      setTagCheckedList(comResult)
     }
   }
 
@@ -286,7 +300,7 @@ const EditDemandLeft = (props: Props) => {
               }
             >
               <TagComponent
-                defaultList={tagList}
+                defaultList={tagCheckedList}
                 onChangeTag={onChangeTag}
                 isQuick={props.isQuickCreate}
                 addWrap={

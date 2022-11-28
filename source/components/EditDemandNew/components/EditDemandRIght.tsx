@@ -59,7 +59,8 @@ const EditDemandRIght = (props: Props) => {
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const { userInfo } = useModel('user')
-  const { selectAllStaffData, memberList, fieldList } = useModel('project')
+  const { selectAllStaffData, memberList, fieldList, priorityList } =
+    useModel('project')
   const { selectIterate } = useModel('iterate')
   const { demandInfo, filterParams } = useModel('demand')
   const [schedule, setSchedule] = useState(0)
@@ -166,6 +167,20 @@ const EditDemandRIght = (props: Props) => {
           : null,
       })
     } else {
+      // console.log(
+      //   memberList,
+      //   '111',
+      //   classTreeData,
+      //   '333',
+      //   priorityList,
+      //   '333',
+      //   selectIterate,
+      //   '12121',
+      //   selectAllStaffData,
+      //   '44',
+      //   filterParams,
+      // )
+      // 子需求默认回填父需求
       if (props.isChild) {
         form.setFieldsValue({
           parentId: props.parentList?.filter(
@@ -173,6 +188,7 @@ const EditDemandRIght = (props: Props) => {
           )[0]?.value,
         })
       }
+      // 迭代创建需求默认回填迭代
       if (props.iterateId) {
         form.setFieldsValue({
           iterateId: selectIterate?.list
@@ -182,6 +198,27 @@ const EditDemandRIght = (props: Props) => {
             : null,
         })
       }
+      // 不是在迭代创建需求并且有筛选项
+      if (!props.iterateId && filterParams?.iterateId?.length) {
+        const resultId = filterParams?.iterateId?.filter(
+          (i: any) => i !== -1,
+        )?.[0]
+        form.setFieldsValue({
+          iterateId: selectIterate?.list
+            ?.filter((k: any) => k.status === 1)
+            .filter((i: any) => i.id === resultId).length
+            ? resultId
+            : null,
+        })
+      }
+
+      form.setFieldsValue({
+        copySendIds: filterParams?.usersCopysendNameId?.filter(
+          (i: any) => i !== -1,
+        ),
+        userIds: filterParams?.usersnameId?.filter((i: any) => i !== -1),
+        class: filterParams?.class_ids?.filter((i: any) => i !== -1),
+      })
     }
   }, [props?.demandId, props.info, props.parentList, selectIterate])
 

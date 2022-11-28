@@ -241,20 +241,23 @@ const EditDemand = (props: Props) => {
           categoryData?.list?.filter((i: any) => i.id === categoryId)[0],
         )
       }
-      // 如果是快速创建没有缓存数据 或者是 迭代创建，取列表第一个
-      if ((props?.isQuickCreate && !categoryId) || props?.iterateId) {
+      // 如果是快速创建没有缓存数据，取列表第一个
+      if (props?.isQuickCreate && !categoryId) {
         setCategoryObj(categoryData?.list[0])
       }
-      // 如果是有筛选条件的，回填筛选条件
-      if (filterParams?.category_id?.length) {
-        const resultId = filterParams?.category_id?.filter(
-          (i: any) => i !== -1,
-        )?.[0]
-        // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-        const resultObj = resultId
-          ? categoryData?.list?.filter((i: any) => i.id === resultId)[0]
-          : categoryData?.list[0]
-        setCategoryObj(resultObj)
+      // 迭代创建 ,当前只有迭代是需要做筛选类别回填
+      if (props?.iterateId) {
+        // 如果是有筛选条件的，回填筛选条件
+        if (filterParams?.category_id?.length) {
+          const resultId = filterParams?.category_id?.filter(
+            (i: any) => i !== -1,
+          )?.[0]
+          // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
+          const resultObj = resultId
+            ? categoryData?.list?.filter((i: any) => i.id === resultId)[0]
+            : categoryData?.list[0]
+          setCategoryObj(resultObj)
+        }
       }
     }
   }

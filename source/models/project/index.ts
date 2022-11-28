@@ -231,5 +231,6 @@ export default () => {
     updateProjectGroup,
     deleteProjectGroup,
     getPriorityList,
+    priorityList,
   }
 }
