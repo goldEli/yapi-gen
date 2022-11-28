@@ -170,7 +170,6 @@ const WrapLeftBox = () => {
       //
     }
   }
-  // console.log(demandInfo?.attachment);
 
   return (
     <div
@@ -254,6 +253,7 @@ const WrapLeftBox = () => {
                   time: i.created_at,
                   name: i.attachment.name,
                   suffix: i.attachment.ext,
+                  username: i.user_name,
                 }))}
                 canUpdate
                 onC

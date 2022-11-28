@@ -332,7 +332,6 @@ const EditDemand = (props: Props) => {
             : res?.customField[key]?.value
       }
       form1.setFieldsValue(form1Obj)
-      // console.log(res?.attachment)
 
       setPriorityDetail(res.priority)
       setAttachList(
@@ -343,6 +342,7 @@ const EditDemand = (props: Props) => {
           time: i.created_at,
           name: i.attachment.name,
           suffix: i.attachment.ext,
+          username: i.user_name,
         })),
       )
       setTagList(
