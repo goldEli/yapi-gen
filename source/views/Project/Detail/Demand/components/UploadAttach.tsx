@@ -130,8 +130,8 @@ export const fileIconMap: Record<string, string> = {
   wav: 'colormusic',
   cad: 'colormusic',
   doc: 'colordoc',
-  docx: 'colordoc',
-  pdf: 'colorPDF',
+  docx: 'colorDOC-76p4mioh',
+  pdf: 'colorpdf',
   zip: 'zip',
   rar: 'zip',
 }
