@@ -125,13 +125,16 @@ const EditDemandLeft = (props: Props) => {
           name: i.tag?.content,
         })),
       )
+
       setAttachList(
         props.demandInfo?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
-          time: i.attachment.created_at,
-          name: i.attachment.name,
           size: i.attachment.size,
+          time: i.created_at,
+          name: i.attachment.name,
+          suffix: i.attachment.ext,
+          username: i.user_name ?? '--',
         })),
       )
       form.setFieldsValue({
