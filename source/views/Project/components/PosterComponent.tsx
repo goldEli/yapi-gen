@@ -115,7 +115,7 @@ const PosterComponent = (props: Props) => {
   const [t] = useTranslation()
   const { coverList } = useModel('project')
   const [checkedPoster, setCheckedPoster] = useState('')
-  const { uploadFile } = useModel('cos')
+  const { uploadFileByTask } = useModel('cos')
   const [posterList, setPosterList] = useState<any>([])
 
   const onUpdateValue = (path: any) => {
@@ -148,7 +148,7 @@ const PosterComponent = (props: Props) => {
   const onUploadFileClick = async (option: UploadRequestOption) => {
     const { file } = option
     if (file instanceof File) {
-      const result = await uploadFile(file, file.name, 'file')
+      const result = await uploadFileByTask(file, file.name, 'file')
       option.onSuccess?.(result)
       const items = [result.url]
       setPosterList([items])

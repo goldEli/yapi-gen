@@ -118,7 +118,7 @@ const EditorBox = (props: Props) => {
     }
     return url
   }
-  const { uploadFile } = useModel('cos')
+  const { uploadFileByTask } = useModel('cos')
   const { userInfo } = useModel('user')
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
@@ -146,11 +146,12 @@ const EditorBox = (props: Props) => {
           file: File,
           insert: (url: string, alt: string, src: string) => void,
         ) {
-          const uploadedFile = await uploadFile(
+          const uploadedFile = await uploadFileByTask(
             file,
             userInfo?.username,
             `richEditorFiles_${new Date().getTime()}`,
           )
+
           insert(uploadedFile.url, '', uploadedFile.url)
         },
       },
