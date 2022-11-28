@@ -61,7 +61,7 @@ const EditDemandRIght = (props: Props) => {
   const { userInfo } = useModel('user')
   const { selectAllStaffData, memberList, fieldList } = useModel('project')
   const { selectIterate } = useModel('iterate')
-  const { demandInfo } = useModel('demand')
+  const { demandInfo, filterParams } = useModel('demand')
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [priorityDetail, setPriorityDetail] = useState<any>({})

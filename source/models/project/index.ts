@@ -13,6 +13,7 @@ export default () => {
     list: undefined,
   })
   const [tagList, setTagList] = useState<any>([])
+  const [priorityList, setPriorityList] = useState<any>([])
   const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
@@ -89,6 +90,11 @@ export default () => {
   const getTagList = async (params: any) => {
     const result = await services.project.getTagList(params)
     setTagList(result)
+  }
+
+  const getPriorityList = async (params: any) => {
+    const result = await services.mine.getPriOrStu(params)
+    setPriorityList(result)
   }
 
   const getProjectCoverList = async () => {
@@ -224,5 +230,6 @@ export default () => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
+    getPriorityList,
   }
 }

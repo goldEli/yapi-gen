@@ -35,6 +35,7 @@ const Detail = () => {
     setSelectAllStaffData,
     getFieldList,
     isChangeProject,
+    getPriorityList,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
   const { isOpenEditDemand } = useModel('demand')
@@ -231,6 +232,7 @@ const Detail = () => {
     getFieldData()
     getStaffData()
     getTreeData(projectInfo, selectIterate, memberList)
+    getPriorityList({ projectId, type: 'priority' })
   }
 
   useEffect(() => {

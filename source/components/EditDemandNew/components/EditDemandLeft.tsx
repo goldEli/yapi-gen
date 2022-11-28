@@ -44,6 +44,7 @@ const EditDemandLeft = (props: Props) => {
   const [projectList, setProjectList] = useState<any>([])
   const { projectInfo, getProjectInfo, setFieldList } = useModel('project')
   const { getProjectList } = useModel('mine')
+  const { filterParams } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [tagList, setTagList] = useState<any>([])
 
