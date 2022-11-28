@@ -129,6 +129,33 @@ const HeaderWrap = styled.div({
   justifyContent: 'space-between',
 })
 
+const MoreDrop = (props: any) => {
+  const [showPop, setShowPop] = useState(false)
+  return (
+    <Popover
+      visible={showPop}
+      content={props.content}
+      placement="bottomRight"
+      trigger={['click', 'hover']}
+      onVisibleChange={visible => setShowPop(visible)}
+    >
+      <MoreWrap2>
+        <div
+          style={{
+            marginRight: '8px',
+          }}
+          className="job"
+        >
+          {props.positionName}
+        </div>
+        <span className="job1">
+          <IconFont style={{ fontSize: 16 }} type="down" />
+        </span>
+      </MoreWrap2>
+    </Popover>
+  )
+}
+
 const Member = (props: Props) => {
   const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
@@ -138,7 +165,7 @@ const Member = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [memberList, setMemberList] = useState<any>([])
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
+  const [showPop, setShowPop] = useState(false)
   const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -158,18 +185,14 @@ const Member = (props: Props) => {
     init()
   }, [])
   const moreOperation = (values: any) => {
-    // console.log(values)
-    const arr = ['管理员', ' 编辑者', '参与者', '自定义权限组']
     const onChangeRule = async (i: any) => {
-      const res = await updateMember({
+      await updateMember({
         projectId: props.projectId,
         userGroupId: i,
         userIds: values.id,
       })
-      if (res.code === 0) {
-        message.success(res.message)
-        getList()
-      }
+
+      getList()
     }
     return (
       <div
@@ -285,25 +308,10 @@ const Member = (props: Props) => {
                     <span>{i.roleName}</span>
                   </div>
                 </div>
-                <Popover
+                <MoreDrop
+                  positionName={i.positionName}
                   content={moreOperation(i)}
-                  placement="bottomRight"
-                  getPopupContainer={node => node}
-                >
-                  <MoreWrap2>
-                    <div
-                      style={{
-                        marginRight: '8px',
-                      }}
-                      className="job"
-                    >
-                      {i.positionName}
-                    </div>
-                    <span className="job1">
-                      <IconFont style={{ fontSize: 16 }} type="down" />
-                    </span>
-                  </MoreWrap2>
-                </Popover>
+                />
               </ListItem>
             ))}
           </ListWrap>
