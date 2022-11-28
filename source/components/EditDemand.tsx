@@ -334,6 +334,7 @@ const EditDemand = (props: Props) => {
       form1.setFieldsValue(form1Obj)
 
       setPriorityDetail(res.priority)
+      //  这里会有问题
       setAttachList(
         res?.attachment.map((i: any) => ({
           url: i.attachment.path,
