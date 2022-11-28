@@ -519,7 +519,7 @@ const UploadAttach = (props: any) => {
                       >
                         /
                       </span>
-                      <span>{bytesToSize(i.file?.size)}xx</span>
+                      <span>{bytesToSize(i.file?.size)}</span>
                     </>
                   )}
                   {i.state === 'paused' && <span> {t('p2.paused')}</span>}
