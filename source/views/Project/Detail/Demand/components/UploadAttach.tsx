@@ -14,9 +14,8 @@ import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
 import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
-import moment from 'moment'
 import Viewer from 'react-viewer'
-import { css } from '@emotion/react'
+import myImg from '/public/er.png'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -108,6 +107,7 @@ export const Card = styled.div`
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
+  padding-right: 80px;
 `
 
 const StyledProgress = styled(Progress)`
@@ -130,8 +130,8 @@ export const fileIconMap: Record<string, string> = {
   wav: 'colormusic',
   cad: 'colormusic',
   doc: 'colordoc',
-  docx: 'colordoc',
-  pdf: 'colorPDF',
+  docx: 'colorDOC-76p4mioh',
+  pdf: 'colorpdf',
   zip: 'zip',
   rar: 'zip',
 }
@@ -400,7 +400,7 @@ const UploadAttach = (props: any) => {
                       borderRadius: '4px',
                     }}
                     alt=""
-                    src={i.file.url}
+                    src={i.file.url ? i.file.url : myImg}
                   />
                 )}
                 {!imgs.includes(i.file.suffix) && (
@@ -495,7 +495,7 @@ const UploadAttach = (props: any) => {
                     color: '#323233',
                     lineHeight: '22px',
                     wordBreak: 'break-all',
-                    width: '90%',
+                    // width: '90%',
                   }}
                 >
                   {i.file.name}
@@ -519,7 +519,7 @@ const UploadAttach = (props: any) => {
                       >
                         /
                       </span>
-                      <span>{bytesToSize(i.file?.size)}xx</span>
+                      <span>{bytesToSize(i.file?.size)}</span>
                     </>
                   )}
                   {i.state === 'paused' && <span> {t('p2.paused')}</span>}
@@ -535,7 +535,12 @@ const UploadAttach = (props: any) => {
                   )}
                   {i.state === 'success' && (
                     <>
-                      <span>{bytesToSize(i.file?.size) ?? ''}</span>
+                      {i.file?.size === 0 ? (
+                        '--'
+                      ) : (
+                        <span>{bytesToSize(i.file?.size) ?? ''}</span>
+                      )}
+
                       <span
                         style={{
                           margin: '0 6px 0 6px',
@@ -543,12 +548,13 @@ const UploadAttach = (props: any) => {
                       >
                         ·
                       </span>
+
                       <span
                         style={{
                           marginRight: '12px',
                         }}
                       >
-                        {i.file.username}
+                        {i.file.username ?? userInfo?.name}
                       </span>
                       <span>{i.file.time}</span>
                     </>
