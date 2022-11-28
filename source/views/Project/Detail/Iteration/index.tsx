@@ -144,6 +144,7 @@ const IterationWrap = () => {
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -256,6 +257,11 @@ const IterationWrap = () => {
     setTitleList(projectInfo.titleList)
     setTitleList2(projectInfo.titleList2)
     setTitleList3(projectInfo.titleList3)
+    setAllTitleList([
+      ...projectInfo.titleList,
+      ...projectInfo.titleList2,
+      ...projectInfo.titleList3,
+    ])
   }
 
   useEffect(() => {
@@ -330,10 +336,16 @@ const IterationWrap = () => {
     setSearchGroups(obj)
   }
 
-  const getCheckList = (list: any[], list2: any[], list3: any[]) => {
+  const getCheckList = (
+    list: any[],
+    list2: any[],
+    list3: any[],
+    all: any[],
+  ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const content = () => {
@@ -460,6 +472,7 @@ const IterationWrap = () => {
           </MainWrap>
           {settingState ? (
             <OptionalFeld
+              allTitleList={allTitleList}
               plainOptions={plainOptions}
               plainOptions2={plainOptions2}
               plainOptions3={plainOptions3}

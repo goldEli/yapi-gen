@@ -9,12 +9,12 @@ const InfoItem = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginTop: 24,
-  fontSize: 14,
+  fontSize: 12,
   fontWeight: 400,
   span: {
     color: '#646566',
     display: 'inline-block',
-    minWidth: 120,
+    minWidth: 80,
   },
   div: {
     color: '#323233',
@@ -22,6 +22,8 @@ const InfoItem = styled.div({
 })
 
 const PosterWrap = styled.div({
+  paddingBottom: '16px',
+  borderBottom: '1px solid #ECEDEF',
   display: 'flex',
   flexDirection: 'column',
   img: {
@@ -62,47 +64,76 @@ const ProjectInfo = (props: Props) => {
       >
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
-          <div>{projectInfo.name}</div>
+          <div
+            style={{
+              fontSize: '18px',
+
+              fontWeight: 'bold',
+              color: '#323233',
+            }}
+          >
+            {projectInfo.name}
+          </div>
           <span>{projectInfo.info || '--'}</span>
         </PosterWrap>
-        <InfoItem>
-          <span>{t('project.projectId')}</span>
-          <div>{projectInfo.id}</div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('common.createName')}</span>
-          <div>{projectInfo.userName || '--'}</div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('common.createTime')}</span>
-          <div>{projectInfo.createTime || '--'}</div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('project.projectStatus')}</span>
-          <div>
-            {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
+        <div
+          style={{
+            display: 'flex',
+            paddingBottom: '175px',
+          }}
+        >
+          <div
+            style={{
+              marginRight: '50px',
+            }}
+          >
+            <InfoItem>
+              <span>{t('project.projectId')}</span>
+              <div>{projectInfo.id}</div>
+            </InfoItem>
+            <InfoItem>
+              <span>{t('common.createName')}</span>
+              <div>{projectInfo.userName || '--'}</div>
+            </InfoItem>
+            <InfoItem>
+              <span>{t('project.projectStatus')}</span>
+              <div>
+                {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
+              </div>
+            </InfoItem>
+            <InfoItem>
+              <span>{t('common.demand')}</span>
+              <div>{projectInfo.demandCount || 0}</div>
+            </InfoItem>
           </div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('common.permission')}</span>
-          <div>
-            {projectInfo.isPublic === 1
-              ? t('common.publicProject')
-              : t('common.privateProject')}
+          <div
+            style={{
+              flex: 1,
+            }}
+          >
+            <InfoItem>
+              <span>{t('common.createTime')}</span>
+              <div>{projectInfo.createTime || '--'}</div>
+            </InfoItem>
+            <InfoItem>
+              <span>{t('common.permission')}</span>
+              <div>
+                {projectInfo.isPublic === 1
+                  ? t('common.publicProject')
+                  : t('common.privateProject')}
+              </div>
+            </InfoItem>
+
+            <InfoItem>
+              <span>{t('project.iterateEdition')}</span>
+              <div>{projectInfo.iterateCount || 0}</div>
+            </InfoItem>
+            <InfoItem>
+              <span>{t('project.projectMember')}</span>
+              <div>{projectInfo.memberCount || 0}</div>
+            </InfoItem>
           </div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('common.demand')}</span>
-          <div>{projectInfo.demandCount || 0}</div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('project.iterateEdition')}</span>
-          <div>{projectInfo.iterateCount || 0}</div>
-        </InfoItem>
-        <InfoItem>
-          <span>{t('project.projectMember')}</span>
-          <div>{projectInfo.memberCount || 0}</div>
-        </InfoItem>
+        </div>
       </div>
     </CommonModal>
   )

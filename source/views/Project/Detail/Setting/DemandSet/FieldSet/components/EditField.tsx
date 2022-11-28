@@ -96,7 +96,6 @@ const DragHandle = sortableHandle(() => (
 const SortContainer = sortableContainer<any>((props: any) => (
   <ul className="flex flex1" {...props} />
 ))
-
 // 拖拽元素
 const SortItemLi = sortableElement<any>((props: any) => (
   <li helperClass="row-dragging" {...props} />
