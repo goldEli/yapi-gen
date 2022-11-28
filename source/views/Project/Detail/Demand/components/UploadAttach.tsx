@@ -144,8 +144,6 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
   }
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
-const fils = ['xlsx', 'pdf']
-const fils2 = fils.concat(imgs)
 
 const UploadAttach = (props: any) => {
   const { userInfo } = useModel('user')
@@ -497,6 +495,7 @@ const UploadAttach = (props: any) => {
                     color: '#323233',
                     lineHeight: '22px',
                     wordBreak: 'break-all',
+                    width: '90%',
                   }}
                 >
                   {i.file.name}

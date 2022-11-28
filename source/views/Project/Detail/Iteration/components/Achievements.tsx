@@ -91,7 +91,7 @@ const Achievements = (props: Props) => {
         time: i.created_at,
         name: i.attachment.name,
         suffix: i.attachment.ext,
-        username: i.user_name,
+        username: i.user_name ?? '--',
       })) || [],
     )
   }
