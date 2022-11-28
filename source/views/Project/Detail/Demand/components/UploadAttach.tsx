@@ -108,6 +108,7 @@ export const Card = styled.div`
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
+  padding-right: 80px;
 `
 
 const StyledProgress = styled(Progress)`
@@ -495,7 +496,7 @@ const UploadAttach = (props: any) => {
                     color: '#323233',
                     lineHeight: '22px',
                     wordBreak: 'break-all',
-                    width: '90%',
+                    // width: '90%',
                   }}
                 >
                   {i.file.name}
