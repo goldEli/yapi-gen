@@ -99,6 +99,7 @@ export default () => {
   const getProjectInfo = async (params: any) => {
     const result = await services.project.getProjectInfo(params)
     setProjectInfo(result)
+    return result
   }
 
   const getMemberList = async (params: any) => {

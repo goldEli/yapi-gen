@@ -23,6 +23,7 @@ export default () => {
   const getIterateSelectList = async (params: any) => {
     const result = await services.iterate.getIterateList(params)
     setSelectIterate(result)
+    return result
   }
 
   const {
