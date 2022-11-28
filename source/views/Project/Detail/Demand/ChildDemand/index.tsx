@@ -132,13 +132,11 @@ const ChildDemand = () => {
     setTitleList(projectInfo?.titleList || [])
     setTitleList2(projectInfo?.titleList2 || [])
     setTitleList3(projectInfo?.titleList3 || [])
-    setAllTitleList(
-      [
-        ...projectInfo.titleList,
-        ...projectInfo.titleList2,
-        ...projectInfo.titleList3,
-      ] || [],
-    )
+    setAllTitleList([
+      ...(projectInfo.titleList || []),
+      ...(projectInfo.titleList2 || []),
+      ...(projectInfo.titleList3 || []),
+    ])
   }
 
   const getList = async (
