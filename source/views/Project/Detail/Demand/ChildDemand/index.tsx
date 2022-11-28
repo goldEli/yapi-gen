@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 // 需求详情-子需求
 
 /* eslint-disable complexity */
@@ -94,6 +95,7 @@ const ChildDemand = () => {
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -130,6 +132,13 @@ const ChildDemand = () => {
     setTitleList(projectInfo?.titleList || [])
     setTitleList2(projectInfo?.titleList2 || [])
     setTitleList3(projectInfo?.titleList3 || [])
+    setAllTitleList(
+      [
+        ...projectInfo.titleList,
+        ...projectInfo.titleList2,
+        ...projectInfo.titleList3,
+      ] || [],
+    )
   }
 
   const getList = async (
@@ -172,10 +181,12 @@ const ChildDemand = () => {
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
     list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const onEdit = (e: any, item: any) => {
@@ -321,7 +332,7 @@ const ChildDemand = () => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2, ...titleList3]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -418,6 +429,7 @@ const ChildDemand = () => {
       </PaginationWrap>
       {isSettingState ? (
         <OptionalFeld
+          allTitleList={allTitleList}
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
           plainOptions3={plainOptions3}

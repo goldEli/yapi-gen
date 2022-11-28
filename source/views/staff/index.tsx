@@ -110,7 +110,7 @@ const Staff = () => {
   const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
     'created_at',
   ])
-
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
 
   const getStaffListData = async () => {
@@ -196,7 +196,7 @@ const Staff = () => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -259,9 +259,12 @@ const Staff = () => {
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
+    setAllTitleList(all)
   }
   const onSearch = async (e: any) => {
     setSearchGroups({
@@ -285,6 +288,7 @@ const Staff = () => {
   }, [page, pagesize])
 
   useEffect(() => {
+    setAllTitleList([...titleList, ...titleList2])
     setPage(1)
     init()
   }, [keyword, searchGroups, orderKey, order])
@@ -434,6 +438,7 @@ const Staff = () => {
       </div>
 
       <OptionalFeld
+        allTitleList={allTitleList}
         plainOptions={plainOptions}
         plainOptions2={plainOptions2}
         checkList={titleList}
