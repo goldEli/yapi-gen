@@ -14,9 +14,8 @@ import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
 import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
-import moment from 'moment'
 import Viewer from 'react-viewer'
-import { css } from '@emotion/react'
+import myImg from '/public/er.png'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -401,7 +400,7 @@ const UploadAttach = (props: any) => {
                       borderRadius: '4px',
                     }}
                     alt=""
-                    src={i.file.url}
+                    src={i.file.url ? i.file.url : myImg}
                   />
                 )}
                 {!imgs.includes(i.file.suffix) && (
@@ -537,7 +536,7 @@ const UploadAttach = (props: any) => {
                   {i.state === 'success' && (
                     <>
                       {i.file?.size === 0 ? (
-                        '70kb'
+                        '--'
                       ) : (
                         <span>{bytesToSize(i.file?.size) ?? ''}</span>
                       )}
