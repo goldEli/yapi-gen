@@ -118,8 +118,8 @@ const StyledProgress = styled(Progress)`
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
-  ppt: 'colorppt',
-  pptx: 'colorppt',
+  ppt: 'colorPPT',
+  pptx: 'colorPPT',
   avi: 'colorvideo',
   mp4: 'colorvideo',
   mov: 'colorvideo',
