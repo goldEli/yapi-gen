@@ -554,7 +554,7 @@ const UploadAttach = (props: any) => {
                           marginRight: '12px',
                         }}
                       >
-                        {i.file.username ?? userInfo?.name}
+                        {i.file.username}
                       </span>
                       <span>{i.file.time}</span>
                     </>
