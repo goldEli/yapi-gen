@@ -1,12 +1,67 @@
-/* eslint-disable max-lines */
 // 两次以上的公共样式
 
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
+
+// 新版移入效果例：项目列表左上方操作
+const HoverWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 8px',
+    height: 32,
+    borderRadius: 6,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      fontSize: 14,
+      fontWeight: 400,
+      marginLeft: 8,
+    },
+    svg: {
+      fontSize: 16,
+    },
+    '&: hover': {
+      background: '#F4F5F5',
+      color: '#323233',
+    },
+  },
+  ({ isActive }) => ({
+    color: isActive ? '#2877ff' : '#969799',
+  }),
+)
+
+// 次按钮样式
+const SecondButton = styled(Button)`
+  height: 32px;
+  border-radius: 6px;
+  background: #f0f4fa;
+  cursor: pointer;
+  padding: 0 16px;
+  color: #2877ff;
+  display: flex;
+  align-items: center;
+  svg {
+    font-size: 16px;
+  }
+  div {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  &:hover {
+    background: #2877ff;
+    color: white;
+  }
+  &:focus {
+    background: #1763e5;
+    color: white;
+  }
+`
 
 const TextWrapEditor = styled.div({
   p: {
@@ -15,21 +70,26 @@ const TextWrapEditor = styled.div({
   img: { maxWidth: '100%' },
 })
 
-const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
+const CloseWrap = styled.div<{ width?: any; height?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
+    borderRadius: 6,
+    '.anticon': {
+      color: '#646566',
+    },
     '&: hover': {
-      '.anticon': {
-        color: '#2877ff',
+      background: '#F4F5F5',
+      svg: {
+        color: '#323233',
       },
     },
   },
-  ({ width, height, isRight }) => ({
+  ({ width, height }) => ({
     width,
     height,
-    justifyContent: isRight ? 'right' : 'center',
   }),
 )
 
@@ -425,10 +485,40 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     fontWeight: 400,
     marginLeft: 8,
     flexShrink: 0,
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ color, bgColor }) => ({
     background: bgColor,
     color,
+  }),
+)
+
+const CanOperationCategory = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    width: 'fit-content',
+    '.title': {
+      '::before': {
+        content: "'#'",
+      },
+      '::after': {
+        content: "'#'",
+      },
+    },
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
   }),
 )
 
@@ -837,4 +927,7 @@ export {
   CloseWrap,
   TextWrapEditor,
   TableStyleBox,
+  CanOperationCategory,
+  SecondButton,
+  HoverWrap,
 }

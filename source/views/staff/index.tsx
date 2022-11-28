@@ -1,3 +1,5 @@
+// 公司成员主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -28,6 +30,7 @@ import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 export const tableWrapP = css`
   display: flex;
@@ -63,7 +66,10 @@ export const DataWrap = styled.div({
 })
 
 const Staff = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.b5'))
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
@@ -276,13 +282,11 @@ const Staff = () => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, searchGroups, orderKey, order])
 
   const rest = debounce(

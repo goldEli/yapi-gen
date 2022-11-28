@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+// 左侧操作栏
+
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -224,14 +225,15 @@ export const Side = () => {
           content={<Panel onChange={() => setPanelVisible(false)} />}
           onVisibleChange={visible => setPanelVisible(visible)}
         >
-          {userInfo.avatar ? (
+          {userInfo.avatar && (
             <img
               style={{ cursor: 'pointer' }}
               className={imgCss}
               src={userInfo.avatar}
               onClick={controlPanelVisible}
             />
-          ) : (
+          )}
+          {!userInfo.avatar && (
             <SetHead onClick={controlPanelVisible}>
               {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
             </SetHead>

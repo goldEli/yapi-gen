@@ -1,3 +1,5 @@
+// 需求设置-编辑需求类别
+
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
@@ -25,6 +27,12 @@ const ViewWrap = styled.div<{ color: string; bgColor: string }>(
     lineHeight: '22px',
     fontSize: 12,
     fontWeight: 400,
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ color, bgColor }) => ({
     background: bgColor,
@@ -47,7 +55,7 @@ const EditorCategory = (props: EditorProps) => {
   } = useModel('project')
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
-  const [normalColor, setNormalColor] = useState<any>('')
+  const [normalColor, setNormalColor] = useState<any>('#2877FF')
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -60,6 +68,9 @@ const EditorCategory = (props: EditorProps) => {
       setName(props?.item?.name)
     } else {
       form.resetFields()
+      form.setFieldsValue({
+        color: '#2877FF',
+      })
       setName('')
     }
     setTimeout(() => {
@@ -71,7 +82,7 @@ const EditorCategory = (props: EditorProps) => {
     props?.onClose()
     setTimeout(() => {
       form.resetFields()
-      setNormalColor('')
+      setNormalColor('#2877FF')
       setName('')
       getCategoryList({ projectId: paramsData.id })
     }, 100)
@@ -110,7 +121,7 @@ const EditorCategory = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('')
+      setNormalColor('#2877FF')
     }, 100)
   }
 

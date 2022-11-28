@@ -13,6 +13,7 @@ import WhiteDay from './components/WhiteDay'
 import { RedLogo } from '../Container/components/Side'
 import { useSelector } from 'react-redux'
 import { writeDaily } from '@/services/daily'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div`
   height: 100%;
@@ -78,7 +79,10 @@ type MenuList = {
 }
 
 const Information = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c6'))
   const menuList = [
     {
       id: 1,
@@ -197,10 +201,6 @@ const Information = () => {
       background: #f0f4fa;
       color: #2877ff;
     }
-  `
-  const RedLogo2 = styled(RedLogo)`
-    right: 10px;
-    top: 14px;
   `
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)

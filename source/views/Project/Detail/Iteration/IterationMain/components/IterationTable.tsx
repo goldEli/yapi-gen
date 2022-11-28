@@ -1,7 +1,15 @@
+// 迭代-表格模式
+
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Pagination, Dropdown, Menu, message, Spin } from 'antd'
+/* eslint-disable complexity */
+import { Pagination, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  SecondButton,
+} from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -14,6 +22,9 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+// import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Content = styled.div({
   padding: 16,
@@ -27,11 +38,15 @@ const RowIconFont = styled(IconFont)({
   color: '#2877ff',
 })
 
-const DataWrap = styled.div({
-  background: 'white',
-  overflowX: 'auto',
-  height: 'calc(100% - 40px)',
-})
+const DataWrap = styled.div<{ hasCreate: boolean }>(
+  {
+    background: 'white',
+    overflowX: 'auto',
+  },
+  ({ hasCreate }) => ({
+    height: hasCreate ? 'calc(100% - 40px)' : 'calc(100% - 88px)',
+  }),
+)
 
 interface Props {
   data: any
@@ -48,6 +63,8 @@ interface Props {
 }
 
 const IterationTable = (props: Props) => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -65,7 +82,8 @@ const IterationTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-
+  const [isEdit, setIsEdit] = useState(false)
+  asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -185,6 +203,11 @@ const IterationTable = (props: Props) => {
     'b/story/delete',
   )
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/save',
+  )
+
   const menu = (item: any) => {
     let menuItems = [
       {
@@ -241,7 +264,27 @@ const IterationTable = (props: Props) => {
 
   return (
     <Content style={{ height: 'calc(100% - 64px)' }}>
-      <DataWrap ref={dataWrapRef}>
+      {isEdit && (
+        <EditDemand
+          visible={isEdit}
+          onChangeVisible={() => setIsEdit(!isEdit)}
+          iterateId={props.hasId?.id}
+          onUpdate={() => props.onUpdate(true)}
+        />
+      )}
+
+      {!hasCreate && props.hasId && props.hasId?.status === 1 && (
+        <div style={{ padding: '10px 0 10px 16px', background: 'white' }}>
+          <SecondButton onClick={() => setIsEdit(true)}>
+            <IconFont type="plus" />
+            <div>{t('common.createDemand')}</div>
+          </SecondButton>
+        </div>
+      )}
+      <DataWrap
+        ref={dataWrapRef}
+        hasCreate={hasCreate || props.hasId?.status !== 1}
+      >
         <Spin spinning={props?.isSpinning}>
           {typeof props?.hasId === 'object' ? (
             props.data?.list ? (

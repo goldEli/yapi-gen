@@ -24,7 +24,6 @@ import { getDailyList, writeDaily } from '@/services/daily'
 import { DailyContext } from '.'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
-import styled from '@emotion/styled'
 
 const titleList = {
   2: '修改日报',

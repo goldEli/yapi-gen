@@ -1,3 +1,5 @@
+// 他的模块所有页面公用列表及查询
+
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
@@ -25,7 +27,8 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemand'
+// import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -126,7 +129,6 @@ const MoreWrap = (props: MoreWrapProps) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
   return (
-    // <ShowWrap>
     <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
         <MoreDropdown
@@ -136,7 +138,6 @@ const MoreWrap = (props: MoreWrapProps) => {
         />
       )}
     </>
-    // </ShowWrap>
   )
 }
 
@@ -352,7 +353,6 @@ const CommonNeed = (props: any) => {
       },
     ]
     return [...arrList, ...newList]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
   const getShowkey = async () => {
@@ -404,13 +404,11 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init(1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
@@ -426,7 +424,6 @@ const CommonNeed = (props: any) => {
         getSearchKey()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefresh])
 
   const showModal = () => {
@@ -574,7 +571,7 @@ const CommonNeed = (props: any) => {
         </SearchWrap>
       </TabsHehavior>
 
-      {isShowSearch && props.id !== 0 ? (
+      {isShowSearch && props.id !== 0 && (
         <div style={{ borderLeft: '1px solid #EBEDF0' }}>
           <TableFilter
             onFilter={getSearchKey}
@@ -585,7 +582,7 @@ const CommonNeed = (props: any) => {
             customList={filterCustomList}
           />
         </div>
-      ) : null}
+      )}
       {!isMany && (
         <div>
           <LoadingSpin spinning={isSpin}>
@@ -608,7 +605,7 @@ const CommonNeed = (props: any) => {
         </div>
       )}
 
-      {isMany ? (
+      {isMany && (
         <div>
           <LoadingSpin spinning={isSpin}>
             {manyListData.list &&
@@ -654,7 +651,7 @@ const CommonNeed = (props: any) => {
               ))}
           </LoadingSpin>
         </div>
-      ) : null}
+      )}
 
       {!isMany && listData?.list?.length > 0 && (
         <PaginationWrap style={{ paddingRight: 24 }}>
@@ -672,7 +669,7 @@ const CommonNeed = (props: any) => {
           />
         </PaginationWrap>
       )}
-      {isModalVisible ? (
+      {isModalVisible && (
         <OptionalFeld
           plainOptions={plainOptions}
           plainOptions2={plainOptions2}
@@ -684,8 +681,8 @@ const CommonNeed = (props: any) => {
           onClose={close2}
           getCheckList={getCheckList}
         />
-      ) : null}
-      {isVisible ? (
+      )}
+      {isVisible && (
         <EditDemand
           visible={isVisible}
           onChangeVisible={onChangeVisible}
@@ -694,7 +691,7 @@ const CommonNeed = (props: any) => {
           onUpdate={onUpdate}
           notGetPath
         />
-      ) : null}
+      )}
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}

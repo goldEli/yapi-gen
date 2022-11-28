@@ -1,3 +1,5 @@
+// 需求设置-工作流
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable new-cap */
@@ -176,10 +178,11 @@ const Workflow = () => {
             <span>{t('newlyAdd.reviewSet')}</span>
           </StepBoxWrap>
         </StepWrap>
-        {step === 1
-          ? <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
-          : <StepPageTwo />
-        }
+        {step === 1 ? (
+          <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
+        ) : (
+          <StepPageTwo />
+        )}
       </ContentWrap>
     </Wrap>
   )

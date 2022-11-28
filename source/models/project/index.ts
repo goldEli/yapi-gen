@@ -28,6 +28,8 @@ export default () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  // 改变项目-项目id
+  const [isChangeProject, setIsChangeProject] = useState(0)
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -139,6 +141,10 @@ export default () => {
     addStoryConfigStatus,
     deleteStoryConfigStatus,
     updateStoryConfigStatus,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
   } = services.project
 
   return {
@@ -180,6 +186,7 @@ export default () => {
     colorList,
     getFieldList,
     fieldList,
+    setFieldList,
     option,
     addStoryConfigField,
     deleteStoryConfigField,
@@ -206,10 +213,15 @@ export default () => {
     updateStoryConfigStatus,
     workList,
     setWorkList,
-    setFieldList,
     setSelectTreeData,
     selectTreeData,
     setSelectAllStaffData,
     selectAllStaffData,
+    setIsChangeProject,
+    isChangeProject,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
   }
 }

@@ -1,8 +1,10 @@
+// 权限设置
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Input, Space, message, Menu, Dropdown, Spin } from 'antd'
+import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -13,6 +15,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Header = styled.div({
   height: 64,
@@ -73,13 +76,6 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
-const IconWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  right: 10,
-  fontSize: '16px!important',
-})
-
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -138,14 +134,6 @@ const MainWrapItem = styled.div({
   padding: '24px 0',
   display: 'flex',
   alignItems: 'center',
-})
-
-const ModalHeader = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: 16,
-  color: '#323233',
 })
 
 const ModalFooter = styled(Space)({
@@ -212,7 +200,9 @@ const PermissionItem = (props: ItemProps) => {
 }
 
 const Permission = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c2'))
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])

@@ -1,10 +1,11 @@
+// 需求主页-需求表格模式
+
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
-import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -15,6 +16,7 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -42,6 +44,7 @@ interface Props {
 }
 
 const DemandTable = (props: Props) => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -58,7 +61,7 @@ const DemandTable = (props: Props) => {
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-
+  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])

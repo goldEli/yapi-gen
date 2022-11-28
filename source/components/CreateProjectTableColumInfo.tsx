@@ -1,3 +1,5 @@
+// 公用我的/他的需求列表表格
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
 import { ShapeContent } from '@/components/Shape'
@@ -201,8 +203,9 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) =>
-              record.project?.isPublic !== 1 &&
-              !record.project?.isUserMember ? null : (
+              !(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && (
                 <LevelContent
                   onTap={state.updatePriority}
                   onHide={onHide}
@@ -235,8 +238,9 @@ export const useDynamicColumns = (state: any) => {
                   {text?.content_txt || '--'}
                 </span>
               </Wrap>
-              {record.project?.isPublic !== 1 &&
-              !record.project?.isUserMember ? null : (
+              {!(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && (
                 <ShowWrap>
                   <IconFont style={{ color: '#2877ff' }} type="down-icon" />
                 </ShowWrap>
@@ -330,15 +334,19 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) => {
-              return record.isExamine ||
-                (record.project?.isPublic !== 1 &&
-                  !record.project?.isUserMember) ? null : (
-                <ShapeContent
-                  tap={(value: any) => state.updateStatus(value)}
-                  hide={onHide}
-                  record={record}
-                  row={record}
-                />
+              return (
+                !(
+                  record.isExamine ||
+                  (record.project?.isPublic !== 1 &&
+                    !record.project?.isUserMember)
+                ) && (
+                  <ShapeContent
+                    tap={(value: any) => state.updateStatus(value)}
+                    hide={onHide}
+                    record={record}
+                    row={record}
+                  />
+                )
               )
             }}
             record={record}
@@ -399,17 +407,22 @@ export const useDynamicColumns = (state: any) => {
         return (
           <>
             {record?.usersNameIds?.includes(userInfo?.id) &&
-            record.status.is_start !== 1 &&
-            record.status.is_end !== 1 ? (
-              <div style={{ cursor: 'pointer' }}>
-                <DemandProgress
-                  value={record.schedule}
-                  row={record}
-                  onUpdate={onUpdate}
-                  index={index}
-                />
-              </div>
-            ) : (
+              record.status.is_start !== 1 &&
+              record.status.is_end !== 1 && (
+                <div style={{ cursor: 'pointer' }}>
+                  <DemandProgress
+                    value={record.schedule}
+                    row={record}
+                    onUpdate={onUpdate}
+                    index={index}
+                  />
+                </div>
+              )}
+            {!(
+              record?.usersNameIds?.includes(userInfo?.id) &&
+              record.status.is_start !== 1 &&
+              record.status.is_end !== 1
+            ) && (
               <Progress
                 strokeColor="#43BA9A"
                 style={{ color: '#43BA9A', cursor: 'not-allowed' }}

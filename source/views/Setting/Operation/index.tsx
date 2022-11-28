@@ -1,8 +1,10 @@
+// 设置-操作日志
+
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Table, Select, Pagination, Form, Spin, Space } from 'antd'
+import { Select, Pagination, Form, Spin, Space } from 'antd'
 import moment from 'moment'
 import {
   PaginationWrap,
@@ -15,6 +17,7 @@ import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Header = styled.div({
   height: 'auto',
@@ -79,7 +82,9 @@ const NewSort = (sortProps: any) => {
 }
 
 const Operation = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c3'))
   const typeList = [
     { label: t('common.add'), value: 'POST' },
     { label: t('common.edit'), value: 'PUT' },

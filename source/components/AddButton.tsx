@@ -1,3 +1,5 @@
+// 添加按钮
+
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 
@@ -11,6 +13,7 @@ const Wrap = styled.div({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  width: 'fit-content',
 })
 
 interface Props {

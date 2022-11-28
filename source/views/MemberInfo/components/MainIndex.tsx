@@ -1,3 +1,5 @@
+// 他的模块所有页面公用布局
+
 /* eslint-disable react/jsx-no-useless-fragment */
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
@@ -40,7 +42,6 @@ const MainIndex = (props: Props) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getProjectId = (value: any) => {

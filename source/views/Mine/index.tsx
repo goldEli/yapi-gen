@@ -1,9 +1,12 @@
+// 我的模块主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-import EditDemand from '@/components/EditDemand'
+// import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'

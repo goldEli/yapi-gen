@@ -299,7 +299,7 @@ const UploadAttach = (props: any) => {
   }, [])
 
   const setDefaultList = () => {
-    if (props.defaultList.length >= 1) {
+    if (props.defaultList?.length >= 1) {
       const arr: any[] = []
       props.defaultList.forEach((i: any, index: any) => {
         const obj = {

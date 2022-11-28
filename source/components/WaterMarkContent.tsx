@@ -1,5 +1,8 @@
+// 水印
+
 import { useMemo } from 'react'
 import { useModel } from '@/models'
+import { useSelector } from '../../store'
 
 const SvgTextBg = (props: any) => {
   const { userInfo } = useModel('user')
@@ -38,7 +41,7 @@ const SvgTextBg = (props: any) => {
 
 const WaterMarkContent = (props: any) => {
   const { text, fontSize, fillOpacity, fillColor } = props
-
+  const { value: valueId } = useSelector(store => store.water)
   const memoInfo = useMemo(
     () => ({
       text,
@@ -51,7 +54,7 @@ const WaterMarkContent = (props: any) => {
   return (
     <div style={{ position: 'relative', width: '100%', height: ' 100%' }}>
       {props.children}
-      {/* <SvgTextBg {...memoInfo} /> */}
+      {valueId === 1 && <SvgTextBg {...memoInfo} />}
     </div>
   )
 }

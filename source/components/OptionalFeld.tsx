@@ -1,3 +1,5 @@
+// 可配置的表格字段弹窗
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
@@ -24,7 +26,6 @@ const CheckedItem = styled.div({
   height: 40,
   borderRadius: 4,
   padding: '  0 16px',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   '&: hover': {
     background: ' rgba(240, 244, 250, 1)',
     [ShowWrap.toString()]: {
@@ -51,14 +52,12 @@ const ItemWrap = styled.div`
   margin-bottom: 24px;
 `
 type OptionalFeldProps = {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   plainOptions: {
     labelTxt: string
     label: string
     value: string
     is_default_display?: number
   }[]
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   plainOptions2: {
     labelTxt: string
     label: string
@@ -119,8 +118,6 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
       const arr3 = checkList3.filter(value1 => value1 !== value)
       setCheckList3([...arr3])
     }
-
-    //
   }
 
   const handleOk = () => {

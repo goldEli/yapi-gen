@@ -1,3 +1,5 @@
+// 审核列表字段
+
 import Sort from '@/components/Sort'
 import { CategoryWrap, ClickWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'

@@ -1,3 +1,5 @@
+// 公用弹窗
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { Modal, Space } from 'antd'
@@ -15,7 +17,7 @@ const ModalHeader = styled.div({
   color: '#323233',
   fontWeight: '500',
   height: 56,
-  padding: '0 0px 0 26px',
+  padding: '0 16px 0 26px',
 })
 
 const ModalFooter = styled(Space)({
@@ -59,7 +61,7 @@ const CommonModal = (props: ModalProps) => {
         <span>{props?.title}</span>
         <Space size={4}>
           {props.hasTop}
-          <CloseWrap onClick={props?.onClose} width={60} height={52}>
+          <CloseWrap onClick={props?.onClose} width={32} height={32}>
             <IconFont type="close" />
           </CloseWrap>
         </Space>

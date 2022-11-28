@@ -1,3 +1,6 @@
+// 公用的popover,例：修改修改优先级
+
+/* eslint-disable @typescript-eslint/naming-convention */
 import { useState, type ReactNode } from 'react'
 import { Popover } from 'antd'
 
@@ -6,12 +9,9 @@ type PopConfirmProps = {
   content: any
   record?: Record<string, string | number>
   isShow?: boolean
-
-  // onHide
 }
 const Popconfirm = (props: PopConfirmProps) => {
   const [visible, setVisible] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const PropsContent = props.content
   const handleVisibleChange = (newVisible: boolean) => {
     setVisible(newVisible)

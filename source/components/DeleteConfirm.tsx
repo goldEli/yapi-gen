@@ -1,3 +1,5 @@
+// 公用删除确认弹窗
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Modal, Space } from 'antd'
@@ -35,12 +37,14 @@ const ModalContent = styled.div({
   fontSize: 14,
   marginTop: 12,
   paddingLeft: 36,
+  paddingRight: 8,
 })
 
 const ModalFooter = styled(Space)({
   marginTop: 12,
   display: 'flex',
   justifyContent: 'flex-end',
+  paddingRight: 8,
 })
 
 const DeleteConfirm = (props: Props) => {
@@ -50,7 +54,7 @@ const DeleteConfirm = (props: Props) => {
       visible={props.isVisible}
       title={false}
       footer={false}
-      bodyStyle={{ padding: '16px 24px' }}
+      bodyStyle={{ padding: '16px 16px 16px 24px' }}
       closable={false}
       width={420}
       maskClosable={false}
@@ -63,7 +67,7 @@ const DeleteConfirm = (props: Props) => {
           <IconFont style={{ fontSize: 24, color: '#FA9746' }} type="Warning" />
           <div>{props.title ? props.title : t('components.deleteConfirm')}</div>
         </Title>
-        <CloseWrap width={30} isRight onClick={props?.onChangeVisible}>
+        <CloseWrap width={32} height={32} onClick={props?.onChangeVisible}>
           <IconFont style={{ fontSize: 16 }} type="close" />
         </CloseWrap>
       </ModalHeader>

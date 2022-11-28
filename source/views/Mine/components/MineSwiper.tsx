@@ -1,3 +1,5 @@
+// 我的模块-项目swiper
+
 import { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -47,7 +49,6 @@ const SwiperCardMove = (props: any) => {
               name={item.name}
               avtar={item.cover}
               tap={() => {
-                // setSwiperActive(item.id)
                 onClickProject(item)
               }}
               show={swiperActive === item.id}

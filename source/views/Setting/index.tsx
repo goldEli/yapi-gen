@@ -1,3 +1,5 @@
+// 公司设置主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import IconFont from '@/components/IconFont'
@@ -135,6 +137,15 @@ const Setting = () => {
       name: t('setting.loginLog'),
       icon: 'solution',
       path: 'loginLog',
+      isHidden: getIsPermission(
+        userInfo?.company_permissions,
+        'b/company/login_logs',
+      ),
+    },
+    {
+      name: t('v2_1_1.configuration'),
+      icon: 'solution',
+      path: 'universal',
       isHidden: getIsPermission(
         userInfo?.company_permissions,
         'b/company/login_logs',

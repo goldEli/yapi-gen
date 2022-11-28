@@ -1,3 +1,7 @@
+/* eslint-disable complexity */
+/* eslint-disable max-len */
+// 他的模块-他的概况
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
@@ -24,6 +28,7 @@ import Loading from '@/components/Loading'
 import { getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
+import useSetTitle from '@/hooks/useSetTitle'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -154,6 +159,7 @@ const TotalWrap = styled.div({
 })
 
 const Profile = () => {
+  const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
   const {
     getUserInfoOverviewFeed,
@@ -161,9 +167,10 @@ const Profile = () => {
     getMemberInfoOverviewStatistics,
     getMemberGantt,
     getUserGantt,
+    mainInfo,
   } = useModel('member')
   const { userInfo } = useModel('user')
-  const { colorList } = useModel('project')
+  const { colorList, projectInfo } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -175,7 +182,11 @@ const Profile = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId, id } = paramsData
-
+  asyncSetTtile(
+    `${t('title.a3')}【${mainInfo.name}】${
+      projectInfo.name ? `-【 ${projectInfo.name}】` : ''
+    } `,
+  )
   const changeMonth = async () => {
     const params: any = {
       startTime: moment()
@@ -206,7 +217,7 @@ const Profile = () => {
           k.categoryColor
         }; background: ${
           colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">${k.categoryName}</span>
+        }">#${k.categoryName}#</span>
         <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
           k.text
         }</span>
@@ -248,7 +259,6 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthIndex, page, pagesize])
 
   const forMateMonth = useMemo(() => {

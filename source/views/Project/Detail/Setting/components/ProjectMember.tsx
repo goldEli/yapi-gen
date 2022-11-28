@@ -1,3 +1,5 @@
+// 项目设置-项目成员
+
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -12,16 +14,7 @@ import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import {
-  Menu,
-  Dropdown,
-  Pagination,
-  message,
-  Select,
-  Form,
-  Spin,
-  Space,
-} from 'antd'
+import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
 import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
@@ -34,6 +27,7 @@ import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -56,13 +50,6 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   padding: 16,
-})
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
 })
 
 const FilterWrap = styled(Form)({
@@ -122,6 +109,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const ProjectMember = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -157,7 +145,7 @@ const ProjectMember = () => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-
+  asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight

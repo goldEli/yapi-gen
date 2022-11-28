@@ -34,6 +34,7 @@ const Detail = () => {
     setSelectTreeData,
     setSelectAllStaffData,
     getFieldList,
+    isChangeProject,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
   const { isOpenEditDemand } = useModel('demand')
@@ -245,7 +246,7 @@ const Detail = () => {
   return (
     <Wrap>
       <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
-      <Outlet />
+      <Outlet key={isChangeProject} />
     </Wrap>
   )
 }

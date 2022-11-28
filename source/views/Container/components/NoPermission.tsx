@@ -1,3 +1,5 @@
+// 暂无权限页面
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -202,7 +204,7 @@ const NoPermission = () => {
   return (
     <Wrap hidden={!userInfo?.id}>
       <InfoWrap>
-        {userInfo?.avatar ? (
+        {userInfo?.avatar && (
           <img
             src={userInfo?.avatar}
             style={{
@@ -213,7 +215,8 @@ const NoPermission = () => {
             }}
             alt=""
           />
-        ) : (
+        )}
+        {!userInfo?.avatar && (
           <SetHead>
             {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
           </SetHead>

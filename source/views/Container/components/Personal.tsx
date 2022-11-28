@@ -1,5 +1,6 @@
+// 个人信息面板
+
 /* eslint-disable react/jsx-handler-names */
-/* eslint-disable max-len */
 import { useState } from 'react'
 import { Spin } from 'antd'
 import { css } from '@emotion/css'

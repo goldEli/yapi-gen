@@ -1,3 +1,5 @@
+// 切换公司弹窗
+
 import { useEffect, useState } from 'react'
 import { Space } from 'antd'
 import CompanyCard from '@/views/Container/components/CompanyCard'
@@ -27,7 +29,6 @@ const CompanyModal = (props: Props) => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo])
 
   const cutCompany = (value: any) => {

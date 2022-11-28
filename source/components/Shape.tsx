@@ -1,8 +1,10 @@
+// 公用状态流转弹窗
+
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
-/* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/jsx-no-leaked-render */
 import { useEffect, useState } from 'react'
 import {
   Select,
@@ -81,7 +83,6 @@ const ButtonFooter = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
-  /* margin-top: 24px; */
   flex-direction: row-reverse;
   box-sizing: border-box;
   padding-right: 24px;
@@ -180,15 +181,6 @@ const ArrorItem = styled.div`
       visibility: hidden;
     }
   }
-`
-const danweiCss = css`
-  height: 22px;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #323233;
-  line-height: 22px;
-  margin: 0 16px;
 `
 
 const LabelComponent = (props: any) => {
@@ -488,11 +480,9 @@ export const ShapeContent = (props: any) => {
     onClear()
   }
 
-  // console.log(rightList)
-
   return (
     <Contain>
-      {props.noleft ? null : (
+      {!props.noleft && (
         <Left>
           {leftList.map((item: any) => (
             <div
@@ -516,7 +506,7 @@ export const ShapeContent = (props: any) => {
         </Left>
       )}
 
-      {loading ? (
+      {loading && (
         <Right>
           <div style={{ maxHeight: 280, overflow: 'auto' }}>
             <FormWrap>
@@ -872,7 +862,9 @@ export const ShapeContent = (props: any) => {
             <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
           </ButtonFooter>
         </Right>
-      ) : (
+      )}
+
+      {!loading && (
         <Spin
           style={{
             width: '100%',

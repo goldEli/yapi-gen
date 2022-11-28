@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form, message } from 'antd'
+import { Form } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import Editor from '@/components/Editor'
 import ChoosePeople from './ChoosePeople'
@@ -154,7 +154,6 @@ const WhiteDay = (props: any) => {
     })
   }
   const onValidator = (rule: any, value: any) => {
-    // eslint-disable-next-line no-undefined
     if (value === '<p><br></p>' || value.trim() === '') {
       return Promise.reject(
         new Error('The two passwords that you entered do not match!'),
