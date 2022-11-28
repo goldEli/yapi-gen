@@ -70,10 +70,8 @@ const Children = (props: ChildrenProps) => {
 
 const Achievements = (props: Props) => {
   const WrapDom = useRef<HTMLInputElement>(null)
-  const { uploadStatus, percentShow, percentVal } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
-  const [isShow, setIsShow] = useState(false)
   const [html, setHtml] = useState('')
   const { getAchieveInfo, achieveInfo } = useModel('iterate')
   const { projectInfo } = useModel('project')
@@ -85,7 +83,6 @@ const Achievements = (props: Props) => {
 
   const setValue = (obj: any) => {
     setHtml(obj.info)
-    // console.log(obj.attachList)
 
     setAttachList(
       obj.attachList?.map((i: any) => ({
@@ -95,6 +92,7 @@ const Achievements = (props: Props) => {
         time: i.created_at,
         name: i.attachment.name,
         suffix: i.attachment.ext,
+        username: i.user_name ?? '--',
       })) || [],
     )
   }
