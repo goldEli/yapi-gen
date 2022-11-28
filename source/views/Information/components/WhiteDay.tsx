@@ -113,6 +113,7 @@ const WhiteDay = (props: any) => {
           time: item.created_at,
           name: item.configurations.name,
           suffix: item.configurations.ext,
+          username: '123',
         }
       }),
     )

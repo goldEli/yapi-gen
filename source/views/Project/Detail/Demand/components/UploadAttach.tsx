@@ -536,7 +536,12 @@ const UploadAttach = (props: any) => {
                   )}
                   {i.state === 'success' && (
                     <>
-                      <span>{bytesToSize(i.file?.size) ?? ''}</span>
+                      {i.file?.size === 0 ? (
+                        '70kb'
+                      ) : (
+                        <span>{bytesToSize(i.file?.size) ?? ''}</span>
+                      )}
+
                       <span
                         style={{
                           margin: '0 6px 0 6px',
@@ -544,12 +549,13 @@ const UploadAttach = (props: any) => {
                       >
                         ·
                       </span>
+
                       <span
                         style={{
                           marginRight: '12px',
                         }}
                       >
-                        {i.file.username}
+                        {i.file.username ?? userInfo?.name}
                       </span>
                       <span>{i.file.time}</span>
                     </>
