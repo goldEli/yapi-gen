@@ -28,8 +28,6 @@ const Detail = () => {
     setProjectPermission,
     getMemberList,
     getTagList,
-    memberList,
-    projectInfo,
     setFilterAll,
     setIsRefreshIterateList,
     isRefreshIterateList,
@@ -37,7 +35,7 @@ const Detail = () => {
     setSelectAllStaffData,
     getFieldList,
   } = useModel('project')
-  const { getIterateSelectList, selectIterate } = useModel('iterate')
+  const { getIterateSelectList } = useModel('iterate')
   const { isOpenEditDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -77,7 +75,11 @@ const Detail = () => {
     })
   }
 
-  const getTreeData = async () => {
+  const getTreeData = async (
+    projectInfo: any,
+    selectIterate: any,
+    memberList: any,
+  ) => {
     const res = await getTreeList({ id: projectId })
 
     const res2 = await storyConfigCategoryList({
@@ -216,15 +218,22 @@ const Detail = () => {
     setSelectAllStaffData(options)
   }
 
-  useEffect(() => {
-    getProjectInfo({ projectId })
+  const getInit = async () => {
+    const [projectInfo, selectIterate, memberList] = await Promise.all([
+      getProjectInfo({ projectId }),
+      getIterateList(),
+      getMemberList({ all: true, projectId }),
+    ])
     getPermissionList()
     getProjectCoverList()
-    getMemberList({ all: true, projectId })
     getTagList({ projectId })
-    getIterateList()
     getFieldData()
     getStaffData()
+    getTreeData(projectInfo, selectIterate, memberList)
+  }
+
+  useEffect(() => {
+    getInit()
   }, [isRefresh])
 
   useEffect(() => {
@@ -232,17 +241,6 @@ const Detail = () => {
       getIterateList()
     }
   }, [isRefreshIterateList])
-
-  useEffect(() => {
-    if (
-      projectInfo.id &&
-      selectIterate?.list?.length > 0 &&
-      memberList?.length > 0 &&
-      !isOpenEditDemand
-    ) {
-      getTreeData()
-    }
-  }, [projectInfo, selectIterate, memberList, isOpenEditDemand])
 
   return (
     <Wrap>
