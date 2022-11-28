@@ -95,6 +95,7 @@ const NumStyle = styled.div`
   font-size: 12px;
   color: #969799;
 `
+
 export const Card = styled.div`
   flex: 1;
   position: relative;
@@ -115,6 +116,7 @@ const StyledProgress = styled(Progress)`
     height: 2px !important;
   }
 `
+
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
@@ -201,7 +203,26 @@ const UploadAttach = (props: any) => {
     })
   }
 
+  function isFormatType(str: string) {
+    return (
+      ['exe', 'bat', 'com', 'vbs', 'reg', 'sh'].indexOf(str.toLowerCase()) !==
+      -1
+    )
+  }
+  const isFormat = (value: string) => {
+    const index = value.lastIndexOf('.')
+    const str = value.substring(index + 1)
+    return isFormatType(str)
+  }
+
   const onUploadBefore = (file: any) => {
+    if (isFormat(file.name)) {
+      message.warning(
+        `${t('title.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        3,
+      )
+      return Upload.LIST_IGNORE
+    }
     if (props?.defaultList.length >= 20) {
       message.warning(t('common.limitToast'))
       return Upload.LIST_IGNORE
@@ -495,6 +516,7 @@ const UploadAttach = (props: any) => {
                     color: '#323233',
                     lineHeight: '22px',
                     wordBreak: 'break-all',
+
                     // width: '90%',
                   }}
                 >
