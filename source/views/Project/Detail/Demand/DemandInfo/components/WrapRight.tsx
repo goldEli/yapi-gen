@@ -21,6 +21,7 @@ import {
   HiddenText,
   IconFontWrapEdit,
   CanOperation,
+  SliderWrap,
 } from '@/components/StyleCommon'
 import ParentDemand from '../../components/ParentDemand'
 import { LevelContent } from '@/components/Level'
@@ -227,6 +228,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     setIsRefreshComment,
     demandInfo,
     updatePriority,
+    getDemandInfo,
+    updateTableParams,
   } = useModel('demand')
   const { userInfo } = useModel('user')
   const { projectInfo, fieldList, getFieldList } = useModel('project')
@@ -236,7 +239,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const isComment = !projectInfo?.projectPermissions?.filter(
     (i: any) => i.identity === 'b/story/comment',
   ).length
-
+  const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -303,6 +306,25 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       //
     }
   }
+  const onChangeSchedule = async () => {
+    if (
+      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
+      demandInfo.status.is_start !== 1 &&
+      demandInfo.status.is_end !== 1
+    ) {
+      const obj = {
+        projectId,
+        id: demandInfo?.id,
+        otherParams: { schedule },
+      }
+      try {
+        await updateTableParams(obj)
+        getDemandInfo({ projectId, id: demandInfo?.id })
+      } catch (error) {
+        //
+      }
+    }
+  }
 
   const onAddComment = async (content: string) => {
     if (content?.trim().length) {
@@ -343,6 +365,40 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
       {activeTabs === 1 && (
         <div style={{ maxHeight: 'calc(100% - 100px)', overflow: 'auto' }}>
+          <InfoItem>
+            <Label>{t('newlyAdd.demandProgress')}</Label>
+            <div
+              style={{ display: 'flex', alignItems: 'center' }}
+              onMouseUp={onChangeSchedule}
+            >
+              <SliderWrap
+                isDisabled={
+                  demandInfo?.user
+                    ?.map((i: any) => i.user.id)
+                    ?.includes(userInfo?.id) &&
+                  demandInfo.status.is_start !== 1 &&
+                  demandInfo.status.is_end !== 1
+                }
+                style={{ width: 190 }}
+                value={schedule}
+                tipFormatter={(value: any) => `${value}%`}
+                onChange={value => setSchedule(value)}
+                tooltipVisible={false}
+                disabled={
+                  !(
+                    demandInfo?.user
+                      ?.map((i: any) => i.user.id)
+                      ?.includes(userInfo?.id) &&
+                    demandInfo.status.is_start !== 1 &&
+                    demandInfo.status.is_end !== 1
+                  )
+                }
+              />
+              <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
+                {schedule}%
+              </span>
+            </div>
+          </InfoItem>
           <InfoItem>
             <Label>{t('common.dealName')}</Label>
             <ContentWrap>
