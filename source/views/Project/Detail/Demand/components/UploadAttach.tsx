@@ -88,6 +88,7 @@ const RedCss = styled(BlueCss)`
   margin-left: 12px;
 `
 const NumStyle = styled.div`
+  background-color: white;
   font-size: 12px;
   color: #969799;
 `
