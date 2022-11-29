@@ -52,6 +52,7 @@
     "pleaseGroupName": "请输入分组名称"
   },
   "p2": {
+    "del": "Confirm to delete the attachment ",
     "begin": " begin",
     "pause": " Pause ",
     "cancel": " Cancel ",

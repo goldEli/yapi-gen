@@ -53,6 +53,7 @@
     "pleaseGroupName": "请输入分组名称"
   },
   "p2": {
+    "del": "确认删除该附件",
     "begin": "开始",
     "pause": "暂停",
     "cancel": "取消",
