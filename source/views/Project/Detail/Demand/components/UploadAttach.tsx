@@ -222,18 +222,12 @@ const UploadAttach = (props: any) => {
   const onUploadBefore = (file: any) => {
     if (isFormat(file.name)) {
       message.warning(
-        `${t('title.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
         3,
       )
       return Upload.LIST_IGNORE
     }
-    if (props?.defaultList.length >= 20) {
-      message.warning(t('common.limitToast'))
-      return Upload.LIST_IGNORE
-    }
-
     if (file.size / 1024 > 5242880) {
-      message.warning(t('project.uploadMax'))
       return Upload.LIST_IGNORE
     }
 
@@ -246,9 +240,34 @@ const UploadAttach = (props: any) => {
   }
 
   const onUploadFileClick = async ({ file }: { file: any }) => {
-    const result: any = await uploadFile(file, file.name, 'file')
+    if (file instanceof File) {
+      const fileName = file.name
+      let newName = file.name
 
-    setFileList((tasks: any) => [result].concat(...tasks))
+      const list = fileList as any[]
+      let i = 1
+
+      while (
+        list.some(
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          fileItem =>
+            String(fileItem.file.name).toLowerCase() ===
+            String(newName).toLowerCase(),
+        )
+      ) {
+        newName = fileName
+          .split('.')
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          .map((nameSlice, index, array) =>
+            array.length - 2 === index ? `${nameSlice}(${i++})` : nameSlice,
+          )
+          .join('.')
+      }
+
+      const result: any = await uploadFile(file, file.name, 'file', newName)
+
+      setFileList((tasks: any) => [result].concat(...tasks))
+    }
   }
 
   const onDownload = (url: string, name: string) => {
@@ -583,7 +602,7 @@ const UploadAttach = (props: any) => {
                           marginRight: '12px',
                         }}
                       >
-                        {i.file.username ?? userInfo?.name}
+                        {i.file.username}
                       </span>
                       <span>{i.file.time}</span>
                     </>
