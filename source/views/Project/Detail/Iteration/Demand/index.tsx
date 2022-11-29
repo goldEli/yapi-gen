@@ -3,7 +3,7 @@
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { Menu, Dropdown, Pagination, message, Spin } from 'antd'
+import { Menu, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -264,6 +264,7 @@ const DemandWrap = (props: Props) => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
+      setIsDelete(false)
       getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //

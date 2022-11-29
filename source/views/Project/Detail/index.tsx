@@ -53,8 +53,9 @@ const Detail = () => {
   }
 
   const getIterateList = async () => {
-    await getIterateSelectList({ projectId, all: true })
+    const result = await getIterateSelectList({ projectId, all: true })
     setIsRefreshIterateList(false)
+    return result
   }
 
   const filArr = (data: any) => {
