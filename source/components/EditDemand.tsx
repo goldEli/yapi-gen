@@ -265,6 +265,7 @@ const EditDemand = (props: Props) => {
     getWorkflowList,
     workList,
     selectAllStaffData,
+    getTagList,
   } = useModel('project')
   const { getIterateSelectList, selectIterate } = useModel('iterate')
   const { userInfo } = useModel('user')
@@ -490,6 +491,7 @@ const EditDemand = (props: Props) => {
         decryptPhp(localStorage.getItem('quickCreateData') as any),
       )
       getInit(hisCategoryData?.projectId, hisCategoryData?.categoryId)
+      getTagList({ projectId: hisCategoryData?.projectId })
     }
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -695,6 +697,7 @@ const EditDemand = (props: Props) => {
       users: [],
     })
     getInit(value)
+    getTagList({ projectId: value })
   }
 
   const onClearProjectId = () => {
