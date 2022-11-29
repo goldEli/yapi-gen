@@ -1,3 +1,4 @@
+/* eslint-disable max-statements-per-line */
 // 使用多次的公共方法
 
 /* eslint-disable max-params */
@@ -263,25 +264,25 @@ function getDecimal(num: any) {
   return val
 }
 
-function bytesToSize(size: number) {
-  let num
-  if (size < 0.1 * 1024) {
-    num = `${size.toFixed(2)}B`
-  } else if (size < 0.1 * 1024 * 1024) {
-    num = `${(size / 1024).toFixed(2)}KB`
-  } else if (size < 0.1 * 1024 * 1024 * 1024) {
-    num = `${(size / (1024 * 1024)).toFixed(2)}MB`
+function bytesToSize(fileByte: any) {
+  const fileSizeByte = fileByte
+  let fileSizeMsg = ''
+  if (fileSizeByte < 1024) {
+    fileSizeMsg = `${fileSizeByte.toFixed(2)}Byte`
+  } else if (fileSizeByte < 1048576) {
+    fileSizeMsg = `${(fileSizeByte / 1024).toFixed(2)}KB`
+  } else if (fileSizeByte === 1048576) {
+    fileSizeMsg = '1MB'
+  } else if (fileSizeByte > 1048576 && fileSizeByte < 1073741824) {
+    fileSizeMsg = `${(fileSizeByte / (1024 * 1024)).toFixed(2)}MB`
+  } else if (fileSizeByte > 1048576 && fileSizeByte === 1073741824) {
+    fileSizeMsg = '1GB'
+  } else if (fileSizeByte > 1073741824 && fileSizeByte < 1099511627776) {
+    fileSizeMsg = `${(fileSizeByte / (1024 * 1024 * 1024)).toFixed(2)}GB`
   } else {
-    num = `${(size / (1024 * 1024 * 1024)).toFixed(2)}GB`
+    fileSizeMsg = '文件超过1TB'
   }
-  let sizeStr = num + '',
-    index = sizeStr.indexOf('.'),
-    dou = sizeStr.substr(index + 1, 2)
-
-  if (dou === '00')
-    return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2)
-
-  return num
+  return fileSizeMsg
 }
 
 // 14.24GB

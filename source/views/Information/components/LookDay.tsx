@@ -7,6 +7,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
+import { bytesToSize } from '@/tools'
 import {
   BigWrap,
   Card,
@@ -192,7 +193,10 @@ const LookDay = (props: any) => {
         return {
           path: item.associate,
           id: item.id,
+          size: item.configurations.size,
           time: item.created_at,
+          name: item.configurations.name,
+          suffix: item.configurations.ext,
         }
       }),
     )
@@ -414,7 +418,7 @@ const LookDay = (props: any) => {
                             position: 'relative',
                           }}
                         >
-                          {imgs.includes(item.path.split('.').at(-1)) && (
+                          {imgs.includes(item.suffix) && (
                             <img
                               style={{
                                 width: '40px',
@@ -425,28 +429,21 @@ const LookDay = (props: any) => {
                               alt=""
                             />
                           )}
-                          {!imgs.includes(item.path.split('.').at(-1)) && (
+                          {!imgs.includes(item.suffix) && (
                             <IconFont
                               style={{
                                 fontSize: 40,
                                 color: 'white',
                                 borderRadius: '8px',
                               }}
-                              type={
-                                fileIconMap[item.path.split('.').at(-1)] ||
-                                'colorunknown'
-                              }
+                              type={fileIconMap[item.suffix] || 'colorunknown'}
                             />
                           )}
 
-                          {imgs.includes(item.path.split('.').at(-1)) && (
+                          {imgs.includes(item.suffix) && (
                             <Gred
                               onClick={() => {
                                 onReview(item)
-
-                                // setPreviewOpen(true)
-                                // setPreviewImage(item.path)
-                                // setPreviewTitle(item.path.split('/').at(-1))
                               }}
                             >
                               <IconFont
@@ -467,7 +464,7 @@ const LookDay = (props: any) => {
                               wordBreak: 'break-all',
                             }}
                           >
-                            {item.path.split('/').at(-1)}
+                            {item.name}
                           </div>
                           <First
                             style={{
@@ -478,6 +475,14 @@ const LookDay = (props: any) => {
                               lineHeight: '20px',
                             }}
                           >
+                            <span>{bytesToSize(item?.size) ?? ''}</span>
+                            <span
+                              style={{
+                                margin: '0 6px 0 6px',
+                              }}
+                            >
+                              ·
+                            </span>
                             <span
                               style={{
                                 marginRight: '12px',

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
 import { Form } from 'antd'
@@ -67,8 +69,20 @@ const WhiteDay = (props: any) => {
   }
 
   const onChangeAttachment = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        created_at: i.ctime,
+        configurations: {
+          name: i.name,
+          ext: i.ext,
+          size: i.size,
+        },
+      }
+    })
+
     form.setFieldsValue({
-      attachments: result,
+      attachments: arr,
     })
   }
 
@@ -89,12 +103,17 @@ const WhiteDay = (props: any) => {
       info: res.data.info.finish_content,
       info2: res.data.info.plan_content,
     })
+
     setAttachList(
       res.data.files.map((item: any) => {
         return {
           url: item.associate,
           id: item.id,
+          size: item.configurations.size,
           time: item.created_at,
+          name: item.configurations.name,
+          suffix: item.configurations.ext,
+          username: res.data.info.user_name,
         }
       }),
     )

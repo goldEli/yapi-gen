@@ -27,6 +27,7 @@ const StatusWrap = styled.div({
   border: '1px solid #EBEDF0',
   color: '#969799',
   cursor: 'pointer',
+  whiteSpace: 'nowrap',
 })
 
 const DemandStatusBox = (props: any) => {

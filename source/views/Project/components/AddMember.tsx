@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -30,13 +31,14 @@ const ModalContent = styled.div({
   boxSizing: 'border-box',
   border: '1px solid #EBEDF0',
   padding: 24,
-  width: '100%',
+  width: '99%',
 })
 
 const ModalFooter = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  paddingRight: 8,
 })
 
 interface Props {
@@ -131,7 +133,7 @@ const AddMember = (props: Props) => {
       visible={props.value}
       title={false}
       footer={false}
-      bodyStyle={{ padding: 24 }}
+      bodyStyle={{ padding: '16px 16px 24px 24px' }}
       width={700}
       closable={false}
       destroyOnClose
@@ -143,7 +145,9 @@ const AddMember = (props: Props) => {
         <span>
           {props.details?.id ? t('project.editMember') : t('project.addMember')}
         </span>
-        <IconFont onClick={onClose} type="close" />
+        <CloseWrap onClick={onClose} width={32} height={32}>
+          <IconFont type="close" />
+        </CloseWrap>
       </ModalHeader>
       <Form form={form}>
         <ModalContent>

@@ -18,6 +18,7 @@ import {
   StaffTableWrap2,
   ShowWrap,
   TableWrap,
+  IconFontWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
@@ -26,13 +27,20 @@ import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemand'
+// import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
+
+const IconWrap = styled(IconFontWrap)({
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -438,7 +446,7 @@ const CommonNeed = (props: any) => {
       items={[
         {
           key: '1',
-          label: <span onClick={showModal}>{t('common.setField')}</span>,
+          label: <div onClick={showModal}>{t('common.setField')}</div>,
         },
       ]}
     />
@@ -530,7 +538,11 @@ const CommonNeed = (props: any) => {
                   title={t('common.tableFieldSet')}
                   getPopupContainer={node => node}
                 >
-                  <IconFont type="settings" style={{ fontSize: 20 }} />
+                  <IconWrap
+                    type="settings"
+                    active={isModalVisible}
+                    style={{ fontSize: 20 }}
+                  />
                 </Tooltip>
               </SetButton>
             </Dropdown>

@@ -16,7 +16,8 @@ import {
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import EditDemand from '@/components/EditDemand'
+// import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -123,7 +124,7 @@ const DemandWrap = (props: Props) => {
       pageSize: item ? item.size : 10,
       order: orderValue,
       orderKey: orderKeyValue,
-      searchValue: searchParamsObj?.searchVal || '',
+      searchValue: searchParamsObj?.searchVal,
       statusIds: searchParamsObj?.statusId,
       iterateIds: [iterateId],
       priorityIds: searchParamsObj?.priorityId,
@@ -281,6 +282,7 @@ const DemandWrap = (props: Props) => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
+      setIsDelete(false)
       getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //

@@ -14,9 +14,8 @@ import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
 import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
-import moment from 'moment'
 import Viewer from 'react-viewer'
-import { css } from '@emotion/react'
+import myImg from '/public/er.png'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -77,7 +76,7 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 1s;
+      transition: all 0.2s;
     }
   }
 `
@@ -86,6 +85,11 @@ const BlueCss = styled.span`
   font-size: 12px;
   color: #2877ff;
   cursor: pointer;
+  margin-left: 5px;
+  background-color: white;
+  padding: 5px 8px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
 `
 
 const RedCss = styled(BlueCss)`
@@ -96,6 +100,7 @@ const NumStyle = styled.div`
   font-size: 12px;
   color: #969799;
 `
+
 export const Card = styled.div`
   flex: 1;
   position: relative;
@@ -115,11 +120,12 @@ const StyledProgress = styled(Progress)`
     height: 2px !important;
   }
 `
+
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
-  ppt: 'colorppt',
-  pptx: 'colorppt',
+  ppt: 'colorPPT',
+  pptx: 'colorPPT',
   avi: 'colorvideo',
   mp4: 'colorvideo',
   mov: 'colorvideo',
@@ -130,8 +136,8 @@ export const fileIconMap: Record<string, string> = {
   wav: 'colormusic',
   cad: 'colormusic',
   doc: 'colordoc',
-  docx: 'colordoc',
-  pdf: 'colorPDF',
+  docx: 'colorDOC-76p4mioh',
+  pdf: 'colorpdf',
   zip: 'zip',
   rar: 'zip',
 }
@@ -144,8 +150,6 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
   }
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
-const fils = ['xlsx', 'pdf']
-const fils2 = fils.concat(imgs)
 
 const UploadAttach = (props: any) => {
   const { userInfo } = useModel('user')
@@ -203,14 +207,27 @@ const UploadAttach = (props: any) => {
     })
   }
 
+  function isFormatType(str: string) {
+    return (
+      ['exe', 'bat', 'com', 'vbs', 'reg', 'sh'].indexOf(str.toLowerCase()) !==
+      -1
+    )
+  }
+  const isFormat = (value: string) => {
+    const index = value.lastIndexOf('.')
+    const str = value.substring(index + 1)
+    return isFormatType(str)
+  }
+
   const onUploadBefore = (file: any) => {
-    if (props?.defaultList.length >= 20) {
-      message.warning(t('common.limitToast'))
+    if (isFormat(file.name)) {
+      message.warning(
+        `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        3,
+      )
       return Upload.LIST_IGNORE
     }
-
     if (file.size / 1024 > 5242880) {
-      message.warning(t('project.uploadMax'))
       return Upload.LIST_IGNORE
     }
 
@@ -223,9 +240,34 @@ const UploadAttach = (props: any) => {
   }
 
   const onUploadFileClick = async ({ file }: { file: any }) => {
-    const result: any = await uploadFile(file, file.name, 'file')
+    if (file instanceof File) {
+      const fileName = file.name
+      let newName = file.name
 
-    setFileList((tasks: any) => [result].concat(...tasks))
+      const list = fileList as any[]
+      let i = 1
+
+      while (
+        list.some(
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          fileItem =>
+            String(fileItem.file.name).toLowerCase() ===
+            String(newName).toLowerCase(),
+        )
+      ) {
+        newName = fileName
+          .split('.')
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          .map((nameSlice, index, array) =>
+            array.length - 2 === index ? `${nameSlice}(${i++})` : nameSlice,
+          )
+          .join('.')
+      }
+
+      const result: any = await uploadFile(file, file.name, 'file', newName)
+
+      setFileList((tasks: any) => [result].concat(...tasks))
+    }
   }
 
   const onDownload = (url: string, name: string) => {
@@ -256,6 +298,10 @@ const UploadAttach = (props: any) => {
       props.del(id)
     }
   }
+  const onTapClose = (id: string) => {
+    cos.cancelTask(id)
+    setFileList(fileList.filter((i: { id: string }) => i.id !== id))
+  }
 
   const onTapRestart = (id: string) => cos.restartTask(id)
 
@@ -278,7 +324,7 @@ const UploadAttach = (props: any) => {
 
   const onTaskOver = useCallback((data: { id: string; url: string }) => {
     if (props.canUpdate) {
-      props.add([data.url])
+      props.add({ data })
     }
     setFileList((currentTasks: any[]) =>
       currentTasks.map(i => {
@@ -297,7 +343,7 @@ const UploadAttach = (props: any) => {
   }, [])
 
   const setDefaultList = () => {
-    if (props.defaultList.length >= 1) {
+    if (props.defaultList?.length >= 1) {
       const arr: any[] = []
       props.defaultList.forEach((i: any, index: any) => {
         const obj = {
@@ -308,12 +354,13 @@ const UploadAttach = (props: any) => {
 
           file: {
             id: index,
-            name: i.url.split('/').at(-1),
-            size: 0,
+            name: i.name,
+            size: i.size,
             formattedSize: '',
             suffix: i.url.split('.').at(-1),
             url: i.url,
             time: i.time,
+            username: i.username ?? userInfo?.name,
           },
         }
         arr.push(obj)
@@ -340,7 +387,17 @@ const UploadAttach = (props: any) => {
     const state = fileList.every((i: any) => i.state === 'success')
     if (state) {
       if (!props.canUpdate) {
-        props.onChangeAttachment(fileList.map((i: any) => i.file.url))
+        props.onChangeAttachment(
+          fileList.map((i: any) => {
+            return {
+              url: i.file.url,
+              name: i.file.name,
+              size: i.file.size,
+              ext: i.file.suffix,
+              ctime: i.file.time,
+            }
+          }),
+        )
       }
     }
   }
@@ -387,7 +444,7 @@ const UploadAttach = (props: any) => {
                       borderRadius: '4px',
                     }}
                     alt=""
-                    src={i.file.url}
+                    src={i.file.url ? i.file.url : myImg}
                   />
                 )}
                 {!imgs.includes(i.file.suffix) && (
@@ -417,7 +474,7 @@ const UploadAttach = (props: any) => {
                     <BlueCss onClick={() => onTapPause(i.id)}>
                       {t('p2.pause')}
                     </BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>
+                    <RedCss onClick={() => onTapClose(i.id)}>
                       {t('p2.cancel')}
                     </RedCss>
                   </>
@@ -427,7 +484,7 @@ const UploadAttach = (props: any) => {
                     <BlueCss onClick={() => onTapRestart(i.id)}>
                       {t('p2.begin')}
                     </BlueCss>
-                    <RedCss onClick={() => onTapRemove(i.id)}>
+                    <RedCss onClick={() => onTapClose(i.id)}>
                       {t('p2.cancel')}
                     </RedCss>
                   </>
@@ -445,7 +502,11 @@ const UploadAttach = (props: any) => {
                   </>
                 )}
                 {i.state === 'success' && (
-                  <span>
+                  <span
+                    style={{
+                      background: 'white',
+                    }}
+                  >
                     {!!isDownload && (
                       <BlueCss
                         onClick={() => onDownload(i.file.url, i.file.name)}
@@ -477,19 +538,19 @@ const UploadAttach = (props: any) => {
               <div>
                 <div
                   style={{
-                    width: 'calc(100% - 80px)',
                     fontSize: '14px',
                     fontWeight: 400,
                     color: '#323233',
                     lineHeight: '22px',
                     wordBreak: 'break-all',
+
+                    // width: '90%',
                   }}
                 >
                   {i.file.name}
                 </div>
                 <First
                   style={{
-                    height: '20px',
                     fontSize: '12px',
                     fontWeight: 400,
                     color: '#969799',
@@ -522,20 +583,26 @@ const UploadAttach = (props: any) => {
                   )}
                   {i.state === 'success' && (
                     <>
-                      {/* <span>{bytesToSize(i.file?.size) ?? ''}</span> */}
-                      {/* <span
+                      {i.file?.size === 0 ? (
+                        '--'
+                      ) : (
+                        <span>{bytesToSize(i.file?.size) ?? ''}</span>
+                      )}
+
+                      <span
                         style={{
                           margin: '0 6px 0 6px',
                         }}
                       >
                         ·
-                      </span> */}
+                      </span>
+
                       <span
                         style={{
                           marginRight: '12px',
                         }}
                       >
-                        {userInfo?.name}
+                        {i.file.username}
                       </span>
                       <span>{i.file.time}</span>
                     </>

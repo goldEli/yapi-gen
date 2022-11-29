@@ -9,6 +9,33 @@ import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
+// 新版移入效果例：项目列表左上方操作
+const HoverWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 8px',
+    height: 32,
+    borderRadius: 6,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      fontSize: 14,
+      fontWeight: 400,
+      marginLeft: 8,
+    },
+    svg: {
+      fontSize: 16,
+    },
+    '&: hover': {
+      background: '#F4F5F5',
+      color: '#323233',
+    },
+  },
+  ({ isActive }) => ({
+    color: isActive ? '#2877ff' : '#969799',
+  }),
+)
+
 // 次按钮样式
 const SecondButton = styled(Button)`
   height: 32px;
@@ -43,21 +70,26 @@ const TextWrapEditor = styled.div({
   img: { maxWidth: '100%' },
 })
 
-const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
+const CloseWrap = styled.div<{ width?: any; height?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
+    borderRadius: 6,
+    '.anticon': {
+      color: '#646566',
+    },
     '&: hover': {
-      '.anticon': {
-        color: '#2877ff',
+      background: '#F4F5F5',
+      svg: {
+        color: '#323233',
       },
     },
   },
-  ({ width, height, isRight }) => ({
+  ({ width, height }) => ({
     width,
     height,
-    justifyContent: isRight ? 'right' : 'center',
   }),
 )
 
@@ -897,4 +929,5 @@ export {
   TableStyleBox,
   CanOperationCategory,
   SecondButton,
+  HoverWrap,
 }

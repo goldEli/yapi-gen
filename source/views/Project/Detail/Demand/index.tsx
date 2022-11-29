@@ -8,7 +8,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import EditDemand from '@/components/EditDemand'
+// import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
 import ChangeRecord from './ChangeRecord'

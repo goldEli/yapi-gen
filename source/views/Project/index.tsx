@@ -1,10 +1,9 @@
+/* eslint-disable react/jsx-no-leaked-render */
 // 项目详情页面
 
 /* eslint-disable max-params */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable max-len */
 import styled from '@emotion/styled'
-import SearchComponent from '@/components/SearchComponent'
 import Filter from './components/Filter'
 import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
@@ -17,21 +16,28 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
 
-const SearchWrap = styled.div({
-  height: 64,
-  display: 'flex',
-  alignItems: 'center',
-  paddingLeft: 24,
-  background: 'white',
-})
+const Content = styled.div<{ isGrid: boolean }>(
+  {
+    background: '#F5F7FA',
+    height: 'calc(100% - 64px)',
+  },
+  ({ isGrid }) => ({
+    padding: isGrid ? '16px' : '16px 16px 0 16px',
+  }),
+)
 
-const Content = styled.div({
-  padding: '16px 16px 0 16px',
-  background: '#F5F7FA',
-  height: 'calc(100% - 116px)',
-})
+const Wrap = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`
+
+const WrapRight = styled.div`
+  width: calc(100% - 220px);
+`
 
 const Project = () => {
   const [t] = useTranslation()
@@ -48,6 +54,7 @@ const Project = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
+  const [groupId, setGroupId] = useState<any>()
   const {
     getProjectList,
     projectList,
@@ -66,6 +73,7 @@ const Project = () => {
     val: string,
     sortVal: any,
     pageVal: any,
+    groupIdVal?: any,
   ) => {
     setIsSpinning(true)
     const params: any = {
@@ -73,7 +81,7 @@ const Project = () => {
       orderKey: sortVal.key,
       order: sortVal.value,
       status: isDisable ? 1 : 0,
-      self: active !== 1,
+      groupId: groupIdVal,
     }
     if (isTable) {
       params.all = true
@@ -82,23 +90,28 @@ const Project = () => {
       params.page = pageVal.page
       params.pageSize = pageVal.size
     }
-    if (active) {
-      params.isPublic = 1
+    if (!groupIdVal) {
+      params.self = active !== 1
+      if (active) {
+        params.isPublic = 1
+      }
     }
     await getProjectList(params)
     setIsSpinning(false)
   }
 
   const init = async () => {
-    getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
     await getProjectCoverList()
     setLoadingState(true)
   }
   useEffect(() => {
     init()
   }, [])
+
   const onChangeType = (type: number) => {
     setActiveType(type)
+    setGroupId(null)
     getList(type, isGrid, isHidden, searchVal, order, {
       page: 1,
       size: pageObj.size,
@@ -107,10 +120,18 @@ const Project = () => {
 
   const onChangeHidden = (hidden: boolean) => {
     setIsHidden(hidden)
-    getList(activeType, isGrid, hidden, searchVal, order, {
-      page: 1,
-      size: pageObj.size,
-    })
+    getList(
+      activeType,
+      isGrid,
+      hidden,
+      searchVal,
+      order,
+      {
+        page: 1,
+        size: pageObj.size,
+      },
+      groupId,
+    )
   }
 
   const onChangeSort = (str: string) => {
@@ -122,15 +143,24 @@ const Project = () => {
       searchVal,
       { value: 'asc', key: str },
       { page: 1, size: pageObj.size },
+      groupId,
     )
   }
 
   const onChangeSearch = (value: string) => {
     setSearchVal(value)
-    getList(activeType, isGrid, isHidden, value, order, {
-      page: 1,
-      size: pageObj.size,
-    })
+    getList(
+      activeType,
+      isGrid,
+      isHidden,
+      value,
+      order,
+      {
+        page: 1,
+        size: pageObj.size,
+      },
+      groupId,
+    )
   }
 
   const onDeleteConfirm = async () => {
@@ -139,7 +169,7 @@ const Project = () => {
       message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       setOperationDetail({})
-      getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+      getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
     } catch (error) {
       //
     }
@@ -157,7 +187,7 @@ const Project = () => {
       )
       setOperationDetail({})
       setIsStop(false)
-      getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+      getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
     } catch (error) {
       //
     }
@@ -185,10 +215,18 @@ const Project = () => {
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    getList(activeType, val, isHidden, searchVal, order, {
-      page: 1,
-      size: pageObj.size,
-    })
+    getList(
+      activeType,
+      val,
+      isHidden,
+      searchVal,
+      order,
+      {
+        page: 1,
+        size: pageObj.size,
+      },
+      groupId,
+    )
   }
 
   const onAddClick = () => {
@@ -201,19 +239,43 @@ const Project = () => {
       page: item.page,
       size: item.size,
     })
-    getList(activeType, isGrid, isHidden, searchVal, order, {
-      page: item.page,
-      size: item.size,
-    })
+    getList(
+      activeType,
+      isGrid,
+      isHidden,
+      searchVal,
+      order,
+      {
+        page: item.page,
+        size: item.size,
+      },
+      groupId,
+    )
   }
 
   const onUpdateOrderKey = (item: any) => {
     setOrder(item)
-    getList(activeType, isGrid, isHidden, searchVal, item, {
-      page: 1,
-      size: pageObj.size,
-    })
+    getList(
+      activeType,
+      isGrid,
+      isHidden,
+      searchVal,
+      item,
+      {
+        page: 1,
+        size: pageObj.size,
+      },
+      groupId,
+    )
   }
+
+  // 切换分组查询列表
+  const onChangeGroup = (id: number) => {
+    setGroupId(id)
+    setActiveType(-1)
+    getList(-1, isGrid, isHidden, searchVal, order, pageObj, id)
+  }
+
   if (!loadingState) {
     return <Loading />
   }
@@ -243,55 +305,64 @@ const Project = () => {
             onChangeVisible={() => setIsVisible(!isVisible)}
             details={operationDetail}
             onUpdate={() =>
-              getList(activeType, isGrid, isHidden, searchVal, order, pageObj)
+              getList(
+                activeType,
+                isGrid,
+                isHidden,
+                searchVal,
+                order,
+                pageObj,
+                groupId,
+              )
             }
           />
         )}
-        <SearchWrap>
-          <SearchComponent
-            placeholder={t('mark.searchP')}
-            text={t('common.createProject')}
-            onChangeSearch={onChangeSearch}
-            onChangeVisible={onAddClick}
+
+        <Wrap>
+          <WrapLeftBox
+            onAddClick={onAddClick}
+            onChangeType={onChangeType}
+            activeType={activeType}
+            onChangeGroup={onChangeGroup}
             isPermission={getIsPermission(
               userInfo?.company_permissions,
               'b/project/save',
             )}
           />
-        </SearchWrap>
-        <Filter
-          show
-          total={projectList.list?.length}
-          sort={order.key}
-          isGrid={isGrid}
-          activeType={activeType}
-          onChangeSort={onChangeSort}
-          onChangeFormat={onChangeGrid}
-          onChangeHidden={onChangeHidden}
-          onChangeType={onChangeType}
-        />
-        <Content>
-          <Spin spinning={isSpinning}>
-            {isGrid ? (
-              <MainGrid
-                projectList={projectList}
-                onChangeVisible={() => setIsVisible(true)}
-                onChangeOperation={onChangeOperation}
-                onAddClear={() => setOperationDetail({})}
-              />
-            ) : (
-              <MainTable
-                onChangeOperation={(e, type, item) =>
-                  onChangeOperation(e, type, item)
-                }
-                projectList={projectList}
-                onChangePageNavigation={onChangePageNavigation}
-                onUpdateOrderKey={onUpdateOrderKey}
-                order={order}
-              />
-            )}
-          </Spin>
-        </Content>
+          <WrapRight>
+            <Filter
+              sort={order.key}
+              isGrid={isGrid}
+              activeType={activeType}
+              onChangeSort={onChangeSort}
+              onChangeFormat={onChangeGrid}
+              onChangeHidden={onChangeHidden}
+              onChangeSearch={onChangeSearch}
+            />
+            <Content isGrid={isGrid}>
+              <Spin spinning={isSpinning}>
+                {isGrid ? (
+                  <MainGrid
+                    projectList={projectList}
+                    onChangeVisible={() => setIsVisible(true)}
+                    onChangeOperation={onChangeOperation}
+                    onAddClear={() => setOperationDetail({})}
+                  />
+                ) : (
+                  <MainTable
+                    onChangeOperation={(e, type, item) =>
+                      onChangeOperation(e, type, item)
+                    }
+                    projectList={projectList}
+                    onChangePageNavigation={onChangePageNavigation}
+                    onUpdateOrderKey={onUpdateOrderKey}
+                    order={order}
+                  />
+                )}
+              </Spin>
+            </Content>
+          </WrapRight>
+        </Wrap>
       </PermissionWrap>
     </div>
   )

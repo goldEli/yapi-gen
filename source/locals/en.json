@@ -1,5 +1,6 @@
 {
   "title": {
+    "text": "File format not supported ",
     "general": "general",
     "project": "project",
     "need": "need",
@@ -30,12 +31,25 @@
     "c5": "Message center",
     "c6": "Log"
   },
-  "version2.2.1": {
+  "v2_1_1": {
+    "configuration": "通用配置",
+    "safe": "水印保护",
+    "open": "开启水印",
+    "close": "关闭水印"
+  },
+  "version2": {
     "defect": "缺陷",
     "report": "报表",
     "developed": "待开发",
     "waitingPlan": "功能筹备中，敬请期待",
-    "searchProject": "搜索项目(按Enter搜索)"
+    "searchProject": "搜索项目(按Enter搜索)",
+    "projectGroup": "项目分组",
+    "editGroup": "编辑分组",
+    "deleteGroup": "删除分组",
+    "createGroup": "创建分组",
+    "deleteGroupText": "确认删除该分组？",
+    "groupName": "分组名称",
+    "pleaseGroupName": "请输入分组名称"
   },
   "p2": {
     "begin": " begin",
@@ -46,7 +60,7 @@
     "delete": " Delete ",
     "paused": " paused",
     "fail": " Upload failed ",
-    "retransmission": " retransmission",
+    "text": "File format not supported ",
     "maxUploadText": "The maximum length of a file name is 130 words!",
     "nameNotNull": "The demand title cannot be empty!",
     "toast": "Tips",
@@ -406,7 +420,7 @@
     "saveSuccess": "Save successfully",
     "save": "Save",
     "phone": "Phone number",
-    "email": "Email",
+    "email": "Login Email",
     "name": "Name",
     "nickname": "Nickname",
     "sex": "Sex",
@@ -542,7 +556,7 @@
     "pleaseProjectInfo": "Please enter a project description",
     "isPublic": "Public/Private",
     "companyOpen": "Public Project",
-    "mineJoin": "My Project",
+    "mineJoin": "Involved",
     "companyAll": "Company Projects",
     "hiddenProject": "Hidden end project",
     "allProject": "Total {{count}} projects",

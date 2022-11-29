@@ -19,6 +19,8 @@ export default () => {
   const [importExcel, setImportExcel] = useState<any>({})
   // 编辑需求弹窗是否开启，用于调用多接口限制
   const [isOpenEditDemand, setIsOpenEditDemand] = useState(false)
+  // 筛选需求列表参数，用于回填创建需求弹窗
+  const [filterParams, setFilterParams] = useState<any>({})
 
   const getImportExcelUpdate = async (params: any) => {
     setImportExcel({})
@@ -125,5 +127,7 @@ export default () => {
     isOpenEditDemand,
     setIsUpdateChangeLog,
     isUpdateChangeLog,
+    setFilterParams,
+    filterParams,
   }
 }

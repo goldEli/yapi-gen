@@ -1,5 +1,6 @@
 {
   "title": {
+    "text": "不支持文件格式",
     "general": "概况",
     "project": "项目",
     "need": "需求-",
@@ -37,12 +38,19 @@
     "close": "关闭水印",
     "projectInformation": "项目数据"
   },
-  "version2.2.1": {
+  "version2": {
     "defect": "缺陷",
     "report": "报表",
     "developed": "待开发",
     "waitingPlan": "功能筹备中，敬请期待",
-    "searchProject": "搜索项目(按Enter搜索)"
+    "searchProject": "搜索项目(按Enter搜索)",
+    "projectGroup": "项目分组",
+    "editGroup": "编辑分组",
+    "deleteGroup": "删除分组",
+    "createGroup": "创建分组",
+    "deleteGroupText": "确认删除该分组？",
+    "groupName": "分组名称",
+    "pleaseGroupName": "请输入分组名称"
   },
   "p2": {
     "begin": "开始",
@@ -53,7 +61,7 @@
     "delete": "删除",
     "paused": "已暂停",
     "fail": "上传失败",
-    "retransmission": "重传",
+    "text": "不支持文件格式",
     "maxUploadText": "最大支持130个字长度的文件名！",
     "nameNotNull": "需求标题不能为空！",
     "toast": "提示",
@@ -83,7 +91,7 @@
     "search": "搜索日志内容",
     "addAdjunct": "添加附件",
     "managingDemand": "关联需求",
-    "haveRead": "已阅",
+    "haveRead": "已读",
     "RelatedRequirements": "关联需求",
     "whiteDay": "写日志",
     "synopsis": "内容摘要",
@@ -93,7 +101,7 @@
     "show": "查看",
     "edit": "修改",
     "sender": "发送人",
-    "OnlySee": "只看未阅",
+    "OnlySee": "只看未读",
     "new": "新",
     "dayList": {
       "t1": "我发出的",
@@ -413,7 +421,7 @@
     "saveSuccess": "保存成功",
     "save": "保存",
     "phone": "手机号",
-    "email": "邮箱",
+    "email": "登录邮箱",
     "phoneNum": "手机",
     "name": "姓名",
     "nickname": "昵称",
@@ -550,7 +558,7 @@
     "pleaseProjectInfo": "请输入项目描述",
     "isPublic": "公开/私有",
     "companyOpen": "企业公开",
-    "mineJoin": "我参与的项目",
+    "mineJoin": "我参与的",
     "companyAll": "企业全部",
     "hiddenProject": "隐藏结束项目",
     "allProject": "共{{count}}个项目",

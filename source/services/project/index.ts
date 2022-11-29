@@ -12,6 +12,7 @@ export const getProjectList: any = async (params: any) => {
       is_public: params?.isPublic ? Number(params.isPublic) : '',
       status: Number(params.status) || '',
       all: params.all ? 1 : 0,
+      groups: params?.groupId,
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -194,6 +195,7 @@ export const addProject: any = async (params: any) => {
     name: params.name,
     info: params?.info,
     cover: params?.cover,
+    group_ids: params?.groupIds,
   })
 }
 
@@ -204,6 +206,7 @@ export const updateProject: any = async (params: any) => {
     info: params.info,
     cover: params.cover,
     id: params.id,
+    group_ids: params?.groupIds,
   })
 }
 
@@ -649,5 +652,41 @@ export const saveWorkflowConfig: any = async (params: any) => {
       process: params.process,
     },
     auth: params.auth,
+  })
+}
+
+// 获取分组列表
+export const getGroupList: any = async () => {
+  return {
+    list: [{ name: '分组', id: 1 }],
+  }
+  const response = await http.get<any>('getGroupList')
+  return {
+    list: response.data.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+    })),
+  }
+}
+
+// 添加分组
+export const addProjectGroup: any = async (params: any) => {
+  await http.post<any>('addProjectGroup', {
+    name: params.name,
+  })
+}
+
+// 编辑分组
+export const updateProjectGroup: any = async (params: any) => {
+  await http.put<any>('updateProjectGroup', {
+    name: params.name,
+    id: params.id,
+  })
+}
+
+// 删除分组
+export const deleteProjectGroup: any = async (params: any) => {
+  await http.delete<any>('deleteProjectGroup', {
+    id: params.id,
   })
 }

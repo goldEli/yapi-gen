@@ -38,6 +38,7 @@ const label = css`
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
+  margin-top: 24px;
 `
 
 interface Props {
@@ -69,10 +70,8 @@ const Children = (props: ChildrenProps) => {
 
 const Achievements = (props: Props) => {
   const WrapDom = useRef<HTMLInputElement>(null)
-  const { uploadStatus, percentShow, percentVal } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
-  const [isShow, setIsShow] = useState(false)
   const [html, setHtml] = useState('')
   const { getAchieveInfo, achieveInfo } = useModel('iterate')
   const { projectInfo } = useModel('project')
@@ -89,8 +88,12 @@ const Achievements = (props: Props) => {
       obj.attachList?.map((i: any) => ({
         url: i.attachment.path,
         id: i.id,
-        time: i.attachment.created_at,
-      })) || [],
+        size: i.attachment.size,
+        time: i.created_at,
+        name: i.attachment.name,
+        suffix: i.attachment.ext,
+        username: i.user_name ?? '--',
+      })),
     )
   }
 
@@ -117,7 +120,17 @@ const Achievements = (props: Props) => {
 
   // 修改附件编辑或删除
   const onChangeAttachment = (result: any) => {
-    setNewAttachList(result)
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        name: i.name,
+        size: i.size,
+        ext: i.ext,
+        ctime: i.ctime,
+      }
+    })
+
+    setNewAttachList(arr)
   }
 
   const onBottom = () => {

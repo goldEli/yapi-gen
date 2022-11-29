@@ -135,13 +135,21 @@ const WrapLeftBox = () => {
     dom.scrollTop = dom.scrollHeight
   }
 
-  const onAddInfoAttach = async (url: any) => {
+  const onAddInfoAttach = async (data: any) => {
+    const obj = {
+      url: data.data.url,
+      name: data.data.files.name,
+      size: data.data.files.size,
+      ext: data.data.files.suffix,
+      ctime: data.data.files.time,
+    }
+
     try {
       await addInfoDemand({
         projectId,
         demandId,
         type: 'attachment',
-        targetId: url,
+        targetId: [obj],
       })
 
       getDemandInfo({ projectId, id: demandId })
@@ -241,7 +249,11 @@ const WrapLeftBox = () => {
                 defaultList={demandInfo?.attachment?.map((i: any) => ({
                   url: i.attachment.path,
                   id: i.id,
-                  time: i.attachment.created_at,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
                 }))}
                 canUpdate
                 onC

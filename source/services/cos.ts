@@ -95,7 +95,7 @@ export const uploadFile = (
           loaded: task.loaded,
           percent: task.percent,
 
-          name: file.name,
+          name: fileName || file.name,
           size: file.size,
           formattedSize: formatFileSize(file.size),
           suffix: getFileSuffix(file.name),
@@ -109,7 +109,7 @@ export const uploadFile = (
           percent: task.percent,
           file: {
             id: getUUID(),
-            name: file.name,
+            name: fileName || file.name,
             size: file.size,
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
@@ -137,46 +137,31 @@ export const uploadFileByTask = (
   file: File,
   username: string,
   space: string,
+  fileName?: any,
 ) => {
-  let id = ''
-  let url = ''
-  return new Promise<Models.Files.FileUploadTask>((resolve, reject) => {
+  return new Promise<Models.Files.File>((resolve, reject) => {
     cos.uploadFile({
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${file.name}`,
-      onTaskReady(taskId: string) {
-        id = taskId
-      },
-
-      onFileFinish(error: Error, data: { Location: string }) {
-        url = `https://${data.Location}`
+      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
+        fileName || file.name
+      }`,
+      onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)
         } else {
-          cos.emit('task-over', {
-            id,
-            url: `https://${data.Location}`,
-          })
-        }
-      },
-      onTaskStart(task: Task) {
-        resolve({
-          id: task.id,
-          state: task.state,
-          loaded: task.loaded,
-          percent: task.percent,
-          file: {
+          resolve({
+            space,
             id: getUUID(),
             name: file.name,
             size: file.size,
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),
-            url,
+            url: `https://${data.Location}`,
             time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
-          },
-        })
+          })
+        }
       },
     })
   })

@@ -13,6 +13,7 @@ export default () => {
     list: undefined,
   })
   const [tagList, setTagList] = useState<any>([])
+  const [priorityList, setPriorityList] = useState<any>([])
   const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
@@ -91,6 +92,11 @@ export default () => {
     setTagList(result)
   }
 
+  const getPriorityList = async (params: any) => {
+    const result = await services.mine.getPriOrStu(params)
+    setPriorityList(result)
+  }
+
   const getProjectCoverList = async () => {
     const result = await services.project.getProjectCoverList()
     setCoverList(result)
@@ -99,6 +105,7 @@ export default () => {
   const getProjectInfo = async (params: any) => {
     const result = await services.project.getProjectInfo(params)
     setProjectInfo(result)
+    return result
   }
 
   const getMemberList = async (params: any) => {
@@ -141,6 +148,10 @@ export default () => {
     addStoryConfigStatus,
     deleteStoryConfigStatus,
     updateStoryConfigStatus,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
   } = services.project
 
   return {
@@ -182,6 +193,7 @@ export default () => {
     colorList,
     getFieldList,
     fieldList,
+    setFieldList,
     option,
     addStoryConfigField,
     deleteStoryConfigField,
@@ -208,12 +220,17 @@ export default () => {
     updateStoryConfigStatus,
     workList,
     setWorkList,
-    setFieldList,
     setSelectTreeData,
     selectTreeData,
     setSelectAllStaffData,
     selectAllStaffData,
     setIsChangeProject,
     isChangeProject,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
+    getPriorityList,
+    priorityList,
   }
 }

@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Input, message, Popover } from 'antd'
+import { Drawer, Dropdown, Input, Menu, message, Popover } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import AddMember from './AddMember'
@@ -99,18 +99,6 @@ const MoreWrap2 = styled(MoreWrap)`
     }
   }
 `
-const Item = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  width: '116px',
-  height: '32px',
-  fontSize: '14px',
-  paddingLeft: '16px',
-  cursor: 'pointer',
-  '&:hover': {
-    color: '#2877FF',
-  },
-})
 const NameWrap = styled.div({
   width: 32,
   height: 32,
@@ -128,16 +116,40 @@ const HeaderWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
 })
+interface DropDownProps {
+  row: any
+  onClickMenu(item: any, row: any): void
+  roleOptions: any
+}
 
-const MoreDrop = (props: any) => {
-  const [showPop, setShowPop] = useState(false)
+const MoreDropdown = (props: DropDownProps) => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const onClickItem = (item: any) => {
+    setIsVisible(false)
+    props.onClickMenu(item, props.row)
+  }
+
+  const menu = () => {
+    let menuItems: any = []
+    props.roleOptions?.forEach((i: any, idx: any) => {
+      menuItems.push({
+        key: idx,
+        label: <div onClick={() => onClickItem(i)}>{i.label}</div>,
+      })
+    })
+    return <Menu items={menuItems} />
+  }
+
   return (
-    <Popover
-      visible={showPop}
-      content={props.content}
+    <Dropdown
+      key={isVisible ? isVisible.toString() : null}
+      visible={isVisible}
+      overlay={menu}
+      trigger={['hover']}
       placement="bottomRight"
-      trigger={['click', 'hover']}
-      onVisibleChange={visible => setShowPop(visible)}
+      getPopupContainer={node => node}
+      onVisibleChange={setIsVisible}
     >
       <MoreWrap2>
         <div
@@ -146,13 +158,13 @@ const MoreDrop = (props: any) => {
           }}
           className="job"
         >
-          {props.positionName}
+          {props.row.roleName}
         </div>
         <span className="job1">
           <IconFont style={{ fontSize: 16 }} type="down" />
         </span>
       </MoreWrap2>
-    </Popover>
+    </Dropdown>
   )
 }
 
@@ -160,12 +172,10 @@ const Member = (props: Props) => {
   const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
     useModel('project')
-  const { getRoleList } = useModel('staff')
   const { getProjectPermission, updateMember } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [memberList, setMemberList] = useState<any>([])
-  const [showPop, setShowPop] = useState(false)
   const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -184,27 +194,19 @@ const Member = (props: Props) => {
   useEffect(() => {
     init()
   }, [])
-  const moreOperation = (values: any) => {
-    const onChangeRule = async (i: any) => {
+
+  const onClickMenu = async (item: any, row: any) => {
+    try {
       await updateMember({
         projectId: props.projectId,
-        userGroupId: i,
-        userIds: values.id,
+        userGroupId: item.id,
+        userIds: row.id,
       })
-
+      message.success('修改成功！')
       getList()
+    } catch (error) {
+      //
     }
-    return (
-      <div
-        style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}
-      >
-        {roleOptions.map((i: any) => (
-          <Item onClick={() => onChangeRule(i.id)} key={i.id}>
-            {i.label}
-          </Item>
-        ))}
-      </div>
-    )
   }
 
   useEffect(() => {
@@ -308,9 +310,10 @@ const Member = (props: Props) => {
                     <span>{i.positionName}</span>
                   </div>
                 </div>
-                <MoreDrop
-                  positionName={i.roleName}
-                  content={moreOperation(i)}
+                <MoreDropdown
+                  onClickMenu={onClickMenu}
+                  roleOptions={roleOptions}
+                  row={i}
                 />
               </ListItem>
             ))}

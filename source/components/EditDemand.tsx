@@ -102,7 +102,7 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingRight: 0,
+  paddingRight: 16,
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -293,7 +293,12 @@ const EditDemand = (props: Props) => {
     return res.length ? res.map((i: any) => i.id) : []
   }
 
-  const getInfo = async (id: any, treeArr?: any, categoryData?: any) => {
+  const getInfo = async (
+    id: any,
+    treeArr?: any,
+    categoryData?: any,
+    allDemandArr?: any,
+  ) => {
     const res = await getDemandInfo({ projectId: id, id: props?.demandId })
     setDemandInfo(res)
     if (res) {
@@ -311,11 +316,17 @@ const EditDemand = (props: Props) => {
       form1.setFieldsValue(form1Obj)
 
       setPriorityDetail(res.priority)
+
+      //  这里会有问题
       setAttachList(
         res?.attachment.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
-          time: i.attachment.created_at,
+          size: i.attachment.size,
+          time: i.created_at,
+          name: i.attachment.name,
+          suffix: i.attachment.ext,
+          username: i.user_name ?? '--',
         })),
       )
       setTagList(
@@ -367,15 +378,15 @@ const EditDemand = (props: Props) => {
           .length
           ? res?.iterateId
           : null,
-        parentId: parentArr?.filter((i: any) => i.value === res?.parentId)
+        parentId: allDemandArr?.filter((i: any) => i.value === res?.parentId)
           .length
           ? res?.parentId
           : null,
-        class:
-          res.class === 0 ||
-          JSON.stringify(treeArr?.find((j: any) => j.id === res.class)) !== '{}'
-            ? res.class
-            : null,
+        class: treeArr?.filter((j: any) => j.id === res.class)?.length
+          ? res.class
+          : res.class === 0
+          ? 0
+          : null,
       })
     } else {
       form.resetFields()
@@ -416,7 +427,7 @@ const EditDemand = (props: Props) => {
 
     if (props?.demandId) {
       setCategoryObj({})
-      getInfo(value || projectId, classTree, categoryData?.list)
+      getInfo(value || projectId, classTree, categoryData?.list, allDemandArr)
     } else {
       form.setFieldsValue({
         projectId: value,
@@ -625,8 +636,18 @@ const EditDemand = (props: Props) => {
   }
 
   const onChangeAttachment = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        name: i.name,
+        size: i.size,
+        ext: i.ext,
+        ctime: i.ctime,
+      }
+    })
+
     form.setFieldsValue({
-      attachments: result,
+      attachments: arr,
     })
   }
 
@@ -919,7 +940,7 @@ const EditDemand = (props: Props) => {
               </Popover>
             )}
           </div>
-          <CloseWrap width={60} height={52} onClick={onCancel}>
+          <CloseWrap width={32} height={32} onClick={onCancel}>
             <IconFont type="close" />
           </CloseWrap>
         </ModalHeader>
