@@ -72,7 +72,7 @@ export const GredParent = styled.div`
   }
 `
 
-const BlueCss = styled.span`
+export const BlueCss = styled.span`
   font-size: 12px;
   color: #2877ff;
   cursor: pointer;
@@ -354,7 +354,7 @@ const UploadAttach = (props: any) => {
             name: i.name,
             size: i.size,
             formattedSize: '',
-            suffix: i.url.split('.').at(-1),
+            suffix: i.suffix,
             url: i.url,
             time: i.time,
             username: i.username ?? userInfo?.name,
