@@ -241,9 +241,9 @@ export const addDemand: any = async (params: any) => {
     info,
     expected_start_at: params?.expectedStart,
     expected_end_at: params?.expectedEnd,
-    iterate_id: params?.iterateId,
-    parent_id: params?.parentId,
-    priority: params?.priority,
+    iterate_id: params?.iterateId || 0,
+    parent_id: params?.parentId || 0,
+    priority: params?.priority || 0,
     users: params?.userIds,
     copysend: params?.copySendIds,
     tag: params?.tagIds,
@@ -273,15 +273,15 @@ export const updateDemand: any = async (params: any) => {
     iterate_id:
       JSON.stringify(params.iterateId) !== '[]' && params.iterateId
         ? params.iterateId
-        : null,
+        : 0,
     parent_id:
       JSON.stringify(params.parentId) !== '[]' && params.parentId
         ? params.parentId
-        : null,
+        : 0,
     priority:
       JSON.stringify(params.priority) !== '[]' && params.priority
         ? params.priority
-        : null,
+        : 0,
     users: params.userIds,
     copysend: params.copySendIds,
     tag: params.tagIds,
