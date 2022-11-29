@@ -264,7 +264,9 @@ function getDecimal(num: any) {
 function bytesToSize(fileByte: any) {
   const fileSizeByte = fileByte
   let fileSizeMsg = ''
-  if (fileSizeByte < 1048576) {
+  if (fileSizeByte < 1024) {
+    fileSizeMsg = `${fileSizeByte.toFixed(2)}Byte`
+  } else if (fileSizeByte < 1048576) {
     fileSizeMsg = `${(fileSizeByte / 1024).toFixed(2)}KB`
   } else if (fileSizeByte === 1048576) {
     fileSizeMsg = '1MB'

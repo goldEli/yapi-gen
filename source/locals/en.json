@@ -8,7 +8,7 @@
     "delete": " Delete ",
     "paused": " paused",
     "fail": " Upload failed ",
-    "retransmission": " retransmission",
+    "text": "File format not supported ",
     "maxUploadText": "The maximum length of a file name is 130 words!",
     "nameNotNull": "The demand title cannot be empty!",
     "toast": "Tips",

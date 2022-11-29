@@ -76,7 +76,7 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 1s;
+      transition: all 0.2s;
     }
   }
 `
@@ -85,6 +85,11 @@ const BlueCss = styled.span`
   font-size: 12px;
   color: #2877ff;
   cursor: pointer;
+  margin-left: 5px;
+  background-color: white;
+  padding: 5px 8px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
 `
 
 const RedCss = styled(BlueCss)`
@@ -118,8 +123,8 @@ const StyledProgress = styled(Progress)`
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
-  ppt: 'colorppt',
-  pptx: 'colorppt',
+  ppt: 'colorPPT',
+  pptx: 'colorPPT',
   avi: 'colorvideo',
   mp4: 'colorvideo',
   mov: 'colorvideo',
@@ -201,7 +206,27 @@ const UploadAttach = (props: any) => {
     })
   }
 
+  function isFormatType(str: string) {
+    return (
+      ['exe', 'bat', 'com', 'vbs', 'reg', 'sh'].indexOf(str.toLowerCase()) !==
+      -1
+    )
+  }
+  const isFormat = (value: string) => {
+    const index = value.lastIndexOf('.')
+    const str = value.substring(index + 1)
+    return isFormatType(str)
+  }
+
   const onUploadBefore = (file: any) => {
+    if (isFormat(file.name)) {
+      message.warning(
+        `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        3,
+      )
+      return Upload.LIST_IGNORE
+    }
+
     if (props?.defaultList.length >= 20) {
       message.warning(t('common.limitToast'))
       return Upload.LIST_IGNORE
@@ -458,7 +483,11 @@ const UploadAttach = (props: any) => {
                   </>
                 )}
                 {i.state === 'success' && (
-                  <span>
+                  <span
+                    style={{
+                      background: 'white',
+                    }}
+                  >
                     {!!isDownload && (
                       <BlueCss
                         onClick={() => onDownload(i.file.url, i.file.name)}
@@ -502,7 +531,6 @@ const UploadAttach = (props: any) => {
                 </div>
                 <First
                   style={{
-                    height: '20px',
                     fontSize: '12px',
                     fontWeight: 400,
                     color: '#969799',
@@ -554,7 +582,7 @@ const UploadAttach = (props: any) => {
                           marginRight: '12px',
                         }}
                       >
-                        {i.file.username ?? userInfo?.name}
+                        {i.file.username}
                       </span>
                       <span>{i.file.time}</span>
                     </>

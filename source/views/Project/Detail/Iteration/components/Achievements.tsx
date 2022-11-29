@@ -93,7 +93,7 @@ const Achievements = (props: Props) => {
         name: i.attachment.name,
         suffix: i.attachment.ext,
         username: i.user_name ?? '--',
-      })) || [],
+      })),
     )
   }
 

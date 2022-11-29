@@ -8,7 +8,7 @@
     "delete": "删除",
     "paused": "已暂停",
     "fail": "上传失败",
-    "retransmission": "重传",
+    "text": "不支持文件格式",
     "maxUploadText": "最大支持130个字长度的文件名！",
     "nameNotNull": "需求标题不能为空！",
     "toast": "提示",
