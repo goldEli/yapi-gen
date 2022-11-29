@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Input, Popover } from 'antd'
+import { Drawer, Input, message, Popover } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import AddMember from './AddMember'
@@ -129,13 +129,43 @@ const HeaderWrap = styled.div({
   justifyContent: 'space-between',
 })
 
+const MoreDrop = (props: any) => {
+  const [showPop, setShowPop] = useState(false)
+  return (
+    <Popover
+      visible={showPop}
+      content={props.content}
+      placement="bottomRight"
+      trigger={['click', 'hover']}
+      onVisibleChange={visible => setShowPop(visible)}
+    >
+      <MoreWrap2>
+        <div
+          style={{
+            marginRight: '8px',
+          }}
+          className="job"
+        >
+          {props.positionName}
+        </div>
+        <span className="job1">
+          <IconFont style={{ fontSize: 16 }} type="down" />
+        </span>
+      </MoreWrap2>
+    </Popover>
+  )
+}
+
 const Member = (props: Props) => {
   const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
     useModel('project')
+  const { getRoleList } = useModel('staff')
+  const { getProjectPermission, updateMember } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
+  const [roleOptions, setRoleOptions] = useState([])
   const [memberList, setMemberList] = useState<any>([])
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
+  const [showPop, setShowPop] = useState(false)
   const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -145,20 +175,32 @@ const Member = (props: Props) => {
     setMemberList(result)
     setIsRefreshMember(false)
   }
+  const init = async () => {
+    const res = await getProjectPermission({ projectId: props.projectId })
+
+    setRoleOptions(res.list)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
   const moreOperation = (values: any) => {
-    // console.log(values)
-    const arr = ['管理员', ' 编辑者', '参与者', '自定义权限组']
-    const onChangeRule = (i: any) => {
-      // console.log(values, i)
+    const onChangeRule = async (i: any) => {
+      await updateMember({
+        projectId: props.projectId,
+        userGroupId: i,
+        userIds: values.id,
+      })
+
       getList()
     }
     return (
       <div
         style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}
       >
-        {arr.map((i: any) => (
-          <Item onClick={() => onChangeRule(i)} key={i}>
-            {i}
+        {roleOptions.map((i: any) => (
+          <Item onClick={() => onChangeRule(i.id)} key={i.id}>
+            {i.label}
           </Item>
         ))}
       </div>
@@ -266,25 +308,10 @@ const Member = (props: Props) => {
                     <span>{i.roleName}</span>
                   </div>
                 </div>
-                <Popover
+                <MoreDrop
+                  positionName={i.positionName}
                   content={moreOperation(i)}
-                  placement="bottomRight"
-                  getPopupContainer={node => node}
-                >
-                  <MoreWrap2>
-                    <div
-                      style={{
-                        marginRight: '8px',
-                      }}
-                      className="job"
-                    >
-                      {i.positionName}
-                    </div>
-                    <span className="job1">
-                      <IconFont style={{ fontSize: 16 }} type="down" />
-                    </span>
-                  </MoreWrap2>
-                </Popover>
+                />
               </ListItem>
             ))}
           </ListWrap>
