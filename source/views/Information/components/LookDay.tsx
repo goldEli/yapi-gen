@@ -456,7 +456,7 @@ const LookDay = (props: any) => {
                         <div>
                           <div
                             style={{
-                              width: 'calc(100% - 50px)',
+                              width: '100%',
                               fontSize: '14px',
                               fontWeight: 400,
                               color: '#646566',
