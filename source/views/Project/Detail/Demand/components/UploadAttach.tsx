@@ -76,7 +76,7 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 1s;
+      transition: all 0.2s;
     }
   }
 `
@@ -85,6 +85,11 @@ const BlueCss = styled.span`
   font-size: 12px;
   color: #2877ff;
   cursor: pointer;
+  margin-left: 5px;
+  background-color: white;
+  padding: 5px 8px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
 `
 
 const RedCss = styled(BlueCss)`
@@ -108,7 +113,6 @@ export const Card = styled.div`
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
-  padding-right: 80px;
 `
 
 const StyledProgress = styled(Progress)`
@@ -479,7 +483,11 @@ const UploadAttach = (props: any) => {
                   </>
                 )}
                 {i.state === 'success' && (
-                  <span>
+                  <span
+                    style={{
+                      background: 'white',
+                    }}
+                  >
                     {!!isDownload && (
                       <BlueCss
                         onClick={() => onDownload(i.file.url, i.file.name)}
@@ -524,7 +532,6 @@ const UploadAttach = (props: any) => {
                 </div>
                 <First
                   style={{
-                    height: '20px',
                     fontSize: '12px',
                     fontWeight: 400,
                     color: '#969799',
