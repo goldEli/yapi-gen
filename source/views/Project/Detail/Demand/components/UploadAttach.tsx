@@ -133,7 +133,7 @@ export const fileIconMap: Record<string, string> = {
   mp3: 'colormusic',
   wav: 'colormusic',
   cad: 'colormusic',
-  doc: 'colordoc',
+  doc: ' colorDOC-76p4mioh',
   docx: 'colorDOC-76p4mioh',
   pdf: 'colorpdf',
   zip: 'zip',
@@ -474,28 +474,40 @@ const UploadAttach = (props: any) => {
 
               <Second>
                 {i.state === 'uploading' && (
-                  <>
+                  <span
+                    style={{
+                      background: 'white',
+                    }}
+                  >
                     <BlueCss onClick={() => onTapPause(i.id)}>
                       {t('p2.pause')}
                     </BlueCss>
                     <RedCss onClick={() => onTapClose(i.id)}>
                       {t('p2.cancel')}
                     </RedCss>
-                  </>
+                  </span>
                 )}
                 {i.state === 'paused' && (
-                  <>
+                  <span
+                    style={{
+                      background: 'white',
+                    }}
+                  >
                     <BlueCss onClick={() => onTapRestart(i.id)}>
                       {t('p2.begin')}
                     </BlueCss>
                     <RedCss onClick={() => onTapClose(i.id)}>
                       {t('p2.cancel')}
                     </RedCss>
-                  </>
+                  </span>
                 )}
 
                 {i.state === 'error' && (
-                  <>
+                  <span
+                    style={{
+                      background: 'white',
+                    }}
+                  >
                     <BlueCss onClick={() => onTapRestart(i.id)}>
                       {t('p2.retransmission')}
                     </BlueCss>
@@ -503,7 +515,7 @@ const UploadAttach = (props: any) => {
                       {' '}
                       {t('p2.cancel')}
                     </RedCss>
-                  </>
+                  </span>
                 )}
                 {i.state === 'success' && (
                   <span
