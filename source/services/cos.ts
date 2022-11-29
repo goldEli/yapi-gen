@@ -95,7 +95,7 @@ export const uploadFile = (
           loaded: task.loaded,
           percent: task.percent,
 
-          name: file.name,
+          name: fileName || file.name,
           size: file.size,
           formattedSize: formatFileSize(file.size),
           suffix: getFileSuffix(file.name),
@@ -109,7 +109,7 @@ export const uploadFile = (
           percent: task.percent,
           file: {
             id: getUUID(),
-            name: file.name,
+            name: fileName || file.name,
             size: file.size,
             formattedSize: formatFileSize(file.size),
             suffix: getFileSuffix(file.name),

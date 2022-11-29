@@ -246,9 +246,34 @@ const UploadAttach = (props: any) => {
   }
 
   const onUploadFileClick = async ({ file }: { file: any }) => {
-    const result: any = await uploadFile(file, file.name, 'file')
+    if (file instanceof File) {
+      const fileName = file.name
+      let newName = file.name
 
-    setFileList((tasks: any) => [result].concat(...tasks))
+      const list = fileList as any[]
+      let i = 1
+
+      while (
+        list.some(
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          fileItem =>
+            String(fileItem.file.name).toLowerCase() ===
+            String(newName).toLowerCase(),
+        )
+      ) {
+        newName = fileName
+          .split('.')
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          .map((nameSlice, index, array) =>
+            array.length - 2 === index ? `${nameSlice}(${i++})` : nameSlice,
+          )
+          .join('.')
+      }
+
+      const result: any = await uploadFile(file, file.name, 'file', newName)
+
+      setFileList((tasks: any) => [result].concat(...tasks))
+    }
   }
 
   const onDownload = (url: string, name: string) => {
