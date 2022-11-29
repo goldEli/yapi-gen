@@ -282,6 +282,7 @@ const DemandWrap = (props: Props) => {
       message.success(t('common.deleteSuccess'))
       setIsVisible(false)
       setDeleteId(0)
+      setIsDelete(false)
       getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //
