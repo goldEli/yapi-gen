@@ -27,6 +27,7 @@ import ParentDemand from '../../components/ParentDemand'
 import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
+import EditComment from '@/components/EditComment'
 
 const WrapRight = styled.div({
   minWidth: '200px',
@@ -692,20 +693,22 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         </div>
       )}
       {!isComment && activeTabs === 2 && (
-        <TextareaWrap>
-          <Input.TextArea
-            placeholder={t('mark.editCom')}
-            autoSize={{ minRows: 3, maxRows: 5 }}
-            value={addValue}
-            onChange={(e: any) => setAddValue(e.target.value)}
-            onPressEnter={onPressEnter}
-          />
-          <ButtonWrap>
-            <Button type="primary" onClick={() => onAddComment(addValue)}>
-              {t('project.replay')}
-            </Button>
-          </ButtonWrap>
-        </TextareaWrap>
+        <EditComment></EditComment>
+        // <TextareaWrap>
+        //   <Input.TextArea
+        //     placeholder={t('mark.editCom')}
+        //     autoSize={{ minRows: 3, maxRows: 5 }}
+        //     value={addValue}
+        //     onChange={(e: any) => setAddValue(e.target.value)}
+        //     onPressEnter={onPressEnter}
+        //   />
+        //   <ButtonWrap>
+        //     <Button type="primary" onClick={() => onAddComment(addValue)}>
+        //       {t('project.replay')}
+        //     </Button>
+        //   </ButtonWrap>
+
+        // </TextareaWrap>
       )}
     </WrapRight>
   )

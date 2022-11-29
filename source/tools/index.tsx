@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable max-statements-per-line */
 // 使用多次的公共方法
 
@@ -286,6 +289,89 @@ function bytesToSize(fileByte: any) {
 }
 
 // 14.24GB
+// 定义粘贴函数
+const onPaste = (event: any) => {
+  // 剪贴板没数据，则直接返回
+  if (!event.clipboardData || !event.clipboardData.items) {
+    return
+  }
+  return new Promise((resovle, reject) => {
+    for (let i = 0, len = event.clipboardData.items.length; i < len; i++) {
+      const item = event.clipboardData.items[i]
+      if (item.kind === 'file') {
+        const file = item.getAsFile()
+        if (item.type.match('^image/')) {
+          // 处理图片
+          handleImage(file, (data: any) => {
+            resovle(data)
+          })
+        } else {
+          // 其他文件直接返回
+          resovle({
+            data: file,
+            type: 'file',
+          })
+        }
+      } else {
+        reject(new Error('不支持粘贴该类型'))
+      }
+    }
+  })
+}
+
+function handleImage(file: any, callback: any, maxWidth = 200) {
+  if (!file || !/(?:png|jpg|jpeg|gif)/i.test(file.type)) {
+    return
+  }
+  const reader = new FileReader()
+  reader.onload = function () {
+    const { result } = this
+    let img: any = new Image()
+    img.onload = function () {
+      const compressedDataUrl = compress(img, file.type, maxWidth, true)
+      const url = compress(img, file.type, maxWidth, false)
+      img = null
+      callback({
+        data: file,
+        compressedDataUrl,
+        url,
+        type: 'image',
+      })
+    }
+    img.src = result
+  }
+  reader.readAsDataURL(file)
+}
+
+function compress(img: any, type: any, maxHeight: any, flag: any) {
+  let canvas: any = document.createElement('canvas')
+  let ctx2: any = canvas.getContext('2d')
+  const ratio = img.width / img.height
+  let { width } = img,
+    { height } = img
+
+  // 根据flag判断是否压缩图片
+  if (flag) {
+    // 压缩后的图片展示在输入框
+    height = maxHeight
+    width = maxHeight * ratio
+  }
+  canvas.width = width
+  canvas.height = height
+  ctx2.fillStyle = '#fff'
+  ctx2.fillRect(0, 0, canvas.width, canvas.height)
+  ctx2.drawImage(img, 0, 0, width, height)
+  let base64Data = canvas.toDataURL(type, 0.75)
+  if (type === 'image/gif') {
+    const regx = /(?<=data:image).*?(?=;base64)/
+    base64Data = base64Data.replace(regx, '/gif')
+  }
+  canvas = null
+  ctx2 = null
+  return base64Data
+}
+
+export default onPaste
 
 export {
   getIsPermission,
@@ -296,4 +382,5 @@ export {
   getNestedChildren,
   filterTreeData,
   bytesToSize,
+  onPaste,
 }
