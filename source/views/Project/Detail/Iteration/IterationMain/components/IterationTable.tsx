@@ -64,13 +64,13 @@ interface Props {
 
 const IterationTable = (props: Props) => {
   const asyncSetTtile = useSetTitle()
-
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { filterParams } = useModel('iterate')
   const { updatePriority, updateDemandStatus } = useModel('demand')
-  const { projectInfo } = useModel('project')
+  const { projectInfo, setFilterParamsModal } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -270,6 +270,13 @@ const IterationTable = (props: Props) => {
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns])
 
+  const onCreateDemand = () => {
+    setFilterParamsModal(filterParams)
+    setTimeout(() => {
+      setIsEdit(true)
+    }, 100)
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 64px)' }}>
       {isEdit && (
@@ -283,7 +290,7 @@ const IterationTable = (props: Props) => {
 
       {!hasCreate && props.hasId && props.hasId?.status === 1 && (
         <div style={{ padding: '10px 0 10px 16px', background: 'white' }}>
-          <SecondButton onClick={() => setIsEdit(true)}>
+          <SecondButton onClick={onCreateDemand}>
             <IconFont type="plus" />
             <div>{t('common.createDemand')}</div>
           </SecondButton>

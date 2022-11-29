@@ -42,17 +42,26 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const { projectInfo, getProjectInfo, setFieldList, tagList } =
-    useModel('project')
+  const {
+    projectInfo,
+    getProjectInfo,
+    setFieldList,
+    tagList,
+    filterParamsModal,
+  } = useModel('project')
   const { getProjectList } = useModel('mine')
-  const { filterParams } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
 
   // 提交参数
   const onConfirm = async () => {
     await form.validateFields()
-    return { ...form.getFieldsValue() }
+    const values = form.getFieldsValue()
+    values.tagIds = tagCheckedList?.map((i: any) => ({
+      name: i.name,
+      color: i.color,
+    }))
+    return { ...values }
   }
 
   // 清空左侧参数
@@ -116,8 +125,8 @@ const EditDemandLeft = (props: Props) => {
       getProjectData()
     }
     // 创建回填筛选数据 --- 标签
-    if (filterParams?.tagIds?.length) {
-      const resultArr = filterParams?.tagIds?.filter((i: any) => i !== -1)
+    if (filterParamsModal?.tagIds?.length) {
+      const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
         tagList
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))

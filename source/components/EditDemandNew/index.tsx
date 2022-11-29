@@ -161,6 +161,8 @@ const EditDemand = (props: Props) => {
     getCategoryList,
     getMemberList,
     getFieldList,
+    filterParamsModal,
+    setFilterParamsModal,
   } = useModel('project')
   const {
     setCreateCategory,
@@ -173,8 +175,6 @@ const EditDemand = (props: Props) => {
     updateDemandCategory,
     updateDemand,
     addDemand,
-    filterParams,
-    setFilterParams,
   } = useModel('demand')
   const { setIsUpdateCreate } = useModel('mine')
 
@@ -250,15 +250,17 @@ const EditDemand = (props: Props) => {
       // 迭代创建 ,当前只有迭代是需要做筛选类别回填
       if (props?.iterateId) {
         // 如果是有筛选条件的，回填筛选条件
-        if (filterParams?.category_id?.length) {
-          const resultId = filterParams?.category_id?.filter(
+        if (filterParamsModal?.category_id?.length) {
+          const resultId = filterParamsModal?.category_id?.filter(
             (i: any) => i !== -1,
           )?.[0]
           // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-          const resultObj = resultId
-            ? categoryData?.list?.filter((i: any) => i.id === resultId)[0]
-            : categoryData?.list[0]
+          const resultObj = categoryData?.list?.filter(
+            (i: any) => i.id === resultId,
+          )[0]
           setCategoryObj(resultObj)
+        } else {
+          setCategoryObj(categoryData?.list[0])
         }
       }
     }
@@ -368,8 +370,7 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
-    const classId = filterParams.class_id
-    setFilterParams({ class_id: classId })
+    setFilterParamsModal({})
   }
 
   // 保存数据
@@ -410,7 +411,7 @@ const EditDemand = (props: Props) => {
         rightDom.current?.reset()
       }, 100)
       props.onChangeVisible()
-      setFilterParams({})
+      setFilterParamsModal({})
     }
 
     if (props.isQuickCreate) {

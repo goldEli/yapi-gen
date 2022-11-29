@@ -57,11 +57,11 @@ const DemandWrap = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { projectInfo } = useModel('project')
+  const { projectInfo, setFilterParamsModal } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
     useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
-  const { iterateInfo } = useModel('iterate')
+  const { iterateInfo, setFilterParams, filterParams } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -143,7 +143,7 @@ const DemandWrap = (props: Props) => {
       schedule_end: searchParamsObj?.schedule_end,
       custom_field: searchParamsObj?.custom_field,
     }
-
+    setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -318,6 +318,13 @@ const DemandWrap = (props: Props) => {
     return [...arrList, ...newList]
   }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
+  const onCreateDemand = () => {
+    setFilterParamsModal(filterParams)
+    setTimeout(() => {
+      setIsVisible(true)
+    }, 100)
+  }
+
   return (
     <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
       <DeleteConfirm
@@ -338,7 +345,7 @@ const DemandWrap = (props: Props) => {
 
       {!hasCreate && iterateInfo?.status === 1 && (
         <div style={{ padding: '10px 0 10px 16px', background: 'white' }}>
-          <SecondButton onClick={() => setIsVisible(true)}>
+          <SecondButton onClick={onCreateDemand}>
             <IconFont type="plus" />
             <div>{t('common.createDemand')}</div>
           </SecondButton>

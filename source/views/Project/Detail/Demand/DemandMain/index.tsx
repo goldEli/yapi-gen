@@ -124,6 +124,7 @@ const DemandMain = (props: Props) => {
         class_id: key,
       }
     }
+    setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -183,7 +184,7 @@ const DemandMain = (props: Props) => {
 
   const onSearch = (params: any) => {
     setSearchItems(params)
-    setFilterParams({ ...params, ...{ class_id: key } })
+    // setFilterParams({ ...params, ...{ class_id: key } })
     getList(isGrid, params, { page: 1, size: pageObj.size }, order)
   }
 
@@ -211,9 +212,9 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
-      const obj = filterParams
-      obj.class_id = value
-      setFilterParams(obj)
+      // const obj = filterParams
+      // obj.class_id = value
+      // setFilterParams(obj)
     },
   }
 

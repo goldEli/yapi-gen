@@ -48,7 +48,8 @@ const IterationMain = (props: Props) => {
   const projectId = paramsData.id
   const { iterateId } = paramsData
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
-  const { setIsRefreshList, setIsUpdateList } = useModel('iterate')
+  const { setIsRefreshList, setIsUpdateList, setFilterParams } =
+    useModel('iterate')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
@@ -116,7 +117,7 @@ const IterationMain = (props: Props) => {
         custom_field: searchParamsObj?.custom_field,
       }
     }
-
+    setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
