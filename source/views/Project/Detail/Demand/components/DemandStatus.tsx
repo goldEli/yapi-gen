@@ -5,16 +5,14 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
-import Pop from '@/components/Popconfirm'
 import styled from '@emotion/styled'
 import { Divider, message } from 'antd'
 import { useModel } from '@/models'
-import { SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getShapeLeft } from '@/services/project/shape'
-import { ShapeContent } from '@/components/Shape'
 import { updateDemandStatus } from '@/services/mine'
-import { ShapeContentForDetail } from '@/components/ShapeForDetail'
+import ShapeContentForDetail from '@/components/ShapeForDetail'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -58,6 +56,8 @@ const DemandStatusBox = (props: any) => {
     })
     setLeftList(res2)
     setIsUpdateStatus(false)
+
+    setRows(res2.find((i: any) => i.id === demandInfo.status.id))
   }
   const updateStatus = async (res1: any) => {
     const res = await updateDemandStatus(res1)

@@ -316,7 +316,7 @@ const NumericInput = (props: any) => {
   )
 }
 
-export const ShapeContentForDetail = (props: any) => {
+const ShapeContentForDetail = (props: any) => {
   const [t] = useTranslation()
   const {
     row: {
@@ -704,8 +704,7 @@ export const ShapeContentForDetail = (props: any) => {
             ) : null}
             {rightList.is_verify && rightList.verify.verify_type === 2 ? (
               <Form
-                labelCol={{ span: 10 }}
-                wrapperCol={{ span: 16 }}
+                labelCol={{ span: 4 }}
                 labelAlign="left"
                 form={form2}
                 onFinish={confirm}
@@ -782,3 +781,5 @@ export const ShapeContentForDetail = (props: any) => {
     </Contain>
   )
 }
+
+export default ShapeContentForDetail
