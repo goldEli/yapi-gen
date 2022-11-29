@@ -305,11 +305,11 @@ const Member = (props: Props) => {
                       {i.name}
                       {i.nickname ? `(${i.nickname})` : ''}
                     </span>
-                    <span>{i.roleName}</span>
+                    <span>{i.positionName}</span>
                   </div>
                 </div>
                 <MoreDrop
-                  positionName={i.positionName}
+                  positionName={i.roleName}
                   content={moreOperation(i)}
                 />
               </ListItem>
