@@ -67,7 +67,7 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 0.2s;
+      transition: all 0.1s;
     }
   }
 `
