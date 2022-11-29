@@ -76,7 +76,7 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 0.2s;
+      transition: all 0.1s;
     }
   }
 `
@@ -112,7 +112,7 @@ export const Card = styled.div`
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
-  padding-right: 80px;
+ 
 `
 
 const StyledProgress = styled(Progress)`
