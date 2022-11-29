@@ -48,6 +48,7 @@ const EditDemandLeft = (props: Props) => {
     setFieldList,
     tagList,
     filterParamsModal,
+    getTagList,
   } = useModel('project')
   const { getProjectList } = useModel('mine')
   const [attachList, setAttachList] = useState<any>([])
@@ -108,10 +109,26 @@ const EditDemandLeft = (props: Props) => {
       )
       form.setFieldsValue(hisCategoryData)
       getProjectInfo({ projectId: hisCategoryData?.projectId })
+      const resultList = await getTagList({
+        projectId: hisCategoryData?.projectId,
+      })
       props.onChangeProjectId(hisCategoryData?.projectId)
       props.onGetDataAll(
         hisCategoryData?.projectId,
         hisCategoryData?.categoryId,
+      )
+      setTagCheckedList(
+        resultList
+          ?.filter((i: any) =>
+            hisCategoryData?.tagIds
+              ?.map((k: any) => k.name)
+              .some((k: any) => k === i.content),
+          )
+          ?.map((i: any) => ({
+            id: i.id,
+            color: i.color,
+            name: i.content,
+          })),
       )
     }
 
@@ -174,10 +191,13 @@ const EditDemandLeft = (props: Props) => {
   }, [props?.demandId, props.demandInfo])
 
   // 切换项目
-  const onSelectProjectName = (value: any) => {
+  const onSelectProjectName = async (value: any) => {
     onReset()
     setFieldList({ list: undefined })
     getProjectInfo({ projectId: value })
+    await getTagList({
+      projectId: value,
+    })
     form.setFieldsValue({
       projectId: value,
     })

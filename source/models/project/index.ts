@@ -92,6 +92,7 @@ export default () => {
   const getTagList = async (params: any) => {
     const result = await services.project.getTagList(params)
     setTagList(result)
+    return result
   }
 
   const getPriorityList = async (params: any) => {

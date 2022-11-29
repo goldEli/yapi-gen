@@ -53,6 +53,8 @@ interface Props {
   info?: any
   //是否来自子需求
   isChild?: any
+  // 是否是完成并创建
+  isSaveParams?: boolean
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -191,99 +193,102 @@ const EditDemandRIght = (props: Props) => {
             : null,
         })
       }
-      // 不是在迭代创建需求并且有筛选项
-      if (!props.iterateId && filterParamsModal?.iterateIds?.length) {
-        const resultId = filterParamsModal?.iterateIds?.filter(
+      // 如果是不完成并创建的话，回填筛选值
+      if (!props.isSaveParams) {
+        // 不是在迭代创建需求并且有筛选项
+        if (!props.iterateId && filterParamsModal?.iterateIds?.length) {
+          const resultId = filterParamsModal?.iterateIds?.filter(
+            (i: any) => i !== -1,
+          )?.[0]
+          form.setFieldsValue({
+            iterateId: selectIterate?.list
+              ?.filter((k: any) => k.status === 1)
+              .filter((i: any) => i.id === resultId).length
+              ? resultId
+              : null,
+          })
+        }
+        // 获取需求分类回填值 未分类可能是-1或者是0
+        const resultClass = filterParamsModal?.class_id
+          ? filterParamsModal?.class_id === -1
+            ? 0
+            : filterParamsModal?.class_id
+          : filterParamsModal?.class_ids?.filter((i: any) => i !== -1)?.[0]
+        // 筛选值-优先级
+        const priorityId = filterParamsModal?.priorityIds?.filter(
           (i: any) => i !== -1,
         )?.[0]
+        const resultPriority = priorityList?.data?.filter(
+          (i: any) => i.id === priorityId,
+        )?.[0]
+
+        // 筛选回填处理人、抄送人、需求分类、优先级
         form.setFieldsValue({
-          iterateId: selectIterate?.list
-            ?.filter((k: any) => k.status === 1)
-            .filter((i: any) => i.id === resultId).length
-            ? resultId
-            : null,
-        })
-      }
-      // 获取需求分类回填值 未分类可能是-1或者是0
-      const resultClass = filterParamsModal?.class_id
-        ? filterParamsModal?.class_id === -1
-          ? 0
-          : filterParamsModal?.class_id
-        : filterParamsModal?.class_ids?.filter((i: any) => i !== -1)?.[0]
-      // 筛选值-优先级
-      const priorityId = filterParamsModal?.priorityIds?.filter(
-        (i: any) => i !== -1,
-      )?.[0]
-      const resultPriority = priorityList?.data?.filter(
-        (i: any) => i.id === priorityId,
-      )?.[0]
-
-      // 筛选回填处理人、抄送人、需求分类、优先级
-      form.setFieldsValue({
-        copySendIds: filterParamsModal?.copySendId?.filter(
-          (i: any) => i !== -1,
-        ),
-        userIds: filterParamsModal?.usersNameId?.filter((i: any) => i !== -1),
-        class: resultClass,
-        priority: resultPriority,
-      })
-      setPriorityDetail(resultPriority)
-
-      // 筛选回填预计开始时间
-      if (filterParamsModal?.expectedStart) {
-        form.setFieldsValue({
-          startTime: moment(
-            filterParamsModal?.expectedStart[0] === '1970-01-01'
-              ? 0
-              : filterParamsModal?.expectedStart[0],
+          copySendIds: filterParamsModal?.copySendId?.filter(
+            (i: any) => i !== -1,
           ),
+          userIds: filterParamsModal?.usersNameId?.filter((i: any) => i !== -1),
+          class: resultClass,
+          priority: resultPriority,
         })
-      }
+        setPriorityDetail(resultPriority)
 
-      // 筛选回填预计结束时间
-      if (filterParamsModal?.expectedEnd) {
-        form.setFieldsValue({
-          endTime: moment(
-            filterParamsModal?.expectedEnd[1] === '2030-01-01'
-              ? 0
-              : filterParamsModal?.expectedEnd[1],
-          ),
-        })
-      }
+        // 筛选回填预计开始时间
+        if (filterParamsModal?.expectedStart) {
+          form.setFieldsValue({
+            startTime: moment(
+              filterParamsModal?.expectedStart[0] === '1970-01-01'
+                ? 0
+                : filterParamsModal?.expectedStart[0],
+            ),
+          })
+        }
 
-      // 筛选值回填自定义字段值
-      if (
-        filterParamsModal?.custom_field &&
-        JSON.stringify(filterParamsModal?.custom_field) !== '{}'
-      ) {
-        let resultCustom: any = {}
-        const customArr = fieldList?.list?.filter((i: any) =>
-          Object.keys(filterParamsModal?.custom_field).some(
-            (k: any) => k === i.content,
-          ),
-        )
-        customArr.forEach((element: any) => {
-          const customValue = filterParamsModal?.custom_field[element.content]
-          if (
-            ['select_checkbox', 'select', 'checkbox', 'radio'].includes(
-              element.type.attr,
-            )
-          ) {
-            // 判断是否是下拉框，是则去除空选项
-            resultCustom[element.content] = customValue?.filter(
-              (i: any) => i !== -1,
-            )
-          } else if (['number'].includes(element.type.attr)) {
-            // 判断是否是数字类型，是则获取start
-            resultCustom[element.content] = Number(customValue?.start)
-          } else if (['date'].includes(element.type.attr)) {
-            // 判断是否是时间类型，是则获取第一个时间
-            resultCustom[element.content] = moment(customValue[0])
-          } else if (['text', 'textarea'].includes(element.type.attr)) {
-            resultCustom[element.content] = customValue
-          }
-        })
-        form1.setFieldsValue(resultCustom)
+        // 筛选回填预计结束时间
+        if (filterParamsModal?.expectedEnd) {
+          form.setFieldsValue({
+            endTime: moment(
+              filterParamsModal?.expectedEnd[1] === '2030-01-01'
+                ? 0
+                : filterParamsModal?.expectedEnd[1],
+            ),
+          })
+        }
+
+        // 筛选值回填自定义字段值
+        if (
+          filterParamsModal?.custom_field &&
+          JSON.stringify(filterParamsModal?.custom_field) !== '{}'
+        ) {
+          let resultCustom: any = {}
+          const customArr = fieldList?.list?.filter((i: any) =>
+            Object.keys(filterParamsModal?.custom_field).some(
+              (k: any) => k === i.content,
+            ),
+          )
+          customArr.forEach((element: any) => {
+            const customValue = filterParamsModal?.custom_field[element.content]
+            if (
+              ['select_checkbox', 'select', 'checkbox', 'radio'].includes(
+                element.type.attr,
+              )
+            ) {
+              // 判断是否是下拉框，是则去除空选项
+              resultCustom[element.content] = customValue?.filter(
+                (i: any) => i !== -1,
+              )
+            } else if (['number'].includes(element.type.attr)) {
+              // 判断是否是数字类型，是则获取start
+              resultCustom[element.content] = Number(customValue?.start)
+            } else if (['date'].includes(element.type.attr)) {
+              // 判断是否是时间类型，是则获取第一个时间
+              resultCustom[element.content] = moment(customValue[0])
+            } else if (['text', 'textarea'].includes(element.type.attr)) {
+              resultCustom[element.content] = customValue
+            }
+          })
+          form1.setFieldsValue(resultCustom)
+        }
       }
     }
   }, [props?.demandId, props.info, props.parentList, selectIterate])

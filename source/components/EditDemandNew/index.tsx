@@ -127,6 +127,7 @@ const EditDemand = (props: Props) => {
   const [t] = useTranslation()
   const rightDom: any = createRef()
   const leftDom: any = createRef()
+  const [isSaveParams, setIsSaveParams] = useState(false)
   // 需求类别切换提交表单
   const [changeCategoryForm] = Form.useForm()
   // 点击需求类别是否展示popover弹层
@@ -371,6 +372,7 @@ const EditDemand = (props: Props) => {
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
     setFilterParamsModal({})
+    setIsSaveParams(false)
   }
 
   // 保存数据
@@ -399,10 +401,25 @@ const EditDemand = (props: Props) => {
     } else {
       props.onUpdate?.()
     }
+    // 如果是快速创建，相应数据存缓存
+    if (props.isQuickCreate) {
+      const saveParams = values
+      saveParams.categoryId = categoryObj?.id
+      saveParams.type = 'need'
+      saveParams.name = ''
+      saveParams.info = ''
+      saveParams.attachments = []
+
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(JSON.stringify(saveParams)),
+      )
+    }
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
       rightDom.current.update()
+      setIsSaveParams(true)
     } else {
       setChangeCategoryFormData({})
       setCreateCategory({})
@@ -412,19 +429,6 @@ const EditDemand = (props: Props) => {
       }, 100)
       props.onChangeVisible()
       setFilterParamsModal({})
-    }
-
-    if (props.isQuickCreate) {
-      localStorage.setItem(
-        'quickCreateData',
-        encryptPhp(
-          JSON.stringify({
-            projectId,
-            type: 'need',
-            categoryId: categoryObj?.id,
-          }),
-        ),
-      )
     }
   }
 
@@ -651,6 +655,7 @@ const EditDemand = (props: Props) => {
             iterateId={props.iterateId}
             info={demandInfo}
             isChild={props.isChild}
+            isSaveParams={isSaveParams}
           />
         </ModalContent>
 
