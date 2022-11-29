@@ -42,15 +42,6 @@ export const Third = styled.div`
 
 export const BigWrap = styled.div`
   display: flex;
-  &:hover {
-    ${Second} {
-      visibility: visible;
-      opacity: 1;
-    }
-    ${First} {
-      /* display: none; */
-    }
-  }
 `
 
 export const Gred = styled.div`
@@ -76,7 +67,7 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 0.2s;
+      transition: all 0.1s;
     }
   }
 `
@@ -100,19 +91,25 @@ const NumStyle = styled.div`
   font-size: 12px;
   color: #969799;
 `
+
 export const Card = styled.div`
   flex: 1;
   position: relative;
   min-width: 372px;
   min-height: 60px;
   background: #ffffff;
-  box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
-  padding-right: 80px;
+  &:hover {
+    ${Second} {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 `
 
 const StyledProgress = styled(Progress)`
@@ -120,6 +117,7 @@ const StyledProgress = styled(Progress)`
     height: 2px !important;
   }
 `
+
 export const fileIconMap: Record<string, string> = {
   xlsx: 'colorXLS-76p4mekd',
   xls: 'colorXLS-76p4mekd',
@@ -249,7 +247,6 @@ const UploadAttach = (props: any) => {
     if (file instanceof File) {
       const fileName = file.name
       let newName = file.name
-
       const list = fileList as any[]
       let i = 1
 
@@ -549,6 +546,7 @@ const UploadAttach = (props: any) => {
                     color: '#323233',
                     lineHeight: '22px',
                     wordBreak: 'break-all',
+
                     // width: '90%',
                   }}
                 >
@@ -607,7 +605,7 @@ const UploadAttach = (props: any) => {
                           marginRight: '12px',
                         }}
                       >
-                        {i.file.username}
+                        {i.file.username ?? userInfo?.name}
                       </span>
                       <span>{i.file.time}</span>
                     </>
