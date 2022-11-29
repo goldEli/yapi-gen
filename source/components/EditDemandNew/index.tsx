@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -173,6 +174,7 @@ const EditDemand = (props: Props) => {
     updateDemand,
     addDemand,
     filterParams,
+    setFilterParams,
   } = useModel('demand')
   const { setIsUpdateCreate } = useModel('mine')
 
@@ -366,6 +368,8 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
+    const classId = filterParams.class_id
+    setFilterParams({ class_id: classId })
   }
 
   // 保存数据
@@ -406,6 +410,7 @@ const EditDemand = (props: Props) => {
         rightDom.current?.reset()
       }, 100)
       props.onChangeVisible()
+      setFilterParams({})
     }
 
     if (props.isQuickCreate) {

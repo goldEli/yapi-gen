@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
@@ -167,6 +168,7 @@ const EditDemandRIght = (props: Props) => {
           : null,
       })
     } else {
+      // console.log(filterParams, 'filterParamsfilterParams', priorityList)
       // console.log(
       //   memberList,
       //   '111',
@@ -199,8 +201,8 @@ const EditDemandRIght = (props: Props) => {
         })
       }
       // 不是在迭代创建需求并且有筛选项
-      if (!props.iterateId && filterParams?.iterateId?.length) {
-        const resultId = filterParams?.iterateId?.filter(
+      if (!props.iterateId && filterParams?.iterateIds?.length) {
+        const resultId = filterParams?.iterateIds?.filter(
           (i: any) => i !== -1,
         )?.[0]
         form.setFieldsValue({
@@ -211,14 +213,27 @@ const EditDemandRIght = (props: Props) => {
             : null,
         })
       }
+      // 获取需求分类回填值 未分类可能是-1或者是0
+      const resultClass = filterParams?.class_id
+        ? filterParams?.class_id === -1
+          ? 0
+          : filterParams?.class_id
+        : filterParams?.class_ids?.filter((i: any) => i !== -1)
+      // 筛选值-优先级
+      const priorityId = filterParams?.priorityId?.filter(
+        (i: any) => i !== -1,
+      )?.[0]
+      const resultPriority = priorityList?.data?.filter(
+        (i: any) => i.id === priorityId,
+      )?.[0]
 
       form.setFieldsValue({
-        copySendIds: filterParams?.usersCopysendNameId?.filter(
-          (i: any) => i !== -1,
-        ),
-        userIds: filterParams?.usersnameId?.filter((i: any) => i !== -1),
-        class: filterParams?.class_ids?.filter((i: any) => i !== -1),
+        copySendIds: filterParams?.copySendId?.filter((i: any) => i !== -1),
+        userIds: filterParams?.usersNameId?.filter((i: any) => i !== -1),
+        class: resultClass,
+        priority: resultPriority,
       })
+      setPriorityDetail(resultPriority)
     }
   }, [props?.demandId, props.info, props.parentList, selectIterate])
 

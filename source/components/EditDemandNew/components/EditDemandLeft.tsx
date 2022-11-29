@@ -116,8 +116,8 @@ const EditDemandLeft = (props: Props) => {
       getProjectData()
     }
     // 创建回填筛选数据 --- 标签
-    if (filterParams?.tagId?.length) {
-      const resultArr = filterParams?.tagId?.filter((i: any) => i !== -1)
+    if (filterParams?.tagIds?.length) {
+      const resultArr = filterParams?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
         tagList
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))

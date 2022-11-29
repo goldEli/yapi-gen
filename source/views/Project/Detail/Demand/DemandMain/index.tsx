@@ -49,7 +49,8 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand, setFilterParams } = useModel('demand')
+  const { getDemandList, deleteDemand, setFilterParams, filterParams } =
+    useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -180,9 +181,9 @@ const DemandMain = (props: Props) => {
     }
   }
 
-  const onSearch = (params: string) => {
+  const onSearch = (params: any) => {
     setSearchItems(params)
-    setFilterParams(params)
+    setFilterParams({ ...params, ...{ class_id: key } })
     getList(isGrid, params, { page: 1, size: pageObj.size }, order)
   }
 
@@ -210,6 +211,9 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
+      const obj = filterParams
+      obj.class_id = value
+      setFilterParams(obj)
     },
   }
 
