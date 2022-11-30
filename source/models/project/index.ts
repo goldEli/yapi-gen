@@ -59,6 +59,12 @@ export default () => {
     { label: t('newlyAdd.radio'), value: '6', type: 'radio' },
     { label: t('newlyAdd.time'), value: '7', type: 'date' },
     { label: t('newlyAdd.number'), value: '8', type: 'number' },
+    { label: t('version2.personRadio'), value: '9', type: 'user_select' },
+    {
+      label: t('version2.personCheckbox'),
+      value: '10',
+      type: 'user_select_checkbox',
+    },
   ]
 
   const getWorkflowList = async (params: any) => {
