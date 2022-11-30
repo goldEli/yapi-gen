@@ -117,7 +117,6 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const { plainOptions, plainOptions2 } = props
   const plainOptions3 = props?.plainOptions3 || []
   const [all, setAll] = useState<any>(props.allTitleList)
-  const [allShow, setAllShow] = useState<any>([])
   const [checkList, setCheckList] = useState<CheckboxValueType[]>(
     props.checkList,
   )
@@ -130,16 +129,16 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
 
-    setAll(Array.from(new Set(all.concat(list))))
+    setAll([...list, ...checkList2, ...checkList3])
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
-    setAll(Array.from(new Set(all.concat(list))))
+    setAll([...checkList, ...list, ...checkList3])
   }
 
   const onChange3 = (list: CheckboxValueType[]) => {
     setCheckList3(list)
-    setAll(Array.from(new Set(all.concat(list))))
+    setAll([...checkList, ...checkList2, ...list])
   }
 
   function del(value: string) {
@@ -156,7 +155,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   }
 
   const handleOk = () => {
-    let news = allList.map((i: any) => i.value)
+    const news = allList.map((i: any) => i.value)
 
     props.getCheckList(checkList, checkList2, checkList3, news)
     props.onClose()

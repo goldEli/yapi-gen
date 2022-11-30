@@ -262,21 +262,21 @@ const FieldsTemplate = (props: Props) => {
 
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
-    setAll(Array.from(new Set(all.concat(list))))
+    setAll([...list, ...checkList2, ...checkList3])
     const resArr = [...list, ...checkList2, ...checkList3]
     onIsCheckAll(resArr.length)
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
-    setAll(Array.from(new Set(all.concat(list))))
+    setAll([...checkList, ...list, ...checkList3])
     const resArr = [...checkList, ...list, ...checkList3]
     onIsCheckAll(resArr.length)
   }
 
   const onChange3 = (list: CheckboxValueType[]) => {
     setCheckList3(list)
-    setAll(Array.from(new Set(all.concat(list))))
     const resArr = [...checkList, ...checkList2, ...list]
+    setAll([...checkList, ...checkList2, ...list])
     onIsCheckAll(resArr.length)
   }
 
