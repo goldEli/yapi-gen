@@ -8,7 +8,14 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { decryptPhp } from './cryptoPhp'
-import { Select, Input, DatePicker, InputNumber, TreeSelect } from 'antd'
+import {
+  Select,
+  Input,
+  DatePicker,
+  InputNumber,
+  TreeSelect,
+  message,
+} from 'antd'
 import moment from 'moment'
 
 // 获取权限
@@ -313,6 +320,7 @@ const onPaste = (event: any) => {
           })
         }
       } else {
+        message.error('不支持粘贴该类型')
         reject(new Error('不支持粘贴该类型'))
       }
     }
