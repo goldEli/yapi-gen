@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState } from 'react'
-import { Checkbox, Col, Divider, Row, Space } from 'antd'
+import { Checkbox, Col, Divider, Row, Space, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -47,7 +47,7 @@ const Wrap = styled.div`
   display: flex;
 `
 const Left = styled.div`
-  width: 524px;
+  width: 624px;
   height: 350px;
   overflow: scroll;
 `
@@ -111,6 +111,25 @@ const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
 const SortItemLi = sortableElement<any>((props: any) => (
   <div helperClass="row-dragging" {...props} />
 ))
+
+const ShowText = (props: any) => {
+  return (
+    <Tooltip placement="top" title={props.names}>
+      <span
+        style={{
+          whiteSpace: 'nowrap',
+          width: '84px',
+          overflow: 'hidden',
+          textOverflow: ' ellipsis',
+          display: 'block',
+          height: '100%',
+        }}
+      >
+        {props.names}
+      </span>
+    </Tooltip>
+  )
+}
 
 export const OptionalFeld = (props: OptionalFeldProps) => {
   const [t] = useTranslation()
@@ -217,12 +236,12 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
             <CheckboxGroup value={checkList} onChange={onChange}>
               <Row gutter={[0, 10]}>
                 {plainOptions.map(item => (
-                  <Col key={item.label} span={8}>
+                  <Col key={item.label} span={6}>
                     <Checkbox
                       disabled={item.value === 'name'}
                       value={item.value}
                     >
-                      {item.labelTxt}
+                      <ShowText names={item.labelTxt} />
                     </Checkbox>
                   </Col>
                 ))}
@@ -235,8 +254,10 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               <Row gutter={[0, 10]}>
                 {/* <Space style={{ flexWrap: 'wrap' }}> */}
                 {plainOptions2.map(item => (
-                  <Col key={item.label} span={8}>
-                    <Checkbox value={item.value}>{item.labelTxt}</Checkbox>
+                  <Col key={item.label} span={6}>
+                    <Checkbox value={item.value}>
+                      <ShowText names={item.labelTxt} />
+                    </Checkbox>
                   </Col>
                 ))}
                 {/* </Space> */}
@@ -249,8 +270,10 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               <CheckboxGroup value={checkList3} onChange={onChange3}>
                 <Row gutter={[0, 10]}>
                   {plainOptions3?.map(item => (
-                    <Col key={item.label} span={8}>
-                      <Checkbox value={item.value}>{item.label}</Checkbox>
+                    <Col key={item.label} span={6}>
+                      <Checkbox value={item.value}>
+                        <ShowText names={item.label} />
+                      </Checkbox>
                     </Col>
                   ))}
                 </Row>
