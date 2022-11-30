@@ -203,7 +203,7 @@ const DemandTable = (props: Props) => {
     const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < columns.length; j++) {
+      for (let j = 0; j < columns?.length; j++) {
         if (arr[i] === columns[j].key) {
           newList.push(columns[j])
         }

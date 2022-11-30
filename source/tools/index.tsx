@@ -162,9 +162,14 @@ function getTypeComponent(
       />
     )
   } else if (
-    ['select_checkbox', 'checkbox', 'select', 'radio'].includes(
-      String(params?.attr),
-    )
+    [
+      'select_checkbox',
+      'checkbox',
+      'select',
+      'radio',
+      'user_select_checkbox',
+      'user_select',
+    ].includes(String(params?.attr))
   ) {
     child = (
       <Select
@@ -175,19 +180,35 @@ function getTypeComponent(
         optionFilterProp="label"
         getPopupContainer={node => node}
         allowClear
-        value={defaultValue}
+        value={
+          ['user_select_checkbox', 'user_select'].includes(String(params?.attr))
+            ? params?.value?.filter(
+                (i: any) => i.value === Number(defaultValue),
+              )?.[0]?.label
+            : defaultValue
+        }
         ref={inputRef}
         onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={value =>
           onChange(
             value,
-            ['select_checkbox', 'checkbox'].includes(params?.attr) ? '' : 1,
+            ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
+              params?.attr,
+            )
+              ? ''
+              : 1,
           )
         }
-        options={params?.value?.map((i: any) => ({ label: i, value: i }))}
+        options={
+          ['user_select_checkbox', 'user_select'].includes(String(params?.attr))
+            ? params?.value
+            : params?.value?.map((i: any) => ({ label: i, value: i }))
+        }
         defaultOpen={isModal}
         mode={
-          ['select_checkbox', 'checkbox'].includes(params?.attr)
+          ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
+            params?.attr,
+          )
             ? 'multiple'
             : ('' as any)
         }

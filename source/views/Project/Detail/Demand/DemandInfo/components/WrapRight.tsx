@@ -548,9 +548,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   keyText={i.content}
                   type={i.type?.attr}
                   defaultText={demandInfo?.customField?.[i.content]?.value}
-                  value={i.type?.value}
                   isCustom
-                  remarks={i.remarks}
+                  remarks={i?.remarks}
                 >
                   {Array.isArray(demandInfo?.customField?.[i.content]?.value)
                     ? demandInfo?.customField?.[i.content]?.value?.length > 0

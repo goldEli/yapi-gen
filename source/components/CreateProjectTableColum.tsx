@@ -517,7 +517,7 @@ export const useDynamicColumns = (state: any) => {
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {
-      result.unshift({
+      result.push({
         width: 200,
         title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
         dataIndex: element.value,
@@ -533,8 +533,7 @@ export const useDynamicColumns = (state: any) => {
               keyText={element.value}
               item={record}
               onUpdate={onUpdate}
-              value={currentFields.type?.value}
-              remarks={currentFields.remarks}
+              remarks={currentFields?.remarks}
               isCustom
             >
               <span>
@@ -551,5 +550,7 @@ export const useDynamicColumns = (state: any) => {
     return arr.slice(0, -5).concat(result.concat(arr.slice(-5)))
   }
 
-  return getArr()
+  const endResult = getArr()
+
+  return endResult
 }

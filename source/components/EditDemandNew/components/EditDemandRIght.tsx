@@ -108,9 +108,14 @@ const EditDemandRIght = (props: Props) => {
     customArr?.forEach((element: any) => {
       const customValue: any = params[element.content]
       if (
-        ['select_checkbox', 'select', 'checkbox', 'radio'].includes(
-          element.type.attr,
-        )
+        [
+          'select_checkbox',
+          'select',
+          'checkbox',
+          'radio',
+          'user_select_checkbox',
+          'user_select',
+        ].includes(element.type.attr)
       ) {
         // 判断是否是下拉框，是则去除空选项
         resultCustom[element.content] = isFilter
@@ -370,7 +375,8 @@ const EditDemandRIght = (props: Props) => {
         )
       } else if (
         obj?.type?.attr === 'select_checkbox' ||
-        obj?.type?.attr === 'checkbox'
+        obj?.type?.attr === 'checkbox' ||
+        obj?.type?.attr === 'user_select_checkbox'
       ) {
         customValues[obj.content] = customValues[obj.content]?.length
           ? customValues[obj.content]

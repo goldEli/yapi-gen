@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
@@ -591,6 +592,7 @@ export const getWorkflowInfo: any = async (params: any) => {
     label: i.title,
     value: i.content,
     groupLabel: i.group_name,
+    contentType: i.value ? JSON.parse(i.value) : null,
     defaultValueFields: {
       1: {
         type: 'select',
@@ -609,8 +611,9 @@ export const getWorkflowInfo: any = async (params: any) => {
           i.fixed_type.attr === 'number' ||
           !i.fixed_type.value
             ? []
-            : i.fixed_type.attr === 'select' &&
-              String(i.content).includes('custom_')
+            : ['select', 'select_checkbox', 'radio', 'checkbox'].includes(
+                i.fixed_type.attr,
+              ) && String(i.content).includes('custom_')
             ? i.fixed_type.value?.map((fixed: any) => ({
                 label: fixed,
                 value: fixed,

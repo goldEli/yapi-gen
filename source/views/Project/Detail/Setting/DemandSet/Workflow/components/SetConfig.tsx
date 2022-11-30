@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 // 需求设置-流转弹窗
 
 /* eslint-disable react/no-unstable-nested-components */
@@ -40,6 +41,7 @@ import {
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
 import { useTranslation } from 'react-i18next'
+import { getStaffList } from '@/services/staff'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -160,6 +162,7 @@ const SetConfig = (props: Props) => {
   const { categoryItem } = paramsData
   const [info, setInfo] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
+  const [staffList, setStaffList] = useState<any>([])
   const [allMemberList, setAllMemberList] = useState<any>([])
   const [normalList, setNormalList] = useState([
     { id: new Date().getTime(), obj: {} },
@@ -220,9 +223,15 @@ const SetConfig = (props: Props) => {
     getInfo(result)
   }
 
+  const getStaffData = async () => {
+    const response = await getStaffList({ all: 1 })
+    setStaffList(response)
+  }
+
   useEffect(() => {
     if (props?.isVisible) {
       getMemberList()
+      getStaffData()
     }
   }, [props?.isVisible])
 
@@ -323,6 +332,7 @@ const SetConfig = (props: Props) => {
     }
     obj.title = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.label
     obj.content = info?.fieldAll?.filter((k: any) => k.value === val)[0]?.value
+    obj.default_value = ''
     if (String(obj.content).includes('custom_')) {
       obj.is_customize = 1
     } else {
@@ -335,10 +345,13 @@ const SetConfig = (props: Props) => {
   // 修改默认值、默认值字段 --- 点选||多选
   const onChangeSelect = (value: any, row: any, obj: any) => {
     const arr = JSON.parse(JSON.stringify(dataSource))
+    // 新添加的
     if (row.tag) {
       arr.filter((i: any) => i.tag === row.tag)[0].default_value = [
         'select_checkbox',
         'checkbox',
+        'user_select_checkbox',
+        'user_select',
       ].includes(obj.type)
         ? value
         : {
@@ -350,6 +363,8 @@ const SetConfig = (props: Props) => {
       arr.filter((i: any) => i.content === row.content)[0].default_value = [
         'select_checkbox',
         'checkbox',
+        'user_select_checkbox',
+        'user_select',
       ].includes(obj.type)
         ? value
         : {
@@ -394,7 +409,7 @@ const SetConfig = (props: Props) => {
     const defaultObj = filterObj?.defaultValueFields[row.default_type]
     let child: any
     if (
-      ['select', 'select_checkbox', 'checkbox', ' radio'].includes(
+      ['select', 'select_checkbox', 'checkbox', 'radio'].includes(
         defaultObj?.type,
       )
     ) {
@@ -416,7 +431,39 @@ const SetConfig = (props: Props) => {
               : defaultObj?.options
           }
           mode={
-            defaultObj?.type === 'select_checkbox' ? 'multiple' : ('' as any)
+            ['checkbox', 'select_checkbox'].includes(defaultObj?.type)
+              ? 'multiple'
+              : ('' as any)
+          }
+          onChange={(value: any) => onChangeSelect(value, row, defaultObj)}
+        />
+      )
+    } else if (
+      ['user_select_checkbox', 'user_select'].includes(defaultObj?.type)
+    ) {
+      const optionsType = info?.fieldAll?.filter(
+        (i: any) => i.value === row.content,
+      )?.[0]?.contentType[0]
+      const optionValues =
+        optionsType === 'projectMember' ? memberList : staffList
+      child = (
+        <Select
+          style={{ width: 148 }}
+          showArrow
+          showSearch
+          optionFilterProp="label"
+          value={
+            defaultObj?.type === 'user_select_checkbox'
+              ? row.default_value?.length > 0
+                ? row.default_value
+                : []
+              : row.default_value
+          }
+          options={row.default_type === 2 ? optionValues : defaultObj?.options}
+          mode={
+            defaultObj?.type === 'user_select_checkbox'
+              ? 'multiple'
+              : ('' as any)
           }
           onChange={(value: any) => onChangeSelect(value, row, defaultObj)}
         />
