@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/naming-convention */
 // 需求主页-导出及导入字段选择
 
@@ -130,7 +131,6 @@ const FieldsTemplate = (props: Props) => {
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
   const [all, setAll] = useState<any[]>([])
-  const [allsKey, setAllsKey] = useState<any[]>([])
   const [checkAll, setCheckAll] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
   const [fields, setFields] = useState<any>({})
@@ -195,7 +195,8 @@ const FieldsTemplate = (props: Props) => {
   }
 
   const onConfirm = () => {
-    props?.onConfirm(allsKey)
+    const news = allList.map((i: any) => i.field)
+    props?.onConfirm(news)
   }
 
   function del(value: string) {
@@ -245,7 +246,6 @@ const FieldsTemplate = (props: Props) => {
       })
       alls.push(result)
     })
-    setAllsKey(alls.map((i: any) => i.field))
 
     return alls
   }, [checkList, checkList2, checkList3, fields, all])
