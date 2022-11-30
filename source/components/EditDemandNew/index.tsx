@@ -146,6 +146,7 @@ const EditDemand = (props: Props) => {
   const [treeArr, setTreeArr] = useState([])
   // 父需求列表
   const [parentList, setParentList] = useState<any>([])
+  const [fieldsList, setFieldsList] = useState<any>([])
   // 需求详情
   const [demandInfo, setDemandInfo] = useState<any>({})
   const [searchParams] = useSearchParams()
@@ -164,6 +165,7 @@ const EditDemand = (props: Props) => {
     getFieldList,
     filterParamsModal,
     setFilterParamsModal,
+    getPriorityList,
   } = useModel('project')
   const {
     setCreateCategory,
@@ -194,26 +196,23 @@ const EditDemand = (props: Props) => {
     return arr
   }
 
-  // 获取自定义字段
-  const getFieldData = async (value?: any) => {
-    await getFieldList({ projectId: value || projectId })
-  }
-
   // 获取回填Info数据的下拉数据
   const getInit = async (value?: any, categoryId?: any) => {
     setIsOpenEditDemand(true)
-    const [classTree, categoryData] = await Promise.all([
+    const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
+      getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
-      getFieldData(value || projectId),
       getMemberList({
         all: true,
         projectId: value || projectId,
       }),
       getIterateSelectList({ projectId: value || projectId, all: true }),
+      getPriorityList({ projectId: value || projectId, type: 'priority' }),
     ])
     setTreeArr(classTree)
+    setFieldsList(fieldsData?.list)
 
     //  没有需id时，则是创建需求
     if (props.demandId) {
@@ -429,6 +428,7 @@ const EditDemand = (props: Props) => {
       }, 100)
       props.onChangeVisible()
       setFilterParamsModal({})
+      setIsSaveParams(false)
     }
   }
 
@@ -656,6 +656,8 @@ const EditDemand = (props: Props) => {
             info={demandInfo}
             isChild={props.isChild}
             isSaveParams={isSaveParams}
+            isQuickCreate={props?.isQuickCreate}
+            fieldsList={fieldsList}
           />
         </ModalContent>
 

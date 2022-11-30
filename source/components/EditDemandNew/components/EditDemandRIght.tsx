@@ -21,6 +21,7 @@ import { LevelContent } from '@/components/Level'
 import IconFont from '@/components/IconFont'
 import { getNestedChildren, getTypeComponent } from '@/tools'
 import moment from 'moment'
+import { decryptPhp } from '@/tools/cryptoPhp'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -55,6 +56,10 @@ interface Props {
   isChild?: any
   // 是否是完成并创建
   isSaveParams?: boolean
+  // 我的-快速创建
+  isQuickCreate?: any
+  // 自定义字段
+  fieldsList: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -62,13 +67,8 @@ const EditDemandRIght = (props: Props) => {
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const { userInfo } = useModel('user')
-  const {
-    selectAllStaffData,
-    memberList,
-    fieldList,
-    priorityList,
-    filterParamsModal,
-  } = useModel('project')
+  const { selectAllStaffData, memberList, priorityList, filterParamsModal } =
+    useModel('project')
   const { selectIterate } = useModel('iterate')
   const { demandInfo } = useModel('demand')
   const [schedule, setSchedule] = useState(0)
@@ -98,6 +98,40 @@ const EditDemandRIght = (props: Props) => {
       ...getNestedChildren(props.treeArr, 0),
     ])
   }, [props.treeArr])
+
+  // 回填自定义数据 -- params：传入回填数据对象，isFilter：是否是筛选回填
+  const setCustomFields = (params: any, isFilter: boolean) => {
+    let resultCustom: any = {}
+    const customArr = props.fieldsList?.filter((i: any) =>
+      Object.keys(params).some((k: any) => k === i.content),
+    )
+    customArr?.forEach((element: any) => {
+      const customValue: any = params[element.content]
+      if (
+        ['select_checkbox', 'select', 'checkbox', 'radio'].includes(
+          element.type.attr,
+        )
+      ) {
+        // 判断是否是下拉框，是则去除空选项
+        resultCustom[element.content] = isFilter
+          ? customValue?.filter((i: any) => i !== -1)
+          : customValue
+      } else if (['number'].includes(element.type.attr)) {
+        // 判断是否是数字类型，是则获取start
+        resultCustom[element.content] = isFilter
+          ? Number(customValue?.start)
+          : customValue
+      } else if (['date'].includes(element.type.attr)) {
+        // 判断是否是时间类型，是则获取第一个时间
+        resultCustom[element.content] = isFilter
+          ? moment(customValue[0])
+          : moment(customValue)
+      } else if (['text', 'textarea'].includes(element.type.attr)) {
+        resultCustom[element.content] = customValue
+      }
+    })
+    form1.setFieldsValue(resultCustom)
+  }
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
@@ -193,8 +227,8 @@ const EditDemandRIght = (props: Props) => {
             : null,
         })
       }
-      // 如果是不完成并创建的话，回填筛选值
-      if (!props.isSaveParams) {
+      // 如果不是完成并创建的话，则回填筛选值
+      if (!props.isSaveParams && !props.isQuickCreate) {
         // 不是在迭代创建需求并且有筛选项
         if (!props.iterateId && filterParamsModal?.iterateIds?.length) {
           const resultId = filterParamsModal?.iterateIds?.filter(
@@ -260,38 +294,47 @@ const EditDemandRIght = (props: Props) => {
           filterParamsModal?.custom_field &&
           JSON.stringify(filterParamsModal?.custom_field) !== '{}'
         ) {
-          let resultCustom: any = {}
-          const customArr = fieldList?.list?.filter((i: any) =>
-            Object.keys(filterParamsModal?.custom_field).some(
-              (k: any) => k === i.content,
-            ),
-          )
-          customArr.forEach((element: any) => {
-            const customValue = filterParamsModal?.custom_field[element.content]
-            if (
-              ['select_checkbox', 'select', 'checkbox', 'radio'].includes(
-                element.type.attr,
-              )
-            ) {
-              // 判断是否是下拉框，是则去除空选项
-              resultCustom[element.content] = customValue?.filter(
-                (i: any) => i !== -1,
-              )
-            } else if (['number'].includes(element.type.attr)) {
-              // 判断是否是数字类型，是则获取start
-              resultCustom[element.content] = Number(customValue?.start)
-            } else if (['date'].includes(element.type.attr)) {
-              // 判断是否是时间类型，是则获取第一个时间
-              resultCustom[element.content] = moment(customValue[0])
-            } else if (['text', 'textarea'].includes(element.type.attr)) {
-              resultCustom[element.content] = customValue
-            }
-          })
-          form1.setFieldsValue(resultCustom)
+          setCustomFields(filterParamsModal?.custom_field, true)
+        }
+      }
+      // 如果是快捷创建并且有缓存数据
+      if (props.isQuickCreate && localStorage.getItem('quickCreateData')) {
+        const hisCategoryData = JSON.parse(
+          decryptPhp(localStorage.getItem('quickCreateData') as any),
+        )
+        form.setFieldsValue({
+          userIds: hisCategoryData?.userIds,
+          class: hisCategoryData?.class,
+          parentId: hisCategoryData?.parentId,
+          iterateId: hisCategoryData?.iterateId,
+          copySendIds: hisCategoryData?.copySendIds,
+          endTime: moment(hisCategoryData?.expectedEnd || 0),
+          startTime: moment(hisCategoryData?.expectedStart || 0),
+          priority: priorityList?.data?.filter(
+            (i: any) => i.id === hisCategoryData?.priority,
+          )?.[0],
+        })
+        // 优先级
+        setPriorityDetail(
+          priorityList?.data?.filter(
+            (i: any) => i.id === hisCategoryData?.priority,
+          )?.[0],
+        )
+        if (
+          hisCategoryData?.customField &&
+          JSON.stringify(hisCategoryData?.customField) !== '{}'
+        ) {
+          setCustomFields(hisCategoryData?.customField, false)
         }
       }
     }
-  }, [props?.demandId, props.info, props.parentList, selectIterate])
+  }, [
+    props?.demandId,
+    props.info,
+    props.parentList,
+    selectIterate,
+    props.fieldsList,
+  ])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -318,7 +361,7 @@ const EditDemandRIght = (props: Props) => {
 
     Object.keys(customValues)?.forEach((k: any) => {
       customValues[k] = customValues[k] ? customValues[k] : ''
-      const obj = fieldList?.list?.filter((i: any) => k === i.content)[0]
+      const obj = props.fieldsList?.filter((i: any) => k === i.content)[0]
       if (obj?.type?.attr === 'date' && customValues[k]) {
         customValues[obj.content] = moment(customValues[obj.content]).format(
           obj?.type?.value[0] === 'datetime'
@@ -514,9 +557,9 @@ const EditDemandRIght = (props: Props) => {
           />
         </Form.Item>
       </FormWrapDemand>
-      {fieldList?.list && (
+      {props.fieldsList && (
         <>
-          {!isShowFields && fieldList?.list?.length > 0 && (
+          {!isShowFields && props.fieldsList?.length > 0 && (
             <ShowLabel onClick={() => setIsShowFields(true)}>
               {t('newlyAdd.open')}
             </ShowLabel>
@@ -526,7 +569,7 @@ const EditDemandRIght = (props: Props) => {
             form={form1}
             style={{ display: isShowFields ? 'block' : 'none' }}
           >
-            {fieldList?.list?.map((i: any) => (
+            {props.fieldsList?.map((i: any) => (
               <div style={{ display: 'flex' }} key={i.content}>
                 <Form.Item label={i.name} name={i.content}>
                   {getTypeComponent({
@@ -537,7 +580,7 @@ const EditDemandRIght = (props: Props) => {
               </div>
             ))}
           </FormWrapDemand>
-          {isShowFields && fieldList?.list?.length > 0 && (
+          {isShowFields && props.fieldsList?.length > 0 && (
             <ShowLabel onClick={() => setIsShowFields(false)}>
               {t('newlyAdd.close')}
             </ShowLabel>
