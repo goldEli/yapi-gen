@@ -220,6 +220,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [addValue, setAddValue] = useState('')
+  const [visibleEdit, setVisibleEdit] = useState(false)
   const [activeTabs, setActiveTabs] = useState(1)
   const {
     getCommentList,
@@ -342,6 +343,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
 
   const onPressEnter = (e: any) => {
     onAddComment(e.target.value)
+  }
+
+  const editClose = () => {
+    setVisibleEdit(false)
+  }
+
+  const editConfirm = async (params: any) => {
+    // console.log(params)
   }
 
   return (
@@ -626,6 +635,40 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             overflow: 'auto',
           }}
         >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span
+              style={{
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#323233',
+              }}
+            >
+              {t('new_p1.a1')}
+            </span>
+            <AddWrap
+              onClick={() => setVisibleEdit(true)}
+              style={{
+                marginRight: '30px',
+              }}
+              hasColor
+            >
+              <IconFont type="plus" />
+              <div
+                style={{
+                  color: '#2877ff',
+                }}
+              >
+                {t('new_p1.a2')}
+              </div>
+            </AddWrap>
+          </div>
+
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <div>
@@ -692,8 +735,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         </div>
       )}
       {!isComment && activeTabs === 2 && (
-        <EditComment></EditComment>
-        // <TextareaWrap>
+        <EditComment
+          visibleEdit={visibleEdit}
+          editClose={editClose}
+          editConfirm={editConfirm}
+        ></EditComment>
+        // <div>
+        //    <TextareaWrap>
         //   <Input.TextArea
         //     placeholder={t('mark.editCom')}
         //     autoSize={{ minRows: 3, maxRows: 5 }}
@@ -708,6 +756,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         //   </ButtonWrap>
 
         // </TextareaWrap>
+        // </div>
       )}
     </WrapRight>
   )

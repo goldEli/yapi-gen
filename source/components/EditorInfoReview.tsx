@@ -17,6 +17,11 @@ const TextWrapEditor = styled.div({
     height: 'auto!important',
     cursor: 'pointer',
   },
+  video: {
+    maxWidth: '400px',
+    height: 'auto!important',
+    cursor: 'pointer',
+  },
   p: {
     marginBottom: '0px!important',
   },
