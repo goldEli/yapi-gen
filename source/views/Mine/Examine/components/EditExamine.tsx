@@ -248,13 +248,13 @@ const EditExamine = (props: Props) => {
                         <span>
                           {verifyInfo.fields[m]?.value
                             ?.map((i: any) => i)
-                            .join('、') || '--'}
+                            .join(';') || '--'}
                         </span>
                       ) : (
                         <span>
                           {verifyInfo.fields[m]?.value
                             ?.map((i: any) => i.name?.trim())
-                            .join('、') || '--'}
+                            .join(';') || '--'}
                         </span>
                       )}
                     </ContentWrap>

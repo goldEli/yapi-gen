@@ -194,7 +194,7 @@ const Send = () => {
       render: (text: any) => {
         return (
           <Tooltip
-            title={text.join('  ；  ') || '--'}
+            title={text.join(';') || '--'}
             getPopupContainer={node => node}
           >
             <span
@@ -206,7 +206,7 @@ const Send = () => {
                 whiteSpace: 'nowrap',
               }}
             >
-              {text.join('  ；  ') || '--'}
+              {text.join(';') || '--'}
             </span>
           </Tooltip>
         )
@@ -218,7 +218,7 @@ const Send = () => {
       key: 'read_user',
       width: 170,
       render: (text: any) => {
-        return <span>{text.join('  ；  ') || '--'}</span>
+        return <span>{text.join(';') || '--'}</span>
       },
     },
 

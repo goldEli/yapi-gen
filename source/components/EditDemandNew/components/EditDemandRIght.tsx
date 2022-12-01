@@ -408,6 +408,19 @@ const EditDemandRIght = (props: Props) => {
     }
   })
 
+  // 返回自定义字段相应的控件
+  const getCustomDom = (item: any) => {
+    let options: any = item.type
+    if (['user_select_checkbox', 'user_select'].includes(item.type.attr)) {
+      const key = item.type.value[0]
+      options.value = key === 'projectMember' ? memberList : selectAllStaffData
+    }
+    return getTypeComponent({
+      ...options,
+      ...{ remarks: item.remarks },
+    })
+  }
+
   return (
     <RightWrap>
       <FormWrapDemand layout="vertical" form={form}>
@@ -578,10 +591,7 @@ const EditDemandRIght = (props: Props) => {
             {props.fieldsList?.map((i: any) => (
               <div style={{ display: 'flex' }} key={i.content}>
                 <Form.Item label={i.name} name={i.content}>
-                  {getTypeComponent({
-                    ...i.type,
-                    ...{ remarks: i.remarks },
-                  })}
+                  {getCustomDom(i)}
                 </Form.Item>
               </div>
             ))}
