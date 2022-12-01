@@ -123,6 +123,11 @@ export const useDynamicColumns = (state: any) => {
               alignItems: 'center',
             }}
           >
+            {(state.isTree &&
+              record.demand &&
+              Number(record.demand) !== 0 &&
+              state.onChangeTree(record)) ||
+              ''}
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -256,10 +261,12 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string, record: any) => {
         return (
           <>
-            {state.showChildCOntent && (
+            {state.showChildCOntent && !state.isTree && (
               <ChildDemandTable value={text} row={record} />
             )}
-            {!state.showChildCOntent && <span>{text || '--'}</span>}
+            {(!state.showChildCOntent || state.isTree) && (
+              <span>{text || 0}</span>
+            )}
           </>
         )
       },

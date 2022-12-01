@@ -9,6 +9,17 @@ import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
+// 列表的加号，获取子需求
+const ExpendedWrap = styled(IconFont)({
+  marginRight: 12,
+  color: '#BBBDBF',
+  fontSize: 16,
+  cursor: 'pointer',
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
 // 新版移入效果例：项目列表左上方操作
 const HoverWrap = styled.div<{ isActive?: any }>(
   {
@@ -859,6 +870,14 @@ const TableStyleBox = styled(TableWrap)<{
         visibility: 'visible',
       },
     },
+    '.ant-table-expanded-row': {
+      'td[colspan]': {
+        padding: '0px!important',
+        '.ant-table-scroll-horizontal': {
+          margin: '0px!important',
+        },
+      },
+    },
   },
   ({ isPadding }) => ({
     '.ant-table-thead > tr > th:nth-child(1)': {
@@ -930,4 +949,5 @@ export {
   CanOperationCategory,
   SecondButton,
   HoverWrap,
+  ExpendedWrap,
 }

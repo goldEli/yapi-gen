@@ -212,9 +212,6 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
-      // const obj = filterParams
-      // obj.class_id = value
-      // setFilterParams(obj)
     },
   }
 
@@ -267,6 +264,7 @@ const DemandMain = (props: Props) => {
               onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
+              filterParams={filterParams}
             />
           )}
           {!isGrid && (

@@ -5,9 +5,13 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu, Checkbox } from 'antd'
+import { Pagination, message, Spin, Menu, Checkbox, Table } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  ExpendedWrap,
+} from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -54,6 +58,31 @@ interface Props {
   onChangeOrder?(item: any): void
   isSpinning?: boolean
   onUpdate(updateState?: boolean): void
+  filterParams: any
+}
+
+interface TreeIconProps {
+  row: any
+  onChangeExpendedKeys(values: any): void
+  onGetChildList(values: any): void
+}
+
+// 返回标题获取子需求列表icon
+const GetTreeIcon = (props: TreeIconProps) => {
+  const [isExpended, setIsExpended] = useState(false)
+  const onChangeData = async () => {
+    if (!isExpended) {
+      await props.onGetChildList(props.row?.id)
+    }
+    setIsExpended(!isExpended)
+    props.onChangeExpendedKeys(props.row?.id)
+  }
+  return (
+    <ExpendedWrap
+      onClick={onChangeData}
+      type={isExpended ? 'add-subtract' : 'add-square-big'}
+    />
+  )
 }
 
 const DemandTree = (props: Props) => {
@@ -62,7 +91,8 @@ const DemandTree = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus } = useModel('demand')
+  const { updatePriority, updateDemandStatus, getDemandList } =
+    useModel('demand')
   const { projectInfo } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -76,6 +106,8 @@ const DemandTree = (props: Props) => {
   const [isShowMore, setIsShowMore] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [checkNumber, setCheckNumber] = useState<any>('')
+  const [data, setData] = useState<any>({})
+  const [expandedRowKeys, setExpandedRowKeys] = useState<any>([])
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -109,10 +141,12 @@ const DemandTree = (props: Props) => {
   }
 
   const onChangePage = (page: number, size: number) => {
+    setExpandedRowKeys([])
     props.onChangePageNavigation?.({ page, size })
   }
 
   const onShowSizeChange = (page: number, size: number) => {
+    setExpandedRowKeys([])
     props.onChangePageNavigation?.({ page, size })
   }
 
@@ -150,6 +184,7 @@ const DemandTree = (props: Props) => {
   const updateOrderkey = (key: any, val: any) => {
     setOrderKey(key)
     setOrder(val)
+    setExpandedRowKeys([])
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
@@ -163,6 +198,36 @@ const DemandTree = (props: Props) => {
     props.onDelete(item)
   }
 
+  const onGetChildList = async (id: any) => {
+    const list = await getDemandList({
+      tree: 1,
+      ...props.filterParams,
+      all: true,
+      parentId: id,
+    })
+    const currentItem: any = data?.list?.filter((i: any) => i.id === id)[0]
+    currentItem.treeChild = list
+  }
+
+  // 返回点击展开子需求图标
+  const getTreeIcon = (row: any) => {
+    const onChangeExpendedKeys = (values: any) => {
+      const hasId = expandedRowKeys.includes(values)
+      const resultList = hasId
+        ? expandedRowKeys?.filter((i: any) => i !== values)
+        : [...expandedRowKeys, ...[values]]
+      setExpandedRowKeys(resultList)
+    }
+
+    return (
+      <GetTreeIcon
+        row={row}
+        onChangeExpendedKeys={onChangeExpendedKeys}
+        onGetChildList={onGetChildList}
+      />
+    )
+  }
+
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -173,6 +238,8 @@ const DemandTree = (props: Props) => {
     onClickItem,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
+    isTree: true,
+    onChangeTree: getTreeIcon,
   })
 
   const hasEdit = getIsPermission(
@@ -288,21 +355,43 @@ const DemandTree = (props: Props) => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
+    setData(props.data)
   }, [props.data?.list])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  const expendedRow = (record: any) => {
+    return (
+      <TableStyleBox
+        showHeader={false}
+        rowKey="id"
+        columns={selectColum}
+        dataSource={record.treeChild}
+        pagination={false}
+        scroll={{
+          x: 'max-content',
+        }}
+        showSorterTooltip={false}
+        expandable={{
+          expandedRowRender: row => expendedRow(row),
+          showExpandColumn: false,
+          expandedRowKeys,
+        }}
+      />
+    )
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
-          {!!props.data?.list &&
-            (props.data?.list?.length > 0 ? (
+          {!!data?.list &&
+            (data?.list?.length > 0 ? (
               <TableStyleBox
                 rowKey="id"
                 columns={selectColum}
-                dataSource={props.data?.list}
+                dataSource={data?.list}
                 pagination={false}
                 scroll={{
                   x: 'max-content',
@@ -310,6 +399,11 @@ const DemandTree = (props: Props) => {
                 }}
                 showSorterTooltip={false}
                 tableLayout="auto"
+                expandable={{
+                  expandedRowRender: record => expendedRow(record),
+                  showExpandColumn: false,
+                  expandedRowKeys: expandedRowKeys,
+                }}
               />
             ) : (
               <NoData />
@@ -320,11 +414,11 @@ const DemandTree = (props: Props) => {
       <PaginationWrap>
         <Pagination
           defaultCurrent={1}
-          current={props.data?.currentPage}
-          pageSize={props.data?.pageSize || 20}
+          current={data?.currentPage}
+          pageSize={data?.pageSize || 20}
           showSizeChanger
           showQuickJumper
-          total={props.data?.total}
+          total={data?.total}
           showTotal={total => t('common.tableTotal', { count: total })}
           pageSizeOptions={['10', '20', '50']}
           onChange={onChangePage}

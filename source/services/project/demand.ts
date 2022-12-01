@@ -77,6 +77,7 @@ export const getDemandList: any = async (params: any) => {
       schedule_start: params.schedule_start,
       schedule_end: params.schedule_end,
       custom_field: params?.custom_field,
+      tree: params?.tree || 0,
     },
     pagesize: params?.pageSize,
     page: params?.page,
@@ -157,6 +158,9 @@ export const getDemandList: any = async (params: any) => {
         project_id: i.project_id,
         usersNameIds: i.users_name_ids,
         usersCopySendIds: i.users_copysend_name_ids,
+        allChildrenCount: i.all_child_story_count,
+        allChildrenIds: i.all_child_ids,
+        treeChild: i.children || null,
       })),
     }
   }
