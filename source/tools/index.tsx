@@ -180,13 +180,7 @@ function getTypeComponent(
         optionFilterProp="label"
         getPopupContainer={node => node}
         allowClear
-        value={
-          ['user_select_checkbox', 'user_select'].includes(String(params?.attr))
-            ? params?.value?.filter(
-                (i: any) => i.value === Number(defaultValue),
-              )?.[0]?.label
-            : defaultValue
-        }
+        value={defaultValue}
         ref={inputRef}
         onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
         onChange={value =>
