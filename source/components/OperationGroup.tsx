@@ -16,9 +16,9 @@ const IconWrap = styled(IconFontWrap)({
 
 interface Props {
   onChangeFilter?(): void
-  onChangeGrid?(val: boolean): void
+  onChangeGrid?(val: any): void
   onChangeSetting?(): void
-  isGrid: boolean | undefined
+  isGrid: any
   filterState: boolean | undefined
   settingState: boolean | undefined
 }
@@ -56,16 +56,23 @@ const OperationGroup = (props: Props) => {
     <SpaceWrap size={16}>
       <Tooltip title={t('common.board')}>
         <IconWrap
-          onClick={() => props.onChangeGrid?.(true)}
-          active={props.isGrid}
+          onClick={() => props.onChangeGrid?.(1)}
+          active={props.isGrid === 1}
           type="layout"
         />
       </Tooltip>
       <Tooltip title={t('common.list')}>
         <IconWrap
-          onClick={() => props.onChangeGrid?.(false)}
+          onClick={() => props.onChangeGrid?.(0)}
           active={!props.isGrid}
           type="unorderedlist"
+        />
+      </Tooltip>
+      <Tooltip title="树形">
+        <IconWrap
+          onClick={() => props.onChangeGrid?.(2)}
+          active={props.isGrid === 2}
+          type="slider-02"
         />
       </Tooltip>
 

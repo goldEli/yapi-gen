@@ -93,8 +93,8 @@ const MoreItem = styled.div({
 })
 
 interface Props {
-  isGrid: boolean
-  onChangeGrid(val: boolean): void
+  isGrid: any
+  onChangeGrid(val: any): void
   onChangeVisible?(e?: any): void
   onSearch(params: any): void
   settingState: boolean
