@@ -307,7 +307,7 @@ export const useDynamicColumns = (state: any) => {
           <TableQuickEdit
             keyText="tag"
             type="fixed_select"
-            defaultText={text?.split(',') || []}
+            defaultText={text?.split(';') || []}
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
@@ -319,7 +319,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text?.split(',') || '--'}
+                {text || '--'}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>
@@ -549,7 +549,7 @@ export const useDynamicColumns = (state: any) => {
             >
               <span>
                 {(Array.isArray(text?.value)
-                  ? text?.value?.join('、')
+                  ? text?.value?.join(';')
                   : text?.value) || '--'}
               </span>
             </TableQuickEdit>

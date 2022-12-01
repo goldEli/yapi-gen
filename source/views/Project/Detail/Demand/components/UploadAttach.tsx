@@ -42,15 +42,6 @@ export const Third = styled.div`
 
 export const BigWrap = styled.div`
   display: flex;
-  &:hover {
-    ${Second} {
-      visibility: visible;
-      opacity: 1;
-    }
-    ${First} {
-      /* display: none; */
-    }
-  }
 `
 
 export const Gred = styled.div`
@@ -76,12 +67,12 @@ export const GredParent = styled.div`
   &:hover {
     ${Gred} {
       opacity: 0.6;
-      transition: all 0.2s;
+      transition: all 0.1s;
     }
   }
 `
 
-const BlueCss = styled.span`
+export const BlueCss = styled.span`
   font-size: 12px;
   color: #2877ff;
   cursor: pointer;
@@ -97,6 +88,7 @@ const RedCss = styled(BlueCss)`
   margin-left: 12px;
 `
 const NumStyle = styled.div`
+  background-color: white;
   font-size: 12px;
   color: #969799;
 `
@@ -107,12 +99,19 @@ export const Card = styled.div`
   min-width: 372px;
   min-height: 60px;
   background: #ffffff;
-  box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
+  &:hover {
+    box-shadow: 0px 0px 7px 2px rgba(40, 119, 255, 20%);
+    ${Second} {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 `
 
 const StyledProgress = styled(Progress)`
@@ -135,7 +134,7 @@ export const fileIconMap: Record<string, string> = {
   mp3: 'colormusic',
   wav: 'colormusic',
   cad: 'colormusic',
-  doc: 'colordoc',
+  doc: 'colorDOC-76p4mioh',
   docx: 'colorDOC-76p4mioh',
   pdf: 'colorpdf',
   zip: 'zip',
@@ -245,7 +244,6 @@ const UploadAttach = (props: any) => {
     if (file instanceof File) {
       const fileName = file.name
       let newName = file.name
-
       const list = fileList as any[]
       let i = 1
 
@@ -359,7 +357,7 @@ const UploadAttach = (props: any) => {
             name: i.name,
             size: i.size,
             formattedSize: '',
-            suffix: i.url.split('.').at(-1),
+            suffix: i.suffix,
             url: i.url,
             time: i.time,
             username: i.username ?? userInfo?.name,

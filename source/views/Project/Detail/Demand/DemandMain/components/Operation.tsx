@@ -93,8 +93,8 @@ const MoreItem = styled.div({
 })
 
 interface Props {
-  isGrid: boolean
-  onChangeGrid(val: boolean): void
+  isGrid: any
+  onChangeGrid(val: any): void
   onChangeVisible?(e?: any): void
   onSearch(params: any): void
   settingState: boolean
@@ -116,9 +116,15 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { filterAll, projectInfo, categoryList, colorList } =
-    useModel('project')
-  const { setFilterHeight, setCreateCategory } = useModel('demand')
+  const {
+    filterAll,
+    projectInfo,
+    categoryList,
+    colorList,
+    setFilterParamsModal,
+  } = useModel('project')
+  const { setFilterHeight, setCreateCategory, filterParams } =
+    useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -215,6 +221,8 @@ const Operation = (props: Props) => {
 
   const onChangeCategory = (e: any, item: any) => {
     setCreateCategory(item)
+    // 需求列表筛选参数赋值给 弹窗
+    setFilterParamsModal(filterParams)
     setTimeout(() => {
       props.onChangeVisible?.(e)
       setIsVisible(false)

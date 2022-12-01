@@ -200,14 +200,18 @@ const TagBox = (props: TagProps) => {
         />
       </div>
       <div style={{ maxHeight: 200, overflow: 'auto', marginTop: 4 }}>
-        {arr.map((i: any) => (
-          <TagItem key={i.id} onClick={() => onHasTagAdd(i)}>
-            <div style={{ background: i.color }} />
-            <span>{i.content}</span>
-          </TagItem>
-        ))}
+        {arr
+          ?.filter((i: any) => String(i.content).includes(value))
+          .map((i: any) => (
+            <TagItem key={i.id} onClick={() => onHasTagAdd(i)}>
+              <div style={{ background: i.color }} />
+              <span>{i.content}</span>
+            </TagItem>
+          ))}
       </div>
-      <TagItem hidden={!value}>
+      <TagItem
+        hidden={!value || arr?.filter((i: any) => i.content === value)?.length}
+      >
         <span onClick={onCreateTag}>{t('project.createTag', { value })}</span>
       </TagItem>
     </TagWrap>

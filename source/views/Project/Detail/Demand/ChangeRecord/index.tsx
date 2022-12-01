@@ -149,10 +149,10 @@ const ChangeRecord = () => {
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
       return item[i]?.length
-        ? item[i]?.map((k: any) => k?.name).join('、')
+        ? item[i]?.map((k: any) => k?.name).join(';')
         : '--'
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
-      return item[i]?.length ? item[i].join(',') : '--'
+      return item[i]?.length ? item[i].join(';') : '--'
     } else if (i === 'status') {
       return item[i]
     } else {
@@ -307,7 +307,7 @@ const ChangeRecord = () => {
                           )
                           ?.map((k: any) => (
                             <span key={k}>
-                              {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                              {(Array.isArray(k) ? k.join(';') : k) || '--'}
                             </span>
                           ))
                       : record.fields.custom_field?.map((m: any) => (
@@ -376,7 +376,7 @@ const ChangeRecord = () => {
                           )
                           ?.map((k: any) => (
                             <span key={k}>
-                              {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                              {(Array.isArray(k) ? k.join(';') : k) || '--'}
                             </span>
                           ))
                       : record.fields.custom_field?.map((m: any) => (

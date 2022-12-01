@@ -142,7 +142,7 @@ const ChangeRecord = (props?: any) => {
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
       return item[i]?.length
-        ? item[i]?.map((k: any) => k?.name).join('、')
+        ? item[i]?.map((k: any) => k?.name).join(';')
         : '--'
     } else if (i === 'attachment' || i === 'copysend') {
       return item[i]?.length ? item[i].map((k: any) => k) : '--'

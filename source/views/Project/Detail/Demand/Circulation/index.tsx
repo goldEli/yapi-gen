@@ -224,7 +224,7 @@ const Circulation = () => {
                                 <span>
                                   {i.fields[m]?.value
                                     ?.map((n: any) => n)
-                                    .join('、') || '--'}
+                                    .join(';') || '--'}
                                 </span>
                               ) : (
                                 <Space size={24}>

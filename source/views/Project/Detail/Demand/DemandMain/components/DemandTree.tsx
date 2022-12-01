@@ -1,10 +1,11 @@
-/* eslint-disable no-constant-binary-expression */
-// 需求主页-需求表格模式
+/* eslint-disable react/jsx-no-leaked-render */
+// 需求主页-需求树形模式
 
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu } from 'antd'
+import { Pagination, message, Spin, Menu, Checkbox } from 'antd'
 import styled from '@emotion/styled'
 import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
@@ -31,6 +32,17 @@ const DataWrap = styled.div({
   height: 'calc(100% - 64px)',
 })
 
+const CheckWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  minWidth: 20,
+  maxWidth: 200,
+  '.number': {
+    color: '#969799',
+    marginLeft: 8,
+  },
+})
+
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
@@ -44,7 +56,7 @@ interface Props {
   onUpdate(updateState?: boolean): void
 }
 
-const DemandTable = (props: Props) => {
+const DemandTree = (props: Props) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -63,6 +75,8 @@ const DemandTable = (props: Props) => {
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const [checkNumber, setCheckNumber] = useState<any>('')
+
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -170,6 +184,11 @@ const DemandTable = (props: Props) => {
     'b/story/delete',
   )
 
+  // 全选列表
+  const onChangeAll = () => {
+    //
+  }
+
   const menu = (item: any) => {
     let menuItems = [
       {
@@ -227,9 +246,32 @@ const DemandTable = (props: Props) => {
           )
         },
       },
+      {
+        title: (
+          <CheckWrap>
+            <Checkbox onChange={onChangeAll} />
+            <span className="number">{checkNumber}</span>
+          </CheckWrap>
+        ),
+        render: (text: any, record: any) => {
+          return (
+            <CheckWrap>
+              <Checkbox />
+              <span
+                className="number"
+                style={{
+                  visibility: 'hidden',
+                }}
+              >
+                {checkNumber}
+              </span>
+            </CheckWrap>
+          )
+        },
+      },
     ]
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns])
+  }, [titleList, titleList2, titleList3, columns, checkNumber])
 
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -289,7 +331,7 @@ const DemandTable = (props: Props) => {
           onShowSizeChange={onShowSizeChange}
         />
       </PaginationWrap>
-      {props.settingState ? (
+      {props.settingState && (
         <OptionalFeld
           allTitleList={allTitleList}
           plainOptions={plainOptions}
@@ -302,9 +344,9 @@ const DemandTable = (props: Props) => {
           onClose={() => props.onChangeSetting(false)}
           getCheckList={getCheckList}
         />
-      ) : null}
+      )}
     </Content>
   )
 }
 
-export default DemandTable
+export default DemandTree

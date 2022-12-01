@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -126,6 +127,7 @@ const EditDemand = (props: Props) => {
   const [t] = useTranslation()
   const rightDom: any = createRef()
   const leftDom: any = createRef()
+  const [isSaveParams, setIsSaveParams] = useState(false)
   // 需求类别切换提交表单
   const [changeCategoryForm] = Form.useForm()
   // 点击需求类别是否展示popover弹层
@@ -144,6 +146,7 @@ const EditDemand = (props: Props) => {
   const [treeArr, setTreeArr] = useState([])
   // 父需求列表
   const [parentList, setParentList] = useState<any>([])
+  const [fieldsList, setFieldsList] = useState<any>([])
   // 需求详情
   const [demandInfo, setDemandInfo] = useState<any>({})
   const [searchParams] = useSearchParams()
@@ -160,6 +163,9 @@ const EditDemand = (props: Props) => {
     getCategoryList,
     getMemberList,
     getFieldList,
+    filterParamsModal,
+    setFilterParamsModal,
+    getPriorityList,
   } = useModel('project')
   const {
     setCreateCategory,
@@ -172,7 +178,6 @@ const EditDemand = (props: Props) => {
     updateDemandCategory,
     updateDemand,
     addDemand,
-    filterParams,
   } = useModel('demand')
   const { setIsUpdateCreate } = useModel('mine')
 
@@ -191,26 +196,23 @@ const EditDemand = (props: Props) => {
     return arr
   }
 
-  // 获取自定义字段
-  const getFieldData = async (value?: any) => {
-    await getFieldList({ projectId: value || projectId })
-  }
-
   // 获取回填Info数据的下拉数据
   const getInit = async (value?: any, categoryId?: any) => {
     setIsOpenEditDemand(true)
-    const [classTree, categoryData] = await Promise.all([
+    const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       getCategoryList({ projectId: value || projectId, isSelect: true }),
+      getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
-      getFieldData(value || projectId),
       getMemberList({
         all: true,
         projectId: value || projectId,
       }),
       getIterateSelectList({ projectId: value || projectId, all: true }),
+      getPriorityList({ projectId: value || projectId, type: 'priority' }),
     ])
     setTreeArr(classTree)
+    setFieldsList(fieldsData?.list)
 
     //  没有需id时，则是创建需求
     if (props.demandId) {
@@ -248,15 +250,17 @@ const EditDemand = (props: Props) => {
       // 迭代创建 ,当前只有迭代是需要做筛选类别回填
       if (props?.iterateId) {
         // 如果是有筛选条件的，回填筛选条件
-        if (filterParams?.category_id?.length) {
-          const resultId = filterParams?.category_id?.filter(
+        if (filterParamsModal?.category_id?.length) {
+          const resultId = filterParamsModal?.category_id?.filter(
             (i: any) => i !== -1,
           )?.[0]
           // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-          const resultObj = resultId
-            ? categoryData?.list?.filter((i: any) => i.id === resultId)[0]
-            : categoryData?.list[0]
+          const resultObj = categoryData?.list?.filter(
+            (i: any) => i.id === resultId,
+          )[0]
           setCategoryObj(resultObj)
+        } else {
+          setCategoryObj(categoryData?.list[0])
         }
       }
     }
@@ -366,6 +370,8 @@ const EditDemand = (props: Props) => {
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
+    setFilterParamsModal({})
+    setIsSaveParams(false)
   }
 
   // 保存数据
@@ -394,10 +400,25 @@ const EditDemand = (props: Props) => {
     } else {
       props.onUpdate?.()
     }
+    // 如果是快速创建，相应数据存缓存
+    if (props.isQuickCreate) {
+      const saveParams = values
+      saveParams.categoryId = categoryObj?.id
+      saveParams.type = 'need'
+      saveParams.name = ''
+      saveParams.info = ''
+      saveParams.attachments = []
+
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(JSON.stringify(saveParams)),
+      )
+    }
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
       rightDom.current.update()
+      setIsSaveParams(true)
     } else {
       setChangeCategoryFormData({})
       setCreateCategory({})
@@ -406,19 +427,8 @@ const EditDemand = (props: Props) => {
         rightDom.current?.reset()
       }, 100)
       props.onChangeVisible()
-    }
-
-    if (props.isQuickCreate) {
-      localStorage.setItem(
-        'quickCreateData',
-        encryptPhp(
-          JSON.stringify({
-            projectId,
-            type: 'need',
-            categoryId: categoryObj?.id,
-          }),
-        ),
-      )
+      setFilterParamsModal({})
+      setIsSaveParams(false)
     }
   }
 
@@ -645,6 +655,9 @@ const EditDemand = (props: Props) => {
             iterateId={props.iterateId}
             info={demandInfo}
             isChild={props.isChild}
+            isSaveParams={isSaveParams}
+            isQuickCreate={props?.isQuickCreate}
+            fieldsList={fieldsList}
           />
         </ModalContent>
 

@@ -42,17 +42,27 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const { projectInfo, getProjectInfo, setFieldList, tagList } =
-    useModel('project')
+  const {
+    projectInfo,
+    getProjectInfo,
+    setFieldList,
+    tagList,
+    filterParamsModal,
+    getTagList,
+  } = useModel('project')
   const { getProjectList } = useModel('mine')
-  const { filterParams } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
 
   // 提交参数
   const onConfirm = async () => {
     await form.validateFields()
-    return { ...form.getFieldsValue() }
+    const values = form.getFieldsValue()
+    values.tagIds = tagCheckedList?.map((i: any) => ({
+      name: i.name,
+      color: i.color,
+    }))
+    return { ...values }
   }
 
   // 清空左侧参数
@@ -99,10 +109,26 @@ const EditDemandLeft = (props: Props) => {
       )
       form.setFieldsValue(hisCategoryData)
       getProjectInfo({ projectId: hisCategoryData?.projectId })
+      const resultList = await getTagList({
+        projectId: hisCategoryData?.projectId,
+      })
       props.onChangeProjectId(hisCategoryData?.projectId)
       props.onGetDataAll(
         hisCategoryData?.projectId,
         hisCategoryData?.categoryId,
+      )
+      setTagCheckedList(
+        resultList
+          ?.filter((i: any) =>
+            hisCategoryData?.tagIds
+              ?.map((k: any) => k.name)
+              .some((k: any) => k === i.content),
+          )
+          ?.map((i: any) => ({
+            id: i.id,
+            color: i.color,
+            name: i.content,
+          })),
       )
     }
 
@@ -116,8 +142,8 @@ const EditDemandLeft = (props: Props) => {
       getProjectData()
     }
     // 创建回填筛选数据 --- 标签
-    if (filterParams?.tagId?.length) {
-      const resultArr = filterParams?.tagId?.filter((i: any) => i !== -1)
+    if (filterParamsModal?.tagIds?.length) {
+      const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
         tagList
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
@@ -165,10 +191,13 @@ const EditDemandLeft = (props: Props) => {
   }, [props?.demandId, props.demandInfo])
 
   // 切换项目
-  const onSelectProjectName = (value: any) => {
+  const onSelectProjectName = async (value: any) => {
     onReset()
     setFieldList({ list: undefined })
     getProjectInfo({ projectId: value })
+    await getTagList({
+      projectId: value,
+    })
     form.setFieldsValue({
       projectId: value,
     })

@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
@@ -20,6 +21,7 @@ import { LevelContent } from '@/components/Level'
 import IconFont from '@/components/IconFont'
 import { getNestedChildren, getTypeComponent } from '@/tools'
 import moment from 'moment'
+import { decryptPhp } from '@/tools/cryptoPhp'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -52,6 +54,12 @@ interface Props {
   info?: any
   //是否来自子需求
   isChild?: any
+  // 是否是完成并创建
+  isSaveParams?: boolean
+  // 我的-快速创建
+  isQuickCreate?: any
+  // 自定义字段
+  fieldsList: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -59,10 +67,10 @@ const EditDemandRIght = (props: Props) => {
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const { userInfo } = useModel('user')
-  const { selectAllStaffData, memberList, fieldList, priorityList } =
+  const { selectAllStaffData, memberList, priorityList, filterParamsModal } =
     useModel('project')
   const { selectIterate } = useModel('iterate')
-  const { demandInfo, filterParams } = useModel('demand')
+  const { demandInfo } = useModel('demand')
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [priorityDetail, setPriorityDetail] = useState<any>({})
@@ -90,6 +98,45 @@ const EditDemandRIght = (props: Props) => {
       ...getNestedChildren(props.treeArr, 0),
     ])
   }, [props.treeArr])
+
+  // 回填自定义数据 -- params：传入回填数据对象，isFilter：是否是筛选回填
+  const setCustomFields = (params: any, isFilter: boolean) => {
+    let resultCustom: any = {}
+    const customArr = props.fieldsList?.filter((i: any) =>
+      Object.keys(params).some((k: any) => k === i.content),
+    )
+    customArr?.forEach((element: any) => {
+      const customValue: any = params[element.content]
+      if (
+        [
+          'select_checkbox',
+          'select',
+          'checkbox',
+          'radio',
+          'user_select_checkbox',
+          'user_select',
+        ].includes(element.type.attr)
+      ) {
+        // 判断是否是下拉框，是则去除空选项
+        resultCustom[element.content] = isFilter
+          ? customValue?.filter((i: any) => i !== -1)
+          : customValue
+      } else if (['number'].includes(element.type.attr)) {
+        // 判断是否是数字类型，是则获取start
+        resultCustom[element.content] = isFilter
+          ? Number(customValue?.start)
+          : customValue
+      } else if (['date'].includes(element.type.attr)) {
+        // 判断是否是时间类型，是则获取第一个时间
+        resultCustom[element.content] = isFilter
+          ? moment(customValue[0])
+          : moment(customValue)
+      } else if (['text', 'textarea'].includes(element.type.attr)) {
+        resultCustom[element.content] = customValue
+      }
+    })
+    form1.setFieldsValue(resultCustom)
+  }
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
@@ -167,19 +214,6 @@ const EditDemandRIght = (props: Props) => {
           : null,
       })
     } else {
-      // console.log(
-      //   memberList,
-      //   '111',
-      //   classTreeData,
-      //   '333',
-      //   priorityList,
-      //   '333',
-      //   selectIterate,
-      //   '12121',
-      //   selectAllStaffData,
-      //   '44',
-      //   filterParams,
-      // )
       // 子需求默认回填父需求
       if (props.isChild) {
         form.setFieldsValue({
@@ -198,29 +232,114 @@ const EditDemandRIght = (props: Props) => {
             : null,
         })
       }
-      // 不是在迭代创建需求并且有筛选项
-      if (!props.iterateId && filterParams?.iterateId?.length) {
-        const resultId = filterParams?.iterateId?.filter(
+      // 如果不是完成并创建的话，则回填筛选值
+      if (!props.isSaveParams && !props.isQuickCreate) {
+        // 不是在迭代创建需求并且有筛选项
+        if (!props.iterateId && filterParamsModal?.iterateIds?.length) {
+          const resultId = filterParamsModal?.iterateIds?.filter(
+            (i: any) => i !== -1,
+          )?.[0]
+          form.setFieldsValue({
+            iterateId: selectIterate?.list
+              ?.filter((k: any) => k.status === 1)
+              .filter((i: any) => i.id === resultId).length
+              ? resultId
+              : null,
+          })
+        }
+        // 获取需求分类回填值 未分类可能是-1或者是0
+        const resultClass = filterParamsModal?.class_id
+          ? filterParamsModal?.class_id === -1
+            ? 0
+            : filterParamsModal?.class_id
+          : filterParamsModal?.class_ids?.filter((i: any) => i !== -1)?.[0]
+        // 筛选值-优先级
+        const priorityId = filterParamsModal?.priorityIds?.filter(
           (i: any) => i !== -1,
         )?.[0]
-        form.setFieldsValue({
-          iterateId: selectIterate?.list
-            ?.filter((k: any) => k.status === 1)
-            .filter((i: any) => i.id === resultId).length
-            ? resultId
-            : null,
-        })
-      }
+        const resultPriority = priorityList?.data?.filter(
+          (i: any) => i.id === priorityId,
+        )?.[0]
 
-      form.setFieldsValue({
-        copySendIds: filterParams?.usersCopysendNameId?.filter(
-          (i: any) => i !== -1,
-        ),
-        userIds: filterParams?.usersnameId?.filter((i: any) => i !== -1),
-        class: filterParams?.class_ids?.filter((i: any) => i !== -1),
-      })
+        // 筛选回填处理人、抄送人、需求分类、优先级
+        form.setFieldsValue({
+          copySendIds: filterParamsModal?.copySendId?.filter(
+            (i: any) => i !== -1,
+          ),
+          userIds: filterParamsModal?.usersNameId?.filter((i: any) => i !== -1),
+          class: resultClass,
+          priority: resultPriority,
+        })
+        setPriorityDetail(resultPriority)
+
+        // 筛选回填预计开始时间
+        if (filterParamsModal?.expectedStart) {
+          form.setFieldsValue({
+            startTime: moment(
+              filterParamsModal?.expectedStart[0] === '1970-01-01'
+                ? 0
+                : filterParamsModal?.expectedStart[0],
+            ),
+          })
+        }
+
+        // 筛选回填预计结束时间
+        if (filterParamsModal?.expectedEnd) {
+          form.setFieldsValue({
+            endTime: moment(
+              filterParamsModal?.expectedEnd[1] === '2030-01-01'
+                ? 0
+                : filterParamsModal?.expectedEnd[1],
+            ),
+          })
+        }
+
+        // 筛选值回填自定义字段值
+        if (
+          filterParamsModal?.custom_field &&
+          JSON.stringify(filterParamsModal?.custom_field) !== '{}'
+        ) {
+          setCustomFields(filterParamsModal?.custom_field, true)
+        }
+      }
+      // 如果是快捷创建并且有缓存数据
+      if (props.isQuickCreate && localStorage.getItem('quickCreateData')) {
+        const hisCategoryData = JSON.parse(
+          decryptPhp(localStorage.getItem('quickCreateData') as any),
+        )
+        form.setFieldsValue({
+          userIds: hisCategoryData?.userIds,
+          class: hisCategoryData?.class,
+          parentId: hisCategoryData?.parentId,
+          iterateId: hisCategoryData?.iterateId,
+          copySendIds: hisCategoryData?.copySendIds,
+          endTime: moment(hisCategoryData?.expectedEnd || 0),
+          startTime: moment(hisCategoryData?.expectedStart || 0),
+          priority: priorityList?.data?.filter(
+            (i: any) => i.id === hisCategoryData?.priority,
+          )?.[0],
+        })
+        // 优先级
+        setPriorityDetail(
+          priorityList?.data?.filter(
+            (i: any) => i.id === hisCategoryData?.priority,
+          )?.[0],
+        )
+        if (
+          hisCategoryData?.customField &&
+          JSON.stringify(hisCategoryData?.customField) !== '{}'
+        ) {
+          setCustomFields(hisCategoryData?.customField, false)
+        }
+      }
     }
-  }, [props?.demandId, props.info, props.parentList, selectIterate])
+  }, [
+    props?.demandId,
+    props.info,
+    props.parentList,
+    selectIterate,
+    props.fieldsList,
+  ])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -247,7 +366,7 @@ const EditDemandRIght = (props: Props) => {
 
     Object.keys(customValues)?.forEach((k: any) => {
       customValues[k] = customValues[k] ? customValues[k] : ''
-      const obj = fieldList?.list?.filter((i: any) => k === i.content)[0]
+      const obj = props.fieldsList?.filter((i: any) => k === i.content)[0]
       if (obj?.type?.attr === 'date' && customValues[k]) {
         customValues[obj.content] = moment(customValues[obj.content]).format(
           obj?.type?.value[0] === 'datetime'
@@ -256,7 +375,8 @@ const EditDemandRIght = (props: Props) => {
         )
       } else if (
         obj?.type?.attr === 'select_checkbox' ||
-        obj?.type?.attr === 'checkbox'
+        obj?.type?.attr === 'checkbox' ||
+        obj?.type?.attr === 'user_select_checkbox'
       ) {
         customValues[obj.content] = customValues[obj.content]?.length
           ? customValues[obj.content]
@@ -287,6 +407,19 @@ const EditDemandRIght = (props: Props) => {
       update: onSubmitUpdate,
     }
   })
+
+  // 返回自定义字段相应的控件
+  const getCustomDom = (item: any) => {
+    let options: any = item.type
+    if (['user_select_checkbox', 'user_select'].includes(item.type.attr)) {
+      const key = item.type.value[0]
+      options.value = key === 'projectMember' ? memberList : selectAllStaffData
+    }
+    return getTypeComponent({
+      ...options,
+      ...{ remarks: item.remarks },
+    })
+  }
 
   return (
     <RightWrap>
@@ -443,9 +576,9 @@ const EditDemandRIght = (props: Props) => {
           />
         </Form.Item>
       </FormWrapDemand>
-      {fieldList?.list && (
+      {props.fieldsList && (
         <>
-          {!isShowFields && fieldList?.list?.length > 0 && (
+          {!isShowFields && props.fieldsList?.length > 0 && (
             <ShowLabel onClick={() => setIsShowFields(true)}>
               {t('newlyAdd.open')}
             </ShowLabel>
@@ -455,18 +588,15 @@ const EditDemandRIght = (props: Props) => {
             form={form1}
             style={{ display: isShowFields ? 'block' : 'none' }}
           >
-            {fieldList?.list?.map((i: any) => (
+            {props.fieldsList?.map((i: any) => (
               <div style={{ display: 'flex' }} key={i.content}>
                 <Form.Item label={i.name} name={i.content}>
-                  {getTypeComponent({
-                    ...i.type,
-                    ...{ remarks: i.remarks },
-                  })}
+                  {getCustomDom(i)}
                 </Form.Item>
               </div>
             ))}
           </FormWrapDemand>
-          {isShowFields && fieldList?.list?.length > 0 && (
+          {isShowFields && props.fieldsList?.length > 0 && (
             <ShowLabel onClick={() => setIsShowFields(false)}>
               {t('newlyAdd.close')}
             </ShowLabel>

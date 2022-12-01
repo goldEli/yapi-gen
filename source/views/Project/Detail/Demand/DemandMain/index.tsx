@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
+import DemandTree from './components/DemandTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -38,7 +39,7 @@ const DemandMain = (props: Props) => {
   const myTreeComponent: any = useRef(null)
   const [t] = useTranslation()
   const [key, setKey] = useState()
-  const [isGrid, setIsGrid] = useState(false)
+  const [isGrid, setIsGrid] = useState(0)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
@@ -49,7 +50,8 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand, setFilterParams } = useModel('demand')
+  const { getDemandList, deleteDemand, setFilterParams, filterParams } =
+    useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -58,7 +60,7 @@ const DemandMain = (props: Props) => {
   const { getCategoryList } = useModel('project')
 
   const getList = async (
-    state: boolean,
+    state: any,
     searchParamsObj: any,
     item?: any,
     orderItem?: any,
@@ -70,7 +72,7 @@ const DemandMain = (props: Props) => {
     }
 
     let params = {}
-    if (state) {
+    if (state === 1) {
       params = {
         projectId,
         all: true,
@@ -123,6 +125,7 @@ const DemandMain = (props: Props) => {
         class_id: key,
       }
     }
+    setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -151,7 +154,7 @@ const DemandMain = (props: Props) => {
     myTreeComponent?.current?.init()
   }, [props.isUpdate])
 
-  const onChangeGrid = (val: boolean) => {
+  const onChangeGrid = (val: any) => {
     setIsGrid(val)
     setDataList({ list: undefined })
     getList(val, searchItems, { page: 1, size: pageObj.size }, order)
@@ -180,9 +183,8 @@ const DemandMain = (props: Props) => {
     }
   }
 
-  const onSearch = (params: string) => {
+  const onSearch = (params: any) => {
     setSearchItems(params)
-    setFilterParams(params)
     getList(isGrid, params, { page: 1, size: pageObj.size }, order)
   }
 
@@ -210,6 +212,9 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
+      // const obj = filterParams
+      // obj.class_id = value
+      // setFilterParams(obj)
     },
   }
 
@@ -250,15 +255,21 @@ const DemandMain = (props: Props) => {
             }}
             dataLength={dataList?.total}
           />
-          {isGrid ? (
-            <DemandGrid
+          {isGrid === 2 && (
+            <DemandTree
               onChangeVisible={onChangeOperation}
               onDelete={onDelete}
               data={dataList}
+              onChangePageNavigation={onChangePageNavigation}
+              onChangeRow={onChangeRow}
+              settingState={isSettingState}
+              onChangeSetting={setIsSettingState}
+              onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
             />
-          ) : (
+          )}
+          {!isGrid && (
             <DemandTable
               onChangeVisible={onChangeOperation}
               onDelete={onDelete}
@@ -268,6 +279,15 @@ const DemandMain = (props: Props) => {
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}
               onChangeOrder={onChangeOrder}
+              isSpinning={isSpinning}
+              onUpdate={onUpdate}
+            />
+          )}
+          {isGrid === 1 && (
+            <DemandGrid
+              onChangeVisible={onChangeOperation}
+              onDelete={onDelete}
+              data={dataList}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
             />

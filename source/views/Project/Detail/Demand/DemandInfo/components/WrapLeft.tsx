@@ -26,6 +26,7 @@ import {
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
 import { off } from 'process'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -87,6 +88,8 @@ const WrapLeftBox = () => {
   const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
   const LeftDom = useRef<HTMLInputElement>(null)
+  const [isDelVisible, setIsDelVisible] = useState(false)
+  const [files, setFiles] = useState()
 
   useEffect(() => {
     setTagList(
@@ -160,12 +163,17 @@ const WrapLeftBox = () => {
   }
 
   const onDeleteInfoAttach = async (file: any) => {
+    setIsDelVisible(true)
+    setFiles(file)
+  }
+
+  const onDeleteConfirm = async () => {
     try {
       await deleteInfoDemand({
         projectId,
         demandId,
         type: 'attachment',
-        targetId: file,
+        targetId: files,
       })
 
       getDemandInfo({ projectId, id: demandId })
@@ -173,6 +181,8 @@ const WrapLeftBox = () => {
     } catch (error) {
       //
     }
+
+    setIsDelVisible(false)
   }
 
   return (
@@ -263,7 +273,11 @@ const WrapLeftBox = () => {
                   projectInfo?.projectPermissions?.filter(
                     (i: any) => i.name === '附件上传',
                   ).length > 0 ? (
-                    <AddWrap>
+                    <AddWrap
+                      style={{
+                        marginBottom: '10px',
+                      }}
+                    >
                       <IconFont type="plus" />
                       <div>{t('common.add23')}</div>
                     </AddWrap>
@@ -274,6 +288,12 @@ const WrapLeftBox = () => {
               />
             </div>
           </InfoItem>
+          <DeleteConfirm
+            text={t('p2.del')}
+            isVisible={isDelVisible}
+            onChangeVisible={() => setIsDelVisible(!isDelVisible)}
+            onConfirm={onDeleteConfirm}
+          />
           <InfoItem>
             <Label>{t('project.demandStatus')}</Label>
             <DemandStatus pid={projectId} sid={demandId} />

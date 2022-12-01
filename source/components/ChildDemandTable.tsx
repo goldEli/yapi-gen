@@ -274,7 +274,7 @@ const ChildDemandTable = (props: {
       dataIndex: 'dealName',
       width: 150,
       render: (text: any) => {
-        return <span>{text?.join(',') || '--'}</span>
+        return <span>{text?.join(';') || '--'}</span>
       },
     },
   ]

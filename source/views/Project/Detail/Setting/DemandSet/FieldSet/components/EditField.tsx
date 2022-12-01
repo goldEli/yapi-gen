@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 // 需求字段-编辑字段
 
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -5,7 +6,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Form, Input, message, Select } from 'antd'
+import { Checkbox, Form, Input, message, Radio, Select } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
@@ -108,6 +109,7 @@ const EditFiled = (props: Props) => {
   const { option, updateStoryConfigField, addStoryConfigField } =
     useModel('project')
   const [checked, setChecked] = useState(false)
+  const [personValue, setPersonValue] = useState('')
   const ChooseDom = useRef<HTMLInputElement>(null)
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
@@ -130,10 +132,13 @@ const EditFiled = (props: Props) => {
         setChecked(props?.item?.values[0] === 'datetime')
       } else if (props?.item?.type === '8') {
         setChecked(props?.item?.values[0] === 'integer')
+      } else if (['9', '10'].includes(props?.item?.type)) {
+        setPersonValue(props?.item?.values[0])
       }
     } else {
       form.resetFields()
       setValue('')
+      setPersonValue('')
       setChecked(false)
       setRow([
         { value: '', key: new Date().getTime() },
@@ -148,6 +153,7 @@ const EditFiled = (props: Props) => {
       form.resetFields()
       setValue('')
       setChecked(false)
+      setPersonValue('')
       setRow([
         { value: '', key: new Date().getTime() },
         { value: '', key: new Date().getTime() + 100 },
@@ -162,7 +168,7 @@ const EditFiled = (props: Props) => {
   const onConfirm = async () => {
     await form.validateFields()
     const selObj = option?.filter(
-      i => i.value === form.getFieldValue('type'),
+      (i: any) => i.value === form.getFieldValue('type'),
     )[0]
     let contentValue
 
@@ -183,6 +189,9 @@ const EditFiled = (props: Props) => {
     } else if (selObj?.value === '8') {
       // 整数
       contentValue = checked ? ['integer'] : ['number']
+    } else if (['9', '10'].includes(selObj?.value)) {
+      // 人员字段
+      contentValue = [personValue]
     }
 
     const obj: any = {
@@ -301,6 +310,7 @@ const EditFiled = (props: Props) => {
                 optionFilterProp="label"
                 getPopupContainer={node => node}
                 showSearch
+                disabled={props?.item?.id}
                 options={option}
                 onSelect={(val: any) => setValue(val)}
                 onClear={() => setValue('')}
@@ -309,7 +319,7 @@ const EditFiled = (props: Props) => {
             <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
               {t('newlyAdd.pleaseFieldsType')}
             </div>
-            {value && value !== '1' && value !== '2' ? (
+            {value && value !== '1' && value !== '2' && (
               <ChooseWrap>
                 {value === '7' && (
                   <Checkbox
@@ -327,7 +337,32 @@ const EditFiled = (props: Props) => {
                     {t('newlyAdd.onlyInt')}
                   </Checkbox>
                 )}
-                {value !== '8' && value !== '7' && (
+                {(value === '9' || value === '10') && (
+                  <>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        color: '#323233',
+                        marginBottom: 12,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {t('version2.chooseRange')}
+                    </div>
+                    <Radio.Group
+                      value={personValue}
+                      onChange={e => setPersonValue(e.target.value)}
+                    >
+                      <Radio value="projectMember">
+                        {t('project.projectMember')}
+                      </Radio>
+                      <Radio value="companyMember">
+                        {t('situation.companyStaff')}
+                      </Radio>
+                    </Radio.Group>
+                  </>
+                )}
+                {!['7', '8', '9', '10'].includes(value) && (
                   <OptionsWrap>
                     <AddWrap onClick={onAddChoose}>
                       <IconFont type="plus" />
@@ -370,7 +405,7 @@ const EditFiled = (props: Props) => {
                   </OptionsWrap>
                 )}
               </ChooseWrap>
-            ) : null}
+            )}
           </ItemWrap>
         </FormWrap>
       </div>

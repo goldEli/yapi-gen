@@ -85,7 +85,14 @@ const TableQuickEdit = (props: Props) => {
       (i: any) => i.content === props.keyText,
     )[0]
     const resultValue = {
-      value: currentObj?.type.value,
+      value: ['user_select_checkbox', 'user_select'].includes(
+        currentObj?.type.attr,
+      )
+        ? currentObj?.type.data?.map((i: any) => ({
+            label: i.name,
+            value: i.id,
+          }))
+        : currentObj?.type.value,
       remarks: currentObj?.remarks,
       attr: currentObj?.type.attr,
     }
@@ -153,19 +160,9 @@ const TableQuickEdit = (props: Props) => {
 
   // 设置默认参数 - 主要用于需要接口获取参数的
   const setNormalParams = async () => {
-    let resultValue: any
-    if (props?.isMineOrHis && props?.isCustom) {
+    if (props?.isCustom) {
       // 我的模块及他的模块并且是自定义字段
       getIsCustomValues()
-    } else if (props.isCustom) {
-      resultValue = {
-        attr: props?.type,
-        value: props.value,
-      }
-      setParams(resultValue)
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
     } else {
       // 项目及详情中自带相应参数或者是之前的固定参数
       getDefaultSelectValues()
@@ -234,9 +231,12 @@ const TableQuickEdit = (props: Props) => {
     } else {
       let resultVal: any
       if (
-        ['select_checkbox', 'checkbox', 'fixed_select'].includes(
-          String(props?.type),
-        ) &&
+        [
+          'select_checkbox',
+          'checkbox',
+          'fixed_select',
+          'user_select_checkbox',
+        ].includes(String(props?.type)) &&
         !val
       ) {
         resultVal = []
@@ -247,7 +247,6 @@ const TableQuickEdit = (props: Props) => {
       onChange(resultVal, 1)
     }
   }
-
   return (
     <div style={{ width: '100%' }}>
       {isShowControl &&

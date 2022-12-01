@@ -10,6 +10,7 @@ import { addComment, getReportDetail } from '@/services/daily'
 import { bytesToSize } from '@/tools'
 import {
   BigWrap,
+  BlueCss,
   Card,
   fileIconMap,
   First,
@@ -456,7 +457,7 @@ const LookDay = (props: any) => {
                         <div>
                           <div
                             style={{
-                              width: 'calc(100% - 50px)',
+                              width: '100%',
                               fontSize: '14px',
                               fontWeight: 400,
                               color: '#646566',
@@ -497,7 +498,7 @@ const LookDay = (props: any) => {
                               height: '20px',
                             }}
                           >
-                            <span
+                            <BlueCss
                               onClick={() =>
                                 onDownload(
                                   item.path,
@@ -512,7 +513,7 @@ const LookDay = (props: any) => {
                               }}
                             >
                               {t('p2.download') as unknown as string}
-                            </span>
+                            </BlueCss>
                           </Second>
                         </div>
                       </BigWrap>
