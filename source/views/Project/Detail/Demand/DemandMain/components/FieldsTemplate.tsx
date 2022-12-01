@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/naming-convention */
 // 需求主页-导出及导入字段选择
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -12,6 +14,12 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { ShowWrap } from '@/components/StyleCommon'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
+import { arrayMoveImmutable } from 'array-move'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -95,6 +103,25 @@ interface Props {
   isSpin?: any
 }
 
+const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
+
+// 拖拽元素
+const SortItemLi = sortableElement<any>((props: any) => (
+  <div helperClass="row-dragging" {...props} />
+))
+
+const DragHandle = sortableHandle(() => (
+  <IconFont
+    type="move"
+    style={{
+      fontSize: 16,
+      cursor: 'pointer',
+      color: '#969799',
+      marginRight: 12,
+    }}
+  />
+))
+
 const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -103,6 +130,7 @@ const FieldsTemplate = (props: Props) => {
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
+  const [all, setAll] = useState<any[]>([])
   const [checkAll, setCheckAll] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
   const [fields, setFields] = useState<any>({})
@@ -125,6 +153,7 @@ const FieldsTemplate = (props: Props) => {
     setCheckList(basicKeys || [])
     setCheckList2(otherKeys || [])
     setCheckList3(customKeys || [])
+    setAll([...basicKeys, ...otherKeys, ...customKeys])
     setIndeterminate(false)
     setCheckAll(true)
     setFields(result)
@@ -139,9 +168,35 @@ const FieldsTemplate = (props: Props) => {
   const onClose = () => {
     props?.onClose()
   }
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    const arr = all.slice()
+
+    if (props?.importState === 1) {
+      arr.shift()
+    }
+    if (props?.importState === 2 || props.isExport) {
+      arr.shift()
+      arr.shift()
+    }
+
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(arr, oldIndex, newIndex).filter(
+        (el: any) => !!el,
+      )
+      if (props?.importState === 2) {
+        setAll(['name', 'category'].concat(newData))
+      } else {
+        setAll(['id'].concat(newData))
+      }
+      if (props.isExport) {
+        setAll(['id', 'name'].concat(newData))
+      }
+    }
+  }
 
   const onConfirm = () => {
-    props?.onConfirm([...checkList, ...checkList2, ...checkList3])
+    const news = allList.map((i: any) => i.field)
+    props?.onConfirm(news)
   }
 
   function del(value: string) {
@@ -162,7 +217,7 @@ const FieldsTemplate = (props: Props) => {
   const getItemState = (field: string) => {
     let resultVal: boolean
     if (props.isExport) {
-      resultVal = field === 'name'
+      resultVal = ['name', 'id'].includes(field)
     } else {
       resultVal =
         props?.importState === 2
@@ -173,42 +228,27 @@ const FieldsTemplate = (props: Props) => {
   }
 
   const allList = useMemo(() => {
-    const arr = [...checkList, ...checkList2, ...checkList3]
+    const newArr = [...checkList, ...checkList2, ...checkList3]
+
     const arr2 = [
       ...(fields?.baseFields || []),
       ...(fields?.timeAndPersonFields || []),
       ...(fields?.customFields || []),
     ]
-    const all = arr2.reduce((res: { name: string; field: string }[], item) => {
-      if (arr.includes(item.field)) {
-        res.push(item)
-      }
-      return res
-    }, [])
+    const newList = all.filter((i: any) => {
+      return newArr.includes(i)
+    })
+    const alls: any[] = []
 
-    return (
-      <CheckedWrap>
-        {all.map((item: any) => (
-          <CheckedItem key={item.field} state={getItemState(item.field)}>
-            <IconFont
-              style={{ fontSize: 12, marginRight: '8px', color: '#969799' }}
-              type="move"
-            />
-            <span>{item.name}</span>
-            {!getItemState(item.field) && (
-              <ShowWrap style={{ marginLeft: 'auto' }}>
-                <IconFont
-                  style={{ fontSize: 12 }}
-                  type="close"
-                  onClick={() => del(item.field)}
-                />
-              </ShowWrap>
-            )}
-          </CheckedItem>
-        ))}
-      </CheckedWrap>
-    )
-  }, [checkList, checkList2, checkList3, fields])
+    newList.forEach((i: any) => {
+      const result = arr2.find(item => {
+        return item.field === i
+      })
+      alls.push(result)
+    })
+
+    return alls
+  }, [checkList, checkList2, checkList3, fields, all])
 
   const onIsCheckAll = (length: any) => {
     const allKeys = [
@@ -222,11 +262,13 @@ const FieldsTemplate = (props: Props) => {
 
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
+    setAll([...list, ...checkList2, ...checkList3])
     const resArr = [...list, ...checkList2, ...checkList3]
     onIsCheckAll(resArr.length)
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
+    setAll([...checkList, ...list, ...checkList3])
     const resArr = [...checkList, ...list, ...checkList3]
     onIsCheckAll(resArr.length)
   }
@@ -234,6 +276,7 @@ const FieldsTemplate = (props: Props) => {
   const onChange3 = (list: CheckboxValueType[]) => {
     setCheckList3(list)
     const resArr = [...checkList, ...checkList2, ...list]
+    setAll([...checkList, ...checkList2, ...list])
     onIsCheckAll(resArr.length)
   }
 
@@ -335,7 +378,71 @@ const FieldsTemplate = (props: Props) => {
         />
         <RightWrap>
           <LabelWrap>{t('components.currentFiled')}</LabelWrap>
-          {allList}
+          <div>
+            <CheckedWrap>
+              {allList
+                .filter((i: any) => getItemState(i.field))
+                .map((item: any) => (
+                  <CheckedItem
+                    key={item.field}
+                    state={getItemState(item.field)}
+                  >
+                    <IconFont
+                      style={{
+                        fontSize: 16,
+                        marginRight: '8px',
+                        color: '#969799',
+                      }}
+                      type="move"
+                    />
+                    <span>{item.name}</span>
+                    {!getItemState(item.field) && (
+                      <ShowWrap style={{ marginLeft: 'auto' }}>
+                        <IconFont
+                          style={{ fontSize: 12 }}
+                          type="close"
+                          onClick={() => del(item.field)}
+                        />
+                      </ShowWrap>
+                    )}
+                  </CheckedItem>
+                ))}
+            </CheckedWrap>
+            <SortContainer
+              helperClass="row-dragging"
+              useDragHandle
+              onSortEnd={(values: any) => onSortEnd(values)}
+            >
+              {allList
+                .filter((i: any) => !getItemState(i.field))
+                .map((item: any, idx: number) => {
+                  return (
+                    <SortItemLi
+                      helperClass="row-dragging"
+                      key={item.value}
+                      index={idx}
+                    >
+                      <CheckedItem
+                        key={item.field}
+                        state={getItemState(item.field)}
+                      >
+                        <DragHandle />
+                        <span>{item.name}</span>
+                        {!getItemState(item.field) && (
+                          <ShowWrap style={{ marginLeft: 'auto' }}>
+                            <IconFont
+                              style={{ fontSize: 12 }}
+                              type="close"
+                              onClick={() => del(item.field)}
+                            />
+                          </ShowWrap>
+                        )}
+                      </CheckedItem>
+                    </SortItemLi>
+                  )
+                })}
+            </SortContainer>
+          </div>
         </RightWrap>
       </Wrap>
     </CommonModal>

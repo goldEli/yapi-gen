@@ -38,28 +38,30 @@ const WrapLeft = styled.div({
 const InfoItem = styled.div<{ activeState?: any }>(
   {
     display: 'flex',
-    alignItems: 'center',
+    // alignItems: 'center',
     marginTop: 14,
     position: 'relative',
+    flexDirection: 'column',
   },
-  ({ activeState }) => ({
-    alignItems: activeState ? 'flex-start' : 'center',
-  }),
+  // ({ activeState }) => ({
+  //   alignItems: activeState ? 'flex-start' : 'center',
+  // }),
 )
 
 const Label = styled.div({
-  color: '#969799',
+  color: '#323233',
   fontSize: 14,
-  fontWeight: 400,
   minWidth: 120,
   height: 32,
   lineHeight: '32px',
+  fontWeight: 'bold',
 })
 
 const TextWrap = styled.div({
   color: '#323233',
   fontSize: 14,
   display: 'flex',
+
   flexDirection: 'column',
   img: {
     maxWidth: '20%',
@@ -195,11 +197,7 @@ const WrapLeftBox = () => {
       <div className="resize_line" />
       <div className="resize_save2">
         <WrapLeft ref={LeftDom}>
-          <InfoItem>
-            <Label>{t('project.demandStatus')}</Label>
-            <DemandStatus pid={projectId} sid={demandId} />
-          </InfoItem>
-          <InfoItem>
+          {/* <InfoItem>
             <Label>{t('newlyAdd.demandProgress')}</Label>
             <div
               style={{ display: 'flex', alignItems: 'center' }}
@@ -232,7 +230,7 @@ const WrapLeftBox = () => {
                 {schedule}%
               </span>
             </div>
-          </InfoItem>
+          </InfoItem> */}
           <InfoItem activeState>
             <Label>{t('mine.demandInfo')}</Label>
             {demandInfo?.info ? (
@@ -296,6 +294,10 @@ const WrapLeftBox = () => {
             onChangeVisible={() => setIsDelVisible(!isDelVisible)}
             onConfirm={onDeleteConfirm}
           />
+          <InfoItem>
+            <Label>{t('project.demandStatus')}</Label>
+            <DemandStatus pid={projectId} sid={demandId} />
+          </InfoItem>
         </WrapLeft>
       </div>
     </div>
