@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Input, Menu, message, Spin } from 'antd'
+import { Checkbox, Space, Input, Menu, message, Spin, Row } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import { ShowText } from '@/components/OptionalFeld'
 
 const Warp = styled.div({
   padding: 16,
@@ -120,7 +121,6 @@ const MainWrapItem = styled.div({
   borderBottom: '1px solid #EBEDF0',
   padding: '24px 0',
   display: 'flex',
-  alignItems: 'center',
 })
 
 const ModalHeader = styled.div({
@@ -140,7 +140,7 @@ const ModalFooter = styled(Space)({
 
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
-const GroupWrap = styled.div({
+export const GroupWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   width: 'calc(100% - 200px)',
@@ -190,12 +190,28 @@ const PermissionItem = (props: ItemProps) => {
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
       <GroupWrap>
-        <Checkbox.Group
-          options={props.item.children}
-          value={keys}
-          onChange={onChange}
-          disabled={props.activeDetail?.type === 1}
-        />
+        <Checkbox.Group value={keys} onChange={onChange}>
+          {props.item.children.map((item: any) => {
+            return (
+              <Checkbox
+                key={item.label}
+                disabled={props.activeDetail?.type === 1}
+                value={item.value}
+              >
+                {/* <ShowText names={item.label} /> */}
+                <span
+                  style={{
+                    width: '150px',
+                    display: 'inline-block',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {item.label}
+                </span>
+              </Checkbox>
+            )
+          })}
+        </Checkbox.Group>
       </GroupWrap>
     </MainWrapItem>
   )

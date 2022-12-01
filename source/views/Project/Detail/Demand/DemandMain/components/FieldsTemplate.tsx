@@ -4,7 +4,7 @@
 
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider, Button } from 'antd'
+import { Checkbox, Space, Divider, Button, Row, Col } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -20,6 +20,7 @@ import {
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
 import { arrayMoveImmutable } from 'array-move'
+import { ShowText } from '@/components/OptionalFeld'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -143,6 +144,7 @@ const FieldsTemplate = (props: Props) => {
           isUpdate: props?.importState,
         })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
+
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
     const customKeys = result?.customFields?.map((k: any) => k.field)
     if (props.isExport) {
@@ -174,7 +176,10 @@ const FieldsTemplate = (props: Props) => {
     if (props?.importState === 1) {
       arr.shift()
     }
-    if (props?.importState === 2 || props.isExport) {
+    if (props?.isExport) {
+      arr.shift()
+    }
+    if (props?.importState === 2) {
       arr.shift()
       arr.shift()
     }
@@ -183,13 +188,13 @@ const FieldsTemplate = (props: Props) => {
       const newData = arrayMoveImmutable(arr, oldIndex, newIndex).filter(
         (el: any) => !!el,
       )
+
       if (props?.importState === 2) {
         setAll(['name', 'category'].concat(newData))
-      } else {
+      } else if (props?.importState === 1) {
         setAll(['id'].concat(newData))
-      }
-      if (props.isExport) {
-        setAll(['id', 'name'].concat(newData))
+      } else if (props.isExport) {
+        setAll(['name'].concat(newData))
       }
     }
   }
@@ -217,7 +222,7 @@ const FieldsTemplate = (props: Props) => {
   const getItemState = (field: string) => {
     let resultVal: boolean
     if (props.isExport) {
-      resultVal = ['name', 'id'].includes(field)
+      resultVal = ['name'].includes(field)
     } else {
       resultVal =
         props?.importState === 2
@@ -332,42 +337,48 @@ const FieldsTemplate = (props: Props) => {
           <ItemWrap>
             <LabelWrap>{t('components.basicFiled')}</LabelWrap>
             <Checkbox.Group value={checkList} onChange={onChange}>
-              <Space style={{ flexWrap: 'wrap' }}>
+              <Row gutter={[0, 10]}>
                 {fields?.baseFields?.map((item: any) => (
-                  <Checkbox
-                    disabled={getItemState(item.field)}
-                    key={item.field}
-                    value={item.field}
-                  >
-                    {item.name}
-                  </Checkbox>
+                  <Col key={item.label} span={6}>
+                    <Checkbox
+                      disabled={getItemState(item.field)}
+                      key={item.field}
+                      value={item.field}
+                    >
+                      <ShowText names={item.name} />
+                    </Checkbox>
+                  </Col>
                 ))}
-              </Space>
+              </Row>
             </Checkbox.Group>
           </ItemWrap>
           <ItemWrap>
             <LabelWrap>{t('components.personOrTime')}</LabelWrap>
             <Checkbox.Group value={checkList2} onChange={onChange2}>
-              <Space style={{ flexWrap: 'wrap' }}>
+              <Row gutter={[0, 10]}>
                 {fields?.timeAndPersonFields?.map((item: any) => (
-                  <Checkbox key={item.field} value={item.field}>
-                    {item.name}
-                  </Checkbox>
+                  <Col key={item.label} span={6}>
+                    <Checkbox key={item.field} value={item.field}>
+                      <ShowText names={item.name} />
+                    </Checkbox>
+                  </Col>
                 ))}
-              </Space>
+              </Row>
             </Checkbox.Group>
           </ItemWrap>
           {fields?.customFields?.length ? (
             <ItemWrap>
               <LabelWrap>{t('newlyAdd.customFields')}</LabelWrap>
               <Checkbox.Group value={checkList3} onChange={onChange3}>
-                <Space style={{ flexWrap: 'wrap' }}>
+                <Row gutter={[0, 10]}>
                   {fields?.customFields?.map((item: any) => (
-                    <Checkbox key={item.field} value={item.field}>
-                      {item.name}
-                    </Checkbox>
+                    <Col key={item.label} span={6}>
+                      <Checkbox key={item.field} value={item.field}>
+                        <ShowText names={item.name} />
+                      </Checkbox>
+                    </Col>
                   ))}
-                </Space>
+                </Row>
               </Checkbox.Group>
             </ItemWrap>
           ) : null}
