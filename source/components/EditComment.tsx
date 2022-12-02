@@ -12,7 +12,7 @@ import CommonModal from './CommonModal'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
 
-const Wrap = styled.div`
+const Wrap = styled.div<{ pl: string }>`
   padding: 12px;
   padding-top: 0px;
   width: 100%;
@@ -22,6 +22,12 @@ const Wrap = styled.div`
   border-top: none;
   &:focus {
     outline: none;
+    content: none;
+  }
+  &:empty:before {
+    content: '${({ pl }) => pl}';
+
+    color: gray;
   }
 `
 const arr = [
@@ -119,7 +125,7 @@ const EditComment = (props: any) => {
   }
 
   const confirm = async () => {
-    // console.log(result)
+    const inner = document.getElementById('inner')
   }
   const addAta = (value: any) => {
     const selection: any = window.getSelection()
@@ -254,6 +260,7 @@ const EditComment = (props: any) => {
             onPaste={handlePaste}
             onInput={changeTalkContent}
             contentEditable
+            pl="输入评论"
           />
         </div>
         <Form

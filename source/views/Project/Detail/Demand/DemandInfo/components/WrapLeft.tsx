@@ -139,20 +139,12 @@ const WrapLeftBox = () => {
   }
 
   const onAddInfoAttach = async (data: any) => {
-    const obj = {
-      url: data.data.url,
-      name: data.data.files.name,
-      size: data.data.files.size,
-      ext: data.data.files.suffix,
-      ctime: data.data.files.time,
-    }
-
     try {
       await addInfoDemand({
         projectId,
         demandId,
         type: 'attachment',
-        targetId: [obj],
+        targetId: data,
       })
 
       getDemandInfo({ projectId, id: demandId })
