@@ -861,6 +861,10 @@ const TableStyleBox = styled(TableWrap)<{
   isHover?: any
 }>(
   {
+    '.ant-table-expanded-row .ant-table-thead': {
+      opacity: 0,
+      position: 'absolute',
+    },
     height: '100%',
     '.ant-table, .ant-table-content,.ant-table-container': {
       height: '100%',

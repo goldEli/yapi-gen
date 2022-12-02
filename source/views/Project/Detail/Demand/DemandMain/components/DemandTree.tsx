@@ -5,7 +5,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu, Checkbox, Table } from 'antd'
+import { Pagination, message, Spin, Menu, Table, Checkbox } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -35,18 +35,6 @@ const DataWrap = styled.div({
   overflowX: 'auto',
   height: 'calc(100% - 64px)',
 })
-
-const CheckWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  minWidth: 20,
-  maxWidth: 200,
-  '.number': {
-    color: '#969799',
-    marginLeft: 8,
-  },
-})
-
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
@@ -71,7 +59,8 @@ interface TreeIconProps {
 const GetTreeIcon = (props: TreeIconProps) => {
   const [isExpended, setIsExpended] = useState(false)
   const onChangeData = async () => {
-    if (!isExpended) {
+    // 未展开并且是最顶级
+    if (!isExpended && !props.row.parentId) {
       await props.onGetChildList(props.row?.id)
     }
     setIsExpended(!isExpended)
@@ -105,9 +94,11 @@ const DemandTree = (props: Props) => {
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-  const [checkNumber, setCheckNumber] = useState<any>('')
   const [data, setData] = useState<any>({})
+  // 展开的id集合
   const [expandedRowKeys, setExpandedRowKeys] = useState<any>([])
+  // 勾选的id集合
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -198,15 +189,18 @@ const DemandTree = (props: Props) => {
     props.onDelete(item)
   }
 
+  // 点击获取子需求
   const onGetChildList = async (id: any) => {
-    const list = await getDemandList({
+    const dataChildren = await getDemandList({
       tree: 1,
       ...props.filterParams,
-      all: true,
+      all: false,
       parentId: id,
+      // 标识子需求
+      isChildren: true,
     })
     const currentItem: any = data?.list?.filter((i: any) => i.id === id)[0]
-    currentItem.treeChild = list
+    currentItem.treeChild = dataChildren?.list
   }
 
   // 返回点击展开子需求图标
@@ -227,6 +221,8 @@ const DemandTree = (props: Props) => {
       />
     )
   }
+
+  // 返回子需求
 
   const columns = useDynamicColumns({
     projectId,
@@ -250,11 +246,6 @@ const DemandTree = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
-
-  // 全选列表
-  const onChangeAll = () => {
-    //
-  }
 
   const menu = (item: any) => {
     let menuItems = [
@@ -313,35 +304,18 @@ const DemandTree = (props: Props) => {
           )
         },
       },
-      {
-        title: (
-          <CheckWrap>
-            <Checkbox onChange={onChangeAll} />
-            <span className="number">{checkNumber}</span>
-          </CheckWrap>
-        ),
-        render: (text: any, record: any) => {
-          return (
-            <CheckWrap>
-              <Checkbox />
-              <span
-                className="number"
-                style={{
-                  visibility: 'hidden',
-                }}
-              >
-                {checkNumber}
-              </span>
-            </CheckWrap>
-          )
-        },
-      },
+      Table.SELECTION_COLUMN,
     ]
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns, checkNumber])
+  }, [titleList, titleList2, titleList3, columns])
 
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
+
+  useEffect(() => {
+    setData(props.data)
+    setExpandedRowKeys([])
+  }, [props.data?.list])
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -355,16 +329,38 @@ const DemandTree = (props: Props) => {
         setTableWrapHeight(tableBody.clientHeight)
       }
     }
-    setData(props.data)
-  }, [props.data?.list])
+  }, [data?.list])
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  // 需求勾选
+  const onSelectChange = (record: any, selected: any) => {
+    const resultKeys = selected
+      ? [...selectedRowKeys, ...[record.id], ...(record?.allChildrenIds || [])]
+      : selectedRowKeys?.filter((i: any) => i !== record.id)
+    setSelectedRowKeys([...new Set(resultKeys)])
+  }
+
+  // 全选
+  const onSelectAll = (selected: any, selectedRows: any) => {
+    if (selected) {
+      let childKeys: any = []
+      selectedRows?.forEach((element: any) => {
+        childKeys = [...childKeys, ...element.allChildrenIds]
+      })
+      setSelectedRowKeys([
+        ...(selectedRows?.map((i: any) => i.id) || []),
+        ...childKeys,
+      ])
+    } else {
+      setSelectedRowKeys([])
+    }
+  }
+
   const expendedRow = (record: any) => {
     return (
       <TableStyleBox
-        showHeader={false}
         rowKey="id"
         columns={selectColum}
         dataSource={record.treeChild}
@@ -377,6 +373,10 @@ const DemandTree = (props: Props) => {
           expandedRowRender: row => expendedRow(row),
           showExpandColumn: false,
           expandedRowKeys,
+        }}
+        rowSelection={{
+          selectedRowKeys,
+          onSelect: (row, selected) => onSelectChange(row, selected),
         }}
       />
     )
@@ -391,7 +391,7 @@ const DemandTree = (props: Props) => {
               <TableStyleBox
                 rowKey="id"
                 columns={selectColum}
-                dataSource={data?.list}
+                dataSource={props.data?.list}
                 pagination={false}
                 scroll={{
                   x: 'max-content',
@@ -403,6 +403,12 @@ const DemandTree = (props: Props) => {
                   expandedRowRender: record => expendedRow(record),
                   showExpandColumn: false,
                   expandedRowKeys: expandedRowKeys,
+                }}
+                rowSelection={{
+                  selectedRowKeys,
+                  onSelect: (record, selected) =>
+                    onSelectChange(record, selected),
+                  onSelectAll: onSelectAll,
                 }}
               />
             ) : (

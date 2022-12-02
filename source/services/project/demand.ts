@@ -85,6 +85,43 @@ export const getDemandList: any = async (params: any) => {
     order: params?.order,
   })
 
+  const getListItem = (array: any) => {
+    return array?.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      demand: i.child_story_count,
+      priority: i.priority,
+      iteration: i.iterate_name,
+      status: i.status,
+      dealName: i.users_name || '--',
+      time: i.created_at,
+      expectedStart: i.expected_start_at,
+      expectedEnd: i.expected_end_at,
+      info: i.info,
+      userIds: i.user_id,
+      iterateId: i.iterate_id,
+      parentId: i.parent_id,
+      finishTime: i.finish_at,
+      updatedTime: i.updated_at,
+      usersCopySendName: i.users_copysend_name,
+      userName: i.user_name,
+      tag: i.tag,
+      isExamine: i.verify_lock === 1,
+      category: i.category,
+      class: i.class,
+      schedule: i.schedule,
+      ...i.custom_field,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      project_id: i.project_id,
+      usersNameIds: i.users_name_ids,
+      usersCopySendIds: i.users_copysend_name_ids,
+      allChildrenCount: i.all_child_story_count,
+      allChildrenIds: i.all_child_ids,
+      treeChild: getListItem(i.children) || null,
+    }))
+  }
+
   if (params.all && params.panel) {
     return {
       list: response.data.map((k: any) => ({
@@ -123,6 +160,10 @@ export const getDemandList: any = async (params: any) => {
       categoryRemark: i.category_remark,
       isExamine: i.verify_lock === 1,
     }))
+  } else if (params?.isChildren) {
+    return {
+      list: getListItem(response.data),
+    }
   } else {
     return {
       currentPage: params.page,
@@ -159,8 +200,8 @@ export const getDemandList: any = async (params: any) => {
         usersNameIds: i.users_name_ids,
         usersCopySendIds: i.users_copysend_name_ids,
         allChildrenCount: i.all_child_story_count,
-        allChildrenIds: i.all_child_ids,
-        treeChild: i.children || null,
+        allChildrenIds: i.all_child_ids?.map((k: any) => Number(k)),
+        treeChild: null,
       })),
     }
   }

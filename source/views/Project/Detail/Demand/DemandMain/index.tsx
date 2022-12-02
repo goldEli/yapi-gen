@@ -71,7 +71,7 @@ const DemandMain = (props: Props) => {
       setIsSpinning(true)
     }
 
-    let params = {}
+    let params: any = {}
     if (state === 1) {
       params = {
         projectId,
@@ -124,6 +124,9 @@ const DemandMain = (props: Props) => {
         custom_field: searchParamsObj?.custom_field,
         class_id: key,
       }
+    }
+    if (state === 2) {
+      params.tree = 1
     }
     setFilterParams(params)
     const result = await getDemandList(params)
@@ -224,13 +227,13 @@ const DemandMain = (props: Props) => {
           onChangeVisible={() => setIsVisible(!isVisible)}
           onConfirm={onDeleteConfirm}
         />
-        {isShowLeft ? (
+        {isShowLeft && (
           <WrapLeft
             ref={myTreeComponent}
             projectId={projectId}
             isShowLeft={isShowLeft}
           />
-        ) : null}
+        )}
         <Right isShowLeft={isShowLeft}>
           <Operation
             isGrid={isGrid}
