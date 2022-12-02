@@ -28,6 +28,8 @@ import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import EditComment from '@/components/EditComment'
+import { useDispatch } from '../../../../../../../store'
+import { changeId } from '../../../../../../../store/modalState'
 
 const WrapRight = styled.div({
   minWidth: '200px',
@@ -213,6 +215,7 @@ const SetHead = styled.div`
 
 const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -652,7 +655,10 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               {t('new_p1.a1')}
             </span>
             <AddWrap
-              onClick={() => setVisibleEdit(true)}
+              onClick={() => {
+                setVisibleEdit(true)
+                dispatch(changeId(true))
+              }}
               style={{
                 marginRight: '30px',
               }}

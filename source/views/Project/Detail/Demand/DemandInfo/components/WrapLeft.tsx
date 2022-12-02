@@ -27,6 +27,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
 import { off } from 'process'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useSelector } from '../../../../../../../store'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -90,7 +91,7 @@ const WrapLeftBox = () => {
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
-
+  const { value: modalState } = useSelector(store => store.modal)
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({
@@ -122,29 +123,26 @@ const WrapLeftBox = () => {
     }
   }
 
-  const Children = (item: any) => {
-    return (
-      <ProgressWrapUpload
-        status={uploadStatus}
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
-      />
-    )
-  }
-
   const onBottom = () => {
     const dom: any = LeftDom?.current
     dom.scrollTop = dom.scrollHeight
   }
 
   const onAddInfoAttach = async (data: any) => {
+    const obj = {
+      url: data.data.url,
+      name: data.data.files.name,
+      size: data.data.files.size,
+      ext: data.data.files.suffix,
+      ctime: data.data.files.time,
+    }
+
     try {
       await addInfoDemand({
         projectId,
         demandId,
         type: 'attachment',
-        targetId: data,
+        targetId: [obj],
       })
 
       getDemandInfo({ projectId, id: demandId })
