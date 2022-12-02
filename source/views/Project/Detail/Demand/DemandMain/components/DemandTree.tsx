@@ -349,18 +349,36 @@ const DemandTree = (props: Props) => {
       selectedRows?.forEach((element: any) => {
         childKeys = [...childKeys, ...element.allChildrenIds]
       })
-      setSelectedRowKeys([
+      const allKeys = [
         ...(selectedRows?.map((i: any) => i.id) || []),
         ...childKeys,
-      ])
+      ]
+      setSelectedRowKeys(allKeys)
+
+      //   var redClassElements = document.getElementsByClassName(
+      //     'ant-checkbox-wrapper',
+      //   )
+      //   for (var i = 0; i < redClassElements.length; i++) {
+      //     var div2 = document.createElement('div')
+      //     div2.innerText = String(allKeys.length)
+      //     div2.id = 'tagLength'
+      //     redClassElements[i].appendChild(div2)
+      //   }
     } else {
+      //   var redClassElements = document.getElementsByClassName(
+      //     'ant-checkbox-wrapper',
+      //   )
       setSelectedRowKeys([])
+      //   for (var i = 0; i < redClassElements.length; i++) {
+      //     redClassElements[i].removeChild('#tagLength')
+      //   }
     }
   }
 
   const expendedRow = (record: any) => {
     return (
       <TableStyleBox
+        showHeader={false}
         rowKey="id"
         columns={selectColum}
         dataSource={record.treeChild}
