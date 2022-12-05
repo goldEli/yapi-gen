@@ -202,7 +202,7 @@ export const getDemandList: any = async (params: any) => {
         usersNameIds: i.users_name_ids,
         usersCopySendIds: i.users_copysend_name_ids,
         allChildrenCount: i.all_child_story_count,
-        allChildrenIds: i.all_child_ids?.map((k: any) => Number(k)),
+        allChildrenIds: i.all_child_ids,
         treeChild: null,
       })),
     }
@@ -561,4 +561,21 @@ export const getExportExcel: any = async (params: any) => {
     { responseType: 'blob' },
   )
   return response
+}
+
+export const batchDelete: any = async (params: any) => {
+  await http.delete<any>('batchDelete', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+    is_delete_childs: params.isDeleteChild,
+  })
+}
+
+export const batchEdit: any = async (params: any) => {
+  await http.put<any>('batchEdit', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+    type: params.type,
+    target: params.target,
+  })
 }

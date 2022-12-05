@@ -5,7 +5,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu, Table } from 'antd'
+import { Pagination, message, Spin, Menu, Table, Checkbox } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -104,6 +104,7 @@ const DemandTree = (props: Props) => {
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const [isVisible, setIsVisible] = useState(false)
+  // 创建子需求数据
   const [isCreateChild, setIsCreateChild] = useState<any>({})
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
@@ -193,6 +194,24 @@ const DemandTree = (props: Props) => {
   const onPropsChangeDelete = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
+  }
+
+  // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
+  const onOperationCheckbox = (type: any, keys?: any) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (type === 'add' && keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
+    }
   }
 
   // 点击获取子需求
@@ -367,7 +386,7 @@ const DemandTree = (props: Props) => {
       Table.SELECTION_COLUMN,
     ]
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns])
+  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -394,29 +413,11 @@ const DemandTree = (props: Props) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
-  // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
-  const onOperationCheckbox = (type: any, keys?: any) => {
-    const redClassElements = document.getElementsByClassName(
-      'ant-checkbox-wrapper',
-    )
-    for (const i of redClassElements) {
-      if (i.getElementsByClassName('tagLength')[0]) {
-        i.removeChild(i.getElementsByClassName('tagLength')[0])
-      }
-      if (type === 'add' && keys?.length > 0) {
-        const div2 = document.createElement('div')
-        div2.innerText = String(keys.length)
-        div2.className = 'tagLength'
-        i.appendChild(div2)
-      }
-    }
-  }
-
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
     const resultKeys = selected
-      ? [...selectedRowKeys, ...[record.id], ...(record?.allChildrenIds || [])]
-      : selectedRowKeys?.filter((i: any) => i !== record.id)
+      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
+      : selectedRowKeys?.filter((i: any) => i.id !== record.id)
     setSelectedRowKeys([...new Set(resultKeys)])
     onOperationCheckbox('add', [...new Set(resultKeys)])
   }
@@ -426,7 +427,7 @@ const DemandTree = (props: Props) => {
     if (selected) {
       let childKeys: any = []
       data?.list?.forEach((element: any) => {
-        childKeys = [...childKeys, ...[element.id], ...element.allChildrenIds]
+        childKeys = [...childKeys, ...[element], ...element.allChildrenIds]
       })
       setSelectedRowKeys([...new Set(childKeys)])
       onOperationCheckbox('add', [...new Set(childKeys)])
@@ -440,7 +441,6 @@ const DemandTree = (props: Props) => {
   const expendedRow = (record: any) => {
     return (
       <TableStyleBox
-        showHeader={false}
         rowKey="id"
         columns={selectColum}
         dataSource={record.treeChild}
@@ -455,7 +455,7 @@ const DemandTree = (props: Props) => {
           expandedRowKeys,
         }}
         rowSelection={{
-          selectedRowKeys,
+          selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
           onSelect: (row, selected) => onSelectChange(row, selected),
         }}
       />
@@ -502,7 +502,7 @@ const DemandTree = (props: Props) => {
                   expandedRowKeys: expandedRowKeys,
                 }}
                 rowSelection={{
-                  selectedRowKeys,
+                  selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
                   onSelect: (record, selected) =>
                     onSelectChange(record, selected),
                   onSelectAll: onSelectAll,
@@ -515,6 +515,8 @@ const DemandTree = (props: Props) => {
         <FloatBatch
           isVisible={selectedRowKeys.length}
           onClose={() => onSelectAll(false)}
+          selectRows={selectedRowKeys}
+          onUpdate={props.onUpdate}
         />
       </DataWrap>
 

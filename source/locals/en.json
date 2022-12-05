@@ -57,7 +57,13 @@
     "checked": "已选中({{count}})",
     "batchEdit": "批量编辑",
     "batchDelete": "批量删除",
-    "batchCopyLink": "批量复制链接"
+    "batchCopyLink": "批量复制链接",
+    "deleteTitle": "批量删除(已选中{{count}}项)",
+    "editTitle": "批量编辑(已选中{{count}}项)",
+    "deleteToast": "勾选的需求将被删除，确认删除吗？",
+    "deleteChildren": "同时删除对应子需求",
+    "chooseUpdate": "选择更新属性",
+    "updateAfter": "更新后属性值"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",

@@ -10,10 +10,11 @@ import { CloseWrap } from './StyleCommon'
 
 interface Props {
   isVisible: boolean
-  text: string
+  text?: string
   onChangeVisible(): void
   onConfirm(): void
   title?: string
+  children?: any
 }
 
 const ModalHeader = styled.div({
@@ -71,7 +72,7 @@ const DeleteConfirm = (props: Props) => {
           <IconFont style={{ fontSize: 16 }} type="close" />
         </CloseWrap>
       </ModalHeader>
-      <ModalContent>{props.text}</ModalContent>
+      <ModalContent>{props.children ?? props.text}</ModalContent>
       <ModalFooter size={16}>
         <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
         <Button type="primary" onClick={props.onConfirm}>

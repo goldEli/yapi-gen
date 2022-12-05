@@ -861,6 +861,9 @@ const TableStyleBox = styled(TableWrap)<{
   isHover?: any
 }>(
   {
+    '.ant-table-tbody .tagLength': {
+      visibility: 'hidden',
+    },
     '.tagLength': {
       marginLeft: 8,
       fontSize: 12,
@@ -871,6 +874,7 @@ const TableStyleBox = styled(TableWrap)<{
     },
     '.ant-table-selection-column': {
       textAlign: 'left',
+      width: 70,
     },
     '.ant-table-expanded-row .ant-table-thead': {
       opacity: 0,
