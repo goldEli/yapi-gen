@@ -4,7 +4,7 @@
 
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider, Button, Row, Col } from 'antd'
+import { Checkbox, Space, Divider, Button, Row, Col, Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -21,13 +21,18 @@ import {
 } from 'react-sortable-hoc'
 import { arrayMoveImmutable } from 'array-move'
 import { ShowText } from '@/components/OptionalFeld'
+import { css } from '@emotion/css'
 
 const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 350,
 })
-
+const text = css`
+  color: rgba(150, 151, 153, 1);
+  font-size: 12px;
+  /* margin-bottom: 8px; */
+`
 const LeftWrap = styled.div({
   height: 350,
   width: 'calc(100% - 227px)',
@@ -326,62 +331,80 @@ const FieldsTemplate = (props: Props) => {
     >
       <Wrap>
         <LeftWrap>
-          <Checkbox
-            checked={checkAll}
-            indeterminate={indeterminate}
-            style={{ marginBottom: 24, width: 'fit-content' }}
-            onClick={onAllChecked}
-          >
-            {t('newlyAdd.allChecked')}
-          </Checkbox>
-          <ItemWrap>
-            <LabelWrap>{t('components.basicFiled')}</LabelWrap>
-            <Checkbox.Group value={checkList} onChange={onChange}>
-              <Row gutter={[0, 10]}>
-                {fields?.baseFields?.map((item: any) => (
-                  <Col key={item.label} span={6}>
-                    <Checkbox
-                      disabled={getItemState(item.field)}
-                      key={item.field}
-                      value={item.field}
-                    >
-                      <ShowText names={item.name} />
-                    </Checkbox>
-                  </Col>
-                ))}
-              </Row>
-            </Checkbox.Group>
-          </ItemWrap>
-          <ItemWrap>
-            <LabelWrap>{t('components.personOrTime')}</LabelWrap>
-            <Checkbox.Group value={checkList2} onChange={onChange2}>
-              <Row gutter={[0, 10]}>
-                {fields?.timeAndPersonFields?.map((item: any) => (
-                  <Col key={item.label} span={6}>
-                    <Checkbox key={item.field} value={item.field}>
-                      <ShowText names={item.name} />
-                    </Checkbox>
-                  </Col>
-                ))}
-              </Row>
-            </Checkbox.Group>
-          </ItemWrap>
-          {fields?.customFields?.length ? (
-            <ItemWrap>
-              <LabelWrap>{t('newlyAdd.customFields')}</LabelWrap>
-              <Checkbox.Group value={checkList3} onChange={onChange3}>
-                <Row gutter={[0, 10]}>
-                  {fields?.customFields?.map((item: any) => (
-                    <Col key={item.label} span={6}>
-                      <Checkbox key={item.field} value={item.field}>
-                        <ShowText names={item.name} />
-                      </Checkbox>
-                    </Col>
-                  ))}
-                </Row>
-              </Checkbox.Group>
-            </ItemWrap>
-          ) : null}
+          <div style={{ marginBottom: 24, width: 'fit-content' }}>
+            <Checkbox
+              checked={checkAll}
+              indeterminate={indeterminate}
+              onClick={onAllChecked}
+            >
+              {t('newlyAdd.allChecked')}
+            </Checkbox>
+          </div>
+
+          <Collapse defaultActiveKey={['1']} ghost>
+            <Collapse.Panel
+              header={<div className={text}>{t('components.basicFiled')}</div>}
+              key="1"
+            >
+              <ItemWrap>
+                <Checkbox.Group value={checkList} onChange={onChange}>
+                  <Row gutter={[0, 10]}>
+                    {fields?.baseFields?.map((item: any) => (
+                      <Col key={item.label} span={6}>
+                        <Checkbox
+                          disabled={getItemState(item.field)}
+                          key={item.field}
+                          value={item.field}
+                        >
+                          <ShowText names={item.name} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              </ItemWrap>
+            </Collapse.Panel>
+            <Collapse.Panel
+              header={
+                <div className={text}>{t('components.personOrTime')}</div>
+              }
+              key="2"
+            >
+              <ItemWrap>
+                <Checkbox.Group value={checkList2} onChange={onChange2}>
+                  <Row gutter={[0, 10]}>
+                    {fields?.timeAndPersonFields?.map((item: any) => (
+                      <Col key={item.label} span={6}>
+                        <Checkbox key={item.field} value={item.field}>
+                          <ShowText names={item.name} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              </ItemWrap>
+            </Collapse.Panel>
+            <Collapse.Panel
+              header={<div className={text}>{t('newlyAdd.customFields')}</div>}
+              key="3"
+            >
+              {fields?.customFields?.length ? (
+                <ItemWrap>
+                  <Checkbox.Group value={checkList3} onChange={onChange3}>
+                    <Row gutter={[0, 10]}>
+                      {fields?.customFields?.map((item: any) => (
+                        <Col key={item.label} span={6}>
+                          <Checkbox key={item.field} value={item.field}>
+                            <ShowText names={item.name} />
+                          </Checkbox>
+                        </Col>
+                      ))}
+                    </Row>
+                  </Checkbox.Group>
+                </ItemWrap>
+              ) : null}
+            </Collapse.Panel>
+          </Collapse>
         </LeftWrap>
         <Divider
           type="vertical"
