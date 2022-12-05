@@ -1,5 +1,6 @@
 // 编辑项目信息
 
+/* eslint-disable no-undefined */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Input, Select, message } from 'antd'
@@ -19,7 +20,7 @@ interface Props {
 const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const { addProject, updateProject } = useModel('project')
+  const { addProject, updateProject, selectGroupList } = useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   const onConfirm = async () => {
@@ -128,7 +129,14 @@ const EditProject = (props: Props) => {
           </Select>
         </Form.Item>
         <Form.Item label={t('version2.projectGroup')} name="groupIds">
-          <Select placeholder={t('common.pleaseSelect')} mode="multiple" />
+          <Select
+            placeholder={t('common.pleaseSelect')}
+            mode="multiple"
+            options={selectGroupList}
+            showArrow
+            showSearch
+            allowClear
+          />
         </Form.Item>
       </Form>
     </CommonModal>

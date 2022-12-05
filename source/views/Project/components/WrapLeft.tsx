@@ -95,6 +95,7 @@ const WrapLeftBox = (props: Props) => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
+    setSelectGroupList,
   } = useModel('project')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -109,6 +110,9 @@ const WrapLeftBox = (props: Props) => {
   const getGroupData = async () => {
     const result = await getGroupList()
     setGroupList(result)
+    setSelectGroupList(
+      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
+    )
   }
 
   useEffect(() => {
@@ -133,6 +137,7 @@ const WrapLeftBox = (props: Props) => {
     setIsVisible(false)
     setOperationObj({})
     form.resetFields()
+    getGroupData()
   }
 
   // 确认删除分组

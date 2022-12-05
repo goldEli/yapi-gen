@@ -33,6 +33,7 @@ export default () => {
   const [isChangeProject, setIsChangeProject] = useState(0)
   // 筛选需求列表参数，用于回填创建需求弹窗
   const [filterParamsModal, setFilterParamsModal] = useState<any>({})
+  const [selectGroupList, setSelectGroupList] = useState<any>([])
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -243,5 +244,7 @@ export default () => {
     priorityList,
     setFilterParamsModal,
     filterParamsModal,
+    setSelectGroupList,
+    selectGroupList,
   }
 }

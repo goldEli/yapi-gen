@@ -74,7 +74,7 @@ const BatchModal = (props: Props) => {
           onConfirm={onConfirmDelete}
         >
           <div style={{ marginBottom: 12 }}>{t('version2.deleteToast')}</div>
-          <Checkbox onChange={e => setHaveChildren(e.target.value)}>
+          <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
             {t('version2.deleteChildren')}
           </Checkbox>
         </DeleteConfirm>
