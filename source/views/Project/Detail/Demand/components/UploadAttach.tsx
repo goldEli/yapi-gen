@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useModel } from '@/models'
 import { message, Progress, Upload } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +15,7 @@ import type { Task } from 'cos-js-sdk-v5'
 import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
 import Viewer from 'react-viewer'
-import myImg from '/public/er.png'
+import myImg from '/er.png'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -151,6 +151,8 @@ const progressStatusMap: { [key: string]: 'success' | 'exception' | 'active' } =
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
 const UploadAttach = (props: any) => {
+  const scopeRef = useRef(String(Math.random()))
+
   const { userInfo } = useModel('user')
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [pictureList, setPictureList] = useState({
@@ -264,8 +266,13 @@ const UploadAttach = (props: any) => {
           .join('.')
       }
 
-      const result: any = await uploadFile(file, file.name, 'file', newName)
-
+      const result: any = await uploadFile(
+        file,
+        file.name,
+        'file',
+        newName,
+        scopeRef.current,
+      )
       setFileList((tasks: any) => [result].concat(...tasks))
     }
   }
@@ -322,8 +329,8 @@ const UploadAttach = (props: any) => {
     )
   }, [])
 
-  const onTaskOver = useCallback((data: { id: string; url: string }) => {
-    if (props.canUpdate) {
+  const onTaskOver = (data: any) => {
+    if (props.canUpdate && data?.files.scope === scopeRef.current) {
       props.add({ data })
     }
     setFileList((currentTasks: any[]) =>
@@ -340,7 +347,7 @@ const UploadAttach = (props: any) => {
         }
       }),
     )
-  }, [])
+  }
 
   const setDefaultList = () => {
     if (props.defaultList?.length >= 1) {
@@ -378,6 +385,7 @@ const UploadAttach = (props: any) => {
   useEffect(() => {
     cos.on('list-update', onTasksUpdate)
     cos.on('task-over', onTaskOver)
+
     return () => {
       cos.off('list-update', onTasksUpdate)
       cos.off('task-over', onTaskOver)

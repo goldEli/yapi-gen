@@ -1,4 +1,11 @@
 {
+  "new_p1": {
+    "a1": "comment ",
+    "a2": "Add comment ",
+    "a3": "Demand flow ",
+    "a4": " Write a review ",
+    "a5": " Enter a comment"
+  },
   "title": {
     "text": "File format not supported ",
     "general": "general",

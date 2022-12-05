@@ -1,3 +1,4 @@
+/* eslint-disable no-duplicate-imports */
 // 公用富文本
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -18,6 +19,12 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'
+import type { SlateElement } from '@wangeditor/editor'
+
+type VideoElement = SlateElement & {
+  src: string
+  poster?: string
+}
 
 interface Props {
   value?: string
@@ -129,6 +136,17 @@ const EditorBox = (props: Props) => {
           )
 
           insert(uploadedFile.url, '', uploadedFile.url)
+        },
+      },
+      uploadVideo: {
+        async customUpload(file: File, insertFn: any) {
+          const uploadedFile = await uploadFileByTask(
+            file,
+            userInfo?.username,
+            `richEditorFiles_${new Date().getTime()}`,
+          )
+
+          insertFn(uploadedFile.url, '', uploadedFile.url)
         },
       },
       insertLink: {

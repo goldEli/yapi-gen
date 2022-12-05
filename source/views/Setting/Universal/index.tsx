@@ -1,9 +1,9 @@
+import { getWater } from '@/services/setting'
 import styled from '@emotion/styled'
 import { Radio } from 'antd'
-import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '../../../../store'
-import { changeId } from '../../../../store/waterState'
+import { changeWaterStatus } from '../../../../store/waterState'
 import { BottomTitle } from '../CompanyInfo'
 
 const Header = styled.div({
@@ -30,11 +30,13 @@ const Index = () => {
   const [t] = useTranslation()
   const { value: valueId } = useSelector(store => store.water)
   const dispatch = useDispatch()
-  const [disabled, setDisabled] = useState(valueId)
-  const onChange = (e: any) => {
-    setDisabled(e.target.value)
-    dispatch(changeId(e.target.value))
+
+  const onChange = async (e: any) => {
+    const res = await getWater()
+
+    dispatch(changeWaterStatus({ id: res.id, status: e.target.value }))
   }
+
   return (
     <div style={{ height: '100%' }}>
       <Header>
@@ -77,7 +79,7 @@ const Index = () => {
               marginTop: '17px',
             }}
           >
-            <Radio.Group onChange={onChange} value={disabled}>
+            <Radio.Group onChange={onChange} value={valueId}>
               <Radio value={1}>{t('v2_1_1.open')}</Radio>
               <Radio value={2}>{t('v2_1_1.close')}</Radio>
             </Radio.Group>

@@ -6,8 +6,8 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useMemo, useState } from 'react'
-import { Checkbox, Col, Divider, Row, Space, Tooltip } from 'antd'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Checkbox, Col, Collapse, Divider, Row, Space, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -27,7 +27,7 @@ import { arrayMoveImmutable } from 'array-move'
 const text = css`
   color: rgba(150, 151, 153, 1);
   font-size: 12px;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 `
 const CheckedItem = styled.div({
   fontSize: '14px',
@@ -112,10 +112,21 @@ const SortItemLi = sortableElement<any>((props: any) => (
   <div helperClass="row-dragging" {...props} />
 ))
 
-const ShowText = (props: any) => {
+export const ShowText = (props: any) => {
+  const [show, setShow] = useState(false)
+  const ele = useRef<any>(null)
+  const checkWidth = () => {
+    setShow(ele.current.scrollWidth > ele.current.offsetWidth)
+  }
+
+  useEffect(() => {
+    checkWidth()
+  }, [])
+
   return (
-    <Tooltip placement="top" title={props.names}>
+    <Tooltip placement="top" title={show ? props.names : ''}>
       <span
+        ref={ele}
         style={{
           whiteSpace: 'nowrap',
           width: '84px',
@@ -231,55 +242,69 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     >
       <Wrap>
         <Left>
-          <ItemWrap>
-            <div className={text}>{t('components.basicFiled')}</div>
-            <CheckboxGroup value={checkList} onChange={onChange}>
-              <Row gutter={[0, 10]}>
-                {plainOptions.map(item => (
-                  <Col key={item.label} span={6}>
-                    <Checkbox
-                      disabled={item.value === 'name'}
-                      value={item.value}
-                    >
-                      <ShowText names={item.labelTxt} />
-                    </Checkbox>
-                  </Col>
-                ))}
-              </Row>
-            </CheckboxGroup>
-          </ItemWrap>
-          <ItemWrap>
-            <div className={text}>{t('components.personOrTime')}</div>
-            <CheckboxGroup value={checkList2} onChange={onChange2}>
-              <Row gutter={[0, 10]}>
-                {/* <Space style={{ flexWrap: 'wrap' }}> */}
-                {plainOptions2.map(item => (
-                  <Col key={item.label} span={6}>
-                    <Checkbox value={item.value}>
-                      <ShowText names={item.labelTxt} />
-                    </Checkbox>
-                  </Col>
-                ))}
-                {/* </Space> */}
-              </Row>
-            </CheckboxGroup>
-          </ItemWrap>
-          {plainOptions3?.length > 0 && (
-            <ItemWrap>
-              <div className={text}>{t('newlyAdd.customFields')}</div>
-              <CheckboxGroup value={checkList3} onChange={onChange3}>
-                <Row gutter={[0, 10]}>
-                  {plainOptions3?.map(item => (
-                    <Col key={item.label} span={6}>
-                      <Checkbox value={item.value}>
-                        <ShowText names={item.label} />
-                      </Checkbox>
-                    </Col>
-                  ))}
-                </Row>
-              </CheckboxGroup>
-            </ItemWrap>
-          )}
+          <Collapse defaultActiveKey={['1']} ghost>
+            <Collapse.Panel
+              header={<div className={text}>{t('components.basicFiled')}</div>}
+              key="1"
+            >
+              <ItemWrap>
+                <CheckboxGroup value={checkList} onChange={onChange}>
+                  <Row gutter={[0, 10]}>
+                    {plainOptions.map(item => (
+                      <Col key={item.labelTxt} span={6}>
+                        <Checkbox
+                          disabled={item.value === 'name'}
+                          value={item.value}
+                        >
+                          <ShowText names={item.labelTxt} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </CheckboxGroup>
+              </ItemWrap>
+            </Collapse.Panel>
+            <Collapse.Panel
+              header={
+                <div className={text}>{t('components.personOrTime')}</div>
+              }
+              key="2"
+            >
+              <ItemWrap>
+                <CheckboxGroup value={checkList2} onChange={onChange2}>
+                  <Row gutter={[0, 10]}>
+                    {plainOptions2.map(item => (
+                      <Col key={item.labelTxt} span={6}>
+                        <Checkbox value={item.value}>
+                          <ShowText names={item.labelTxt} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </CheckboxGroup>
+              </ItemWrap>
+            </Collapse.Panel>
+            <Collapse.Panel
+              header={<div className={text}>{t('newlyAdd.customFields')}</div>}
+              key="3"
+            >
+              {plainOptions3?.length > 0 && (
+                <ItemWrap>
+                  <CheckboxGroup value={checkList3} onChange={onChange3}>
+                    <Row gutter={[0, 10]}>
+                      {plainOptions3?.map(item => (
+                        <Col key={item.label} span={6}>
+                          <Checkbox value={item.value}>
+                            <ShowText names={item.label} />
+                          </Checkbox>
+                        </Col>
+                      ))}
+                    </Row>
+                  </CheckboxGroup>
+                </ItemWrap>
+              )}
+            </Collapse.Panel>
+          </Collapse>
         </Left>
         <Divider
           type="vertical"

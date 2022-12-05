@@ -27,6 +27,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
 import { off } from 'process'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useSelector } from '../../../../../../../store'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -90,7 +91,7 @@ const WrapLeftBox = () => {
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
-
+  const { value: modalState } = useSelector(store => store.modal)
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({
@@ -120,17 +121,6 @@ const WrapLeftBox = () => {
         //
       }
     }
-  }
-
-  const Children = (item: any) => {
-    return (
-      <ProgressWrapUpload
-        status={uploadStatus}
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
-      />
-    )
   }
 
   const onBottom = () => {
@@ -231,7 +221,12 @@ const WrapLeftBox = () => {
               </span>
             </div>
           </InfoItem> */}
-          <InfoItem activeState>
+          <InfoItem
+            style={{
+              marginTop: '0px',
+            }}
+            activeState
+          >
             <Label>{t('mine.demandInfo')}</Label>
             {demandInfo?.info ? (
               <EditorInfoReview info={demandInfo?.info} />
@@ -274,12 +269,20 @@ const WrapLeftBox = () => {
                     (i: any) => i.name === '附件上传',
                   ).length > 0 ? (
                     <AddWrap
+                      hasColor
                       style={{
                         marginBottom: '10px',
+                        color: '#2877FF',
+                        // paddingRight: '0px',
                       }}
                     >
-                      <IconFont type="plus" />
-                      <div>{t('common.add23')}</div>
+                      <IconFont
+                        style={{
+                          color: '#2877FF',
+                        }}
+                        type="plus"
+                      />
+                      <div>{t('p2.addAdjunct')}</div>
                     </AddWrap>
                   ) : (
                     (null as any)
@@ -295,7 +298,7 @@ const WrapLeftBox = () => {
             onConfirm={onDeleteConfirm}
           />
           <InfoItem>
-            <Label>{t('project.demandStatus')}</Label>
+            <Label>{t('new_p1.a3')}</Label>
             <DemandStatus pid={projectId} sid={demandId} />
           </InfoItem>
         </WrapLeft>

@@ -12,7 +12,7 @@ const InfoItem = styled.div({
   fontSize: 12,
   fontWeight: 400,
   span: {
-    color: '#646566',
+    color: '#969799',
     display: 'inline-block',
     minWidth: 80,
   },

@@ -244,6 +244,7 @@ export const getCommentList: any = async (params: any) => {
     page: params.page,
     pagesize: params.pageSize,
   })
+
   return {
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -253,6 +254,7 @@ export const getCommentList: any = async (params: any) => {
       createdTime: i.created_at,
       statusContent: i.status_content,
       userId: i.user_id,
+      attachment: i.app_attachment,
     })),
   }
 }
@@ -262,6 +264,7 @@ export const addComment: any = async (params: any) => {
     project_id: params.projectId,
     story_id: params.demandId,
     content: params.content,
+    attachment: params.attachment,
   })
 }
 

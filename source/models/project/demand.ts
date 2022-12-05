@@ -41,6 +41,10 @@ export default () => {
 
   const getExportFields = async (params: any) => {
     const result = await services.demand.getExportFields(params)
+    const temp = result.baseFields[0]
+    result.baseFields[0] = result.baseFields[1]
+    result.baseFields[1] = temp
+
     return result
   }
 

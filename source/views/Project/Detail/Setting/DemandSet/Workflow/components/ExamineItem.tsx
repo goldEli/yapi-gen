@@ -138,29 +138,34 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
       <PersonWrap>
         {props?.options
           ?.filter((k: any) => k.name.includes(value))
-          ?.map((i: any) => (
-            <PersonItemWrap key={i.id} onClick={() => props?.onChangeValue(i)}>
-              {i.avatar ? (
-                <img
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 16,
-                    marginRight: 8,
-                  }}
-                  src={i?.avatar}
-                  alt=""
-                />
-              ) : (
-                <NameWrap style={{ margin: '0 8px 0 0' }}>
-                  {String(
-                    i?.name?.substring(0, 1)?.trim().slice(0, 1),
-                  ).toLocaleUpperCase()}
-                </NameWrap>
-              )}
-              {i.name}
-            </PersonItemWrap>
-          ))}
+          ?.map((i: any) => {
+            return (
+              <PersonItemWrap
+                key={i.id}
+                onClick={() => props?.onChangeValue(i)}
+              >
+                {i.avatar ? (
+                  <img
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16,
+                      marginRight: 8,
+                    }}
+                    src={i?.avatar}
+                    alt=""
+                  />
+                ) : (
+                  <NameWrap style={{ margin: '0 8px 0 0' }}>
+                    {String(
+                      i?.name?.substring(0, 1)?.trim().slice(0, 1),
+                    ).toLocaleUpperCase()}
+                  </NameWrap>
+                )}
+                {i.name}
+              </PersonItemWrap>
+            )
+          })}
       </PersonWrap>
     </div>
   )

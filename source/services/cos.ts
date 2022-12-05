@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable require-unicode-regexp */
@@ -76,6 +77,7 @@ export const uploadFile = (
   username: string,
   space: string,
   fileName?: any,
+  scope?: string,
 ) => {
   let id = ''
   let files: any = ''
@@ -96,6 +98,7 @@ export const uploadFile = (
           state: task.state,
           loaded: task.loaded,
           percent: task.percent,
+          scope,
 
           name: fileName || file.name,
           size: file.size,
@@ -110,6 +113,7 @@ export const uploadFile = (
           loaded: task.loaded,
           percent: task.percent,
           file: {
+            scope,
             id: getUUID(),
             name: fileName || file.name,
             size: file.size,
