@@ -409,7 +409,7 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
-const SliderWrap = styled(Slider)<{ isDisabled?: boolean }>(
+const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
   {
     margin: '0!important',
     '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {

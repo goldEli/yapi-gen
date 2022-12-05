@@ -128,7 +128,7 @@ const LabelTitle = (props: any) => {
     </div>
   )
 }
-const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
+export const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const fils = ['xlsx', 'pdf']
 const fils2 = fils.concat(imgs)
 const LookDay = (props: any) => {

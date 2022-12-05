@@ -7,7 +7,7 @@ import { LabelTitle } from '@/views/Information/components/WhiteDay'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import styled from '@emotion/styled'
-import { Form, Popover, Upload } from 'antd'
+import { Form, message, Popover, Upload } from 'antd'
 import { t } from 'i18next'
 import React, { useState } from 'react'
 import CommonModal from './CommonModal'
@@ -23,7 +23,10 @@ const Wrap = styled.div<{ pl: string }>`
   border: 1px solid #ecedef;
   border-top: none;
   img {
-    width: 100%;
+    width: 100px;
+    /* height: 100px; */
+    object-fit: contain;
+    margin-right: 5px;
   }
   &:focus {
     outline: none;
@@ -126,12 +129,11 @@ const EditComment = (props: any) => {
       return {
         url: i.url,
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        created_at: i.ctime,
-        configurations: {
-          name: i.name,
-          ext: i.ext,
-          size: i.size,
-        },
+        ctime: i.ctime,
+
+        name: i.name,
+        ext: i.ext,
+        size: i.size,
       }
     })
     form.setFieldsValue({
@@ -145,8 +147,15 @@ const EditComment = (props: any) => {
 
   const confirm = async () => {
     const inner = document.getElementById('inner')
-    // console.log(inner?.innerHTML, '内容')
-    // console.log(form.getFieldsValue())
+    if (!String(inner?.innerHTML).trim()) {
+      message.warning('请输入评论')
+      return
+    }
+
+    props.editConfirm({
+      content: String(inner?.innerHTML),
+      attachment: form.getFieldsValue().attachments,
+    })
   }
   const addAta = (value: any) => {
     const selection: any = window.getSelection()

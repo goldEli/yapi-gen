@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable max-lines */
+/* eslint-disable react/no-danger */
 // 需求详情-右侧
 
 /* eslint-disable react/no-unstable-nested-components */
@@ -15,7 +18,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
-import { getParamsData } from '@/tools'
+import { bytesToSize, getParamsData } from '@/tools'
 import {
   AddWrap,
   HiddenText,
@@ -30,12 +33,24 @@ import TableQuickEdit from '@/components/TableQuickEdit'
 import EditComment from '@/components/EditComment'
 import { useDispatch } from '../../../../../../../store'
 import { changeId } from '../../../../../../../store/modalState'
+import {
+  BigWrap,
+  BlueCss,
+  Card,
+  fileIconMap,
+  First,
+  Gred,
+  GredParent,
+  Second,
+} from '../../components/UploadAttach'
+import { imgs } from '@/views/Information/components/LookDay'
 
 const WrapRight = styled.div({
   minWidth: '200px',
   width: '100%',
   height: '100%',
   padding: '16px 0 0 24px',
+  overflow: 'auto',
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -114,9 +129,9 @@ const CommentItem = styled.div<{ isShow?: boolean }>(
     display: 'flex',
     justifyContent: 'flex-start',
     marginTop: 24,
-    img: {
-      width: 32,
-      height: 32,
+    '.ar': {
+      width: 24,
+      height: 24,
       borderRadius: '50%',
       marginRight: 12,
     },
@@ -169,6 +184,12 @@ const TextWrap = styled.div({
     paddingRight: 30,
     flexWrap: 'wrap',
     wordBreak: 'break-all',
+    img: {
+      // width: 200,
+      display: 'block',
+      height: 100,
+      objectFit: 'contain',
+    },
   },
 })
 
@@ -294,7 +315,22 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       //
     }
   }
-
+  const downloadIamge = (src: string, name1: string) => {
+    let urls = ''
+    urls = `${src}?t=${new Date().getTime()}`
+    fetch(urls).then(response => {
+      response.blob().then(myBlob => {
+        const href = URL.createObjectURL(myBlob)
+        const a = document.createElement('a')
+        a.href = href
+        a.download = name1
+        a.click()
+      })
+    })
+  }
+  const onDownload = (url: string, name1: string) => {
+    downloadIamge(url, name1)
+  }
   const onDeleteComment = (item: any) => {
     setIsVisible(true)
     setIsDeleteId(item.id)
@@ -330,30 +366,29 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       }
     }
   }
-
-  const onAddComment = async (content: string) => {
-    if (content?.trim().length) {
-      try {
-        await addComment({ projectId, demandId, content: content?.trim() })
-        message.success(t('project.replaySuccess'))
-        setAddValue('')
-        getList()
-      } catch (error) {
-        //
-      }
-    }
-  }
-
-  const onPressEnter = (e: any) => {
-    onAddComment(e.target.value)
-  }
-
   const editClose = () => {
     setVisibleEdit(false)
   }
 
+  const onAddComment = async (value: any) => {
+    try {
+      await addComment({
+        projectId,
+        demandId,
+        content: value.content,
+        attachment: value.attachment,
+      })
+      message.success(t('project.replaySuccess'))
+      setAddValue('')
+      getList()
+      editClose()
+    } catch (error) {
+      //
+    }
+  }
+
   const editConfirm = async (params: any) => {
-    // console.log(params)
+    onAddComment(params)
   }
 
   return (
@@ -388,9 +423,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 isDisabled={
                   demandInfo?.user
                     ?.map((i: any) => i.user.id)
-                    ?.includes(userInfo?.id) &&
-                  demandInfo.status.is_start !== 1 &&
-                  demandInfo.status.is_end !== 1
+                    ?.includes(userInfo?.id) && demandInfo.status.is_start !== 1
+                    ? demandInfo.status.is_end !== 1
+                    : null
                 }
                 style={{ width: 190 }}
                 value={schedule}
@@ -540,7 +575,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     type={demandInfo?.priority?.icon}
                   />
                   <span>{demandInfo?.priority?.content_txt || '--'}</span>
-                  {isCanEdit && <IconFontWrapEdit type="down-icon" />}
+                  {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
                 </CanOperation>
               </div>
             </Popconfirm>
@@ -635,7 +670,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         <div
           style={{
             maxHeight: `calc(100% - ${isComment ? 80 : 320}px)`,
-            overflow: 'auto',
           }}
         >
           <div
@@ -684,7 +718,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     isShow={item.userId === userInfo.id}
                   >
                     {item.avatar ? (
-                      <img src={item.avatar} alt="" />
+                      <img className="ar" src={item.avatar} alt="" />
                     ) : (
                       <SetHead>
                         {String(
@@ -730,7 +764,131 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                           {item.createdTime}
                         </div>
                       </div>
-                      <div className="content">{item.content}</div>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                        className="content"
+                      />
+                      <div
+                        style={{
+                          marginTop: '8px',
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '10px',
+                        }}
+                      >
+                        {item.attachment.map((item: any) => {
+                          return (
+                            <Card
+                              style={{
+                                margin: 0,
+                              }}
+                              key={item.id}
+                            >
+                              <BigWrap
+                                style={{
+                                  display: 'flex',
+                                }}
+                              >
+                                <GredParent
+                                  style={{
+                                    marginRight: '8px',
+                                    position: 'relative',
+                                  }}
+                                >
+                                  {imgs.includes(item.attachment.ext) && (
+                                    <img
+                                      style={{
+                                        width: '40px',
+                                        height: '40px',
+                                        borderRadius: '4px',
+                                      }}
+                                      src={item.attachment.path}
+                                      alt=""
+                                    />
+                                  )}
+                                  {!imgs.includes(item.attachment.ext) && (
+                                    <IconFont
+                                      style={{
+                                        fontSize: 40,
+                                        color: 'white',
+                                        borderRadius: '8px',
+                                      }}
+                                      type={
+                                        fileIconMap[item.attachment.ext] ||
+                                        'colorunknown'
+                                      }
+                                    />
+                                  )}
+                                </GredParent>
+                                <div>
+                                  <div
+                                    style={{
+                                      width: '100%',
+                                      fontSize: '14px',
+                                      fontWeight: 400,
+                                      color: '#646566',
+                                      lineHeight: '22px',
+                                      wordBreak: 'break-all',
+                                    }}
+                                  >
+                                    {item.attachment.name}
+                                  </div>
+                                  <First
+                                    style={{
+                                      height: '20px',
+                                      fontSize: '12px',
+                                      fontWeight: 400,
+                                      color: '#969799',
+                                      lineHeight: '20px',
+                                    }}
+                                  >
+                                    <span>
+                                      {bytesToSize(item?.attachment.size) ?? ''}
+                                    </span>
+                                    <span
+                                      style={{
+                                        margin: '0 6px 0 6px',
+                                      }}
+                                    >
+                                      ·
+                                    </span>
+                                    <span
+                                      style={{
+                                        marginRight: '12px',
+                                      }}
+                                    >
+                                      {item.attachment.name}
+                                    </span>
+                                    <span>{item.time}</span>
+                                  </First>
+                                  <Second
+                                    style={{
+                                      height: '20px',
+                                    }}
+                                  >
+                                    <BlueCss
+                                      onClick={() =>
+                                        onDownload(
+                                          item.attachment.path,
+                                          item.attachment.name,
+                                        )
+                                      }
+                                      style={{
+                                        marginRight: '12px',
+                                        cursor: 'pointer',
+                                        fontSize: '12px',
+                                        color: '#2877ff',
+                                      }}
+                                    >
+                                      {t('p2.download') as unknown as string}
+                                    </BlueCss>
+                                  </Second>
+                                </div>
+                              </BigWrap>
+                            </Card>
+                          )
+                        })}
+                      </div>
                     </TextWrap>
                   </CommentItem>
                 ))}
@@ -745,7 +903,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           visibleEdit={visibleEdit}
           editClose={editClose}
           editConfirm={editConfirm}
-        ></EditComment>
+        />
+
         // <div>
         //    <TextareaWrap>
         //   <Input.TextArea
