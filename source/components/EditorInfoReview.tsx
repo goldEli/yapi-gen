@@ -25,6 +25,11 @@ const TextWrapEditor = styled.div({
   p: {
     marginBottom: '0px!important',
   },
+  table: {
+    td: {
+      border: '1px solid black',
+    },
+  },
 })
 
 interface Props {
