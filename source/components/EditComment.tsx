@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 //  评论的弹框
 /* eslint-disable no-cond-assign */
 import { uploadFileByTask } from '@/services/cos'
@@ -21,6 +22,9 @@ const Wrap = styled.div<{ pl: string }>`
   opacity: 1;
   border: 1px solid #ecedef;
   border-top: none;
+  img {
+    width: 100%;
+  }
   &:focus {
     outline: none;
     content: none;
@@ -118,7 +122,21 @@ const EditComment = (props: any) => {
   }
 
   const onChangeAttachment = (result: any) => {
-    // console.log(result)
+    const arrs = result.map((i: any) => {
+      return {
+        url: i.url,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        created_at: i.ctime,
+        configurations: {
+          name: i.name,
+          ext: i.ext,
+          size: i.size,
+        },
+      }
+    })
+    form.setFieldsValue({
+      attachments: arrs,
+    })
   }
 
   const onClose = () => {
@@ -127,6 +145,8 @@ const EditComment = (props: any) => {
 
   const confirm = async () => {
     const inner = document.getElementById('inner')
+    // console.log(inner?.innerHTML, '内容')
+    // console.log(form.getFieldsValue())
   }
   const addAta = (value: any) => {
     const selection: any = window.getSelection()
@@ -189,7 +209,7 @@ const EditComment = (props: any) => {
   return (
     <CommonModal
       width={784}
-      title="写评论"
+      title={t('new_p1.a4')}
       isVisible={props.visibleEdit}
       onClose={onClose}
       onConfirm={confirm}
@@ -261,7 +281,7 @@ const EditComment = (props: any) => {
             onPaste={handlePaste}
             onInput={changeTalkContent}
             contentEditable
-            pl="输入评论"
+            pl={t('new_p1.a5')}
           />
         </div>
         <Form

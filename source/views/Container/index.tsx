@@ -15,6 +15,8 @@ import { changeLanguage, loadedAntdLocals } from '@/locals'
 import NoPermission from './components/NoPermission'
 import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
+import { useDispatch } from '../../../store'
+import { getStatus } from '../../../store/waterState'
 
 const Wrap = styled.div`
   display: flex;
@@ -32,6 +34,7 @@ const Main = styled.div`
 `
 
 export const Container = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const { loginInfo, userInfo, getUserDetail, login, setLoginInfo } =
@@ -64,6 +67,10 @@ export const Container = () => {
     changeLanguage(languageParams)
 
     init()
+  }, [])
+
+  useEffect(() => {
+    dispatch(getStatus())
   }, [])
 
   const jumpList = [

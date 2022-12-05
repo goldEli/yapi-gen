@@ -221,7 +221,12 @@ const WrapLeftBox = () => {
               </span>
             </div>
           </InfoItem> */}
-          <InfoItem activeState>
+          <InfoItem
+            style={{
+              marginTop: '0px',
+            }}
+            activeState
+          >
             <Label>{t('mine.demandInfo')}</Label>
             {demandInfo?.info ? (
               <EditorInfoReview info={demandInfo?.info} />
@@ -264,12 +269,20 @@ const WrapLeftBox = () => {
                     (i: any) => i.name === '附件上传',
                   ).length > 0 ? (
                     <AddWrap
+                      hasColor
                       style={{
                         marginBottom: '10px',
+                        color: '#2877FF',
+                        // paddingRight: '0px',
                       }}
                     >
-                      <IconFont type="plus" />
-                      <div>{t('common.add23')}</div>
+                      <IconFont
+                        style={{
+                          color: '#2877FF',
+                        }}
+                        type="plus"
+                      />
+                      <div>{t('p2.addAdjunct')}</div>
                     </AddWrap>
                   ) : (
                     (null as any)
@@ -285,7 +298,7 @@ const WrapLeftBox = () => {
             onConfirm={onDeleteConfirm}
           />
           <InfoItem>
-            <Label>{t('project.demandStatus')}</Label>
+            <Label>{t('new_p1.a3')}</Label>
             <DemandStatus pid={projectId} sid={demandId} />
           </InfoItem>
         </WrapLeft>
