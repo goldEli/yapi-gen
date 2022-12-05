@@ -53,7 +53,12 @@
     "pleaseGroupName": "请输入分组名称",
     "personRadio": "人员单选",
     "personCheckbox": "人员复选",
-    "chooseRange": "选择范围"
+    "chooseRange": "选择范围",
+    "link": "链接",
+    "checked": "已选中({{count}})",
+    "batchEdit": "批量编辑",
+    "batchDelete": "批量删除",
+    "batchCopyLink": "批量复制链接"
   },
   "p2": {
     "del": "确认删除该附件",

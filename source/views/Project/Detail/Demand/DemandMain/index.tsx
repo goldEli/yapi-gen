@@ -163,7 +163,7 @@ const DemandMain = (props: Props) => {
     getList(val, searchItems, { page: 1, size: pageObj.size }, order)
   }
 
-  const onChangeOperation = (e: any, item: any) => {
+  const onChangeOperation = (e: any, item?: any) => {
     props.onSetOperationItem(item)
     props.onChangeVisible(e)
   }

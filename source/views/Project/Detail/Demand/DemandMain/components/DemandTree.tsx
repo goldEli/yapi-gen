@@ -1,11 +1,11 @@
-/* eslint-disable react/jsx-no-leaked-render */
 // 需求主页-需求树形模式
 
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu, Table, Checkbox } from 'antd'
+import { Pagination, message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -23,6 +23,8 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import EditDemand from '@/components/EditDemandNew'
+import FloatBatch from '@/components/FloatBatch'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -34,6 +36,8 @@ const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   height: 'calc(100% - 64px)',
+  width: '100%',
+  position: 'relative',
 })
 interface Props {
   data: any
@@ -99,6 +103,8 @@ const DemandTree = (props: Props) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<any>([])
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
+  const [isVisible, setIsVisible] = useState(false)
+  const [isCreateChild, setIsCreateChild] = useState<any>({})
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -179,7 +185,7 @@ const DemandTree = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onPropsChangeVisible = (e: any, item: any) => {
+  const onPropsChangeVisible = (e: any, item?: any) => {
     setIsShowMore(false)
     props.onChangeVisible(e, item)
   }
@@ -222,8 +228,6 @@ const DemandTree = (props: Props) => {
     )
   }
 
-  // 返回子需求
-
   const columns = useDynamicColumns({
     projectId,
     orderKey,
@@ -247,6 +251,13 @@ const DemandTree = (props: Props) => {
     'b/story/delete',
   )
 
+  // 点击创建子需求
+  const onChangeCreateChild = (item: any) => {
+    setIsShowMore(false)
+    setIsVisible(true)
+    setIsCreateChild(item)
+  }
+
   const menu = (item: any) => {
     let menuItems = [
       {
@@ -263,6 +274,14 @@ const DemandTree = (props: Props) => {
           <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
         ),
       },
+      {
+        key: '3',
+        label: (
+          <div onClick={() => onChangeCreateChild(item)}>
+            {t('project.addChildDemand')}
+          </div>
+        ),
+      },
     ]
 
     if (hasEdit) {
@@ -273,7 +292,48 @@ const DemandTree = (props: Props) => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
+    const batchItems = [
+      {
+        key: '0',
+        disabled: true,
+        label: (
+          <div onClick={e => onPropsChangeVisible(e, item)}>
+            {t('version2.checked', { count: 23 })}
+          </div>
+        ),
+      },
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onPropsChangeVisible(e, item)}>
+            {t('version2.batchEdit', { count: 23 })}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={() => onPropsChangeDelete(item)}>
+            {t('version2.batchDelete')}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <div onClick={() => onChangeCreateChild(item)}>
+            {t('version2.batchCopyLink')}
+          </div>
+        ),
+      },
+    ]
+
+    return (
+      <Menu
+        style={{ minWidth: 56 }}
+        items={selectedRowKeys.includes(item.id) ? batchItems : menuItems}
+      />
+    )
   }
 
   const selectColum: any = useMemo(() => {
@@ -334,47 +394,49 @@ const DemandTree = (props: Props) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
+  const onOperationCheckbox = (type: any, keys?: any) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (type === 'add' && keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
+    }
+  }
+
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
     const resultKeys = selected
       ? [...selectedRowKeys, ...[record.id], ...(record?.allChildrenIds || [])]
       : selectedRowKeys?.filter((i: any) => i !== record.id)
     setSelectedRowKeys([...new Set(resultKeys)])
+    onOperationCheckbox('add', [...new Set(resultKeys)])
   }
 
   // 全选
-  const onSelectAll = (selected: any, selectedRows: any) => {
+  const onSelectAll = (selected: any) => {
     if (selected) {
       let childKeys: any = []
-      selectedRows?.forEach((element: any) => {
-        childKeys = [...childKeys, ...element.allChildrenIds]
+      data?.list?.forEach((element: any) => {
+        childKeys = [...childKeys, ...[element.id], ...element.allChildrenIds]
       })
-      const allKeys = [
-        ...(selectedRows?.map((i: any) => i.id) || []),
-        ...childKeys,
-      ]
-      setSelectedRowKeys(allKeys)
-
-      //   var redClassElements = document.getElementsByClassName(
-      //     'ant-checkbox-wrapper',
-      //   )
-      //   for (var i = 0; i < redClassElements.length; i++) {
-      //     var div2 = document.createElement('div')
-      //     div2.innerText = String(allKeys.length)
-      //     div2.id = 'tagLength'
-      //     redClassElements[i].appendChild(div2)
-      //   }
+      setSelectedRowKeys([...new Set(childKeys)])
+      onOperationCheckbox('add', [...new Set(childKeys)])
     } else {
-      //   var redClassElements = document.getElementsByClassName(
-      //     'ant-checkbox-wrapper',
-      //   )
       setSelectedRowKeys([])
-      //   for (var i = 0; i < redClassElements.length; i++) {
-      //     redClassElements[i].removeChild('#tagLength')
-      //   }
+      onOperationCheckbox('remove')
     }
   }
 
+  // 表格渲染子需求
   const expendedRow = (record: any) => {
     return (
       <TableStyleBox
@@ -400,8 +462,25 @@ const DemandTree = (props: Props) => {
     )
   }
 
+  // 关闭创建子需求
+  const onCloseCreateChild = () => {
+    setIsVisible(!isVisible)
+    setIsCreateChild({})
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
+      {isVisible && (
+        <EditDemand
+          visible={isVisible}
+          onChangeVisible={onCloseCreateChild}
+          onUpdate={() => props.onUpdate(true)}
+          isChild
+          categoryId={isCreateChild?.categoryId}
+          parentId={isCreateChild?.id}
+        />
+      )}
+
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!data?.list &&
@@ -433,6 +512,10 @@ const DemandTree = (props: Props) => {
               <NoData />
             ))}
         </Spin>
+        <FloatBatch
+          isVisible={selectedRowKeys.length}
+          onClose={() => onSelectAll(false)}
+        />
       </DataWrap>
 
       <PaginationWrap>

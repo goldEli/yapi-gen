@@ -861,6 +861,11 @@ const TableStyleBox = styled(TableWrap)<{
   isHover?: any
 }>(
   {
+    '.tagLength': {
+      marginLeft: 8,
+      fontSize: 12,
+      color: '#969799',
+    },
     '.ant-table-selection': {
       flexDirection: 'inherit',
     },

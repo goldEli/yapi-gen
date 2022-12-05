@@ -60,6 +60,8 @@ interface Props {
   isQuickCreate?: any
   // 自定义字段
   fieldsList: any
+  // 父需求id --- 和isChild一起使用
+  parentId?: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -178,7 +180,7 @@ const EditDemandRIght = (props: Props) => {
       // 如果是子需求创建或编辑，默认父需求填入当前需求id
       if (props.isChild) {
         hasChild = props.parentList?.filter(
-          (i: any) => i.value === Number(demandInfo?.id),
+          (i: any) => i.value === Number(props?.parentId),
         )[0]?.value
       }
 
@@ -218,7 +220,7 @@ const EditDemandRIght = (props: Props) => {
       if (props.isChild) {
         form.setFieldsValue({
           parentId: props.parentList?.filter(
-            (i: any) => i.value === Number(demandInfo?.id),
+            (i: any) => i.value === Number(props?.parentId),
           )[0]?.value,
         })
       }
