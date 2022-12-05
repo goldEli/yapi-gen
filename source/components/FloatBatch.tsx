@@ -8,7 +8,9 @@ import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import BatchModal from './BatchModal'
 import { useState } from 'react'
-import { copyLink } from '@/tools'
+import { copyLink, getParamsData } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useSearchParams } from 'react-router-dom'
 
 const batchAllBox = css`
   width: 100%;
@@ -62,6 +64,9 @@ const FloatBatch = (props: Props) => {
   // 底部悬浮显示
   const [isVisible, setIsVisible] = useState(false)
   const [currentType, setCurrentType] = useState('')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
 
   // 点击每项操作
   const onClickItem = (type: string) => {
@@ -78,7 +83,21 @@ const FloatBatch = (props: Props) => {
 
   //  点击复制链接
   const onCopy = () => {
-    copyLink(props.selectRows)
+    let text: any = ''
+    let beforeUrl: any
+    if (import.meta.env.MODE === 'production') {
+      beforeUrl = window.origin
+    } else {
+      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}`
+    }
+    props.selectRows?.forEach((element: any) => {
+      const params = encryptPhp(
+        JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
+      )
+      const url = `/Detail/Demand?data=${params}`
+      text += `【${element.name}】 ${beforeUrl}${url} \n`
+    })
+    copyLink(text, t('version2.copyLinkSuccess'), t('version2.copyLinkError'))
   }
 
   return (

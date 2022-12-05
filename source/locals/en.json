@@ -70,7 +70,9 @@
     "deleteToast": "勾选的需求将被删除，确认删除吗？",
     "deleteChildren": "同时删除对应子需求",
     "chooseUpdate": "选择更新属性",
-    "updateAfter": "更新后属性值"
+    "updateAfter": "更新后属性值",
+    "copyLinkSuccess": "需求链接已复制！",
+    "copyLinkError": "需求链接复制失败！"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",

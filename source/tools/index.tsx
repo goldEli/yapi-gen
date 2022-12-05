@@ -395,26 +395,15 @@ function compress(img: any, type: any, maxHeight: any, flag: any) {
 }
 
 // 复制
-function copyLink(list: any) {
-  const copyElement = document.createElement('div')
-  //创建Range对象（某个区域内连续的内容）
-  const range = document.createRange()
-  //清除页面中已有的selection
-  window.getSelection()?.removeAllRanges()
-  //选中需要复制的节点
-  range.selectNode(copyElement)
-  //执行选中元素
-  window.getSelection()?.addRange(range)
-  //执行 copy 操作
-  const copyStatus = document.execCommand('Copy')
-  // 对成功与否定进行提示
-  if (copyStatus) {
-    message.success('Copy Success', 1)
-  } else {
-    message.error('Copy Failed', 1)
-  }
-  // 移除选中的元素
-  window.getSelection()?.removeAllRanges()
+function copyLink(text: any, successText: string, errorText: string) {
+  navigator.clipboard.writeText(text).then(
+    function () {
+      message.success(successText)
+    },
+    function (err) {
+      message.error(errorText)
+    },
+  )
 }
 
 export default onPaste
