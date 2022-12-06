@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
 import { useModel } from '@/models'
@@ -34,6 +34,8 @@ const Main = styled.div`
 `
 
 export const Container = () => {
+  const location = useLocation()
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
@@ -112,15 +114,16 @@ export const Container = () => {
     const routerMap = Array.from(
       new Set(company_permissions?.map((i: any) => i.group_name)),
     )
-
-    if (routerMap.length >= 1) {
-      routerMap.concat('日志')
-      if (!localStorage.getItem('saveRouter')) {
-        for (let i = 0; i <= jumpList.length; i++) {
-          if (routerMap?.includes(jumpList[i].name)) {
-            localStorage.setItem('saveRouter', '首次登录')
-            navigate(jumpList[i].path)
-            break
+    if (location.pathname === '/') {
+      if (routerMap.length >= 1) {
+        routerMap.concat('日志')
+        if (!sessionStorage.getItem('saveRouter')) {
+          for (let i = 0; i <= jumpList.length; i++) {
+            if (routerMap?.includes(jumpList[i].name)) {
+              sessionStorage.setItem('saveRouter', '首次登录')
+              navigate(jumpList[i].path)
+              break
+            }
           }
         }
       }
