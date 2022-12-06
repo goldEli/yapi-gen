@@ -91,6 +91,11 @@ export default () => {
     return result
   }
 
+  const getFieldListCustom = async (params: any) => {
+    const result = await services.project.storyConfigField(params)
+    return result
+  }
+
   const getProjectList = async (params: any) => {
     const result = await services.project.getProjectList(params)
     setProjectList(result)
@@ -202,6 +207,7 @@ export default () => {
     setTagList,
     colorList,
     getFieldList,
+    getFieldListCustom,
     fieldList,
     setFieldList,
     option,

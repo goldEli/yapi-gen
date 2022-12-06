@@ -38,6 +38,9 @@ interface Props {
 
   // 他的/我的子需求列表使用 --- 用于判断是否有编辑权限
   projectPermissions?: any
+
+  // 自定义人员的下拉
+  defaultTextValues?: any
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -46,7 +49,7 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, getFieldList, tagList } = useModel('project')
+  const { projectInfo, getFieldListCustom, tagList } = useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
@@ -80,7 +83,7 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段
   const getIsCustomValues = async () => {
-    const response = await getFieldList({ projectId, key: props.keyText })
+    const response = await getFieldListCustom({ projectId, key: props.keyText })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
@@ -247,6 +250,7 @@ const TableQuickEdit = (props: Props) => {
       onChange(resultVal, 1)
     }
   }
+
   return (
     <div style={{ width: '100%' }}>
       {isShowControl &&
