@@ -394,8 +394,15 @@ export const ShapeContent = (props: any) => {
 
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] =
-        res?.fields[key].true_value === null ? [] : res?.fields[key].true_value
+      if (res?.fields[key].type === 'select') {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null &&
+          res?.fields[key].children.some(
+            (i: any) => i.id === res?.fields[key].true_value,
+          )
+            ? []
+            : res?.fields[key].true_value
+      }
     }
 
     form.setFieldsValue(form1Obj)
