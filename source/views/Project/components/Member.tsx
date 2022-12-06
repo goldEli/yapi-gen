@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
 import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
-// import { StaffSelect } from '@xyfe/uikit'
+import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember, getStaffList2 } from '@/services/staff'
 
 interface Props {
@@ -325,7 +325,7 @@ const Member = (props: Props) => {
         onChangeUpdate={() => getList()}
       /> */}
 
-      {/* <StaffSelect
+      <StaffSelect
         title={t('project.addMember')}
         user={userObj as any}
         departments={departments}
@@ -367,7 +367,7 @@ const Member = (props: Props) => {
             </div>
           </Form>
         }
-      /> */}
+      />
 
       <DrawerWrap
         title={
