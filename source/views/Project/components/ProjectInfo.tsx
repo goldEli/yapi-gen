@@ -57,11 +57,9 @@ const ProjectInfo = (props: Props) => {
       title={t('project.projectInformation')}
       isVisible={props.visible}
       onClose={props.onChangeVisible}
-      isShowFooter={true}
+      isShowFooter
     >
-      <div
-        style={{ maxHeight: 544, overflow: 'auto', padding: '0 16px 16px 0' }}
-      >
+      <div style={{ height: 544, overflow: 'auto', padding: '0 16px 16px 0' }}>
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
           <div
@@ -76,12 +74,7 @@ const ProjectInfo = (props: Props) => {
           </div>
           <span>{projectInfo.info || '--'}</span>
         </PosterWrap>
-        <div
-          style={{
-            display: 'flex',
-            paddingBottom: '175px',
-          }}
-        >
+        <div style={{ display: 'flex' }}>
           <div
             style={{
               marginRight: '50px',

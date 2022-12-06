@@ -75,7 +75,7 @@ const Filter = (props: Props) => {
           key: 'list',
           label: (
             <div onClick={() => props.onChangeFormat(false)}>
-              {t('version2.projectList')}
+              {t('common.list')}
             </div>
           ),
         },
@@ -128,9 +128,7 @@ const Filter = (props: Props) => {
             <HoverWrap style={{ color: '#2877ff' }}>
               <IconFont type={props.isGrid ? 'app-store' : 'unorderedlist'} />
               <div>
-                {props.isGrid
-                  ? t('common.thumbnail')
-                  : t('version2.projectList')}
+                {props.isGrid ? t('common.thumbnail') : t('common.list')}
               </div>
             </HoverWrap>
           </Dropdown>
