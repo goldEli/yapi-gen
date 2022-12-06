@@ -582,3 +582,17 @@ export const batchEdit: any = async (params: any) => {
     target: params.target,
   })
 }
+
+// 获取批量编辑选择属性下拉
+export const getBatchEditConfig: any = async (params: any) => {
+  const response: any = await http.get<any>('getBatchEditConfig', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+  })
+
+  return response.data?.map((i: any) => ({
+    label: i.title,
+    value: i.content,
+    options: i.values || [],
+  }))
+}

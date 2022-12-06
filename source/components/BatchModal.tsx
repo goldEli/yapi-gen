@@ -1,5 +1,5 @@
 // 批量操作弹窗 -- 编辑及删除
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DeleteConfirm from './DeleteConfirm'
 import CommonModal from './CommonModal'
 import { Checkbox, Form, message, Select } from 'antd'
@@ -21,10 +21,36 @@ const BatchModal = (props: Props) => {
   const [t] = useTranslation()
   const [haveChildren, setHaveChildren] = useState(false)
   const [form] = Form.useForm()
-  const { batchDelete, batchEdit } = useModel('demand')
+  const { batchDelete, batchEdit, getBatchEditConfig } = useModel('demand')
+  const { memberList, selectAllStaffData } = useModel('project')
+  const [chooseSelect, setChooseSelect] = useState<any>([])
+  const [chooseType, setChooseType] = useState('')
+  const [chooseAfterList, setChooseAfterList] = useState<any>([])
+  const { isRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+
+  // 获取批量编辑的下拉列表
+  const getBatchEditConfigList = async () => {
+    // console.log('212112', memberList, selectAllStaffData)
+    const response = await getBatchEditConfig({
+      projectId,
+      demandIds: props.selectRows?.map((i: any) => i.id),
+    })
+    setChooseSelect(response)
+  }
+
+  useEffect(() => {
+    if (props.type === 'edit') {
+      getBatchEditConfigList()
+    }
+  }, [props.type])
+
+  useEffect(() => {
+    let array: any = []
+    setChooseAfterList(array)
+  }, [chooseType])
 
   // 批量删除的取消事件
   const onCloseDelete = () => {
@@ -103,6 +129,8 @@ const BatchModal = (props: Props) => {
                 getPopupContainer={node => node}
                 allowClear
                 optionFilterProp="label"
+                options={chooseSelect}
+                onChange={value => setChooseType(value)}
               />
             </Form.Item>
             <Form.Item

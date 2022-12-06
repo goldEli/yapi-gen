@@ -83,6 +83,7 @@ export default () => {
     getExportExcel,
     batchDelete,
     batchEdit,
+    getBatchEditConfig,
   } = services.demand
 
   return {
@@ -137,5 +138,6 @@ export default () => {
     filterParams,
     batchDelete,
     batchEdit,
+    getBatchEditConfig,
   }
 }
