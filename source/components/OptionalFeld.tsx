@@ -50,6 +50,13 @@ const Left = styled.div`
   width: 624px;
   height: 350px;
   overflow: scroll;
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding: 16px 0px !important;
+    padding-top: 0px !important;
+  }
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0px !important;
+  }
 `
 const Right = styled.div`
   box-sizing: border-box;

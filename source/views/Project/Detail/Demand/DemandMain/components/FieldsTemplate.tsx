@@ -39,6 +39,13 @@ const LeftWrap = styled.div({
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
+  '.ant-collapse > .ant-collapse-item > .ant-collapse-header': {
+    padding: '16px 0px !important',
+    paddingTop: '0px !important',
+  },
+  ' .ant-collapse-content > .ant-collapse-content-box': {
+    padding: '0px !important',
+  },
 })
 const RightWrap = styled.div({
   height: 350,

@@ -3,7 +3,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Dropdown, Input, Menu, message, Popover } from 'antd'
+import {
+  Drawer,
+  Dropdown,
+  Form,
+  Input,
+  Menu,
+  message,
+  Popover,
+  Select,
+} from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import AddMember from './AddMember'
@@ -14,6 +23,8 @@ import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
 import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
+import { StaffSelect } from '@xyfe/uikit'
+import { getAddDepartMember, getStaffList2 } from '@/services/staff'
 
 interface Props {
   visible: boolean
@@ -99,6 +110,8 @@ const MoreWrap2 = styled(MoreWrap)`
     }
   }
 `
+const WaiWrap = styled.div``
+
 const NameWrap = styled.div({
   width: 32,
   height: 32,
@@ -131,7 +144,7 @@ const MoreDropdown = (props: DropDownProps) => {
   }
 
   const menu = () => {
-    let menuItems: any = []
+    const menuItems: any = []
     props.roleOptions?.forEach((i: any, idx: any) => {
       menuItems.push({
         key: idx,
@@ -172,10 +185,15 @@ const Member = (props: Props) => {
   const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
     useModel('project')
-  const { getProjectPermission, updateMember } = useModel('project')
+  const { getProjectPermission, updateMember, projectPermission, addMember } =
+    useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
+  const [departments, setDepartments] = useState([])
+  const [member, setMember] = useState<any>()
   const [memberList, setMemberList] = useState<any>([])
+  const [userDataList, setUserDataList] = useState<any[]>([])
+  const [form] = Form.useForm()
   const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -189,6 +207,33 @@ const Member = (props: Props) => {
     const res = await getProjectPermission({ projectId: props.projectId })
 
     setRoleOptions(res.list)
+    const res2 = await getAddDepartMember()
+
+    const arr = res2.companyList.map((i: any) => {
+      return {
+        id: i.id,
+        code: '234234',
+        name: i.name,
+        avatar: i.avatar,
+        phoneNumber: '123123213',
+        departmentId: i.department_id,
+        jobName: '',
+        jobId: '1584818157136687105',
+        cardType: '',
+        cardNumber: '',
+        hiredate: '2022-11-26',
+        type: 1,
+        gender: 0,
+        companyId: '1504303190303051778',
+      }
+    })
+
+    const obj = {
+      list: arr,
+    }
+    setMember(obj)
+
+    setDepartments(res2.departments)
   }
 
   useEffect(() => {
@@ -225,13 +270,105 @@ const Member = (props: Props) => {
     getList(e.target.value)
   }
 
+  const onClickCancel = () => {
+    setIsVisible(false)
+  }
+  const handleOk = async () => {
+    const values = form.getFieldsValue()
+
+    if (userDataList.length <= 0) {
+      message.warning(t('project.memberNull'))
+      return
+    }
+    let { userGroupId } = values
+    if (!form.getFieldValue('userGroupId')) {
+      userGroupId = projectPermission?.filter(
+        (i: any) => i.tagLabel === '参与者',
+      )[0]?.value
+    }
+
+    const params: any = {
+      projectId: props.projectId,
+      userGroupId,
+      userIds: userDataList,
+    }
+    await addMember(params)
+    message.success(t('common.addSuccess'))
+    setUserDataList([])
+    getList()
+    setIsVisible(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
+
+  const onChangeMember = (value: any) => {
+    setUserDataList(value)
+  }
+  const userObj = {
+    avatar:
+      'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1531903254371954690/2022-11-15/71A2A5C7-CFB9CDD612ED.jpeg',
+    name: '杨一',
+    id: '1531903254371954690',
+    companyId: '1504303190303051778',
+    companyName: '成都定星科技',
+    phone: '18380129474',
+    remark: '',
+    admin: false,
+    gender: 1,
+  }
   return (
-    <>
-      <AddMember
+    <WaiWrap>
+      {/* <AddMember
         value={isVisible}
         onChangeValue={() => setIsVisible(!isVisible)}
         onChangeUpdate={() => getList()}
+      /> */}
+
+      <StaffSelect
+        title={t('project.addMember')}
+        user={userObj as any}
+        departments={departments}
+        staffListAll={member}
+        visible={isVisible}
+        onCancel={onClickCancel}
+        value={userDataList}
+        onOk={handleOk}
+        onChange={onChangeMember}
+        plugArea={
+          <Form form={form}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
+                {t('project.joinPermission')}
+                <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
+                  *
+                </span>
+              </span>
+              <Form.Item
+                name="userGroupId"
+                noStyle
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('project.pleasePermission')}
+                  getPopupContainer={node => node}
+                  style={{ width: 192 }}
+                  options={projectPermission}
+                  showSearch
+                  showArrow
+                  optionFilterProp="label"
+                  defaultValue={
+                    projectPermission?.filter(
+                      (i: any) => i.tagLabel === '参与者',
+                    )[0]?.value
+                  }
+                />
+              </Form.Item>
+            </div>
+          </Form>
+        }
       />
+
       <DrawerWrap
         title={
           <HeaderWrap>
@@ -324,7 +461,7 @@ const Member = (props: Props) => {
           </div>
         )}
       </DrawerWrap>
-    </>
+    </WaiWrap>
   )
 }
 

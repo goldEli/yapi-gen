@@ -121,6 +121,10 @@ const MainWrapItem = styled.div({
   borderBottom: '1px solid #EBEDF0',
   padding: '24px 0',
   display: 'flex',
+
+  '.ant-checkbox-wrapper': {
+    margin: '0 !important',
+  },
 })
 
 const ModalHeader = styled.div({
