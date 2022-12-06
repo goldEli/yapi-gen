@@ -395,7 +395,7 @@ export const ShapeContent = (props: any) => {
     const form1Obj: any = {}
     for (const key in res?.fields) {
       form1Obj[res?.fields[key].content] =
-        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
+        res?.fields[key].true_value === null ? [] : res?.fields[key].true_value
     }
 
     form.setFieldsValue(form1Obj)
@@ -414,6 +414,7 @@ export const ShapeContent = (props: any) => {
     })
 
     setRightList(res)
+
     const form1Obj: any = {}
     for (const key in res?.fields) {
       form1Obj[res?.fields[key].content] =
@@ -423,6 +424,7 @@ export const ShapeContent = (props: any) => {
     form.setFieldsValue(form1Obj)
     setLoading(true)
   }
+  // console.log(rightList);
 
   const init = async () => {
     const res = await getProjectMember(projectId)
