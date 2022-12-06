@@ -39,6 +39,54 @@ const DataWrap = styled.div({
   width: '100%',
   position: 'relative',
 })
+
+const LineWrap = styled.div<{
+  isTop?: any
+  isBottom?: any
+  isRight?: any
+  isChild?: any
+}>(
+  {
+    position: 'relative',
+    height: 52,
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      background: '#ECEDEF',
+      zIndex: 0,
+      position: 'absolute',
+    },
+  },
+  ({ isTop, isBottom, isRight }) => ({
+    '.topLine': {
+      display: isTop ? 'block' : 'none',
+      height: 20,
+      top: 0,
+      width: 1,
+      left: 8,
+    },
+    '.bottomLine': {
+      display: isBottom ? 'block' : 'none',
+      height: 20,
+      bottom: 0,
+      width: 1,
+      left: 8,
+    },
+    '.rightLine': {
+      display: isRight ? 'block' : 'none',
+      width: 20,
+      bottom: 26,
+      height: 1,
+      left: 6,
+    },
+  }),
+  ({ isChild }) => ({
+    width: isChild ? 1 : 'inherit',
+    left: isChild ? -16 : 0,
+    background: isChild ? '#ECEDEF' : '',
+  }),
+)
+
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
@@ -76,10 +124,15 @@ const GetTreeIcon = (props: TreeIconProps) => {
     props.onChangeExpendedKeys(props.row?.id)
   }
   return (
-    <ExpendedWrap
-      onClick={onChangeData}
-      type={isExpended ? 'add-subtract' : 'add-square-big'}
-    />
+    <LineWrap isBottom>
+      <ExpendedWrap
+        onClick={onChangeData}
+        type={isExpended ? 'add-subtract' : 'add-square-big'}
+      />
+      <div className="topLine" />
+      <div className="bottomLine" />
+      <div className="rightLine" />
+    </LineWrap>
   )
 }
 
@@ -243,12 +296,24 @@ const DemandTree = (props: Props) => {
       setExpandedRowKeys(resultList)
     }
 
+    // console.log(row)
+
     return (
-      <GetTreeIcon
-        row={row}
-        onChangeExpendedKeys={onChangeExpendedKeys}
-        onGetChildList={onGetChildList}
-      />
+      <>
+        {row.allChildrenCount ? (
+          <GetTreeIcon
+            row={row}
+            onChangeExpendedKeys={onChangeExpendedKeys}
+            onGetChildList={onGetChildList}
+          />
+        ) : (
+          <LineWrap isChild={row.parentId}>
+            <div className="topLine" />
+            <div className="bottomLine" />
+            <div className="rightLine" />
+          </LineWrap>
+        )}
+      </>
     )
   }
 
@@ -448,7 +513,6 @@ const DemandTree = (props: Props) => {
       <TableStyleBox
         rowKey="id"
         columns={selectColum}
-        rowClassName=""
         dataSource={record.treeChild}
         pagination={false}
         scroll={{

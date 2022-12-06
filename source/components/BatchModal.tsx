@@ -241,7 +241,7 @@ const BatchModal = (props: Props) => {
                 name="target"
                 rules={[{ required: true, message: '' }]}
               >
-                <DatePicker allowClear />
+                <DatePicker allowClear style={{ width: '100%' }} />
               </Form.Item>
             )}
             {!String(chooseType).includes('expected_') &&

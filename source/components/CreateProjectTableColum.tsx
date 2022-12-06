@@ -121,13 +121,11 @@ export const useDynamicColumns = (state: any) => {
             style={{
               display: 'flex',
               alignItems: 'center',
+              position: 'relative',
+              paddingLeft: record.level ? (Number(record.level) - 1) * 24 : 0,
             }}
           >
-            {(state.isTree &&
-              record.demand &&
-              Number(record.demand) !== 0 &&
-              state.onChangeTree(record)) ||
-              ''}
+            {state.isTree && state.onChangeTree(record)}
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -157,6 +155,9 @@ export const useDynamicColumns = (state: any) => {
                   isName
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}
+                  maxWidth={
+                    state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
+                  }
                 >
                   {text}
                 </ListNameWrap>

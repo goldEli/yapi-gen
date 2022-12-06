@@ -666,12 +666,10 @@ export const getGroupList: any = async () => {
       all: 1,
     },
   })
-  return {
-    list: response.data.map((i: any) => ({
-      id: i.id,
-      name: i.name,
-    })),
-  }
+  return response.data.map((i: any) => ({
+    id: i.id,
+    name: i.name,
+  }))
 }
 
 // 添加分组

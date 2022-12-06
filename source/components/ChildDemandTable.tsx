@@ -292,18 +292,20 @@ const ChildDemandTable = (props: {
       onVisibleChange={onVisibleChange}
       content={
         <div style={{ maxHeight: 310, overflow: 'auto' }}>
-          {!!dataList?.list && dataList?.list.length && (
-            <Table
-              rowKey="id"
-              pagination={false}
-              columns={columnsChild}
-              dataSource={dataList?.list}
-              scroll={{ x: 'max-content' }}
-              tableLayout="auto"
-              style={{ borderRadius: 4, overflow: 'hidden' }}
-            />
-          )}
-          {!(!!dataList?.list && dataList?.list.length) && <NoData />}
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              <Table
+                rowKey="id"
+                pagination={false}
+                columns={columnsChild}
+                dataSource={dataList?.list}
+                scroll={{ x: 'max-content' }}
+                tableLayout="auto"
+                style={{ borderRadius: 4, overflow: 'hidden' }}
+              />
+            ) : (
+              <NoData />
+            ))}
         </div>
       }
     >

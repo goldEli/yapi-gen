@@ -102,7 +102,7 @@ function getTypeComponent(
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
-        style={{ minWidth: 192 }}
+        style={{ width: '100%', minWidth: 192 }}
       />
     )
   } else if (params?.attr === 'textarea') {
@@ -115,7 +115,7 @@ function getTypeComponent(
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
         ref={inputRef}
-        style={{ minWidth: 192 }}
+        style={{ width: '100%', minWidth: 192 }}
         autoComplete="off"
       />
     )

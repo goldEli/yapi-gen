@@ -109,9 +109,9 @@ const WrapLeftBox = (props: Props) => {
 
   const getGroupData = async () => {
     const result = await getGroupList()
-    setGroupList(result)
+    setGroupList({ list: result })
     setSelectGroupList(
-      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
+      result?.map((i: any) => ({ label: i.name, value: i.id })),
     )
   }
 
@@ -297,25 +297,29 @@ const WrapLeftBox = (props: Props) => {
         </CloseWrap>
       </GroupBox>
       <GroupItems isPermission={props.isPermission}>
-        {!!groupList.list &&
-          groupList.list?.length > 0 &&
-          groupList.list?.map((item: any) => (
-            <TitleBox
-              isSpace
-              onClick={() => onChangeGroup(item)}
-              key={item.id}
-              idx={item.id === groupId}
-            >
-              {item.name}
-              <MoreDropdown
-                onChangeVisible={setIsMoreVisible}
-                menu={menu(item)}
-                isMoreVisible={isMoreVisible}
-                color="#969799"
-              />
-            </TitleBox>
+        {!!groupList?.list &&
+          (groupList?.list?.length > 0 ? (
+            <>
+              {groupList.list?.map((item: any) => (
+                <TitleBox
+                  isSpace
+                  onClick={() => onChangeGroup(item)}
+                  key={item.id}
+                  idx={item.id === groupId}
+                >
+                  {item.name}
+                  <MoreDropdown
+                    onChangeVisible={setIsMoreVisible}
+                    menu={menu(item)}
+                    isMoreVisible={isMoreVisible}
+                    color="#969799"
+                  />
+                </TitleBox>
+              ))}
+            </>
+          ) : (
+            <NoData />
           ))}
-        {!(!!groupList.list && groupList.list?.length > 0) && <NoData />}
       </GroupItems>
     </WrapLeft>
   )

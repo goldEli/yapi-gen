@@ -15,6 +15,8 @@ const ExpendedWrap = styled(IconFont)({
   color: '#BBBDBF',
   fontSize: 16,
   cursor: 'pointer',
+  background: 'white',
+  zIndex: 1,
   '&: hover': {
     color: '#2877ff',
   },
@@ -280,10 +282,13 @@ const DividerWrap = styled(Divider)({
   margin: 0,
 })
 
-const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+const ListNameWrap = styled.div<{
+  isClose?: boolean
+  isName?: boolean
+  maxWidth?: any
+}>(
   {
-    padding: '10px 20px',
-    maxWidth: 500,
+    padding: '10px 0px',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -292,9 +297,10 @@ const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       color: '#2877ff',
     },
   },
-  ({ isClose, isName }) => ({
+  ({ isClose, isName, maxWidth }) => ({
     color: isClose ? '#969799' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
+    maxWidth: maxWidth || 500,
   }),
 )
 

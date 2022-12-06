@@ -120,6 +120,8 @@ export const getDemandList: any = async (params: any) => {
       allChildrenCount: i.all_child_story_count,
       allChildrenIds: i.all_child_ids,
       treeChild: getListItem(i.children) || null,
+      level: i.level,
+      isExpended: false,
     }))
   }
 
@@ -204,6 +206,8 @@ export const getDemandList: any = async (params: any) => {
         allChildrenCount: i.all_child_story_count,
         allChildrenIds: i.all_child_ids,
         treeChild: null,
+        isExpended: false,
+        level: 1,
       })),
     }
   }
