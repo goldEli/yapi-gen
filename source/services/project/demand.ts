@@ -593,6 +593,7 @@ export const getBatchEditConfig: any = async (params: any) => {
   return response.data?.map((i: any) => ({
     label: i.title,
     value: i.content,
-    options: i.values || [],
+    selectList: i.values || [],
+    attr: i.attr,
   }))
 }

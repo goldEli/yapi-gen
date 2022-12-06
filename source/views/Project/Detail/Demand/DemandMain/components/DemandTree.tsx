@@ -62,6 +62,11 @@ interface TreeIconProps {
 // 返回标题获取子需求列表icon
 const GetTreeIcon = (props: TreeIconProps) => {
   const [isExpended, setIsExpended] = useState(false)
+
+  // useEffect(() => {
+  //   setIsExpended(false)
+  // }, [props.row])
+
   const onChangeData = async () => {
     // 未展开并且是最顶级
     if (!isExpended && !props.row.parentId) {
@@ -443,6 +448,7 @@ const DemandTree = (props: Props) => {
       <TableStyleBox
         rowKey="id"
         columns={selectColum}
+        rowClassName=""
         dataSource={record.treeChild}
         pagination={false}
         scroll={{

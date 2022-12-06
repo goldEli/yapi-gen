@@ -1,13 +1,20 @@
 // 批量操作弹窗 -- 编辑及删除
+
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable complexity */
+
 import { useEffect, useState } from 'react'
 import DeleteConfirm from './DeleteConfirm'
 import CommonModal from './CommonModal'
-import { Checkbox, Form, message, Select } from 'antd'
+import { Checkbox, DatePicker, Form, message, Select } from 'antd'
 import { FormWrapDemand } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getParamsData, getTypeComponent } from '@/tools'
+import moment from 'moment'
 
 interface Props {
   isVisible: boolean
@@ -25,7 +32,9 @@ const BatchModal = (props: Props) => {
   const { memberList, selectAllStaffData } = useModel('project')
   const [chooseSelect, setChooseSelect] = useState<any>([])
   const [chooseType, setChooseType] = useState('')
-  const [chooseAfterList, setChooseAfterList] = useState<any>([])
+  const [chooseAfter, setChooseAfter] = useState<any>({})
+  // 需求类别的状态下拉
+  const [categoryStatusList, setCategoryStatusList] = useState<any>([])
   const { isRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -33,7 +42,6 @@ const BatchModal = (props: Props) => {
 
   // 获取批量编辑的下拉列表
   const getBatchEditConfigList = async () => {
-    // console.log('212112', memberList, selectAllStaffData)
     const response = await getBatchEditConfig({
       projectId,
       demandIds: props.selectRows?.map((i: any) => i.id),
@@ -48,8 +56,49 @@ const BatchModal = (props: Props) => {
   }, [props.type])
 
   useEffect(() => {
-    let array: any = []
-    setChooseAfterList(array)
+    const list = JSON.parse(JSON.stringify(chooseSelect))
+    let filterItem: any = {}
+    if (chooseType) {
+      // 筛选对应key的下拉值
+      filterItem = list?.filter((i: any) => i.value === chooseType)[0]
+      if (
+        chooseType === 'users' ||
+        (['user_select_checkbox', 'user_select'].includes(filterItem.attr) &&
+          filterItem.selectList[0] === 'projectMember')
+      ) {
+        // 单独处理项目人员下拉
+        filterItem.selectList = memberList?.map((i: any) => ({
+          label: i.name,
+          value: i.id,
+        }))
+      } else if (
+        chooseType === 'copysend' ||
+        (['user_select_checkbox', 'user_select'].includes(filterItem.attr) &&
+          filterItem.selectList[0] === 'companyMember')
+      ) {
+        // 单独处理公司人员下拉
+        filterItem.selectList = selectAllStaffData
+      } else if (chooseType === 'category_id') {
+        // 单独处理需求类别下拉
+        filterItem.selectList = filterItem.selectList?.map((i: any) => ({
+          label: i.content,
+          value: i.list[0].category_id,
+          list: i.list?.map((k: any) => ({
+            label: k.status.content,
+            value: k.status.id,
+          })),
+        }))
+      } else {
+        // 其余的下拉，如果是自定义字段则单独处理
+        filterItem.selectList = String(chooseType).includes('custom_')
+          ? filterItem.selectList
+          : filterItem.selectList?.map((i: any) => ({
+              label: i.content,
+              value: i.id,
+            }))
+      }
+    }
+    setChooseAfter(filterItem)
   }, [chooseType])
 
   // 批量删除的取消事件
@@ -74,20 +123,73 @@ const BatchModal = (props: Props) => {
     }
   }
 
+  // 批量编辑的取消事件
+  const onEditClose = () => {
+    props.onChangeVisible()
+    setChooseAfter({})
+    setCategoryStatusList([])
+    form.resetFields()
+  }
+
   // 批量编辑的确认事件
   const onConfirmEdit = async () => {
     await form.validateFields()
+    let params: any = {
+      projectId,
+      demandIds: props.selectRows?.map((i: any) => i.id),
+      type: chooseType,
+    }
     const values = form.getFieldsValue()
-    values.projectId = projectId
-    values.demandIds = props.selectRows?.map((i: any) => i.id)
+    if (chooseType === 'category_id') {
+      params.target = {
+        category_id: values.target,
+        status: values.status,
+      }
+    } else {
+      // 如果是时间组件的话，需要处理成字符串，还要加是否有时分秒判断
+      params.target =
+        ['expected_start_at', 'expected_end_at'].includes(chooseType) ||
+        chooseAfter.attr === 'date'
+          ? moment(values.target).format(
+              chooseAfter.selectList[0] === 'datetime'
+                ? 'YYYY-MM-DD HH:mm:ss'
+                : 'YYYY-MM-DD',
+            )
+          : values.target
+    }
     try {
-      await batchEdit(values)
+      await batchEdit(params)
       message.success(t('common.editSuccess'))
-      form.resetFields()
+      onEditClose()
       props.onClose()
     } catch (error) {
       //
     }
+  }
+
+  // 单独控制需求类别的状态
+  const onChangeCategory = (value: any) => {
+    if (!value) {
+      form.setFieldsValue({
+        status: '',
+      })
+    }
+    setCategoryStatusList(
+      value
+        ? chooseAfter.selectList?.filter((i: any) => i.value === value)[0]?.list
+        : [],
+    )
+  }
+
+  // 切换更新属性
+  const onChangeType = (value: any) => {
+    setChooseAfter({})
+    setCategoryStatusList([])
+    form.resetFields()
+    form.setFieldsValue({
+      type: value,
+    })
+    setChooseType(value)
   }
 
   return (
@@ -108,7 +210,7 @@ const BatchModal = (props: Props) => {
       {props.type === 'edit' && (
         <CommonModal
           isVisible={props.isVisible}
-          onClose={props.onChangeVisible}
+          onClose={onEditClose}
           title={t('version2.editTitle', { count: props.selectRows?.length })}
           onConfirm={onConfirmEdit}
         >
@@ -130,23 +232,82 @@ const BatchModal = (props: Props) => {
                 allowClear
                 optionFilterProp="label"
                 options={chooseSelect}
-                onChange={value => setChooseType(value)}
+                onChange={onChangeType}
               />
             </Form.Item>
-            <Form.Item
-              label={t('version2.updateAfter')}
-              name="target"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Select
-                placeholder={t('common.pleaseSelect')}
-                showArrow
-                showSearch
-                getPopupContainer={node => node}
-                allowClear
-                optionFilterProp="label"
-              />
-            </Form.Item>
+            {String(chooseType).includes('expected_') && (
+              <Form.Item
+                label={t('version2.updateAfter')}
+                name="target"
+                rules={[{ required: true, message: '' }]}
+              >
+                <DatePicker allowClear />
+              </Form.Item>
+            )}
+            {!String(chooseType).includes('expected_') &&
+              !String(chooseType).includes('custom_') && (
+                <Form.Item
+                  label={t('version2.updateAfter')}
+                  name="target"
+                  rules={[{ required: true, message: '' }]}
+                >
+                  <Select
+                    showSearch
+                    showArrow
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    allowClear
+                    options={chooseAfter.selectList}
+                    onChange={
+                      chooseType === 'category_id' ? onChangeCategory : void 0
+                    }
+                    mode={
+                      [
+                        'priority',
+                        'iterate_id',
+                        'parent_id',
+                        'class_id',
+                        'category_id',
+                      ].includes(chooseType)
+                        ? ('' as any)
+                        : 'multiple'
+                    }
+                  />
+                </Form.Item>
+              )}
+            {chooseType && String(chooseType).includes('custom_') && (
+              <Form.Item
+                label={t('version2.updateAfter')}
+                name="target"
+                rules={[{ required: true, message: '' }]}
+              >
+                {getTypeComponent(
+                  {
+                    attr: chooseAfter.attr,
+                    remarks: '',
+                    value: chooseAfter.selectList,
+                  },
+                  false,
+                )}
+              </Form.Item>
+            )}
+            {chooseType === 'category_id' && (
+              <Form.Item
+                label="更新后状态值"
+                name="status"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={categoryStatusList}
+                />
+              </Form.Item>
+            )}
           </FormWrapDemand>
         </CommonModal>
       )}

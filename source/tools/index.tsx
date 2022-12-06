@@ -1,9 +1,9 @@
+// 使用多次的公共方法
+
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable max-statements-per-line */
-// 使用多次的公共方法
-
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
