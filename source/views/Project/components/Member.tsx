@@ -336,36 +336,40 @@ const Member = (props: Props) => {
         onOk={handleOk}
         onChange={onChangeMember}
         plugArea={
-          <Form form={form}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
-                {t('project.joinPermission')}
-                <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
-                  *
+          <div style={{ marginBottom: '25px' }}>
+            <Form form={form}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span
+                  style={{ fontSize: 14, color: '#323233', marginRight: 16 }}
+                >
+                  {t('project.joinPermission')}
+                  <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
+                    *
+                  </span>
                 </span>
-              </span>
-              <Form.Item
-                name="userGroupId"
-                noStyle
-                rules={[{ required: true, message: '' }]}
-              >
-                <Select
-                  placeholder={t('project.pleasePermission')}
-                  getPopupContainer={node => node}
-                  style={{ width: 192 }}
-                  options={projectPermission}
-                  showSearch
-                  showArrow
-                  optionFilterProp="label"
-                  defaultValue={
-                    projectPermission?.filter(
-                      (i: any) => i.tagLabel === '参与者',
-                    )[0]?.value
-                  }
-                />
-              </Form.Item>
-            </div>
-          </Form>
+                <Form.Item
+                  name="userGroupId"
+                  noStyle
+                  rules={[{ required: true, message: '' }]}
+                >
+                  <Select
+                    placeholder={t('project.pleasePermission')}
+                    getPopupContainer={node => node}
+                    style={{ width: 192 }}
+                    options={projectPermission}
+                    showSearch
+                    showArrow
+                    optionFilterProp="label"
+                    defaultValue={
+                      projectPermission?.filter(
+                        (i: any) => i.tagLabel === '参与者',
+                      )[0]?.value
+                    }
+                  />
+                </Form.Item>
+              </div>
+            </Form>
+          </div>
         }
       />
 

@@ -17,6 +17,11 @@ import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
 import { useDispatch } from '../../../store'
 import { getStatus } from '../../../store/waterState'
+import {
+  ConfigProvider as KitConfigProvider,
+  FilesTransferProvider,
+  FileView,
+} from '@xyfe/uikit'
 
 const Wrap = styled.div`
   display: flex;
@@ -131,17 +136,22 @@ export const Container = () => {
   }, [loginInfo, userInfo])
 
   return (
-    <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
-      {userInfo?.company_permissions?.length && (
-        <Wrap>
-          <Side />
-          <Main>
-            <Outlet />
-          </Main>
-          <Next visible={isNextVisible} close={() => setIsNextVisible(false)} />
-        </Wrap>
-      )}
-      {!userInfo?.company_permissions?.length && <NoPermission />}
-    </ConfigProvider>
+    <KitConfigProvider local={language as any}>
+      <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
+        {userInfo?.company_permissions?.length && (
+          <Wrap>
+            <Side />
+            <Main>
+              <Outlet />
+            </Main>
+            <Next
+              visible={isNextVisible}
+              close={() => setIsNextVisible(false)}
+            />
+          </Wrap>
+        )}
+        {!userInfo?.company_permissions?.length && <NoPermission />}
+      </ConfigProvider>
+    </KitConfigProvider>
   )
 }
