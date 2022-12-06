@@ -115,10 +115,10 @@ export const Container = () => {
 
     if (routerMap.length >= 1) {
       routerMap.concat('日志')
-      if (!sessionStorage.getItem('saveRouter')) {
+      if (!localStorage.getItem('saveRouter')) {
         for (let i = 0; i <= jumpList.length; i++) {
           if (routerMap?.includes(jumpList[i].name)) {
-            sessionStorage.setItem('saveRouter', '首次登录')
+            localStorage.setItem('saveRouter', '首次登录')
             navigate(jumpList[i].path)
             break
           }

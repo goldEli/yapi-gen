@@ -145,3 +145,23 @@ export const getRoleList: any = async () => {
   const response = await http.get('getRoleList')
   return response
 }
+
+export const getAddDepartMember = async () => {
+  const response = await http.get('/b/user/department_user_list')
+  const companyList: any = []
+  response.data.forEach((i: any) => {
+    companyList.push(i.staffs)
+    if (i.children) {
+      i.children.forEach((j: any) => {
+        companyList.push(j.staffs)
+      })
+    }
+  })
+
+  const list = {
+    companyList: companyList.flat(),
+    departments: response.data,
+  }
+
+  return list
+}
