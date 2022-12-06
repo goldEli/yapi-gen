@@ -17,6 +17,7 @@ export const getTicket = () => {
   const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
   url.searchParams.set('redirect', location.href)
+  url.searchParams.set('target', 'agile')
   url.searchParams.set('language', localStorage.getItem('language') || 'zh')
   localStorage.removeItem('language')
 
@@ -47,7 +48,6 @@ export const login = async () => {
   try {
     data = await getLoginDetail(true)
   } catch (error) {
-
     //
   }
   sessionStorage.removeItem('IS_CHECK_TICKET')
