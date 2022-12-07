@@ -108,7 +108,8 @@ export const ItemWrap = styled.div({
   alignItems: 'center',
   '.changeSize': {
     fontSize: 12,
-    marginTop: 4,
+
+    marginLeft: 10,
   },
   '&: hover': {
     [IconfontCloseWrap.toString()]: {
@@ -307,13 +308,13 @@ const ExamineItem = (props: Props) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: 4,
+                margin: '10px 0 4px 0',
               }}
             >
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+
                   alignItems: 'center',
                 }}
               >
@@ -341,7 +342,7 @@ const ExamineItem = (props: Props) => {
                 <IconFont
                   style={{
                     fontSize: 16,
-                    margin: '-20px 8px 0',
+                    margin: '0px 8px 0',
                     color: '#BBBDBF',
                   }}
                   type={
