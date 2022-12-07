@@ -158,6 +158,7 @@ const arrorText = css`
   font-weight: 400;
   color: #323233;
   line-height: 20px;
+  margin-left: 10px;
 `
 const symbol = css`
   color: #bbbdbf;
@@ -172,7 +173,7 @@ const ArrorItem = styled.div`
   position: relative;
   height: 50px;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -765,7 +766,7 @@ export const ShapeContent = (props: any) => {
                                     margin: '0 8px',
                                     color: '#BBBDBF',
                                     position: 'relative',
-                                    top: '-13px',
+                                    top: '0px',
                                   }}
                                   type={
                                     item2.operator === 1
