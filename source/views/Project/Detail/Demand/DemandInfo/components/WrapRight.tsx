@@ -41,9 +41,11 @@ import {
   First,
   Gred,
   GredParent,
+  RedCss,
   Second,
 } from '../../components/UploadAttach'
 import { imgs } from '@/views/Information/components/LookDay'
+import { delCommonAt } from '@/services/user'
 
 const WrapRight = styled.div({
   minWidth: '200px',
@@ -171,6 +173,7 @@ const TextWrap = styled.div({
   '.common': {
     fontSize: 12,
     color: '#969799',
+    whiteSpace: 'nowrap',
   },
   '.content': {
     color: '#646566',
@@ -305,7 +308,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       getList()
     }
   }
-
+  const onTapRemove = async (attid: any, id: any) => {
+    await delCommonAt({
+      project_id: projectId,
+      comment_id: attid,
+      att_id: id,
+    })
+    getList()
+  }
   const onChangeState = async (item: any) => {
     try {
       await updatePriority({ demandId, priorityId: item.priorityId, projectId })
@@ -776,13 +786,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                           gap: '10px',
                         }}
                       >
-                        {item.attachment.map((item: any) => {
+                        {item.attachment.map((i: any) => {
                           return (
                             <Card
                               style={{
                                 margin: 0,
                               }}
-                              key={item.id}
+                              key={i.id}
                             >
                               <BigWrap
                                 style={{
@@ -795,18 +805,18 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     position: 'relative',
                                   }}
                                 >
-                                  {imgs.includes(item.attachment.ext) && (
+                                  {imgs.includes(i.attachment.ext) && (
                                     <img
                                       style={{
                                         width: '40px',
                                         height: '40px',
                                         borderRadius: '4px',
                                       }}
-                                      src={item.attachment.path}
+                                      src={i.attachment.path}
                                       alt=""
                                     />
                                   )}
-                                  {!imgs.includes(item.attachment.ext) && (
+                                  {!imgs.includes(i.attachment.ext) && (
                                     <IconFont
                                       style={{
                                         fontSize: 40,
@@ -814,7 +824,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                         borderRadius: '8px',
                                       }}
                                       type={
-                                        fileIconMap[item.attachment.ext] ||
+                                        fileIconMap[i.attachment.ext] ||
                                         'colorunknown'
                                       }
                                     />
@@ -831,7 +841,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                       wordBreak: 'break-all',
                                     }}
                                   >
-                                    {item.attachment.name}
+                                    {i.attachment.name}
                                   </div>
                                   <First
                                     style={{
@@ -843,7 +853,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     }}
                                   >
                                     <span>
-                                      {bytesToSize(item?.attachment.size) ?? ''}
+                                      {bytesToSize(i?.attachment.size) ?? ''}
                                     </span>
                                     <span
                                       style={{
@@ -857,9 +867,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                         marginRight: '12px',
                                       }}
                                     >
-                                      {item.attachment.name}
+                                      {i.user_name}
                                     </span>
-                                    <span>{item.time}</span>
+                                    <span>{i.attachment.created_at}</span>
                                   </First>
                                   <Second
                                     style={{
@@ -869,12 +879,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     <BlueCss
                                       onClick={() =>
                                         onDownload(
-                                          item.attachment.path,
-                                          item.attachment.name,
+                                          i.attachment.path,
+                                          i.attachment.name,
                                         )
                                       }
                                       style={{
-                                        marginRight: '12px',
                                         cursor: 'pointer',
                                         fontSize: '12px',
                                         color: '#2877ff',
@@ -882,6 +891,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     >
                                       {t('p2.download') as unknown as string}
                                     </BlueCss>
+                                    <RedCss
+                                      onClick={() => onTapRemove(item.id, i.id)}
+                                    >
+                                      {t('p2.delete')}
+                                    </RedCss>
                                   </Second>
                                 </div>
                               </BigWrap>

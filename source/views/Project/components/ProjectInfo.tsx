@@ -60,7 +60,7 @@ const ProjectInfo = (props: Props) => {
       isShowFooter={true}
     >
       <div
-        style={{ maxHeight: 544, overflow: 'auto', padding: '0 16px 16px 0' }}
+        style={{ maxHeight: 544, overflow: 'auto', padding: '0 16px 86px 0' }}
       >
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
@@ -79,7 +79,6 @@ const ProjectInfo = (props: Props) => {
         <div
           style={{
             display: 'flex',
-            paddingBottom: '175px',
           }}
         >
           <div

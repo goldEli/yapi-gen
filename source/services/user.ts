@@ -75,3 +75,9 @@ export const getGlobalGeneral: any = async () => {
   const response = await http.get('getGlobalGeneral')
   return response.data
 }
+
+// 删除评论下的附件
+export const delCommonAt: any = async (params: any) => {
+  const response = await http.delete('/b/story/comment/delete_att', params)
+  return response.data
+}
