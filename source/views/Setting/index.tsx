@@ -144,11 +144,11 @@ const Setting = () => {
     },
     {
       name: t('v2_1_1.configuration'),
-      icon: 'solution',
+      icon: 'slider-02',
       path: 'universal',
       isHidden: getIsPermission(
         userInfo?.company_permissions,
-        'b/company/login_logs',
+        'b/company/config',
       ),
     },
   ]

@@ -207,7 +207,7 @@ const Member = (props: Props) => {
     const res = await getProjectPermission({ projectId: props.projectId })
 
     setRoleOptions(res.list)
-    const res2 = await getAddDepartMember()
+    const res2 = await getAddDepartMember(props.projectId)
 
     const arr = res2.companyList.map((i: any) => {
       return {
@@ -238,7 +238,7 @@ const Member = (props: Props) => {
 
   useEffect(() => {
     init()
-  }, [])
+  }, [isVisible])
 
   const onClickMenu = async (item: any, row: any) => {
     try {
