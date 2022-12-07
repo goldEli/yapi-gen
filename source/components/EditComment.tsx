@@ -143,7 +143,7 @@ const EditComment = (props: any) => {
 
     spanNode1.contentEditable = false as unknown as string
 
-    spanNode1.setAttribute('data-userId', value.roleName)
+    spanNode1.setAttribute('data-userId', value.id)
     spanNode2.innerHTML = '&nbsp;'
     let frag = document.createDocumentFragment(),
       node,
