@@ -142,11 +142,11 @@ const arron = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: #a4acf5;
   border-radius: 16px 16px 16px 16px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -158,6 +158,7 @@ const arrorText = css`
   font-weight: 400;
   color: #323233;
   line-height: 20px;
+  margin-left: 10px;
 `
 const symbol = css`
   color: #bbbdbf;
@@ -170,9 +171,9 @@ const symbol = css`
 `
 const ArrorItem = styled.div`
   position: relative;
-  height: 60px;
+  height: 50px;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -394,8 +395,15 @@ export const ShapeContent = (props: any) => {
 
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] =
-        res?.fields[key].true_value === null ? [] : res?.fields[key].true_value
+      if (res?.fields[key].type === 'select') {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null &&
+          res?.fields[key].children.some(
+            (i: any) => i.id === res?.fields[key].true_value,
+          )
+            ? []
+            : res?.fields[key].true_value
+      }
     }
 
     form.setFieldsValue(form1Obj)
@@ -758,7 +766,7 @@ export const ShapeContent = (props: any) => {
                                     margin: '0 8px',
                                     color: '#BBBDBF',
                                     position: 'relative',
-                                    top: '-13px',
+                                    top: '0px',
                                   }}
                                   type={
                                     item2.operator === 1

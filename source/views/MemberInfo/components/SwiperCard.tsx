@@ -113,7 +113,7 @@ const SwiperCard = (props: {
       <TextWarp>
         <NameWrap show={props.show}>{props.name}</NameWrap>
       </TextWarp>
-      <Triangle />
+      {/* <Triangle /> */}
     </Warp>
   )
 }

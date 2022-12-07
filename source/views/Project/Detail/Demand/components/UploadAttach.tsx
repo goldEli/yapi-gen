@@ -83,7 +83,7 @@ export const BlueCss = styled.span`
   box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
 `
 
-const RedCss = styled(BlueCss)`
+export const RedCss = styled(BlueCss)`
   color: #ff5c5e;
   margin-left: 12px;
 `

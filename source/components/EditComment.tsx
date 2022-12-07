@@ -2,6 +2,7 @@
 //  评论的弹框
 /* eslint-disable no-cond-assign */
 import { uploadFileByTask } from '@/services/cos'
+import { getStaffList2 } from '@/services/staff'
 import { onPaste } from '@/tools'
 import { LabelTitle } from '@/views/Information/components/WhiteDay'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
@@ -9,7 +10,7 @@ import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/
 import styled from '@emotion/styled'
 import { Form, message, Popover, Upload } from 'antd'
 import { t } from 'i18next'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CommonModal from './CommonModal'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
@@ -38,65 +39,26 @@ const Wrap = styled.div<{ pl: string }>`
     color: gray;
   }
 `
-const arr = [
-  {
-    avatar: '',
-    id: 17,
-    name: 'dawenwen-ceshi ',
-    nickname: '',
-    positionName: null,
-    roleName: '参与者',
-  },
-  {
-    avatar: '',
-    id: 18,
-    name: 'dawenwen-ceshi ',
-    nickname: '',
-    positionName: null,
-    roleName: '参与者',
-  },
-  {
-    avatar: '',
-    id: 19,
-    name: 'dawenwen-ceshi ',
-    nickname: '',
-    positionName: null,
-    roleName: '参与者',
-  },
-  {
-    avatar: '',
-    id: 20,
-    name: 'dawenwen-ceshi ',
-    nickname: '',
-    positionName: null,
-    roleName: '参与者',
-  },
-  {
-    avatar: '',
-    id: 21,
-    name: 'dawenwen-ceshi ',
-    nickname: '',
-    positionName: null,
-    roleName: '参与者',
-  },
-]
+
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
   const [isOpen, setIsOpen] = useState(false)
   const [plan, setPlan] = useState(false)
   const [focusNode, setFocusNode] = useState<any>(null)
   const [focusOffset, setFocusOffset] = useState<any>(null)
+  const [arr, setArr] = useState<any>(null)
 
   // 复制事件
   const handlePaste = async (event: any) => {
-    // 阻止默认图片的复制
     event.preventDefault()
     const result: any = await onPaste(event)
-    const imgs = await uploadFileByTask(result.data, result.data.name, 'file')
+    // 阻止默认图片的复制
+
     if (result.type === 'string') {
       // 粘贴文本
       document.execCommand('insertText', false, result.data)
     } else {
+      const imgs = await uploadFileByTask(result.data, result.data.name, 'file')
       // 替换图片src
       const sel = window.getSelection()
       if (sel && sel.rangeCount === 1 && sel.isCollapsed) {
@@ -112,8 +74,18 @@ const EditComment = (props: any) => {
     }
   }
 
-  const onSend = () => {
-    const inner = document.getElementById('inner')
+  const init = async () => {
+    const companyList = await getStaffList2({ all: 1 })
+
+    const filterCompanyList = companyList.map((item: any) => ({
+      id: item.id,
+      name: item.name,
+      avatar: item.avatar,
+      nickname: item.nickname,
+      positionName: null,
+      roleName: item.roleName,
+    }))
+    setArr(filterCompanyList)
   }
 
   const onUpload = async ({ file }: { file: any }) => {
@@ -167,11 +139,11 @@ const EditComment = (props: any) => {
     const spanNode1 = document.createElement('span')
     const spanNode2 = document.createElement('span')
     spanNode1.style.color = '#2877FF'
-    spanNode1.innerHTML = `@${value.roleName}`
+    spanNode1.innerHTML = `@${value.name}`
 
     spanNode1.contentEditable = false as unknown as string
 
-    spanNode1.setAttribute('data-userId', value.roleName)
+    spanNode1.setAttribute('data-userId', value.id)
     spanNode2.innerHTML = '&nbsp;'
     let frag = document.createDocumentFragment(),
       node,
@@ -193,10 +165,10 @@ const EditComment = (props: any) => {
       const spanNode1 = document.createElement('span')
       const spanNode2 = document.createElement('span')
       spanNode1.style.color = '#2877FF'
-      spanNode1.innerHTML = `@${value.roleName}`
+      spanNode1.innerHTML = `@${value.name}`
       spanNode1.contentEditable = false as unknown as string
 
-      spanNode1.setAttribute('data-userId', value.roleName)
+      spanNode1.setAttribute('data-userId', value.name)
       spanNode2.innerHTML = '&nbsp;'
       inner?.appendChild(spanNode1)
       inner?.appendChild(spanNode2)
@@ -214,6 +186,9 @@ const EditComment = (props: any) => {
       setFocusOffset(selection.focusOffset)
     }
   }
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <CommonModal

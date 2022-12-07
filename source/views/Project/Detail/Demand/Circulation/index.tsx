@@ -95,7 +95,7 @@ const SpanWrap = styled.span<{ size?: any; weight?: any; color?: any }>(
 
 const TextWrap = styled.div({
   fontSize: 16,
-  fontWeight: 400,
+  fontWeight: 'normal',
   color: '#323233',
 })
 

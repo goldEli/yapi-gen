@@ -320,7 +320,16 @@ const Staff = () => {
       items={[
         {
           key: '1',
-          label: <span onClick={showModal}>{t('common.setField')}</span>,
+          label: (
+            <span
+              style={{
+                padding: '0px 12px',
+              }}
+              onClick={showModal}
+            >
+              {t('common.setField')}
+            </span>
+          ),
         },
       ]}
     />

@@ -320,6 +320,7 @@ const onPaste = (event: any) => {
   return new Promise((resovle, reject) => {
     for (let i = 0, len = event.clipboardData.items.length; i < len; i++) {
       const item = event.clipboardData.items[i]
+
       if (item.kind === 'file') {
         const file = item.getAsFile()
         if (item.type.match('^image/')) {
@@ -334,6 +335,12 @@ const onPaste = (event: any) => {
             type: 'file',
           })
         }
+      } else if (item.kind === 'string') {
+        let str = event.clipboardData.getData('text')
+        resovle({
+          data: str,
+          type: 'string',
+        })
       } else {
         message.error('不支持粘贴该类型')
         reject(new Error('不支持粘贴该类型'))

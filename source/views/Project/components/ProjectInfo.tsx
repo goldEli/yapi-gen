@@ -59,7 +59,9 @@ const ProjectInfo = (props: Props) => {
       onClose={props.onChangeVisible}
       isShowFooter
     >
-      <div style={{ height: 544, overflow: 'auto', padding: '0 16px 16px 0' }}>
+      <div
+        style={{ maxHeight: 544, overflow: 'auto', padding: '0 16px 86px 0' }}
+      >
         <PosterWrap>
           <img src={projectInfo.cover} alt="" />
           <div
