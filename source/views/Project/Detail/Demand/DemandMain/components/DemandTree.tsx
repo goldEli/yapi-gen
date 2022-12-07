@@ -1,11 +1,12 @@
 // 需求主页-需求树形模式
 
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu, Table, Checkbox } from 'antd'
+import { Pagination, message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -43,11 +44,12 @@ const DataWrap = styled.div({
 const LineWrap = styled.div<{
   isTop?: any
   isBottom?: any
+  isLeft?: any
   isRight?: any
-  isChild?: any
+  isLeftBottom?: any
 }>(
   {
-    position: 'relative',
+    position: 'absolute',
     height: 52,
     display: 'flex',
     alignItems: 'center',
@@ -57,20 +59,27 @@ const LineWrap = styled.div<{
       position: 'absolute',
     },
   },
-  ({ isTop, isBottom, isRight }) => ({
+  ({ isTop, isBottom, isRight, isLeft, isLeftBottom }) => ({
     '.topLine': {
       display: isTop ? 'block' : 'none',
-      height: 20,
-      top: 0,
       width: 1,
-      left: 8,
+      left: -16,
+      height: 26,
+      top: 0,
     },
     '.bottomLine': {
       display: isBottom ? 'block' : 'none',
-      height: 20,
+      height: 26,
       bottom: 0,
       width: 1,
       left: 8,
+    },
+    '.leftLine': {
+      display: isLeft ? 'block' : 'none',
+      width: 15,
+      bottom: 26,
+      height: 1,
+      left: -16,
     },
     '.rightLine': {
       display: isRight ? 'block' : 'none',
@@ -79,11 +88,13 @@ const LineWrap = styled.div<{
       height: 1,
       left: 6,
     },
-  }),
-  ({ isChild }) => ({
-    width: isChild ? 1 : 'inherit',
-    left: isChild ? -16 : 0,
-    background: isChild ? '#ECEDEF' : '',
+    '.leftBottomLine': {
+      display: isLeftBottom ? 'block' : 'none',
+      width: 1,
+      bottom: 0,
+      height: 26,
+      left: -16,
+    },
   }),
 )
 
@@ -104,35 +115,43 @@ interface Props {
 interface TreeIconProps {
   row: any
   onChangeExpendedKeys(values: any): void
-  onGetChildList(values: any): void
+  onGetChildList(): void
 }
 
 // 返回标题获取子需求列表icon
 const GetTreeIcon = (props: TreeIconProps) => {
-  const [isExpended, setIsExpended] = useState(false)
-
-  // useEffect(() => {
-  //   setIsExpended(false)
-  // }, [props.row])
-
   const onChangeData = async () => {
     // 未展开并且是最顶级
-    if (!isExpended && !props.row.parentId) {
-      await props.onGetChildList(props.row?.id)
-    }
-    setIsExpended(!isExpended)
+    await props.onGetChildList()
     props.onChangeExpendedKeys(props.row?.id)
   }
   return (
-    <LineWrap isBottom>
-      <ExpendedWrap
-        onClick={onChangeData}
-        type={isExpended ? 'add-subtract' : 'add-square-big'}
-      />
-      <div className="topLine" />
-      <div className="bottomLine" />
-      <div className="rightLine" />
-    </LineWrap>
+    <div
+      style={{ display: 'flex', alignItems: 'center', position: 'relative' }}
+    >
+      {props.row.demand > 0 && (
+        <ExpendedWrap
+          onClick={onChangeData}
+          type={props.row.isExpended ? 'add-subtract' : 'add-square-big'}
+        />
+      )}
+      {props.row.demand <= 0 && <div style={{ marginLeft: 4 }} />}
+      <LineWrap
+        isBottom={props.row.isExpended}
+        isTop={props.row.parentId > 0}
+        isLeft={props.row.parentId > 0}
+        isRight={
+          props.row.parentId > 0 &&
+          props.row.demand <= 0 &&
+          props.row.isExpended
+        }
+      >
+        <div className="topLine" />
+        <div className="bottomLine" />
+        <div className="leftLine" />
+        <div className="rightLine" />
+      </LineWrap>
+    </div>
   )
 }
 
@@ -273,20 +292,27 @@ const DemandTree = (props: Props) => {
   }
 
   // 点击获取子需求
-  const onGetChildList = async (id: any) => {
-    const dataChildren = await getDemandList({
-      tree: 1,
-      ...props.filterParams,
-      all: false,
-      parentId: id,
-      // 标识子需求
-      isChildren: true,
-    })
-    const currentItem: any = data?.list?.filter((i: any) => i.id === id)[0]
-    currentItem.treeChild = dataChildren?.list
+  const onGetChildList = async (row: any) => {
+    let dataChildren: any
+    if (!row.isExpended && !row.parendId) {
+      dataChildren = await getDemandList({
+        tree: 1,
+        ...props.filterParams,
+        all: false,
+        parentId: row.id,
+        // 标识子需求
+        isChildren: true,
+      })
+    }
+    row.children = row.parentId ? row.treeChild : dataChildren?.list
+    setData({ ...data, list: [...data.list] })
+    setTimeout(() => {
+      row.isExpended = !row.isExpended
+      setData({ ...data, list: [...data.list] })
+    }, 0)
   }
 
-  // 返回点击展开子需求图标
+  // 返回 点击展开子需求图标
   const getTreeIcon = (row: any) => {
     const onChangeExpendedKeys = (values: any) => {
       const hasId = expandedRowKeys.includes(values)
@@ -296,22 +322,26 @@ const DemandTree = (props: Props) => {
       setExpandedRowKeys(resultList)
     }
 
-    // console.log(row)
-
     return (
       <>
-        {row.allChildrenCount ? (
+        {(row.demand > 0 || row.parentId > 0) && (
           <GetTreeIcon
             row={row}
             onChangeExpendedKeys={onChangeExpendedKeys}
-            onGetChildList={onGetChildList}
+            onGetChildList={() => onGetChildList(row)}
           />
-        ) : (
-          <LineWrap isChild={row.parentId}>
-            <div className="topLine" />
-            <div className="bottomLine" />
-            <div className="rightLine" />
-          </LineWrap>
+        )}
+        {row.parentId > 0 && (
+          <div
+            className="aa"
+            style={{
+              height: 52,
+              width: 1,
+              background: '#ECEDEF',
+              position: 'absolute',
+              left: 8,
+            }}
+          />
         )}
       </>
     )
@@ -480,7 +510,7 @@ const DemandTree = (props: Props) => {
     }
   }, [data?.list])
 
-  const tableY =
+  const tableY: any =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   // 需求勾选
@@ -505,31 +535,6 @@ const DemandTree = (props: Props) => {
       setSelectedRowKeys([])
       onOperationCheckbox('remove')
     }
-  }
-
-  // 表格渲染子需求
-  const expendedRow = (record: any) => {
-    return (
-      <TableStyleBox
-        rowKey="id"
-        columns={selectColum}
-        dataSource={record.treeChild}
-        pagination={false}
-        scroll={{
-          x: 'max-content',
-        }}
-        showSorterTooltip={false}
-        expandable={{
-          expandedRowRender: row => expendedRow(row),
-          showExpandColumn: false,
-          expandedRowKeys,
-        }}
-        rowSelection={{
-          selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-          onSelect: (row, selected) => onSelectChange(row, selected),
-        }}
-      />
-    )
   }
 
   // 关闭创建子需求
@@ -558,7 +563,7 @@ const DemandTree = (props: Props) => {
               <TableStyleBox
                 rowKey="id"
                 columns={selectColum}
-                dataSource={props.data?.list}
+                dataSource={data?.list}
                 pagination={false}
                 scroll={{
                   x: 'max-content',
@@ -567,15 +572,14 @@ const DemandTree = (props: Props) => {
                 showSorterTooltip={false}
                 tableLayout="auto"
                 expandable={{
-                  expandedRowRender: record => expendedRow(record),
                   showExpandColumn: false,
-                  expandedRowKeys: expandedRowKeys,
+                  expandedRowKeys,
                 }}
                 rowSelection={{
                   selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
                   onSelect: (record, selected) =>
                     onSelectChange(record, selected),
-                  onSelectAll: onSelectAll,
+                  onSelectAll,
                 }}
               />
             ) : (
@@ -583,7 +587,7 @@ const DemandTree = (props: Props) => {
             ))}
         </Spin>
         <FloatBatch
-          isVisible={selectedRowKeys.length}
+          isVisible={selectedRowKeys.length > 0}
           onClose={() => onSelectAll(false)}
           selectRows={selectedRowKeys}
           onUpdate={props.onUpdate}
