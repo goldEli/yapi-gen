@@ -142,11 +142,11 @@ const arron = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: #a4acf5;
   border-radius: 16px 16px 16px 16px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -170,7 +170,7 @@ const symbol = css`
 `
 const ArrorItem = styled.div`
   position: relative;
-  height: 60px;
+  height: 50px;
   display: flex;
   flex-direction: column;
   display: flex;

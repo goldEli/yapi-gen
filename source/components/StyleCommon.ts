@@ -442,8 +442,8 @@ const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
 )
 
 const NameWrap = styled.div({
-  width: 32,
-  height: 32,
+  width: 24,
+  height: 24,
   borderRadius: 16,
   background: '#A4ACF5',
   color: 'white',
@@ -677,7 +677,7 @@ const SwiperWrap = styled.div`
   box-sizing: border-box;
   padding: 0 24px;
   height: 144px;
-  background-color: #f5f7fa;
+  background-color: white;
   overflow: hidden;
   & .swiper {
     overflow: visible;
