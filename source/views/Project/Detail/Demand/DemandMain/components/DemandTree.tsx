@@ -114,7 +114,7 @@ interface Props {
 
 interface TreeIconProps {
   row: any
-  onChangeExpendedKeys(values: any): void
+  // onChangeExpendedKeys(values: any): void
   onGetChildList(): void
 }
 
@@ -123,7 +123,7 @@ const GetTreeIcon = (props: TreeIconProps) => {
   const onChangeData = async () => {
     // 未展开并且是最顶级
     await props.onGetChildList()
-    props.onChangeExpendedKeys(props.row?.id)
+    // props.onChangeExpendedKeys(props.row?.id)
   }
   return (
     <div
@@ -136,7 +136,7 @@ const GetTreeIcon = (props: TreeIconProps) => {
         />
       )}
       {props.row.demand <= 0 && <div style={{ marginLeft: 4 }} />}
-      <LineWrap
+      {/* <LineWrap
         isBottom={props.row.isExpended}
         isTop={props.row.parentId > 0}
         isLeft={props.row.parentId > 0}
@@ -150,7 +150,7 @@ const GetTreeIcon = (props: TreeIconProps) => {
         <div className="bottomLine" />
         <div className="leftLine" />
         <div className="rightLine" />
-      </LineWrap>
+      </LineWrap> */}
     </div>
   )
 }
@@ -294,7 +294,9 @@ const DemandTree = (props: Props) => {
   // 点击获取子需求
   const onGetChildList = async (row: any) => {
     let dataChildren: any
-    if (!row.isExpended && !row.parendId) {
+    let resultList: any
+    // 第一级调用接口获取子级， 并且全部展开子级
+    if (!row.isExpended && !row.parentId) {
       dataChildren = await getDemandList({
         tree: 1,
         ...props.filterParams,
@@ -304,7 +306,26 @@ const DemandTree = (props: Props) => {
         isChildren: true,
       })
     }
-    row.children = row.parentId ? row.treeChild : dataChildren?.list
+
+    // 如果折叠起来，则在已勾选的数组中删掉，反之合并
+    if (row.isExpended) {
+      const lists = [
+        ...[row.id],
+        ...(row.allChildrenIds?.map((i: any) => i.id) || []),
+      ]
+      resultList = expandedRowKeys?.filter(
+        (i: any) => !lists.some((k: any) => k === i),
+      )
+    } else {
+      const lists = [
+        ...[row.id],
+        ...(row.allChildrenIds?.map((i: any) => i.id) || []),
+      ]
+      resultList = [...expandedRowKeys, ...lists]
+    }
+    setExpandedRowKeys(resultList)
+
+    row.children = row.parentId ? row.children : dataChildren?.list
     setData({ ...data, list: [...data.list] })
     setTimeout(() => {
       row.isExpended = !row.isExpended
@@ -314,24 +335,16 @@ const DemandTree = (props: Props) => {
 
   // 返回 点击展开子需求图标
   const getTreeIcon = (row: any) => {
-    const onChangeExpendedKeys = (values: any) => {
-      const hasId = expandedRowKeys.includes(values)
-      const resultList = hasId
-        ? expandedRowKeys?.filter((i: any) => i !== values)
-        : [...expandedRowKeys, ...[values]]
-      setExpandedRowKeys(resultList)
-    }
-
     return (
       <>
         {(row.demand > 0 || row.parentId > 0) && (
           <GetTreeIcon
             row={row}
-            onChangeExpendedKeys={onChangeExpendedKeys}
+            // onChangeExpendedKeys={onChangeExpendedKeys}
             onGetChildList={() => onGetChildList(row)}
           />
         )}
-        {row.parentId > 0 && (
+        {/* {row.parentId > 0 && (
           <div
             className="aa"
             style={{
@@ -342,7 +355,7 @@ const DemandTree = (props: Props) => {
               left: 8,
             }}
           />
-        )}
+        )} */}
       </>
     )
   }
