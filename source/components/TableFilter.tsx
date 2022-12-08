@@ -124,14 +124,15 @@ export const SelectWrapBedeck = styled.div`
 `
 
 const CollapseDiv = styled.div({
+  color: '#BBBDBF',
   height: 28,
   fontSize: 12,
   lineHeight: '28px',
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#F0F4FA',
-    color: '#2877ff',
+    background: '#f4f5f5',
+    color: 'black',
   },
 })
 const danweiCss = css`
