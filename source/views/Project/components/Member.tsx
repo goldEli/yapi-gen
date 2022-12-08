@@ -40,9 +40,9 @@ const DrawerWrap = styled(Drawer)({
 })
 
 const ButtonWrap = styled(Button)({
-  width: '100%',
+  width: '88px',
   height: 32,
-  marginBottom: 16,
+  marginLeft: 16,
 })
 
 const ListWrap = styled.div`
@@ -390,32 +390,16 @@ const Member = (props: Props) => {
         placement="right"
         visible={props.visible}
         bodyStyle={{ padding: 0 }}
-        width={320}
+        width={400}
       >
         <div
           style={{
             padding: '0 16px',
             background: 'white',
+            display: 'flex',
+            marginBottom: '12px',
           }}
         >
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/project/member/save',
-          ) ? null : (
-            <ButtonWrap
-              type="primary"
-              onClick={() => setIsVisible(true)}
-              icon={
-                <IconFont
-                  type="plus"
-                  style={{ color: 'white', fontSize: 16 }}
-                />
-              }
-            >
-              {t('project.addMember1')}
-            </ButtonWrap>
-          )}
-
           <Input
             autoComplete="off"
             onPressEnter={onChangeSearch}
@@ -429,6 +413,14 @@ const Member = (props: Props) => {
             placeholder={t('project.searchMember')}
             allowClear
           />
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/project/member/save',
+          ) ? null : (
+            <ButtonWrap type="primary" onClick={() => setIsVisible(true)}>
+              {t('project.addMember1')}
+            </ButtonWrap>
+          )}
         </div>
         {memberList?.length > 0 ? (
           <ListWrap>
