@@ -39,11 +39,12 @@
     "c6": "Log"
   },
   "v2_1_1": {
-    "configuration": "通用配置",
-    "safe": "水印保护",
-    "open": "开启水印",
-    "close": "关闭水印",
-    "projectInformation": "Project data"
+    "configuration": "General configuration",
+    "safe": "watermark protection ",
+    "open": "Open the watermark ",
+    "close": "Close watermark ",
+    "projectInformation": "Project data",
+    "c1": "Watermark composition [Enterprise Name] + [Name] + [Mobile Phone]"
   },
   "version2": {
     "defect": "缺陷",
