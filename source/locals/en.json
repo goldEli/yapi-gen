@@ -4,7 +4,8 @@
     "a2": "Add comment ",
     "a3": "Demand flow ",
     "a4": " Write a review ",
-    "a5": " Enter a comment"
+    "a5": " Enter a comment",
+    "a6": " Not a picture file"
   },
   "title": {
     "text": "File format not supported ",

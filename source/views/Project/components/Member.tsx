@@ -86,16 +86,20 @@ const ListItem = styled.div({
     fontSize: 12,
   },
   '&:nth-child(even)': {
-    backgroundColor: '#f8f9fa',
+    // backgroundColor: '#f8f9fa',
   },
 })
 const MoreWrap2 = styled(MoreWrap)`
   background-color: transparent;
+  .job1 {
+    color: #323233;
+  }
   &:hover {
     .job {
       color: #2877ff;
     }
     .job1 {
+      color: #2877ff;
       transform: rotate(180deg);
     }
   }
