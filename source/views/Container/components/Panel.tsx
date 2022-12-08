@@ -145,6 +145,7 @@ export const Panel = (props: Props) => {
     const clear = message.loading(t('common.localsSwitching'), 0)
     try {
       await changeLanguage(key as LocaleKeys)
+      alert('异步通过')
       localStorage.setItem('language', key)
     } catch (error) {
       //
