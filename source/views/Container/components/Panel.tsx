@@ -140,9 +140,16 @@ export const Panel = (props: Props) => {
   const [languageMode, setLanguageMode] = useState(
     localStorage.getItem('language') === 'zh' ? 1 : 2,
   )
+  // const [messageApi, contextHolder] = message.useMessage()
 
   const changeLanguageMode = async (value: number, key: any) => {
     const clear = message.loading(t('common.localsSwitching'), 0)
+    // messageApi.open({
+    //   type: 'loading',
+    //   content: t('common.localsSwitching'),
+    //   duration: 0,
+    // });
+
     try {
       await changeLanguage(key as LocaleKeys)
       alert('异步通过')
@@ -150,14 +157,13 @@ export const Panel = (props: Props) => {
     } catch (error) {
       //
     }
+    clear()
     setLanguageMode(value)
     setLanguageModeVisible(false)
-
     setTimeout(() => {
       setIsRefresh(true)
     }, 100)
     props.onChange?.()
-    clear()
   }
 
   const content = (
