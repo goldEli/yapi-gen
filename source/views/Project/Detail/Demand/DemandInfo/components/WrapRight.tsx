@@ -410,6 +410,12 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     )
   }
 
+  useEffect(() => {
+    PubSub.subscribe('watch', () => {
+      getList()
+    })
+  }, [])
+
   return (
     <WrapRight>
       <DeleteConfirm

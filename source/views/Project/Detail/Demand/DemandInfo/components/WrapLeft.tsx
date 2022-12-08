@@ -187,40 +187,6 @@ const WrapLeftBox = () => {
       <div className="resize_line" />
       <div className="resize_save2">
         <WrapLeft ref={LeftDom}>
-          {/* <InfoItem>
-            <Label>{t('newlyAdd.demandProgress')}</Label>
-            <div
-              style={{ display: 'flex', alignItems: 'center' }}
-              onMouseUp={onChangeSchedule}
-            >
-              <SliderWrap
-                isDisabled={
-                  demandInfo?.user
-                    ?.map((i: any) => i.user.id)
-                    ?.includes(userInfo?.id) &&
-                  demandInfo.status.is_start !== 1 &&
-                  demandInfo.status.is_end !== 1
-                }
-                style={{ width: 260 }}
-                value={schedule}
-                tipFormatter={(value: any) => `${value}%`}
-                onChange={value => setSchedule(value)}
-                tooltipVisible={false}
-                disabled={
-                  !(
-                    demandInfo?.user
-                      ?.map((i: any) => i.user.id)
-                      ?.includes(userInfo?.id) &&
-                    demandInfo.status.is_start !== 1 &&
-                    demandInfo.status.is_end !== 1
-                  )
-                }
-              />
-              <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
-                {schedule}%
-              </span>
-            </div>
-          </InfoItem> */}
           <InfoItem
             style={{
               marginTop: '0px',
