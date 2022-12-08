@@ -300,26 +300,26 @@ const IterationTable = (props: Props) => {
         hasCreate={hasCreate || props.hasId?.status !== 1}
       >
         <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId === 'object' ? (
-            props.data?.list ? (
-              props.data?.list?.length > 0 ? (
-                <TableStyleBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={props.data?.list}
-                  pagination={false}
-                  scroll={{
-                    x: 'max-content',
-                    y: tableY,
-                  }}
-                  showSorterTooltip={false}
-                  tableLayout="auto"
-                />
-              ) : (
-                <NoData />
-              )
-            ) : null
-          ) : (
+          {typeof props?.hasId === 'object' &&
+            (props.data?.list && props.data?.list?.length > 0 ? (
+              <TableStyleBox
+                rowKey="id"
+                columns={selectColum}
+                dataSource={props.data?.list}
+                pagination={false}
+                scroll={{
+                  x: 'max-content',
+                  y: tableY,
+                }}
+                showSorterTooltip={false}
+                tableLayout="auto"
+              />
+            ) : (
+              <NoData />
+            ))}
+
+          {typeof props?.hasId !== 'object' && (
+            // 没有迭代的时候
             <NoData />
           )}
         </Spin>

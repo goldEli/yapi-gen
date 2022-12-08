@@ -1,12 +1,16 @@
-/* eslint-disable no-constant-binary-expression */
 // 需求主页-需求表格模式
-
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react/jsx-no-leaked-render */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Menu } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  SecondButton,
+} from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -18,6 +22,7 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import EditDemand from '@/components/EditDemandNew'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -62,6 +67,7 @@ const DemandTable = (props: Props) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
+  const [isAddVisible, setIsAddVisible] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -161,6 +167,11 @@ const DemandTable = (props: Props) => {
     onUpdate: props?.onUpdate,
   })
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/save',
+  )
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -253,6 +264,15 @@ const DemandTable = (props: Props) => {
 
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
+      {/* 暂无数据创建 */}
+      {isAddVisible && (
+        <EditDemand
+          visible={isAddVisible}
+          noDataCreate
+          onChangeVisible={() => setIsAddVisible(!isAddVisible)}
+          onUpdate={() => props.onUpdate(true)}
+        />
+      )}
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
@@ -270,7 +290,18 @@ const DemandTable = (props: Props) => {
                 tableLayout="auto"
               />
             ) : (
-              <NoData />
+              <NoData
+                subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+              >
+                {!hasCreate && (
+                  <SecondButton
+                    onClick={() => setIsAddVisible(true)}
+                    style={{ marginTop: 24 }}
+                  >
+                    {t('common.createDemand')}
+                  </SecondButton>
+                )}
+              </NoData>
             ))}
         </Spin>
       </DataWrap>

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-leaked-render */
-// 项目详情页面
+// 项目主页
 
 /* eslint-disable max-params */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -359,6 +359,7 @@ const Project = () => {
                     onChangePageNavigation={onChangePageNavigation}
                     onUpdateOrderKey={onUpdateOrderKey}
                     order={order}
+                    onAddClick={onAddClick}
                   />
                 )}
               </Spin>

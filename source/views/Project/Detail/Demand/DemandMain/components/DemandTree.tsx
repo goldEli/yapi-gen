@@ -12,6 +12,7 @@ import {
   TableStyleBox,
   PaginationWrap,
   ExpendedWrap,
+  SecondButton,
 } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -183,6 +184,7 @@ const DemandTree = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false)
   // 创建子需求数据
   const [isCreateChild, setIsCreateChild] = useState<any>({})
+  const [isAddVisible, setIsAddVisible] = useState(false)
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -374,6 +376,11 @@ const DemandTree = (props: Props) => {
     onChangeTree: getTreeIcon,
   })
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/save',
+  )
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -556,8 +563,22 @@ const DemandTree = (props: Props) => {
     setIsCreateChild({})
   }
 
+  // 关闭创建子需求
+  const onClose = () => {
+    setIsAddVisible(!isAddVisible)
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
+      {/* 暂无数据创建 */}
+      {isAddVisible && (
+        <EditDemand
+          visible={isAddVisible}
+          noDataCreate
+          onChangeVisible={onClose}
+          onUpdate={() => props.onUpdate(true)}
+        />
+      )}
       {isVisible && (
         <EditDemand
           visible={isVisible}
@@ -596,7 +617,18 @@ const DemandTree = (props: Props) => {
                 }}
               />
             ) : (
-              <NoData />
+              <NoData
+                subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+              >
+                {!hasCreate && (
+                  <SecondButton
+                    onClick={() => setIsAddVisible(true)}
+                    style={{ marginTop: 24 }}
+                  >
+                    {t('common.createDemand')}
+                  </SecondButton>
+                )}
+              </NoData>
             ))}
         </Spin>
         <FloatBatch

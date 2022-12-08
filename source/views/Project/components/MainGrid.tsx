@@ -13,6 +13,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { SecondButton } from '@/components/StyleCommon'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -92,7 +93,7 @@ const MainGrid = (props: Props) => {
               </div>
             ))}
 
-            {isPermission ? null : (
+            {!isPermission && (
               <AddProject onClick={onAddClick}>
                 <IconFont
                   style={{ fontSize: 24, marginBottom: 16 }}

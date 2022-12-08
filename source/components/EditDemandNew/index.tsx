@@ -124,6 +124,9 @@ interface Props {
 
   // 父需求id --- 和isChild一起使用
   parentId?: any
+
+  // 无数据创建
+  noDataCreate?: any
 }
 
 const EditDemand = (props: Props) => {
@@ -247,7 +250,7 @@ const EditDemand = (props: Props) => {
         )
       }
       // 如果是快速创建没有缓存数据，取列表第一个
-      if (props?.isQuickCreate && !categoryId) {
+      if ((props?.isQuickCreate && !categoryId) || props.noDataCreate) {
         setCategoryObj(categoryData?.list[0])
       }
       // 迭代创建 ,当前只有迭代是需要做筛选类别回填

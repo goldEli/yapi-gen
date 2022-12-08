@@ -73,7 +73,13 @@
     "chooseUpdate": "选择更新属性",
     "updateAfter": "更新后属性值",
     "copyLinkSuccess": "需求链接已复制！",
-    "copyLinkError": "需求链接复制失败！"
+    "copyLinkError": "需求链接复制失败！",
+    "noDataCreateGroup": "暂无分组，创建一个吧~",
+    "addGroup": "添加分组",
+    "noDataCreateProject": "当前您未加入任何项目，创建一个吧",
+    "noDataCreateIteration": "暂无迭代版本，创建一个吧！",
+    "noDataCreateDemand": "该迭代版本还未添加任何需求",
+    "noDataCreateDemandList": "当前项目还未创建任何需求，创建一个吧~"
   },
   "p2": {
     "del": "确认删除该附件",

@@ -10,6 +10,7 @@ import {
   PaginationWrap,
   ClickWrap,
   HiddenText,
+  SecondButton,
 } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
@@ -28,6 +29,7 @@ interface Props {
   onChangePageNavigation(item: any): void
   onUpdateOrderKey(item: any): void
   order: any
+  onAddClick(): void
 }
 
 const StatusWrap = styled.div({
@@ -186,6 +188,11 @@ const MainTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const { userInfo } = useModel('user')
+  const hasCreate = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/save',
+  )
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -461,7 +468,18 @@ const MainTable = (props: Props) => {
               onRow={onTableRow}
             />
           ) : (
-            <NoData />
+            <NoData
+              subText={hasCreate ? '' : t('version2.noDataCreateProject')}
+            >
+              {!hasCreate && (
+                <SecondButton
+                  onClick={props.onAddClick}
+                  style={{ marginTop: 24 }}
+                >
+                  {t('common.createProject')}
+                </SecondButton>
+              )}
+            </NoData>
           ))}
       </DataWrap>
 

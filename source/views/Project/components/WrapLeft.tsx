@@ -80,6 +80,43 @@ const GroupItems = styled.div<{ isPermission?: boolean }>(
   }),
 )
 
+const NoDataCreateWrap = styled.div({
+  marginTop: 8,
+  minHeight: 68,
+  borderRadius: 6,
+  background: '#F9FAFA',
+  padding: '8px 12px',
+  '.top': {
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    svg: {
+      color: '#FA9746',
+      fontSize: 16,
+      marginTop: 2,
+    },
+    div: {
+      color: '#646566',
+      fontSize: 12,
+      marginLeft: 8,
+      flexWrap: 'wrap',
+    },
+  },
+  '.bottom': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    color: '#2877ff',
+    svg: {
+      fontSize: 10,
+    },
+    div: {
+      fontSize: 12,
+      marginLeft: 6,
+    },
+  },
+})
+
 interface Props {
   onAddClick(): void
   onChangeType(val: number): void
@@ -120,7 +157,8 @@ const WrapLeftBox = (props: Props) => {
   }, [])
 
   // 点击下拉项
-  const onClickMenu = (type: any, item: any) => {
+  const onClickMenu = (type: any, item: any, e: any) => {
+    e.stopPropagation()
     setIsMoreVisible(false)
     setOperationObj(item)
     if (type === 'edit') {
@@ -181,7 +219,7 @@ const WrapLeftBox = (props: Props) => {
       {
         key: '1',
         label: (
-          <div onClick={() => onClickMenu('edit', item)}>
+          <div onClick={e => onClickMenu('edit', item, e)}>
             {t('version2.editGroup')}
           </div>
         ),
@@ -189,7 +227,7 @@ const WrapLeftBox = (props: Props) => {
       {
         key: '2',
         label: (
-          <div onClick={() => onClickMenu('del', item)}>
+          <div onClick={e => onClickMenu('del', item, e)}>
             {t('version2.deleteGroup')}
           </div>
         ),
@@ -318,7 +356,24 @@ const WrapLeftBox = (props: Props) => {
               ))}
             </>
           ) : (
-            <NoData />
+            <div style={{ padding: '0 16px' }}>
+              <NoDataCreateWrap>
+                <div className="top">
+                  <IconFont type="Warning" />
+                  <div>{t('version2.noDataCreateGroup')}</div>
+                </div>
+                <div className="bottom">
+                  <div
+                    className="bottom"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setIsVisible(true)}
+                  >
+                    <IconFont type="plus" />
+                    <div>{t('version2.addGroup')}</div>
+                  </div>
+                </div>
+              </NoDataCreateWrap>
+            </div>
           ))}
       </GroupItems>
     </WrapLeft>

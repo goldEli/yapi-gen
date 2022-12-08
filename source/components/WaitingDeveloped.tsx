@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import IconFont from './IconFont'
+import planing from '/planing.png'
 
 const Wrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -22,8 +22,8 @@ const WaitingDeveloped = () => {
   const [t] = useTranslation()
   return (
     <Wrap>
-      <IconFont type="planning" style={{ fontSize: 220 }} />
-      <div>{t('version2.waitingPlan')}</div>
+      <img src={planing} style={{ width: 240 }} alt="" />
+      <div style={{ marginTop: 24 }}>{t('version2.waitingPlan')}</div>
     </Wrap>
   )
 }

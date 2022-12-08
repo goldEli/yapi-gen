@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { SecondButton } from '@/components/StyleCommon'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -437,7 +438,18 @@ const WrapLeft = (props: Props) => {
                 ))}
               </div>
             ) : (
-              <NoData />
+              <NoData
+                subText={hasAdd ? '' : t('version2.noDataCreateIteration')}
+              >
+                {!hasAdd && (
+                  <SecondButton
+                    onClick={onChangeClick}
+                    style={{ marginTop: 24 }}
+                  >
+                    {t('common.createIterate')}
+                  </SecondButton>
+                )}
+              </NoData>
             ))}
         </Spin>
       </CardGroups>
