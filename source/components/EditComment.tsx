@@ -117,6 +117,24 @@ const EditComment = (props: any) => {
     props.editClose()
   }
 
+  const onBeforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 2
+
+    if (!isLt2M) {
+      message.warning({
+        content: `${file.name} ${t('new_p1.a7')}`,
+        duration: 2,
+      })
+    }
+    const isPNG = file.type.includes('image')
+    if (!isPNG) {
+      message.warning({
+        content: `${file.name} ${t('new_p1.a6')}`,
+        duration: 2,
+      })
+    }
+    return isPNG || Upload.LIST_IGNORE
+  }
   const confirm = async () => {
     const inner = document.getElementById('inner')
     if (!String(inner?.innerHTML).trim()) {
@@ -224,7 +242,11 @@ const EditComment = (props: any) => {
                 gap: '14px',
               }}
             >
-              <Upload fileList={[]} customRequest={onUpload}>
+              <Upload
+                beforeUpload={onBeforeUpload}
+                fileList={[]}
+                customRequest={onUpload}
+              >
                 <IconFont
                   style={{
                     cursor: 'pointer',

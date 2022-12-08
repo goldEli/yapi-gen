@@ -4,7 +4,8 @@
     "a2": "Add comment ",
     "a3": "Demand flow ",
     "a4": " Write a review ",
-    "a5": " Enter a comment"
+    "a5": " Enter a comment",
+    "a6": "More than 2M"
   },
   "title": {
     "text": "File format not supported ",
@@ -39,10 +40,12 @@
     "c6": "Log"
   },
   "v2_1_1": {
-    "configuration": "通用配置",
-    "safe": "水印保护",
-    "open": "开启水印",
-    "close": "关闭水印"
+    "configuration": "General configuration",
+    "safe": "watermark protection ",
+    "open": "Open the watermark ",
+    "close": "Close watermark ",
+    "projectInformation": "Project data",
+    "c1": "Watermark composition [Enterprise Name] + [Name] + [Mobile Phone]"
   },
   "version2": {
     "defect": "缺陷",

@@ -15,7 +15,6 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
-import useSetTitle from '@/hooks/useSetTitle'
 
 const OperationTop = styled.div({
   height: 64,

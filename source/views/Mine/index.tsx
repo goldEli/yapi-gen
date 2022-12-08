@@ -11,7 +11,8 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getStaffList } from '@/services/staff'
 
-const AddButton = styled.div({
+const AddButton = styled.button({
+  border: 'none',
   height: 32,
   padding: '0 16px',
   borderRadius: 6,
@@ -21,6 +22,10 @@ const AddButton = styled.div({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  ':focus': {
+    background: '#1763e5',
+    color: 'white',
+  },
 })
 
 const Wrap = styled.div`

@@ -40,6 +40,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "object-hash": "^3.0.0",
+    "pubsub-js": "^1.9.4",
     "pusher-js": "^7.4.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -52,11 +53,12 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
-    "@jihe/eslint-config-react": "^0.0.6",
+    "@jihe/eslint-config-react": "^0.2.0",
     "@jihe/prettier-config": "^0.0.2",
     "@jihe/stylelint-config": "^0.0.1",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "^17.0.42",
+    "@types/pubsub-js": "^1.8.3",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
@@ -86,34 +88,7 @@
       ]
     },
     "rules": {
-      "object-property-newline": [
-        1,
-        {
-          "allowAllPropertiesOnSameLine": true
-        }
-      ],
-      "function-call-argument-newline": [
-        1,
-        "consistent"
-      ],
-      "@typescript-eslint/indent": [
-        1,
-        2,
-        {
-          "offsetTernaryExpressions": true
-        }
-      ],
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/member-delimiter-style": 0,
-      "complexity": [
-        2,
-        10
-      ],
-      "react-hooks/exhaustive-deps": 0,
-      "max-lines": [
-        2,
-        800
-      ]
+      "@typescript-eslint/no-explicit-any": 0
     }
   },
   "lint-staged": {

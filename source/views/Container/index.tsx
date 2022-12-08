@@ -40,7 +40,6 @@ const Main = styled.div`
 
 export const Container = () => {
   const location = useLocation()
-
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)

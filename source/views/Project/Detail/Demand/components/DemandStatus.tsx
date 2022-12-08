@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { getShapeLeft } from '@/services/project/shape'
 import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
+import PubSub from 'pubsub-js'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -66,6 +67,7 @@ const DemandStatusBox = (props: any) => {
       message.success(t('common.circulationSuccess'))
       getDemandInfo({ projectId: props.pid, id: props.sid })
     }
+    PubSub.publish('watch')
   }
 
   useEffect(() => {

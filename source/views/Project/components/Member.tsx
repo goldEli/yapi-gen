@@ -3,19 +3,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  Drawer,
-  Dropdown,
-  Form,
-  Input,
-  Menu,
-  message,
-  Popover,
-  Select,
-} from 'antd'
+import { Drawer, Dropdown, Form, Input, Menu, message, Select } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import AddMember from './AddMember'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
@@ -24,7 +14,7 @@ import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
 import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
-import { getAddDepartMember, getStaffList2 } from '@/services/staff'
+import { getAddDepartMember } from '@/services/staff'
 
 interface Props {
   visible: boolean
@@ -50,9 +40,9 @@ const DrawerWrap = styled(Drawer)({
 })
 
 const ButtonWrap = styled(Button)({
-  width: '100%',
+  width: '88px',
   height: 32,
-  marginBottom: 16,
+  marginLeft: 16,
 })
 
 const ListWrap = styled.div`
@@ -96,16 +86,21 @@ const ListItem = styled.div({
     fontSize: 12,
   },
   '&:nth-child(even)': {
-    backgroundColor: '#f8f9fa',
+    // backgroundColor: '#f8f9fa',
   },
 })
 const MoreWrap2 = styled(MoreWrap)`
   background-color: transparent;
+  .job1,
+  .job {
+    color: #323233;
+  }
   &:hover {
     .job {
       color: #2877ff;
     }
     .job1 {
+      color: #2877ff;
       transform: rotate(180deg);
     }
   }
@@ -148,7 +143,16 @@ const MoreDropdown = (props: DropDownProps) => {
     props.roleOptions?.forEach((i: any, idx: any) => {
       menuItems.push({
         key: idx,
-        label: <div onClick={() => onClickItem(i)}>{i.label}</div>,
+        label: (
+          <div
+            style={{
+              textAlign: 'left',
+            }}
+            onClick={() => onClickItem(i)}
+          >
+            {i.label}
+          </div>
+        ),
       })
     })
     return <Menu items={menuItems} />
@@ -391,32 +395,16 @@ const Member = (props: Props) => {
         placement="right"
         visible={props.visible}
         bodyStyle={{ padding: 0 }}
-        width={320}
+        width={400}
       >
         <div
           style={{
             padding: '0 16px',
             background: 'white',
+            display: 'flex',
+            marginBottom: '12px',
           }}
         >
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/project/member/save',
-          ) ? null : (
-            <ButtonWrap
-              type="primary"
-              onClick={() => setIsVisible(true)}
-              icon={
-                <IconFont
-                  type="plus"
-                  style={{ color: 'white', fontSize: 16 }}
-                />
-              }
-            >
-              {t('project.addMember1')}
-            </ButtonWrap>
-          )}
-
           <Input
             autoComplete="off"
             onPressEnter={onChangeSearch}
@@ -430,6 +418,14 @@ const Member = (props: Props) => {
             placeholder={t('project.searchMember')}
             allowClear
           />
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            'b/project/member/save',
+          ) ? null : (
+            <ButtonWrap type="primary" onClick={() => setIsVisible(true)}>
+              {t('project.addMember1')}
+            </ButtonWrap>
+          )}
         </div>
         {memberList?.length > 0 ? (
           <ListWrap>
