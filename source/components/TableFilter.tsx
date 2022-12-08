@@ -124,10 +124,10 @@ export const SelectWrapBedeck = styled.div`
 `
 
 const CollapseDiv = styled.div({
-  color: '#BBBDBF',
-  height: 28,
-  fontSize: 12,
-  lineHeight: '28px',
+  color: '#646566',
+  height: 35,
+  fontSize: 14,
+  lineHeight: '35px',
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
@@ -162,7 +162,7 @@ const CollapseWrap = styled(Collapse)({
     direction: 'rtl',
     display: 'flex',
     justifyContent: 'space-between',
-    color: 'rgba(187, 189, 191, 1)',
+    color: '#646566',
     '.ant-collapse-arrow': {
       margin: '0 0 0 8px',
     },
@@ -294,33 +294,39 @@ const TableFilter = (props: any) => {
     confirm()
   }
   const content = (
-    <CollapseWrap defaultActiveKey={['1', '2', '3']}>
-      <Collapse.Panel header={t('components.basicFiled')} key="1">
-        {filterBasicsList
-          ?.filter((k: any) =>
-            props.isIteration ? k.key !== 'iterate_name' : k,
-          )
-          ?.map((i: any) => (
+    <div
+      style={{
+        padding: '5px 0',
+      }}
+    >
+      <CollapseWrap defaultActiveKey={['1', '2', '3']}>
+        <Collapse.Panel header={t('components.basicFiled')} key="1">
+          {filterBasicsList
+            ?.filter((k: any) =>
+              props.isIteration ? k.key !== 'iterate_name' : k,
+            )
+            ?.map((i: any) => (
+              <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+                {i.content_txt}
+              </CollapseDiv>
+            ))}
+        </Collapse.Panel>
+        <Collapse.Panel header={t('components.personOrTime')} key="2">
+          {filterSpecialList?.map((i: any) => (
             <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
               {i.content_txt}
             </CollapseDiv>
           ))}
-      </Collapse.Panel>
-      <Collapse.Panel header={t('components.personOrTime')} key="2">
-        {filterSpecialList?.map((i: any) => (
-          <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
-            {i.content_txt}
-          </CollapseDiv>
-        ))}
-      </Collapse.Panel>
-      <Collapse.Panel header={t('newlyAdd.customFields')} key="3">
-        {filterCustomList?.map((i: any) => (
-          <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
-            {i.title}
-          </CollapseDiv>
-        ))}
-      </Collapse.Panel>
-    </CollapseWrap>
+        </Collapse.Panel>
+        <Collapse.Panel header={t('newlyAdd.customFields')} key="3">
+          {filterCustomList?.map((i: any) => (
+            <CollapseDiv onClick={() => addList(i.content)} key={i.id}>
+              {i.title}
+            </CollapseDiv>
+          ))}
+        </Collapse.Panel>
+      </CollapseWrap>
+    </div>
   )
 
   const onChangeTime = (key: any, dates: any) => {

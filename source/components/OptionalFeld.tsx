@@ -27,7 +27,7 @@ import { arrayMoveImmutable } from 'array-move'
 const text = css`
   color: rgba(150, 151, 153, 1);
   font-size: 12px;
-  /* margin-bottom: 8px; */
+  margin-top: 1px;
 `
 const CheckedItem = styled.div({
   fontSize: '14px',
@@ -50,12 +50,21 @@ const Left = styled.div`
   width: 624px;
   height: 350px;
   overflow: scroll;
+
   .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 16px 0px !important;
     padding-top: 0px !important;
   }
+
   .ant-collapse-content > .ant-collapse-content-box {
     padding: 0px !important;
+  }
+  &
+    .ant-collapse
+    > .ant-collapse-item
+    > .ant-collapse-header
+    .ant-collapse-arrow {
+    color: rgba(150, 151, 153, 1) !important;
   }
 `
 const Right = styled.div`
