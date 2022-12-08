@@ -22,7 +22,7 @@ export const getDemandInfo: any = async (params: any) => {
   return {
     id: response.data.id,
     name: response.data.name || '--',
-    info: response.data.info,
+    info: response.data.info.replaceAll('\n', '<br/>'),
     priority: response.data.priority,
     expectedStart: response.data.expected_start_at,
     expectedEnd: response.data.expected_end_at,
