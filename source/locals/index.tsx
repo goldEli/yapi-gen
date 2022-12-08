@@ -71,7 +71,6 @@ const changeLanguage = async (language: LocaleKeys) => {
     loadI18nLanguage(language),
     loadAntdLanguage(language),
   ])
-  alert('异步通过1')
   i18n.changeLanguage(language)
   currentLanguage = language
   dayjs.locale(language.includes('zh') ? 'zh-cn' : language)
