@@ -117,7 +117,15 @@ const EditComment = (props: any) => {
     props.editClose()
   }
 
-  const onBeforeUpload = (file: { type: string; name: any }) => {
+  const onBeforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 2
+
+    if (!isLt2M) {
+      message.warning({
+        content: `${file.name} ${t('new_p1.a7')}`,
+        duration: 2,
+      })
+    }
     const isPNG = file.type.includes('image')
     if (!isPNG) {
       message.warning({
