@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
-    "@jihe/eslint-config-react": "^0.0.6",
+    "@jihe/eslint-config-react": "^0.2.0",
     "@jihe/prettier-config": "^0.0.2",
     "@jihe/stylelint-config": "^0.0.1",
     "@types/crypto-js": "^4.1.1",
@@ -88,34 +88,7 @@
       ]
     },
     "rules": {
-      "object-property-newline": [
-        1,
-        {
-          "allowAllPropertiesOnSameLine": true
-        }
-      ],
-      "function-call-argument-newline": [
-        1,
-        "consistent"
-      ],
-      "@typescript-eslint/indent": [
-        1,
-        2,
-        {
-          "offsetTernaryExpressions": true
-        }
-      ],
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/member-delimiter-style": 0,
-      "complexity": [
-        2,
-        10
-      ],
-      "react-hooks/exhaustive-deps": 0,
-      "max-lines": [
-        2,
-        800
-      ]
+      "@typescript-eslint/no-explicit-any": 0
     }
   },
   "lint-staged": {

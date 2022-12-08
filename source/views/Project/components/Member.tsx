@@ -246,7 +246,9 @@ const Member = (props: Props) => {
   }
 
   useEffect(() => {
-    init()
+    if (isVisible) {
+      init()
+    }
   }, [isVisible])
 
   const onClickMenu = async (item: any, row: any) => {
