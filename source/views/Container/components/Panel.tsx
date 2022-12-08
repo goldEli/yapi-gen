@@ -143,12 +143,12 @@ export const Panel = (props: Props) => {
   // const [messageApi, contextHolder] = message.useMessage()
 
   const changeLanguageMode = async (value: number, key: any) => {
-    const clear = message.loading(t('common.localsSwitching'), 0)
-    // messageApi.open({
-    //   type: 'loading',
-    //   content: t('common.localsSwitching'),
-    //   duration: 0,
-    // });
+    //   const clear = message.loading(t('common.localsSwitching'), 0)
+    message.open({
+      type: 'loading',
+      content: t('common.localsSwitching'),
+      duration: 0,
+    })
 
     try {
       await changeLanguage(key as LocaleKeys)
@@ -157,7 +157,8 @@ export const Panel = (props: Props) => {
     } catch (error) {
       //
     }
-    clear()
+    // clear()
+    message.destroy()
     setLanguageMode(value)
     setLanguageModeVisible(false)
     setTimeout(() => {
