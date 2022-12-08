@@ -91,7 +91,8 @@ const ListItem = styled.div({
 })
 const MoreWrap2 = styled(MoreWrap)`
   background-color: transparent;
-  .job1 {
+  .job1,
+  .job {
     color: #323233;
   }
   &:hover {
