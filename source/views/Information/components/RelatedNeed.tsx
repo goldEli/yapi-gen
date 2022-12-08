@@ -152,7 +152,7 @@ const RelatedNeed = (props: any) => {
                   label: i.title,
                   value: i.id,
                 }))}
-              ></Select>
+              />
             </Form.Item>
             <Form.Item
               rules={[
@@ -183,7 +183,7 @@ const RelatedNeed = (props: any) => {
                   label: i.name,
                   value: i.id,
                 }))}
-              ></Select>
+              />
             </Form.Item>
           </Form>
           <div

@@ -42,7 +42,8 @@
     "configuration": "通用配置",
     "safe": "水印保护",
     "open": "开启水印",
-    "close": "关闭水印"
+    "close": "关闭水印",
+    "projectInformation": "Project data"
   },
   "version2": {
     "defect": "缺陷",
