@@ -31,7 +31,7 @@ const Side = styled.div`
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
 `
-const AddButton = styled.div({
+const AddButton = styled.button({
   height: 32,
   padding: '0 16px',
   borderRadius: 6,
