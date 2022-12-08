@@ -148,7 +148,16 @@ const MoreDropdown = (props: DropDownProps) => {
     props.roleOptions?.forEach((i: any, idx: any) => {
       menuItems.push({
         key: idx,
-        label: <div onClick={() => onClickItem(i)}>{i.label}</div>,
+        label: (
+          <div
+            style={{
+              textAlign: 'left',
+            }}
+            onClick={() => onClickItem(i)}
+          >
+            {i.label}
+          </div>
+        ),
       })
     })
     return <Menu items={menuItems} />
