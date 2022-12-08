@@ -142,12 +142,12 @@ export const Panel = (props: Props) => {
   )
 
   const changeLanguageMode = async (value: number, key: any) => {
-    message.open({
-      type: 'loading',
-      content: value === 1 ? '语言切换' : 'Language switching',
-      duration: 0,
-      key: 'languageLoading',
-    })
+    // message.open({
+    //   type: 'loading',
+    //   content: value === 1 ? '语言切换' : 'Language switching',
+    //   duration: 0,
+    //   key: 'languageLoading',
+    // })
 
     try {
       await changeLanguage(key as LocaleKeys)
@@ -155,7 +155,8 @@ export const Panel = (props: Props) => {
     } catch (error) {
       //
     }
-    message.destroy('languageLoading')
+    // message.destroy('languageLoading')
+    message.success('切换成功')
     setLanguageMode(value)
     setLanguageModeVisible(false)
     props.onChange?.()
