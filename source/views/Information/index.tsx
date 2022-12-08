@@ -41,6 +41,7 @@ const AddButton = styled.button({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  border: 'none',
 })
 
 const Menu = styled.div`
