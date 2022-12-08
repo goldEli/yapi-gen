@@ -3,19 +3,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  Drawer,
-  Dropdown,
-  Form,
-  Input,
-  Menu,
-  message,
-  Popover,
-  Select,
-} from 'antd'
+import { Drawer, Dropdown, Form, Input, Menu, message, Select } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import AddMember from './AddMember'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useModel } from '@/models'
@@ -24,7 +14,7 @@ import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
 import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
-import { getAddDepartMember, getStaffList2 } from '@/services/staff'
+import { getAddDepartMember } from '@/services/staff'
 
 interface Props {
   visible: boolean
@@ -246,9 +236,7 @@ const Member = (props: Props) => {
   }
 
   useEffect(() => {
-    if (isVisible) {
-      init()
-    }
+    init()
   }, [isVisible])
 
   const onClickMenu = async (item: any, row: any) => {
