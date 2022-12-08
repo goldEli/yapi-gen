@@ -361,7 +361,7 @@ const EditDemand = (props: Props) => {
 
       if (res?.expectedEnd) {
         form.setFieldsValue({
-          endTime: moment(res.expectedStart || 0),
+          endTime: moment(res.expectedEnd || 0),
         })
       }
 
