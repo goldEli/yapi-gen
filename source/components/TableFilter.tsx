@@ -265,7 +265,7 @@ const TableFilter = (props: any) => {
       }
     }
 
-    if (delKey) {
+    if (typeof delKey === 'string') {
       if (delKey?.includes('custom_')) {
         delete customField[delKey]
         delete res[delKey]

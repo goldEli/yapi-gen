@@ -162,7 +162,7 @@ const EditDemandRIght = (props: Props) => {
 
       if (props.info?.expectedEnd) {
         form.setFieldsValue({
-          endTime: moment(props.info.expectedStart || 0),
+          endTime: moment(props.info.expectedEnd || 0),
         })
       }
 
@@ -411,13 +411,20 @@ const EditDemandRIght = (props: Props) => {
 
   // 返回自定义字段相应的控件
   const getCustomDom = (item: any) => {
-    let options: any = item.type
-    if (['user_select_checkbox', 'user_select'].includes(item.type.attr)) {
-      const key = item.type.value[0]
-      options.value = key === 'projectMember' ? memberList : selectAllStaffData
+    const currentItem = JSON.parse(JSON.stringify(item.type))
+    let options: any = currentItem.value
+    if (['user_select_checkbox', 'user_select'].includes(currentItem.attr)) {
+      options =
+        currentItem.value?.[0] === 'projectMember'
+          ? memberList?.map((i: any) => ({
+              label: i.name,
+              value: i.id,
+            }))
+          : selectAllStaffData
     }
+
     return getTypeComponent({
-      ...options,
+      ...{ attr: currentItem.attr, value: options },
       ...{ remarks: item.remarks },
     })
   }

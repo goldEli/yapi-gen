@@ -35,6 +35,7 @@ const BatchModal = (props: Props) => {
   const [chooseAfter, setChooseAfter] = useState<any>({})
   // 需求类别的状态下拉
   const [categoryStatusList, setCategoryStatusList] = useState<any>([])
+  const [currentTypeItem, setCurrentTypeItem] = useState<any>({})
   const { isRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -146,16 +147,34 @@ const BatchModal = (props: Props) => {
         status: values.status,
       }
     } else {
-      // 如果是时间组件的话，需要处理成字符串，还要加是否有时分秒判断
-      params.target =
-        ['expected_start_at', 'expected_end_at'].includes(chooseType) ||
-        chooseAfter.attr === 'date'
-          ? moment(values.target).format(
-              chooseAfter.selectList[0] === 'datetime'
-                ? 'YYYY-MM-DD HH:mm:ss'
-                : 'YYYY-MM-DD',
-            )
-          : values.target
+      if (values.target) {
+        // 如果是时间组件的话，需要处理成字符串，还要加是否有时分秒判断
+        params.target =
+          ['expected_start_at', 'expected_end_at'].includes(chooseType) ||
+          chooseAfter.attr === 'date'
+            ? moment(values.target).format(
+                chooseAfter.selectList[0] === 'datetime'
+                  ? 'YYYY-MM-DD HH:mm:ss'
+                  : 'YYYY-MM-DD',
+              )
+            : values.target
+      } else {
+        // 如果没选target，处理target参数类型
+        let targetValue: any
+        if (['tag', 'users', 'copysend'].includes(currentTypeItem.value)) {
+          targetValue = []
+        } else if (
+          String(currentTypeItem.value).includes('custom_') &&
+          ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
+            currentTypeItem?.attr,
+          )
+        ) {
+          targetValue = []
+        } else {
+          targetValue = ''
+        }
+        params.target = targetValue
+      }
     }
     try {
       await batchEdit(params)
@@ -190,6 +209,7 @@ const BatchModal = (props: Props) => {
       type: value,
     })
     setChooseType(value)
+    setCurrentTypeItem(chooseSelect?.filter((i: any) => i.value === value)[0])
   }
 
   return (
@@ -236,11 +256,7 @@ const BatchModal = (props: Props) => {
               />
             </Form.Item>
             {String(chooseType).includes('expected_') && (
-              <Form.Item
-                label={t('version2.updateAfter')}
-                name="target"
-                rules={[{ required: true, message: '' }]}
-              >
+              <Form.Item label={t('version2.updateAfter')} name="target">
                 <DatePicker allowClear style={{ width: '100%' }} />
               </Form.Item>
             )}
@@ -249,7 +265,9 @@ const BatchModal = (props: Props) => {
                 <Form.Item
                   label={t('version2.updateAfter')}
                   name="target"
-                  rules={[{ required: true, message: '' }]}
+                  rules={[
+                    { required: chooseType === 'category_id', message: '' },
+                  ]}
                 >
                   <Select
                     showSearch
@@ -276,11 +294,7 @@ const BatchModal = (props: Props) => {
                 </Form.Item>
               )}
             {chooseType && String(chooseType).includes('custom_') && (
-              <Form.Item
-                label={t('version2.updateAfter')}
-                name="target"
-                rules={[{ required: true, message: '' }]}
-              >
+              <Form.Item label={t('version2.updateAfter')} name="target">
                 {getTypeComponent(
                   {
                     attr: chooseAfter.attr,

@@ -88,9 +88,11 @@ const OperationGroup = (props: Props) => {
         </Tooltip>
       )}
 
-      {!props.isGrid && <DividerWrap type="vertical" />}
+      {(props.isGrid === 0 || props.isGrid === 2) && (
+        <DividerWrap type="vertical" />
+      )}
 
-      {!props.isGrid && (
+      {(props.isGrid === 0 || props.isGrid === 2) && (
         <Dropdown overlay={menu} trigger={['click']}>
           <Tooltip title={t('common.tableFieldSet')}>
             <IconWrap active={props.settingState} type="settings" />
