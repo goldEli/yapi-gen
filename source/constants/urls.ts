@@ -123,6 +123,9 @@ const urls = {
   addProjectGroup: '/b/project/group/save',
   updateProjectGroup: '/b/project/group/update',
   deleteProjectGroup: '/b/project/group/delete',
+  batchDelete: '/b/story/batch_delete',
+  batchEdit: '/b/story/batch_update',
+  getBatchEditConfig: '/b/story/batch_fields',
 }
 
 export default urls

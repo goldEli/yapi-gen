@@ -77,12 +77,53 @@ export const getDemandList: any = async (params: any) => {
       schedule_start: params.schedule_start,
       schedule_end: params.schedule_end,
       custom_field: params?.custom_field,
+      tree: params?.tree || 0,
     },
     pagesize: params?.pageSize,
     page: params?.page,
     orderkey: params?.orderKey,
     order: params?.order,
   })
+
+  const getListItem = (array: any) => {
+    return array?.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      demand: i.child_story_count,
+      priority: i.priority,
+      iteration: i.iterate_name,
+      status: i.status,
+      dealName: i.users_name || '--',
+      time: i.created_at,
+      expectedStart: i.expected_start_at,
+      expectedEnd: i.expected_end_at,
+      info: i.info,
+      userIds: i.user_id,
+      iterateId: i.iterate_id,
+      parentId: i.parent_id,
+      finishTime: i.finish_at,
+      updatedTime: i.updated_at,
+      usersCopySendName: i.users_copysend_name,
+      userName: i.user_name,
+      tag: i.tag,
+      isExamine: i.verify_lock === 1,
+      category: i.category,
+      class: i.class,
+      schedule: i.schedule,
+      ...i.custom_field,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      categoryId: i.category_id,
+      project_id: i.project_id,
+      usersNameIds: i.users_name_ids,
+      usersCopySendIds: i.users_copysend_name_ids,
+      allChildrenCount: i.all_child_story_count,
+      allChildrenIds: i.all_child_ids,
+      treeChild: getListItem(i.children) || null,
+      level: i.level,
+      isExpended: false,
+    }))
+  }
 
   if (params.all && params.panel) {
     return {
@@ -122,6 +163,10 @@ export const getDemandList: any = async (params: any) => {
       categoryRemark: i.category_remark,
       isExamine: i.verify_lock === 1,
     }))
+  } else if (params?.isChildren) {
+    return {
+      list: getListItem(response.data),
+    }
   } else {
     return {
       currentPage: params.page,
@@ -154,9 +199,15 @@ export const getDemandList: any = async (params: any) => {
         ...i.custom_field,
         categoryColor: i.category_color,
         categoryRemark: i.category_remark,
+        categoryId: i.category_id,
         project_id: i.project_id,
         usersNameIds: i.users_name_ids,
         usersCopySendIds: i.users_copysend_name_ids,
+        allChildrenCount: i.all_child_story_count,
+        allChildrenIds: i.all_child_ids,
+        treeChild: null,
+        isExpended: false,
+        level: 1,
       })),
     }
   }
@@ -517,4 +568,36 @@ export const getExportExcel: any = async (params: any) => {
     { responseType: 'blob' },
   )
   return response
+}
+
+export const batchDelete: any = async (params: any) => {
+  await http.delete<any>('batchDelete', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+    is_delete_childs: params.isDeleteChild,
+  })
+}
+
+export const batchEdit: any = async (params: any) => {
+  await http.put<any>('batchEdit', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+    type: params.type,
+    target: params.target,
+  })
+}
+
+// 获取批量编辑选择属性下拉
+export const getBatchEditConfig: any = async (params: any) => {
+  const response: any = await http.get<any>('getBatchEditConfig', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+  })
+
+  return response.data?.map((i: any) => ({
+    label: i.title,
+    value: i.content,
+    selectList: i.values || [],
+    attr: i.attr,
+  }))
 }

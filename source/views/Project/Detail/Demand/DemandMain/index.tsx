@@ -71,7 +71,7 @@ const DemandMain = (props: Props) => {
       setIsSpinning(true)
     }
 
-    let params = {}
+    let params: any = {}
     if (state === 1) {
       params = {
         projectId,
@@ -125,6 +125,9 @@ const DemandMain = (props: Props) => {
         class_id: key,
       }
     }
+    if (state === 2) {
+      params.tree = 1
+    }
     setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
@@ -160,7 +163,7 @@ const DemandMain = (props: Props) => {
     getList(val, searchItems, { page: 1, size: pageObj.size }, order)
   }
 
-  const onChangeOperation = (e: any, item: any) => {
+  const onChangeOperation = (e: any, item?: any) => {
     props.onSetOperationItem(item)
     props.onChangeVisible(e)
   }
@@ -212,9 +215,6 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
-      // const obj = filterParams
-      // obj.class_id = value
-      // setFilterParams(obj)
     },
   }
 
@@ -227,13 +227,13 @@ const DemandMain = (props: Props) => {
           onChangeVisible={() => setIsVisible(!isVisible)}
           onConfirm={onDeleteConfirm}
         />
-        {isShowLeft ? (
+        {isShowLeft && (
           <WrapLeft
             ref={myTreeComponent}
             projectId={projectId}
             isShowLeft={isShowLeft}
           />
-        ) : null}
+        )}
         <Right isShowLeft={isShowLeft}>
           <Operation
             isGrid={isGrid}
@@ -267,6 +267,7 @@ const DemandMain = (props: Props) => {
               onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
+              filterParams={filterParams}
             />
           )}
           {!isGrid && (

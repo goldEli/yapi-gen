@@ -301,6 +301,8 @@ const Project = () => {
         />
         {isVisible && (
           <EditProject
+            activeType={activeType}
+            groupId={groupId}
             visible={isVisible}
             onChangeVisible={() => setIsVisible(!isVisible)}
             details={operationDetail}

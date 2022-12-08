@@ -60,7 +60,20 @@
     "pleaseGroupName": "请输入分组名称",
     "personRadio": "人员单选",
     "personCheckbox": "人员复选",
-    "chooseRange": "选择范围"
+    "chooseRange": "选择范围",
+    "link": "链接",
+    "checked": "已选中({{count}})",
+    "batchEdit": "批量编辑",
+    "batchDelete": "批量删除",
+    "batchCopyLink": "批量复制链接",
+    "deleteTitle": "批量删除(已选中{{count}}项)",
+    "editTitle": "批量编辑(已选中{{count}}项)",
+    "deleteToast": "勾选的需求将被删除，确认删除吗？",
+    "deleteChildren": "同时删除对应子需求",
+    "chooseUpdate": "选择更新属性",
+    "updateAfter": "更新后属性值",
+    "copyLinkSuccess": "需求链接已复制！",
+    "copyLinkError": "需求链接复制失败！"
   },
   "p2": {
     "del": "确认删除该附件",

@@ -13,7 +13,7 @@ export const getProjectList: any = async (params: any) => {
       is_public: params?.isPublic ? Number(params.isPublic) : '',
       status: Number(params.status) || '',
       all: params.all ? 1 : 0,
-      groups: params?.groupId,
+      group: params?.groupId,
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -38,6 +38,7 @@ export const getProjectList: any = async (params: any) => {
         createName: i.user_name,
         info: i.info,
         isPublic: i.is_public,
+        groupIds: i.groups?.map((k: any) => k.id),
       })),
     }
   }
@@ -196,7 +197,7 @@ export const addProject: any = async (params: any) => {
     name: params.name,
     info: params?.info,
     cover: params?.cover,
-    group_ids: params?.groupIds,
+    groups: params?.groupIds,
   })
 }
 
@@ -207,7 +208,7 @@ export const updateProject: any = async (params: any) => {
     info: params.info,
     cover: params.cover,
     id: params.id,
-    group_ids: params?.groupIds,
+    groups: params?.groupIds,
   })
 }
 
@@ -660,16 +661,15 @@ export const saveWorkflowConfig: any = async (params: any) => {
 
 // 获取分组列表
 export const getGroupList: any = async () => {
-  return {
-    list: [{ name: '分组', id: 1 }],
-  }
-  const response = await http.get<any>('getGroupList')
-  return {
-    list: response.data.map((i: any) => ({
-      id: i.id,
-      name: i.name,
-    })),
-  }
+  const response = await http.get<any>('getGroupList', {
+    search: {
+      all: 1,
+    },
+  })
+  return response.data.map((i: any) => ({
+    id: i.id,
+    name: i.name,
+  }))
 }
 
 // 添加分组

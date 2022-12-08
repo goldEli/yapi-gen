@@ -1,9 +1,9 @@
+// 使用多次的公共方法
+
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable max-statements-per-line */
-// 使用多次的公共方法
-
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -102,7 +102,7 @@ function getTypeComponent(
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
-        style={{ minWidth: 192 }}
+        style={{ width: '100%', minWidth: 192 }}
       />
     )
   } else if (params?.attr === 'textarea') {
@@ -115,7 +115,7 @@ function getTypeComponent(
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
         ref={inputRef}
-        style={{ minWidth: 192 }}
+        style={{ width: '100%', minWidth: 192 }}
         autoComplete="off"
       />
     )
@@ -401,6 +401,18 @@ function compress(img: any, type: any, maxHeight: any, flag: any) {
   return base64Data
 }
 
+// 复制
+function copyLink(text: any, successText: string, errorText: string) {
+  navigator.clipboard.writeText(text).then(
+    function () {
+      message.success(successText)
+    },
+    function (err) {
+      message.error(errorText)
+    },
+  )
+}
+
 export default onPaste
 
 export {
@@ -413,4 +425,5 @@ export {
   filterTreeData,
   bytesToSize,
   onPaste,
+  copyLink,
 }

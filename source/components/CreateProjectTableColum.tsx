@@ -121,8 +121,11 @@ export const useDynamicColumns = (state: any) => {
             style={{
               display: 'flex',
               alignItems: 'center',
+              position: 'relative',
+              paddingLeft: record.level ? (Number(record.level) - 1) * 24 : 0,
             }}
           >
+            {state.isTree && state.onChangeTree(record)}
             <Tooltip
               placement="top"
               getPopupContainer={node => node}
@@ -152,6 +155,9 @@ export const useDynamicColumns = (state: any) => {
                   isName
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}
+                  maxWidth={
+                    state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
+                  }
                 >
                   {text}
                 </ListNameWrap>
@@ -256,10 +262,12 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string, record: any) => {
         return (
           <>
-            {state.showChildCOntent && (
+            {state.showChildCOntent && !state.isTree && (
               <ChildDemandTable value={text} row={record} />
             )}
-            {!state.showChildCOntent && <span>{text || '--'}</span>}
+            {(!state.showChildCOntent || state.isTree) && (
+              <span>{text || 0}</span>
+            )}
           </>
         )
       },
@@ -514,6 +522,17 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
+  // 返回文本
+  const getText = (attr: any, text: any) => {
+    if (['user_select_checkbox', 'user_select'].includes(attr)) {
+      return text?.true_value || '--'
+    }
+    return (
+      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
+      '--'
+    )
+  }
+
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {
@@ -535,12 +554,9 @@ export const useDynamicColumns = (state: any) => {
               onUpdate={onUpdate}
               remarks={currentFields?.remarks}
               isCustom
+              defaultTextValues={text?.true_value}
             >
-              <span>
-                {(Array.isArray(text?.value)
-                  ? text?.value?.join(';')
-                  : text?.value) || '--'}
-              </span>
+              <span>{getText(currentFields?.type.attr, text)}</span>
             </TableQuickEdit>
           )
         },

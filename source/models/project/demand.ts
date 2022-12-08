@@ -81,6 +81,9 @@ export default () => {
     updateDemandCategory,
     getImportDownloadModel,
     getExportExcel,
+    batchDelete,
+    batchEdit,
+    getBatchEditConfig,
   } = services.demand
 
   return {
@@ -133,5 +136,8 @@ export default () => {
     isUpdateChangeLog,
     setFilterParams,
     filterParams,
+    batchDelete,
+    batchEdit,
+    getBatchEditConfig,
   }
 }

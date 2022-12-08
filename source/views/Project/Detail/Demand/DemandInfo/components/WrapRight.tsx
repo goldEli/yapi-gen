@@ -246,7 +246,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const { demandId } = paramsData
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
-  const [addValue, setAddValue] = useState('')
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [activeTabs, setActiveTabs] = useState(1)
   const {
@@ -389,7 +388,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         attachment: value.attachment,
       })
       message.success(t('project.replaySuccess'))
-      setAddValue('')
       getList()
       editClose()
     } catch (error) {
@@ -399,6 +397,17 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
 
   const editConfirm = async (params: any) => {
     onAddComment(params)
+  }
+
+  // 返回文本
+  const getText = (attr: any, text: any) => {
+    if (['user_select_checkbox', 'user_select'].includes(attr)) {
+      return text?.true_value || '--'
+    }
+    return (
+      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
+      '--'
+    )
   }
 
   return (
@@ -665,11 +674,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   isCustom
                   remarks={i?.remarks}
                 >
-                  {Array.isArray(demandInfo?.customField?.[i.content]?.value)
-                    ? demandInfo?.customField?.[i.content]?.value?.length > 0
-                      ? demandInfo?.customField?.[i.content]?.value.join(';')
-                      : '--'
-                    : demandInfo?.customField?.[i.content]?.value || '--'}
+                  {getText(i.type?.attr, demandInfo?.customField?.[i.content])}
                 </TableQuickEdit>
               </ContentWrap>
             </InfoItem>
@@ -918,24 +923,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
           editClose={editClose}
           editConfirm={editConfirm}
         />
-
-        // <div>
-        //    <TextareaWrap>
-        //   <Input.TextArea
-        //     placeholder={t('mark.editCom')}
-        //     autoSize={{ minRows: 3, maxRows: 5 }}
-        //     value={addValue}
-        //     onChange={(e: any) => setAddValue(e.target.value)}
-        //     onPressEnter={onPressEnter}
-        //   />
-        //   <ButtonWrap>
-        //     <Button type="primary" onClick={() => onAddComment(addValue)}>
-        //       {t('project.replay')}
-        //     </Button>
-        //   </ButtonWrap>
-
-        // </TextareaWrap>
-        // </div>
       )}
     </WrapRight>
   )

@@ -9,6 +9,19 @@ import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
+// 列表的加号，获取子需求
+const ExpendedWrap = styled(IconFont)({
+  marginRight: 12,
+  color: '#BBBDBF',
+  fontSize: 16,
+  cursor: 'pointer',
+  background: 'white',
+  zIndex: 1,
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
 // 新版移入效果例：项目列表左上方操作
 const HoverWrap = styled.div<{ isActive?: any }>(
   {
@@ -269,10 +282,13 @@ const DividerWrap = styled(Divider)({
   margin: 0,
 })
 
-const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+const ListNameWrap = styled.div<{
+  isClose?: boolean
+  isName?: boolean
+  maxWidth?: any
+}>(
   {
-    padding: '10px 20px',
-    maxWidth: 500,
+    padding: '10px 0px',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -281,9 +297,10 @@ const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       color: '#2877ff',
     },
   },
-  ({ isClose, isName }) => ({
+  ({ isClose, isName, maxWidth }) => ({
     color: isClose ? '#969799' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
+    maxWidth: maxWidth || 500,
   }),
 )
 
@@ -850,6 +867,25 @@ const TableStyleBox = styled(TableWrap)<{
   isHover?: any
 }>(
   {
+    '.ant-table-tbody .tagLength': {
+      visibility: 'hidden',
+    },
+    '.tagLength': {
+      marginLeft: 8,
+      fontSize: 12,
+      color: '#969799',
+    },
+    '.ant-table-selection': {
+      flexDirection: 'inherit',
+    },
+    '.ant-table-selection-column': {
+      textAlign: 'left',
+      width: 70,
+    },
+    '.ant-table-expanded-row .ant-table-thead': {
+      opacity: 0,
+      position: 'absolute',
+    },
     height: '100%',
     '.ant-table, .ant-table-content,.ant-table-container': {
       height: '100%',
@@ -857,6 +893,14 @@ const TableStyleBox = styled(TableWrap)<{
     '.ant-table-row:hover': {
       '.dropdownIcon': {
         visibility: 'visible',
+      },
+    },
+    '.ant-table-expanded-row': {
+      'td[colspan]': {
+        padding: '0px!important',
+        '.ant-table-scroll-horizontal': {
+          margin: '0px!important',
+        },
       },
     },
   },
@@ -930,4 +974,5 @@ export {
   CanOperationCategory,
   SecondButton,
   HoverWrap,
+  ExpendedWrap,
 }

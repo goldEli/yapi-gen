@@ -121,6 +121,9 @@ interface Props {
 
   // 是否是需求详情，用于更新需求状态
   isInfo?: any
+
+  // 父需求id --- 和isChild一起使用
+  parentId?: any
 }
 
 const EditDemand = (props: Props) => {
@@ -658,6 +661,7 @@ const EditDemand = (props: Props) => {
             isSaveParams={isSaveParams}
             isQuickCreate={props?.isQuickCreate}
             fieldsList={fieldsList}
+            parentId={props.parentId}
           />
         </ModalContent>
 

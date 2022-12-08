@@ -365,6 +365,7 @@ const ChildDemand = () => {
           onUpdate={onUpdate}
           childList={dataList?.list}
           categoryId={demandInfo?.category}
+          parentId={demandInfo.id}
         />
       ) : null}
       <DeleteConfirm

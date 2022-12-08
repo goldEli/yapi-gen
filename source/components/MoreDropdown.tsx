@@ -22,17 +22,23 @@ interface Props {
   isHidden?: any
   size?: any
   color?: any
+  // 是否是子表格
+  hasChild?: any
 }
 
 const MoreDropdown = (props: Props) => {
   return (
     <DropdownWrap
-      key={props.isMoreVisible ? props.isMoreVisible.toString() : null}
-      visible={props.isMoreVisible}
+      key={
+        props.isMoreVisible && !props?.hasChild
+          ? props.isMoreVisible.toString()
+          : null
+      }
+      visible={props?.hasChild ? void 0 : props.isMoreVisible}
       overlay={props.menu}
       trigger={['hover']}
-      placement="bottomRight"
-      getPopupContainer={node => node}
+      placement={props?.hasChild ? 'bottomLeft' : 'bottomRight'}
+      getPopupContainer={node => (props?.hasChild ? document.body : node)}
       onVisibleChange={visible => props.onChangeVisible?.(visible)}
       className="dropdownIcon"
     >
