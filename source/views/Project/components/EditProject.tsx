@@ -15,6 +15,10 @@ interface Props {
   onChangeVisible(): void
   details?: any
   onUpdate?(): void
+  // 当前选中的项
+  activeType?: any
+  // 当前选中的分组
+  groupId?: any
 }
 
 const EditProject = (props: Props) => {
@@ -58,6 +62,11 @@ const EditProject = (props: Props) => {
       form.setFieldsValue(props?.details)
     } else {
       form.resetFields()
+      if (props.activeType === -1) {
+        form.setFieldsValue({
+          groupIds: [props.groupId],
+        })
+      }
     }
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -121,7 +130,10 @@ const EditProject = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('project.isPublic')} name="isPublic">
-          <Select placeholder={t('common.pleaseSelect')} defaultValue={[2]}>
+          <Select
+            placeholder={t('common.pleaseSelect')}
+            defaultValue={props.activeType === 1 ? [1] : [2]}
+          >
             <Select.Option value={2}>
               {t('common.privateProject')}
             </Select.Option>

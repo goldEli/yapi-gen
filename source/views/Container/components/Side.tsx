@@ -6,7 +6,8 @@ import { css } from '@emotion/css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
-import sideLogo from '/logo.svg'
+import sideLogo from '/sliderLogo.svg'
+import sideLogoText from '/logoText.svg'
 import { useModel } from '@/models'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -32,9 +33,9 @@ const SideWrap = styled.div`
   height: 100vh;
 `
 const imgCSS = css`
-  width: 80px;
-  height: 106px;
-  margin-bottom: 50px;
+  width: 56px;
+  margin-top: 24px;
+  margin-bottom: 32px;
   object-fit: cover;
 `
 const SideHeader = styled.div`
@@ -194,8 +195,6 @@ export const Side = () => {
     >
       {item?.icon}
       {item.title}
-      {/* {item.key === '/information' && <RedLogo>{count}</RedLogo>} */}
-      {/* {item.key === '/mine' && <RedLogo>{count}</RedLogo>} */}
     </SideEach>
   ))
 
@@ -207,6 +206,7 @@ export const Side = () => {
     <SideWrap>
       <SideHeader>
         <img className={imgCSS} src={sideLogo} alt="1" />
+        <img style={{ marginBottom: 32 }} src={sideLogoText} alt="1" />
         {allEach}
       </SideHeader>
 
