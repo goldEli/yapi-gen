@@ -487,7 +487,10 @@ const CommonNeed = (props: any) => {
                   >
                     <IconFont
                       type="unorderedlist"
-                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
+                      style={{
+                        fontSize: 20,
+                        color: isMany ? '#969799' : '#4388ff',
+                      }}
                     />
                   </Tooltip>
                 </SetButton>
@@ -505,7 +508,7 @@ const CommonNeed = (props: any) => {
                         type="database"
                         style={{
                           fontSize: 20,
-                          color: isMany ? '#4388ff' : '',
+                          color: isMany ? '#4388ff' : '#969799',
                         }}
                       />
                     </Tooltip>
@@ -524,7 +527,7 @@ const CommonNeed = (props: any) => {
                     type="filter"
                     style={{
                       fontSize: 20,
-                      color: isShowSearch ? '#2877ff' : '',
+                      color: isShowSearch ? '#2877ff' : '#969799',
                     }}
                   />
                 </Tooltip>
