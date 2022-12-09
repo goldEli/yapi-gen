@@ -22,6 +22,9 @@ const AddButton = styled.button({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  ':hover': {
+    background: '#669FFF',
+  },
   ':focus': {
     background: '#1763e5',
     color: 'white',
@@ -62,13 +65,14 @@ const MenuItem = styled.div<{ active?: boolean }>(
     alignItems: 'center',
     cursor: 'pointer',
     '&: hover': {
-      color: '#2877ff!important',
+      backgroundColor: '#F4F5F5',
+      // color: '#2877ff!important',
     },
   },
   ({ active }) => ({
     borderRight: active ? '3px solid #2877ff' : '3px solid white',
     color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA' : 'white',
+    background: active ? '#F0F4FA !important' : 'white',
   }),
 )
 

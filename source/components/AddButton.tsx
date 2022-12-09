@@ -16,6 +16,10 @@ const Wrap = styled.button({
   color: 'white',
   border: 'none',
   width: 'fit-content',
+  ':hover': {
+    background: '#669FFF',
+    color: 'white',
+  },
   ':focus': {
     background: '#1763e5',
     color: 'white',
