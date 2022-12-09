@@ -22,6 +22,9 @@ const AddButton = styled.button({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  ':hover': {
+    background: '#669FFF',
+  },
   ':focus': {
     background: '#1763e5',
     color: 'white',

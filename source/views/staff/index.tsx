@@ -55,6 +55,10 @@ const Reset = styled.div`
     border: 1px solid rgba(40, 119, 255, 1);
     color: rgba(40, 119, 255, 1);
   }
+  &:focus {
+    border: 1px solid #1763e5;
+    color: #1763e5;
+  }
 `
 
 export const DataWrap = styled.div({

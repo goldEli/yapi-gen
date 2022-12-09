@@ -42,6 +42,10 @@ const AddButton = styled.button({
   cursor: 'pointer',
   color: 'white',
   border: 'none',
+  ':hover': {
+    background: '#669FFF',
+    color: 'white',
+  },
 })
 
 const Menu = styled.div`
@@ -52,6 +56,11 @@ const Menu = styled.div`
 export const DailyContext: any = React.createContext('')
 
 const MenuItem = styled.div<{ active?: boolean }>(
+  ({ active }) => ({
+    borderRight: active ? '3px solid #2877ff' : '3px solid white',
+    color: active ? '#2877ff' : '#323233',
+    background: active ? '#F0F4FA !important' : 'white',
+  }),
   {
     boxSizing: 'border-box',
     justifyContent: 'center',
@@ -60,14 +69,9 @@ const MenuItem = styled.div<{ active?: boolean }>(
     alignItems: 'center',
     cursor: 'pointer',
     '&: hover': {
-      color: '#2877ff!important',
+      backgroundColor: '#F4F5F5',
     },
   },
-  ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid white',
-    color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA' : 'white',
-  }),
 )
 const Main = styled.div({
   width: 'calc(100% - 220px)',
