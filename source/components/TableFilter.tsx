@@ -369,9 +369,13 @@ const TableFilter = (props: any) => {
             )
             ?.map((i: any) => (
               <div key={i.key}>
-                {['select_checkbox', 'checkbox', 'select', 'radio'].includes(
-                  i.type,
-                ) && (
+                {[
+                  'select_checkbox',
+                  'checkbox',
+                  'select',
+                  'radio',
+                  'dan',
+                ].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
@@ -400,34 +404,7 @@ const TableFilter = (props: any) => {
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
-                {['dan'].includes(i.type) && (
-                  <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                      {i.contentTxt}
-                    </span>
-                    <Form.Item name={i.key}>
-                      <SelectWrap
-                        showArrow
-                        style={{ width: '100%' }}
-                        placeholder={t('common.pleaseSelect')}
-                        showSearch
-                        onChange={confirm}
-                        allowClear
-                        optionFilterProp="label"
-                        options={deWeight(
-                          i.children.map((v: any) => ({
-                            label: v.content_txt,
-                            value: v.id,
-                            id: v.id,
-                          })),
-                        )}
-                      />
-                    </Form.Item>
-                    <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
-                    </DelButton>
-                  </SelectWrapBedeck>
-                )}
+
                 {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
