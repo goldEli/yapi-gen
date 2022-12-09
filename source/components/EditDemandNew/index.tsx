@@ -165,8 +165,8 @@ const EditDemand = (props: Props) => {
     colorList,
     getWorkflowList,
     workList,
-    categoryList,
-    getCategoryList,
+    categoryEditList,
+    getCategoryEditList,
     getMemberList,
     getFieldList,
     filterParamsModal,
@@ -207,7 +207,7 @@ const EditDemand = (props: Props) => {
     setIsOpenEditDemand(true)
     const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
-      getCategoryList({ projectId: value || projectId }),
+      getCategoryEditList({ projectId: value || projectId, isEdit: true }),
       getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
       getMemberList({
@@ -319,7 +319,7 @@ const EditDemand = (props: Props) => {
   const onChangeSelect = async (value: any) => {
     if (value) {
       setCurrentCategory(
-        categoryList?.list
+        categoryEditList?.list
           ?.filter((i: any) => i.isCheck === 1)
           ?.filter((i: any) => i.id === value)[0],
       )
@@ -358,7 +358,7 @@ const EditDemand = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      {categoryList?.list
+      {categoryEditList?.list
         ?.filter((i: any) => i.isCheck === 1)
         ?.filter((i: any) => (props.demandId ? i.id !== categoryObj.id : i))
         ?.map((k: any) => (
@@ -556,7 +556,7 @@ const EditDemand = (props: Props) => {
                 allowClear
                 optionFilterProp="label"
                 onChange={onChangeSelect}
-                options={categoryList?.list
+                options={categoryEditList?.list
                   ?.filter((i: any) => i.isCheck === 1)
                   ?.filter((i: any) => i.id !== categoryObj.id)
                   ?.map((k: any) => ({
@@ -618,7 +618,7 @@ const EditDemand = (props: Props) => {
                 <CanOperationCategory
                   style={{ marginRight: 8, cursor: 'pointer' }}
                   color={
-                    categoryList?.list?.filter(
+                    categoryEditList?.list?.filter(
                       (i: any) => i.id === categoryObj?.id,
                     )[0]?.color
                   }
@@ -626,7 +626,7 @@ const EditDemand = (props: Props) => {
                     colorList?.filter(
                       (i: any) =>
                         i.key ===
-                        categoryList?.list?.filter(
+                        categoryEditList?.list?.filter(
                           (k: any) => k.id === categoryObj?.id,
                         )[0]?.color,
                     )[0]?.bgColor
@@ -634,7 +634,7 @@ const EditDemand = (props: Props) => {
                 >
                   <span className="title">
                     {
-                      categoryList?.list?.filter(
+                      categoryEditList?.list?.filter(
                         (i: any) => i.id === categoryObj?.id,
                       )[0]?.name
                     }

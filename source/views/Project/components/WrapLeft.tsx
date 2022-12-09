@@ -329,7 +329,7 @@ const WrapLeftBox = (props: Props) => {
       >
         <IconFont type="user-check" style={{ fontSize: 18, marginRight: 8 }} />
         {t('project.mineJoin')}
-        {countData.publicCount ? `（${countData.publicCount}）` : ''}
+        {countData.selfCount ? `（${countData.selfCount}）` : ''}
       </TitleBox>
       <TitleBox onClick={() => onChangeType(1)} idx={props.activeType === 1}>
         <IconFont
@@ -337,7 +337,7 @@ const WrapLeftBox = (props: Props) => {
           style={{ fontSize: 18, marginRight: 8 }}
         />
         {t('project.companyAll')}
-        {countData.selfCount ? `（${countData.selfCount}）` : ''}
+        {countData.publicCount ? `（${countData.publicCount}）` : ''}
       </TitleBox>
       <GroupBox>
         <div>{t('version2.projectGroup')}</div>

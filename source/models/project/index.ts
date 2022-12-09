@@ -25,6 +25,7 @@ export default () => {
     list: undefined,
   })
   const [categoryList, setCategoryList] = useState<any>([])
+  const [categoryEditList, setCategoryEditList] = useState<any>([])
   const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [workList, setWorkList] = useState<any>({
     list: undefined,
@@ -77,6 +78,12 @@ export default () => {
   const getStatusList = async (params: any) => {
     const result = await services.project.storyConfigStatusList(params)
     setStatusWorkList(result)
+  }
+
+  const getCategoryEditList = async (params: any) => {
+    const result = await services.project.storyConfigCategoryList(params)
+    setCategoryEditList(result)
+    return result
   }
 
   const getCategoryList = async (params: any) => {
@@ -252,5 +259,7 @@ export default () => {
     filterParamsModal,
     setSelectGroupList,
     selectGroupList,
+    categoryEditList,
+    getCategoryEditList,
   }
 }
