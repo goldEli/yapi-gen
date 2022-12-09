@@ -88,7 +88,34 @@
       ]
     },
     "rules": {
-      "@typescript-eslint/no-explicit-any": 0
+      "object-property-newline": [
+        1,
+        {
+          "allowAllPropertiesOnSameLine": true
+        }
+      ],
+      "function-call-argument-newline": [
+        1,
+        "consistent"
+      ],
+      "@typescript-eslint/indent": [
+        1,
+        2,
+        {
+          "offsetTernaryExpressions": true
+        }
+      ],
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/member-delimiter-style": 0,
+      "complexity": [
+        2,
+        10
+      ],
+      "react-hooks/exhaustive-deps": 0,
+      "max-lines": [
+        2,
+        800
+      ]
     }
   },
   "lint-staged": {
