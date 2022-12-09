@@ -5,7 +5,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
+import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -18,6 +18,8 @@ import {
   StaffTableWrap,
   SetButton,
   TableStyleBox,
+  HoverWrap,
+  DividerWrap,
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -31,6 +33,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import DropDownMenu from '@/components/DropDownMenu'
 
 export const tableWrapP = css`
   display: flex;
@@ -95,6 +98,7 @@ const Staff = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [isStaffPersonalVisible, setIsStaffPersonalVisible] =
     useState<boolean>(false)
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'nickname',
     'name',
@@ -251,6 +255,7 @@ const Staff = () => {
 
   const showModal = () => {
     setIsModalVisible(true)
+    setIsVisibleFields(false)
   }
   const close2 = () => {
     setIsModalVisible(false)
@@ -376,24 +381,22 @@ const Staff = () => {
           style={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
-          <SetButton onClick={onChangeFilter}>
-            <Tooltip title={t('common.search')}>
-              <IconFont
-                type="filter"
-                style={{
-                  fontSize: 20,
-                  color: isShow ? 'rgba(40, 119, 255, 1)' : '',
-                }}
-              />
-            </Tooltip>
-          </SetButton>
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <SetButton>
-              <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="settings" style={{ fontSize: 20 }} />
-              </Tooltip>
-            </SetButton>
-          </Dropdown>
+          <Space size={8}>
+            <HoverWrap onClick={onChangeFilter} isActive={isShow}>
+              <IconFont className="iconMain" type="filter" />
+              <span className="label">{t('common.search')}</span>
+            </HoverWrap>
+            <DividerWrap type="vertical" />
+            <DropDownMenu
+              menu={menu}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div>{t('common.tableFieldSet')}</div>
+            </DropDownMenu>
+          </Space>
         </div>
       </Hehavior>
       {isShow ? <SearchList onSearch={onSearch} /> : null}

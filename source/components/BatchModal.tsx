@@ -307,7 +307,7 @@ const BatchModal = (props: Props) => {
             )}
             {chooseType === 'category_id' && (
               <Form.Item
-                label="更新后状态值"
+                label={t('version2.updateAfterStatus')}
                 name="status"
                 rules={[{ required: true, message: '' }]}
               >

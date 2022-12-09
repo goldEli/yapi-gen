@@ -7,7 +7,9 @@ import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import CommonInput from '@/components/CommonInput'
-import { HoverWrap } from '@/components/StyleCommon'
+import DropDownMenu from '@/components/DropDownMenu'
+import { HasIconMenu } from '@/components/StyleCommon'
+import { useState } from 'react'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -45,23 +47,50 @@ interface Props {
 
 const Filter = (props: Props) => {
   const [t] = useTranslation()
+  const [isVisible, setIsVisible] = useState(false)
+  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
+
+  // 切换显示类型
+  const onClickMenu = (value: any) => {
+    props.onChangeSort?.(value)
+    setIsVisible(false)
+  }
+
+  // 切换显示类型
+  const onClickMenuFormat = (type: boolean) => {
+    props.onChangeFormat(type)
+    setIsVisibleFormat(false)
+  }
+
   const menu = (
     <Menu
       items={[
         {
           key: 'name',
           label: (
-            <div onClick={() => props.onChangeSort('name')}>
-              {t('common.projectName')}
-            </div>
+            <HasIconMenu
+              onClick={() => onClickMenu('name')}
+              isCheck={props.sort === 'name'}
+            >
+              <span className="label">{t('common.projectName')}</span>
+              {props.sort === 'name' && (
+                <IconFont className="checked" type="check" />
+              )}
+            </HasIconMenu>
           ),
         },
         {
           key: 'created_at',
           label: (
-            <div onClick={() => props.onChangeSort('created_at')}>
-              {t('common.createTime')}
-            </div>
+            <HasIconMenu
+              onClick={() => onClickMenu('created_at')}
+              isCheck={props.sort === 'created_at'}
+            >
+              <span className="label">{t('common.createTime')}</span>
+              {props.sort === 'created_at' && (
+                <IconFont className="checked" type="check" />
+              )}
+            </HasIconMenu>
           ),
         },
       ]}
@@ -74,22 +103,37 @@ const Filter = (props: Props) => {
         {
           key: 'list',
           label: (
-            <div onClick={() => props.onChangeFormat(false)}>
-              {t('common.list')}
-            </div>
+            <HasIconMenu
+              onClick={() => onClickMenuFormat(false)}
+              isCheck={!props.isGrid}
+            >
+              <span className="label">{t('common.list')}</span>
+              <IconFont
+                className="checked"
+                type={props.isGrid ? '' : 'check'}
+              />
+            </HasIconMenu>
           ),
         },
         {
           key: 'thumbnail',
           label: (
-            <div onClick={() => props.onChangeFormat(true)}>
-              {t('common.thumbnail')}
-            </div>
+            <HasIconMenu
+              onClick={() => onClickMenuFormat(true)}
+              isCheck={props.isGrid}
+            >
+              <span className="label">{t('common.thumbnail')}</span>
+              <IconFont
+                className="checked"
+                type={props.isGrid ? 'check' : ''}
+              />
+            </HasIconMenu>
           ),
         },
       ]}
     />
   )
+
   return (
     <Wrap>
       <CommonInput
@@ -112,26 +156,30 @@ const Filter = (props: Props) => {
             hidden={!props.isGrid}
             style={{ display: 'flex', alignItems: 'center' }}
           >
-            <Dropdown overlay={menu} getPopupContainer={node => node}>
-              <HoverWrap>
-                <IconFont type="sort" />
-                <div>
-                  {props.sort === 'name'
-                    ? t('common.projectName')
-                    : t('common.createTime')}
-                </div>
-              </HoverWrap>
-            </Dropdown>
-          </div>
-          <Divider style={{ height: 16, margin: 0 }} type="vertical" />
-          <Dropdown overlay={menuFormat} getPopupContainer={node => node}>
-            <HoverWrap style={{ color: '#2877ff' }}>
-              <IconFont type={props.isGrid ? 'app-store' : 'unorderedlist'} />
+            <DropDownMenu
+              menu={menu}
+              icon="sort"
+              isVisible={isVisible}
+              onChangeVisible={setIsVisible}
+            >
               <div>
-                {props.isGrid ? t('common.thumbnail') : t('common.list')}
+                {props.sort === 'name'
+                  ? t('common.projectName')
+                  : t('common.createTime')}
               </div>
-            </HoverWrap>
-          </Dropdown>
+            </DropDownMenu>
+          </div>
+          {props.isGrid && (
+            <Divider style={{ height: 16, margin: 0 }} type="vertical" />
+          )}
+          <DropDownMenu
+            isVisible={isVisibleFormat}
+            onChangeVisible={setIsVisibleFormat}
+            menu={menuFormat}
+            icon={props.isGrid ? 'app-store' : 'unorderedlist'}
+          >
+            <div>{props.isGrid ? t('common.thumbnail') : t('common.list')}</div>
+          </DropDownMenu>
         </Space>
       </WrapRight>
     </Wrap>

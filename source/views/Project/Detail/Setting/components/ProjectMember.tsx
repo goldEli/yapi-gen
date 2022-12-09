@@ -9,6 +9,7 @@ import {
   TableStyleBox,
   PaginationWrap,
   SelectWrapBedeck,
+  HoverWrap,
 } from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
@@ -570,11 +571,10 @@ const ProjectMember = () => {
               onChangeSearch={onChangeSearch}
               isPermission={hasAdd}
             />
-            <IconFont
-              style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
-              type="filter"
-              onClick={onChangeFilter}
-            />
+            <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
+              <IconFont className="iconMain" type="filter" />
+              <span className="label">{t('common.search')}</span>
+            </HoverWrap>
           </HeaderTop>
           <FilterWrap
             hidden={isVisible}

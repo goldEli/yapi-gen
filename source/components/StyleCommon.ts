@@ -9,6 +9,64 @@ import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
+// 新版移入效果例：项目列表左上方操作
+const HoverWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 8px',
+    height: 32,
+    borderRadius: 6,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    '.iconMain': {
+      marginRight: 8,
+      fontSize: 18,
+    },
+    svg: {
+      fontSize: 16,
+    },
+    '&: hover': {
+      background: '#F4F5F5',
+      color: '#323233',
+    },
+  },
+  ({ isActive }) => ({
+    background: isActive ? '#F4F5F5' : 'white',
+    color: isActive ? '#323233' : '#969799',
+  }),
+)
+
+// 包含图标及文字的下拉
+const HasIconMenu = styled.div<{ isCheck?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    '.icon': {
+      marginRight: 12,
+      fontSize: 16,
+    },
+    '.checked': {
+      fontSize: 16,
+      marginLeft: 36,
+      color: '#2877ff',
+    },
+    '.left': {
+      padding: 0,
+      display: 'flex',
+      alignItems: 'center',
+    },
+  },
+  ({ isCheck }) => ({
+    '.label': {
+      color: isCheck ? '#2877ff' : '',
+    },
+    '.icon': {
+      color: isCheck ? '#2877ff' : '',
+    },
+  }),
+)
+
 // 列表的加号，获取子需求
 const ExpendedWrap = styled(IconFont)({
   marginRight: 12,
@@ -21,33 +79,6 @@ const ExpendedWrap = styled(IconFont)({
     color: '#2877ff',
   },
 })
-
-// 新版移入效果例：项目列表左上方操作
-const HoverWrap = styled.div<{ isActive?: any }>(
-  {
-    padding: '0 8px',
-    height: 32,
-    borderRadius: 6,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    div: {
-      fontSize: 14,
-      fontWeight: 400,
-      marginLeft: 8,
-    },
-    svg: {
-      fontSize: 16,
-    },
-    '&: hover': {
-      background: '#F4F5F5',
-      color: '#323233',
-    },
-  },
-  ({ isActive }) => ({
-    color: isActive ? '#2877ff' : '#969799',
-  }),
-)
 
 // 次按钮样式
 const SecondButton = styled(Button)`
@@ -979,6 +1010,7 @@ export {
   TableStyleBox,
   CanOperationCategory,
   SecondButton,
-  HoverWrap,
   ExpendedWrap,
+  HasIconMenu,
+  HoverWrap,
 }

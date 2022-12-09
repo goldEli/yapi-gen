@@ -81,7 +81,9 @@
     "noDataCreateProject": "Currently you have not joined any project, please create one",
     "noDataCreateIteration": "There is no iteration version yet, let's create one!",
     "noDataCreateDemand": "This iteration has not added any requirements",
-    "noDataCreateDemandList": "The current project has not created any requirements yet, create one~"
+    "noDataCreateDemandList": "The current project has not created any requirements yet, create one~",
+    "tree": "Treelike",
+    "updateAfterStatus": "Status value after update"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",

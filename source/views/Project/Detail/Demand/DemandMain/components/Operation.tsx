@@ -416,7 +416,6 @@ const Operation = (props: Props) => {
             placeholder={t('common.pleaseSearchDemand')}
             onChangeSearch={onChangeSearch}
           />
-          <DividerWrap type="vertical" />
           <OperationGroup
             onChangeFilter={onChangeFilter}
             onChangeGrid={props.onChangeGrid}

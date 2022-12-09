@@ -19,9 +19,12 @@ import {
   ShowWrap,
   TableWrap,
   IconFontWrap,
+  HoverWrap,
+  DividerWrap,
+  HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
+import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -34,6 +37,7 @@ import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
+import DropDownMenu from '@/components/DropDownMenu'
 
 const IconWrap = styled(IconFontWrap)({
   '&: hover': {
@@ -180,6 +184,8 @@ const CommonNeed = (props: any) => {
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const [isSpin, setIsSpin] = useState<boolean>(false)
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
+  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -404,6 +410,7 @@ const CommonNeed = (props: any) => {
 
   const showModal = () => {
     setIsModalVisible(true)
+    setIsVisibleFields(false)
   }
   const close2 = () => {
     setIsModalVisible(false)
@@ -453,7 +460,39 @@ const CommonNeed = (props: any) => {
 
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
+    setIsVisibleFormat(false)
   }
+
+  const menuType = (
+    <Menu
+      items={[
+        {
+          key: 'list',
+          label: (
+            <HasIconMenu onClick={() => onChangeMany(true)} isCheck={isMany}>
+              <div className="left">
+                <IconFont className="icon" type="database" />
+                <span className="label">{t('common.timeList')}</span>
+              </div>
+              <IconFont className="checked" type={isMany ? 'check' : ''} />
+            </HasIconMenu>
+          ),
+        },
+        {
+          key: 'thumbnail',
+          label: (
+            <HasIconMenu onClick={() => onChangeMany(false)} isCheck={!isMany}>
+              <div className="left">
+                <IconFont className="icon" type="unorderedlist" />
+                <span className="label">{t('common.list')}</span>
+              </div>
+              <IconFont className="checked" type={isMany ? '' : 'check'} />
+            </HasIconMenu>
+          ),
+        },
+      ]}
+    />
+  )
 
   return (
     <>
@@ -473,79 +512,49 @@ const CommonNeed = (props: any) => {
               onChangeSearch={onPressEnter}
             />
           </div>
-          <div style={{ display: 'flex' }}>
+          <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (
               <>
-                <SetButton
-                  onClick={() => {
-                    onChangeMany(false)
-                  }}
-                >
-                  <Tooltip
-                    title={t('common.list')}
-                    getPopupContainer={node => node}
-                  >
-                    <IconFont
-                      type="unorderedlist"
-                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-                    />
-                  </Tooltip>
-                </SetButton>
                 {props?.type === 'abeyance' && (
-                  <SetButton
-                    onClick={() => {
-                      onChangeMany(true)
-                    }}
+                  <DropDownMenu
+                    menu={menuType}
+                    icon={isMany ? 'database' : 'unorderedlist'}
+                    isVisible={isVisibleFormat}
+                    onChangeVisible={setIsVisibleFormat}
                   >
-                    <Tooltip
-                      title={t('common.timeList')}
-                      getPopupContainer={node => node}
-                    >
-                      <IconFont
-                        type="database"
-                        style={{
-                          fontSize: 20,
-                          color: isMany ? '#4388ff' : '',
-                        }}
-                      />
-                    </Tooltip>
-                  </SetButton>
+                    <HasIconMenu>
+                      <div className="label">
+                        {isMany ? t('common.timeList') : t('common.list')}
+                      </div>
+                    </HasIconMenu>
+                  </DropDownMenu>
                 )}
               </>
             )}
 
             {props.id !== 0 && (
-              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-                <Tooltip
-                  title={t('common.search')}
-                  getPopupContainer={node => node}
+              <>
+                <DividerWrap type="vertical" />
+                <HoverWrap
+                  onClick={() => setIsShowSearch(!isShowSearch)}
+                  isActive={isShowSearch}
                 >
-                  <IconFont
-                    type="filter"
-                    style={{
-                      fontSize: 20,
-                      color: isShowSearch ? '#2877ff' : '',
-                    }}
-                  />
-                </Tooltip>
-              </SetButton>
+                  <IconFont className="iconMain" type="filter" />
+                  <span className="label">{t('common.search')}</span>
+                </HoverWrap>
+              </>
             )}
-
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              <SetButton>
-                <Tooltip
-                  title={t('common.tableFieldSet')}
-                  getPopupContainer={node => node}
-                >
-                  <IconWrap
-                    type="settings"
-                    active={isModalVisible}
-                    style={{ fontSize: 20 }}
-                  />
-                </Tooltip>
-              </SetButton>
-            </Dropdown>
-          </div>
+            <DividerWrap type="vertical" />
+            <DropDownMenu
+              menu={menu}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div>{t('common.tableFieldSet')}</div>
+            </DropDownMenu>
+          </Space>
         </SearchWrap>
       </TabsHehavior>
       {isShowSearch && props.id !== 0 ? (

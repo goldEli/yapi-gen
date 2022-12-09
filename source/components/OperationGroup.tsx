@@ -1,18 +1,15 @@
 // 需求主页右侧操作组件
-
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Space, Dropdown, Menu, Tooltip } from 'antd'
+import { Space, Menu } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
-import { DividerWrap, IconFontWrap } from './StyleCommon'
+import { DividerWrap, HasIconMenu, HoverWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
-
-const IconWrap = styled(IconFontWrap)({
-  '&: hover': {
-    color: '#2877ff',
-  },
-})
+import IconFont from './IconFont'
+import DropDownMenu from './DropDownMenu'
+import { useState } from 'react'
 
 interface Props {
   onChangeFilter?(): void
@@ -32,60 +29,124 @@ const SpaceWrap = styled(Space)({
 const OperationGroup = (props: Props) => {
   const [t] = useTranslation()
   const { projectInfo } = useModel('project')
+  const [isVisible, setIsVisible] = useState(false)
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/get',
   )
 
+  // 切换显示类型
+  const onClickMenu = (number: any) => {
+    props.onChangeGrid?.(number)
+    setIsVisible(false)
+  }
+
+  // 切换显示类型
+  const onClickMenuFields = () => {
+    props.onChangeSetting?.()
+    setIsVisibleFields(false)
+  }
+
   const menu = (
     <Menu
       items={[
         {
           key: '1',
+          label: <div onClick={onClickMenuFields}>{t('common.setField')}</div>,
+        },
+      ]}
+    />
+  )
+
+  const menuType = (
+    <Menu
+      items={[
+        {
+          key: 'list',
           label: (
-            <div onClick={() => props.onChangeSetting?.()}>
-              {t('common.setField')}
-            </div>
+            <HasIconMenu onClick={() => onClickMenu(0)} isCheck={!props.isGrid}>
+              <div className="left">
+                <IconFont className="icon" type="unorderedlist" />
+                <span className="label">{t('common.list')}</span>
+              </div>
+              <IconFont
+                className="checked"
+                type={props.isGrid ? '' : 'check'}
+              />
+            </HasIconMenu>
+          ),
+        },
+        {
+          key: 'thumbnail',
+          label: (
+            <HasIconMenu
+              onClick={() => onClickMenu(1)}
+              isCheck={props.isGrid === 1}
+            >
+              <div className="left">
+                <IconFont className="icon" type="layout" />
+                <span className="label">{t('common.board')}</span>
+              </div>
+              <IconFont
+                className="checked"
+                type={props.isGrid === 1 ? 'check' : ''}
+              />
+            </HasIconMenu>
+          ),
+        },
+        {
+          key: 'tree',
+          label: (
+            <HasIconMenu
+              onClick={() => onClickMenu(2)}
+              isCheck={props.isGrid === 2}
+            >
+              <div className="left">
+                <IconFont className="icon" type="tree-list" />
+                <span className="label">{t('version2.tree')}</span>
+              </div>
+              <IconFont
+                className="checked"
+                type={props.isGrid === 2 ? '"check"' : ''}
+              />
+            </HasIconMenu>
           ),
         },
       ]}
     />
   )
   return (
-    <SpaceWrap size={16}>
-      <Tooltip title={t('common.board')}>
-        <IconWrap
-          onClick={() => props.onChangeGrid?.(1)}
-          active={props.isGrid === 1}
-          type="layout"
-        />
-      </Tooltip>
-      <Tooltip title={t('common.list')}>
-        <IconWrap
-          onClick={() => props.onChangeGrid?.(0)}
-          active={!props.isGrid}
-          type="unorderedlist"
-        />
-      </Tooltip>
-      <Tooltip title="树形">
-        <IconWrap
-          onClick={() => props.onChangeGrid?.(2)}
-          active={props.isGrid === 2}
-          type="slider-02"
-        />
-      </Tooltip>
+    <SpaceWrap size={16} style={{ marginLeft: 8 }}>
+      <DropDownMenu
+        isVisible={isVisible}
+        onChangeVisible={setIsVisible}
+        menu={menuType}
+        icon={
+          props.isGrid === 1
+            ? 'layout'
+            : props.isGrid === 2
+            ? 'tree-list'
+            : 'unorderedlist'
+        }
+      >
+        <HasIconMenu>
+          <div className="label">
+            {props.isGrid === 1 && t('common.board')}
+            {props.isGrid === 2 && t('version2.tree')}
+            {!props.isGrid && t('common.list')}
+          </div>
+        </HasIconMenu>
+      </DropDownMenu>
 
       {!hasFilter && <DividerWrap type="vertical" />}
 
       {!hasFilter && (
-        <Tooltip title={t('common.search')}>
-          <IconWrap
-            active={!props.filterState}
-            type="filter"
-            onClick={props.onChangeFilter}
-          />
-        </Tooltip>
+        <HoverWrap onClick={props.onChangeFilter} isActive={!props.filterState}>
+          <IconFont className="iconMain" type="filter" />
+          <span className="label">{t('common.search')}</span>
+        </HoverWrap>
       )}
 
       {(props.isGrid === 0 || props.isGrid === 2) && (
@@ -93,11 +154,15 @@ const OperationGroup = (props: Props) => {
       )}
 
       {(props.isGrid === 0 || props.isGrid === 2) && (
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Tooltip title={t('common.tableFieldSet')}>
-            <IconWrap active={props.settingState} type="settings" />
-          </Tooltip>
-        </Dropdown>
+        <DropDownMenu
+          menu={menu}
+          icon="settings"
+          isVisible={isVisibleFields}
+          onChangeVisible={setIsVisibleFields}
+          isActive={props.settingState}
+        >
+          <div>{t('common.tableFieldSet')}</div>
+        </DropDownMenu>
       )}
     </SpaceWrap>
   )

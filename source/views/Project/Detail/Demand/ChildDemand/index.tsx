@@ -24,6 +24,7 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import EditDemand from '@/components/EditDemandNew'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import DropDownMenu from '@/components/DropDownMenu'
 
 const Operation = styled.div({
   display: 'flex',
@@ -107,6 +108,7 @@ const ChildDemand = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -209,7 +211,12 @@ const ChildDemand = () => {
         {
           key: '1',
           label: (
-            <div onClick={() => setIsSettingState(true)}>
+            <div
+              onClick={() => {
+                setIsSettingState(true)
+                setIsVisibleFields(false)
+              }}
+            >
               {t('common.setField')}
             </div>
           ),
@@ -386,9 +393,15 @@ const ChildDemand = () => {
           </ButtonWrap>
         )}
 
-        <Dropdown overlay={setMenu}>
-          <IconFontWrap active={isSettingState} type="settings" />
-        </Dropdown>
+        <DropDownMenu
+          menu={setMenu}
+          icon="settings"
+          isVisible={isVisibleFields}
+          onChangeVisible={setIsVisibleFields}
+          isActive={isSettingState}
+        >
+          <div>{t('common.tableFieldSet')}</div>
+        </DropDownMenu>
       </Operation>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>

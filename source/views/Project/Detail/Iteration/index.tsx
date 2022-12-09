@@ -18,12 +18,14 @@ import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import { DividerWrap, IconFontWrap } from '@/components/StyleCommon'
+import { DividerWrap, HoverWrap, IconFontWrap } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import IterationStatus from './components/IterationStatus'
 import CommonInput from '@/components/CommonInput'
+import IconFont from '@/components/IconFont'
+import DropDownMenu from '@/components/DropDownMenu'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -145,6 +147,7 @@ const IterationWrap = () => {
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
   const [allTitleList, setAllTitleList] = useState<any[]>([])
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -432,24 +435,28 @@ const IterationWrap = () => {
                 {hasFilter ? null : <DividerWrap type="vertical" />}
 
                 {hasFilter ? null : (
-                  <Tooltip title={t('common.search')}>
-                    <IconFontWrap
-                      isHover
-                      active={!filterState}
-                      type="filter"
-                      onClick={() => setFilterState(!filterState)}
-                    />
-                  </Tooltip>
+                  <HoverWrap
+                    onClick={() => setFilterState(!filterState)}
+                    isActive={!filterState}
+                  >
+                    <IconFont className="iconMain" type="filter" />
+                    <span className="label">{t('common.search')}</span>
+                  </HoverWrap>
                 )}
                 <DividerWrap type="vertical" />
-                <Dropdown
-                  overlay={
+                <DropDownMenu
+                  menu={
                     <Menu
                       items={[
                         {
                           key: '1',
                           label: (
-                            <div onClick={() => setSettingState(true)}>
+                            <div
+                              onClick={() => {
+                                setSettingState(true)
+                                setIsVisibleFields(false)
+                              }}
+                            >
                               {t('common.setField')}
                             </div>
                           ),
@@ -457,16 +464,13 @@ const IterationWrap = () => {
                       ]}
                     />
                   }
-                  trigger={['click']}
+                  icon="settings"
+                  isVisible={isVisibleFields}
+                  onChangeVisible={setIsVisibleFields}
+                  isActive={settingState}
                 >
-                  <Tooltip title={t('common.tableFieldSet')}>
-                    <IconFontWrap
-                      isHover
-                      active={settingState}
-                      type="settings"
-                    />
-                  </Tooltip>
-                </Dropdown>
+                  <div>{t('common.tableFieldSet')}</div>
+                </DropDownMenu>
               </OperationWrap>
             )}
           </MainWrap>
