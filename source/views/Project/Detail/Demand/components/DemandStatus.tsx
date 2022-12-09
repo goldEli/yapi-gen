@@ -33,7 +33,7 @@ const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const { getDemandInfo, demandInfo, isUpdateStatus, setIsUpdateStatus } =
     useModel('demand')
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(demandInfo?.status?.id)
   const [rows, setRows] = useState(null)
   const { projectInfo } = useModel('project')
   const [leftList, setLeftList] = useState([])
@@ -85,14 +85,13 @@ const DemandStatusBox = (props: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <StatusWrap
-                onClick={() => onChangeIdx(i.id, i)}
+                onClick={() => {
+                  onChangeIdx(i.id, i)
+                }}
                 style={{
-                  color:
-                    i.id === demandInfo?.status?.id ? '#2877ff' : '#969799',
+                  color: i.id === active ? '#2877ff' : '#969799',
                   border:
-                    i.id === demandInfo?.status?.id
-                      ? '1px solid #2877ff'
-                      : '1px solid #EBEDF0',
+                    i.id === active ? '1px solid #2877ff' : '1px solid #EBEDF0',
                   cursor: isCanEdit ? 'pointer' : 'inherit',
                 }}
               >
