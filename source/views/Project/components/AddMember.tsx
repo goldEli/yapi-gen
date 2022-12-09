@@ -146,7 +146,7 @@ const AddMember = (props: Props) => {
           {props.details?.id ? t('project.editMember') : t('project.addMember')}
         </span>
         <CloseWrap onClick={onClose} width={32} height={32}>
-          <IconFont type="close" />
+          <IconFont type="close" style={{ fontSize: 20 }} />
         </CloseWrap>
       </ModalHeader>
       <Form form={form}>

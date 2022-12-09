@@ -82,7 +82,7 @@ const CommonWrap = styled.div({
 
 const ContentWrap = styled.div<{ hasBg?: true; width: number }>(
   {
-    height: 32,
+    minHeight: 32,
     lineHeight: '32px',
     textAlign: 'center',
     fontSize: 12,

@@ -62,12 +62,7 @@ const CommonModal = (props: ModalProps) => {
         <Space size={4}>
           {props.hasTop}
           <CloseWrap onClick={props?.onClose} width={32} height={32}>
-            <IconFont
-              style={{
-                fontSize: '20px',
-              }}
-              type="close"
-            />
+            <IconFont style={{ fontSize: 20 }} type="close" />
           </CloseWrap>
         </Space>
       </ModalHeader>

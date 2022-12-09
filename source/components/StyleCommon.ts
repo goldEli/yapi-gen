@@ -67,12 +67,12 @@ const SecondButton = styled(Button)`
     font-size: 14px;
   }
   &:hover {
-    background: #2877ff;
-    color: white;
+    background: #e8f1ff;
+    color: #2877ff;
   }
   &:focus {
-    background: #1763e5;
-    color: white;
+    background: #dbeaff;
+    color: #2877ff;
   }
 `
 
@@ -97,6 +97,12 @@ const CloseWrap = styled.div<{ width?: any; height?: any }>(
       background: '#F4F5F5',
       svg: {
         color: '#323233',
+      },
+    },
+    '&: active ': {
+      background: '#ECEDEF',
+      svg: {
+        color: '323233',
       },
     },
   },

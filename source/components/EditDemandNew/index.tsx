@@ -207,7 +207,7 @@ const EditDemand = (props: Props) => {
     setIsOpenEditDemand(true)
     const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
-      getCategoryList({ projectId: value || projectId, isSelect: true }),
+      getCategoryList({ projectId: value || projectId }),
       getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
       getMemberList({
@@ -219,6 +219,10 @@ const EditDemand = (props: Props) => {
     ])
     setTreeArr(classTree)
     setFieldsList(fieldsData?.list)
+    // 过滤掉未开启的类别
+    const resultCategoryList = categoryData?.list?.filter(
+      (i: any) => i.isCheck === 1,
+    )
 
     //  没有需id时，则是创建需求
     if (props.demandId) {
@@ -229,8 +233,12 @@ const EditDemand = (props: Props) => {
       })
       setDemandInfo(res)
       if (
-        categoryData?.list?.filter((j: any) => j.id === res.category)?.length
+        resultCategoryList?.filter((j: any) => j.id === res.category)?.length
       ) {
+        setCategoryObj(
+          resultCategoryList?.filter((j: any) => j.id === res.category)[0],
+        )
+      } else {
         setCategoryObj(
           categoryData?.list?.filter((j: any) => j.id === res.category)[0],
         )
@@ -239,19 +247,21 @@ const EditDemand = (props: Props) => {
       setProjectId(value)
       // 如果是子需求的话，继承父级的需求类别
       if (props?.isChild) {
-        setCategoryObj(
-          categoryData?.list?.filter((i: any) => i.id === props?.categoryId)[0],
-        )
+        // 判断父需求类别是否被关闭，是则取列表第一条
+        const isExistence = resultCategoryList?.filter(
+          (i: any) => i.id === props?.categoryId,
+        )?.length
+        setCategoryObj(isExistence ? isExistence[0] : resultCategoryList[0])
       }
       // 如果是快速创建并且有缓存数据
       if (props?.isQuickCreate && categoryId) {
         setCategoryObj(
-          categoryData?.list?.filter((i: any) => i.id === categoryId)[0],
+          resultCategoryList?.filter((i: any) => i.id === categoryId)[0],
         )
       }
       // 如果是快速创建没有缓存数据，取列表第一个
       if ((props?.isQuickCreate && !categoryId) || props.noDataCreate) {
-        setCategoryObj(categoryData?.list[0])
+        setCategoryObj(resultCategoryList[0])
       }
       // 迭代创建 ,当前只有迭代是需要做筛选类别回填
       if (props?.iterateId) {
@@ -261,12 +271,12 @@ const EditDemand = (props: Props) => {
             (i: any) => i !== -1,
           )?.[0]
           // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-          const resultObj = categoryData?.list?.filter(
+          const resultObj = resultCategoryList?.filter(
             (i: any) => i.id === resultId,
           )[0]
           setCategoryObj(resultObj)
         } else {
-          setCategoryObj(categoryData?.list[0])
+          setCategoryObj(resultCategoryList[0])
         }
       }
     }
@@ -309,7 +319,9 @@ const EditDemand = (props: Props) => {
   const onChangeSelect = async (value: any) => {
     if (value) {
       setCurrentCategory(
-        categoryList?.list.filter((i: any) => i.id === value)[0],
+        categoryList?.list
+          ?.filter((i: any) => i.isCheck === 1)
+          ?.filter((i: any) => i.id === value)[0],
       )
       await getWorkflowList({
         projectId,
@@ -347,6 +359,7 @@ const EditDemand = (props: Props) => {
       }}
     >
       {categoryList?.list
+        ?.filter((i: any) => i.isCheck === 1)
         ?.filter((i: any) => (props.demandId ? i.id !== categoryObj.id : i))
         ?.map((k: any) => (
           <LiWrap
@@ -544,6 +557,7 @@ const EditDemand = (props: Props) => {
                 optionFilterProp="label"
                 onChange={onChangeSelect}
                 options={categoryList?.list
+                  ?.filter((i: any) => i.isCheck === 1)
                   ?.filter((i: any) => i.id !== categoryObj.id)
                   ?.map((k: any) => ({
                     label: k.name,
@@ -638,7 +652,7 @@ const EditDemand = (props: Props) => {
             )}
           </div>
           <CloseWrap width={32} height={32} onClick={onCancel}>
-            <IconFont type="close" />
+            <IconFont type="close" style={{ fontSize: 20 }} />
           </CloseWrap>
         </ModalHeader>
         <ModalContent>

@@ -1,8 +1,8 @@
-/* eslint-disable no-undefined */
 // 项目列表页左侧
 
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-undefined */
 import AddButton from '@/components/AddButton'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap } from '@/components/StyleCommon'
-import NoData from '@/components/NoData'
 import { useModel } from '@/models'
 
 const WrapLeft = styled.div`
@@ -144,12 +143,17 @@ const WrapLeftBox = (props: Props) => {
     list: undefined,
   })
 
-  const getGroupData = async () => {
+  const getGroupData = async (isChange?: boolean) => {
     const result = await getGroupList()
     setGroupList({ list: result })
     setSelectGroupList(
       result?.map((i: any) => ({ label: i.name, value: i.id })),
     )
+    // 如果当前删除的是当前选择，则切换为分组第一条
+    if (isChange) {
+      props.onChangeGroup(result[0]?.id)
+      setGroupId(result[0]?.id)
+    }
   }
 
   useEffect(() => {
@@ -170,12 +174,24 @@ const WrapLeftBox = (props: Props) => {
   }
 
   // 操作成功后，清除
-  const onUpdateGroup = () => {
+  const onUpdateGroup = (isChange?: boolean) => {
     setIsDeleteVisible(false)
     setIsVisible(false)
     setOperationObj({})
     form.resetFields()
-    getGroupData()
+    getGroupData(isChange)
+  }
+
+  // 点击切换我参与的或企业所有
+  const onChangeType = (value: number) => {
+    setGroupId(null)
+    props.onChangeType(value)
+  }
+
+  // 点击切分组
+  const onChangeGroup = (item: any) => {
+    props.onChangeGroup(item.id)
+    setGroupId(item.id)
   }
 
   // 确认删除分组
@@ -183,7 +199,11 @@ const WrapLeftBox = (props: Props) => {
     try {
       await deleteProjectGroup({ id: operationObj?.id })
       message.success(t('common.deleteSuccess'))
-      onUpdateGroup()
+      onUpdateGroup(groupId === operationObj?.id)
+      // 如果分组只剩最后一个分组,默认切换到我参与的，反之切换到分组第一个
+      if (groupList?.list?.length === 1) {
+        onChangeType(0)
+      }
     } catch (error) {
       //
     }
@@ -245,18 +265,6 @@ const WrapLeftBox = (props: Props) => {
       setIsVisible(!isVisible)
     }
     setOperationObj({})
-  }
-
-  // 点击切分组
-  const onChangeGroup = (item: any) => {
-    props.onChangeGroup(item.id)
-    setGroupId(item.id)
-  }
-
-  // 点击切换我参与的或企业所有
-  const onChangeType = (value: number) => {
-    setGroupId(null)
-    props.onChangeType(value)
   }
 
   return (

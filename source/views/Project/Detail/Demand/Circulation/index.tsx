@@ -134,6 +134,15 @@ const Circulation = () => {
     }
   }, [isRefresh])
 
+  // 返回自定义值
+  const getValues = (key: any, values: any) => {
+    return (
+      <span>
+        {values?.map((n: any) => (n?.id ? n?.name : n)).join(';') || '--'}
+      </span>
+    )
+  }
+
   return (
     <Wrap>
       <Spin spinning={isSpin}>
@@ -221,11 +230,7 @@ const Circulation = () => {
                           ) : (
                             <ContentWrap>
                               {String(m).includes('custom_') ? (
-                                <span>
-                                  {i.fields[m]?.value
-                                    ?.map((n: any) => n)
-                                    .join(';') || '--'}
-                                </span>
+                                getValues(m, i.fields[m]?.value)
                               ) : (
                                 <Space size={24}>
                                   {i.fields[m]?.value?.map((n: any) => (

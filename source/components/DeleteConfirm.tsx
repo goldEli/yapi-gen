@@ -69,7 +69,7 @@ const DeleteConfirm = (props: Props) => {
           <div>{props.title ? props.title : t('components.deleteConfirm')}</div>
         </Title>
         <CloseWrap width={32} height={32} onClick={props?.onChangeVisible}>
-          <IconFont style={{ fontSize: 16 }} type="close" />
+          <IconFont style={{ fontSize: 20 }} type="close" />
         </CloseWrap>
       </ModalHeader>
       <ModalContent>{props.children ?? props.text}</ModalContent>
