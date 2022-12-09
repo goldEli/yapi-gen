@@ -58,14 +58,23 @@ const TopWrap = styled.div({
   marginBottom: 8,
 })
 
-const IconWrap = styled(IconFont)({
-  fontSize: 20,
-  color: '#969799',
-  cursor: 'pointer',
-  '&: hover': {
-    color: '#2877ff',
+const IconWrap = styled(IconFont)<{ isActive: any }>(
+  {
+    fontSize: 20,
+    color: '#969799',
+    cursor: 'pointer',
+    padding: 8,
+    borderRadius: 6,
+    '&: hover': {
+      color: '#323233',
+      background: '#F4F5F5',
+    },
   },
-})
+  ({ isActive }) => ({
+    color: isActive ? '#323233' : '#969799',
+    background: isActive ? '#F4F5F5' : 'white',
+  }),
+)
 
 const SortItem = styled.div<{ isActive: boolean }>(
   {
@@ -384,7 +393,7 @@ const WrapLeft = (props: Props) => {
             onChangeClick={onChangeClick}
           />
         )}
-        <Space size={20}>
+        <Space size={8}>
           <Popover
             visible={isSort}
             trigger="click"
@@ -394,7 +403,7 @@ const WrapLeft = (props: Props) => {
             onVisibleChange={(visible: boolean) => setIsSort(visible)}
           >
             <Tooltip title={t('common.sort')}>
-              <IconWrap type="sort" />
+              <IconWrap type="sort" isActive={isSort} />
             </Tooltip>
           </Popover>
           {hasFilter ? null : (
@@ -411,7 +420,7 @@ const WrapLeft = (props: Props) => {
               onVisibleChange={onVisibleChange}
             >
               <Tooltip title={t('common.search')}>
-                <IconWrap type="filter" />
+                <IconWrap type="filter" isActive={isFilter} />
               </Tooltip>
             </Popover>
           )}

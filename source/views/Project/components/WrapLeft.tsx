@@ -142,17 +142,22 @@ const WrapLeftBox = (props: Props) => {
   const [groupList, setGroupList] = useState<any>({
     list: undefined,
   })
+  const [countData, setCountData] = useState<any>({})
 
   const getGroupData = async (isChange?: boolean) => {
     const result = await getGroupList()
-    setGroupList({ list: result })
+    setGroupList({ list: result?.list })
     setSelectGroupList(
-      result?.map((i: any) => ({ label: i.name, value: i.id })),
+      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
     )
+    setCountData({
+      publicCount: result.publicCount,
+      selfCount: result.selfCount,
+    })
     // 如果当前删除的是当前选择，则切换为分组第一条
     if (isChange) {
-      props.onChangeGroup(result[0]?.id)
-      setGroupId(result[0]?.id)
+      props.onChangeGroup(result?.list[0]?.id)
+      setGroupId(result?.list[0]?.id)
     }
   }
 
@@ -324,6 +329,7 @@ const WrapLeftBox = (props: Props) => {
       >
         <IconFont type="user-check" style={{ fontSize: 18, marginRight: 8 }} />
         {t('project.mineJoin')}
+        {countData.publicCount ? `（${countData.publicCount}）` : ''}
       </TitleBox>
       <TitleBox onClick={() => onChangeType(1)} idx={props.activeType === 1}>
         <IconFont
@@ -331,6 +337,7 @@ const WrapLeftBox = (props: Props) => {
           style={{ fontSize: 18, marginRight: 8 }}
         />
         {t('project.companyAll')}
+        {countData.selfCount ? `（${countData.selfCount}）` : ''}
       </TitleBox>
       <GroupBox>
         <div>{t('version2.projectGroup')}</div>
