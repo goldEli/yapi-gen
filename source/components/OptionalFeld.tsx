@@ -1,13 +1,12 @@
+// 可配置的表格字段弹窗
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-shadow */
-// 可配置的表格字段弹窗
-
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Checkbox, Col, Collapse, Divider, Row, Space, Tooltip } from 'antd'
+import { Checkbox, Col, Collapse, Divider, Row, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'

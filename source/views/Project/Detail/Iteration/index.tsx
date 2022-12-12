@@ -275,7 +275,9 @@ const IterationWrap = () => {
   }, [])
 
   useEffect(() => {
-    getSearchKey()
+    if (projectInfo?.id && filterAll) {
+      getSearchKey()
+    }
   }, [projectInfo, filterAll])
 
   const onChangeIdx = (val: string) => {

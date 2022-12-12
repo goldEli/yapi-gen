@@ -116,7 +116,9 @@ const IterationTable = (props: Props) => {
   }
 
   useEffect(() => {
-    getShowkey()
+    if (projectInfo?.id) {
+      getShowkey()
+    }
   }, [projectInfo])
 
   const getCheckList = (

@@ -11,7 +11,6 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  SetButton,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -19,13 +18,12 @@ import {
   StaffTableWrap2,
   ShowWrap,
   TableWrap,
-  IconFontWrap,
   HoverWrap,
   DividerWrap,
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
@@ -41,12 +39,6 @@ import { getParamsData } from '@/tools'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
-
-const IconWrap = styled(IconFontWrap)({
-  '&: hover': {
-    color: '#2877ff',
-  },
-})
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {

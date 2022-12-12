@@ -26,7 +26,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  maxHeight: 600,
+  height: '60vh',
   overflow: 'auto',
   padding: '0 24px 16px',
 })

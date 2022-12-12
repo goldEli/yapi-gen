@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
-  padding: 24,
+  padding: 16,
 })
 
 const DataWrap = styled.div({
@@ -107,7 +107,7 @@ const DemandGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)`, padding: '' }}>
+    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>

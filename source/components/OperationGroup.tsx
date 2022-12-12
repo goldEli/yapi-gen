@@ -18,6 +18,7 @@ interface Props {
   isGrid: any
   filterState: boolean | undefined
   settingState: boolean | undefined
+  isDemand?: boolean
 }
 
 const SpaceWrap = styled(Space)({
@@ -60,63 +61,63 @@ const OperationGroup = (props: Props) => {
     />
   )
 
-  const menuType = (
-    <Menu
-      items={[
-        {
-          key: 'list',
-          label: (
-            <HasIconMenu onClick={() => onClickMenu(0)} isCheck={!props.isGrid}>
-              <div className="left">
-                <IconFont className="icon" type="unorderedlist" />
-                <span className="label">{t('common.list')}</span>
-              </div>
-              <IconFont
-                className="checked"
-                type={props.isGrid ? '' : 'check'}
-              />
-            </HasIconMenu>
-          ),
-        },
-        {
-          key: 'thumbnail',
-          label: (
-            <HasIconMenu
-              onClick={() => onClickMenu(1)}
-              isCheck={props.isGrid === 1}
-            >
-              <div className="left">
-                <IconFont className="icon" type="layout" />
-                <span className="label">{t('common.board')}</span>
-              </div>
-              <IconFont
-                className="checked"
-                type={props.isGrid === 1 ? 'check' : ''}
-              />
-            </HasIconMenu>
-          ),
-        },
-        {
-          key: 'tree',
-          label: (
-            <HasIconMenu
-              onClick={() => onClickMenu(2)}
-              isCheck={props.isGrid === 2}
-            >
-              <div className="left">
-                <IconFont className="icon" type="tree-list" />
-                <span className="label">{t('version2.tree')}</span>
-              </div>
-              <IconFont
-                className="checked"
-                type={props.isGrid === 2 ? '"check"' : ''}
-              />
-            </HasIconMenu>
-          ),
-        },
-      ]}
-    />
-  )
+  const menuType = () => {
+    let menuItems = [
+      {
+        key: 'list',
+        label: (
+          <HasIconMenu onClick={() => onClickMenu(0)} isCheck={!props.isGrid}>
+            <div className="left">
+              <IconFont className="icon" type="unorderedlist" />
+              <span className="label">{t('common.list')}</span>
+            </div>
+            <IconFont className="checked" type={props.isGrid ? '' : 'check'} />
+          </HasIconMenu>
+        ),
+      },
+      {
+        key: 'thumbnail',
+        label: (
+          <HasIconMenu
+            onClick={() => onClickMenu(1)}
+            isCheck={props.isGrid === 1}
+          >
+            <div className="left">
+              <IconFont className="icon" type="layout" />
+              <span className="label">{t('common.board')}</span>
+            </div>
+            <IconFont
+              className="checked"
+              type={props.isGrid === 1 ? 'check' : ''}
+            />
+          </HasIconMenu>
+        ),
+      },
+      {
+        key: 'tree',
+        label: (
+          <HasIconMenu
+            onClick={() => onClickMenu(2)}
+            isCheck={props.isGrid === 2}
+          >
+            <div className="left">
+              <IconFont className="icon" type="tree-list" />
+              <span className="label">{t('version2.tree')}</span>
+            </div>
+            <IconFont
+              className="checked"
+              type={props.isGrid === 2 ? '"check"' : ''}
+            />
+          </HasIconMenu>
+        ),
+      },
+    ]
+
+    if (!props.isDemand) {
+      menuItems = menuItems.filter((i: any) => i.key !== 'tree')
+    }
+    return <Menu items={menuItems} />
+  }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <DropDownMenu

@@ -422,6 +422,7 @@ const Operation = (props: Props) => {
             filterState={filterState}
             settingState={props.settingState}
             onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+            isDemand
           />
         </div>
       </OperationWrap>

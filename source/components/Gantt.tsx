@@ -179,6 +179,7 @@ const Gantt = (props: Props) => {
         width: '100%',
         height: props.height,
         minHeight: props?.minHeight,
+        paddingLeft: 16,
       }}
     ></GanttWrap>
   )

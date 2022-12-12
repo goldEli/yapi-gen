@@ -645,7 +645,7 @@ const PaginationWrap = styled.div`
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
-  padding: 16px 24px 0px;
+  padding: 16px 16px 0px;
   background: #f5f7fa;
 `
 
