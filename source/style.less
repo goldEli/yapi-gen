@@ -78,7 +78,7 @@
 
 //table样式 --- end
 
-.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-item,
 .ant-dropdown-menu-item:active {
   background: #f0f4fa;
   color: #2877ff;
@@ -154,16 +154,24 @@ textarea {
   // visibility: hidden;
 }
 
+.ant-select-item-option {
+  font-weight: inherit;
+
+  color: #646566;
+}
+.ant-select-item-option:hover {
+  font-weight: inherit;
+
+  background: #f4f5f5;
+  color: #323233;
+}
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  background-color: #f0f4fa;
+  background-color: transparent;
   font-weight: inherit;
   color: #2877ff;
 }
-
-.ant-select-item-option:hover {
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
   background-color: #f0f4fa;
-  font-weight: inherit;
-  color: #2877ff;
 }
 
 .ant-btn-default,
