@@ -7,6 +7,7 @@ import { onPaste } from '@/tools'
 import { LabelTitle } from '@/views/Information/components/WhiteDay'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Form, message, Popover, Upload } from 'antd'
 import { t } from 'i18next'
@@ -23,6 +24,7 @@ const Wrap = styled.div<{ pl: string }>`
   opacity: 1;
   border: 1px solid #ecedef;
   border-top: none;
+  border-radius: 0px 0px 8px 8px;
   img {
     width: 100px;
     /* height: 100px; */
@@ -36,7 +38,12 @@ const Wrap = styled.div<{ pl: string }>`
   &:empty:before {
     content: '${({ pl }) => pl}';
 
-    color: gray;
+    color: #bbbdbf;
+  }
+`
+const Hov = styled(IconFont)`
+  & :hover {
+    color: #2877ff;
   }
 `
 
@@ -219,12 +226,16 @@ const EditComment = (props: any) => {
     >
       <div
         style={{
-          height: 'calc(90vh - 136px)',
+          height: 'calc(90vh - 190px)',
           overflow: 'scroll',
           paddingRight: '24px',
         }}
       >
-        <div>
+        <div
+          style={{
+            marginBottom: '24px',
+          }}
+        >
           <div
             style={{
               display: 'flex',
@@ -233,6 +244,8 @@ const EditComment = (props: any) => {
               border: '1px solid #ecedef',
               borderBottom: 'none',
               padding: '12px',
+              marginTop: '8px',
+              borderRadius: '8px 8px 0px 0px',
             }}
           >
             <div
@@ -247,9 +260,11 @@ const EditComment = (props: any) => {
                 fileList={[]}
                 customRequest={onUpload}
               >
-                <IconFont
+                <Hov
                   style={{
                     cursor: 'pointer',
+                    fontSize: '16px',
+                    color: '#969799',
                   }}
                   type="image"
                 />
@@ -270,12 +285,14 @@ const EditComment = (props: any) => {
                 }
                 getPopupContainer={node => node}
               >
-                <IconFont
+                <Hov
                   onClick={() => {
                     setPlan(true)
                   }}
                   style={{
                     cursor: 'pointer',
+                    fontSize: '16px',
+                    color: '#969799',
                   }}
                   type="mention"
                 />

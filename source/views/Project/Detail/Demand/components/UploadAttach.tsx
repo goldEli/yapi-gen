@@ -96,7 +96,7 @@ const NumStyle = styled.div`
 export const Card = styled.div`
   flex: 1;
   position: relative;
-  min-width: 372px;
+  min-width: 300px;
   min-height: 60px;
   background: #ffffff;
   box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);

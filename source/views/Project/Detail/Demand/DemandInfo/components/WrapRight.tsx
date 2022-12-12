@@ -51,7 +51,7 @@ const WrapRight = styled.div({
   minWidth: '200px',
   width: '100%',
   height: '100%',
-  padding: '16px 0 0 24px',
+  padding: '16px 10px 0 24px',
   overflow: 'auto',
 })
 
@@ -131,6 +131,7 @@ const CommentItem = styled.div<{ isShow?: boolean }>(
     display: 'flex',
     justifyContent: 'flex-start',
     marginTop: 24,
+    marginRight: 12,
     '.ar': {
       width: 24,
       height: 24,

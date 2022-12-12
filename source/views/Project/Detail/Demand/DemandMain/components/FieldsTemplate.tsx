@@ -80,7 +80,7 @@ const CheckedItem = styled.div<{ state?: any }>(
     padding: '  0 16px',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '&: hover': {
-      background: ' rgba(240, 244, 250, 1)',
+      background: ' #f4f5f5',
       [ShowWrap.toString()]: {
         visibility: 'visible',
       },
@@ -476,7 +476,7 @@ const FieldsTemplate = (props: Props) => {
                         {!getItemState(item.field) && (
                           <ShowWrap style={{ marginLeft: 'auto' }}>
                             <IconFont
-                              style={{ fontSize: 12 }}
+                              style={{ fontSize: 16, color: '#646566' }}
                               type="close"
                               onClick={() => del(item.field)}
                             />
