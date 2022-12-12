@@ -217,16 +217,15 @@ const ImportDemand = () => {
 
   return (
     <Wrap language={i18n.language}>
-      {isVisible && (
-        <FieldsTemplate
-          visible={isVisible}
-          title={t('newlyAdd.importChoose')}
-          importState={tabs}
-          onClose={() => setIsVisible(false)}
-          onConfirm={onConfirmTemplate}
-          isExport={false}
-        />
-      )}
+      <FieldsTemplate
+        visible={isVisible}
+        title={t('newlyAdd.importChoose')}
+        importState={tabs}
+        onClose={() => setIsVisible(false)}
+        onConfirm={onConfirmTemplate}
+        isExport={false}
+      />
+
       <StepWrap>
         <StepBoxWrap active={step === 1}>
           <div className="circle">1</div>

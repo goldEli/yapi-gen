@@ -506,73 +506,72 @@ const EditDemand = (props: Props) => {
 
   return (
     <>
-      {isShowChangeCategory && (
-        <CommonModal
-          isVisible={isShowChangeCategory}
-          onClose={onCloseCategory}
-          title={t('newlyAdd.changeCategory')}
-          onConfirm={onConfirmCategory}
+      <CommonModal
+        isVisible={isShowChangeCategory}
+        onClose={onCloseCategory}
+        title={t('newlyAdd.changeCategory')}
+        onConfirm={onConfirmCategory}
+      >
+        <FormWrapDemand
+          form={changeCategoryForm}
+          layout="vertical"
+          style={{ padding: '0 20px 0 2px' }}
         >
-          <FormWrapDemand
-            form={changeCategoryForm}
-            layout="vertical"
-            style={{ padding: '0 20px 0 2px' }}
+          <Form.Item label={t('newlyAdd.beforeCategory')}>
+            <CanOperationCategory
+              style={{ marginRight: 8, cursor: 'pointer' }}
+              color={categoryObj?.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === categoryObj?.color)[0]
+                  ?.bgColor
+              }
+            >
+              <span className="title">{categoryObj?.name}</span>
+            </CanOperationCategory>
+          </Form.Item>
+          <Form.Item
+            label={t('newlyAdd.afterCategory')}
+            name="categoryId"
+            rules={[{ required: true, message: '' }]}
           >
-            <Form.Item label={t('newlyAdd.beforeCategory')}>
-              <CanOperationCategory
-                style={{ marginRight: 8, cursor: 'pointer' }}
-                color={categoryObj?.color}
-                bgColor={
-                  colorList?.filter((i: any) => i.key === categoryObj?.color)[0]
-                    ?.bgColor
-                }
-              >
-                <span className="title">{categoryObj?.name}</span>
-              </CanOperationCategory>
-            </Form.Item>
-            <Form.Item
-              label={t('newlyAdd.afterCategory')}
-              name="categoryId"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Select
-                placeholder={t('common.pleaseSelect')}
-                showArrow
-                showSearch
-                getPopupContainer={node => node}
-                allowClear
-                optionFilterProp="label"
-                onChange={onChangeSelect}
-                options={categoryList?.list
-                  ?.filter((i: any) => i.id !== categoryObj.id)
-                  ?.map((k: any) => ({
-                    label: k.name,
-                    value: k.id,
-                  }))}
-              />
-            </Form.Item>
-            <Form.Item
-              label={t('newlyAdd.afterStatus')}
-              name="statusId"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Select
-                placeholder={t('common.pleaseSelect')}
-                showArrow
-                showSearch
-                getPopupContainer={node => node}
-                allowClear
-                disabled={!currentCategory.id}
-                optionFilterProp="label"
-                options={workList?.list?.map((k: any) => ({
+            <Select
+              placeholder={t('common.pleaseSelect')}
+              showArrow
+              showSearch
+              getPopupContainer={node => node}
+              allowClear
+              optionFilterProp="label"
+              onChange={onChangeSelect}
+              options={categoryList?.list
+                ?.filter((i: any) => i.id !== categoryObj.id)
+                ?.map((k: any) => ({
                   label: k.name,
-                  value: k.statusId,
+                  value: k.id,
                 }))}
-              />
-            </Form.Item>
-          </FormWrapDemand>
-        </CommonModal>
-      )}
+            />
+          </Form.Item>
+          <Form.Item
+            label={t('newlyAdd.afterStatus')}
+            name="statusId"
+            rules={[{ required: true, message: '' }]}
+          >
+            <Select
+              placeholder={t('common.pleaseSelect')}
+              showArrow
+              showSearch
+              getPopupContainer={node => node}
+              allowClear
+              disabled={!currentCategory.id}
+              optionFilterProp="label"
+              options={workList?.list?.map((k: any) => ({
+                label: k.name,
+                value: k.statusId,
+              }))}
+            />
+          </Form.Item>
+        </FormWrapDemand>
+      </CommonModal>
+
       <ModalWrap
         visible={props.visible}
         width="88%"

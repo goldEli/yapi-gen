@@ -46,6 +46,10 @@ const LeftWrap = styled.div({
   ' .ant-collapse-content > .ant-collapse-content-box': {
     padding: '0px !important',
   },
+  '.ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow ':
+    {
+      color: 'rgba(150, 151, 153, 1) !important',
+    },
 })
 const RightWrap = styled.div({
   height: 350,
