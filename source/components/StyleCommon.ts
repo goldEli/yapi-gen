@@ -18,6 +18,7 @@ const HoverWrap = styled.div<{ isActive?: any }>(
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
+    color: '#646566',
     '.iconMain': {
       marginRight: 8,
       fontSize: 18,
@@ -32,7 +33,7 @@ const HoverWrap = styled.div<{ isActive?: any }>(
   },
   ({ isActive }) => ({
     background: isActive ? '#F4F5F5' : 'white',
-    color: isActive ? '#323233' : '#969799',
+    color: isActive ? '#323233' : '#646566',
   }),
 )
 
@@ -56,13 +57,21 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
       display: 'flex',
       alignItems: 'center',
     },
+    '&: hover': {
+      '.label': {
+        color: '#323233',
+      },
+      '.icon': {
+        color: '#323233',
+      },
+    },
   },
   ({ isCheck }) => ({
     '.label': {
-      color: isCheck ? '#2877ff' : '',
+      color: isCheck ? '#2877ff' : '#646566',
     },
     '.icon': {
-      color: isCheck ? '#2877ff' : '',
+      color: isCheck ? '#2877ff' : '#646566',
     },
   }),
 )

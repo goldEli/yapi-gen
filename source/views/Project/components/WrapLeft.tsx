@@ -133,7 +133,7 @@ const WrapLeftBox = (props: Props) => {
     deleteProjectGroup,
     setSelectGroupList,
   } = useModel('project')
-  const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const [isMoreVisible, setIsMoreVisible] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [groupId, setGroupId] = useState<any>(null)

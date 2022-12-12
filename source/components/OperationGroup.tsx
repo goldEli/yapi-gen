@@ -118,7 +118,7 @@ const OperationGroup = (props: Props) => {
     />
   )
   return (
-    <SpaceWrap size={16} style={{ marginLeft: 8 }}>
+    <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       <DropDownMenu
         isVisible={isVisible}
         onChangeVisible={setIsVisible}
