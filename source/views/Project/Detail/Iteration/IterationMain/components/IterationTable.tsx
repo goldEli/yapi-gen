@@ -280,14 +280,12 @@ const IterationTable = (props: Props) => {
 
   return (
     <Content style={{ height: 'calc(100% - 64px)' }}>
-      {isEdit && (
-        <EditDemand
-          visible={isEdit}
-          onChangeVisible={() => setIsEdit(!isEdit)}
-          iterateId={props.hasId?.id}
-          onUpdate={() => props.onUpdate(true)}
-        />
-      )}
+      <EditDemand
+        visible={isEdit}
+        onChangeVisible={() => setIsEdit(!isEdit)}
+        iterateId={props.hasId?.id}
+        onUpdate={() => props.onUpdate(true)}
+      />
 
       {!hasCreate && props.hasId && props.hasId?.status === 1 && (
         <div style={{ padding: '10px 0 10px 16px', background: 'white' }}>

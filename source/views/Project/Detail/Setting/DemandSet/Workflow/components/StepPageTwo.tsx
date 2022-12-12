@@ -141,13 +141,11 @@ const StepPageTwo = () => {
   return (
     <>
       <ContWrap>
-        {isVisible && (
-          <SetConfig
-            isVisible={isVisible}
-            onClose={onClose}
-            item={operationObj}
-          />
-        )}
+        <SetConfig
+          isVisible={isVisible}
+          onClose={onClose}
+          item={operationObj}
+        />
         <TableWrap>
           <Table
             rowKey="id"

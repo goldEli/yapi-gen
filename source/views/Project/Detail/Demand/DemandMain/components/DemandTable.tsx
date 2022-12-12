@@ -265,14 +265,12 @@ const DemandTable = (props: Props) => {
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
       {/* 暂无数据创建 */}
-      {isAddVisible && (
-        <EditDemand
-          visible={isAddVisible}
-          noDataCreate
-          onChangeVisible={() => setIsAddVisible(!isAddVisible)}
-          onUpdate={() => props.onUpdate(true)}
-        />
-      )}
+      <EditDemand
+        visible={isAddVisible}
+        noDataCreate
+        onChangeVisible={() => setIsAddVisible(!isAddVisible)}
+        onUpdate={() => props.onUpdate(true)}
+      />
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&

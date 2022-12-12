@@ -272,14 +272,12 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   return (
     <>
-      {isDelete && (
-        <DeleteConfirm
-          isVisible={isDelete}
-          text={t('newlyAdd.confirmDelCategory')}
-          onChangeVisible={() => setIsDelete(!isDelete)}
-          onConfirm={onDeleteConfirm}
-        />
-      )}
+      <DeleteConfirm
+        isVisible={isDelete}
+        text={t('newlyAdd.confirmDelCategory')}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
 
       {isHasDelete && (
         <CommonModal

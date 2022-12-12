@@ -368,18 +368,16 @@ const ChildDemand = () => {
 
   return (
     <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          isChild
-          demandId={operationItem.id}
-          onUpdate={onUpdate}
-          childList={dataList?.list}
-          categoryId={demandInfo?.category}
-          parentId={demandInfo.id}
-        />
-      ) : null}
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        isChild
+        demandId={operationItem.id}
+        onUpdate={onUpdate}
+        childList={dataList?.list}
+        categoryId={demandInfo?.category}
+        parentId={demandInfo.id}
+      />
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}

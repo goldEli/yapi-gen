@@ -509,14 +509,12 @@ const IterationWrap = () => {
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>
-      {isVisible ? (
-        <EditIteration
-          visible={isVisible}
-          onChangeVisible={() => onChangeVisible('clear')}
-          id={operationDetail.id}
-          onUpdate={setIsUpdateState}
-        />
-      ) : null}
+      <EditIteration
+        visible={isVisible}
+        onChangeVisible={() => onChangeVisible('clear')}
+        id={operationDetail.id}
+        onUpdate={setIsUpdateState}
+      />
       {content()}
     </div>
   )

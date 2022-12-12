@@ -673,16 +673,14 @@ const CommonNeed = (props: any) => {
         getCheckList={getCheckList}
       />
 
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          demandId={operationItem?.id}
-          projectId={projectId}
-          onUpdate={onUpdate}
-          notGetPath
-        />
-      ) : null}
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        demandId={operationItem?.id}
+        projectId={projectId}
+        onUpdate={onUpdate}
+        notGetPath
+      />
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}

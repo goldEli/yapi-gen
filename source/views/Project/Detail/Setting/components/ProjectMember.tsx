@@ -16,7 +16,6 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
-import AddMember from '@/views/Project/components/AddMember'
 import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -623,16 +622,14 @@ const ProjectMember = () => {
       isPadding
     >
       <Wrap>
-        {isEditVisible ? (
-          <SetPermissionWrap
-            data={operationItem}
-            isVisible={isEditVisible}
-            onClose={() => {
-              setIsEditVisible(false)
-            }}
-            onConfirm={onConfirmEdit}
-          />
-        ) : null}
+        <SetPermissionWrap
+          data={operationItem}
+          isVisible={isEditVisible}
+          onClose={() => {
+            setIsEditVisible(false)
+          }}
+          onConfirm={onConfirmEdit}
+        />
         <DeleteConfirm
           text={t('mark.delPeople')}
           isVisible={isDelete}

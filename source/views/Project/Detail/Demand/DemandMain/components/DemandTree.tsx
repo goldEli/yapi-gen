@@ -571,24 +571,21 @@ const DemandTree = (props: Props) => {
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
       {/* 暂无数据创建 */}
-      {isAddVisible && (
-        <EditDemand
-          visible={isAddVisible}
-          noDataCreate
-          onChangeVisible={onClose}
-          onUpdate={() => props.onUpdate(true)}
-        />
-      )}
-      {isVisible && (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onCloseCreateChild}
-          onUpdate={() => props.onUpdate(true)}
-          isChild
-          categoryId={isCreateChild?.categoryId}
-          parentId={isCreateChild?.id}
-        />
-      )}
+      <EditDemand
+        visible={isAddVisible}
+        noDataCreate
+        onChangeVisible={onClose}
+        onUpdate={() => props.onUpdate(true)}
+      />
+
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onCloseCreateChild}
+        onUpdate={() => props.onUpdate(true)}
+        isChild
+        categoryId={isCreateChild?.categoryId}
+        parentId={isCreateChild?.id}
+      />
 
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>

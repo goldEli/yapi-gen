@@ -68,15 +68,13 @@ const Achieve = () => {
           isReadonly
         />
 
-        {isEdit ? (
-          <EditAchievements
-            isAchievements={isEdit}
-            onClose={() => setIsEdit(false)}
-            projectId={projectId}
-            id={iterateId}
-            isInfo
-          />
-        ) : null}
+        <EditAchievements
+          isAchievements={isEdit}
+          onClose={() => setIsEdit(false)}
+          projectId={projectId}
+          id={iterateId}
+          isInfo
+        />
       </div>
     </div>
   )

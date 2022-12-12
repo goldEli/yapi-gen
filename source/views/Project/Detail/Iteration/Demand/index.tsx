@@ -332,15 +332,13 @@ const DemandWrap = (props: Props) => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      {isVisible && (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          demandId={demandItem?.id}
-          onUpdate={() => getList(pageObj)}
-          iterateId={iterateId}
-        />
-      )}
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        demandId={demandItem?.id}
+        onUpdate={() => getList(pageObj)}
+        iterateId={iterateId}
+      />
 
       {!hasCreate && iterateInfo?.status === 1 && (
         <div

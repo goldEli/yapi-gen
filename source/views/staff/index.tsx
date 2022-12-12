@@ -5,7 +5,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -16,7 +16,6 @@ import {
   Hehavior,
   PaginationWrap,
   StaffTableWrap,
-  SetButton,
   TableStyleBox,
   HoverWrap,
   DividerWrap,
@@ -463,16 +462,14 @@ const Staff = () => {
         onClose={close2}
         getCheckList={getCheckList}
       />
-      {isStaffPersonalVisible ? (
-        <StaffPersonal
-          data={editData}
-          isVisible={isStaffPersonalVisible}
-          onClose={() => {
-            setIsStaffPersonalVisible(false)
-          }}
-          onConfirm={closeStaffPersonal}
-        />
-      ) : null}
+      <StaffPersonal
+        data={editData}
+        isVisible={isStaffPersonalVisible}
+        onClose={() => {
+          setIsStaffPersonalVisible(false)
+        }}
+        onConfirm={closeStaffPersonal}
+      />
     </PermissionWrap>
   )
 }

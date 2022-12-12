@@ -133,7 +133,7 @@ const WrapLeftBox = (props: Props) => {
     deleteProjectGroup,
     setSelectGroupList,
   } = useModel('project')
-  const [isMoreVisible, setIsMoreVisible] = useState(true)
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [groupId, setGroupId] = useState<any>(null)
@@ -278,14 +278,12 @@ const WrapLeftBox = (props: Props) => {
 
   return (
     <WrapLeft>
-      {isDeleteVisible && (
-        <DeleteConfirm
-          isVisible={isDeleteVisible}
-          text={t('version2.deleteGroupText')}
-          onChangeVisible={() => onClose('del')}
-          onConfirm={onDeleteConfirm}
-        />
-      )}
+      <DeleteConfirm
+        isVisible={isDeleteVisible}
+        text={t('version2.deleteGroupText')}
+        onChangeVisible={() => onClose('del')}
+        onConfirm={onDeleteConfirm}
+      />
 
       <CommonModal
         isVisible={isVisible}
