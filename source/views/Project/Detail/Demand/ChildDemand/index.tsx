@@ -1,6 +1,5 @@
-/* eslint-disable no-constant-binary-expression */
 // 需求详情-子需求
-
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -8,9 +7,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
-import { Button, Menu, Dropdown, Pagination, message, Spin } from 'antd'
+import { Button, Menu, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  SecondButton,
+} from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -25,6 +28,7 @@ import EditDemand from '@/components/EditDemandNew'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import { Second } from '../components/UploadAttach'
 
 const Operation = styled.div({
   display: 'flex',
@@ -386,12 +390,12 @@ const ChildDemand = () => {
         {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ? (
           <div />
         ) : (
-          <ButtonWrap
+          <SecondButton
             onClick={() => setIsVisible(true)}
             icon={<IconFont type="plus" />}
           >
             {t('project.addChildDemand')}
-          </ButtonWrap>
+          </SecondButton>
         )}
 
         <DropDownMenu

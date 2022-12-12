@@ -107,8 +107,8 @@ const SecondButton = styled(Button)`
     font-size: 14px;
   }
   &:hover {
-    background: #e8f1ff;
-    color: #2877ff;
+    background: #e8f1ff !important;
+    color: #2877ff !important;
   }
   &:focus {
     background: #dbeaff;

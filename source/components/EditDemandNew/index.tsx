@@ -222,7 +222,7 @@ const EditDemand = (props: Props) => {
     setFieldsList(fieldsData?.list)
     // 过滤掉未开启的类别
     const resultCategoryList = categoryData?.list?.filter(
-      (i: any) => i.isCheck !== 1,
+      (i: any) => i.isCheck === 1,
     )
 
     //  没有需id时，则是创建需求
@@ -361,7 +361,7 @@ const EditDemand = (props: Props) => {
     >
       {categoryEditList?.list
         ?.filter((i: any) => i.isCheck === 1)
-        ?.filter((i: any) => i.id !== categoryObj.id)
+        ?.filter((i: any) => i.id !== categoryObj?.id)
         ?.map((k: any) => (
           <LiWrap
             key={k.id}
@@ -558,7 +558,7 @@ const EditDemand = (props: Props) => {
               onChange={onChangeSelect}
               options={categoryEditList?.list
                 ?.filter((i: any) => i.isCheck === 1)
-                ?.filter((i: any) => i.id !== categoryObj.id)
+                ?.filter((i: any) => i.id !== categoryObj?.id)
                 ?.map((k: any) => ({
                   label: k.name,
                   value: k.id,
@@ -586,7 +586,7 @@ const EditDemand = (props: Props) => {
               optionFilterProp="label"
               onChange={onChangeSelect}
               options={categoryEditList?.list
-                ?.filter((i: any) => i.id !== categoryObj.id)
+                ?.filter((i: any) => i.id !== categoryObj?.id)
                 ?.map((k: any) => ({
                   label: k.name,
                   value: k.id,

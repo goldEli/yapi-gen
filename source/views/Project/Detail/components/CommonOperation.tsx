@@ -147,7 +147,7 @@ const MenuItems = styled.div({
     fontWeight: 400,
   },
   '&: hover': {
-    color: '#323233',
+    color: '#2877ff',
   },
 })
 
