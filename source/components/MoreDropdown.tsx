@@ -13,6 +13,9 @@ const DropdownWrap = styled(Dropdown)({
       color: '#2877ff',
     },
   },
+  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+    textAlign: 'left',
+  },
 })
 
 interface Props {
@@ -39,7 +42,7 @@ const MoreDropdown = (props: Props) => {
       trigger={['hover']}
       placement={props?.hasChild ? 'bottomLeft' : 'bottomRight'}
       getPopupContainer={node => (props?.hasChild ? document.body : node)}
-      // onVisibleChange={visible => props.onChangeVisible?.(visible)}
+      onVisibleChange={visible => props.onChangeVisible?.(visible)}
       className="dropdownIcon"
     >
       <div
