@@ -54,7 +54,7 @@ export const SelectWrap = styled(Select)`
   }
 
   .ant-select-selection-placeholder {
-    color: rgba(187, 189, 191, 1);
+    color: #bfbdbb;
   }
 `
 
