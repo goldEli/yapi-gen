@@ -197,14 +197,13 @@ const MineBox = () => {
       <Main>
         <Outlet />
       </Main>
-      {quickCreateVisible ? (
-        <EditDemand
-          visible={quickCreateVisible}
-          onChangeVisible={() => setQuickCreateVisible(false)}
-          isQuickCreate
-          notGetPath
-        />
-      ) : null}
+
+      <EditDemand
+        visible={quickCreateVisible}
+        onChangeVisible={() => setQuickCreateVisible(false)}
+        isQuickCreate
+        notGetPath
+      />
     </Wrap>
   )
 }

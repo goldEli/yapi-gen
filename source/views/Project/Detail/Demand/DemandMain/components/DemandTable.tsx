@@ -320,20 +320,19 @@ const DemandTable = (props: Props) => {
           onShowSizeChange={onShowSizeChange}
         />
       </PaginationWrap>
-      {props.settingState ? (
-        <OptionalFeld
-          allTitleList={allTitleList}
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          plainOptions3={plainOptions3}
-          checkList={titleList}
-          checkList2={titleList2}
-          checkList3={titleList3}
-          isVisible={props.settingState}
-          onClose={() => props.onChangeSetting(false)}
-          getCheckList={getCheckList}
-        />
-      ) : null}
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={props.settingState}
+        onClose={() => props.onChangeSetting(false)}
+        getCheckList={getCheckList}
+      />
     </Content>
   )
 }

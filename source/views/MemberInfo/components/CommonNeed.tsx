@@ -681,20 +681,20 @@ const CommonNeed = (props: any) => {
           />
         </PaginationWrap>
       )}
-      {isModalVisible && (
-        <OptionalFeld
-          allTitleList={allTitleList}
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          plainOptions3={plainOptions3}
-          checkList={titleList}
-          checkList2={titleList2}
-          checkList3={titleList3}
-          isVisible={isModalVisible}
-          onClose={close2}
-          getCheckList={getCheckList}
-        />
-      )}
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={isModalVisible}
+        onClose={close2}
+        getCheckList={getCheckList}
+      />
+
       {isVisible && (
         <EditDemand
           visible={isVisible}

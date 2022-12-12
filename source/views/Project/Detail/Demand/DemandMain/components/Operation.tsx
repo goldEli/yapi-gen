@@ -341,14 +341,14 @@ const Operation = (props: Props) => {
       >
         <ImportDemand />
       </CommonModal>
-      {isShowExport ? (
-        <ExportDemand
-          isShowExport={isShowExport}
-          onClose={setIsShowExport}
-          searchGroups={searchGroups}
-          otherParams={props.otherParams}
-        />
-      ) : null}
+
+      <ExportDemand
+        isShowExport={isShowExport}
+        onClose={setIsShowExport}
+        searchGroups={searchGroups}
+        otherParams={props.otherParams}
+      />
+
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (

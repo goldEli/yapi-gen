@@ -287,39 +287,31 @@ const WrapLeftBox = (props: Props) => {
         />
       )}
 
-      {isVisible && (
-        <CommonModal
-          isVisible={isVisible}
-          title={
-            operationObj.id
-              ? t('version2.editGroup')
-              : t('version2.createGroup')
-          }
-          onClose={() => onClose('edit')}
-          onConfirm={onConfirm}
-        >
-          <Form
-            form={form}
-            layout="vertical"
-            style={{ padding: '0 20px 0 2px' }}
+      <CommonModal
+        isVisible={isVisible}
+        title={
+          operationObj.id ? t('version2.editGroup') : t('version2.createGroup')
+        }
+        onClose={() => onClose('edit')}
+        onConfirm={onConfirm}
+      >
+        <Form form={form} layout="vertical" style={{ padding: '0 20px 0 2px' }}>
+          <Form.Item
+            label={t('version2.groupName')}
+            name="name"
+            rules={[{ required: true, message: '' }]}
           >
-            <Form.Item
-              label={t('version2.groupName')}
-              name="name"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Input
-                placeholder={t('version2.pleaseGroupName')}
-                autoComplete="off"
-                maxLength={10}
-                autoFocus
-                allowClear
-                ref={inputRefDom as any}
-              />
-            </Form.Item>
-          </Form>
-        </CommonModal>
-      )}
+            <Input
+              placeholder={t('version2.pleaseGroupName')}
+              autoComplete="off"
+              maxLength={10}
+              autoFocus
+              allowClear
+              ref={inputRefDom as any}
+            />
+          </Form.Item>
+        </Form>
+      </CommonModal>
 
       {!props.isPermission && (
         <AddButton
