@@ -299,26 +299,25 @@ const Project = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        {isVisible && (
-          <EditProject
-            activeType={activeType}
-            groupId={groupId}
-            visible={isVisible}
-            onChangeVisible={() => setIsVisible(!isVisible)}
-            details={operationDetail}
-            onUpdate={() =>
-              getList(
-                activeType,
-                isGrid,
-                isHidden,
-                searchVal,
-                order,
-                pageObj,
-                groupId,
-              )
-            }
-          />
-        )}
+
+        <EditProject
+          activeType={activeType}
+          groupId={groupId}
+          visible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          details={operationDetail}
+          onUpdate={() =>
+            getList(
+              activeType,
+              isGrid,
+              isHidden,
+              searchVal,
+              order,
+              pageObj,
+              groupId,
+            )
+          }
+        />
 
         <Wrap>
           <WrapLeftBox

@@ -126,14 +126,12 @@ const ProjectInfo = () => {
 
   return (
     <div style={{ padding: 16, height: '100%' }}>
-      {visible ? (
-        <EditProject
-          visible={visible}
-          onChangeVisible={() => setVisible(!visible)}
-          details={projectInfo}
-          onUpdate={onUpdate}
-        />
-      ) : null}
+      <EditProject
+        visible={visible}
+        onChangeVisible={() => setVisible(!visible)}
+        details={projectInfo}
+        onUpdate={onUpdate}
+      />
 
       <Wrap>
         <InfoLeft>

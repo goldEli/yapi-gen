@@ -274,15 +274,14 @@ const Operation = (props: Props) => {
           isIteration
         />
       )}
-      {isAchievements ? (
-        <EditAchievements
-          isAchievements={isAchievements}
-          onClose={() => setIsAchievements(false)}
-          projectId={projectId}
-          id={props.currentDetail?.id}
-          isInfo={false}
-        />
-      ) : null}
+
+      <EditAchievements
+        isAchievements={isAchievements}
+        onClose={() => setIsAchievements(false)}
+        projectId={projectId}
+        id={props.currentDetail?.id}
+        isInfo={false}
+      />
     </StickyWrap>
   )
 }
