@@ -418,10 +418,10 @@ export const useDynamicColumns = (state: any) => {
                 strokeColor="#43BA9A"
                 style={{ color: '#43BA9A', cursor: 'not-allowed' }}
                 width={38}
-                type="circle"
+                type="line"
                 percent={record.schedule}
                 format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                strokeWidth={8}
+                strokeWidth={4}
               />
             )}
           </div>

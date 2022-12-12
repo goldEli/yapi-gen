@@ -207,6 +207,7 @@ const EditDemand = (props: Props) => {
     setIsOpenEditDemand(true)
     const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
+      // 获取的所有需求类别
       getCategoryEditList({ projectId: value || projectId, isEdit: true }),
       getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
@@ -221,7 +222,7 @@ const EditDemand = (props: Props) => {
     setFieldsList(fieldsData?.list)
     // 过滤掉未开启的类别
     const resultCategoryList = categoryData?.list?.filter(
-      (i: any) => i.isCheck === 1,
+      (i: any) => i.isCheck !== 1,
     )
 
     //  没有需id时，则是创建需求
@@ -360,7 +361,7 @@ const EditDemand = (props: Props) => {
     >
       {categoryEditList?.list
         ?.filter((i: any) => i.isCheck === 1)
-        ?.filter((i: any) => (props.demandId ? i.id !== categoryObj.id : i))
+        ?.filter((i: any) => i.id !== categoryObj.id)
         ?.map((k: any) => (
           <LiWrap
             key={k.id}
@@ -616,7 +617,16 @@ const EditDemand = (props: Props) => {
                 onVisibleChange={visible => setIsShowPop(visible)}
               >
                 <CanOperationCategory
-                  style={{ marginRight: 8, cursor: 'pointer' }}
+                  style={{
+                    marginRight: 8,
+                    cursor:
+                      categoryEditList?.list
+                        ?.filter((i: any) => i.isCheck === 1)
+                        ?.filter((i: any) => i.id !== categoryObj.id)?.length <=
+                      0
+                        ? 'inherit'
+                        : 'pointer',
+                  }}
                   color={
                     categoryEditList?.list?.filter(
                       (i: any) => i.id === categoryObj?.id,
@@ -639,14 +649,19 @@ const EditDemand = (props: Props) => {
                       )[0]?.name
                     }
                   </span>
-                  <IconFont
-                    type="down-icon"
-                    style={{
-                      fontSize: 12,
-                      marginLeft: 4,
-                      color: '43BA9A',
-                    }}
-                  />
+                  {categoryEditList?.list
+                    ?.filter((i: any) => i.isCheck === 1)
+                    ?.filter((i: any) => i.id !== categoryObj.id)?.length >
+                    0 && (
+                    <IconFont
+                      type="down-icon"
+                      style={{
+                        fontSize: 12,
+                        marginLeft: 4,
+                        color: '43BA9A',
+                      }}
+                    />
+                  )}
                 </CanOperationCategory>
               </Popover>
             )}

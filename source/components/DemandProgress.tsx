@@ -54,10 +54,10 @@ const DemandProgress = (props: Props) => {
         strokeColor="#43BA9A"
         style={{ color: '#43BA9A' }}
         width={42}
-        type="circle"
+        type={props.isCard ? 'circle' : 'line'}
         percent={props?.value}
         format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-        strokeWidth={8}
+        strokeWidth={props.isCard ? 8 : 4}
       />
     </Popover>
   )

@@ -427,7 +427,9 @@ const SetConfig = (props: Props) => {
           options={
             ['users_name', 'users_copysend_name'].includes(row.content) &&
             row.default_type === 2
-              ? memberList
+              ? row.content === 'users_name'
+                ? memberList
+                : staffList
               : defaultObj?.options
           }
           mode={

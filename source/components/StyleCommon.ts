@@ -904,6 +904,9 @@ const TableStyleBox = styled(TableWrap)<{
   isHover?: any
 }>(
   {
+    '.ant-progress-text': {
+      fontSize: 12,
+    },
     '.ant-table-tbody .tagLength': {
       visibility: 'hidden',
     },
