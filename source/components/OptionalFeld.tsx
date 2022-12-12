@@ -37,7 +37,7 @@ const CheckedItem = styled.div({
   borderRadius: 4,
   padding: '  0 16px',
   '&: hover': {
-    background: ' rgba(240, 244, 250, 1)',
+    background: ' #f4f5f5',
     [ShowWrap.toString()]: {
       visibility: 'visible',
     },
@@ -355,7 +355,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                   {item.value !== 'name' && (
                     <ShowWrap style={{ marginLeft: 'auto' }}>
                       <IconFont
-                        style={{ fontSize: 12 }}
+                        style={{ fontSize: 16, color: '#646566' }}
                         type="close"
                         onClick={() => del(item.value)}
                       />

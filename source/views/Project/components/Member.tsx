@@ -15,6 +15,7 @@ import NoData from '@/components/NoData'
 import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
+import { CloseWrap } from '@/components/StyleCommon'
 
 interface Props {
   visible: boolean
@@ -124,10 +125,21 @@ const HeaderWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
 })
+const Myd = styled.div<{ active: boolean }>`
+  text-align: left;
+
+  color: #bbbdbf;
+  &:hover {
+    color: #323233;
+    background-color: #f4f5f5;
+  }
+  color: ${({ active }) => (active ? '#2877FF !important' : '')};
+`
 interface DropDownProps {
   row: any
   onClickMenu(item: any, row: any): void
   roleOptions: any
+  name: any
 }
 
 const MoreDropdown = (props: DropDownProps) => {
@@ -144,14 +156,18 @@ const MoreDropdown = (props: DropDownProps) => {
       menuItems.push({
         key: idx,
         label: (
-          <div
-            style={{
-              textAlign: 'left',
-            }}
+          <Myd
+            active={i.label === props.row.roleName}
             onClick={() => onClickItem(i)}
           >
             {i.label}
-          </div>
+            {i.label === props.row.roleName && (
+              <IconFont
+                style={{ fontSize: 16, margin: '1px 0px 0px 15px' }}
+                type="check"
+              />
+            )}
+          </Myd>
         ),
       })
     })
@@ -383,11 +399,14 @@ const Member = (props: Props) => {
             <span>
               {t('project.projectMemberAll', { count: memberList?.length })}
             </span>
-            <IconFont
+            <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
+              <IconFont type="close" />
+            </CloseWrap>
+            {/* <IconFont
               onClick={props.onChangeVisible}
               style={{ cursor: 'pointer' }}
               type="close"
-            />
+            /> */}
           </HeaderWrap>
         }
         headerStyle={{ width: '100%' }}
@@ -451,6 +470,7 @@ const Member = (props: Props) => {
                   onClickMenu={onClickMenu}
                   roleOptions={roleOptions}
                   row={i}
+                  name={i.positionName}
                 />
               </ListItem>
             ))}

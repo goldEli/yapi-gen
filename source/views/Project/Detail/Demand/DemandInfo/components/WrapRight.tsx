@@ -47,11 +47,11 @@ import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
 
 const WrapRight = styled.div({
-  minWidth: '200px',
+  minWidth: '300px',
   width: '100%',
+  overflow: 'hidden',
   height: '100%',
-  padding: '16px 0 0 24px',
-  overflow: 'auto',
+  padding: '16px 10px 0 24px',
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -130,6 +130,7 @@ const CommentItem = styled.div<{ isShow?: boolean }>(
     display: 'flex',
     justifyContent: 'flex-start',
     marginTop: 24,
+    marginRight: 12,
     '.ar': {
       width: 24,
       height: 24,
@@ -147,7 +148,7 @@ const CommentItem = styled.div<{ isShow?: boolean }>(
 )
 
 const TextWrap = styled.div({
-  width: 'calc(100% - 48px)',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   '.textTop': {
@@ -180,7 +181,7 @@ const TextWrap = styled.div({
     fontWeight: 400,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    display: 'flex',
+
     WebkitLineClamp: 4,
     WebkitBoxOrient: 'vertical',
     paddingRight: 30,
@@ -435,7 +436,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       </TitleWrap>
       {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
       {activeTabs === 1 && (
-        <div style={{ maxHeight: 'calc(100% - 100px)', overflow: 'auto' }}>
+        <div style={{ maxHeight: 'calc(100% - 100px)' }}>
           <InfoItem>
             <Label>{t('newlyAdd.demandProgress')}</Label>
             <div
@@ -688,7 +689,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       {activeTabs !== 1 && (
         <div
           style={{
-            maxHeight: `calc(100% - ${isComment ? 80 : 320}px)`,
+            height: 'calc(100% - 80px)',
           }}
         >
           <div
@@ -917,7 +918,15 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 ))}
               </div>
             ) : (
-              <NoData />
+              <div
+                style={{
+                  display: ' flex',
+                  height: '100%',
+                  alignItems: 'center',
+                }}
+              >
+                <NoData />
+              </div>
             ))}
         </div>
       )}

@@ -70,8 +70,8 @@ const BtnsItemBox = styled.div`
   font-weight: 400;
   color: #646566;
   &:hover {
-    background: #f0f4fa;
-    color: #2877ff;
+    background: #f4f5f5;
+    color: #323233;
   }
 `
 const centerText = css`
