@@ -80,7 +80,7 @@ const MenuItem = styled.div<{ isActive: boolean; language?: string }>(
   },
   ({ isActive, language }) => ({
     borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
-    background: isActive ? '#F0F4FA' : 'white',
+    background: isActive ? '#F0F4FA!important' : 'white',
     paddingLeft: language === 'zh' ? 65 : 40,
     div: {
       color: isActive ? '#2877FF' : '#323233',

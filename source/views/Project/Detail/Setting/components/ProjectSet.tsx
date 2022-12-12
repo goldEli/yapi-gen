@@ -97,7 +97,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
-    background: isActive ? '#F0F4FA' : 'transparent',
+    background: isActive ? '#F0F4FA!important' : 'transparent',
     '.name': {
       color: isActive ? '#2877FF' : '#323233',
     },

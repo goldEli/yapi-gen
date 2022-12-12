@@ -8,7 +8,7 @@ import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import styled from '@emotion/styled'
 import { Form, Input, Menu, message } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
@@ -39,17 +39,17 @@ const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
     alignItems: 'center',
     width: '100%',
     boxSizing: 'border-box',
+  },
+  ({ idx, isSpace }) => ({
     '&:hover': {
       background: '#F4F5F5',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
-  },
-  ({ idx, isSpace }) => ({
     borderRight: idx ? '3px solid #2877FF' : '3px solid transparent',
     color: idx ? '#2877FF' : '#323233',
-    background: idx ? '#F0F4FA' : 'white',
+    background: idx ? '#F0F4FA!important' : 'white',
     justifyContent: isSpace ? 'space-between' : 'inherit',
     padding: isSpace ? '0 14px 0 24px' : '0 0 0 24px',
   }),
@@ -133,7 +133,7 @@ const WrapLeftBox = (props: Props) => {
     deleteProjectGroup,
     setSelectGroupList,
   } = useModel('project')
-  const [isMoreVisible, setIsMoreVisible] = useState(true)
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [groupId, setGroupId] = useState<any>(null)
@@ -143,6 +143,7 @@ const WrapLeftBox = (props: Props) => {
     list: undefined,
   })
   const [countData, setCountData] = useState<any>({})
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   const getGroupData = async (isChange?: boolean) => {
     const result = await getGroupList()
@@ -173,6 +174,9 @@ const WrapLeftBox = (props: Props) => {
     if (type === 'edit') {
       setIsVisible(true)
       form.setFieldsValue({ name: item.name })
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     } else {
       setIsDeleteVisible(true)
     }
@@ -310,6 +314,7 @@ const WrapLeftBox = (props: Props) => {
                 maxLength={10}
                 autoFocus
                 allowClear
+                ref={inputRefDom as any}
               />
             </Form.Item>
           </Form>
@@ -343,7 +348,12 @@ const WrapLeftBox = (props: Props) => {
         <div>{t('version2.projectGroup')}</div>
         <CloseWrap width={24} height={24}>
           <IconFont
-            onClick={() => setIsVisible(true)}
+            onClick={() => {
+              setIsVisible(true)
+              setTimeout(() => {
+                inputRefDom.current?.focus()
+              }, 100)
+            }}
             type="plus"
             style={{ fontSize: 16, color: '#646566', cursor: 'pointer' }}
           />

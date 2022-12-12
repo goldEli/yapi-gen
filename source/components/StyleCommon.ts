@@ -23,7 +23,7 @@ const HoverWrap = styled.div<{ isActive?: any }>(
       fontSize: 18,
     },
     svg: {
-      fontSize: 16,
+      fontSize: 18,
     },
     '&: hover': {
       background: '#F4F5F5',

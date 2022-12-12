@@ -17,11 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
 import { useDispatch } from '../../../store'
 import { getStatus } from '../../../store/waterState'
-import {
-  ConfigProvider as KitConfigProvider,
-  FilesTransferProvider,
-  FileView,
-} from '@xyfe/uikit'
+import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 
 const Wrap = styled.div`
   display: flex;

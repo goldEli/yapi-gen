@@ -207,7 +207,7 @@ const EditDemand = (props: Props) => {
     setIsOpenEditDemand(true)
     const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
-      // 获取的所有需求类别
+      // 获取全部的需求列表
       getCategoryEditList({ projectId: value || projectId, isEdit: true }),
       getFieldList({ projectId: value || projectId }),
       getList(value || projectId),

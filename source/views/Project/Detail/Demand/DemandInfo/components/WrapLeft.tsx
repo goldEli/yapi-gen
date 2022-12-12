@@ -18,14 +18,9 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import {
-  SliderWrap,
-  ProgressWrapUpload,
-  AddWrap,
-} from '@/components/StyleCommon'
+import { AddWrap } from '@/components/StyleCommon'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
-import { off } from 'process'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSelector } from '../../../../../../../store'
 
@@ -36,18 +31,12 @@ const WrapLeft = styled.div({
   padding: '0 20px 24px 0',
 })
 
-const InfoItem = styled.div<{ activeState?: any }>(
-  {
-    display: 'flex',
-    // alignItems: 'center',
-    marginTop: 14,
-    position: 'relative',
-    flexDirection: 'column',
-  },
-  // ({ activeState }) => ({
-  //   alignItems: activeState ? 'flex-start' : 'center',
-  // }),
-)
+const InfoItem = styled.div<{ activeState?: any }>({
+  display: 'flex',
+  marginTop: 14,
+  position: 'relative',
+  flexDirection: 'column',
+})
 
 const Label = styled.div({
   color: '#323233',
@@ -71,15 +60,7 @@ const TextWrap = styled.div({
 
 const WrapLeftBox = () => {
   const [t] = useTranslation()
-  const {
-    demandInfo,
-    isShowProgress,
-    percentShow,
-    percentVal,
-    uploadStatus,
-    getDemandInfo,
-    updateTableParams,
-  } = useModel('demand')
+  const { demandInfo, getDemandInfo, updateTableParams } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -102,26 +83,6 @@ const WrapLeftBox = () => {
     )
     setSchedule(demandInfo?.schedule)
   }, [demandInfo])
-
-  const onChangeSchedule = async () => {
-    if (
-      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
-      demandInfo.status.is_start !== 1 &&
-      demandInfo.status.is_end !== 1
-    ) {
-      const obj = {
-        projectId,
-        id: demandInfo?.id,
-        otherParams: { schedule },
-      }
-      try {
-        await updateTableParams(obj)
-        getDemandInfo({ projectId, id: demandInfo?.id })
-      } catch (error) {
-        //
-      }
-    }
-  }
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
@@ -239,7 +200,6 @@ const WrapLeftBox = () => {
                       style={{
                         marginBottom: '10px',
                         color: '#2877FF',
-                        // paddingRight: '0px',
                       }}
                     >
                       <IconFont

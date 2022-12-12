@@ -35,7 +35,6 @@ const SideWrap = styled.div`
 const imgCSS = css`
   width: 56px;
   margin-top: 24px;
-  margin-bottom: 32px;
   object-fit: cover;
 `
 const SideHeader = styled.div`

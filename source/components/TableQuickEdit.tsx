@@ -194,7 +194,9 @@ const TableQuickEdit = (props: Props) => {
     }
     if (props?.isCustom) {
       obj.otherParams = {
-        custom_field: { [props?.keyText]: newValue },
+        custom_field: {
+          [props?.keyText]: newValue || '',
+        },
       }
     } else if (props.keyText === 'tag') {
       obj.otherParams = {
@@ -211,6 +213,7 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
+
     try {
       await updateTableParams(obj)
       if (props.isInfo) {

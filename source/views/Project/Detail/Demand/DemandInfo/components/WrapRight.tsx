@@ -8,7 +8,7 @@
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Input, Button, message } from 'antd'
+import { message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -39,7 +39,6 @@ import {
   Card,
   fileIconMap,
   First,
-  Gred,
   GredParent,
   RedCss,
   Second,
@@ -188,7 +187,6 @@ const TextWrap = styled.div({
     flexWrap: 'wrap',
     wordBreak: 'break-all',
     img: {
-      // width: 200,
       display: 'block',
       height: 100,
       objectFit: 'contain',
