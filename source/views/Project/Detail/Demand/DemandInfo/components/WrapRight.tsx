@@ -149,7 +149,7 @@ const CommentItem = styled.div<{ isShow?: boolean }>(
 )
 
 const TextWrap = styled.div({
-  width: 'calc(100% - 48px)',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   '.textTop': {
