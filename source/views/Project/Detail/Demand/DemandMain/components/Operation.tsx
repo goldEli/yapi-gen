@@ -29,6 +29,10 @@ const OperationWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0 24px',
+  '.ant-space-item': {
+    display: 'flex',
+    alignItems: 'center',
+  },
   '.ant-popover-content': {
     width: 'max-content',
   },
@@ -36,11 +40,6 @@ const OperationWrap = styled.div({
 
 const StickyWrap = styled.div({
   background: 'white',
-})
-
-const DividerWrap = styled(Divider)({
-  height: 20,
-  margin: '0 16px 0 24px',
 })
 
 const LiWrap = styled.div<{ color: any }>(
@@ -60,6 +59,18 @@ const LiWrap = styled.div<{ color: any }>(
   }),
 )
 
+const IconWrap = styled(IconFont)({
+  fontSize: 20,
+  color: 'black',
+  cursor: 'pointer',
+  padding: 6,
+  borderRadius: 6,
+  '&: hover': {
+    color: '#323233',
+    background: '#F4F5F5',
+  },
+})
+
 export const MoreWrap = styled.div<{ type?: any }>(
   {
     display: 'flex',
@@ -74,6 +85,12 @@ export const MoreWrap = styled.div<{ type?: any }>(
   ({ type }) => ({
     background: type ? '#2877ff' : '#F0F4FA',
     color: type ? 'white' : '#2877ff',
+    '&: hover': {
+      background: type ? '#669FFF' : '#E8F1FF',
+    },
+    '&: active': {
+      background: type ? '#1763E5' : '#DBEAFF',
+    },
   }),
 )
 
@@ -341,16 +358,7 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('newlyAdd.collapseClass')}
             >
-              <IconFont
-                onClick={() => onClickIcon(1)}
-                type="outdent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
-              />
+              <IconWrap onClick={() => onClickIcon(1)} type="outdent" />
             </Tooltip>
           ) : (
             <Tooltip
@@ -359,16 +367,7 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('newlyAdd.openClass')}
             >
-              <IconFont
-                onClick={() => onClickIcon(2)}
-                type="indent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
-              />
+              <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
           {getIsPermission(

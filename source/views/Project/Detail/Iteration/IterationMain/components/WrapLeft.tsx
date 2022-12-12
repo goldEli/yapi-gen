@@ -82,19 +82,22 @@ const SortItem = styled.div<{ isActive: boolean }>(
     height: 30,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     fontSize: 14,
     cursor: 'pointer',
     margin: '4px 0',
     padding: '0 16px',
+    '.icon': {
+      marginLeft: 24,
+    },
     '&:hover': {
-      color: '#2877ff',
-      background: '#F0F4FA',
+      color: '#323233',
+      background: '#F4F5F5',
     },
   },
   ({ isActive }) => ({
-    color: isActive ? '#2877ff' : '#646566',
-    background: isActive ? '#F0F4FA' : 'white',
+    color: isActive ? '#2877ff!important' : '#646566',
+    background: isActive ? '#F0F4FA!important' : 'white',
   }),
 )
 
@@ -263,6 +266,10 @@ const WrapLeft = (props: Props) => {
           onClick={() => onChangeSort(i)}
         >
           {i.name}
+          <IconFont
+            className="icon"
+            type={currentSort.name === i.name ? 'check' : ''}
+          />
         </SortItem>
       ))}
     </div>

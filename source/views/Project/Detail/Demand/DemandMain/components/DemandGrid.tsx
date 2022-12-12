@@ -107,7 +107,7 @@ const DemandGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+    <Content style={{ height: `calc(100% - ${filterHeight}px)`, padding: '' }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>

@@ -33,6 +33,7 @@ const Operation = styled.div({
   padding: '0 24px',
   height: 52,
   background: 'white',
+  borderRadius: '6px 6px 0 0',
 })
 
 const ButtonWrap = styled(Button)({

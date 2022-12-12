@@ -16,8 +16,8 @@ const Wrap = styled.div({
   borderRadius: 6,
   padding: 16,
   div: {
-    color: '#323233',
-    fontSize: 16,
+    color: '#969799',
+    fontSize: 14,
     fontWeight: '500',
     marginTop: 24,
   },

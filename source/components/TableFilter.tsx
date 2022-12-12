@@ -77,12 +77,9 @@ export const rangPicker = css`
 `
 
 const DelButton = styled.div`
-  color: white;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #9b9daa;
   position: absolute;
   right: -7px;
   top: -7px;
@@ -90,8 +87,13 @@ const DelButton = styled.div`
   height: 15px;
   visibility: hidden;
   z-index: 2;
-  &:hover {
-    background-color: #2877ff;
+  .icon {
+    font-size: 16px;
+    color: #969799;
+    cursor: pointer;
+    &:hover {
+      color: #2877ff;
+    }
   }
 `
 
@@ -400,7 +402,7 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                      <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
@@ -425,7 +427,7 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.key)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                      <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
@@ -438,7 +440,7 @@ const TableFilter = (props: any) => {
                       <NumericInput onPress={confirm} />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                      <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
@@ -458,7 +460,7 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                      <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
@@ -481,7 +483,7 @@ const TableFilter = (props: any) => {
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close" style={{ fontSize: '12px' }} />
+                      <IconFont className="icon" type="close-solid" />
                     </DelButton>
                   </SelectWrapBedeck>
                 )}

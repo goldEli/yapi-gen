@@ -5,7 +5,6 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import { useModel } from '@/models'
-import { ClickWrap } from './StyleCommon'
 
 const flexCss = css`
   height: 32px;
@@ -14,9 +13,11 @@ const flexCss = css`
   padding: 0px 16px;
   display: flex;
   align-items: center;
+  color: #646566;
+  cursor: pointer;
   &:hover {
-    background-color: #f0f4fa;
-    color: #2877ff;
+    background-color: #f4f5f5;
+    color: #323233;
   }
 `
 const Contain = styled.div`
@@ -63,7 +64,7 @@ export const LevelContent = (props: LevelProps) => {
   return (
     <Contain>
       {showData.map((item: any) => (
-        <ClickWrap
+        <div
           onClick={() => changeState(item.id)}
           className={flexCss}
           key={item.id}
@@ -77,7 +78,7 @@ export const LevelContent = (props: LevelProps) => {
             }}
           />
           <span>{item.content_txt}</span>
-        </ClickWrap>
+        </div>
       ))}
     </Contain>
   )
