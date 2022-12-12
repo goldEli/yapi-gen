@@ -152,23 +152,25 @@ const Filter = (props: Props) => {
             style={{ height: 16, margin: '0 0 0 8px' }}
             type="vertical"
           />
-          <div
-            hidden={!props.isGrid}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <DropDownMenu
-              menu={menu}
-              icon="sort"
-              isVisible={isVisible}
-              onChangeVisible={setIsVisible}
+          {props.isGrid && (
+            <div
+              hidden={!props.isGrid}
+              style={{ display: 'flex', alignItems: 'center' }}
             >
-              <div>
-                {props.sort === 'name'
-                  ? t('common.projectName')
-                  : t('common.createTime')}
-              </div>
-            </DropDownMenu>
-          </div>
+              <DropDownMenu
+                menu={menu}
+                icon="sort"
+                isVisible={isVisible}
+                onChangeVisible={setIsVisible}
+              >
+                <div>
+                  {props.sort === 'name'
+                    ? t('common.projectName')
+                    : t('common.createTime')}
+                </div>
+              </DropDownMenu>
+            </div>
+          )}
           {props.isGrid && (
             <Divider style={{ height: 16, margin: 0 }} type="vertical" />
           )}

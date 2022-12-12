@@ -48,6 +48,7 @@ const Index = () => {
             background: 'white',
             height: '100%',
             padding: '25px',
+            borderRadius: 6,
           }}
         >
           <div

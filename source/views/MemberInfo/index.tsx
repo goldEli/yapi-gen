@@ -162,7 +162,7 @@ const MemberInfo = () => {
               alt=""
             />
           ) : (
-            <NameWrap style={{ margin: '0 8px 0 0 ' }}>
+            <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
               {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
             </NameWrap>
           )}

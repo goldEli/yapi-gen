@@ -18,7 +18,6 @@ const Wrap = styled.div({
   div: {
     color: '#969799',
     fontSize: 14,
-    fontWeight: '500',
     marginTop: 24,
   },
 })

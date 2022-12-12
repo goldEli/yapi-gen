@@ -24,7 +24,6 @@ interface Props {
 const SpaceWrap = styled(Space)({
   display: 'flex',
   flexWrap: 'wrap',
-  padding: '0 8px',
 })
 
 const AddProject = styled.div({

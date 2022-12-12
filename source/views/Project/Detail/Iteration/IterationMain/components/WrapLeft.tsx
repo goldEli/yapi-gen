@@ -97,7 +97,6 @@ const SortItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     color: isActive ? '#2877ff!important' : '#646566',
-    background: isActive ? '#F0F4FA!important' : 'white',
   }),
 )
 

@@ -25,7 +25,7 @@ const Content = styled.div<{ isGrid: boolean }>(
     height: 'calc(100% - 64px)',
   },
   ({ isGrid }) => ({
-    padding: isGrid ? '16px' : '16px 16px 0 16px',
+    padding: isGrid ? '24px' : '16px 16px 0 16px',
   }),
 )
 

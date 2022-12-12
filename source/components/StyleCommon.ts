@@ -33,7 +33,7 @@ const HoverWrap = styled.div<{ isActive?: any }>(
   },
   ({ isActive }) => ({
     background: isActive ? '#F4F5F5' : 'white',
-    color: isActive ? '#323233' : '#646566',
+    color: isActive ? '#323233!important' : '#646566',
   }),
 )
 
@@ -68,10 +68,10 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
   },
   ({ isCheck }) => ({
     '.label': {
-      color: isCheck ? '#2877ff' : '#646566',
+      color: isCheck ? '#2877ff!important' : '#646566',
     },
     '.icon': {
-      color: isCheck ? '#2877ff' : '#646566',
+      color: isCheck ? '#2877ff!important' : '#646566',
     },
   }),
 )

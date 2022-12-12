@@ -130,20 +130,20 @@ const GetTreeIcon = (props: TreeIconProps) => {
     <div
       style={{ display: 'flex', alignItems: 'center', position: 'relative' }}
     >
-      {props.row.demand > 0 && (
+      {props.row.allChildrenCount > 0 && (
         <ExpendedWrap
           onClick={onChangeData}
           type={props.row.isExpended ? 'add-subtract' : 'add-square-big'}
         />
       )}
-      {props.row.demand <= 0 && <div style={{ marginLeft: 4 }} />}
+      {props.row.allChildrenCount <= 0 && <div style={{ marginLeft: 4 }} />}
       {/* <LineWrap
         isBottom={props.row.isExpended}
         isTop={props.row.parentId > 0}
         isLeft={props.row.parentId > 0}
         isRight={
           props.row.parentId > 0 &&
-          props.row.demand <= 0 &&
+          props.row.allChildrenCount <= 0 &&
           props.row.isExpended
         }
       >
@@ -339,7 +339,7 @@ const DemandTree = (props: Props) => {
   const getTreeIcon = (row: any) => {
     return (
       <>
-        {(row.demand > 0 || row.parentId > 0) && (
+        {(row.allChildrenCount > 0 || row.parentId > 0) && (
           <GetTreeIcon
             row={row}
             // onChangeExpendedKeys={onChangeExpendedKeys}

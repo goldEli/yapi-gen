@@ -39,7 +39,7 @@ const InfoLeft = styled.div({
 })
 
 const SubText = styled.div({
-  marginTop: 10,
+  marginTop: 8,
   color: '#646566',
   fontSize: 14,
   lineHeight: '30px',
@@ -55,7 +55,7 @@ const Title = styled.div({
   color: 'black',
   paddingLeft: 10,
   borderLeft: '3px solid #2877FF',
-  lineHeight: '18px',
+  lineHeight: '16px',
 })
 const InfoItem = styled.div({
   display: 'flex',
@@ -90,10 +90,10 @@ const CardItem = styled.div({
   borderRadius: 6,
   background: 'rgba(235, 237, 240, 0.6)',
   div: {
-    fontSize: 32,
+    fontSize: 28,
     color: '#323233',
-    fontWeight: 400,
-    lineHeight: '32px',
+    fontWeight: 500,
+    lineHeight: '28px',
   },
   span: {
     fontSize: 14,
@@ -103,7 +103,7 @@ const CardItem = styled.div({
 
 const ClickIcon = styled(IconFont)({
   color: '#323233',
-  fontSize: 16,
+  fontSize: 20,
   marginLeft: 8,
   '&: hover': {
     color: '#2877ff',
@@ -136,7 +136,7 @@ const ProjectInfo = () => {
       <Wrap>
         <InfoLeft>
           <Title>{t('v2_1_1.projectInformation')}</Title>
-          <CardGroup size={24}>
+          <CardGroup size={32}>
             <CardItem>
               <div>{projectInfo.demandCount || 0}</div>
               <span>{t('common.demand')}</span>
@@ -150,7 +150,6 @@ const ProjectInfo = () => {
               <span>{t('project.projectMember')}</span>
             </CardItem>
           </CardGroup>
-          {/* <img src={projectInfo.cover} alt="" /> */}
         </InfoLeft>
         <InfoRight>
           <Title
@@ -177,6 +176,7 @@ const ProjectInfo = () => {
                   fontSize: '16px',
                   fontWeight: 'bold',
                   color: '#323233',
+                  lineHeight: '24px',
                 }}
               >
                 {' '}
