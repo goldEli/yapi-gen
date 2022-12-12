@@ -48,11 +48,10 @@ import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
 
 const WrapRight = styled.div({
-  minWidth: '200px',
-  width: '100%',
+  minWidth: '300px',
+  overflow: 'hidden',
   height: '100%',
   padding: '16px 10px 0 24px',
-  overflow: 'auto',
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -182,7 +181,7 @@ const TextWrap = styled.div({
     fontWeight: 400,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    display: 'flex',
+
     WebkitLineClamp: 4,
     WebkitBoxOrient: 'vertical',
     paddingRight: 30,
@@ -438,7 +437,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       </TitleWrap>
       {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
       {activeTabs === 1 && (
-        <div style={{ maxHeight: 'calc(100% - 100px)', overflow: 'auto' }}>
+        <div style={{ maxHeight: 'calc(100% - 100px)' }}>
           <InfoItem>
             <Label>{t('newlyAdd.demandProgress')}</Label>
             <div
