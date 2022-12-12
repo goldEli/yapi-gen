@@ -691,7 +691,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       {activeTabs !== 1 && (
         <div
           style={{
-            maxHeight: `calc(100% - ${isComment ? 80 : 320}px)`,
+            height: 'calc(100% - 80px)',
           }}
         >
           <div
@@ -920,7 +920,15 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 ))}
               </div>
             ) : (
-              <NoData />
+              <div
+                style={{
+                  display: ' flex',
+                  height: '100%',
+                  alignItems: 'center',
+                }}
+              >
+                <NoData />
+              </div>
             ))}
         </div>
       )}
