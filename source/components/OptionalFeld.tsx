@@ -23,6 +23,7 @@ import {
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
 import { arrayMoveImmutable } from 'array-move'
+import { use } from 'i18next'
 
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -172,6 +173,13 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>(
     props?.checkList3 || [],
   )
+  useEffect(() => {
+    setCheckList(props.checkList)
+    setCheckList2(props.checkList2)
+    setCheckList3(props.checkList3 ?? [])
+    setAll(props.allTitleList)
+  }, [props.checkList, props.checkList2, props.checkList3, props.allTitleList])
+
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
 
@@ -246,6 +254,9 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     plainOptions,
     plainOptions2,
     plainOptions3,
+    props.checkList,
+    props.checkList2,
+    props.checkList3,
   ])
 
   return (
