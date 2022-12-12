@@ -49,6 +49,7 @@ import { delCommonAt } from '@/services/user'
 
 const WrapRight = styled.div({
   minWidth: '300px',
+  width: '100%',
   overflow: 'hidden',
   height: '100%',
   padding: '16px 10px 0 24px',
