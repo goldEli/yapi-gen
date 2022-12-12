@@ -89,17 +89,18 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      '.name': {
-        color: '#2877FF',
-      },
+      background: '#F4F5F5',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive ? '3px solid #2877FF' : '3px solid white',
-    background: isActive ? '#F0F4FA' : 'white',
+    borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
+    background: isActive ? '#F0F4FA' : 'transparent',
+    '.name': {
+      color: isActive ? '#2877FF' : '#323233',
+    },
   }),
 )
 

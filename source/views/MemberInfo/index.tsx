@@ -58,11 +58,11 @@ const MenuItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
     width: 220,
     '&: hover': {
-      color: '#2877ff!important',
+      backgroundColor: '#F4F5F5',
     },
   },
   ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid white',
+    borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
     color: active ? '#2877ff' : '#323233',
     background: active ? '#F0F4FA' : 'white',
   }),

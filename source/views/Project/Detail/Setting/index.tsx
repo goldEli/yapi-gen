@@ -75,16 +75,11 @@ const MenuItem = styled.div<{ isActive: boolean; language?: string }>(
       color: '#323233',
     },
     '&:hover': {
-      div: {
-        color: '#2877FF',
-      },
-      svg: {
-        color: '#2877FF',
-      },
+      background: '#F4F5F5',
     },
   },
   ({ isActive, language }) => ({
-    borderRight: isActive ? '3px solid #2877FF' : '3px solid white',
+    borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
     background: isActive ? '#F0F4FA' : 'white',
     paddingLeft: language === 'zh' ? 65 : 40,
     div: {

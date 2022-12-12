@@ -38,16 +38,16 @@ const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
     display: 'flex',
     alignItems: 'center',
     width: '100%',
+    boxSizing: 'border-box',
     '&:hover': {
       background: '#F4F5F5',
-      color: '#2877ff',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ idx, isSpace }) => ({
-    borderRight: idx ? '3px solid #2877FF' : '3px solid white',
+    borderRight: idx ? '3px solid #2877FF' : '3px solid transparent',
     color: idx ? '#2877FF' : '#323233',
     background: idx ? '#F0F4FA' : 'white',
     justifyContent: isSpace ? 'space-between' : 'inherit',
@@ -133,7 +133,7 @@ const WrapLeftBox = (props: Props) => {
     deleteProjectGroup,
     setSelectGroupList,
   } = useModel('project')
-  const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const [isMoreVisible, setIsMoreVisible] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [groupId, setGroupId] = useState<any>(null)

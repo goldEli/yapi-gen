@@ -39,7 +39,7 @@ const MoreDropdown = (props: Props) => {
       trigger={['hover']}
       placement={props?.hasChild ? 'bottomLeft' : 'bottomRight'}
       getPopupContainer={node => (props?.hasChild ? document.body : node)}
-      onVisibleChange={visible => props.onChangeVisible?.(visible)}
+      // onVisibleChange={visible => props.onChangeVisible?.(visible)}
       className="dropdownIcon"
     >
       <div
