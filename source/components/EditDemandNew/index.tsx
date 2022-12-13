@@ -572,34 +572,6 @@ const EditDemand = (props: Props) => {
             name="statusId"
             rules={[{ required: true, message: '' }]}
           >
-            <span className="title">{categoryObj?.name}</span>
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterCategory')}
-            name="categoryId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <Select
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={node => node}
-              allowClear
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              options={categoryEditList?.list
-                ?.filter((i: any) => i.id !== categoryObj?.id)
-                ?.map((k: any) => ({
-                  label: k.name,
-                  value: k.id,
-                }))}
-            />
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterStatus')}
-            name="statusId"
-            rules={[{ required: true, message: '' }]}
-          >
             <Select
               placeholder={t('common.pleaseSelect')}
               showArrow

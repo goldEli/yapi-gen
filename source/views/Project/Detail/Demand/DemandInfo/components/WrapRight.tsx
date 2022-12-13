@@ -969,7 +969,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             ))}
         </div>
       )}
-      {!isComment && activeTabs === 2 && (
+      {isComment && activeTabs === 2 && (
         <EditComment
           visibleEdit={visibleEdit}
           editClose={editClose}
