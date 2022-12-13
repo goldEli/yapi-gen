@@ -42,11 +42,21 @@ const Wrap = styled.div<{ pl: string }>`
   }
 `
 const Hov = styled(IconFont)`
-  & :hover {
+  & :focus {
     color: #2877ff;
   }
 `
-
+const GrepDiv = styled.div`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px 6px 6px 6px;
+  &:hover {
+    background: #f4f5f5;
+  }
+`
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
   const [isOpen, setIsOpen] = useState(false)
@@ -260,14 +270,16 @@ const EditComment = (props: any) => {
                 fileList={[]}
                 customRequest={onUpload}
               >
-                <Hov
-                  style={{
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    color: '#969799',
-                  }}
-                  type="image"
-                />
+                <GrepDiv>
+                  <Hov
+                    style={{
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      color: '#969799',
+                    }}
+                    type="image"
+                  />
+                </GrepDiv>
               </Upload>
 
               <Popover
@@ -285,17 +297,19 @@ const EditComment = (props: any) => {
                 }
                 getPopupContainer={node => node}
               >
-                <Hov
-                  onClick={() => {
-                    setPlan(true)
-                  }}
-                  style={{
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    color: '#969799',
-                  }}
-                  type="mention"
-                />
+                <GrepDiv>
+                  <Hov
+                    onClick={() => {
+                      setPlan(true)
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      color: isOpen ? '#2877ff' : '#969799',
+                    }}
+                    type="mention"
+                  />
+                </GrepDiv>
               </Popover>
             </div>
           </div>

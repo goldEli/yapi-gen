@@ -22,6 +22,7 @@ const DropDownMenu = (props: Props) => {
       overlay={props?.isVisible ? props.menu : ''}
       getPopupContainer={node => node}
       trigger={['hover']}
+      placement="bottomRight"
       onOpenChange={visible => props.onChangeVisible?.(visible)}
     >
       <HoverWrap isActive={props.isActive}>
