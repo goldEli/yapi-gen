@@ -251,8 +251,10 @@ const EditDemand = (props: Props) => {
         // 判断父需求类别是否被关闭，是则取列表第一条
         const isExistence = resultCategoryList?.filter(
           (i: any) => i.id === props?.categoryId,
-        )?.length
-        setCategoryObj(isExistence ? isExistence[0] : resultCategoryList[0])
+        )
+        setCategoryObj(
+          isExistence?.length ? isExistence[0] : resultCategoryList[0],
+        )
       }
       // 如果是快速创建并且有缓存数据
       if (props?.isQuickCreate && categoryId) {
