@@ -41,7 +41,7 @@ const DrawerWrap = styled(Drawer)({
 })
 
 const ButtonWrap = styled(Button)({
-  width: '88px',
+  // minWidth: '88px',
   height: 32,
   marginLeft: 16,
 })
@@ -51,6 +51,10 @@ const ListWrap = styled.div`
   & .ant-popover-inner {
     position: relative !important;
     top: -3px !important;
+  }
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-submenu-title {
+    padding: 0 !important;
   }
 `
 
@@ -89,6 +93,9 @@ const ListItem = styled.div({
   '&:nth-child(even)': {
     // backgroundColor: '#f8f9fa',
   },
+  '&:hover': {
+    backgroundColor: '#f4f5f5',
+  },
 })
 const MoreWrap2 = styled(MoreWrap)`
   background-color: transparent;
@@ -97,6 +104,7 @@ const MoreWrap2 = styled(MoreWrap)`
     color: #323233;
   }
   &:hover {
+    background-color: transparent !important;
     .job {
       color: #2877ff;
     }
@@ -127,8 +135,8 @@ const HeaderWrap = styled.div({
 })
 const Myd = styled.div<{ active: boolean }>`
   text-align: left;
-
-  color: #bbbdbf;
+  padding: 5px 5px !important;
+  color: #646566;
   &:hover {
     color: #323233;
     background-color: #f4f5f5;
@@ -400,7 +408,12 @@ const Member = (props: Props) => {
               {t('project.projectMemberAll', { count: memberList?.length })}
             </span>
             <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
-              <IconFont type="close" />
+              <IconFont
+                style={{
+                  fontSize: '20px',
+                }}
+                type="close"
+              />
             </CloseWrap>
             {/* <IconFont
               onClick={props.onChangeVisible}

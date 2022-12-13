@@ -59,11 +59,12 @@ const FormBox = styled.div`
 `
 const BtnsItemBox = styled.div`
   cursor: pointer;
-  width: 102px;
+  min-width: 102px;
+  padding: 0px 10px;
   height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   border-radius: 0px 0px 0px 0px;
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
@@ -186,7 +187,8 @@ const TreeItem = (props: any) => {
   const content = (
     <div
       style={{
-        padding: '10px 0',
+        padding: '10px 0px',
+        whiteSpace: 'nowrap',
       }}
     >
       {props.pid === 1

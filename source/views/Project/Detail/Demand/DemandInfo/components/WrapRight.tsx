@@ -47,7 +47,7 @@ import { delCommonAt } from '@/services/user'
 
 const WrapRight = styled.div({
   width: '100%',
-  minWidth: '300px',
+  minWidth: '370px',
   overflowY: 'auto',
   height: '100%',
   padding: '16px 10px 10px 24px',
@@ -791,7 +791,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                           <span className="common">
                             <HiddenText>
                               <OmitText
-                                width={108}
+                                width={150}
                                 tipProps={{
                                   getPopupContainer: node => node,
                                 }}
