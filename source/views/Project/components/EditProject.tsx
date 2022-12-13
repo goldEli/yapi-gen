@@ -24,7 +24,8 @@ interface Props {
 const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const { addProject, updateProject, selectGroupList } = useModel('project')
+  const { addProject, updateProject, selectGroupList, setIsRefreshGroup } =
+    useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   const onConfirm = async () => {
@@ -43,6 +44,7 @@ const EditProject = (props: Props) => {
         }
         await addProject(form.getFieldsValue())
         message.success(t('common.createSuccess'))
+        setIsRefreshGroup(true)
       }
       props.onChangeVisible()
       props.onUpdate?.()

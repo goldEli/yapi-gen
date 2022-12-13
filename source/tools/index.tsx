@@ -162,9 +162,9 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
+        onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
         onChange={value =>
-          onChange(value, params.attr === 'fixed_select' ? '' : 1)
+          onChange?.(value, params.attr === 'fixed_select' ? '' : 1)
         }
         options={params?.value}
         mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
@@ -192,9 +192,9 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
+        onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
         onChange={value =>
-          onChange(
+          onChange?.(
             value,
             ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
               params?.attr,

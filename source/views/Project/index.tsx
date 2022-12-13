@@ -62,6 +62,7 @@ const Project = () => {
     deleteProject,
     stopProject,
     openProject,
+    setIsRefreshGroup,
   } = useModel('project')
   const { userInfo } = useModel('user')
   const [isSpinning, setIsSpinning] = useState(false)
@@ -170,6 +171,7 @@ const Project = () => {
       setIsDelete(false)
       setOperationDetail({})
       getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+      setIsRefreshGroup(true)
     } catch (error) {
       //
     }

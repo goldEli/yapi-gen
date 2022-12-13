@@ -5,7 +5,14 @@
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  createRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Pagination, message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import {
@@ -185,6 +192,7 @@ const DemandTree = (props: Props) => {
   // 创建子需求数据
   const [isCreateChild, setIsCreateChild] = useState<any>({})
   const [isAddVisible, setIsAddVisible] = useState(false)
+  const batchDom: any = createRef()
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -390,6 +398,11 @@ const DemandTree = (props: Props) => {
     'b/story/delete',
   )
 
+  const hasBatch = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/batch',
+  )
+
   // 点击创建子需求
   const onChangeCreateChild = (item: any) => {
     setIsShowMore(false)
@@ -417,7 +430,7 @@ const DemandTree = (props: Props) => {
         key: '3',
         label: (
           <div onClick={() => onChangeCreateChild(item)}>
-            {t('project.addChildDemand')}
+            {t('common.createChildDemand')}
           </div>
         ),
       },
@@ -431,28 +444,49 @@ const DemandTree = (props: Props) => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
+    if (hasCreate) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
+
+    return <Menu style={{ minWidth: 56 }} items={menuItems} />
+  }
+
+  //  点击批量
+  const onClickBatch = (e: any, type: any) => {
+    setIsShowMore(false)
+    e.stopPropagation()
+    if (type === 'copy') {
+      batchDom.current?.copy()
+    } else {
+      batchDom.current?.clickMenu(type)
+    }
+  }
+
+  const menuBatch = () => {
     const batchItems = [
       {
         key: '0',
         disabled: true,
         label: (
-          <div onClick={e => onPropsChangeVisible(e, item)}>
-            {t('version2.checked', { count: 23 })}
+          <div>
+            {t('version2.checked', {
+              count: selectedRowKeys?.map((i: any) => i.id)?.length,
+            })}
           </div>
         ),
       },
       {
         key: '1',
         label: (
-          <div onClick={e => onPropsChangeVisible(e, item)}>
-            {t('version2.batchEdit', { count: 23 })}
+          <div onClick={e => onClickBatch(e, 'edit')}>
+            {t('version2.batchEdit')}
           </div>
         ),
       },
       {
         key: '2',
         label: (
-          <div onClick={() => onPropsChangeDelete(item)}>
+          <div onClick={e => onClickBatch(e, 'delete')}>
             {t('version2.batchDelete')}
           </div>
         ),
@@ -460,19 +494,13 @@ const DemandTree = (props: Props) => {
       {
         key: '3',
         label: (
-          <div onClick={() => onChangeCreateChild(item)}>
+          <div onClick={e => onClickBatch(e, 'copy')}>
             {t('version2.batchCopyLink')}
           </div>
         ),
       },
     ]
-
-    return (
-      <Menu
-        style={{ minWidth: 56 }}
-        items={selectedRowKeys.includes(item.id) ? batchItems : menuItems}
-      />
-    )
+    return <Menu style={{ minWidth: 56 }} items={batchItems} />
   }
 
   const selectColum: any = useMemo(() => {
@@ -492,10 +520,14 @@ const DemandTree = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
+              {hasEdit && hasDel && hasBatch ? null : (
                 <MoreDropdown
                   isMoreVisible={isShowMore}
-                  menu={menu(record)}
+                  menu={
+                    selectedRowKeys?.map((i: any) => i.id).includes(record.id)
+                      ? menuBatch()
+                      : menu(record)
+                  }
                   onChangeVisible={setIsShowMore}
                 />
               )}
@@ -628,12 +660,15 @@ const DemandTree = (props: Props) => {
               </NoData>
             ))}
         </Spin>
-        <FloatBatch
-          isVisible={selectedRowKeys.length > 0}
-          onClose={() => onSelectAll(false)}
-          selectRows={selectedRowKeys}
-          onUpdate={props.onUpdate}
-        />
+        {!hasBatch && (
+          <FloatBatch
+            isVisible={selectedRowKeys.length > 0}
+            onClose={() => onSelectAll(false)}
+            selectRows={selectedRowKeys}
+            onUpdate={props.onUpdate}
+            onRef={batchDom}
+          />
+        )}
       </DataWrap>
 
       <PaginationWrap>

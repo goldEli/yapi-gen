@@ -303,7 +303,7 @@ const TableFilter = (props: any) => {
         padding: '5px 0',
       }}
     >
-      <CollapseWrap defaultActiveKey={['1', '2', '3']}>
+      <CollapseWrap defaultActiveKey={['1']} accordion>
         <Collapse.Panel header={t('components.basicFiled')} key="1">
           {filterBasicsList
             ?.filter((k: any) =>
