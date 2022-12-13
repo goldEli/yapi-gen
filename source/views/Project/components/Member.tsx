@@ -222,9 +222,8 @@ const Member = (props: Props) => {
   const [memberList, setMemberList] = useState<any>([])
   const [userDataList, setUserDataList] = useState<any[]>([])
   const [form] = Form.useForm()
-  const { userInfo } = useModel('user')
-  const hasEdit = getIsPermission(
-    userInfo?.company_permissions,
+  const hasEdit = !getIsPermission(
+    projectInfo?.projectPermissions,
     'b/project/member/update',
   )
   const getList = async (val?: string) => {
