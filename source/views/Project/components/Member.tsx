@@ -228,6 +228,7 @@ const Member = (props: Props) => {
       all: true,
       searchValue: val,
     })
+
     setMemberList(result)
     setIsRefreshMember(false)
   }
@@ -476,7 +477,10 @@ const Member = (props: Props) => {
                       {i.name}
                       {i.nickname ? `(${i.nickname})` : ''}
                     </span>
-                    <span>{i.positionName}</span>
+                    <span>
+                      {i.positionName}
+                      {i.is_admin === 1 ? '      （项目创建人）' : ''}
+                    </span>
                   </div>
                 </div>
                 <MoreDropdown

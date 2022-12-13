@@ -1,4 +1,4 @@
-import { getWater } from '@/services/setting'
+import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
 import { Radio } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -33,8 +33,11 @@ const Index = () => {
 
   const onChange = async (e: any) => {
     const res = await getWater()
+    const res2 = await changeWater({ id: res.id, status: e.target.value })
 
-    dispatch(changeWaterStatus({ id: res.id, status: e.target.value }))
+    if (res2.code === 0) {
+      dispatch(changeWaterStatus({ id: res.id, status: e.target.value }))
+    }
   }
 
   return (

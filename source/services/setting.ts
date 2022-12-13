@@ -123,7 +123,8 @@ export const updateRole: any = async (params: any) => {
 // 水印开关控制
 
 export const changeWater: any = async (params: any) => {
-  await http.post<any>('/b/company/config/save', params)
+  const res = await http.post<any>('/b/company/config/save', params)
+  return res
 }
 
 // 查询配置
