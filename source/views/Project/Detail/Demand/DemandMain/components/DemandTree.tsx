@@ -520,7 +520,7 @@ const DemandTree = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel && hasBatch ? null : (
+              {(hasEdit && hasDel) || hasBatch ? null : (
                 <MoreDropdown
                   isMoreVisible={isShowMore}
                   menu={
