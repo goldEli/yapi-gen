@@ -82,10 +82,13 @@ export const StaffPersonal = (props: {
   }, [props.isVisible])
 
   const handleChange = (value: any) => {
-    setInfo({ userId: data.id, roleId: value })
+    setInfoId(value)
   }
   const onConfirm = () => {
-    props.onConfirm(info)
+    props.onConfirm({
+      userId: data.id,
+      roleId: infoId,
+    })
   }
 
   return (

@@ -484,7 +484,7 @@ const Member = (props: Props) => {
                     </span>
                     <span>
                       {i.positionName}
-                      {i.is_admin === 1 ? '      （项目创建人）' : ''}
+                      {i.is_admin === 1 ? `  （${t('new_p1.a8')}）` : ''}
                     </span>
                   </div>
                 </div>

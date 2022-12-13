@@ -1,11 +1,13 @@
 {
   "new_p1": {
-    "a1": "comment ",
+    "a1": "Comment ",
     "a2": "Add comment ",
     "a3": "Demand flow ",
-    "a4": " Write a review ",
-    "a5": " Enter a comment",
-    "a6": "More than 2M"
+    "a4": "Write a review ",
+    "a5": "Enter comments ",
+    "a6": "Not a picture file ",
+    "a7": "more than 2M",
+    "a8": " Project Founder"
   },
   "title": {
     "text": "File format not supported ",
