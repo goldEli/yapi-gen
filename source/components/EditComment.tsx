@@ -119,7 +119,7 @@ const EditComment = (props: any) => {
         url: i.url,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         ctime: i.ctime,
-
+        username: i.user_name,
         name: i.name,
         ext: i.ext,
         size: i.size,
