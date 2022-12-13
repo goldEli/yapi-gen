@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 //  评论的弹框
 /* eslint-disable no-cond-assign */
@@ -142,6 +143,7 @@ const EditComment = (props: any) => {
         content: `${file.name} ${t('new_p1.a7')}`,
         duration: 2,
       })
+      return Upload.LIST_IGNORE
     }
     const isPNG = file.type.includes('image')
     if (!isPNG) {
