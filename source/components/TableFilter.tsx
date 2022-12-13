@@ -278,7 +278,7 @@ const TableFilter = (props: any) => {
         delete res[delKey]
       }
       form.setFieldsValue({
-        [delKey]: null,
+        [delKey]: [],
       })
     }
     props.onSearch(res, customField)

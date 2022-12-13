@@ -195,14 +195,14 @@ const MoreDropdown = (props: DropDownProps) => {
       <MoreWrap2>
         <div
           style={{
-            marginRight: '8px',
+            marginRight: '4px',
           }}
           className="job"
         >
           {props.row.roleName}
         </div>
         <span className="job1">
-          <IconFont style={{ fontSize: 16 }} type="down" />
+          <IconFont style={{ fontSize: 14 }} type="down" />
         </span>
       </MoreWrap2>
     </Dropdown>
@@ -222,6 +222,11 @@ const Member = (props: Props) => {
   const [memberList, setMemberList] = useState<any>([])
   const [userDataList, setUserDataList] = useState<any[]>([])
   const [form] = Form.useForm()
+  const { userInfo } = useModel('user')
+  const hasEdit = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/member/update',
+  )
   const getList = async (val?: string) => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -483,12 +488,23 @@ const Member = (props: Props) => {
                     </span>
                   </div>
                 </div>
-                <MoreDropdown
-                  onClickMenu={onClickMenu}
-                  roleOptions={roleOptions}
-                  row={i}
-                  name={i.positionName}
-                />
+                {hasEdit ? (
+                  <MoreDropdown
+                    onClickMenu={onClickMenu}
+                    roleOptions={roleOptions}
+                    row={i}
+                    name={i.positionName}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      color: '#323233',
+                      fontSize: '12px',
+                    }}
+                  >
+                    {i.roleName}
+                  </span>
+                )}
               </ListItem>
             ))}
           </ListWrap>
