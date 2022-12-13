@@ -175,7 +175,7 @@ const WrapLeftBox = () => {
           </InfoItem>
           <InfoItem activeState>
             <Label>{t('common.attachment')}</Label>
-            <div style={{ width: 'calc(100% - 120px)' }}>
+            <div>
               <UploadAttach
                 onBottom={onBottom}
                 defaultList={demandInfo?.attachment?.map((i: any) => ({

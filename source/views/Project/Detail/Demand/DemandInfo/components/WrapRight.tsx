@@ -36,7 +36,6 @@ import { changeId } from '../../../../../../../store/modalState'
 import {
   BigWrap,
   BlueCss,
-  Card,
   fileIconMap,
   First,
   GredParent,
@@ -47,11 +46,11 @@ import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
 
 const WrapRight = styled.div({
-  minWidth: '300px',
   width: '100%',
-  overflow: 'hidden',
+  minWidth: '370px',
+  overflowY: 'auto',
   height: '100%',
-  padding: '16px 10px 0 24px',
+  padding: '16px 10px 10px 24px',
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -146,7 +145,26 @@ const CommentItem = styled.div<{ isShow?: boolean }>(
     },
   }),
 )
-
+const Card = styled.div`
+  flex: 1;
+  position: relative;
+  min-width: 290px;
+  min-height: 60px;
+  background: #ffffff;
+  box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 6px 6px 6px 6px;
+  opacity: 1;
+  margin: 0 16px 16px 10px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  &:hover {
+    box-shadow: 0px 0px 7px 2px rgba(40, 119, 255, 20%);
+    ${Second} {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+`
 const TextWrap = styled.div({
   width: '100%',
   display: 'flex',
@@ -221,20 +239,20 @@ export const TextareaWrap = styled.div({
   },
 })
 
-const SetHead = styled.div`
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 50%;
-  font-size: 14px;
-  background: #a4acf5;
-  background-blend-mode: normal;
-  border: 1px solid #f0f2fd;
-  color: white;
-  margin-right: 8px;
-  margin-top: 24;
-`
+const SetHead = styled.div({
+  width: 24,
+  height: 24,
+  borderRadius: 24,
+  background: '#A4ACF5',
+  color: 'white',
+  fontSize: 12,
+  fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 12,
+  overflow: 'hidden',
+})
 
 const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
@@ -737,15 +755,18 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     key={item.id}
                     isShow={item.userId === userInfo.id}
                   >
-                    {item.avatar ? (
-                      <img className="ar" src={item.avatar} alt="" />
-                    ) : (
-                      <SetHead>
-                        {String(
-                          item.name?.trim().slice(0, 1),
-                        ).toLocaleUpperCase()}
-                      </SetHead>
-                    )}
+                    <div>
+                      {item.avatar ? (
+                        <img className="ar" src={item.avatar} alt="" />
+                      ) : (
+                        <SetHead>
+                          {String(
+                            item.name?.trim().slice(0, 1),
+                          ).toLocaleUpperCase()}
+                        </SetHead>
+                      )}
+                    </div>
+
                     <TextWrap>
                       <div className="textTop">
                         {isComment ? null : (
@@ -770,7 +791,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                           <span className="common">
                             <HiddenText>
                               <OmitText
-                                width={108}
+                                width={150}
                                 tipProps={{
                                   getPopupContainer: node => node,
                                 }}
@@ -780,9 +801,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                             </HiddenText>
                           </span>
                         </div>
-                        <div className="common" style={{ paddingRight: 30 }}>
-                          {item.createdTime}
-                        </div>
+                      </div>
+                      <div className="common" style={{ paddingRight: 30 }}>
+                        {item.createdTime}
                       </div>
                       <div
                         dangerouslySetInnerHTML={{ __html: item.content }}
@@ -790,6 +811,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                       />
                       <div
                         style={{
+                          minWidth: '300px',
                           marginTop: '8px',
                           display: 'flex',
                           flexWrap: 'wrap',
@@ -901,11 +923,15 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     >
                                       {t('p2.download') as unknown as string}
                                     </BlueCss>
-                                    <RedCss
-                                      onClick={() => onTapRemove(item.id, i.id)}
-                                    >
-                                      {t('p2.delete')}
-                                    </RedCss>
+                                    {isComment ? null : (
+                                      <RedCss
+                                        onClick={() =>
+                                          onTapRemove(item.id, i.id)
+                                        }
+                                      >
+                                        {t('p2.delete')}
+                                      </RedCss>
+                                    )}
                                   </Second>
                                 </div>
                               </BigWrap>

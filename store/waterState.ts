@@ -23,7 +23,6 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     changeWaterStatus: (state, action: any) => {
-      changeWater(action.payload)
       state.value = action.payload.status
     },
   },

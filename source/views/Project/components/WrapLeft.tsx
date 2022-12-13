@@ -385,7 +385,12 @@ const WrapLeftBox = (props: Props) => {
                   <div
                     className="bottom"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setIsVisible(true)}
+                    onClick={() => {
+                      setIsVisible(true)
+                      setTimeout(() => {
+                        inputRefDom.current?.focus()
+                      }, 100)
+                    }}
                   >
                     <IconFont type="plus" />
                     <div>{t('version2.addGroup')}</div>

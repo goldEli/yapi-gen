@@ -98,6 +98,7 @@ export const Card = styled.div`
   position: relative;
   min-width: 372px;
   min-height: 60px;
+  max-width: 100%;
   background: #ffffff;
   box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);
   border-radius: 6px 6px 6px 6px;
@@ -635,7 +636,7 @@ const UploadAttach = (props: any) => {
                             marginRight: '12px',
                           }}
                         >
-                          {i.file.username}
+                          {i.file.username ?? userInfo?.name}
                         </span>
                         <span>{i.file.time}</span>
                       </>
