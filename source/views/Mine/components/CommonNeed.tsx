@@ -39,12 +39,6 @@ import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
 
-const IconWrap = styled(IconFontWrap)({
-  '&: hover': {
-    color: '#2877ff',
-  },
-})
-
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
     minHeight: '460px',

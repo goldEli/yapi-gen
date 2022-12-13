@@ -276,22 +276,21 @@ const EditDemandRIght = (props: Props) => {
         // 筛选回填预计开始时间
         if (filterParamsModal?.expectedStart) {
           form.setFieldsValue({
-            startTime: moment(
+            startTime:
               filterParamsModal?.expectedStart[0] === '1970-01-01'
-                ? 0
-                : filterParamsModal?.expectedStart[0],
-            ),
+                ? ''
+                : moment(filterParamsModal?.expectedStart[0]),
           })
         }
 
         // 筛选回填预计结束时间
         if (filterParamsModal?.expectedEnd) {
           form.setFieldsValue({
-            endTime: moment(
-              filterParamsModal?.expectedEnd[1] === '2030-01-01'
-                ? 0
-                : filterParamsModal?.expectedEnd[1],
-            ),
+            endTime: ['2030-01-01', '1970-01-01'].includes(
+              filterParamsModal?.expectedEnd[1],
+            )
+              ? ''
+              : moment(filterParamsModal?.expectedEnd[1]),
           })
         }
 
@@ -398,7 +397,7 @@ const EditDemandRIght = (props: Props) => {
 
   // 提交参数后的操作
   const onSubmitUpdate = () => {
-    setIsShowFields(false)
+    //
   }
 
   useImperativeHandle(props.onRef, () => {

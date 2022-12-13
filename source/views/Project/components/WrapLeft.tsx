@@ -272,6 +272,7 @@ const WrapLeftBox = (props: Props) => {
       setIsDeleteVisible(!isDeleteVisible)
     } else {
       setIsVisible(!isVisible)
+      form.resetFields()
     }
     setOperationObj({})
   }
