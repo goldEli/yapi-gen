@@ -340,31 +340,36 @@ const EditDemandLeft = (props: Props) => {
               />
             </Form.Item>
           )}
-        {props.projectId && (
-          <Form.Item
-            label={
-              <div style={{ fontWeight: 'bold' }}>{t('common.attachment')}</div>
-            }
-            name="attachments"
-          >
-            <UploadAttach
-              defaultList={attachList}
-              onChangeAttachment={onChangeAttachment}
-              onBottom={onBottom}
-              addWrap={
-                <AddWrap
-                  style={{
-                    marginBottom: '20px',
-                  }}
-                  hasColor
-                >
-                  <IconFont type="plus" />
-                  <div>{t('common.add23')}</div>
-                </AddWrap>
+        {props.projectId &&
+          projectInfo?.projectPermissions?.filter(
+            (i: any) => i.name === '附件上传',
+          )?.length > 0 && (
+            <Form.Item
+              label={
+                <div style={{ fontWeight: 'bold' }}>
+                  {t('common.attachment')}
+                </div>
               }
-            />
-          </Form.Item>
-        )}
+              name="attachments"
+            >
+              <UploadAttach
+                defaultList={attachList}
+                onChangeAttachment={onChangeAttachment}
+                onBottom={onBottom}
+                addWrap={
+                  <AddWrap
+                    style={{
+                      marginBottom: '20px',
+                    }}
+                    hasColor
+                  >
+                    <IconFont type="plus" />
+                    <div>{t('common.add23')}</div>
+                  </AddWrap>
+                }
+              />
+            </Form.Item>
+          )}
       </FormWrapDemand>
     </LeftWrap>
   )

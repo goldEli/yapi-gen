@@ -270,7 +270,7 @@ function getNestedChildren(arr: any, parent?: any) {
         item.children = children
       }
       resArr.push({
-        title: item.name,
+        title: item.name ?? item.content,
         key: item.id,
         value: item.id,
         children: item.children ?? [],
@@ -278,15 +278,6 @@ function getNestedChildren(arr: any, parent?: any) {
     }
   }
   return resArr
-}
-
-// 计算小数需要的倍数
-function getDecimal(num: any) {
-  let val = '1'
-  for (let i = 0; i < num; i++) {
-    val += '0'
-  }
-  return val
 }
 
 function bytesToSize(fileByte: any) {
