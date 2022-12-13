@@ -61,18 +61,25 @@ export const StaffPersonal = (props: {
     roleId: data.user_group_id,
     userId: data.id,
   })
-
+  const [infoId, setInfoId] = useState<any>(0)
   const { getRoleList } = useModel('staff')
 
   const init = async () => {
     const res3 = await getRoleList()
 
     setRoleOptions(res3.data)
+    setInfoId(
+      res3.data.filter((item: any) => {
+        return item.id === data.user_group_id
+      }).length
+        ? data.user_group_id
+        : '',
+    )
   }
 
   useEffect(() => {
     init()
-  }, [])
+  }, [props.isVisible])
 
   const handleChange = (value: any) => {
     setInfo({ userId: data.id, roleId: value })
@@ -113,13 +120,7 @@ export const StaffPersonal = (props: {
           <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
           <RightLine>
             <Select
-              defaultValue={
-                roleOptions.some((item: any) => {
-                  return item.id !== data.user_group_id
-                })
-                  ? ''
-                  : data.user_group_id
-              }
+              value={infoId}
               style={{ width: 120 }}
               onChange={handleChange}
               getPopupContainer={node => node}

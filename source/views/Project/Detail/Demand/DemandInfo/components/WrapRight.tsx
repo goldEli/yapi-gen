@@ -923,11 +923,15 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     >
                                       {t('p2.download') as unknown as string}
                                     </BlueCss>
-                                    <RedCss
-                                      onClick={() => onTapRemove(item.id, i.id)}
-                                    >
-                                      {t('p2.delete')}
-                                    </RedCss>
+                                    {isComment ? null : (
+                                      <RedCss
+                                        onClick={() =>
+                                          onTapRemove(item.id, i.id)
+                                        }
+                                      >
+                                        {t('p2.delete')}
+                                      </RedCss>
+                                    )}
                                   </Second>
                                 </div>
                               </BigWrap>
