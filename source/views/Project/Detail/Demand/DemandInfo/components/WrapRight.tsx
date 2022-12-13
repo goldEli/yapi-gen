@@ -285,9 +285,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const isComment = !projectInfo?.projectPermissions?.filter(
-    (i: any) => i.identity === 'b/story/comment',
-  ).length
+  // 判断当前登录的人是否有编辑评论的权限
+  const isComment =
+    projectInfo?.projectPermissions?.filter(
+      (i: any) => i.identity === 'b/story/comment',
+    ).length > 0
   const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -756,11 +758,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             (dataList?.list?.length > 0 ? (
               <div>
                 {dataList?.list?.map((item: any) => (
-                  <CommentItem
-                    style={{ marginBottom: '24px' }}
-                    key={item.id}
-                    isShow={item.userId === userInfo.id}
-                  >
+                  <CommentItem style={{ marginBottom: '24px' }} key={item.id}>
                     <div>
                       {item.avatar ? (
                         <img className="ar" src={item.avatar} alt="" />
@@ -776,7 +774,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     <TextWrap>
                       <MyDiv>
                         <HovDiv>
-                          {isComment ? null : (
+                          {isComment && userInfo?.id === item.userId && (
                             <IconFont
                               type="close"
                               onClick={() => onDeleteComment(item)}
@@ -937,15 +935,16 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                     >
                                       {t('p2.download') as unknown as string}
                                     </BlueCss>
-                                    {isComment ? null : (
-                                      <RedCss
-                                        onClick={() =>
-                                          onTapRemove(item.id, i.id)
-                                        }
-                                      >
-                                        {t('p2.delete')}
-                                      </RedCss>
-                                    )}
+                                    {isComment &&
+                                      userInfo?.id === item.userId && (
+                                        <RedCss
+                                          onClick={() =>
+                                            onTapRemove(item.id, i.id)
+                                          }
+                                        >
+                                          {t('p2.delete')}
+                                        </RedCss>
+                                      )}
                                   </Second>
                                 </div>
                               </BigWrap>
