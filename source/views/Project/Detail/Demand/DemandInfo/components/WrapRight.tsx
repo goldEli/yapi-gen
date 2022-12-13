@@ -123,28 +123,32 @@ const ContentWrap = styled.div<{ notHover?: any }>(
     paddingLeft: notHover ? 8 : 0,
   }),
 )
+const HovDiv = styled.div`
+  visibility: hidden;
+  position: absolute;
+  right: 0px;
+`
+const MyDiv = styled.div`
+  position: relative;
+`
 
-const CommentItem = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    marginTop: 24,
-    marginRight: 12,
-    '.ar': {
-      width: 24,
-      height: 24,
-      borderRadius: '50%',
-      marginRight: 12,
-    },
-  },
-  ({ isShow }) => ({
-    '&: hover': {
-      '.anticon': {
-        display: isShow ? 'block!important' : 'none',
-      },
-    },
-  }),
-)
+const CommentItem = styled.div<{ isShow?: boolean }>`
+  .ar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 24;
+  margin-bottom: 24 !important;
+  margin-right: 12;
+  &:hover ${HovDiv} {
+    visibility: visible;
+  }
+`
 const Card = styled.div`
   flex: 1;
   position: relative;
@@ -715,6 +719,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              marginBottom: '20px',
             }}
           >
             <span
@@ -752,6 +757,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               <div>
                 {dataList?.list?.map((item: any) => (
                   <CommentItem
+                    style={{ marginBottom: '24px' }}
                     key={item.id}
                     isShow={item.userId === userInfo.id}
                   >
@@ -768,15 +774,23 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     </div>
 
                     <TextWrap>
-                      <div className="textTop">
-                        {isComment ? null : (
-                          <IconFont
-                            type="close"
-                            onClick={() => onDeleteComment(item)}
-                          />
-                        )}
+                      <MyDiv>
+                        <HovDiv>
+                          {isComment ? null : (
+                            <IconFont
+                              type="close"
+                              onClick={() => onDeleteComment(item)}
+                            />
+                          )}
+                        </HovDiv>
+
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <span className="name">
+                          <span
+                            style={{
+                              marginRight: '12px',
+                            }}
+                            className="name"
+                          >
                             <HiddenText>
                               <OmitText
                                 width={100}
@@ -801,7 +815,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                             </HiddenText>
                           </span>
                         </div>
-                      </div>
+                      </MyDiv>
                       <div className="common" style={{ paddingRight: 30 }}>
                         {item.createdTime}
                       </div>
