@@ -27,6 +27,7 @@ interface Props {
   subText?: any
   // 有操作的
   children?: any
+  haveFilter?: any
 }
 
 const NoData = (props: Props) => {
@@ -34,12 +35,19 @@ const NoData = (props: Props) => {
   return (
     <Wrap>
       <img src={noData} style={{ width: 240 }} alt="" />
-      {!props?.subText && !props?.children && (
+      {!props?.subText && !props?.children && !props?.haveFilter && (
         <div>{t('components.noData')}</div>
       )}
-      {props?.subText && (
-        <span style={{ color: '#969799', fontSize: 14, marginTop: 24 }}>
-          {props?.subText}
+      {(props?.subText || props.haveFilter) && (
+        <span
+          style={{
+            color: '#969799',
+            fontSize: 14,
+            marginTop: 24,
+            textAlign: 'center',
+          }}
+        >
+          {props.haveFilter ? t('version2.noDataFilter') : props?.subText}
         </span>
       )}
       {props?.children}

@@ -207,6 +207,9 @@ const BatchModal = (props: Props) => {
         status: '',
       })
     }
+    form.setFieldsValue({
+      target: value,
+    })
     setCategoryStatusList(
       value
         ? chooseAfter.selectList?.filter((i: any) => i.value === value)[0]?.list
@@ -274,7 +277,20 @@ const BatchModal = (props: Props) => {
                 <DatePicker allowClear style={{ width: '100%' }} />
               </Form.Item>
             )}
+            {chooseType === 'class_id' &&
+              !String(chooseType).includes('custom_') && (
+                <Form.Item label={t('version2.updateAfter')} name="target">
+                  <TreeSelect
+                    showArrow
+                    showSearch
+                    getPopupContainer={node => node}
+                    allowClear
+                    treeData={chooseAfter.selectList}
+                  />
+                </Form.Item>
+              )}
             {!String(chooseType).includes('expected_') &&
+              chooseType !== 'class_id' &&
               !String(chooseType).includes('custom_') && (
                 <Form.Item
                   label={t('version2.updateAfter')}
@@ -283,7 +299,7 @@ const BatchModal = (props: Props) => {
                     { required: chooseType === 'category_id', message: '' },
                   ]}
                 >
-                  {chooseType === 'class_id' && (
+                  {/* {chooseType === 'class_id' && (
                     <TreeSelect
                       showArrow
                       showSearch
@@ -292,30 +308,30 @@ const BatchModal = (props: Props) => {
                       treeData={chooseAfter.selectList}
                     />
                   )}
-                  {chooseType !== 'class_id' && (
-                    <Select
-                      showSearch
-                      showArrow
-                      optionFilterProp="label"
-                      getPopupContainer={node => node}
-                      allowClear
-                      options={chooseAfter.selectList}
-                      onChange={
-                        chooseType === 'category_id' ? onChangeCategory : void 0
-                      }
-                      mode={
-                        [
-                          'priority',
-                          'iterate_id',
-                          'parent_id',
-                          'class_id',
-                          'category_id',
-                        ].includes(chooseType)
-                          ? ('' as any)
-                          : 'multiple'
-                      }
-                    />
-                  )}
+                  {chooseType !== 'class_id' && ( */}
+                  <Select
+                    showSearch
+                    showArrow
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    allowClear
+                    options={chooseAfter.selectList}
+                    onChange={
+                      chooseType === 'category_id' ? onChangeCategory : void 0
+                    }
+                    mode={
+                      [
+                        'priority',
+                        'iterate_id',
+                        'parent_id',
+                        'class_id',
+                        'category_id',
+                      ].includes(chooseType)
+                        ? ('' as any)
+                        : 'multiple'
+                    }
+                  />
+                  {/* )} */}
                 </Form.Item>
               )}
             {chooseType && String(chooseType).includes('custom_') && (
@@ -326,6 +342,7 @@ const BatchModal = (props: Props) => {
                     remarks: '',
                     value: chooseAfter.selectList,
                   },
+                  void 0,
                   false,
                 )}
               </Form.Item>

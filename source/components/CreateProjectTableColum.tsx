@@ -536,15 +536,24 @@ export const useDynamicColumns = (state: any) => {
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {
+      const currentFields = fieldList?.list?.filter(
+        (i: any) => i.content === element.value,
+      )[0]
       result.push({
         width: 200,
-        title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
+        title: (
+          <div>
+            {!['user_select_checkbox', 'user_select'].includes(
+              currentFields?.type.attr,
+            ) && <NewSort fixedKey={element.value}>{element.label}</NewSort>}
+            {['user_select_checkbox', 'user_select'].includes(
+              currentFields?.type.attr,
+            ) && element.label}
+          </div>
+        ),
         dataIndex: element.value,
         key: element.value,
         render: (text: any, record: any) => {
-          const currentFields = fieldList?.list?.filter(
-            (i: any) => i.content === element.value,
-          )[0]
           return (
             <TableQuickEdit
               type={currentFields?.type.attr}

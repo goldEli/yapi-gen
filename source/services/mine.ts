@@ -337,21 +337,15 @@ export const getField: any = async (params: any) => {
 
   const plainOptions3 = display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '自定义字段')
-    .map(
-      (item: {
-        title: any
-        content: any
-        is_default_display: any
-        content_txt: any
-      }) => {
-        return {
-          label: item.title,
-          value: item.content,
-          is_default_display: item.is_default_display,
-          labelTxt: item.content_txt,
-        }
-      },
-    )
+    .map((item: any) => {
+      return {
+        label: item.title,
+        value: item.content,
+        is_default_display: item.is_default_display,
+        labelTxt: item.content_txt,
+        attr: item.attr,
+      }
+    })
 
   const titleList: any[] = []
   plainOptions

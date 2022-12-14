@@ -57,7 +57,7 @@ const DemandMain = (props: Props) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { getCategoryList } = useModel('project')
+  const { getCategoryList, setFilterKeys } = useModel('project')
 
   const getList = async (
     state: any,
@@ -138,6 +138,8 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getCategoryList({ projectId, isSelect: true })
+    // 进入需求主页清除已存储的筛选计数
+    setFilterKeys([])
   }, [])
 
   useEffect(() => {

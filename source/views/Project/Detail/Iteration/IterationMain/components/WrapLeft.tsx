@@ -455,6 +455,10 @@ const WrapLeft = (props: Props) => {
             ) : (
               <NoData
                 subText={hasAdd ? '' : t('version2.noDataCreateIteration')}
+                haveFilter={
+                  Object.values(form.getFieldsValue())?.filter((i: any) => i)
+                    ?.length > 0
+                }
               >
                 {!hasAdd && (
                   <SecondButton

@@ -54,7 +54,7 @@ const Project = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
-  const [groupId, setGroupId] = useState<any>()
+  const [groupId, setGroupId] = useState<any>(null)
   const {
     getProjectList,
     projectList,
@@ -106,14 +106,24 @@ const Project = () => {
     await getProjectCoverList()
     setLoadingState(true)
   }
+
   useEffect(() => {
     init()
   }, [])
 
+  useEffect(() => {
+    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId])
+
+  // 更新列表
+  const onUpdate = () => {
+    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+  }
+
   const onChangeType = (type: number) => {
     setActiveType(type)
     setGroupId(null)
-    getList(type, isGrid, isHidden, searchVal, order, {
+    setPageObj({
       page: 1,
       size: pageObj.size,
     })
@@ -121,47 +131,26 @@ const Project = () => {
 
   const onChangeHidden = (hidden: boolean) => {
     setIsHidden(hidden)
-    getList(
-      activeType,
-      isGrid,
-      hidden,
-      searchVal,
-      order,
-      {
-        page: 1,
-        size: pageObj.size,
-      },
-      groupId,
-    )
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onChangeSort = (str: string) => {
     setOrder({ value: 'asc', key: str })
-    getList(
-      activeType,
-      isGrid,
-      isHidden,
-      searchVal,
-      { value: 'asc', key: str },
-      { page: 1, size: pageObj.size },
-      groupId,
-    )
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onChangeSearch = (value: string) => {
     setSearchVal(value)
-    getList(
-      activeType,
-      isGrid,
-      isHidden,
-      value,
-      order,
-      {
-        page: 1,
-        size: pageObj.size,
-      },
-      groupId,
-    )
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onDeleteConfirm = async () => {
@@ -170,7 +159,7 @@ const Project = () => {
       message.success(t('common.deleteSuccess'))
       setIsDelete(false)
       setOperationDetail({})
-      getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+      onUpdate()
       setIsRefreshGroup(true)
     } catch (error) {
       //
@@ -189,7 +178,7 @@ const Project = () => {
       )
       setOperationDetail({})
       setIsStop(false)
-      getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+      onUpdate()
     } catch (error) {
       //
     }
@@ -217,18 +206,10 @@ const Project = () => {
 
   const onChangeGrid = (val: boolean) => {
     setIsGrid(val)
-    getList(
-      activeType,
-      val,
-      isHidden,
-      searchVal,
-      order,
-      {
-        page: 1,
-        size: pageObj.size,
-      },
-      groupId,
-    )
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onAddClick = () => {
@@ -241,41 +222,20 @@ const Project = () => {
       page: item.page,
       size: item.size,
     })
-    getList(
-      activeType,
-      isGrid,
-      isHidden,
-      searchVal,
-      order,
-      {
-        page: item.page,
-        size: item.size,
-      },
-      groupId,
-    )
   }
 
   const onUpdateOrderKey = (item: any) => {
     setOrder(item)
-    getList(
-      activeType,
-      isGrid,
-      isHidden,
-      searchVal,
-      item,
-      {
-        page: 1,
-        size: pageObj.size,
-      },
-      groupId,
-    )
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   // 切换分组查询列表
   const onChangeGroup = (id: number) => {
     setGroupId(id)
     setActiveType(-1)
-    getList(-1, isGrid, isHidden, searchVal, order, pageObj, id)
   }
 
   if (!loadingState) {
@@ -308,17 +268,7 @@ const Project = () => {
           visible={isVisible}
           onChangeVisible={() => setIsVisible(!isVisible)}
           details={operationDetail}
-          onUpdate={() =>
-            getList(
-              activeType,
-              isGrid,
-              isHidden,
-              searchVal,
-              order,
-              pageObj,
-              groupId,
-            )
-          }
+          onUpdate={onUpdate}
         />
 
         <Wrap>
@@ -361,6 +311,7 @@ const Project = () => {
                     onUpdateOrderKey={onUpdateOrderKey}
                     order={order}
                     onAddClick={onAddClick}
+                    hasFilter={searchVal.length > 0 || isHidden}
                   />
                 )}
               </Spin>

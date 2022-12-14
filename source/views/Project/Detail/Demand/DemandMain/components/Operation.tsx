@@ -139,6 +139,8 @@ const Operation = (props: Props) => {
     categoryList,
     colorList,
     setFilterParamsModal,
+    setFilterKeys,
+    filterKeys,
   } = useModel('project')
   const { setFilterHeight, setCreateCategory, filterParams } =
     useModel('demand')
@@ -179,6 +181,11 @@ const Operation = (props: Props) => {
     params.searchValue = val
     setSearchGroups(params)
     props.onSearch(params)
+    // 添加搜索项 计数
+    const keys = val
+      ? [...filterKeys, ...['searchVal']]
+      : filterKeys?.filter((i: any) => i !== 'searchVal')
+    setFilterKeys([...new Set(keys)])
   }
 
   const onFilterSearch = (e: any, customField: any) => {

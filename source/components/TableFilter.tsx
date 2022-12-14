@@ -18,10 +18,11 @@ import {
 } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
+import { useModel } from '@/models'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -229,6 +230,7 @@ const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
+  const { filterKeys, setFilterKeys } = useModel('project')
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
@@ -259,7 +261,16 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, customList])
 
-  const confirm = async (val?: any, delKey?: any) => {
+  // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
+  const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
+    //当前查询的存入计数
+    if (operationKey) {
+      const keys = [...filterKeys, ...[operationKey]]
+      setFilterKeys([...new Set(keys)])
+    } else {
+      setFilterKeys([])
+    }
+
     const value = await form.getFieldsValue()
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))
@@ -278,15 +289,26 @@ const TableFilter = (props: any) => {
         delete res[delKey]
       }
       form.setFieldsValue({
-        [delKey]: [],
+        [delKey]: type === 1 ? '' : type === 2 ? null : [],
       })
+    }
+
+    // 当前被删除的和值全部清空的删除计数
+    if (
+      delKey ||
+      form.getFieldValue(operationKey)?.length <= 0 ||
+      !form.getFieldValue(operationKey)
+    ) {
+      const keys = filterKeys?.filter((i: any) => i !== operationKey)
+      setFilterKeys([...new Set(keys)])
     }
     props.onSearch(res, customField)
   }
 
-  const delList = (key: string) => {
+  // 点击删除按钮
+  const delList = (key: string, type?: any) => {
     props.onFilter(key, 0)
-    confirm('', key)
+    confirm(key, key, type)
   }
 
   const addList = (key: string) => {
@@ -350,7 +372,7 @@ const TableFilter = (props: any) => {
         [key]: null,
       })
     }
-    confirm()
+    confirm(key, '', 2)
   }
 
   function deWeight(arr: any) {
@@ -363,6 +385,7 @@ const TableFilter = (props: any) => {
     arr = [...map.values()]
     return arr
   }
+
   return (
     <SearchLine>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
@@ -391,7 +414,7 @@ const TableFilter = (props: any) => {
                         style={{ width: '100%' }}
                         placeholder={t('common.pleaseSelect')}
                         showSearch
-                        onChange={confirm}
+                        onChange={() => confirm(i.key)}
                         allowClear
                         optionFilterProp="label"
                         options={deWeight(
@@ -428,7 +451,7 @@ const TableFilter = (props: any) => {
                         onChange={dates => onChangeTime(i.key, dates)}
                       />
                     </Form.Item>
-                    <DelButton onClick={() => delList(i.key)}>
+                    <DelButton onClick={() => delList(i.key, 2)}>
                       <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
@@ -439,9 +462,9 @@ const TableFilter = (props: any) => {
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
-                      <NumericInput onPress={confirm} />
+                      <NumericInput onPress={() => confirm(i.key, '', 1)} />
                     </Form.Item>
-                    <DelButton onClick={() => delList(i.content)}>
+                    <DelButton onClick={() => delList(i.content, 1)}>
                       <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
@@ -455,13 +478,13 @@ const TableFilter = (props: any) => {
                       <Input
                         allowClear
                         autoComplete="off"
-                        onBlur={confirm}
-                        onPressEnter={confirm}
+                        onBlur={() => confirm(i.key, '', 1)}
+                        onPressEnter={() => confirm(i.key, '', 1)}
                         style={{ border: 'none' }}
                         placeholder={t('newlyAdd.pleaseKeyword')}
                       />
                     </Form.Item>
-                    <DelButton onClick={() => delList(i.content)}>
+                    <DelButton onClick={() => delList(i.content, 1)}>
                       <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
@@ -478,9 +501,9 @@ const TableFilter = (props: any) => {
                         treeData={i.children}
                         placeholder={t('common.pleaseSelect')}
                         treeDefaultExpandAll
-                        onSelect={confirm}
+                        onSelect={() => confirm(i.key)}
                         multiple
-                        onChange={confirm}
+                        onChange={() => confirm(i.key)}
                         allowClear
                       />
                     </Form.Item>
