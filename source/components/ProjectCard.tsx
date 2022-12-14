@@ -34,7 +34,7 @@ const ImgWrap = styled.div({
 })
 
 const Warp = styled.div({
-  marginLeft: '3px',
+  marginLeft: '7px',
   display: 'flex',
   flexDirection: 'column',
   borderRadius: 4,
