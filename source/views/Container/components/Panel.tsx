@@ -62,30 +62,35 @@ const SetHead = styled.div`
   line-height: 32px;
   text-align: center;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
   border: 1px solid #f0f2fd;
   color: white;
 `
 const PanelHeader = styled.div`
-  padding: 16px 16px 14px 16px;
+  padding: 16px 16px 10px 16px;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(235, 237, 240, 1);
-  margin-bottom: 8px;
+
+  /* margin-bottom: 8px; */
 `
 const PanelHeaderFirst = styled.div`
   display: flex;
   align-items: center;
 `
 const PanelHeaderSecond = styled.div`
-  margin-top: 8px;
+  height: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
   display: flex;
+  padding: 0px 16px 0px 16px;
+  border-bottom: 1px solid rgba(235, 237, 240, 1);
   cursor: pointer;
+  &:hover {
+    background-color: #f4f5f5;
+  }
 `
 const NameAndPhone = styled.div`
   font-size: 12px;
@@ -267,23 +272,23 @@ export const Panel = (props: Props) => {
             </span>
           </NameAndPhone>
         </PanelHeaderFirst>
-        <PanelHeaderSecond onClick={() => onSetVisible(3)}>
-          <div
-            style={{
-              fontSize: '14px',
-              fontWeight: 'bold',
-              color: '#323233',
-            }}
-          >
-            {userInfo?.company_name}
-          </div>
-          <Tooltip placement="top" title={t('container.changeCompany')}>
-            <div className={buttonCss}>
-              <IconFont type="swap" style={{ fontSize: 20 }} />
-            </div>
-          </Tooltip>
-        </PanelHeaderSecond>
       </PanelHeader>
+      <PanelHeaderSecond onClick={() => onSetVisible(3)}>
+        <div
+          style={{
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#323233',
+          }}
+        >
+          {userInfo?.company_name}
+        </div>
+        <Tooltip placement="top" title={t('container.changeCompany')}>
+          <div className={buttonCss}>
+            <IconFont type="swap" style={{ fontSize: 20 }} />
+          </div>
+        </Tooltip>
+      </PanelHeaderSecond>
       <PanelFooter>
         <Popover
           visible={languageModeVisible}
