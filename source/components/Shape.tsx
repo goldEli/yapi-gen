@@ -156,7 +156,7 @@ const arrorText = css`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: #646566;
   line-height: 20px;
   margin-left: 10px;
 `

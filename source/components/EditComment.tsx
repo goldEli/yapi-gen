@@ -50,9 +50,9 @@ const Hov = styled(IconFont)`
 const GrepDiv = styled.div`
   width: 24px;
   height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  line-height: 24px;
+  display: inline-block;
   border-radius: 6px 6px 6px 6px;
   &:hover {
     background: #f4f5f5;
@@ -264,10 +264,13 @@ const EditComment = (props: any) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '14px',
+                gap: '4px',
               }}
             >
               <Upload
+                style={{
+                  display: 'inline-block',
+                }}
                 beforeUpload={onBeforeUpload}
                 fileList={[]}
                 customRequest={onUpload}
@@ -285,6 +288,9 @@ const EditComment = (props: any) => {
               </Upload>
 
               <Popover
+                style={{
+                  display: 'inline',
+                }}
                 key={isOpen.toString()}
                 visible={isOpen}
                 placement="bottomLeft"

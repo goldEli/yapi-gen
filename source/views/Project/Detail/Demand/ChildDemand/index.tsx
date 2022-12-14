@@ -34,7 +34,7 @@ const Operation = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 24px',
+  padding: '0 24px 0px 12px ',
   height: 52,
   background: 'white',
   borderRadius: '6px 6px 0 0',

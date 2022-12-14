@@ -462,7 +462,17 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       {activeTabs === 1 && (
         <div style={{ maxHeight: 'calc(100% - 100px)' }}>
           <InfoItem>
-            <Label>{t('newlyAdd.demandProgress')}</Label>
+            <Label>
+              <OmitText
+                width={100}
+                tipProps={{
+                  placement: 'topLeft',
+                  getPopupContainer: node => node,
+                }}
+              >
+                {t('newlyAdd.demandProgress')}
+              </OmitText>
+            </Label>
             <div
               style={{ display: 'flex', alignItems: 'center' }}
               onMouseUp={onChangeSchedule}
