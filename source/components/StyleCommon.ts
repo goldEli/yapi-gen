@@ -198,7 +198,7 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
     justifyContent: isTable ? 'flex-start' : 'space-between',
     minWidth: isTable ? 0 : 60,
     '&: hover': {
-      background: isTable ? '' : isCanEdit ? '#F0F4FA' : '',
+      background: isTable ? '' : isCanEdit ? '#f4f5f5' : '',
       [IconFontWrapEdit.toString()]: {
         visibility: 'visible',
       },

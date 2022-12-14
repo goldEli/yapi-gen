@@ -722,6 +722,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
           ))}
+          <div
+            style={{
+              height: '10px',
+            }}
+          />
         </div>
       )}
       {activeTabs !== 1 && (
