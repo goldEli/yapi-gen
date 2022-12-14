@@ -27,6 +27,7 @@ const Warp = styled.div({
 
 const SetMain = styled.div({
   padding: '24px 0',
+  paddingBottom: '0px',
   background: 'white',
   borderRadius: 6,
   minHeight: '100%',
@@ -37,7 +38,7 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
+
   borderRight: '1px solid #EBEDF0',
   width: 160,
 })
@@ -466,7 +467,12 @@ const ProjectSet = () => {
                     height: 58,
                     lineHeight: '58px',
                   }}
-                  onClick={() => setIsVisible(true)}
+                  onClick={() => {
+                    setIsVisible(true)
+                    setTimeout(() => {
+                      inputRefDom.current?.focus()
+                    }, 100)
+                  }}
                 >
                   <IconFont type="plus" />
                   <span>{t('setting.addUserGroup')}</span>

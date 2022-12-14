@@ -92,6 +92,7 @@ const Center = styled.div`
 const CenterRight = styled.div`
   box-sizing: border-box;
   padding: 24px;
+  padding-right: 4px;
   flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;

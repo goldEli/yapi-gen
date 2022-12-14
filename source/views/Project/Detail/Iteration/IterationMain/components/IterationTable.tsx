@@ -288,7 +288,7 @@ const IterationTable = (props: Props) => {
       />
 
       {!hasCreate && props.hasId && props.hasId?.status === 1 && (
-        <div style={{ padding: '10px 0 10px 16px', background: 'white' }}>
+        <div style={{ padding: '16px 0 10px 16px', background: 'white' }}>
           <SecondButton onClick={onCreateDemand}>
             <IconFont type="plus" />
             <div>{t('common.createDemand')}</div>

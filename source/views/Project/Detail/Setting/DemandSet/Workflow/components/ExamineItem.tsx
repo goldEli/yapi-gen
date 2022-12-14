@@ -11,11 +11,12 @@ import { useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const AddWrap = styled.div({
+  marginTop: '6px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: 32,
-  width: 32,
+  height: 24,
+  width: 24,
   boxSizing: 'border-box',
   cursor: 'pointer',
   borderRadius: 16,

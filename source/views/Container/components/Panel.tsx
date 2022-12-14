@@ -85,6 +85,7 @@ const PanelHeaderSecond = styled.div`
   align-items: center;
   font-size: 12px;
   display: flex;
+  cursor: pointer;
 `
 const NameAndPhone = styled.div`
   font-size: 12px;
@@ -107,7 +108,7 @@ const Line = styled.div`
   padding: 0 16px;
   cursor: pointer;
   &:hover {
-    background-color: #f0f4fa;
+    background-color: #f4f5f5;
   }
 `
 const LanguageLine = styled.div`
@@ -266,7 +267,7 @@ export const Panel = (props: Props) => {
             </span>
           </NameAndPhone>
         </PanelHeaderFirst>
-        <PanelHeaderSecond>
+        <PanelHeaderSecond onClick={() => onSetVisible(3)}>
           <div
             style={{
               fontSize: '14px',
@@ -277,7 +278,7 @@ export const Panel = (props: Props) => {
             {userInfo?.company_name}
           </div>
           <Tooltip placement="top" title={t('container.changeCompany')}>
-            <div onClick={() => onSetVisible(3)} className={buttonCss}>
+            <div className={buttonCss}>
               <IconFont type="swap" style={{ fontSize: 20 }} />
             </div>
           </Tooltip>

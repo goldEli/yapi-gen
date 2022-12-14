@@ -136,7 +136,7 @@ const arron = css`
   height: 24px;
   background: #a4acf5;
   border-radius: 16px 16px 16px 16px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -287,7 +287,7 @@ const NumericInput = (props: any) => {
   }
   if (type === 'integer') {
     return (
-      <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+      <div style={{ border: '1px solid #ebedf0', borderRadius: '6px' }}>
         <Input
           type="number"
           placeholder={t('newlyAdd.pleaseValue')}

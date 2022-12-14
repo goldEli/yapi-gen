@@ -230,7 +230,7 @@ const Send = () => {
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
-          <div style={{ textAlign: 'right', width: '72px' }}>
+          <div style={{ textAlign: 'right', width: '82px' }}>
             {record.read_user.length > 0 ? null : (
               <span
                 onClick={() => {

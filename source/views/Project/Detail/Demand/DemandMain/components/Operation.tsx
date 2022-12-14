@@ -104,8 +104,8 @@ const MoreItem = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    color: '#2877ff',
-    background: '#F0F4FA',
+    color: '#323233',
+    background: '#f4f5f5',
   },
 })
 
