@@ -343,7 +343,7 @@ const DemandWrap = (props: Props) => {
       {!hasCreate && iterateInfo?.status === 1 && (
         <div
           style={{
-            padding: '10px 0 10px 16px',
+            padding: '16px 0 4px 16px',
             background: 'white',
             borderRadius: '6px 6px 0 0',
           }}

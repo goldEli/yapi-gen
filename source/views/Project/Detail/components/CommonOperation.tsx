@@ -48,41 +48,27 @@ const Tabs = styled(Space)({
   alignItems: 'center',
 })
 
-const TopRightItem = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    color: 'black',
-    cursor: 'pointer',
-    height: '32px',
-    padding: '0 8px',
-    borderRadius: 6,
-    '.anticon': {
-      fontSize: 20,
-    },
-    div: {
-      fontSize: 14,
-      fontWeight: 400,
-      marginLeft: 8,
-    },
-    '&: hover': {
-      color: '#2877ff!important',
-      background: '#F4F5F5',
-    },
-    '&: active': {
-      color: '#2877ff!important',
-      background: '#ECEDEF',
-    },
+const TopRightItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  color: 'black',
+  cursor: 'pointer',
+  height: '32px',
+  padding: '0 8px',
+  borderRadius: 6,
+  '.anticon': {
+    fontSize: 20,
   },
-  ({ isShow }) => ({
-    '.anticon': {
-      color: isShow ? '#2877ff' : '',
-    },
-    div: {
-      color: isShow ? '#2877ff' : '',
-    },
-  }),
-)
+  div: {
+    fontSize: 14,
+    fontWeight: 400,
+    marginLeft: 8,
+  },
+  '&: hover': {
+    color: '#323233!important',
+    background: '#F4F5F5',
+  },
+})
 
 const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
   {
@@ -396,7 +382,7 @@ const CommonOperation = (props: Props) => {
             placement="bottomRight"
             onVisibleChange={state => onClickMenu(state)}
           >
-            <TopRightItem onClick={() => onClickMenu(true)} isShow={isColor}>
+            <TopRightItem onClick={() => onClickMenu(true)}>
               <IconFont type="menu" />
               <div>{t('project.menu')}</div>
             </TopRightItem>

@@ -39,7 +39,7 @@ const InfoLeft = styled.div({
 })
 
 const SubText = styled.div({
-  marginTop: 8,
+  marginTop: 4,
   color: '#646566',
   fontSize: 14,
   lineHeight: '30px',
@@ -88,7 +88,7 @@ const CardItem = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
-  background: 'rgba(235, 237, 240, 0.6)',
+  background: '#F9FAFA',
   div: {
     fontSize: 28,
     color: '#323233',

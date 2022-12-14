@@ -258,6 +258,16 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     props.checkList3,
   ])
 
+  // 折叠图标
+  const expandIcon = (e: any) => {
+    return (
+      <IconFont
+        type={e.isActive ? 'down' : 'right'}
+        style={{ fontSize: 14, marginRight: 8 }}
+      />
+    )
+  }
+
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -268,7 +278,11 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     >
       <Wrap>
         <Left>
-          <Collapse defaultActiveKey={['1', '2', '3']} ghost>
+          <Collapse
+            defaultActiveKey={['1', '2', '3']}
+            ghost
+            expandIcon={e => expandIcon(e)}
+          >
             <Collapse.Panel
               header={<div className={text}>{t('components.basicFiled')}</div>}
               key="1"

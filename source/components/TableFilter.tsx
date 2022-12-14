@@ -319,13 +319,28 @@ const TableFilter = (props: any) => {
     form.resetFields()
     confirm()
   }
+
+  // 折叠图标
+  const expandIcon = (e: any) => {
+    return (
+      <IconFont
+        type={e.isActive ? 'down' : 'right'}
+        style={{ fontSize: 14, marginRight: 0 }}
+      />
+    )
+  }
+
   const content = (
     <div
       style={{
         padding: '5px 0',
       }}
     >
-      <CollapseWrap defaultActiveKey={['1']} accordion>
+      <CollapseWrap
+        defaultActiveKey={['1']}
+        accordion
+        expandIcon={e => expandIcon(e)}
+      >
         <Collapse.Panel header={t('components.basicFiled')} key="1">
           {filterBasicsList
             ?.filter((k: any) =>

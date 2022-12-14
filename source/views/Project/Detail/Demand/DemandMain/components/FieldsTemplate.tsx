@@ -324,6 +324,16 @@ const FieldsTemplate = (props: Props) => {
     setCheckAll(checked)
   }
 
+  // 折叠图标
+  const expandIcon = (e: any) => {
+    return (
+      <IconFont
+        type={e.isActive ? 'down' : 'right'}
+        style={{ fontSize: 14, marginRight: 8 }}
+      />
+    )
+  }
+
   return (
     <CommonModal
       title={props?.title}
@@ -355,7 +365,11 @@ const FieldsTemplate = (props: Props) => {
             </Checkbox>
           </div>
 
-          <Collapse defaultActiveKey={['1']} ghost>
+          <Collapse
+            defaultActiveKey={['1']}
+            ghost
+            expandIcon={e => expandIcon(e)}
+          >
             <Collapse.Panel
               header={<div className={text}>{t('components.basicFiled')}</div>}
               key="1"
