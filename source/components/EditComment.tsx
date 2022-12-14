@@ -157,7 +157,7 @@ const EditComment = (props: any) => {
   const confirm = async () => {
     const inner = document.getElementById('inner')
     if (!String(inner?.innerHTML).trim()) {
-      message.warning('请输入评论')
+      message.warning(t('new_p1.a9') as unknown as string)
       return
     }
 

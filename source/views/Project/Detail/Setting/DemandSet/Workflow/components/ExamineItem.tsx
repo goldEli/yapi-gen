@@ -43,7 +43,7 @@ const PersonItemWrap = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#F0F4FA',
+    background: '#f4f5f5',
   },
 })
 
@@ -149,8 +149,8 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
                 {i.avatar ? (
                   <img
                     style={{
-                      width: 32,
-                      height: 32,
+                      width: 24,
+                      height: 24,
                       borderRadius: 16,
                       marginRight: 8,
                     }}
