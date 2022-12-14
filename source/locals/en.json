@@ -585,7 +585,7 @@
     "permissionNull": "Permission cannot be null!",
     "editMember": "Edit project member",
     "addMember": "Add Project Member",
-    "joinPermission": "Join permission group",
+    "joinPermission": "permission  ",
     "pleasePermission": "Please select a permission group",
     "joinMember": "Import Member",
     "editProject": "Edit Project",
