@@ -268,13 +268,19 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
     >
       <Wrap>
         <Left>
-          <Collapse defaultActiveKey={['1']} ghost>
+          <Collapse defaultActiveKey={['1', '2', '3']} ghost>
             <Collapse.Panel
               header={<div className={text}>{t('components.basicFiled')}</div>}
               key="1"
             >
               <ItemWrap>
-                <CheckboxGroup value={checkList} onChange={onChange}>
+                <CheckboxGroup
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList}
+                  onChange={onChange}
+                >
                   <Row gutter={[0, 10]}>
                     {plainOptions.map(item => (
                       <Col key={item.labelTxt} span={6}>
@@ -297,7 +303,13 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               key="2"
             >
               <ItemWrap>
-                <CheckboxGroup value={checkList2} onChange={onChange2}>
+                <CheckboxGroup
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList2}
+                  onChange={onChange2}
+                >
                   <Row gutter={[0, 10]}>
                     {plainOptions2.map(item => (
                       <Col key={item.labelTxt} span={6}>
@@ -314,21 +326,25 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
               header={<div className={text}>{t('newlyAdd.customFields')}</div>}
               key="3"
             >
-              {plainOptions3?.length > 0 && (
-                <ItemWrap>
-                  <CheckboxGroup value={checkList3} onChange={onChange3}>
-                    <Row gutter={[0, 10]}>
-                      {plainOptions3?.map(item => (
-                        <Col key={item.label} span={6}>
-                          <Checkbox value={item.value}>
-                            <ShowText names={item.label} />
-                          </Checkbox>
-                        </Col>
-                      ))}
-                    </Row>
-                  </CheckboxGroup>
-                </ItemWrap>
-              )}
+              <ItemWrap>
+                <CheckboxGroup
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList3}
+                  onChange={onChange3}
+                >
+                  <Row gutter={[0, 11]}>
+                    {plainOptions3?.map(item => (
+                      <Col key={item.value} span={6}>
+                        <Checkbox value={item.value}>
+                          <ShowText names={item.labelTxt} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </CheckboxGroup>
+              </ItemWrap>
             </Collapse.Panel>
           </Collapse>
         </Left>
