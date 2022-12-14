@@ -57,12 +57,12 @@ const Box = styled.div`
   border-radius: 6px;
 `
 const SetHead = styled.div`
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
   text-align: center;
   border-radius: 50%;
-  font-size: 14px;
+  font-size: 12px;
   background: #a4acf5;
   background-blend-mode: normal;
   border: 1px solid #f0f2fd;

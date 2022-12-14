@@ -474,7 +474,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </OmitText>
             </Label>
             <div
-              style={{ display: 'flex', alignItems: 'center' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginLeft: '15px',
+              }}
               onMouseUp={onChangeSchedule}
             >
               <SliderWrap

@@ -109,7 +109,7 @@ export const ItemWrap = styled.div({
   alignItems: 'center',
   '.changeSize': {
     fontSize: 12,
-
+    color: '#646566',
     marginLeft: 10,
   },
   '&: hover': {
@@ -375,6 +375,9 @@ const ExamineItem = (props: Props) => {
                 }}
               >
                 <IconFont
+                  style={{
+                    fontSize: '12px',
+                  }}
                   className="icon"
                   type="plus"
                   onClick={() => setIsOpen(true)}
