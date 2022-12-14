@@ -251,8 +251,10 @@ const EditDemand = (props: Props) => {
         // 判断父需求类别是否被关闭，是则取列表第一条
         const isExistence = resultCategoryList?.filter(
           (i: any) => i.id === props?.categoryId,
-        )?.length
-        setCategoryObj(isExistence ? isExistence[0] : resultCategoryList[0])
+        )
+        setCategoryObj(
+          isExistence?.length ? isExistence[0] : resultCategoryList[0],
+        )
       }
       // 如果是快速创建并且有缓存数据
       if (props?.isQuickCreate && categoryId) {
@@ -558,34 +560,6 @@ const EditDemand = (props: Props) => {
               onChange={onChangeSelect}
               options={categoryEditList?.list
                 ?.filter((i: any) => i.isCheck === 1)
-                ?.filter((i: any) => i.id !== categoryObj?.id)
-                ?.map((k: any) => ({
-                  label: k.name,
-                  value: k.id,
-                }))}
-            />
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterStatus')}
-            name="statusId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <span className="title">{categoryObj?.name}</span>
-          </Form.Item>
-          <Form.Item
-            label={t('newlyAdd.afterCategory')}
-            name="categoryId"
-            rules={[{ required: true, message: '' }]}
-          >
-            <Select
-              placeholder={t('common.pleaseSelect')}
-              showArrow
-              showSearch
-              getPopupContainer={node => node}
-              allowClear
-              optionFilterProp="label"
-              onChange={onChangeSelect}
-              options={categoryEditList?.list
                 ?.filter((i: any) => i.id !== categoryObj?.id)
                 ?.map((k: any) => ({
                   label: k.name,

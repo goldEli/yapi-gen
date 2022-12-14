@@ -15,6 +15,7 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { HoverWrap } from '@/components/StyleCommon'
 
 const OperationTop = styled.div({
   height: 64,
@@ -374,10 +375,10 @@ const CommonOperation = (props: Props) => {
           ))}
         </Tabs>
         <TopRight size={20}>
-          <TopRightItem onClick={() => setMemberVisible(true)}>
-            <IconFont type="team" />
-            <div>{t('project.member')}</div>
-          </TopRightItem>
+          <HoverWrap onClick={() => setMemberVisible(true)}>
+            <IconFont className="iconMain" type="team" />
+            <span className="label">{t('project.member')}</span>
+          </HoverWrap>
           <Dropdown
             key={isShowMenu.toString()}
             visible={isShowMenu}
@@ -386,10 +387,10 @@ const CommonOperation = (props: Props) => {
             placement="bottomRight"
             onVisibleChange={state => onClickMenu(state)}
           >
-            <TopRightItem onClick={() => onClickMenu(true)} isShow={isColor}>
-              <IconFont type="menu" />
-              <div>{t('project.menu')}</div>
-            </TopRightItem>
+            <HoverWrap onClick={() => onClickMenu(true)} isActive={isColor}>
+              <IconFont className="iconMain" type="menu" />
+              <span className="label">{t('project.menu')}</span>
+            </HoverWrap>
           </Dropdown>
         </TopRight>
       </OperationTop>

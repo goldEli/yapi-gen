@@ -7,7 +7,7 @@ import { Space } from 'antd'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import BatchModal from './BatchModal'
-import { useState } from 'react'
+import { useImperativeHandle, useState } from 'react'
 import { copyLink, getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSearchParams } from 'react-router-dom'
@@ -57,11 +57,11 @@ interface Props {
   onClose(): void
   selectRows?: any
   onUpdate(): void
+  onRef: any
 }
 
 const FloatBatch = (props: Props) => {
   const [t] = useTranslation()
-  // 底部悬浮显示
   const [isVisible, setIsVisible] = useState(false)
   const [currentType, setCurrentType] = useState('')
   const [searchParams] = useSearchParams()
@@ -99,6 +99,13 @@ const FloatBatch = (props: Props) => {
     })
     copyLink(text, t('version2.copyLinkSuccess'), t('version2.copyLinkError'))
   }
+
+  useImperativeHandle(props.onRef, () => {
+    return {
+      clickMenu: onClickItem,
+      copy: onCopy,
+    }
+  })
 
   return (
     <>

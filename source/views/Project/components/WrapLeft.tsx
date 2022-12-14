@@ -132,6 +132,8 @@ const WrapLeftBox = (props: Props) => {
     updateProjectGroup,
     deleteProjectGroup,
     setSelectGroupList,
+    isRefreshGroup,
+    setIsRefreshGroup,
   } = useModel('project')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -155,6 +157,7 @@ const WrapLeftBox = (props: Props) => {
       publicCount: result.publicCount,
       selfCount: result.selfCount,
     })
+    setIsRefreshGroup(false)
     // 如果当前删除的是当前选择，则切换为分组第一条
     if (isChange) {
       props.onChangeGroup(result?.list[0]?.id)
@@ -164,7 +167,7 @@ const WrapLeftBox = (props: Props) => {
 
   useEffect(() => {
     getGroupData()
-  }, [])
+  }, [isRefreshGroup])
 
   // 点击下拉项
   const onClickMenu = (type: any, item: any, e: any) => {
@@ -272,6 +275,7 @@ const WrapLeftBox = (props: Props) => {
       setIsDeleteVisible(!isDeleteVisible)
     } else {
       setIsVisible(!isVisible)
+      form.resetFields()
     }
     setOperationObj({})
   }

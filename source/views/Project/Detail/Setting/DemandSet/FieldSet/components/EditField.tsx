@@ -191,6 +191,10 @@ const EditFiled = (props: Props) => {
       contentValue = checked ? ['integer'] : ['number']
     } else if (['9', '10'].includes(selObj?.value)) {
       // 人员字段
+      if (personValue?.length <= 0) {
+        message.warning(t('version2.chooseNotNull'))
+        return
+      }
       contentValue = [personValue]
     }
 

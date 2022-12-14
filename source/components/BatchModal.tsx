@@ -8,12 +8,12 @@
 import { useEffect, useState } from 'react'
 import DeleteConfirm from './DeleteConfirm'
 import CommonModal from './CommonModal'
-import { Checkbox, DatePicker, Form, message, Select } from 'antd'
+import { Checkbox, DatePicker, Form, message, Select, TreeSelect } from 'antd'
 import { FormWrapDemand } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData, getTypeComponent } from '@/tools'
+import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import moment from 'moment'
 
 interface Props {
@@ -36,7 +36,6 @@ const BatchModal = (props: Props) => {
   // 需求类别的状态下拉
   const [categoryStatusList, setCategoryStatusList] = useState<any>([])
   const [currentTypeItem, setCurrentTypeItem] = useState<any>({})
-  const { isRefresh } = useModel('user')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -89,6 +88,21 @@ const BatchModal = (props: Props) => {
             value: k.status.id,
           })),
         }))
+      } else if (chooseType === 'class_id') {
+        // 需求分类的下拉数据
+        filterItem.attr = 'treeSelect'
+        const classList = filterItem.selectList
+        filterItem.selectList = [
+          ...[
+            {
+              title: t('newlyAdd.unclassified'),
+              key: 0,
+              value: 0,
+              children: [],
+            },
+          ],
+          ...getNestedChildren(classList, 0),
+        ]
       } else {
         // 其余的下拉，如果是自定义字段则单独处理
         filterItem.selectList = String(chooseType).includes('custom_')
@@ -269,28 +283,39 @@ const BatchModal = (props: Props) => {
                     { required: chooseType === 'category_id', message: '' },
                   ]}
                 >
-                  <Select
-                    showSearch
-                    showArrow
-                    optionFilterProp="label"
-                    getPopupContainer={node => node}
-                    allowClear
-                    options={chooseAfter.selectList}
-                    onChange={
-                      chooseType === 'category_id' ? onChangeCategory : void 0
-                    }
-                    mode={
-                      [
-                        'priority',
-                        'iterate_id',
-                        'parent_id',
-                        'class_id',
-                        'category_id',
-                      ].includes(chooseType)
-                        ? ('' as any)
-                        : 'multiple'
-                    }
-                  />
+                  {chooseType === 'class_id' && (
+                    <TreeSelect
+                      showArrow
+                      showSearch
+                      getPopupContainer={node => node}
+                      allowClear
+                      treeData={chooseAfter.selectList}
+                    />
+                  )}
+                  {chooseType !== 'class_id' && (
+                    <Select
+                      showSearch
+                      showArrow
+                      optionFilterProp="label"
+                      getPopupContainer={node => node}
+                      allowClear
+                      options={chooseAfter.selectList}
+                      onChange={
+                        chooseType === 'category_id' ? onChangeCategory : void 0
+                      }
+                      mode={
+                        [
+                          'priority',
+                          'iterate_id',
+                          'parent_id',
+                          'class_id',
+                          'category_id',
+                        ].includes(chooseType)
+                          ? ('' as any)
+                          : 'multiple'
+                      }
+                    />
+                  )}
                 </Form.Item>
               )}
             {chooseType && String(chooseType).includes('custom_') && (

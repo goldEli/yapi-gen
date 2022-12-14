@@ -127,9 +127,11 @@ export const SelectWrapBedeck = styled.div`
 
 const CollapseDiv = styled.div({
   color: '#646566',
-  height: 35,
+  minHeight: 35,
   fontSize: 14,
-  lineHeight: '35px',
+  display: 'flex',
+  alignItems: 'center',
+  lineHeight: '24px',
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
@@ -301,7 +303,7 @@ const TableFilter = (props: any) => {
         padding: '5px 0',
       }}
     >
-      <CollapseWrap defaultActiveKey={['1', '2', '3']}>
+      <CollapseWrap defaultActiveKey={['1']} accordion>
         <Collapse.Panel header={t('components.basicFiled')} key="1">
           {filterBasicsList
             ?.filter((k: any) =>
@@ -496,10 +498,18 @@ const TableFilter = (props: any) => {
             trigger={['click']}
             getPopupContainer={node => node}
           >
-            <Button
-              style={{ background: 'white', border: '1px solid #d5d6d9' }}
-              icon={<IconFont type="plus" />}
-            />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <IconFont
+                type="plus-square"
+                style={{ fontSize: 20, color: '#BBBDBF' }}
+              />
+            </div>
           </PopoverWrap>
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>

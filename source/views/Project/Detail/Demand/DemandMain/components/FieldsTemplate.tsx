@@ -178,12 +178,15 @@ const FieldsTemplate = (props: Props) => {
   }
 
   useEffect(() => {
-    getList()
-  }, [])
+    if (props.visible) {
+      getList()
+    }
+  }, [props.visible])
 
   const [t] = useTranslation()
 
   const onClose = () => {
+    setAll([])
     props?.onClose()
   }
   const onSortEnd = ({ oldIndex, newIndex }: any) => {

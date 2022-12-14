@@ -85,7 +85,8 @@
     "noDataCreateDemand": "This iteration has not added any requirements",
     "noDataCreateDemandList": "The current project has not created any requirements yet, create one~",
     "tree": "Treelike",
-    "updateAfterStatus": "Status value after update"
+    "updateAfterStatus": "Status value after update",
+    "chooseNotNull": "The selection range cannot be empty"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",

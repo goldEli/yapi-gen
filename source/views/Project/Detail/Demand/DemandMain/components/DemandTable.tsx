@@ -55,8 +55,9 @@ const DemandTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus } = useModel('demand')
-  const { projectInfo } = useModel('project')
+  const { updatePriority, updateDemandStatus, filterParams } =
+    useModel('demand')
+  const { projectInfo, setFilterParamsModal } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -262,6 +263,11 @@ const DemandTable = (props: Props) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  const onClick = () => {
+    setIsAddVisible(!isAddVisible)
+    setFilterParamsModal(filterParams)
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
       {/* 暂无数据创建 */}
@@ -292,10 +298,7 @@ const DemandTable = (props: Props) => {
                 subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
               >
                 {!hasCreate && (
-                  <SecondButton
-                    onClick={() => setIsAddVisible(true)}
-                    style={{ marginTop: 24 }}
-                  >
+                  <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
                     {t('common.createDemand')}
                   </SecondButton>
                 )}

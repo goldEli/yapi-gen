@@ -35,6 +35,8 @@ export default () => {
   // 筛选需求列表参数，用于回填创建需求弹窗
   const [filterParamsModal, setFilterParamsModal] = useState<any>({})
   const [selectGroupList, setSelectGroupList] = useState<any>([])
+  // 是否更新分组列表，用于获取count
+  const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -261,5 +263,7 @@ export default () => {
     selectGroupList,
     categoryEditList,
     getCategoryEditList,
+    setIsRefreshGroup,
+    isRefreshGroup,
   }
 }
