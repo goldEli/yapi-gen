@@ -545,7 +545,7 @@ const DemandBox = () => {
               <IconFont
                 type="review"
                 style={{
-                  fontSize: 80,
+                  fontSize: 64,
                   position: 'absolute',
                   top: 22,
                   right: 530,

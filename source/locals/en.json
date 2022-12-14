@@ -7,7 +7,8 @@
     "a5": "Enter comments ",
     "a6": "Not a picture file ",
     "a7": "more than 2M",
-    "a8": " Project Founder"
+    "a8": " Project Founder",
+    "a9": "Please enter a comment"
   },
   "title": {
     "text": "File format not supported ",
@@ -586,7 +587,7 @@
     "permissionNull": "Permission cannot be null!",
     "editMember": "Edit project member",
     "addMember": "Add Project Member",
-    "joinPermission": "Join permission group",
+    "joinPermission": "permission  ",
     "pleasePermission": "Please select a permission group",
     "joinMember": "Import Member",
     "editProject": "Edit Project",

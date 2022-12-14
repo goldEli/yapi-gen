@@ -364,7 +364,10 @@ const ShapeContentForDetail = (props: any) => {
     setRightList(res)
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      if (res?.fields[key].type === 'select') {
+      if (
+        res?.fields[key].type === 'select' &&
+        res?.fields[key].true_value !== 0
+      ) {
         form1Obj[res?.fields[key].content] =
           res?.fields[key].true_value === null &&
           res?.fields[key].children.some(
@@ -372,8 +375,13 @@ const ShapeContentForDetail = (props: any) => {
           )
             ? []
             : res?.fields[key].true_value
+      } else if (res?.fields[key].true_value === 0) {
+        form1Obj[res?.fields[key].content] = ''
+      } else {
+        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
       }
     }
+
     form.setFieldsValue(form1Obj)
     setLoading(true)
   }
