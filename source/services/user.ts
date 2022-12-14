@@ -61,13 +61,10 @@ export const getCompanyList: any = async () => {
 }
 
 export const updateCompany: any = async (params: any) => {
-  const response = await http.put('changeCompany', {
+  await http.put('changeCompany', {
     company_id: params.companyId,
     company_user_id: params.companyUserId,
   })
-  return {
-    data: response,
-  }
 }
 
 // 全局概况

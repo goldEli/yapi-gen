@@ -61,13 +61,14 @@ const DemandStatusBox = (props: any) => {
     setRows(res2.find((i: any) => i.id === demandInfo.status.id))
   }
   const updateStatus = async (res1: any) => {
-    const res = await updateDemandStatus(res1)
-
-    if (res.code === 0) {
+    try {
+      await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
       getDemandInfo({ projectId: props.pid, id: props.sid })
+      PubSub.publish('watch')
+    } catch (error) {
+      //
     }
-    PubSub.publish('watch')
   }
 
   useEffect(() => {
@@ -116,7 +117,7 @@ const DemandStatusBox = (props: any) => {
             active={demandInfo.status.status}
             sid={props.sid}
             fromId={demandInfo?.status?.id}
-            tap={(value: any) => updateStatus(value)}
+            tap={updateStatus}
             record={rows}
             row={rows}
             noleft

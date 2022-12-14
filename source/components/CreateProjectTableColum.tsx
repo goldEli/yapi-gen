@@ -543,12 +543,11 @@ export const useDynamicColumns = (state: any) => {
         width: 200,
         title: (
           <div>
-            {!['user_select_checkbox', 'user_select'].includes(
-              currentFields?.type.attr,
-            ) && <NewSort fixedKey={element.value}>{element.label}</NewSort>}
-            {['user_select_checkbox', 'user_select'].includes(
-              currentFields?.type.attr,
-            ) && element.label}
+            {!['user_select_checkbox'].includes(currentFields?.type.attr) && (
+              <NewSort fixedKey={element.value}>{element.label}</NewSort>
+            )}
+            {['user_select_checkbox'].includes(currentFields?.type.attr) &&
+              element.label}
           </div>
         ),
         dataIndex: element.value,

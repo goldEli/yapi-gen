@@ -266,11 +266,12 @@ const CommonNeed = (props: any) => {
   }
 
   const updateStatus = async (res1: any) => {
-    const res = await updateDemandStatus(res1)
-
-    if (res.code === 0) {
+    try {
+      await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
       init()
+    } catch (error) {
+      //
     }
   }
   const updatePriority = async (res1: any) => {

@@ -8,7 +8,6 @@
 import { useEffect, useState } from 'react'
 import {
   Select,
-  Button,
   Form,
   Input,
   Timeline,
@@ -24,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
 const Left = styled.div`
   min-height: 400px;
@@ -432,7 +432,6 @@ export const ShapeContent = (props: any) => {
     form.setFieldsValue(form1Obj)
     setLoading(true)
   }
-  // console.log(rightList);
 
   const init = async () => {
     const res = await getProjectMember(projectId)
@@ -486,8 +485,12 @@ export const ShapeContent = (props: any) => {
       verifyId: reviewerValue,
     }
 
-    tap(props.noleft ? putData2 : putData)
+    await tap(props.noleft ? putData2 : putData)
     onClear()
+  }
+
+  const onConfirm = async () => {
+    await confirm()
   }
 
   return (
@@ -857,10 +860,7 @@ export const ShapeContent = (props: any) => {
           <ButtonFooter>
             <Button
               disabled={!rightList.user_has_auth}
-              onClick={() => {
-                form.submit()
-                form2.submit()
-              }}
+              onClick={onConfirm}
               style={{ marginLeft: '16px' }}
               type="primary"
             >

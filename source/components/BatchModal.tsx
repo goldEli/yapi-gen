@@ -343,7 +343,6 @@ const BatchModal = (props: Props) => {
                     value: chooseAfter.selectList,
                   },
                   void 0,
-                  false,
                 )}
               </Form.Item>
             )}

@@ -314,16 +314,3 @@ export const getShapeRight = async (params: any) => {
   }
   return obj
 }
-
-// updateDemandStatus
-export const updateDemandStatus = async (params: any) => {
-  const res = await http.put('updateDemandStatus', {
-    project_id: params.projectId,
-    story_id: params.nId,
-    category_status_to_id: params.toId,
-    fields: params.fields,
-    verify_user_id: params.verifyId ?? undefined,
-  })
-
-  return res.data
-}

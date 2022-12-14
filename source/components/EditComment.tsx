@@ -161,7 +161,7 @@ const EditComment = (props: any) => {
       return
     }
 
-    props.editConfirm({
+    await props.editConfirm({
       content: String(inner?.innerHTML),
       attachment: form.getFieldsValue().attachments,
     })

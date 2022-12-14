@@ -84,8 +84,8 @@ export const StaffPersonal = (props: {
   const handleChange = (value: any) => {
     setInfoId(value)
   }
-  const onConfirm = () => {
-    props.onConfirm({
+  const onConfirm = async () => {
+    await props.onConfirm({
       userId: data.id,
       roleId: infoId,
     })

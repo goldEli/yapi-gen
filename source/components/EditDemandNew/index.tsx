@@ -486,12 +486,12 @@ const EditDemand = (props: Props) => {
           ...changeCategoryFormData,
         })
         setCurrentCategory({})
-        onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+        await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
       } catch (error) {
         //
       }
     } else {
-      onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+      await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
     }
   }
 

@@ -218,9 +218,9 @@ const FieldsTemplate = (props: Props) => {
     }
   }
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
     const news = allList.map((i: any) => i.field)
-    props?.onConfirm(news)
+    await props?.onConfirm(news)
   }
 
   function del(value: string) {

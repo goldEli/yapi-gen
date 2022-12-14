@@ -436,14 +436,13 @@ export const getProjectMember: any = async (params: any) => {
 
 // 流转状态
 export const updateDemandStatus: any = async (params: any) => {
-  const res = await http.put<any>('updateDemandStatus', {
+  await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
     fields: params.fields,
     verify_user_id: params.verifyId ?? undefined,
   })
-  return res
 }
 
 // 修改优先级

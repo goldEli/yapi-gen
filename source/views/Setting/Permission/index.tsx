@@ -4,7 +4,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Input, Space, message, Menu, Spin, Row, Col } from 'antd'
+import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import { ShowText } from '@/components/OptionalFeld'
 import { GroupWrap } from '@/views/Project/Detail/Setting/components/ProjectSet'
 
 const Header = styled.div({
@@ -139,7 +138,6 @@ const MainWrapItem = styled.div({
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
   },
-  // alignItems: 'center',
 })
 
 const ModalFooter = styled(Space)({

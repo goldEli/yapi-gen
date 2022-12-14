@@ -86,8 +86,8 @@ const SetPermissionWrap = (props: {
     setInfoId(value)
   }
 
-  const onConfirm = () => {
-    props.onConfirm(infoId)
+  const onConfirm = async () => {
+    await props.onConfirm(infoId)
   }
 
   return (
