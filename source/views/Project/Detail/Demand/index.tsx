@@ -231,7 +231,7 @@ const DemandBox = () => {
       await deleteDemand({ projectId, id: demandInfo.id })
       message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
-      const params = encryptPhp(JSON.stringify({ id: projectId, demandId }))
+      const params = encryptPhp(JSON.stringify({ id: projectId }))
       navigate(`/Detail/Demand?data=${params}`)
     } catch (error) {
       //

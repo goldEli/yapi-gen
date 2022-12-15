@@ -391,7 +391,7 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        {hasAdd ? (
+        {hasAdd || projectInfo?.status !== 1 ? (
           <div />
         ) : (
           <AddButton

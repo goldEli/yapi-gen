@@ -276,10 +276,12 @@ const EditDemandLeft = (props: Props) => {
                 optionFilterProp="label"
                 getPopupContainer={node => node}
                 showSearch
-                options={projectList?.map((k: any) => ({
-                  label: k.name,
-                  value: k.id,
-                }))}
+                options={projectList
+                  ?.filter((i: any) => i.status === 1)
+                  ?.map((k: any) => ({
+                    label: k.name,
+                    value: k.id,
+                  }))}
               />
             </Form.Item>
             <Form.Item

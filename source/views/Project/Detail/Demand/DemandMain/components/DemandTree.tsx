@@ -444,7 +444,7 @@ const DemandTree = (props: Props) => {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
 
-    if (hasCreate) {
+    if (hasCreate || projectInfo?.status !== 1) {
       menuItems = menuItems.filter((i: any) => i.key !== '3')
     }
 

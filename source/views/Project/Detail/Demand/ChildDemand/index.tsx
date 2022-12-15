@@ -362,7 +362,8 @@ const ChildDemand = () => {
         onConfirm={onDeleteConfirm}
       />
       <Operation>
-        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ? (
+        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
+        projectInfo?.status !== 1 ? (
           <div />
         ) : (
           <SecondButton

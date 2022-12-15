@@ -287,17 +287,22 @@ const IterationTable = (props: Props) => {
         onUpdate={() => props.onUpdate(true)}
       />
 
-      {!hasCreate && props.hasId && props.hasId?.status === 1 && (
-        <div style={{ padding: '16px 0 4px 16px', background: 'white' }}>
-          <SecondButton onClick={onCreateDemand}>
-            <IconFont type="plus" />
-            <div>{t('common.createDemand')}</div>
-          </SecondButton>
-        </div>
-      )}
+      {!hasCreate &&
+        props.hasId &&
+        props.hasId?.status === 1 &&
+        projectInfo?.status === 1 && (
+          <div style={{ padding: '16px 0 4px 16px', background: 'white' }}>
+            <SecondButton onClick={onCreateDemand}>
+              <IconFont type="plus" />
+              <div>{t('common.createDemand')}</div>
+            </SecondButton>
+          </div>
+        )}
       <DataWrap
         ref={dataWrapRef}
-        hasCreate={hasCreate || props.hasId?.status !== 1}
+        hasCreate={
+          hasCreate || props.hasId?.status !== 1 || projectInfo?.status !== 1
+        }
       >
         <Spin spinning={props?.isSpinning}>
           {typeof props?.hasId === 'object' &&

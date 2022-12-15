@@ -340,7 +340,7 @@ const DemandWrap = (props: Props) => {
         iterateId={iterateId}
       />
 
-      {!hasCreate && iterateInfo?.status === 1 && (
+      {!hasCreate && iterateInfo?.status === 1 && projectInfo?.status === 1 && (
         <div
           style={{
             padding: '16px 0 4px 16px',
@@ -356,7 +356,9 @@ const DemandWrap = (props: Props) => {
       )}
       <DataWrap
         ref={dataWrapRef}
-        hasCreate={hasCreate || iterateInfo?.status !== 1}
+        hasCreate={
+          hasCreate || iterateInfo?.status !== 1 || projectInfo?.status !== 1
+        }
       >
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
