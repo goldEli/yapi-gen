@@ -49,8 +49,10 @@ const SideFooter = styled(SideHeader)`
 const SetHead = styled.div`
   width: 32px;
   height: 32px;
-  line-height: 32px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
   font-size: 14px;
   background: #a4acf5;

@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines */
 /* eslint-disable react/no-danger */
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -197,6 +197,11 @@ const TextWrap = styled.div({
     color: '#969799',
     whiteSpace: 'nowrap',
   },
+  '.statusText': {
+    width: 'calc(100% - 120px)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
   '.content': {
     color: '#646566',
     fontSize: 12,
@@ -249,7 +254,7 @@ const SetHead = styled.div({
   borderRadius: 24,
   background: '#A4ACF5',
   color: 'white',
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: 400,
   display: 'flex',
   alignItems: 'center',
@@ -815,17 +820,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                               </OmitText>
                             </HiddenText>
                           </span>
-                          <span className="common">
-                            <HiddenText>
-                              <OmitText
-                                width={150}
-                                tipProps={{
-                                  getPopupContainer: node => node,
-                                }}
-                              >
-                                {item.statusContent}
-                              </OmitText>
-                            </HiddenText>
+                          <span className="common statusText">
+                            <Tooltip
+                              title={item.statusContent}
+                              getPopupContainer={node => node}
+                            >
+                              {item.statusContent}
+                            </Tooltip>
                           </span>
                         </div>
                       </MyDiv>

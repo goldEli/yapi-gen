@@ -59,24 +59,33 @@ const Box = styled.div`
 const SetHead = styled.div`
   width: 32px;
   height: 32px;
-  line-height: 32px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
   border: 1px solid #f0f2fd;
   color: white;
 `
 const PanelHeader = styled.div`
-  padding: 16px 16px 14px 16px;
+  padding-top: 16px;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(235, 237, 240, 1);
   margin-bottom: 8px;
+  .provider {
+    margin-top: 4px;
+    height: 1px;
+    width: calc(100% - 32px);
+    background: #ebedf0;
+    margin-left: 16px;
+  }
 `
 const PanelHeaderFirst = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 16px;
 `
 const PanelHeaderSecond = styled.div`
   margin-top: 8px;
@@ -86,6 +95,11 @@ const PanelHeaderSecond = styled.div`
   font-size: 12px;
   display: flex;
   cursor: pointer;
+  padding: 0 16px;
+  height: 32px;
+  &:hover {
+    background: #f4f5f5;
+  }
 `
 const NameAndPhone = styled.div`
   font-size: 12px;
@@ -283,6 +297,7 @@ export const Panel = (props: Props) => {
             </div>
           </Tooltip>
         </PanelHeaderSecond>
+        <div className="provider" />
       </PanelHeader>
       <PanelFooter>
         <Popover

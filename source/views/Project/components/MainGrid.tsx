@@ -80,7 +80,7 @@ const MainGrid = (props: Props) => {
     <DataWrap>
       {!!props.projectList?.list &&
         (props.projectList?.list?.length > 0 ? (
-          <SpaceWrap size={32}>
+          <SpaceWrap size={24}>
             {props.projectList.list?.map((item: any) => (
               <div key={item.id}>
                 <ProjectCard

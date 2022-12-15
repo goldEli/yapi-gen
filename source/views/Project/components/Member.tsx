@@ -90,15 +90,14 @@ const ListItem = styled.div({
     color: 'black',
     fontSize: 12,
   },
-  '&:nth-child(even)': {
-    // backgroundColor: '#f8f9fa',
-  },
   '&:hover': {
     backgroundColor: '#f4f5f5',
   },
 })
 const MoreWrap2 = styled(MoreWrap)`
+  padding: 0;
   background-color: transparent;
+  font-size: 12px;
   .job1,
   .job {
     color: #323233;
@@ -135,7 +134,7 @@ const HeaderWrap = styled.div({
 })
 const Myd = styled.div<{ active: boolean }>`
   text-align: left;
-  padding: 5px 5px !important;
+  padding: 5px 16px !important;
   color: #646566;
   &:hover {
     color: #323233;
@@ -482,12 +481,12 @@ const Member = (props: Props) => {
                       {i.nickname ? `(${i.nickname})` : ''}
                     </span>
                     <span>
-                      {i.positionName}
+                      {i.positionName || '--'}
                       {i.is_admin === 1 ? `  （${t('new_p1.a8')}）` : ''}
                     </span>
                   </div>
                 </div>
-                {hasEdit ? (
+                {hasEdit && i.is_admin !== 1 ? (
                   <MoreDropdown
                     onClickMenu={onClickMenu}
                     roleOptions={roleOptions}
@@ -497,7 +496,7 @@ const Member = (props: Props) => {
                 ) : (
                   <span
                     style={{
-                      color: '#323233',
+                      color: '#969799',
                       fontSize: '12px',
                     }}
                   >

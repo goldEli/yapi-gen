@@ -39,8 +39,10 @@ const imgCss = css`
 const SetHead = styled.div`
   width: 104px;
   height: 104px;
-  line-height: 104px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
   font-size: 32px;
   background: #a4acf5;
