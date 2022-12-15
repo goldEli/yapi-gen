@@ -88,12 +88,14 @@ const PanelHeaderFirst = styled.div`
   padding: 0 16px;
 `
 const PanelHeaderSecond = styled.div`
-  margin-top: 8px;
+  height: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
   display: flex;
+  padding: 0px 16px 0px 16px;
+  border-bottom: 1px solid rgba(235, 237, 240, 1);
   cursor: pointer;
   padding: 0 16px;
   height: 32px;
@@ -299,6 +301,22 @@ export const Panel = (props: Props) => {
         </PanelHeaderSecond>
         <div className="provider" />
       </PanelHeader>
+      <PanelHeaderSecond onClick={() => onSetVisible(3)}>
+        <div
+          style={{
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#323233',
+          }}
+        >
+          {userInfo?.company_name}
+        </div>
+        <Tooltip placement="top" title={t('container.changeCompany')}>
+          <div className={buttonCss}>
+            <IconFont type="swap" style={{ fontSize: 20 }} />
+          </div>
+        </Tooltip>
+      </PanelHeaderSecond>
       <PanelFooter>
         <Popover
           visible={languageModeVisible}
