@@ -14,6 +14,8 @@ import { getShapeLeft } from '@/services/project/shape'
 import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
 import PubSub from 'pubsub-js'
+import { divide } from 'lodash'
+import IconFont from '@/components/IconFont'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -111,8 +113,35 @@ const DemandStatusBox = (props: any) => {
           )
         })}
       </div>
-      <div>
-        {rows && (
+
+      <div
+        style={{
+          position: 'relative',
+        }}
+      >
+        {demandInfo?.isExamine ? (
+          <div
+            style={{
+              position: 'absolute',
+              backgroundColor: 'rgba(0, 0, 0, 0.45)',
+              width: '100%',
+              height: '100%',
+              zIndex: 1,
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <IconFont
+              type="review"
+              style={{
+                fontSize: 80,
+              }}
+            />
+          </div>
+        ) : null}
+        {rows ? (
           <ShapeContentForDetail
             active={demandInfo.status.status}
             sid={props.sid}
@@ -122,7 +151,7 @@ const DemandStatusBox = (props: any) => {
             row={rows}
             noleft
           />
-        )}
+        ) : null}
       </div>
     </div>
   )
