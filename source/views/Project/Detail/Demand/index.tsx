@@ -541,17 +541,6 @@ const DemandBox = () => {
             >
               <span>{t('newlyAdd.circulationRecord')}</span>
             </Item>
-            {demandInfo?.isExamine && type === 'info' ? (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 64,
-                  position: 'absolute',
-                  top: 22,
-                  right: 530,
-                }}
-              />
-            ) : null}
           </MainWrap>
           {childContent()}
         </ContentWrap>
