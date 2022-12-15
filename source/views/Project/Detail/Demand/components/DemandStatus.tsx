@@ -67,6 +67,7 @@ const DemandStatusBox = (props: any) => {
       await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
       getDemandInfo({ projectId: props.pid, id: props.sid })
+      init()
       PubSub.publish('watch')
     } catch (error) {
       //
