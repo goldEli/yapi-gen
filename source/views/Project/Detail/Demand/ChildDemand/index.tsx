@@ -28,7 +28,6 @@ import EditDemand from '@/components/EditDemandNew'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
-import { Second } from '../components/UploadAttach'
 
 const Operation = styled.div({
   display: 'flex',
@@ -39,28 +38,6 @@ const Operation = styled.div({
   background: 'white',
   borderRadius: '6px 6px 0 0',
 })
-
-const ButtonWrap = styled(Button)({
-  color: '#2877ff',
-  border: '1px solid #2877FF',
-  background: 'none',
-  '&: hover': {
-    color: '#2877ff',
-    border: '1px solid #2877FF',
-    background: 'none',
-  },
-})
-
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    fontSize: 20,
-    cursor: 'pointer',
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
-  }),
-)
-
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
   fontSize: 16,
