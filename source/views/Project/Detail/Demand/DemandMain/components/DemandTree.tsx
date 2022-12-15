@@ -171,7 +171,7 @@ const DemandTree = (props: Props) => {
   const projectId = paramsData.id
   const { updatePriority, updateDemandStatus, getDemandList } =
     useModel('demand')
-  const { projectInfo } = useModel('project')
+  const { projectInfo, filterKeys } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -648,6 +648,7 @@ const DemandTree = (props: Props) => {
             ) : (
               <NoData
                 subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+                haveFilter={filterKeys?.length > 0}
               >
                 {!hasCreate && (
                   <SecondButton

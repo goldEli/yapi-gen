@@ -87,7 +87,8 @@
     "noDataCreateDemandList": "当前项目还未创建任何需求，创建一个吧~",
     "tree": "树形",
     "updateAfterStatus": "更新后状态值",
-    "chooseNotNull": "选择范围不能为空"
+    "chooseNotNull": "选择范围不能为空",
+    "noDataFilter": "暂无数据，请重新调整一下筛选参数试试"
   },
   "p2": {
     "del": "确认删除该附件",

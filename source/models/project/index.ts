@@ -37,6 +37,8 @@ export default () => {
   const [selectGroupList, setSelectGroupList] = useState<any>([])
   // 是否更新分组列表，用于获取count
   const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
+  // 需求列表筛选项值计数
+  const [filterKeys, setFilterKeys] = useState<any>([])
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -265,5 +267,7 @@ export default () => {
     getCategoryEditList,
     setIsRefreshGroup,
     isRefreshGroup,
+    setFilterKeys,
+    filterKeys,
   }
 }

@@ -337,21 +337,15 @@ export const getField: any = async (params: any) => {
 
   const plainOptions3 = display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '自定义字段')
-    .map(
-      (item: {
-        title: any
-        content: any
-        is_default_display: any
-        content_txt: any
-      }) => {
-        return {
-          label: item.title,
-          value: item.content,
-          is_default_display: item.is_default_display,
-          labelTxt: item.content_txt,
-        }
-      },
-    )
+    .map((item: any) => {
+      return {
+        label: item.title,
+        value: item.content,
+        is_default_display: item.is_default_display,
+        labelTxt: item.content_txt,
+        attr: item.attr,
+      }
+    })
 
   const titleList: any[] = []
   plainOptions
@@ -442,14 +436,13 @@ export const getProjectMember: any = async (params: any) => {
 
 // 流转状态
 export const updateDemandStatus: any = async (params: any) => {
-  const res = await http.put<any>('updateDemandStatus', {
+  await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
     fields: params.fields,
     verify_user_id: params.verifyId ?? undefined,
   })
-  return res
 }
 
 // 修改优先级

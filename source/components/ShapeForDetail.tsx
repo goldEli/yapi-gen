@@ -8,7 +8,6 @@
 import { useEffect, useState } from 'react'
 import {
   Select,
-  Button,
   Form,
   Input,
   Timeline,
@@ -23,6 +22,7 @@ import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
 
 const Right = styled.div`
@@ -339,7 +339,6 @@ const ShapeContentForDetail = (props: any) => {
   const [form2] = Form.useForm()
   const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
-  const [leftList, setLeftList] = useState([])
   const [rightList, setRightList] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)
   const [activeStatus, setActiveStatus] = useState<any>({})
@@ -423,8 +422,12 @@ const ShapeContentForDetail = (props: any) => {
       verifyId: reviewerValue,
     }
 
-    tap(props.noleft ? putData2 : putData)
+    await tap(props.noleft ? putData2 : putData)
     onClear()
+  }
+
+  const onConfirm = async () => {
+    await confirm()
   }
 
   return (
@@ -768,10 +771,7 @@ const ShapeContentForDetail = (props: any) => {
           <ButtonFooter>
             <Button
               disabled={!rightList.user_has_auth}
-              onClick={() => {
-                form.submit()
-                form2.submit()
-              }}
+              onClick={onConfirm}
               type="primary"
             >
               {rightList.is_verify

@@ -69,6 +69,9 @@ const GanttWrap = styled.div({
   '.gantt_task_cell': {
     borderRight: 'none',
   },
+  '.gantt_grid_head_text': {
+    paddingLeft: 26,
+  },
   '#status': {
     padding: '4px 8px',
     borderRadius: 6,
@@ -179,7 +182,7 @@ const Gantt = (props: Props) => {
         width: '100%',
         height: props.height,
         minHeight: props?.minHeight,
-        paddingLeft: 16,
+        // paddingLeft: 16,
       }}
     ></GanttWrap>
   )

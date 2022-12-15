@@ -30,6 +30,8 @@ interface Props {
   onUpdateOrderKey(item: any): void
   order: any
   onAddClick(): void
+  // 是否有筛选条件
+  hasFilter?: boolean
 }
 
 const StatusWrap = styled.div({
@@ -470,6 +472,7 @@ const MainTable = (props: Props) => {
           ) : (
             <NoData
               subText={hasCreate ? '' : t('version2.noDataCreateProject')}
+              haveFilter={props?.hasFilter}
             >
               {!hasCreate && (
                 <SecondButton

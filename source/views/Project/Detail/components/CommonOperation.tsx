@@ -48,6 +48,28 @@ const Tabs = styled(Space)({
   alignItems: 'center',
 })
 
+const TopRightItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  color: 'black',
+  cursor: 'pointer',
+  height: '32px',
+  padding: '0 8px',
+  borderRadius: 6,
+  '.anticon': {
+    fontSize: 20,
+  },
+  div: {
+    fontSize: 14,
+    fontWeight: 400,
+    marginLeft: 8,
+  },
+  '&: hover': {
+    color: '#323233!important',
+    background: '#F4F5F5',
+  },
+})
+
 const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
   {
     display: 'flex',
@@ -109,34 +131,6 @@ const TopRight = styled(Space)({
   position: 'absolute',
   right: 24,
 })
-
-const TopRightItem = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    color: 'black',
-    cursor: 'pointer',
-    '.anticon': {
-      fontSize: 20,
-    },
-    div: {
-      fontSize: 14,
-      fontWeight: 400,
-      marginLeft: 8,
-    },
-    '&: hover': {
-      color: '#2877ff!important',
-    },
-  },
-  ({ isShow }) => ({
-    '.anticon': {
-      color: isShow ? '#2877ff' : '',
-    },
-    div: {
-      color: isShow ? '#2877ff' : '',
-    },
-  }),
-)
 
 const MenuItems = styled.div({
   display: 'flex',
@@ -374,11 +368,12 @@ const CommonOperation = (props: Props) => {
             </TabsItem>
           ))}
         </Tabs>
-        <TopRight size={20}>
-          <HoverWrap onClick={() => setMemberVisible(true)}>
-            <IconFont className="iconMain" type="team" />
-            <span className="label">{t('project.member')}</span>
-          </HoverWrap>
+        <TopRight size={12}>
+          <TopRightItem onClick={() => setMemberVisible(true)}>
+            <IconFont type="team" />
+            <div>{t('project.member')}</div>
+          </TopRightItem>
+
           <Dropdown
             key={isShowMenu.toString()}
             visible={isShowMenu}
@@ -387,10 +382,10 @@ const CommonOperation = (props: Props) => {
             placement="bottomRight"
             onVisibleChange={state => onClickMenu(state)}
           >
-            <HoverWrap onClick={() => onClickMenu(true)} isActive={isColor}>
-              <IconFont className="iconMain" type="menu" />
-              <span className="label">{t('project.menu')}</span>
-            </HoverWrap>
+            <TopRightItem onClick={() => onClickMenu(true)}>
+              <IconFont type="menu" />
+              <div>{t('project.menu')}</div>
+            </TopRightItem>
           </Dropdown>
         </TopRight>
       </OperationTop>

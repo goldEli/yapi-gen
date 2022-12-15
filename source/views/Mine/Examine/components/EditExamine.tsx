@@ -115,12 +115,12 @@ const EditExamine = (props: Props) => {
     }
   }
 
-  const onConfirm = () => {
-    updateMethod(2)
+  const onConfirm = async () => {
+    await updateMethod(2)
   }
 
-  const onRefuse = () => {
-    updateMethod(3)
+  const onRefuse = async () => {
+    await updateMethod(3)
   }
 
   // status: 审核状态(待审核、已通过、未通过)，type: 审核类型(依次、与、或), list: 所有人列表

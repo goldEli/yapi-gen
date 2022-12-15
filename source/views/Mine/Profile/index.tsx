@@ -171,7 +171,7 @@ const Profile = () => {
       res2.list?.map((k: any) => ({
         id: k.id,
         demandText: k.text,
-        text: `<div style="display: flex; align-items: center">
+        text: `<div style="display: flex; align-items: center;padding-left: 16px">
           <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
             k.categoryColor
           }; background: ${

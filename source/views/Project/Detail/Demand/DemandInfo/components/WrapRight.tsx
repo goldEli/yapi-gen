@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable max-lines */
-/* eslint-disable react/no-danger */
 // 需求详情-右侧
 
 /* eslint-disable react/no-unstable-nested-components */
@@ -8,6 +5,9 @@
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable max-lines */
+/* eslint-disable react/no-danger */
 import { message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -402,13 +402,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     setVisibleEdit(false)
   }
 
-  const onAddComment = async (value: any) => {
+  const onAddConfirm = async (params: any) => {
     try {
       await addComment({
         projectId,
         demandId,
-        content: value.content,
-        attachment: value.attachment,
+        content: params.content,
+        attachment: params.attachment,
       })
       message.success(t('project.replaySuccess'))
       getList()
@@ -416,10 +416,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     } catch (error) {
       //
     }
-  }
-
-  const editConfirm = async (params: any) => {
-    onAddComment(params)
   }
 
   // 返回文本
@@ -992,7 +988,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         <EditComment
           visibleEdit={visibleEdit}
           editClose={editClose}
-          editConfirm={editConfirm}
+          editConfirm={onAddConfirm}
         />
       )}
     </WrapRight>
