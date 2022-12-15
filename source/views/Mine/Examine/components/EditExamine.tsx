@@ -66,6 +66,11 @@ const WrapBox = styled.div<{
 
 const ContentWrap = styled.div({
   width: '70%',
+  '.hasPerson': {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
 })
 
 interface Props {
@@ -164,6 +169,15 @@ const EditExamine = (props: Props) => {
     )
   }
 
+  // 返回自定义值
+  const getValues = (key: any, values: any) => {
+    return (
+      <span>
+        {values?.map((n: any) => (n?.id ? n?.name : n)).join(';') || '--'}
+      </span>
+    )
+  }
+
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -245,19 +259,50 @@ const EditExamine = (props: Props) => {
                   ) : (
                     <ContentWrap>
                       {String(m).includes('custom_') ? (
-                        <span>
-                          {verifyInfo.fields[m]?.value
-                            ?.map((i: any) => i)
-                            .join(';') || '--'}
-                        </span>
+                        getValues(m, verifyInfo.fields[m]?.value)
                       ) : (
-                        <span>
-                          {verifyInfo.fields[m]?.value
-                            ?.map((i: any) => i.name?.trim())
-                            .join(';') || '--'}
-                        </span>
+                        <div className="hasPerson">
+                          {verifyInfo.fields[m]?.value?.map((n: any) => (
+                            <div
+                              key={n.id}
+                              style={{
+                                display: 'flex',
+                                margin: '0 24px 8px 0',
+                              }}
+                            >
+                              <NameWrap
+                                style={{
+                                  marginBottom: 0,
+                                  marginRight: 8,
+                                  width: 24,
+                                  height: 24,
+                                }}
+                              >
+                                {String(
+                                  n?.name?.trim().slice(0, 1),
+                                ).toLocaleUpperCase()}
+                              </NameWrap>
+                              <span>{n?.name?.trim()}</span>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </ContentWrap>
+                    // <ContentWrap>
+                    //   {String(m).includes('custom_') ? (
+                    //     <span>
+                    //       {verifyInfo.fields[m]?.value
+                    //         ?.map((i: any) => i)
+                    //         .join(';') || '--'}
+                    //     </span>
+                    //   ) : (
+                    //     <span>
+                    //       {verifyInfo.fields[m]?.value
+                    //         ?.map((i: any) => i.name?.trim())
+                    //         .join(';') || '--'}
+                    //     </span>
+                    //   )}
+                    // </ContentWrap>
                   ))}
                 {m === 'priority' && (
                   <ContentWrap>

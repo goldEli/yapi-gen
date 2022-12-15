@@ -83,6 +83,12 @@ const SearchWrap = styled.div({
   justifyContent: 'flex-end',
 })
 
+const MainWrap = styled.div({
+  '.ant-spin-nested-loading': {
+    height: 'initial',
+  },
+})
+
 interface MoreWrapProps {
   record: any
   onShowEdit(): void
@@ -514,7 +520,7 @@ const CommonNeed = (props: any) => {
   )
 
   return (
-    <>
+    <MainWrap>
       <TabsHehavior
         style={{ padding: '0 24px', justifyContent: 'space-between' }}
       >
@@ -590,29 +596,33 @@ const CommonNeed = (props: any) => {
         </div>
       )}
       {!isMany && (
-        <div>
-          <LoadingSpin spinning={isSpin}>
-            <StaffTableWrap>
-              {listData?.list ? (
-                listData?.list?.length > 0 ? (
-                  <TableBox
-                    rowKey="id"
-                    columns={selectColum}
-                    dataSource={listData?.list}
-                    pagination={false}
-                    scroll={{ x: 'max-content' }}
-                  />
-                ) : (
-                  <NoData />
-                )
-              ) : null}
-            </StaffTableWrap>
-          </LoadingSpin>
-        </div>
+        <LoadingSpin spinning={isSpin}>
+          <StaffTableWrap>
+            {listData?.list ? (
+              listData?.list?.length > 0 ? (
+                <TableBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={listData?.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                />
+              ) : (
+                <NoData />
+              )
+            ) : null}
+          </StaffTableWrap>
+        </LoadingSpin>
       )}
 
       {isMany && (
-        <div>
+        <div
+          style={{
+            minHeight: isMember ? 'calc(100vh - 130px)' : '',
+            textAlign: 'center',
+            lineHeight: isMember ? 'calc(100vh - 130px)' : '',
+          }}
+        >
           <LoadingSpin spinning={isSpin}>
             {manyListData.list &&
               (manyListData.list?.length > 0 ? (
@@ -703,7 +713,7 @@ const CommonNeed = (props: any) => {
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
       />
-    </>
+    </MainWrap>
   )
 }
 

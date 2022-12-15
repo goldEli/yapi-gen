@@ -671,32 +671,34 @@ const EditDemand = (props: Props) => {
             <IconFont type="close" style={{ fontSize: 20 }} />
           </CloseWrap>
         </ModalHeader>
-        <ModalContent>
-          <EditDemandLeft
-            isQuickCreate={props?.isQuickCreate}
-            projectId={projectId}
-            onChangeProjectId={setProjectId}
-            onGetDataAll={getInit}
-            onResetForm={onResetForm}
-            onRef={leftDom}
-            demandId={props.demandId}
-            demandInfo={demandInfo}
-          />
-          <EditDemandRIght
-            projectId={projectId}
-            demandId={props.demandId}
-            parentList={parentList}
-            onRef={rightDom}
-            treeArr={treeArr}
-            iterateId={props.iterateId}
-            info={demandInfo}
-            isChild={props.isChild}
-            isSaveParams={isSaveParams}
-            isQuickCreate={props?.isQuickCreate}
-            fieldsList={fieldsList}
-            parentId={props.parentId}
-          />
-        </ModalContent>
+        {props.visible && (
+          <ModalContent>
+            <EditDemandLeft
+              isQuickCreate={props?.isQuickCreate}
+              projectId={projectId}
+              onChangeProjectId={setProjectId}
+              onGetDataAll={getInit}
+              onResetForm={onResetForm}
+              onRef={leftDom}
+              demandId={props.demandId}
+              demandInfo={demandInfo}
+            />
+            <EditDemandRIght
+              projectId={projectId}
+              demandId={props.demandId}
+              parentList={parentList}
+              onRef={rightDom}
+              treeArr={treeArr}
+              iterateId={props.iterateId}
+              info={demandInfo}
+              isChild={props.isChild}
+              isSaveParams={isSaveParams}
+              isQuickCreate={props?.isQuickCreate}
+              fieldsList={fieldsList}
+              parentId={props.parentId}
+            />
+          </ModalContent>
+        )}
 
         <ModalFooter>
           <Space size={16}>

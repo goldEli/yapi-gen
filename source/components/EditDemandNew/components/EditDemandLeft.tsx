@@ -154,6 +154,9 @@ const EditDemandLeft = (props: Props) => {
           })),
       )
     }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }, [])
 
   // 需求详情返回后给标签及附件数组赋值
@@ -187,6 +190,9 @@ const EditDemandLeft = (props: Props) => {
           name: i.tag?.content,
         })),
       })
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
     }
   }, [props?.demandId, props.demandInfo])
 

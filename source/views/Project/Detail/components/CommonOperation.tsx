@@ -73,8 +73,6 @@ const TopRightItem = styled.div({
 const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
   {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
     position: 'relative',
     '.titleBox': {
       fontSize: 18,
@@ -82,45 +80,41 @@ const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
       lineHeight: '62px',
       display: 'flex',
       '&: hover': {
-        span: {
-          color: '#2877ff',
-          cursor: 'pointer',
-        },
+        color: '#2877ff',
+        cursor: 'pointer',
       },
-      '.text': {
+    },
+    '.text': {
+      position: 'absolute',
+      zIndex: 2,
+      fontSize: 12,
+      top: 12,
+      right: -50,
+      display: 'flex',
+      padding: '0 4px 0 2px',
+      height: 20,
+      lineHeight: '20px',
+      whiteSpace: 'nowrap',
+      background: '#F4F4F6',
+      borderTopRightRadius: 4,
+      borderBottomRightRadius: 4,
+      div: {
+        display: 'inline-block',
+        borderTop: '10px solid transparent',
+        borderBottom: '10px solid transparent',
+        borderRight: '7px solid #F4F4F6',
+        width: 0,
+        height: 0,
         position: 'absolute',
-        zIndex: 2,
-        fontSize: 12,
-        top: 12,
-        right: -50,
-        display: 'flex',
-        padding: '0 4px 0 2px',
-        height: 20,
-        lineHeight: '20px',
-        whiteSpace: 'nowrap',
-        background: '#F4F4F6',
-        borderTopRightRadius: 4,
-        borderBottomRightRadius: 4,
-        div: {
-          display: 'inline-block',
-          borderTop: '10px solid transparent',
-          borderBottom: '10px solid transparent',
-          borderRight: '7px solid #F4F4F6',
-          width: 0,
-          height: 0,
-          position: 'absolute',
-          left: -7,
-          top: 0,
-        },
+        left: -7,
+        top: 0,
       },
     },
   },
   ({ isActive, isPlan }) => ({
     color: isPlan ? '#969799' : '#323233',
     '.titleBox': {
-      span: {
-        color: String(isActive ? '#2877FF' : ''),
-      },
+      color: String(isActive ? '#2877FF' : ''),
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
       fontWeight: isActive ? 500 : 400,
     },
@@ -329,15 +323,13 @@ const CommonOperation = (props: Props) => {
                 i.hasPath?.filter(k => pathname.includes(k))?.length > 0
               }
             >
-              <div className="titleBox">
-                <span>{i.name}</span>
-                {i.isPlan ? (
-                  <div className="text">
-                    {t('version2.developed')}
-                    <div />
-                  </div>
-                ) : null}
-              </div>
+              <span className="titleBox">{i.name}</span>
+              {/* {i.isPlan ? (
+                <div className="text">
+                  {t('version2.developed')}
+                  <div />
+                </div>
+              ) : null} */}
             </TabsItem>
           ))}
         </Tabs>
