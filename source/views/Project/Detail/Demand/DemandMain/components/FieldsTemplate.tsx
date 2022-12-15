@@ -375,7 +375,13 @@ const FieldsTemplate = (props: Props) => {
               key="1"
             >
               <ItemWrap>
-                <Checkbox.Group value={checkList} onChange={onChange}>
+                <Checkbox.Group
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList}
+                  onChange={onChange}
+                >
                   <Row gutter={[0, 10]}>
                     {fields?.baseFields?.map((item: any) => (
                       <Col key={item.label} span={6}>
@@ -399,7 +405,13 @@ const FieldsTemplate = (props: Props) => {
               key="2"
             >
               <ItemWrap>
-                <Checkbox.Group value={checkList2} onChange={onChange2}>
+                <Checkbox.Group
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList2}
+                  onChange={onChange2}
+                >
                   <Row gutter={[0, 10]}>
                     {fields?.timeAndPersonFields?.map((item: any) => (
                       <Col key={item.label} span={6}>
@@ -418,7 +430,13 @@ const FieldsTemplate = (props: Props) => {
             >
               {fields?.customFields?.length ? (
                 <ItemWrap>
-                  <Checkbox.Group value={checkList3} onChange={onChange3}>
+                  <Checkbox.Group
+                    style={{
+                      width: '100%',
+                    }}
+                    value={checkList3}
+                    onChange={onChange3}
+                  >
                     <Row gutter={[0, 10]}>
                       {fields?.customFields?.map((item: any) => (
                         <Col key={item.label} span={6}>
