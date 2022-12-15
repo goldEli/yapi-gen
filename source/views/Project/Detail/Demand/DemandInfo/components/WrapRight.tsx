@@ -51,6 +51,7 @@ const WrapRight = styled.div({
   overflowY: 'auto',
   height: '100%',
   padding: '16px 10px 10px 24px',
+  position: 'relative',
 })
 
 const TitleWrap = styled.div<{ activeTabs?: any }>(
@@ -436,562 +437,591 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   }, [])
 
   return (
-    <WrapRight>
-      <DeleteConfirm
-        text={t('mark.cd')}
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
-        onConfirm={onDeleteConfirm}
-      />
-      <TitleWrap activeTabs={activeTabs}>
-        <div className="leftWrap" onClick={() => onChangeTabs(1)}>
-          {t('newlyAdd.basicInfo')}
-        </div>
-        <div className="rightWrap" onClick={() => onChangeTabs(2)}>
-          {t('common.comment')}{' '}
-          {dataList?.list?.length > 99
-            ? `${dataList?.list?.length}+`
-            : dataList?.list?.length}
-        </div>
-      </TitleWrap>
-      {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
-      {activeTabs === 1 && (
-        <div style={{ maxHeight: 'calc(100% - 100px)' }}>
-          <InfoItem>
-            <Label>
-              <OmitText
-                width={100}
-                tipProps={{
-                  placement: 'topLeft',
-                  getPopupContainer: node => node,
-                }}
-              >
-                {t('newlyAdd.demandProgress')}
-              </OmitText>
-            </Label>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginLeft: '15px',
-              }}
-              onMouseUp={onChangeSchedule}
-            >
-              <SliderWrap
-                isDisabled={
-                  demandInfo?.user
-                    ?.map((i: any) => i.user.id)
-                    ?.includes(userInfo?.id) && demandInfo.status.is_start !== 1
-                    ? demandInfo.status.is_end !== 1
-                    : null
-                }
-                style={{ width: 190 }}
-                value={schedule}
-                tipFormatter={(value: any) => `${value}%`}
-                onChange={value => setSchedule(value)}
-                tooltipVisible={false}
-                disabled={
-                  !(
-                    demandInfo?.user
-                      ?.map((i: any) => i.user.id)
-                      ?.includes(userInfo?.id) &&
-                    demandInfo.status.is_start !== 1 &&
-                    demandInfo.status.is_end !== 1
-                  )
-                }
-              />
-              <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
-                {schedule}%
-              </span>
-            </div>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.dealName')}</Label>
-            <ContentWrap>
-              <TableQuickEdit
-                item={demandInfo}
-                isInfo
-                keyText="users"
-                type="fixed_select"
-                defaultText={
-                  demandInfo?.user?.length
-                    ? demandInfo?.user?.map((i: any) => i.user.id)
-                    : []
-                }
-              >
-                {demandInfo?.user?.length
-                  ? demandInfo?.user?.map((i: any) => i.user.name).join(';')
-                  : '--'}
-              </TableQuickEdit>
-            </ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.createName')}</Label>
-            <ContentWrap notHover>{demandInfo?.userName || '--'}</ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.createTime')}</Label>
-            <ContentWrap notHover>
-              {demandInfo?.createdTime || '--'}
-            </ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.finishTime')}</Label>
-            <ContentWrap notHover>{demandInfo?.finishTime || '--'}</ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.parentDemand')}</Label>
-            <div style={{ paddingLeft: 4 }}>
-              <ParentDemand
-                isRight
-                addWrap={
-                  <AddWrap>
-                    <IconFont type="plus" />
-                    <div>{t('common.add23')}</div>
-                  </AddWrap>
-                }
-              />
-            </div>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.iterate')}</Label>
-            <ContentWrap>
-              <TableQuickEdit
-                item={demandInfo}
-                isInfo
-                keyText="iterate_id"
-                type="fixed_radio"
-                defaultText={
-                  demandInfo?.iterateName === '--'
-                    ? ''
-                    : demandInfo?.iterateName
-                }
-              >
-                {demandInfo?.iterateName === '--'
-                  ? '--'
-                  : demandInfo?.iterateName}
-              </TableQuickEdit>
-            </ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>
-              <OmitText
-                width={100}
-                tipProps={{
-                  placement: 'topLeft',
-                  getPopupContainer: node => node,
-                }}
-              >
-                {t('newlyAdd.demandClass')}
-              </OmitText>
-            </Label>
-
-            <ContentWrap>
-              <TableQuickEdit
-                item={demandInfo}
-                isInfo
-                keyText="class_id"
-                type="treeSelect"
-                defaultText={demandInfo?.class}
-              >
-                {demandInfo?.className
-                  ? demandInfo?.className
-                  : t('newlyAdd.unclassified')}
-              </TableQuickEdit>
-            </ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.priority')}</Label>
-            <Popconfirm
-              content={({ onHide }: { onHide(): void }) => {
-                return isCanEdit ? (
-                  <LevelContent
-                    onTap={item => onChangeState(item)}
-                    onHide={onHide}
-                    record={{
-                      id: demandId,
-                      project_id: projectId,
-                    }}
-                  />
-                ) : null
-              }}
-            >
-              <div
-                style={{
-                  cursor: isCanEdit ? 'pointer' : 'inherit',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <CanOperation isCanEdit={isCanEdit}>
-                  <IconFont
-                    style={{
-                      fontSize: 20,
-                      color: demandInfo?.priority?.color,
-                      marginRight: 4,
-                    }}
-                    type={demandInfo?.priority?.icon}
-                  />
-                  <span>{demandInfo?.priority?.content_txt || '--'}</span>
-                  {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
-                </CanOperation>
-              </div>
-            </Popconfirm>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.start')}</Label>
-            <ContentWrap>
-              <TableQuickEdit
-                item={demandInfo}
-                isInfo
-                keyText="expected_start_at"
-                type="date"
-                defaultText={demandInfo?.expectedStart || ''}
-                value={['date']}
-              >
-                {demandInfo?.expectedStart || '--'}
-              </TableQuickEdit>
-            </ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.end')}</Label>
-            <ContentWrap>
-              <TableQuickEdit
-                isInfo
-                item={demandInfo}
-                keyText="expected_end_at"
-                type="date"
-                defaultText={demandInfo?.expectedEnd || ''}
-                value={['date']}
-              >
-                {demandInfo?.expectedEnd || '--'}
-              </TableQuickEdit>
-            </ContentWrap>
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.copySend')}</Label>
-            <ContentWrap>
-              <TableQuickEdit
-                item={demandInfo}
-                isInfo
-                keyText="copysend"
-                type="fixed_select"
-                defaultText={
-                  demandInfo?.copySend?.length
-                    ? demandInfo?.copySend?.map((i: any) => i.copysend.id)
-                    : []
-                }
-              >
-                {demandInfo?.copySend?.length
-                  ? demandInfo?.copySend
-                      ?.map((i: any) => i.copysend.name)
-                      .join(';')
-                  : '--'}
-              </TableQuickEdit>
-            </ContentWrap>
-          </InfoItem>
-          {fieldList?.list?.map((i: any) => (
-            <InfoItem key={i.content}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+      }}
+    >
+      {demandInfo?.isExamine ? (
+        <IconFont
+          type="review"
+          style={{
+            fontSize: 64,
+            position: 'absolute',
+            top: -42,
+            left: -37,
+            zIndex: 9999,
+          }}
+        />
+      ) : null}
+      <WrapRight>
+        <DeleteConfirm
+          text={t('mark.cd')}
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          onConfirm={onDeleteConfirm}
+        />
+        <TitleWrap activeTabs={activeTabs}>
+          <div className="leftWrap" onClick={() => onChangeTabs(1)}>
+            {t('newlyAdd.basicInfo')}
+          </div>
+          <div className="rightWrap" onClick={() => onChangeTabs(2)}>
+            {t('common.comment')}{' '}
+            {dataList?.list?.length > 99
+              ? `${dataList?.list?.length}+`
+              : dataList?.list?.length}
+          </div>
+        </TitleWrap>
+        {activeTabs === 1 && <BasicWrap>{t('newlyAdd.basicInfo')}</BasicWrap>}
+        {activeTabs === 1 && (
+          <div style={{ maxHeight: 'calc(100% - 100px)' }}>
+            <InfoItem>
               <Label>
                 <OmitText
-                  width={80}
+                  width={100}
                   tipProps={{
                     placement: 'topLeft',
                     getPopupContainer: node => node,
                   }}
                 >
-                  {i.name}
+                  {t('newlyAdd.demandProgress')}
                 </OmitText>
               </Label>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginLeft: '15px',
+                }}
+                onMouseUp={onChangeSchedule}
+              >
+                <SliderWrap
+                  isDisabled={
+                    demandInfo?.user
+                      ?.map((i: any) => i.user.id)
+                      ?.includes(userInfo?.id) &&
+                    demandInfo.status.is_start !== 1
+                      ? demandInfo.status.is_end !== 1
+                      : null
+                  }
+                  style={{ width: 190 }}
+                  value={schedule}
+                  tipFormatter={(value: any) => `${value}%`}
+                  onChange={value => setSchedule(value)}
+                  tooltipVisible={false}
+                  disabled={
+                    !(
+                      demandInfo?.user
+                        ?.map((i: any) => i.user.id)
+                        ?.includes(userInfo?.id) &&
+                      demandInfo.status.is_start !== 1 &&
+                      demandInfo.status.is_end !== 1
+                    )
+                  }
+                />
+                <span
+                  style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}
+                >
+                  {schedule}%
+                </span>
+              </div>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.dealName')}</Label>
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
                   isInfo
-                  keyText={i.content}
-                  type={i.type?.attr}
-                  defaultText={demandInfo?.customField?.[i.content]?.value}
-                  isCustom
-                  remarks={i?.remarks}
+                  keyText="users"
+                  type="fixed_select"
+                  defaultText={
+                    demandInfo?.user?.length
+                      ? demandInfo?.user?.map((i: any) => i.user.id)
+                      : []
+                  }
                 >
-                  {getText(i.type?.attr, demandInfo?.customField?.[i.content])}
+                  {demandInfo?.user?.length
+                    ? demandInfo?.user?.map((i: any) => i.user.name).join(';')
+                    : '--'}
                 </TableQuickEdit>
               </ContentWrap>
             </InfoItem>
-          ))}
+            <InfoItem>
+              <Label>{t('common.createName')}</Label>
+              <ContentWrap notHover>{demandInfo?.userName || '--'}</ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.createTime')}</Label>
+              <ContentWrap notHover>
+                {demandInfo?.createdTime || '--'}
+              </ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.finishTime')}</Label>
+              <ContentWrap notHover>
+                {demandInfo?.finishTime || '--'}
+              </ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.parentDemand')}</Label>
+              <div style={{ paddingLeft: 4 }}>
+                <ParentDemand
+                  isRight
+                  addWrap={
+                    <AddWrap>
+                      <IconFont type="plus" />
+                      <div>{t('common.add23')}</div>
+                    </AddWrap>
+                  }
+                />
+              </div>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.iterate')}</Label>
+              <ContentWrap>
+                <TableQuickEdit
+                  item={demandInfo}
+                  isInfo
+                  keyText="iterate_id"
+                  type="fixed_radio"
+                  defaultText={
+                    demandInfo?.iterateName === '--'
+                      ? ''
+                      : demandInfo?.iterateName
+                  }
+                >
+                  {demandInfo?.iterateName === '--'
+                    ? '--'
+                    : demandInfo?.iterateName}
+                </TableQuickEdit>
+              </ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>
+                <OmitText
+                  width={100}
+                  tipProps={{
+                    placement: 'topLeft',
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {t('newlyAdd.demandClass')}
+                </OmitText>
+              </Label>
+
+              <ContentWrap>
+                <TableQuickEdit
+                  item={demandInfo}
+                  isInfo
+                  keyText="class_id"
+                  type="treeSelect"
+                  defaultText={demandInfo?.class}
+                >
+                  {demandInfo?.className
+                    ? demandInfo?.className
+                    : t('newlyAdd.unclassified')}
+                </TableQuickEdit>
+              </ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.priority')}</Label>
+              <Popconfirm
+                content={({ onHide }: { onHide(): void }) => {
+                  return isCanEdit ? (
+                    <LevelContent
+                      onTap={item => onChangeState(item)}
+                      onHide={onHide}
+                      record={{
+                        id: demandId,
+                        project_id: projectId,
+                      }}
+                    />
+                  ) : null
+                }}
+              >
+                <div
+                  style={{
+                    cursor: isCanEdit ? 'pointer' : 'inherit',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <CanOperation isCanEdit={isCanEdit}>
+                    <IconFont
+                      style={{
+                        fontSize: 20,
+                        color: demandInfo?.priority?.color,
+                        marginRight: 4,
+                      }}
+                      type={demandInfo?.priority?.icon}
+                    />
+                    <span>{demandInfo?.priority?.content_txt || '--'}</span>
+                    {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
+                  </CanOperation>
+                </div>
+              </Popconfirm>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.start')}</Label>
+              <ContentWrap>
+                <TableQuickEdit
+                  item={demandInfo}
+                  isInfo
+                  keyText="expected_start_at"
+                  type="date"
+                  defaultText={demandInfo?.expectedStart || ''}
+                  value={['date']}
+                >
+                  {demandInfo?.expectedStart || '--'}
+                </TableQuickEdit>
+              </ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.end')}</Label>
+              <ContentWrap>
+                <TableQuickEdit
+                  isInfo
+                  item={demandInfo}
+                  keyText="expected_end_at"
+                  type="date"
+                  defaultText={demandInfo?.expectedEnd || ''}
+                  value={['date']}
+                >
+                  {demandInfo?.expectedEnd || '--'}
+                </TableQuickEdit>
+              </ContentWrap>
+            </InfoItem>
+            <InfoItem>
+              <Label>{t('common.copySend')}</Label>
+              <ContentWrap>
+                <TableQuickEdit
+                  item={demandInfo}
+                  isInfo
+                  keyText="copysend"
+                  type="fixed_select"
+                  defaultText={
+                    demandInfo?.copySend?.length
+                      ? demandInfo?.copySend?.map((i: any) => i.copysend.id)
+                      : []
+                  }
+                >
+                  {demandInfo?.copySend?.length
+                    ? demandInfo?.copySend
+                        ?.map((i: any) => i.copysend.name)
+                        .join(';')
+                    : '--'}
+                </TableQuickEdit>
+              </ContentWrap>
+            </InfoItem>
+            {fieldList?.list?.map((i: any) => (
+              <InfoItem key={i.content}>
+                <Label>
+                  <OmitText
+                    width={80}
+                    tipProps={{
+                      placement: 'topLeft',
+                      getPopupContainer: node => node,
+                    }}
+                  >
+                    {i.name}
+                  </OmitText>
+                </Label>
+                <ContentWrap>
+                  <TableQuickEdit
+                    item={demandInfo}
+                    isInfo
+                    keyText={i.content}
+                    type={i.type?.attr}
+                    defaultText={demandInfo?.customField?.[i.content]?.value}
+                    isCustom
+                    remarks={i?.remarks}
+                  >
+                    {getText(
+                      i.type?.attr,
+                      demandInfo?.customField?.[i.content],
+                    )}
+                  </TableQuickEdit>
+                </ContentWrap>
+              </InfoItem>
+            ))}
+            <div
+              style={{
+                height: '10px',
+              }}
+            />
+          </div>
+        )}
+        {activeTabs !== 1 && (
           <div
             style={{
-              height: '10px',
-            }}
-          />
-        </div>
-      )}
-      {activeTabs !== 1 && (
-        <div
-          style={{
-            height: 'calc(100% - 80px)',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '20px',
+              height: 'calc(100% - 80px)',
             }}
           >
-            <span
+            <div
               style={{
-                fontSize: '14px',
-                fontWeight: 'bold',
-                color: '#323233',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '20px',
               }}
             >
-              {t('new_p1.a1')}
-            </span>
-            <AddWrap
-              onClick={() => {
-                setVisibleEdit(true)
-                dispatch(changeId(true))
-              }}
-              style={{
-                marginRight: '30px',
-              }}
-              hasColor
-            >
-              <IconFont type="plus" />
-              <div
+              <span
                 style={{
-                  color: '#2877ff',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: '#323233',
                 }}
               >
-                {t('new_p1.a2')}
-              </div>
-            </AddWrap>
-          </div>
+                {t('new_p1.a1')}
+              </span>
+              <AddWrap
+                onClick={() => {
+                  setVisibleEdit(true)
+                  dispatch(changeId(true))
+                }}
+                style={{
+                  marginRight: '30px',
+                }}
+                hasColor
+              >
+                <IconFont type="plus" />
+                <div
+                  style={{
+                    color: '#2877ff',
+                  }}
+                >
+                  {t('new_p1.a2')}
+                </div>
+              </AddWrap>
+            </div>
 
-          {!!dataList?.list &&
-            (dataList?.list?.length > 0 ? (
-              <div>
-                {dataList?.list?.map((item: any) => (
-                  <CommentItem style={{ marginBottom: '24px' }} key={item.id}>
-                    <div>
-                      {item.avatar ? (
-                        <img className="ar" src={item.avatar} alt="" />
-                      ) : (
-                        <SetHead>
-                          {String(
-                            item.name?.trim().slice(0, 1),
-                          ).toLocaleUpperCase()}
-                        </SetHead>
-                      )}
-                    </div>
-
-                    <TextWrap>
-                      <MyDiv>
-                        <HovDiv>
-                          {isComment && userInfo?.id === item.userId && (
-                            <IconFont
-                              type="close"
-                              onClick={() => onDeleteComment(item)}
-                            />
-                          )}
-                        </HovDiv>
-
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <span
-                            style={{
-                              marginRight: '12px',
-                            }}
-                            className="name"
-                          >
-                            <HiddenText>
-                              <OmitText
-                                width={100}
-                                tipProps={{
-                                  getPopupContainer: node => node,
-                                }}
-                              >
-                                {item.name}
-                              </OmitText>
-                            </HiddenText>
-                          </span>
-                          <span className="common">
-                            <HiddenText>
-                              <OmitText
-                                width={150}
-                                tipProps={{
-                                  getPopupContainer: node => node,
-                                }}
-                              >
-                                {item.statusContent}
-                              </OmitText>
-                            </HiddenText>
-                          </span>
-                        </div>
-                      </MyDiv>
-                      <div className="common" style={{ paddingRight: 30 }}>
-                        {item.createdTime}
+            {!!dataList?.list &&
+              (dataList?.list?.length > 0 ? (
+                <div>
+                  {dataList?.list?.map((item: any) => (
+                    <CommentItem style={{ marginBottom: '24px' }} key={item.id}>
+                      <div>
+                        {item.avatar ? (
+                          <img className="ar" src={item.avatar} alt="" />
+                        ) : (
+                          <SetHead>
+                            {String(
+                              item.name?.trim().slice(0, 1),
+                            ).toLocaleUpperCase()}
+                          </SetHead>
+                        )}
                       </div>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: item.content }}
-                        className="content"
-                      />
-                      <div
-                        style={{
-                          minWidth: '300px',
-                          marginTop: '8px',
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '10px',
-                        }}
-                      >
-                        {item.attachment.map((i: any) => {
-                          return (
-                            <Card
+
+                      <TextWrap>
+                        <MyDiv>
+                          <HovDiv>
+                            {isComment && userInfo?.id === item.userId && (
+                              <IconFont
+                                type="close"
+                                onClick={() => onDeleteComment(item)}
+                              />
+                            )}
+                          </HovDiv>
+
+                          <div
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            <span
                               style={{
-                                margin: 0,
+                                marginRight: '12px',
                               }}
-                              key={i.id}
+                              className="name"
                             >
-                              <BigWrap
-                                style={{
-                                  display: 'flex',
-                                }}
-                              >
-                                <GredParent
-                                  style={{
-                                    marginRight: '8px',
-                                    position: 'relative',
+                              <HiddenText>
+                                <OmitText
+                                  width={100}
+                                  tipProps={{
+                                    getPopupContainer: node => node,
                                   }}
                                 >
-                                  {imgs.includes(i.attachment.ext) && (
-                                    <img
-                                      style={{
-                                        width: '40px',
-                                        height: '40px',
-                                        borderRadius: '4px',
-                                      }}
-                                      src={i.attachment.path}
-                                      alt=""
-                                    />
-                                  )}
-                                  {!imgs.includes(i.attachment.ext) && (
-                                    <IconFont
-                                      style={{
-                                        fontSize: 40,
-                                        color: 'white',
-                                        borderRadius: '8px',
-                                      }}
-                                      type={
-                                        fileIconMap[i.attachment.ext] ||
-                                        'colorunknown'
-                                      }
-                                    />
-                                  )}
-                                </GredParent>
-                                <div>
-                                  <div
+                                  {item.name}
+                                </OmitText>
+                              </HiddenText>
+                            </span>
+                            <span className="common">
+                              <HiddenText>
+                                <OmitText
+                                  width={150}
+                                  tipProps={{
+                                    getPopupContainer: node => node,
+                                  }}
+                                >
+                                  {item.statusContent}
+                                </OmitText>
+                              </HiddenText>
+                            </span>
+                          </div>
+                        </MyDiv>
+                        <div className="common" style={{ paddingRight: 30 }}>
+                          {item.createdTime}
+                        </div>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: item.content }}
+                          className="content"
+                        />
+                        <div
+                          style={{
+                            minWidth: '300px',
+                            marginTop: '8px',
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '10px',
+                          }}
+                        >
+                          {item.attachment.map((i: any) => {
+                            return (
+                              <Card
+                                style={{
+                                  margin: 0,
+                                }}
+                                key={i.id}
+                              >
+                                <BigWrap
+                                  style={{
+                                    display: 'flex',
+                                  }}
+                                >
+                                  <GredParent
                                     style={{
-                                      width: '100%',
-                                      fontSize: '14px',
-                                      fontWeight: 400,
-                                      color: '#646566',
-                                      lineHeight: '22px',
-                                      wordBreak: 'break-all',
+                                      marginRight: '8px',
+                                      position: 'relative',
                                     }}
                                   >
-                                    {i.attachment.name}
-                                  </div>
-                                  <First
-                                    style={{
-                                      height: '20px',
-                                      fontSize: '12px',
-                                      fontWeight: 400,
-                                      color: '#969799',
-                                      lineHeight: '20px',
-                                    }}
-                                  >
-                                    <span>
-                                      {bytesToSize(i?.attachment.size) ?? ''}
-                                    </span>
-                                    <span
+                                    {imgs.includes(i.attachment.ext) && (
+                                      <img
+                                        style={{
+                                          width: '40px',
+                                          height: '40px',
+                                          borderRadius: '4px',
+                                        }}
+                                        src={i.attachment.path}
+                                        alt=""
+                                      />
+                                    )}
+                                    {!imgs.includes(i.attachment.ext) && (
+                                      <IconFont
+                                        style={{
+                                          fontSize: 40,
+                                          color: 'white',
+                                          borderRadius: '8px',
+                                        }}
+                                        type={
+                                          fileIconMap[i.attachment.ext] ||
+                                          'colorunknown'
+                                        }
+                                      />
+                                    )}
+                                  </GredParent>
+                                  <div>
+                                    <div
                                       style={{
-                                        margin: '0 6px 0 6px',
+                                        width: '100%',
+                                        fontSize: '14px',
+                                        fontWeight: 400,
+                                        color: '#646566',
+                                        lineHeight: '22px',
+                                        wordBreak: 'break-all',
                                       }}
                                     >
-                                      ·
-                                    </span>
-                                    <span
+                                      {i.attachment.name}
+                                    </div>
+                                    <First
                                       style={{
-                                        marginRight: '12px',
-                                      }}
-                                    >
-                                      {i.user_name}
-                                    </span>
-                                    <span>{i.attachment.created_at}</span>
-                                  </First>
-                                  <Second
-                                    style={{
-                                      height: '20px',
-                                    }}
-                                  >
-                                    <BlueCss
-                                      onClick={() =>
-                                        onDownload(
-                                          i.attachment.path,
-                                          i.attachment.name,
-                                        )
-                                      }
-                                      style={{
-                                        cursor: 'pointer',
+                                        height: '20px',
                                         fontSize: '12px',
-                                        color: '#2877ff',
+                                        fontWeight: 400,
+                                        color: '#969799',
+                                        lineHeight: '20px',
                                       }}
                                     >
-                                      {t('p2.download') as unknown as string}
-                                    </BlueCss>
-                                    {isComment &&
-                                      userInfo?.id === item.userId && (
-                                        <RedCss
-                                          onClick={() =>
-                                            onTapRemove(item.id, i.id)
-                                          }
-                                        >
-                                          {t('p2.delete')}
-                                        </RedCss>
-                                      )}
-                                  </Second>
-                                </div>
-                              </BigWrap>
-                            </Card>
-                          )
-                        })}
-                      </div>
-                    </TextWrap>
-                  </CommentItem>
-                ))}
-              </div>
-            ) : (
-              <div
-                style={{
-                  display: ' flex',
-                  height: '100%',
-                  alignItems: 'center',
-                }}
-              >
-                <NoData />
-              </div>
-            ))}
-        </div>
-      )}
-      {isComment && activeTabs === 2 && (
-        <EditComment
-          visibleEdit={visibleEdit}
-          editClose={editClose}
-          editConfirm={onAddConfirm}
-        />
-      )}
-    </WrapRight>
+                                      <span>
+                                        {bytesToSize(i?.attachment.size) ?? ''}
+                                      </span>
+                                      <span
+                                        style={{
+                                          margin: '0 6px 0 6px',
+                                        }}
+                                      >
+                                        ·
+                                      </span>
+                                      <span
+                                        style={{
+                                          marginRight: '12px',
+                                        }}
+                                      >
+                                        {i.user_name}
+                                      </span>
+                                      <span>{i.attachment.created_at}</span>
+                                    </First>
+                                    <Second
+                                      style={{
+                                        height: '20px',
+                                      }}
+                                    >
+                                      <BlueCss
+                                        onClick={() =>
+                                          onDownload(
+                                            i.attachment.path,
+                                            i.attachment.name,
+                                          )
+                                        }
+                                        style={{
+                                          cursor: 'pointer',
+                                          fontSize: '12px',
+                                          color: '#2877ff',
+                                        }}
+                                      >
+                                        {t('p2.download') as unknown as string}
+                                      </BlueCss>
+                                      {isComment &&
+                                        userInfo?.id === item.userId && (
+                                          <RedCss
+                                            onClick={() =>
+                                              onTapRemove(item.id, i.id)
+                                            }
+                                          >
+                                            {t('p2.delete')}
+                                          </RedCss>
+                                        )}
+                                    </Second>
+                                  </div>
+                                </BigWrap>
+                              </Card>
+                            )
+                          })}
+                        </div>
+                      </TextWrap>
+                    </CommentItem>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: ' flex',
+                    height: '100%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <NoData />
+                </div>
+              ))}
+          </div>
+        )}
+        {isComment && activeTabs === 2 && (
+          <EditComment
+            visibleEdit={visibleEdit}
+            editClose={editClose}
+            editConfirm={onAddConfirm}
+          />
+        )}
+      </WrapRight>
+    </div>
   )
 }
 
