@@ -14,7 +14,6 @@ import { getShapeLeft } from '@/services/project/shape'
 import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
 import PubSub from 'pubsub-js'
-import { divide } from 'lodash'
 import IconFont from '@/components/IconFont'
 
 const StatusWrap = styled.div({
