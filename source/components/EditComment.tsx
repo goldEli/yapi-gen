@@ -8,11 +8,10 @@ import { onPaste } from '@/tools'
 import { LabelTitle } from '@/views/Information/components/WhiteDay'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
-import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Form, message, Popover, Upload } from 'antd'
 import { t } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonModal from './CommonModal'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
@@ -298,10 +297,13 @@ const EditComment = (props: any) => {
                 onVisibleChange={visible => setIsOpen(visible)}
                 getTooltipContainer={node => node}
                 content={
-                  <ChoosePerson
-                    onChangeValue={obj => onAddPerson(obj)}
-                    options={arr}
-                  />
+                  isOpen && (
+                    <ChoosePerson
+                      onChangeValue={obj => onAddPerson(obj)}
+                      options={arr}
+                      visible={isOpen}
+                    />
+                  )
                 }
                 getPopupContainer={node => node}
               >

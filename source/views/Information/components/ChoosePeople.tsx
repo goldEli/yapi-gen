@@ -147,6 +147,7 @@ const ChoosePeople = (props: any) => {
             <ChoosePerson
               onChangeValue={obj => onAddPerson(obj)}
               options={filterOptions}
+              visible={isOpen}
             />
           }
           getPopupContainer={node => node}

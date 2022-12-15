@@ -5,7 +5,7 @@
 import { useModel } from '@/models'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
-import { message, Popover } from 'antd'
+import { message, Popover, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -58,6 +58,27 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
     fontWeight: isActive ? 500 : 400,
   }),
 )
+
+const ProjectNameWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  padding: '0 8px',
+  cursor: 'pointer',
+  borderRadius: 6,
+  color: '#323233',
+  fontSize: 14,
+  fontWeight: 500,
+  '.text': {
+    maxWidth: 240,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  },
+  '&:hover': {
+    background: '#F4F5F5',
+  },
+})
 
 interface DemandProps {
   tap?(item: any): void
@@ -166,6 +187,8 @@ interface Props {
   isOperationParent?: boolean
   // 输入框文本
   placeholder: string
+  //单独区分项目切换
+  isProjectChange?: boolean
 }
 
 const HaveSearchAndList = (props: Props) => {
@@ -173,7 +196,8 @@ const HaveSearchAndList = (props: Props) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const { addInfoDemand, getDemandInfo } = useModel('demand')
-  const { setIsChangeProject } = useModel('project')
+  const { setIsChangeProject, projectInfo } = useModel('project')
+  const [hoverState, setHoverState] = useState(false)
   const onVisibleOpenChange = (visible: any) => {
     setIsOpen(visible)
   }
@@ -228,7 +252,18 @@ const HaveSearchAndList = (props: Props) => {
       isRight={props?.isRight}
     >
       <div hidden={props.isHidden} onClick={() => setIsOpen(!isOpen)}>
-        {props.addWrap}
+        {props?.isProjectChange && (
+          <ProjectNameWrap
+            onMouseEnter={() => setHoverState(true)}
+            onMouseLeave={() => setHoverState(false)}
+          >
+            <Tooltip open={!isOpen && hoverState} title={projectInfo?.name}>
+              <span className="text">{projectInfo?.name}</span>
+            </Tooltip>
+            <IconFont type="down" style={{ fontSize: 20, marginLeft: 8 }} />
+          </ProjectNameWrap>
+        )}
+        {!props.isProjectChange && props?.addWrap}
       </div>
     </PopoverWrap>
   )

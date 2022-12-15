@@ -122,11 +122,21 @@ export const ItemWrap = styled.div({
 interface ChoosePersonProps {
   onChangeValue(obj: any): void
   options: any
+  visible?: any
 }
 
 export const ChoosePerson = (props: ChoosePersonProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState('')
+  const inputRefDom = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (props.visible) {
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    }
+  }, [props.visible])
 
   return (
     <div style={{ padding: '16px 0', minWidth: 240 }}>
@@ -135,6 +145,8 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
           style={{ height: 32, width: 208 }}
           placeholder={t('newlyAdd.pleaseKeyWord')}
           onChange={e => setValue(e.target.value)}
+          autoFocus
+          ref={inputRefDom as any}
         />
       </div>
       <PersonWrap>
@@ -365,6 +377,7 @@ const ExamineItem = (props: Props) => {
                 <ChoosePerson
                   onChangeValue={obj => onAddPerson(obj)}
                   options={props?.options}
+                  visible={isOpen}
                 />
               }
               getPopupContainer={node => node}

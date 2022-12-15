@@ -144,13 +144,13 @@
     "new": "New",
     "dayList": {
       "t1": "From me ",
-      "t2": "Send out the daily newspaper ",
-      "t3": "Send out a weekly report",
-      "t4": "Issue monthly report ",
+      "t2": "Issue daily report",
+      "t3": "Issue weekly report",
+      "t4": "Issue monthly report",
       "t5": "I received ",
-      "t6": "Receive daily newspaper ",
-      "t7": "Receive weekly report ",
-      "t8": "Receive Monthly Report"
+      "t6": "Receive Daily report",
+      "t7": "Receive weekly reports",
+      "t8": "Receive Monthly report"
     },
     "whiteList": {
       "t1": "Write daily ",

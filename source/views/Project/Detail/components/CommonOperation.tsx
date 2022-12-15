@@ -146,21 +146,6 @@ const MenuItems = styled.div({
   },
 })
 
-const ProjectNameWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  padding: '0 8px',
-  cursor: 'pointer',
-  borderRadius: 6,
-  color: '#323233',
-  fontSize: 14,
-  fontWeight: 500,
-  '&:hover': {
-    background: '#F4F5F5',
-  },
-})
-
 const BackWrap = styled.div({
   height: 24,
   width: 32,
@@ -330,20 +315,8 @@ const CommonOperation = (props: Props) => {
           <ImgWrap src={projectInfo.cover} />
           <HaveSearchAndList
             placeholder={t('version2.searchProject')}
-            addWrap={
-              <ProjectNameWrap>
-                <OmitText
-                  width={152}
-                  tipProps={{
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {projectInfo.name}
-                </OmitText>
-                <IconFont type="down" style={{ fontSize: 20, marginLeft: 8 }} />
-              </ProjectNameWrap>
-            }
             projectId={projectId}
+            isProjectChange
           />
         </ProjectInfo>
         <Tabs size={60}>

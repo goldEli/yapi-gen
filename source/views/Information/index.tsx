@@ -51,6 +51,12 @@ const AddButton = styled.button({
 const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
+  .provider {
+    height: 1px;
+    background: #ecedef;
+    width: calc(100% - 32px);
+    margin-left: 16px;
+  }
 `
 
 export const DailyContext: any = React.createContext('')
@@ -63,11 +69,11 @@ const MenuItem = styled.div<{ active?: boolean }>(
   }),
   {
     boxSizing: 'border-box',
-    justifyContent: 'center',
     height: 44,
     display: 'flex',
     alignItems: 'center',
     cursor: 'pointer',
+    paddingLeft: 52,
     '&: hover': {
       backgroundColor: '#F4F5F5',
     },
@@ -110,6 +116,9 @@ const Information = () => {
       id: 4,
       name: t('p2.dayList.t4'),
       path: 'send/4',
+    },
+    {
+      name: 'provider',
     },
     {
       id: 5,
@@ -259,42 +268,46 @@ const Information = () => {
         )}
         <Menu>
           {menuList.map(item => (
-            <MenuItem
-              style={{
-                fontSize: item.state ? '16px' : '',
-                fontWeight: item.state ? 'bold' : '',
-                position: 'relative',
-              }}
-              active={nowPath2 === item.id}
-              onClick={() => changeActive(item)}
-              key={item.id}
-              hidden={item.isPermission}
-            >
-              {item.state === 1 && (
-                <IconFont
-                  type="send"
+            <>
+              {item.id && (
+                <MenuItem
                   style={{
-                    fontSize: 20,
-                    marginRight: item.state ? '6px' : '',
-                    position: 'absolute',
-                    left: '45px',
+                    fontSize: item.state ? '16px' : '',
+                    fontWeight: item.state ? 'bold' : '',
+                    position: 'relative',
                   }}
-                />
+                  active={nowPath2 === item.id}
+                  onClick={() => changeActive(item)}
+                  key={item.id}
+                  hidden={item.isPermission}
+                >
+                  {item.state === 1 && (
+                    <IconFont
+                      type="send"
+                      style={{
+                        fontSize: 20,
+                        marginRight: item.state ? '6px' : '',
+                        position: 'absolute',
+                        left: '24px',
+                      }}
+                    />
+                  )}
+                  {item.state === 2 && (
+                    <IconFont
+                      type="container"
+                      style={{
+                        fontSize: 20,
+                        marginRight: item.state ? '6px' : '',
+                        position: 'absolute',
+                        left: '24px',
+                      }}
+                    />
+                  )}
+                  {item.name}
+                </MenuItem>
               )}
-              {item.state === 2 && (
-                <IconFont
-                  type="container"
-                  style={{
-                    fontSize: 20,
-                    marginRight: item.state ? '6px' : '',
-                    position: 'absolute',
-                    left: '45px',
-                  }}
-                />
-              )}
-              {item.name}
-              {/* {item.state === 2 && <RedLogo2>{count}</RedLogo2>} */}
-            </MenuItem>
+              {!item.id && <div className="provider" />}
+            </>
           ))}
         </Menu>
       </Side>
