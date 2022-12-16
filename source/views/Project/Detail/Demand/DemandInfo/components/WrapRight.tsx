@@ -44,6 +44,7 @@ import {
 } from '../../components/UploadAttach'
 import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
+import PubSub from 'pubsub-js'
 
 const WrapRight = styled.div({
   width: '100%',
