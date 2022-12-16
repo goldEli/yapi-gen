@@ -220,6 +220,12 @@ const TextWrap = styled.div({
       height: 100,
       objectFit: 'contain',
     },
+    table: {
+      'td,th': {
+        height: '20px',
+        border: '1px solid black',
+      },
+    },
   },
 })
 

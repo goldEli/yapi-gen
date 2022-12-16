@@ -25,7 +25,7 @@ const TextWrapEditor = styled.div({
     marginBottom: '0px!important',
   },
   table: {
-    td: {
+    'td,th': {
       height: '20px',
       border: '1px solid black',
     },
