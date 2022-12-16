@@ -969,7 +969,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                       >
                                         {i.user_name}
                                       </span>
-                                      <span>{i.attachment.created_at}</span>
+                                      <span>{i.created_at}</span>
                                     </First>
                                     <Second
                                       style={{
