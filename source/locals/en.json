@@ -634,7 +634,7 @@
     "createTag": "Create 【{{value}}】 tag",
     "uploadMax": "The file supports up to 5G",
     "demandStatus": "Demand Status",
-    "replaySuccess": "Replay Success",
+    "replaySuccess": "Comment Success",
     "confirmDelComment": "Confirm to delete the current comment?",
     "enterComment": "Enter a comment, press Enter to post quickly",
     "replay": "Reply",

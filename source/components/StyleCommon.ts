@@ -677,7 +677,6 @@ const SearchLine = styled.div`
   display: flex;
   gap: 16px;
   padding-left: 24px;
-  min-height: 64px;
   background: rgba(255, 255, 255, 1);
 `
 const SetButton = styled.div<{ show?: boolean }>`

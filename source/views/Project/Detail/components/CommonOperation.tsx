@@ -186,18 +186,18 @@ const CommonOperation = (props: Props) => {
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
     { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
-    {
-      name: t('version2.defect'),
-      type: 'Defect',
-      hasPath: ['Defect'],
-      isPlan: true,
-    },
-    {
-      name: t('version2.report'),
-      type: 'Report',
-      hasPath: ['Report'],
-      isPlan: true,
-    },
+    // {
+    //   name: t('version2.defect'),
+    //   type: 'Defect',
+    //   hasPath: ['Defect'],
+    //   isPlan: true,
+    // },
+    // {
+    //   name: t('version2.report'),
+    //   type: 'Report',
+    //   hasPath: ['Report'],
+    //   isPlan: true,
+    // },
     {
       name: t('container.setting'),
       type: 'Set',
@@ -316,7 +316,7 @@ const CommonOperation = (props: Props) => {
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
-              isPlan={i.isPlan}
+              // isPlan={i.isPlan}
               onClick={() => onToModel(i)}
               key={i.type}
               isActive={

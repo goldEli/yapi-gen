@@ -635,7 +635,7 @@
     "createTag": "创建【{{value}}】标签",
     "uploadMax": "文件最大支持5G",
     "demandStatus": "需求状态",
-    "replaySuccess": "回复成功",
+    "replaySuccess": "评论成功",
     "confirmDelComment": "确认删除当前评论？",
     "enterComment": "输入评论，按Enter快速发布",
     "replay": "回复",

@@ -274,7 +274,11 @@ const BatchModal = (props: Props) => {
             </Form.Item>
             {String(chooseType).includes('expected_') && (
               <Form.Item label={t('version2.updateAfter')} name="target">
-                <DatePicker allowClear style={{ width: '100%' }} />
+                <DatePicker
+                  allowClear
+                  style={{ width: '100%' }}
+                  placeholder={t('common.pleaseSelect')}
+                />
               </Form.Item>
             )}
             {chooseType === 'class_id' &&
@@ -286,6 +290,7 @@ const BatchModal = (props: Props) => {
                     getPopupContainer={node => node}
                     allowClear
                     treeData={chooseAfter.selectList}
+                    placeholder={t('common.pleaseSelect')}
                   />
                 </Form.Item>
               )}
@@ -299,17 +304,8 @@ const BatchModal = (props: Props) => {
                     { required: chooseType === 'category_id', message: '' },
                   ]}
                 >
-                  {/* {chooseType === 'class_id' && (
-                    <TreeSelect
-                      showArrow
-                      showSearch
-                      getPopupContainer={node => node}
-                      allowClear
-                      treeData={chooseAfter.selectList}
-                    />
-                  )}
-                  {chooseType !== 'class_id' && ( */}
                   <Select
+                    placeholder={t('common.pleaseSelect')}
                     showSearch
                     showArrow
                     optionFilterProp="label"
@@ -339,7 +335,17 @@ const BatchModal = (props: Props) => {
                 {getTypeComponent(
                   {
                     attr: chooseAfter.attr,
-                    remarks: '',
+                    remarks: [
+                      'select_checkbox',
+                      'radio',
+                      'checkbox',
+                      'select',
+                      'user_select',
+                      'user_select_checkbox',
+                      'date',
+                    ].includes(chooseAfter.attr)
+                      ? t('common.pleaseSelect')
+                      : t('common.pleaseEnter'),
                     value: chooseAfter.selectList,
                   },
                   void 0,

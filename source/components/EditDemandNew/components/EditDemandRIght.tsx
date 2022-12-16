@@ -119,9 +119,14 @@ const EditDemandRIght = (props: Props) => {
         ].includes(element.type.attr)
       ) {
         // 判断是否是下拉框，是则去除空选项
-        resultCustom[element.content] = isFilter
-          ? customValue?.filter((i: any) => i !== -1)
-          : customValue
+        const values = customValue?.filter((i: any) => i !== -1)
+        // 判断是否是单选，是则取第一个
+        const resultValue = ['select', 'radio', 'user_select'].includes(
+          element.type.attr,
+        )
+          ? values[0]
+          : values
+        resultCustom[element.content] = isFilter ? resultValue : customValue
       } else if (['number'].includes(element.type.attr)) {
         // 判断是否是数字类型，是则获取start
         resultCustom[element.content] = isFilter

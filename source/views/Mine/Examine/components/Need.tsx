@@ -222,13 +222,10 @@ const Need = (props: any) => {
             placeholder={t('common.pleaseSearchDemand')}
             onChangeSearch={onPressEnter}
           />
-          <Divider
-            style={{ height: 20, margin: '0 16px 0 24px' }}
-            type="vertical"
-          />
           <HoverWrap
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}
+            style={{ marginLeft: 8 }}
           >
             <IconFont className="iconMain" type="filter" />
             <span className="label">{t('common.search')}</span>

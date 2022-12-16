@@ -520,7 +520,7 @@ const DemandTree = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {(hasEdit && hasDel) || hasBatch ? null : (
+              {hasEdit && hasDel ? null : (
                 <MoreDropdown
                   isMoreVisible={isShowMore}
                   menu={
@@ -535,8 +535,10 @@ const DemandTree = (props: Props) => {
           )
         },
       },
-      Table.SELECTION_COLUMN,
     ]
+    if (!hasBatch) {
+      arrList.push(Table.SELECTION_COLUMN as any)
+    }
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
@@ -638,12 +640,15 @@ const DemandTree = (props: Props) => {
                   showExpandColumn: false,
                   expandedRowKeys,
                 }}
-                rowSelection={{
-                  selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-                  onSelect: (record, selected) =>
-                    onSelectChange(record, selected),
-                  onSelectAll,
-                }}
+                rowSelection={
+                  !hasBatch &&
+                  ({
+                    selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+                    onSelect: (record: any, selected: any) =>
+                      onSelectChange(record, selected),
+                    onSelectAll,
+                  } as any)
+                }
               />
             ) : (
               <NoData

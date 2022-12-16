@@ -19,6 +19,7 @@ const batchAllBox = css`
   position: absolute;
   bottom: 56px;
   z-index: 22;
+  pointer-events: none;
 `
 
 const batchBox = css`

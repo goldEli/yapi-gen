@@ -302,7 +302,7 @@ const Operation = (props: Props) => {
 
   const moreOperation = (
     <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
-      {hasImport ? null : (
+      {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
           <span>{t('newlyAdd.importDemand')}</span>
