@@ -218,6 +218,7 @@ const Member = (props: Props) => {
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
+  const [search, setSearch] = useState<any>()
   const [memberList, setMemberList] = useState<any>([])
   const [userDataList, setUserDataList] = useState<any[]>([])
   const [form] = Form.useForm()
@@ -225,11 +226,11 @@ const Member = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/project/member/update',
   )
-  const getList = async (val?: string) => {
+  const getList = async () => {
     const result = await getProjectMember({
       projectId: props.projectId,
       all: true,
-      searchValue: val,
+      searchValue: search,
     })
 
     setMemberList(result)
@@ -299,8 +300,11 @@ const Member = (props: Props) => {
   }, [isRefreshMember])
 
   const onChangeSearch = (e: any) => {
-    getList(e.target.value)
+    setSearch(e.target.value)
   }
+  useEffect(() => {
+    getList()
+  }, [search])
 
   const onClickCancel = () => {
     setIsVisible(false)
