@@ -386,14 +386,16 @@ const EditDemand = (props: Props) => {
 
   // 关闭弹窗
   const onCancel = () => {
-    leftDom.current?.reset()
-    rightDom.current?.reset()
     props.onChangeVisible()
     setCreateCategory({})
     setChangeCategoryFormData({})
     setIsOpenEditDemand(false)
     setFilterParamsModal({})
     setIsSaveParams(false)
+    setTimeout(() => {
+      leftDom.current?.reset()
+      rightDom.current?.reset()
+    }, 100)
   }
 
   // 保存数据

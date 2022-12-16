@@ -32,10 +32,11 @@ interface Props {
 const MoreDropdown = (props: Props) => {
   return (
     <DropdownWrap
+      destroyPopupOnHide
       key={
         props.isMoreVisible && !props?.hasChild
           ? props.isMoreVisible.toString()
-          : null
+          : Math.random()
       }
       visible={props?.hasChild ? void 0 : props.isMoreVisible}
       overlay={props.menu}

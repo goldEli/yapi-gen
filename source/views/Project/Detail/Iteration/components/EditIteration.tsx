@@ -3,7 +3,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Form, Input, message } from 'antd'
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Editor from '@/components/Editor'
 import { useModel } from '@/models'
@@ -127,6 +126,7 @@ const EditIteration = (props: Props) => {
       }
       setIsUpdateList(true)
       setTimeout(() => {
+        setHtml('')
         form.resetFields()
       }, 100)
     } catch (error) {
@@ -136,7 +136,10 @@ const EditIteration = (props: Props) => {
 
   const onCancel = () => {
     props.onChangeVisible()
-    form.resetFields()
+    setTimeout(() => {
+      setHtml('')
+      form.resetFields()
+    }, 100)
   }
 
   const onChangePicker = (_values: any) => {
