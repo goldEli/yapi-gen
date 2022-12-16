@@ -503,6 +503,7 @@ const Member = (props: Props) => {
                     style={{
                       color: '#969799',
                       fontSize: '12px',
+                      marginRight: '18px',
                     }}
                   >
                     {i.roleName}
