@@ -13,13 +13,12 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSearchParams } from 'react-router-dom'
 
 const batchAllBox = css`
-  width: 100%;
   display: flex;
   justify-content: center;
   position: absolute;
   bottom: 56px;
   z-index: 22;
-  pointer-events: none;
+  left: calc(50% - 150px);
 `
 
 const batchBox = css`
