@@ -279,7 +279,7 @@ const EditDemandRIght = (props: Props) => {
         setPriorityDetail(resultPriority)
 
         // 筛选回填预计开始时间
-        if (filterParamsModal?.expectedStart) {
+        if (filterParamsModal?.expectedStart?.length > 0) {
           form.setFieldsValue({
             startTime:
               filterParamsModal?.expectedStart[0] === '1970-01-01'
@@ -289,7 +289,7 @@ const EditDemandRIght = (props: Props) => {
         }
 
         // 筛选回填预计结束时间
-        if (filterParamsModal?.expectedEnd) {
+        if (filterParamsModal?.expectedEnd?.length > 0) {
           form.setFieldsValue({
             endTime: ['2030-01-01', '1970-01-01'].includes(
               filterParamsModal?.expectedEnd[1],
