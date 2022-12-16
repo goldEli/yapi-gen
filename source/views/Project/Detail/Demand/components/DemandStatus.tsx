@@ -52,6 +52,7 @@ const DemandStatusBox = (props: any) => {
     }
   }
   const init = async () => {
+    getDemandInfo({ projectId: props.pid, id: props.sid })
     const res2 = await getShapeLeft({
       id: props.pid,
       nId: props.sid,
@@ -59,14 +60,15 @@ const DemandStatusBox = (props: any) => {
     setLeftList(res2)
     setIsUpdateStatus(false)
 
-    setRows(res2.find((i: any) => i.id === demandInfo.status.id))
+    setRows(res2.find((i: any) => i.id === active))
   }
+
   const updateStatus = async (res1: any) => {
     try {
       await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
-      getDemandInfo({ projectId: props.pid, id: props.sid })
-      init()
+      await getDemandInfo({ projectId: props.pid, id: props.sid })
+      await init()
       PubSub.publish('watch')
     } catch (error) {
       //
@@ -141,7 +143,7 @@ const DemandStatusBox = (props: any) => {
             />
           </div>
         ) : null}
-        {rows ? (
+        {rows && !isUpdateStatus ? (
           <ShapeContentForDetail
             active={demandInfo.status.status}
             sid={props.sid}

@@ -7,11 +7,12 @@ import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
 import EditProject from '@/views/Project/components/EditProject'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
+import PubSub from 'pubsub-js'
 
 const Wrap = styled.div({
   padding: 24,
@@ -120,10 +121,16 @@ const ProjectInfo = () => {
   const { projectInfo, getProjectInfo } = useModel('project')
   const { userInfo } = useModel('user')
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
+  localStorage.setItem('memberId', projectInfo.id)
   const onUpdate = () => {
     getProjectInfo({ projectId: projectInfo.id })
   }
 
+  useEffect(() => {
+    PubSub.subscribe('member', () => {
+      getProjectInfo({ projectId: localStorage.getItem('memberId') })
+    })
+  }, [])
   return (
     <div style={{ padding: 16, height: '100%' }}>
       <EditProject

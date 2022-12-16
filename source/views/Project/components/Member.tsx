@@ -329,6 +329,7 @@ const Member = (props: Props) => {
     setUserDataList([])
     getList()
     setIsVisible(false)
+    PubSub.publish('member')
     setTimeout(() => {
       form.resetFields()
     }, 100)
