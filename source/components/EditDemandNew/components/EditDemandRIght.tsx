@@ -312,18 +312,32 @@ const EditDemandRIght = (props: Props) => {
         const hisCategoryData = JSON.parse(
           decryptPhp(localStorage.getItem('quickCreateData') as any),
         )
+
         form.setFieldsValue({
           userIds: hisCategoryData?.userIds,
           class: hisCategoryData?.class,
           parentId: hisCategoryData?.parentId,
           iterateId: hisCategoryData?.iterateId,
           copySendIds: hisCategoryData?.copySendIds,
-          endTime: moment(hisCategoryData?.expectedEnd || 0),
-          startTime: moment(hisCategoryData?.expectedStart || 0),
+          // endTime: moment(hisCategoryData?.expectedEnd || 0),
+          // startTime: moment(hisCategoryData?.expectedStart || 0),
           priority: priorityList?.data?.filter(
             (i: any) => i.id === hisCategoryData?.priority,
           )?.[0],
         })
+
+        if (hisCategoryData?.expectedStart) {
+          form.setFieldsValue({
+            startTime: moment(hisCategoryData.expectedStart || 0),
+          })
+        }
+
+        if (hisCategoryData?.expectedEnd) {
+          form.setFieldsValue({
+            endTime: moment(hisCategoryData.expectedEnd || 0),
+          })
+        }
+
         // 优先级
         setPriorityDetail(
           priorityList?.data?.filter(

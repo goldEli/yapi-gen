@@ -62,6 +62,12 @@ const EditorCategory = (props: EditorProps) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    form.setFieldsValue({
+      color: '#2877FF',
+    })
+  }, [props.isVisible])
+
+  useEffect(() => {
     if (props?.item?.id) {
       form.setFieldsValue(props?.item)
       setNormalColor(props?.item?.color)
