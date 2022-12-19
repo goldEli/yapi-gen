@@ -32,7 +32,7 @@ const WrapRight = styled.div({
 
 const MainTitle = styled.div({
   fontSize: 14,
-  color: '#969799',
+  color: '#646566',
   fontWeight: 400,
 })
 interface Props {

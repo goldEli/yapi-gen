@@ -471,7 +471,7 @@ const FieldsTemplate = (props: Props) => {
                       style={{
                         fontSize: 16,
                         marginRight: '8px',
-                        color: '#969799',
+                        color: '#bbbdbf',
                       }}
                       type="move"
                     />
