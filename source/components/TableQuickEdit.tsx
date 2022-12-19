@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-leaked-render */
+// 需求列表快捷编辑组件
+
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-// 需求列表快捷编辑组件
-
 import { useEffect, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
@@ -37,6 +38,9 @@ interface Props {
 
   // 他的/我的子需求列表使用 --- 用于判断是否有编辑权限
   projectPermissions?: any
+
+  // 自定义人员的下拉
+  defaultTextValues?: any
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -45,7 +49,7 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, getFieldList, tagList } = useModel('project')
+  const { projectInfo, getFieldListCustom, tagList } = useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
@@ -79,12 +83,19 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段
   const getIsCustomValues = async () => {
-    const response = await getFieldList({ projectId, key: props.keyText })
+    const response = await getFieldListCustom({ projectId, key: props.keyText })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
     const resultValue = {
-      value: currentObj?.type.value,
+      value: ['user_select_checkbox', 'user_select'].includes(
+        currentObj?.type.attr,
+      )
+        ? currentObj?.type.data?.map((i: any) => ({
+            label: i.name,
+            value: i.id,
+          }))
+        : currentObj?.type.value,
       remarks: currentObj?.remarks,
       attr: currentObj?.type.attr,
     }
@@ -152,19 +163,9 @@ const TableQuickEdit = (props: Props) => {
 
   // 设置默认参数 - 主要用于需要接口获取参数的
   const setNormalParams = async () => {
-    let resultValue: any
-    if (props?.isMineOrHis && props?.isCustom) {
+    if (props?.isCustom) {
       // 我的模块及他的模块并且是自定义字段
       getIsCustomValues()
-    } else if (props.isCustom) {
-      resultValue = {
-        attr: props?.type,
-        value: props.value,
-      }
-      setParams(resultValue)
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
     } else {
       // 项目及详情中自带相应参数或者是之前的固定参数
       getDefaultSelectValues()
@@ -193,7 +194,9 @@ const TableQuickEdit = (props: Props) => {
     }
     if (props?.isCustom) {
       obj.otherParams = {
-        custom_field: { [props?.keyText]: newValue },
+        custom_field: {
+          [props?.keyText]: newValue || '',
+        },
       }
     } else if (props.keyText === 'tag') {
       obj.otherParams = {
@@ -210,6 +213,7 @@ const TableQuickEdit = (props: Props) => {
         [props?.keyText]: newValue || newValue === 0 ? newValue : '',
       }
     }
+
     try {
       await updateTableParams(obj)
       if (props.isInfo) {
@@ -233,9 +237,12 @@ const TableQuickEdit = (props: Props) => {
     } else {
       let resultVal: any
       if (
-        ['select_checkbox', 'checkbox', 'fixed_select'].includes(
-          String(props?.type),
-        ) &&
+        [
+          'select_checkbox',
+          'checkbox',
+          'fixed_select',
+          'user_select_checkbox',
+        ].includes(String(props?.type)) &&
         !val
       ) {
         resultVal = []

@@ -1,3 +1,5 @@
+// 需求主页-导入需求
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -80,7 +82,7 @@ const CommonWrap = styled.div({
 
 const ContentWrap = styled.div<{ hasBg?: true; width: number }>(
   {
-    height: 32,
+    minHeight: 32,
     lineHeight: '32px',
     textAlign: 'center',
     fontSize: 12,
@@ -215,16 +217,15 @@ const ImportDemand = () => {
 
   return (
     <Wrap language={i18n.language}>
-      {isVisible && (
-        <FieldsTemplate
-          visible={isVisible}
-          title={t('newlyAdd.importChoose')}
-          importState={tabs}
-          onClose={() => setIsVisible(false)}
-          onConfirm={onConfirmTemplate}
-          isExport={false}
-        />
-      )}
+      <FieldsTemplate
+        visible={isVisible}
+        title={t('newlyAdd.importChoose')}
+        importState={tabs}
+        onClose={() => setIsVisible(false)}
+        onConfirm={onConfirmTemplate}
+        isExport={false}
+      />
+
       <StepWrap>
         <StepBoxWrap active={step === 1}>
           <div className="circle">1</div>

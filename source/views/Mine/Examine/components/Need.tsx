@@ -1,3 +1,6 @@
+// 审核列表
+
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-params */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -14,9 +17,10 @@ import {
   LabNumber,
   ShowWrap,
   TableWrap,
+  HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Divider, Pagination, Spin, Tooltip } from 'antd'
+import { Divider, Pagination, Spin } from 'antd'
 import { useModel } from '@/models'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
@@ -218,17 +222,14 @@ const Need = (props: any) => {
             placeholder={t('common.pleaseSearchDemand')}
             onChangeSearch={onPressEnter}
           />
-          <Divider
-            style={{ height: 20, margin: '0 16px 0 24px' }}
-            type="vertical"
-          />
-          <Tooltip title={t('common.search')} getPopupContainer={node => node}>
-            <IconFontWrap
-              active={!filterState}
-              type="filter"
-              onClick={() => setFilterState(!filterState)}
-            />
-          </Tooltip>
+          <HoverWrap
+            onClick={() => setFilterState(!filterState)}
+            isActive={!filterState}
+            style={{ marginLeft: 8 }}
+          >
+            <IconFont className="iconMain" type="filter" />
+            <span className="label">{t('common.search')}</span>
+          </HoverWrap>
         </SearchWrap>
       </TabsHehavior>
 

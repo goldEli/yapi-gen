@@ -1,3 +1,5 @@
+// 我的模块-所有页面公用列表及查询
+
 /* eslint-disable camelcase */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
@@ -17,27 +19,25 @@ import {
   ShowWrap,
   TableWrap,
   IconFontWrap,
+  HoverWrap,
+  DividerWrap,
+  HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
+import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
-
-const IconWrap = styled(IconFontWrap)({
-  '&: hover': {
-    color: '#2877ff',
-  },
-})
+import DropDownMenu from '@/components/DropDownMenu'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -172,11 +172,14 @@ const CommonNeed = (props: any) => {
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const [isSpin, setIsSpin] = useState<boolean>(false)
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
+  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -263,11 +266,12 @@ const CommonNeed = (props: any) => {
   }
 
   const updateStatus = async (res1: any) => {
-    const res = await updateDemandStatus(res1)
-
-    if (res.code === 0) {
+    try {
+      await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
       init()
+    } catch (error) {
+      //
     }
   }
   const updatePriority = async (res1: any) => {
@@ -300,7 +304,7 @@ const CommonNeed = (props: any) => {
   })
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2, ...titleList3]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -335,6 +339,7 @@ const CommonNeed = (props: any) => {
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
+    setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
     setIsRefresh(false)
   }
 
@@ -376,13 +381,11 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init(false, 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
@@ -398,11 +401,11 @@ const CommonNeed = (props: any) => {
         getSearchKey()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefresh, isUpdateCreate])
 
   const showModal = () => {
     setIsModalVisible(true)
+    setIsVisibleFields(false)
   }
   const close2 = () => {
     setIsModalVisible(false)
@@ -412,10 +415,12 @@ const CommonNeed = (props: any) => {
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
     list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const onChangeVisible = () => {
@@ -450,7 +455,39 @@ const CommonNeed = (props: any) => {
 
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
+    setIsVisibleFormat(false)
   }
+
+  const menuType = (
+    <Menu
+      items={[
+        {
+          key: 'list',
+          label: (
+            <HasIconMenu onClick={() => onChangeMany(true)} isCheck={isMany}>
+              <div className="left">
+                <IconFont className="icon" type="database" />
+                <span className="label">{t('common.timeList')}</span>
+              </div>
+              <IconFont className="checked" type={isMany ? 'check' : ''} />
+            </HasIconMenu>
+          ),
+        },
+        {
+          key: 'thumbnail',
+          label: (
+            <HasIconMenu onClick={() => onChangeMany(false)} isCheck={!isMany}>
+              <div className="left">
+                <IconFont className="icon" type="unorderedlist" />
+                <span className="label">{t('common.list')}</span>
+              </div>
+              <IconFont className="checked" type={isMany ? '' : 'check'} />
+            </HasIconMenu>
+          ),
+        },
+      ]}
+    />
+  )
 
   return (
     <>
@@ -470,79 +507,49 @@ const CommonNeed = (props: any) => {
               onChangeSearch={onPressEnter}
             />
           </div>
-          <div style={{ display: 'flex' }}>
+          <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (
               <>
-                <SetButton
-                  onClick={() => {
-                    onChangeMany(false)
-                  }}
-                >
-                  <Tooltip
-                    title={t('common.list')}
-                    getPopupContainer={node => node}
-                  >
-                    <IconFont
-                      type="unorderedlist"
-                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-                    />
-                  </Tooltip>
-                </SetButton>
                 {props?.type === 'abeyance' && (
-                  <SetButton
-                    onClick={() => {
-                      onChangeMany(true)
-                    }}
+                  <DropDownMenu
+                    menu={menuType}
+                    icon={isMany ? 'database' : 'unorderedlist'}
+                    isVisible={isVisibleFormat}
+                    onChangeVisible={setIsVisibleFormat}
                   >
-                    <Tooltip
-                      title={t('common.timeList')}
-                      getPopupContainer={node => node}
-                    >
-                      <IconFont
-                        type="database"
-                        style={{
-                          fontSize: 20,
-                          color: isMany ? '#4388ff' : '',
-                        }}
-                      />
-                    </Tooltip>
-                  </SetButton>
+                    <HasIconMenu>
+                      <div className="label">
+                        {isMany ? t('common.timeList') : t('common.list')}
+                      </div>
+                    </HasIconMenu>
+                  </DropDownMenu>
                 )}
               </>
             )}
 
             {props.id !== 0 && (
-              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-                <Tooltip
-                  title={t('common.search')}
-                  getPopupContainer={node => node}
+              <>
+                <DividerWrap type="vertical" />
+                <HoverWrap
+                  onClick={() => setIsShowSearch(!isShowSearch)}
+                  isActive={isShowSearch}
                 >
-                  <IconFont
-                    type="filter"
-                    style={{
-                      fontSize: 20,
-                      color: isShowSearch ? '#2877ff' : '',
-                    }}
-                  />
-                </Tooltip>
-              </SetButton>
+                  <IconFont className="iconMain" type="filter" />
+                  <span className="label">{t('common.search')}</span>
+                </HoverWrap>
+              </>
             )}
-
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              <SetButton>
-                <Tooltip
-                  title={t('common.tableFieldSet')}
-                  getPopupContainer={node => node}
-                >
-                  <IconWrap
-                    type="settings"
-                    active={isModalVisible}
-                    style={{ fontSize: 20 }}
-                  />
-                </Tooltip>
-              </SetButton>
-            </Dropdown>
-          </div>
+            <DividerWrap type="vertical" />
+            <DropDownMenu
+              menu={menu}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div>{t('common.tableFieldSet')}</div>
+            </DropDownMenu>
+          </Space>
         </SearchWrap>
       </TabsHehavior>
       {isShowSearch && props.id !== 0 ? (
@@ -647,29 +654,28 @@ const CommonNeed = (props: any) => {
           />
         </PaginationWrap>
       )}
-      {isModalVisible ? (
-        <OptionalFeld
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          plainOptions3={plainOptions3}
-          checkList={titleList}
-          checkList2={titleList2}
-          checkList3={titleList3}
-          isVisible={isModalVisible}
-          onClose={close2}
-          getCheckList={getCheckList}
-        />
-      ) : null}
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          demandId={operationItem?.id}
-          projectId={projectId}
-          onUpdate={onUpdate}
-          notGetPath
-        />
-      ) : null}
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={isModalVisible}
+        onClose={close2}
+        getCheckList={getCheckList}
+      />
+
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        demandId={operationItem?.id}
+        projectId={projectId}
+        onUpdate={onUpdate}
+        notGetPath
+      />
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}

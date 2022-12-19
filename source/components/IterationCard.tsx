@@ -4,21 +4,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useState } from 'react'
 import styled from '@emotion/styled'
-import { Dropdown, Menu, Progress } from 'antd'
+import { Menu, Progress } from 'antd'
 import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
 import MoreDropdown from './MoreDropdown'
-
-const MoreWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  top: 16,
-  right: 16,
-  color: '#969799',
-})
 
 const DetailWrap = styled.div({
   display: 'flex',
@@ -119,10 +111,6 @@ const IterationCard = (props: Props) => {
     'b/iterate/status',
   )
 
-  const onVisibleChange = (visible: any) => {
-    setIsVisible(visible)
-  }
-
   const onClickMenu = (e: any, type: any) => {
     setIsVisible(false)
     if (type === 'edit') {
@@ -189,17 +177,6 @@ const IterationCard = (props: Props) => {
         <IconFont type="right" />
       </DetailWrap>
       {!(hasDel && hasEdit && hasChangeStatus) && (
-        // <Dropdown
-        //   key={isVisible.toString()}
-        //   visible={isVisible}
-        //   overlay={menu()}
-        //   placement="bottomRight"
-        //   trigger={['hover']}
-        //   getPopupContainer={node => node}
-        //   onVisibleChange={onVisibleChange}
-        // >
-        //   <MoreWrap type="more" />
-        // </Dropdown>
         <MoreDropdown
           isMoreVisible={isVisible}
           menu={menu()}

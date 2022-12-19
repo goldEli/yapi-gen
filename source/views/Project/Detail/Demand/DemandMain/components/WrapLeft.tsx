@@ -1,3 +1,5 @@
+// 需求主页-左侧需求分类
+
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-duplicate-imports */
@@ -38,6 +40,7 @@ const Left = styled.div`
 `
 
 const TitleWrap = styled.div({
+  paddingLeft: '15px',
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: '#323233',
@@ -57,19 +60,20 @@ const FormBox = styled.div`
 `
 const BtnsItemBox = styled.div`
   cursor: pointer;
-  width: 102px;
+  min-width: 102px;
+  padding: 0px 10px;
   height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   border-radius: 0px 0px 0px 0px;
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   color: #646566;
   &:hover {
-    background: #f0f4fa;
-    color: #2877ff;
+    background: #f4f5f5;
+    color: #323233;
   }
 `
 const centerText = css`
@@ -184,7 +188,8 @@ const TreeItem = (props: any) => {
   const content = (
     <div
       style={{
-        padding: '10px 0',
+        padding: '10px 0px',
+        whiteSpace: 'nowrap',
       }}
     >
       {props.pid === 1

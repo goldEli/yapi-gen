@@ -1,3 +1,4 @@
+// 日志左侧面板界面
 /* eslint-disable camelcase */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -13,6 +14,7 @@ import WhiteDay from './components/WhiteDay'
 import { RedLogo } from '../Container/components/Side'
 import { useSelector } from 'react-redux'
 import { writeDaily } from '@/services/daily'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div`
   height: 100%;
@@ -29,7 +31,7 @@ const Side = styled.div`
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
 `
-const AddButton = styled.div({
+const AddButton = styled.button({
   height: 32,
   padding: '0 16px',
   borderRadius: 6,
@@ -39,32 +41,43 @@ const AddButton = styled.div({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  border: 'none',
+  ':hover': {
+    background: '#669FFF',
+    color: 'white',
+  },
 })
 
 const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
+  .provider {
+    height: 1px;
+    background: #ecedef;
+    width: calc(100% - 32px);
+    margin-left: 16px;
+  }
 `
 
 export const DailyContext: any = React.createContext('')
 
 const MenuItem = styled.div<{ active?: boolean }>(
+  ({ active }) => ({
+    borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
+    color: active ? '#2877ff' : '#323233',
+    background: active ? '#F0F4FA !important' : 'white',
+  }),
   {
     boxSizing: 'border-box',
-    justifyContent: 'center',
     height: 44,
     display: 'flex',
     alignItems: 'center',
     cursor: 'pointer',
+    paddingLeft: 52,
     '&: hover': {
-      color: '#2877ff!important',
+      backgroundColor: '#F4F5F5',
     },
   },
-  ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid white',
-    color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA' : 'white',
-  }),
 )
 const Main = styled.div({
   width: 'calc(100% - 220px)',
@@ -78,7 +91,10 @@ type MenuList = {
 }
 
 const Information = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c6'))
   const menuList = [
     {
       id: 1,
@@ -100,6 +116,9 @@ const Information = () => {
       id: 4,
       name: t('p2.dayList.t4'),
       path: 'send/4',
+    },
+    {
+      name: 'provider',
     },
     {
       id: 5,
@@ -198,10 +217,6 @@ const Information = () => {
       color: #2877ff;
     }
   `
-  const RedLogo2 = styled(RedLogo)`
-    right: 10px;
-    top: 14px;
-  `
   const onWriteDaily = (item: any) => {
     setVisibleEdit(true)
     setVisibleEditText(item.name)
@@ -253,42 +268,46 @@ const Information = () => {
         )}
         <Menu>
           {menuList.map(item => (
-            <MenuItem
-              style={{
-                fontSize: item.state ? '16px' : '',
-                fontWeight: item.state ? 'bold' : '',
-                position: 'relative',
-              }}
-              active={nowPath2 === item.id}
-              onClick={() => changeActive(item)}
-              key={item.id}
-              hidden={item.isPermission}
-            >
-              {item.state === 1 && (
-                <IconFont
-                  type="send"
+            <>
+              {item.id && (
+                <MenuItem
                   style={{
-                    fontSize: 20,
-                    marginRight: item.state ? '6px' : '',
-                    position: 'absolute',
-                    left: '45px',
+                    fontSize: item.state ? '16px' : '',
+                    fontWeight: item.state ? 'bold' : '',
+                    position: 'relative',
                   }}
-                />
+                  active={nowPath2 === item.id}
+                  onClick={() => changeActive(item)}
+                  key={item.id}
+                  hidden={item.isPermission}
+                >
+                  {item.state === 1 && (
+                    <IconFont
+                      type="send"
+                      style={{
+                        fontSize: 20,
+                        marginRight: item.state ? '6px' : '',
+                        position: 'absolute',
+                        left: '24px',
+                      }}
+                    />
+                  )}
+                  {item.state === 2 && (
+                    <IconFont
+                      type="container"
+                      style={{
+                        fontSize: 20,
+                        marginRight: item.state ? '6px' : '',
+                        position: 'absolute',
+                        left: '24px',
+                      }}
+                    />
+                  )}
+                  {item.name}
+                </MenuItem>
               )}
-              {item.state === 2 && (
-                <IconFont
-                  type="container"
-                  style={{
-                    fontSize: 20,
-                    marginRight: item.state ? '6px' : '',
-                    position: 'absolute',
-                    left: '45px',
-                  }}
-                />
-              )}
-              {item.name}
-              {/* {item.state === 2 && <RedLogo2>{count}</RedLogo2>} */}
-            </MenuItem>
+              {!item.id && <div className="provider" />}
+            </>
           ))}
         </Menu>
       </Side>

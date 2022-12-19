@@ -1,3 +1,5 @@
+// 大概况主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -13,6 +15,7 @@ import { useModel } from '@/models'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -41,7 +44,10 @@ const Head = styled.div`
 `
 
 const Situation = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.general'))
   const { getGlobalGeneral, userInfo } = useModel('user')
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [generalData, setGeneralData] = useState<any>()

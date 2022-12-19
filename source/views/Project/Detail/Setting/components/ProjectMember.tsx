@@ -1,3 +1,5 @@
+// 项目设置-项目成员
+
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -7,22 +9,13 @@ import {
   TableStyleBox,
   PaginationWrap,
   SelectWrapBedeck,
+  HoverWrap,
 } from '@/components/StyleCommon'
 import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import {
-  Menu,
-  Dropdown,
-  Pagination,
-  message,
-  Select,
-  Form,
-  Spin,
-  Space,
-} from 'antd'
-import AddMember from '@/views/Project/components/AddMember'
+import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -34,6 +27,10 @@ import NoData from '@/components/NoData'
 import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
+import { StaffSelect } from '@xyfe/uikit'
+import { getAddDepartMember } from '@/services/staff'
+import { addMember } from '@/services/project'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -56,13 +53,6 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   padding: 16,
-})
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
 })
 
 const FilterWrap = styled(Form)({
@@ -122,6 +112,7 @@ const NewSort = (sortProps: any) => {
 }
 
 const ProjectMember = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -156,8 +147,11 @@ const ProjectMember = () => {
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const [departments, setDepartments] = useState([])
+  const [member, setMember] = useState<any>()
+  const [userDataList, setUserDataList] = useState<any[]>([])
   const dataWrapRef = useRef<HTMLDivElement>(null)
-
+  asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -524,6 +518,53 @@ const ProjectMember = () => {
     }, 100)
   }
 
+  const userObj = {
+    avatar:
+      'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1531903254371954690/2022-11-15/71A2A5C7-CFB9CDD612ED.jpeg',
+    name: '杨一',
+    id: '1531903254371954690',
+    companyId: '1504303190303051778',
+    companyName: '成都定星科技',
+    phone: '18380129474',
+    remark: '',
+    admin: false,
+    gender: 1,
+  }
+  const init = async () => {
+    const res2 = await getAddDepartMember(projectId)
+
+    const arr = res2.companyList.map((i: any) => {
+      return {
+        id: i.id,
+        code: '234234',
+        name: i.name,
+        avatar: i.avatar,
+        phoneNumber: '123123213',
+        departmentId: i.department_id,
+        jobName: '',
+        jobId: '1584818157136687105',
+        cardType: '',
+        cardNumber: '',
+        hiredate: '2022-11-26',
+        type: 1,
+        gender: 0,
+        companyId: '1504303190303051778',
+      }
+    })
+
+    const obj = {
+      list: arr,
+    }
+    setMember(obj)
+
+    setDepartments(res2.departments)
+  }
+  const onClickCancel = () => {
+    setIsAddVisible(false)
+  }
+  const onChangeMember = (value: any) => {
+    setUserDataList(value)
+  }
   const onConfirmEdit = async (roleId: any) => {
     const params: any = {
       projectId,
@@ -542,7 +583,37 @@ const ProjectMember = () => {
       //
     }
   }
+  const handleOk = async () => {
+    const values = form.getFieldsValue()
 
+    if (userDataList.length <= 0) {
+      message.warning(t('project.memberNull'))
+      return
+    }
+    let { userGroupId } = values
+    if (!form.getFieldValue('userGroupId')) {
+      userGroupId = projectPermission?.filter(
+        (i: any) => i.tagLabel === '参与者',
+      )[0]?.value
+    }
+
+    const params: any = {
+      projectId,
+      userGroupId,
+      userIds: userDataList,
+    }
+    await addMember(params)
+    message.success(t('common.addSuccess'))
+    setUserDataList([])
+    getList(order, pageObj)
+    setIsAddVisible(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
+  useEffect(() => {
+    init()
+  }, [isAddVisible])
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -551,27 +622,67 @@ const ProjectMember = () => {
       isPadding
     >
       <Wrap>
-        {isEditVisible ? (
-          <SetPermissionWrap
-            data={operationItem}
-            isVisible={isEditVisible}
-            onClose={() => {
-              setIsEditVisible(false)
-            }}
-            onConfirm={onConfirmEdit}
-          />
-        ) : null}
+        <SetPermissionWrap
+          data={operationItem}
+          isVisible={isEditVisible}
+          onClose={() => {
+            setIsEditVisible(false)
+          }}
+          onConfirm={onConfirmEdit}
+        />
         <DeleteConfirm
           text={t('mark.delPeople')}
           isVisible={isDelete}
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        <AddMember
-          value={isAddVisible}
-          onChangeValue={onChangeValue}
-          details={operationItem}
-          onChangeUpdate={onChangeUpdate}
+
+        <StaffSelect
+          title={t('project.addMember')}
+          user={userObj as any}
+          departments={departments}
+          staffListAll={member}
+          visible={isAddVisible}
+          onCancel={onClickCancel}
+          value={userDataList}
+          onOk={handleOk}
+          onChange={onChangeMember}
+          plugArea={
+            <div style={{ marginBottom: '25px' }}>
+              <Form form={form}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span
+                    style={{ fontSize: 14, color: '#323233', marginRight: 16 }}
+                  >
+                    {t('project.joinPermission')}
+                    <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
+                      *
+                    </span>
+                  </span>
+                  <Form.Item
+                    name="userGroupId"
+                    noStyle
+                    rules={[{ required: true, message: '' }]}
+                  >
+                    <Select
+                      placeholder={t('project.pleasePermission')}
+                      getPopupContainer={node => node}
+                      style={{ width: 192 }}
+                      options={projectPermission}
+                      showSearch
+                      showArrow
+                      optionFilterProp="label"
+                      defaultValue={
+                        projectPermission?.filter(
+                          (i: any) => i.tagLabel === '参与者',
+                        )[0]?.value
+                      }
+                    />
+                  </Form.Item>
+                </div>
+              </Form>
+            </div>
+          }
         />
         <Header>
           <HeaderTop>
@@ -582,11 +693,10 @@ const ProjectMember = () => {
               onChangeSearch={onChangeSearch}
               isPermission={hasAdd}
             />
-            <IconFont
-              style={{ fontSize: 20, color: '#969799', cursor: 'pointer' }}
-              type="filter"
-              onClick={onChangeFilter}
-            />
+            <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
+              <IconFont className="iconMain" type="filter" />
+              <span className="label">{t('common.search')}</span>
+            </HoverWrap>
           </HeaderTop>
           <FilterWrap
             hidden={isVisible}

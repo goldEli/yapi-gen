@@ -1,7 +1,11 @@
+// 设置-公司信息
+
 import styled from '@emotion/styled'
 import { OmitText } from '@star-yun/ui'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import useSetTitle from '@/hooks/useSetTitle'
+import { Space } from 'antd'
 
 const Header = styled.div({
   height: 64,
@@ -33,14 +37,7 @@ const InfoWrap = styled.div({
 
 const InfoTop = styled.div({
   display: 'flex',
-  justifyContent: 'flex-start',
-})
-
-const CompanyImg = styled.img({
-  height: 186,
-  width: 396,
-  borderRadius: 6,
-  marginRight: 24,
+  flexDirection: 'column',
 })
 
 const TextWrap = styled.div({
@@ -55,13 +52,14 @@ const Title = styled.div({
   display: 'flex',
   alignItems: 'center',
   width: 'fit-content',
+  lineHeight: '16px',
 })
 
 const Subtext = styled.div({
   color: '#646566',
   fontSize: 14,
-  lineHeight: '30px',
-  marginTop: 10,
+  lineHeight: '24px',
+  marginTop: 8,
 })
 
 const InfoBottom = styled.div({
@@ -70,40 +68,42 @@ const InfoBottom = styled.div({
   marginTop: 40,
 })
 
-const BottomTitle = styled.div({
+export const BottomTitle = styled.div({
   fontSize: 14,
   color: 'black',
   fontWeight: 400,
   paddingLeft: 8,
   borderLeft: '3px solid #2877ff',
   marginBottom: 16,
+  lineHeight: '16px',
 })
 
 const CardWrap = styled.div({
-  height: 72,
+  height: 80,
   width: 160,
   borderRadius: 6,
-  background: 'rgba(235, 237, 240, 0.6)',
+  background: '#F9FAFA',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  marginRight: 24,
   div: {
-    color: '#2877FF',
-    fontSize: 32,
-    fontWeight: 400,
-    lineHeight: '32px',
+    color: '#323233',
+    fontSize: 28,
+    fontWeight: 500,
+    lineHeight: '28px',
   },
   span: {
     fontSize: 14,
     fontWeight: 400,
-    color: '#323233',
+    color: '#969799',
   },
 })
 
 const CompanyInfo = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c1'))
   const { companyInfo } = useModel('setting')
   return (
     <div style={{ height: '100%' }}>
@@ -113,24 +113,9 @@ const CompanyInfo = () => {
       <Content>
         <InfoWrap>
           <InfoTop>
-            <CompanyImg src={companyInfo.logo} />
-            <TextWrap>
-              <Title>
-                <OmitText
-                  width={400}
-                  tipProps={{
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {companyInfo.name}
-                </OmitText>
-              </Title>
-              <Subtext>{companyInfo.info}</Subtext>
-            </TextWrap>
-          </InfoTop>
-          <InfoBottom>
             <BottomTitle>{t('setting.enterpriseData')}</BottomTitle>
-            <div
+            <Space
+              size={32}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -145,7 +130,23 @@ const CompanyInfo = () => {
                 <div>{companyInfo.userCount}</div>
                 <span>{t('setting.companyStaff')}</span>
               </CardWrap>
-            </div>
+            </Space>
+          </InfoTop>
+          <InfoBottom>
+            <BottomTitle>{t('setting.companyInfo')}</BottomTitle>
+            <TextWrap>
+              <Title>
+                <OmitText
+                  width={400}
+                  tipProps={{
+                    getPopupContainer: node => node,
+                  }}
+                >
+                  {companyInfo.name}
+                </OmitText>
+              </Title>
+              <Subtext>{companyInfo.info}</Subtext>
+            </TextWrap>
           </InfoBottom>
         </InfoWrap>
       </Content>

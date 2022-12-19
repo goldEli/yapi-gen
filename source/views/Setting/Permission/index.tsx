@@ -1,8 +1,10 @@
+// 权限设置
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Input, Space, message, Menu, Dropdown, Spin } from 'antd'
+import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -13,6 +15,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
+import { GroupWrap } from '@/views/Project/Detail/Setting/components/ProjectSet'
 
 const Header = styled.div({
   height: 64,
@@ -73,13 +77,6 @@ const MenuItems = styled.div({
   flexDirection: 'column',
 })
 
-const IconWrap = styled(IconFont)({
-  display: 'none',
-  position: 'absolute',
-  right: 10,
-  fontSize: '16px!important',
-})
-
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -105,17 +102,18 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      '.name': {
-        color: '#2877FF',
-      },
+      background: '#F4F5F5',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive ? '3px solid #2877FF' : '3px solid white',
-    background: isActive ? '#F0F4FA' : 'white',
+    borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
+    background: isActive ? '#F0F4FA!important' : 'white',
+    '.name': {
+      color: isActive ? '#2877FF' : '#323233',
+    },
   }),
 )
 
@@ -137,15 +135,9 @@ const MainWrapItem = styled.div({
   borderBottom: '1px solid #EBEDF0',
   padding: '24px 0',
   display: 'flex',
-  alignItems: 'center',
-})
-
-const ModalHeader = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: 16,
-  color: '#323233',
+  '.ant-checkbox-wrapper': {
+    margin: '0 !important',
+  },
 })
 
 const ModalFooter = styled(Space)({
@@ -198,21 +190,38 @@ const PermissionItem = (props: ItemProps) => {
         />
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Checkbox.Group
-          options={props.item.children}
-          style={{ marginRight: 8 }}
-          value={keys}
-          onChange={onChange}
-          disabled={props.activeDetail?.type === 1}
-        />
-      </div>
+      <GroupWrap>
+        <Checkbox.Group value={keys} onChange={onChange}>
+          {props.item.children.map((item: any) => {
+            return (
+              <Checkbox
+                key={item.label}
+                disabled={props.activeDetail?.type === 1}
+                value={item.value}
+              >
+                {/* <ShowText names={item.label} /> */}
+                <span
+                  style={{
+                    width: '150px',
+                    display: 'inline-block',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {item.label}
+                </span>
+              </Checkbox>
+            )
+          })}
+        </Checkbox.Group>
+      </GroupWrap>
     </MainWrapItem>
   )
 }
 
 const Permission = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c2'))
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([])

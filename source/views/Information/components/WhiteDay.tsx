@@ -2,19 +2,17 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form, message } from 'antd'
+import { Form } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import Editor from '@/components/Editor'
 import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import IconFont from '@/components/IconFont'
-import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
+import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import { getReportDetail } from '@/services/daily'
 import { t } from 'i18next'
-import moment from 'moment'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -43,9 +41,7 @@ const WhiteDay = (props: any) => {
     { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
     { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
   ]
-  const { percentShow, percentVal, uploadStatus } = useModel('demand')
   const [form] = Form.useForm()
-  const [isShow, setIsShow] = useState(false)
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
@@ -64,7 +60,7 @@ const WhiteDay = (props: any) => {
   const confirm = async () => {
     const data: any = await form.validateFields()
 
-    props.editConfirm(data, props.editId)
+    await props.editConfirm(data, props.editId)
     close()
   }
 
@@ -154,7 +150,6 @@ const WhiteDay = (props: any) => {
     })
   }
   const onValidator = (rule: any, value: any) => {
-    // eslint-disable-next-line no-undefined
     if (value === '<p><br></p>' || value.trim() === '') {
       return Promise.reject(
         new Error('The two passwords that you entered do not match!'),
@@ -171,7 +166,7 @@ const WhiteDay = (props: any) => {
       title={props.editId ? title : props.visibleEditText}
       isVisible={props.visibleEdit}
       onClose={close}
-      onConfirm={() => form.submit()}
+      onConfirm={confirm}
       confirmText={t('newlyAdd.submit')}
     >
       <div

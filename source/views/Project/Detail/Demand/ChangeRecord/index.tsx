@@ -1,3 +1,5 @@
+// 需求详情-变更记录
+
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -51,7 +53,7 @@ const DataWrap = styled.div({
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  maxHeight: 600,
+  height: '60vh',
   overflow: 'auto',
   padding: '0 24px 16px',
 })
@@ -147,10 +149,10 @@ const ChangeRecord = () => {
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
       return item[i]?.length
-        ? item[i]?.map((k: any) => k?.name).join('、')
+        ? item[i]?.map((k: any) => k?.name).join(';')
         : '--'
     } else if (i === 'users' || i === 'copysend' || i === 'attachment') {
-      return item[i]?.length ? item[i].join(',') : '--'
+      return item[i]?.length ? item[i].join(';') : '--'
     } else if (i === 'status') {
       return item[i]
     } else {
@@ -305,7 +307,7 @@ const ChangeRecord = () => {
                           )
                           ?.map((k: any) => (
                             <span key={k}>
-                              {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                              {(Array.isArray(k) ? k.join(';') : k) || '--'}
                             </span>
                           ))
                       : record.fields.custom_field?.map((m: any) => (
@@ -374,7 +376,7 @@ const ChangeRecord = () => {
                           )
                           ?.map((k: any) => (
                             <span key={k}>
-                              {(Array.isArray(k) ? k.join('、') : k) || '--'}
+                              {(Array.isArray(k) ? k.join(';') : k) || '--'}
                             </span>
                           ))
                       : record.fields.custom_field?.map((m: any) => (

@@ -1,3 +1,5 @@
+// 我的审核主页
+
 import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
@@ -7,6 +9,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -14,7 +17,9 @@ const MainWrap = styled.div({
 })
 
 const Examine = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.b4'))
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
@@ -29,7 +34,6 @@ const Examine = () => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type])
 
   const getProjectId = (value: any) => {

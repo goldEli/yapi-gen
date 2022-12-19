@@ -1,3 +1,5 @@
+// 公用我的/他的需求列表表格
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
 import { ShapeContent } from '@/components/Shape'
@@ -153,7 +155,8 @@ export const useDynamicColumns = (state: any) => {
                         display: 'inline-block',
                         left: '1px',
                         top: '-10px',
-                        width: '28px',
+                        padding: '0px 5px',
+                        minWidth: '28px',
                         height: '20px',
                         background: '#FF5C5E',
                         borderRadius: '10px 10px 10px 10px',
@@ -201,8 +204,9 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) =>
-              record.project?.isPublic !== 1 &&
-              !record.project?.isUserMember ? null : (
+              !(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && (
                 <LevelContent
                   onTap={state.updatePriority}
                   onHide={onHide}
@@ -235,8 +239,9 @@ export const useDynamicColumns = (state: any) => {
                   {text?.content_txt || '--'}
                 </span>
               </Wrap>
-              {record.project?.isPublic !== 1 &&
-              !record.project?.isUserMember ? null : (
+              {!(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && (
                 <ShowWrap>
                   <IconFont style={{ color: '#2877ff' }} type="down-icon" />
                 </ShowWrap>
@@ -303,7 +308,7 @@ export const useDynamicColumns = (state: any) => {
           <TableQuickEdit
             keyText="tag"
             type="fixed_select"
-            defaultText={text?.split(',') || []}
+            defaultText={text?.split(';') || []}
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
@@ -315,7 +320,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text?.split(',') || '--'}
+                {text || '--'}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>
@@ -330,15 +335,19 @@ export const useDynamicColumns = (state: any) => {
         return (
           <Pop
             content={({ onHide }: { onHide(): void }) => {
-              return record.isExamine ||
-                (record.project?.isPublic !== 1 &&
-                  !record.project?.isUserMember) ? null : (
-                <ShapeContent
-                  tap={(value: any) => state.updateStatus(value)}
-                  hide={onHide}
-                  record={record}
-                  row={record}
-                />
+              return (
+                !(
+                  record.isExamine ||
+                  (record.project?.isPublic !== 1 &&
+                    !record.project?.isUserMember)
+                ) && (
+                  <ShapeContent
+                    tap={(value: any) => state.updateStatus(value)}
+                    hide={onHide}
+                    record={record}
+                    row={record}
+                  />
+                )
               )
             }}
             record={record}
@@ -399,25 +408,30 @@ export const useDynamicColumns = (state: any) => {
         return (
           <>
             {record?.usersNameIds?.includes(userInfo?.id) &&
-            record.status.is_start !== 1 &&
-            record.status.is_end !== 1 ? (
-              <div style={{ cursor: 'pointer' }}>
-                <DemandProgress
-                  value={record.schedule}
-                  row={record}
-                  onUpdate={onUpdate}
-                  index={index}
-                />
-              </div>
-            ) : (
+              record.status.is_start !== 1 &&
+              record.status.is_end !== 1 && (
+                <div style={{ cursor: 'pointer' }}>
+                  <DemandProgress
+                    value={record.schedule}
+                    row={record}
+                    onUpdate={onUpdate}
+                    index={index}
+                  />
+                </div>
+              )}
+            {!(
+              record?.usersNameIds?.includes(userInfo?.id) &&
+              record.status.is_start !== 1 &&
+              record.status.is_end !== 1
+            ) && (
               <Progress
                 strokeColor="#43BA9A"
                 style={{ color: '#43BA9A', cursor: 'not-allowed' }}
                 width={38}
-                type="circle"
+                type="line"
                 percent={record.schedule}
                 format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                strokeWidth={8}
+                strokeWidth={4}
               />
             )}
           </>
@@ -515,12 +529,32 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
+  // 返回文本
+  const getText = (attr: any, text: any) => {
+    if (['user_select_checkbox', 'user_select'].includes(attr)) {
+      return text?.true_value || '--'
+    }
+    return (
+      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
+      '--'
+    )
+  }
+
   const getArr = () => {
     const result: any = []
     state.plainOptions3?.forEach((element: any) => {
       result.unshift({
         width: 200,
-        title: <NewSort fixedKey={element.value}>{element.label}</NewSort>,
+        title: (
+          <div>
+            {!['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(
+              element?.attr,
+            ) && <NewSort fixedKey={element.value}>{element.label}</NewSort>}
+            {['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(
+              element?.attr,
+            ) && element.label}
+          </div>
+        ),
         dataIndex: element.value,
         key: element.value,
         render: (text: any, record: any) => {
@@ -534,11 +568,7 @@ export const useDynamicColumns = (state: any) => {
               isMineOrHis
               type={record[element.value]?.attr}
             >
-              <span>
-                {(Array.isArray(text?.value)
-                  ? text?.value?.join('、')
-                  : text?.value) || '--'}
-              </span>
+              <span>{getText(record[element.value]?.attr, text)}</span>
             </TableQuickEdit>
           )
         },

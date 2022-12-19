@@ -1,6 +1,6 @@
-/* eslint-disable complexity */
 // 抽调查看成果弹窗及详情成果展示公共部分
 
+/* eslint-disable complexity */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-unstable-nested-components */

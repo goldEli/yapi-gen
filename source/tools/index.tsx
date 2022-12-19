@@ -1,17 +1,29 @@
-/* eslint-disable max-statements-per-line */
 // 使用多次的公共方法
 
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable require-unicode-regexp */
+/* eslint-disable max-statements-per-line */
 /* eslint-disable max-params */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { decryptPhp } from './cryptoPhp'
-import { Select, Input, DatePicker, InputNumber, TreeSelect } from 'antd'
+import {
+  Select,
+  Input,
+  DatePicker,
+  InputNumber,
+  TreeSelect,
+  message,
+} from 'antd'
 import moment from 'moment'
 
+// 获取权限
 function getIsPermission(arr: any, value: string) {
   return !arr?.filter((i: any) => i.identity === value).length
 }
 
+// 新开页面
 function openDetail(url: string) {
   if (import.meta.env.MODE === 'production') {
     window.open(`${window.origin}${url}`)
@@ -20,6 +32,7 @@ function openDetail(url: string) {
   }
 }
 
+// 解密地址栏参数
 function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
@@ -89,7 +102,7 @@ function getTypeComponent(
         defaultValue={defaultValue}
         ref={inputRef}
         autoComplete="off"
-        style={{ minWidth: 192 }}
+        style={{ width: '100%', minWidth: 192 }}
       />
     )
   } else if (params?.attr === 'textarea') {
@@ -102,7 +115,7 @@ function getTypeComponent(
         autoSize={{ minRows: 3, maxRows: 5 }}
         defaultValue={defaultValue}
         ref={inputRef}
-        style={{ minWidth: 192 }}
+        style={{ width: '100%', minWidth: 192 }}
         autoComplete="off"
       />
     )
@@ -149,9 +162,9 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
+        onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
         onChange={value =>
-          onChange(value, params.attr === 'fixed_select' ? '' : 1)
+          onChange?.(value, params.attr === 'fixed_select' ? '' : 1)
         }
         options={params?.value}
         mode={params.attr === 'fixed_select' ? 'multiple' : (null as any)}
@@ -159,9 +172,14 @@ function getTypeComponent(
       />
     )
   } else if (
-    ['select_checkbox', 'checkbox', 'select', 'radio'].includes(
-      String(params?.attr),
-    )
+    [
+      'select_checkbox',
+      'checkbox',
+      'select',
+      'radio',
+      'user_select_checkbox',
+      'user_select',
+    ].includes(String(params?.attr))
   ) {
     child = (
       <Select
@@ -174,17 +192,27 @@ function getTypeComponent(
         allowClear
         value={defaultValue}
         ref={inputRef}
-        onBlur={() => (isModal ? onBlur(defaultValue) : void 0)}
+        onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
         onChange={value =>
-          onChange(
+          onChange?.(
             value,
-            ['select_checkbox', 'checkbox'].includes(params?.attr) ? '' : 1,
+            ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
+              params?.attr,
+            )
+              ? ''
+              : 1,
           )
         }
-        options={params?.value?.map((i: any) => ({ label: i, value: i }))}
+        options={
+          ['user_select_checkbox', 'user_select'].includes(String(params?.attr))
+            ? params?.value
+            : params?.value?.map((i: any) => ({ label: i, value: i }))
+        }
         defaultOpen={isModal}
         mode={
-          ['select_checkbox', 'checkbox'].includes(params?.attr)
+          ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(
+            params?.attr,
+          )
             ? 'multiple'
             : ('' as any)
         }
@@ -242,7 +270,7 @@ function getNestedChildren(arr: any, parent?: any) {
         item.children = children
       }
       resArr.push({
-        title: item.name,
+        title: item.name ?? item.content,
         key: item.id,
         value: item.id,
         children: item.children ?? [],
@@ -250,15 +278,6 @@ function getNestedChildren(arr: any, parent?: any) {
     }
   }
   return resArr
-}
-
-// 计算小数需要的倍数
-function getDecimal(num: any) {
-  let val = '1'
-  for (let i = 0; i < num; i++) {
-    val += '0'
-  }
-  return val
 }
 
 function bytesToSize(fileByte: any) {
@@ -283,6 +302,109 @@ function bytesToSize(fileByte: any) {
 }
 
 // 14.24GB
+// 定义粘贴函数
+const onPaste = (event: any) => {
+  // 剪贴板没数据，则直接返回
+  if (!event.clipboardData || !event.clipboardData.items) {
+    return
+  }
+  return new Promise((resovle, reject) => {
+    for (let i = 0, len = event.clipboardData.items.length; i < len; i++) {
+      const item = event.clipboardData.items[i]
+
+      if (item.kind === 'file') {
+        const file = item.getAsFile()
+        if (item.type.match('^image/')) {
+          // 处理图片
+          handleImage(file, (data: any) => {
+            resovle(data)
+          })
+        } else {
+          // 其他文件直接返回
+          resovle({
+            data: file,
+            type: 'file',
+          })
+        }
+      } else if (item.kind === 'string') {
+        let str = event.clipboardData.getData('text')
+        resovle({
+          data: str,
+          type: 'string',
+        })
+      } else {
+        message.error('不支持粘贴该类型')
+        reject(new Error('不支持粘贴该类型'))
+      }
+    }
+  })
+}
+
+function handleImage(file: any, callback: any, maxWidth = 200) {
+  if (!file || !/(?:png|jpg|jpeg|gif)/i.test(file.type)) {
+    return
+  }
+  const reader = new FileReader()
+  reader.onload = function () {
+    const { result } = this
+    let img: any = new Image()
+    img.onload = function () {
+      const compressedDataUrl = compress(img, file.type, maxWidth, true)
+      const url = compress(img, file.type, maxWidth, false)
+      img = null
+      callback({
+        data: file,
+        compressedDataUrl,
+        url,
+        type: 'image',
+      })
+    }
+    img.src = result
+  }
+  reader.readAsDataURL(file)
+}
+
+function compress(img: any, type: any, maxHeight: any, flag: any) {
+  let canvas: any = document.createElement('canvas')
+  let ctx2: any = canvas.getContext('2d')
+  const ratio = img.width / img.height
+  let { width } = img,
+    { height } = img
+
+  // 根据flag判断是否压缩图片
+  if (flag) {
+    // 压缩后的图片展示在输入框
+    height = maxHeight
+    width = maxHeight * ratio
+  }
+  canvas.width = width
+  canvas.height = height
+  ctx2.fillStyle = '#fff'
+  ctx2.fillRect(0, 0, canvas.width, canvas.height)
+  ctx2.drawImage(img, 0, 0, width, height)
+  let base64Data = canvas.toDataURL(type, 0.75)
+  if (type === 'image/gif') {
+    const regx = /(?<=data:image).*?(?=;base64)/
+    base64Data = base64Data.replace(regx, '/gif')
+  }
+  canvas = null
+  ctx2 = null
+  return base64Data
+}
+
+// 复制
+function copyLink(text: any, successText: string, errorText: string) {
+  navigator.clipboard.writeText(text).then(
+    function () {
+      message.success(successText)
+    },
+    function (err) {
+      message.error(errorText)
+    },
+  )
+}
+
+export default onPaste
 
 export {
   getIsPermission,
@@ -293,4 +415,6 @@ export {
   getNestedChildren,
   filterTreeData,
   bytesToSize,
+  onPaste,
+  copyLink,
 }

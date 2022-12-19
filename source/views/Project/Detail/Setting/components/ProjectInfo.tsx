@@ -1,15 +1,18 @@
+// 项目设置-项目信息
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-/* eslint-disable max-len */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
 import EditProject from '@/views/Project/components/EditProject'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
+import useSetTitle from '@/hooks/useSetTitle'
+import PubSub from 'pubsub-js'
 
 const Wrap = styled.div({
   padding: 24,
@@ -18,6 +21,7 @@ const Wrap = styled.div({
   width: '100%',
   borderRadius: 6,
   display: 'flex',
+  flexDirection: 'column',
 })
 
 const InfoLeft = styled.div({
@@ -26,6 +30,7 @@ const InfoLeft = styled.div({
   width: 396,
   fontSize: 16,
   color: 'black',
+  marginBottom: 40,
   img: {
     width: '100%',
     height: 186,
@@ -35,7 +40,7 @@ const InfoLeft = styled.div({
 })
 
 const SubText = styled.div({
-  marginTop: 10,
+  marginTop: 4,
   color: '#646566',
   fontSize: 14,
   lineHeight: '30px',
@@ -44,9 +49,15 @@ const SubText = styled.div({
 const InfoRight = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  marginLeft: 55,
 })
-
+const Title = styled.div({
+  fontSize: 14,
+  fontWeight: 'bold',
+  color: 'black',
+  paddingLeft: 10,
+  borderLeft: '3px solid #2877FF',
+  lineHeight: '16px',
+})
 const InfoItem = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -67,63 +78,94 @@ const InfoItem = styled.div({
 const CardGroup = styled(Space)({
   display: 'flex',
   alignItems: 'center',
-  marginTop: 24,
+  marginTop: 16,
 })
 
 const CardItem = styled.div({
-  height: 72,
-  width: 158,
+  height: 80,
+  width: 160,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
-  background: 'rgba(235, 237, 240, 0.6)',
+  background: '#F9FAFA',
   div: {
-    fontSize: 32,
-    color: '#2877FF',
-    fontWeight: 400,
-    lineHeight: '32px',
+    fontSize: 28,
+    color: '#323233',
+    fontWeight: 500,
+    lineHeight: '28px',
   },
   span: {
     fontSize: 14,
-    color: '#323233',
+    color: '#969799',
   },
 })
 
 const ClickIcon = styled(IconFont)({
   color: '#323233',
-  fontSize: 16,
+  fontSize: 20,
   marginLeft: 8,
   '&: hover': {
     color: '#2877ff',
   },
 })
 
+const Line = styled.div`
+  flex: 1;
+`
 const ProjectInfo = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const { projectInfo, getProjectInfo } = useModel('project')
   const { userInfo } = useModel('user')
-
+  asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
+  localStorage.setItem('memberId', projectInfo.id)
   const onUpdate = () => {
     getProjectInfo({ projectId: projectInfo.id })
   }
 
+  useEffect(() => {
+    PubSub.subscribe('member', () => {
+      getProjectInfo({ projectId: localStorage.getItem('memberId') })
+    })
+  }, [])
   return (
     <div style={{ padding: 16, height: '100%' }}>
-      {visible ? (
-        <EditProject
-          visible={visible}
-          onChangeVisible={() => setVisible(!visible)}
-          details={projectInfo}
-          onUpdate={onUpdate}
-        />
-      ) : null}
+      <EditProject
+        visible={visible}
+        onChangeVisible={() => setVisible(!visible)}
+        details={projectInfo}
+        onUpdate={onUpdate}
+      />
 
       <Wrap>
         <InfoLeft>
-          <img src={projectInfo.cover} alt="" />
+          <Title>{t('v2_1_1.projectInformation')}</Title>
+          <CardGroup size={32}>
+            <CardItem>
+              <div>{projectInfo.demandCount || 0}</div>
+              <span>{t('common.demand')}</span>
+            </CardItem>
+            <CardItem>
+              <div>{projectInfo.iterateCount || 0}</div>
+              <span>{t('project.iterateEdition')}</span>
+            </CardItem>
+            <CardItem>
+              <div>{projectInfo.memberCount || 0}</div>
+              <span>{t('project.projectMember')}</span>
+            </CardItem>
+          </CardGroup>
+        </InfoLeft>
+        <InfoRight>
+          <Title
+            style={{
+              marginBottom: 16,
+            }}
+          >
+            {t('project.projectInformation')}
+          </Title>
           <div
             style={{
               display: 'flex',
@@ -136,7 +178,17 @@ const ProjectInfo = () => {
                 getPopupContainer: node => node,
               }}
             >
-              {projectInfo.name}
+              <span
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  color: '#323233',
+                  lineHeight: '24px',
+                }}
+              >
+                {' '}
+                {projectInfo.name}
+              </span>
             </OmitText>
             <ClickIcon
               hidden={getIsPermission(
@@ -152,52 +204,54 @@ const ProjectInfo = () => {
             />
           </div>
           <SubText>{projectInfo.info || '--'}</SubText>
-        </InfoLeft>
-        <InfoRight>
-          <InfoItem>
-            <div>{t('project.projectId')}</div>
-            <span>{projectInfo.id}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.createName')}：</div>
-            <span>{projectInfo.userName || '--'}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.createTime')}：</div>
-            <span>{projectInfo.createTime || '--'}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.endTime')}：</div>
-            <span>{projectInfo.endTime || '--'}</span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('project.projectStatus')}：</div>
-            <span>
-              {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
-            </span>
-          </InfoItem>
-          <InfoItem>
-            <div>{t('common.permission')}：</div>
-            <span>
-              {projectInfo.isPublic === 1
-                ? t('project.companyOpen')
-                : t('common.privateProject')}
-            </span>
-          </InfoItem>
-          <CardGroup size={24}>
-            <CardItem>
-              <div>{projectInfo.demandCount || 0}</div>
-              <span>{t('common.demand')}</span>
-            </CardItem>
-            <CardItem>
-              <div>{projectInfo.iterateCount || 0}</div>
-              <span>{t('project.iterateEdition')}</span>
-            </CardItem>
-            <CardItem>
-              <div>{projectInfo.memberCount || 0}</div>
-              <span>{t('project.projectMember')}</span>
-            </CardItem>
-          </CardGroup>
+          <div
+            style={{
+              display: 'flex',
+              marginTop: '24px',
+            }}
+          >
+            <Line>
+              {' '}
+              <InfoItem>
+                <div>{t('project.projectId')}</div>
+                <span>{projectInfo.id}</span>
+              </InfoItem>
+              <InfoItem>
+                <div>{t('common.createName')}：</div>
+                <span>{projectInfo.userName || '--'}</span>
+              </InfoItem>
+            </Line>
+            <Line>
+              {' '}
+              <InfoItem>
+                <div>{t('common.createTime')}：</div>
+                <span>{projectInfo.createTime || '--'}</span>
+              </InfoItem>
+              <InfoItem>
+                <div>{t('common.endTime')}：</div>
+                <span>{projectInfo.endTime || '--'}</span>
+              </InfoItem>
+            </Line>
+            <Line>
+              {' '}
+              <InfoItem>
+                <div>{t('project.projectStatus')}：</div>
+                <span>
+                  {projectInfo.status === 1
+                    ? t('common.open')
+                    : t('common.stop')}
+                </span>
+              </InfoItem>
+              <InfoItem>
+                <div>{t('common.permission')}：</div>
+                <span>
+                  {projectInfo.isPublic === 1
+                    ? t('project.companyOpen')
+                    : t('common.privateProject')}
+                </span>
+              </InfoItem>
+            </Line>
+          </div>
         </InfoRight>
       </Wrap>
     </div>

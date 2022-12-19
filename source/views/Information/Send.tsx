@@ -24,7 +24,6 @@ import { getDailyList, writeDaily } from '@/services/daily'
 import { DailyContext } from '.'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
-import styled from '@emotion/styled'
 
 const titleList = {
   2: '修改日报',
@@ -195,7 +194,7 @@ const Send = () => {
       render: (text: any) => {
         return (
           <Tooltip
-            title={text.join('  ；  ') || '--'}
+            title={text.join(';') || '--'}
             getPopupContainer={node => node}
           >
             <span
@@ -207,7 +206,7 @@ const Send = () => {
                 whiteSpace: 'nowrap',
               }}
             >
-              {text.join('  ；  ') || '--'}
+              {text.join(';') || '--'}
             </span>
           </Tooltip>
         )
@@ -219,7 +218,7 @@ const Send = () => {
       key: 'read_user',
       width: 170,
       render: (text: any) => {
-        return <span>{text.join('  ；  ') || '--'}</span>
+        return <span>{text.join(';') || '--'}</span>
       },
     },
 
@@ -231,7 +230,7 @@ const Send = () => {
       fixed: 'right',
       render: (text: string, record: any) => {
         return (
-          <div style={{ textAlign: 'right', width: '72px' }}>
+          <div style={{ textAlign: 'right', width: '82px' }}>
             {record.read_user.length > 0 ? null : (
               <span
                 onClick={() => {

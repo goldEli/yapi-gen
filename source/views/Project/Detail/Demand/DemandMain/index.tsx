@@ -1,3 +1,5 @@
+// 需求主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
@@ -8,6 +10,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Operation from './components/Operation'
 import DemandTable from './components/DemandTable'
 import DemandGrid from './components/DemandGrid'
+import DemandTree from './components/DemandTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -17,11 +20,11 @@ import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
 
-const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
+const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
   height: 'calc(100vh - 64px)',
   overflowY: 'auto',
-}))
+})
 
 interface Props {
   onChangeVisible(e: any): void
@@ -36,7 +39,7 @@ const DemandMain = (props: Props) => {
   const myTreeComponent: any = useRef(null)
   const [t] = useTranslation()
   const [key, setKey] = useState()
-  const [isGrid, setIsGrid] = useState(false)
+  const [isGrid, setIsGrid] = useState(0)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
@@ -47,16 +50,17 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand } = useModel('demand')
+  const { getDemandList, deleteDemand, setFilterParams, filterParams } =
+    useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { getCategoryList } = useModel('project')
+  const { getCategoryList, setFilterKeys } = useModel('project')
 
   const getList = async (
-    state: boolean,
+    state: any,
     searchParamsObj: any,
     item?: any,
     orderItem?: any,
@@ -67,8 +71,8 @@ const DemandMain = (props: Props) => {
       setIsSpinning(true)
     }
 
-    let params = {}
-    if (state) {
+    let params: any = {}
+    if (state === 1) {
       params = {
         projectId,
         all: true,
@@ -121,6 +125,10 @@ const DemandMain = (props: Props) => {
         class_id: key,
       }
     }
+    if (state === 2) {
+      params.tree = 1
+    }
+    setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -130,6 +138,8 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getCategoryList({ projectId, isSelect: true })
+    // 进入需求主页清除已存储的筛选计数
+    setFilterKeys([])
   }, [])
 
   useEffect(() => {
@@ -149,13 +159,13 @@ const DemandMain = (props: Props) => {
     myTreeComponent?.current?.init()
   }, [props.isUpdate])
 
-  const onChangeGrid = (val: boolean) => {
+  const onChangeGrid = (val: any) => {
     setIsGrid(val)
     setDataList({ list: undefined })
     getList(val, searchItems, { page: 1, size: pageObj.size }, order)
   }
 
-  const onChangeOperation = (e: any, item: any) => {
+  const onChangeOperation = (e: any, item?: any) => {
     props.onSetOperationItem(item)
     props.onChangeVisible(e)
   }
@@ -178,7 +188,7 @@ const DemandMain = (props: Props) => {
     }
   }
 
-  const onSearch = (params: string) => {
+  const onSearch = (params: any) => {
     setSearchItems(params)
     getList(isGrid, params, { page: 1, size: pageObj.size }, order)
   }
@@ -219,13 +229,13 @@ const DemandMain = (props: Props) => {
           onChangeVisible={() => setIsVisible(!isVisible)}
           onConfirm={onDeleteConfirm}
         />
-        {isShowLeft ? (
+        {isShowLeft && (
           <WrapLeft
             ref={myTreeComponent}
             projectId={projectId}
             isShowLeft={isShowLeft}
           />
-        ) : null}
+        )}
         <Right isShowLeft={isShowLeft}>
           <Operation
             isGrid={isGrid}
@@ -247,15 +257,22 @@ const DemandMain = (props: Props) => {
             }}
             dataLength={dataList?.total}
           />
-          {isGrid ? (
-            <DemandGrid
+          {isGrid === 2 && (
+            <DemandTree
               onChangeVisible={onChangeOperation}
               onDelete={onDelete}
               data={dataList}
+              onChangePageNavigation={onChangePageNavigation}
+              onChangeRow={onChangeRow}
+              settingState={isSettingState}
+              onChangeSetting={setIsSettingState}
+              onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
+              filterParams={filterParams}
             />
-          ) : (
+          )}
+          {!isGrid && (
             <DemandTable
               onChangeVisible={onChangeOperation}
               onDelete={onDelete}
@@ -265,6 +282,15 @@ const DemandMain = (props: Props) => {
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}
               onChangeOrder={onChangeOrder}
+              isSpinning={isSpinning}
+              onUpdate={onUpdate}
+            />
+          )}
+          {isGrid === 1 && (
+            <DemandGrid
+              onChangeVisible={onChangeOperation}
+              onDelete={onDelete}
+              data={dataList}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
             />

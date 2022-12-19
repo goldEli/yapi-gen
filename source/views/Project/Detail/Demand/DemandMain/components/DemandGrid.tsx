@@ -1,3 +1,5 @@
+// 需求主页-需求看板模式
+
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -13,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
-  padding: 24,
+  padding: 16,
 })
 
 const DataWrap = styled.div({

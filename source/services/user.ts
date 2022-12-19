@@ -17,6 +17,7 @@ export const getTicket = () => {
   const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
   url.searchParams.set('redirect', location.href)
+  url.searchParams.set('target', 'agile')
   url.searchParams.set('language', localStorage.getItem('language') || 'zh')
   localStorage.removeItem('language')
 
@@ -47,7 +48,6 @@ export const login = async () => {
   try {
     data = await getLoginDetail(true)
   } catch (error) {
-
     //
   }
   sessionStorage.removeItem('IS_CHECK_TICKET')
@@ -61,17 +61,20 @@ export const getCompanyList: any = async () => {
 }
 
 export const updateCompany: any = async (params: any) => {
-  const response = await http.put('changeCompany', {
+  await http.put('changeCompany', {
     company_id: params.companyId,
     company_user_id: params.companyUserId,
   })
-  return {
-    data: response,
-  }
 }
 
 // 全局概况
 export const getGlobalGeneral: any = async () => {
   const response = await http.get('getGlobalGeneral')
+  return response.data
+}
+
+// 删除评论下的附件
+export const delCommonAt: any = async (params: any) => {
+  const response = await http.delete('/b/story/comment/delete_att', params)
   return response.data
 }

@@ -6,6 +6,7 @@
 import * as http from '@/tools/http'
 import { filter } from 'lodash'
 import { getTreeList } from './tree'
+import { getStaffList2 } from '../staff'
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -35,6 +36,15 @@ export const getShapeRight = async (params: any) => {
     category_status_from_id: params.fromId,
     category_status_to_id: params.toId,
   })
+
+  // 公司
+
+  const companyList = await getStaffList2({ all: 1 })
+
+  const filterCompanyList = companyList.map((item: any) => ({
+    id: item.id,
+    name: item.name,
+  }))
 
   // 处理人、抄送人
 
@@ -214,6 +224,60 @@ export const getShapeRight = async (params: any) => {
           type: item.value[0],
         }
       }
+      // 这里操作人员
+
+      if (item.attr === 'user_select') {
+        if (item.value[0] === 'projectMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select',
+            children: [...filterMemberList],
+          }
+        }
+        if (item.value[0] === 'companyMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select',
+            children: [...filterCompanyList],
+          }
+        }
+      }
+      if (item.attr === 'user_select_checkbox') {
+        if (item.value[0] === 'projectMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select_checkbox',
+            children: [...filterMemberList],
+          }
+        }
+        if (item.value[0] === 'companyMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select_checkbox',
+            children: [...filterCompanyList],
+          }
+        }
+      }
       return {
         ...item,
         id: index,
@@ -230,6 +294,7 @@ export const getShapeRight = async (params: any) => {
           : [],
       }
     }
+
     return {
       ...item,
       id: index,
@@ -248,17 +313,4 @@ export const getShapeRight = async (params: any) => {
     user_has_auth: res.data.user_has_auth,
   }
   return obj
-}
-
-// updateDemandStatus
-export const updateDemandStatus = async (params: any) => {
-  const res = await http.put('updateDemandStatus', {
-    project_id: params.projectId,
-    story_id: params.nId,
-    category_status_to_id: params.toId,
-    fields: params.fields,
-    verify_user_id: params.verifyId ?? undefined,
-  })
-
-  return res.data
 }

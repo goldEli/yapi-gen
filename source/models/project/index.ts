@@ -13,6 +13,7 @@ export default () => {
     list: undefined,
   })
   const [tagList, setTagList] = useState<any>([])
+  const [priorityList, setPriorityList] = useState<any>([])
   const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
@@ -24,10 +25,20 @@ export default () => {
     list: undefined,
   })
   const [categoryList, setCategoryList] = useState<any>([])
+  const [categoryEditList, setCategoryEditList] = useState<any>([])
   const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  // 改变项目-项目id
+  const [isChangeProject, setIsChangeProject] = useState(0)
+  // 筛选需求列表参数，用于回填创建需求弹窗
+  const [filterParamsModal, setFilterParamsModal] = useState<any>({})
+  const [selectGroupList, setSelectGroupList] = useState<any>([])
+  // 是否更新分组列表，用于获取count
+  const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
+  // 需求列表筛选项值计数
+  const [filterKeys, setFilterKeys] = useState<any>([])
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -54,6 +65,12 @@ export default () => {
     { label: t('newlyAdd.radio'), value: '6', type: 'radio' },
     { label: t('newlyAdd.time'), value: '7', type: 'date' },
     { label: t('newlyAdd.number'), value: '8', type: 'number' },
+    { label: t('version2.personRadio'), value: '9', type: 'user_select' },
+    {
+      label: t('version2.personCheckbox'),
+      value: '10',
+      type: 'user_select_checkbox',
+    },
   ]
 
   const getWorkflowList = async (params: any) => {
@@ -65,6 +82,12 @@ export default () => {
   const getStatusList = async (params: any) => {
     const result = await services.project.storyConfigStatusList(params)
     setStatusWorkList(result)
+  }
+
+  const getCategoryEditList = async (params: any) => {
+    const result = await services.project.storyConfigCategoryList(params)
+    setCategoryEditList(result)
+    return result
   }
 
   const getCategoryList = async (params: any) => {
@@ -79,6 +102,11 @@ export default () => {
     return result
   }
 
+  const getFieldListCustom = async (params: any) => {
+    const result = await services.project.storyConfigField(params)
+    return result
+  }
+
   const getProjectList = async (params: any) => {
     const result = await services.project.getProjectList(params)
     setProjectList(result)
@@ -87,6 +115,12 @@ export default () => {
   const getTagList = async (params: any) => {
     const result = await services.project.getTagList(params)
     setTagList(result)
+    return result
+  }
+
+  const getPriorityList = async (params: any) => {
+    const result = await services.mine.getPriOrStu(params)
+    setPriorityList(result)
   }
 
   const getProjectCoverList = async () => {
@@ -140,6 +174,10 @@ export default () => {
     addStoryConfigStatus,
     deleteStoryConfigStatus,
     updateStoryConfigStatus,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
   } = services.project
 
   return {
@@ -180,7 +218,9 @@ export default () => {
     setTagList,
     colorList,
     getFieldList,
+    getFieldListCustom,
     fieldList,
+    setFieldList,
     option,
     addStoryConfigField,
     deleteStoryConfigField,
@@ -207,10 +247,27 @@ export default () => {
     updateStoryConfigStatus,
     workList,
     setWorkList,
-    setFieldList,
     setSelectTreeData,
     selectTreeData,
     setSelectAllStaffData,
     selectAllStaffData,
+    setIsChangeProject,
+    isChangeProject,
+    getGroupList,
+    addProjectGroup,
+    updateProjectGroup,
+    deleteProjectGroup,
+    getPriorityList,
+    priorityList,
+    setFilterParamsModal,
+    filterParamsModal,
+    setSelectGroupList,
+    selectGroupList,
+    categoryEditList,
+    getCategoryEditList,
+    setIsRefreshGroup,
+    isRefreshGroup,
+    setFilterKeys,
+    filterKeys,
   }
 }

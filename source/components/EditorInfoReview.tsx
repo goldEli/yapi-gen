@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 // 富文本上传后的图片查看
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
@@ -15,8 +16,19 @@ const TextWrapEditor = styled.div({
     height: 'auto!important',
     cursor: 'pointer',
   },
+  video: {
+    maxWidth: '400px',
+    height: 'auto!important',
+    cursor: 'pointer',
+  },
   p: {
     marginBottom: '0px!important',
+  },
+  table: {
+    'td,th': {
+      height: '20px',
+      border: '1px solid black',
+    },
   },
 })
 
@@ -60,7 +72,7 @@ const EditorInfoReview = (props: Props) => {
 
   return (
     <>
-      {isVisible ? (
+      {isVisible && (
         <Viewer
           zIndex={9999}
           visible={isVisible}
@@ -68,7 +80,7 @@ const EditorInfoReview = (props: Props) => {
           activeIndex={pictureList?.index}
           onClose={() => setIsVisible(false)}
         />
-      ) : null}
+      )}
       <TextWrapEditor
         ref={textWrapEditor}
         dangerouslySetInnerHTML={{ __html: props.info }}

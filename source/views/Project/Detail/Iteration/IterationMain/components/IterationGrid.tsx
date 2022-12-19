@@ -1,3 +1,5 @@
+// 迭代-看板模式
+
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -14,7 +16,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 
 const Content = styled.div({
   padding: 16,
-  overflow: 'auto',
+  height: '100%',
 })
 
 const StatusItemsWrap = styled.div({
@@ -105,42 +107,44 @@ const IterationGrid = (props: Props) => {
 
   return (
     <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
-      <Spin spinning={props?.isSpinning}>
-        <SpaceWrap size={20}>
-          {basicStatus?.map((k: any) => (
-            <StatusItemsWrap key={k.id}>
-              <Title>
-                {k.content_txt}(
-                {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
-              </Title>
-              {typeof props?.hasId === 'object' ? (
-                dataList?.filter((item: any) => item.id === k.id)[0]?.list ? (
-                  dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                    .length > 0 ? (
-                    dataList
-                      ?.filter((item: any) => item.id === k.id)[0]
-                      ?.list?.map((i: any, idx: any) => (
-                        <DemandCard
-                          key={i.id}
-                          item={i}
-                          indexVal={idx}
-                          onClickItem={() => onClickItem(i)}
-                          onChangeDelete={props?.onDelete}
-                          onChangeEdit={props?.onChangeVisible}
-                          onUpdate={props?.onUpdate}
-                        />
-                      ))
-                  ) : (
-                    <NoData />
-                  )
-                ) : null
-              ) : (
-                <NoData />
-              )}
-            </StatusItemsWrap>
-          ))}
-        </SpaceWrap>
-      </Spin>
+      <div style={{ height: '100%', overflow: 'auto' }}>
+        <Spin spinning={props?.isSpinning}>
+          <SpaceWrap size={20}>
+            {basicStatus?.map((k: any) => (
+              <StatusItemsWrap key={k.id}>
+                <Title>
+                  {k.content_txt}(
+                  {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
+                </Title>
+                {typeof props?.hasId === 'object' ? (
+                  dataList?.filter((item: any) => item.id === k.id)[0]?.list ? (
+                    dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                      .length > 0 ? (
+                      dataList
+                        ?.filter((item: any) => item.id === k.id)[0]
+                        ?.list?.map((i: any, idx: any) => (
+                          <DemandCard
+                            key={i.id}
+                            item={i}
+                            indexVal={idx}
+                            onClickItem={() => onClickItem(i)}
+                            onChangeDelete={props?.onDelete}
+                            onChangeEdit={props?.onChangeVisible}
+                            onUpdate={props?.onUpdate}
+                          />
+                        ))
+                    ) : (
+                      <NoData />
+                    )
+                  ) : null
+                ) : (
+                  <NoData />
+                )}
+              </StatusItemsWrap>
+            ))}
+          </SpaceWrap>
+        </Spin>
+      </div>
     </Content>
   )
 }

@@ -1,3 +1,5 @@
+// 迭代详情-迭代变更记录
+
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -24,7 +26,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  maxHeight: 600,
+  height: '60vh',
   overflow: 'auto',
   padding: '0 24px 16px',
 })
@@ -140,7 +142,7 @@ const ChangeRecord = (props?: any) => {
   const fieldContent = (item: any, i: string) => {
     if (i === 'tag') {
       return item[i]?.length
-        ? item[i]?.map((k: any) => k?.name).join('、')
+        ? item[i]?.map((k: any) => k?.name).join(';')
         : '--'
     } else if (i === 'attachment' || i === 'copysend') {
       return item[i]?.length ? item[i].map((k: any) => k) : '--'

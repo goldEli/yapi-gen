@@ -101,6 +101,14 @@ const routes = [
               },
             ],
           },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/Project/Detail/Defect')),
+          },
+          {
+            path: 'Report',
+            element: lazy(() => import('@/views/Project/Detail/Report')),
+          },
         ],
       },
       {
@@ -140,6 +148,10 @@ const routes = [
           {
             path: 'loginLog',
             element: lazy(() => import('@/views/Setting/LoginLog')),
+          },
+          {
+            path: 'universal',
+            element: lazy(() => import('@/views/Setting/Universal')),
           },
         ],
       },

@@ -1,3 +1,5 @@
+// 需求设置-编辑工作流弹窗
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -7,7 +9,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import ChooseColor from '../../components/ChooseColor'
 import { useModel } from '@/models'
-import { ViewWrap } from '@/components/StyleCommon'
+import { ViewWrap, CategoryWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
@@ -17,23 +19,6 @@ const FormWrap = styled(Form)({
     margin: '22px 0 0 0',
   },
 })
-
-const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    padding: '0 8px',
-    marginRight: 8,
-    lineHeight: '22px',
-    fontSize: 12,
-    fontWeight: 400,
-    marginLeft: 8,
-  },
-  ({ color, bgColor }) => ({
-    background: bgColor,
-    color,
-  }),
-)
 
 interface EditorProps {
   isVisible: boolean
@@ -49,7 +34,7 @@ const EditWorkflow = (props: EditorProps) => {
   const [form] = Form.useForm()
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
-  const [normalColor, setNormalColor] = useState<any>('')
+  const [normalColor, setNormalColor] = useState<any>('#2877FF')
   const { colorList, updateStoryConfigWorkflow } = useModel('project')
 
   useEffect(() => {
@@ -84,7 +69,7 @@ const EditWorkflow = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('')
+      setNormalColor('#2877FF')
       setStatus(false)
     }, 100)
   }

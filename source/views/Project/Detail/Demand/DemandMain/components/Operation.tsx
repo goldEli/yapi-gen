@@ -1,3 +1,5 @@
+// 需求主页-操作栏
+
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/indent */
@@ -16,6 +18,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
+import { CanOperationCategory } from '@/components/StyleCommon'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -26,6 +29,10 @@ const OperationWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0 24px',
+  '.ant-space-item': {
+    display: 'flex',
+    alignItems: 'center',
+  },
   '.ant-popover-content': {
     width: 'max-content',
   },
@@ -33,11 +40,6 @@ const OperationWrap = styled.div({
 
 const StickyWrap = styled.div({
   background: 'white',
-})
-
-const DividerWrap = styled(Divider)({
-  height: 20,
-  margin: '0 16px 0 24px',
 })
 
 const LiWrap = styled.div<{ color: any }>(
@@ -57,23 +59,19 @@ const LiWrap = styled.div<{ color: any }>(
   }),
 )
 
-const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    width: 'fit-content',
+const IconWrap = styled(IconFont)({
+  fontSize: 20,
+  color: 'black',
+  cursor: 'pointer',
+  padding: 6,
+  borderRadius: 6,
+  '&: hover': {
+    color: '#323233',
+    background: '#F4F5F5',
   },
-  ({ color, bgColor }) => ({
-    color,
-    background: bgColor,
-  }),
-)
+})
 
-const MoreWrap = styled.div<{ type?: any }>(
+export const MoreWrap = styled.div<{ type?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -87,6 +85,12 @@ const MoreWrap = styled.div<{ type?: any }>(
   ({ type }) => ({
     background: type ? '#2877ff' : '#F0F4FA',
     color: type ? 'white' : '#2877ff',
+    '&: hover': {
+      background: type ? '#669FFF' : '#E8F1FF',
+    },
+    '&: active': {
+      background: type ? '#1763E5' : '#DBEAFF',
+    },
   }),
 )
 
@@ -100,14 +104,14 @@ const MoreItem = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    color: '#2877ff',
-    background: '#F0F4FA',
+    color: '#323233',
+    background: '#f4f5f5',
   },
 })
 
 interface Props {
-  isGrid: boolean
-  onChangeGrid(val: boolean): void
+  isGrid: any
+  onChangeGrid(val: any): void
   onChangeVisible?(e?: any): void
   onSearch(params: any): void
   settingState: boolean
@@ -129,9 +133,17 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { filterAll, projectInfo, categoryList, colorList } =
-    useModel('project')
-  const { setFilterHeight, setCreateCategory } = useModel('demand')
+  const {
+    filterAll,
+    projectInfo,
+    categoryList,
+    colorList,
+    setFilterParamsModal,
+    setFilterKeys,
+    filterKeys,
+  } = useModel('project')
+  const { setFilterHeight, setCreateCategory, filterParams } =
+    useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -169,6 +181,11 @@ const Operation = (props: Props) => {
     params.searchValue = val
     setSearchGroups(params)
     props.onSearch(params)
+    // 添加搜索项 计数
+    const keys = val
+      ? [...filterKeys, ...['searchVal']]
+      : filterKeys?.filter((i: any) => i !== 'searchVal')
+    setFilterKeys([...new Set(keys)])
   }
 
   const onFilterSearch = (e: any, customField: any) => {
@@ -228,6 +245,8 @@ const Operation = (props: Props) => {
 
   const onChangeCategory = (e: any, item: any) => {
     setCreateCategory(item)
+    // 需求列表筛选参数赋值给 弹窗
+    setFilterParamsModal(filterParams)
     setTimeout(() => {
       props.onChangeVisible?.(e)
       setIsVisible(false)
@@ -250,15 +269,15 @@ const Operation = (props: Props) => {
           color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
           onClick={(e: any) => onChangeCategory(e, k)}
         >
-          <StatusTag
+          <CanOperationCategory
             style={{ marginRight: 0 }}
             color={k.color}
             bgColor={
               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
             }
           >
-            {k.name}
-          </StatusTag>
+            <span className="title">{k.name}</span>
+          </CanOperationCategory>
         </LiWrap>
       ))}
     </div>
@@ -283,7 +302,7 @@ const Operation = (props: Props) => {
 
   const moreOperation = (
     <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
-      {hasImport ? null : (
+      {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
           <span>{t('newlyAdd.importDemand')}</span>
@@ -329,14 +348,14 @@ const Operation = (props: Props) => {
       >
         <ImportDemand />
       </CommonModal>
-      {isShowExport ? (
-        <ExportDemand
-          isShowExport={isShowExport}
-          onClose={setIsShowExport}
-          searchGroups={searchGroups}
-          otherParams={props.otherParams}
-        />
-      ) : null}
+
+      <ExportDemand
+        isShowExport={isShowExport}
+        onClose={setIsShowExport}
+        searchGroups={searchGroups}
+        otherParams={props.otherParams}
+      />
+
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
           {props.isShowLeft ? (
@@ -346,16 +365,7 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('newlyAdd.collapseClass')}
             >
-              <IconFont
-                onClick={() => onClickIcon(1)}
-                type="outdent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
-              />
+              <IconWrap onClick={() => onClickIcon(1)} type="outdent" />
             </Tooltip>
           ) : (
             <Tooltip
@@ -364,22 +374,11 @@ const Operation = (props: Props) => {
               getTooltipContainer={node => node}
               title={t('newlyAdd.openClass')}
             >
-              <IconFont
-                onClick={() => onClickIcon(2)}
-                type="indent"
-                style={{
-                  fontSize: 20,
-                  color: 'black',
-                  cursor: 'pointer',
-                  marginRight: 8,
-                }}
-              />
+              <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(
-            projectInfo?.projectPermissions,
-            'b/story/save',
-          ) ? null : (
+          {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
+          projectInfo?.status !== 1 ? null : (
             <Popover
               content={changeStatus}
               placement="bottomLeft"
@@ -421,7 +420,6 @@ const Operation = (props: Props) => {
             placeholder={t('common.pleaseSearchDemand')}
             onChangeSearch={onChangeSearch}
           />
-          <DividerWrap type="vertical" />
           <OperationGroup
             onChangeFilter={onChangeFilter}
             onChangeGrid={props.onChangeGrid}
@@ -429,6 +427,7 @@ const Operation = (props: Props) => {
             filterState={filterState}
             settingState={props.settingState}
             onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+            isDemand
           />
         </div>
       </OperationWrap>

@@ -1,3 +1,5 @@
+// 迭代详情-迭代成果
+
 import { getIsPermission, getParamsData } from '@/tools'
 import { css } from '@emotion/css'
 import { useEffect, useState } from 'react'
@@ -66,15 +68,13 @@ const Achieve = () => {
           isReadonly
         />
 
-        {isEdit ? (
-          <EditAchievements
-            isAchievements={isEdit}
-            onClose={() => setIsEdit(false)}
-            projectId={projectId}
-            id={iterateId}
-            isInfo
-          />
-        ) : null}
+        <EditAchievements
+          isAchievements={isEdit}
+          onClose={() => setIsEdit(false)}
+          projectId={projectId}
+          id={iterateId}
+          isInfo
+        />
       </div>
     </div>
   )

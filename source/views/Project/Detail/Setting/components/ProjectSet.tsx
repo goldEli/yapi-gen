@@ -1,7 +1,9 @@
+// 项目设置
+
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Input, Menu, Dropdown, message, Spin } from 'antd'
+import { Checkbox, Space, Input, Menu, message, Spin, Row } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
@@ -15,6 +17,8 @@ import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
+import { ShowText } from '@/components/OptionalFeld'
 
 const Warp = styled.div({
   padding: 16,
@@ -23,6 +27,7 @@ const Warp = styled.div({
 
 const SetMain = styled.div({
   padding: '24px 0',
+  paddingBottom: '0px',
   background: 'white',
   borderRadius: 6,
   minHeight: '100%',
@@ -33,7 +38,7 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
+
   borderRight: '1px solid #EBEDF0',
   width: 160,
 })
@@ -85,17 +90,18 @@ const MenuItem = styled.div<{ isActive: boolean }>(
       fontWeight: 400,
     },
     '&:hover': {
-      '.name': {
-        color: '#2877FF',
-      },
+      background: '#F4F5F5',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive ? '3px solid #2877FF' : '3px solid white',
-    background: isActive ? '#F0F4FA' : 'white',
+    borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
+    background: isActive ? '#F0F4FA!important' : 'transparent',
+    '.name': {
+      color: isActive ? '#2877FF' : '#323233',
+    },
   }),
 )
 
@@ -117,7 +123,10 @@ const MainWrapItem = styled.div({
   borderBottom: '1px solid #EBEDF0',
   padding: '24px 0',
   display: 'flex',
-  alignItems: 'center',
+
+  '.ant-checkbox-wrapper': {
+    margin: '0 !important',
+  },
 })
 
 const ModalHeader = styled.div({
@@ -137,7 +146,7 @@ const ModalFooter = styled(Space)({
 
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
-const GroupWrap = styled.div({
+export const GroupWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   width: 'calc(100% - 200px)',
@@ -187,18 +196,35 @@ const PermissionItem = (props: ItemProps) => {
       </CheckboxWrap>
       <OperationWrap>{props.item.name}</OperationWrap>
       <GroupWrap>
-        <Checkbox.Group
-          options={props.item.children}
-          value={keys}
-          onChange={onChange}
-          disabled={props.activeDetail?.type === 1}
-        />
+        <Checkbox.Group value={keys} onChange={onChange}>
+          {props.item.children.map((item: any) => {
+            return (
+              <Checkbox
+                key={item.label}
+                disabled={props.activeDetail?.type === 1}
+                value={item.value}
+              >
+                {/* <ShowText names={item.label} /> */}
+                <span
+                  style={{
+                    width: '150px',
+                    display: 'inline-block',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {item.label}
+                </span>
+              </Checkbox>
+            )
+          })}
+        </Checkbox.Group>
       </GroupWrap>
     </MainWrapItem>
   )
 }
 
 const ProjectSet = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -225,7 +251,7 @@ const ProjectSet = () => {
   } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
-
+  asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })
@@ -441,7 +467,12 @@ const ProjectSet = () => {
                     height: 58,
                     lineHeight: '58px',
                   }}
-                  onClick={() => setIsVisible(true)}
+                  onClick={() => {
+                    setIsVisible(true)
+                    setTimeout(() => {
+                      inputRefDom.current?.focus()
+                    }, 100)
+                  }}
                 >
                   <IconFont type="plus" />
                   <span>{t('setting.addUserGroup')}</span>

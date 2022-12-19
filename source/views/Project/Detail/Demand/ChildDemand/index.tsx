@@ -1,3 +1,5 @@
+// 需求详情-子需求
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -5,9 +7,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
-import { Button, Menu, Dropdown, Pagination, message, Spin } from 'antd'
+import { Button, Menu, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  SecondButton,
+} from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -18,40 +24,20 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import DropDownMenu from '@/components/DropDownMenu'
 
 const Operation = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 24px',
+  padding: '0 24px 0px 12px ',
   height: 52,
   background: 'white',
+  borderRadius: '6px 6px 0 0',
 })
-
-const ButtonWrap = styled(Button)({
-  color: '#2877ff',
-  border: '1px solid #2877FF',
-  background: 'none',
-  '&: hover': {
-    color: '#2877ff',
-    border: '1px solid #2877FF',
-    background: 'none',
-  },
-})
-
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    fontSize: 20,
-    cursor: 'pointer',
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
-  }),
-)
-
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
   fontSize: 16,
@@ -92,6 +78,7 @@ const ChildDemand = () => {
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -103,6 +90,7 @@ const ChildDemand = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -128,6 +116,11 @@ const ChildDemand = () => {
     setTitleList(projectInfo?.titleList || [])
     setTitleList2(projectInfo?.titleList2 || [])
     setTitleList3(projectInfo?.titleList3 || [])
+    setAllTitleList([
+      ...(projectInfo.titleList || []),
+      ...(projectInfo.titleList2 || []),
+      ...(projectInfo.titleList3 || []),
+    ])
   }
 
   const getList = async (
@@ -170,10 +163,12 @@ const ChildDemand = () => {
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
     list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const onEdit = (e: any, item: any) => {
@@ -198,7 +193,12 @@ const ChildDemand = () => {
         {
           key: '1',
           label: (
-            <div onClick={() => setIsSettingState(true)}>
+            <div
+              onClick={() => {
+                setIsSettingState(true)
+                setIsVisibleFields(false)
+              }}
+            >
               {t('common.setField')}
             </div>
           ),
@@ -319,7 +319,7 @@ const ChildDemand = () => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2, ...titleList3]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -345,17 +345,16 @@ const ChildDemand = () => {
 
   return (
     <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          isChild
-          demandId={operationItem.id}
-          onUpdate={onUpdate}
-          childList={dataList?.list}
-          categoryId={demandInfo?.category}
-        />
-      ) : null}
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        isChild
+        demandId={operationItem.id}
+        onUpdate={onUpdate}
+        childList={dataList?.list}
+        categoryId={demandInfo?.category}
+        parentId={demandInfo.id}
+      />
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}
@@ -363,20 +362,27 @@ const ChildDemand = () => {
         onConfirm={onDeleteConfirm}
       />
       <Operation>
-        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ? (
+        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
+        projectInfo?.status !== 1 ? (
           <div />
         ) : (
-          <ButtonWrap
+          <SecondButton
             onClick={() => setIsVisible(true)}
             icon={<IconFont type="plus" />}
           >
             {t('project.addChildDemand')}
-          </ButtonWrap>
+          </SecondButton>
         )}
 
-        <Dropdown overlay={setMenu}>
-          <IconFontWrap active={isSettingState} type="settings" />
-        </Dropdown>
+        <DropDownMenu
+          menu={setMenu}
+          icon="settings"
+          isVisible={isVisibleFields}
+          onChangeVisible={setIsVisibleFields}
+          isActive={isSettingState}
+        >
+          <div>{t('common.tableFieldSet')}</div>
+        </DropDownMenu>
       </Operation>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={isSpinning}>
@@ -414,19 +420,19 @@ const ChildDemand = () => {
           onShowSizeChange={onShowSizeChange}
         />
       </PaginationWrap>
-      {isSettingState ? (
-        <OptionalFeld
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          plainOptions3={plainOptions3}
-          checkList={titleList}
-          checkList2={titleList2}
-          checkList3={titleList3}
-          isVisible={isSettingState}
-          onClose={() => setIsSettingState(false)}
-          getCheckList={getCheckList}
-        />
-      ) : null}
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={isSettingState}
+        onClose={() => setIsSettingState(false)}
+        getCheckList={getCheckList}
+      />
     </div>
   )
 }

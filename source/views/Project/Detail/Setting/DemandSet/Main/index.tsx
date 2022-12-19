@@ -1,8 +1,10 @@
+// 需求设置主页
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Button, Dropdown, Menu, Switch, Form, Select, message } from 'antd'
+import { Button, Menu, Switch, Form, Select, message } from 'antd'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
@@ -14,6 +16,7 @@ import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Wrap = styled.div({
   padding: 16,
@@ -126,10 +129,18 @@ const DivWrap = styled.div({
 const CategoryName = styled.div<{ bgColor?: string; color?: string }>(
   {
     height: 22,
+    display: 'flex',
+    alignItems: 'center',
     borderRadius: '11px',
     padding: '0 8px',
     fontSize: 12,
     lineHeight: '22px',
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ bgColor, color }) => ({
     background: bgColor,
@@ -261,14 +272,12 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   return (
     <>
-      {isDelete && (
-        <DeleteConfirm
-          isVisible={isDelete}
-          text={t('newlyAdd.confirmDelCategory')}
-          onChangeVisible={() => setIsDelete(!isDelete)}
-          onConfirm={onDeleteConfirm}
-        />
-      )}
+      <DeleteConfirm
+        isVisible={isDelete}
+        text={t('newlyAdd.confirmDelCategory')}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
 
       {isHasDelete && (
         <CommonModal
@@ -344,6 +353,7 @@ interface CardGroupProps {
 }
 
 const CardGroup = (props: CardGroupProps) => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
@@ -353,7 +363,7 @@ const CardGroup = (props: CardGroupProps) => {
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
   const activeTabs = Number(paramsData.type) || 0
-
+  asyncSetTtile(`${t('title.a8')}【${projectInfo.name}】`)
   const onChangeStatus = async (item: any, state: any) => {
     try {
       await changeCategoryStatus({

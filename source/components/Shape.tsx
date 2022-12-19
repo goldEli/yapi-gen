@@ -1,12 +1,13 @@
+// 公用状态流转弹窗
+
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
-/* eslint-disable max-len */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/jsx-no-leaked-render */
 import { useEffect, useState } from 'react'
 import {
   Select,
-  Button,
   Form,
   Input,
   Timeline,
@@ -22,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
 const Left = styled.div`
   min-height: 400px;
@@ -81,7 +83,6 @@ const ButtonFooter = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
-  /* margin-top: 24px; */
   flex-direction: row-reverse;
   box-sizing: border-box;
   padding-right: 24px;
@@ -141,11 +142,11 @@ const arron = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: #a4acf5;
   border-radius: 16px 16px 16px 16px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
   color: #ffffff;
@@ -155,8 +156,9 @@ const arrorText = css`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: #646566;
   line-height: 20px;
+  margin-left: 10px;
 `
 const symbol = css`
   color: #bbbdbf;
@@ -169,9 +171,9 @@ const symbol = css`
 `
 const ArrorItem = styled.div`
   position: relative;
-  height: 60px;
+  height: 50px;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -180,15 +182,6 @@ const ArrorItem = styled.div`
       visibility: hidden;
     }
   }
-`
-const danweiCss = css`
-  height: 22px;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #323233;
-  line-height: 22px;
-  margin: 0 16px;
 `
 
 const LabelComponent = (props: any) => {
@@ -382,8 +375,27 @@ export const ShapeContent = (props: any) => {
 
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] =
-        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
+      if (
+        res?.fields[key].type === 'select' &&
+        res?.fields[key].true_value !== 0
+      ) {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null &&
+          res?.fields[key].children.some(
+            (i: any) => i.id === res?.fields[key].true_value,
+          )
+            ? []
+            : res?.fields[key].true_value
+      } else if (res?.fields[key].type === 'select_checkbox') {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null
+            ? []
+            : res?.fields[key].true_value
+      } else if (res?.fields[key].true_value === 0) {
+        form1Obj[res?.fields[key].content] = ''
+      } else {
+        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+      }
     }
 
     form.setFieldsValue(form1Obj)
@@ -402,8 +414,27 @@ export const ShapeContent = (props: any) => {
 
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] =
-        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
+      if (
+        res?.fields[key].type === 'select' &&
+        res?.fields[key].true_value !== 0
+      ) {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null &&
+          res?.fields[key].children.some(
+            (i: any) => i.id === res?.fields[key].true_value,
+          )
+            ? []
+            : res?.fields[key].true_value
+      } else if (res?.fields[key].type === 'select_checkbox') {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null
+            ? []
+            : res?.fields[key].true_value
+      } else if (res?.fields[key].true_value === 0) {
+        form1Obj[res?.fields[key].content] = ''
+      } else {
+        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+      }
     }
 
     form.setFieldsValue(form1Obj)
@@ -422,10 +453,30 @@ export const ShapeContent = (props: any) => {
     })
 
     setRightList(res)
+
     const form1Obj: any = {}
     for (const key in res?.fields) {
-      form1Obj[res?.fields[key].content] =
-        res?.fields[key].true_value === 0 ? '' : res?.fields[key].true_value
+      if (
+        res?.fields[key].type === 'select' &&
+        res?.fields[key].true_value !== 0
+      ) {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null &&
+          res?.fields[key].children.some(
+            (i: any) => i.id === res?.fields[key].true_value,
+          )
+            ? []
+            : res?.fields[key].true_value
+      } else if (res?.fields[key].type === 'select_checkbox') {
+        form1Obj[res?.fields[key].content] =
+          res?.fields[key].true_value === null
+            ? []
+            : res?.fields[key].true_value
+      } else if (res?.fields[key].true_value === 0) {
+        form1Obj[res?.fields[key].content] = ''
+      } else {
+        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+      }
     }
 
     form.setFieldsValue(form1Obj)
@@ -484,15 +535,17 @@ export const ShapeContent = (props: any) => {
       verifyId: reviewerValue,
     }
 
-    tap(props.noleft ? putData2 : putData)
+    await tap(props.noleft ? putData2 : putData)
     onClear()
   }
 
-  // console.log(rightList)
+  const onConfirm = async () => {
+    await confirm()
+  }
 
   return (
     <Contain>
-      {props.noleft ? null : (
+      {!props.noleft && (
         <Left>
           {leftList.map((item: any) => (
             <div
@@ -516,7 +569,7 @@ export const ShapeContent = (props: any) => {
         </Left>
       )}
 
-      {loading ? (
+      {loading && (
         <Right>
           <div style={{ maxHeight: 280, overflow: 'auto' }}>
             <FormWrap>
@@ -586,7 +639,6 @@ export const ShapeContent = (props: any) => {
                     )}
                     {['select_checkbox', 'checkbox'].includes(i.type) && (
                       <Form.Item
-                        initialValue={i.true_value ?? []}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[
@@ -766,7 +818,7 @@ export const ShapeContent = (props: any) => {
                                     margin: '0 8px',
                                     color: '#BBBDBF',
                                     position: 'relative',
-                                    top: '-13px',
+                                    top: '0px',
                                   }}
                                   type={
                                     item2.operator === 1
@@ -857,10 +909,7 @@ export const ShapeContent = (props: any) => {
           <ButtonFooter>
             <Button
               disabled={!rightList.user_has_auth}
-              onClick={() => {
-                form.submit()
-                form2.submit()
-              }}
+              onClick={onConfirm}
               style={{ marginLeft: '16px' }}
               type="primary"
             >
@@ -872,7 +921,9 @@ export const ShapeContent = (props: any) => {
             <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
           </ButtonFooter>
         </Right>
-      ) : (
+      )}
+
+      {!loading && (
         <Spin
           style={{
             width: '100%',

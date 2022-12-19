@@ -1,3 +1,5 @@
+// 项目设置
+
 import { Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
@@ -37,8 +39,10 @@ const imgCss = css`
 const SetHead = styled.div`
   width: 104px;
   height: 104px;
-  line-height: 104px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
   font-size: 32px;
   background: #a4acf5;
@@ -64,6 +68,7 @@ const SetPermissionWrap = (props: {
 
   const init = async () => {
     const result = await getProjectPermission({ projectId })
+
     setRoleOptions(result.list)
     setInfoId(
       result.list.filter((item: any) => {
@@ -77,14 +82,14 @@ const SetPermissionWrap = (props: {
   useEffect(() => {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [props.isVisible])
 
   const handleChange = (value: any) => {
     setInfoId(value)
   }
 
-  const onConfirm = () => {
-    props.onConfirm(infoId)
+  const onConfirm = async () => {
+    await props.onConfirm(infoId)
   }
 
   return (

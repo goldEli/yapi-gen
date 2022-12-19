@@ -8,6 +8,8 @@ export default () => {
   const [isUpdateList, setIsUpdateList] = useState(false)
   const [filterHeightIterate, setFilterHeightIterate] = useState<any>(60)
   const [achieveInfo, setAchieveInfo] = useState<any>({})
+  // 筛选需求列表参数，用于回填创建需求弹窗
+  const [filterParams, setFilterParams] = useState<any>({})
 
   const getAchieveInfo = async (params: any) => {
     const result = await services.iterate.getAchieveInfo(params)
@@ -58,5 +60,7 @@ export default () => {
     getAchieveInfo,
     achieveInfo,
     updateAchieve,
+    setFilterParams,
+    filterParams,
   }
 }

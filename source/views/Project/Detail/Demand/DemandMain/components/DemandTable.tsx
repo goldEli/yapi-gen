@@ -1,10 +1,16 @@
+// 需求主页-需求表格模式
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react/jsx-no-leaked-render */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Pagination, message, Spin, Menu } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
-import IconFont from '@/components/IconFont'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  SecondButton,
+} from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -15,6 +21,8 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
+import EditDemand from '@/components/EditDemandNew'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -42,23 +50,27 @@ interface Props {
 }
 
 const DemandTable = (props: Props) => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus } = useModel('demand')
-  const { projectInfo } = useModel('project')
+  const { updatePriority, updateDemandStatus, filterParams } =
+    useModel('demand')
+  const { projectInfo, setFilterParamsModal, filterKeys } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
+  const [isAddVisible, setIsAddVisible] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-
+  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -66,6 +78,11 @@ const DemandTable = (props: Props) => {
     setTitleList(projectInfo?.titleList || [])
     setTitleList2(projectInfo?.titleList2 || [])
     setTitleList3(projectInfo?.titleList3 || [])
+    setAllTitleList([
+      ...(projectInfo.titleList || []),
+      ...(projectInfo.titleList2 || []),
+      ...(projectInfo.titleList3 || []),
+    ])
   }
 
   useEffect(() => {
@@ -76,10 +93,12 @@ const DemandTable = (props: Props) => {
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
     list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const onChangePage = (page: number, size: number) => {
@@ -149,6 +168,11 @@ const DemandTable = (props: Props) => {
     onUpdate: props?.onUpdate,
   })
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/save',
+  )
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',
@@ -188,10 +212,10 @@ const DemandTable = (props: Props) => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2, ...titleList3]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < columns.length; j++) {
+      for (let j = 0; j < columns?.length; j++) {
         if (arr[i] === columns[j].key) {
           newList.push(columns[j])
         }
@@ -239,8 +263,20 @@ const DemandTable = (props: Props) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  const onClick = () => {
+    setIsAddVisible(!isAddVisible)
+    setFilterParamsModal(filterParams)
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
+      {/* 暂无数据创建 */}
+      <EditDemand
+        visible={isAddVisible}
+        noDataCreate
+        onChangeVisible={() => setIsAddVisible(!isAddVisible)}
+        onUpdate={() => props.onUpdate(true)}
+      />
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
@@ -258,7 +294,16 @@ const DemandTable = (props: Props) => {
                 tableLayout="auto"
               />
             ) : (
-              <NoData />
+              <NoData
+                subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+                haveFilter={filterKeys?.length > 0}
+              >
+                {!hasCreate && (
+                  <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
+                    {t('common.createDemand')}
+                  </SecondButton>
+                )}
+              </NoData>
             ))}
         </Spin>
       </DataWrap>
@@ -277,19 +322,19 @@ const DemandTable = (props: Props) => {
           onShowSizeChange={onShowSizeChange}
         />
       </PaginationWrap>
-      {props.settingState ? (
-        <OptionalFeld
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          plainOptions3={plainOptions3}
-          checkList={titleList}
-          checkList2={titleList2}
-          checkList3={titleList3}
-          isVisible={props.settingState}
-          onClose={() => props.onChangeSetting(false)}
-          getCheckList={getCheckList}
-        />
-      ) : null}
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={props.settingState}
+        onClose={() => props.onChangeSetting(false)}
+        getCheckList={getCheckList}
+      />
     </Content>
   )
 }

@@ -1,3 +1,5 @@
+// 项目-公用操作栏
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -10,9 +12,10 @@ import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
 import { useModel } from '@/models'
 import { getIsPermission, getParamsData } from '@/tools/index'
-import { ClickWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { HoverWrap } from '@/components/StyleCommon'
 
 const OperationTop = styled.div({
   height: 64,
@@ -37,7 +40,7 @@ const ImgWrap = styled.img({
   width: 86,
   height: 40,
   borderRadius: 4,
-  marginRight: 16,
+  marginRight: 8,
 })
 
 const Tabs = styled(Space)({
@@ -45,24 +48,72 @@ const Tabs = styled(Space)({
   alignItems: 'center',
 })
 
-const TabsItem = styled.div<{ isActive: boolean }>(
+const TopRightItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  color: 'black',
+  cursor: 'pointer',
+  height: '32px',
+  padding: '0 8px',
+  borderRadius: 6,
+  '.anticon': {
+    fontSize: 20,
+  },
+  div: {
+    fontSize: 14,
+    fontWeight: 400,
+    marginLeft: 8,
+  },
+  '&: hover': {
+    color: '#323233!important',
+    background: '#F4F5F5',
+  },
+})
+
+const TabsItem = styled.div<{ isActive: boolean; isPlan?: boolean }>(
   {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    color: '#323233',
-    div: {
+    position: 'relative',
+    '.titleBox': {
       fontSize: 18,
       height: 62,
       lineHeight: '62px',
+      display: 'flex',
+      '&: hover': {
+        color: '#2877ff',
+        cursor: 'pointer',
+      },
     },
-    '&: hover': {
-      color: '#2877ff',
+    '.text': {
+      position: 'absolute',
+      zIndex: 2,
+      fontSize: 12,
+      top: 12,
+      right: -50,
+      display: 'flex',
+      padding: '0 4px 0 2px',
+      height: 20,
+      lineHeight: '20px',
+      whiteSpace: 'nowrap',
+      background: '#F4F4F6',
+      borderTopRightRadius: 4,
+      borderBottomRightRadius: 4,
+      div: {
+        display: 'inline-block',
+        borderTop: '10px solid transparent',
+        borderBottom: '10px solid transparent',
+        borderRight: '7px solid #F4F4F6',
+        width: 0,
+        height: 0,
+        position: 'absolute',
+        left: -7,
+        top: 0,
+      },
     },
   },
-  ({ isActive }) => ({
-    div: {
+  ({ isActive, isPlan }) => ({
+    color: isPlan ? '#969799' : '#323233',
+    '.titleBox': {
       color: String(isActive ? '#2877FF' : ''),
       borderBottom: `2px solid ${isActive ? '#2877FF' : 'white'}`,
       fontWeight: isActive ? 500 : 400,
@@ -75,34 +126,6 @@ const TopRight = styled(Space)({
   right: 24,
 })
 
-const TopRightItem = styled.div<{ isShow?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    color: 'black',
-    cursor: 'pointer',
-    '.anticon': {
-      fontSize: 20,
-    },
-    div: {
-      fontSize: 14,
-      fontWeight: 400,
-      marginLeft: 8,
-    },
-    '&: hover': {
-      color: '#2877ff!important',
-    },
-  },
-  ({ isShow }) => ({
-    '.anticon': {
-      color: isShow ? '#2877ff' : '',
-    },
-    div: {
-      color: isShow ? '#2877ff' : '',
-    },
-  }),
-)
-
 const MenuItems = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -113,16 +136,7 @@ const MenuItems = styled.div({
     fontWeight: 400,
   },
   '&: hover': {
-    color: '#2877ff',
-  },
-})
-
-const ClickIcon = styled(IconFont)({
-  color: '#323233',
-  fontSize: 16,
-  marginLeft: 8,
-  '&: hover': {
-    color: '#2877ff',
+    color: '#323233',
   },
 })
 
@@ -172,6 +186,18 @@ const CommonOperation = (props: Props) => {
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
     { name: t('common.iterate'), type: 'Iteration', hasPath: ['Iteration'] },
+    // {
+    //   name: t('version2.defect'),
+    //   type: 'Defect',
+    //   hasPath: ['Defect'],
+    //   isPlan: true,
+    // },
+    // {
+    //   name: t('version2.report'),
+    //   type: 'Report',
+    //   hasPath: ['Report'],
+    //   isPlan: true,
+    // },
     {
       name: t('container.setting'),
       type: 'Set',
@@ -257,14 +283,13 @@ const CommonOperation = (props: Props) => {
 
   return (
     <div>
-      {isVisible ? (
-        <EditProject
-          visible={isVisible}
-          onChangeVisible={() => onClickEdit(false)}
-          details={projectInfo}
-          onUpdate={props.onUpdate}
-        />
-      ) : null}
+      <EditProject
+        visible={isVisible}
+        onChangeVisible={() => onClickEdit(false)}
+        details={projectInfo}
+        onUpdate={props.onUpdate}
+      />
+
       <ProjectInfoModal
         visible={infoVisible}
         onChangeVisible={() => onClickProjectInfo(false)}
@@ -282,49 +307,38 @@ const CommonOperation = (props: Props) => {
             </BackWrap>
           </Tooltip>
           <ImgWrap src={projectInfo.cover} />
-          <OmitText
-            width={152}
-            tipProps={{
-              getPopupContainer: node => node,
-            }}
-          >
-            <ClickWrap
-              style={{ fontSize: 14, fontWeight: 500 }}
-              onClick={() => setIsVisible(true)}
-            >
-              {projectInfo.name}
-            </ClickWrap>
-          </OmitText>
-          <Tooltip title={t('project.editProject')}>
-            <ClickIcon
-              hidden={getIsPermission(
-                userInfo?.company_permissions,
-                'b/project/update',
-              )}
-              style={{ fontSize: 20 }}
-              type="edit-square"
-              onClick={() => setIsVisible(true)}
-            />
-          </Tooltip>
+          <HaveSearchAndList
+            placeholder={t('version2.searchProject')}
+            projectId={projectId}
+            isProjectChange
+          />
         </ProjectInfo>
         <Tabs size={60}>
           {tabsList.map(i => (
             <TabsItem
+              // isPlan={i.isPlan}
               onClick={() => onToModel(i)}
               key={i.type}
               isActive={
                 i.hasPath?.filter(k => pathname.includes(k))?.length > 0
               }
             >
-              <div>{i.name}</div>
+              <span className="titleBox">{i.name}</span>
+              {/* {i.isPlan ? (
+                <div className="text">
+                  {t('version2.developed')}
+                  <div />
+                </div>
+              ) : null} */}
             </TabsItem>
           ))}
         </Tabs>
-        <TopRight size={20}>
+        <TopRight size={12}>
           <TopRightItem onClick={() => setMemberVisible(true)}>
             <IconFont type="team" />
             <div>{t('project.member')}</div>
           </TopRightItem>
+
           <Dropdown
             key={isShowMenu.toString()}
             visible={isShowMenu}
@@ -333,7 +347,7 @@ const CommonOperation = (props: Props) => {
             placement="bottomRight"
             onVisibleChange={state => onClickMenu(state)}
           >
-            <TopRightItem onClick={() => onClickMenu(true)} isShow={isColor}>
+            <TopRightItem onClick={() => onClickMenu(true)}>
               <IconFont type="menu" />
               <div>{t('project.menu')}</div>
             </TopRightItem>

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
@@ -12,6 +13,7 @@ export const getProjectList: any = async (params: any) => {
       is_public: params?.isPublic ? Number(params.isPublic) : '',
       status: Number(params.status) || '',
       all: params.all ? 1 : 0,
+      group: params?.groupId,
     },
     pagesize: params.pageSize,
     page: params.page,
@@ -36,6 +38,7 @@ export const getProjectList: any = async (params: any) => {
         createName: i.user_name,
         info: i.info,
         isPublic: i.is_public,
+        groupIds: i.groups?.map((k: any) => k.id),
       })),
     }
   }
@@ -194,6 +197,7 @@ export const addProject: any = async (params: any) => {
     name: params.name,
     info: params?.info,
     cover: params?.cover,
+    groups: params?.groupIds,
   })
 }
 
@@ -204,6 +208,7 @@ export const updateProject: any = async (params: any) => {
     info: params.info,
     cover: params.cover,
     id: params.id,
+    groups: params?.groupIds,
   })
 }
 
@@ -247,6 +252,7 @@ export const getProjectMember: any = async (params: any) => {
       nickname: i.nickname,
       positionName: i.position_name,
       roleName: i.role_name,
+      is_admin: i.is_admin,
     }))
   } else {
     return {
@@ -318,13 +324,13 @@ export const addPermission: any = async (params: any) => {
 }
 
 export const deletePermission: any = async (params: any) => {
-  await http.delete<any>(`/b/company/role/${params.id}`, {
+  await http.delete<any>(`/b/project/role/${params.id}`, {
     project_id: params.projectId,
   })
 }
 
 export const updatePermission: any = async (params: any) => {
-  await http.put<any>(`/b/company/role/${params.id}`, {
+  await http.put<any>(`/b/project/role/${params.id}`, {
     name: params.name,
     project_id: params.projectId,
   })
@@ -588,6 +594,7 @@ export const getWorkflowInfo: any = async (params: any) => {
     label: i.title,
     value: i.content,
     groupLabel: i.group_name,
+    contentType: i.value ? JSON.parse(i.value) : null,
     defaultValueFields: {
       1: {
         type: 'select',
@@ -606,8 +613,9 @@ export const getWorkflowInfo: any = async (params: any) => {
           i.fixed_type.attr === 'number' ||
           !i.fixed_type.value
             ? []
-            : i.fixed_type.attr === 'select' &&
-              String(i.content).includes('custom_')
+            : ['select', 'select_checkbox', 'radio', 'checkbox'].includes(
+                i.fixed_type.attr,
+              ) && String(i.content).includes('custom_')
             ? i.fixed_type.value?.map((fixed: any) => ({
                 label: fixed,
                 value: fixed,
@@ -649,5 +657,44 @@ export const saveWorkflowConfig: any = async (params: any) => {
       process: params.process,
     },
     auth: params.auth,
+  })
+}
+
+// 获取分组列表
+export const getGroupList: any = async () => {
+  const response = await http.get<any>('getGroupList', {
+    search: {
+      all: 1,
+    },
+  })
+  return {
+    publicCount: response.data.public_count,
+    selfCount: response.data.self_count,
+    list: response.data?.list.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+    })),
+  }
+}
+
+// 添加分组
+export const addProjectGroup: any = async (params: any) => {
+  await http.post<any>('addProjectGroup', {
+    name: params.name,
+  })
+}
+
+// 编辑分组
+export const updateProjectGroup: any = async (params: any) => {
+  await http.put<any>('updateProjectGroup', {
+    name: params.name,
+    id: params.id,
+  })
+}
+
+// 删除分组
+export const deleteProjectGroup: any = async (params: any) => {
+  await http.delete<any>('deleteProjectGroup', {
+    id: params.id,
   })
 }

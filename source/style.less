@@ -8,7 +8,7 @@
 @border-radius-base: 6px;
 @table-header-bg: white;
 @table-header-color: #969799;
-@table-row-hover-bg: #f0f4fa;
+@table-row-hover-bg: #f7f7f7;
 @table-body-sort-bg: none;
 @table-header-sort-bg: white;
 @table-header-sort-active-bg: white;
@@ -17,10 +17,34 @@
 @border-color-base: #d5d6d9;
 @text-color: #323233;
 
+.ant-progress-inner {
+  background-color: #ecedef;
+}
+
+.ant-btn-default:hover {
+  background: #f0f4fa !important;
+  color: #2877ff !important;
+}
+
+.ant-btn-default:focus {
+  background: #dbeaff !important;
+  color: #2877ff !important;
+}
+
+.ant-progress-status-success .ant-progress-text {
+  color: #43ba9a;
+}
+
+.ant-checkbox-inner {
+  border-radius: 4px !important;
+}
+
 .react-viewer-transition {
   transition: inherit !important;
 }
-
+[data-w-e-textarea] {
+  overflow: visible;
+}
 .vertical-center-modal {
   display: flex;
   align-items: center;
@@ -66,13 +90,18 @@
   margin-left: 12px;
 }
 
-.ant-table-tbody .ant-table-row:nth-child(odd) td {
-  background-color: #f8f9fa;
-}
-
 //table样式 --- end
 
-.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-item {
+  color: #646566;
+  .ant-dropdown-menu-title-content div {
+    min-width: 80px;
+  }
+}
+.ant-dropdown-menu-item:hover {
+  background: #f4f5f5;
+  color: #323233;
+}
 .ant-dropdown-menu-item:active {
   background: #f0f4fa;
   color: #2877ff;
@@ -103,7 +132,9 @@ html {
   margin: 0;
   box-sizing: border-box;
 }
-
+// .ant-checkbox-wrapper {
+//   margin: 0 !important;
+// }
 input:-webkit-autofill {
   box-shadow: 0 0 0 1000px #fff inset !important;
 }
@@ -146,16 +177,24 @@ textarea {
   // visibility: hidden;
 }
 
+.ant-select-item-option {
+  font-weight: inherit;
+
+  color: #646566;
+}
+.ant-select-item-option:hover {
+  font-weight: inherit;
+
+  background: #f4f5f5;
+  color: #323233;
+}
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  background-color: #f0f4fa;
+  background-color: transparent;
   font-weight: inherit;
   color: #2877ff;
 }
-
-.ant-select-item-option:hover {
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
   background-color: #f0f4fa;
-  font-weight: inherit;
-  color: #2877ff;
 }
 
 .ant-btn-default,
@@ -211,7 +250,7 @@ textarea {
   width: 100%;
   &:hover {
     cursor: grab;
-    background-color: #f0f4f9;
+    background-color: #f4f5f5;
     [data-tree] {
       visibility: visible;
     }
@@ -256,17 +295,25 @@ input::-webkit-inner-spin-button {
   display: none;
 }
 .ant-tree-treenode-selected {
-  background-color: #f0f4f9;
+  background-color: #f0f4f9 !important;
 }
 .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
   opacity: 1;
 }
+
 .row-dragging {
   display: flex;
   align-items: center;
-  background: #fafafa;
-  border: 1px solid #ccc;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
   z-index: 10000 !important;
+}
+.ant-switch {
+  background-color: #d5d6d9 !important;
+}
+.ant-switch-checked {
+  background-color: #2877ff !important;
 }
 .row-dragging td {
   padding: 16px;
@@ -284,7 +331,7 @@ input::-webkit-inner-spin-button {
   right: 5px;
   bottom: 0;
   left: 0;
-  padding-left: 16px;
+  padding-left: 5px;
   overflow-x: hidden;
 }
 .resize_save2 {
@@ -307,8 +354,8 @@ input::-webkit-inner-spin-button {
   overflow: scroll;
 }
 .resize_bar2 {
-  max-width: 70vw;
-  width: 70vw;
+  max-width: 65vw;
+  width: 65vw;
   min-width: 30vw;
   height: inherit;
   resize: horizontal;
@@ -361,6 +408,9 @@ input::-webkit-inner-spin-button {
 .ant-tooltip-inner {
   white-space: pre-wrap;
 }
+.ant-collapse-content {
+  border-top: 1px solid #ecedef;
+}
 
 .ant-table-cell .ant-popover {
   z-index: 2 !important;
@@ -377,9 +427,11 @@ input::-webkit-inner-spin-button {
 .ant-select-tree-treenode {
   padding: 0 !important;
 }
-.ant-select-tree-treenode:hover,
+.ant-select-tree-treenode:hover {
+  background: #f4f5f5 !important;
+}
 .ant-select-tree-treenode-selected {
-  background: #f2f7ff !important;
+  background: #f0f4fa !important;
 }
 .ant-select-tree-node-content-wrapper:hover,
 .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
@@ -411,10 +463,15 @@ input::-webkit-inner-spin-button {
 }
 
 .ant-collapse-content-box {
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
 .ant-picker-range-separator svg {
   margin: 0 !important;
+}
+
+.w-e-bar-divider {
+  height: 20px !important;
+  margin: 10px 5px !important;
 }

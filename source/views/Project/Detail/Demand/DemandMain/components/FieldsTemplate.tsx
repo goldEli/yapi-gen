@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/naming-convention */
+// 需求主页-导出及导入字段选择
+
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider, Button } from 'antd'
+import { Checkbox, Space, Divider, Button, Row, Col, Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -10,20 +14,42 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { ShowWrap } from '@/components/StyleCommon'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
-// import { AsyncButton as  } from '@staryuntech/ant-pro'
+import {
+  SortableContainer as sortableContainer,
+  SortableElement as sortableElement,
+  SortableHandle as sortableHandle,
+} from 'react-sortable-hoc'
+import { arrayMoveImmutable } from 'array-move'
+import { ShowText } from '@/components/OptionalFeld'
+import { css } from '@emotion/css'
 
 const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 350,
 })
-
+const text = css`
+  color: rgba(150, 151, 153, 1);
+  font-size: 12px;
+  /* margin-bottom: 8px; */
+`
 const LeftWrap = styled.div({
   height: 350,
   width: 'calc(100% - 227px)',
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
+  '.ant-collapse > .ant-collapse-item > .ant-collapse-header': {
+    padding: '16px 0px !important',
+    paddingTop: '0px !important',
+  },
+  ' .ant-collapse-content > .ant-collapse-content-box': {
+    padding: '0px !important',
+  },
+  '.ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow ':
+    {
+      color: 'rgba(150, 151, 153, 1) !important',
+    },
 })
 const RightWrap = styled.div({
   height: 350,
@@ -54,7 +80,7 @@ const CheckedItem = styled.div<{ state?: any }>(
     padding: '  0 16px',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '&: hover': {
-      background: ' rgba(240, 244, 250, 1)',
+      background: ' #f4f5f5',
       [ShowWrap.toString()]: {
         visibility: 'visible',
       },
@@ -94,6 +120,25 @@ interface Props {
   isSpin?: any
 }
 
+const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
+
+// 拖拽元素
+const SortItemLi = sortableElement<any>((props: any) => (
+  <div helperClass="row-dragging" {...props} />
+))
+
+const DragHandle = sortableHandle(() => (
+  <IconFont
+    type="move"
+    style={{
+      fontSize: 16,
+      cursor: 'pointer',
+      color: '#969799',
+      marginRight: 12,
+    }}
+  />
+))
+
 const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -102,6 +147,7 @@ const FieldsTemplate = (props: Props) => {
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
+  const [all, setAll] = useState<any[]>([])
   const [checkAll, setCheckAll] = useState(false)
   const [indeterminate, setIndeterminate] = useState(true)
   const [fields, setFields] = useState<any>({})
@@ -114,6 +160,7 @@ const FieldsTemplate = (props: Props) => {
           isUpdate: props?.importState,
         })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
+
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
     const customKeys = result?.customFields?.map((k: any) => k.field)
     if (props.isExport) {
@@ -124,23 +171,56 @@ const FieldsTemplate = (props: Props) => {
     setCheckList(basicKeys || [])
     setCheckList2(otherKeys || [])
     setCheckList3(customKeys || [])
+    setAll([...basicKeys, ...otherKeys, ...customKeys])
     setIndeterminate(false)
     setCheckAll(true)
     setFields(result)
   }
 
   useEffect(() => {
-    getList()
-  }, [])
+    if (props.visible) {
+      getList()
+    }
+  }, [props.visible])
 
   const [t] = useTranslation()
 
   const onClose = () => {
+    setAll([])
     props?.onClose()
   }
+  const onSortEnd = ({ oldIndex, newIndex }: any) => {
+    const arr = all.slice()
 
-  const onConfirm = () => {
-    props?.onConfirm([...checkList, ...checkList2, ...checkList3])
+    if (props?.importState === 1) {
+      arr.shift()
+    }
+    if (props?.isExport) {
+      arr.shift()
+    }
+    if (props?.importState === 2) {
+      arr.shift()
+      arr.shift()
+    }
+
+    if (oldIndex !== newIndex) {
+      const newData = arrayMoveImmutable(arr, oldIndex, newIndex).filter(
+        (el: any) => !!el,
+      )
+
+      if (props?.importState === 2) {
+        setAll(['name', 'category'].concat(newData))
+      } else if (props?.importState === 1) {
+        setAll(['id'].concat(newData))
+      } else if (props.isExport) {
+        setAll(['name'].concat(newData))
+      }
+    }
+  }
+
+  const onConfirm = async () => {
+    const news = allList.map((i: any) => i.field)
+    await props?.onConfirm(news)
   }
 
   function del(value: string) {
@@ -161,7 +241,7 @@ const FieldsTemplate = (props: Props) => {
   const getItemState = (field: string) => {
     let resultVal: boolean
     if (props.isExport) {
-      resultVal = field === 'name'
+      resultVal = ['name'].includes(field)
     } else {
       resultVal =
         props?.importState === 2
@@ -172,42 +252,27 @@ const FieldsTemplate = (props: Props) => {
   }
 
   const allList = useMemo(() => {
-    const arr = [...checkList, ...checkList2, ...checkList3]
+    const newArr = [...checkList, ...checkList2, ...checkList3]
+
     const arr2 = [
       ...(fields?.baseFields || []),
       ...(fields?.timeAndPersonFields || []),
       ...(fields?.customFields || []),
     ]
-    const all = arr2.reduce((res: { name: string; field: string }[], item) => {
-      if (arr.includes(item.field)) {
-        res.push(item)
-      }
-      return res
-    }, [])
+    const newList = all.filter((i: any) => {
+      return newArr.includes(i)
+    })
+    const alls: any[] = []
 
-    return (
-      <CheckedWrap>
-        {all.map((item: any) => (
-          <CheckedItem key={item.field} state={getItemState(item.field)}>
-            <IconFont
-              style={{ fontSize: 12, marginRight: '8px', color: '#969799' }}
-              type="move"
-            />
-            <span>{item.name}</span>
-            {!getItemState(item.field) && (
-              <ShowWrap style={{ marginLeft: 'auto' }}>
-                <IconFont
-                  style={{ fontSize: 12 }}
-                  type="close"
-                  onClick={() => del(item.field)}
-                />
-              </ShowWrap>
-            )}
-          </CheckedItem>
-        ))}
-      </CheckedWrap>
-    )
-  }, [checkList, checkList2, checkList3, fields])
+    newList.forEach((i: any) => {
+      const result = arr2.find(item => {
+        return item.field === i
+      })
+      alls.push(result)
+    })
+
+    return alls
+  }, [checkList, checkList2, checkList3, fields, all])
 
   const onIsCheckAll = (length: any) => {
     const allKeys = [
@@ -221,11 +286,13 @@ const FieldsTemplate = (props: Props) => {
 
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
+    setAll([...list, ...checkList2, ...checkList3])
     const resArr = [...list, ...checkList2, ...checkList3]
     onIsCheckAll(resArr.length)
   }
   const onChange2 = (list: CheckboxValueType[]) => {
     setCheckList2(list)
+    setAll([...checkList, ...list, ...checkList3])
     const resArr = [...checkList, ...list, ...checkList3]
     onIsCheckAll(resArr.length)
   }
@@ -233,6 +300,7 @@ const FieldsTemplate = (props: Props) => {
   const onChange3 = (list: CheckboxValueType[]) => {
     setCheckList3(list)
     const resArr = [...checkList, ...checkList2, ...list]
+    setAll([...checkList, ...checkList2, ...list])
     onIsCheckAll(resArr.length)
   }
 
@@ -256,6 +324,16 @@ const FieldsTemplate = (props: Props) => {
     setCheckAll(checked)
   }
 
+  // 折叠图标
+  const expandIcon = (e: any) => {
+    return (
+      <IconFont
+        type={e.isActive ? 'down' : 'right'}
+        style={{ fontSize: 14, marginRight: 8 }}
+      />
+    )
+  }
+
   return (
     <CommonModal
       title={props?.title}
@@ -277,56 +355,102 @@ const FieldsTemplate = (props: Props) => {
     >
       <Wrap>
         <LeftWrap>
-          <Checkbox
-            checked={checkAll}
-            indeterminate={indeterminate}
-            style={{ marginBottom: 24, width: 'fit-content' }}
-            onClick={onAllChecked}
+          <div style={{ marginBottom: 24, width: 'fit-content' }}>
+            <Checkbox
+              checked={checkAll}
+              indeterminate={indeterminate}
+              onClick={onAllChecked}
+            >
+              {t('newlyAdd.allChecked')}
+            </Checkbox>
+          </div>
+
+          <Collapse
+            defaultActiveKey={['1']}
+            ghost
+            expandIcon={e => expandIcon(e)}
           >
-            {t('newlyAdd.allChecked')}
-          </Checkbox>
-          <ItemWrap>
-            <LabelWrap>{t('components.basicFiled')}</LabelWrap>
-            <Checkbox.Group value={checkList} onChange={onChange}>
-              <Space style={{ flexWrap: 'wrap' }}>
-                {fields?.baseFields?.map((item: any) => (
-                  <Checkbox
-                    disabled={getItemState(item.field)}
-                    key={item.field}
-                    value={item.field}
+            <Collapse.Panel
+              header={<div className={text}>{t('components.basicFiled')}</div>}
+              key="1"
+            >
+              <ItemWrap>
+                <Checkbox.Group
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList}
+                  onChange={onChange}
+                >
+                  <Row gutter={[0, 10]}>
+                    {fields?.baseFields?.map((item: any) => (
+                      <Col key={item.label} span={6}>
+                        <Checkbox
+                          disabled={getItemState(item.field)}
+                          key={item.field}
+                          value={item.field}
+                        >
+                          <ShowText names={item.name} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              </ItemWrap>
+            </Collapse.Panel>
+            <Collapse.Panel
+              header={
+                <div className={text}>{t('components.personOrTime')}</div>
+              }
+              key="2"
+            >
+              <ItemWrap>
+                <Checkbox.Group
+                  style={{
+                    width: '100%',
+                  }}
+                  value={checkList2}
+                  onChange={onChange2}
+                >
+                  <Row gutter={[0, 10]}>
+                    {fields?.timeAndPersonFields?.map((item: any) => (
+                      <Col key={item.label} span={6}>
+                        <Checkbox key={item.field} value={item.field}>
+                          <ShowText names={item.name} />
+                        </Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              </ItemWrap>
+            </Collapse.Panel>
+            <Collapse.Panel
+              header={<div className={text}>{t('newlyAdd.customFields')}</div>}
+              key="3"
+            >
+              {fields?.customFields?.length ? (
+                <ItemWrap>
+                  <Checkbox.Group
+                    style={{
+                      width: '100%',
+                    }}
+                    value={checkList3}
+                    onChange={onChange3}
                   >
-                    {item.name}
-                  </Checkbox>
-                ))}
-              </Space>
-            </Checkbox.Group>
-          </ItemWrap>
-          <ItemWrap>
-            <LabelWrap>{t('components.personOrTime')}</LabelWrap>
-            <Checkbox.Group value={checkList2} onChange={onChange2}>
-              <Space style={{ flexWrap: 'wrap' }}>
-                {fields?.timeAndPersonFields?.map((item: any) => (
-                  <Checkbox key={item.field} value={item.field}>
-                    {item.name}
-                  </Checkbox>
-                ))}
-              </Space>
-            </Checkbox.Group>
-          </ItemWrap>
-          {fields?.customFields?.length ? (
-            <ItemWrap>
-              <LabelWrap>{t('newlyAdd.customFields')}</LabelWrap>
-              <Checkbox.Group value={checkList3} onChange={onChange3}>
-                <Space style={{ flexWrap: 'wrap' }}>
-                  {fields?.customFields?.map((item: any) => (
-                    <Checkbox key={item.field} value={item.field}>
-                      {item.name}
-                    </Checkbox>
-                  ))}
-                </Space>
-              </Checkbox.Group>
-            </ItemWrap>
-          ) : null}
+                    <Row gutter={[0, 10]}>
+                      {fields?.customFields?.map((item: any) => (
+                        <Col key={item.label} span={6}>
+                          <Checkbox key={item.field} value={item.field}>
+                            <ShowText names={item.name} />
+                          </Checkbox>
+                        </Col>
+                      ))}
+                    </Row>
+                  </Checkbox.Group>
+                </ItemWrap>
+              ) : null}
+            </Collapse.Panel>
+          </Collapse>
         </LeftWrap>
         <Divider
           type="vertical"
@@ -334,7 +458,71 @@ const FieldsTemplate = (props: Props) => {
         />
         <RightWrap>
           <LabelWrap>{t('components.currentFiled')}</LabelWrap>
-          {allList}
+          <div>
+            <CheckedWrap>
+              {allList
+                .filter((i: any) => getItemState(i.field))
+                .map((item: any) => (
+                  <CheckedItem
+                    key={item.field}
+                    state={getItemState(item.field)}
+                  >
+                    <IconFont
+                      style={{
+                        fontSize: 16,
+                        marginRight: '8px',
+                        color: '#969799',
+                      }}
+                      type="move"
+                    />
+                    <span>{item.name}</span>
+                    {!getItemState(item.field) && (
+                      <ShowWrap style={{ marginLeft: 'auto' }}>
+                        <IconFont
+                          style={{ fontSize: 12 }}
+                          type="close"
+                          onClick={() => del(item.field)}
+                        />
+                      </ShowWrap>
+                    )}
+                  </CheckedItem>
+                ))}
+            </CheckedWrap>
+            <SortContainer
+              helperClass="row-dragging"
+              useDragHandle
+              onSortEnd={(values: any) => onSortEnd(values)}
+            >
+              {allList
+                .filter((i: any) => !getItemState(i.field))
+                .map((item: any, idx: number) => {
+                  return (
+                    <SortItemLi
+                      helperClass="row-dragging"
+                      key={item.value}
+                      index={idx}
+                    >
+                      <CheckedItem
+                        key={item.field}
+                        state={getItemState(item.field)}
+                      >
+                        <DragHandle />
+                        <span>{item.name}</span>
+                        {!getItemState(item.field) && (
+                          <ShowWrap style={{ marginLeft: 'auto' }}>
+                            <IconFont
+                              style={{ fontSize: 16, color: '#646566' }}
+                              type="close"
+                              onClick={() => del(item.field)}
+                            />
+                          </ShowWrap>
+                        )}
+                      </CheckedItem>
+                    </SortItemLi>
+                  )
+                })}
+            </SortContainer>
+          </div>
         </RightWrap>
       </Wrap>
     </CommonModal>

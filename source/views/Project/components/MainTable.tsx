@@ -1,15 +1,16 @@
+// 项目列表表格模式
+
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable max-len */
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Menu, Dropdown, Pagination, Progress } from 'antd'
+import { Menu, Pagination, Progress } from 'antd'
 import {
   TableStyleBox,
   PaginationWrap,
   ClickWrap,
   HiddenText,
+  SecondButton,
 } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
@@ -28,14 +29,10 @@ interface Props {
   onChangePageNavigation(item: any): void
   onUpdateOrderKey(item: any): void
   order: any
+  onAddClick(): void
+  // 是否有筛选条件
+  hasFilter?: boolean
 }
-
-const RowIconFont = styled(IconFont)({
-  visibility: 'hidden',
-  fontSize: 16,
-  cursor: 'pointer',
-  color: '#2877ff',
-})
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -193,6 +190,11 @@ const MainTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const { userInfo } = useModel('user')
+  const hasCreate = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/save',
+  )
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -468,7 +470,19 @@ const MainTable = (props: Props) => {
               onRow={onTableRow}
             />
           ) : (
-            <NoData />
+            <NoData
+              subText={hasCreate ? '' : t('version2.noDataCreateProject')}
+              haveFilter={props?.hasFilter}
+            >
+              {!hasCreate && (
+                <SecondButton
+                  onClick={props.onAddClick}
+                  style={{ marginTop: 24 }}
+                >
+                  {t('common.createProject')}
+                </SecondButton>
+              )}
+            </NoData>
           ))}
       </DataWrap>
 

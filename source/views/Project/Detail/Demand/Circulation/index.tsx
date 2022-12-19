@@ -1,3 +1,5 @@
+// 需求详情-流转记录
+
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
@@ -93,7 +95,7 @@ const SpanWrap = styled.span<{ size?: any; weight?: any; color?: any }>(
 
 const TextWrap = styled.div({
   fontSize: 16,
-  fontWeight: 400,
+  fontWeight: 'normal',
   color: '#323233',
 })
 
@@ -131,6 +133,15 @@ const Circulation = () => {
       getLogs()
     }
   }, [isRefresh])
+
+  // 返回自定义值
+  const getValues = (key: any, values: any) => {
+    return (
+      <span>
+        {values?.map((n: any) => (n?.id ? n?.name : n)).join(';') || '--'}
+      </span>
+    )
+  }
 
   return (
     <Wrap>
@@ -219,11 +230,7 @@ const Circulation = () => {
                           ) : (
                             <ContentWrap>
                               {String(m).includes('custom_') ? (
-                                <span>
-                                  {i.fields[m]?.value
-                                    ?.map((n: any) => n)
-                                    .join('、') || '--'}
-                                </span>
+                                getValues(m, i.fields[m]?.value)
                               ) : (
                                 <Space size={24}>
                                   {i.fields[m]?.value?.map((n: any) => (
@@ -430,24 +437,27 @@ const Circulation = () => {
                             ? t('newlyAdd.demandReviewTo')
                             : t('newlyAdd.notExamineTo')}
                         </SpanWrap>
-
-                        {i.verifyAll?.verifyStatus === 2 &&
-                        (i.statusTo || i.verifyAll?.statusFrom) ? (
-                          <ViewWrap
-                            style={{ marginLeft: 8 }}
-                            color={
-                              i.verifyAll?.verifyStatus === 2
-                                ? i.statusTo?.color
-                                : i.verifyAll?.statusFrom?.color
-                            }
-                          >
-                            {i.verifyAll?.verifyStatus === 2
-                              ? i.statusTo?.name
-                              : i.verifyAll?.statusFrom?.name}
-                          </ViewWrap>
-                        ) : (
-                          <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
-                        )}
+                        {(i.verifyAll?.verifyStatus === 2 ||
+                          i.verifyAll?.verifyStatus === 3) &&
+                          (i.statusTo || i.verifyAll?.statusFrom) && (
+                            <ViewWrap
+                              style={{ marginLeft: 8 }}
+                              color={
+                                i.verifyAll?.verifyStatus === 2
+                                  ? i.statusTo?.color
+                                  : i.verifyAll?.statusFrom?.color
+                              }
+                            >
+                              {i.verifyAll?.verifyStatus === 2
+                                ? i.statusTo?.name
+                                : i.verifyAll?.statusFrom?.name}
+                            </ViewWrap>
+                          )}
+                        {(i.verifyAll?.verifyStatus === 2 ||
+                          i.verifyAll?.verifyStatus === 3) &&
+                          !(i.statusTo || i.verifyAll?.statusFrom) && (
+                            <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                          )}
                       </LineItem>
                     )}
                   </Timeline.Item>

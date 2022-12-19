@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { SecondButton } from '@/components/StyleCommon'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -57,14 +58,23 @@ const TopWrap = styled.div({
   marginBottom: 8,
 })
 
-const IconWrap = styled(IconFont)({
-  fontSize: 20,
-  color: '#969799',
-  cursor: 'pointer',
-  '&: hover': {
-    color: '#2877ff',
+const IconWrap = styled(IconFont)<{ isActive: any }>(
+  {
+    fontSize: 20,
+    color: '#969799',
+    cursor: 'pointer',
+    padding: 8,
+    borderRadius: 6,
+    '&: hover': {
+      color: '#323233',
+      background: '#F4F5F5',
+    },
   },
-})
+  ({ isActive }) => ({
+    color: isActive ? '#323233' : '#969799',
+    background: isActive ? '#F4F5F5' : 'white',
+  }),
+)
 
 const SortItem = styled.div<{ isActive: boolean }>(
   {
@@ -72,19 +82,21 @@ const SortItem = styled.div<{ isActive: boolean }>(
     height: 30,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     fontSize: 14,
     cursor: 'pointer',
     margin: '4px 0',
     padding: '0 16px',
+    '.icon': {
+      marginLeft: 24,
+    },
     '&:hover': {
-      color: '#2877ff',
-      background: '#F0F4FA',
+      color: '#323233',
+      background: '#F4F5F5',
     },
   },
   ({ isActive }) => ({
-    color: isActive ? '#2877ff' : '#646566',
-    background: isActive ? '#F0F4FA' : 'white',
+    color: isActive ? '#2877ff!important' : '#646566',
   }),
 )
 
@@ -253,6 +265,10 @@ const WrapLeft = (props: Props) => {
           onClick={() => onChangeSort(i)}
         >
           {i.name}
+          <IconFont
+            className="icon"
+            type={currentSort.name === i.name ? 'check' : ''}
+          />
         </SortItem>
       ))}
     </div>
@@ -375,7 +391,7 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        {hasAdd ? (
+        {hasAdd || projectInfo?.status !== 1 ? (
           <div />
         ) : (
           <AddButton
@@ -383,7 +399,7 @@ const WrapLeft = (props: Props) => {
             onChangeClick={onChangeClick}
           />
         )}
-        <Space size={20}>
+        <Space size={8}>
           <Popover
             visible={isSort}
             trigger="click"
@@ -393,7 +409,7 @@ const WrapLeft = (props: Props) => {
             onVisibleChange={(visible: boolean) => setIsSort(visible)}
           >
             <Tooltip title={t('common.sort')}>
-              <IconWrap type="sort" />
+              <IconWrap type="sort" isActive={isSort} />
             </Tooltip>
           </Popover>
           {hasFilter ? null : (
@@ -410,7 +426,7 @@ const WrapLeft = (props: Props) => {
               onVisibleChange={onVisibleChange}
             >
               <Tooltip title={t('common.search')}>
-                <IconWrap type="filter" />
+                <IconWrap type="filter" isActive={isFilter} />
               </Tooltip>
             </Popover>
           )}
@@ -437,7 +453,22 @@ const WrapLeft = (props: Props) => {
                 ))}
               </div>
             ) : (
-              <NoData />
+              <NoData
+                subText={hasAdd ? '' : t('version2.noDataCreateIteration')}
+                haveFilter={
+                  Object.values(form.getFieldsValue())?.filter((i: any) => i)
+                    ?.length > 0
+                }
+              >
+                {!hasAdd && (
+                  <SecondButton
+                    onClick={onChangeClick}
+                    style={{ marginTop: 24 }}
+                  >
+                    {t('common.createIterate')}
+                  </SecondButton>
+                )}
+              </NoData>
             ))}
         </Spin>
       </CardGroups>

@@ -1,11 +1,13 @@
-/* eslint-disable max-len */
+// 左侧操作栏
+
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
-import sideLogo from '/logo.svg'
+import sideLogo from '/sliderLogo.svg'
+import sideLogoText from '/logoText.svg'
 import { useModel } from '@/models'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -31,9 +33,8 @@ const SideWrap = styled.div`
   height: 100vh;
 `
 const imgCSS = css`
-  width: 80px;
-  height: 106px;
-  margin-bottom: 50px;
+  width: 56px;
+  margin-top: 24px;
   object-fit: cover;
 `
 const SideHeader = styled.div`
@@ -48,8 +49,10 @@ const SideFooter = styled(SideHeader)`
 const SetHead = styled.div`
   width: 32px;
   height: 32px;
-  line-height: 32px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
   font-size: 14px;
   background: #a4acf5;
@@ -193,8 +196,6 @@ export const Side = () => {
     >
       {item?.icon}
       {item.title}
-      {/* {item.key === '/information' && <RedLogo>{count}</RedLogo>} */}
-      {/* {item.key === '/mine' && <RedLogo>{count}</RedLogo>} */}
     </SideEach>
   ))
 
@@ -206,6 +207,7 @@ export const Side = () => {
     <SideWrap>
       <SideHeader>
         <img className={imgCSS} src={sideLogo} alt="1" />
+        <img style={{ marginBottom: 32 }} src={sideLogoText} alt="1" />
         {allEach}
       </SideHeader>
 
@@ -224,14 +226,15 @@ export const Side = () => {
           content={<Panel onChange={() => setPanelVisible(false)} />}
           onVisibleChange={visible => setPanelVisible(visible)}
         >
-          {userInfo.avatar ? (
+          {userInfo.avatar && (
             <img
               style={{ cursor: 'pointer' }}
               className={imgCss}
               src={userInfo.avatar}
               onClick={controlPanelVisible}
             />
-          ) : (
+          )}
+          {!userInfo.avatar && (
             <SetHead onClick={controlPanelVisible}>
               {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
             </SetHead>

@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+// 添加按钮
+
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 
-const Wrap = styled.div({
+const Wrap = styled.button({
   height: 32,
   padding: '0 16px',
   borderRadius: 6,
@@ -11,6 +14,16 @@ const Wrap = styled.div({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  border: 'none',
+  width: 'fit-content',
+  ':hover': {
+    background: '#669FFF',
+    color: 'white',
+  },
+  ':focus': {
+    background: '#1763e5',
+    color: 'white',
+  },
 })
 
 interface Props {

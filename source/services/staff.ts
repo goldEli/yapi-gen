@@ -145,3 +145,30 @@ export const getRoleList: any = async () => {
   const response = await http.get('getRoleList')
   return response
 }
+
+const deep = (arr: any, newArr: any) => {
+  arr.map((x: any) => {
+    newArr.push(x.staffs)
+    if (x && x.children) {
+      deep(x.children, newArr)
+    }
+    return x
+  })
+  return newArr
+}
+
+export const getAddDepartMember = async (projectId: any) => {
+  const response = await http.get('/b/user/department_user_list', {
+    search: {
+      project_id: projectId,
+    },
+  })
+  const companyList: any = deep(response.data, [])
+
+  const list = {
+    companyList: companyList.flat(),
+    departments: response.data,
+  }
+
+  return list
+}

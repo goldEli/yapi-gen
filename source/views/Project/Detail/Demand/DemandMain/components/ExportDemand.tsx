@@ -1,3 +1,5 @@
+// 需求主页-导出需求
+
 import FieldsTemplate from './FieldsTemplate'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -48,7 +50,6 @@ const ExportDemand = (props: Props) => {
     <FieldsTemplate
       visible={props.isShowExport}
       title={t('p2.exportFields')}
-      importState={2}
       onClose={() => props.onClose(false)}
       onConfirm={onConfirmTemplate}
       isExport

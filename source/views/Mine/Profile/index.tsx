@@ -1,3 +1,5 @@
+// 我的模块-我的概况
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
@@ -23,8 +25,7 @@ import Loading from '@/components/Loading'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
+import useSetTitle from '@/hooks/useSetTitle'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -91,6 +92,7 @@ const Center = styled.div`
 const CenterRight = styled.div`
   box-sizing: border-box;
   padding: 24px;
+  padding-right: 4px;
   flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
@@ -130,7 +132,10 @@ const GatteWrap = styled.div`
   border-radius: 6px;
 `
 const Profile = () => {
+  const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
+  asyncSetTtile(t('title.a9'))
+
   const {
     getMineChartsList,
     getUserFeedList,
@@ -166,12 +171,12 @@ const Profile = () => {
       res2.list?.map((k: any) => ({
         id: k.id,
         demandText: k.text,
-        text: `<div style="display: flex; align-items: center">
+        text: `<div style="display: flex; align-items: center;padding-left: 16px">
           <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
             k.categoryColor
           }; background: ${
           colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">${k.categoryName}</span>
+        }">#${k.categoryName}#</span>
           <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
             k.text
           }</span>
@@ -212,7 +217,6 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthIndex, page, pagesize])
 
   const forMateMonth = useMemo(() => {

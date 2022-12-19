@@ -1,10 +1,10 @@
+// 我的模块和他的模块甘特图
+
 /* eslint-disable prefer-template */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-
-// 我的模块和他的模块甘特图
 
 import { gantt } from 'dhtmlx-gantt'
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css'
@@ -69,9 +69,9 @@ const GanttWrap = styled.div({
   '.gantt_task_cell': {
     borderRight: 'none',
   },
-  //   '.gantt_row:nth-child(even), .gantt_task_row:nth-child(even)': {
-  //     backgroundColor: ' #f8f9fa',
-  //   },
+  '.gantt_grid_head_text': {
+    paddingLeft: 26,
+  },
   '#status': {
     padding: '4px 8px',
     borderRadius: 6,
@@ -156,14 +156,6 @@ const Gantt = (props: Props) => {
       },
     ]
 
-    // gantt.attachEvent(
-    //   'onAfterTaskDrag',
-    //   (id: any, mode: any, e: any) => {
-    //     const task = gantt.getTask(id)
-    //   },
-    //   {},
-    // )
-
     gantt.init(document.getElementById('ganttDom') as string | HTMLElement)
   }
 
@@ -190,6 +182,7 @@ const Gantt = (props: Props) => {
         width: '100%',
         height: props.height,
         minHeight: props?.minHeight,
+        // paddingLeft: 16,
       }}
     ></GanttWrap>
   )

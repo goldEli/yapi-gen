@@ -7,6 +7,7 @@
 import * as http from '../tools/http'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
+import { getStaffList2 } from './staff'
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -51,6 +52,16 @@ export const getSearchField: any = async (params: any) => {
   })
   const newTreeData = filterTreeData(res)
   const newLieBieData = filArr2(res2.list)
+
+  // 公司
+
+  const companyList = await getStaffList2({ all: 1 })
+
+  const filterCompanyList = companyList.map((item: any) => ({
+    id: item.id,
+    content: item.name,
+    content_txt: item.name,
+  }))
 
   const memberList = await http.get('getProjectMember', {
     search: {
@@ -166,6 +177,73 @@ export const getSearchField: any = async (params: any) => {
         ],
       }
     } else if (item.attr) {
+      // 成员
+
+      if (item.attr === 'user_select') {
+        if (item.values[0] === 'projectMember') {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: 'select_checkbox',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: [
+              { id: -1, content: '空', content_txt: '空' },
+              ...filterMemberList,
+            ],
+          }
+        }
+        if (item.values[0] === 'companyMember') {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: 'select_checkbox',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: [
+              { id: -1, content: '空', content_txt: '空' },
+              ...filterCompanyList,
+            ],
+          }
+        }
+      }
+      if (item.attr === 'user_select_checkbox') {
+        if (item.values[0] === 'projectMember') {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: 'select_checkbox',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: [
+              { id: -1, content: '空', content_txt: '空' },
+              ...filterMemberList,
+            ],
+          }
+        }
+        if (item.values[0] === 'companyMember') {
+          return {
+            id: item.id,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            type: 'select_checkbox',
+            isDefault: item.is_default_filter,
+            contentTxt: item.content_txt,
+            children: [
+              { id: -1, content: '空', content_txt: '空' },
+              ...filterCompanyList,
+            ],
+          }
+        }
+      }
+
       const filterData = filArr(item?.values) || []
       return {
         id: item.id,
@@ -259,21 +337,15 @@ export const getField: any = async (params: any) => {
 
   const plainOptions3 = display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '自定义字段')
-    .map(
-      (item: {
-        title: any
-        content: any
-        is_default_display: any
-        content_txt: any
-      }) => {
-        return {
-          label: item.title,
-          value: item.content,
-          is_default_display: item.is_default_display,
-          labelTxt: item.content_txt,
-        }
-      },
-    )
+    .map((item: any) => {
+      return {
+        label: item.title,
+        value: item.content,
+        is_default_display: item.is_default_display,
+        labelTxt: item.content_txt,
+        attr: item.attr,
+      }
+    })
 
   const titleList: any[] = []
   plainOptions
@@ -364,14 +436,13 @@ export const getProjectMember: any = async (params: any) => {
 
 // 流转状态
 export const updateDemandStatus: any = async (params: any) => {
-  const res = await http.put<any>('updateDemandStatus', {
+  await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
     fields: params.fields,
     verify_user_id: params.verifyId ?? undefined,
   })
-  return res
 }
 
 // 修改优先级

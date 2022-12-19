@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 // 迭代右侧的操作栏
 
 /* eslint-disable camelcase */
@@ -9,7 +10,7 @@ import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
-import { message, Tooltip } from 'antd'
+import { message, Space, Tooltip } from 'antd'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
@@ -19,6 +20,7 @@ import EditAchievements from '../../components/EditAchievements'
 import IterationStatus from '../../components/IterationStatus'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -240,17 +242,24 @@ const Operation = (props: Props) => {
                 iterateInfo={props.currentDetail}
                 onChangeStatus={onChangeStatus}
               />
-              <Tooltip title={t('project.iterateTarget')}>
-                <IconWrap onClick={() => setVisible(true)} type="detail" />
-              </Tooltip>
-              {isCanCheck ? null : (
-                <Tooltip title={t('p2.d2')}>
-                  <IconWrap
-                    onClick={() => setIsAchievements(true)}
-                    type="iteration"
-                  />
-                </Tooltip>
-              )}
+              <Space size={8} style={{ marginLeft: 8 }}>
+                <HoverWrap onClick={() => setVisible(true)} isActive={visible}>
+                  <IconFont className="iconMain" type="detail" />
+                  <span className="label">{t('project.iterateTarget')}</span>
+                </HoverWrap>
+                {isCanCheck ? null : (
+                  <>
+                    <DividerWrap type="vertical" />
+                    <HoverWrap
+                      onClick={() => setIsAchievements(true)}
+                      isActive={isAchievements}
+                    >
+                      <IconFont className="iconMain" type="iteration" />
+                      <span className="label">{t('p2.d2')}</span>
+                    </HoverWrap>
+                  </>
+                )}
+              </Space>
             </>
           )}
         </IterationInfo>
@@ -274,15 +283,14 @@ const Operation = (props: Props) => {
           isIteration
         />
       )}
-      {isAchievements ? (
-        <EditAchievements
-          isAchievements={isAchievements}
-          onClose={() => setIsAchievements(false)}
-          projectId={projectId}
-          id={props.currentDetail?.id}
-          isInfo={false}
-        />
-      ) : null}
+
+      <EditAchievements
+        isAchievements={isAchievements}
+        onClose={() => setIsAchievements(false)}
+        projectId={projectId}
+        id={props.currentDetail?.id}
+        isInfo={false}
+      />
     </StickyWrap>
   )
 }

@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
 import ChangeRecord from './ChangeRecord'
@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
-import { StatusWrap } from '@/components/StyleCommon'
+import { CanOperationCategory, StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
@@ -103,24 +103,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
       color: activeIdx ? 'white' : '#2877FF',
       background: activeIdx ? '#2877FF' : '#F0F4FA',
     },
-  }),
-)
-
-const StatusTag = styled.div<{ color?: string; bgColor?: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    textAlign: 'center',
-    lineHeight: '22px',
-    padding: '0 8px',
-    fontSize: 12,
-    cursor: 'pointer',
-    marginRight: 8,
-    width: 'fit-content',
-  },
-  ({ color, bgColor }) => ({
-    color,
-    background: bgColor,
   }),
 )
 
@@ -249,7 +231,7 @@ const DemandBox = () => {
       await deleteDemand({ projectId, id: demandInfo.id })
       message.success(t('common.deleteSuccess'))
       setIsDelVisible(false)
-      const params = encryptPhp(JSON.stringify({ id: projectId, demandId }))
+      const params = encryptPhp(JSON.stringify({ id: projectId }))
       navigate(`/Detail/Demand?data=${params}`)
     } catch (error) {
       //
@@ -349,15 +331,15 @@ const DemandBox = () => {
           color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
           onClick={() => onClickCategory(k)}
         >
-          <StatusTag
-            style={{ marginRight: 0 }}
+          <CanOperationCategory
+            style={{ marginRight: 0, cursor: 'pointer' }}
             color={k.color}
             bgColor={
               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
             }
           >
-            {k.name}
-          </StatusTag>
+            <span className="title">{k.name}</span>
+          </CanOperationCategory>
         </LiWrap>
       ))}
     </div>
@@ -376,69 +358,68 @@ const DemandBox = () => {
     }
     return (
       <>
-        {isShowCategory && (
-          <CommonModal
-            isVisible={isShowCategory}
-            onClose={onCloseCategory}
-            title={t('newlyAdd.changeCategory')}
-            onConfirm={onConfirmCategory}
+        <CommonModal
+          isVisible={isShowCategory}
+          onClose={onCloseCategory}
+          title={t('newlyAdd.changeCategory')}
+          onConfirm={onConfirmCategory}
+        >
+          <FormWrap
+            form={form}
+            layout="vertical"
+            style={{ padding: '0 20px 0 2px' }}
           >
-            <FormWrap
-              form={form}
-              layout="vertical"
-              style={{ padding: '0 20px 0 2px' }}
+            <Form.Item label={t('newlyAdd.beforeCategory')}>
+              <CanOperationCategory
+                style={{ marginRight: 8, cursor: 'pointer' }}
+                color={colorObj?.color}
+                bgColor={
+                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                    ?.bgColor
+                }
+              >
+                <span className="title">{colorObj?.name}</span>
+              </CanOperationCategory>
+            </Form.Item>
+            <Form.Item
+              label={t('newlyAdd.afterCategory')}
+              name="categoryId"
+              rules={[{ required: true, message: '' }]}
             >
-              <Form.Item label={t('newlyAdd.beforeCategory')}>
-                <StatusTag
-                  color={colorObj?.color}
-                  bgColor={
-                    colorList?.filter((i: any) => i.key === colorObj?.color)[0]
-                      ?.bgColor
-                  }
-                >
-                  <>{colorObj?.name}</>
-                </StatusTag>
-              </Form.Item>
-              <Form.Item
-                label={t('newlyAdd.afterCategory')}
-                name="categoryId"
-                rules={[{ required: true, message: '' }]}
-              >
-                <Select
-                  placeholder={t('common.pleaseSelect')}
-                  showArrow
-                  showSearch
-                  getPopupContainer={node => node}
-                  allowClear
-                  optionFilterProp="label"
-                  onChange={onChangeSelect}
-                  options={resultCategory?.map((k: any) => ({
-                    label: k.name,
-                    value: k.id,
-                  }))}
-                />
-              </Form.Item>
-              <Form.Item
-                label={t('newlyAdd.afterStatus')}
-                name="statusId"
-                rules={[{ required: true, message: '' }]}
-              >
-                <Select
-                  placeholder={t('common.pleaseSelect')}
-                  showArrow
-                  showSearch
-                  getPopupContainer={node => node}
-                  allowClear
-                  optionFilterProp="label"
-                  options={workList?.list?.map((k: any) => ({
-                    label: k.name,
-                    value: k.statusId,
-                  }))}
-                />
-              </Form.Item>
-            </FormWrap>
-          </CommonModal>
-        )}
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                onChange={onChangeSelect}
+                options={resultCategory?.map((k: any) => ({
+                  label: k.name,
+                  value: k.id,
+                }))}
+              />
+            </Form.Item>
+            <Form.Item
+              label={t('newlyAdd.afterStatus')}
+              name="statusId"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={workList?.list?.map((k: any) => ({
+                  label: k.name,
+                  value: k.statusId,
+                }))}
+              />
+            </Form.Item>
+          </FormWrap>
+        </CommonModal>
         <DeleteConfirm
           text={t('common.confirmDelDemand')}
           isVisible={isDelVisible}
@@ -455,9 +436,10 @@ const DemandBox = () => {
               getPopupContainer={node => node}
               onVisibleChange={visible => setIsShowChange(visible)}
             >
-              <StatusTag
+              <CanOperationCategory
                 style={{
                   cursor: resultCategory?.length > 0 ? 'pointer' : 'inherit',
+                  marginRight: 8,
                 }}
                 color={colorObj?.color}
                 bgColor={
@@ -465,7 +447,7 @@ const DemandBox = () => {
                     ?.bgColor
                 }
               >
-                <>{colorObj?.name}</>
+                <span className="title">{colorObj?.name}</span>
                 {resultCategory?.length > 0 && (
                   <IconFont
                     type="down-icon"
@@ -476,10 +458,11 @@ const DemandBox = () => {
                     }}
                   />
                 )}
-              </StatusTag>
+              </CanOperationCategory>
             </Popover>
+            <div className="demandName">【{demandInfo?.id}】</div>
             <OmitText
-              width={600}
+              width={800}
               tipProps={{
                 getPopupContainer: node => node,
               }}
@@ -558,17 +541,6 @@ const DemandBox = () => {
             >
               <span>{t('newlyAdd.circulationRecord')}</span>
             </Item>
-            {demandInfo?.isExamine && type === 'info' ? (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 80,
-                  position: 'absolute',
-                  top: 22,
-                  right: 530,
-                }}
-              />
-            ) : null}
           </MainWrap>
           {childContent()}
         </ContentWrap>
@@ -593,15 +565,13 @@ const DemandBox = () => {
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          demandId={operationItem.id}
-          onUpdate={onUpdate}
-          isInfo={type === 'info'}
-        />
-      ) : null}
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        demandId={operationItem.id}
+        onUpdate={onUpdate}
+        isInfo={type === 'info'}
+      />
       {content()}
     </div>
   )

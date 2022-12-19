@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-no-leaked-render */
+// 他的模块所有页面公用列表及查询
+
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
@@ -9,7 +12,6 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  SetButton,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -17,15 +19,17 @@ import {
   StaffTableWrap2,
   ShowWrap,
   TableWrap,
-  IconFontWrap,
+  HoverWrap,
+  DividerWrap,
+  HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -35,12 +39,7 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
-
-const IconWrap = styled(IconFontWrap)({
-  '&: hover': {
-    color: '#2877ff',
-  },
-})
+import DropDownMenu from '@/components/DropDownMenu'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -82,6 +81,12 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
+})
+
+const MainWrap = styled.div({
+  '.ant-spin-nested-loading': {
+    height: 'initial',
+  },
 })
 
 interface MoreWrapProps {
@@ -126,7 +131,6 @@ const MoreWrap = (props: MoreWrapProps) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
   return (
-    // <ShowWrap>
     <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
         <MoreDropdown
@@ -136,7 +140,6 @@ const MoreWrap = (props: MoreWrapProps) => {
         />
       )}
     </>
-    // </ShowWrap>
   )
 }
 
@@ -171,6 +174,7 @@ const CommonNeed = (props: any) => {
   const [manyListData, setManyListData] = useState<any>({
     list: undefined,
   })
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
@@ -190,6 +194,8 @@ const CommonNeed = (props: any) => {
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
   const [isSpin, setIsSpin] = useState<boolean>(false)
+  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -286,11 +292,12 @@ const CommonNeed = (props: any) => {
   }
 
   const updateStatus = async (res1: any) => {
-    const res = await updateDemandStatus(res1)
-
-    if (res.code === 0) {
+    try {
+      await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
       init()
+    } catch (error) {
+      //
     }
   }
   const updatePriority = async (res1: any) => {
@@ -323,7 +330,7 @@ const CommonNeed = (props: any) => {
   })
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2, ...titleList3]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -352,7 +359,6 @@ const CommonNeed = (props: any) => {
       },
     ]
     return [...arrList, ...newList]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
   const getShowkey = async () => {
@@ -363,6 +369,7 @@ const CommonNeed = (props: any) => {
     setTitleList(res2.titleList)
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
+    setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
     setIsRefresh(false)
   }
 
@@ -404,13 +411,11 @@ const CommonNeed = (props: any) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
     setPage(1)
     init(1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, orderKey, order, props.id, searchGroups, isMany])
 
   useEffect(() => {
@@ -426,11 +431,11 @@ const CommonNeed = (props: any) => {
         getSearchKey()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefresh])
 
   const showModal = () => {
     setIsModalVisible(true)
+    setIsVisibleFields(false)
   }
   const close2 = () => {
     setIsModalVisible(false)
@@ -440,10 +445,12 @@ const CommonNeed = (props: any) => {
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
     list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
     setTitleList3(list3)
+    setAllTitleList(all)
   }
 
   const onChangeVisible = () => {
@@ -478,10 +485,42 @@ const CommonNeed = (props: any) => {
 
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
+    setIsVisibleFormat(false)
   }
 
+  const menuType = (
+    <Menu
+      items={[
+        {
+          key: 'list',
+          label: (
+            <HasIconMenu onClick={() => onChangeMany(true)} isCheck={isMany}>
+              <div className="left">
+                <IconFont className="icon" type="database" />
+                <span className="label">{t('common.timeList')}</span>
+              </div>
+              <IconFont className="checked" type={isMany ? 'check' : ''} />
+            </HasIconMenu>
+          ),
+        },
+        {
+          key: 'thumbnail',
+          label: (
+            <HasIconMenu onClick={() => onChangeMany(false)} isCheck={!isMany}>
+              <div className="left">
+                <IconFont className="icon" type="unorderedlist" />
+                <span className="label">{t('common.list')}</span>
+              </div>
+              <IconFont className="checked" type={isMany ? '' : 'check'} />
+            </HasIconMenu>
+          ),
+        },
+      ]}
+    />
+  )
+
   return (
-    <>
+    <MainWrap>
       <TabsHehavior
         style={{ padding: '0 24px', justifyContent: 'space-between' }}
       >
@@ -498,83 +537,53 @@ const CommonNeed = (props: any) => {
               onChangeSearch={onPressEnter}
             />
           </div>
-          <div style={{ display: 'flex' }}>
+          <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (
               <>
-                <SetButton
-                  onClick={() => {
-                    onChangeMany(false)
-                  }}
-                >
-                  <Tooltip
-                    title={t('common.list')}
-                    getPopupContainer={node => node}
-                  >
-                    <IconFont
-                      type="unorderedlist"
-                      style={{ fontSize: 20, color: isMany ? '' : '#4388ff' }}
-                    />
-                  </Tooltip>
-                </SetButton>
                 {props?.type === 'abeyance' && (
-                  <SetButton
-                    onClick={() => {
-                      onChangeMany(true)
-                    }}
+                  <DropDownMenu
+                    menu={menuType}
+                    icon={isMany ? 'database' : 'unorderedlist'}
+                    isVisible={isVisibleFormat}
+                    onChangeVisible={setIsVisibleFormat}
                   >
-                    <Tooltip
-                      title={t('common.timeList')}
-                      getPopupContainer={node => node}
-                    >
-                      <IconFont
-                        type="database"
-                        style={{
-                          fontSize: 20,
-                          color: isMany ? '#4388ff' : '',
-                        }}
-                      />
-                    </Tooltip>
-                  </SetButton>
+                    <HasIconMenu>
+                      <div className="label">
+                        {isMany ? t('common.timeList') : t('common.list')}
+                      </div>
+                    </HasIconMenu>
+                  </DropDownMenu>
                 )}
               </>
             )}
 
             {props.id !== 0 && (
-              <SetButton onClick={() => setIsShowSearch(!isShowSearch)}>
-                <Tooltip
-                  title={t('common.search')}
-                  getPopupContainer={node => node}
+              <>
+                <DividerWrap type="vertical" />
+                <HoverWrap
+                  onClick={() => setIsShowSearch(!isShowSearch)}
+                  isActive={isShowSearch}
                 >
-                  <IconFont
-                    type="filter"
-                    style={{
-                      fontSize: 20,
-                      color: isShowSearch ? '#2877ff' : '',
-                    }}
-                  />
-                </Tooltip>
-              </SetButton>
+                  <IconFont className="iconMain" type="filter" />
+                  <span className="label">{t('common.search')}</span>
+                </HoverWrap>
+              </>
             )}
-
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              <SetButton>
-                <Tooltip
-                  title={t('common.tableFieldSet')}
-                  getPopupContainer={node => node}
-                >
-                  <IconWrap
-                    type="settings"
-                    active={isModalVisible}
-                    style={{ fontSize: 20 }}
-                  />
-                </Tooltip>
-              </SetButton>
-            </Dropdown>
-          </div>
+            <DividerWrap type="vertical" />
+            <DropDownMenu
+              menu={menu}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div>{t('common.tableFieldSet')}</div>
+            </DropDownMenu>
+          </Space>
         </SearchWrap>
       </TabsHehavior>
 
-      {isShowSearch && props.id !== 0 ? (
+      {isShowSearch && props.id !== 0 && (
         <div style={{ borderLeft: '1px solid #EBEDF0' }}>
           <TableFilter
             onFilter={getSearchKey}
@@ -585,31 +594,35 @@ const CommonNeed = (props: any) => {
             customList={filterCustomList}
           />
         </div>
-      ) : null}
+      )}
       {!isMany && (
-        <div>
-          <LoadingSpin spinning={isSpin}>
-            <StaffTableWrap>
-              {listData?.list ? (
-                listData?.list?.length > 0 ? (
-                  <TableBox
-                    rowKey="id"
-                    columns={selectColum}
-                    dataSource={listData?.list}
-                    pagination={false}
-                    scroll={{ x: 'max-content' }}
-                  />
-                ) : (
-                  <NoData />
-                )
-              ) : null}
-            </StaffTableWrap>
-          </LoadingSpin>
-        </div>
+        <LoadingSpin spinning={isSpin}>
+          <StaffTableWrap>
+            {listData?.list ? (
+              listData?.list?.length > 0 ? (
+                <TableBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={listData?.list}
+                  pagination={false}
+                  scroll={{ x: 'max-content' }}
+                />
+              ) : (
+                <NoData />
+              )
+            ) : null}
+          </StaffTableWrap>
+        </LoadingSpin>
       )}
 
-      {isMany ? (
-        <div>
+      {isMany && (
+        <div
+          style={{
+            minHeight: isMember ? 'calc(100vh - 130px)' : '',
+            textAlign: 'center',
+            lineHeight: isMember ? 'calc(100vh - 130px)' : '',
+          }}
+        >
           <LoadingSpin spinning={isSpin}>
             {manyListData.list &&
               (manyListData.list?.length > 0 ? (
@@ -654,7 +667,7 @@ const CommonNeed = (props: any) => {
               ))}
           </LoadingSpin>
         </div>
-      ) : null}
+      )}
 
       {!isMany && listData?.list?.length > 0 && (
         <PaginationWrap style={{ paddingRight: 24 }}>
@@ -672,36 +685,35 @@ const CommonNeed = (props: any) => {
           />
         </PaginationWrap>
       )}
-      {isModalVisible ? (
-        <OptionalFeld
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          plainOptions3={plainOptions3}
-          checkList={titleList}
-          checkList2={titleList2}
-          checkList3={titleList3}
-          isVisible={isModalVisible}
-          onClose={close2}
-          getCheckList={getCheckList}
-        />
-      ) : null}
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          demandId={operationItem?.id}
-          projectId={projectId}
-          onUpdate={onUpdate}
-          notGetPath
-        />
-      ) : null}
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        plainOptions3={plainOptions3}
+        checkList={titleList}
+        checkList2={titleList2}
+        checkList3={titleList3}
+        isVisible={isModalVisible}
+        onClose={close2}
+        getCheckList={getCheckList}
+      />
+
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        demandId={operationItem?.id}
+        projectId={projectId}
+        onUpdate={onUpdate}
+        notGetPath
+      />
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
       />
-    </>
+    </MainWrap>
   )
 }
 

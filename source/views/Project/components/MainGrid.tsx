@@ -1,3 +1,5 @@
+// 项目列表卡片模式
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -22,7 +24,6 @@ interface Props {
 const SpaceWrap = styled(Space)({
   display: 'flex',
   flexWrap: 'wrap',
-  padding: '0 8px',
 })
 
 const AddProject = styled.div({
@@ -79,7 +80,7 @@ const MainGrid = (props: Props) => {
     <DataWrap>
       {!!props.projectList?.list &&
         (props.projectList?.list?.length > 0 ? (
-          <SpaceWrap size={32}>
+          <SpaceWrap size={24}>
             {props.projectList.list?.map((item: any) => (
               <div key={item.id}>
                 <ProjectCard
@@ -90,7 +91,7 @@ const MainGrid = (props: Props) => {
               </div>
             ))}
 
-            {isPermission ? null : (
+            {!isPermission && (
               <AddProject onClick={onAddClick}>
                 <IconFont
                   style={{ fontSize: 24, marginBottom: 16 }}

@@ -1,3 +1,5 @@
+// 需求设置-添加工作流弹窗
+
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -103,7 +105,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState<any>('')
   const [errorState, setErrorState] = useState(false)
-  const [normalColor, setNormalColor] = useState<any>()
+  const [normalColor, setNormalColor] = useState<any>('#2877FF')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -119,7 +121,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const onReset = () => {
     props?.onClose?.()
     setValue('')
-    setNormalColor('')
+    setNormalColor('#2877FF')
     setErrorState(false)
   }
 
@@ -454,67 +456,63 @@ const AddWorkflow = (props: Props) => {
 
   return (
     <>
-      {isDelVisible && (
-        <DeleteConfirm
-          text={t('newlyAdd.confirmDelStatus')}
-          isVisible={isDelVisible}
-          onChangeVisible={onCloseDel}
-          onConfirm={onDeleteConfirm}
-        />
-      )}
-      {isHasDelete && (
-        <CommonModal
-          isVisible={isHasDelete}
-          onClose={onCloseHasDelete}
-          title={t('newlyAdd.newStatus')}
-          onConfirm={onConfirmHasDelete}
-        >
-          <div style={{ paddingRight: 16 }}>
-            <HasDemandText>
-              {t('newlyAdd.changeNewStatus', {
-                count: operationDelObj?.deleteData?.story_count,
-                name: operationDelObj?.name,
-              })}
-            </HasDemandText>
-            <FormWrap form={form} layout="vertical">
-              {operationDelObj?.deleteData?.list?.map((i: any) => (
-                <Form.Item
-                  name={`${i.category_id}_name`}
-                  key={i.category_id}
-                  label={
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <CategoryWrap
-                        style={{ marginRight: 8, marginLeft: 0 }}
-                        color={i.category_color}
-                        bgColor={
-                          colorList?.filter(k => k.key === i.category_color)[0]
-                            ?.bgColor
-                        }
-                      >
-                        {i.category_name}
-                      </CategoryWrap>
-                      {t('newlyAdd.appointStatus')}
-                    </div>
-                  }
-                >
-                  <Select
-                    placeholder={t('common.pleaseSelect')}
-                    showArrow
-                    showSearch
-                    getPopupContainer={node => node}
-                    allowClear
-                    optionFilterProp="label"
-                    options={i.status?.map((k: any) => ({
-                      label: k.content,
-                      value: k.id,
-                    }))}
-                  />
-                </Form.Item>
-              ))}
-            </FormWrap>
-          </div>
-        </CommonModal>
-      )}
+      <DeleteConfirm
+        text={t('newlyAdd.confirmDelStatus')}
+        isVisible={isDelVisible}
+        onChangeVisible={onCloseDel}
+        onConfirm={onDeleteConfirm}
+      />
+      <CommonModal
+        isVisible={isHasDelete}
+        onClose={onCloseHasDelete}
+        title={t('newlyAdd.newStatus')}
+        onConfirm={onConfirmHasDelete}
+      >
+        <div style={{ paddingRight: 16 }}>
+          <HasDemandText>
+            {t('newlyAdd.changeNewStatus', {
+              count: operationDelObj?.deleteData?.story_count,
+              name: operationDelObj?.name,
+            })}
+          </HasDemandText>
+          <FormWrap form={form} layout="vertical">
+            {operationDelObj?.deleteData?.list?.map((i: any) => (
+              <Form.Item
+                name={`${i.category_id}_name`}
+                key={i.category_id}
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <CategoryWrap
+                      style={{ marginRight: 8, marginLeft: 0 }}
+                      color={i.category_color}
+                      bgColor={
+                        colorList?.filter(k => k.key === i.category_color)[0]
+                          ?.bgColor
+                      }
+                    >
+                      {i.category_name}
+                    </CategoryWrap>
+                    {t('newlyAdd.appointStatus')}
+                  </div>
+                }
+              >
+                <Select
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={i.status?.map((k: any) => ({
+                    label: k.content,
+                    value: k.id,
+                  }))}
+                />
+              </Form.Item>
+            ))}
+          </FormWrap>
+        </div>
+      </CommonModal>
       <CommonModal
         isVisible={props.isVisible}
         title={t('newlyAdd.addStatus')}

@@ -1,3 +1,6 @@
+// 编辑项目信息
+
+/* eslint-disable no-undefined */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Input, Select, message } from 'antd'
@@ -12,12 +15,17 @@ interface Props {
   onChangeVisible(): void
   details?: any
   onUpdate?(): void
+  // 当前选中的项
+  activeType?: any
+  // 当前选中的分组
+  groupId?: any
 }
 
 const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const { addProject, updateProject } = useModel('project')
+  const { addProject, updateProject, selectGroupList, setIsRefreshGroup } =
+    useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   const onConfirm = async () => {
@@ -36,6 +44,7 @@ const EditProject = (props: Props) => {
         }
         await addProject(form.getFieldsValue())
         message.success(t('common.createSuccess'))
+        setIsRefreshGroup(true)
       }
       props.onChangeVisible()
       props.onUpdate?.()
@@ -55,6 +64,11 @@ const EditProject = (props: Props) => {
       form.setFieldsValue(props?.details)
     } else {
       form.resetFields()
+      if (props.activeType === -1) {
+        form.setFieldsValue({
+          groupIds: [props.groupId],
+        })
+      }
     }
     setTimeout(() => {
       inputRefDom.current?.focus()
@@ -118,12 +132,25 @@ const EditProject = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('project.isPublic')} name="isPublic">
-          <Select placeholder={t('project.pleaseSelect')} defaultValue={[2]}>
+          <Select
+            placeholder={t('common.pleaseSelect')}
+            defaultValue={props.activeType === 1 ? [1] : [2]}
+          >
             <Select.Option value={2}>
               {t('common.privateProject')}
             </Select.Option>
             <Select.Option value={1}>{t('project.companyOpen')}</Select.Option>
           </Select>
+        </Form.Item>
+        <Form.Item label={t('version2.projectGroup')} name="groupIds">
+          <Select
+            placeholder={t('common.pleaseSelect')}
+            mode="multiple"
+            options={selectGroupList}
+            showArrow
+            showSearch
+            allowClear
+          />
         </Form.Item>
       </Form>
     </CommonModal>

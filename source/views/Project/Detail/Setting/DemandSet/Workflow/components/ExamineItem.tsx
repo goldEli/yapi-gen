@@ -1,3 +1,5 @@
+// 需求设置-流转弹窗审核模块下的
+
 /* eslint-disable camelcase */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -5,15 +7,16 @@ import IconFont from '@/components/IconFont'
 import { NameWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Input, Popover, Space, Timeline } from 'antd'
-import { useEffect, useImperativeHandle, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const AddWrap = styled.div({
+  marginTop: '6px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: 32,
-  width: 32,
+  height: 24,
+  width: 24,
   boxSizing: 'border-box',
   cursor: 'pointer',
   borderRadius: 16,
@@ -40,7 +43,7 @@ const PersonItemWrap = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#F0F4FA',
+    background: '#f4f5f5',
   },
 })
 
@@ -106,7 +109,8 @@ export const ItemWrap = styled.div({
   alignItems: 'center',
   '.changeSize': {
     fontSize: 12,
-    marginTop: 4,
+    color: '#646566',
+    marginLeft: 10,
   },
   '&: hover': {
     [IconfontCloseWrap.toString()]: {
@@ -118,11 +122,21 @@ export const ItemWrap = styled.div({
 interface ChoosePersonProps {
   onChangeValue(obj: any): void
   options: any
+  visible?: any
 }
 
 export const ChoosePerson = (props: ChoosePersonProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState('')
+  const inputRefDom = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (props.visible) {
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    }
+  }, [props.visible])
 
   return (
     <div style={{ padding: '16px 0', minWidth: 240 }}>
@@ -131,34 +145,41 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
           style={{ height: 32, width: 208 }}
           placeholder={t('newlyAdd.pleaseKeyWord')}
           onChange={e => setValue(e.target.value)}
+          autoFocus
+          ref={inputRefDom as any}
         />
       </div>
       <PersonWrap>
         {props?.options
           ?.filter((k: any) => k.name.includes(value))
-          ?.map((i: any) => (
-            <PersonItemWrap key={i.id} onClick={() => props?.onChangeValue(i)}>
-              {i.avatar ? (
-                <img
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 16,
-                    marginRight: 8,
-                  }}
-                  src={i?.avatar}
-                  alt=""
-                />
-              ) : (
-                <NameWrap style={{ margin: '0 8px 0 0' }}>
-                  {String(
-                    i?.name?.substring(0, 1)?.trim().slice(0, 1),
-                  ).toLocaleUpperCase()}
-                </NameWrap>
-              )}
-              {i.name}
-            </PersonItemWrap>
-          ))}
+          ?.map((i: any) => {
+            return (
+              <PersonItemWrap
+                key={i.id}
+                onClick={() => props?.onChangeValue(i)}
+              >
+                {i.avatar ? (
+                  <img
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: 16,
+                      marginRight: 8,
+                    }}
+                    src={i?.avatar}
+                    alt=""
+                  />
+                ) : (
+                  <NameWrap style={{ margin: '0 8px 0 0' }}>
+                    {String(
+                      i?.name?.substring(0, 1)?.trim().slice(0, 1),
+                    ).toLocaleUpperCase()}
+                  </NameWrap>
+                )}
+                {i.name}
+              </PersonItemWrap>
+            )
+          })}
       </PersonWrap>
     </div>
   )
@@ -300,13 +321,13 @@ const ExamineItem = (props: Props) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: 4,
+                margin: '10px 0 4px 0',
               }}
             >
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+
                   alignItems: 'center',
                 }}
               >
@@ -334,7 +355,7 @@ const ExamineItem = (props: Props) => {
                 <IconFont
                   style={{
                     fontSize: 16,
-                    margin: '-20px 8px 0',
+                    margin: '0px 8px 0',
                     color: '#BBBDBF',
                   }}
                   type={
@@ -356,6 +377,7 @@ const ExamineItem = (props: Props) => {
                 <ChoosePerson
                   onChangeValue={obj => onAddPerson(obj)}
                   options={props?.options}
+                  visible={isOpen}
                 />
               }
               getPopupContainer={node => node}
@@ -366,6 +388,9 @@ const ExamineItem = (props: Props) => {
                 }}
               >
                 <IconFont
+                  style={{
+                    fontSize: '12px',
+                  }}
                   className="icon"
                   type="plus"
                   onClick={() => setIsOpen(true)}

@@ -1,9 +1,11 @@
+// 公司成员主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -14,8 +16,9 @@ import {
   Hehavior,
   PaginationWrap,
   StaffTableWrap,
-  SetButton,
   TableStyleBox,
+  HoverWrap,
+  DividerWrap,
 } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -28,6 +31,8 @@ import { debounce } from 'lodash'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
+import DropDownMenu from '@/components/DropDownMenu'
 
 export const tableWrapP = css`
   display: flex;
@@ -52,6 +57,10 @@ const Reset = styled.div`
     border: 1px solid rgba(40, 119, 255, 1);
     color: rgba(40, 119, 255, 1);
   }
+  &:focus {
+    border: 1px solid #1763e5;
+    color: #1763e5;
+  }
 `
 
 export const DataWrap = styled.div({
@@ -63,7 +72,10 @@ export const DataWrap = styled.div({
 })
 
 const Staff = () => {
+  const asyncSetTtile = useSetTitle()
+
   const [t] = useTranslation()
+  asyncSetTtile(t('title.b5'))
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
   const { userInfo, isRefresh, setIsRefresh } = useModel('user')
   const [filterHeight, setFilterHeight] = useState<any>(116)
@@ -89,6 +101,7 @@ const Staff = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [isStaffPersonalVisible, setIsStaffPersonalVisible] =
     useState<boolean>(false)
+  const [isVisibleFields, setIsVisibleFields] = useState(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'nickname',
     'name',
@@ -104,7 +117,7 @@ const Staff = () => {
   const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
     'created_at',
   ])
-
+  const [allTitleList, setAllTitleList] = useState<any[]>([])
   const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
 
   const getStaffListData = async () => {
@@ -190,7 +203,7 @@ const Staff = () => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = [...titleList, ...titleList2]
+    const arr = allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns.length; j++) {
@@ -245,6 +258,7 @@ const Staff = () => {
 
   const showModal = () => {
     setIsModalVisible(true)
+    setIsVisibleFields(false)
   }
   const close2 = () => {
     setIsModalVisible(false)
@@ -253,9 +267,12 @@ const Staff = () => {
   const getCheckList = (
     list: CheckboxValueType[],
     list2: CheckboxValueType[],
+    list3: CheckboxValueType[],
+    all: CheckboxValueType[],
   ) => {
     setTitleList(list)
     setTitleList2(list2)
+    setAllTitleList(all)
   }
   const onSearch = async (e: any) => {
     setSearchGroups({
@@ -276,13 +293,12 @@ const Staff = () => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pagesize])
 
   useEffect(() => {
+    setAllTitleList([...titleList, ...titleList2])
     setPage(1)
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, searchGroups, orderKey, order])
 
   const rest = debounce(
@@ -312,7 +328,16 @@ const Staff = () => {
       items={[
         {
           key: '1',
-          label: <span onClick={showModal}>{t('common.setField')}</span>,
+          label: (
+            <span
+              style={{
+                padding: '0px 12px',
+              }}
+              onClick={showModal}
+            >
+              {t('common.setField')}
+            </span>
+          ),
         },
       ]}
     />
@@ -359,24 +384,22 @@ const Staff = () => {
           style={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}
         >
           <Reset onClick={rest}>{t('staff.refresh')}</Reset>
-          <SetButton onClick={onChangeFilter}>
-            <Tooltip title={t('common.search')}>
-              <IconFont
-                type="filter"
-                style={{
-                  fontSize: 20,
-                  color: isShow ? 'rgba(40, 119, 255, 1)' : '',
-                }}
-              />
-            </Tooltip>
-          </SetButton>
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <SetButton>
-              <Tooltip title={t('common.tableFieldSet')}>
-                <IconFont type="settings" style={{ fontSize: 20 }} />
-              </Tooltip>
-            </SetButton>
-          </Dropdown>
+          <Space size={8}>
+            <HoverWrap onClick={onChangeFilter} isActive={isShow}>
+              <IconFont className="iconMain" type="filter" />
+              <span className="label">{t('common.search')}</span>
+            </HoverWrap>
+            <DividerWrap type="vertical" />
+            <DropDownMenu
+              menu={menu}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div>{t('common.tableFieldSet')}</div>
+            </DropDownMenu>
+          </Space>
         </div>
       </Hehavior>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
@@ -430,6 +453,7 @@ const Staff = () => {
       </div>
 
       <OptionalFeld
+        allTitleList={allTitleList}
         plainOptions={plainOptions}
         plainOptions2={plainOptions2}
         checkList={titleList}
@@ -438,16 +462,14 @@ const Staff = () => {
         onClose={close2}
         getCheckList={getCheckList}
       />
-      {isStaffPersonalVisible ? (
-        <StaffPersonal
-          data={editData}
-          isVisible={isStaffPersonalVisible}
-          onClose={() => {
-            setIsStaffPersonalVisible(false)
-          }}
-          onConfirm={closeStaffPersonal}
-        />
-      ) : null}
+      <StaffPersonal
+        data={editData}
+        isVisible={isStaffPersonalVisible}
+        onClose={() => {
+          setIsStaffPersonalVisible(false)
+        }}
+        onConfirm={closeStaffPersonal}
+      />
     </PermissionWrap>
   )
 }

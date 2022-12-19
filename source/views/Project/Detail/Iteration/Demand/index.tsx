@@ -1,3 +1,6 @@
+// 迭代详情-需求
+
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable max-params */
 /* eslint-disable no-undefined */
@@ -5,11 +8,15 @@
 import IconFont from '@/components/IconFont'
 import { Menu, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, PaginationWrap } from '@/components/StyleCommon'
+import {
+  TableStyleBox,
+  PaginationWrap,
+  SecondButton,
+} from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -25,12 +32,16 @@ const RowIconFont = styled(IconFont)({
   color: '#2877ff',
 })
 
-const DataWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 6,
-})
+const DataWrap = styled.div<{ hasCreate: boolean }>(
+  {
+    background: 'white',
+    overflowX: 'auto',
+    borderRadius: 6,
+  },
+  ({ hasCreate }) => ({
+    height: hasCreate ? 'calc(100% - 64px)' : 'calc(100% - 118px)',
+  }),
+)
 
 interface Props {
   searchGroups: any
@@ -45,10 +56,11 @@ const DemandWrap = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { projectInfo } = useModel('project')
+  const { projectInfo, setFilterParamsModal } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
     useModel('demand')
   const { isRefresh, setIsRefresh } = useModel('user')
+  const { iterateInfo, setFilterParams, filterParams } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -90,6 +102,11 @@ const DemandWrap = (props: Props) => {
     'b/story/delete',
   )
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/save',
+  )
+
   const getList = async (
     item?: any,
     orderValue?: any,
@@ -125,7 +142,7 @@ const DemandWrap = (props: Props) => {
       schedule_end: searchParamsObj?.schedule_end,
       custom_field: searchParamsObj?.custom_field,
     }
-
+    setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
@@ -300,6 +317,13 @@ const DemandWrap = (props: Props) => {
     return [...arrList, ...newList]
   }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
+  const onCreateDemand = () => {
+    setFilterParamsModal(filterParams)
+    setTimeout(() => {
+      setIsVisible(true)
+    }, 100)
+  }
+
   return (
     <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
       <DeleteConfirm
@@ -308,16 +332,34 @@ const DemandWrap = (props: Props) => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      {isVisible ? (
-        <EditDemand
-          visible={isVisible}
-          onChangeVisible={onChangeVisible}
-          demandId={demandItem?.id}
-          onUpdate={() => getList(pageObj)}
-          iterateId={iterateId}
-        />
-      ) : null}
-      <DataWrap ref={dataWrapRef}>
+      <EditDemand
+        visible={isVisible}
+        onChangeVisible={onChangeVisible}
+        demandId={demandItem?.id}
+        onUpdate={() => getList(pageObj)}
+        iterateId={iterateId}
+      />
+
+      {!hasCreate && iterateInfo?.status === 1 && projectInfo?.status === 1 && (
+        <div
+          style={{
+            padding: '16px 0 4px 16px',
+            background: 'white',
+            borderRadius: '6px 6px 0 0',
+          }}
+        >
+          <SecondButton onClick={onCreateDemand}>
+            <IconFont type="plus" />
+            <div>{t('common.createDemand')}</div>
+          </SecondButton>
+        </div>
+      )}
+      <DataWrap
+        ref={dataWrapRef}
+        hasCreate={
+          hasCreate || iterateInfo?.status !== 1 || projectInfo?.status !== 1
+        }
+      >
         <Spin spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (

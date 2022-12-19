@@ -5,10 +5,14 @@ import {
   useSelector as useOriginSelector,
 } from 'react-redux'
 import counterReducer from './counterSlice'
+import waterReducer from './waterState'
+import modalReducer from './modalState'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    water: waterReducer,
+    modal: modalReducer,
   },
 })
 

@@ -1,12 +1,120 @@
-/* eslint-disable max-lines */
 // 两次以上的公共样式
 
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { Table, Input, Slider, Divider, Form, Progress } from 'antd'
 import IconFont from './IconFont'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
+
+// 新版移入效果例：项目列表左上方操作
+const HoverWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 8px',
+    height: 32,
+    borderRadius: 6,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    color: '#646566',
+    '.iconMain': {
+      marginRight: 8,
+      fontSize: 18,
+    },
+    svg: {
+      fontSize: 18,
+    },
+    '&: hover': {
+      background: '#F4F5F5',
+      color: '#323233',
+    },
+  },
+  ({ isActive }) => ({
+    background: isActive ? '#F4F5F5' : 'white',
+    color: isActive ? '#323233!important' : '#646566',
+  }),
+)
+
+// 包含图标及文字的下拉
+const HasIconMenu = styled.div<{ isCheck?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    '.icon': {
+      marginRight: 12,
+      fontSize: 16,
+    },
+    '.checked': {
+      fontSize: 16,
+      marginLeft: 36,
+      color: '#2877ff',
+    },
+    '.left': {
+      padding: 0,
+      display: 'flex',
+      alignItems: 'center',
+    },
+    '&: hover': {
+      '.label': {
+        color: '#323233',
+      },
+      '.icon': {
+        color: '#323233',
+      },
+    },
+  },
+  ({ isCheck }) => ({
+    '.label': {
+      color: isCheck ? '#2877ff!important' : '#646566',
+    },
+    '.icon': {
+      color: isCheck ? '#2877ff!important' : '#646566',
+    },
+  }),
+)
+
+// 列表的加号，获取子需求
+const ExpendedWrap = styled(IconFont)({
+  marginRight: 12,
+  color: '#BBBDBF',
+  fontSize: 16,
+  cursor: 'pointer',
+  background: 'white',
+  zIndex: 1,
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
+// 次按钮样式
+const SecondButton = styled(Button)`
+  height: 32px;
+  border-radius: 6px;
+  background: #f0f4fa;
+  cursor: pointer;
+  padding: 0 16px;
+  color: #2877ff;
+  display: flex;
+  align-items: center;
+  svg {
+    font-size: 16px;
+  }
+  div {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  &:hover {
+    background: #e8f1ff !important;
+    color: #2877ff !important;
+  }
+  &:focus {
+    background: #dbeaff;
+    color: #2877ff;
+  }
+`
 
 const TextWrapEditor = styled.div({
   p: {
@@ -15,21 +123,32 @@ const TextWrapEditor = styled.div({
   img: { maxWidth: '100%' },
 })
 
-const CloseWrap = styled.div<{ width?: any; height?: any; isRight?: any }>(
+const CloseWrap = styled.div<{ width?: any; height?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
+    borderRadius: 6,
+    '.anticon': {
+      color: '#646566',
+    },
     '&: hover': {
-      '.anticon': {
-        color: '#2877ff',
+      background: '#F4F5F5',
+      svg: {
+        color: '#323233',
+      },
+    },
+    '&: active ': {
+      background: '#ECEDEF',
+      svg: {
+        color: '323233',
       },
     },
   },
-  ({ width, height, isRight }) => ({
+  ({ width, height }) => ({
     width,
     height,
-    justifyContent: isRight ? 'right' : 'center',
   }),
 )
 
@@ -79,7 +198,7 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
     justifyContent: isTable ? 'flex-start' : 'space-between',
     minWidth: isTable ? 0 : 60,
     '&: hover': {
-      background: isTable ? '' : isCanEdit ? '#F0F4FA' : '',
+      background: isTable ? '' : isCanEdit ? '#f4f5f5' : '',
       [IconFontWrapEdit.toString()]: {
         visibility: 'visible',
       },
@@ -209,10 +328,13 @@ const DividerWrap = styled(Divider)({
   margin: 0,
 })
 
-const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+const ListNameWrap = styled.div<{
+  isClose?: boolean
+  isName?: boolean
+  maxWidth?: any
+}>(
   {
-    padding: '10px 20px',
-    maxWidth: 500,
+    padding: '10px 0px',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -221,9 +343,10 @@ const ListNameWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
       color: '#2877ff',
     },
   },
-  ({ isClose, isName }) => ({
+  ({ isClose, isName, maxWidth }) => ({
     color: isClose ? '#969799' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
+    maxWidth: maxWidth || 500,
   }),
 )
 
@@ -349,7 +472,7 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
-const SliderWrap = styled(Slider)<{ isDisabled?: boolean }>(
+const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
   {
     margin: '0!important',
     '.ant-slider-track,.ant-slider-step,.ant-slider-rail': {
@@ -382,8 +505,8 @@ const SliderWrap = styled(Slider)<{ isDisabled?: boolean }>(
 )
 
 const NameWrap = styled.div({
-  width: 32,
-  height: 32,
+  width: 24,
+  height: 24,
   borderRadius: 16,
   background: '#A4ACF5',
   color: 'white',
@@ -425,10 +548,40 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     fontWeight: 400,
     marginLeft: 8,
     flexShrink: 0,
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
   },
   ({ color, bgColor }) => ({
     background: bgColor,
     color,
+  }),
+)
+
+const CanOperationCategory = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    width: 'fit-content',
+    '.title': {
+      '::before': {
+        content: "'#'",
+      },
+      '::after': {
+        content: "'#'",
+      },
+    },
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
   }),
 )
 
@@ -492,7 +645,7 @@ const PaginationWrap = styled.div`
 const StaffTableWrap = styled.div`
   overflow-y: scroll;
   box-sizing: border-box;
-  padding: 16px 24px 0px;
+  padding: 16px 16px 0px;
   background: #f5f7fa;
 `
 
@@ -524,7 +677,6 @@ const SearchLine = styled.div`
   display: flex;
   gap: 16px;
   padding-left: 24px;
-  min-height: 64px;
   background: rgba(255, 255, 255, 1);
 `
 const SetButton = styled.div<{ show?: boolean }>`
@@ -587,7 +739,7 @@ const SwiperWrap = styled.div`
   box-sizing: border-box;
   padding: 0 24px;
   height: 144px;
-  background-color: #f5f7fa;
+  background-color: white;
   overflow: hidden;
   & .swiper {
     overflow: visible;
@@ -760,6 +912,28 @@ const TableStyleBox = styled(TableWrap)<{
   isHover?: any
 }>(
   {
+    '.ant-progress-text': {
+      fontSize: 12,
+    },
+    '.ant-table-tbody .tagLength': {
+      visibility: 'hidden',
+    },
+    '.tagLength': {
+      marginLeft: 8,
+      fontSize: 12,
+      color: '#969799',
+    },
+    '.ant-table-selection': {
+      flexDirection: 'inherit',
+    },
+    '.ant-table-selection-column': {
+      textAlign: 'left',
+      width: 70,
+    },
+    '.ant-table-expanded-row .ant-table-thead': {
+      opacity: 0,
+      position: 'absolute',
+    },
     height: '100%',
     '.ant-table, .ant-table-content,.ant-table-container': {
       height: '100%',
@@ -767,6 +941,14 @@ const TableStyleBox = styled(TableWrap)<{
     '.ant-table-row:hover': {
       '.dropdownIcon': {
         visibility: 'visible',
+      },
+    },
+    '.ant-table-expanded-row': {
+      'td[colspan]': {
+        padding: '0px!important',
+        '.ant-table-scroll-horizontal': {
+          margin: '0px!important',
+        },
       },
     },
   },
@@ -837,4 +1019,9 @@ export {
   CloseWrap,
   TextWrapEditor,
   TableStyleBox,
+  CanOperationCategory,
+  SecondButton,
+  ExpendedWrap,
+  HasIconMenu,
+  HoverWrap,
 }

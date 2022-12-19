@@ -1,3 +1,5 @@
+// 需求详情-左侧
+
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 /* eslint-disable no-empty-function */
@@ -16,15 +18,11 @@ import { useSearchParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import {
-  SliderWrap,
-  ProgressWrapUpload,
-  AddWrap,
-} from '@/components/StyleCommon'
+import { AddWrap } from '@/components/StyleCommon'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
-import { off } from 'process'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useSelector } from '../../../../../../../store'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -33,31 +31,27 @@ const WrapLeft = styled.div({
   padding: '0 20px 24px 0',
 })
 
-const InfoItem = styled.div<{ activeState?: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: 14,
-    position: 'relative',
-  },
-  ({ activeState }) => ({
-    alignItems: activeState ? 'flex-start' : 'center',
-  }),
-)
+const InfoItem = styled.div<{ activeState?: any }>({
+  display: 'flex',
+  marginTop: 14,
+  position: 'relative',
+  flexDirection: 'column',
+})
 
 const Label = styled.div({
-  color: '#969799',
+  color: '#323233',
   fontSize: 14,
-  fontWeight: 400,
   minWidth: 120,
   height: 32,
   lineHeight: '32px',
+  fontWeight: 'bold',
 })
 
 const TextWrap = styled.div({
   color: '#323233',
   fontSize: 14,
   display: 'flex',
+
   flexDirection: 'column',
   img: {
     maxWidth: '20%',
@@ -66,15 +60,7 @@ const TextWrap = styled.div({
 
 const WrapLeftBox = () => {
   const [t] = useTranslation()
-  const {
-    demandInfo,
-    isShowProgress,
-    percentShow,
-    percentVal,
-    uploadStatus,
-    getDemandInfo,
-    updateTableParams,
-  } = useModel('demand')
+  const { demandInfo, getDemandInfo, updateTableParams } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -86,7 +72,7 @@ const WrapLeftBox = () => {
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
-
+  const { value: modalState } = useSelector(store => store.modal)
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({
@@ -97,37 +83,6 @@ const WrapLeftBox = () => {
     )
     setSchedule(demandInfo?.schedule)
   }, [demandInfo])
-
-  const onChangeSchedule = async () => {
-    if (
-      demandInfo?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
-      demandInfo.status.is_start !== 1 &&
-      demandInfo.status.is_end !== 1
-    ) {
-      const obj = {
-        projectId,
-        id: demandInfo?.id,
-        otherParams: { schedule },
-      }
-      try {
-        await updateTableParams(obj)
-        getDemandInfo({ projectId, id: demandInfo?.id })
-      } catch (error) {
-        //
-      }
-    }
-  }
-
-  const Children = (item: any) => {
-    return (
-      <ProgressWrapUpload
-        status={uploadStatus}
-        percent={percentVal}
-        size="small"
-        style={{ display: percentShow ? 'block' : 'none' }}
-      />
-    )
-  }
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
@@ -193,45 +148,12 @@ const WrapLeftBox = () => {
       <div className="resize_line" />
       <div className="resize_save2">
         <WrapLeft ref={LeftDom}>
-          <InfoItem>
-            <Label>{t('project.demandStatus')}</Label>
-            <DemandStatus pid={projectId} sid={demandId} />
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('newlyAdd.demandProgress')}</Label>
-            <div
-              style={{ display: 'flex', alignItems: 'center' }}
-              onMouseUp={onChangeSchedule}
-            >
-              <SliderWrap
-                isDisabled={
-                  demandInfo?.user
-                    ?.map((i: any) => i.user.id)
-                    ?.includes(userInfo?.id) &&
-                  demandInfo.status.is_start !== 1 &&
-                  demandInfo.status.is_end !== 1
-                }
-                style={{ width: 260 }}
-                value={schedule}
-                tipFormatter={(value: any) => `${value}%`}
-                onChange={value => setSchedule(value)}
-                tooltipVisible={false}
-                disabled={
-                  !(
-                    demandInfo?.user
-                      ?.map((i: any) => i.user.id)
-                      ?.includes(userInfo?.id) &&
-                    demandInfo.status.is_start !== 1 &&
-                    demandInfo.status.is_end !== 1
-                  )
-                }
-              />
-              <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
-                {schedule}%
-              </span>
-            </div>
-          </InfoItem>
-          <InfoItem activeState>
+          <InfoItem
+            style={{
+              marginTop: '0px',
+            }}
+            activeState
+          >
             <Label>{t('mine.demandInfo')}</Label>
             {demandInfo?.info ? (
               <EditorInfoReview info={demandInfo?.info} />
@@ -253,7 +175,7 @@ const WrapLeftBox = () => {
           </InfoItem>
           <InfoItem activeState>
             <Label>{t('common.attachment')}</Label>
-            <div style={{ width: 'calc(100% - 120px)' }}>
+            <div>
               <UploadAttach
                 onBottom={onBottom}
                 defaultList={demandInfo?.attachment?.map((i: any) => ({
@@ -274,12 +196,19 @@ const WrapLeftBox = () => {
                     (i: any) => i.name === '附件上传',
                   ).length > 0 ? (
                     <AddWrap
+                      hasColor
                       style={{
                         marginBottom: '10px',
+                        color: '#2877FF',
                       }}
                     >
-                      <IconFont type="plus" />
-                      <div>{t('common.add23')}</div>
+                      <IconFont
+                        style={{
+                          color: '#2877FF',
+                        }}
+                        type="plus"
+                      />
+                      <div>{t('p2.addAdjunct')}</div>
                     </AddWrap>
                   ) : (
                     (null as any)
@@ -294,6 +223,10 @@ const WrapLeftBox = () => {
             onChangeVisible={() => setIsDelVisible(!isDelVisible)}
             onConfirm={onDeleteConfirm}
           />
+          <InfoItem>
+            <Label>{t('new_p1.a3')}</Label>
+            <DemandStatus pid={projectId} sid={demandId} />
+          </InfoItem>
         </WrapLeft>
       </div>
     </div>

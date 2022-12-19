@@ -1,3 +1,5 @@
+// 切换公司弹窗
+
 import { useEffect, useState } from 'react'
 import { Space } from 'antd'
 import CompanyCard from '@/views/Container/components/CompanyCard'
@@ -27,7 +29,6 @@ const CompanyModal = (props: Props) => {
   }
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo])
 
   const cutCompany = (value: any) => {
@@ -38,15 +39,16 @@ const CompanyModal = (props: Props) => {
     })
   }
   const confirm = async () => {
-    sessionStorage.removeItem('saveRouter')
-    props.onChangeState()
     if (activeId === userInfo.company_id) {
       return
     }
-    const res = await updateCompany(companyParams)
-
-    if (res.data.code === 0) {
+    try {
+      await updateCompany(companyParams)
+      sessionStorage.removeItem('saveRouter')
+      props.onChangeState()
       location.reload()
+    } catch (error) {
+      //
     }
   }
   return (

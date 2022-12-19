@@ -1,3 +1,5 @@
+// 公司成员详情编辑弹窗
+
 import { Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
@@ -35,8 +37,10 @@ const imgCss = css`
 const SetHead = styled.div`
   width: 104px;
   height: 104px;
-  line-height: 104px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
   font-size: 32px;
   background: #a4acf5;
@@ -59,25 +63,34 @@ export const StaffPersonal = (props: {
     roleId: data.user_group_id,
     userId: data.id,
   })
-
+  const [infoId, setInfoId] = useState<any>(0)
   const { getRoleList } = useModel('staff')
 
   const init = async () => {
     const res3 = await getRoleList()
 
     setRoleOptions(res3.data)
+    setInfoId(
+      res3.data.filter((item: any) => {
+        return item.id === data.user_group_id
+      }).length
+        ? data.user_group_id
+        : '',
+    )
   }
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [props.isVisible])
 
   const handleChange = (value: any) => {
-    setInfo({ userId: data.id, roleId: value })
+    setInfoId(value)
   }
-  const onConfirm = () => {
-    props.onConfirm(info)
+  const onConfirm = async () => {
+    await props.onConfirm({
+      userId: data.id,
+      roleId: infoId,
+    })
   }
 
   return (
@@ -112,13 +125,7 @@ export const StaffPersonal = (props: {
           <RightLine>{data.nickname ? data.nickname : '-'}</RightLine>
           <RightLine>
             <Select
-              defaultValue={
-                roleOptions.some((item: any) => {
-                  return item.id !== data.user_group_id
-                })
-                  ? ''
-                  : data.user_group_id
-              }
+              value={infoId}
               style={{ width: 120 }}
               onChange={handleChange}
               getPopupContainer={node => node}

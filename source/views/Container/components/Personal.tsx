@@ -1,5 +1,6 @@
+// 个人信息面板
+
 /* eslint-disable react/jsx-handler-names */
-/* eslint-disable max-len */
 import { useState } from 'react'
 import { Spin } from 'antd'
 import { css } from '@emotion/css'
@@ -35,8 +36,10 @@ const SetHead = styled.div`
   width: 104px;
   height: 104px;
   border-radius: 50%;
-  line-height: 104px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   font-size: 32px;
   background: #a4acf5;
   background-blend-mode: normal;

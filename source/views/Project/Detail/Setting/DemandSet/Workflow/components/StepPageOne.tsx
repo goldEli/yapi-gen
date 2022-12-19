@@ -1,3 +1,5 @@
+// 需求设置-工作流第一步
+
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable react/no-unstable-nested-components */
@@ -398,80 +400,74 @@ const StepPageOne = (propsOne: Props) => {
 
   return (
     <>
-      {isAddVisible && (
-        <AddWorkflow
-          isVisible={isAddVisible}
-          onUpdate={onUpdate}
-          onClose={() => setIsAddVisible(false)}
-        />
-      )}
-      {isVisible && (
-        <EditWorkflow
-          item={operationObj}
-          isVisible={isVisible}
-          onClose={onClose}
-          onUpdate={onUpdateEdit}
-        />
-      )}
+      <AddWorkflow
+        isVisible={isAddVisible}
+        onUpdate={onUpdate}
+        onClose={() => setIsAddVisible(false)}
+      />
+      <EditWorkflow
+        item={operationObj}
+        isVisible={isVisible}
+        onClose={onClose}
+        onUpdate={onUpdateEdit}
+      />
       <DeleteConfirm
         text={t('newlyAdd.confirmDelStatus')}
         isVisible={isDelVisible}
         onChangeVisible={() => setIsDelVisible(!isDelVisible)}
         onConfirm={onDeleteConfirm}
       />
-      {isHasDelete && (
-        <CommonModal
-          isVisible={isHasDelete}
-          onClose={onCloseHasDelete}
-          title={t('newlyAdd.historyMove')}
-          onConfirm={onConfirmHasDelete}
-        >
-          <div style={{ padding: '0 16px 0 2px' }}>
-            <HasDemandText>
-              {t('newlyAdd.changeNewStatus', {
-                count: operationObj?.deleteData?.story_count,
-                name: operationObj?.name,
-              })}
-            </HasDemandText>
-            <FormWrap form={form} layout="vertical">
-              <Form.Item
-                rules={[{ required: true, message: '' }]}
-                name="statusId"
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <CategoryWrap
-                      style={{ marginRight: 8, marginLeft: 0 }}
-                      color={operationObj?.deleteData?.item?.category_color}
-                      bgColor={
-                        colorList?.filter(
-                          k =>
-                            k.key ===
-                            operationObj?.deleteData?.item?.category_color,
-                        )[0]?.bgColor
-                      }
-                    >
-                      {operationObj?.deleteData?.item?.category_name}
-                    </CategoryWrap>
-                    {t('newlyAdd.appointStatus')}
-                  </div>
-                }
-              >
-                <Select
-                  placeholder={t('common.pleaseSelect')}
-                  showArrow
-                  showSearch
-                  getPopupContainer={node => node}
-                  allowClear
-                  optionFilterProp="label"
-                  options={operationObj?.deleteData?.item?.status?.map(
-                    (i: any) => ({ label: i.content, value: i.id }),
-                  )}
-                />
-              </Form.Item>
-            </FormWrap>
-          </div>
-        </CommonModal>
-      )}
+      <CommonModal
+        isVisible={isHasDelete}
+        onClose={onCloseHasDelete}
+        title={t('newlyAdd.historyMove')}
+        onConfirm={onConfirmHasDelete}
+      >
+        <div style={{ padding: '0 16px 0 2px' }}>
+          <HasDemandText>
+            {t('newlyAdd.changeNewStatus', {
+              count: operationObj?.deleteData?.story_count,
+              name: operationObj?.name,
+            })}
+          </HasDemandText>
+          <FormWrap form={form} layout="vertical">
+            <Form.Item
+              rules={[{ required: true, message: '' }]}
+              name="statusId"
+              label={
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <CategoryWrap
+                    style={{ marginRight: 8, marginLeft: 0 }}
+                    color={operationObj?.deleteData?.item?.category_color}
+                    bgColor={
+                      colorList?.filter(
+                        k =>
+                          k.key ===
+                          operationObj?.deleteData?.item?.category_color,
+                      )[0]?.bgColor
+                    }
+                  >
+                    {operationObj?.deleteData?.item?.category_name}
+                  </CategoryWrap>
+                  {t('newlyAdd.appointStatus')}
+                </div>
+              }
+            >
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={operationObj?.deleteData?.item?.status?.map(
+                  (i: any) => ({ label: i.content, value: i.id }),
+                )}
+              />
+            </Form.Item>
+          </FormWrap>
+        </div>
+      </CommonModal>
       <div
         style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 24 }}
       >

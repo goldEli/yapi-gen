@@ -1,15 +1,18 @@
+// 我的模块主页
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-import EditDemand from '@/components/EditDemand'
+import EditDemand from '@/components/EditDemandNew'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getStaffList } from '@/services/staff'
 
-const AddButton = styled.div({
+const AddButton = styled.button({
+  border: 'none',
   height: 32,
   padding: '0 16px',
   borderRadius: 6,
@@ -19,6 +22,13 @@ const AddButton = styled.div({
   justifyContent: 'center',
   cursor: 'pointer',
   color: 'white',
+  ':hover': {
+    background: '#669FFF',
+  },
+  ':focus': {
+    background: '#1763e5',
+    color: 'white',
+  },
 })
 
 const Wrap = styled.div`
@@ -55,13 +65,13 @@ const MenuItem = styled.div<{ active?: boolean }>(
     alignItems: 'center',
     cursor: 'pointer',
     '&: hover': {
-      color: '#2877ff!important',
+      backgroundColor: '#F4F5F5',
     },
   },
   ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid white',
+    borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
     color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA' : 'white',
+    background: active ? '#F0F4FA !important' : 'white',
   }),
 )
 
@@ -187,14 +197,13 @@ const MineBox = () => {
       <Main>
         <Outlet />
       </Main>
-      {quickCreateVisible ? (
-        <EditDemand
-          visible={quickCreateVisible}
-          onChangeVisible={() => setQuickCreateVisible(false)}
-          isQuickCreate
-          notGetPath
-        />
-      ) : null}
+
+      <EditDemand
+        visible={quickCreateVisible}
+        onChangeVisible={() => setQuickCreateVisible(false)}
+        isQuickCreate
+        notGetPath
+      />
     </Wrap>
   )
 }

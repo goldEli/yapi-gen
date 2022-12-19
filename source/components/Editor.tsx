@@ -1,6 +1,9 @@
+/* eslint-disable no-duplicate-imports */
+// 公用富文本
+
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -16,6 +19,12 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'
+import type { SlateElement } from '@wangeditor/editor'
+
+type VideoElement = SlateElement & {
+  src: string
+  poster?: string
+}
 
 interface Props {
   value?: string
@@ -27,33 +36,7 @@ interface Props {
   autoFocus?: boolean
 }
 
-const toolbarConfig: Partial<IToolbarConfig> = {
-  toolbarKeys: [
-    'headerSelect',
-    'bold',
-
-    // 'italic',
-    // 'underline',
-    'color',
-    'bgColor',
-    'fontSize',
-
-    // 'fontFamily',
-    // 'indent',
-    // 'delIndent',
-    // 'insertLink',
-    'bulletedList',
-    'numberedList',
-    'uploadImage',
-    'justifyLeft',
-    'justifyRight',
-    'justifyCenter',
-
-    // 'justifyJustify',
-    // 'fullScreen',
-    'customFullScreen',
-  ],
-}
+const toolbarConfig: Partial<IToolbarConfig> = {}
 
 Boot.registerParseElemHtml({
   selector: 'v-start',
@@ -153,6 +136,17 @@ const EditorBox = (props: Props) => {
           )
 
           insert(uploadedFile.url, '', uploadedFile.url)
+        },
+      },
+      uploadVideo: {
+        async customUpload(file: File, insertFn: any) {
+          const uploadedFile = await uploadFileByTask(
+            file,
+            userInfo?.username,
+            `richEditorFiles_${new Date().getTime()}`,
+          )
+
+          insertFn(uploadedFile.url, '', uploadedFile.url)
         },
       },
       insertLink: {

@@ -1,3 +1,6 @@
+// 子需求表格
+
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-unstable-nested-components */
@@ -202,7 +205,7 @@ const ChildDemandTable = (props: {
       ),
       dataIndex: 'iteration',
       width: 100,
-      render: (text: string, record: any) => {
+      render: (text: string) => {
         return (
           <HiddenText>
             <OmitText
@@ -252,14 +255,14 @@ const ChildDemandTable = (props: {
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
-      render: (text: string, record: any, index: any) => {
+      render: (text: any) => {
         return (
           <Progress
             strokeColor="#43BA9A"
             style={{ color: '#43BA9A', cursor: 'not-allowed' }}
             width={38}
             type="circle"
-            percent={record.schedule}
+            percent={text}
             format={percent => (percent === 100 ? '100%' : `${percent}%`)}
             strokeWidth={8}
           />
@@ -270,8 +273,8 @@ const ChildDemandTable = (props: {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       width: 150,
-      render: (text: any, record: any) => {
-        return <span>{text?.join(',') || '--'}</span>
+      render: (text: any) => {
+        return <span>{text?.join(';') || '--'}</span>
       },
     },
   ]
@@ -289,19 +292,20 @@ const ChildDemandTable = (props: {
       onVisibleChange={onVisibleChange}
       content={
         <div style={{ maxHeight: 310, overflow: 'auto' }}>
-          {!!dataList?.list && dataList?.list.length ? (
-            <Table
-              rowKey="id"
-              pagination={false}
-              columns={columnsChild}
-              dataSource={dataList?.list}
-              scroll={{ x: 'max-content' }}
-              tableLayout="auto"
-              style={{ borderRadius: 4, overflow: 'hidden' }}
-            />
-          ) : (
-            <NoData />
-          )}
+          {!!dataList?.list &&
+            (dataList?.list?.length > 0 ? (
+              <Table
+                rowKey="id"
+                pagination={false}
+                columns={columnsChild}
+                dataSource={dataList?.list}
+                scroll={{ x: 'max-content' }}
+                tableLayout="auto"
+                style={{ borderRadius: 4, overflow: 'hidden' }}
+              />
+            ) : (
+              <NoData />
+            ))}
         </div>
       }
     >
@@ -313,12 +317,12 @@ const ChildDemandTable = (props: {
         }}
         onClick={onChildClick}
       >
-        {props?.hasIcon ? (
+        {props?.hasIcon && (
           <IconFont
             type="apartment"
             style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
           />
-        ) : null}
+        )}
         {props.value}
       </ClickWrap>
     </Popover>

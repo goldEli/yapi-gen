@@ -1,6 +1,9 @@
+// 暂无数据
+
+/* eslint-disable react/jsx-no-leaked-render */
 import styled from '@emotion/styled'
-import empty from '/empty.svg'
 import { useTranslation } from 'react-i18next'
+import noData from '/noData.png'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -12,28 +15,42 @@ const Wrap = styled.div({
   width: '100%',
   borderRadius: 6,
   padding: 16,
-  img: {
-    width: 240,
-    marginBottom: 35,
-  },
   div: {
-    color: '#323233',
-    fontSize: 18,
-    fontWeight: '500',
+    color: '#969799',
+    fontSize: 14,
+    marginTop: 24,
   },
 })
 
-const NoData = (props?: any) => {
+interface Props {
+  // 其他的文字，例：需求设置的状态定义列表
+  subText?: any
+  // 有操作的
+  children?: any
+  haveFilter?: any
+}
+
+const NoData = (props: Props) => {
   const [t] = useTranslation()
   return (
     <Wrap>
-      <img src={empty} alt="" />
-      <div>{t('components.noData')}</div>
-      {props?.subText
-        ? <span style={{ color: '#969799', fontSize: 14, marginTop: 8 }}>
-            {props?.subText}
-          </span>
-        : null}
+      <img src={noData} style={{ width: 240 }} alt="" />
+      {!props?.subText && !props?.children && !props?.haveFilter && (
+        <div>{t('components.noData')}</div>
+      )}
+      {(props?.subText || props.haveFilter) && (
+        <span
+          style={{
+            color: '#969799',
+            fontSize: 14,
+            marginTop: 24,
+            textAlign: 'center',
+          }}
+        >
+          {props.haveFilter ? t('version2.noDataFilter') : props?.subText}
+        </span>
+      )}
+      {props?.children}
     </Wrap>
   )
 }

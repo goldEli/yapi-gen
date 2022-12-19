@@ -13,7 +13,7 @@ import { useEffect } from 'react'
 import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
-import { getStaffList } from '@/services/staff'
+import { getStaffList, getStaffList2 } from '@/services/staff'
 
 const Wrap = styled.div({
   height: '100%',
@@ -34,6 +34,8 @@ const Detail = () => {
     setSelectTreeData,
     setSelectAllStaffData,
     getFieldList,
+    isChangeProject,
+    getPriorityList,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
   const { isOpenEditDemand } = useModel('demand')
@@ -81,6 +83,14 @@ const Detail = () => {
     selectIterate: any,
     memberList: any,
   ) => {
+    const companyList = await getStaffList2({ all: 1 })
+
+    const filterCompanyList = companyList.map((i: any) => ({
+      id: i.id,
+      content: i.name,
+      content_txt: i.name,
+    }))
+
     const res = await getTreeList({ id: projectId })
 
     const res2 = await storyConfigCategoryList({
@@ -96,7 +106,7 @@ const Detail = () => {
         if (item.content === 'iterate_name') {
           item.values = [
             { id: -1, content: '空', content_txt: '空' },
-            ...(selectIterate.list?.map((i: any) => {
+            ...(selectIterate?.list?.map((i: any) => {
               return {
                 id: i.id,
                 content: i.name,
@@ -178,6 +188,84 @@ const Detail = () => {
             ],
           }
         } else if (item.attr) {
+          // 成员
+
+          if (item.attr === 'user_select') {
+            if (item.values[0] === 'projectMember') {
+              return {
+                id: item.id,
+                name: item.title,
+                key: item.content,
+                content: item.content,
+                type: 'dan',
+                isDefault: item.is_default_filter,
+                contentTxt: item.content_txt,
+                children: [
+                  { id: -1, content: '空', content_txt: '空' },
+                  ...(memberList?.map((k: any) => {
+                    return {
+                      id: k.id,
+                      content: k.name,
+                      content_txt: k.name,
+                    }
+                  }) || []),
+                ],
+              }
+            }
+            if (item.values[0] === 'companyMember') {
+              return {
+                id: item.id,
+                name: item.title,
+                key: item.content,
+                content: item.content,
+                type: 'dan',
+                isDefault: item.is_default_filter,
+                contentTxt: item.content_txt,
+                children: [
+                  { id: -1, content: '空', content_txt: '空' },
+                  ...filterCompanyList,
+                ],
+              }
+            }
+          }
+          if (item.attr === 'user_select_checkbox') {
+            if (item.values[0] === 'projectMember') {
+              return {
+                id: item.id,
+                name: item.title,
+                key: item.content,
+                content: item.content,
+                type: 'select_checkbox',
+                isDefault: item.is_default_filter,
+                contentTxt: item.content_txt,
+                children: [
+                  { id: -1, content: '空', content_txt: '空' },
+                  ...(memberList?.map((k: any) => {
+                    return {
+                      id: k.id,
+                      content: k.name,
+                      content_txt: k.name,
+                    }
+                  }) || []),
+                ],
+              }
+            }
+            if (item.values[0] === 'companyMember') {
+              return {
+                id: item.id,
+                name: item.title,
+                key: item.content,
+                content: item.content,
+                type: 'select_checkbox',
+                isDefault: item.is_default_filter,
+                contentTxt: item.content_txt,
+                children: [
+                  { id: -1, content: '空', content_txt: '空' },
+                  ...filterCompanyList,
+                ],
+              }
+            }
+          }
           const filterData = filArr(item?.values) || []
           return {
             id: item.id,
@@ -204,7 +292,6 @@ const Detail = () => {
           contentTxt: item.content_txt,
         }
       })
-
       setFilterAll(filterAllList)
     }
   }
@@ -231,11 +318,12 @@ const Detail = () => {
     getFieldData()
     getStaffData()
     getTreeData(projectInfo, selectIterate, memberList)
+    getPriorityList({ projectId, type: 'priority' })
   }
 
   useEffect(() => {
     getInit()
-  }, [isRefresh])
+  }, [isRefresh, isChangeProject])
 
   useEffect(() => {
     if (isRefreshIterateList) {
@@ -246,7 +334,7 @@ const Detail = () => {
   return (
     <Wrap>
       <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
-      <Outlet />
+      <Outlet key={isChangeProject} />
     </Wrap>
   )
 }

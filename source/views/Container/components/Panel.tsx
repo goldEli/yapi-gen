@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+// 个人信息弹窗
+
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -15,8 +16,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { HiddenText } from '@/components/StyleCommon'
 
 const imgCss = css`
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 `
@@ -38,6 +39,7 @@ const buttonCss = css`
   }
 `
 const lineText = css`
+  color: #646566;
   margin-left: 8px;
 `
 const languageText = css`
@@ -55,10 +57,12 @@ const Box = styled.div`
   border-radius: 6px;
 `
 const SetHead = styled.div`
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border-radius: 50%;
   font-size: 14px;
   background: #a4acf5;
@@ -67,23 +71,36 @@ const SetHead = styled.div`
   color: white;
 `
 const PanelHeader = styled.div`
-  padding: 16px 16px 22px 16px;
+  padding-top: 16px;
   box-sizing: border-box;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(235, 237, 240, 1);
   margin-bottom: 8px;
+  .provider {
+    margin-top: 4px;
+    height: 1px;
+    width: calc(100% - 32px);
+    background: #ebedf0;
+    margin-left: 16px;
+  }
 `
 const PanelHeaderFirst = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 16px;
 `
 const PanelHeaderSecond = styled.div`
-  margin-top: 16px;
+  height: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
   display: flex;
+  cursor: pointer;
+  padding: 0 16px;
+  height: 32px;
+  margin-top: 12px;
+  &:hover {
+    background: #f4f5f5;
+  }
 `
 const NameAndPhone = styled.div`
   font-size: 12px;
@@ -106,10 +123,11 @@ const Line = styled.div`
   padding: 0 16px;
   cursor: pointer;
   &:hover {
-    background-color: #f0f4fa;
+    background-color: #f4f5f5;
   }
 `
 const LanguageLine = styled.div`
+  color: #646566;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -140,33 +158,43 @@ export const Panel = (props: Props) => {
   )
 
   const changeLanguageMode = async (value: number, key: any) => {
-    const clear = message.loading(t('common.localsSwitching'), 0)
     try {
       await changeLanguage(key as LocaleKeys)
       localStorage.setItem('language', key)
     } catch (error) {
       //
     }
+    message.success(t('common.localsSwitching'))
     setLanguageMode(value)
     setLanguageModeVisible(false)
-
+    props.onChange?.()
     setTimeout(() => {
       setIsRefresh(true)
     }, 100)
-    props.onChange?.()
-    clear()
   }
 
   const content = (
     <div style={{ borderRadius: 6, overflow: 'hidden' }}>
       <LanguageLine onClick={() => changeLanguageMode(1, 'zh')}>
-        <span>中文</span>
+        <span
+          style={{
+            color: languageMode === 1 ? '#4186fe' : '#646566',
+          }}
+        >
+          中文
+        </span>
         {languageMode === 1 && (
           <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
         )}
       </LanguageLine>
       <LanguageLine onClick={() => changeLanguageMode(2, 'en')}>
-        <span> English </span>
+        <span
+          style={{
+            color: languageMode === 2 ? '#4186fe' : '#646566',
+          }}
+        >
+          English
+        </span>
         {languageMode === 2 && (
           <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
         )}
@@ -233,20 +261,44 @@ export const Panel = (props: Props) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {userInfo?.name}
+                <span
+                  style={{
+                    fontSize: '14px',
+                    color: '#323233',
+                  }}
+                >
+                  {' '}
+                  {userInfo?.name}
+                </span>
               </OmitText>
             </HiddenText>
-            <span>{userInfo?.phone}</span>
+            <span
+              style={{
+                fontSize: '14px',
+                color: '#969799',
+              }}
+            >
+              {userInfo?.phone}
+            </span>
           </NameAndPhone>
         </PanelHeaderFirst>
-        <PanelHeaderSecond>
-          <div>{userInfo?.company_name}</div>
+        <PanelHeaderSecond onClick={() => onSetVisible(3)}>
+          <div
+            style={{
+              fontSize: '14px',
+              fontWeight: 'bold',
+              color: '#323233',
+            }}
+          >
+            {userInfo?.company_name}
+          </div>
           <Tooltip placement="top" title={t('container.changeCompany')}>
-            <div onClick={() => onSetVisible(3)} className={buttonCss}>
+            <div className={buttonCss}>
               <IconFont type="swap" style={{ fontSize: 20 }} />
             </div>
           </Tooltip>
         </PanelHeaderSecond>
+        <div className="provider" />
       </PanelHeader>
       <PanelFooter>
         <Popover
@@ -259,7 +311,10 @@ export const Panel = (props: Props) => {
         >
           <Line>
             <div>
-              <IconFont type="earth" style={{ fontSize: 15 }} />
+              <IconFont
+                type="earth"
+                style={{ fontSize: 15, color: '#969799' }}
+              />
               <span className={lineText}>{t('container.language')}</span>
             </div>
             <div>
@@ -267,23 +322,29 @@ export const Panel = (props: Props) => {
                 {languageMode === 1 ? '中文' : 'English'}
               </span>
 
-              <IconFont type="right" style={{ fontSize: 12 }} />
+              <IconFont
+                type="right"
+                style={{ fontSize: 12, color: '#969799' }}
+              />
             </div>
           </Line>
         </Popover>
 
         <Line onClick={() => onSetVisible(1)}>
           <div>
-            <IconFont type="container" style={{ fontSize: 15 }} />
+            <IconFont
+              type="container"
+              style={{ fontSize: 15, color: '#969799' }}
+            />
             <span className={lineText}>{t('container.personInfo')}</span>
           </div>
           <div>
-            <IconFont type="right" style={{ fontSize: 12 }} />
+            <IconFont type="right" style={{ fontSize: 12, color: '#969799' }} />
           </div>
         </Line>
         <Line>
           <div onClick={() => onSetVisible(2)}>
-            <IconFont type="login" style={{ fontSize: 15 }} />
+            <IconFont type="login" style={{ fontSize: 15, color: '#969799' }} />
             <span className={lineText}>{t('container.logout')}</span>
           </div>
         </Line>
