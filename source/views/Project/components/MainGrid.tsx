@@ -13,13 +13,15 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import noData from '/noData.png'
+import { SecondButton } from '@/components/StyleCommon'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
   onChangeVisible(): void
   projectList: any
   onAddClear?(): void
+  // 是否有筛选条件
+  hasFilter?: boolean
 }
 
 const SpaceWrap = styled(Space)({
@@ -107,57 +109,16 @@ const MainGrid = (props: Props) => {
         ) : isPermission ? (
           <NoData />
         ) : (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: '#FFFFFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-            }}
+          <NoData
+            subText={isPermission ? '' : t('version2.noDataCreateProject')}
+            haveFilter={props?.hasFilter}
           >
-            <img
-              style={{
-                width: '240px',
-                height: '144px',
-              }}
-              src={noData}
-              alt=""
-            />
-            <div
-              style={{
-                height: '22px',
-                fontSize: '14px',
-                fontWeight: 400,
-                color: '#969799',
-                lineHeight: '22px',
-                marginTop: '26px',
-              }}
-            >
-              {t('new_p1.quick')}
-            </div>
-
-            <div
-              onClick={onAddClick}
-              style={{
-                marginTop: '24px',
-                fontSize: 14,
-                minWidth: '88px',
-                padding: '0 16px',
-                height: '32px',
-                background: '#F0F4FA',
-                borderRadius: '6px 6px 6px 6px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#2877FF',
-              }}
-            >
-              {t('common.createProject')}
-            </div>
-          </div>
+            {!isPermission && (
+              <SecondButton onClick={onAddClick} style={{ marginTop: 24 }}>
+                {t('common.createProject')}
+              </SecondButton>
+            )}
+          </NoData>
         ))}
     </DataWrap>
   )

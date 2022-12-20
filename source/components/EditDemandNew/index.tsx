@@ -417,6 +417,9 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.createSuccess'))
     }
+    if (props.iterateId) {
+      PubSub.publish('num')
+    }
     // 更新父需求列表
     getList()
     // 是否是快捷创建，是则要刷新相应的列表接口
@@ -710,7 +713,6 @@ const EditDemand = (props: Props) => {
               <AddButtonWrap
                 onClick={() => {
                   onSaveCategory(1)
-                  PubSub.publish('num')
                 }}
               >
                 {t('common.finishToAdd')}
@@ -720,7 +722,6 @@ const EditDemand = (props: Props) => {
               type="primary"
               onClick={() => {
                 onSaveCategory()
-                PubSub.publish('num')
               }}
             >
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}

@@ -300,6 +300,7 @@ const Project = () => {
                     onChangeVisible={() => setIsVisible(true)}
                     onChangeOperation={onChangeOperation}
                     onAddClear={() => setOperationDetail({})}
+                    hasFilter={searchVal.length > 0 || isHidden}
                   />
                 ) : (
                   <MainTable
