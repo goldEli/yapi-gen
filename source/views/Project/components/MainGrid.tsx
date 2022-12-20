@@ -28,6 +28,8 @@ const SpaceWrap = styled(Space)({
 
 const AddProject = styled.div({
   height: 144,
+  marginLeft: '8px',
+  marginTop: '-8px',
   borderRadius: 4,
   background: 'white',
   display: 'flex',
@@ -104,10 +106,57 @@ const MainGrid = (props: Props) => {
         ) : isPermission ? (
           <NoData />
         ) : (
-          <AddProject onClick={onAddClick}>
-            <IconFont style={{ fontSize: 24, marginBottom: 16 }} type="plus" />
-            <div style={{ fontSize: 14 }}>{t('common.createProject')}</div>
-          </AddProject>
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              background: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <img
+              style={{
+                width: '240px',
+                height: '144px',
+              }}
+              src="/public/noData.png"
+              alt=""
+            />
+            <div
+              style={{
+                height: '22px',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#969799',
+                lineHeight: '22px',
+                marginTop: '26px',
+              }}
+            >
+              {t('new_p1.quick')}
+            </div>
+
+            <div
+              onClick={onAddClick}
+              style={{
+                marginTop: '24px',
+                fontSize: 14,
+                minWidth: '88px',
+                padding: '0 16px',
+                height: '32px',
+                background: '#F0F4FA',
+                borderRadius: '6px 6px 6px 6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#2877FF',
+              }}
+            >
+              {t('common.createProject')}
+            </div>
+          </div>
         ))}
     </DataWrap>
   )

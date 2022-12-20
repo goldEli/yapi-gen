@@ -1,3 +1,4 @@
+import useSetTitle from '@/hooks/useSetTitle'
 import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
 import { Radio } from 'antd'
@@ -27,7 +28,10 @@ const Content = styled.div({
 })
 
 const Index = () => {
+  const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
+  asyncSetTtile(t('title.c7'))
+
   const { value: valueId } = useSelector(store => store.water)
   const dispatch = useDispatch()
 

@@ -8,7 +8,8 @@
     "a6": "Not a picture file ",
     "a7": "more than 2M",
     "a8": " Project Founder",
-    "a9": "Please enter a comment"
+    "a9": "Please enter a comment",
+    "quick": "You are not currently in any project, create one ~"
   },
   "title": {
     "text": "File format not supported ",
@@ -40,7 +41,8 @@
     "c3": "Operation log ",
     "c4": "login log ",
     "c5": "Message center",
-    "c6": "Log"
+    "c6": "Log",
+    "c7": "configuration"
   },
   "v2_1_1": {
     "configuration": "General configuration",
@@ -55,7 +57,7 @@
     "report": "Report",
     "developed": "Developed",
     "waitingPlan": "The function is under preparation, please look forward to it",
-    "searchProject": "Search Project (press Enter to search)",
+    "searchProject": "press Enter to search",
     "projectGroup": "Project Group",
     "editGroup": "Edit Group",
     "deleteGroup": "Delete Group",

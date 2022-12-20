@@ -142,6 +142,7 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
     <div style={{ padding: '16px 0', minWidth: 240 }}>
       <div style={{ padding: '0 16px' }}>
         <Input
+          value={value}
           style={{ height: 32, width: 208 }}
           placeholder={t('newlyAdd.pleaseKeyWord')}
           onChange={e => setValue(e.target.value)}
@@ -156,7 +157,10 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
             return (
               <PersonItemWrap
                 key={i.id}
-                onClick={() => props?.onChangeValue(i)}
+                onClick={() => {
+                  props?.onChangeValue(i)
+                  setValue('')
+                }}
               >
                 {i.avatar ? (
                   <img

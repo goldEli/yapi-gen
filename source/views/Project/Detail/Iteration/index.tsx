@@ -26,6 +26,7 @@ import IterationStatus from './components/IterationStatus'
 import CommonInput from '@/components/CommonInput'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
+import PubSub from 'pubsub-js'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -506,6 +507,11 @@ const IterationWrap = () => {
       </div>
     )
   }
+  useEffect(() => {
+    PubSub.subscribe('num', () => {
+      getIterateInfo({ projectId, id: iterateId })
+    })
+  })
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>

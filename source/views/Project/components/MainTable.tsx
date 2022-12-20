@@ -247,16 +247,7 @@ const MainTable = (props: Props) => {
       },
     },
     {
-      title: (
-        <NewSort
-          fixedKey="cover"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project.img')}
-        </NewSort>
-      ),
+      title: t('project.img'),
       dataIndex: 'cover',
       width: 120,
       render: (text: string) => <ImgWrap url={text} />,

@@ -18,6 +18,7 @@ import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import PubSub from 'pubsub-js'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -706,11 +707,22 @@ const EditDemand = (props: Props) => {
           <Space size={16}>
             <Button onClick={onCancel}>{t('common.cancel')}</Button>
             {!props?.demandId && (
-              <AddButtonWrap onClick={() => onSaveCategory(1)}>
+              <AddButtonWrap
+                onClick={() => {
+                  onSaveCategory(1)
+                  PubSub.publish('num')
+                }}
+              >
                 {t('common.finishToAdd')}
               </AddButtonWrap>
             )}
-            <Button type="primary" onClick={() => onSaveCategory()}>
+            <Button
+              type="primary"
+              onClick={() => {
+                onSaveCategory()
+                PubSub.publish('num')
+              }}
+            >
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
             </Button>
           </Space>
