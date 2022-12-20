@@ -64,6 +64,7 @@ const ChoosePeople = (props: any) => {
   }
   const onAddPerson = async (obj: any) => {
     await onChangeList(obj, 'add')
+    setIsOpen(false)
   }
   useEffect(() => {
     getList()
