@@ -225,6 +225,44 @@ export const NumericInput = (props: any) => {
     </>
   )
 }
+export const NumericInput2 = (props: any) => {
+  const [t] = useTranslation()
+  const { value, onChange, onPress } = props
+
+  const enter = (e: any) => {
+    onChange({ ...value, start: e })
+  }
+  const enter2 = (e: any) => {
+    onChange({ ...value, end: e })
+  }
+
+  return (
+    <>
+      <Input
+        type="number"
+        placeholder={t('newlyAdd.pleaseValue')}
+        onPressEnter={onPress}
+        onChange={e => enter(e.target.value)}
+        value={value?.start}
+        onBlur={onPress}
+        allowClear
+        style={{ width: '100px', border: 'none' }}
+      />
+      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
+      <Input
+        type="number"
+        placeholder={t('newlyAdd.pleaseValue')}
+        onPressEnter={onPress}
+        onChange={e => enter2(e.target.value)}
+        value={value?.end}
+        style={{ width: '100px', border: 'none' }}
+        onBlur={onPress}
+        allowClear
+      />
+      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
+    </>
+  )
+}
 
 const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
@@ -478,6 +516,19 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item name={i.key}>
                       <NumericInput onPress={() => confirm(i.key, '', 1)} />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content, 1)}>
+                      <IconFont type="close-solid" className="icon" />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )}
+                {i.type === 'integer' && (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <NumericInput2 onPress={() => confirm(i.key, '', 1)} />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content, 1)}>
                       <IconFont type="close-solid" className="icon" />

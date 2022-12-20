@@ -347,7 +347,7 @@ const LoginLog = () => {
       form={form}
       onValuesChange={onValuesChange}
       initialValues={{
-        pageSize: 2,
+        pageSize: 20,
         page: 1,
       }}
     >

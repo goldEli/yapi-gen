@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 // 需求主页-需求树形模式
 
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -228,6 +229,8 @@ const DemandTree = (props: Props) => {
   const onChangePage = (page: number, size: number) => {
     setExpandedRowKeys([])
     props.onChangePageNavigation?.({ page, size })
+    onOperationCheckbox('add', 0)
+    setSelectedRowKeys([])
   }
 
   const onShowSizeChange = (page: number, size: number) => {
