@@ -162,7 +162,7 @@ const Detail = () => {
             isDefault: item.is_default_filter,
             contentTxt: item.content_txt,
           }
-        } else if (item.values[0] === 'integer') {
+        } else if (item.attr === 'number') {
           return {
             ...item,
             id: item.id,
@@ -170,7 +170,7 @@ const Detail = () => {
             key: item.content,
             content: item.content,
             children: item.values,
-            type: 'integer',
+            type: item.values[0],
             isDefault: item.is_default_filter,
             contentTxt: item.content_txt,
           }

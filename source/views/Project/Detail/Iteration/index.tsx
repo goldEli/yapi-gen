@@ -509,7 +509,9 @@ const IterationWrap = () => {
   }
   useEffect(() => {
     PubSub.subscribe('num', () => {
-      getIterateInfo({ projectId, id: iterateId })
+      if (iterateId) {
+        getIterateInfo({ projectId, id: iterateId })
+      }
     })
   })
 

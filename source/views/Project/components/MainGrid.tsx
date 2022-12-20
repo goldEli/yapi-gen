@@ -13,6 +13,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import noData from '/noData.png'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -122,7 +123,7 @@ const MainGrid = (props: Props) => {
                 width: '240px',
                 height: '144px',
               }}
-              src="/public/noData.png"
+              src={noData}
               alt=""
             />
             <div
