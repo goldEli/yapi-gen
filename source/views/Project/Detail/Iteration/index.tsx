@@ -513,7 +513,7 @@ const IterationWrap = () => {
         getIterateInfo({ projectId, id: iterateId })
       }
     })
-  })
+  }, [])
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>
