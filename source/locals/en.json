@@ -23,7 +23,7 @@
     "a4": "His to-do list ",
     "a5": "He created ",
     "a6": "His has done ",
-    "a7": "project permission group ",
+    "a7": "Project permission group ",
     "a8": "Requirement setting ",
     "a9": "My profile - mine ",
     "b1": "My to-do - mine ",
@@ -39,10 +39,10 @@
     "c1": "Company information ",
     "c2": "Authority management ",
     "c3": "Operation log ",
-    "c4": "login log ",
+    "c4": "Login log ",
     "c5": "Message center",
     "c6": "Log",
-    "c7": "configuration"
+    "c7": "Configuration"
   },
   "v2_1_1": {
     "configuration": "General configuration",
@@ -57,7 +57,7 @@
     "report": "Report",
     "developed": "Developed",
     "waitingPlan": "The function is under preparation, please look forward to it",
-    "searchProject": "press Enter to search",
+    "searchProject": "Please Enter to search",
     "projectGroup": "Project Group",
     "editGroup": "Edit Group",
     "deleteGroup": "Delete Group",

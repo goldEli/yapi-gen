@@ -227,15 +227,15 @@ const DemandTree = (props: Props) => {
   }
 
   const onChangePage = (page: number, size: number) => {
-    setExpandedRowKeys([])
     props.onChangePageNavigation?.({ page, size })
-    onOperationCheckbox('add', 0)
     setSelectedRowKeys([])
+    onOperationCheckbox('remove')
   }
 
   const onShowSizeChange = (page: number, size: number) => {
-    setExpandedRowKeys([])
     props.onChangePageNavigation?.({ page, size })
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
   }
 
   const onClickItem = (item: any) => {

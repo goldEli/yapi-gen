@@ -417,6 +417,9 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.createSuccess'))
     }
+    if (props.iterateId) {
+      PubSub.publish('num')
+    }
     // 更新父需求列表
     getList()
     // 是否是快捷创建，是则要刷新相应的列表接口
@@ -462,17 +465,15 @@ const EditDemand = (props: Props) => {
     const leftValues = await leftDom.current.confirm()
     const rightValues = rightDom.current.confirm()
 
-    if (rightValues.startTime) {
-      rightValues.expectedStart = moment(rightValues.startTime).format(
-        'YYYY-MM-DD',
-      )
+    if (rightValues?.startTime) {
+      rightValues.expectedStart = rightValues?.startTime
+        ? moment(rightValues?.startTime).format('YYYY-MM-DD')
+        : null
     }
-    if (rightValues.endTime) {
-      rightValues.expectedEnd = moment(rightValues.endTime).format('YYYY-MM-DD')
-    }
-
-    if (props.iterateId) {
-      rightValues.iterateId = props.iterateId
+    if (rightValues?.endTime) {
+      rightValues.expectedEnd = rightValues?.endTime
+        ? moment(rightValues.endTime).format('YYYY-MM-DD')
+        : null
     }
 
     if (rightValues.priority?.id) {
@@ -710,7 +711,6 @@ const EditDemand = (props: Props) => {
               <AddButtonWrap
                 onClick={() => {
                   onSaveCategory(1)
-                  PubSub.publish('num')
                 }}
               >
                 {t('common.finishToAdd')}
@@ -720,7 +720,6 @@ const EditDemand = (props: Props) => {
               type="primary"
               onClick={() => {
                 onSaveCategory()
-                PubSub.publish('num')
               }}
             >
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}

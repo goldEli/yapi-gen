@@ -340,14 +340,17 @@ const WrapLeftBox = (props: Props) => {
       </TitleBox>
       <GroupBox>
         <div>{t('version2.projectGroup')}</div>
-        <CloseWrap width={24} height={24}>
+        <CloseWrap
+          width={24}
+          height={24}
+          onClick={() => {
+            setIsVisible(true)
+            setTimeout(() => {
+              inputRefDom.current?.focus()
+            }, 100)
+          }}
+        >
           <IconFont
-            onClick={() => {
-              setIsVisible(true)
-              setTimeout(() => {
-                inputRefDom.current?.focus()
-              }, 100)
-            }}
             type="plus"
             style={{ fontSize: 16, color: '#646566', cursor: 'pointer' }}
           />
