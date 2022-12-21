@@ -285,8 +285,8 @@ export const addDemand: any = async (params: any) => {
   const hasImg = Array.from(element.getElementsByTagName('img'))
   const info = hasImg.length
     ? params?.info
-    : element.innerText.trim() === ''
-    ? ''
+    : element.innerText
+    ? params?.info
     : element.innerHTML
 
   await http.post<any>('addDemand', {

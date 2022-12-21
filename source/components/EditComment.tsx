@@ -20,7 +20,7 @@ const Wrap = styled.div<{ pl: string }>`
   padding: 12px;
   padding-top: 0px;
   width: 100%;
-  min-height: 240px;
+  min-height: 150px;
   opacity: 1;
   border: 1px solid #ecedef;
   border-top: none;
