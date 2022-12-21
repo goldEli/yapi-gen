@@ -465,17 +465,15 @@ const EditDemand = (props: Props) => {
     const leftValues = await leftDom.current.confirm()
     const rightValues = rightDom.current.confirm()
 
-    if (rightValues.startTime) {
-      rightValues.expectedStart = moment(rightValues.startTime).format(
-        'YYYY-MM-DD',
-      )
+    if (rightValues?.startTime) {
+      rightValues.expectedStart = rightValues?.startTime
+        ? moment(rightValues?.startTime).format('YYYY-MM-DD')
+        : null
     }
-    if (rightValues.endTime) {
-      rightValues.expectedEnd = moment(rightValues.endTime).format('YYYY-MM-DD')
-    }
-
-    if (props.iterateId) {
-      rightValues.iterateId = props.iterateId
+    if (rightValues?.endTime) {
+      rightValues.expectedEnd = rightValues?.endTime
+        ? moment(rightValues.endTime).format('YYYY-MM-DD')
+        : null
     }
 
     if (rightValues.priority?.id) {
