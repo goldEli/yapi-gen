@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 项目列表页左侧
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -225,6 +226,7 @@ const WrapLeftBox = (props: Props) => {
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
+
     if (operationObj?.id) {
       values.id = operationObj?.id
       try {
@@ -302,6 +304,9 @@ const WrapLeftBox = (props: Props) => {
             label={t('version2.groupName')}
             name="name"
             rules={[{ required: true, message: '' }]}
+            getValueFromEvent={event => {
+              return event.target.value.replace(/\s+/g, '')
+            }}
           >
             <Input
               placeholder={t('version2.pleaseGroupName')}
