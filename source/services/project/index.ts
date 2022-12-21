@@ -188,6 +188,7 @@ export const getProjectInfo: any = async (params: any) => {
     filterCustomList,
     filterFelid: response.data.storyConfig.filter_fidlds,
     projectPermissions: response.data.company_permissions,
+    groupIds: response.data?.groups?.map((i: any) => i.id),
   }
 }
 

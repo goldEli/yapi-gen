@@ -15,6 +15,7 @@ import { getTreeList } from '@/services/project/tree'
 import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
+import moment from 'moment'
 
 interface Props {
   children: any
@@ -187,6 +188,32 @@ const TableQuickEdit = (props: Props) => {
       message.warning(t('p2.nameNotNull'))
       setIsShowControl(false)
       return
+    }
+
+    // 判断如果修改的是预计开始时间，则判断结束时间不能小于开始时间
+    if (props?.keyText === 'expected_start_at') {
+      if (
+        props.item.expectedEnd &&
+        moment(props.item.expectedEnd || '').unix() <
+          moment(newValue || '').unix()
+      ) {
+        message.warning(t('version2.endTimeComputedStartTime'))
+        setIsShowControl(false)
+        return
+      }
+    }
+
+    // 判断如果修改的是预计结束时间，则判断开始时间不能大于结束时间
+    if (props?.keyText === 'expected_end_at') {
+      if (
+        props.item.expectedStart &&
+        moment(props.item.expectedStart || '').unix() >
+          moment(newValue || '').unix()
+      ) {
+        message.warning(t('version2.startTimeComputedEndTime'))
+        setIsShowControl(false)
+        return
+      }
     }
     const obj: any = {
       projectId,
