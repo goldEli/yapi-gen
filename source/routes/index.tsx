@@ -177,6 +177,10 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'Kong',
+        element: lazy(() => import('@/views/Kong')),
+      },
     ],
   },
 ]
