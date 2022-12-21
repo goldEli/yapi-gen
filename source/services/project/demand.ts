@@ -316,7 +316,7 @@ export const updateDemand: any = async (params: any) => {
   const info = hasImg.length
     ? params?.info
     : element.innerText.trim() === ''
-    ? ''
+    ? params?.info
     : element.innerHTML
   await http.put<any>('updateDemand', {
     project_id: params.projectId,
