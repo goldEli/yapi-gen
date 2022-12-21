@@ -122,7 +122,13 @@ const SearchList = (props: Props) => {
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
               {t('newlyAdd.examineTime')}
             </span>
-            <Form.Item name="remark">
+            <Form.Item
+              getValueFromEvent={event => {
+                // eslint-disable-next-line require-unicode-regexp
+                return event.target.value.replace(/\s+/g, '')
+              }}
+              name="remark"
+            >
               <InputWrap
                 allowClear
                 autoComplete="off"

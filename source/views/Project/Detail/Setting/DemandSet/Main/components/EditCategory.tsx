@@ -159,6 +159,10 @@ const EditorCategory = (props: EditorProps) => {
           label={t('newlyAdd.categoryName')}
           name="name"
           rules={[{ required: true, message: '' }]}
+          getValueFromEvent={event => {
+            // eslint-disable-next-line require-unicode-regexp
+            return event.target.value.replace(/\s+/g, '')
+          }}
         >
           <Input
             autoComplete="off"
@@ -170,7 +174,14 @@ const EditorCategory = (props: EditorProps) => {
             autoFocus
           />
         </Form.Item>
-        <Form.Item label={t('newlyAdd.categoryRemark')} name="remark">
+        <Form.Item
+          label={t('newlyAdd.categoryRemark')}
+          getValueFromEvent={event => {
+            // eslint-disable-next-line require-unicode-regexp
+            return event.target.value.replace(/\s+/g, '')
+          }}
+          name="remark"
+        >
           <Input.TextArea
             placeholder={t('newlyAdd.pleaseCategoryRemark')}
             autoSize={{ minRows: 5, maxRows: 5 }}

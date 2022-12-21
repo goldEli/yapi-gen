@@ -129,7 +129,14 @@ const EditWorkflow = (props: EditorProps) => {
         )}
         <FormWrap form={form} layout="vertical">
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Form.Item label={t('newlyAdd.statusName')} name="name">
+            <Form.Item
+              getValueFromEvent={event => {
+                // eslint-disable-next-line require-unicode-regexp
+                return event.target.value.replace(/\s+/g, '')
+              }}
+              label={t('newlyAdd.statusName')}
+              name="name"
+            >
               <Input
                 autoComplete="off"
                 maxLength={10}
@@ -142,7 +149,14 @@ const EditWorkflow = (props: EditorProps) => {
               {t('newlyAdd.pleaseStatusNameMax')}
             </span>
           </div>
-          <Form.Item label={t('newlyAdd.statusRemark')} name="info">
+          <Form.Item
+            getValueFromEvent={event => {
+              // eslint-disable-next-line require-unicode-regexp
+              return event.target.value.replace(/\s+/g, '')
+            }}
+            label={t('newlyAdd.statusRemark')}
+            name="info"
+          >
             <Input.TextArea
               autoSize={{ minRows: 5, maxRows: 5 }}
               placeholder={t('newlyAdd.pleaseStatusRemark')}
