@@ -121,6 +121,7 @@ const EditorBox = (props: Props) => {
           'Verdana',
         ],
       },
+
       fontSize: {
         fontSizeList: ['12px', '16px', '40px'],
       },
@@ -224,7 +225,7 @@ const EditorBox = (props: Props) => {
         onChange={onChange}
         mode="simple"
         key={key}
-        style={{ flex: 1, overflowY: 'hidden' }}
+        style={{ flex: 1 }}
       />
     </Wrap>
   )

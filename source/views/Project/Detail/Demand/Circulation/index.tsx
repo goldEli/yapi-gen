@@ -15,6 +15,7 @@ import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
+import PubSub from 'pubsub-js'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -133,6 +134,11 @@ const Circulation = () => {
       getLogs()
     }
   }, [isRefresh])
+  useEffect(() => {
+    PubSub.subscribe('state', () => {
+      getStatusLogs({ projectId, demandId: demandInfo?.id, all: true })
+    })
+  }, [])
 
   // 返回自定义值
   const getValues = (key: any, values: any) => {

@@ -24,6 +24,7 @@ import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import PubSub from 'pubsub-js'
 
 const Left = styled.div`
   min-height: 400px;
@@ -537,6 +538,9 @@ export const ShapeContent = (props: any) => {
 
     await tap(props.noleft ? putData2 : putData)
     onClear()
+    setTimeout(() => {
+      PubSub.publish('state')
+    }, 100)
   }
 
   const onConfirm = async () => {
@@ -859,7 +863,7 @@ export const ShapeContent = (props: any) => {
             ) : null}
             {rightList.is_verify && rightList.verify.verify_type === 2 ? (
               <Form
-                labelCol={{ span: 10 }}
+                labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
                 labelAlign="left"
                 form={form2}
