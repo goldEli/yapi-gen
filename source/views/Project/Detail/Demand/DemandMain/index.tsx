@@ -57,7 +57,7 @@ const DemandMain = (props: Props) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { getCategoryList, setFilterKeys } = useModel('project')
+  const { getCategoryList, setFilterKeys, filterKeys } = useModel('project')
 
   const getList = async (
     state: any,
@@ -217,6 +217,12 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['classId']]
+        : filterKeys?.filter((i: any) => i !== 'classId')
+
+      setFilterKeys([...new Set(keys)])
     },
   }
 

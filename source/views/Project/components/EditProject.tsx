@@ -24,9 +24,28 @@ interface Props {
 const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const { addProject, updateProject, selectGroupList, setIsRefreshGroup } =
-    useModel('project')
+  const {
+    addProject,
+    updateProject,
+    selectGroupList,
+    setIsRefreshGroup,
+    getGroupList,
+    setSelectGroupList,
+  } = useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
+
+  const getGroupData = async () => {
+    const result = await getGroupList()
+    setSelectGroupList(
+      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
+    )
+  }
+
+  useEffect(() => {
+    if (props.visible) {
+      getGroupData()
+    }
+  }, [props.visible])
 
   const onConfirm = async () => {
     await form.validateFields()
@@ -150,6 +169,7 @@ const EditProject = (props: Props) => {
             showArrow
             showSearch
             allowClear
+            optionFilterProp="label"
           />
         </Form.Item>
       </Form>
