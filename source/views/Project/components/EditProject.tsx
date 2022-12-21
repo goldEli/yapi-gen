@@ -116,6 +116,9 @@ const EditProject = (props: Props) => {
         </Form.Item>
         <Form.Item
           label={t('common.projectName')}
+          getValueFromEvent={event => {
+            return event.target.value.replace(/\s+/g, '')
+          }}
           rules={[
             { required: true, message: '' },
             {
@@ -141,6 +144,9 @@ const EditProject = (props: Props) => {
         <Form.Item
           label={t('project.projectInfo')}
           name="info"
+          getValueFromEvent={event => {
+            return event.target.value.replace(/\s+/g, '')
+          }}
           rules={[{ required: true, message: '' }]}
         >
           <Input.TextArea

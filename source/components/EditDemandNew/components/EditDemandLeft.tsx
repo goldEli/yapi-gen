@@ -303,6 +303,10 @@ const EditDemandLeft = (props: Props) => {
           </div>
         )}
         <Form.Item
+          getValueFromEvent={event => {
+            // eslint-disable-next-line require-unicode-regexp
+            return event.target.value.replace(/\s+/g, '')
+          }}
           label={
             <div style={{ fontWeight: 'bold' }}>{t('common.demandName')}</div>
           }

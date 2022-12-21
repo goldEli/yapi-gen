@@ -729,6 +729,9 @@ export const ShapeContent = (props: any) => {
                     )}
                     {['text', 'textarea'].includes(i.type) && (
                       <Form.Item
+                        getValueFromEvent={event => {
+                          return event.target.value.replace(/\s+/g, '')
+                        }}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
                         rules={[

@@ -303,6 +303,10 @@ const TreeItem = (props: any) => {
                 label={t('newlyAdd.className')}
                 name="name"
                 rules={[{ required: true, message: '' }]}
+                getValueFromEvent={event => {
+                  // eslint-disable-next-line require-unicode-regexp
+                  return event.target.value.replace(/\s+/g, '')
+                }}
               >
                 <Input
                   ref={inputRefDom as any}
@@ -312,7 +316,14 @@ const TreeItem = (props: any) => {
                   placeholder={t('newlyAdd.pleaseClassName')}
                 />
               </Form.Item>
-              <Form.Item name="remark" label={t('newlyAdd.classRemark')}>
+              <Form.Item
+                getValueFromEvent={event => {
+                  // eslint-disable-next-line require-unicode-regexp
+                  return event.target.value.replace(/\s+/g, '')
+                }}
+                name="remark"
+                label={t('newlyAdd.classRemark')}
+              >
                 <Input.TextArea
                   maxLength={100}
                   showCount

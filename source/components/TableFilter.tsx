@@ -540,7 +540,12 @@ const TableFilter = (props: any) => {
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
                       {i.contentTxt}
                     </span>
-                    <Form.Item name={i.key}>
+                    <Form.Item
+                      getValueFromEvent={event => {
+                        return event.target.value.replace(/\s+/g, '')
+                      }}
+                      name={i.key}
+                    >
                       <Input
                         allowClear
                         autoComplete="off"

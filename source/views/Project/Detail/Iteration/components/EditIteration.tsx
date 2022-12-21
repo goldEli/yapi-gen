@@ -181,6 +181,10 @@ const EditIteration = (props: Props) => {
             label={t('common.iterateName')}
             rules={[{ required: true, message: '' }]}
             name="iterationName"
+            getValueFromEvent={event => {
+              // eslint-disable-next-line require-unicode-regexp
+              return event.target.value.replace(/\s+/g, '')
+            }}
           >
             <Input
               autoComplete="off"

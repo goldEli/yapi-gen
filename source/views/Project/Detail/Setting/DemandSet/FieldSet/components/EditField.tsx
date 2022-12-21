@@ -282,6 +282,10 @@ const EditFiled = (props: Props) => {
               label={t('newlyAdd.fieldsName')}
               rules={[{ required: true, message: '' }]}
               name="name"
+              getValueFromEvent={event => {
+                // eslint-disable-next-line require-unicode-regexp
+                return event.target.value.replace(/\s+/g, '')
+              }}
             >
               <Input
                 placeholder={t('newlyAdd.pleaseFieldsName')}
@@ -294,7 +298,14 @@ const EditFiled = (props: Props) => {
               {t('newlyAdd.nameText')}
             </div>
           </ItemWrap>
-          <Form.Item label={t('newlyAdd.fieldsRemark')} name="remarks">
+          <Form.Item
+            label={t('newlyAdd.fieldsRemark')}
+            getValueFromEvent={event => {
+              // eslint-disable-next-line require-unicode-regexp
+              return event.target.value.replace(/\s+/g, '')
+            }}
+            name="remarks"
+          >
             <Input.TextArea
               placeholder={t('newlyAdd.pleaseFields')}
               autoSize={{ minRows: 5, maxRows: 5 }}

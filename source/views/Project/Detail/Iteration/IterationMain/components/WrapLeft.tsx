@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 迭代主页左侧模块
 
 /* eslint-disable no-undefined */
@@ -277,7 +278,13 @@ const WrapLeft = (props: Props) => {
   const filterContent = (
     <div className="filterContent">
       <Form form={form} style={{ width: 270, padding: 16 }} layout="vertical">
-        <Form.Item label={t('common.title')} name="name">
+        <Form.Item
+          getValueFromEvent={event => {
+            return event.target.value.replace(/\s+/g, '')
+          }}
+          label={t('common.title')}
+          name="name"
+        >
           <Input autoComplete="off" placeholder={t('project.pleaseTitle')} />
         </Form.Item>
         <Form.Item label={t('common.startTime')} name="startTime">
