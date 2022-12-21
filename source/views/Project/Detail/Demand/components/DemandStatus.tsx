@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -91,13 +92,18 @@ const DemandStatusBox = (props: any) => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <StatusWrap
                 onClick={() => {
-                  onChangeIdx(i.id, i)
+                  if (!demandInfo?.isExamine) {
+                    onChangeIdx(i.id, i)
+                  }
                 }}
                 style={{
                   color: i.id === active ? '#2877ff' : '#969799',
                   border:
                     i.id === active ? '1px solid #2877ff' : '1px solid #EBEDF0',
-                  cursor: isCanEdit ? 'pointer' : 'inherit',
+                  cursor:
+                    isCanEdit && !demandInfo?.isExamine
+                      ? 'pointer'
+                      : 'not-allowed',
                 }}
               >
                 {i.status.content}
@@ -116,34 +122,40 @@ const DemandStatusBox = (props: any) => {
         })}
       </div>
 
-      <div
-        style={{
-          position: 'relative',
-        }}
-      >
-        {demandInfo?.isExamine ? (
+      <div>
+        {demandInfo?.isExamine && (
           <div
             style={{
-              position: 'absolute',
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
+              backgroundColor: '#F9FAFA',
               width: '100%',
-              height: '100%',
+              height: '54px',
               zIndex: 1,
               borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              marginTop: '10px',
+              paddingLeft: '18px',
             }}
           >
             <IconFont
-              type="review"
+              type="Warning"
               style={{
-                fontSize: 80,
+                fontSize: 17,
+                color: '#FA9746',
               }}
             />
+            <span
+              style={{
+                color: '#969799',
+                fontSize: '14px',
+                marginLeft: '10px',
+              }}
+            >
+              该需求正在审核中，现在不能流转操作！
+            </span>
           </div>
-        ) : null}
-        {rows && !isUpdateStatus ? (
+        )}
+        {rows && !isUpdateStatus && !demandInfo?.isExamine && (
           <ShapeContentForDetail
             active={demandInfo.status.status}
             sid={props.sid}
@@ -153,7 +165,7 @@ const DemandStatusBox = (props: any) => {
             row={rows}
             noleft
           />
-        ) : null}
+        )}
       </div>
     </div>
   )
