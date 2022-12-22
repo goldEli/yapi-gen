@@ -154,7 +154,13 @@ client.config({
           getTicket()
         }, 500)
       }
-      if (data.code !== '00000' && data.code !== 1 && data.code !== 0) {
+      // A0301特殊处理-私有项目没有权限查看
+      if (
+        data.code !== '00000' &&
+        data.code !== 1 &&
+        data.code !== 0 &&
+        data.code !== 'A0301'
+      ) {
         message.error(data.message)
         throw new Error(data.code)
       }

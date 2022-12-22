@@ -7,9 +7,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
-import { Outlet, useSearchParams } from 'react-router-dom'
+import {
+  Navigate,
+  Outlet,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 import { useModel } from '@/models'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
@@ -42,6 +47,9 @@ const Detail = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isRefresh } = useModel('user')
+  // 用于私有项目权限过渡
+  const [isShowPage, setIsShowPage] = useState(false)
+  const navigate = useNavigate()
 
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
@@ -317,9 +325,21 @@ const Detail = () => {
     setSelectAllStaffData(options)
   }
 
+  // 获取项目信息
+  const getInfo = async () => {
+    const result = await getProjectInfo({ projectId })
+    // 判断如果当前项目是私有项目并且当前登录者不是项目成员则跳转无权限界面
+    if (result.isPublic === 2 && !result.isMember) {
+      navigate('/PrivatePermission')
+      return false
+    }
+    setIsShowPage(true)
+    return result
+  }
+
   const getInit = async () => {
     const [projectInfo, selectIterate, memberList] = await Promise.all([
-      getProjectInfo({ projectId }),
+      getInfo(),
       getIterateList(),
       getMemberList({ all: true, projectId }),
     ])
@@ -344,8 +364,12 @@ const Detail = () => {
 
   return (
     <Wrap>
-      <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
-      <Outlet key={isChangeProject} />
+      {isShowPage && (
+        <>
+          <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
+          <Outlet key={isChangeProject} />
+        </>
+      )}
     </Wrap>
   )
 }
