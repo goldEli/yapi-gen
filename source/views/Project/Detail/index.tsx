@@ -38,7 +38,6 @@ const Detail = () => {
     getPriorityList,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
-  const { isOpenEditDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

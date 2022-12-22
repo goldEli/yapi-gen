@@ -178,8 +178,10 @@ const routes = [
         ],
       },
       {
-        path: 'Kong',
-        element: lazy(() => import('@/views/Kong')),
+        path: 'PrivatePermission',
+        element: lazy(
+          () => import('@/views/Project/Detail/components/PrivatePermission'),
+        ),
       },
     ],
   },
