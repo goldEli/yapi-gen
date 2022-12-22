@@ -413,7 +413,9 @@ const Member = (props: Props) => {
         title={
           <HeaderWrap>
             <span>
-              {t('project.projectMemberAll', { count: memberList?.length })}
+              {t('project.projectMemberAll', {
+                count: projectInfo.memberCount,
+              })}
             </span>
             <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
               <IconFont
