@@ -46,11 +46,7 @@ const Detail = () => {
   const projectId = paramsData.id
   const { isRefresh } = useModel('user')
   const asyncSetTtile = useSetTitle()
-  asyncSetTtile(
-    `${t('title.need')}【${demandInfo.id}】${demandInfo.name}-【${
-      projectInfo2.name
-    }】`,
-  )
+  asyncSetTtile(`${t('title.need')}【${projectInfo2.name}】`)
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
     const arr = result.list?.map((i: any) => ({
