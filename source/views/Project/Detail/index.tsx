@@ -14,7 +14,7 @@ import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffList, getStaffList2 } from '@/services/staff'
-
+import useSetTitle from '@/hooks/useSetTitle'
 const Wrap = styled.div({
   height: '100%',
   overflow: 'auto',
@@ -22,6 +22,7 @@ const Wrap = styled.div({
 
 const Detail = () => {
   const {
+    projectInfo: projectInfo2,
     getProjectInfo,
     getProjectCoverList,
     getProjectPermission,
@@ -38,12 +39,15 @@ const Detail = () => {
     getPriorityList,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
-  const { isOpenEditDemand } = useModel('demand')
+  const { isOpenEditDemand, demandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isRefresh } = useModel('user')
-
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(
+    `【${demandInfo.id}】${demandInfo.name}-【${projectInfo2.name}】`,
+  )
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
     const arr = result.list?.map((i: any) => ({

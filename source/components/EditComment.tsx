@@ -20,7 +20,7 @@ const Wrap = styled.div<{ pl: string }>`
   padding: 12px;
   padding-top: 0px;
   width: 100%;
-  min-height: 150px;
+  min-height: 220px;
   opacity: 1;
   border: 1px solid #ecedef;
   border-top: none;
@@ -237,7 +237,7 @@ const EditComment = (props: any) => {
     >
       <div
         style={{
-          height: 'calc(90vh - 190px)',
+          height: 'calc(90vh - 100px)',
           overflow: 'scroll',
           paddingRight: '24px',
         }}
