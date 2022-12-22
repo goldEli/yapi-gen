@@ -348,7 +348,7 @@ const MainTable = (props: Props) => {
             format={percent =>
               Number(percent) === 100 ? '100%' : `${percent}%`
             }
-            strokeWidth={8}
+            strokeWidth={4}
           />
         )
       },
