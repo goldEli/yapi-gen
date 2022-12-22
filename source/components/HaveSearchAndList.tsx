@@ -228,6 +228,7 @@ const HaveSearchAndList = (props: Props) => {
       const params = encryptPhp(JSON.stringify({ id: item.id }))
       navigate(`/Detail/${beforeUrl}?data=${params}`)
       setIsChangeProject(item.id)
+      message.success(t('version2.changeProjectSuccess'))
     }
     setIsOpen(false)
   }

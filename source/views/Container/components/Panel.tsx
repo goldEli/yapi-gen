@@ -158,6 +158,8 @@ export const Panel = (props: Props) => {
   )
 
   const changeLanguageMode = async (value: number, key: any) => {
+    props.onChange?.()
+    setLanguageModeVisible(false)
     try {
       await changeLanguage(key as LocaleKeys)
       localStorage.setItem('language', key)
@@ -166,8 +168,6 @@ export const Panel = (props: Props) => {
     }
     message.success(t('common.localsSwitching'))
     setLanguageMode(value)
-    setLanguageModeVisible(false)
-    props.onChange?.()
     setTimeout(() => {
       setIsRefresh(true)
     }, 100)

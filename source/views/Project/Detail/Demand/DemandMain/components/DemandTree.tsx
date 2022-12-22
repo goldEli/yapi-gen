@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 // 需求主页-需求树形模式
-
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-constant-binary-expression */
@@ -600,7 +599,7 @@ const DemandTree = (props: Props) => {
     setIsCreateChild({})
   }
 
-  // 关闭创建子需求
+  // 关闭创建需求-暂无数据
   const onClose = () => {
     setIsAddVisible(!isAddVisible)
   }

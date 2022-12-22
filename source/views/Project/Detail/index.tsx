@@ -7,20 +7,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
-import {
-  Navigate,
-  Outlet,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom'
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { getParamsData, filterTreeData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffList, getStaffList2 } from '@/services/staff'
-import useSetTitle from '@/hooks/useSetTitle'
-import { t } from 'i18next'
 const Wrap = styled.div({
   height: '100%',
   overflow: 'auto',
@@ -28,7 +21,6 @@ const Wrap = styled.div({
 
 const Detail = () => {
   const {
-    projectInfo: projectInfo2,
     getProjectInfo,
     getProjectCoverList,
     getProjectPermission,
@@ -45,7 +37,6 @@ const Detail = () => {
     getPriorityList,
   } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
-  const { isOpenEditDemand, demandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -54,12 +45,6 @@ const Detail = () => {
   const [isShowPage, setIsShowPage] = useState(false)
   const navigate = useNavigate()
 
-  const asyncSetTtile = useSetTitle()
-  asyncSetTtile(
-    `${t('title.need')}【${demandInfo.id}】${demandInfo.name}-【${
-      projectInfo2.name
-    }】`,
-  )
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
     const arr = result.list?.map((i: any) => ({

@@ -30,6 +30,7 @@ import { CanOperationCategory, StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
+import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch } from '../../../../../store'
 import { changeId } from '../../../../../store/counterSlice'
 
@@ -167,6 +168,8 @@ const DemandBox = () => {
     setIsUpdateStatus,
   } = useModel('demand')
   const navigate = useNavigate()
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const isEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/update',

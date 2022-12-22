@@ -94,7 +94,8 @@
     "chooseNotNull": "选择范围不能为空",
     "noDataFilter": "暂无数据，请重新调整一下筛选参数试试",
     "startTimeComputedEndTime": "预计开始时间不能大于预计结束时间！",
-    "endTimeComputedStartTime": "预计结束时间不能小于预计开始时间！"
+    "endTimeComputedStartTime": "预计结束时间不能小于预计开始时间！",
+    "changeProjectSuccess": "项目切换成功！"
   },
   "p2": {
     "del": "确认删除该附件",

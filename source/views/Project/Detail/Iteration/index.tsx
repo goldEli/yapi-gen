@@ -13,12 +13,12 @@ import Achieve from './Achieve'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message, Tooltip, Dropdown, Menu } from 'antd'
+import { Space, Button, message, Menu } from 'antd'
 import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import { DividerWrap, HoverWrap, IconFontWrap } from '@/components/StyleCommon'
+import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import TableFilter from '@/components/TableFilter'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -27,6 +27,7 @@ import CommonInput from '@/components/CommonInput'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import PubSub from 'pubsub-js'
+import useSetTitle from '@/hooks/useSetTitle'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -164,6 +165,9 @@ const IterationWrap = () => {
     finishAt: [],
     searchVal: '',
   })
+
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
 
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
