@@ -15,6 +15,7 @@ import { getTreeList } from '@/services/project/tree'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffList, getStaffList2 } from '@/services/staff'
 import useSetTitle from '@/hooks/useSetTitle'
+import { t } from 'i18next'
 const Wrap = styled.div({
   height: '100%',
   overflow: 'auto',
@@ -46,7 +47,9 @@ const Detail = () => {
   const { isRefresh } = useModel('user')
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(
-    `【${demandInfo.id}】${demandInfo.name}-【${projectInfo2.name}】`,
+    `${t('title.need')}【${demandInfo.id}】${demandInfo.name}-【${
+      projectInfo2.name
+    }】`,
   )
   const getPermissionList = async () => {
     const result = await getProjectPermission({ projectId })
