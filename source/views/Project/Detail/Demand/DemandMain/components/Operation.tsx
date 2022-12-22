@@ -123,6 +123,7 @@ interface Props {
   isShowLeft?: boolean
   otherParams: any
   dataLength: any
+  pid: any
 }
 
 const Operation = (props: Props) => {
@@ -218,7 +219,10 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
-    const res = await getSearchField(projectInfo.id)
+    if (!props.pid) {
+      return
+    }
+    const res = await getSearchField(props.pid)
 
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))

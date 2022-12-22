@@ -245,6 +245,7 @@ const DemandMain = (props: Props) => {
         )}
         <Right isShowLeft={isShowLeft}>
           <Operation
+            pid={projectId}
             isGrid={isGrid}
             onChangeGrid={val => onChangeGrid(val)}
             onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
