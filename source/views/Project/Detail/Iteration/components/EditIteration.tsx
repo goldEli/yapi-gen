@@ -73,7 +73,7 @@ const EditIteration = (props: Props) => {
     iterateInfo,
     setIsUpdateList,
   } = useModel('iterate')
-  const { setIsRefreshIterateList } = useModel('project')
+  const { setIsRefreshIterateList, getProjectInfo } = useModel('project')
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -132,6 +132,7 @@ const EditIteration = (props: Props) => {
     } catch (error) {
       //
     }
+    getProjectInfo({ projectId })
   }
 
   const onCancel = () => {

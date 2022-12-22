@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 //  评论的弹框
@@ -11,7 +12,7 @@ import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/
 import styled from '@emotion/styled'
 import { Form, message, Popover, Upload } from 'antd'
 import { t } from 'i18next'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CommonModal from './CommonModal'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
@@ -64,6 +65,7 @@ const EditComment = (props: any) => {
   const [focusNode, setFocusNode] = useState<any>(null)
   const [focusOffset, setFocusOffset] = useState<any>(null)
   const [arr, setArr] = useState<any>(null)
+  const editable = useRef<HTMLInputElement>(null)
 
   // 复制事件
   const handlePaste = async (event: any) => {
@@ -223,8 +225,11 @@ const EditComment = (props: any) => {
     }
   }
   useEffect(() => {
+    setTimeout(() => {
+      editable.current?.focus()
+    }, 100)
     init()
-  }, [])
+  }, [props.visibleEdit])
 
   return (
     <CommonModal
@@ -328,6 +333,7 @@ const EditComment = (props: any) => {
             onPaste={handlePaste}
             onInput={changeTalkContent}
             contentEditable
+            ref={editable}
             pl={t('new_p1.a5')}
           />
         </div>

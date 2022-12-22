@@ -19,6 +19,8 @@ import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
+import { useLocation } from 'react-router-dom'
+import { getProjectInfo } from '@/services/project'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -144,6 +146,7 @@ const Operation = (props: Props) => {
   } = useModel('project')
   const { setFilterHeight, setCreateCategory, filterParams } =
     useModel('demand')
+  const location = useLocation()
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -234,7 +237,7 @@ const Operation = (props: Props) => {
 
   useEffect(() => {
     getSearchKey()
-  }, [projectInfo, filterAll])
+  }, [projectInfo, filterAll, location.key])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
