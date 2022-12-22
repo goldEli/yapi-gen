@@ -213,7 +213,7 @@ const ProjectInfo = () => {
             <Line>
               {' '}
               <InfoItem>
-                <div>{t('project.projectId')}</div>
+                <div>{t('project.projectId')}：</div>
                 <span>{projectInfo.id}</span>
               </InfoItem>
               <InfoItem>
