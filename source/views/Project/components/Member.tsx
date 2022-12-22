@@ -212,8 +212,13 @@ const Member = (props: Props) => {
   const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
     useModel('project')
-  const { getProjectPermission, updateMember, projectPermission, addMember } =
-    useModel('project')
+  const {
+    getProjectPermission,
+    updateMember,
+    projectPermission,
+    addMember,
+    getProjectInfo,
+  } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])
@@ -342,6 +347,7 @@ const Member = (props: Props) => {
     setTimeout(() => {
       form.resetFields()
     }, 100)
+    getProjectInfo({ projectId: projectInfo.id })
   }
 
   const onChangeMember = (value: any) => {
