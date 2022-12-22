@@ -325,21 +325,8 @@ const Detail = () => {
     setSelectAllStaffData(options)
   }
 
-  // 获取项目信息
-  const getInfo = async () => {
-    const result = await getProjectInfo({ projectId })
-    // 判断如果当前项目是私有项目并且当前登录者不是项目成员则跳转无权限界面
-    if (result.isPublic === 2 && !result.isMember) {
-      navigate('/PrivatePermission')
-      return false
-    }
-    setIsShowPage(true)
-    return result
-  }
-
-  const getInit = async () => {
-    const [projectInfo, selectIterate, memberList] = await Promise.all([
-      getInfo(),
+  const getInit = async (projectInfo: any) => {
+    const [selectIterate, memberList] = await Promise.all([
       getIterateList(),
       getMemberList({ all: true, projectId }),
     ])
@@ -352,8 +339,20 @@ const Detail = () => {
     getPriorityList({ projectId, type: 'priority' })
   }
 
+  // 获取项目信息
+  const getInfo = async () => {
+    const result = await getProjectInfo({ projectId })
+    // 判断如果当前项目是私有项目并且当前登录者不是项目成员则跳转无权限界面
+    if (result.isPublic === 2 && !result.isMember) {
+      navigate('/PrivatePermission')
+    } else {
+      setIsShowPage(true)
+      getInit(result)
+    }
+  }
+
   useEffect(() => {
-    getInit()
+    getInfo()
   }, [isRefresh, isChangeProject])
 
   useEffect(() => {

@@ -178,9 +178,11 @@ export const Side = () => {
 
   const getClassName = (path: string) => {
     if (path === '/Project') {
-      return nowPath === '/Project' || nowPath === '/Detail' ? activeCss : ''
+      return ['/Project', '/Detail', '/PrivatePermission'].includes(nowPath)
+        ? activeCss
+        : ''
     } else if (path === '/staff') {
-      return nowPath === '/staff' || nowPath === '/MemberInfo' ? activeCss : ''
+      return ['/staff', '/MemberInfo'].includes(nowPath) ? activeCss : ''
     } else if (path === '/Information/send/1') {
       return nowPath === '/Information' ? activeCss : ''
     }

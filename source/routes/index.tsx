@@ -64,6 +64,12 @@ const routes = [
         element: lazy(() => import('@/views/Project')),
       },
       {
+        path: 'PrivatePermission',
+        element: lazy(
+          () => import('@/views/Project/Detail/components/PrivatePermission'),
+        ),
+      },
+      {
         path: '/Detail',
         element: lazy(() => import('@/views/Project/Detail')),
         children: [
@@ -176,12 +182,6 @@ const routes = [
             element: lazy(() => import('@/views/MemberInfo/Profile')),
           },
         ],
-      },
-      {
-        path: 'PrivatePermission',
-        element: lazy(
-          () => import('@/views/Project/Detail/components/PrivatePermission'),
-        ),
       },
     ],
   },
