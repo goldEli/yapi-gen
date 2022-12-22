@@ -243,7 +243,12 @@ const Staff = () => {
               ) : (
                 <span
                   onClick={() => onToDetail(record)}
-                  style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                  style={{
+                    fontSize: 14,
+                    color: '#2877ff',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
                   {t('project.checkInfo')}
                 </span>

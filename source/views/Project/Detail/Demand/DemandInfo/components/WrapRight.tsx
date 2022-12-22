@@ -18,6 +18,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
+import Viewer from 'react-viewer'
 import { bytesToSize, getParamsData } from '@/tools'
 import {
   AddWrap,
@@ -38,6 +39,7 @@ import {
   BlueCss,
   fileIconMap,
   First,
+  Gred,
   GredParent,
   RedCss,
   Second,
@@ -298,6 +300,12 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
+  const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
     projectInfo?.projectPermissions?.filter(
@@ -441,7 +449,20 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       '--'
     )
   }
-
+  const onReview = (item: any, attachList: any) => {
+    setPictureList({
+      imageArray: attachList
+        ?.filter((j: any) => imgs.includes(j.attachment.ext))
+        ?.map((k: any, index: any) => ({
+          src: k.attachment.path,
+          index,
+        })),
+      index: attachList
+        ?.filter((j: any) => imgs.includes(j.attachment.ext))
+        ?.findIndex((i: any) => i.attachment.path === item.path),
+    })
+    setPreviewOpen(true)
+  }
   useEffect(() => {
     PubSub.subscribe('watch', () => {
       getList()
@@ -463,7 +484,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             position: 'absolute',
             top: -42,
             left: -37,
-            zIndex: 9999,
+            zIndex: 1,
           }}
         />
       ) : null}
@@ -828,12 +849,12 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                       <TextWrap>
                         <MyDiv>
                           <HovDiv>
-                            {isComment && userInfo?.id === item.userId && (
+                            {isComment && userInfo?.id === item.userId ? (
                               <IconFont
                                 type="close"
                                 onClick={() => onDeleteComment(item)}
                               />
-                            )}
+                            ) : null}
                           </HovDiv>
 
                           <div
@@ -929,6 +950,33 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                         }
                                       />
                                     )}
+                                    {imgs.includes(i.attachment.ext) && (
+                                      <Gred
+                                        onClick={() => {
+                                          onReview(
+                                            i.attachment,
+                                            item.attachment,
+                                          )
+                                        }}
+                                      >
+                                        <IconFont
+                                          style={{
+                                            fontSize: 18,
+                                            color: 'white',
+                                          }}
+                                          type="zoomin"
+                                        />
+                                      </Gred>
+                                    )}
+                                    {previewOpen ? (
+                                      <Viewer
+                                        zIndex={99999}
+                                        visible={previewOpen}
+                                        images={pictureList?.imageArray}
+                                        activeIndex={pictureList?.index}
+                                        onClose={() => setPreviewOpen(false)}
+                                      />
+                                    ) : null}
                                   </GredParent>
                                   <div>
                                     <div
@@ -992,15 +1040,15 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                                         {t('p2.download') as unknown as string}
                                       </BlueCss>
                                       {isComment &&
-                                        userInfo?.id === item.userId && (
-                                          <RedCss
-                                            onClick={() =>
-                                              onTapRemove(item.id, i.id)
-                                            }
-                                          >
-                                            {t('p2.delete')}
-                                          </RedCss>
-                                        )}
+                                      userInfo?.id === item.userId ? (
+                                        <RedCss
+                                          onClick={() =>
+                                            onTapRemove(item.id, i.id)
+                                          }
+                                        >
+                                          {t('p2.delete')}
+                                        </RedCss>
+                                      ) : null}
                                     </Second>
                                   </div>
                                 </BigWrap>
@@ -1025,13 +1073,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               ))}
           </div>
         )}
-        {isComment && activeTabs === 2 && (
+        {isComment && activeTabs === 2 ? (
           <EditComment
             visibleEdit={visibleEdit}
             editClose={editClose}
             editConfirm={onAddConfirm}
           />
-        )}
+        ) : null}
       </WrapRight>
     </div>
   )

@@ -212,8 +212,13 @@ const Member = (props: Props) => {
   const [t] = useTranslation()
   const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
     useModel('project')
-  const { getProjectPermission, updateMember, projectPermission, addMember } =
-    useModel('project')
+  const {
+    getProjectPermission,
+    updateMember,
+    projectPermission,
+    addMember,
+    getProjectInfo,
+  } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])
@@ -342,6 +347,7 @@ const Member = (props: Props) => {
     setTimeout(() => {
       form.resetFields()
     }, 100)
+    getProjectInfo({ projectId: projectInfo.id })
   }
 
   const onChangeMember = (value: any) => {
@@ -413,7 +419,9 @@ const Member = (props: Props) => {
         title={
           <HeaderWrap>
             <span>
-              {t('project.projectMemberAll', { count: memberList?.length })}
+              {t('project.projectMemberAll', {
+                count: projectInfo.memberCount,
+              })}
             </span>
             <CloseWrap width={32} height={32} onClick={props.onChangeVisible}>
               <IconFont
@@ -433,7 +441,9 @@ const Member = (props: Props) => {
         headerStyle={{ width: '100%' }}
         closable={false}
         placement="right"
-        visible={props.visible}
+        open={props.visible}
+        onClose={props.onChangeVisible}
+        // visible={props.visible}
         bodyStyle={{ padding: 0 }}
         width={400}
       >

@@ -5,7 +5,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import EditorInfoReview from '@/components/EditorInfoReview'
 import IconFont from '@/components/IconFont'
-import { NameWrap } from '@/components/StyleCommon'
+import { CloseWrap, NameWrap } from '@/components/StyleCommon'
 import { addComment, getReportDetail } from '@/services/daily'
 import { bytesToSize } from '@/tools'
 import {
@@ -307,19 +307,17 @@ const LookDay = (props: any) => {
               >
                 {title}
               </span>
-              <span
+              <CloseWrap
                 style={{
                   cursor: 'pointer',
-                  marginRight: '24px',
+                  marginRight: '14px',
                 }}
                 onClick={() => props.onEditClose()}
+                width={32}
+                height={32}
               >
-                <IconFont
-                  className={hover}
-                  type="close"
-                  style={{ color: '#323233', fontSize: 20 }}
-                />
-              </span>
+                <IconFont style={{ fontSize: 20 }} type="close" />
+              </CloseWrap>
             </div>
             <div
               ref={messagesEndRef}

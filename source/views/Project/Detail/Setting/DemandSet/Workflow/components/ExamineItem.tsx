@@ -64,7 +64,7 @@ const MenuItemWrap = styled.span({
   lineHeight: '32px',
   '&:hover': {
     color: '#2877ff',
-    background: '#F0F4FA',
+    background: '#f8f9fa',
   },
 })
 
@@ -101,7 +101,7 @@ const IconfontCloseWrap = styled(IconFont)({
   color: '#969799',
   cursor: 'pointer',
   display: 'none',
-  margin: '4px 0 0 12px',
+  margin: '0 0 0 12px',
 })
 
 export const ItemWrap = styled.div({
@@ -266,7 +266,14 @@ const ExamineItem = (props: Props) => {
   return (
     <Timeline.Item>
       <ItemWrap>
-        <span className="changeSize">{t('newlyAdd.reviewPerson')}</span>
+        <span
+          style={{
+            marginLeft: '-2px',
+          }}
+          className="changeSize"
+        >
+          {t('newlyAdd.reviewPerson')}
+        </span>
         <Popover
           key={isShowSelect.toString()}
           visible={isShowSelect}
@@ -292,7 +299,7 @@ const ExamineItem = (props: Props) => {
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              marginTop: 4,
+              // marginTop: 4,
             }}
           >
             <span
@@ -349,11 +356,18 @@ const ExamineItem = (props: Props) => {
                     </NameWrap>
                   )}
                   <IconFontWrap
-                    type="close-circle-fill"
+                    type="close-solid"
                     onClick={() => onDelCheckPerson(i.id)}
                   />
                 </NewNameWrap>
-                <span className="changeSize">{i.name}</span>
+                <span
+                  style={{
+                    marginLeft: '10px',
+                  }}
+                  className="changeSize"
+                >
+                  {i.name}
+                </span>
               </div>
               {index !== examineList?.length - 1 && (
                 <IconFont
