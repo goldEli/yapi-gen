@@ -433,7 +433,9 @@ const Member = (props: Props) => {
         headerStyle={{ width: '100%' }}
         closable={false}
         placement="right"
-        visible={props.visible}
+        open={props.visible}
+        onClose={props.onChangeVisible}
+        // visible={props.visible}
         bodyStyle={{ padding: 0 }}
         width={400}
       >

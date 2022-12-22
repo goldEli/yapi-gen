@@ -32,6 +32,7 @@ export const Second = styled.div`
   top: 8px;
   opacity: 0;
   transition: all 1s;
+  background-color: white;
 `
 
 export const Third = styled.div`

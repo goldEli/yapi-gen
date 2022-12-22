@@ -463,7 +463,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             position: 'absolute',
             top: -42,
             left: -37,
-            zIndex: 9999,
+            zIndex: 1,
           }}
         />
       ) : null}

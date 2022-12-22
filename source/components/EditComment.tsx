@@ -50,7 +50,7 @@ const GrepDiv = styled.div`
   width: 24px;
   height: 24px;
   text-align: center;
-  line-height: 24px;
+  line-height: 25px;
   display: inline-block;
   border-radius: 6px 6px 6px 6px;
   &:hover {
