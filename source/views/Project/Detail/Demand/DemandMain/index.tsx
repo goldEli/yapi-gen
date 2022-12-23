@@ -64,7 +64,6 @@ const DemandMain = (props: Props) => {
     searchParamsObj: any,
     item?: any,
     orderItem?: any,
-    isInit?: boolean,
     updateState?: boolean,
   ) => {
     if (!updateState) {
@@ -144,7 +143,7 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
-  }, [key])
+  }, [key, isGrid, order, pageObj])
 
   useEffect(() => {
     if (isRefresh) {
@@ -160,9 +159,10 @@ const DemandMain = (props: Props) => {
   }, [props.isUpdate])
 
   const onChangeGrid = (val: any) => {
-    setIsGrid(val)
-    setDataList({ list: undefined })
-    getList(val, searchItems, { page: 1, size: pageObj.size }, order)
+    if (val !== isGrid) {
+      setIsGrid(val)
+      setDataList({ list: undefined })
+    }
   }
 
   const onChangeOperation = (e: any, item?: any) => {
@@ -190,12 +190,14 @@ const DemandMain = (props: Props) => {
 
   const onSearch = (params: any) => {
     setSearchItems(params)
-    getList(isGrid, params, { page: 1, size: pageObj.size }, order)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
-    getList(isGrid, searchItems, item, order)
   }
 
   const onChangeRow = () => {
@@ -204,11 +206,10 @@ const DemandMain = (props: Props) => {
 
   const onChangeOrder = (item: any) => {
     setOrder(item)
-    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, item)
   }
 
   const onUpdate = (state?: boolean) => {
-    getList(isGrid, searchItems, pageObj, order, true, state)
+    getList(isGrid, searchItems, pageObj, order, state)
     myTreeComponent?.current?.init()
   }
 
