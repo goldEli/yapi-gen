@@ -291,7 +291,7 @@ const ChildDemandTable = (props: {
       trigger="click"
       onVisibleChange={onVisibleChange}
       content={
-        <div style={{ maxHeight: 310, overflow: 'auto' }}>
+        <div style={{ maxHeight: 310, overflow: 'auto', width: 950 }}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <Table

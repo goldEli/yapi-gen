@@ -4,6 +4,7 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
+import NoData from '@/components/NoData'
 import { NameWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Input, Popover, Space, Timeline } from 'antd'
@@ -146,6 +147,7 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
           style={{ height: 32, width: 208 }}
           placeholder={t('newlyAdd.pleaseKeyWord')}
           onChange={e => setValue(e.target.value)}
+          allowClear
           autoFocus
           ref={inputRefDom as any}
         />
@@ -184,6 +186,9 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
               </PersonItemWrap>
             )
           })}
+
+        {props?.options?.filter((k: any) => k.name.includes(value))?.length <=
+          0 && <NoData size="mini" />}
       </PersonWrap>
     </div>
   )

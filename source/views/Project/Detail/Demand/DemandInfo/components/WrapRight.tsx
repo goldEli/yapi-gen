@@ -527,6 +527,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                   display: 'flex',
                   alignItems: 'center',
                   marginLeft: '15px',
+                  width: '100%',
                 }}
                 onMouseUp={onChangeSchedule}
               >
@@ -539,7 +540,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                       ? demandInfo.status.is_end !== 1
                       : null
                   }
-                  style={{ width: 190 }}
+                  style={{ width: '70%', maxWidth: 200 }}
                   value={schedule}
                   tipFormatter={(value: any) => `${value}%`}
                   onChange={value => setSchedule(value)}

@@ -80,8 +80,8 @@ export const useDynamicColumns = (state: any) => {
     message.warning(t('newlyAdd.underReview'))
   }
 
-  const onUpdate = () => {
-    state.onUpdate(true)
+  const onUpdate = (row: any) => {
+    state.onUpdate(true, row.topId)
   }
 
   const arr = [
@@ -148,7 +148,7 @@ export const useDynamicColumns = (state: any) => {
               defaultText={text}
               keyText="name"
               item={record}
-              onUpdate={onUpdate}
+              onUpdate={() => onUpdate(record)}
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
@@ -180,7 +180,7 @@ export const useDynamicColumns = (state: any) => {
                 isCanEdit &&
                 !record.isExamine && (
                   <ShapeContent
-                    tap={(value: any) => state.onChangeStatus(value)}
+                    tap={(value: any) => state.onChangeStatus(value, record)}
                     hide={onHide}
                     row={record}
                     record={{
@@ -223,7 +223,7 @@ export const useDynamicColumns = (state: any) => {
               return (
                 isCanEdit && (
                   <LevelContent
-                    onTap={item => state.onChangeState(item)}
+                    onTap={item => state.onChangeState(item, record)}
                     onHide={onHide}
                     record={{ project_id: state.projectId, id: record.id }}
                   />
@@ -284,7 +284,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text}
             keyText="iterate_id"
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
           >
             <HiddenText>
               <OmitText
@@ -312,7 +312,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text}
             keyText="class_id"
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
           >
             <HiddenText>
               <OmitText
@@ -340,7 +340,7 @@ export const useDynamicColumns = (state: any) => {
             type="fixed_select"
             defaultText={text?.split(';') || []}
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
           >
             <HiddenText>
               <OmitText
@@ -378,7 +378,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={record?.usersNameIds || []}
             keyText="users"
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -403,7 +403,7 @@ export const useDynamicColumns = (state: any) => {
                   <DemandProgress
                     value={record.schedule}
                     row={record}
-                    onUpdate={onUpdate}
+                    onUpdate={() => onUpdate(record)}
                     index={index}
                   />
                 </div>
@@ -440,7 +440,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={record?.usersCopySendIds || []}
             keyText="copysend"
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -472,7 +472,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text}
             keyText="expected_start_at"
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
             value={['datetime']}
           >
             <span>{text || '--'}</span>
@@ -494,7 +494,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text}
             keyText="expected_end_at"
             item={record}
-            onUpdate={onUpdate}
+            onUpdate={() => onUpdate(record)}
             value={['datetime']}
           >
             <span>{text || '--'}</span>
@@ -560,7 +560,7 @@ export const useDynamicColumns = (state: any) => {
               defaultText={text?.value}
               keyText={element.value}
               item={record}
-              onUpdate={onUpdate}
+              onUpdate={() => onUpdate(record)}
               remarks={currentFields?.remarks}
               isCustom
               defaultTextValues={text?.true_value}

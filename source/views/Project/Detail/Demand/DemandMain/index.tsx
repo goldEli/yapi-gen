@@ -55,10 +55,11 @@ const DemandMain = (props: Props) => {
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
+  // 用于当前操作层级不折叠
+  const [topParentId, setTopParentId] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { getCategoryList, setFilterKeys, filterKeys, getProjectInfo } =
-    useModel('project')
+  const { getCategoryList, setFilterKeys, filterKeys } = useModel('project')
 
   const getList = async (
     state: any,
@@ -66,6 +67,7 @@ const DemandMain = (props: Props) => {
     item?: any,
     orderItem?: any,
     updateState?: boolean,
+    topId?: any,
   ) => {
     if (!updateState) {
       setIsSpinning(true)
@@ -127,6 +129,7 @@ const DemandMain = (props: Props) => {
     }
     if (state === 2) {
       params.tree = 1
+      params.topParentId = topId ?? topParentId
     }
     setFilterParams(params)
     const result = await getDemandList(params)
@@ -134,6 +137,7 @@ const DemandMain = (props: Props) => {
     setIsSpinning(false)
     props.onIsUpdate?.()
     setIsRefresh(false)
+    setTopParentId(0)
   }
 
   useEffect(() => {
@@ -143,12 +147,12 @@ const DemandMain = (props: Props) => {
   }, [])
 
   useEffect(() => {
-    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
+    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
   }, [key, isGrid, order, pageObj])
 
   useEffect(() => {
     if (isRefresh) {
-      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order, true)
+      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
     }
   }, [isRefresh])
 
@@ -166,14 +170,17 @@ const DemandMain = (props: Props) => {
     }
   }
 
+  // 点击操作左侧三点
   const onChangeOperation = (e: any, item?: any) => {
     props.onSetOperationItem(item)
     props.onChangeVisible(e)
+    setTopParentId(item?.topId)
   }
 
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
+    setTopParentId(item?.topId)
   }
 
   const onDeleteConfirm = async () => {
@@ -201,16 +208,16 @@ const DemandMain = (props: Props) => {
     setPageObj(item)
   }
 
-  const onChangeRow = () => {
-    getList(isGrid, searchItems, pageObj, order)
+  const onChangeRow = (topId?: any) => {
+    getList(isGrid, searchItems, pageObj, order, false, topId)
   }
 
   const onChangeOrder = (item: any) => {
     setOrder(item)
   }
 
-  const onUpdate = (state?: boolean) => {
-    getList(isGrid, searchItems, pageObj, order, state)
+  const onUpdate = (state?: boolean, topId?: any) => {
+    getList(isGrid, searchItems, pageObj, order, state, topId)
     myTreeComponent?.current?.init()
   }
 

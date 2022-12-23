@@ -34,6 +34,7 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import EditDemand from '@/components/EditDemandNew'
 import FloatBatch from '@/components/FloatBatch'
+import IconFont from '@/components/IconFont'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -49,80 +50,22 @@ const DataWrap = styled.div({
   position: 'relative',
 })
 
-const LineWrap = styled.div<{
-  isTop?: any
-  isBottom?: any
-  isLeft?: any
-  isRight?: any
-  isLeftBottom?: any
-}>(
-  {
-    position: 'absolute',
-    height: 52,
-    display: 'flex',
-    alignItems: 'center',
-    div: {
-      background: '#ECEDEF',
-      zIndex: 0,
-      position: 'absolute',
-    },
-  },
-  ({ isTop, isBottom, isRight, isLeft, isLeftBottom }) => ({
-    '.topLine': {
-      display: isTop ? 'block' : 'none',
-      width: 1,
-      left: -16,
-      height: 26,
-      top: 0,
-    },
-    '.bottomLine': {
-      display: isBottom ? 'block' : 'none',
-      height: 26,
-      bottom: 0,
-      width: 1,
-      left: 8,
-    },
-    '.leftLine': {
-      display: isLeft ? 'block' : 'none',
-      width: 15,
-      bottom: 26,
-      height: 1,
-      left: -16,
-    },
-    '.rightLine': {
-      display: isRight ? 'block' : 'none',
-      width: 20,
-      bottom: 26,
-      height: 1,
-      left: 6,
-    },
-    '.leftBottomLine': {
-      display: isLeftBottom ? 'block' : 'none',
-      width: 1,
-      bottom: 0,
-      height: 26,
-      left: -16,
-    },
-  }),
-)
-
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
-  onChangeRow?(): void
+  onChangeRow?(topId?: any): void
   settingState: boolean
   onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
-  onUpdate(updateState?: boolean): void
+  onUpdate(updateState?: boolean, topId?: any): void
   filterParams: any
 }
 
 interface TreeIconProps {
   row: any
-  // onChangeExpendedKeys(values: any): void
   onGetChildList(): void
 }
 
@@ -131,7 +74,6 @@ const GetTreeIcon = (props: TreeIconProps) => {
   const onChangeData = async () => {
     // 未展开并且是最顶级
     await props.onGetChildList()
-    // props.onChangeExpendedKeys(props.row?.id)
   }
   return (
     <div
@@ -143,22 +85,9 @@ const GetTreeIcon = (props: TreeIconProps) => {
           type={props.row.isExpended ? 'add-subtract' : 'add-square-big'}
         />
       )}
-      {props.row.allChildrenCount <= 0 && <div style={{ marginLeft: 4 }} />}
-      {/* <LineWrap
-        isBottom={props.row.isExpended}
-        isTop={props.row.parentId > 0}
-        isLeft={props.row.parentId > 0}
-        isRight={
-          props.row.parentId > 0 &&
-          props.row.allChildrenCount <= 0 &&
-          props.row.isExpended
-        }
-      >
-        <div className="topLine" />
-        <div className="bottomLine" />
-        <div className="leftLine" />
-        <div className="rightLine" />
-      </LineWrap> */}
+      {props.row.allChildrenCount <= 0 && (
+        <ExpendedWrap type="add-subtract" style={{ visibility: 'hidden' }} />
+      )}
     </div>
   )
 }
@@ -193,6 +122,8 @@ const DemandTree = (props: Props) => {
   const [isCreateChild, setIsCreateChild] = useState<any>({})
   const [isAddVisible, setIsAddVisible] = useState(false)
   const batchDom: any = createRef()
+  // 用于获取数据更新后的展开key
+  const [computedTopId, setComputedTopId] = useState(0)
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -237,6 +168,7 @@ const DemandTree = (props: Props) => {
     onOperationCheckbox('remove')
   }
 
+  // 点击跳转需求详情
   const onClickItem = (item: any) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
@@ -244,7 +176,8 @@ const DemandTree = (props: Props) => {
     openDetail(`/Detail/Demand?data=${params}`)
   }
 
-  const onChangeState = async (item: any) => {
+  // 修改优先级
+  const onChangeState = async (item: any, row?: any) => {
     try {
       await updatePriority({
         demandId: item.id,
@@ -252,22 +185,24 @@ const DemandTree = (props: Props) => {
         projectId,
       })
       message.success(t('common.prioritySuccess'))
-      props.onChangeRow?.()
+      props.onChangeRow?.(row?.topId)
     } catch (error) {
       //
     }
   }
 
-  const onChangeStatus = async (value: any) => {
+  // 修改状态
+  const onChangeStatus = async (value: any, row?: any) => {
     try {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
-      props.onChangeRow?.()
+      props.onChangeRow?.(row?.topId)
     } catch (error) {
       //
     }
   }
 
+  // 点击排序
   const updateOrderkey = (key: any, val: any) => {
     setOrderKey(key)
     setOrder(val)
@@ -278,11 +213,13 @@ const DemandTree = (props: Props) => {
   const onPropsChangeVisible = (e: any, item?: any) => {
     setIsShowMore(false)
     props.onChangeVisible(e, item)
+    setComputedTopId(item?.topId)
   }
 
   const onPropsChangeDelete = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
+    setComputedTopId(item?.topId)
   }
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
@@ -350,24 +287,11 @@ const DemandTree = (props: Props) => {
     return (
       <>
         {(row.allChildrenCount > 0 || row.parentId > 0) && (
-          <GetTreeIcon
-            row={row}
-            // onChangeExpendedKeys={onChangeExpendedKeys}
-            onGetChildList={() => onGetChildList(row)}
-          />
+          <GetTreeIcon row={row} onGetChildList={() => onGetChildList(row)} />
         )}
-        {/* {row.parentId > 0 && (
-          <div
-            className="aa"
-            style={{
-              height: 52,
-              width: 1,
-              background: '#ECEDEF',
-              position: 'absolute',
-              left: 8,
-            }}
-          />
-        )} */}
+        {!(row.allChildrenCount > 0 || row.parentId > 0) && (
+          <ExpendedWrap type="add-subtract" style={{ visibility: 'hidden' }} />
+        )}
       </>
     )
   }
@@ -410,6 +334,7 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     setIsVisible(true)
     setIsCreateChild(item)
+    setComputedTopId(item?.topId)
   }
 
   const menu = (item: any) => {
@@ -549,7 +474,22 @@ const DemandTree = (props: Props) => {
 
   useEffect(() => {
     setData(props.data)
-    setExpandedRowKeys([])
+    // 如果有顶层id，则更新展开的key数组
+    if (computedTopId) {
+      if (
+        props.data?.list?.filter((i: any) => i.id === computedTopId)?.length > 0
+      ) {
+        const list = props.data?.list?.filter(
+          (i: any) => i.id === computedTopId,
+        )
+        setExpandedRowKeys([
+          ...[list[0]?.id],
+          ...(list[0]?.allChildrenIds?.map((i: any) => i.id) || []),
+        ])
+      } else {
+        setComputedTopId(0)
+      }
+    }
   }, [props.data?.list])
 
   useLayoutEffect(() => {
@@ -604,6 +544,10 @@ const DemandTree = (props: Props) => {
     setIsAddVisible(!isAddVisible)
   }
 
+  const onTest = () => {
+    props.onUpdate(true, isCreateChild?.topId)
+  }
+
   return (
     <Content style={{ height: 'calc(100% - 52px)' }}>
       {/* 暂无数据创建 */}
@@ -617,7 +561,7 @@ const DemandTree = (props: Props) => {
       <EditDemand
         visible={isVisible}
         onChangeVisible={onCloseCreateChild}
-        onUpdate={() => props.onUpdate(true)}
+        onUpdate={onTest}
         isChild
         categoryId={isCreateChild?.categoryId}
         parentId={isCreateChild?.id}

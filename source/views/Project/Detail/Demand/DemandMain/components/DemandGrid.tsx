@@ -46,7 +46,7 @@ const Title = styled.div({
   top: 0,
   background: 'white',
   paddingTop: 16,
-  zIndex: 2,
+  zIndex: 4,
   width: '100%',
 })
 

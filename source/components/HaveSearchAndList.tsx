@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import CommonInput from './CommonInput'
 import IconFont from './IconFont'
+import NoData from './NoData'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -150,6 +151,10 @@ const ChooseItems = (props: DemandProps) => {
                 )}
               </DemandItem>
             ))}
+          {dataList
+            ?.filter((item: any) => item.value !== demandInfo?.id)
+            ?.filter((k: any) => String(k.label).includes(value))?.length <=
+            0 && <NoData size="mini" />}
         </MaxWrap>
       )}
       {!props.isOperationParent && (
@@ -166,6 +171,9 @@ const ChooseItems = (props: DemandProps) => {
                 {i.id === props.projectId && <IconfontWrap type="check" />}
               </DemandItem>
             ))}
+
+          {projectList.list?.filter((k: any) => String(k.name).includes(value))
+            ?.length <= 0 && <NoData size="mini" />}
         </MaxWrap>
       )}
     </DemandWrap>

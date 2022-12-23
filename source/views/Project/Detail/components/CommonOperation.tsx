@@ -4,7 +4,6 @@
 import IconFont from '@/components/IconFont'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { OmitText } from '@star-yun/ui'
 import { Space, Dropdown, Menu, Tooltip } from 'antd'
 import { useState } from 'react'
 import EditProject from '../../components/EditProject'
@@ -15,7 +14,6 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
-import { HoverWrap } from '@/components/StyleCommon'
 
 const OperationTop = styled.div({
   height: 64,

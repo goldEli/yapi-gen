@@ -161,7 +161,7 @@ const EditDemandLeft = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId) {
+    if (props?.demandId === props?.demandInfo?.id) {
       setTagCheckedList(
         props.demandInfo?.tag?.map((i: any) => ({
           id: i.id,

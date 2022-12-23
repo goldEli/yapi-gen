@@ -262,7 +262,7 @@ const Operation = (props: Props) => {
     setTimeout(() => {
       props.onChangeVisible?.(e)
       setIsVisible(false)
-    }, 100)
+    }, 0)
   }
 
   const changeStatus = (

@@ -146,7 +146,11 @@ const EditDemandRIght = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId && props.info?.id) {
+    if (
+      props?.demandId &&
+      props.info?.id &&
+      props.demandId === props.info?.id
+    ) {
       setSchedule(props.info?.schedule)
       const form1Obj: any = {}
       for (const key in props.info?.customField) {

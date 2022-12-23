@@ -78,6 +78,7 @@ export const getDemandList: any = async (params: any) => {
       schedule_end: params.schedule_end,
       custom_field: params?.custom_field,
       tree: params?.tree || 0,
+      top_parent_id: params?.topParentId,
     },
     pagesize: params?.pageSize,
     page: params?.page,
@@ -122,6 +123,7 @@ export const getDemandList: any = async (params: any) => {
       children: getListItem(i.children) || null,
       level: i.level,
       isExpended: true,
+      topId: params?.parentId ?? params?.topParentId,
     }))
   }
 
@@ -205,9 +207,10 @@ export const getDemandList: any = async (params: any) => {
         usersCopySendIds: i.users_copysend_name_ids,
         allChildrenCount: i.all_child_story_count,
         allChildrenIds: i.all_child_ids,
-        treeChild: null,
-        isExpended: false,
+        children: getListItem(i.children) || null,
+        isExpended: params.topParentId === i.id,
         level: 1,
+        topId: i.id,
       })),
     }
   }
