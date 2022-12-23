@@ -23,6 +23,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSelector } from '../../../../../../../store'
+import { message } from 'antd'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -126,7 +127,7 @@ const WrapLeftBox = () => {
         type: 'attachment',
         targetId: files,
       })
-
+      message.success(t('common.deleteSuccess'))
       getDemandInfo({ projectId, id: demandId })
       onBottom?.()
     } catch (error) {

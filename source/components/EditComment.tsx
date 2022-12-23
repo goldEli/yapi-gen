@@ -14,6 +14,7 @@ import { Form, message, Popover, Upload } from 'antd'
 import { t } from 'i18next'
 import { useEffect, useRef, useState } from 'react'
 import CommonModal from './CommonModal'
+import Editor from './Editor'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
 
@@ -26,11 +27,17 @@ const Wrap = styled.div<{ pl: string }>`
   border: 1px solid #ecedef;
   border-top: none;
   border-radius: 0px 0px 8px 8px;
+  .big {
+    width: 200px;
+    height: 200px;
+    resize: vertical;
+    overflow: hidden;
+  }
+
   img {
-    width: 100px;
-    /* height: 100px; */
-    object-fit: contain;
-    margin-right: 5px;
+    width: 100%;
+    height: 100%;
+    /* object-fit:contain; */
   }
   &:focus {
     outline: none;
@@ -66,7 +73,7 @@ const EditComment = (props: any) => {
   const [focusOffset, setFocusOffset] = useState<any>(null)
   const [arr, setArr] = useState<any>(null)
   const editable = useRef<HTMLInputElement>(null)
-
+  const [colorState, setColorState] = useState<any>(false)
   // 复制事件
   const handlePaste = async (event: any) => {
     event.preventDefault()
@@ -106,13 +113,28 @@ const EditComment = (props: any) => {
     }))
     setArr(filterCompanyList)
   }
+  const onValidator = (rule: any, value: any) => {
+    if (value === '<p><br></p>' || value.trim() === '') {
+      return Promise.reject(
+        new Error('The two passwords that you entered do not match!'),
+      )
+    }
+
+    setColorState(false)
+    return Promise.resolve()
+  }
 
   const onUpload = async ({ file }: { file: any }) => {
     const result: any = await uploadFileByTask(file, file.name, 'file')
     const img = new Image()
     img.src = result.url
     const inner = document.getElementById('inner')
-    inner?.appendChild(img)
+    const newDiv = document.createElement('div')
+    newDiv.className = 'big'
+
+    newDiv.appendChild(img)
+
+    inner?.appendChild(newDiv)
   }
 
   const onChangeAttachment = (result: any) => {
@@ -135,7 +157,12 @@ const EditComment = (props: any) => {
   const onClose = () => {
     props.editClose()
   }
-
+  const texts: any = [
+    '',
+    { name: t('p2.title.t1d'), name2: t('p2.title.t1t') },
+    { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
+    { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
+  ]
   const onBeforeUpload = (file: any) => {
     const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -156,6 +183,7 @@ const EditComment = (props: any) => {
     return isPNG || Upload.LIST_IGNORE
   }
   const confirm = async () => {
+    await form.validateFields()
     const inner = document.getElementById('inner')
     if (!String(inner?.innerHTML).trim()) {
       message.warning(t('new_p1.a9') as unknown as string)
@@ -163,7 +191,7 @@ const EditComment = (props: any) => {
     }
 
     await props.editConfirm({
-      content: String(inner?.innerHTML),
+      content: form.getFieldsValue().info,
       attachment: form.getFieldsValue().attachments,
     })
   }
@@ -229,6 +257,7 @@ const EditComment = (props: any) => {
       editable.current?.focus()
     }, 100)
     init()
+    form.resetFields()
   }, [props.visibleEdit])
 
   return (
@@ -242,12 +271,12 @@ const EditComment = (props: any) => {
     >
       <div
         style={{
-          height: 'calc(90vh - 100px)',
+          height: 'calc(90vh - 450px)',
           overflow: 'scroll',
           paddingRight: '24px',
         }}
       >
-        <div
+        {/* <div
           style={{
             marginBottom: '24px',
           }}
@@ -336,7 +365,7 @@ const EditComment = (props: any) => {
             ref={editable}
             pl={t('new_p1.a5')}
           />
-        </div>
+        </div> */}
         <Form
           form={form}
           onFinish={confirm}
@@ -354,6 +383,36 @@ const EditComment = (props: any) => {
             }, 100)
           }}
         >
+          <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
+            label={<LabelTitle title={t('new_p1.a4')} />}
+            name="info"
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: true,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                    {texts[props.type]?.name}
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+          >
+            <Editor at height={178} autoFocus />
+          </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}
             name="attachments"

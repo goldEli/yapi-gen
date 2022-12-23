@@ -27,7 +27,7 @@ const Popconfirm = (props: PopConfirmProps) => {
       visible={visible}
       onVisibleChange={handleVisibleChange}
       getPopupContainer={n => (props.isShow ? n : document.body)}
-      content={<PropsContent onHide={hide} />}
+      content={visible ? <PropsContent onHide={hide} /> : null}
       destroyTooltipOnHide
     >
       {props.children}
