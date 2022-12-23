@@ -57,7 +57,8 @@ const DemandMain = (props: Props) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { getCategoryList, setFilterKeys, filterKeys } = useModel('project')
+  const { getCategoryList, setFilterKeys, filterKeys, getProjectInfo } =
+    useModel('project')
 
   const getList = async (
     state: any,
@@ -245,6 +246,7 @@ const DemandMain = (props: Props) => {
         )}
         <Right isShowLeft={isShowLeft}>
           <Operation
+            pid={projectId}
             isGrid={isGrid}
             onChangeGrid={val => onChangeGrid(val)}
             onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}

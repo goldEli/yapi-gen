@@ -47,6 +47,7 @@ import {
 import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
 import PubSub from 'pubsub-js'
+import EditorInfoReview from '@/components/EditorInfoReview'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -894,10 +895,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                         <div className="common" style={{ paddingRight: 30 }}>
                           {item.createdTime}
                         </div>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: item.content }}
-                          className="content"
-                        />
+                        <EditorInfoReview info={item.content} />
+
                         <div
                           style={{
                             minWidth: '300px',

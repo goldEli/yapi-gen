@@ -19,6 +19,9 @@ import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
+import { useLocation } from 'react-router-dom'
+import { getProjectInfo } from '@/services/project'
+import { getSearchField } from '@/services/mine'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -120,6 +123,7 @@ interface Props {
   isShowLeft?: boolean
   otherParams: any
   dataLength: any
+  pid: any
 }
 
 const Operation = (props: Props) => {
@@ -144,6 +148,7 @@ const Operation = (props: Props) => {
   } = useModel('project')
   const { setFilterHeight, setCreateCategory, filterParams } =
     useModel('demand')
+  const location = useLocation()
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -214,27 +219,34 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
+    if (!props.pid) {
+      return
+    }
+    const res = await getSearchField(props.pid)
+
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const addList = filterAll?.filter((item: any) => item.content === key)
+      const addList = res.filterAllList?.filter(
+        (item: any) => item.content === key,
+      )
       setSearchList([...searchList, ...addList])
 
       return
     }
-    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+    const arr = res.filterAllList?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(projectInfo?.filterBasicsList)
-    setFilterSpecialList(projectInfo?.filterSpecialList)
-    setFilterCustomList(projectInfo?.filterCustomList)
+    setFilterBasicsList(res?.filterBasicsList)
+    setFilterSpecialList(res?.filterSpecialList)
+    setFilterCustomList(res?.filterCustomList)
   }
 
   useEffect(() => {
     getSearchKey()
-  }, [projectInfo, filterAll])
+  }, [projectInfo, filterAll, location.key, filterState])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
