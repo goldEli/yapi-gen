@@ -271,7 +271,7 @@ const EditComment = (props: any) => {
     >
       <div
         style={{
-          height: 'calc(90vh - 450px)',
+          height: 'calc(90vh - 40vh)',
           overflow: 'scroll',
           paddingRight: '24px',
         }}
