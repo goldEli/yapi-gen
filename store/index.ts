@@ -7,12 +7,14 @@ import {
 import counterReducer from './counterSlice'
 import waterReducer from './waterState'
 import modalReducer from './modalState'
+import user from './user'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     water: waterReducer,
     modal: modalReducer,
+    user,
   },
 })
 

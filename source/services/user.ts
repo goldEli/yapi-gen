@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { store } from '../../store'
 import { decrypt, encrypt } from '../tools/crypto'
 import * as http from '../tools/http'
 
@@ -46,7 +47,7 @@ export const login = async () => {
   }
   let data
   try {
-    data = await getLoginDetail(true)
+    data = await store.dispatch(getLoginDetail)
   } catch (error) {
     //
   }

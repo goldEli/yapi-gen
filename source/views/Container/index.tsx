@@ -15,7 +15,7 @@ import { changeLanguage, loadedAntdLocals } from '@/locals'
 import NoPermission from './components/NoPermission'
 import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
-import { useDispatch } from '../../../store'
+import { useDispatch, useSelector } from '../../../store'
 import { getStatus } from '../../../store/waterState'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 
@@ -39,8 +39,8 @@ export const Container = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo } =
-    useModel('user')
+  const loginInfo = useSelector(state => state.user.loginInfo)
+  const { userInfo, getUserDetail, login, setLoginInfo } = useModel('user')
   const {
     i18n: { language },
   } = useTranslation()
