@@ -147,7 +147,7 @@ const DemandMain = (props: Props) => {
   }, [])
 
   useEffect(() => {
-    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
+    getList(isGrid, searchItems, pageObj, order)
   }, [key, isGrid, order, pageObj])
 
   useEffect(() => {

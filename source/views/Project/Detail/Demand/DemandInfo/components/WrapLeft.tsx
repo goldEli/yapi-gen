@@ -177,25 +177,25 @@ const WrapLeftBox = () => {
           <InfoItem activeState>
             <Label>{t('common.attachment')}</Label>
             <div>
-              <UploadAttach
-                onBottom={onBottom}
-                defaultList={demandInfo?.attachment?.map((i: any) => ({
-                  url: i.attachment.path,
-                  id: i.id,
-                  size: i.attachment.size,
-                  time: i.created_at,
-                  name: i.attachment.name,
-                  suffix: i.attachment.ext,
-                  username: i.user_name ?? '--',
-                }))}
-                canUpdate
-                onC
-                del={onDeleteInfoAttach}
-                add={onAddInfoAttach}
-                addWrap={
-                  projectInfo?.projectPermissions?.filter(
-                    (i: any) => i.name === '附件上传',
-                  ).length > 0 ? (
+              {projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length > 0 && (
+                <UploadAttach
+                  onBottom={onBottom}
+                  defaultList={demandInfo?.attachment?.map((i: any) => ({
+                    url: i.attachment.path,
+                    id: i.id,
+                    size: i.attachment.size,
+                    time: i.created_at,
+                    name: i.attachment.name,
+                    suffix: i.attachment.ext,
+                    username: i.user_name ?? '--',
+                  }))}
+                  canUpdate
+                  onC
+                  del={onDeleteInfoAttach}
+                  add={onAddInfoAttach}
+                  addWrap={
                     <AddWrap
                       hasColor
                       style={{
@@ -211,11 +211,12 @@ const WrapLeftBox = () => {
                       />
                       <div>{t('p2.addAdjunct')}</div>
                     </AddWrap>
-                  ) : (
-                    (null as any)
-                  )
-                }
-              />
+                  }
+                />
+              )}
+              {projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length <= 0 && <span>--</span>}
             </div>
           </InfoItem>
           <DeleteConfirm

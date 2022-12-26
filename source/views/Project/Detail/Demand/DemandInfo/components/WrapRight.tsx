@@ -352,12 +352,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       getList()
     }
   }
+  // 删除附件
   const onTapRemove = async (attid: any, id: any) => {
     await delCommonAt({
       project_id: projectId,
       comment_id: attid,
       att_id: id,
     })
+    message.success(t('common.deleteSuccess'))
     getList()
   }
   const onChangeState = async (item: any) => {

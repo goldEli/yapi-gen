@@ -92,7 +92,7 @@ const DemandStatusBox = (props: any) => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <StatusWrap
                 onClick={() => {
-                  if (!demandInfo?.isExamine) {
+                  if (isCanEdit && !demandInfo?.isExamine) {
                     onChangeIdx(i.id, i)
                   }
                 }}
