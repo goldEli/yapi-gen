@@ -1,104 +1,27 @@
+//  评论的弹框
+
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable consistent-return */
 /* eslint-disable camelcase */
-//  评论的弹框
+
 /* eslint-disable no-cond-assign */
-import { uploadFileByTask } from '@/services/cos'
 import { getStaffList2 } from '@/services/staff'
-import { onPaste } from '@/tools'
 import { LabelTitle } from '@/views/Information/components/WhiteDay'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
-import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
-import styled from '@emotion/styled'
-import { Form, message, Popover, Upload } from 'antd'
-import { t } from 'i18next'
-import { useEffect, useRef, useState } from 'react'
+import { Form, message } from 'antd'
+import { createRef, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
 import Editor from './Editor'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
 
-const Wrap = styled.div<{ pl: string }>`
-  padding: 12px;
-  padding-top: 0px;
-  width: 100%;
-  min-height: 220px;
-  opacity: 1;
-  border: 1px solid #ecedef;
-  border-top: none;
-  border-radius: 0px 0px 8px 8px;
-  .big {
-    width: 200px;
-    height: 200px;
-    resize: vertical;
-    overflow: hidden;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    /* object-fit:contain; */
-  }
-  &:focus {
-    outline: none;
-    content: none;
-  }
-  &:empty:before {
-    content: '${({ pl }) => pl}';
-
-    color: #bbbdbf;
-  }
-`
-const Hov = styled(IconFont)`
-  & :focus {
-    color: #2877ff;
-  }
-`
-const GrepDiv = styled.div`
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  line-height: 25px;
-  display: inline-block;
-  border-radius: 6px 6px 6px 6px;
-  &:hover {
-    background: #f4f5f5;
-  }
-`
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
-  const [isOpen, setIsOpen] = useState(false)
-  const [plan, setPlan] = useState(false)
-  const [focusNode, setFocusNode] = useState<any>(null)
-  const [focusOffset, setFocusOffset] = useState<any>(null)
   const [arr, setArr] = useState<any>(null)
   const editable = useRef<HTMLInputElement>(null)
-  const [colorState, setColorState] = useState<any>(false)
-  // 复制事件
-  const handlePaste = async (event: any) => {
-    event.preventDefault()
-    const result: any = await onPaste(event)
-    // 阻止默认图片的复制
-
-    if (result.type === 'string') {
-      // 粘贴文本
-      document.execCommand('insertText', false, result.data)
-    } else {
-      const imgs = await uploadFileByTask(result.data, result.data.name, 'file')
-      // 替换图片src
-      const sel = window.getSelection()
-      if (sel && sel.rangeCount === 1 && sel.isCollapsed) {
-        const range2 = sel.getRangeAt(0)
-        const img = new Image()
-        img.src = imgs.url
-
-        range2.insertNode(img)
-        range2.collapse(false)
-        sel.removeAllRanges()
-        sel.addRange(range2)
-      }
-    }
-  }
+  const attachDom: any = createRef()
+  const [t] = useTranslation()
 
   const init = async () => {
     const companyList = await getStaffList2({ all: 1 })
@@ -119,22 +42,7 @@ const EditComment = (props: any) => {
         new Error('The two passwords that you entered do not match!'),
       )
     }
-
-    setColorState(false)
     return Promise.resolve()
-  }
-
-  const onUpload = async ({ file }: { file: any }) => {
-    const result: any = await uploadFileByTask(file, file.name, 'file')
-    const img = new Image()
-    img.src = result.url
-    const inner = document.getElementById('inner')
-    const newDiv = document.createElement('div')
-    newDiv.className = 'big'
-
-    newDiv.appendChild(img)
-
-    inner?.appendChild(newDiv)
   }
 
   const onChangeAttachment = (result: any) => {
@@ -163,30 +71,19 @@ const EditComment = (props: any) => {
     { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
     { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
   ]
-  const onBeforeUpload = (file: any) => {
-    const isLt2M = file.size / 1024 / 1024 < 2
 
-    if (!isLt2M) {
-      message.warning({
-        content: `${file.name} ${t('new_p1.a7')}`,
-        duration: 2,
-      })
-      return Upload.LIST_IGNORE
-    }
-    const isPNG = file.type.includes('image')
-    if (!isPNG) {
-      message.warning({
-        content: `${file.name} ${t('new_p1.a6')}`,
-        duration: 2,
-      })
-    }
-    return isPNG || Upload.LIST_IGNORE
-  }
   const confirm = async () => {
     await form.validateFields()
     const inner = document.getElementById('inner')
     if (!String(inner?.innerHTML).trim()) {
-      message.warning(t('new_p1.a9') as unknown as string)
+      message.warning(t('new_p1.a9'))
+      return
+    }
+
+    // 未上传成功的个数
+    const stateLength = attachDom.current?.getAttachState()
+    if (stateLength) {
+      message.warning(t('version2.haveNoSuccessAttach'))
       return
     }
 
@@ -195,63 +92,7 @@ const EditComment = (props: any) => {
       attachment: form.getFieldsValue().attachments,
     })
   }
-  const addAta = (value: any) => {
-    const selection: any = window.getSelection()
-    const range: any = window.getSelection()?.getRangeAt(0)
-    range.setStart(focusNode, focusOffset - 1)
-    range.setEnd(focusNode, focusOffset)
-    range.deleteContents()
 
-    const spanNode1 = document.createElement('span')
-    const spanNode2 = document.createElement('span')
-    spanNode1.style.color = '#2877FF'
-    spanNode1.innerHTML = `@${value.name}`
-
-    spanNode1.contentEditable = false as unknown as string
-
-    spanNode1.setAttribute('data-userId', value.id)
-    spanNode2.innerHTML = '&nbsp;'
-    let frag = document.createDocumentFragment(),
-      node,
-      lastNode
-    frag.appendChild(spanNode1)
-    while ((node = spanNode2.firstChild)) {
-      lastNode = frag.appendChild(node)
-      range.insertNode(frag)
-      selection.extend(lastNode, 1)
-      selection.collapseToEnd()
-    }
-  }
-
-  const onAddPerson = (value: any) => {
-    setIsOpen(false)
-    const inner = document.getElementById('inner')
-
-    if (plan) {
-      const spanNode1 = document.createElement('span')
-      const spanNode2 = document.createElement('span')
-      spanNode1.style.color = '#2877FF'
-      spanNode1.innerHTML = `@${value.name}`
-      spanNode1.contentEditable = false as unknown as string
-
-      spanNode1.setAttribute('data-userId', value.name)
-      spanNode2.innerHTML = '&nbsp;'
-      inner?.appendChild(spanNode1)
-      inner?.appendChild(spanNode2)
-    } else {
-      addAta(value)
-    }
-    setPlan(false)
-  }
-
-  function changeTalkContent(e: any) {
-    if (e.nativeEvent.data === '@') {
-      setIsOpen(true)
-      const selection: any = window.getSelection()
-      setFocusNode(selection.focusNode)
-      setFocusOffset(selection.focusOffset)
-    }
-  }
   useEffect(() => {
     setTimeout(() => {
       editable.current?.focus()
@@ -276,96 +117,6 @@ const EditComment = (props: any) => {
           paddingRight: '24px',
         }}
       >
-        {/* <div
-          style={{
-            marginBottom: '24px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              border: '1px solid #ecedef',
-              borderBottom: 'none',
-              padding: '12px',
-              marginTop: '8px',
-              borderRadius: '8px 8px 0px 0px',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <Upload
-                style={{
-                  display: 'inline-block',
-                }}
-                beforeUpload={onBeforeUpload}
-                fileList={[]}
-                customRequest={onUpload}
-              >
-                <GrepDiv>
-                  <Hov
-                    style={{
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      color: '#969799',
-                    }}
-                    type="image"
-                  />
-                </GrepDiv>
-              </Upload>
-
-              <Popover
-                style={{
-                  display: 'inline',
-                }}
-                key={isOpen.toString()}
-                visible={isOpen}
-                placement="bottomLeft"
-                trigger="click"
-                onVisibleChange={visible => setIsOpen(visible)}
-                getTooltipContainer={node => node}
-                content={
-                  isOpen && (
-                    <ChoosePerson
-                      onChangeValue={obj => onAddPerson(obj)}
-                      options={arr}
-                      visible={isOpen}
-                    />
-                  )
-                }
-                getPopupContainer={node => node}
-              >
-                <GrepDiv>
-                  <Hov
-                    onClick={() => {
-                      setPlan(true)
-                    }}
-                    style={{
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      color: isOpen ? '#2877ff' : '#969799',
-                    }}
-                    type="mention"
-                  />
-                </GrepDiv>
-              </Popover>
-            </div>
-          </div>
-          <Wrap
-            id="inner"
-            onPaste={handlePaste}
-            onInput={changeTalkContent}
-            contentEditable
-            ref={editable}
-            pl={t('new_p1.a5')}
-          />
-        </div> */}
         <Form
           form={form}
           onFinish={confirm}
@@ -418,6 +169,7 @@ const EditComment = (props: any) => {
             name="attachments"
           >
             <UploadAttach
+              onRef={attachDom}
               key={1}
               power
               canUpdate={false}

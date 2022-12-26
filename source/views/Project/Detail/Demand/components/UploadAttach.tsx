@@ -7,7 +7,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useModel } from '@/models'
 import { message, Progress, Upload } from 'antd'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -164,7 +170,6 @@ const UploadAttach = (props: any) => {
   const [t] = useTranslation()
   const { uploadFile, cos } = useModel('cos')
 
-  // console.log(23423423, cos.getTaskList())
   const [searchParams] = useSearchParams()
   let projectId: any
   let demandId: any
@@ -414,6 +419,17 @@ const UploadAttach = (props: any) => {
   useEffect(() => {
     checkList()
   }, [fileList])
+
+  // 获取当前上传附件的非完成状态
+  const onGetAttachState = () => {
+    return fileList?.filter((i: any) => i.state !== 'success')?.length
+  }
+
+  useImperativeHandle(props.onRef, () => {
+    return {
+      getAttachState: onGetAttachState,
+    }
+  })
 
   return (
     <div>

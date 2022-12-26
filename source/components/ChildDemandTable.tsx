@@ -250,7 +250,14 @@ const ChildDemandTable = (props: {
     },
     {
       title: (
-        <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
+        <NewSort
+          fixedKey="schedule"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('newlyAdd.demandProgress')}
+        </NewSort>
       ),
       dataIndex: 'schedule',
       key: 'schedule',
@@ -299,7 +306,7 @@ const ChildDemandTable = (props: {
                 pagination={false}
                 columns={columnsChild}
                 dataSource={dataList?.list}
-                scroll={{ x: 'max-content' }}
+                scroll={{ x: 'max-content', y: 259 }}
                 tableLayout="auto"
                 style={{ borderRadius: 4, overflow: 'hidden' }}
               />

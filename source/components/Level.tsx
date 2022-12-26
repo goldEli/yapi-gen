@@ -47,6 +47,7 @@ export const LevelContent = (props: LevelProps) => {
     })
     setShowData(res.data)
   }
+
   useEffect(() => {
     init()
   }, [record])

@@ -1,6 +1,5 @@
-/* eslint-disable no-duplicate-imports */
 // 公用富文本
-
+/* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
 import { useState, useEffect, forwardRef } from 'react'
@@ -19,16 +18,10 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'
-import type { SlateElement } from '@wangeditor/editor'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
-import { Popover, Tooltip } from 'antd'
+import { Popover } from 'antd'
 import IconFont from './IconFont'
 import { getStaffList2 } from '@/services/staff'
-
-type VideoElement = SlateElement & {
-  src: string
-  poster?: string
-}
 
 interface Props {
   value?: string

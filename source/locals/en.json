@@ -95,7 +95,8 @@
     "noDataFilter": "No data at present. Please readjust the filtering parameters to try",
     "startTimeComputedEndTime": "The estimated start time cannot be greater than the estimated end time!",
     "endTimeComputedStartTime": "Expected end time cannot be less than expected start time!",
-    "changeProjectSuccess": "Project switching succeeded!"
+    "changeProjectSuccess": "Project switching succeeded!",
+    "haveNoSuccessAttach": "There are also attachments that have not been uploaded successfully!"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",
