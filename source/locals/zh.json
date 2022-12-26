@@ -96,7 +96,8 @@
     "startTimeComputedEndTime": "预计开始时间不能大于预计结束时间！",
     "endTimeComputedStartTime": "预计结束时间不能小于预计开始时间！",
     "changeProjectSuccess": "项目切换成功！",
-    "haveNoSuccessAttach": "还有未上传成功的附件！"
+    "haveNoSuccessAttach": "还有未上传成功的附件！",
+    "reviewModeChangeSuccess": "浏览模式切换成功！"
   },
   "p2": {
     "del": "确认删除该附件",

@@ -1,7 +1,7 @@
 // 需求主页右侧操作组件
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Space, Menu } from 'antd'
+import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
@@ -42,6 +42,7 @@ const OperationGroup = (props: Props) => {
   const onClickMenu = (number: any) => {
     props.onChangeGrid?.(number)
     setIsVisible(false)
+    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   // 切换显示类型

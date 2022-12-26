@@ -486,6 +486,7 @@ const CommonNeed = (props: any) => {
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
     setIsVisibleFormat(false)
+    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   const menuType = (
