@@ -1,5 +1,5 @@
 // 需求主页-左侧需求分类
-
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-duplicate-imports */
@@ -396,7 +396,7 @@ const WrapLeft = (props: any, ref: any) => {
     const end = info.node.title.props
     const isDropToGap = info.dropToGap
 
-    if (start.pid === 0) {
+    if (start.pid === 0 || end.id === -1) {
       return
     }
     if (end.grade === 4 && !isDropToGap) {
@@ -431,7 +431,7 @@ const WrapLeft = (props: any, ref: any) => {
         })
       }
     } else {
-      if (end.pid === 0) {
+      if (end.pid === 0 || end.id === -1) {
         return
       }
       await moveTreeList({
