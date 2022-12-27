@@ -12,7 +12,7 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Divider, Popover, Space, Tooltip } from 'antd'
+import { Popover, Space, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
@@ -20,7 +20,6 @@ import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
 import { useLocation } from 'react-router-dom'
-import { getProjectInfo } from '@/services/project'
 import { getSearchField } from '@/services/mine'
 
 const OperationWrap = styled.div({
@@ -245,7 +244,9 @@ const Operation = (props: Props) => {
   }
 
   useEffect(() => {
-    getSearchKey()
+    if (!filterState) {
+      getSearchKey()
+    }
   }, [projectInfo, filterAll, location.key, filterState])
 
   const onChangeFilter = () => {
@@ -443,7 +444,7 @@ const Operation = (props: Props) => {
           />
         </div>
       </OperationWrap>
-      {filterState ? null : (
+      {!filterState && (
         <TableFilter
           noNeed
           onFilter={getSearchKey}

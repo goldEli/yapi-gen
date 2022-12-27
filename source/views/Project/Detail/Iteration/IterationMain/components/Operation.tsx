@@ -21,6 +21,7 @@ import IterationStatus from '../../components/IterationStatus'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
+import { getSearchField } from '@/services/mine'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -133,29 +134,37 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
+    if (!projectId) {
+      return
+    }
+    const res = await getSearchField(projectId)
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const addList = filterAll?.filter((item: any) => item.content === key)
+      const addList = res.filterAllList?.filter(
+        (item: any) => item.content === key,
+      )
 
       setSearchList([...searchList, ...addList])
 
       return
     }
 
-    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+    const arr = res.filterAllList?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(projectInfo?.filterBasicsList)
-    setFilterSpecialList(projectInfo?.filterSpecialList)
-    setFilterCustomList(projectInfo?.filterCustomList)
+    setFilterBasicsList(res?.filterBasicsList)
+    setFilterSpecialList(res?.filterSpecialList)
+    setFilterCustomList(res?.filterCustomList)
   }
 
   useEffect(() => {
-    getSearchKey()
-  }, [projectInfo, filterAll])
+    if (!filterState) {
+      getSearchKey()
+    }
+  }, [projectInfo, filterAll, filterState])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)

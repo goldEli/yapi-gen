@@ -61,14 +61,12 @@ const TextWrap = styled.div({
 
 const WrapLeftBox = () => {
   const [t] = useTranslation()
-  const { demandInfo, getDemandInfo, updateTableParams } = useModel('demand')
+  const { demandInfo, getDemandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { projectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
-  const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -82,7 +80,6 @@ const WrapLeftBox = () => {
         name: i.tag?.content,
       })),
     )
-    setSchedule(demandInfo?.schedule)
   }, [demandInfo])
 
   const onBottom = () => {

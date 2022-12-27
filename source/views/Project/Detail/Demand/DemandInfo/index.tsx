@@ -27,10 +27,6 @@ const DemandInfo = () => {
   const { isRefresh, setIsRefresh } = useModel('user')
 
   useEffect(() => {
-    getDemandInfo({ projectId, id: demandId })
-  }, [])
-
-  useEffect(() => {
     if (isRefresh) {
       getDemandInfo({ projectId, id: demandId })
       setIsRefresh(false)
@@ -44,8 +40,6 @@ const DemandInfo = () => {
   return (
     <Wrap>
       <WrapLeft />
-
-      {/* <DividerWrap type="vertical" /> */}
       <WrapRight onUpdate={onUpdate} />
     </Wrap>
   )

@@ -456,8 +456,10 @@ const WrapLeft = (props: any, ref: any) => {
   }
 
   useEffect(() => {
-    init()
-  }, [])
+    if (props.isShowLeft) {
+      init()
+    }
+  }, [props.isShowLeft])
 
   useImperativeHandle(ref, () => {
     return {

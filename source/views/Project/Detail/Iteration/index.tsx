@@ -28,6 +28,7 @@ import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import PubSub from 'pubsub-js'
 import useSetTitle from '@/hooks/useSetTitle'
+import { getSearchField } from '@/services/mine'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -241,35 +242,28 @@ const IterationWrap = () => {
   }
 
   const getSearchKey = async (key?: any, typeVal?: number) => {
+    if (!projectId) {
+      return
+    }
+    const res = await getSearchField(projectId)
+
     if (key && typeVal === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && typeVal === 1) {
-      const addList = filterAll?.filter((item: any) => item.content === key)
+      const addList = res.filterAllList?.filter(
+        (item: any) => item.content === key,
+      )
 
       setSearchList([...searchList, ...addList])
 
       return
     }
 
-    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+    const arr = res.filterAllList?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(projectInfo?.filterBasicsList)
-    setFilterSpecialList(projectInfo?.filterSpecialList)
-    setFilterCustomList(projectInfo?.filterCustomList)
-    setPlainOptions(projectInfo.plainOptions)
-    setPlainOptions2(projectInfo.plainOptions2)
-    setPlainOptions3(projectInfo.plainOptions3)
-    setTitleList(projectInfo.titleList)
-    setTitleList2(projectInfo.titleList2)
-    setTitleList3(projectInfo.titleList3)
-    setAllTitleList([
-      ...projectInfo.titleList,
-      ...projectInfo.titleList2,
-      ...projectInfo.titleList3,
-    ])
   }
 
   useEffect(() => {
@@ -280,10 +274,26 @@ const IterationWrap = () => {
   }, [])
 
   useEffect(() => {
-    if (projectInfo?.id && filterAll) {
+    if (!filterState) {
       getSearchKey()
     }
-  }, [projectInfo, filterAll])
+    if (projectInfo?.id) {
+      setFilterBasicsList(projectInfo?.filterBasicsList)
+      setFilterSpecialList(projectInfo?.filterSpecialList)
+      setFilterCustomList(projectInfo?.filterCustomList)
+      setPlainOptions(projectInfo.plainOptions)
+      setPlainOptions2(projectInfo.plainOptions2)
+      setPlainOptions3(projectInfo.plainOptions3)
+      setTitleList(projectInfo.titleList)
+      setTitleList2(projectInfo.titleList2)
+      setTitleList3(projectInfo.titleList3)
+      setAllTitleList([
+        ...projectInfo.titleList,
+        ...projectInfo.titleList2,
+        ...projectInfo.titleList3,
+      ])
+    }
+  }, [projectInfo, filterAll, filterState])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(

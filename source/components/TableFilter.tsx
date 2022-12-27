@@ -7,18 +7,10 @@
 /* eslint-disable complexity */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import {
-  Form,
-  Select,
-  Button,
-  Popover,
-  Collapse,
-  Input,
-  TreeSelect,
-} from 'antd'
+import { Form, Select, Popover, Collapse, Input, TreeSelect } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
@@ -225,6 +217,7 @@ export const NumericInput = (props: any) => {
     </>
   )
 }
+
 export const NumericInput2 = (props: any) => {
   const [t] = useTranslation()
   const { value, onChange, onPress } = props

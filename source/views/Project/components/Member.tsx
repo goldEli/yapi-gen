@@ -236,6 +236,7 @@ const Member = (props: Props) => {
     const res = await getProjectPermission({ projectId: props.projectId })
     setRoleOptions(res.list)
   }
+
   const getList = async () => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -247,6 +248,7 @@ const Member = (props: Props) => {
     setIsRefreshMember(false)
     getPermission()
   }
+
   const init = async () => {
     const res2 = await getAddDepartMember(props.projectId)
 
@@ -298,12 +300,6 @@ const Member = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.visible) {
-      getList()
-    }
-  }, [props.visible])
-
-  useEffect(() => {
     if (isRefreshMember) {
       getList()
     }
@@ -313,12 +309,15 @@ const Member = (props: Props) => {
     setSearch(e.target.value)
   }
   useEffect(() => {
-    getList()
-  }, [search])
+    if (props.visible) {
+      getList()
+    }
+  }, [search, props.visible])
 
   const onClickCancel = () => {
     setIsVisible(false)
   }
+
   const handleOk = async () => {
     const values = form.getFieldsValue()
 
@@ -431,11 +430,6 @@ const Member = (props: Props) => {
                 type="close"
               />
             </CloseWrap>
-            {/* <IconFont
-              onClick={props.onChangeVisible}
-              style={{ cursor: 'pointer' }}
-              type="close"
-            /> */}
           </HeaderWrap>
         }
         headerStyle={{ width: '100%' }}
@@ -443,7 +437,6 @@ const Member = (props: Props) => {
         placement="right"
         open={props.visible}
         onClose={props.onChangeVisible}
-        // visible={props.visible}
         bodyStyle={{ padding: 0 }}
         width={400}
       >

@@ -53,14 +53,12 @@ const DemandStatusBox = (props: any) => {
     }
   }
   const init = async () => {
-    getDemandInfo({ projectId: props.pid, id: props.sid })
     const res2 = await getShapeLeft({
       id: props.pid,
       nId: props.sid,
     })
     setLeftList(res2)
     setIsUpdateStatus(false)
-
     setRows(res2.find((i: any) => i.id === active))
   }
 
