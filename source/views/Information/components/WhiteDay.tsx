@@ -1,3 +1,5 @@
+// 写日志
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -141,6 +143,7 @@ const WhiteDay = (props: any) => {
       setDefaultValue()
     }
   }, [props.editId, props.visibleEdit])
+
   const scrollToBottom = () => {
     setTimeout(() => {
       leftDom.current.scrollTo({

@@ -1,3 +1,5 @@
+// 我发送的日志列表
+
 /* eslint-disable react/no-danger */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
@@ -324,6 +326,7 @@ const Send = () => {
     setListData(res.list)
     setTotal(res.total)
   }
+
   const init2 = async () => {
     setIsSpinning(true)
     const obj = {
@@ -343,6 +346,7 @@ const Send = () => {
     setListData(res.list)
     setTotal(res.total)
   }
+
   const changePage = (e: any, id: any) => {
     const index = changeIds.findIndex((k: any) => k === id)
     const start = changeIds.at(0)
@@ -368,9 +372,11 @@ const Send = () => {
   useEffect(() => {
     init()
   }, [orderKey, order, page, pagesize, keyword, created_at])
+
   useEffect(() => {
     init2()
   }, [urlId, context.id])
+
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
   return (

@@ -205,9 +205,7 @@ const Profile = () => {
 
   const init = async () => {
     const res = await getMineChartsList()
-
     setData(res)
-    getFeedList()
   }
 
   useEffect(() => {

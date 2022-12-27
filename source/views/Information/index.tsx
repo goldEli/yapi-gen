@@ -1,4 +1,5 @@
-// 日志左侧面板界面
+// 日志主页面
+
 /* eslint-disable camelcase */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */

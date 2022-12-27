@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-no-leaked-render */
 // 项目主页
-
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-params */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from '@emotion/styled'
@@ -102,7 +101,6 @@ const Project = () => {
   }
 
   const init = async () => {
-    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
     await getProjectCoverList()
     setLoadingState(true)
   }

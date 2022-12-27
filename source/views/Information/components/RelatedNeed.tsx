@@ -1,3 +1,5 @@
+// 写日志中的关联需求
+
 /* eslint-disable react/jsx-no-leaked-render */
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
@@ -86,9 +88,11 @@ const RelatedNeed = (props: any) => {
     const res = await getDemandList(value)
     setDemandList(res.data)
   }
+
   useEffect(() => {
     init()
   }, [])
+
   useEffect(() => {
     setChooseList(props.initValue)
     props.onChange(props.initValue.map((item: any) => item.value))

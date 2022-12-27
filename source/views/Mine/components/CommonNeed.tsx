@@ -195,6 +195,7 @@ const CommonNeed = (props: any) => {
     finishAt: [],
   })
   const onSearch = (e: any, customField: any) => {
+    setPage(1)
     setSearchGroups({
       statusId: e.status,
       priorityId: e.priority,
@@ -218,6 +219,7 @@ const CommonNeed = (props: any) => {
   const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
     setOrder(orderVal)
+    setPage(1)
   }
   const init = async (updateState?: boolean, pageNumber?: any) => {
     if (!updateState) {
@@ -376,17 +378,13 @@ const CommonNeed = (props: any) => {
     setPagesize(size)
   }
   const onPressEnter = (value: any) => {
+    setPage(1)
     setKeyword(value)
   }
 
   useEffect(() => {
-    init()
-  }, [page, pagesize])
-
-  useEffect(() => {
-    setPage(1)
     init(false, 1)
-  }, [keyword, orderKey, order, props.id, searchGroups, isMany])
+  }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
 
   useEffect(() => {
     getSearchKey()
@@ -456,6 +454,7 @@ const CommonNeed = (props: any) => {
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
     setIsVisibleFormat(false)
+    setPage(1)
     message.success(t('version2.reviewModeChangeSuccess'))
   }
 

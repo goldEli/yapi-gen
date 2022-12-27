@@ -360,7 +360,7 @@ const Detail = () => {
       {isShowPage && (
         <>
           <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
-          <Outlet key={isChangeProject} />
+          {/* <Outlet key={isChangeProject} /> */}
         </>
       )}
     </Wrap>

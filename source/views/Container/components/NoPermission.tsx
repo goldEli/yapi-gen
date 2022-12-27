@@ -155,6 +155,7 @@ const NoPermission = () => {
     init()
   }, [userInfo])
 
+  // 无权限页面切换公司
   const onChangeCompany = async (item: any) => {
     setActiveId(item.id)
     if (item.id === userInfo.company_id) {
@@ -170,6 +171,7 @@ const NoPermission = () => {
     }
   }
 
+  // 退出登录
   const toLoginOut = async () => {
     try {
       localStorage.removeItem('saveRouter')
