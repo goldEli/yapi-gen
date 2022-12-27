@@ -33,7 +33,7 @@ const SvgTextBg = (props: any) => {
         backgroundImage: `url(${url})`,
         top: 0,
         left: 0,
-        zIndex: 9999,
+        zIndex: 999999,
         pointerEvents: 'none',
       }}
     />
