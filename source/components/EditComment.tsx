@@ -100,14 +100,16 @@ const EditComment = (props: any) => {
     init()
     form.resetFields()
   }, [props.visibleEdit])
-
+  const onsubmit = () => {
+    form.submit()
+  }
   return (
     <CommonModal
       width={784}
       title={t('new_p1.a4')}
       isVisible={props.visibleEdit}
       onClose={onClose}
-      onConfirm={confirm}
+      onConfirm={onsubmit}
       confirmText={t('newlyAdd.submit')}
     >
       <div
@@ -131,7 +133,7 @@ const EditComment = (props: any) => {
                 block: 'center',
                 behavior: 'smooth',
               })
-            }, 100)
+            }, 200)
           }}
         >
           <Form.Item
@@ -162,7 +164,7 @@ const EditComment = (props: any) => {
               },
             ]}
           >
-            <Editor at height={178} autoFocus />
+            <Editor at height={178} autoFocus placeholder={t('new_p1.kongN')} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}
