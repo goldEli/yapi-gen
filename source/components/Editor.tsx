@@ -2,7 +2,7 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect, forwardRef, useRef } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
-import { Popover } from 'antd'
+import { Popover, Tooltip } from 'antd'
 import IconFont from './IconFont'
 import { getStaffList2 } from '@/services/staff'
 
@@ -119,10 +119,7 @@ const EditorBox = (props: Props) => {
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
   const [isOpen, setIsOpen] = useState(false)
-  const [plan, setPlan] = useState(false)
   const [arr, setArr] = useState<any>(null)
-  const [focusNode, setFocusNode] = useState<any>(null)
-  const [focusOffset, setFocusOffset] = useState<any>(null)
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: props.placeholder ?? t('components.pleaseContent'),
     MENU_CONF: {
@@ -273,10 +270,12 @@ const EditorBox = (props: Props) => {
         defaultConfig={editConfig}
         mode="default"
       />
+
       {props.at ? (
         <div
           style={{
             paddingLeft: '10px',
+            backgroundColor: '#ffffff',
           }}
         >
           <Popover
@@ -301,17 +300,25 @@ const EditorBox = (props: Props) => {
             getPopupContainer={node => node}
           >
             <GrepDiv>
-              <Hov
-                onClick={() => {
-                  setPlan(true)
+              <Tooltip
+                autoAdjustOverflow={false}
+                overlayStyle={{
+                  height: '27px',
+                  fontSize: '12px',
                 }}
-                style={{
-                  cursor: 'pointer',
-                  fontSize: '18px',
-                  color: isOpen ? '#2877ff' : '#595959',
-                }}
-                type="mention"
-              />
+                placement="bottom"
+                getPopupContainer={node => node}
+                title={t('new_p1.kongK')}
+              >
+                <Hov
+                  style={{
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    color: isOpen ? '#2877ff' : '#595959',
+                  }}
+                  type="mention"
+                />
+              </Tooltip>
             </GrepDiv>
           </Popover>
         </div>
