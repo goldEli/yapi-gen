@@ -350,7 +350,6 @@ const EditorBox = (props: Props) => {
           >
             <GrepDiv>
               <Tooltip
-                autoAdjustOverflow={false}
                 overlayStyle={{
                   height: '27px',
                   fontSize: '12px',
