@@ -287,7 +287,9 @@ const EditorBox = (props: Props) => {
     onChange2(value.name)
   }
   useEffect(() => {
-    init()
+    if (props.at) {
+      init()
+    }
     if (editor) {
       const newEditor: NewIDomEditor = editor
       newEditor.changeEditor = changeEditor
