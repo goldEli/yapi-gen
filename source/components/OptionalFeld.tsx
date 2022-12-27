@@ -137,7 +137,7 @@ export const ShowText = (props: any) => {
 
   useEffect(() => {
     checkWidth()
-  }, [])
+  })
 
   return (
     <Tooltip placement="top" title={show ? props.names : ''}>
