@@ -222,7 +222,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor height={178} autoFocus />
+            <Editor at height={178} autoFocus />
           </Form.Item>
           <Form.Item
             style={{

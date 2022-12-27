@@ -34,7 +34,48 @@ interface Props {
   at?: boolean
 }
 
-const toolbarConfig: Partial<IToolbarConfig> = {}
+const toolbarConfig: Partial<IToolbarConfig> = {
+  toolbarKeys: [
+    'bold',
+    'underline',
+    'italic',
+    'through',
+    'color',
+    'bgColor',
+    'fontSize',
+    'fontFamily',
+    'indent',
+    'delIndent',
+    'justifyLeft',
+    'justifyRight',
+    'justifyCenter',
+    'justifyJustify',
+    'lineHeight',
+    'viewImageLink',
+    'divider',
+    'emotion',
+    'insertLink',
+    'editLink',
+    'unLink',
+    'viewLink',
+    'codeBlock',
+    'blockquote',
+    'headerSelect',
+    'todo',
+    'redo',
+    'undo',
+    'enter',
+    'bulletedList',
+    'numberedList',
+    'insertTable',
+    'uploadVideo',
+    'editVideoSize',
+    'uploadImage',
+    'customFullScreen',
+    // 'cancelCustomFullScreen',
+  ],
+  excludeKeys: [],
+}
 
 Boot.registerParseElemHtml({
   selector: 'v-start',
@@ -105,6 +146,7 @@ const Hov = styled(IconFont)`
     color: #2877ff;
   }
 `
+
 const EditorBox = (props: Props) => {
   const [t, i18n] = useTranslation()
   const [key, setKey] = useState(1)
@@ -118,6 +160,7 @@ const EditorBox = (props: Props) => {
   const { userInfo } = useModel('user')
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
+
   const [isOpen, setIsOpen] = useState(false)
   const [arr, setArr] = useState<any>(null)
   const editorConfig: Partial<IEditorConfig> = {
@@ -261,6 +304,12 @@ const EditorBox = (props: Props) => {
       setEditor(null)
     }
   }, [editor])
+
+  // toolbarConfig.excludeKeys = [
+  //   'headerSelect',
+  //   'italic',
+  //   'group-more-style',
+  // ]
 
   return (
     <Wrap red={props.color} id="editorWrap" minHeight={props?.height}>

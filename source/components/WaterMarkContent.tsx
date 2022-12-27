@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-loss-of-precision */
 // 水印
 
 import { useMemo } from 'react'
@@ -32,7 +33,7 @@ const SvgTextBg = (props: any) => {
         backgroundImage: `url(${url})`,
         top: 0,
         left: 0,
-        zIndex: 999,
+        zIndex: 9999,
         pointerEvents: 'none',
       }}
     />
