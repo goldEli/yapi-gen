@@ -112,7 +112,7 @@ interface TagProps {
 
 const TagBox = (props: TagProps) => {
   const [t] = useTranslation()
-  const { tagList } = useModel('project')
+  const { projectInfo } = useModel('project')
   const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
@@ -128,14 +128,17 @@ const TagBox = (props: TagProps) => {
 
   useEffect(() => {
     setArr(
-      tagList?.filter(
-        (i: any) =>
-          !props.checkedTags?.find(
-            (k: any) => k.content === i.content && i.color === k.color,
-          ),
-      ),
+      projectInfo?.filterFelid
+        ?.filter((i: any) => i.content === 'tag')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+        ?.filter(
+          (i: any) =>
+            !props.checkedTags?.find(
+              (k: any) => k.content === i.content && i.color === k.color,
+            ),
+        ),
     )
-  }, [tagList, props.checkedTags])
+  }, [projectInfo, props.checkedTags])
 
   const onCreateTag = () => {
     props.tap?.(value)
@@ -156,7 +159,12 @@ const TagBox = (props: TagProps) => {
 
   const onPressEnter = (val: any) => {
     setValue(val)
-    setArr(tagList.filter((i: any) => i?.content?.includes(val)))
+    setArr(
+      projectInfo?.filterFelid
+        ?.filter((i: any) => i.content === 'tag')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+        .filter((i: any) => i?.content?.includes(val)),
+    )
   }
 
   const onHasTagAdd = async (item: any) => {
