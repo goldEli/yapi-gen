@@ -131,10 +131,9 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
+  const { getProjectInfo, projectInfo } = useModel('project')
   const { getIterateSelectList } = useModel('iterate')
   const {
-    getField,
-    getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
     getMineNoFinishList,
@@ -331,8 +330,30 @@ const CommonNeed = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
+  const getSearchKey = async (key?: any, type?: number) => {
+    const filterFelid = projectInfo?.filterFelid
+    if (key && type === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && type === 1) {
+      const addList = filterFelid.filter((item: any) => item.content === key)
+
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
+    setIsRefresh(false)
+  }
+
   const getShowkey = async () => {
-    const res2 = await getField(props.id)
+    const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
     setPlainOptions3(res2.plainOptions3)
@@ -340,32 +361,6 @@ const CommonNeed = (props: any) => {
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
     setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
-    setIsRefresh(false)
-  }
-
-  const getSearchKey = async (key?: any, type?: number) => {
-    if (key && type === 0) {
-      setSearchList(searchList.filter((item: any) => item.content !== key))
-      return
-    }
-    if (key && type === 1) {
-      const res = await getSearchField(props.id)
-      const addList = res.filterAllList.filter(
-        (item: any) => item.content === key,
-      )
-
-      setSearchList([...searchList, ...addList])
-
-      return
-    }
-
-    const res = await getSearchField(props.id)
-    const arr = res?.filterAllList?.filter((item: any) => item.isDefault === 1)
-
-    setSearchList(arr)
-    setFilterBasicsList(res?.filterBasicsList)
-    setFilterSpecialList(res?.filterSpecialList)
-    setFilterCustomList(res?.filterCustomList)
     setIsRefresh(false)
   }
 
@@ -389,12 +384,11 @@ const CommonNeed = (props: any) => {
     getShowkey()
   }, [props.id])
 
-  // 监听筛选是否打开，获取相应配置
   useEffect(() => {
-    if (isShowSearch) {
+    if (projectInfo?.id) {
       getSearchKey()
     }
-  }, [isShowSearch])
+  }, [projectInfo])
 
   // 监听语言变化及是否需要更新创建
   useEffect(() => {

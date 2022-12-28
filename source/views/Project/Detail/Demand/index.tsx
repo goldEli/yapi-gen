@@ -149,14 +149,8 @@ const DemandBox = () => {
   const { type } = paramsData
   const { demandId } = paramsData
   const { setIsRefresh } = useModel('user')
-  const {
-    projectInfo,
-    getCategoryList,
-    categoryList,
-    colorList,
-    getWorkflowList,
-    workList,
-  } = useModel('project')
+  const { projectInfo, colorList, getWorkflowList, workList } =
+    useModel('project')
   const {
     getDemandInfo,
     demandInfo,
@@ -187,7 +181,6 @@ const DemandBox = () => {
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
-      await getCategoryList({ projectId })
     }
     setLoadingState(true)
   }
@@ -201,15 +194,17 @@ const DemandBox = () => {
   }, [])
 
   useEffect(() => {
-    setColorObj(
-      categoryList?.list?.filter((k: any) => k.id === demandInfo?.category)[0],
-    )
+    // 获取项目信息中的需求类别
+    const list = projectInfo?.filterFelid?.filter(
+      (i: any) => i.content === 'category',
+    )[0]?.children
+    setColorObj(list?.filter((k: any) => k.id === demandInfo?.category)[0])
     setResultCategory(
-      categoryList?.list
+      list
         ?.filter((i: any) => i.id !== demandInfo?.category)
-        ?.filter((i: any) => i.isCheck === 1),
+        ?.filter((i: any) => i.status === 1),
     )
-  }, [demandInfo, categoryList])
+  }, [demandInfo, projectInfo])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -341,7 +336,7 @@ const DemandBox = () => {
               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
             }
           >
-            <span className="title">{k.name}</span>
+            <span className="title">{k.content}</span>
           </CanOperationCategory>
         </LiWrap>
       ))}
@@ -450,7 +445,7 @@ const DemandBox = () => {
                     ?.bgColor
                 }
               >
-                <span className="title">{colorObj?.name}</span>
+                <span className="title">{colorObj?.content}</span>
                 {resultCategory?.length > 0 && (
                   <IconFont
                     type="down-icon"

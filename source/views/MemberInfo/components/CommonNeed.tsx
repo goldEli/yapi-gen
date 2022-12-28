@@ -149,8 +149,8 @@ const CommonNeed = (props: any) => {
   const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
   const { getIterateSelectList } = useModel('iterate')
-  const { getField, getSearchField, updateDemandStatus, updatePriorityStatus } =
-    useModel('mine')
+  const { getProjectInfo, projectInfo } = useModel('project')
+  const { updateDemandStatus, updatePriorityStatus } = useModel('mine')
   const {
     getUserInfoAbeyanceStory,
     getUserInfoCreateStory,
@@ -362,7 +362,7 @@ const CommonNeed = (props: any) => {
   }, [titleList, columns])
 
   const getShowkey = async () => {
-    const res2 = await getField(props.id)
+    const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
     setPlainOptions3(res2.plainOptions3)
@@ -374,28 +374,25 @@ const CommonNeed = (props: any) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
+    const filterFelid = projectInfo?.filterFelid
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const res = await getSearchField(props.id)
-      const addList = res.filterAllList.filter(
-        (item: any) => item.content === key,
-      )
+      const addList = filterFelid.filter((item: any) => item.content === key)
 
       setSearchList([...searchList, ...addList])
 
       return
     }
 
-    const res = await getSearchField(props.id)
-    const arr = res?.filterAllList?.filter((item: any) => item.isDefault === 1)
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(res?.filterBasicsList)
-    setFilterSpecialList(res?.filterSpecialList)
-    setFilterCustomList(res?.filterCustomList)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
     setIsRefresh(false)
   }
 
@@ -421,10 +418,10 @@ const CommonNeed = (props: any) => {
 
   // 监听筛选是否打开，获取相应配置
   useEffect(() => {
-    if (isShowSearch) {
+    if (projectInfo?.id) {
       getSearchKey()
     }
-  }, [isShowSearch])
+  }, [projectInfo])
 
   // 监听语言变化及是否需要更新创建
   useEffect(() => {

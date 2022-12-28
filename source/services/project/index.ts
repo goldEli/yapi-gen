@@ -3,7 +3,9 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { getNestedChildren } from '@/tools'
 import * as http from '@/tools/http'
+import { getStaffList2 } from './../staff'
 
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
@@ -81,6 +83,32 @@ export const getProjectInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params.projectId,
   })
+  let filterCompanyList: any = []
+  let filterMemberList: any = []
+  // 查所有项目时，不调用人员接口
+  if (params.projectId) {
+    // 公司
+    const companyList = await getStaffList2({ all: 1 })
+    filterCompanyList = companyList.map((item: any) => ({
+      id: item.id,
+      content: item.name,
+      content_txt: item.name,
+    }))
+
+    const memberList = await http.get('getProjectMember', {
+      search: {
+        project_id: params.projectId,
+        all: 1,
+      },
+    })
+    filterMemberList = memberList.data.map((item: any) => {
+      return {
+        id: item.id,
+        content: item.name,
+        content_txt: item.name,
+      }
+    })
+  }
 
   const plainOptions = response.data.storyConfig.display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '基本字段')
@@ -152,17 +180,76 @@ export const getProjectInfo: any = async (params: any) => {
       titleList3.push(item.value)
     })
 
-  const filterBasicsList = response.data.storyConfig.filter_fidlds.filter(
-    (item: any) => item.group_name === '基本字段',
-  )
+  let filterBasicsList: any = []
+  let filterSpecialList: any = []
+  let filterCustomList: any = []
+  // 查所有项目时，不调用人员接口
+  if (params.projectId) {
+    filterBasicsList = response.data.storyConfig?.filter_fidlds.filter(
+      (item: any) => item.group_name === '基本字段',
+    )
 
-  const filterSpecialList = response.data.storyConfig.filter_fidlds.filter(
-    (item: any) => item.group_name === '人员与时间字段',
-  )
+    filterSpecialList = response.data.storyConfig?.filter_fidlds.filter(
+      (item: any) => item.group_name === '人员与时间字段',
+    )
 
-  const filterCustomList = response.data.storyConfig.filter_fidlds.filter(
-    (item: any) => item.group_name === '自定义字段',
-  )
+    filterCustomList = response.data.storyConfig?.filter_fidlds.filter(
+      (item: any) => item.group_name === '自定义字段',
+    )
+  }
+
+  const getChildren = (key: any, attr: any, values: any) => {
+    let allValues: any = []
+    if (
+      [
+        'select_checkbox',
+        'select',
+        'user_select',
+        'radio',
+        'user_select_checkbox',
+        'checkbox',
+      ].includes(attr)
+    ) {
+      let resultValues: any = []
+      // 自定义数据并且不是人员数据
+      if (
+        key.includes('custom_') &&
+        !['user_select', 'user_select_checkbox'].includes(attr)
+      ) {
+        resultValues = values?.map((i: any) => ({
+          content_txt: i,
+          content: i,
+          id: i,
+        }))
+      }
+      // 自定义数据并且是人员数据
+      if (
+        key.includes('custom_') &&
+        ['user_select', 'user_select_checkbox'].includes(attr)
+      ) {
+        resultValues =
+          values[0] === 'projectMember' ? filterMemberList : filterCompanyList
+      }
+      // 抄送人、处理人及创建人下拉数据
+      if (['user_name', 'users_name', 'users_copysend_name'].includes(key)) {
+        resultValues =
+          key === 'users_copysend_name' ? filterCompanyList : filterMemberList
+      } else {
+        resultValues = values?.map((i: any) => ({
+          content_txt: i.content_txt ?? i.name,
+          content: i.content ?? i.name,
+          id: i.id,
+          status: i.status,
+          color: i.color,
+        }))
+      }
+      allValues = [
+        { id: -1, content: '空', content_txt: '空' },
+        ...resultValues,
+      ]
+    }
+    return allValues
+  }
 
   return {
     cover: response.data.cover,
@@ -186,7 +273,31 @@ export const getProjectInfo: any = async (params: any) => {
     filterBasicsList,
     filterSpecialList,
     filterCustomList,
-    filterFelid: response.data.storyConfig.filter_fidlds,
+    filterFelid: response.data.storyConfig.filter_fidlds?.map((i: any) => ({
+      children:
+        i.content === 'class'
+          ? [
+              ...[
+                {
+                  title: '未分类',
+                  key: 0,
+                  value: 0,
+                  children: [],
+                },
+              ],
+              ...getNestedChildren(i.values, 0),
+            ]
+          : getChildren(i.content, i.attr, i.values),
+      type: ['user_select', 'user_select_checkbox'].includes(i.attr)
+        ? 'select_checkbox'
+        : i.attr,
+      id: i.id,
+      name: i.title,
+      key: i.content,
+      isDefault: i.is_default_filter,
+      contentTxt: i.content_txt,
+      content: i.content,
+    })),
     projectPermissions: response.data.company_permissions,
     groupIds: response.data?.groups?.map((i: any) => i.id),
     isMember: response.data.user_ismember,

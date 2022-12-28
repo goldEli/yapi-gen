@@ -77,7 +77,7 @@ const DemandGrid = (props: Props) => {
 
   useEffect(() => {
     const arr = projectInfo?.filterFelid?.filter(
-      (i: any) => i.title === '状态',
+      (i: any) => i.content === 'status',
     )[0]?.values
     setBasicStatus(arr)
     setDataList(

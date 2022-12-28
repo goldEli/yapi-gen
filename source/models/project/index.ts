@@ -20,7 +20,6 @@ export default () => {
   const [memberList, setMemberList] = useState<any>([])
   const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [filterAll, setFilterAll] = useState<any>([])
-  const [isRefreshIterateList, setIsRefreshIterateList] = useState<any>(false)
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
@@ -213,8 +212,6 @@ export default () => {
     isRefreshMember,
     setFilterAll,
     filterAll,
-    setIsRefreshIterateList,
-    isRefreshIterateList,
     setProjectInfo,
     setTagList,
     colorList,

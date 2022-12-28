@@ -139,7 +139,6 @@ const Operation = (props: Props) => {
   const {
     filterAll,
     projectInfo,
-    categoryList,
     colorList,
     setFilterParamsModal,
     setFilterKeys,
@@ -218,36 +217,31 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
-    if (!props.pid) {
-      return
-    }
-    const res = await getSearchField(props.pid)
+    const filterFelid = projectInfo?.filterFelid
 
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const addList = res.filterAllList?.filter(
-        (item: any) => item.content === key,
-      )
+      const addList = filterFelid?.filter((item: any) => item.content === key)
       setSearchList([...searchList, ...addList])
 
       return
     }
-    const arr = res.filterAllList?.filter((item: any) => item.isDefault === 1)
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(res?.filterBasicsList)
-    setFilterSpecialList(res?.filterSpecialList)
-    setFilterCustomList(res?.filterCustomList)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
   }
 
   useEffect(() => {
     if (!filterState) {
       getSearchKey()
     }
-  }, [projectInfo, filterAll, location.key, filterState])
+  }, [projectInfo, filterState])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
@@ -276,23 +270,26 @@ const Operation = (props: Props) => {
         minWidth: i18n.language === 'zh' ? 110 : 151,
       }}
     >
-      {categoryList?.list?.map((k: any) => (
-        <LiWrap
-          key={k.id}
-          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-          onClick={(e: any) => onChangeCategory(e, k)}
-        >
-          <CanOperationCategory
-            style={{ marginRight: 0 }}
-            color={k.color}
-            bgColor={
-              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-            }
+      {projectInfo?.filterFelid
+        ?.filter((i: any) => i.content === 'category')[0]
+        ?.children?.filter((i: any) => i.status === 1)
+        ?.map((k: any) => (
+          <LiWrap
+            key={k.id}
+            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+            onClick={(e: any) => onChangeCategory(e, k)}
           >
-            <span className="title">{k.name}</span>
-          </CanOperationCategory>
-        </LiWrap>
-      ))}
+            <CanOperationCategory
+              style={{ marginRight: 0 }}
+              color={k.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+            >
+              <span className="title">{k.content}</span>
+            </CanOperationCategory>
+          </LiWrap>
+        ))}
     </div>
   )
 

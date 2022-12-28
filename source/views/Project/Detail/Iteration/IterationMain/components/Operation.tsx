@@ -55,7 +55,7 @@ const IconWrap = styled(IconFont)<{ color?: string }>(
 )
 
 interface Props {
-  isGrid: boolean
+  isGrid: any
   onChangeGrid(val: boolean): void
   onChangeIsShowLeft?(): void
   onIsUpdateList?(val: boolean): void
@@ -78,7 +78,7 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { filterAll, projectInfo } = useModel('project')
+  const { projectInfo } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -134,37 +134,32 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
-    if (!projectId) {
-      return
-    }
-    const res = await getSearchField(projectId)
+    const filterFelid = projectInfo?.filterFelid
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const addList = res.filterAllList?.filter(
-        (item: any) => item.content === key,
-      )
+      const addList = filterFelid?.filter((item: any) => item.content === key)
 
       setSearchList([...searchList, ...addList])
 
       return
     }
 
-    const arr = res.filterAllList?.filter((item: any) => item.isDefault === 1)
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(res?.filterBasicsList)
-    setFilterSpecialList(res?.filterSpecialList)
-    setFilterCustomList(res?.filterCustomList)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
   }
 
   useEffect(() => {
     if (!filterState) {
       getSearchKey()
     }
-  }, [projectInfo, filterAll, filterState])
+  }, [projectInfo, filterState])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)

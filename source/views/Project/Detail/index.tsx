@@ -11,7 +11,7 @@ import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { getParamsData } from '@/tools'
-import { getStaffList } from '@/services/staff'
+// import { getStaffList } from '@/services/staff'
 
 const Wrap = styled.div({
   height: '100%',
@@ -19,17 +19,8 @@ const Wrap = styled.div({
 })
 
 const Detail = () => {
-  const {
-    getProjectInfo,
-    getProjectPermission,
-    setProjectPermission,
-    getTagList,
-    setIsRefreshIterateList,
-    isRefreshIterateList,
-    setSelectAllStaffData,
-    isChangeProject,
-  } = useModel('project')
-  const { getIterateSelectList } = useModel('iterate')
+  const { getProjectInfo, setSelectAllStaffData, isChangeProject } =
+    useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -38,32 +29,11 @@ const Detail = () => {
   const [isShowPage, setIsShowPage] = useState(false)
   const navigate = useNavigate()
 
-  const getPermissionList = async () => {
-    const result = await getProjectPermission({ projectId })
-    const arr = result.list?.map((i: any) => ({
-      label: i.name,
-      value: i.id,
-      tagLabel: i.label,
-    }))
-    setProjectPermission(arr)
-  }
-
-  const getIterateList = async () => {
-    const result = await getIterateSelectList({ projectId, all: true })
-    setIsRefreshIterateList(false)
-    return result
-  }
-
-  // 获取公司员工
-  const getStaffData = async () => {
-    const options = await getStaffList({ all: 1 })
-    setSelectAllStaffData(options)
-  }
-
-  const getInit = async () => {
-    getTagList({ projectId })
-    getStaffData()
-  }
+  // // 获取公司员工
+  // const getStaffData = async () => {
+  //   const options = await getStaffList({ all: 1 })
+  //   setSelectAllStaffData(options)
+  // }
 
   // 获取项目信息
   const getInfo = async () => {
@@ -73,25 +43,28 @@ const Detail = () => {
       navigate('/PrivatePermission')
     } else {
       setIsShowPage(true)
-      getInit()
     }
   }
 
   useEffect(() => {
-    getInfo()
+    if (isRefresh || isChangeProject) {
+      getInfo()
+    }
   }, [isRefresh, isChangeProject])
 
   useEffect(() => {
-    if (isRefreshIterateList) {
-      getIterateList()
-    }
-  }, [isRefreshIterateList])
+    getInfo()
+    // getStaffData()
+  }, [])
 
   return (
     <Wrap>
       {isShowPage && (
         <>
-          <CommonOperation onUpdate={() => getProjectInfo({ projectId })} />
+          <CommonOperation
+            onUpdate={() => getProjectInfo({ projectId })}
+            onChangeIdx={getInfo}
+          />
           <Outlet key={isChangeProject} />
         </>
       )}

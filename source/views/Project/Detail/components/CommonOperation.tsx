@@ -162,6 +162,7 @@ const BackWrap = styled.div({
 
 interface Props {
   onUpdate?(): void
+  onChangeIdx(): void
 }
 
 const CommonOperation = (props: Props) => {
@@ -169,7 +170,6 @@ const CommonOperation = (props: Props) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [isVisible, setIsVisible] = useState(false)
-  const [isColor, setIsColor] = useState(false)
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
@@ -247,17 +247,14 @@ const CommonOperation = (props: Props) => {
 
   const onClickMenu = (state: boolean) => {
     setIsShowMenu(state)
-    setIsColor(state)
   }
 
   const onClickProjectInfo = (state: boolean) => {
     setInfoVisible(state)
-    setIsColor(state)
   }
 
   const onClickEdit = (state: boolean) => {
     setIsVisible(state)
-    setIsColor(state)
   }
 
   const onToModel = (i: any) => {
@@ -265,6 +262,8 @@ const CommonOperation = (props: Props) => {
     navigate(`/Detail/${i.type}?data=${params}`)
     setFilterHeight(52)
     setFilterHeightIterate(60)
+    // 点击切换更新项目info接口
+    props.onChangeIdx()
   }
 
   return (
