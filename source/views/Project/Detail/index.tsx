@@ -21,7 +21,6 @@ const Wrap = styled.div({
 const Detail = () => {
   const {
     getProjectInfo,
-    getProjectCoverList,
     getProjectPermission,
     setProjectPermission,
     getTagList,
@@ -62,8 +61,6 @@ const Detail = () => {
   }
 
   const getInit = async () => {
-    getPermissionList()
-    getProjectCoverList()
     getTagList({ projectId })
     getStaffData()
   }

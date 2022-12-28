@@ -68,7 +68,6 @@ const SetPermissionWrap = (props: {
 
   const init = async () => {
     const result = await getProjectPermission({ projectId })
-
     setRoleOptions(result.list)
     setInfoId(
       result.list.filter((item: any) => {
@@ -80,8 +79,9 @@ const SetPermissionWrap = (props: {
   }
 
   useEffect(() => {
-    init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (props.isVisible) {
+      init()
+    }
   }, [props.isVisible])
 
   const handleChange = (value: any) => {

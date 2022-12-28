@@ -10,7 +10,6 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  SetButton,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -18,13 +17,12 @@ import {
   StaffTableWrap2,
   ShowWrap,
   TableWrap,
-  IconFontWrap,
   HoverWrap,
   DividerWrap,
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -386,18 +384,23 @@ const CommonNeed = (props: any) => {
     init(false, 1)
   }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
 
+  // 监听项目id变化，更新项目信息
   useEffect(() => {
-    getSearchKey()
     getShowkey()
   }, [props.id])
 
+  // 监听筛选是否打开，获取相应配置
+  useEffect(() => {
+    if (isShowSearch) {
+      getSearchKey()
+    }
+  }, [isShowSearch])
+
+  // 监听语言变化及是否需要更新创建
   useEffect(() => {
     if (isRefresh || isUpdateCreate) {
       init()
       getShowkey()
-      if (props?.id) {
-        getSearchKey()
-      }
     }
   }, [isRefresh, isUpdateCreate])
 

@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-no-leaked-render */
 // 他的模块所有页面公用列表及查询
-
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/no-array-index-key */
@@ -415,18 +414,23 @@ const CommonNeed = (props: any) => {
     init(1)
   }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
 
+  // 监听项目id变化，更新项目信息
   useEffect(() => {
-    getSearchKey()
     getShowkey()
   }, [props.id])
 
+  // 监听筛选是否打开，获取相应配置
+  useEffect(() => {
+    if (isShowSearch) {
+      getSearchKey()
+    }
+  }, [isShowSearch])
+
+  // 监听语言变化及是否需要更新创建
   useEffect(() => {
     if (isRefresh) {
       init()
       getShowkey()
-      if (props?.id) {
-        getSearchKey()
-      }
     }
   }, [isRefresh])
 

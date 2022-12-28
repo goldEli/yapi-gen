@@ -47,7 +47,6 @@ const Project = () => {
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -57,7 +56,6 @@ const Project = () => {
   const {
     getProjectList,
     projectList,
-    getProjectCoverList,
     deleteProject,
     stopProject,
     openProject,
@@ -99,15 +97,6 @@ const Project = () => {
     await getProjectList(params)
     setIsSpinning(false)
   }
-
-  const init = async () => {
-    await getProjectCoverList()
-    setLoadingState(true)
-  }
-
-  useEffect(() => {
-    init()
-  }, [])
 
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
@@ -234,10 +223,6 @@ const Project = () => {
   const onChangeGroup = (id: number) => {
     setGroupId(id)
     setActiveType(-1)
-  }
-
-  if (!loadingState) {
-    return <Loading />
   }
 
   return (

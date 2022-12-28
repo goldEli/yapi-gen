@@ -31,6 +31,7 @@ const EditProject = (props: Props) => {
     setIsRefreshGroup,
     getGroupList,
     setSelectGroupList,
+    getProjectCoverList,
   } = useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
@@ -41,9 +42,14 @@ const EditProject = (props: Props) => {
     )
   }
 
+  const getInit = async () => {
+    await getProjectCoverList()
+  }
+
   useEffect(() => {
     if (props.visible) {
       getGroupData()
+      getInit()
     }
   }, [props.visible])
 

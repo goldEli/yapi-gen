@@ -133,6 +133,8 @@ const ProjectMember = () => {
     updateMember,
     getProjectInfo,
     getMemberList,
+    getProjectPermission,
+    setProjectPermission,
   } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
   const { userInfo } = useModel('user')
@@ -211,9 +213,22 @@ const ProjectMember = () => {
     setJobList(arr)
   }
 
+  // 获取项目权限组
+  const getPermission = async () => {
+    const res = await getProjectPermission({ projectId })
+    setProjectPermission(
+      res.list?.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+        tagLabel: i.label,
+      })),
+    )
+  }
+
   useEffect(() => {
     getList(order, pageObj)
     getJobList()
+    getPermission()
   }, [])
 
   useEffect(() => {
@@ -612,8 +627,11 @@ const ProjectMember = () => {
     }, 100)
   }
   useEffect(() => {
-    init()
+    if (isAddVisible) {
+      init()
+    }
   }, [isAddVisible])
+
   return (
     <PermissionWrap
       auth="b/project/member"

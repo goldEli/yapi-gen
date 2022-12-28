@@ -210,9 +210,12 @@ const MoreDropdown = (props: DropDownProps) => {
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
-    useModel('project')
   const {
+    getProjectMember,
+    isRefreshMember,
+    setIsRefreshMember,
+    projectInfo,
+    setProjectPermission,
     getProjectPermission,
     updateMember,
     projectPermission,
@@ -235,6 +238,13 @@ const Member = (props: Props) => {
   const getPermission = async () => {
     const res = await getProjectPermission({ projectId: props.projectId })
     setRoleOptions(res.list)
+    setProjectPermission(
+      res.list?.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+        tagLabel: i.label,
+      })),
+    )
   }
 
   const getList = async () => {
