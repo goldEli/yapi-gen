@@ -4,9 +4,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '@/tools/http'
-import { filter } from 'lodash'
-import { getTreeList } from './tree'
-import { getStaffList2 } from '../staff'
+import { transData } from '@/tools'
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -37,80 +35,58 @@ export const getShapeRight = async (params: any) => {
     category_status_to_id: params.toId,
   })
 
+  const selectData = res.data.fieldsFilterData
   // 公司
-
-  const companyList = await getStaffList2({ all: 1 })
-
-  const filterCompanyList = companyList.map((item: any) => ({
-    id: item.id,
-    name: item.name,
-  }))
+  const filterCompanyList = selectData.company_user
 
   // 处理人、抄送人
 
-  const memberList = await http.get('getProjectMember', {
-    search: {
-      project_id: params.id,
-      all: 1,
-    },
-  })
-
-  const filterMemberList = memberList.data.map((item: any) => ({
-    id: item.id,
-    name: item.name,
-  }))
+  const filterMemberList = selectData.project_member
 
   // console.log(filterMemberList, '处理人、抄送人')
 
   // 分类
 
-  const treeList = await getTreeList({ id: params.id })
-  const filterTreeList = filterTreeData(treeList)
-
-  // console.log(filterTreeList, '分类')
+  const treeData = [
+    {
+      name: '全部分类',
+      key: 0,
+      id: 0,
+      pid: 1,
+      parent_id: 0,
+      story_count: res.data[0]?.story_count,
+      children: [
+        {
+          key: -1,
+          name: '未分类',
+          pid: 0,
+          id: -1,
+          story_count: res.data[1]?.story_count,
+        },
+        ...(transData(
+          selectData.class ? selectData.class : [],
+          'id',
+          'parent_id',
+          'children',
+        ) ?? []),
+      ],
+    },
+  ]
+  const filterTreeList = filterTreeData(treeData)
 
   // 迭代
 
-  const iterateList = await http.get('getIterateList', {
-    search: {
-      project_id: params.id,
-      all: 1,
-    },
-  })
-
-  const filterIterateList = iterateList.data
-    .map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      status: item.status,
-    }))
-    .filter((item: any) => item.status === 1)
+  const filterIterateList = selectData.iterate_name
 
   // 标签
-  const getTagList = await http.get<any>('getTagList', {
-    project_id: params.id,
-  })
 
-  const filterGetTagList = getTagList.data.map((item: any) => ({
-    ...item,
-    id: item.id,
-    name: item.content_txt,
-  }))
+  const filterGetTagList = selectData.tag
 
   // console.log(filterGetTagList, '标签')
 
   // 优先级
 
-  const getPriOrStu = await http.get('getPriOrStu', {
-    project_id: params.id,
-    type: 'priority',
-  })
-
-  const filterGetPriOrStu = getPriOrStu.data.map((item: any) => ({
-    ...item,
-    id: item.id,
-    name: item.content_txt,
-  }))
+  const filterGetPriOrStu = selectData.priority
 
   // console.log(filterGetPriOrStu, '优先级')
 
@@ -224,6 +200,7 @@ export const getShapeRight = async (params: any) => {
           type: item.value[0],
         }
       }
+
       // 这里操作人员
 
       if (item.attr === 'user_select') {

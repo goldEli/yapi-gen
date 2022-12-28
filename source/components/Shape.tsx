@@ -544,6 +544,9 @@ export const ShapeContent = (props: any) => {
   }
 
   const onConfirm = async () => {
+    form.submit()
+    form2.submit()
+
     await confirm()
   }
 

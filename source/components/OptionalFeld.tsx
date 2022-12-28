@@ -131,11 +131,15 @@ export const ShowText = (props: any) => {
   const [show, setShow] = useState(false)
   const ele = useRef<any>(null)
   const checkWidth = () => {
-    setShow(ele.current.scrollWidth > ele.current.offsetWidth)
+    setTimeout(() => {
+      setShow(ele.current.scrollWidth > ele.current.offsetWidth)
+    }, 100)
   }
 
   useEffect(() => {
-    checkWidth()
+    setTimeout(() => {
+      checkWidth()
+    }, 100)
   })
 
   return (
