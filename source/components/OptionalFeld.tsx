@@ -22,7 +22,6 @@ import {
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
 import { arrayMoveImmutable } from 'array-move'
-import { use } from 'i18next'
 
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -297,12 +296,12 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                 >
                   <Row gutter={[0, 10]}>
                     {plainOptions.map(item => (
-                      <Col key={item.labelTxt} span={6}>
+                      <Col key={item?.labelTxt} span={6}>
                         <Checkbox
-                          disabled={item.value === 'name'}
-                          value={item.value}
+                          disabled={item?.value === 'name'}
+                          value={item?.value}
                         >
-                          <ShowText names={item.labelTxt} />
+                          <ShowText names={item?.labelTxt} />
                         </Checkbox>
                       </Col>
                     ))}
@@ -326,9 +325,9 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                 >
                   <Row gutter={[0, 10]}>
                     {plainOptions2.map(item => (
-                      <Col key={item.labelTxt} span={6}>
-                        <Checkbox value={item.value}>
-                          <ShowText names={item.labelTxt} />
+                      <Col key={item?.labelTxt} span={6}>
+                        <Checkbox value={item?.value}>
+                          <ShowText names={item?.labelTxt} />
                         </Checkbox>
                       </Col>
                     ))}

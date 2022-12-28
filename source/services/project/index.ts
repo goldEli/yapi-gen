@@ -221,17 +221,17 @@ export const getProjectInfo: any = async (params: any) => {
           content: i,
           id: i,
         }))
-      }
-      // 自定义数据并且是人员数据
-      if (
+      } else if (
         key.includes('custom_') &&
         ['user_select', 'user_select_checkbox'].includes(attr)
       ) {
+        // 自定义数据并且是人员数据
         resultValues =
           values[0] === 'projectMember' ? filterMemberList : filterCompanyList
-      }
-      // 抄送人、处理人及创建人下拉数据
-      if (['user_name', 'users_name', 'users_copysend_name'].includes(key)) {
+      } else if (
+        ['user_name', 'users_name', 'users_copysend_name'].includes(key)
+      ) {
+        // 抄送人、处理人及创建人下拉数据
         resultValues =
           key === 'users_copysend_name' ? filterCompanyList : filterMemberList
       } else {

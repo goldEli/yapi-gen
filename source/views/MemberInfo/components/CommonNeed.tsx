@@ -311,7 +311,7 @@ const CommonNeed = (props: any) => {
   const showEdit = async (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    await getIterateSelectList({ projectId: record.project_id, all: true })
+    // await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
   const showDel = (record: any) => {
@@ -327,6 +327,7 @@ const CommonNeed = (props: any) => {
     updatePriority,
     init,
     plainOptions3,
+    projectId: props.id,
   })
 
   const selectColum: any = useMemo(() => {
@@ -686,18 +687,20 @@ const CommonNeed = (props: any) => {
         </PaginationWrap>
       )}
 
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={isModalVisible}
-        onClose={close2}
-        getCheckList={getCheckList}
-      />
+      {props.id > 0 && (
+        <OptionalFeld
+          allTitleList={allTitleList}
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          plainOptions3={plainOptions3}
+          checkList={titleList}
+          checkList2={titleList2}
+          checkList3={titleList3}
+          isVisible={isModalVisible}
+          onClose={close2}
+          getCheckList={getCheckList}
+        />
+      )}
 
       <EditDemand
         visible={isVisible}
