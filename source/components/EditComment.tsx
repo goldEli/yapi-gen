@@ -97,9 +97,12 @@ const EditComment = (props: any) => {
     setTimeout(() => {
       editable.current?.focus()
     }, 100)
-    init()
+    if (props.visibleEdit) {
+      init()
+    }
     form.resetFields()
   }, [props.visibleEdit])
+
   const onsubmit = () => {
     form.submit()
   }
@@ -164,7 +167,13 @@ const EditComment = (props: any) => {
               },
             ]}
           >
-            <Editor at height={178} autoFocus placeholder={t('new_p1.kongN')} />
+            <Editor
+              at
+              staffList={arr}
+              height={178}
+              autoFocus
+              placeholder={t('new_p1.kongN')}
+            />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}

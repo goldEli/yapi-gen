@@ -2,7 +2,7 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect, forwardRef, useRef } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -21,7 +21,6 @@ import styled from '@emotion/styled'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { Popover, Tooltip } from 'antd'
 import IconFont from './IconFont'
-import { getStaffList2 } from '@/services/staff'
 
 interface Props {
   value?: string
@@ -32,6 +31,7 @@ interface Props {
   color?: boolean
   autoFocus?: boolean
   at?: boolean
+  staffList?: any
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -160,9 +160,7 @@ const EditorBox = (props: Props) => {
   const { userInfo } = useModel('user')
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
-
   const [isOpen, setIsOpen] = useState(false)
-  const [arr, setArr] = useState<any>(null)
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: props.placeholder ?? t('components.pleaseContent'),
     MENU_CONF: {
@@ -242,19 +240,6 @@ const EditorBox = (props: Props) => {
     }
     setKey(oldKey => oldKey + 1)
   }
-  const init = async () => {
-    const companyList = await getStaffList2({ all: 1 })
-
-    const filterCompanyList = companyList.map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      avatar: item.avatar,
-      nickname: item.nickname,
-      positionName: null,
-      roleName: item.roleName,
-    }))
-    setArr(filterCompanyList)
-  }
   const onChange = (e: any) => {
     i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
     props.onChangeValue?.(e.getHtml().trim())
@@ -287,9 +272,6 @@ const EditorBox = (props: Props) => {
     onChange2(value.name)
   }
   useEffect(() => {
-    if (props.at) {
-      init()
-    }
     if (editor) {
       const newEditor: NewIDomEditor = editor
       newEditor.changeEditor = changeEditor
@@ -343,7 +325,7 @@ const EditorBox = (props: Props) => {
               isOpen ? (
                 <ChoosePerson
                   onChangeValue={obj => onAddPerson(obj)}
-                  options={arr}
+                  options={props.staffList}
                   visible={isOpen}
                 />
               ) : null

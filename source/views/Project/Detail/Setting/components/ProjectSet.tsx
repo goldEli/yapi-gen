@@ -204,7 +204,6 @@ const PermissionItem = (props: ItemProps) => {
                 disabled={props.activeDetail?.type === 1}
                 value={item.value}
               >
-                {/* <ShowText names={item.label} /> */}
                 <span
                   style={{
                     width: '150px',
@@ -247,7 +246,6 @@ const ProjectSet = () => {
     updatePermission,
     deletePermission,
     projectInfo,
-    getProjectInfo,
   } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
@@ -299,7 +297,6 @@ const ProjectSet = () => {
       })
       getPermissionList(activeDetail.id)
       message.success(t('common.saveSuccess'))
-      getProjectInfo({ projectId })
     } catch (error) {
       //
     }

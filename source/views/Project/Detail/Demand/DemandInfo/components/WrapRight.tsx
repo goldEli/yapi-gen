@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines */
 /* eslint-disable react/no-danger */
-import { message, Tooltip } from 'antd'
+import { message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'

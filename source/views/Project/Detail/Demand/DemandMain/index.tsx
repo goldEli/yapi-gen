@@ -215,9 +215,13 @@ const DemandMain = (props: Props) => {
     setOrder(item)
   }
 
-  const onUpdate = (state?: boolean, topId?: any) => {
+  // 更新需求列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类
+  const onUpdate = (state?: boolean, topId?: any, isClass?: any) => {
     getList(isGrid, searchItems, pageObj, order, state, topId)
-    // myTreeComponent?.current?.init()
+    // 是编辑需求分类的话，就更新左侧需求分类列表
+    if (isClass) {
+      myTreeComponent?.current?.init()
+    }
   }
 
   const keyValue = {
