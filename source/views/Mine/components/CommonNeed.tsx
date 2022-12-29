@@ -537,16 +537,20 @@ const CommonNeed = (props: any) => {
                 </HoverWrap>
               </>
             )}
-            <DividerWrap type="vertical" />
-            <DropDownMenu
-              menu={menu}
-              icon="settings"
-              isVisible={isVisibleFields}
-              onChangeVisible={setIsVisibleFields}
-              isActive={isModalVisible}
-            >
-              <div>{t('common.tableFieldSet')}</div>
-            </DropDownMenu>
+            {props.id !== 0 && (
+              <>
+                <DividerWrap type="vertical" />
+                <DropDownMenu
+                  menu={menu}
+                  icon="settings"
+                  isVisible={isVisibleFields}
+                  onChangeVisible={setIsVisibleFields}
+                  isActive={isModalVisible}
+                >
+                  <div>{t('common.tableFieldSet')}</div>
+                </DropDownMenu>
+              </>
+            )}
           </Space>
         </SearchWrap>
       </TabsHehavior>

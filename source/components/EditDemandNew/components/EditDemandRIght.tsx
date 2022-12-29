@@ -62,6 +62,8 @@ interface Props {
   fieldsList: any
   // 父需求id --- 和isChild一起使用
   parentId?: any
+  // 用于我的，他的，快速创建取项目id
+  notGetPath?: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -69,8 +71,13 @@ const EditDemandRIght = (props: Props) => {
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const { userInfo } = useModel('user')
-  const { selectAllStaffData, memberList, priorityList, filterParamsModal } =
-    useModel('project')
+  const {
+    selectAllStaffData,
+    memberList,
+    priorityList,
+    filterParamsModal,
+    projectInfo,
+  } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
@@ -195,7 +202,15 @@ const EditDemandRIght = (props: Props) => {
       form.setFieldsValue({
         copySendIds: getCommonUser(
           props.info?.copySend?.map((i: any) => i.copysend),
-          selectAllStaffData,
+          props?.notGetPath
+            ? selectAllStaffData
+            : projectInfo?.filterFelid
+                ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+                ?.children?.filter((i: any) => i.id !== -1)
+                ?.map((i: any) => ({
+                  label: i.content,
+                  value: i.id,
+                })),
         ),
         attachments: props.info?.attachment?.map((i: any) => i.attachment.path),
         userIds: getCommonUser(
@@ -442,7 +457,15 @@ const EditDemandRIght = (props: Props) => {
               label: i.name,
               value: i.id,
             }))
-          : selectAllStaffData
+          : props?.notGetPath
+          ? selectAllStaffData
+          : projectInfo?.filterFelid
+              ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+              ?.children?.filter((i: any) => i.id !== -1)
+              ?.map((i: any) => ({
+                label: i.content,
+                value: i.id,
+              }))
     }
 
     return getTypeComponent({
@@ -602,7 +625,17 @@ const EditDemandRIght = (props: Props) => {
             placeholder={t('common.pleaseChooseCopySend')}
             getPopupContainer={node => node}
             optionFilterProp="label"
-            options={selectAllStaffData}
+            options={
+              props?.notGetPath
+                ? selectAllStaffData
+                : projectInfo?.filterFelid
+                    ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+                    ?.children?.filter((i: any) => i.id !== -1)
+                    ?.map((i: any) => ({
+                      label: i.content,
+                      value: i.id,
+                    }))
+            }
           />
         </Form.Item>
       </FormWrapDemand>

@@ -701,6 +701,7 @@ const EditDemand = (props: Props) => {
               isQuickCreate={props?.isQuickCreate}
               fieldsList={fieldsList}
               parentId={props.parentId}
+              notGetPath={props.notGetPath}
             />
           </ModalContent>
         )}
