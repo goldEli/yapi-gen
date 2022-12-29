@@ -86,7 +86,10 @@ export const getShapeRight = async (params: any) => {
 
   // 优先级
 
-  const filterGetPriOrStu = selectData.priority
+  const filterGetPriOrStu = selectData.priority?.map((i: any) => ({
+    id: i.id,
+    name: i.content,
+  }))
 
   // console.log(filterGetPriOrStu, '优先级')
 
