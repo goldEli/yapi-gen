@@ -183,7 +183,7 @@ export const getProjectInfo: any = async (params: any) => {
   let filterBasicsList: any = []
   let filterSpecialList: any = []
   let filterCustomList: any = []
-  // 查所有项目时，不调用人员接口
+  // 查所有项目时，不显示筛选
   if (params.projectId) {
     filterBasicsList = response.data.storyConfig?.filter_fidlds.filter(
       (item: any) => item.group_name === '基本字段',

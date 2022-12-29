@@ -18,7 +18,6 @@ import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import PubSub from 'pubsub-js'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -173,6 +172,7 @@ const EditDemand = (props: Props) => {
     filterParamsModal,
     setFilterParamsModal,
     getPriorityList,
+    getProjectInfo,
   } = useModel('project')
   const {
     setCreateCategory,
@@ -416,6 +416,10 @@ const EditDemand = (props: Props) => {
         ...values,
       })
       message.success(t('common.createSuccess'))
+    }
+    // 保存数据后更新项目信息-用于更新标签
+    if (projectId) {
+      getProjectInfo({ projectId })
     }
     // 更新父需求列表
     getList()

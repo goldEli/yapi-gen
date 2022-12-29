@@ -75,6 +75,7 @@ const ColorWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  cursor: 'pointer',
   svg: {
     color: 'white',
   },
@@ -237,7 +238,6 @@ interface Props {
 
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
-  const { getTagList } = useModel('project')
   const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand } =
     useModel('demand')
   const [newTag, setNewTag] = useState<any>('')
@@ -285,7 +285,6 @@ const TagComponent = (props: Props) => {
         getDemandInfo({ projectId, id: demandInfo?.id })
         setNewTag('')
         setIsChooseColor(false)
-        getTagList({ projectId })
         setIsClear(false)
       } catch (error) {
         //
@@ -315,7 +314,6 @@ const TagComponent = (props: Props) => {
         })
         message.success(t('common.deleteSuccess'))
         getDemandInfo({ projectId, id: demandInfo?.id })
-        getTagList({ projectId })
       } catch (error) {
         //
       }
