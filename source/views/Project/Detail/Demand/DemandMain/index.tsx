@@ -39,6 +39,7 @@ const DemandMain = (props: Props) => {
   const myTreeComponent: any = useRef(null)
   const [t] = useTranslation()
   const [key, setKey] = useState()
+  const keyRef = useRef()
   const [isGrid, setIsGrid] = useState(0)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
@@ -97,7 +98,7 @@ const DemandMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
-        class_id: key,
+        class_id: keyRef.current,
       }
     } else {
       params = {
@@ -124,7 +125,7 @@ const DemandMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
-        class_id: key,
+        class_id: keyRef.current,
       }
     }
     if (state === 2) {
@@ -229,6 +230,7 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
+      keyRef.current = value
       // 添加搜索项 计数
       const keys = value
         ? [...filterKeys, ...['classId']]
@@ -253,6 +255,7 @@ const DemandMain = (props: Props) => {
             projectId={projectId}
             isShowLeft={isShowLeft}
             onUpdate={onUpdate}
+            iKey={key}
           />
         )}
         <Right isShowLeft={isShowLeft}>

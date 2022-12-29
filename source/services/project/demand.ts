@@ -5,6 +5,7 @@
 import * as http from '@/tools/http'
 
 export const updateDemandStatus: any = async (params: any) => {
+  delete params.fields.reviewerValue
   await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.nId,
