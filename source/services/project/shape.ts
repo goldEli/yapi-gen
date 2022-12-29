@@ -80,7 +80,10 @@ export const getShapeRight = async (params: any) => {
 
   // 标签
 
-  const filterGetTagList = selectData.tag
+  const filterGetTagList = selectData.tag?.map((i: any) => ({
+    id: i.id,
+    name: i.content,
+  }))
 
   // console.log(filterGetTagList, '标签')
 
@@ -103,11 +106,7 @@ export const getShapeRight = async (params: any) => {
         content: item.content,
         type: 'time',
       }
-    } else if (
-      (item.content.includes('users_name') ||
-        item.content.includes('users_copysend_name')) &&
-      !item.attr
-    ) {
+    } else if (item.content.includes('users_name') && !item.attr) {
       return {
         ...item,
         id: item.id,
@@ -115,6 +114,18 @@ export const getShapeRight = async (params: any) => {
         key: item.content,
         content: item.content,
         children: [...filterMemberList],
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('users_copysend_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: [...filterCompanyList],
         type: 'select_checkbox',
         isDefault: item.is_default_filter,
         contentTxt: item.content_txt,
