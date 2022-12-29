@@ -387,7 +387,9 @@ const ShapeContentForDetail = (props: any) => {
         res?.fields[key].type === 'select_checkbox' &&
         res?.fields[key].true_value !== 0
       ) {
-        form1Obj[res?.fields[key].content] = []
+        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+          ? res?.fields[key].true_value
+          : []
       } else {
         form1Obj[res?.fields[key].content] = res?.fields[key].true_value
       }
