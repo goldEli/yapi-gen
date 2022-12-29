@@ -137,7 +137,7 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, filterAll } = useModel('project')
+  const { projectInfo, getProjectInfo } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -261,16 +261,15 @@ const IterationWrap = () => {
 
   useEffect(() => {
     setFilterHeightIterate(60)
+    // 迭代详情页面调用迭代详情
     if (iterateId) {
       getIterateInfo({ projectId, id: iterateId })
     }
   }, [])
 
   useEffect(() => {
-    if (!filterState) {
-      getSearchKey()
-    }
     if (projectInfo?.id) {
+      getSearchKey()
       setFilterBasicsList(projectInfo?.filterBasicsList)
       setFilterSpecialList(projectInfo?.filterSpecialList)
       setFilterCustomList(projectInfo?.filterCustomList)
@@ -286,7 +285,7 @@ const IterationWrap = () => {
         ...projectInfo.titleList3,
       ])
     }
-  }, [projectInfo, filterAll, filterState])
+  }, [projectInfo])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -297,9 +296,6 @@ const IterationWrap = () => {
 
   const onChangeOperation = (item: any) => {
     setOperationDetail(item)
-    if (item.id) {
-      getIterateInfo({ projectId, id: item?.id })
-    }
   }
 
   const onDeleteConfirm = async () => {
@@ -336,6 +332,7 @@ const IterationWrap = () => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
+        getProjectInfo({ projectId })
         setIsUpdateState(true)
       } catch (error) {
         //
@@ -514,13 +511,10 @@ const IterationWrap = () => {
       </div>
     )
   }
-  useEffect(() => {
-    PubSub.subscribe('num', () => {
-      if (iterateId) {
-        getIterateInfo({ projectId, id: iterateId })
-      }
-    })
-  }, [])
+
+  const onUpdate = (value: any) => {
+    setIsUpdateState(value)
+  }
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>
@@ -528,7 +522,7 @@ const IterationWrap = () => {
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
         id={operationDetail.id}
-        onUpdate={setIsUpdateState}
+        onUpdate={onUpdate}
       />
       {content()}
     </div>

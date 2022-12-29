@@ -252,17 +252,17 @@ const TableQuickEdit = (props: Props) => {
   const setNormalParams = async () => {
     if (props?.isCustom) {
       // 我的模块及他的模块并且是自定义字段
-      if (props.projectId) {
-        getCustomValuesInfo()
-      } else {
+      if (props.projectId === 0) {
         getIsCustomValues()
+      } else {
+        getCustomValuesInfo()
       }
     } else {
       // 项目及详情中自带相应参数或者是之前的固定参数
-      if (props.projectId) {
-        getDefaultSelectValuesInfo()
-      } else {
+      if (props.projectId === 0) {
         getDefaultSelectValues()
+      } else {
+        getDefaultSelectValuesInfo()
       }
     }
   }

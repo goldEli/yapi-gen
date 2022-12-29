@@ -144,6 +144,7 @@ const TreeItem = (props: any) => {
     close()
   }
 
+  // 删除需求分类确认
   const onConfirm = async () => {
     const news = await delTreeList({
       projectId: props.projectId,
@@ -157,12 +158,14 @@ const TreeItem = (props: any) => {
     form.resetFields()
   }
 
+  // 编辑分类关闭
   const editClose = () => {
     close()
     props.onRest()
     form.resetFields()
   }
 
+  // 编辑分类确认
   const editConfirm = async () => {
     const tag = visibleEditText === 'add'
     const data: any = await form.validateFields()
@@ -185,6 +188,7 @@ const TreeItem = (props: any) => {
     close()
     props.onRest()
   }
+
   const content = (
     <div
       style={{
@@ -343,18 +347,16 @@ const TreeItem = (props: any) => {
 const WrapLeft = (props: any, ref: any) => {
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
-
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { setSelectTreeData } = useModel('project')
+  const { setSelectTreeData, getProjectInfo } = useModel('project')
   const init = async () => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
     setSelectTreeData(filterTreeData2(res)[0].children)
     setTreeData(filterTreeData(res))
-
     setShow(true)
   }
 
@@ -365,6 +367,7 @@ const WrapLeft = (props: any, ref: any) => {
         <TreeItem
           onRest={() => {
             init()
+            getProjectInfo({ projectId: props.projectId })
           }}
           projectId={props.projectId}
           {...item}
@@ -442,6 +445,7 @@ const WrapLeft = (props: any, ref: any) => {
     }
 
     init()
+    getProjectInfo({ projectId: props.projectId })
   }
 
   const onSelect = (selectedKeys: any, e: any) => {

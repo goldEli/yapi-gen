@@ -77,6 +77,7 @@ const EditIteration = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    // 编辑迭代获取详情
     if (props.id) {
       getIterateInfo({ projectId, id: props.id })
     }
@@ -119,10 +120,6 @@ const EditIteration = (props: Props) => {
         message.success(t('common.createSuccess'))
       }
       props.onChangeVisible()
-      props.onUpdate?.(true)
-      if (props.id) {
-        getIterateInfo({ projectId, id: props.id })
-      }
       setIsUpdateList(true)
       setTimeout(() => {
         setHtml('')

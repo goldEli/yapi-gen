@@ -241,6 +241,7 @@ export const getProjectInfo: any = async (params: any) => {
           id: i.id,
           status: i.status,
           color: i.color,
+          icon: i.icon,
         }))
       }
       allValues = [

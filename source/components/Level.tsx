@@ -32,20 +32,31 @@ type LevelProps = {
   onHide(): void
   onTap?(id: any): void
   onCurrentDetail?(item: any): void
+  // 用于判断当前是否是所有项目， 是则调用就接口获取下拉值
+  projectId?: any
 }
 
 export const LevelContent = (props: LevelProps) => {
   const { getPriOrStu } = useModel('mine')
+  const { projectInfo } = useModel('project')
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
   const [showData, setShowData] = useState<any>([])
 
   const init = async () => {
-    const res = await getPriOrStu({
-      projectId: pid,
-      type: 'priority',
-    })
-    setShowData(res.data)
+    if (props.projectId === 0) {
+      const res = await getPriOrStu({
+        projectId: pid,
+        type: 'priority',
+      })
+      setShowData(res.data)
+    } else {
+      setShowData(
+        projectInfo?.filterFelid
+          ?.filter((i: any) => i.content === 'priority')[0]
+          ?.children?.filter((k: any) => k.id !== -1),
+      )
+    }
   }
 
   useEffect(() => {

@@ -238,10 +238,10 @@ const Operation = (props: Props) => {
   }
 
   useEffect(() => {
-    if (!filterState) {
+    if (projectInfo?.id) {
       getSearchKey()
     }
-  }, [projectInfo, filterState])
+  }, [projectInfo])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)

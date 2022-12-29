@@ -212,6 +212,7 @@ export const useDynamicColumns = (state: any) => {
                   onTap={state.updatePriority}
                   onHide={onHide}
                   record={record}
+                  projectId={state.projectId}
                 />
               )
             }

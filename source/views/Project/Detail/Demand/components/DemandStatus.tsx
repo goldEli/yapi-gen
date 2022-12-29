@@ -149,7 +149,7 @@ const DemandStatusBox = (props: any) => {
                 marginLeft: '10px',
               }}
             >
-              该需求正在审核中，现在不能流转操作！
+              {t('newlyAdd.underReview')}
             </span>
           </div>
         )}

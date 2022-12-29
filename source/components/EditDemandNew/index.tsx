@@ -417,9 +417,6 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.createSuccess'))
     }
-    if (props.iterateId) {
-      PubSub.publish('num')
-    }
     // 更新父需求列表
     getList()
     // 是否是快捷创建，是则要刷新相应的列表接口
