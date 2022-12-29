@@ -471,8 +471,6 @@ export const ShapeContent = (props: any) => {
 
   const onConfirm = async () => {
     form.submit()
-    form2.submit()
-
     await confirm()
   }
 
@@ -675,6 +673,32 @@ export const ShapeContent = (props: any) => {
                     )}
                   </div>
                 ))}
+                {rightList.is_verify && rightList.verify.verify_type === 2 ? (
+                  <Form.Item
+                    labelAlign="left"
+                    label={t('newlyAdd.reviewPerson')}
+                    name="reviewerValue"
+                    rules={[
+                      {
+                        required:
+                          activeContent || (!activeContent && !hasDealName),
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Select
+                      onChange={handleChange}
+                      placeholder={t('common.pleaseSelect')}
+                      allowClear
+                      getPopupContainer={node => node}
+                      options={optionsList?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))}
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                ) : null}
               </Form>
             </FormWrap>
             {rightList?.is_verify ? (
@@ -792,53 +816,6 @@ export const ShapeContent = (props: any) => {
                   </Timeline.Item>
                 </Timeline>
               </AuditBox>
-            ) : null}
-            {rightList.is_verify && rightList.verify.verify_type === 2 ? (
-              <Form
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                labelAlign="left"
-                form={form2}
-                onFinish={confirm}
-                onFinishFailed={() => {
-                  setTimeout(() => {
-                    const errorList = (document as any).querySelectorAll(
-                      '.ant-form-item-has-error',
-                    )
-
-                    errorList[0].scrollIntoView({
-                      block: 'center',
-                      behavior: 'smooth',
-                    })
-                  }, 100)
-                }}
-              >
-                <Form.Item
-                  style={{ paddingRight: '24px' }}
-                  labelAlign="left"
-                  label={t('newlyAdd.reviewPerson')}
-                  name="reviewerValue"
-                  rules={[
-                    {
-                      required:
-                        activeContent || (!activeContent && !hasDealName),
-                      message: '',
-                    },
-                  ]}
-                >
-                  <Select
-                    onChange={handleChange}
-                    placeholder={t('common.pleaseSelect')}
-                    allowClear
-                    getPopupContainer={node => node}
-                    options={optionsList?.map((item: any) => ({
-                      label: item.name,
-                      value: item.id,
-                    }))}
-                    optionFilterProp="label"
-                  />
-                </Form.Item>
-              </Form>
             ) : null}
           </div>
 
