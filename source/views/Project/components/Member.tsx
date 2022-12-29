@@ -352,11 +352,10 @@ const Member = (props: Props) => {
     setUserDataList([])
     getList()
     setIsVisible(false)
-    PubSub.publish('member')
+    getProjectInfo({ projectId: projectInfo.id })
     setTimeout(() => {
       form.resetFields()
     }, 100)
-    getProjectInfo({ projectId: projectInfo.id })
   }
 
   const onChangeMember = (value: any) => {

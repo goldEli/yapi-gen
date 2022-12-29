@@ -80,8 +80,8 @@ export const useDynamicColumns = (state: any) => {
     message.warning(t('newlyAdd.underReview'))
   }
 
-  const onUpdate = (row: any) => {
-    state.onUpdate(true, row.topId)
+  const onUpdate = (row: any, isClass?: any) => {
+    state.onUpdate(true, row.topId, isClass)
   }
 
   const arr = [
@@ -312,7 +312,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text}
             keyText="class_id"
             item={record}
-            onUpdate={() => onUpdate(record)}
+            onUpdate={() => onUpdate(record, true)}
           >
             <HiddenText>
               <OmitText
