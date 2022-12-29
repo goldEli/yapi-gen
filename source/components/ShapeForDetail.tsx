@@ -373,10 +373,10 @@ const ShapeContentForDetail = (props: any) => {
           res?.fields[key].children.some(
             (i: any) => i.id === res?.fields[key].true_value,
           )
-            ? []
+            ? null
             : res?.fields[key].true_value
       } else if (res?.fields[key].true_value === 0) {
-        form1Obj[res?.fields[key].content] = ''
+        form1Obj[res?.fields[key].content] = null
       } else {
         form1Obj[res?.fields[key].content] = res?.fields[key].true_value
       }

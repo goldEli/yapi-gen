@@ -35,7 +35,7 @@ const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const { getDemandInfo, demandInfo, isUpdateStatus, setIsUpdateStatus } =
     useModel('demand')
-  const [active, setActive] = useState(demandInfo?.status?.id)
+  const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
   const { projectInfo } = useModel('project')
   const [leftList, setLeftList] = useState([])
@@ -57,9 +57,10 @@ const DemandStatusBox = (props: any) => {
       id: props.pid,
       nId: props.sid,
     })
+    setActive(demandInfo?.status?.id)
     setLeftList(res2)
     setIsUpdateStatus(false)
-    setRows(res2.find((i: any) => i.id === active))
+    setRows(res2.find((i: any) => i.id === demandInfo?.status?.id))
   }
 
   const updateStatus = async (res1: any) => {
@@ -76,7 +77,7 @@ const DemandStatusBox = (props: any) => {
 
   useEffect(() => {
     init()
-  }, [isUpdateStatus])
+  }, [demandInfo, isUpdateStatus])
 
   return (
     <div>
