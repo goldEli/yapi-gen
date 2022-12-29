@@ -217,7 +217,7 @@ const DemandMain = (props: Props) => {
 
   const onUpdate = (state?: boolean, topId?: any) => {
     getList(isGrid, searchItems, pageObj, order, state, topId)
-    myTreeComponent?.current?.init()
+    // myTreeComponent?.current?.init()
   }
 
   const keyValue = {
@@ -248,6 +248,7 @@ const DemandMain = (props: Props) => {
             ref={myTreeComponent}
             projectId={projectId}
             isShowLeft={isShowLeft}
+            onUpdate={onUpdate}
           />
         )}
         <Right isShowLeft={isShowLeft}>
