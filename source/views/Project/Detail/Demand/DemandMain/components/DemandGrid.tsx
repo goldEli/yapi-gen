@@ -76,9 +76,9 @@ const DemandGrid = (props: Props) => {
   const [dataList, setDataList] = useState<any>({})
 
   useEffect(() => {
-    const arr = projectInfo?.filterFelid?.filter(
-      (i: any) => i.content === 'status',
-    )[0]?.values
+    const arr = projectInfo?.filterFelid
+      ?.filter((i: any) => i.content === 'status')[0]
+      ?.children?.filter((k: any) => k.id !== -1)
     setBasicStatus(arr)
     setDataList(
       arr?.map((i: any) => ({

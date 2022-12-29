@@ -46,7 +46,6 @@ const EditDemandLeft = (props: Props) => {
     projectInfo,
     getProjectInfo,
     setFieldList,
-    tagList,
     filterParamsModal,
     getTagList,
   } = useModel('project')
@@ -145,7 +144,9 @@ const EditDemandLeft = (props: Props) => {
     if (filterParamsModal?.tagIds?.length) {
       const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
-        tagList
+        projectInfo?.filterFelid
+          ?.filter((i: any) => i.content === 'tag')[0]
+          ?.children?.filter((k: any) => k.id !== -1)
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
           ?.map((i: any) => ({
             id: i.id,
@@ -161,7 +162,7 @@ const EditDemandLeft = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId === props?.demandInfo?.id) {
+    if (props?.demandId && props?.demandId === props?.demandInfo?.id) {
       setTagCheckedList(
         props.demandInfo?.tag?.map((i: any) => ({
           id: i.id,
