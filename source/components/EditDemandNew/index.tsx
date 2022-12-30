@@ -421,8 +421,6 @@ const EditDemand = (props: Props) => {
     if (projectId) {
       getProjectInfoValues({ projectId })
     }
-    // 更新父需求列表
-    getList()
     // 是否是快捷创建，是则要刷新相应的列表接口
     if (props?.isQuickCreate) {
       setIsUpdateCreate(true)

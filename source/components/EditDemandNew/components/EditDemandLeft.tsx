@@ -48,6 +48,7 @@ const EditDemandLeft = (props: Props) => {
     setFieldList,
     filterParamsModal,
     getTagList,
+    projectInfoValues,
   } = useModel('project')
   const { getProjectList } = useModel('mine')
   const [attachList, setAttachList] = useState<any>([])
@@ -144,8 +145,8 @@ const EditDemandLeft = (props: Props) => {
     if (filterParamsModal?.tagIds?.length) {
       const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
-        projectInfo?.filterFelid
-          ?.filter((i: any) => i.content === 'tag')[0]
+        projectInfoValues
+          ?.filter((i: any) => i.key === 'tag')[0]
           ?.children?.filter((k: any) => k.id !== -1)
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
           ?.map((i: any) => ({

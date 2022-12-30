@@ -353,7 +353,9 @@ const CommonNeed = (props: any) => {
   }
 
   const getShowkey = async () => {
-    await getProjectInfoValues({ projectId: props.id })
+    if (props.id) {
+      await getProjectInfoValues({ projectId: props.id })
+    }
     const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
