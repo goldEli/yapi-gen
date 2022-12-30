@@ -162,7 +162,9 @@ const WhiteDay = (props: any) => {
     setColorState(false)
     return Promise.resolve()
   }
-
+  if (!props.visibleEdit) {
+    return null
+  }
   return (
     <CommonModal
       width={784}
@@ -261,7 +263,9 @@ const WhiteDay = (props: any) => {
             label={<LabelTitle title={t('common.copySend')} />}
             name="people"
           >
-            <ChoosePeople initValue={peopleValue} />
+            {props.visibleEdit ? (
+              <ChoosePeople initValue={peopleValue} />
+            ) : null}
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}
@@ -289,7 +293,9 @@ const WhiteDay = (props: any) => {
             label={<LabelTitle title={t('p2.managingDemand')} />}
             name="needs"
           >
-            <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+            {props.visibleEdit ? (
+              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+            ) : null}
           </Form.Item>
         </Form>
       </div>

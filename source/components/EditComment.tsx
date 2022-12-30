@@ -38,6 +38,7 @@ const EditComment = (props: any) => {
   }
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value.trim() === '') {
+      form.resetFields()
       return Promise.reject(
         new Error('The two passwords that you entered do not match!'),
       )

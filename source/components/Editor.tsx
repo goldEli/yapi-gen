@@ -107,12 +107,11 @@ i18nAddResources('en', {
   },
 })
 
-const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
+const Wrap = styled.div<{ minHeight?: any; red?: boolean; show?: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: 6,
-    border: '1px solid #ebedf0',
     zIndex: 100,
     marginLeft: '2px',
     padding: '1px',
@@ -137,11 +136,14 @@ const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
   },
   ({ minHeight }) => ({
     '.w-e-text-container [data-slate-editor]': {
-      minHeight: minHeight || 120,
+      minHeight: minHeight || 0,
     },
   }),
   ({ red }) => ({
     borderColor: red ? 'red' : '',
+  }),
+  ({ show }) => ({
+    border: show ? '1px solid transparent' : '1px solid #ebedf0 !important',
   }),
 )
 const GrepDiv = styled.div`
@@ -262,6 +264,12 @@ const EditorBox = (props: Props) => {
     setKey(oldKey => oldKey + 1)
   }
   const onChange = (e: any) => {
+    if (e.getHtml().trim().includes('&nbsp')) {
+      props.onChangeValue?.('')
+      props.onChange?.('')
+      return
+    }
+
     i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
     props.onChangeValue?.(e.getHtml().trim())
     props.onChange?.(e.getHtml().trim())
@@ -349,6 +357,7 @@ const EditorBox = (props: Props) => {
   }, [])
   return (
     <Wrap
+      show={props.show}
       ref={textWrapEditor}
       red={props.color}
       id="editorWrap"
