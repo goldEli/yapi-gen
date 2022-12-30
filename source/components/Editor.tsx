@@ -119,6 +119,9 @@ const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
     '.w-e-text-container [data-slate-editor] p': {
       margin: 0,
     },
+    img: {
+      cursor: 'pointer !important',
+    },
     '.w-e-text-placeholder': {
       top: 0,
       fontStyle: 'inherit',
@@ -320,6 +323,7 @@ const EditorBox = (props: Props) => {
     if (e.path[0].nodeName === 'IMG') {
       const params: any = {}
       const oPics = textWrapEditor?.current?.getElementsByTagName('img')
+
       params.imageArray = []
       if (oPics) {
         for (const element of oPics) {
