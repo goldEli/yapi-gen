@@ -16,6 +16,7 @@ import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
+import PubSub from 'pubsub-js'
 
 interface Props {
   visible: boolean
@@ -155,6 +156,7 @@ const MoreDropdown = (props: DropDownProps) => {
   const onClickItem = (item: any) => {
     setIsVisible(false)
     props.onClickMenu(item, props.row)
+    PubSub.publish('getPeople')
   }
 
   const menu = () => {

@@ -31,6 +31,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { addMember } from '@/services/project'
+import PubSub from 'pubsub-js'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -194,8 +195,8 @@ const ProjectMember = () => {
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
       projectId,
-      order: orderVal.value,
-      orderKey: orderVal.key,
+      order: orderVal?.value,
+      orderKey: orderVal?.key,
       page: pagePrams?.page,
       pageSize: pagePrams?.size,
       ...values,
@@ -631,6 +632,12 @@ const ProjectMember = () => {
       init()
     }
   }, [isAddVisible])
+
+  useEffect(() => {
+    PubSub.subscribe('getPeople', () => {
+      getList(order, { page: 1, size: pageObj.size })
+    })
+  }, [])
 
   return (
     <PermissionWrap
