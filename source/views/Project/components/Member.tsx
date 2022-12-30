@@ -156,7 +156,6 @@ const MoreDropdown = (props: DropDownProps) => {
   const onClickItem = (item: any) => {
     setIsVisible(false)
     props.onClickMenu(item, props.row)
-    PubSub.publish('getPeople')
   }
 
   const menu = () => {
@@ -307,6 +306,7 @@ const Member = (props: Props) => {
       })
       message.success(t('common.editS'))
       getList()
+      PubSub.publish('getPeople')
     } catch (error) {
       //
     }
