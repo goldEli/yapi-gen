@@ -38,7 +38,7 @@ type LevelProps = {
 
 export const LevelContent = (props: LevelProps) => {
   const { getPriOrStu } = useModel('mine')
-  const { projectInfo } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
   const [showData, setShowData] = useState<any>([])
@@ -52,8 +52,8 @@ export const LevelContent = (props: LevelProps) => {
       setShowData(res.data)
     } else {
       setShowData(
-        projectInfo?.filterFelid
-          ?.filter((i: any) => i.content === 'priority')[0]
+        projectInfoValues
+          ?.filter((i: any) => i.key === 'priority')[0]
           ?.children?.filter((k: any) => k.id !== -1),
       )
     }

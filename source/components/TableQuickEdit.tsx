@@ -52,7 +52,8 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, getFieldListCustom } = useModel('project')
+  const { projectInfo, getFieldListCustom, projectInfoValues } =
+    useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
@@ -110,8 +111,8 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段 --- 项目信息获取
   const getCustomValuesInfo = () => {
-    const response = projectInfo?.filterFelid
-      ?.filter((i: any) => i.content === props.keyText)[0]
+    const response = projectInfoValues
+      ?.filter((i: any) => i.key === props.keyText)[0]
       ?.children?.filter((i: any) => i.id !== -1)
     const resultValue = {
       value: ['user_select_checkbox', 'user_select'].includes(
@@ -193,11 +194,10 @@ const TableQuickEdit = (props: Props) => {
       attr: props?.type,
       value: [],
     }
-    const allChildren = projectInfo?.filterFelid
     if (props.keyText === 'iterate_id') {
       // 获取迭代下拉数据
-      const response = allChildren
-        ?.filter((i: any) => i.content === 'iterate_name')[0]
+      const response = projectInfoValues
+        ?.filter((i: any) => i.key === 'iterate_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
 
       resultValue.value = response
@@ -208,8 +208,8 @@ const TableQuickEdit = (props: Props) => {
         }))
     } else if (props.keyText === 'users') {
       // 获取处理人的下拉数据
-      const response = allChildren
-        ?.filter((i: any) => i.content === 'users_name')[0]
+      const response = projectInfoValues
+        ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
 
       resultValue.value = response?.map((i: any) => ({
@@ -218,8 +218,8 @@ const TableQuickEdit = (props: Props) => {
       }))
     } else if (props.keyText === 'copysend') {
       // 获取抄送人的下拉数据
-      const response = allChildren
-        ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+      const response = projectInfoValues
+        ?.filter((i: any) => i.key === 'users_copysend_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
       resultValue.value = response?.map((i: any) => ({
         label: i.content,
@@ -227,13 +227,14 @@ const TableQuickEdit = (props: Props) => {
       }))
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
-      const response = allChildren?.filter((i: any) => i.content === 'class')[0]
-        .children
+      const response = projectInfoValues?.filter(
+        (i: any) => i.key === 'class',
+      )[0].children
       resultValue.value = response
     } else if (props.keyText === 'tag') {
       // 获取标签下拉数据
-      const response: any = allChildren
-        ?.filter((i: any) => i.content === 'tag')[0]
+      const response: any = projectInfoValues
+        ?.filter((i: any) => i.key === 'tag')[0]
         ?.children?.filter((i: any) => i.id !== -1)
       setSelectTagList(response)
       resultValue.value = response?.map((i: any) => ({

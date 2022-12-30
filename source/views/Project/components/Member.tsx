@@ -221,6 +221,7 @@ const Member = (props: Props) => {
     projectPermission,
     addMember,
     getProjectInfo,
+    getProjectInfoValues,
   } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
@@ -353,6 +354,7 @@ const Member = (props: Props) => {
     getList()
     setIsVisible(false)
     getProjectInfo({ projectId: projectInfo.id })
+    getProjectInfoValues({ projectId: projectInfo.id })
     setTimeout(() => {
       form.resetFields()
     }, 100)

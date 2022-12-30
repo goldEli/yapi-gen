@@ -149,8 +149,13 @@ const DemandBox = () => {
   const { type } = paramsData
   const { demandId } = paramsData
   const { setIsRefresh } = useModel('user')
-  const { projectInfo, colorList, getWorkflowList, workList } =
-    useModel('project')
+  const {
+    projectInfo,
+    colorList,
+    getWorkflowList,
+    workList,
+    projectInfoValues,
+  } = useModel('project')
   const {
     getDemandInfo,
     demandInfo,
@@ -195,16 +200,16 @@ const DemandBox = () => {
 
   useEffect(() => {
     // 获取项目信息中的需求类别
-    const list = projectInfo?.filterFelid?.filter(
-      (i: any) => i.content === 'category',
-    )[0]?.children
+    const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
+      ?.children
+
     setColorObj(list?.filter((k: any) => k.id === demandInfo?.category)[0])
     setResultCategory(
       list
         ?.filter((i: any) => i.id !== demandInfo?.category)
         ?.filter((i: any) => i.status === 1),
     )
-  }, [demandInfo, projectInfo])
+  }, [demandInfo, projectInfoValues])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -376,7 +381,7 @@ const DemandBox = () => {
                     ?.bgColor
                 }
               >
-                <span className="title">{colorObj?.name}</span>
+                <span className="title">{colorObj?.content}</span>
               </CanOperationCategory>
             </Form.Item>
             <Form.Item
@@ -393,7 +398,7 @@ const DemandBox = () => {
                 optionFilterProp="label"
                 onChange={onChangeSelect}
                 options={resultCategory?.map((k: any) => ({
-                  label: k.name,
+                  label: k.content,
                   value: k.id,
                 }))}
               />

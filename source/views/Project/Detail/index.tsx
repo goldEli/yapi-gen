@@ -11,7 +11,6 @@ import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { getParamsData } from '@/tools'
-// import { getStaffList } from '@/services/staff'
 
 const Wrap = styled.div({
   height: '100%',
@@ -19,7 +18,7 @@ const Wrap = styled.div({
 })
 
 const Detail = () => {
-  const { getProjectInfo, setSelectAllStaffData, isChangeProject } =
+  const { getProjectInfo, isChangeProject, getProjectInfoValues } =
     useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -29,11 +28,9 @@ const Detail = () => {
   const [isShowPage, setIsShowPage] = useState(false)
   const navigate = useNavigate()
 
-  // // 获取公司员工
-  // const getStaffData = async () => {
-  //   const options = await getStaffList({ all: 1 })
-  //   setSelectAllStaffData(options)
-  // }
+  const getProjectInfoValuesData = async () => {
+    await getProjectInfoValues({ projectId })
+  }
 
   // 获取项目信息
   const getInfo = async () => {
@@ -54,7 +51,7 @@ const Detail = () => {
 
   useEffect(() => {
     getInfo()
-    // getStaffData()
+    getProjectInfoValuesData()
   }, [])
 
   return (
@@ -63,7 +60,7 @@ const Detail = () => {
         <>
           <CommonOperation
             onUpdate={() => getProjectInfo({ projectId })}
-            onChangeIdx={getInfo}
+            onChangeIdx={getProjectInfoValuesData}
           />
           <Outlet key={isChangeProject} />
         </>

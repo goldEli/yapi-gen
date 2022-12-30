@@ -172,7 +172,7 @@ const EditDemand = (props: Props) => {
     filterParamsModal,
     setFilterParamsModal,
     getPriorityList,
-    getProjectInfo,
+    getProjectInfoValues,
   } = useModel('project')
   const {
     setCreateCategory,
@@ -419,7 +419,7 @@ const EditDemand = (props: Props) => {
     }
     // 保存数据后更新项目信息-用于更新标签
     if (projectId) {
-      getProjectInfo({ projectId })
+      getProjectInfoValues({ projectId })
     }
     // 更新父需求列表
     getList()

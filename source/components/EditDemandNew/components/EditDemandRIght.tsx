@@ -76,7 +76,7 @@ const EditDemandRIght = (props: Props) => {
     memberList,
     priorityList,
     filterParamsModal,
-    projectInfo,
+    projectInfoValues,
   } = useModel('project')
   const { selectIterate } = useModel('iterate')
   const [schedule, setSchedule] = useState(0)
@@ -204,8 +204,8 @@ const EditDemandRIght = (props: Props) => {
           props.info?.copySend?.map((i: any) => i.copysend),
           props?.notGetPath
             ? selectAllStaffData
-            : projectInfo?.filterFelid
-                ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+            : projectInfoValues
+                ?.filter((i: any) => i.key === 'users_copysend_name')[0]
                 ?.children?.filter((i: any) => i.id !== -1)
                 ?.map((i: any) => ({
                   label: i.content,
@@ -459,8 +459,8 @@ const EditDemandRIght = (props: Props) => {
             }))
           : props?.notGetPath
           ? selectAllStaffData
-          : projectInfo?.filterFelid
-              ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+          : projectInfoValues
+              ?.filter((i: any) => i.key === 'users_copysend_name')[0]
               ?.children?.filter((i: any) => i.id !== -1)
               ?.map((i: any) => ({
                 label: i.content,
@@ -628,8 +628,8 @@ const EditDemandRIght = (props: Props) => {
             options={
               props?.notGetPath
                 ? selectAllStaffData
-                : projectInfo?.filterFelid
-                    ?.filter((i: any) => i.content === 'users_copysend_name')[0]
+                : projectInfoValues
+                    ?.filter((i: any) => i.key === 'users_copysend_name')[0]
                     ?.children?.filter((i: any) => i.id !== -1)
                     ?.map((i: any) => ({
                       label: i.content,

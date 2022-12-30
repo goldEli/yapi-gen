@@ -38,6 +38,8 @@ export default () => {
   const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
   // 需求列表筛选项值计数
   const [filterKeys, setFilterKeys] = useState<any>([])
+  // 关于项目的下拉数据
+  const [projectInfoValues, setProjectInfoValues] = useState<any>({})
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -132,6 +134,12 @@ export default () => {
 
     setProjectInfo(result)
     return result
+  }
+
+  // 获取项目的下拉数据
+  const getProjectInfoValues = async (params: any) => {
+    const result = await services.project.getProjectInfoValues(params)
+    setProjectInfoValues(result)
   }
 
   const getMemberList = async (params: any) => {
@@ -267,5 +275,7 @@ export default () => {
     isRefreshGroup,
     setFilterKeys,
     filterKeys,
+    getProjectInfoValues,
+    projectInfoValues,
   }
 }

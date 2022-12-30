@@ -131,8 +131,8 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
-  const { getProjectInfo, projectInfo } = useModel('project')
-  const { getIterateSelectList } = useModel('iterate')
+  const { getProjectInfo, projectInfo, getProjectInfoValues } =
+    useModel('project')
   const {
     updateDemandStatus,
     updatePriorityStatus,
@@ -284,7 +284,6 @@ const CommonNeed = (props: any) => {
   const showEdit = async (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    // await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
   const showDel = (record: any) => {
@@ -354,6 +353,7 @@ const CommonNeed = (props: any) => {
   }
 
   const getShowkey = async () => {
+    await getProjectInfoValues({ projectId: props.id })
     const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
