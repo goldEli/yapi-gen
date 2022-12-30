@@ -137,7 +137,7 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, getProjectInfo } = useModel('project')
+  const { projectInfo, getProjectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -332,7 +332,7 @@ const IterationWrap = () => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
-        getProjectInfo({ projectId })
+        getProjectInfoValues({ projectId })
         setIsUpdateState(true)
       } catch (error) {
         //

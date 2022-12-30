@@ -113,7 +113,7 @@ interface TagProps {
 
 const TagBox = (props: TagProps) => {
   const [t] = useTranslation()
-  const { projectInfo } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
@@ -129,8 +129,8 @@ const TagBox = (props: TagProps) => {
 
   useEffect(() => {
     setArr(
-      projectInfo?.filterFelid
-        ?.filter((i: any) => i.content === 'tag')[0]
+      projectInfoValues
+        ?.filter((i: any) => i.key === 'tag')[0]
         ?.children?.filter((i: any) => i.id !== -1)
         ?.filter(
           (i: any) =>
@@ -139,7 +139,7 @@ const TagBox = (props: TagProps) => {
             ),
         ),
     )
-  }, [projectInfo, props.checkedTags])
+  }, [projectInfoValues, props.checkedTags])
 
   const onCreateTag = () => {
     props.tap?.(value)
@@ -161,8 +161,8 @@ const TagBox = (props: TagProps) => {
   const onPressEnter = (val: any) => {
     setValue(val)
     setArr(
-      projectInfo?.filterFelid
-        ?.filter((i: any) => i.content === 'tag')[0]
+      projectInfoValues
+        ?.filter((i: any) => i.key === 'tag')[0]
         ?.children?.filter((i: any) => i.id !== -1)
         .filter((i: any) => i?.content?.includes(val)),
     )

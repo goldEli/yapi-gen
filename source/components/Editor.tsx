@@ -123,6 +123,9 @@ const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
       top: 0,
       fontStyle: 'inherit',
     },
+    '.w-e-bar-item button': {
+      width: 'auto!important',
+    },
     '&: hover': {
       borderRightWidth: 1,
       outline: 0,

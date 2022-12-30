@@ -148,8 +148,8 @@ const CommonNeed = (props: any) => {
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
-  const { getIterateSelectList } = useModel('iterate')
-  const { getProjectInfo, projectInfo } = useModel('project')
+  const { getProjectInfo, projectInfo, getProjectInfoValues } =
+    useModel('project')
   const { updateDemandStatus, updatePriorityStatus } = useModel('mine')
   const {
     getUserInfoAbeyanceStory,
@@ -363,6 +363,7 @@ const CommonNeed = (props: any) => {
   }, [titleList, columns])
 
   const getShowkey = async () => {
+    await getProjectInfoValues({ projectId: props.id })
     const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)

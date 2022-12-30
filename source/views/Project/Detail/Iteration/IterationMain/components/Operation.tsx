@@ -78,7 +78,7 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, getProjectInfo } = useModel('project')
+  const { projectInfo, getProjectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -104,7 +104,7 @@ const Operation = (props: Props) => {
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
         // 更新项目信息-迭代
-        getProjectInfo({ projectId })
+        getProjectInfoValues({ projectId })
         props.onIsUpdateList?.(true)
       } catch (error) {
         //

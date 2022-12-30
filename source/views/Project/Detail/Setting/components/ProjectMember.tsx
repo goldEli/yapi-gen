@@ -132,7 +132,7 @@ const ProjectMember = () => {
     projectInfo,
     isRefreshMember,
     updateMember,
-    getProjectInfo,
+    getProjectInfoValues,
     getMemberList,
     getProjectPermission,
     setProjectPermission,
@@ -593,7 +593,7 @@ const ProjectMember = () => {
       setOperationItem({})
       onChangeUpdate()
       getMemberList({ all: true, projectId })
-      getProjectInfo({ projectId })
+      getProjectInfoValues({ projectId })
       setIsEditVisible(false)
     } catch (error) {
       //

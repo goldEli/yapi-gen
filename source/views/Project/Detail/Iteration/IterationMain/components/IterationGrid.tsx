@@ -67,14 +67,14 @@ const IterationGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { filterHeightIterate } = useModel('iterate')
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
 
   const getBasicStatus = () => {
-    const arr = projectInfo?.filterFelid
-      ?.filter((i: any) => i.content === 'status')[0]
+    const arr = projectInfoValues
+      ?.filter((i: any) => i.key === 'status')[0]
       ?.children?.filter((k: any) => k.id !== -1)
     setBasicStatus(arr)
     setDataList(
@@ -96,7 +96,7 @@ const IterationGrid = (props: Props) => {
     } else {
       getBasicStatus()
     }
-  }, [props.data, projectInfo])
+  }, [props.data, projectInfoValues])
 
   const onClickItem = (item: any) => {
     const params = encryptPhp(

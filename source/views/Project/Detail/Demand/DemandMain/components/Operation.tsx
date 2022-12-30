@@ -137,8 +137,8 @@ const Operation = (props: Props) => {
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
   const {
-    filterAll,
     projectInfo,
+    projectInfoValues,
     colorList,
     setFilterParamsModal,
     setFilterKeys,
@@ -270,8 +270,8 @@ const Operation = (props: Props) => {
         minWidth: i18n.language === 'zh' ? 110 : 151,
       }}
     >
-      {projectInfo?.filterFelid
-        ?.filter((i: any) => i.content === 'category')[0]
+      {projectInfoValues
+        ?.filter((i: any) => i.key === 'category')[0]
         ?.children?.filter((i: any) => i.status === 1)
         ?.map((k: any) => (
           <LiWrap

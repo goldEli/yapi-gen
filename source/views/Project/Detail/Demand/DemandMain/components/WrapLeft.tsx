@@ -351,7 +351,7 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { setSelectTreeData, getProjectInfo } = useModel('project')
+  const { setSelectTreeData, getProjectInfoValues } = useModel('project')
 
   const init = async () => {
     setShow(false)
@@ -368,7 +368,7 @@ const WrapLeft = (props: any, ref: any) => {
         <TreeItem
           onRest={() => {
             init()
-            getProjectInfo({ projectId: props.projectId })
+            getProjectInfoValues({ projectId: props.projectId })
             props.onUpdate()
           }}
           projectId={props.projectId}
@@ -447,7 +447,7 @@ const WrapLeft = (props: any, ref: any) => {
     }
 
     init()
-    getProjectInfo({ projectId: props.projectId })
+    getProjectInfoValues({ projectId: props.projectId })
   }
 
   const onSelect = (selectedKeys: any, e: any) => {

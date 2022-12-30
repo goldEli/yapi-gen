@@ -83,32 +83,6 @@ export const getProjectInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params.projectId,
   })
-  let filterCompanyList: any = []
-  let filterMemberList: any = []
-  // 查所有项目时，不调用人员接口
-  if (params.projectId) {
-    // 公司
-    const companyList = await getStaffList2({ all: 1 })
-    filterCompanyList = companyList.map((item: any) => ({
-      id: item.id,
-      content: item.name,
-      content_txt: item.name,
-    }))
-
-    const memberList = await http.get('getProjectMember', {
-      search: {
-        project_id: params.projectId,
-        all: 1,
-      },
-    })
-    filterMemberList = memberList.data.map((item: any) => {
-      return {
-        id: item.id,
-        content: item.name,
-        content_txt: item.name,
-      }
-    })
-  }
 
   const plainOptions = response.data.storyConfig.display_fidlds
     .filter((item: { group_name: string }) => item.group_name === '基本字段')
@@ -198,60 +172,6 @@ export const getProjectInfo: any = async (params: any) => {
     )
   }
 
-  const getChildren = (key: any, attr: any, values: any) => {
-    let allValues: any = []
-    if (
-      [
-        'select_checkbox',
-        'select',
-        'user_select',
-        'radio',
-        'user_select_checkbox',
-        'checkbox',
-      ].includes(attr)
-    ) {
-      let resultValues: any = []
-      // 自定义数据并且不是人员数据
-      if (
-        key.includes('custom_') &&
-        !['user_select', 'user_select_checkbox'].includes(attr)
-      ) {
-        resultValues = values?.map((i: any) => ({
-          content_txt: i,
-          content: i,
-          id: i,
-        }))
-      } else if (
-        key.includes('custom_') &&
-        ['user_select', 'user_select_checkbox'].includes(attr)
-      ) {
-        // 自定义数据并且是人员数据
-        resultValues =
-          values[0] === 'projectMember' ? filterMemberList : filterCompanyList
-      } else if (
-        ['user_name', 'users_name', 'users_copysend_name'].includes(key)
-      ) {
-        // 抄送人、处理人及创建人下拉数据
-        resultValues =
-          key === 'users_copysend_name' ? filterCompanyList : filterMemberList
-      } else {
-        resultValues = values?.map((i: any) => ({
-          content_txt: i.content_txt ?? i.name,
-          content: i.content ?? i.name,
-          id: i.id,
-          status: i.status,
-          color: i.color,
-          icon: i.icon,
-        }))
-      }
-      allValues = [
-        { id: -1, content: '空', content_txt: '空' },
-        ...resultValues,
-      ]
-    }
-    return allValues
-  }
-
   return {
     cover: response.data.cover,
     name: response.data.name,
@@ -275,20 +195,6 @@ export const getProjectInfo: any = async (params: any) => {
     filterSpecialList,
     filterCustomList,
     filterFelid: response.data.storyConfig.filter_fidlds?.map((i: any) => ({
-      children:
-        i.content === 'class'
-          ? [
-              ...[
-                {
-                  title: '未分类',
-                  key: 0,
-                  value: 0,
-                  children: [],
-                },
-              ],
-              ...getNestedChildren(i.values, 0),
-            ]
-          : getChildren(i.content, i.attr, i.values),
       type: ['user_select', 'user_select_checkbox'].includes(i.attr)
         ? 'select_checkbox'
         : i.attr,
@@ -811,4 +717,96 @@ export const deleteProjectGroup: any = async (params: any) => {
   await http.delete<any>('deleteProjectGroup', {
     id: params.id,
   })
+}
+
+// 获取项目下拉数据
+export const getProjectInfoValues: any = async (params: any) => {
+  const response = await http.get<any>(`/b/project/getfilter_values`, {
+    id: params.projectId,
+  })
+
+  let filterCompanyList: any = []
+  let filterMemberList: any = []
+  // 查所有项目时，不调用人员接口
+  if (params.projectId) {
+    // 公司
+    const companyList = await getStaffList2({ all: 1 })
+    filterCompanyList = companyList.map((item: any) => ({
+      id: item.id,
+      content: item.name,
+      content_txt: item.name,
+    }))
+
+    const memberList = await http.get('getProjectMember', {
+      search: {
+        project_id: params.projectId,
+        all: 1,
+      },
+    })
+    filterMemberList = memberList.data.map((item: any) => {
+      return {
+        id: item.id,
+        content: item.name,
+        content_txt: item.name,
+      }
+    })
+  }
+
+  const getChildren = (key: any, values: any) => {
+    let allValues: any = []
+    let resultValues: any = []
+    // 自定义数据并且不是人员数据
+    if (
+      key.includes('custom_') &&
+      !['projectMember', 'companyMember'].includes(values[0])
+    ) {
+      resultValues = values?.map((i: any) => ({
+        content_txt: i,
+        content: i,
+        id: i,
+      }))
+    } else if (
+      key.includes('custom_') &&
+      ['projectMember', 'companyMember'].includes(values[0])
+    ) {
+      // 自定义数据并且是人员数据
+      resultValues =
+        values[0] === 'projectMember' ? filterMemberList : filterCompanyList
+    } else if (
+      ['user_name', 'users_name', 'users_copysend_name'].includes(key)
+    ) {
+      // 抄送人、处理人及创建人下拉数据
+      resultValues =
+        key === 'users_copysend_name' ? filterCompanyList : filterMemberList
+    } else {
+      resultValues = values?.map((i: any) => ({
+        content_txt: i.content_txt ?? i.name,
+        content: i.content ?? i.name,
+        id: i.id,
+        status: i.status,
+        color: i.color,
+        icon: i.icon,
+      }))
+    }
+    allValues = [{ id: -1, content: '空', content_txt: '空' }, ...resultValues]
+    return allValues
+  }
+
+  return Object.keys(response.data)?.map((i: any) => ({
+    children:
+      i === 'class'
+        ? [
+            ...[
+              {
+                title: '未分类',
+                key: 0,
+                value: 0,
+                children: [],
+              },
+            ],
+            ...getNestedChildren(response.data[i], 0),
+          ]
+        : getChildren(i, response.data[i]),
+    key: i,
+  }))
 }

@@ -241,7 +241,6 @@ export const NumericInput2 = (props: any) => {
         allowClear
         style={{ width: '100px', border: 'none' }}
       />
-      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
       <Input
         type="number"
         placeholder={t('newlyAdd.pleaseValue')}
@@ -252,7 +251,6 @@ export const NumericInput2 = (props: any) => {
         onBlur={onPress}
         allowClear
       />
-      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
     </>
   )
 }
@@ -261,7 +259,7 @@ const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
-  const { filterKeys, setFilterKeys } = useModel('project')
+  const { filterKeys, setFilterKeys, projectInfoValues } = useModel('project')
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
@@ -464,11 +462,13 @@ const TableFilter = (props: any) => {
                         allowClear
                         optionFilterProp="label"
                         options={deWeight(
-                          i.children.map((v: any) => ({
-                            label: v.content_txt,
-                            value: v.id,
-                            id: v.id,
-                          })),
+                          projectInfoValues
+                            ?.filter((k: any) => k.key === i.key)[0]
+                            ?.children?.map((v: any) => ({
+                              label: v.content_txt,
+                              value: v.id,
+                              id: v.id,
+                            })),
                         )}
                       />
                     </Form.Item>
@@ -562,7 +562,11 @@ const TableFilter = (props: any) => {
                       <TreeSelect
                         style={{ minWidth: '200px', border: 'none' }}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                        treeData={i.children}
+                        treeData={
+                          projectInfoValues?.filter(
+                            (k: any) => k.key === 'class',
+                          )[0]?.children
+                        }
                         placeholder={t('common.pleaseSelect')}
                         treeDefaultExpandAll
                         onSelect={() => confirm(i.key)}

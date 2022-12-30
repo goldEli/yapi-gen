@@ -70,14 +70,14 @@ const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { filterHeight } = useModel('demand')
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
 
   useEffect(() => {
-    const arr = projectInfo?.filterFelid
-      ?.filter((i: any) => i.content === 'status')[0]
+    const arr = projectInfoValues
+      ?.filter((i: any) => i.key === 'status')[0]
       ?.children?.filter((k: any) => k.id !== -1)
     setBasicStatus(arr)
     setDataList(
