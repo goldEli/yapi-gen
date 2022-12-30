@@ -5,6 +5,7 @@
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import Viewer from 'react-viewer'
+import Editor from './Editor'
 
 const TextWrapEditor = styled.div({
   color: '#323233',
@@ -81,10 +82,11 @@ const EditorInfoReview = (props: Props) => {
           onClose={() => setIsVisible(false)}
         />
       )}
-      <TextWrapEditor
+      {/* <TextWrapEditor
         ref={textWrapEditor}
         dangerouslySetInnerHTML={{ __html: props.info }}
-      />
+      /> */}
+      <Editor height={292} value={props.info} show />
     </>
   )
 }

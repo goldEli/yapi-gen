@@ -2,7 +2,7 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect, forwardRef, useRef } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -21,6 +21,7 @@ import styled from '@emotion/styled'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { Popover, Tooltip } from 'antd'
 import IconFont from './IconFont'
+import Viewer from 'react-viewer'
 
 interface Props {
   value?: string
@@ -32,6 +33,8 @@ interface Props {
   autoFocus?: boolean
   at?: boolean
   staffList?: any
+  show?: boolean
+  ref: any
 }
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -45,6 +48,7 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     'fontSize',
     'fontFamily',
     'indent',
+
     // 'delIndent',
     // 'justifyLeft',
     // 'justifyRight',
@@ -52,12 +56,14 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     'justifyJustify',
     'lineHeight',
     'viewImageLink',
+
     // 'divider',
     'emotion',
     'insertLink',
     'editLink',
     'unLink',
     'viewLink',
+
     // 'codeBlock',
     'blockquote',
     'headerSelect',
@@ -69,9 +75,11 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     'numberedList',
     'insertTable',
     'uploadVideo',
+
     // 'editVideoSize',
     'uploadImage',
     'customFullScreen',
+
     // 'cancelCustomFullScreen',
   ],
   excludeKeys: [],
@@ -148,6 +156,13 @@ const Hov = styled(IconFont)`
 `
 
 const EditorBox = (props: Props) => {
+  const textWrapEditor = useRef<any>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
+
   const [t, i18n] = useTranslation()
   const [key, setKey] = useState(1)
   const customParseLinkUrl = (url: string): string => {
@@ -275,11 +290,15 @@ const EditorBox = (props: Props) => {
     if (editor) {
       const newEditor: NewIDomEditor = editor
       newEditor.changeEditor = changeEditor
+      if (props.show) {
+        editor.disable()
+      }
     }
     i18n.on('languageChanged', () => {
       i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
       changeEditor(true)
     })
+
     return () => {
       if (editor === null) {
         return
@@ -294,15 +313,48 @@ const EditorBox = (props: Props) => {
   //   'italic',
   //   'group-more-style',
   // ]
-
+  const onGetViewPicture = (e: any) => {
+    if (e.path[0].nodeName === 'IMG') {
+      const params: any = {}
+      const oPics = textWrapEditor?.current?.getElementsByTagName('img')
+      params.imageArray = []
+      if (oPics) {
+        for (const element of oPics) {
+          params.imageArray.push({ src: element.src })
+        }
+        for (let i = 0; i < oPics.length; i++) {
+          if (e.path[0].src === params.imageArray[i].src) {
+            params.index = i
+          }
+        }
+      }
+      setIsVisible(true)
+      setPictureList(params)
+    }
+  }
+  useEffect(() => {
+    textWrapEditor?.current?.addEventListener('click', (e: any) =>
+      onGetViewPicture(e),
+    )
+    return textWrapEditor?.current?.removeEventListener('click', (e: any) =>
+      onGetViewPicture(e),
+    )
+  }, [])
   return (
-    <Wrap red={props.color} id="editorWrap" minHeight={props?.height}>
-      <Toolbar
-        key={key}
-        editor={editor}
-        defaultConfig={editConfig}
-        mode="default"
-      />
+    <Wrap
+      ref={textWrapEditor}
+      red={props.color}
+      id="editorWrap"
+      minHeight={props?.height}
+    >
+      {!props.show && (
+        <Toolbar
+          key={key}
+          editor={editor}
+          defaultConfig={editConfig}
+          mode="default"
+        />
+      )}
 
       {props.at ? (
         <div
@@ -354,6 +406,15 @@ const EditorBox = (props: Props) => {
             </GrepDiv>
           </Popover>
         </div>
+      ) : null}
+      {isVisible ? (
+        <Viewer
+          zIndex={9999}
+          visible={isVisible}
+          images={pictureList?.imageArray}
+          activeIndex={pictureList?.index}
+          onClose={() => setIsVisible(false)}
+        />
       ) : null}
 
       <Editor
