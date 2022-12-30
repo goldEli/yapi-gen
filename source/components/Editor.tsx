@@ -264,15 +264,14 @@ const EditorBox = (props: Props) => {
     setKey(oldKey => oldKey + 1)
   }
   const onChange = (e: any) => {
-    if (e.getHtml().trim().includes('&nbsp')) {
+    if (e.getText().trim()) {
+      i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
+      props.onChangeValue?.(e.getHtml().trim())
+      props.onChange?.(e.getHtml().trim())
+    } else {
       props.onChangeValue?.('')
       props.onChange?.('')
-      return
     }
-
-    i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
-    props.onChangeValue?.(e.getHtml().trim())
-    props.onChange?.(e.getHtml().trim())
   }
 
   const onChange2 = (e: any) => {
