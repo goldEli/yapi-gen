@@ -53,7 +53,7 @@ const IterationMain = (props: Props) => {
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
   const [isSettingState, setIsSettingState] = useState(false)
-  const [order, setOrder] = useState<any>({ value: 'asc', key: 'id' })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [searchItems, setSearchItems] = useState({})
   const [isSpinning, setIsSpinning] = useState(false)
   const getList = async (
