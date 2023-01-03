@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Input, Menu, message, Spin, Row } from 'antd'
+import { Checkbox, Space, Input, Menu, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import { ShowText } from '@/components/OptionalFeld'
 
 const Warp = styled.div({
   padding: 16,
