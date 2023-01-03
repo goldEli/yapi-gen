@@ -80,7 +80,8 @@ const toolbarConfig: Partial<IToolbarConfig> = {
 
     // 'editVideoSize',
     'uploadImage',
-    'customFullScreen',
+    'fullScreen',
+    // 'customFullScreen',
 
     // 'cancelCustomFullScreen',
   ],
@@ -322,6 +323,7 @@ const EditorBox = (props: Props) => {
     if (editor) {
       const newEditor: NewIDomEditor = editor
       newEditor.changeEditor = changeEditor
+
       if (props.show) {
         editor.disable()
       }
@@ -366,9 +368,12 @@ const EditorBox = (props: Props) => {
     }
   }
   useEffect(() => {
-    textWrapEditor?.current?.addEventListener('click', (e: any) =>
-      onGetViewPicture(e),
-    )
+    if (props.show) {
+      textWrapEditor?.current?.addEventListener('click', (e: any) =>
+        onGetViewPicture(e),
+      )
+    }
+
     return textWrapEditor?.current?.removeEventListener('click', (e: any) =>
       onGetViewPicture(e),
     )
