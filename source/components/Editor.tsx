@@ -1,3 +1,5 @@
+/* eslint-disable max-statements-per-line */
+/* eslint-disable require-unicode-regexp */
 // 公用富文本
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -263,14 +265,31 @@ const EditorBox = (props: Props) => {
     }
     setKey(oldKey => oldKey + 1)
   }
+
+  const getText = (str: string) => {
+    return str
+      .replace(/<[^<p>]+>/g, '')
+      .replace(/<[</p>$]+>/g, '')
+      .replace(/&nbsp;/gi, '')
+      .replace(/<[^<br/>]+>/g, '')
+  }
+  const isNull = (str: string) => {
+    if (str === '') {
+      return true
+    }
+    const regu = '^[ ]+$'
+    const re = new RegExp(regu)
+    return re.test(str)
+  }
+
   const onChange = (e: any) => {
-    if (e.getText().trim()) {
+    if (isNull(getText(e.getHtml()))) {
+      props.onChangeValue?.('')
+      props.onChange?.('')
+    } else {
       i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
       props.onChangeValue?.(e.getHtml().trim())
       props.onChange?.(e.getHtml().trim())
-    } else {
-      props.onChangeValue?.('')
-      props.onChange?.('')
     }
   }
 
@@ -354,6 +373,7 @@ const EditorBox = (props: Props) => {
       onGetViewPicture(e),
     )
   }, [])
+
   return (
     <Wrap
       show={props.show}
