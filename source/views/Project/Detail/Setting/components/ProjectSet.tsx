@@ -303,6 +303,11 @@ const ProjectSet = () => {
   }
 
   const onSaveGroup = async () => {
+    if (!String(addValue).trim()) {
+      message.warning(t('version2.permissionNull'))
+      setAddValue('')
+      return
+    }
     let result
     try {
       if (operationDetail.id) {

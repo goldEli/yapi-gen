@@ -39,7 +39,7 @@ export default () => {
   // 需求列表筛选项值计数
   const [filterKeys, setFilterKeys] = useState<any>([])
   // 关于项目的下拉数据
-  const [projectInfoValues, setProjectInfoValues] = useState<any>({})
+  const [projectInfoValues, setProjectInfoValues] = useState<any>([])
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },

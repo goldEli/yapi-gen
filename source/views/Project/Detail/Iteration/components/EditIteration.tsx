@@ -207,7 +207,7 @@ const EditIteration = (props: Props) => {
             />
           </Form.Item>
           <Form.Item label={t('project.iterateTarget')}>
-            <Editor value={html} onChangeValue={setHtml} />
+            <Editor value={html} onChangeValue={setHtml} height={178} />
           </Form.Item>
         </FormWrap>
       </div>
