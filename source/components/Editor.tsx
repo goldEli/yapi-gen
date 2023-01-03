@@ -80,7 +80,8 @@ const toolbarConfig: Partial<IToolbarConfig> = {
 
     // 'editVideoSize',
     'uploadImage',
-    'customFullScreen',
+    'fullScreen',
+    // 'customFullScreen',
 
     // 'cancelCustomFullScreen',
   ],
@@ -322,6 +323,7 @@ const EditorBox = (props: Props) => {
     if (editor) {
       const newEditor: NewIDomEditor = editor
       newEditor.changeEditor = changeEditor
+
       if (props.show) {
         editor.disable()
       }
