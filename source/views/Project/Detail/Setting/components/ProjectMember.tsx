@@ -31,6 +31,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { addMember } from '@/services/project'
+import PubSub from 'pubsub-js'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -131,8 +132,10 @@ const ProjectMember = () => {
     projectInfo,
     isRefreshMember,
     updateMember,
-    getProjectInfo,
+    getProjectInfoValues,
     getMemberList,
+    getProjectPermission,
+    setProjectPermission,
   } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
   const { userInfo } = useModel('user')
@@ -192,8 +195,8 @@ const ProjectMember = () => {
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
       projectId,
-      order: orderVal.value,
-      orderKey: orderVal.key,
+      order: orderVal?.value,
+      orderKey: orderVal?.key,
       page: pagePrams?.page,
       pageSize: pagePrams?.size,
       ...values,
@@ -211,9 +214,22 @@ const ProjectMember = () => {
     setJobList(arr)
   }
 
+  // 获取项目权限组
+  const getPermission = async () => {
+    const res = await getProjectPermission({ projectId })
+    setProjectPermission(
+      res.list?.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+        tagLabel: i.label,
+      })),
+    )
+  }
+
   useEffect(() => {
     getList(order, pageObj)
     getJobList()
+    getPermission()
   }, [])
 
   useEffect(() => {
@@ -577,7 +593,7 @@ const ProjectMember = () => {
       setOperationItem({})
       onChangeUpdate()
       getMemberList({ all: true, projectId })
-      getProjectInfo({ projectId })
+      getProjectInfoValues({ projectId })
       setIsEditVisible(false)
     } catch (error) {
       //
@@ -612,8 +628,17 @@ const ProjectMember = () => {
     }, 100)
   }
   useEffect(() => {
-    init()
+    if (isAddVisible) {
+      init()
+    }
   }, [isAddVisible])
+
+  useEffect(() => {
+    PubSub.subscribe('getPeople', () => {
+      getList(order, { page: 1, size: pageObj.size })
+    })
+  }, [])
+
   return (
     <PermissionWrap
       auth="b/project/member"

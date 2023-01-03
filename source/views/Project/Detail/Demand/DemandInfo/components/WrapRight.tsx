@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines */
 /* eslint-disable react/no-danger */
-import { message, Tooltip } from 'antd'
+import { message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
@@ -352,12 +352,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       getList()
     }
   }
+  // 删除附件
   const onTapRemove = async (attid: any, id: any) => {
     await delCommonAt({
       project_id: projectId,
       comment_id: attid,
       att_id: id,
     })
+    message.success(t('common.deleteSuccess'))
     getList()
   }
   const onChangeState = async (item: any) => {

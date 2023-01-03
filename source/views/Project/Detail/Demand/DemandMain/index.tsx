@@ -39,6 +39,7 @@ const DemandMain = (props: Props) => {
   const myTreeComponent: any = useRef(null)
   const [t] = useTranslation()
   const [key, setKey] = useState()
+  const keyRef = useRef()
   const [isGrid, setIsGrid] = useState(0)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
@@ -59,7 +60,7 @@ const DemandMain = (props: Props) => {
   const [topParentId, setTopParentId] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { getCategoryList, setFilterKeys, filterKeys } = useModel('project')
+  const { setFilterKeys, filterKeys } = useModel('project')
 
   const getList = async (
     state: any,
@@ -97,7 +98,7 @@ const DemandMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
-        class_id: key,
+        class_id: keyRef.current,
       }
     } else {
       params = {
@@ -124,7 +125,7 @@ const DemandMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
-        class_id: key,
+        class_id: keyRef.current,
       }
     }
     if (state === 2) {
@@ -141,13 +142,12 @@ const DemandMain = (props: Props) => {
   }
 
   useEffect(() => {
-    getCategoryList({ projectId, isSelect: true })
     // 进入需求主页清除已存储的筛选计数
     setFilterKeys([])
   }, [])
 
   useEffect(() => {
-    getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
+    getList(isGrid, searchItems, pageObj, order)
   }, [key, isGrid, order, pageObj])
 
   useEffect(() => {
@@ -216,9 +216,13 @@ const DemandMain = (props: Props) => {
     setOrder(item)
   }
 
-  const onUpdate = (state?: boolean, topId?: any) => {
+  // 更新需求列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类
+  const onUpdate = (state?: boolean, topId?: any, isClass?: any) => {
     getList(isGrid, searchItems, pageObj, order, state, topId)
-    myTreeComponent?.current?.init()
+    // 是编辑需求分类的话，就更新左侧需求分类列表
+    if (isClass) {
+      myTreeComponent?.current?.init()
+    }
   }
 
   const keyValue = {
@@ -226,6 +230,7 @@ const DemandMain = (props: Props) => {
     changeKey: (value: any) => {
       setPageObj({ page: 1, size: pageObj.size })
       setKey(value)
+      keyRef.current = value
       // 添加搜索项 计数
       const keys = value
         ? [...filterKeys, ...['classId']]
@@ -249,6 +254,8 @@ const DemandMain = (props: Props) => {
             ref={myTreeComponent}
             projectId={projectId}
             isShowLeft={isShowLeft}
+            onUpdate={onUpdate}
+            iKey={key}
           />
         )}
         <Right isShowLeft={isShowLeft}>

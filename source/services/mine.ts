@@ -436,6 +436,7 @@ export const getProjectMember: any = async (params: any) => {
 
 // 流转状态
 export const updateDemandStatus: any = async (params: any) => {
+  delete params.fields.reviewerValue
   await http.put<any>('updateDemandStatus', {
     project_id: params.projectId,
     story_id: params.nId,

@@ -151,11 +151,10 @@ const DemandBox = () => {
   const { setIsRefresh } = useModel('user')
   const {
     projectInfo,
-    getCategoryList,
-    categoryList,
     colorList,
     getWorkflowList,
     workList,
+    projectInfoValues,
   } = useModel('project')
   const {
     getDemandInfo,
@@ -187,7 +186,6 @@ const DemandBox = () => {
   const init = async () => {
     if (demandId) {
       await getDemandInfo({ projectId, id: demandId })
-      await getCategoryList({ projectId })
     }
     setLoadingState(true)
   }
@@ -201,15 +199,17 @@ const DemandBox = () => {
   }, [])
 
   useEffect(() => {
-    setColorObj(
-      categoryList?.list?.filter((k: any) => k.id === demandInfo?.category)[0],
-    )
+    // 获取项目信息中的需求类别
+    const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
+      ?.children
+
+    setColorObj(list?.filter((k: any) => k.id === demandInfo?.category)[0])
     setResultCategory(
-      categoryList?.list
+      list
         ?.filter((i: any) => i.id !== demandInfo?.category)
-        ?.filter((i: any) => i.isCheck === 1),
+        ?.filter((i: any) => i.status === 1),
     )
-  }, [demandInfo, categoryList])
+  }, [demandInfo, projectInfoValues])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -341,7 +341,7 @@ const DemandBox = () => {
               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
             }
           >
-            <span className="title">{k.name}</span>
+            <span className="title">{k.content}</span>
           </CanOperationCategory>
         </LiWrap>
       ))}
@@ -381,7 +381,7 @@ const DemandBox = () => {
                     ?.bgColor
                 }
               >
-                <span className="title">{colorObj?.name}</span>
+                <span className="title">{colorObj?.content}</span>
               </CanOperationCategory>
             </Form.Item>
             <Form.Item
@@ -398,7 +398,7 @@ const DemandBox = () => {
                 optionFilterProp="label"
                 onChange={onChangeSelect}
                 options={resultCategory?.map((k: any) => ({
-                  label: k.name,
+                  label: k.content,
                   value: k.id,
                 }))}
               />
@@ -450,7 +450,7 @@ const DemandBox = () => {
                     ?.bgColor
                 }
               >
-                <span className="title">{colorObj?.name}</span>
+                <span className="title">{colorObj?.content}</span>
                 {resultCategory?.length > 0 && (
                   <IconFont
                     type="down-icon"

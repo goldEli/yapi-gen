@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Space, Checkbox, Divider, Dropdown, Menu } from 'antd'
+import { Space, Checkbox, Divider, Dropdown, Menu, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import CommonInput from '@/components/CommonInput'
@@ -60,6 +60,7 @@ const Filter = (props: Props) => {
   const onClickMenuFormat = (type: boolean) => {
     props.onChangeFormat(type)
     setIsVisibleFormat(false)
+    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   const menu = (

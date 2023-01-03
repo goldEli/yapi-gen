@@ -16,6 +16,7 @@ import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
+import PubSub from 'pubsub-js'
 
 interface Props {
   visible: boolean
@@ -210,14 +211,18 @@ const MoreDropdown = (props: DropDownProps) => {
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { getProjectMember, isRefreshMember, setIsRefreshMember, projectInfo } =
-    useModel('project')
   const {
+    getProjectMember,
+    isRefreshMember,
+    setIsRefreshMember,
+    projectInfo,
+    setProjectPermission,
     getProjectPermission,
     updateMember,
     projectPermission,
     addMember,
     getProjectInfo,
+    getProjectInfoValues,
   } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
@@ -235,7 +240,15 @@ const Member = (props: Props) => {
   const getPermission = async () => {
     const res = await getProjectPermission({ projectId: props.projectId })
     setRoleOptions(res.list)
+    setProjectPermission(
+      res.list?.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+        tagLabel: i.label,
+      })),
+    )
   }
+
   const getList = async () => {
     const result = await getProjectMember({
       projectId: props.projectId,
@@ -247,6 +260,7 @@ const Member = (props: Props) => {
     setIsRefreshMember(false)
     getPermission()
   }
+
   const init = async () => {
     const res2 = await getAddDepartMember(props.projectId)
 
@@ -292,16 +306,11 @@ const Member = (props: Props) => {
       })
       message.success(t('common.editS'))
       getList()
+      PubSub.publish('getPeople')
     } catch (error) {
       //
     }
   }
-
-  useEffect(() => {
-    if (props.visible) {
-      getList()
-    }
-  }, [props.visible])
 
   useEffect(() => {
     if (isRefreshMember) {
@@ -313,12 +322,15 @@ const Member = (props: Props) => {
     setSearch(e.target.value)
   }
   useEffect(() => {
-    getList()
-  }, [search])
+    if (props.visible) {
+      getList()
+    }
+  }, [search, props.visible])
 
   const onClickCancel = () => {
     setIsVisible(false)
   }
+
   const handleOk = async () => {
     const values = form.getFieldsValue()
 
@@ -343,11 +355,11 @@ const Member = (props: Props) => {
     setUserDataList([])
     getList()
     setIsVisible(false)
-    PubSub.publish('member')
+    getProjectInfo({ projectId: projectInfo.id })
+    getProjectInfoValues({ projectId: projectInfo.id })
     setTimeout(() => {
       form.resetFields()
     }, 100)
-    getProjectInfo({ projectId: projectInfo.id })
   }
 
   const onChangeMember = (value: any) => {
@@ -431,11 +443,6 @@ const Member = (props: Props) => {
                 type="close"
               />
             </CloseWrap>
-            {/* <IconFont
-              onClick={props.onChangeVisible}
-              style={{ cursor: 'pointer' }}
-              type="close"
-            /> */}
           </HeaderWrap>
         }
         headerStyle={{ width: '100%' }}
@@ -443,7 +450,6 @@ const Member = (props: Props) => {
         placement="right"
         open={props.visible}
         onClose={props.onChangeVisible}
-        // visible={props.visible}
         bodyStyle={{ padding: 0 }}
         width={400}
       >

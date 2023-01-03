@@ -61,14 +61,12 @@ const TextWrap = styled.div({
 
 const WrapLeftBox = () => {
   const [t] = useTranslation()
-  const { demandInfo, getDemandInfo, updateTableParams } = useModel('demand')
+  const { demandInfo, getDemandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { projectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
-  const [schedule, setSchedule] = useState(demandInfo?.schedule)
   const [tagList, setTagList] = useState<any>([])
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -82,7 +80,6 @@ const WrapLeftBox = () => {
         name: i.tag?.content,
       })),
     )
-    setSchedule(demandInfo?.schedule)
   }, [demandInfo])
 
   const onBottom = () => {
@@ -177,25 +174,25 @@ const WrapLeftBox = () => {
           <InfoItem activeState>
             <Label>{t('common.attachment')}</Label>
             <div>
-              <UploadAttach
-                onBottom={onBottom}
-                defaultList={demandInfo?.attachment?.map((i: any) => ({
-                  url: i.attachment.path,
-                  id: i.id,
-                  size: i.attachment.size,
-                  time: i.created_at,
-                  name: i.attachment.name,
-                  suffix: i.attachment.ext,
-                  username: i.user_name ?? '--',
-                }))}
-                canUpdate
-                onC
-                del={onDeleteInfoAttach}
-                add={onAddInfoAttach}
-                addWrap={
-                  projectInfo?.projectPermissions?.filter(
-                    (i: any) => i.name === '附件上传',
-                  ).length > 0 ? (
+              {projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length > 0 && (
+                <UploadAttach
+                  onBottom={onBottom}
+                  defaultList={demandInfo?.attachment?.map((i: any) => ({
+                    url: i.attachment.path,
+                    id: i.id,
+                    size: i.attachment.size,
+                    time: i.created_at,
+                    name: i.attachment.name,
+                    suffix: i.attachment.ext,
+                    username: i.user_name ?? '--',
+                  }))}
+                  canUpdate
+                  onC
+                  del={onDeleteInfoAttach}
+                  add={onAddInfoAttach}
+                  addWrap={
                     <AddWrap
                       hasColor
                       style={{
@@ -211,11 +208,12 @@ const WrapLeftBox = () => {
                       />
                       <div>{t('p2.addAdjunct')}</div>
                     </AddWrap>
-                  ) : (
-                    (null as any)
-                  )
-                }
-              />
+                  }
+                />
+              )}
+              {projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length <= 0 && <span>--</span>}
             </div>
           </InfoItem>
           <DeleteConfirm

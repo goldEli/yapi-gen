@@ -53,7 +53,7 @@ const DemandProgress = (props: Props) => {
       <Progress
         strokeColor="#43BA9A"
         style={{ color: '#43BA9A' }}
-        width={42}
+        width={props.isCard ? 38 : 42}
         type={props.isCard ? 'circle' : 'line'}
         percent={props?.value}
         format={percent => (percent === 100 ? '100%' : `${percent}%`)}

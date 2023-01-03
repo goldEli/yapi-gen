@@ -133,7 +133,7 @@ export const Container = () => {
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
-        {userInfo?.company_permissions?.length && (
+        {userInfo?.company_permissions?.length > 0 && (
           <Wrap>
             <Side />
             <Main>
@@ -145,7 +145,7 @@ export const Container = () => {
             />
           </Wrap>
         )}
-        {!userInfo?.company_permissions?.length && <NoPermission />}
+        {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
       </ConfigProvider>
     </KitConfigProvider>
   )

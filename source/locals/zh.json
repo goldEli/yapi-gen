@@ -11,7 +11,9 @@
     "a9": "请输入评论",
     "quick": "当前您未加入任何项目，创建一个吧~",
     "kongT": "私有项目需求，你暂无权访问！",
-    "kongP": "查看我的项目"
+    "kongP": "查看我的项目",
+    "kongK": "@公司成员",
+    "kongN": "选择富文本中的@可通知相关人员"
   },
   "title": {
     "text": "不支持文件格式",
@@ -95,7 +97,10 @@
     "noDataFilter": "暂无数据，请重新调整一下筛选参数试试",
     "startTimeComputedEndTime": "预计开始时间不能大于预计结束时间！",
     "endTimeComputedStartTime": "预计结束时间不能小于预计开始时间！",
-    "changeProjectSuccess": "项目切换成功！"
+    "changeProjectSuccess": "项目切换成功！",
+    "haveNoSuccessAttach": "还有未上传成功的附件！",
+    "reviewModeChangeSuccess": "浏览模式切换成功！",
+    "permissionNull": "权限组不能为空！"
   },
   "p2": {
     "del": "确认删除该附件",

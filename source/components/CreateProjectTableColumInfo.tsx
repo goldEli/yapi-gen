@@ -140,6 +140,7 @@ export const useDynamicColumns = (state: any) => {
               item={record}
               onUpdate={onUpdate}
               isMineOrHis
+              projectId={state.projectId}
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
@@ -211,6 +212,7 @@ export const useDynamicColumns = (state: any) => {
                   onTap={state.updatePriority}
                   onHide={onHide}
                   record={record}
+                  projectId={state.projectId}
                 />
               )
             }
@@ -264,6 +266,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
+            projectId={state.projectId}
           >
             {text || '--'}
           </TableQuickEdit>
@@ -284,6 +287,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
+            projectId={state.projectId}
           >
             <HiddenText>
               <OmitText
@@ -312,6 +316,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
+            projectId={state.projectId}
           >
             <HiddenText>
               <OmitText
@@ -391,6 +396,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
+            projectId={state.projectId}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -451,6 +457,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={onUpdate}
             isMineOrHis
+            projectId={state.projectId}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -483,6 +490,7 @@ export const useDynamicColumns = (state: any) => {
             onUpdate={onUpdate}
             value={['datetime']}
             isMineOrHis
+            projectId={state.projectId}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -505,6 +513,7 @@ export const useDynamicColumns = (state: any) => {
             onUpdate={onUpdate}
             value={['datetime']}
             isMineOrHis
+            projectId={state.projectId}
           >
             <span>{text || '--'}</span>
           </TableQuickEdit>
@@ -567,6 +576,7 @@ export const useDynamicColumns = (state: any) => {
               isCustom
               isMineOrHis
               type={record[element.value]?.attr}
+              projectId={state.projectId}
             >
               <span>{getText(record[element.value]?.attr, text)}</span>
             </TableQuickEdit>

@@ -1,7 +1,6 @@
+// 需求卡片
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
-// 需求卡片
-
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -18,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import DemandProgress from './DemandProgress'
 import MoreDropdown from './MoreDropdown'
+import IconFont from './IconFont'
 
 interface Props {
   item: any
@@ -40,18 +40,12 @@ const Wrap = styled.div({
   overflow: 'hidden',
   '.dropdownIcon': {
     position: 'absolute',
-    top: 8,
+    top: 16,
     right: 0,
   },
   '&: hover': {
     border: '1px solid #2877ff',
     borderLeft: 'none',
-    '.dropdownIcon': {
-      position: 'absolute',
-      top: 16,
-      right: 0,
-      visibility: 'visible',
-    },
   },
 })
 
@@ -114,6 +108,10 @@ const DemandCard = (props: Props) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  // 控制移入移除显示三个点
+  const [isHoverVisible, setIsHoverVisible] = useState(false)
+  // 是否显示子需求表格
+  const [isShowChild, setIsShowChild] = useState(false)
   const { projectInfo, colorList } = useModel('project')
   const hasEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -158,9 +156,33 @@ const DemandCard = (props: Props) => {
     return <Menu items={menuItems} />
   }
 
+  const childrenIcon = () => {
+    return (
+      <ClickWrap
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
+      >
+        <IconFont
+          type="apartment"
+          style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+        />
+        {props.item?.childCount}
+      </ClickWrap>
+    )
+  }
+
   return (
     <div>
-      <Wrap>
+      <Wrap
+        onMouseEnter={() => setIsHoverVisible(true)}
+        onMouseLeave={() => {
+          setIsHoverVisible(false)
+          setIsMoreVisible(false)
+        }}
+      >
         <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
           <CategoryWrap
@@ -214,7 +236,8 @@ const DemandCard = (props: Props) => {
                 hasEdit &&
                 props.item?.usersNameIds?.includes(userInfo?.id) &&
                 props.item.status.is_start !== 1 &&
-                props.item.status.is_end !== 1
+                props.item.status.is_end !== 1 &&
+                isHoverVisible
               ) && (
                 <Progress
                   strokeColor="#43BA9A"
@@ -229,7 +252,8 @@ const DemandCard = (props: Props) => {
               {hasEdit &&
                 props.item?.usersNameIds?.includes(userInfo?.id) &&
                 props.item.status.is_start !== 1 &&
-                props.item.status.is_end !== 1 && (
+                props.item.status.is_end !== 1 &&
+                isHoverVisible && (
                   <div style={{ cursor: 'pointer' }}>
                     <DemandProgress
                       value={props.item?.schedule}
@@ -240,19 +264,24 @@ const DemandCard = (props: Props) => {
                     />
                   </div>
                 )}
-              <ChildDemandTable
-                value={props.item?.childCount}
-                row={props.item}
-                hasIcon
-              />
+              {isHoverVisible ? (
+                <ChildDemandTable
+                  value={props.item?.childCount}
+                  row={props.item}
+                  hasIcon
+                />
+              ) : (
+                childrenIcon()
+              )}
             </Space>
           </AvatarWrap>
         </MainWrap>
-        {!(hasDel && hasEdit) && (
+        {!(hasDel && hasEdit) && isHoverVisible && (
           <MoreDropdown
             isMoreVisible={isMoreVisible}
             menu={menu()}
             onChangeVisible={setIsMoreVisible}
+            isDemandCard
           />
         )}
       </Wrap>

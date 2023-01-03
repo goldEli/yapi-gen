@@ -1,6 +1,5 @@
-/* eslint-disable require-unicode-regexp */
 // 项目列表页左侧
-
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-undefined */

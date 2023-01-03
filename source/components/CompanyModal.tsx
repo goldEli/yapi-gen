@@ -22,15 +22,20 @@ const CompanyModal = (props: Props) => {
     companyUserId: '',
   })
 
+  // 初始化获取公司信息
   const init = async () => {
     const res2 = await getCompanyList()
     setActiveId(userInfo.company_id)
     setCompanyList(res2.data)
   }
-  useEffect(() => {
-    init()
-  }, [userInfo])
 
+  useEffect(() => {
+    if (props.visible) {
+      init()
+    }
+  }, [props.visible])
+
+  // 切换公司
   const cutCompany = (value: any) => {
     setActiveId(value.id)
     setCompanyParams({
@@ -38,6 +43,8 @@ const CompanyModal = (props: Props) => {
       companyUserId: value.companyUserId,
     })
   }
+
+  // 确认按钮
   const confirm = async () => {
     if (activeId === userInfo.company_id) {
       return
@@ -51,6 +58,7 @@ const CompanyModal = (props: Props) => {
       //
     }
   }
+
   return (
     <CommonModal
       isVisible={props.visible}

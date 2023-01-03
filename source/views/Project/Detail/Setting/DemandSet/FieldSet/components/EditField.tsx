@@ -213,6 +213,8 @@ const EditFiled = (props: Props) => {
         obj.id = props?.item?.id
         await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
+        onReset()
+        props?.onUpdate()
       } catch (error) {
         //
       }
@@ -220,13 +222,12 @@ const EditFiled = (props: Props) => {
       try {
         await addStoryConfigField(obj)
         message.success(t('common.createSuccess'))
+        onReset()
+        props?.onUpdate()
       } catch (error) {
         //
       }
     }
-
-    onReset()
-    props?.onUpdate()
   }
 
   const onChangeValue = (e: any, idx: number) => {

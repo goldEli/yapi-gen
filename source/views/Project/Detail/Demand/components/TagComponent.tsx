@@ -75,6 +75,7 @@ const ColorWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  cursor: 'pointer',
   svg: {
     color: 'white',
   },
@@ -112,7 +113,7 @@ interface TagProps {
 
 const TagBox = (props: TagProps) => {
   const [t] = useTranslation()
-  const { tagList } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
@@ -128,14 +129,17 @@ const TagBox = (props: TagProps) => {
 
   useEffect(() => {
     setArr(
-      tagList?.filter(
-        (i: any) =>
-          !props.checkedTags?.find(
-            (k: any) => k.content === i.content && i.color === k.color,
-          ),
-      ),
+      projectInfoValues
+        ?.filter((i: any) => i.key === 'tag')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+        ?.filter(
+          (i: any) =>
+            !props.checkedTags?.find(
+              (k: any) => k.content === i.content && i.color === k.color,
+            ),
+        ),
     )
-  }, [tagList, props.checkedTags])
+  }, [projectInfoValues, props.checkedTags])
 
   const onCreateTag = () => {
     props.tap?.(value)
@@ -156,7 +160,12 @@ const TagBox = (props: TagProps) => {
 
   const onPressEnter = (val: any) => {
     setValue(val)
-    setArr(tagList.filter((i: any) => i?.content?.includes(val)))
+    setArr(
+      projectInfoValues
+        ?.filter((i: any) => i.key === 'tag')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+        .filter((i: any) => i?.content?.includes(val)),
+    )
   }
 
   const onHasTagAdd = async (item: any) => {
@@ -229,7 +238,6 @@ interface Props {
 
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
-  const { getTagList } = useModel('project')
   const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand } =
     useModel('demand')
   const [newTag, setNewTag] = useState<any>('')
@@ -277,7 +285,6 @@ const TagComponent = (props: Props) => {
         getDemandInfo({ projectId, id: demandInfo?.id })
         setNewTag('')
         setIsChooseColor(false)
-        getTagList({ projectId })
         setIsClear(false)
       } catch (error) {
         //
@@ -307,7 +314,6 @@ const TagComponent = (props: Props) => {
         })
         message.success(t('common.deleteSuccess'))
         getDemandInfo({ projectId, id: demandInfo?.id })
-        getTagList({ projectId })
       } catch (error) {
         //
       }

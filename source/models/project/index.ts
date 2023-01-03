@@ -20,7 +20,6 @@ export default () => {
   const [memberList, setMemberList] = useState<any>([])
   const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [filterAll, setFilterAll] = useState<any>([])
-  const [isRefreshIterateList, setIsRefreshIterateList] = useState<any>(false)
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
@@ -39,6 +38,8 @@ export default () => {
   const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
   // 需求列表筛选项值计数
   const [filterKeys, setFilterKeys] = useState<any>([])
+  // 关于项目的下拉数据
+  const [projectInfoValues, setProjectInfoValues] = useState<any>([])
 
   const colorList = [
     { key: '#2877FF', bgColor: '#F2F7FF' },
@@ -135,6 +136,12 @@ export default () => {
     return result
   }
 
+  // 获取项目的下拉数据
+  const getProjectInfoValues = async (params: any) => {
+    const result = await services.project.getProjectInfoValues(params)
+    setProjectInfoValues(result)
+  }
+
   const getMemberList = async (params: any) => {
     const result = await services.project.getProjectMember(params)
     setMemberList(result)
@@ -213,8 +220,6 @@ export default () => {
     isRefreshMember,
     setFilterAll,
     filterAll,
-    setIsRefreshIterateList,
-    isRefreshIterateList,
     setProjectInfo,
     setTagList,
     colorList,
@@ -270,5 +275,7 @@ export default () => {
     isRefreshGroup,
     setFilterKeys,
     filterKeys,
+    getProjectInfoValues,
+    projectInfoValues,
   }
 }

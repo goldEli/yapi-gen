@@ -125,12 +125,6 @@ const ProjectInfo = () => {
   const onUpdate = () => {
     getProjectInfo({ projectId: projectInfo.id })
   }
-
-  useEffect(() => {
-    PubSub.subscribe('member', () => {
-      getProjectInfo({ projectId: localStorage.getItem('memberId') })
-    })
-  }, [])
   return (
     <div style={{ padding: 16, height: '100%' }}>
       <EditProject

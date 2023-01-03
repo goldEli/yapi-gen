@@ -1,5 +1,5 @@
 // 需求主页-左侧需求分类
-
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-duplicate-imports */
@@ -144,6 +144,7 @@ const TreeItem = (props: any) => {
     close()
   }
 
+  // 删除需求分类确认
   const onConfirm = async () => {
     const news = await delTreeList({
       projectId: props.projectId,
@@ -157,12 +158,14 @@ const TreeItem = (props: any) => {
     form.resetFields()
   }
 
+  // 编辑分类关闭
   const editClose = () => {
     close()
     props.onRest()
     form.resetFields()
   }
 
+  // 编辑分类确认
   const editConfirm = async () => {
     const tag = visibleEditText === 'add'
     const data: any = await form.validateFields()
@@ -185,6 +188,7 @@ const TreeItem = (props: any) => {
     close()
     props.onRest()
   }
+
   const content = (
     <div
       style={{
@@ -343,18 +347,17 @@ const TreeItem = (props: any) => {
 const WrapLeft = (props: any, ref: any) => {
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
-
   const [t] = useTranslation()
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { setSelectTreeData } = useModel('project')
+  const { setSelectTreeData, getProjectInfoValues } = useModel('project')
+
   const init = async () => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
     setSelectTreeData(filterTreeData2(res)[0].children)
     setTreeData(filterTreeData(res))
-
     setShow(true)
   }
 
@@ -365,6 +368,8 @@ const WrapLeft = (props: any, ref: any) => {
         <TreeItem
           onRest={() => {
             init()
+            getProjectInfoValues({ projectId: props.projectId })
+            props.onUpdate()
           }}
           projectId={props.projectId}
           {...item}
@@ -396,7 +401,7 @@ const WrapLeft = (props: any, ref: any) => {
     const end = info.node.title.props
     const isDropToGap = info.dropToGap
 
-    if (start.pid === 0) {
+    if (start.pid === 0 || end.id === -1) {
       return
     }
     if (end.grade === 4 && !isDropToGap) {
@@ -431,7 +436,7 @@ const WrapLeft = (props: any, ref: any) => {
         })
       }
     } else {
-      if (end.pid === 0) {
+      if (end.pid === 0 || end.id === -1) {
         return
       }
       await moveTreeList({
@@ -442,6 +447,7 @@ const WrapLeft = (props: any, ref: any) => {
     }
 
     init()
+    getProjectInfoValues({ projectId: props.projectId })
   }
 
   const onSelect = (selectedKeys: any, e: any) => {
@@ -450,14 +456,15 @@ const WrapLeft = (props: any, ref: any) => {
         title: { props: selectLine },
       },
     } = e
-
     context.changeKey(selectLine.id)
     dispatch(changeId(selectLine.id))
   }
 
   useEffect(() => {
-    init()
-  }, [])
+    if (props.isShowLeft) {
+      init()
+    }
+  }, [props.isShowLeft])
 
   useImperativeHandle(ref, () => {
     return {

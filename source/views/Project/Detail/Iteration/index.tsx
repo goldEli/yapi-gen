@@ -137,7 +137,7 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, filterAll } = useModel('project')
+  const { projectInfo, getProjectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -241,49 +241,51 @@ const IterationWrap = () => {
   }
 
   const getSearchKey = async (key?: any, typeVal?: number) => {
+    const filterFelid = projectInfo?.filterFelid
     if (key && typeVal === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && typeVal === 1) {
-      const addList = filterAll?.filter((item: any) => item.content === key)
+      const addList = filterFelid?.filter((item: any) => item.content === key)
 
       setSearchList([...searchList, ...addList])
 
       return
     }
 
-    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(projectInfo?.filterBasicsList)
-    setFilterSpecialList(projectInfo?.filterSpecialList)
-    setFilterCustomList(projectInfo?.filterCustomList)
-    setPlainOptions(projectInfo.plainOptions)
-    setPlainOptions2(projectInfo.plainOptions2)
-    setPlainOptions3(projectInfo.plainOptions3)
-    setTitleList(projectInfo.titleList)
-    setTitleList2(projectInfo.titleList2)
-    setTitleList3(projectInfo.titleList3)
-    setAllTitleList([
-      ...projectInfo.titleList,
-      ...projectInfo.titleList2,
-      ...projectInfo.titleList3,
-    ])
   }
 
   useEffect(() => {
     setFilterHeightIterate(60)
+    // 迭代详情页面调用迭代详情
     if (iterateId) {
       getIterateInfo({ projectId, id: iterateId })
     }
   }, [])
 
   useEffect(() => {
-    if (projectInfo?.id && filterAll) {
+    if (projectInfo?.id) {
       getSearchKey()
+      setFilterBasicsList(projectInfo?.filterBasicsList)
+      setFilterSpecialList(projectInfo?.filterSpecialList)
+      setFilterCustomList(projectInfo?.filterCustomList)
+      setPlainOptions(projectInfo.plainOptions)
+      setPlainOptions2(projectInfo.plainOptions2)
+      setPlainOptions3(projectInfo.plainOptions3)
+      setTitleList(projectInfo.titleList)
+      setTitleList2(projectInfo.titleList2)
+      setTitleList3(projectInfo.titleList3)
+      setAllTitleList([
+        ...projectInfo.titleList,
+        ...projectInfo.titleList2,
+        ...projectInfo.titleList3,
+      ])
     }
-  }, [projectInfo, filterAll])
+  }, [projectInfo])
 
   const onChangeIdx = (val: string) => {
     const params = encryptPhp(
@@ -294,9 +296,6 @@ const IterationWrap = () => {
 
   const onChangeOperation = (item: any) => {
     setOperationDetail(item)
-    if (item.id) {
-      getIterateInfo({ projectId, id: item?.id })
-    }
   }
 
   const onDeleteConfirm = async () => {
@@ -333,6 +332,7 @@ const IterationWrap = () => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
+        getProjectInfoValues({ projectId })
         setIsUpdateState(true)
       } catch (error) {
         //
@@ -511,13 +511,10 @@ const IterationWrap = () => {
       </div>
     )
   }
-  useEffect(() => {
-    PubSub.subscribe('num', () => {
-      if (iterateId) {
-        getIterateInfo({ projectId, id: iterateId })
-      }
-    })
-  }, [])
+
+  const onUpdate = (value: any) => {
+    setIsUpdateState(value)
+  }
 
   return (
     <div style={{ height: 'calc(100% - 64px)' }}>
@@ -525,7 +522,7 @@ const IterationWrap = () => {
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
         id={operationDetail.id}
-        onUpdate={setIsUpdateState}
+        onUpdate={onUpdate}
       />
       {content()}
     </div>

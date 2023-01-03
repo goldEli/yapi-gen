@@ -33,7 +33,7 @@ interface Props {
 
 const IterationMain = (props: Props) => {
   const [t] = useTranslation()
-  const [isGrid, setIsGrid] = useState(false)
+  const [isGrid, setIsGrid] = useState(0)
   const [isDemandVisible, setIsDemandVisible] = useState(false)
   const [demandItem, setDemandItem] = useState<any>({})
   const [isShowLeft, setIsShowLeft] = useState(true)
@@ -57,7 +57,7 @@ const IterationMain = (props: Props) => {
   const [searchItems, setSearchItems] = useState({})
   const [isSpinning, setIsSpinning] = useState(false)
   const getList = async (
-    state: boolean,
+    state: any,
     item: any,
     searchParamsObj: any,
     updateState?: boolean,
@@ -141,7 +141,7 @@ const IterationMain = (props: Props) => {
     }
   }, [props.updateState, currentDetail])
 
-  const onChangeGrid = (val: boolean) => {
+  const onChangeGrid = (val: any) => {
     setIsGrid(val)
     setDataList({ list: undefined })
     if (currentDetail?.id) {

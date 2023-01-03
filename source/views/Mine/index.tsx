@@ -97,7 +97,7 @@ const MineBox = () => {
     setQuickCreateVisible(true)
   }
 
-  // 获取公司员工
+  // 获取公司员工 -- 用于创建需求抄送人
   const getStaffData = async () => {
     const options = await getStaffList({ all: 1 })
     setSelectAllStaffData(options)

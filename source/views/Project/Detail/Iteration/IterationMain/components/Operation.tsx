@@ -21,6 +21,7 @@ import IterationStatus from '../../components/IterationStatus'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
+import { getSearchField } from '@/services/mine'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -54,7 +55,7 @@ const IconWrap = styled(IconFont)<{ color?: string }>(
 )
 
 interface Props {
-  isGrid: boolean
+  isGrid: any
   onChangeGrid(val: boolean): void
   onChangeIsShowLeft?(): void
   onIsUpdateList?(val: boolean): void
@@ -77,7 +78,7 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { filterAll, projectInfo } = useModel('project')
+  const { projectInfo, getProjectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -102,6 +103,8 @@ const Operation = (props: Props) => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: props?.currentDetail?.id })
+        // 更新项目信息-迭代
+        getProjectInfoValues({ projectId })
         props.onIsUpdateList?.(true)
       } catch (error) {
         //
@@ -133,19 +136,20 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
+    const filterFelid = projectInfo?.filterFelid
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const addList = filterAll?.filter((item: any) => item.content === key)
+      const addList = filterFelid?.filter((item: any) => item.content === key)
 
       setSearchList([...searchList, ...addList])
 
       return
     }
 
-    const arr = filterAll?.filter((item: any) => item.isDefault === 1)
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
     setFilterBasicsList(projectInfo?.filterBasicsList)
@@ -154,8 +158,10 @@ const Operation = (props: Props) => {
   }
 
   useEffect(() => {
-    getSearchKey()
-  }, [projectInfo, filterAll])
+    if (projectInfo?.id) {
+      getSearchKey()
+    }
+  }, [projectInfo])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)

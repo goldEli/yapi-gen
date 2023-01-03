@@ -10,7 +10,6 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   PaginationWrap,
   StaffTableWrap,
-  SetButton,
   tabCss,
   TabsHehavior,
   TabsItem,
@@ -18,13 +17,12 @@ import {
   StaffTableWrap2,
   ShowWrap,
   TableWrap,
-  IconFontWrap,
   HoverWrap,
   DividerWrap,
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Dropdown, Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -133,10 +131,9 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
-  const { getIterateSelectList } = useModel('iterate')
+  const { getProjectInfo, projectInfo, getProjectInfoValues } =
+    useModel('project')
   const {
-    getField,
-    getSearchField,
     updateDemandStatus,
     updatePriorityStatus,
     getMineNoFinishList,
@@ -195,6 +192,7 @@ const CommonNeed = (props: any) => {
     finishAt: [],
   })
   const onSearch = (e: any, customField: any) => {
+    setPage(1)
     setSearchGroups({
       statusId: e.status,
       priorityId: e.priority,
@@ -218,6 +216,7 @@ const CommonNeed = (props: any) => {
   const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
     setOrder(orderVal)
+    setPage(1)
   }
   const init = async (updateState?: boolean, pageNumber?: any) => {
     if (!updateState) {
@@ -285,7 +284,6 @@ const CommonNeed = (props: any) => {
   const showEdit = async (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
   const showDel = (record: any) => {
@@ -301,6 +299,7 @@ const CommonNeed = (props: any) => {
     updatePriority,
     init,
     plainOptions3,
+    projectId: props.id,
   })
 
   const selectColum: any = useMemo(() => {
@@ -331,8 +330,33 @@ const CommonNeed = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
+  const getSearchKey = async (key?: any, type?: number) => {
+    const filterFelid = projectInfo?.filterFelid
+    if (key && type === 0) {
+      setSearchList(searchList.filter((item: any) => item.content !== key))
+      return
+    }
+    if (key && type === 1) {
+      const addList = filterFelid.filter((item: any) => item.content === key)
+
+      setSearchList([...searchList, ...addList])
+
+      return
+    }
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
+
+    setSearchList(arr)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
+    setIsRefresh(false)
+  }
+
   const getShowkey = async () => {
-    const res2 = await getField(props.id)
+    if (props.id) {
+      await getProjectInfoValues({ projectId: props.id })
+    }
+    const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
     setPlainOptions2(res2.plainOptions2)
     setPlainOptions3(res2.plainOptions3)
@@ -343,32 +367,6 @@ const CommonNeed = (props: any) => {
     setIsRefresh(false)
   }
 
-  const getSearchKey = async (key?: any, type?: number) => {
-    if (key && type === 0) {
-      setSearchList(searchList.filter((item: any) => item.content !== key))
-      return
-    }
-    if (key && type === 1) {
-      const res = await getSearchField(props.id)
-      const addList = res.filterAllList.filter(
-        (item: any) => item.content === key,
-      )
-
-      setSearchList([...searchList, ...addList])
-
-      return
-    }
-
-    const res = await getSearchField(props.id)
-    const arr = res?.filterAllList?.filter((item: any) => item.isDefault === 1)
-
-    setSearchList(arr)
-    setFilterBasicsList(res?.filterBasicsList)
-    setFilterSpecialList(res?.filterSpecialList)
-    setFilterCustomList(res?.filterCustomList)
-    setIsRefresh(false)
-  }
-
   const onChangePage = (newPage: any) => {
     setPage(newPage)
   }
@@ -376,30 +374,30 @@ const CommonNeed = (props: any) => {
     setPagesize(size)
   }
   const onPressEnter = (value: any) => {
+    setPage(1)
     setKeyword(value)
   }
 
   useEffect(() => {
-    init()
-  }, [page, pagesize])
-
-  useEffect(() => {
-    setPage(1)
     init(false, 1)
-  }, [keyword, orderKey, order, props.id, searchGroups, isMany])
+  }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
 
+  // 监听项目id变化，更新项目信息
   useEffect(() => {
-    getSearchKey()
     getShowkey()
   }, [props.id])
 
   useEffect(() => {
+    if (projectInfo?.id) {
+      getSearchKey()
+    }
+  }, [projectInfo])
+
+  // 监听语言变化及是否需要更新创建
+  useEffect(() => {
     if (isRefresh || isUpdateCreate) {
       init()
       getShowkey()
-      if (props?.id) {
-        getSearchKey()
-      }
     }
   }, [isRefresh, isUpdateCreate])
 
@@ -456,6 +454,8 @@ const CommonNeed = (props: any) => {
   const onChangeMany = (state: boolean) => {
     setIsMany(state)
     setIsVisibleFormat(false)
+    setPage(1)
+    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   const menuType = (
@@ -539,16 +539,20 @@ const CommonNeed = (props: any) => {
                 </HoverWrap>
               </>
             )}
-            <DividerWrap type="vertical" />
-            <DropDownMenu
-              menu={menu}
-              icon="settings"
-              isVisible={isVisibleFields}
-              onChangeVisible={setIsVisibleFields}
-              isActive={isModalVisible}
-            >
-              <div>{t('common.tableFieldSet')}</div>
-            </DropDownMenu>
+            {props.id !== 0 && (
+              <>
+                <DividerWrap type="vertical" />
+                <DropDownMenu
+                  menu={menu}
+                  icon="settings"
+                  isVisible={isVisibleFields}
+                  onChangeVisible={setIsVisibleFields}
+                  isActive={isModalVisible}
+                >
+                  <div>{t('common.tableFieldSet')}</div>
+                </DropDownMenu>
+              </>
+            )}
           </Space>
         </SearchWrap>
       </TabsHehavior>
@@ -655,18 +659,20 @@ const CommonNeed = (props: any) => {
         </PaginationWrap>
       )}
 
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={isModalVisible}
-        onClose={close2}
-        getCheckList={getCheckList}
-      />
+      {props.id > 0 && (
+        <OptionalFeld
+          allTitleList={allTitleList}
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          plainOptions3={plainOptions3}
+          checkList={titleList}
+          checkList2={titleList2}
+          checkList3={titleList3}
+          isVisible={isModalVisible}
+          onClose={close2}
+          getCheckList={getCheckList}
+        />
+      )}
 
       <EditDemand
         visible={isVisible}

@@ -12,7 +12,7 @@ import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Divider, Popover, Space, Tooltip } from 'antd'
+import { Popover, Space, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
@@ -20,7 +20,6 @@ import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
 import { useLocation } from 'react-router-dom'
-import { getProjectInfo } from '@/services/project'
 import { getSearchField } from '@/services/mine'
 
 const OperationWrap = styled.div({
@@ -138,9 +137,8 @@ const Operation = (props: Props) => {
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
   const {
-    filterAll,
     projectInfo,
-    categoryList,
+    projectInfoValues,
     colorList,
     setFilterParamsModal,
     setFilterKeys,
@@ -219,34 +217,31 @@ const Operation = (props: Props) => {
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
-    if (!props.pid) {
-      return
-    }
-    const res = await getSearchField(props.pid)
+    const filterFelid = projectInfo?.filterFelid
 
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
       return
     }
     if (key && type === 1) {
-      const addList = res.filterAllList?.filter(
-        (item: any) => item.content === key,
-      )
+      const addList = filterFelid?.filter((item: any) => item.content === key)
       setSearchList([...searchList, ...addList])
 
       return
     }
-    const arr = res.filterAllList?.filter((item: any) => item.isDefault === 1)
+    const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
-    setFilterBasicsList(res?.filterBasicsList)
-    setFilterSpecialList(res?.filterSpecialList)
-    setFilterCustomList(res?.filterCustomList)
+    setFilterBasicsList(projectInfo?.filterBasicsList)
+    setFilterSpecialList(projectInfo?.filterSpecialList)
+    setFilterCustomList(projectInfo?.filterCustomList)
   }
 
   useEffect(() => {
-    getSearchKey()
-  }, [projectInfo, filterAll, location.key, filterState])
+    if (projectInfo?.id) {
+      getSearchKey()
+    }
+  }, [projectInfo])
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
@@ -275,23 +270,26 @@ const Operation = (props: Props) => {
         minWidth: i18n.language === 'zh' ? 110 : 151,
       }}
     >
-      {categoryList?.list?.map((k: any) => (
-        <LiWrap
-          key={k.id}
-          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-          onClick={(e: any) => onChangeCategory(e, k)}
-        >
-          <CanOperationCategory
-            style={{ marginRight: 0 }}
-            color={k.color}
-            bgColor={
-              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-            }
+      {projectInfoValues
+        ?.filter((i: any) => i.key === 'category')[0]
+        ?.children?.filter((i: any) => i.status === 1)
+        ?.map((k: any) => (
+          <LiWrap
+            key={k.id}
+            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+            onClick={(e: any) => onChangeCategory(e, k)}
           >
-            <span className="title">{k.name}</span>
-          </CanOperationCategory>
-        </LiWrap>
-      ))}
+            <CanOperationCategory
+              style={{ marginRight: 0 }}
+              color={k.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+            >
+              <span className="title">{k.content}</span>
+            </CanOperationCategory>
+          </LiWrap>
+        ))}
     </div>
   )
 
@@ -443,7 +441,7 @@ const Operation = (props: Props) => {
           />
         </div>
       </OperationWrap>
-      {filterState ? null : (
+      {!filterState && (
         <TableFilter
           noNeed
           onFilter={getSearchKey}

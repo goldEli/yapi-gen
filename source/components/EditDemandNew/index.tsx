@@ -18,7 +18,6 @@ import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import PubSub from 'pubsub-js'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -173,6 +172,7 @@ const EditDemand = (props: Props) => {
     filterParamsModal,
     setFilterParamsModal,
     getPriorityList,
+    getProjectInfoValues,
   } = useModel('project')
   const {
     setCreateCategory,
@@ -417,11 +417,10 @@ const EditDemand = (props: Props) => {
       })
       message.success(t('common.createSuccess'))
     }
-    if (props.iterateId) {
-      PubSub.publish('num')
+    // 保存数据后更新项目信息-用于更新标签
+    if (projectId) {
+      getProjectInfoValues({ projectId })
     }
-    // 更新父需求列表
-    getList()
     // 是否是快捷创建，是则要刷新相应的列表接口
     if (props?.isQuickCreate) {
       setIsUpdateCreate(true)
@@ -700,6 +699,7 @@ const EditDemand = (props: Props) => {
               isQuickCreate={props?.isQuickCreate}
               fieldsList={fieldsList}
               parentId={props.parentId}
+              notGetPath={props.notGetPath}
             />
           </ModalContent>
         )}

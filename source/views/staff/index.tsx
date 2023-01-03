@@ -73,7 +73,6 @@ export const DataWrap = styled.div({
 
 const Staff = () => {
   const asyncSetTtile = useSetTitle()
-
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
@@ -296,15 +295,11 @@ const Staff = () => {
     setPage(1)
     setKeyword(value)
   }
-  useEffect(() => {
-    init()
-  }, [page, pagesize])
 
   useEffect(() => {
     setAllTitleList([...titleList, ...titleList2])
-    setPage(1)
     init()
-  }, [keyword, searchGroups, orderKey, order])
+  }, [keyword, searchGroups, orderKey, order, page, pagesize])
 
   const rest = debounce(
     async () => {

@@ -7,18 +7,10 @@
 /* eslint-disable complexity */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import {
-  Form,
-  Select,
-  Button,
-  Popover,
-  Collapse,
-  Input,
-  TreeSelect,
-} from 'antd'
+import { Form, Select, Popover, Collapse, Input, TreeSelect } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
@@ -225,6 +217,7 @@ export const NumericInput = (props: any) => {
     </>
   )
 }
+
 export const NumericInput2 = (props: any) => {
   const [t] = useTranslation()
   const { value, onChange, onPress } = props
@@ -248,7 +241,6 @@ export const NumericInput2 = (props: any) => {
         allowClear
         style={{ width: '100px', border: 'none' }}
       />
-      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
       <Input
         type="number"
         placeholder={t('newlyAdd.pleaseValue')}
@@ -259,7 +251,6 @@ export const NumericInput2 = (props: any) => {
         onBlur={onPress}
         allowClear
       />
-      {/* <span className={danweiCss}>{t('newlyAdd.unit')}</span> */}
     </>
   )
 }
@@ -268,7 +259,7 @@ const TableFilter = (props: any) => {
   const [t, i18n] = useTranslation()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
-  const { filterKeys, setFilterKeys } = useModel('project')
+  const { filterKeys, setFilterKeys, projectInfoValues } = useModel('project')
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
@@ -471,11 +462,13 @@ const TableFilter = (props: any) => {
                         allowClear
                         optionFilterProp="label"
                         options={deWeight(
-                          i.children.map((v: any) => ({
-                            label: v.content_txt,
-                            value: v.id,
-                            id: v.id,
-                          })),
+                          projectInfoValues
+                            ?.filter((k: any) => k.key === i.key)[0]
+                            ?.children?.map((v: any) => ({
+                              label: v.content_txt,
+                              value: v.id,
+                              id: v.id,
+                            })),
                         )}
                       />
                     </Form.Item>
@@ -569,7 +562,11 @@ const TableFilter = (props: any) => {
                       <TreeSelect
                         style={{ minWidth: '200px', border: 'none' }}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                        treeData={i.children}
+                        treeData={
+                          projectInfoValues?.filter(
+                            (k: any) => k.key === 'class',
+                          )[0]?.children
+                        }
                         placeholder={t('common.pleaseSelect')}
                         treeDefaultExpandAll
                         onSelect={() => confirm(i.key)}

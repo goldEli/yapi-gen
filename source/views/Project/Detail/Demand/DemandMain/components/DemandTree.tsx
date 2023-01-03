@@ -34,7 +34,6 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import EditDemand from '@/components/EditDemandNew'
 import FloatBatch from '@/components/FloatBatch'
-import IconFont from '@/components/IconFont'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',

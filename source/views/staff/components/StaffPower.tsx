@@ -59,10 +59,6 @@ export const StaffPersonal = (props: {
   const [t] = useTranslation()
   const { data } = props
   const [roleOptions, setRoleOptions] = useState([])
-  const [info, setInfo] = useState({
-    roleId: data.user_group_id,
-    userId: data.id,
-  })
   const [infoId, setInfoId] = useState<any>(0)
   const { getRoleList } = useModel('staff')
 
@@ -80,7 +76,9 @@ export const StaffPersonal = (props: {
   }
 
   useEffect(() => {
-    init()
+    if (props.isVisible) {
+      init()
+    }
   }, [props.isVisible])
 
   const handleChange = (value: any) => {

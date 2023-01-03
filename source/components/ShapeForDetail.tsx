@@ -25,6 +25,40 @@ import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
 
+export function setValue(res: any) {
+  const form1Obj: any = {}
+  for (const key in res?.fields) {
+    if (
+      res?.fields[key].type === 'select' &&
+      res?.fields[key].true_value !== 0 &&
+      res?.fields[key].true_value !== ''
+    ) {
+      form1Obj[res?.fields[key].content] = res?.fields[key].children.some(
+        (i: any) => i.id === res?.fields[key].true_value,
+      )
+        ? res?.fields[key].true_value
+        : []
+    } else if (
+      res?.fields[key].type === 'select' &&
+      res?.fields[key].true_value === ''
+    ) {
+      form1Obj[res?.fields[key].content] = null
+    } else if (res?.fields[key].true_value === 0) {
+      form1Obj[res?.fields[key].content] = null
+    } else if (
+      res?.fields[key].type === 'select_checkbox' &&
+      res?.fields[key].true_value !== 0
+    ) {
+      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+        ? res?.fields[key].true_value
+        : []
+    } else {
+      form1Obj[res?.fields[key].content] = res?.fields[key].true_value
+    }
+  }
+  return form1Obj
+}
+
 const Right = styled.div`
   position: relative;
   box-sizing: border-box;
@@ -362,27 +396,8 @@ const ShapeContentForDetail = (props: any) => {
     })
 
     setRightList(res)
-    const form1Obj: any = {}
-    for (const key in res?.fields) {
-      if (
-        res?.fields[key].type === 'select' &&
-        res?.fields[key].true_value !== 0
-      ) {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null &&
-          res?.fields[key].children.some(
-            (i: any) => i.id === res?.fields[key].true_value,
-          )
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].true_value === 0) {
-        form1Obj[res?.fields[key].content] = ''
-      } else {
-        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
-      }
-    }
 
-    form.setFieldsValue(form1Obj)
+    form.setFieldsValue(setValue(res))
     setLoading(true)
   }
 
@@ -584,7 +599,7 @@ const ShapeContentForDetail = (props: any) => {
                           style={{ width: '100%', border: 'none' }}
                           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                           treeData={i.children[0].children}
-                          placeholder="Please select"
+                          placeholder={t('common.pleaseSelect')}
                           treeDefaultExpandAll
                         />
                       </Form.Item>

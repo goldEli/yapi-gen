@@ -1,9 +1,10 @@
-/* eslint-disable no-duplicate-imports */
+/* eslint-disable max-statements-per-line */
+/* eslint-disable require-unicode-regexp */
 // 公用富文本
-
+/* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 import '@wangeditor/editor/dist/css/style.css'
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect, forwardRef, useRef } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import {
   type IDomEditor,
@@ -19,16 +20,10 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'
-import type { SlateElement } from '@wangeditor/editor'
 import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { Popover, Tooltip } from 'antd'
 import IconFont from './IconFont'
-import { getStaffList2 } from '@/services/staff'
-
-type VideoElement = SlateElement & {
-  src: string
-  poster?: string
-}
+import Viewer from 'react-viewer'
 
 interface Props {
   value?: string
@@ -39,9 +34,58 @@ interface Props {
   color?: boolean
   autoFocus?: boolean
   at?: boolean
+  staffList?: any
+  show?: boolean
+  ref: any
 }
 
-const toolbarConfig: Partial<IToolbarConfig> = {}
+const toolbarConfig: Partial<IToolbarConfig> = {
+  toolbarKeys: [
+    'bold',
+    'underline',
+    'italic',
+    'through',
+    'color',
+    'bgColor',
+    'fontSize',
+    'fontFamily',
+    'indent',
+
+    // 'delIndent',
+    // 'justifyLeft',
+    // 'justifyRight',
+    'justifyCenter',
+    'justifyJustify',
+    'lineHeight',
+    'viewImageLink',
+
+    // 'divider',
+    'emotion',
+    'insertLink',
+    'editLink',
+    'unLink',
+    'viewLink',
+
+    // 'codeBlock',
+    'blockquote',
+    'headerSelect',
+    'todo',
+    'redo',
+    'undo',
+    'enter',
+    'bulletedList',
+    'numberedList',
+    'insertTable',
+    'uploadVideo',
+
+    // 'editVideoSize',
+    'uploadImage',
+    'customFullScreen',
+
+    // 'cancelCustomFullScreen',
+  ],
+  excludeKeys: [],
+}
 
 Boot.registerParseElemHtml({
   selector: 'v-start',
@@ -65,21 +109,26 @@ i18nAddResources('en', {
   },
 })
 
-const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
+const Wrap = styled.div<{ minHeight?: any; red?: boolean; show?: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: 6,
-    border: '1px solid #ebedf0',
     zIndex: 100,
     marginLeft: '2px',
     padding: '1px',
     '.w-e-text-container [data-slate-editor] p': {
       margin: 0,
     },
+    img: {
+      cursor: 'pointer !important',
+    },
     '.w-e-text-placeholder': {
       top: 0,
       fontStyle: 'inherit',
+    },
+    '.w-e-bar-item button': {
+      width: 'auto!important',
     },
     '&: hover': {
       borderRightWidth: 1,
@@ -89,11 +138,14 @@ const Wrap = styled.div<{ minHeight?: any; red?: boolean }>(
   },
   ({ minHeight }) => ({
     '.w-e-text-container [data-slate-editor]': {
-      minHeight: minHeight || 120,
+      minHeight: minHeight || 0,
     },
   }),
   ({ red }) => ({
     borderColor: red ? 'red' : '',
+  }),
+  ({ show }) => ({
+    border: show ? '1px solid transparent' : '1px solid #ebedf0 !important',
   }),
 )
 const GrepDiv = styled.div`
@@ -112,7 +164,15 @@ const Hov = styled(IconFont)`
     color: #2877ff;
   }
 `
+
 const EditorBox = (props: Props) => {
+  const textWrapEditor = useRef<any>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [pictureList, setPictureList] = useState({
+    imageArray: [],
+    index: 0,
+  })
+
   const [t, i18n] = useTranslation()
   const [key, setKey] = useState(1)
   const customParseLinkUrl = (url: string): string => {
@@ -126,10 +186,6 @@ const EditorBox = (props: Props) => {
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
   const [isOpen, setIsOpen] = useState(false)
-  const [plan, setPlan] = useState(false)
-  const [arr, setArr] = useState<any>(null)
-  const [focusNode, setFocusNode] = useState<any>(null)
-  const [focusOffset, setFocusOffset] = useState<any>(null)
   const editorConfig: Partial<IEditorConfig> = {
     placeholder: props.placeholder ?? t('components.pleaseContent'),
     MENU_CONF: {
@@ -209,23 +265,32 @@ const EditorBox = (props: Props) => {
     }
     setKey(oldKey => oldKey + 1)
   }
-  const init = async () => {
-    const companyList = await getStaffList2({ all: 1 })
 
-    const filterCompanyList = companyList.map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      avatar: item.avatar,
-      nickname: item.nickname,
-      positionName: null,
-      roleName: item.roleName,
-    }))
-    setArr(filterCompanyList)
+  const getText = (str: string) => {
+    return str
+      .replace(/<[^<p>]+>/g, '')
+      .replace(/<[</p>$]+>/g, '')
+      .replace(/&nbsp;/gi, '')
+      .replace(/<[^<br/>]+>/g, '')
   }
+  const isNull = (str: string) => {
+    if (str === '') {
+      return true
+    }
+    const regu = '^[ ]+$'
+    const re = new RegExp(regu)
+    return re.test(str)
+  }
+
   const onChange = (e: any) => {
-    i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
-    props.onChangeValue?.(e.getHtml().trim())
-    props.onChange?.(e.getHtml().trim())
+    if (isNull(getText(e.getHtml()))) {
+      props.onChangeValue?.('')
+      props.onChange?.('')
+    } else {
+      i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
+      props.onChangeValue?.(e.getHtml().trim())
+      props.onChange?.(e.getHtml().trim())
+    }
   }
 
   const onChange2 = (e: any) => {
@@ -254,15 +319,18 @@ const EditorBox = (props: Props) => {
     onChange2(value.name)
   }
   useEffect(() => {
-    init()
     if (editor) {
       const newEditor: NewIDomEditor = editor
       newEditor.changeEditor = changeEditor
+      if (props.show) {
+        editor.disable()
+      }
     }
     i18n.on('languageChanged', () => {
       i18nChangeLanguage(i18n.language === 'zh' ? 'zh-CN' : i18n.language)
       changeEditor(true)
     })
+
     return () => {
       if (editor === null) {
         return
@@ -272,18 +340,62 @@ const EditorBox = (props: Props) => {
     }
   }, [editor])
 
+  // toolbarConfig.excludeKeys = [
+  //   'headerSelect',
+  //   'italic',
+  //   'group-more-style',
+  // ]
+  const onGetViewPicture = (e: any) => {
+    if (e.path[0].nodeName === 'IMG') {
+      const params: any = {}
+      const oPics = textWrapEditor?.current?.getElementsByTagName('img')
+
+      params.imageArray = []
+      if (oPics) {
+        for (const element of oPics) {
+          params.imageArray.push({ src: element.src })
+        }
+        for (let i = 0; i < oPics.length; i++) {
+          if (e.path[0].src === params.imageArray[i].src) {
+            params.index = i
+          }
+        }
+      }
+      setIsVisible(true)
+      setPictureList(params)
+    }
+  }
+  useEffect(() => {
+    textWrapEditor?.current?.addEventListener('click', (e: any) =>
+      onGetViewPicture(e),
+    )
+    return textWrapEditor?.current?.removeEventListener('click', (e: any) =>
+      onGetViewPicture(e),
+    )
+  }, [])
+
   return (
-    <Wrap red={props.color} id="editorWrap" minHeight={props?.height}>
-      <Toolbar
-        key={key}
-        editor={editor}
-        defaultConfig={editConfig}
-        mode="default"
-      />
+    <Wrap
+      show={props.show}
+      ref={textWrapEditor}
+      red={props.color}
+      id="editorWrap"
+      minHeight={props?.height}
+    >
+      {!props.show && (
+        <Toolbar
+          key={key}
+          editor={editor}
+          defaultConfig={editConfig}
+          mode="default"
+        />
+      )}
+
       {props.at ? (
         <div
           style={{
             paddingLeft: '10px',
+            backgroundColor: '#ffffff',
           }}
         >
           <Popover
@@ -300,7 +412,7 @@ const EditorBox = (props: Props) => {
               isOpen ? (
                 <ChoosePerson
                   onChangeValue={obj => onAddPerson(obj)}
-                  options={arr}
+                  options={props.staffList}
                   visible={isOpen}
                 />
               ) : null
@@ -308,20 +420,36 @@ const EditorBox = (props: Props) => {
             getPopupContainer={node => node}
           >
             <GrepDiv>
-              <Hov
-                onClick={() => {
-                  setPlan(true)
+              <Tooltip
+                overlayStyle={{
+                  height: '27px',
+                  fontSize: '12px',
                 }}
-                style={{
-                  cursor: 'pointer',
-                  fontSize: '18px',
-                  color: isOpen ? '#2877ff' : '#595959',
-                }}
-                type="mention"
-              />
+                placement="bottom"
+                getPopupContainer={node => node}
+                title={t('new_p1.kongK')}
+              >
+                <Hov
+                  style={{
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    color: isOpen ? '#2877ff' : '#595959',
+                  }}
+                  type="mention"
+                />
+              </Tooltip>
             </GrepDiv>
           </Popover>
         </div>
+      ) : null}
+      {isVisible ? (
+        <Viewer
+          zIndex={9999}
+          visible={isVisible}
+          images={pictureList?.imageArray}
+          activeIndex={pictureList?.index}
+          onClose={() => setIsVisible(false)}
+        />
       ) : null}
 
       <Editor

@@ -1,3 +1,5 @@
+// 写日志
+
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -141,6 +143,7 @@ const WhiteDay = (props: any) => {
       setDefaultValue()
     }
   }, [props.editId, props.visibleEdit])
+
   const scrollToBottom = () => {
     setTimeout(() => {
       leftDom.current.scrollTo({
@@ -159,7 +162,9 @@ const WhiteDay = (props: any) => {
     setColorState(false)
     return Promise.resolve()
   }
-
+  if (!props.visibleEdit) {
+    return null
+  }
   return (
     <CommonModal
       width={784}
@@ -222,7 +227,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor height={178} autoFocus />
+            <Editor at height={178} autoFocus />
           </Form.Item>
           <Form.Item
             style={{
@@ -258,7 +263,9 @@ const WhiteDay = (props: any) => {
             label={<LabelTitle title={t('common.copySend')} />}
             name="people"
           >
-            <ChoosePeople initValue={peopleValue} />
+            {props.visibleEdit ? (
+              <ChoosePeople initValue={peopleValue} />
+            ) : null}
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}
@@ -286,7 +293,9 @@ const WhiteDay = (props: any) => {
             label={<LabelTitle title={t('p2.managingDemand')} />}
             name="needs"
           >
-            <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+            {props.visibleEdit ? (
+              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+            ) : null}
           </Form.Item>
         </Form>
       </div>

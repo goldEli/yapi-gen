@@ -154,7 +154,7 @@ const WrapLeft = (props: Props) => {
     isRefreshList,
     isUpdateList,
   } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo, getProjectInfoValues } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -339,6 +339,7 @@ const WrapLeft = (props: Props) => {
         })
         message.success(t('common.editS'))
         getList()
+        getProjectInfoValues({ projectId })
       } catch (error) {
         //
       }
@@ -360,6 +361,7 @@ const WrapLeft = (props: Props) => {
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
       getList({})
+      getProjectInfoValues({ projectId })
     } catch (error) {
       //
     }

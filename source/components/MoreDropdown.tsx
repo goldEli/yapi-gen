@@ -5,18 +5,22 @@ import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
 import IconFont from './IconFont'
 
-const DropdownWrap = styled(Dropdown)({
-  visibility: 'hidden',
-  cursor: 'pointer',
-  '&: hover': {
-    svg: {
-      color: '#2877ff',
+const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
+  {
+    cursor: 'pointer',
+    '&: hover': {
+      svg: {
+        color: '#2877ff',
+      },
+    },
+    '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+      textAlign: 'left',
     },
   },
-  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
-    textAlign: 'left',
-  },
-})
+  ({ isDemandCard }) => ({
+    visibility: isDemandCard ? 'visible' : 'hidden',
+  }),
+)
 
 interface Props {
   isMoreVisible?: any
@@ -27,11 +31,14 @@ interface Props {
   color?: any
   // 是否是子表格
   hasChild?: any
+  // 需求卡片默认显示
+  isDemandCard?: any
 }
 
 const MoreDropdown = (props: Props) => {
   return (
     <DropdownWrap
+      isDemandCard={props?.isDemandCard}
       destroyPopupOnHide
       key={
         props.isMoreVisible && !props?.hasChild

@@ -47,7 +47,6 @@ const CommonInput = (props: Props) => {
       ref={props?.ref}
       style={{ width: props.width || 240 }}
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
-      onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={
         <IconFont type="search" style={{ color: '#BBBDBF', fontSize: 16 }} />
       }

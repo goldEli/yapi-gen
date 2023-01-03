@@ -73,29 +73,27 @@ const EditIteration = (props: Props) => {
     iterateInfo,
     setIsUpdateList,
   } = useModel('iterate')
-  const { setIsRefreshIterateList, getProjectInfo } = useModel('project')
+  const { getProjectInfoValues } = useModel('project')
   const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (props.id) {
-      getIterateInfo({ projectId, id: props.id })
-    }
-  }, [props.id])
+  // 迭代时间
+  const [times, setTimes] = useState<any>(null)
 
   useEffect(() => {
     if (props.id && iterateInfo) {
       setHtml(iterateInfo?.info)
+      setTimes([
+        moment(iterateInfo.createdTime || iterateInfo?.startTime || 0),
+        moment(iterateInfo.endTime || 1893427200),
+      ])
       form.setFieldsValue({
         iterationName: iterateInfo.name,
+        time: iterateInfo.endTime
+          ? [
+              moment(iterateInfo.createdTime || iterateInfo?.startTime || 0),
+              moment(iterateInfo.endTime || 1893427200),
+            ]
+          : null,
       })
-      if (iterateInfo?.createdTime || iterateInfo?.startTime) {
-        form.setFieldsValue({
-          time: [
-            moment(iterateInfo.createdTime || iterateInfo?.startTime || 0),
-            moment(iterateInfo.endTime || 1893427200),
-          ],
-        })
-      }
     }
   }, [iterateInfo])
 
@@ -119,31 +117,29 @@ const EditIteration = (props: Props) => {
         message.success(t('common.createSuccess'))
       }
       props.onChangeVisible()
-      props.onUpdate?.(true)
-      setIsRefreshIterateList(true)
-      if (props.id) {
-        getIterateInfo({ projectId, id: props.id })
-      }
       setIsUpdateList(true)
       setTimeout(() => {
         setHtml('')
+        setTimes(null)
         form.resetFields()
       }, 100)
     } catch (error) {
       //
     }
-    getProjectInfo({ projectId })
+    getProjectInfoValues({ projectId })
   }
 
   const onCancel = () => {
     props.onChangeVisible()
     setTimeout(() => {
       setHtml('')
+      setTimes(null)
       form.resetFields()
     }, 100)
   }
 
   const onChangePicker = (_values: any) => {
+    setTimes(_values)
     form.setFieldsValue({
       time: _values,
     })
@@ -151,11 +147,15 @@ const EditIteration = (props: Props) => {
 
   useEffect(() => {
     if (props.visible) {
+      // 编辑迭代获取详情
+      if (props.id) {
+        getIterateInfo({ projectId, id: props.id })
+      }
       setTimeout(() => {
         inputRef.current?.focus()
       }, 200)
     }
-  }, [props.visible])
+  }, [props.visible, props.id])
 
   return (
     <CommonModal
@@ -202,12 +202,12 @@ const EditIteration = (props: Props) => {
           >
             <RangePicker
               isShowQuick={false}
-              dateValue={form.getFieldValue('time')}
+              dateValue={times}
               onChange={(_values: any) => onChangePicker(_values)}
             />
           </Form.Item>
           <Form.Item label={t('project.iterateTarget')}>
-            <Editor value={html} onChangeValue={setHtml} />
+            <Editor value={html} onChangeValue={setHtml} height={178} />
           </Form.Item>
         </FormWrap>
       </div>

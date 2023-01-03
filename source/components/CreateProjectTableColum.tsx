@@ -57,7 +57,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useModel('user')
-  const { projectInfo, colorList, fieldList } = useModel('project')
+  const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -80,8 +80,8 @@ export const useDynamicColumns = (state: any) => {
     message.warning(t('newlyAdd.underReview'))
   }
 
-  const onUpdate = (row: any) => {
-    state.onUpdate(true, row.topId)
+  const onUpdate = (row: any, isClass?: any) => {
+    state.onUpdate(true, row.topId, isClass)
   }
 
   const arr = [
@@ -312,7 +312,7 @@ export const useDynamicColumns = (state: any) => {
             defaultText={text}
             keyText="class_id"
             item={record}
-            onUpdate={() => onUpdate(record)}
+            onUpdate={() => onUpdate(record, true)}
           >
             <HiddenText>
               <OmitText
@@ -536,7 +536,7 @@ export const useDynamicColumns = (state: any) => {
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {
-      const currentFields = fieldList?.list?.filter(
+      const currentFields = projectInfo?.filterCustomList?.filter(
         (i: any) => i.content === element.value,
       )[0]
       result.push({
@@ -544,10 +544,10 @@ export const useDynamicColumns = (state: any) => {
         title: (
           <div>
             {!['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(
-              currentFields?.type.attr,
+              currentFields.attr,
             ) && <NewSort fixedKey={element.value}>{element.label}</NewSort>}
             {['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(
-              currentFields?.type.attr,
+              currentFields.attr,
             ) && element.label}
           </div>
         ),
@@ -556,7 +556,7 @@ export const useDynamicColumns = (state: any) => {
         render: (text: any, record: any) => {
           return (
             <TableQuickEdit
-              type={currentFields?.type.attr}
+              type={currentFields.attr}
               defaultText={text?.value}
               keyText={element.value}
               item={record}
@@ -565,7 +565,7 @@ export const useDynamicColumns = (state: any) => {
               isCustom
               defaultTextValues={text?.true_value}
             >
-              <span>{getText(currentFields?.type.attr, text)}</span>
+              <span>{getText(currentFields.attr, text)}</span>
             </TableQuickEdit>
           )
         },

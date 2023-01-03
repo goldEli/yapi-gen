@@ -11,7 +11,9 @@
     "a9": "Please enter a comment",
     "quick": "You are not currently in any project, create one ~",
     "kongT": " Private project requirements, you do not have access yet!  ",
-    "kongP": " View my project"
+    "kongP": " View my project",
+    "kongK": "@company member ",
+    "kongN": "Select @ in rich text to notify relevant personnel"
   },
   "title": {
     "text": "File format not supported ",
@@ -95,7 +97,10 @@
     "noDataFilter": "No data at present. Please readjust the filtering parameters to try",
     "startTimeComputedEndTime": "The estimated start time cannot be greater than the estimated end time!",
     "endTimeComputedStartTime": "Expected end time cannot be less than expected start time!",
-    "changeProjectSuccess": "Project switching succeeded!"
+    "changeProjectSuccess": "Project switching succeeded!",
+    "haveNoSuccessAttach": "There are also attachments that have not been uploaded successfully!",
+    "reviewModeChangeSuccess": "Browse mode switch succeeded!",
+    "permissionNull": "Permission group cannot be empty!"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",

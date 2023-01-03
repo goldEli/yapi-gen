@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-no-leaked-render */
 // 需求列表快捷编辑组件
-
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
@@ -42,6 +41,9 @@ interface Props {
 
   // 自定义人员的下拉
   defaultTextValues?: any
+
+  // 用于判断当前是否是所有项目， 是则调用就接口获取下拉值
+  projectId?: any
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -50,7 +52,8 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, getFieldListCustom, tagList } = useModel('project')
+  const { projectInfo, getFieldListCustom, projectInfoValues } =
+    useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
@@ -82,7 +85,7 @@ const TableQuickEdit = (props: Props) => {
     canClick = isCan && isCanEdit
   }
 
-  // 我的模块及他的模块并且是自定义字段
+  // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
     const response = await getFieldListCustom({ projectId, key: props.keyText })
     const currentObj = response.list?.filter(
@@ -106,7 +109,30 @@ const TableQuickEdit = (props: Props) => {
     }, 100)
   }
 
-  //  迭代、处理人、抄送人、需求分类、标签
+  // 我的模块及他的模块并且是自定义字段 --- 项目信息获取
+  const getCustomValuesInfo = () => {
+    const response = projectInfoValues
+      ?.filter((i: any) => i.key === props.keyText)[0]
+      ?.children?.filter((i: any) => i.id !== -1)
+    const resultValue = {
+      value: ['user_select_checkbox', 'user_select'].includes(
+        String(props.type),
+      )
+        ? response?.map((i: any) => ({
+            label: i.content,
+            value: i.id,
+          }))
+        : response?.map((i: any) => i.content),
+      remarks: '',
+      attr: props.type,
+    }
+    setParams(resultValue)
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 100)
+  }
+
+  //  迭代、处理人、抄送人、需求分类、标签--- 接口获取
   const getDefaultSelectValues = async () => {
     let resultValue: any = {
       attr: props?.type,
@@ -162,22 +188,88 @@ const TableQuickEdit = (props: Props) => {
     }, 100)
   }
 
+  //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
+  const getDefaultSelectValuesInfo = () => {
+    let resultValue: any = {
+      attr: props?.type,
+      value: [],
+    }
+    if (props.keyText === 'iterate_id') {
+      // 获取迭代下拉数据
+      const response = projectInfoValues
+        ?.filter((i: any) => i.key === 'iterate_name')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+
+      resultValue.value = response
+        ?.filter((k: any) => k.status === 1)
+        ?.map((i: any) => ({
+          label: i.content,
+          value: i.id,
+        }))
+    } else if (props.keyText === 'users') {
+      // 获取处理人的下拉数据
+      const response = projectInfoValues
+        ?.filter((i: any) => i.key === 'users_name')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+
+      resultValue.value = response?.map((i: any) => ({
+        label: i.content,
+        value: i.id,
+      }))
+    } else if (props.keyText === 'copysend') {
+      // 获取抄送人的下拉数据
+      const response = projectInfoValues
+        ?.filter((i: any) => i.key === 'users_copysend_name')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+      resultValue.value = response?.map((i: any) => ({
+        label: i.content,
+        value: i.id,
+      }))
+    } else if (props.keyText === 'class_id') {
+      // 获取需求分类的下拉数据
+      const response = projectInfoValues?.filter(
+        (i: any) => i.key === 'class',
+      )[0].children
+      resultValue.value = response
+    } else if (props.keyText === 'tag') {
+      // 获取标签下拉数据
+      const response: any = projectInfoValues
+        ?.filter((i: any) => i.key === 'tag')[0]
+        ?.children?.filter((i: any) => i.id !== -1)
+      setSelectTagList(response)
+      resultValue.value = response?.map((i: any) => ({
+        label: i.content,
+        value: i.content,
+      }))
+    }
+
+    setParams(resultValue)
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 100)
+  }
+
   // 设置默认参数 - 主要用于需要接口获取参数的
   const setNormalParams = async () => {
     if (props?.isCustom) {
       // 我的模块及他的模块并且是自定义字段
-      getIsCustomValues()
+      if (props.projectId === 0) {
+        getIsCustomValues()
+      } else {
+        getCustomValuesInfo()
+      }
     } else {
       // 项目及详情中自带相应参数或者是之前的固定参数
-      getDefaultSelectValues()
+      if (props.projectId === 0) {
+        getDefaultSelectValues()
+      } else {
+        getDefaultSelectValuesInfo()
+      }
     }
   }
 
   useEffect(() => {
     if (isShowControl) {
-      if (props.keyText === 'tag') {
-        setSelectTagList(tagList)
-      }
       setNormalParams()
     }
   }, [isShowControl])

@@ -25,6 +25,7 @@ import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import PubSub from 'pubsub-js'
+import { setValue } from './ShapeForDetail'
 
 const Left = styled.div`
   min-height: 400px;
@@ -374,32 +375,7 @@ export const ShapeContent = (props: any) => {
     })
     setRightList(res)
 
-    const form1Obj: any = {}
-    for (const key in res?.fields) {
-      if (
-        res?.fields[key].type === 'select' &&
-        res?.fields[key].true_value !== 0
-      ) {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null &&
-          res?.fields[key].children.some(
-            (i: any) => i.id === res?.fields[key].true_value,
-          )
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].type === 'select_checkbox') {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].true_value === 0) {
-        form1Obj[res?.fields[key].content] = ''
-      } else {
-        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
-      }
-    }
-
-    form.setFieldsValue(form1Obj)
+    form.setFieldsValue(setValue(res))
     setLoading(true)
   }
 
@@ -413,32 +389,7 @@ export const ShapeContent = (props: any) => {
     })
     setRightList(res)
 
-    const form1Obj: any = {}
-    for (const key in res?.fields) {
-      if (
-        res?.fields[key].type === 'select' &&
-        res?.fields[key].true_value !== 0
-      ) {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null &&
-          res?.fields[key].children.some(
-            (i: any) => i.id === res?.fields[key].true_value,
-          )
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].type === 'select_checkbox') {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].true_value === 0) {
-        form1Obj[res?.fields[key].content] = ''
-      } else {
-        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
-      }
-    }
-
-    form.setFieldsValue(form1Obj)
+    form.setFieldsValue(setValue(res))
     setLoading(true)
   }
 
@@ -455,32 +406,7 @@ export const ShapeContent = (props: any) => {
 
     setRightList(res)
 
-    const form1Obj: any = {}
-    for (const key in res?.fields) {
-      if (
-        res?.fields[key].type === 'select' &&
-        res?.fields[key].true_value !== 0
-      ) {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null &&
-          res?.fields[key].children.some(
-            (i: any) => i.id === res?.fields[key].true_value,
-          )
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].type === 'select_checkbox') {
-        form1Obj[res?.fields[key].content] =
-          res?.fields[key].true_value === null
-            ? []
-            : res?.fields[key].true_value
-      } else if (res?.fields[key].true_value === 0) {
-        form1Obj[res?.fields[key].content] = ''
-      } else {
-        form1Obj[res?.fields[key].content] = res?.fields[key].true_value
-      }
-    }
-
-    form.setFieldsValue(form1Obj)
+    form.setFieldsValue(setValue(res))
     setLoading(true)
   }
 
@@ -544,6 +470,7 @@ export const ShapeContent = (props: any) => {
   }
 
   const onConfirm = async () => {
+    form.submit()
     await confirm()
   }
 
@@ -722,7 +649,7 @@ export const ShapeContent = (props: any) => {
                           style={{ width: '100%', border: 'none' }}
                           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                           treeData={i.children[0].children}
-                          placeholder="Please select"
+                          placeholder={t('common.pleaseSelect')}
                           treeDefaultExpandAll
                         />
                       </Form.Item>
@@ -746,6 +673,32 @@ export const ShapeContent = (props: any) => {
                     )}
                   </div>
                 ))}
+                {rightList.is_verify && rightList.verify.verify_type === 2 ? (
+                  <Form.Item
+                    labelAlign="left"
+                    label={t('newlyAdd.reviewPerson')}
+                    name="reviewerValue"
+                    rules={[
+                      {
+                        required:
+                          activeContent || (!activeContent && !hasDealName),
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Select
+                      onChange={handleChange}
+                      placeholder={t('common.pleaseSelect')}
+                      allowClear
+                      getPopupContainer={node => node}
+                      options={optionsList?.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                      }))}
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                ) : null}
               </Form>
             </FormWrap>
             {rightList?.is_verify ? (
@@ -863,53 +816,6 @@ export const ShapeContent = (props: any) => {
                   </Timeline.Item>
                 </Timeline>
               </AuditBox>
-            ) : null}
-            {rightList.is_verify && rightList.verify.verify_type === 2 ? (
-              <Form
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                labelAlign="left"
-                form={form2}
-                onFinish={confirm}
-                onFinishFailed={() => {
-                  setTimeout(() => {
-                    const errorList = (document as any).querySelectorAll(
-                      '.ant-form-item-has-error',
-                    )
-
-                    errorList[0].scrollIntoView({
-                      block: 'center',
-                      behavior: 'smooth',
-                    })
-                  }, 100)
-                }}
-              >
-                <Form.Item
-                  style={{ paddingRight: '24px' }}
-                  labelAlign="left"
-                  label={t('newlyAdd.reviewPerson')}
-                  name="reviewerValue"
-                  rules={[
-                    {
-                      required:
-                        activeContent || (!activeContent && !hasDealName),
-                      message: '',
-                    },
-                  ]}
-                >
-                  <Select
-                    onChange={handleChange}
-                    placeholder={t('common.pleaseSelect')}
-                    allowClear
-                    getPopupContainer={node => node}
-                    options={optionsList?.map((item: any) => ({
-                      label: item.name,
-                      value: item.id,
-                    }))}
-                    optionFilterProp="label"
-                  />
-                </Form.Item>
-              </Form>
             ) : null}
           </div>
 
