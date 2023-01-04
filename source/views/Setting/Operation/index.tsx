@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import useSetTitle from '@/hooks/useSetTitle'
+import { getStaffList } from '@/services/staff'
 
 const Header = styled.div({
   height: 'auto',
@@ -92,7 +93,6 @@ const Operation = () => {
   ]
   const { getOperateLogs } = useModel('setting')
   const { userInfo } = useModel('user')
-  const { getStaffList } = useModel('staff')
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
