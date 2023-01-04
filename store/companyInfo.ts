@@ -1,4 +1,5 @@
 /* eslint-disable no-duplicate-imports */
+// 公司信息
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getCompanyInfo } from '@/services/setting'
 import normalCompany from '/normalCompany.svg'

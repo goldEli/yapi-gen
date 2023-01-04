@@ -39,6 +39,14 @@ import { getParamsData } from '@/tools'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import {
+  getMemberInfoAbeyanceStory,
+  getMemberInfoCreateStory,
+  getMemberInfoFinishStory,
+  getUserInfoAbeyanceStory,
+  getUserInfoCreateStory,
+  getUserInfoFinishStory,
+} from '@/services/member'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -151,14 +159,6 @@ const CommonNeed = (props: any) => {
   const { getProjectInfo, projectInfo, getProjectInfoValues } =
     useModel('project')
   const { updateDemandStatus, updatePriorityStatus } = useModel('mine')
-  const {
-    getUserInfoAbeyanceStory,
-    getUserInfoCreateStory,
-    getUserInfoFinishStory,
-    getMemberInfoAbeyanceStory,
-    getMemberInfoCreateStory,
-    getMemberInfoFinishStory,
-  } = useModel('member')
   const { isRefresh, setIsRefresh } = useModel('user')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)

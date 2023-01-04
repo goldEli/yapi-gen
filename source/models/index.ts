@@ -4,7 +4,6 @@ import demand from '@/models/project/demand'
 import iterate from '@/models/project/iterate'
 import project from '@/models/project/index'
 import mine from '@/models/mine'
-import member from '@/models/member'
 
 const hooks = {
   user,
@@ -12,7 +11,6 @@ const hooks = {
   iterate,
   project,
   mine,
-  member,
 }
 
 export const { Provider, useModel } = createModels(hooks)

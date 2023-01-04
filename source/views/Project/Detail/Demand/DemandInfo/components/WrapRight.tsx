@@ -33,7 +33,6 @@ import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import EditComment from '@/components/EditComment'
 import { useDispatch } from '../../../../../../../store'
-import { changeId } from '../../../../../../../store/modalState'
 import {
   BigWrap,
   BlueCss,
@@ -815,7 +814,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               <AddWrap
                 onClick={() => {
                   setVisibleEdit(true)
-                  dispatch(changeId(true))
                 }}
                 style={{
                   marginRight: '30px',

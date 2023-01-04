@@ -2,13 +2,14 @@
 
 import useSetTitle from '@/hooks/useSetTitle'
 import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const Create = () => {
   const [t] = useTranslation()
   const asyncSetTtile = useSetTitle()
-  const { mainInfo } = useModel('member')
+  const { mainInfo } = useSelector((store: { member: any }) => store.member)
   const { projectInfo } = useModel('project')
   asyncSetTtile(
     `${t('title.a5')}【${mainInfo.name}】${
