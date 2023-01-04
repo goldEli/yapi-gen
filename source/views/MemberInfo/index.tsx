@@ -99,6 +99,7 @@ const MemberInfo = () => {
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
   const { mainInfo } = useSelector((store: { member: any }) => store.member)
+
   const { setSelectAllStaffData } = useModel('project')
 
   const menuList = [
@@ -148,7 +149,9 @@ const MemberInfo = () => {
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
-
+  if (!mainInfo) {
+    return null
+  }
   return (
     <Wrap isMember={isMember}>
       <Side>
