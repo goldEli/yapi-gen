@@ -342,8 +342,8 @@ export const Panel = (props: Props) => {
             <IconFont type="right" style={{ fontSize: 12, color: '#969799' }} />
           </div>
         </Line>
-        <Line>
-          <div onClick={() => onSetVisible(2)}>
+        <Line onClick={() => onSetVisible(2)}>
+          <div>
             <IconFont type="login" style={{ fontSize: 15, color: '#969799' }} />
             <span className={lineText}>{t('container.logout')}</span>
           </div>
