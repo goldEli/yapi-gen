@@ -8,11 +8,10 @@ import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools/index'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { message, Popover } from 'antd'
 import WhiteDay from './components/WhiteDay'
-import { useSelector } from 'react-redux'
 import { writeDaily } from '@/services/daily'
 import useSetTitle from '@/hooks/useSetTitle'
 
@@ -159,11 +158,10 @@ const Information = () => {
       name: t('p2.whiteList.t3'),
     },
   ]
-  const count = useSelector((state: any) => state.counter.value)
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const navigate = useNavigate()
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
   const [showPop, setShowPop] = useState(false)

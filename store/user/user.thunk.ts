@@ -5,6 +5,7 @@ export const getLoginDetail = createAsyncThunk(
   'user/getLoginDetail',
   async () => {
     const result = await services.user.getLoginDetail()
-    return result.data
+    const result2 = await services.user.getUserDetail()
+    return { loginInfo: result.data, userInfo: result2 }
   },
 )

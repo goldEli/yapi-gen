@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
 import { useDispatch, useSelector } from '../../../store'
 import { getStatus } from '../../../store/waterState'
+import { getLoginDetail } from '../../../store/user/user.thunk'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 
 const Wrap = styled.div`
@@ -73,6 +74,7 @@ export const Container = () => {
 
   useEffect(() => {
     dispatch(getStatus())
+    dispatch(getLoginDetail())
   }, [])
 
   const jumpList = [

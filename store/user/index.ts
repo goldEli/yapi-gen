@@ -20,7 +20,8 @@ export const counterSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(getLoginDetail.fulfilled, (state, action) => {
-      state.loginInfo = action.payload
+      state.loginInfo = action.payload.loginInfo
+      state.userInfo = action.payload.userInfo
     })
   },
 })
