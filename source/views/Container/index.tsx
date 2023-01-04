@@ -18,7 +18,8 @@ import { useDispatch, useSelector } from '../../../store'
 import { getStatus } from '../../../store/waterState'
 import { getLoginDetail } from '../../../store/user/user.thunk'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
-import { getUserDetail, login } from '@/services/user'
+import { login } from '@/services/user'
+import { useModel } from '@/models'
 
 const Wrap = styled.div`
   display: flex;
@@ -40,8 +41,9 @@ export const Container = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const loginInfo = useSelector(state => state.user.loginInfo)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const {
     i18n: { language },
   } = useTranslation()
@@ -50,15 +52,20 @@ export const Container = () => {
     duration: 0.8,
     maxCount: 1,
   })
-
+  const { getUserDetail, setLoginInfo } = useModel('user')
   const init = async () => {
     if (!localStorage.getItem('agileToken')) {
       const data = await login()
+      setLoginInfo(data.data)
     }
 
     await getUserDetail()
   }
 
+  useEffect(() => {
+    dispatch(getStatus())
+    dispatch(getLoginDetail())
+  }, [])
   useEffect(() => {
     const languageParams =
       (localStorage.getItem('language') as 'zh' | 'en') ||
@@ -70,12 +77,6 @@ export const Container = () => {
 
     init()
   }, [])
-
-  useEffect(() => {
-    dispatch(getStatus())
-    dispatch(getLoginDetail())
-  }, [])
-
   const jumpList = [
     {
       name: '概况',
