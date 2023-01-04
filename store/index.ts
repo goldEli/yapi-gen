@@ -7,6 +7,7 @@ import {
 import counterReducer from './counterSlice'
 import waterReducer from './waterState'
 import modalReducer from './modalState'
+import companyInfo from './companyInfo'
 import user from './user'
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
     water: waterReducer,
     modal: modalReducer,
     user,
+    companyInfo,
   },
 })
 

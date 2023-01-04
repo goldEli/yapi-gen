@@ -20,6 +20,7 @@ import { getLoginDetail } from '../../../store/user/user.thunk'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import { login } from '@/services/user'
 import { useModel } from '@/models'
+import { getAsyncCompanyInfo } from '@store/companyInfo'
 
 const Wrap = styled.div`
   display: flex;
@@ -65,7 +66,9 @@ export const Container = () => {
   useEffect(() => {
     dispatch(getStatus())
     dispatch(getLoginDetail())
+    dispatch(getAsyncCompanyInfo())
   }, [])
+
   useEffect(() => {
     const languageParams =
       (localStorage.getItem('language') as 'zh' | 'en') ||

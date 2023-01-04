@@ -18,6 +18,7 @@ import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import useSetTitle from '@/hooks/useSetTitle'
 import { getStaffList } from '@/services/staff'
+import { getLoginLogs } from '@/services/setting'
 
 const Header = styled.div({
   height: 'auto',
@@ -101,7 +102,6 @@ const LoginLog = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c4'))
-  const { getLoginLogs } = useModel('setting')
   const { userInfo } = useModel('user')
   const [dataList, setDataList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])

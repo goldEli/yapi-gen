@@ -17,6 +17,14 @@ import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { GroupWrap } from '@/views/Project/Detail/Setting/components/ProjectSet'
+import {
+  addRole,
+  deleteRole,
+  getRoleList,
+  getRolePermission,
+  setRolePermission,
+  updateRole,
+} from '@/services/setting'
 
 const Header = styled.div({
   height: 64,
@@ -231,14 +239,6 @@ const Permission = () => {
   const [addValue, setAddValue] = useState('')
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [isDelete, setIsDelete] = useState(false)
-  const {
-    getRoleList,
-    getRolePermission,
-    setRolePermission,
-    addRole,
-    updateRole,
-    deleteRole,
-  } = useModel('setting')
   const [isSpinning, setIsSpinning] = useState(false)
   const { isRefresh, setIsRefresh } = useModel('user')
 
