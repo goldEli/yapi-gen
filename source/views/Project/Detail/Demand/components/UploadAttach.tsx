@@ -22,6 +22,7 @@ import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
 import Viewer from 'react-viewer'
 import myImg from '/er.png'
+import { cos, uploadFile } from '@/services/cos'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -168,7 +169,6 @@ const UploadAttach = (props: any) => {
     index: 0,
   })
   const [t] = useTranslation()
-  const { uploadFile, cos } = useModel('cos')
 
   const [searchParams] = useSearchParams()
   let projectId: any

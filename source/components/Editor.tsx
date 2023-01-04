@@ -24,6 +24,7 @@ import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/
 import { Popover, Tooltip } from 'antd'
 import IconFont from './IconFont'
 import Viewer from 'react-viewer'
+import { uploadFileByTask } from '@/services/cos'
 
 interface Props {
   value?: string
@@ -182,7 +183,7 @@ const EditorBox = (props: Props) => {
     }
     return url
   }
-  const { uploadFileByTask } = useModel('cos')
+
   const { userInfo } = useModel('user')
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
