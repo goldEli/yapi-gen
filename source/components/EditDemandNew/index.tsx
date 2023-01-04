@@ -708,20 +708,11 @@ const EditDemand = (props: Props) => {
           <Space size={16}>
             <Button onClick={onCancel}>{t('common.cancel')}</Button>
             {!props?.demandId && (
-              <AddButtonWrap
-                onClick={() => {
-                  onSaveCategory(1)
-                }}
-              >
+              <AddButtonWrap onClick={() => onSaveCategory(1)}>
                 {t('common.finishToAdd')}
               </AddButtonWrap>
             )}
-            <Button
-              type="primary"
-              onClick={() => {
-                onSaveCategory()
-              }}
-            >
+            <Button type="primary" onClick={() => onSaveCategory()}>
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
             </Button>
           </Space>
