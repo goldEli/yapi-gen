@@ -49,6 +49,7 @@ import {
 } from '@/services/member'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -160,7 +161,6 @@ const CommonNeed = (props: any) => {
   const { deleteDemand } = useModel('demand')
   const { getProjectInfo, projectInfo, getProjectInfoValues } =
     useModel('project')
-  const { updateDemandStatus, updatePriorityStatus } = useModel('mine')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)

@@ -9,6 +9,7 @@ import waterReducer from './waterState'
 import companyInfo from './companyInfo'
 import user from './user'
 import member from './member'
+import mine from './mine'
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     user,
     companyInfo,
     member,
+    mine,
   },
 })
 

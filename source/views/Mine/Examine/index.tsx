@@ -11,6 +11,7 @@ import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useSelector } from '@store/index'
+import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -23,7 +24,6 @@ const Examine = () => {
   asyncSetTtile(t('title.b4'))
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
-  const { getMineProjectList } = useModel('mine')
   const { userInfo, loginInfo } = useSelector(
     (store: { user: any }) => store.user,
   )
