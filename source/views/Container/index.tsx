@@ -53,14 +53,12 @@ export const Container = () => {
     duration: 0.8,
     maxCount: 1,
   })
-  const { getUserDetail, setLoginInfo } = useModel('user')
+
   const init = async () => {
     if (!localStorage.getItem('agileToken')) {
       const data = await login()
-      setLoginInfo(data.data)
     }
-
-    await getUserDetail()
+    dispatch(getLoginDetail())
   }
 
   useEffect(() => {

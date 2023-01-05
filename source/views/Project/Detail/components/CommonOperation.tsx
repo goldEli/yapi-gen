@@ -14,6 +14,7 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { useSelector } from '@store/index'
 
 const OperationTop = styled.div({
   height: 64,
@@ -174,7 +175,9 @@ const CommonOperation = (props: Props) => {
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
   const { projectInfo, setProjectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const { setFilterHeight } = useModel('demand')
   const { setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()

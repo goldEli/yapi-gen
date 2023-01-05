@@ -23,6 +23,7 @@ import IconFont from '@/components/IconFont'
 import Viewer from 'react-viewer'
 import myImg from '/er.png'
 import { cos, uploadFile } from '@/services/cos'
+import { useSelector } from '@store/index'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -162,7 +163,9 @@ const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const UploadAttach = (props: any) => {
   const scopeRef = useRef(String(Math.random()))
 
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [pictureList, setPictureList] = useState({
     imageArray: [],

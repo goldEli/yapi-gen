@@ -6,7 +6,9 @@ import { useModel } from '@/models'
 import { useSelector } from '../../store'
 
 const SvgTextBg = (props: any) => {
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const {
     text = ` ${userInfo?.company_name}  ${userInfo.name}  ${userInfo.phone} `,
     fontSize = 12,

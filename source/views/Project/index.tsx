@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
 
 const Content = styled.div<{ isGrid: boolean }>(
   {
@@ -61,7 +62,9 @@ const Project = () => {
     openProject,
     setIsRefreshGroup,
   } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [isSpinning, setIsSpinning] = useState(false)
 
   const getList = async (

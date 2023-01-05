@@ -10,6 +10,7 @@ import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getStaffList } from '@/services/staff'
+import { useSelector } from '@store/index'
 
 const AddButton = styled.button({
   border: 'none',
@@ -87,7 +88,9 @@ const MineBox = () => {
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const { setSelectAllStaffData } = useModel('project')
 
   const changeActive = (value: MenuList) => {

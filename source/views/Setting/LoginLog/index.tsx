@@ -19,6 +19,7 @@ import RangePicker from '@/components/RangePicker'
 import useSetTitle from '@/hooks/useSetTitle'
 import { getStaffList } from '@/services/staff'
 import { getLoginLogs } from '@/services/setting'
+import { useSelector } from '@store/index'
 
 const Header = styled.div({
   height: 'auto',
@@ -102,7 +103,9 @@ const LoginLog = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c4'))
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [dataList, setDataList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()

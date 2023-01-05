@@ -25,6 +25,8 @@ import {
   setRolePermission,
   updateRole,
 } from '@/services/setting'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Header = styled.div({
   height: 64,
@@ -240,8 +242,8 @@ const Permission = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [isDelete, setIsDelete] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
-
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
@@ -253,7 +255,7 @@ const Permission = () => {
       keys = [...keys, ...a.map((k: any) => k.value)]
     })
     setSelectKeys(keys)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const init = async (isInit?: boolean, str?: string) => {

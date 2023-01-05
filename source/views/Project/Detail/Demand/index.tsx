@@ -33,6 +33,7 @@ import CommonModal from '@/components/CommonModal'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch } from '../../../../../store'
 import { changeId } from '../../../../../store/counterSlice'
+import { setIsRefresh } from '@store/user'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -148,7 +149,6 @@ const DemandBox = () => {
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { setIsRefresh } = useModel('user')
   const {
     projectInfo,
     colorList,
@@ -286,7 +286,7 @@ const DemandBox = () => {
       message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
       setIsUpdateStatus(true)
-      setIsRefresh(true)
+      dispatch(setIsRefresh(true))
       getDemandInfo({ projectId, id: demandInfo?.id })
       setTimeout(() => {
         form.resetFields()

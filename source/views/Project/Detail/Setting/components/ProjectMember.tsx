@@ -32,6 +32,7 @@ import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import { addMember } from '@/services/project'
 import PubSub from 'pubsub-js'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -137,7 +138,9 @@ const ProjectMember = () => {
     getProjectPermission,
     setProjectPermission,
   } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()

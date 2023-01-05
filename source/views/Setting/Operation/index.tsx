@@ -20,6 +20,7 @@ import RangePicker from '@/components/RangePicker'
 import useSetTitle from '@/hooks/useSetTitle'
 import { getStaffList } from '@/services/staff'
 import { getOperateLogs } from '@/services/setting'
+import { useSelector } from '@store/index'
 
 const Header = styled.div({
   height: 'auto',
@@ -92,7 +93,9 @@ const Operation = () => {
     { label: t('common.edit'), value: 'PUT' },
     { label: t('common.del'), value: 'DELETE' },
   ]
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })

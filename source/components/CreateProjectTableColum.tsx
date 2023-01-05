@@ -24,6 +24,7 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from './DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
+import { useSelector } from '@store/index'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -56,7 +57,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo, colorList } = useModel('project')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&

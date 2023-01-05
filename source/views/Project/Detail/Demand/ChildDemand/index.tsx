@@ -28,6 +28,8 @@ import EditDemand from '@/components/EditDemandNew'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Operation = styled.div({
   display: 'flex',
@@ -67,7 +69,8 @@ const ChildDemand = () => {
     getDemandInfo,
     demandInfo,
   } = useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -142,7 +145,7 @@ const ChildDemand = () => {
     })
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   useEffect(() => {

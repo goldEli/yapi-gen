@@ -17,7 +17,11 @@ const initialState: CounterState = {
 export const counterSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsRefresh: (state, action) => {
+      state.isRefresh = action.payload
+    },
+  },
   extraReducers(builder) {
     builder.addCase(getLoginDetail.fulfilled, (state, action) => {
       state.loginInfo = action.payload.loginInfo
@@ -25,5 +29,7 @@ export const counterSlice = createSlice({
     })
   },
 })
+
+export const { setIsRefresh } = counterSlice.actions
 
 export default counterSlice.reducer

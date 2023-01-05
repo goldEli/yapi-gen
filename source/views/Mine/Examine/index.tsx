@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -23,7 +24,9 @@ const Examine = () => {
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
   const { getMineProjectList } = useModel('mine')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [type, setType] = useState('verify')
 

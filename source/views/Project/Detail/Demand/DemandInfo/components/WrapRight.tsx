@@ -32,7 +32,7 @@ import { LevelContent } from '@/components/Level'
 import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import EditComment from '@/components/EditComment'
-import { useDispatch } from '../../../../../../../store'
+import { useDispatch, useSelector } from '../../../../../../../store'
 import {
   BigWrap,
   BlueCss,
@@ -295,7 +295,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     getDemandInfo,
     updateTableParams,
   } = useModel('demand')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const { projectInfo, fieldList, getFieldList } = useModel('project')
   const [dataList, setDataList] = useState<any>({
     list: undefined,

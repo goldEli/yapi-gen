@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
 import PubSub from 'pubsub-js'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   padding: 24,
@@ -119,7 +120,9 @@ const ProjectInfo = () => {
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
   const { projectInfo, getProjectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const onUpdate = () => {

@@ -47,6 +47,8 @@ import {
   getUserInfoCreateStory,
   getUserInfoFinishStory,
 } from '@/services/member'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -159,7 +161,8 @@ const CommonNeed = (props: any) => {
   const { getProjectInfo, projectInfo, getProjectInfoValues } =
     useModel('project')
   const { updateDemandStatus, updatePriorityStatus } = useModel('mine')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(
@@ -374,7 +377,7 @@ const CommonNeed = (props: any) => {
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
     setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
@@ -397,7 +400,7 @@ const CommonNeed = (props: any) => {
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const onChangePage = (newPage: any) => {

@@ -26,6 +26,7 @@ import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -143,7 +144,9 @@ const Profile = () => {
     isUpdateCreate,
     setIsUpdateCreate,
   } = useModel('mine')
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const { colorList } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
