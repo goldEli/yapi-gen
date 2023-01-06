@@ -259,7 +259,7 @@ const CommonOperation = (props: Props) => {
   }
 
   const onToModel = (i: any) => {
-    getProjectInfo()
+    getProjectInfo({ projectId })
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/Detail/${i.type}?data=${params}`)
     setFilterHeight(52)
