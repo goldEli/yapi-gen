@@ -107,7 +107,7 @@ const OperationGroup = (props: Props) => {
             </div>
             <IconFont
               className="checked"
-              type={props.isGrid === 2 ? '"check"' : ''}
+              type={props.isGrid === 2 ? 'check' : ''}
             />
           </HasIconMenu>
         ),

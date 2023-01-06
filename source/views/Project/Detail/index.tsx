@@ -45,7 +45,7 @@ const Detail = () => {
 
   // 用于切换大模块时更新相应数据
   const onUpdate = () => {
-    getInfo()
+    // getInfo()
     getProjectInfoValuesData()
   }
 
