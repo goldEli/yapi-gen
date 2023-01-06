@@ -10,14 +10,19 @@ const SvgTextBg = (props: any) => {
     (store: { user: any }) => store.user,
   )
   const {
-    text = ` ${userInfo?.company_name}  ${userInfo.name}  ${userInfo.phone} `,
+    text = ` ${userInfo?.company_name}  
+    `,
+    text2 = ` ${userInfo.name}  ${userInfo.phone} `,
     fontSize = 12,
     fillOpacity = '0.5',
     fillColor = '#D5D6D9',
   } = props
   const res = `
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400px" height="180px" viewBox="0 0 180 180">
-        <text x="-150" y="-30" fill='${fillColor}'  transform = "rotate(-35 220 -220)" fill-opacity='${fillOpacity}' font-size='${fontSize}'> ${text}</text>
+        <text x="-150" y="-30" fill='${fillColor}'  transform = "rotate(-35 220 -220)" fill-opacity='${fillOpacity}' font-size='${fontSize}'> ${text} 
+        
+
+        <tspan x="-150" y="1">${text2}</tspan> </text>
       </svg>`
 
   const blob = new Blob([res], {
