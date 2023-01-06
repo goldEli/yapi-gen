@@ -43,6 +43,12 @@ const Detail = () => {
     }
   }
 
+  // 用于切换大模块时更新相应数据
+  const onUpdate = () => {
+    // getInfo()
+    getProjectInfoValuesData()
+  }
+
   useEffect(() => {
     if (isRefresh || isChangeProject) {
       getInfo()
@@ -60,7 +66,7 @@ const Detail = () => {
         <>
           <CommonOperation
             onUpdate={() => getProjectInfo({ projectId })}
-            onChangeIdx={getProjectInfoValuesData}
+            onChangeIdx={onUpdate}
           />
           <Outlet key={isChangeProject} />
         </>

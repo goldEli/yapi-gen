@@ -14,6 +14,7 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { getProjectInfo } from '@/services/project'
 
 const OperationTop = styled.div({
   height: 64,
@@ -258,6 +259,7 @@ const CommonOperation = (props: Props) => {
   }
 
   const onToModel = (i: any) => {
+    getProjectInfo({ projectId })
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/Detail/${i.type}?data=${params}`)
     setFilterHeight(52)
