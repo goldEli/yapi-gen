@@ -244,7 +244,7 @@ const CommonNeed = (props: any) => {
         searchGroups,
         order,
         orderkey: orderKey,
-        page: pageNumber ? pageNumber : page,
+        page,
         pagesize,
       }
 
