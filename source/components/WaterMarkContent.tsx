@@ -22,7 +22,7 @@ const SvgTextBg = (props: any) => {
         <text x="-150" y="-30" fill='${fillColor}'  transform = "rotate(-35 220 -220)" fill-opacity='${fillOpacity}' font-size='${fontSize}'> ${text} 
         
 
-        <tspan x="-150" y="1">${text2}</tspan> </text>
+        <tspan x="-150" y="-15">${text2}</tspan> </text>
       </svg>`
 
   const blob = new Blob([res], {
