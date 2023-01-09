@@ -64,7 +64,8 @@ const ImgWrap = styled.div<{ url?: string }>(
     boxSizing: 'border-box',
     border: '1px solid white',
     cursor: 'pointer',
-    backgroundSize: 'cover',
+    backgroundSize: '100%',
+    backgroundPosition: 'center',
     '&: hover': {
       border: '1px solid #2877ff',
     },

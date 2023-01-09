@@ -14,7 +14,6 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
-import { getProjectInfo } from '@/services/project'
 
 const OperationTop = styled.div({
   height: 64,
@@ -174,7 +173,7 @@ const CommonOperation = (props: Props) => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
-  const { projectInfo, setProjectInfo } = useModel('project')
+  const { projectInfo, setProjectInfo, getProjectInfo } = useModel('project')
   const { userInfo } = useModel('user')
   const { setFilterHeight } = useModel('demand')
   const { setFilterHeightIterate } = useModel('iterate')
@@ -258,13 +257,14 @@ const CommonOperation = (props: Props) => {
     setIsVisible(state)
   }
 
-  const onToModel = (i: any) => {
-    getProjectInfo({ projectId })
+  const onToModel = async (i: any) => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/Detail/${i.type}?data=${params}`)
     setFilterHeight(52)
     setFilterHeightIterate(60)
     // 点击切换更新项目info接口
+    await getProjectInfo({ projectId })
+    // 点击切换更新项目下拉数据
     props.onChangeIdx()
   }
 
