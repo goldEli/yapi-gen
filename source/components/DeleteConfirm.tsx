@@ -15,6 +15,7 @@ interface Props {
   onConfirm(): void
   title?: string
   children?: any
+  notCancel?: boolean
 }
 
 const ModalHeader = styled.div({
@@ -68,13 +69,17 @@ const DeleteConfirm = (props: Props) => {
           <IconFont style={{ fontSize: 24, color: '#FA9746' }} type="Warning" />
           <div>{props.title ? props.title : t('components.deleteConfirm')}</div>
         </Title>
-        <CloseWrap width={32} height={32} onClick={props?.onChangeVisible}>
-          <IconFont style={{ fontSize: 20 }} type="close" />
-        </CloseWrap>
+        {!props?.notCancel && (
+          <CloseWrap width={32} height={32} onClick={props?.onChangeVisible}>
+            <IconFont style={{ fontSize: 20 }} type="close" />
+          </CloseWrap>
+        )}
       </ModalHeader>
       <ModalContent>{props.children ?? props.text}</ModalContent>
       <ModalFooter size={16}>
-        <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
+        {!props?.notCancel && (
+          <Button onClick={props.onChangeVisible}>{t('common.cancel')}</Button>
+        )}
         <Button type="primary" onClick={props.onConfirm}>
           {t('common.confirm')}
         </Button>

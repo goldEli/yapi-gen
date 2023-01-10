@@ -24,7 +24,6 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
 
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    log.print('错误捕捉', errorInfo)
     //传递异常信息
     this.setState({
       error,
@@ -48,7 +47,6 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
         isShowModal: false,
       })
       location.reload()
-      localStorage.clear()
     }
 
     //如果捕获到异常，渲染降级UI
@@ -56,10 +54,11 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
       return (
         <DeleteConfirm
           title="版本更新提示"
-          text="有新的版本更新，请刷新重试！"
+          text="版本更新，请刷新重试！"
           isVisible={this.state.isShowModal}
           onChangeVisible={onClose}
           onConfirm={onConfirm}
+          notCancel
         />
       )
     }
