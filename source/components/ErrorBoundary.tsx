@@ -1,4 +1,5 @@
 import * as React from 'react'
+import log from '@jihe/secure-log'
 
 interface PropsType {
   children: React.ReactNode
@@ -27,6 +28,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
 
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    log.print('错误捕捉', errorInfo)
     //传递异常信息
     this.setState(preState => ({
       hasError: preState.hasError,
