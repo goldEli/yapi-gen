@@ -11,6 +11,7 @@ import styled from '@emotion/styled'
 import { store } from '../store'
 import { Provider as RtkProvider } from 'react-redux'
 import WaterMarkContent from './components/WaterMarkContent'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 export const Loading = styled.div`
   width: 100%;
@@ -27,14 +28,16 @@ log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
-    <GlobalStyle />
-    <RtkProvider store={store}>
-      <Provider>
-        <WaterMarkContent>
-          <Routes />
-        </WaterMarkContent>
-      </Provider>
-    </RtkProvider>
+    <ErrorBoundary>
+      <GlobalStyle />
+      <RtkProvider store={store}>
+        <Provider>
+          <WaterMarkContent>
+            <Routes />
+          </WaterMarkContent>
+        </Provider>
+      </RtkProvider>
+    </ErrorBoundary>
   </BrowserRouter>,
 )
 
