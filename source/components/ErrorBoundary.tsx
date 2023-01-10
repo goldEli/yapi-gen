@@ -55,7 +55,8 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
     if (this.state.errorInfo) {
       return (
         <DeleteConfirm
-          text="有新的版本更新，请刷新！"
+          title="版本更新提示"
+          text="有新的版本更新，请刷新重试！"
           isVisible={this.state.isShowModal}
           onChangeVisible={onClose}
           onConfirm={onConfirm}
