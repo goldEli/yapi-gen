@@ -35,30 +35,25 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
   }
 
   render() {
+    // 关闭弹窗
+    const onClose = () => {
+      this.setState({
+        isShowModal: false,
+      })
+    }
+
+    // 确认事件
+    const onConfirm = () => {
+      this.setState({
+        isShowModal: false,
+      })
+      location.reload()
+      localStorage.clear()
+    }
+
     //如果捕获到异常，渲染降级UI
     if (this.state.errorInfo) {
-      const onClose = () => {
-        this.setState({
-          isShowModal: false,
-        })
-      }
-
-      const onConfirm = () => {
-        this.setState({
-          isShowModal: false,
-        })
-        location.reload()
-        localStorage.clear()
-      }
       return (
-        // <div>
-        //   <h2>Something went wrong.</h2>
-        //   <details style={{ whiteSpace: 'pre-wrap' }}>
-        //     {this.state.error && this.state.error.toString()}
-        //     <br />
-        //     {this.state.errorInfo.componentStack}
-        //   </details>
-        // </div>
         <DeleteConfirm
           text="有新的版本更新，请刷新！"
           isVisible={this.state.isShowModal}
