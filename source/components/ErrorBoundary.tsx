@@ -6,7 +6,6 @@ interface PropsType {
 }
 
 interface StateType {
-  hasError: boolean
   error?: null | Error
   errorInfo?: null | React.ErrorInfo
 }
@@ -15,38 +14,33 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props)
     this.state = {
-      hasError: false,
       error: null,
       errorInfo: null,
     }
-  }
-
-  //控制渲染降级UI
-  static getDerivedStateFromError(error: Error): StateType {
-    return { hasError: true }
   }
 
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     log.print('错误捕捉', errorInfo)
     //传递异常信息
-    this.setState(preState => ({
-      hasError: preState.hasError,
+    this.setState({
       error,
       errorInfo,
-    }))
+    })
     //可以将异常信息抛出给日志系统等等
     //do something....
   }
 
   render() {
     //如果捕获到异常，渲染降级UI
-    if (this.state.hasError) {
+    if (this.state.errorInfo) {
       return (
         <div>
-          <h1>{`Error:${this.state.error?.message}`}</h1>
+          <h2>Something went wrong.</h2>
           <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.errorInfo?.componentStack}
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {this.state.errorInfo.componentStack}
           </details>
         </div>
       )
