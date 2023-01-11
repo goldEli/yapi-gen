@@ -136,6 +136,7 @@ const ProjectMember = () => {
     getMemberList,
     getProjectPermission,
     setProjectPermission,
+    getProjectInfo,
   } = useModel('project')
   const { getPositionSelectList } = useModel('staff')
   const { userInfo } = useModel('user')
@@ -625,6 +626,7 @@ const ProjectMember = () => {
     setIsAddVisible(false)
     setTimeout(() => {
       form.resetFields()
+      getProjectInfo({ projectId: projectId })
     }, 100)
   }
   useEffect(() => {

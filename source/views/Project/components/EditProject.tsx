@@ -129,10 +129,10 @@ const EditProject = (props: Props) => {
             { required: true, message: '' },
             {
               // eslint-disable-next-line prefer-regex-literals
-              pattern: new RegExp(
-                /^[\u4e00-\u9fa5_a-zA-Z0-9_(_（_)_）_,_，_:_：_—_\-_/_\n]+$/,
-                'g',
-              ),
+              // pattern: new RegExp(
+              //   /^[\u4e00-\u9fa5_a-zA-Z0-9_(_（_)_）_,_，_:_：_—_\-_/_\n]+$/,
+              //   'g',
+              // ),
               message: t('mark.waring'),
             },
           ]}
@@ -153,7 +153,7 @@ const EditProject = (props: Props) => {
           getValueFromEvent={event => {
             return event.target.value.replace(/\s+/g, '')
           }}
-          rules={[{ required: true, message: '' }]}
+          // rules={[{ required: true, message: '' }]}
         >
           <Input.TextArea
             maxLength={500}
