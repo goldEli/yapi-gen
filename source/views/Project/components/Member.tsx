@@ -465,7 +465,7 @@ const Member = (props: Props) => {
             autoComplete="off"
             onPressEnter={onChangeSearch}
             onBlur={onChangeSearch}
-            suffix={
+            prefix={
               <IconFont
                 type="search"
                 style={{ color: '#BBBDBF', fontSize: 16 }}

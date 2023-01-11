@@ -28,16 +28,16 @@ log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
-    <ErrorBoundary>
-      <GlobalStyle />
-      <RtkProvider store={store}>
-        <Provider>
-          <WaterMarkContent>
-            <Routes />
-          </WaterMarkContent>
-        </Provider>
-      </RtkProvider>
-    </ErrorBoundary>
+    {/* <ErrorBoundary> */}
+    <GlobalStyle />
+    <RtkProvider store={store}>
+      <Provider>
+        <WaterMarkContent>
+          <Routes />
+        </WaterMarkContent>
+      </Provider>
+    </RtkProvider>
+    {/* </ErrorBoundary> */}
   </BrowserRouter>,
 )
 

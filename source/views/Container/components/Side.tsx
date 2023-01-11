@@ -36,6 +36,7 @@ const imgCSS = css`
   width: 56px;
   margin-top: 24px;
   object-fit: cover;
+  cursor: pointer;
 `
 const SideHeader = styled.div`
   display: flex;
@@ -208,8 +209,22 @@ export const Side = () => {
   return (
     <SideWrap>
       <SideHeader>
-        <img className={imgCSS} src={sideLogo} alt="1" />
-        <img style={{ marginBottom: 32 }} src={sideLogoText} alt="1" />
+        <img
+          onClick={() => {
+            navigate('/Project')
+          }}
+          className={imgCSS}
+          src={sideLogo}
+          alt="1"
+        />
+        <img
+          onClick={() => {
+            navigate('/Project')
+          }}
+          style={{ marginBottom: 32, cursor: 'pointer' }}
+          src={sideLogoText}
+          alt="1"
+        />
         {allEach}
       </SideHeader>
 

@@ -47,7 +47,7 @@ const CommonInput = (props: Props) => {
       ref={props?.ref}
       style={{ width: props.width || 240 }}
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
-      suffix={
+      prefix={
         <IconFont type="search" style={{ color: '#BBBDBF', fontSize: 16 }} />
       }
       placeholder={props.placeholder}

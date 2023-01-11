@@ -319,7 +319,7 @@ const EditDemandLeft = (props: Props) => {
             autoComplete="off"
             ref={inputRefDom as any}
             placeholder={t('common.pleaseDemandName')}
-            maxLength={50}
+            maxLength={100}
             autoFocus
           />
         </Form.Item>

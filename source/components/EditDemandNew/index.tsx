@@ -18,6 +18,7 @@ import { getParamsData } from '@/tools'
 import { getTreeList } from '@/services/project/tree'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import ThrottleButton from '../ThrottleButton'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -712,9 +713,9 @@ const EditDemand = (props: Props) => {
                 {t('common.finishToAdd')}
               </AddButtonWrap>
             )}
-            <Button type="primary" onClick={() => onSaveCategory()}>
+            <ThrottleButton type="primary" thClick={onSaveCategory}>
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
-            </Button>
+            </ThrottleButton>
           </Space>
         </ModalFooter>
       </ModalWrap>
