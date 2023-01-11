@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 const ThrottleButton = (props: any) => {
   return (
-    <AsyncButton onClick={_.throttle(props.thClick, 2000)}>
+    <AsyncButton onClick={_.throttle(() => props.thClick(), 2000)}>
       {props.children}
     </AsyncButton>
   )

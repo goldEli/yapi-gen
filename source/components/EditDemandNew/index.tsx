@@ -713,7 +713,7 @@ const EditDemand = (props: Props) => {
                 {t('common.finishToAdd')}
               </AddButtonWrap>
             )}
-            <ThrottleButton type="primary" thClick={onSaveCategory}>
+            <ThrottleButton type="primary" thClick={() => onSaveCategory()}>
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
             </ThrottleButton>
           </Space>
