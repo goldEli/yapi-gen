@@ -143,8 +143,10 @@ const Need = (props: any) => {
   }
 
   const onPressEnter = (value: any) => {
-    setKeyword(value)
-    getList(pageObj, order, value, searchParams)
+    if (keyword !== value) {
+      setKeyword(value)
+      getList(pageObj, order, value, searchParams)
+    }
   }
 
   const onChangeOperation = (record: any) => {

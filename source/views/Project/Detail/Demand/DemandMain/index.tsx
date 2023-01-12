@@ -53,8 +53,7 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand, setFilterParams, filterParams } =
-    useModel('demand')
+  const { getDemandList, deleteDemand, setFilterParams } = useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -299,7 +298,14 @@ const DemandMain = (props: Props) => {
               onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
-              filterParams={filterParams}
+              filterParams={{
+                ...searchItems,
+                projectId,
+                page: 1,
+                pageSize: 100,
+                order: '',
+                orderKey: '',
+              }}
               isUpdated={isUpdated}
             />
           )}

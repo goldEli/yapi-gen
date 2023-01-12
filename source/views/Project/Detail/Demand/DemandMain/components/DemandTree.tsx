@@ -124,6 +124,7 @@ const DemandTree = (props: Props) => {
   const batchDom: any = createRef()
   // 用于获取数据更新后的展开key
   const [computedTopId, setComputedTopId] = useState(0)
+  const [delayChild, setDelayChild] = useState<any>({})
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -243,10 +244,12 @@ const DemandTree = (props: Props) => {
   // 点击获取子需求
   const onGetChildList = async (row: any) => {
     // 如果查询列表未执行完，不执行获取子需求
+    let resultData: any = data
     if (props.isUpdated) {
-      setExpandedRowKeys([row.id])
+      setDelayChild(row)
       return
     }
+
     let dataChildren: any
     let resultList: any
     // 第一级调用接口获取子级， 并且全部展开子级
@@ -260,6 +263,7 @@ const DemandTree = (props: Props) => {
         isChildren: true,
       })
     }
+    setDelayChild({})
 
     // 如果折叠起来，则在已勾选的数组中删掉，反之合并
     if (row.isExpended) {
@@ -277,13 +281,16 @@ const DemandTree = (props: Props) => {
       ]
       resultList = [...expandedRowKeys, ...lists]
     }
-    setExpandedRowKeys(resultList)
 
-    row.children = row.parentId ? row.children : dataChildren?.list
-    setData({ ...data, list: [...data.list] })
+    setExpandedRowKeys([...new Set(resultList)])
+    const resultArr = resultData?.list?.map((i: any) => ({
+      ...i,
+      children: row.parentId ? row.children : dataChildren?.list,
+      isExpended: row.id === i.id ? !row.isExpended : false,
+    }))
+    setData({ ...resultData, list: resultArr })
     setTimeout(() => {
-      row.isExpended = !row.isExpended
-      setData({ ...data, list: [...data.list] })
+      setData({ ...resultData, list: resultArr })
     }, 0)
   }
 
@@ -508,6 +515,10 @@ const DemandTree = (props: Props) => {
       if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
         setTableWrapHeight(tableBody.clientHeight)
       }
+    }
+    // 判断列表数据更新完成并且有延时id则调用获取子需求列表
+    if (!props.isUpdated && delayChild?.id) {
+      onGetChildList(delayChild)
     }
   }, [data?.list])
 

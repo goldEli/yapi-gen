@@ -14,7 +14,6 @@ import { message, Spin } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import Loading from '@/components/Loading'
 import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useSelector } from '@store/index'
@@ -136,11 +135,13 @@ const Project = () => {
   }
 
   const onChangeSearch = (value: string) => {
-    setSearchVal(value)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
+    if (searchVal !== value) {
+      setSearchVal(value)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+    }
   }
 
   const onDeleteConfirm = async () => {

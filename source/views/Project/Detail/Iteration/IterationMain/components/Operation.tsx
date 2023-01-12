@@ -186,14 +186,16 @@ const Operation = (props: Props) => {
     props?.onChangeIsShowLeft?.()
   }
 
-  const onChangeSearch = (val: string) => {
-    setSearchVal(val)
-    const params = searchGroups
-    params.searchValue = val
-    setSearchGroups(params)
-    props.onSearch(params)
+  const onChangeSearch = (value: string) => {
+    if (searchVal !== value) {
+      setSearchVal(value)
+      const params = searchGroups
+      params.searchValue = value
+      setSearchGroups(params)
+      props.onSearch(params)
+    }
     // 添加搜索项 计数
-    const keys = val
+    const keys = value
       ? [...filterKeys, ...['searchVal']]
       : filterKeys?.filter((i: any) => i !== 'searchVal')
     setFilterKeys([...new Set(keys)])
