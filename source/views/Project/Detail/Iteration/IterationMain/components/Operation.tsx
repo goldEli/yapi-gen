@@ -22,6 +22,7 @@ import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { getSearchField } from '@/services/mine'
+import CommonInput from '@/components/CommonInput'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -78,11 +79,14 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { projectInfo, getProjectInfoValues, setFilterKeys, filterKeys } =
+    useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
+  const [searchVal, setSearchVal] = useState('')
+  const [searchGroups, setSearchGroups] = useState<any>({})
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
@@ -131,7 +135,9 @@ const Operation = (props: Props) => {
       schedule_start: e.schedule?.start,
       schedule_end: e.schedule?.end,
       custom_field: customField,
+      searchValue: searchVal,
     }
+    setSearchGroups(params)
     props.onSearch(params)
   }
 
@@ -178,6 +184,19 @@ const Operation = (props: Props) => {
       setIsShow(false)
     }
     props?.onChangeIsShowLeft?.()
+  }
+
+  const onChangeSearch = (val: string) => {
+    setSearchVal(val)
+    const params = searchGroups
+    params.searchValue = val
+    setSearchGroups(params)
+    props.onSearch(params)
+    // 添加搜索项 计数
+    const keys = val
+      ? [...filterKeys, ...['searchVal']]
+      : filterKeys?.filter((i: any) => i !== 'searchVal')
+    setFilterKeys([...new Set(keys)])
   }
 
   return (
@@ -269,14 +288,20 @@ const Operation = (props: Props) => {
             </>
           )}
         </IterationInfo>
-        <OperationGroup
-          onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
-          isGrid={props.isGrid}
-          filterState={filterState}
-          settingState={props.settingState}
-          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-        />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CommonInput
+            placeholder={t('common.pleaseSearchDemand')}
+            onChangeSearch={onChangeSearch}
+          />
+          <OperationGroup
+            onChangeFilter={onChangeFilter}
+            onChangeGrid={props.onChangeGrid}
+            isGrid={props.isGrid}
+            filterState={filterState}
+            settingState={props.settingState}
+            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          />
+        </div>
       </OperationWrap>
       {filterState ? null : (
         <TableFilter
