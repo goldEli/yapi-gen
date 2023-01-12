@@ -19,6 +19,8 @@ import { getTreeList } from '@/services/project/tree'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import ThrottleButton from '../ThrottleButton'
+import { useDispatch } from '@store/index'
+import { setIsUpdateCreate } from '@store/mine'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -187,7 +189,7 @@ const EditDemand = (props: Props) => {
     updateDemand,
     addDemand,
   } = useModel('demand')
-  const { setIsUpdateCreate } = useModel('mine')
+  const dispatch = useDispatch()
 
   // 获取需求列表
   const getList = async (value?: any) => {
@@ -424,7 +426,7 @@ const EditDemand = (props: Props) => {
     }
     // 是否是快捷创建，是则要刷新相应的列表接口
     if (props?.isQuickCreate) {
-      setIsUpdateCreate(true)
+      dispatch(setIsUpdateCreate(true))
     } else {
       props.onUpdate?.()
     }

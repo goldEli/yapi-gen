@@ -1,7 +1,7 @@
 /* eslint-disable no-duplicate-imports */
+// 水印状态
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { changeWater, getWater } from '@/services/setting'
+import { getWater } from '@/services/setting'
 
 export interface CounterState {
   value: number | string

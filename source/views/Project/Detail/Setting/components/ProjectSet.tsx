@@ -18,6 +18,8 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Warp = styled.div({
   padding: 16,
@@ -247,7 +249,8 @@ const ProjectSet = () => {
     projectInfo,
   } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
@@ -276,7 +279,7 @@ const ProjectSet = () => {
       setActiveDetail(result?.list?.filter((i: any) => i.id === str)[0])
       getPermissionList(result?.list?.filter((i: any) => i.id === str)[0])
     }
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   useEffect(() => {

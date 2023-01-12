@@ -31,6 +31,7 @@ export default defineConfig(config => {
     resolve: {
       alias: {
         '@': '/source',
+        '@store': '/store',
       },
     },
     css: {

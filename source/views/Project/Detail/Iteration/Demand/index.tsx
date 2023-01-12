@@ -24,6 +24,8 @@ import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import MoreDropdown from '@/components/MoreDropdown'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -59,7 +61,8 @@ const DemandWrap = (props: Props) => {
   const { projectInfo, setFilterParamsModal } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
     useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { iterateInfo, setFilterParams, filterParams } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -146,7 +149,7 @@ const DemandWrap = (props: Props) => {
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   useEffect(() => {

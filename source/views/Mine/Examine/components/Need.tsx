@@ -29,6 +29,8 @@ import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
 import CommonInput from '@/components/CommonInput'
+import { useSelector } from '@store/index'
+import { getVerifyList, getVerifyUserList } from '@/services/mine'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -78,8 +80,10 @@ const Need = (props: any) => {
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
-  const { userInfo } = useModel('user')
-  const { getVerifyList, getVerifyUserList, setCount, count } = useModel('mine')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
+  const [count, setCount] = useState({ verifyUser: 0, verify: 0 })
   const [listData, setListData] = useState<any>({
     list: undefined,
   })

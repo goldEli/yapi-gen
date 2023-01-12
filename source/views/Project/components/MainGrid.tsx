@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
+import { useSelector } from '@store/index'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -65,7 +66,9 @@ const DataWrap = styled.div({
 const MainGrid = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const isPermission = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',

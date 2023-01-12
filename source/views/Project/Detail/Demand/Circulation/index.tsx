@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import PubSub from 'pubsub-js'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -115,12 +117,12 @@ const Circulation = () => {
   const projectId = paramsData.id
   const { getStatusLogs, statusLogs, demandInfo, setStatusLogs } =
     useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
-
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const getLogs = async () => {
     setIsSpin(true)
     await getStatusLogs({ projectId, demandId: demandInfo?.id, all: true })
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     setIsSpin(false)
   }
 

@@ -23,6 +23,8 @@ import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -87,7 +89,8 @@ const ChangeRecord = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -121,7 +124,7 @@ const ChangeRecord = () => {
     })
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     setIsUpdateChangeLog(false)
   }
 

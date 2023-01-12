@@ -17,6 +17,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import EditDemand from '@/components/EditDemandNew'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
@@ -49,7 +51,8 @@ const IterationMain = (props: Props) => {
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const { setIsRefreshList, setIsUpdateList, setFilterParams } =
     useModel('iterate')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [deleteId, setDeleteId] = useState(0)
   const [currentDetail, setCurrentDetail] = useState<any>({})
   const [isSettingState, setIsSettingState] = useState(false)
@@ -120,7 +123,7 @@ const IterationMain = (props: Props) => {
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     setIsUpdateList(false)
     props.onChangeIsUpdate(false)
   }

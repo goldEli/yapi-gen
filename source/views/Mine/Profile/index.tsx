@@ -26,6 +26,13 @@ import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsUpdateCreate } from '@store/mine'
+import {
+  getMineChartsList,
+  getMineGatte,
+  getUserFeedList,
+} from '@/services/mine'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -136,14 +143,11 @@ const Profile = () => {
   const [t, i18n] = useTranslation()
   asyncSetTtile(t('title.a9'))
 
-  const {
-    getMineChartsList,
-    getUserFeedList,
-    getMineGatte,
-    isUpdateCreate,
-    setIsUpdateCreate,
-  } = useModel('mine')
-  const { userInfo } = useModel('user')
+  const dispatch = useDispatch()
+  const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const { colorList } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
@@ -200,7 +204,7 @@ const Profile = () => {
     })
 
     setLineData(res1.data)
-    setIsUpdateCreate(false)
+    dispatch(setIsUpdateCreate(false))
   }
 
   const init = async () => {

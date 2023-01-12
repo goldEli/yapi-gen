@@ -11,6 +11,7 @@ import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { getParamsData } from '@/tools'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   height: '100%',
@@ -23,7 +24,7 @@ const Detail = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { isRefresh } = useModel('user')
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   // 用于私有项目权限过渡
   const [isShowPage, setIsShowPage] = useState(false)
   const navigate = useNavigate()

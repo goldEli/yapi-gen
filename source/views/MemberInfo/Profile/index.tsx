@@ -29,6 +29,14 @@ import { getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
+import {
+  getMemberGantt,
+  getMemberInfoOverviewStatistics,
+  getUserGantt,
+  getUserInfoOverviewFeed,
+  getUserInfoOverviewStatistics,
+} from '@/services/member'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -161,15 +169,10 @@ const TotalWrap = styled.div({
 const Profile = () => {
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
-  const {
-    getUserInfoOverviewFeed,
-    getUserInfoOverviewStatistics,
-    getMemberInfoOverviewStatistics,
-    getMemberGantt,
-    getUserGantt,
-    mainInfo,
-  } = useModel('member')
-  const { userInfo } = useModel('user')
+  const { mainInfo } = useSelector((store: { member: any }) => store.member)
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const { colorList, projectInfo } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])

@@ -5,7 +5,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import { useEffect } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -91,13 +91,12 @@ const Setting = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { getCompanyInfo, companyInfo } = useModel('setting')
-  const nowPath = pathname.split('/')[2] || ''
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { value: companyInfo } = useSelector(
+    (store: { companyInfo: any }) => store.companyInfo,
+  )
 
-  useEffect(() => {
-    getCompanyInfo()
-  }, [])
+  const nowPath = pathname.split('/')[2] || ''
 
   const onChangeActive = (value: MenuList) => {
     navigate(value.path)
@@ -151,7 +150,7 @@ const Setting = () => {
   return (
     <Wrap>
       <Side>
-        <CompanyImg src={companyInfo.logo} />
+        <CompanyImg src={companyInfo?.logo} />
         <MenuWrap>
           {sideList.map(item => (
             <MenuItem

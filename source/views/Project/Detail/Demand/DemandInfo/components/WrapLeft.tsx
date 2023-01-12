@@ -71,7 +71,6 @@ const WrapLeftBox = () => {
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
-  const { value: modalState } = useSelector(store => store.modal)
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({

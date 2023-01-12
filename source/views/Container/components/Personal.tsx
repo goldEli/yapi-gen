@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import { useSelector } from '@store/index'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -50,7 +51,9 @@ const SetHead = styled.div`
 
 export const Personal = (props: { visible: boolean; close(): void }) => {
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   // eslint-disable-next-line react/hook-use-state
   const [isShow] = useState<any>(false)
 

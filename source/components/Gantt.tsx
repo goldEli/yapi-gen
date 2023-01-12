@@ -64,7 +64,7 @@ const GanttWrap = styled.div({
       backgroundColor: 'transparent',
     },
   '.gantt_task_row.gantt_selected .gantt_task_cell': {
-    'border-right-color': 'white',
+    borderRightColor: 'white',
   },
   '.gantt_task_cell': {
     borderRight: 'none',

@@ -24,6 +24,7 @@ import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
+import { getProjectMember } from '@/services/mine'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -371,7 +372,6 @@ const ShapeContentForDetail = (props: any) => {
 
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
-  const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
   const [rightList, setRightList] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)

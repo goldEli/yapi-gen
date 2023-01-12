@@ -17,6 +17,8 @@ import FieldsTemplate from './FieldsTemplate'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { useDispatch } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Wrap = styled.div<{ language: any }>(
   {
@@ -128,7 +130,7 @@ const ImportDemand = () => {
     importExcel,
     getImportExcelUpdate,
   } = useModel('demand')
-  const { setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
   const { projectInfo } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -158,7 +160,7 @@ const ImportDemand = () => {
         : await getImportExcel({ projectId, filePath: result })
       setSpinLoading(false)
       setStep(3)
-      setIsRefresh(true)
+      dispatch(setIsRefresh(true))
     } catch (error) {
       setStep(1)
       setSpinLoading(false)
