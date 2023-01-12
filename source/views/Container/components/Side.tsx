@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 // 左侧操作栏
 
 import { useState } from 'react'
@@ -204,22 +206,60 @@ export const Side = () => {
   const controlPanelVisible = () => {
     setPanelVisible(!panelVisible)
   }
+  const jump = () => {
+    const jumpList = [
+      {
+        name: '概况',
+        path: '/Situation',
+      },
+      {
+        name: '项目',
+        path: '/Project',
+      },
+      {
+        name: '我的',
+        path: '/mine',
+      },
+      {
+        name: '员工',
+        path: '/staff',
+      },
+      {
+        name: '消息',
+        path: '/Situation',
+      },
 
+      {
+        name: '公司管理',
+        path: '/Setting',
+      },
+      {
+        name: '日志',
+        path: '/Situation',
+      },
+    ]
+    const { company_permissions } = userInfo
+    const routerMap = Array.from(
+      new Set(company_permissions?.map((i: any) => i.group_name)),
+    )
+    if (routerMap.length >= 1) {
+      routerMap.concat('日志')
+
+      for (let i = 0; i <= jumpList.length; i++) {
+        if (routerMap?.includes(jumpList[i].name)) {
+          sessionStorage.setItem('saveRouter', '首次登录')
+          navigate(jumpList[i].path)
+          break
+        }
+      }
+    }
+  }
   return (
     <SideWrap>
       <SideHeader>
+        <img onClick={jump} className={imgCSS} src={sideLogo} alt="1" />
         <img
-          onClick={() => {
-            navigate('/Project')
-          }}
-          className={imgCSS}
-          src={sideLogo}
-          alt="1"
-        />
-        <img
-          onClick={() => {
-            navigate('/Project')
-          }}
+          onClick={jump}
           style={{ marginBottom: 32, cursor: 'pointer' }}
           src={sideLogoText}
           alt="1"
