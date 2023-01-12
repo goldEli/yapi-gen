@@ -19,7 +19,6 @@ import { getStatus } from '../../../store/waterState'
 import { getLoginDetail } from '../../../store/user/user.thunk'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import { login } from '@/services/user'
-import { useModel } from '@/models'
 import { getAsyncCompanyInfo } from '@store/companyInfo'
 
 const Wrap = styled.div`
@@ -56,9 +55,8 @@ export const Container = () => {
 
   const init = async () => {
     if (!localStorage.getItem('agileToken')) {
-      const data = await login()
+      await login()
     }
-    dispatch(getLoginDetail())
   }
 
   useEffect(() => {
