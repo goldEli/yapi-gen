@@ -304,7 +304,10 @@ const WrapLeftBox = (props: Props) => {
             name="name"
             rules={[{ required: true, message: '' }]}
             getValueFromEvent={event => {
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(
+                /(?<start>^\s*)|(?<end>\s*$)/g,
+                '',
+              )
             }}
           >
             <Input

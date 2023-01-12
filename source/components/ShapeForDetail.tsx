@@ -1,6 +1,6 @@
+/* eslint-disable require-unicode-regexp */
 // 公用状态流转弹窗
 
-/* eslint-disable require-unicode-regexp */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -474,7 +474,10 @@ const ShapeContentForDetail = (props: any) => {
                     {i.type === 'area' && (
                       <Form.Item
                         getValueFromEvent={event => {
-                          return event.target.value.replace(/\s+/g, '')
+                          return event.target.value.replace(
+                            /(?<start>^\s*)|(?<end>\s*$)/g,
+                            '',
+                          )
                         }}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -607,7 +610,10 @@ const ShapeContentForDetail = (props: any) => {
                     {['text', 'textarea'].includes(i.type) && (
                       <Form.Item
                         getValueFromEvent={event => {
-                          return event.target.value.replace(/\s+/g, '')
+                          return event.target.value.replace(
+                            /(?<start>^\s*)|(?<end>\s*$)/g,
+                            '',
+                          )
                         }}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}

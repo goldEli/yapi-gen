@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 编辑迭代
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -183,8 +184,10 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="iterationName"
             getValueFromEvent={event => {
-              // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(
+                /(?<start>^\s*)|(?<end>\s*$)/g,
+                '',
+              )
             }}
           >
             <Input

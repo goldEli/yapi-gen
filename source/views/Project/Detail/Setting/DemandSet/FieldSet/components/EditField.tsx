@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable react/jsx-no-leaked-render */
 // 需求字段-编辑字段
 
@@ -284,8 +285,10 @@ const EditFiled = (props: Props) => {
               rules={[{ required: true, message: '' }]}
               name="name"
               getValueFromEvent={event => {
-                // eslint-disable-next-line require-unicode-regexp
-                return event.target.value.replace(/\s+/g, '')
+                return event.target.value.replace(
+                  /(?<start>^\s*)|(?<end>\s*$)/g,
+                  '',
+                )
               }}
             >
               <Input
@@ -303,7 +306,10 @@ const EditFiled = (props: Props) => {
             label={t('newlyAdd.fieldsRemark')}
             getValueFromEvent={event => {
               // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(
+                /(?<start>^\s*)|(?<end>\s*$)/g,
+                '',
+              )
             }}
             name="remarks"
           >

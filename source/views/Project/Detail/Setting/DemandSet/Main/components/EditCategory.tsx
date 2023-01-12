@@ -1,3 +1,5 @@
+/* eslint-disable prefer-regex-literals */
+/* eslint-disable require-unicode-regexp */
 // 需求设置-编辑需求类别
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -161,7 +163,10 @@ const EditorCategory = (props: EditorProps) => {
           rules={[{ required: true, message: '' }]}
           getValueFromEvent={event => {
             // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(
+              /(?<start>^\s*)|(?<end>\s*$)/g,
+              '',
+            )
           }}
         >
           <Input
@@ -177,8 +182,9 @@ const EditorCategory = (props: EditorProps) => {
         <Form.Item
           label={t('newlyAdd.categoryRemark')}
           getValueFromEvent={event => {
-            // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(/\s+/g, '')
+            const reg = new RegExp(/(?<start>^\s*)|(?<end>\s*$)/g)
+
+            return event.target.value.replace(reg, '')
           }}
           name="remark"
         >

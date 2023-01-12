@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 需求主页-左侧需求分类
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -309,7 +310,10 @@ const TreeItem = (props: any) => {
                 rules={[{ required: true, message: '' }]}
                 getValueFromEvent={event => {
                   // eslint-disable-next-line require-unicode-regexp
-                  return event.target.value.replace(/\s+/g, '')
+                  return event.target.value.replace(
+                    /(?<start>^\s*)|(?<end>\s*$)/g,
+                    '',
+                  )
                 }}
               >
                 <Input
@@ -322,8 +326,10 @@ const TreeItem = (props: any) => {
               </Form.Item>
               <Form.Item
                 getValueFromEvent={event => {
-                  // eslint-disable-next-line require-unicode-regexp
-                  return event.target.value.replace(/\s+/g, '')
+                  return event.target.value.replace(
+                    /(?<start>^\s*)|(?<end>\s*$)/g,
+                    '',
+                  )
                 }}
                 name="remark"
                 label={t('newlyAdd.classRemark')}
