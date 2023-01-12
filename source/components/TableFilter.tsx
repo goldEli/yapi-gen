@@ -535,7 +535,10 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item
                       getValueFromEvent={event => {
-                        return event.target.value.replace(/\s+/g, '')
+                        return event.target.value.replace(
+                          /(?<start>^\s*)|(?<end>\s*$)/g,
+                          '',
+                        )
                       }}
                       name={i.key}
                     >

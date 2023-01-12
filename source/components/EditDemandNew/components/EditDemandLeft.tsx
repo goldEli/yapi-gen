@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -306,8 +307,10 @@ const EditDemandLeft = (props: Props) => {
         )}
         <Form.Item
           getValueFromEvent={event => {
-            // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(
+              /(?<start>^\s*)|(?<end>\s*$)/g,
+              '',
+            )
           }}
           label={
             <div style={{ fontWeight: 'bold' }}>{t('common.demandName')}</div>

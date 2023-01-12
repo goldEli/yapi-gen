@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 需求设置-编辑工作流弹窗
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -131,8 +132,10 @@ const EditWorkflow = (props: EditorProps) => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Item
               getValueFromEvent={event => {
-                // eslint-disable-next-line require-unicode-regexp
-                return event.target.value.replace(/\s+/g, '')
+                return event.target.value.replace(
+                  /(?<start>^\s*)|(?<end>\s*$)/g,
+                  '',
+                )
               }}
               label={t('newlyAdd.statusName')}
               name="name"
@@ -152,7 +155,10 @@ const EditWorkflow = (props: EditorProps) => {
           <Form.Item
             getValueFromEvent={event => {
               // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(
+                /(?<start>^\s*)|(?<end>\s*$)/g,
+                '',
+              )
             }}
             label={t('newlyAdd.statusRemark')}
             name="info"
