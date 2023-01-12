@@ -11,7 +11,7 @@ import { CloseWrap } from './StyleCommon'
 interface Props {
   isVisible: boolean
   text?: string
-  onChangeVisible(): void
+  onChangeVisible?(): void
   onConfirm(): void
   title?: string
   children?: any

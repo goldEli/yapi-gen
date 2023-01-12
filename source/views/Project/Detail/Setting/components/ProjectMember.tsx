@@ -11,7 +11,6 @@ import {
   SelectWrapBedeck,
   HoverWrap,
 } from '@/components/StyleCommon'
-import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
@@ -33,6 +32,8 @@ import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import { addMember } from '@/services/project'
 import PubSub from 'pubsub-js'
 import { useSelector } from '@store/index'
+import AddButton from '@/components/AddButton'
+import CommonInput from '@/components/CommonInput'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -290,9 +291,12 @@ const ProjectMember = () => {
     getList(order, { page: 1, size: pageObj.size })
   }
 
-  const onChangeSearch = (val: string) => {
-    form.setFieldsValue({ searchValue: val })
-    getList(order, { page: 1, size: pageObj.size })
+  const onChangeSearch = (value: string) => {
+    // 不相同的才更新
+    if (form.getFieldValue('searchValue') !== value) {
+      form.setFieldsValue({ searchValue: value })
+      getList(order, { page: 1, size: pageObj.size })
+    }
   }
 
   const menu = (item: any) => {
@@ -715,13 +719,18 @@ const ProjectMember = () => {
         />
         <Header>
           <HeaderTop>
-            <SearchComponent
-              onChangeVisible={onChangeValue}
-              text={t('project.addMember1')}
-              placeholder={t('project.pleaseNickname')}
-              onChangeSearch={onChangeSearch}
-              isPermission={hasAdd}
-            />
+            <Space size={24}>
+              {!hasAdd && (
+                <AddButton
+                  text={t('project.addMember1')}
+                  onChangeClick={onChangeValue}
+                />
+              )}
+              <CommonInput
+                onChangeSearch={onChangeSearch}
+                placeholder={t('project.pleaseNickname')}
+              />
+            </Space>
             <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
               <IconFont className="iconMain" type="filter" />
               <span className="label">{t('common.search')}</span>

@@ -53,8 +53,7 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand, setFilterParams, filterParams } =
-    useModel('demand')
+  const { getDemandList, deleteDemand, setFilterParams } = useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -63,6 +62,8 @@ const DemandMain = (props: Props) => {
   const [topParentId, setTopParentId] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
+  // 用于控制失焦事件与展开子需求冲突
+  const [isUpdated, setIsUpdated] = useState(false)
   const { setFilterKeys, filterKeys } = useModel('project')
 
   const getList = async (
@@ -142,6 +143,7 @@ const DemandMain = (props: Props) => {
     props.onIsUpdate?.()
     dispatch(setIsRefresh(false))
     setTopParentId(0)
+    setIsUpdated(false)
   }
 
   useEffect(() => {
@@ -200,6 +202,7 @@ const DemandMain = (props: Props) => {
   }
 
   const onSearch = (params: any) => {
+    setIsUpdated(true)
     setSearchItems(params)
     setPageObj({
       page: 1,
@@ -295,7 +298,15 @@ const DemandMain = (props: Props) => {
               onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
-              filterParams={filterParams}
+              filterParams={{
+                ...searchItems,
+                projectId,
+                page: 1,
+                pageSize: 100,
+                order: '',
+                orderKey: '',
+              }}
+              isUpdated={isUpdated}
             />
           )}
           {!isGrid && (

@@ -341,9 +341,11 @@ const IterationWrap = () => {
   }
 
   const onPressEnter = (value: any) => {
-    let obj = JSON.parse(JSON.stringify(searchGroups))
-    obj.searchVal = value
-    setSearchGroups(obj)
+    if (searchGroups.searchVal !== value) {
+      let obj = JSON.parse(JSON.stringify(searchGroups))
+      obj.searchVal = value
+      setSearchGroups(obj)
+    }
   }
 
   const getCheckList = (
