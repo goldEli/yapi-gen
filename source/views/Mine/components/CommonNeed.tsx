@@ -36,6 +36,17 @@ import NoData from '@/components/NoData'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { setIsUpdateCreate } from '@store/mine'
+import {
+  getMineCreacteList,
+  getMineFinishList,
+  getMineNeedList,
+  getMineNoFinishList,
+  updateDemandStatus,
+  updatePriorityStatus,
+} from '@/services/mine'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -133,17 +144,9 @@ const CommonNeed = (props: any) => {
   const { deleteDemand } = useModel('demand')
   const { getProjectInfo, projectInfo, getProjectInfoValues } =
     useModel('project')
-  const {
-    updateDemandStatus,
-    updatePriorityStatus,
-    getMineNoFinishList,
-    getMineCreacteList,
-    getMineFinishList,
-    getMineNeedList,
-    isUpdateCreate,
-    setIsUpdateCreate,
-  } = useModel('mine')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
@@ -234,7 +237,7 @@ const CommonNeed = (props: any) => {
       const res = await getMineNoFinishList(params)
       setManyListData({ list: res })
       setIsSpin(false)
-      setIsUpdateCreate(false)
+      dispatch(setIsUpdateCreate(false))
     }
 
     if (!isMany) {
@@ -260,7 +263,7 @@ const CommonNeed = (props: any) => {
       setListData(res)
       setTotal(res?.pager?.total)
       setIsSpin(false)
-      setIsUpdateCreate(false)
+      dispatch(setIsUpdateCreate(false))
     }
   }
 
@@ -349,7 +352,7 @@ const CommonNeed = (props: any) => {
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const getShowkey = async () => {
@@ -364,7 +367,7 @@ const CommonNeed = (props: any) => {
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
     setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const onChangePage = (newPage: any) => {

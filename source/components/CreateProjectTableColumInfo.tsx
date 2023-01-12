@@ -25,6 +25,7 @@ import DemandProgress from '@/components/DemandProgress'
 import { useModel } from '@/models'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -39,7 +40,7 @@ const Wrap = styled.div<{ isEdit?: any }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { colorList } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(

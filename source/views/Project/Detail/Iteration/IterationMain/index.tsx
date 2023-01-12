@@ -9,7 +9,7 @@ import IterationTable from './components/IterationTable'
 import IterationGrid from './components/IterationGrid'
 import WrapLeft from './components/WrapLeft'
 import { message } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
@@ -17,6 +17,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import EditDemand from '@/components/EditDemandNew'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
@@ -33,6 +35,7 @@ interface Props {
 
 const IterationMain = (props: Props) => {
   const [t] = useTranslation()
+  const keyRef = useRef<any>()
   const [isGrid, setIsGrid] = useState(0)
   const [isDemandVisible, setIsDemandVisible] = useState(false)
   const [demandItem, setDemandItem] = useState<any>({})
@@ -49,12 +52,11 @@ const IterationMain = (props: Props) => {
   const { getDemandList, deleteDemand, getDemandInfo } = useModel('demand')
   const { setIsRefreshList, setIsUpdateList, setFilterParams } =
     useModel('iterate')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
   const [deleteId, setDeleteId] = useState(0)
-  const [currentDetail, setCurrentDetail] = useState<any>({})
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const [searchItems, setSearchItems] = useState({})
+  const [searchItems, setSearchItems] = useState<any>({})
   const [isSpinning, setIsSpinning] = useState(false)
   const getList = async (
     state: any,
@@ -72,7 +74,7 @@ const IterationMain = (props: Props) => {
         projectId,
         all: true,
         panel: true,
-        iterateIds: [currentDetail?.id],
+        iterateIds: [keyRef.current?.id],
         statusIds: searchParamsObj.statusId,
         priorityIds: searchParamsObj.priorityId,
         userId: searchParamsObj.userId,
@@ -89,6 +91,7 @@ const IterationMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
+        searchValue: searchParamsObj.searchValue,
       }
     } else {
       params = {
@@ -97,7 +100,7 @@ const IterationMain = (props: Props) => {
         pageSize: item ? item?.size : 10,
         order: order.value,
         orderKey: order.key,
-        iterateIds: [currentDetail?.id],
+        iterateIds: [keyRef.current?.id],
         statusIds: searchParamsObj.statusId,
         priorityIds: searchParamsObj.priorityId,
         userId: searchParamsObj.userId,
@@ -114,37 +117,34 @@ const IterationMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
+        searchValue: searchParamsObj.searchValue,
       }
     }
+
     setFilterParams(params)
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     setIsUpdateList(false)
     props.onChangeIsUpdate(false)
   }
 
-  useEffect(() => {
-    if (currentDetail?.id) {
-      if (isRefresh || currentDetail?.id) {
-        setDataList({ list: undefined })
-        getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
-      }
-    }
-  }, [currentDetail, isRefresh])
-
-  useEffect(() => {
-    if (props.updateState && currentDetail?.id) {
-      setDataList({ list: undefined })
-      getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
-    }
-  }, [props.updateState, currentDetail])
+  // useEffect(() => {
+  //   if (
+  //     (props.updateState && keyRef.current?.id) ||
+  //     (isRefresh && keyRef.current?.id)
+  //   ) {
+  //     console.log(keyRef.current)
+  //     setDataList({ list: undefined })
+  //     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+  //   }
+  // }, [props.updateState, keyRef.current, isRefresh])
 
   const onChangeGrid = (val: any) => {
     setIsGrid(val)
     setDataList({ list: undefined })
-    if (currentDetail?.id) {
+    if (keyRef.current?.id) {
       setDataList({ list: undefined })
       getList(val, { page: 1, size: pageObj.size }, searchItems)
     }
@@ -212,6 +212,12 @@ const IterationMain = (props: Props) => {
     getList(isGrid, { page: 1, size: pageObj.size }, searchItems, updateState)
   }
 
+  const onChangeCurrent = (item: any) => {
+    keyRef.current = item
+    setDataList({ list: undefined })
+    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+  }
+
   return (
     <div style={{ display: 'flex' }}>
       <EditDemand
@@ -231,10 +237,10 @@ const IterationMain = (props: Props) => {
       <WrapLeft
         isShowLeft={isShowLeft}
         onChangeVisible={props.onChangeVisible}
-        onCurrentDetail={setCurrentDetail}
+        onCurrentDetail={onChangeCurrent}
         onIsUpdateList={onChangeIsUpdate}
         onChangeOperation={props.onChangeOperation}
-        currentDetail={currentDetail}
+        currentDetail={keyRef.current}
         updateState={props.updateState}
       />
       <Right isShowLeft={isShowLeft}>
@@ -243,7 +249,7 @@ const IterationMain = (props: Props) => {
           onChangeGrid={val => onChangeGrid(val)}
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
           onIsUpdateList={setIsUpdateList}
-          currentDetail={currentDetail}
+          currentDetail={keyRef.current}
           settingState={isSettingState}
           onChangeSetting={setIsSettingState}
           onSearch={onSearch}
@@ -255,7 +261,7 @@ const IterationMain = (props: Props) => {
             onDelete={onDelete}
             data={dataList}
             isSpinning={isSpinning}
-            hasId={currentDetail}
+            hasId={keyRef.current}
             onUpdate={onUpdate}
           />
         ) : (
@@ -269,7 +275,7 @@ const IterationMain = (props: Props) => {
             onChangeSetting={setIsSettingState}
             onChangeOrder={onChangeOrder}
             isSpinning={isSpinning}
-            hasId={currentDetail}
+            hasId={keyRef.current}
             onUpdate={onUpdate}
           />
         )}

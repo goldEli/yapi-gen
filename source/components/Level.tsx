@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
 import { useModel } from '@/models'
+import { getPriOrStu } from '@/services/mine'
 
 const flexCss = css`
   height: 32px;
@@ -37,7 +38,6 @@ type LevelProps = {
 }
 
 export const LevelContent = (props: LevelProps) => {
-  const { getPriOrStu } = useModel('mine')
   const { projectInfoValues } = useModel('project')
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record

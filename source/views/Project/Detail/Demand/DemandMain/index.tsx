@@ -19,6 +19,8 @@ import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -53,7 +55,8 @@ const DemandMain = (props: Props) => {
   const projectId = paramsData.id
   const { getDemandList, deleteDemand, setFilterParams, filterParams } =
     useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   // 用于当前操作层级不折叠
@@ -137,7 +140,7 @@ const DemandMain = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     props.onIsUpdate?.()
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     setTopParentId(0)
   }
 

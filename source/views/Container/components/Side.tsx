@@ -8,7 +8,6 @@ import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
 import sideLogo from '/sliderLogo.svg'
 import sideLogoText from '/logoText.svg'
-import { useModel } from '@/models'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -118,7 +117,7 @@ export const RedLogo = styled.span`
 export const Side = () => {
   const count = useSelector((state: any) => state.counter.value)
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const location = useLocation()
   const { pathname } = location
   const nowPath =

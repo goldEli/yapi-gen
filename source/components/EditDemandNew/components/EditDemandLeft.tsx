@@ -6,6 +6,7 @@ import Editor from '@/components/Editor'
 import IconFont from '@/components/IconFont'
 import { AddWrap, FormWrapDemand } from '@/components/StyleCommon'
 import { useModel } from '@/models'
+import { getProjectList } from '@/services/mine'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
@@ -51,7 +52,6 @@ const EditDemandLeft = (props: Props) => {
     getTagList,
     projectInfoValues,
   } = useModel('project')
-  const { getProjectList } = useModel('mine')
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
 

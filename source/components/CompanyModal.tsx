@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react'
 import { Space } from 'antd'
 import CompanyCard from '@/views/Container/components/CompanyCard'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
+import { useSelector } from '@store/index'
+import { getCompanyList, updateCompany } from '@/services/user'
 
 interface Props {
   onChangeState(): void
@@ -14,7 +15,7 @@ interface Props {
 
 const CompanyModal = (props: Props) => {
   const [t] = useTranslation()
-  const { getCompanyList, updateCompany, userInfo } = useModel('user')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
   const [companyParams, setCompanyParams] = useState({

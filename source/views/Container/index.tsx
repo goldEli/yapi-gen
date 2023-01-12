@@ -10,14 +10,16 @@ import styled from '@emotion/styled'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Side } from './components/Side'
 import Next from './components/Next'
-import { useModel } from '@/models'
 import { changeLanguage, loadedAntdLocals } from '@/locals'
 import NoPermission from './components/NoPermission'
 import { useTranslation } from 'react-i18next'
 import { ConfigProvider, message } from 'antd'
-import { useDispatch } from '../../../store'
+import { useDispatch, useSelector } from '../../../store'
 import { getStatus } from '../../../store/waterState'
+import { getLoginDetail } from '../../../store/user/user.thunk'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
+import { login } from '@/services/user'
+import { getAsyncCompanyInfo } from '@store/companyInfo'
 
 const Wrap = styled.div`
   display: flex;
@@ -39,8 +41,9 @@ export const Container = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const { loginInfo, userInfo, getUserDetail, login, setLoginInfo } =
-    useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const {
     i18n: { language },
   } = useTranslation()
@@ -52,12 +55,15 @@ export const Container = () => {
 
   const init = async () => {
     if (!localStorage.getItem('agileToken')) {
-      const data = await login()
-      setLoginInfo(data.data)
+      await login()
     }
-
-    await getUserDetail()
   }
+
+  useEffect(() => {
+    dispatch(getStatus())
+    dispatch(getLoginDetail())
+    dispatch(getAsyncCompanyInfo())
+  }, [])
 
   useEffect(() => {
     const languageParams =
@@ -70,11 +76,6 @@ export const Container = () => {
 
     init()
   }, [])
-
-  useEffect(() => {
-    dispatch(getStatus())
-  }, [])
-
   const jumpList = [
     {
       name: '概况',

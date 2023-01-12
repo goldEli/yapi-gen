@@ -33,6 +33,7 @@ import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
+import { useSelector } from 'react-redux'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -155,6 +156,7 @@ const WrapLeft = (props: Props) => {
     isUpdateList,
   } = useModel('iterate')
   const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -208,10 +210,10 @@ const WrapLeft = (props: Props) => {
   }, [currentSort])
 
   useEffect(() => {
-    if (isRefreshList) {
+    if (isRefreshList || isRefresh) {
       getList()
     }
-  }, [isRefreshList])
+  }, [isRefreshList, isRefresh])
 
   useEffect(() => {
     if (isUpdateList || props.updateState) {

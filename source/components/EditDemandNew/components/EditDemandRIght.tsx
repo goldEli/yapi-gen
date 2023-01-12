@@ -22,6 +22,7 @@ import IconFont from '@/components/IconFont'
 import { getNestedChildren, getTypeComponent } from '@/tools'
 import moment from 'moment'
 import { decryptPhp } from '@/tools/cryptoPhp'
+import { useSelector } from '@store/index'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -70,7 +71,9 @@ const EditDemandRIght = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const {
     selectAllStaffData,
     memberList,

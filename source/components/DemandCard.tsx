@@ -18,6 +18,7 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 import DemandProgress from './DemandProgress'
 import MoreDropdown from './MoreDropdown'
 import IconFont from './IconFont'
+import { useSelector } from '@store/index'
 
 interface Props {
   item: any
@@ -106,7 +107,9 @@ const NameGroup = styled.div({
 
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)

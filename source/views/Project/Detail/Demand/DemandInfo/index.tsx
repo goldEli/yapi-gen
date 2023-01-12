@@ -8,6 +8,8 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { getParamsData } from '@/tools'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -24,12 +26,12 @@ const DemandInfo = () => {
   const projectId = paramsData.id
   const { demandId } = paramsData
   const { getDemandInfo } = useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
-
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   useEffect(() => {
     if (isRefresh) {
       getDemandInfo({ projectId, id: demandId })
-      setIsRefresh(false)
+      dispatch(setIsRefresh(false))
     }
   }, [isRefresh])
 

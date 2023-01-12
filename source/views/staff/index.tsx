@@ -33,6 +33,9 @@ import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import DropDownMenu from '@/components/DropDownMenu'
+import { getStaffList, refreshStaff, updateStaff } from '@/services/staff'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 export const tableWrapP = css`
   display: flex;
@@ -75,8 +78,10 @@ const Staff = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
-  const { getStaffList, refreshStaff, updateStaff } = useModel('staff')
-  const { userInfo, isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { userInfo, isRefresh } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const [filterHeight, setFilterHeight] = useState<any>(116)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
@@ -137,7 +142,7 @@ const Staff = () => {
     setPlainOptions(res.plainOptions)
     await setPlainOptions2(res.plainOptions2)
     setLoadingState(true)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const init = () => {

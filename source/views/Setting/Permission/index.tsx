@@ -17,6 +17,16 @@ import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { GroupWrap } from '@/views/Project/Detail/Setting/components/ProjectSet'
+import {
+  addRole,
+  deleteRole,
+  getRoleList,
+  getRolePermission,
+  setRolePermission,
+  updateRole,
+} from '@/services/setting'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Header = styled.div({
   height: 64,
@@ -231,17 +241,9 @@ const Permission = () => {
   const [addValue, setAddValue] = useState('')
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [isDelete, setIsDelete] = useState(false)
-  const {
-    getRoleList,
-    getRolePermission,
-    setRolePermission,
-    addRole,
-    updateRole,
-    deleteRole,
-  } = useModel('setting')
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
-
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
@@ -253,7 +255,7 @@ const Permission = () => {
       keys = [...keys, ...a.map((k: any) => k.value)]
     })
     setSelectKeys(keys)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const init = async (isInit?: boolean, str?: string) => {

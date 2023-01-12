@@ -26,6 +26,7 @@ import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import PubSub from 'pubsub-js'
 import { setValue } from './ShapeForDetail'
+import { getProjectMember } from '@/services/mine'
 
 const Left = styled.div`
   min-height: 400px;
@@ -349,7 +350,6 @@ export const ShapeContent = (props: any) => {
 
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
-  const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
   const [leftList, setLeftList] = useState([])
   const [rightList, setRightList] = useState<any>()

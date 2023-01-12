@@ -9,6 +9,7 @@ import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useTranslation } from 'react-i18next'
+import { uploadFileByTask } from '@/services/cos'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -117,7 +118,6 @@ const PosterComponent = (props: Props) => {
   const [t] = useTranslation()
   const { coverList } = useModel('project')
   const [checkedPoster, setCheckedPoster] = useState('')
-  const { uploadFileByTask } = useModel('cos')
   const [posterList, setPosterList] = useState<any>([])
 
   const onUpdateValue = (path: any) => {

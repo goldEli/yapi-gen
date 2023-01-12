@@ -22,6 +22,7 @@ import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import MoreDropdown from '@/components/MoreDropdown'
+import { useSelector } from '@store/index'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -84,7 +85,9 @@ interface MoreProps {
 const MoreContent = (props: MoreProps) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,
     'b/project/update',
@@ -191,7 +194,9 @@ const MainTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-  const { userInfo } = useModel('user')
+  const { userInfo, loginInfo } = useSelector(
+    (store: { user: any }) => store.user,
+  )
   const hasCreate = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',

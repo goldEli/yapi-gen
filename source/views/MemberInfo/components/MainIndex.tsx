@@ -10,6 +10,7 @@ import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { getUserInfoProject } from '@/services/member'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -28,7 +29,6 @@ const MainIndex = (props: Props) => {
   const { isMember, userId } = paramsData
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(paramsData.id || 0)
-  const { getUserInfoProject } = useModel('member')
   const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const init = async () => {

@@ -15,6 +15,8 @@ import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getStaffList } from '@/services/staff'
+import { getAsyncMember } from '@store/member'
+import { useDispatch, useSelector } from '@store/index'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -88,6 +90,7 @@ const InfoItem = styled.div({
 })
 
 const MemberInfo = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -95,7 +98,8 @@ const MemberInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
-  const { getMainInfo, mainInfo } = useModel('member')
+  const { mainInfo } = useSelector((store: { member: any }) => store.member)
+
   const { setSelectAllStaffData } = useModel('project')
 
   const menuList = [
@@ -128,7 +132,7 @@ const MemberInfo = () => {
   }
 
   useEffect(() => {
-    getMainInfo({ userId })
+    dispatch(getAsyncMember({ userId }))
     getStaffData()
   }, [])
 
@@ -145,7 +149,9 @@ const MemberInfo = () => {
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
-
+  if (!mainInfo) {
+    return null
+  }
   return (
     <Wrap isMember={isMember}>
       <Side>
