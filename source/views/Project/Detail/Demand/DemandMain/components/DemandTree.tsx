@@ -61,6 +61,7 @@ interface Props {
   isSpinning?: boolean
   onUpdate(updateState?: boolean, topId?: any): void
   filterParams: any
+  isUpdated?: boolean
 }
 
 interface TreeIconProps {
@@ -241,6 +242,11 @@ const DemandTree = (props: Props) => {
 
   // 点击获取子需求
   const onGetChildList = async (row: any) => {
+    // 如果查询列表未执行完，不执行获取子需求
+    if (props.isUpdated) {
+      setExpandedRowKeys([row.id])
+      return
+    }
     let dataChildren: any
     let resultList: any
     // 第一级调用接口获取子级， 并且全部展开子级
