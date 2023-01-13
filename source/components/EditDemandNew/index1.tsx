@@ -167,9 +167,15 @@ const EditDemand = (props: Props) => {
   const {
     createCategory,
     setCreateCategory,
-    setIsOpenEditDemand,
+    // 是否更新需求状态
+    setIsUpdateStatus,
+    // 是否更新变更记录
+    setIsUpdateChangeLog,
     getDemandList,
     getDemandInfo,
+    updateDemandCategory,
+    updateDemand,
+    addDemand,
   } = useModel('demand')
   const {
     getFieldList,
@@ -179,6 +185,7 @@ const EditDemand = (props: Props) => {
     colorList,
     getWorkflowList,
     workList,
+    getProjectInfoValues,
   } = useModel('project')
 
   // 获取头部标题
@@ -215,7 +222,6 @@ const EditDemand = (props: Props) => {
 
   //   获取初始值
   const getInit = async (value?: any, categoryId?: any) => {
-    setIsOpenEditDemand(true)
     const [fieldsData] = await Promise.all([
       getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
@@ -291,7 +297,10 @@ const EditDemand = (props: Props) => {
           resultCategory = resultCategoryList[0]
         }
       }
-      setCategoryObj(resultCategory)
+      //   如果有修改
+      if (resultCategory?.id) {
+        setCategoryObj(resultCategory)
+      }
     }
   }
 
@@ -319,7 +328,7 @@ const EditDemand = (props: Props) => {
     if (value) {
       setCurrentCategory(
         allCategoryList
-          ?.filter((i: any) => i.isCheck === 1)
+          ?.filter((i: any) => i.status === 1)
           ?.filter((i: any) => i.id === value)[0],
       )
       await getWorkflowList({
@@ -358,7 +367,7 @@ const EditDemand = (props: Props) => {
       }}
     >
       {allCategoryList
-        ?.filter((i: any) => i.isCheck === 1)
+        ?.filter((i: any) => i.status === 1)
         ?.filter((i: any) => i.id !== categoryObj?.id)
         ?.map((k: any) => (
           <LiWrap
@@ -373,12 +382,111 @@ const EditDemand = (props: Props) => {
                 colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
               }
             >
-              <span className="title">{k.name}</span>
+              <span className="title">{k.content}</span>
             </CanOperationCategory>
           </LiWrap>
         ))}
     </div>
   )
+
+  // 保存数据
+  const onSaveDemand = async (values: any, hasNext?: any) => {
+    if (props?.demandId) {
+      await updateDemand({
+        projectId,
+        id: props?.demandId,
+        ...values,
+      })
+      message.success(t('common.editSuccess'))
+      setIsUpdateStatus(true)
+      setIsUpdateChangeLog(true)
+    } else {
+      await addDemand({
+        projectId,
+        ...values,
+      })
+      message.success(t('common.createSuccess'))
+    }
+    // 保存数据后更新项目信息-用于更新标签
+    if (projectId) {
+      getProjectInfoValues({ projectId })
+    }
+    // 是否是快捷创建，是则要刷新相应的列表接口
+    if (props?.isQuickCreate) {
+      dispatch(setIsUpdateCreate(true))
+    } else {
+      props.onUpdate?.()
+    }
+    // 如果是快速创建，相应数据存缓存
+    if (props.isQuickCreate) {
+      const saveParams = values
+      saveParams.categoryId = categoryObj?.id
+      saveParams.type = 'need'
+      saveParams.name = ''
+      saveParams.info = ''
+      saveParams.attachments = []
+
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(JSON.stringify(saveParams)),
+      )
+    }
+    // 是否是完成并创建下一个
+    if (hasNext) {
+      leftDom.current.update()
+      rightDom.current.update()
+      setIsSaveParams(true)
+    } else {
+      setChangeCategoryFormData({})
+      setCreateCategory({})
+      setTimeout(() => {
+        leftDom.current?.reset()
+        rightDom.current?.reset()
+      }, 100)
+      props.onChangeVisible()
+      setFilterParamsModal({})
+      setIsSaveParams(false)
+    }
+  }
+
+  // 先调用保存需求类别接口，再保存需求
+  const onSaveCategory = async (hasNext?: number) => {
+    const leftValues = await leftDom.current.confirm()
+    const rightValues = rightDom.current.confirm()
+
+    if (rightValues?.startTime) {
+      rightValues.expectedStart = rightValues?.startTime
+        ? moment(rightValues?.startTime).format('YYYY-MM-DD')
+        : null
+    }
+    if (rightValues?.endTime) {
+      rightValues.expectedEnd = rightValues?.endTime
+        ? moment(rightValues.endTime).format('YYYY-MM-DD')
+        : null
+    }
+
+    if (rightValues.priority?.id) {
+      rightValues.priority = rightValues.priority?.id
+    }
+
+    leftValues.category = categoryObj?.id
+
+    if (props?.demandId && JSON.stringify(changeCategoryFormData) !== '{}') {
+      try {
+        await updateDemandCategory({
+          projectId,
+          id: props?.demandId,
+          ...changeCategoryFormData,
+        })
+        setCurrentCategory({})
+        await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+      } catch (error) {
+        //
+      }
+    } else {
+      await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+    }
+  }
 
   // 关闭弹窗
   const onCancel = () => {
@@ -386,13 +494,18 @@ const EditDemand = (props: Props) => {
     // 清除创建需求点击的下拉需求类别 -- 需求
     setCreateCategory({})
     setChangeCategoryFormData({})
-    setIsOpenEditDemand(false)
     setFilterParamsModal({})
     setIsSaveParams(false)
     setTimeout(() => {
       leftDom.current?.reset()
       rightDom.current?.reset()
     }, 100)
+  }
+
+  // 左侧项目切换清除右侧form表单
+  const onResetForm = () => {
+    rightDom.current.reset()
+    setCategoryObj({})
   }
 
   useEffect(() => {
@@ -454,7 +567,7 @@ const EditDemand = (props: Props) => {
               optionFilterProp="label"
               onChange={onChangeSelect}
               options={allCategoryList
-                ?.filter((i: any) => i.isCheck === 1)
+                ?.filter((i: any) => i.status === 1)
                 ?.filter((i: any) => i.id !== categoryObj?.id)
                 ?.map((k: any) => ({
                   label: k.name,
@@ -542,7 +655,7 @@ const EditDemand = (props: Props) => {
                     {
                       allCategoryList?.filter(
                         (i: any) => i.id === categoryObj?.id,
-                      )[0]?.name
+                      )[0]?.content
                     }
                   </span>
                   {allCategoryList
@@ -562,11 +675,49 @@ const EditDemand = (props: Props) => {
               </Popover>
             )}
           </div>
-          <CloseWrap width={32} height={32}>
-            {/* onClick={onCancel} */}
+          <CloseWrap width={32} height={32} onClick={onCancel}>
             <IconFont type="close" style={{ fontSize: 20 }} />
           </CloseWrap>
         </ModalHeader>
+        {props.visible && (
+          <ModalContent>
+            <EditDemandLeft
+              isQuickCreate={props?.isQuickCreate}
+              projectId={projectId}
+              onChangeProjectId={setProjectId}
+              onGetDataAll={getInit}
+              onResetForm={onResetForm}
+              onRef={leftDom}
+              demandId={props.demandId}
+            />
+            <EditDemandRIght
+              projectId={projectId}
+              demandId={props.demandId}
+              parentList={parentList}
+              onRef={rightDom}
+              iterateId={props.iterateId}
+              isChild={props.isChild}
+              isSaveParams={isSaveParams}
+              isQuickCreate={props?.isQuickCreate}
+              fieldsList={fieldsList}
+              parentId={props.parentId}
+              notGetPath={props.notGetPath}
+            />
+          </ModalContent>
+        )}
+        <ModalFooter>
+          <Space size={16}>
+            <Button onClick={onCancel}>{t('common.cancel')}</Button>
+            {!props?.demandId && (
+              <AddButtonWrap onClick={() => onSaveCategory(1)}>
+                {t('common.finishToAdd')}
+              </AddButtonWrap>
+            )}
+            <ThrottleButton type="primary" thClick={() => onSaveCategory()}>
+              {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
+            </ThrottleButton>
+          </Space>
+        </ModalFooter>
       </ModalWrap>
     </>
   )

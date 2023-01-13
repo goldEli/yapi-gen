@@ -180,7 +180,6 @@ const EditDemand = (props: Props) => {
   const {
     setCreateCategory,
     setIsUpdateStatus,
-    setIsOpenEditDemand,
     setIsUpdateChangeLog,
     getDemandList,
     createCategory,
@@ -208,7 +207,6 @@ const EditDemand = (props: Props) => {
 
   // 获取回填Info数据的下拉数据
   const getInit = async (value?: any, categoryId?: any) => {
-    setIsOpenEditDemand(true)
     const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       // 获取全部的需求列表
@@ -393,7 +391,6 @@ const EditDemand = (props: Props) => {
     props.onChangeVisible()
     setCreateCategory({})
     setChangeCategoryFormData({})
-    setIsOpenEditDemand(false)
     setFilterParamsModal({})
     setIsSaveParams(false)
     setTimeout(() => {

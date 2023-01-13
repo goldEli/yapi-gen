@@ -303,7 +303,7 @@ const Get = () => {
     setIsSpinning(true)
     const obj = {
       type: srr[urlId as unknown as number],
-      keyword: '',
+      keyword,
       order: 0,
       orderkey: '',
       page: 1,
