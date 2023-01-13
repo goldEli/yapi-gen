@@ -357,12 +357,11 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { setSelectTreeData, getProjectInfoValues } = useModel('project')
+  const { getProjectInfoValues } = useModel('project')
 
   const init = async () => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    setSelectTreeData(filterTreeData2(res)[0].children)
     setTreeData(filterTreeData(res))
     setShow(true)
   }

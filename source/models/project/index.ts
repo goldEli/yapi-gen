@@ -7,12 +7,10 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [selectTreeData, setSelectTreeData] = useState<any>([])
   const [selectAllStaffData, setSelectAllStaffData] = useState<any>([])
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
   })
-  const [tagList, setTagList] = useState<any>([])
   const [priorityList, setPriorityList] = useState<any>([])
   const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
@@ -74,6 +72,11 @@ export default () => {
     },
   ]
 
+  const getTagList = async (params: any) => {
+    const result = await services.project.getTagList(params)
+    return result
+  }
+
   const getWorkflowList = async (params: any) => {
     const result = await services.project.getWorkflowList(params)
     setWorkList(result)
@@ -111,12 +114,6 @@ export default () => {
   const getProjectList = async (params: any) => {
     const result = await services.project.getProjectList(params)
     setProjectList(result)
-  }
-
-  const getTagList = async (params: any) => {
-    const result = await services.project.getTagList(params)
-    setTagList(result)
-    return result
   }
 
   const getPriorityList = async (params: any) => {
@@ -191,8 +188,6 @@ export default () => {
   return {
     projectList,
     getProjectList,
-    tagList,
-    getTagList,
     coverList,
     getProjectCoverList,
     projectInfo,
@@ -221,7 +216,6 @@ export default () => {
     setFilterAll,
     filterAll,
     setProjectInfo,
-    setTagList,
     colorList,
     getFieldList,
     getFieldListCustom,
@@ -253,8 +247,6 @@ export default () => {
     updateStoryConfigStatus,
     workList,
     setWorkList,
-    setSelectTreeData,
-    selectTreeData,
     setSelectAllStaffData,
     selectAllStaffData,
     setIsChangeProject,
@@ -271,11 +263,13 @@ export default () => {
     selectGroupList,
     categoryEditList,
     getCategoryEditList,
+    setCategoryEditList,
     setIsRefreshGroup,
     isRefreshGroup,
     setFilterKeys,
     filterKeys,
     getProjectInfoValues,
     projectInfoValues,
+    getTagList,
   }
 }

@@ -250,6 +250,7 @@ const CommonNeed = (props: any) => {
         all: isMany ? 1 : '',
         panelDate: isMany ? 1 : '',
         targetId: userId,
+        keyword,
       }
       const res = isMember
         ? await getMemberInfoAbeyanceStory(params)
@@ -635,47 +636,47 @@ const CommonNeed = (props: any) => {
           }}
         >
           <LoadingSpin spinning={isSpin}>
-            {manyListData.list &&
-              (manyListData.list?.length > 0 ? (
-                <StaffTableWrap2>
-                  {manyListData.list?.map((item: any, index: any) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <div
-                      hidden={!item.list.length}
-                      key={index}
-                      style={{
-                        background: 'white',
-                        borderRadius: 6,
-                        marginTop: 16,
-                      }}
-                    >
-                      <TableTitle>
-                        <span>
-                          {item.status_name}（{item.list.length}）
-                        </span>
-                      </TableTitle>
+            {manyListData?.list?.filter((i: any) => i.count)?.length > 0 && (
+              <StaffTableWrap2>
+                {manyListData.list?.map((item: any, index: any) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <div
+                    hidden={!item.list.length}
+                    key={index}
+                    style={{
+                      background: 'white',
+                      borderRadius: 6,
+                      marginTop: 16,
+                    }}
+                  >
+                    <TableTitle>
+                      <span>
+                        {item.status_name}（{item.list.length}）
+                      </span>
+                    </TableTitle>
 
-                      {item.list ? (
-                        item?.list?.length > 0 ? (
-                          <TableBox
-                            rowKey="id"
-                            columns={selectColum}
-                            dataSource={item.list}
-                            pagination={false}
-                            scroll={{ x: 'max-content' }}
-                          />
-                        ) : (
-                          <NoData />
-                        )
-                      ) : null}
-                    </div>
-                  ))}
-                </StaffTableWrap2>
-              ) : (
-                <div style={{ padding: 16 }}>
-                  <NoData />
-                </div>
-              ))}
+                    {item.list ? (
+                      item?.list?.length > 0 ? (
+                        <TableBox
+                          rowKey="id"
+                          columns={selectColum}
+                          dataSource={item.list}
+                          pagination={false}
+                          scroll={{ x: 'max-content' }}
+                        />
+                      ) : (
+                        <NoData />
+                      )
+                    ) : null}
+                  </div>
+                ))}
+              </StaffTableWrap2>
+            )}
+            {manyListData?.list?.filter((i: any) => i.count)?.length <= 0 && (
+              <div style={{ padding: 16 }}>
+                <NoData />
+              </div>
+            )}
           </LoadingSpin>
         </div>
       )}

@@ -404,6 +404,13 @@ function copyLink(text: any, successText: string, errorText: string) {
   )
 }
 
+// 去除筛选填入的空选项
+function removeNull(list: any, key: string) {
+  return list
+    ?.filter((i: any) => i.key === key)[0]
+    .children?.filter((i: any) => i.id !== -1)
+}
+
 export default onPaste
 
 export {
@@ -417,4 +424,5 @@ export {
   bytesToSize,
   onPaste,
   copyLink,
+  removeNull,
 }
