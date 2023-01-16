@@ -690,7 +690,7 @@ const EditDemand = (props: Props) => {
               onRef={leftDom}
               demandId={props.demandId}
             />
-            <EditDemandRIght
+            {/* <EditDemandRIght
               projectId={projectId}
               demandId={props.demandId}
               parentList={parentList}
@@ -702,7 +702,7 @@ const EditDemand = (props: Props) => {
               fieldsList={fieldsList}
               parentId={props.parentId}
               notGetPath={props.notGetPath}
-            />
+            /> */}
           </ModalContent>
         )}
         <ModalFooter>

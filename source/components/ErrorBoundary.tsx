@@ -12,6 +12,7 @@ interface StateType {
   error?: null | Error
   errorInfo?: null | React.ErrorInfo
   isShowModal?: any
+  languageList?: any[]
 }
 
 export class ErrorBoundary extends React.Component<PropsType, StateType> {
@@ -21,12 +22,19 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
       error: null,
       errorInfo: null,
       isShowModal: true,
+      languageList: [
+        { key: 'zh', title: '版本更新提示', text: '版本更新，请刷新重试！' },
+        {
+          key: 'en',
+          title: 'Version update prompt',
+          text: 'Version update, please refresh and try again!',
+        },
+      ],
     }
   }
 
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    log.print(error, '11111111', error.message)
     //传递异常信息
     this.setState({
       error,
@@ -36,7 +44,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
   }
 
   render() {
-    const language = localStorage.getItem('language')
+    const language = localStorage.getItem('language') || 'zh'
 
     // 确认事件
     const onConfirm = () => {
@@ -51,18 +59,16 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
       this.state.error?.message.includes(
         'Failed to fetch dynamically imported module',
       )
-      // this.state.error &&
-      // this.state.error?.find(v =>
-      //   v.message.includes('Failed to fetch dynamically imported module'),
-      // )
     ) {
       return (
         <DeleteConfirm
-          title={language === 'zh' ? '版本更新提示' : 'Version update prompt'}
+          title={
+            this.state.languageList?.filter((i: any) => i.key === language)[0]
+              .title
+          }
           text={
-            language === 'zh'
-              ? '版本更新，请刷新重试！'
-              : 'Version update, please refresh and try again!'
+            this.state.languageList?.filter((i: any) => i.key === language)[0]
+              .text
           }
           isVisible={this.state.isShowModal}
           onConfirm={onConfirm}

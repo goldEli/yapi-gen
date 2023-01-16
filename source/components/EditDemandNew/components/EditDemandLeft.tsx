@@ -139,6 +139,7 @@ const EditDemandLeft = (props: Props) => {
   }
 
   useEffect(() => {
+    // 是否是快捷创建
     if (props?.isQuickCreate) {
       getProjectData()
     }
