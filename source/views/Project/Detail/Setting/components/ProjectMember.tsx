@@ -134,7 +134,6 @@ const ProjectMember = () => {
     projectInfo,
     isRefreshMember,
     updateMember,
-    getMemberList,
     getProjectPermission,
     setProjectPermission,
     getProjectInfo,
@@ -272,7 +271,6 @@ const ProjectMember = () => {
         navigate('/Project')
       } else {
         getList(order, pageObj)
-        getMemberList({ all: true, projectId })
       }
     } catch (error) {
       //
@@ -595,8 +593,8 @@ const ProjectMember = () => {
       await updateMember(params)
       message.success(t('common.editSuccess'))
       setOperationItem({})
+      // 可以考虑不走接口修改
       onChangeUpdate()
-      getMemberList({ all: true, projectId })
       setIsEditVisible(false)
     } catch (error) {
       //

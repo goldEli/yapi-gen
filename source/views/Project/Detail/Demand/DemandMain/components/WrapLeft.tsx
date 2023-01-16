@@ -94,6 +94,7 @@ const rightText = css`
   }
 `
 const TreeItem = (props: any) => {
+  const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -155,8 +156,13 @@ const TreeItem = (props: any) => {
     if (news.code === 0) {
       message.success(t('common.deleteSuccess'))
     }
+    // 如果当前删除的跟当前选中的一致，则重置
+    if (context?.key === props.id) {
+      props.onDeleteRestKey()
+    }
     close()
     props.onRest()
+
     form.resetFields()
   }
 
@@ -389,6 +395,11 @@ const WrapLeft = (props: any, ref: any) => {
     }
   }
 
+  const onDeleteRestKey = () => {
+    context.changeKey(0)
+    dispatch(changeId(0))
+  }
+
   function filterTreeData(data: any) {
     const newData = data.map((item: any) => ({
       key: item.key,
@@ -398,6 +409,7 @@ const WrapLeft = (props: any, ref: any) => {
             init(true)
             props.onUpdate()
           }}
+          onDeleteRestKey={onDeleteRestKey}
           projectId={props.projectId}
           {...item}
         />

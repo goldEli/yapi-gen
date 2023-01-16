@@ -322,6 +322,7 @@ const Member = (props: Props) => {
         userIds: row.id,
       })
       message.success(t('common.editS'))
+      // 可以考虑不走接口修改
       getList()
       PubSub.publish('getPeople')
     } catch (error) {
@@ -374,6 +375,7 @@ const Member = (props: Props) => {
     getList(true)
     setIsVisible(false)
     getProjectInfo({ projectId: projectInfo.id })
+    PubSub.publish('getPeople')
     setTimeout(() => {
       form.resetFields()
     }, 100)
