@@ -48,6 +48,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
 
     //如果捕获找不到文件异常，弹窗提示
     if (
+      this.state.error &&
       this.state.error?.find(v =>
         v.message.includes('Failed to fetch dynamically imported module'),
       )
