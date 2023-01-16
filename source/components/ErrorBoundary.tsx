@@ -1,3 +1,5 @@
+// 错误边界 -- 用于构建新版本后白屏问题
+
 import * as React from 'react'
 import log from '@jihe/secure-log'
 import DeleteConfirm from './DeleteConfirm'
@@ -24,6 +26,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
 
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    log.print(error, '11111111', error.message)
     //传递异常信息
     this.setState({
       error: error as unknown as Error[],
