@@ -9,7 +9,7 @@ interface PropsType {
 }
 
 interface StateType {
-  error?: null | Error[]
+  error?: null | Error
   errorInfo?: null | React.ErrorInfo
   isShowModal?: any
 }
@@ -29,7 +29,7 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
     log.print(error, '11111111', error.message)
     //传递异常信息
     this.setState({
-      error: error as unknown as Error[],
+      error,
       errorInfo,
     })
     //可以将异常信息抛出给日志系统等等
@@ -48,10 +48,13 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
 
     //如果捕获找不到文件异常，弹窗提示
     if (
-      this.state.error &&
-      this.state.error?.find(v =>
-        v.message.includes('Failed to fetch dynamically imported module'),
+      this.state.error?.message.includes(
+        'Failed to fetch dynamically imported module',
       )
+      // this.state.error &&
+      // this.state.error?.find(v =>
+      //   v.message.includes('Failed to fetch dynamically imported module'),
+      // )
     ) {
       return (
         <DeleteConfirm
