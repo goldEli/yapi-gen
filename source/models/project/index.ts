@@ -271,6 +271,7 @@ export default () => {
     filterKeys,
     getProjectInfoValues,
     projectInfoValues,
+    setProjectInfoValues,
     getTagList,
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // 项目右侧抽屉弹窗
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -222,7 +223,8 @@ const Member = (props: Props) => {
     projectPermission,
     addMember,
     getProjectInfo,
-    getProjectInfoValues,
+    projectInfoValues,
+    setProjectInfoValues,
   } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
@@ -249,16 +251,31 @@ const Member = (props: Props) => {
     )
   }
 
-  const getList = async () => {
+  // 获取项目成员列表 isUpdateProjectInfoValues：是否需要更新项目下拉数据
+  const getList = async (isUpdateProjectInfoValues?: boolean) => {
     const result = await getProjectMember({
       projectId: props.projectId,
       all: true,
       searchValue: search,
     })
-
+    // 更新项目成员下拉
+    if (isUpdateProjectInfoValues) {
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      const recombinationMember = result?.map((k: any) => ({
+        id: k.id,
+        content: k.name,
+        content_txt: k.name,
+      }))
+      const newValues = beforeValues?.map((i: any) =>
+        ['user_name', 'users_name'].includes(i.key) ||
+        (i.key.includes('custom_') && i.customTag[0] === 'projectMember')
+          ? { ...i, children: [...[i.children[0]], ...recombinationMember] }
+          : i,
+      )
+      setProjectInfoValues(newValues)
+    }
     setMemberList(result)
     setIsRefreshMember(false)
-    getPermission()
   }
 
   const init = async () => {
@@ -324,6 +341,7 @@ const Member = (props: Props) => {
   useEffect(() => {
     if (props.visible) {
       getList()
+      getPermission()
     }
   }, [search, props.visible])
 
@@ -353,10 +371,9 @@ const Member = (props: Props) => {
     await addMember(params)
     message.success(t('common.addSuccess'))
     setUserDataList([])
-    getList()
+    getList(true)
     setIsVisible(false)
     getProjectInfo({ projectId: projectInfo.id })
-    getProjectInfoValues({ projectId: projectInfo.id })
     setTimeout(() => {
       form.resetFields()
     }, 100)

@@ -134,15 +134,12 @@ const ProjectMember = () => {
     projectInfo,
     isRefreshMember,
     updateMember,
-    getProjectInfoValues,
     getMemberList,
     getProjectPermission,
     setProjectPermission,
     getProjectInfo,
   } = useModel('project')
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
@@ -600,7 +597,6 @@ const ProjectMember = () => {
       setOperationItem({})
       onChangeUpdate()
       getMemberList({ all: true, projectId })
-      getProjectInfoValues({ projectId })
       setIsEditVisible(false)
     } catch (error) {
       //

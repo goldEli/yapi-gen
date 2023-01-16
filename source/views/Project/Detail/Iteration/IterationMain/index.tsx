@@ -130,17 +130,6 @@ const IterationMain = (props: Props) => {
     props.onChangeIsUpdate(false)
   }
 
-  // useEffect(() => {
-  //   if (
-  //     (props.updateState && keyRef.current?.id) ||
-  //     (isRefresh && keyRef.current?.id)
-  //   ) {
-  //     console.log(keyRef.current)
-  //     setDataList({ list: undefined })
-  //     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
-  //   }
-  // }, [props.updateState, keyRef.current, isRefresh])
-
   const onChangeGrid = (val: any) => {
     setIsGrid(val)
     setDataList({ list: undefined })

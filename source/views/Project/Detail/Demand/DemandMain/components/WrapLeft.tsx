@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable require-unicode-regexp */
 // 需求主页-左侧需求分类
 /* eslint-disable complexity */
@@ -357,13 +358,35 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { getProjectInfoValues } = useModel('project')
+  const { setProjectInfoValues, projectInfoValues } = useModel('project')
 
-  const init = async () => {
+  // 重组为下拉筛选格式
+  const computedChildren = (array: any) => {
+    const resultData = array?.map((k: any) => ({
+      key: k.id,
+      value: k.id,
+      title: k.name,
+      children: computedChildren(k.children),
+    }))
+    return resultData || []
+  }
+
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
+  const init = async (isUpdateProjectInfoValues?: boolean) => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
     setTreeData(filterTreeData(res))
     setShow(true)
+    // 更新项目成员下拉
+    if (isUpdateProjectInfoValues) {
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      const newValues = beforeValues?.map((i: any) =>
+        i.key === 'class'
+          ? { ...i, children: computedChildren(res[0].children) }
+          : i,
+      )
+      setProjectInfoValues(newValues)
+    }
   }
 
   function filterTreeData(data: any) {
@@ -372,8 +395,7 @@ const WrapLeft = (props: any, ref: any) => {
       title: (
         <TreeItem
           onRest={() => {
-            init()
-            getProjectInfoValues({ projectId: props.projectId })
+            init(true)
             props.onUpdate()
           }}
           projectId={props.projectId}
@@ -388,17 +410,6 @@ const WrapLeft = (props: any, ref: any) => {
     return newData
   }
 
-  function filterTreeData2(data: any) {
-    const newData = data.map((item: any) => ({
-      value: item.key,
-      label: item.name,
-      children:
-        item.children && item.children.length
-          ? filterTreeData2(item.children)
-          : null,
-    }))
-    return newData
-  }
   const onDrop = async (info: any) => {
     const onlyID: any = treeData[0].children[0].title.props.id
     const onlySort: any = treeData[0].children[0].title.props.sort
@@ -451,8 +462,7 @@ const WrapLeft = (props: any, ref: any) => {
       })
     }
 
-    init()
-    getProjectInfoValues({ projectId: props.projectId })
+    init(true)
   }
 
   const onSelect = (selectedKeys: any, e: any) => {

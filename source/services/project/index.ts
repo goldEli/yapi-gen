@@ -808,5 +808,6 @@ export const getProjectInfoValues: any = async (params: any) => {
           ]
         : getChildren(i, response.data[i]),
     key: i,
+    customTag: i.includes('custom_') ? response.data[i] : null,
   }))
 }

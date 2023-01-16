@@ -127,7 +127,6 @@ const EditIteration = (props: Props) => {
     } catch (error) {
       //
     }
-    getProjectInfoValues({ projectId })
   }
 
   const onCancel = () => {

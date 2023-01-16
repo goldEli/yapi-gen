@@ -74,13 +74,17 @@ const Operation = (props: Props) => {
   const [isAchievements, setIsAchievements] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
-  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate } =
-    useModel('iterate')
+  const { updateIterateStatus, setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, getProjectInfoValues, setFilterKeys, filterKeys } =
-    useModel('project')
+  const {
+    projectInfo,
+    setProjectInfoValues,
+    setFilterKeys,
+    filterKeys,
+    projectInfoValues,
+  } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -106,9 +110,20 @@ const Operation = (props: Props) => {
           status: val,
         })
         message.success(t('common.editS'))
-        getIterateInfo({ projectId, id: props?.currentDetail?.id })
-        // 更新项目信息-迭代
-        getProjectInfoValues({ projectId })
+        const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+        // 修改迭代状态更新到项目下拉数据中
+        const newValues = beforeValues?.map((i: any) =>
+          i.key === 'iterate_name'
+            ? {
+                ...i,
+                children: i.children?.map((v: any) => ({
+                  ...v,
+                  status: v.id === props?.currentDetail?.id ? val : v.status,
+                })),
+              }
+            : i,
+        )
+        setProjectInfoValues(newValues)
         props.onIsUpdateList?.(true)
       } catch (error) {
         //

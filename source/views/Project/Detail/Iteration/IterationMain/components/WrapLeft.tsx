@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable require-unicode-regexp */
 // 迭代主页左侧模块
 
@@ -155,7 +156,8 @@ const WrapLeft = (props: Props) => {
     isRefreshList,
     isUpdateList,
   } = useModel('iterate')
-  const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { projectInfo, projectInfoValues, setProjectInfoValues } =
+    useModel('project')
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const hasAdd = getIsPermission(
@@ -167,7 +169,8 @@ const WrapLeft = (props: Props) => {
     'b/iterate/get',
   )
 
-  const getList = async (obj?: any) => {
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
+  const getList = async (obj?: any, isUpdateProjectInfoValues?: boolean) => {
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
@@ -203,6 +206,22 @@ const WrapLeft = (props: Props) => {
         result?.list?.filter((k: any) => k.id === current)[0],
       )
     }
+    // 如果需要更新项目下拉数据
+    if (isUpdateProjectInfoValues) {
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      const recombinationIteration = result?.list?.map((k: any) => ({
+        id: k.id,
+        status: k.status,
+        content: k.name,
+        content_txt: k.name,
+      }))
+      const newValues = beforeValues?.map((i: any) =>
+        i.key === 'iterate_name'
+          ? { ...i, children: [...[i.children[0]], ...recombinationIteration] }
+          : i,
+      )
+      setProjectInfoValues(newValues)
+    }
   }
 
   useEffect(() => {
@@ -217,7 +236,7 @@ const WrapLeft = (props: Props) => {
 
   useEffect(() => {
     if (isUpdateList || props.updateState) {
-      getList()
+      getList(null, true)
     }
   }, [isUpdateList, props.updateState])
 
@@ -343,8 +362,9 @@ const WrapLeft = (props: Props) => {
           status: value,
         })
         message.success(t('common.editS'))
-        getList()
-        getProjectInfoValues({ projectId })
+        getList(null, true)
+        // // 需要修改
+        // getProjectInfoValues({ projectId })
       } catch (error) {
         //
       }
@@ -365,8 +385,9 @@ const WrapLeft = (props: Props) => {
       })
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
-      getList({})
-      getProjectInfoValues({ projectId })
+      getList({}, true)
+      // // 需要修改
+      // getProjectInfoValues({ projectId })
     } catch (error) {
       //
     }

@@ -137,7 +137,8 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { projectInfo, projectInfoValues, setProjectInfoValues } =
+    useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -332,7 +333,20 @@ const IterationWrap = () => {
         })
         message.success(t('common.editS'))
         getIterateInfo({ projectId, id: iterateInfo?.id })
-        getProjectInfoValues({ projectId })
+        const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+        // 修改迭代状态更新到项目下拉数据中
+        const newValues = beforeValues?.map((i: any) =>
+          i.key === 'iterate_name'
+            ? {
+                ...i,
+                children: i.children?.map((v: any) => ({
+                  ...v,
+                  status: v.id === iterateInfo?.id ? val : v.status,
+                })),
+              }
+            : i,
+        )
+        setProjectInfoValues(newValues)
         setIsUpdateState(true)
       } catch (error) {
         //
