@@ -720,6 +720,7 @@ const CommonNeed = (props: any) => {
         projectId={projectId}
         onUpdate={onUpdate}
         notGetPath
+        isAllProject={!props.id}
       />
       <DeleteConfirm
         text={t('common.confirmDelDemand')}

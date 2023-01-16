@@ -37,6 +37,7 @@ interface Props {
   demandId?: any
   // 需求详情
   demandInfo?: any
+  isAllProject?: any
 }
 
 const EditDemandLeft = (props: Props) => {
@@ -139,6 +140,10 @@ const EditDemandLeft = (props: Props) => {
     // 是否是快捷创建
     if (props?.isQuickCreate) {
       getProjectData()
+    }
+    // 如果是所有项目调用项目信息
+    if (props?.isAllProject) {
+      getProjectInfo({ projectId: props?.projectId })
     }
     // 创建回填筛选数据 --- 标签
     if (filterParamsModal?.tagIds?.length) {

@@ -408,7 +408,7 @@ function copyLink(text: any, successText: string, errorText: string) {
 function removeNull(list: any, key: string) {
   return list
     ?.filter((i: any) => i.key === key)[0]
-    .children?.filter((i: any) => i.id !== -1)
+    ?.children?.filter((i: any) => i.id !== -1)
 }
 
 export default onPaste

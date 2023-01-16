@@ -130,6 +130,9 @@ interface Props {
 
   // 无数据创建
   noDataCreate?: any
+
+  // 是否是所有项目
+  isAllProject?: boolean
 }
 
 const EditDemand = (props: Props) => {
@@ -222,13 +225,29 @@ const EditDemand = (props: Props) => {
 
   //   获取初始值
   const getInit = async (value?: any, categoryId?: any) => {
-    const [fieldsData] = await Promise.all([
-      getFieldList({ projectId: value || projectId }),
-      getList(value || projectId),
-    ])
+    let relyData: any = {}
+    // 如果是我的/他的并且是全部项目时，更新项目信息及项目下拉
+    if (props.notGetPath && props.isAllProject) {
+      const [fieldsData, projectInfoData] = await Promise.all([
+        getFieldList({ projectId: value || projectId }),
+        getProjectInfoValues({ projectId: value || projectId }),
+        getList(value || projectId),
+      ])
+      relyData = { fieldsData, projectInfoData }
+    } else {
+      // 项目模块下的
+      const [fieldsData] = await Promise.all([
+        getFieldList({ projectId: value || projectId }),
+        getList(value || projectId),
+      ])
+      relyData = { fieldsData }
+    }
     // 更新自定义字段列表
-    setFieldsList(fieldsData?.list)
-    const allCategory = removeNull(projectInfoValues, 'category')
+    setFieldsList(relyData.fieldsData?.list)
+    const allCategory = removeNull(
+      relyData?.projectInfoData ?? projectInfoValues,
+      'category',
+    )
     // 更新所有需求类别列表
     setAllCategoryList(allCategory)
     // 过滤掉未开启的类别
@@ -305,7 +324,7 @@ const EditDemand = (props: Props) => {
   }
 
   // 快速创建切换项目获取初始值
-  const getQuickIint = async (value?: any) => {
+  const getQuickInit = async (value?: any) => {
     const [fieldsData, projectInfoData] = await Promise.all([
       getFieldList({ projectId: value || projectId }),
       getProjectInfoValues({ projectId: value || projectId }),
@@ -702,9 +721,10 @@ const EditDemand = (props: Props) => {
           <ModalContent>
             <EditDemandLeft
               isQuickCreate={props?.isQuickCreate}
+              isAllProject={props?.isAllProject}
               projectId={projectId}
               onChangeProjectId={setProjectId}
-              onGetDataAll={getQuickIint}
+              onGetDataAll={getQuickInit}
               onResetForm={onResetForm}
               onRef={leftDom}
               demandId={props.demandId}
