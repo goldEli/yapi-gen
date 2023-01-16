@@ -628,6 +628,7 @@ const EditDemand = (props: Props) => {
         keyboard={false}
         closable={false}
         wrapClassName="vertical-center-modal"
+        focusTriggerAfterClose={false}
       >
         <ModalHeader>
           <div>

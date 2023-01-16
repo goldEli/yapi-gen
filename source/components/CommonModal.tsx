@@ -57,6 +57,7 @@ const CommonModal = (props: ModalProps) => {
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"
+      focusTriggerAfterClose={false}
     >
       <ModalHeader>
         <span>{props?.title}</span>

@@ -63,6 +63,7 @@ const DeleteConfirm = (props: Props) => {
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"
+      focusTriggerAfterClose={false}
     >
       <ModalHeader>
         <Title>
