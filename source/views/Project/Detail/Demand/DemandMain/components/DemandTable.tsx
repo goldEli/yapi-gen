@@ -22,7 +22,7 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index1'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',

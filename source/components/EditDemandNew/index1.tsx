@@ -232,7 +232,7 @@ const EditDemand = (props: Props) => {
     // 更新所有需求类别列表
     setAllCategoryList(allCategory)
     // 过滤掉未开启的类别
-    const resultCategoryList = allCategory?.filter((i: any) => i.status !== 1)
+    const resultCategoryList = allCategory?.filter((i: any) => i.status === 1)
     // 需求id存在则是编辑
     if (props.demandId) {
       // 重置需求类别
@@ -302,6 +302,24 @@ const EditDemand = (props: Props) => {
         setCategoryObj(resultCategory)
       }
     }
+  }
+
+  // 快速创建切换项目获取初始值
+  const getQuickIint = async (value?: any) => {
+    const [fieldsData, projectInfoData] = await Promise.all([
+      getFieldList({ projectId: value || projectId }),
+      getProjectInfoValues({ projectId: value || projectId }),
+      getList(value || projectId),
+    ])
+    // 更新自定义字段列表
+    setFieldsList(fieldsData?.list)
+    const allCategory = removeNull(projectInfoData, 'category')
+    // 更新所有需求类别列表
+    setAllCategoryList(allCategory)
+    // 过滤掉未开启的类别
+    const resultCategoryList = allCategory?.filter((i: any) => i.status === 1)
+    // 快速创建选择项目后默认获取需求类别列表第一条
+    setCategoryObj(resultCategoryList[0])
   }
 
   // 修改需求类别的确认
@@ -434,7 +452,6 @@ const EditDemand = (props: Props) => {
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
-      rightDom.current.update()
       setIsSaveParams(true)
     } else {
       setChangeCategoryFormData({})
@@ -504,8 +521,9 @@ const EditDemand = (props: Props) => {
 
   // 左侧项目切换清除右侧form表单
   const onResetForm = () => {
-    rightDom.current.reset()
     setCategoryObj({})
+    setAllCategoryList([])
+    rightDom?.current.reset()
   }
 
   useEffect(() => {
@@ -550,7 +568,7 @@ const EditDemand = (props: Props) => {
                   ?.bgColor
               }
             >
-              <span className="title">{categoryObj?.name}</span>
+              <span className="title">{categoryObj?.content}</span>
             </CanOperationCategory>
           </Form.Item>
           <Form.Item
@@ -570,7 +588,7 @@ const EditDemand = (props: Props) => {
                 ?.filter((i: any) => i.status === 1)
                 ?.filter((i: any) => i.id !== categoryObj?.id)
                 ?.map((k: any) => ({
-                  label: k.name,
+                  label: k.content,
                   value: k.id,
                 }))}
             />
@@ -685,12 +703,12 @@ const EditDemand = (props: Props) => {
               isQuickCreate={props?.isQuickCreate}
               projectId={projectId}
               onChangeProjectId={setProjectId}
-              onGetDataAll={getInit}
+              onGetDataAll={getQuickIint}
               onResetForm={onResetForm}
               onRef={leftDom}
               demandId={props.demandId}
             />
-            {/* <EditDemandRIght
+            <EditDemandRIght
               projectId={projectId}
               demandId={props.demandId}
               parentList={parentList}
@@ -701,8 +719,7 @@ const EditDemand = (props: Props) => {
               isQuickCreate={props?.isQuickCreate}
               fieldsList={fieldsList}
               parentId={props.parentId}
-              notGetPath={props.notGetPath}
-            /> */}
+            />
           </ModalContent>
         )}
         <ModalFooter>

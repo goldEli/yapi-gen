@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index1'
 import { getIsPermission } from '@/tools/index'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
@@ -88,9 +88,7 @@ const MineBox = () => {
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { setSelectAllStaffData } = useModel('project')
 
   const changeActive = (value: MenuList) => {

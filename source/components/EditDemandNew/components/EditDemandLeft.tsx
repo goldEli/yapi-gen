@@ -7,6 +7,7 @@ import IconFont from '@/components/IconFont'
 import { AddWrap, FormWrapDemand } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { getProjectList } from '@/services/mine'
+import { removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
@@ -49,9 +50,9 @@ const EditDemandLeft = (props: Props) => {
     getProjectInfo,
     setFieldList,
     filterParamsModal,
-    getTagList,
     projectInfoValues,
   } = useModel('project')
+  const { demandInfo } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
 
@@ -104,22 +105,18 @@ const EditDemandLeft = (props: Props) => {
       all: 1,
     })
     setProjectList(res.data)
+    // 获取上次缓存的快速创建参数
     if (localStorage.getItem('quickCreateData')) {
       const hisCategoryData = JSON.parse(
         decryptPhp(localStorage.getItem('quickCreateData') as any),
       )
       form.setFieldsValue(hisCategoryData)
       getProjectInfo({ projectId: hisCategoryData?.projectId })
-      const resultList = await getTagList({
-        projectId: hisCategoryData?.projectId,
-      })
+      // 项目更新项目下的所有关联数据
+      props.onGetDataAll(hisCategoryData?.projectId)
       props.onChangeProjectId(hisCategoryData?.projectId)
-      props.onGetDataAll(
-        hisCategoryData?.projectId,
-        hisCategoryData?.categoryId,
-      )
       setTagCheckedList(
-        resultList
+        removeNull(projectInfoValues, 'tag')
           ?.filter((i: any) =>
             hisCategoryData?.tagIds
               ?.map((k: any) => k.name)
@@ -147,9 +144,7 @@ const EditDemandLeft = (props: Props) => {
     if (filterParamsModal?.tagIds?.length) {
       const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
-        projectInfoValues
-          ?.filter((i: any) => i.key === 'tag')[0]
-          ?.children?.filter((k: any) => k.id !== -1)
+        removeNull(projectInfoValues, 'tag')
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
           ?.map((i: any) => ({
             id: i.id,
@@ -165,17 +160,17 @@ const EditDemandLeft = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId && props?.demandId === props?.demandInfo?.id) {
+    // 需求id为真并且与需求详情id匹配
+    if (props?.demandId && props?.demandId === demandInfo?.id) {
       setTagCheckedList(
-        props.demandInfo?.tag?.map((i: any) => ({
+        demandInfo?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       )
-
       setAttachList(
-        props.demandInfo?.attachment?.map((i: any) => ({
+        demandInfo?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
           size: i.attachment.size,
@@ -186,9 +181,9 @@ const EditDemandLeft = (props: Props) => {
         })),
       )
       form.setFieldsValue({
-        name: props.demandInfo?.name,
-        info: props.demandInfo?.info,
-        tagIds: props.demandInfo?.tag?.map((i: any) => ({
+        name: demandInfo?.name,
+        info: demandInfo?.info,
+        tagIds: demandInfo?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
@@ -198,16 +193,13 @@ const EditDemandLeft = (props: Props) => {
         inputRefDom.current?.focus()
       }, 100)
     }
-  }, [props?.demandId, props.demandInfo])
+  }, [props?.demandId, demandInfo])
 
   // 切换项目
   const onSelectProjectName = async (value: any) => {
     onReset()
     setFieldList({ list: undefined })
     getProjectInfo({ projectId: value })
-    await getTagList({
-      projectId: value,
-    })
     form.setFieldsValue({
       projectId: value,
     })

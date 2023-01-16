@@ -137,6 +137,7 @@ export default () => {
   const getProjectInfoValues = async (params: any) => {
     const result = await services.project.getProjectInfoValues(params)
     setProjectInfoValues(result)
+    return result
   }
 
   const getMemberList = async (params: any) => {

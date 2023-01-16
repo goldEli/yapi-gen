@@ -693,13 +693,11 @@ const EditDemand = (props: Props) => {
               onRef={rightDom}
               treeArr={treeArr}
               iterateId={props.iterateId}
-              info={demandInfo}
               isChild={props.isChild}
               isSaveParams={isSaveParams}
               isQuickCreate={props?.isQuickCreate}
               fieldsList={fieldsList}
               parentId={props.parentId}
-              notGetPath={props.notGetPath}
             />
           </ModalContent>
         )}
