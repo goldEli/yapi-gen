@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [selectGroupList, setSelectGroupList] = useState<any>([])
   // 是否更新分组列表，用于获取count
   const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
   // 需求列表筛选项值计数
@@ -118,8 +117,6 @@ export default () => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    setSelectGroupList,
-    selectGroupList,
     setIsRefreshGroup,
     isRefreshGroup,
     setFilterKeys,

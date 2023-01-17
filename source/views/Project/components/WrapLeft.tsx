@@ -131,7 +131,6 @@ const WrapLeftBox = (props: Props) => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    setSelectGroupList,
     isRefreshGroup,
     setIsRefreshGroup,
   } = useModel('project')
@@ -150,9 +149,6 @@ const WrapLeftBox = (props: Props) => {
   const getGroupData = async (isChange?: boolean) => {
     const result = await getGroupList()
     setGroupList({ list: result?.list })
-    setSelectGroupList(
-      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
-    )
     setCountData({
       publicCount: result.publicCount,
       selfCount: result.selfCount,

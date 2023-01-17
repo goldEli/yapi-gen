@@ -6,7 +6,7 @@
 import { Form, Input, Select, message } from 'antd'
 import PosterComponent from './PosterComponent'
 import { useModel } from '@/models'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 
@@ -24,14 +24,9 @@ interface Props {
 const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const {
-    addProject,
-    updateProject,
-    selectGroupList,
-    setIsRefreshGroup,
-    getGroupList,
-    setSelectGroupList,
-  } = useModel('project')
+  const [selectGroupList, setSelectGroupList] = useState<any>([])
+  const { addProject, updateProject, setIsRefreshGroup, getGroupList } =
+    useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   const getGroupData = async () => {
