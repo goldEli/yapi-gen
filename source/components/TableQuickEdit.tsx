@@ -19,7 +19,9 @@ import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 interface Props {
   children: any
@@ -60,11 +62,12 @@ const TableQuickEdit = (props: Props) => {
   const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { updateTableParams, getDemandInfo } = useModel('demand')
+  const { updateTableParams } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
   let projectId: any
   let canClick: any
+  const dispatch = useDispatch()
   const isCan =
     props.isInfo ||
     !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
@@ -342,7 +345,8 @@ const TableQuickEdit = (props: Props) => {
     try {
       await updateTableParams(obj)
       if (props.isInfo) {
-        getDemandInfo({ projectId, id: props.item?.id })
+        const result = await getDemandInfo({ projectId, id: props.item?.id })
+        dispatch(setDemandInfo(result))
       } else {
         props.onUpdate?.()
       }

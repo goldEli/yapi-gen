@@ -3,7 +3,6 @@ import { useState } from 'react'
 import * as services from '@/services'
 
 export default () => {
-  const [demandInfo, setDemandInfo] = useState<any>({})
   const [filterHeight, setFilterHeight] = useState<any>(52)
   const [isRefreshComment, setIsRefreshComment] = useState(false)
   const [isShowProgress, setIsShowProgress] = useState(false)
@@ -46,12 +45,6 @@ export default () => {
     return result
   }
 
-  const getDemandInfo = async (params: any) => {
-    const result = await services.demand.getDemandInfo(params)
-    setDemandInfo(result)
-    return result
-  }
-
   const getDemandChildInfo = async (params: any) => {
     const result = await services.demand.getDemandInfo(params)
     return result
@@ -86,8 +79,6 @@ export default () => {
 
   return {
     updateDemandStatus,
-    demandInfo,
-    getDemandInfo,
     getDemandList,
     getDemandChangeLog,
     getCommentList,

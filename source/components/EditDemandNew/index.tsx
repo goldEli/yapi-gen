@@ -27,6 +27,8 @@ import {
   storyConfigField,
 } from '@/services/project'
 import { setFilterParamsModal, setProjectInfoValues } from '@store/project'
+import { setDemandInfo } from '@store/demand'
+import { getDemandInfo } from '@/services/project/demand'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -184,7 +186,6 @@ const EditDemand = (props: Props) => {
     // 是否更新变更记录
     setIsUpdateChangeLog,
     getDemandList,
-    getDemandInfo,
     updateDemandCategory,
     updateDemand,
     addDemand,
@@ -263,6 +264,7 @@ const EditDemand = (props: Props) => {
         projectId: value || projectId,
         id: props?.demandId,
       })
+      dispatch(setDemandInfo(res))
       //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
       if (
         resultCategoryList?.filter((j: any) => j.id === res.category)?.length

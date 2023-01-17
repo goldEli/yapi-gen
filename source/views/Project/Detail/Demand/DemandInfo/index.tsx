@@ -10,6 +10,8 @@ import { useEffect } from 'react'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -25,19 +27,20 @@ const DemandInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
-  const { getDemandInfo } = useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
+
+  const onUpdate = async () => {
+    const result = await getDemandInfo({ projectId, id: demandId })
+    dispatch(setDemandInfo(result))
+  }
+
   useEffect(() => {
     if (isRefresh) {
-      getDemandInfo({ projectId, id: demandId })
+      onUpdate()
       dispatch(setIsRefresh(false))
     }
   }, [isRefresh])
-
-  const onUpdate = () => {
-    getDemandInfo({ projectId, id: demandId })
-  }
 
   return (
     <Wrap>

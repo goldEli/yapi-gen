@@ -16,7 +16,9 @@ import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
 import PubSub from 'pubsub-js'
 import IconFont from '@/components/IconFont'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -34,14 +36,15 @@ const StatusWrap = styled.div({
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { getDemandInfo, demandInfo, isUpdateStatus, setIsUpdateStatus } =
-    useModel('demand')
+  const { isUpdateStatus, setIsUpdateStatus } = useModel('demand')
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [leftList, setLeftList] = useState([])
+  const dispatch = useDispatch()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -70,7 +73,11 @@ const DemandStatusBox = (props: any) => {
     try {
       await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
-      await getDemandInfo({ projectId: props.pid, id: props.sid })
+      const result = await getDemandInfo({
+        projectId: props.pid,
+        id: props.sid,
+      })
+      dispatch(setDemandInfo(result))
       await init()
       PubSub.publish('watch')
     } catch (error) {

@@ -36,6 +36,8 @@ import { changeId } from '../../../../../store/counterSlice'
 import { setIsRefresh } from '@store/user'
 import { useDispatch, useSelector } from '@store/index'
 import { getWorkflowList } from '@/services/project'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -157,9 +159,8 @@ const DemandBox = () => {
   const { projectInfo, colorList, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const {
-    getDemandInfo,
-    demandInfo,
     deleteDemand,
     updateDemandStatus,
     setIsShowProgress,
@@ -186,7 +187,8 @@ const DemandBox = () => {
 
   const init = async () => {
     if (demandId) {
-      await getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
     }
     setLoadingState(true)
   }
@@ -258,7 +260,8 @@ const DemandBox = () => {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
       if (demandId) {
-        getDemandInfo({ projectId, id: demandId })
+        const result = await getDemandInfo({ projectId, id: demandId })
+        dispatch(setDemandInfo(result))
       }
     } catch (error) {
       //
@@ -288,7 +291,8 @@ const DemandBox = () => {
       setIsShowCategory(false)
       setIsUpdateStatus(true)
       dispatch(setIsRefresh(true))
-      getDemandInfo({ projectId, id: demandInfo?.id })
+      const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+      dispatch(setDemandInfo(result))
       setTimeout(() => {
         form.resetFields()
       }, 100)
@@ -559,9 +563,10 @@ const DemandBox = () => {
     setOperationItem({})
   }
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     if (demandId) {
-      getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
     }
     setIsUpdate(true)
   }

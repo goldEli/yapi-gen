@@ -38,8 +38,6 @@ interface Props {
   onResetForm(): void
   onRef: any
   demandId?: any
-  // 需求详情
-  demandInfo?: any
   isAllProject?: any
 }
 
@@ -52,7 +50,7 @@ const EditDemandLeft = (props: Props) => {
   const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { demandInfo } = useModel('demand')
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
   const dispatch = useDispatch()

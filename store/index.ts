@@ -11,6 +11,7 @@ import user from './user'
 import member from './member'
 import mine from './mine'
 import project from './project'
+import demand from './demand'
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     member,
     mine,
     project,
+    demand,
   },
 })
 

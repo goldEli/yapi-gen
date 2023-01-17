@@ -115,8 +115,8 @@ const Circulation = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getStatusLogs, statusLogs, demandInfo, setStatusLogs } =
-    useModel('demand')
+  const { getStatusLogs, statusLogs, setStatusLogs } = useModel('demand')
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const getLogs = async () => {

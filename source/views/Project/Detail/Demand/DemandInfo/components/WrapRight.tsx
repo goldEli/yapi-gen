@@ -48,6 +48,8 @@ import { delCommonAt } from '@/services/user'
 import PubSub from 'pubsub-js'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { storyConfigField } from '@/services/project'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -293,15 +295,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     deleteComment,
     isRefreshComment,
     setIsRefreshComment,
-    demandInfo,
     updatePriority,
-    getDemandInfo,
     updateTableParams,
   } = useModel('demand')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -310,6 +311,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     index: 0,
   })
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
@@ -421,7 +423,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       }
       try {
         await updateTableParams(obj)
-        getDemandInfo({ projectId, id: demandInfo?.id })
+        const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+        dispatch(setDemandInfo(result))
       } catch (error) {
         //
       }

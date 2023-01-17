@@ -7,7 +7,9 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const TagCheckedItem = styled.div<{ color?: string }>(
   {
@@ -113,11 +115,13 @@ interface TagProps {
 }
 
 const TagBox = (props: TagProps) => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { addInfoDemand } = useModel('demand')
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -181,7 +185,8 @@ const TagBox = (props: TagProps) => {
           targetId: [{ name: item.content, color: item.color }],
         })
         message.success(t('common.addSuccess'))
-        getDemandInfo({ projectId, id: demandInfo?.id })
+        const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+        dispatch(setDemandInfo(result))
         props.onChangeIsOpen(false)
       } catch (error) {
         //
@@ -241,13 +246,15 @@ interface Props {
 
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
-  const { addInfoDemand, demandInfo, getDemandInfo, deleteInfoDemand } =
-    useModel('demand')
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { addInfoDemand, deleteInfoDemand } = useModel('demand')
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
+  const dispatch = useDispatch()
+
   let projectId: any
   if (props?.id) {
     projectId = props?.id
@@ -287,7 +294,8 @@ const TagComponent = (props: Props) => {
           targetId: [{ name: newTag, color: value }],
         })
         message.success(t('common.addSuccess'))
-        getDemandInfo({ projectId, id: demandInfo?.id })
+        const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+        dispatch(setDemandInfo(result))
         setNewTag('')
         setIsChooseColor(false)
         setIsClear(false)
@@ -318,7 +326,8 @@ const TagComponent = (props: Props) => {
           targetId: item.id,
         })
         message.success(t('common.deleteSuccess'))
-        getDemandInfo({ projectId, id: demandInfo?.id })
+        const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+        dispatch(setDemandInfo(result))
       } catch (error) {
         //
       }

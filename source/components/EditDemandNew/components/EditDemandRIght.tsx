@@ -71,7 +71,7 @@ const EditDemandRIght = (props: Props) => {
   const { filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { demandInfo } = useModel('demand')
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [priorityDetail, setPriorityDetail] = useState<any>({})

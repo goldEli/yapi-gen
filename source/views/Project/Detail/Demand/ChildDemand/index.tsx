@@ -30,6 +30,8 @@ import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const Operation = styled.div({
   display: 'flex',
@@ -61,19 +63,14 @@ const ChildDemand = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const {
-    getDemandList,
-    updatePriority,
-    updateDemandStatus,
-    deleteDemand,
-    getDemandInfo,
-    demandInfo,
-  } = useModel('demand')
+  const { getDemandList, updatePriority, updateDemandStatus, deleteDemand } =
+    useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -181,8 +178,9 @@ const ChildDemand = () => {
     setIsVisible(true)
   }
 
-  const onUpdate = (updateState?: boolean) => {
-    getDemandInfo({ projectId, id: demandId })
+  const onUpdate = async (updateState?: boolean) => {
+    const result = await getDemandInfo({ projectId, id: demandId })
+    dispatch(setDemandInfo(result))
     getList(pageObj, order, orderKey, updateState)
   }
 

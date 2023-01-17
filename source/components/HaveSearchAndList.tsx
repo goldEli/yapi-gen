@@ -15,6 +15,8 @@ import NoData from './NoData'
 import { getProjectList } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsChangeProject } from '@store/project'
+import { getDemandInfo } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -93,10 +95,11 @@ interface DemandProps {
 }
 
 const ChooseItems = (props: DemandProps) => {
-  const { getDemandList, demandInfo } = useModel('demand')
+  const { getDemandList } = useModel('demand')
   const [dataList, setDataList] = useState<any>([])
   const [projectList, setProjectList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
 
   const getList = async () => {
     const result = await getDemandList({
@@ -210,7 +213,7 @@ const HaveSearchAndList = (props: Props) => {
     (store: { project: any }) => store.project,
   )
   const [isOpen, setIsOpen] = useState(false)
-  const { addInfoDemand, getDemandInfo } = useModel('demand')
+  const { addInfoDemand } = useModel('demand')
   const [hoverState, setHoverState] = useState(false)
   const dispatch = useDispatch()
 
@@ -228,7 +231,11 @@ const HaveSearchAndList = (props: Props) => {
         targetId: [item.value],
       })
       message.success(t('common.addSuccess'))
-      getDemandInfo({ projectId: props?.projectId, id: props?.demandId })
+      const result = await getDemandInfo({
+        projectId: props?.projectId,
+        id: props?.demandId,
+      })
+      dispatch(setDemandInfo(result))
     } catch (error) {
       //
     }
