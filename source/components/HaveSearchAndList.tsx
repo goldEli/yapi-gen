@@ -13,7 +13,8 @@ import CommonInput from './CommonInput'
 import IconFont from './IconFont'
 import NoData from './NoData'
 import { getProjectList } from '@/services/project'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsChangeProject } from '@store/project'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -210,8 +211,9 @@ const HaveSearchAndList = (props: Props) => {
   )
   const [isOpen, setIsOpen] = useState(false)
   const { addInfoDemand, getDemandInfo } = useModel('demand')
-  const { setIsChangeProject } = useModel('project')
   const [hoverState, setHoverState] = useState(false)
+  const dispatch = useDispatch()
+
   const onVisibleOpenChange = (visible: any) => {
     setIsOpen(visible)
   }
@@ -241,7 +243,7 @@ const HaveSearchAndList = (props: Props) => {
         .split('?data')[0]
       const params = encryptPhp(JSON.stringify({ id: item.id }))
       navigate(`/Detail/${beforeUrl}?data=${params}`)
-      setIsChangeProject(item.id)
+      dispatch(setIsChangeProject(item.id))
       message.success(t('version2.changeProjectSuccess'))
     }
     setIsOpen(false)

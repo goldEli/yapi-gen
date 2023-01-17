@@ -23,7 +23,8 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import EditDemand from '@/components/EditDemandNew/index'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterParamsModal } from '@store/project'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -61,7 +62,7 @@ const DemandTable = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setFilterParamsModal, filterKeys } = useModel('project')
+  const { filterKeys } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -75,6 +76,8 @@ const DemandTable = (props: Props) => {
   const [isAddVisible, setIsAddVisible] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
+  const dispatch = useDispatch()
+
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -269,7 +272,7 @@ const DemandTable = (props: Props) => {
 
   const onClick = () => {
     setIsAddVisible(!isAddVisible)
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
   }
 
   return (

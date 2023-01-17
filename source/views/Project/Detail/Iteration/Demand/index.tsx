@@ -26,6 +26,7 @@ import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { setFilterParamsModal } from '@store/project'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -58,7 +59,6 @@ const DemandWrap = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { setFilterParamsModal } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
     useModel('demand')
   const dispatch = useDispatch()
@@ -324,7 +324,7 @@ const DemandWrap = (props: Props) => {
   }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
   const onCreateDemand = () => {
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
       setIsVisible(true)
     }, 100)

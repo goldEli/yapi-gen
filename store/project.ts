@@ -7,6 +7,8 @@ export interface CounterState {
   projectInfo: any
   workList: any
   colorList: any[]
+  isChangeProject: number | string
+  filterParamsModal: any
 }
 
 const initialState: CounterState = {
@@ -30,6 +32,8 @@ const initialState: CounterState = {
     { key: '#4D5EFF', bgColor: '#EBEDFC' },
     { key: '#464646', bgColor: '#EDEDED' },
   ],
+  isChangeProject: 0,
+  filterParamsModal: {},
 }
 
 export const projectSlice = createSlice({
@@ -44,12 +48,25 @@ export const projectSlice = createSlice({
     setWorkList: (state: any, action) => {
       state.workList = action.payload
     },
+    // 项目详情头部切换项目使用-是否更新项目信息
+    setIsChangeProject: (state: any, action) => {
+      state.isChangeProject = action.payload
+    },
+    // 筛选需求列表参数，用于回填创建需求弹窗
+    setFilterParamsModal: (state: any, action) => {
+      state.filterParamsModal = action.payload
+    },
   },
   extraReducers(builder) {
     //
   },
 })
 
-export const { setProjectInfo, setWorkList } = projectSlice.actions
+export const {
+  setProjectInfo,
+  setWorkList,
+  setIsChangeProject,
+  setFilterParamsModal,
+} = projectSlice.actions
 
 export default projectSlice.reducer

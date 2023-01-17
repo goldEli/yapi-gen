@@ -22,6 +22,7 @@ import ThrottleButton from '../ThrottleButton'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
 import { getWorkflowList, storyConfigField } from '@/services/project'
+import { setFilterParamsModal } from '@store/project'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -138,7 +139,6 @@ interface Props {
 
 const EditDemand = (props: Props) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   //   获取地址参数
   const [searchParams] = useSearchParams()
   let paramsData: any
@@ -185,13 +185,11 @@ const EditDemand = (props: Props) => {
     updateDemand,
     addDemand,
   } = useModel('demand')
-  const {
-    projectInfoValues,
-    filterParamsModal,
-    setFilterParamsModal,
-    getProjectInfoValues,
-  } = useModel('project')
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { projectInfoValues, getProjectInfoValues } = useModel('project')
+  const { colorList, filterParamsModal } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const dispatch = useDispatch()
 
   // 获取头部标题
   const titleText = () => {
@@ -483,7 +481,7 @@ const EditDemand = (props: Props) => {
         rightDom.current?.reset()
       }, 100)
       props.onChangeVisible()
-      setFilterParamsModal({})
+      dispatch(setFilterParamsModal({}))
       setIsSaveParams(false)
     }
   }
@@ -533,7 +531,7 @@ const EditDemand = (props: Props) => {
     // 清除创建需求点击的下拉需求类别 -- 需求
     setCreateCategory({})
     setChangeCategoryFormData({})
-    setFilterParamsModal({})
+    dispatch(setFilterParamsModal({}))
     setIsSaveParams(false)
     setTimeout(() => {
       leftDom.current?.reset()

@@ -7,10 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  // 改变项目-项目id
-  const [isChangeProject, setIsChangeProject] = useState(0)
-  // 筛选需求列表参数，用于回填创建需求弹窗
-  const [filterParamsModal, setFilterParamsModal] = useState<any>({})
   const [selectGroupList, setSelectGroupList] = useState<any>([])
   // 是否更新分组列表，用于获取count
   const [isRefreshGroup, setIsRefreshGroup] = useState<any>(false)
@@ -118,14 +114,10 @@ export default () => {
     addStoryConfigStatus,
     deleteStoryConfigStatus,
     updateStoryConfigStatus,
-    setIsChangeProject,
-    isChangeProject,
     getGroupList,
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    setFilterParamsModal,
-    filterParamsModal,
     setSelectGroupList,
     selectGroupList,
     setIsRefreshGroup,

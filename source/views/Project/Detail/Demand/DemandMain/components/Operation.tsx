@@ -21,7 +21,8 @@ import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
 import { useLocation } from 'react-router-dom'
 import { getSearchField } from '@/services/mine'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterParamsModal } from '@store/project'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -140,8 +141,7 @@ const Operation = (props: Props) => {
   const { projectInfo, colorList } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { projectInfoValues, setFilterParamsModal, setFilterKeys, filterKeys } =
-    useModel('project')
+  const { projectInfoValues, setFilterKeys, filterKeys } = useModel('project')
   const { setFilterHeight, setCreateCategory, filterParams } =
     useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
@@ -165,6 +165,8 @@ const Operation = (props: Props) => {
     searchValue: '',
   })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
+  const dispatch = useDispatch()
+
   const hasImport = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/import',
@@ -252,7 +254,7 @@ const Operation = (props: Props) => {
   const onChangeCategory = (e: any, item: any) => {
     setCreateCategory(item)
     // 需求列表筛选参数赋值给 弹窗
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
       props.onChangeVisible?.(e)
       setIsVisible(false)

@@ -21,11 +21,14 @@ const Wrap = styled.div({
 })
 
 const Detail = () => {
-  const { isChangeProject, getProjectInfoValues } = useModel('project')
+  const { getProjectInfoValues } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isChangeProject } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   // 用于私有项目权限过渡
   const [isShowPage, setIsShowPage] = useState(false)
   const navigate = useNavigate()

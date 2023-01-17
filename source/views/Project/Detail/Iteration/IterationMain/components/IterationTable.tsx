@@ -24,7 +24,8 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import EditDemand from '@/components/EditDemandNew/index'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterParamsModal } from '@store/project'
 
 const Content = styled.div({
   padding: 16,
@@ -73,7 +74,6 @@ const IterationTable = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setFilterParamsModal } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -88,6 +88,8 @@ const IterationTable = (props: Props) => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [isEdit, setIsEdit] = useState(false)
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
+  const dispatch = useDispatch()
+
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -276,7 +278,7 @@ const IterationTable = (props: Props) => {
   }, [titleList, titleList2, titleList3, columns])
 
   const onCreateDemand = () => {
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
       setIsEdit(true)
     }, 100)
