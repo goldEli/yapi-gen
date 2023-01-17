@@ -19,8 +19,6 @@ import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
-import { useLocation } from 'react-router-dom'
-import { getSearchField } from '@/services/mine'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setFilterParamsModal } from '@store/project'
 

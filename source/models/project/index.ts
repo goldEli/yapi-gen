@@ -7,23 +7,6 @@ import { useTranslation } from 'react-i18next'
 export default () => {
   const [t] = useTranslation()
 
-  const option = [
-    { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
-    { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
-    { label: t('newlyAdd.radioDropdown'), value: '3', type: 'select' },
-    { label: t('newlyAdd.multiDropdown'), value: '4', type: 'select_checkbox' },
-    { label: t('newlyAdd.checkbox'), value: '5', type: 'checkbox' },
-    { label: t('newlyAdd.radio'), value: '6', type: 'radio' },
-    { label: t('newlyAdd.time'), value: '7', type: 'date' },
-    { label: t('newlyAdd.number'), value: '8', type: 'number' },
-    { label: t('version2.personRadio'), value: '9', type: 'user_select' },
-    {
-      label: t('version2.personCheckbox'),
-      value: '10',
-      type: 'user_select_checkbox',
-    },
-  ]
-
   const {
     addProject,
     updateProject,
@@ -80,7 +63,6 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
-    option,
     addStoryConfigField,
     deleteStoryConfigField,
     updateStoryConfigField,
