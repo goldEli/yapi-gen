@@ -20,7 +20,7 @@ import styled from '@emotion/styled'
 import { Space, Button, message, Popover, Form, Select } from 'antd'
 import { ShapeContent } from '@/components/Shape'
 import PopConfirm from '@/components/Popconfirm'
-import { useModel } from '@/models'
+
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'

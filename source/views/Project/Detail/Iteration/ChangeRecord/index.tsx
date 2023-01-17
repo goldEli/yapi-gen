@@ -13,7 +13,7 @@ import {
   PaginationWrap,
   TableStyleBox,
 } from '@/components/StyleCommon'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
@@ -24,6 +24,7 @@ import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { getIterateChangeLog } from '@/services/project/iterate'
 
 const ContentWrap = styled.div({
   display: 'flex',
@@ -74,7 +75,6 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = (props?: any) => {
   const [t] = useTranslation()
-  const { getIterateChangeLog } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)

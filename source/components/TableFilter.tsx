@@ -14,7 +14,6 @@ import { useEffect, useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
-import { useModel } from '@/models'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
 

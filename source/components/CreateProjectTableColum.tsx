@@ -19,7 +19,6 @@ import {
   StatusWrap,
 } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from './DemandProgress'

@@ -7,7 +7,7 @@ import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
 import { Tooltip, Popover, message } from 'antd'
 import { Personal } from './Personal'
-import { useModel } from '@/models'
+
 import { getTicket, loginOut } from '@/services/user'
 import { useTranslation } from 'react-i18next'
 import { changeLanguage, type LocaleKeys } from '@/locals'

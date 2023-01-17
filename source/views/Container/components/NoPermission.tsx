@@ -2,7 +2,7 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
+
 import styled from '@emotion/styled'
 import { Button, Popover, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'

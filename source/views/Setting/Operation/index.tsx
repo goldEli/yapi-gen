@@ -11,7 +11,7 @@ import {
   SelectWrapBedeck,
   TableStyleBox,
 } from '@/components/StyleCommon'
-import { useModel } from '@/models'
+
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'

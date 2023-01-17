@@ -14,7 +14,7 @@ import {
   PaginationWrap,
   TableStyleBox,
 } from '@/components/StyleCommon'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'

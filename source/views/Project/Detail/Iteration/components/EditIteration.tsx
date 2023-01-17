@@ -6,7 +6,7 @@
 import { Form, Input, message } from 'antd'
 import styled from '@emotion/styled'
 import Editor from '@/components/Editor'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
@@ -15,8 +15,12 @@ import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
-import { setIterateInfo } from '@store/iterate'
-import { getIterateInfo } from '@/services/project/iterate'
+import { setIsUpdateList, setIterateInfo } from '@store/iterate'
+import {
+  addIterate,
+  getIterateInfo,
+  updateIterate,
+} from '@/services/project/iterate'
 
 const FormWrap = styled(Form)({
   paddingTop: 2,
@@ -70,7 +74,6 @@ const EditIteration = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const [html, setHtml] = useState('')
   const projectId = paramsData.id
-  const { addIterate, updateIterate, setIsUpdateList } = useModel('iterate')
   const { iterateInfo } = useSelector(
     (store: { iterate: any }) => store.iterate,
   )
@@ -118,7 +121,7 @@ const EditIteration = (props: Props) => {
         message.success(t('common.createSuccess'))
       }
       props.onChangeVisible()
-      setIsUpdateList(true)
+      dispatch(setIsUpdateList(true))
       setTimeout(() => {
         setHtml('')
         setTimes(null)

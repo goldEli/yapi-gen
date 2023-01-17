@@ -9,7 +9,7 @@
 import styled from '@emotion/styled'
 import { Space, Spin, Timeline } from 'antd'
 import { NameWrap, ViewWrap, DelWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
+
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'

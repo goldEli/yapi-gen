@@ -16,7 +16,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
+
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { useDispatch, useSelector } from '@store/index'

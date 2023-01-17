@@ -5,7 +5,6 @@
 import Editor from '@/components/Editor'
 import IconFont from '@/components/IconFont'
 import { AddWrap, FormWrapDemand } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { getProjectList } from '@/services/mine'
 import { getProjectInfo } from '@/services/project'
 import { removeNull } from '@/tools'

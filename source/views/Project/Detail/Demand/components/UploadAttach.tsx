@@ -5,7 +5,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useModel } from '@/models'
+
 import { message, Progress, Upload } from 'antd'
 import {
   useCallback,

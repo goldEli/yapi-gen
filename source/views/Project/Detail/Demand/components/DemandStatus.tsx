@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Divider, message } from 'antd'
-import { useModel } from '@/models'
+
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getShapeLeft } from '@/services/project/shape'

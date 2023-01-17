@@ -12,7 +12,7 @@ import { message } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
+
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditDemand from '@/components/EditDemandNew/index'
 import { useTranslation } from 'react-i18next'
@@ -24,7 +24,8 @@ import {
   getDemandInfo,
   getDemandList,
 } from '@/services/project/demand'
-import { setDemandInfo } from '@store/demand'
+import { setDemandInfo, setFilterParams } from '@store/demand'
+import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
   width: isShowLeft ? 'calc(100% - 300px)' : '100%',
@@ -55,8 +56,6 @@ const IterationMain = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { setIsRefreshList, setIsUpdateList, setFilterParams } =
-    useModel('iterate')
   const dispatch = useDispatch()
   const [deleteId, setDeleteId] = useState(0)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -126,12 +125,12 @@ const IterationMain = (props: Props) => {
       }
     }
 
-    setFilterParams(params)
+    dispatch(setFilterParams(params))
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    setIsUpdateList(false)
+    dispatch(setIsUpdateList(false))
     props.onChangeIsUpdate(false)
   }
 
@@ -164,7 +163,7 @@ const IterationMain = (props: Props) => {
       setDeleteId(0)
       setDataList({ list: undefined })
       getList(isGrid, pageObj, searchItems)
-      setIsRefreshList(true)
+      dispatch(setIsRefreshList(true))
     } catch (error) {
       //
     }
@@ -179,7 +178,7 @@ const IterationMain = (props: Props) => {
   const onChangeRow = () => {
     setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
-    setIsRefreshList(true)
+    dispatch(setIsRefreshList(true))
   }
 
   const onChangeVisible = () => {
@@ -243,7 +242,7 @@ const IterationMain = (props: Props) => {
           isGrid={isGrid}
           onChangeGrid={val => onChangeGrid(val)}
           onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
-          onIsUpdateList={setIsUpdateList}
+          onIsUpdateList={value => dispatch(setIsUpdateList(value))}
           currentDetail={keyRef.current}
           settingState={isSettingState}
           onChangeSetting={setIsSettingState}

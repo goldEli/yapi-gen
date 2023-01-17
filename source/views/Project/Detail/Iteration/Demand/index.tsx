@@ -14,7 +14,7 @@ import {
   SecondButton,
 } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -33,6 +33,7 @@ import {
   updatePriority,
   getDemandList,
 } from '@/services/project/demand'
+import { setFilterParams } from '@store/demand'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -70,10 +71,9 @@ const DemandWrap = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { iterateInfo } = useSelector(
+  const { iterateInfo, filterParams } = useSelector(
     (store: { iterate: any }) => store.iterate,
   )
-  const { setFilterParams, filterParams } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -155,7 +155,7 @@ const DemandWrap = (props: Props) => {
       schedule_end: searchParamsObj?.schedule_end,
       custom_field: searchParamsObj?.custom_field,
     }
-    setFilterParams(params)
+    dispatch(setFilterParams(params))
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)

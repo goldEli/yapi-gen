@@ -11,7 +11,7 @@ import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
 import { message, Space, Tooltip } from 'antd'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +25,7 @@ import { getSearchField } from '@/services/mine'
 import CommonInput from '@/components/CommonInput'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setProjectInfoValues } from '@store/project'
+import { updateIterateStatus } from '@/services/project/iterate'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -76,7 +77,6 @@ const Operation = (props: Props) => {
   const [isAchievements, setIsAchievements] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
-  const { updateIterateStatus, setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -186,10 +186,6 @@ const Operation = (props: Props) => {
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
-
-    setTimeout(() => {
-      setFilterHeightIterate(Number(stickyWrapDom.current?.clientHeight) + 8)
-    }, 42)
   }
 
   const onClickIcon = (value: any) => {

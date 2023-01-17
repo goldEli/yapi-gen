@@ -13,7 +13,7 @@ import {
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useModel } from '@/models'
+
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -70,9 +70,11 @@ const IterationTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { filterParams } = useModel('iterate')
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
+  )
+  const { filterParams } = useSelector(
+    (store: { iterate: any }) => store.iterate,
   )
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])

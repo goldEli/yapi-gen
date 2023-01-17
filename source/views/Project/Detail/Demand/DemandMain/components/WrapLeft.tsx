@@ -30,7 +30,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
-import { useModel } from '@/models'
+
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '../../../../../../../store'
 import { changeId } from '../../../../../../../store/counterSlice'

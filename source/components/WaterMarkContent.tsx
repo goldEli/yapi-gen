@@ -2,7 +2,6 @@
 // 水印
 
 import { useMemo } from 'react'
-import { useModel } from '@/models'
 import { useSelector } from '../../store'
 
 const SvgTextBg = (props: any) => {

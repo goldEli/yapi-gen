@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button, message, Menu } from 'antd'
-import { useModel } from '@/models'
+
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -29,7 +29,11 @@ import DropDownMenu from '@/components/DropDownMenu'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
-import { getIterateInfo } from '@/services/project/iterate'
+import {
+  deleteIterate,
+  getIterateInfo,
+  updateIterateStatus,
+} from '@/services/project/iterate'
 import { setIterateInfo } from '@store/iterate'
 
 const DemandInfoWrap = styled.div({
@@ -131,8 +135,6 @@ const IterationWrap = () => {
   const { type } = paramsData
   const navigate = useNavigate()
   const { iterateId } = paramsData
-  const { deleteIterate, updateIterateStatus, setFilterHeightIterate } =
-    useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo, projectInfoValues } = useSelector(
@@ -268,7 +270,6 @@ const IterationWrap = () => {
   }
 
   useEffect(() => {
-    setFilterHeightIterate(60)
     // 迭代详情页面调用迭代详情
     if (iterateId) {
       onUpdateIterateInfo(iterateId)

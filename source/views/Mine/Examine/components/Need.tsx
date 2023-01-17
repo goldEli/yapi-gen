@@ -21,7 +21,7 @@ import {
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Divider, Pagination, Spin } from 'antd'
-import { useModel } from '@/models'
+
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'

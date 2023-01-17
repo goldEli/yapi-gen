@@ -13,7 +13,7 @@ import DemandGrid from './components/DemandGrid'
 import DemandTree from './components/DemandTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
+
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'

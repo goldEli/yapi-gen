@@ -5,7 +5,7 @@ import { CategoryWrap, ClickWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import { useModel } from '@/models'
+
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { openDetail } from '@/tools'
 import { useSelector } from '@store/index'

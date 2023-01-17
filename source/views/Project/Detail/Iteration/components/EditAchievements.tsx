@@ -3,13 +3,17 @@
 import CommonModal from '@/components/CommonModal'
 import { createRef, useEffect, useState } from 'react'
 import Achievements from './Achievements'
-import { useModel } from '@/models'
+
 import { Button, message, Space } from 'antd'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
-import { getIterateInfo } from '@/services/project/iterate'
+import {
+  getAchieveInfo,
+  getIterateInfo,
+  updateAchieve,
+} from '@/services/project/iterate'
 import { setIterateInfo } from '@store/iterate'
 
 const ModalFooter = styled(Space)({
@@ -35,7 +39,6 @@ const EditAchievements = (props: Props) => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const childRef: any = createRef()
-  const { updateAchieve, getAchieveInfo } = useModel('iterate')
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
@@ -72,7 +75,9 @@ const EditAchievements = (props: Props) => {
           projectId: props.projectId,
           id: props.id,
         }
-        getAchieveInfo(obj)
+        const resultAchieve = await getAchieveInfo(obj)
+        dispatch(setIterateInfo(resultAchieve))
+
         const result = await getIterateInfo(obj)
         dispatch(setIterateInfo(result))
       }

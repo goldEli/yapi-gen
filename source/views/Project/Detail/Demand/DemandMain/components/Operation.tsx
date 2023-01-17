@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
-import { useModel } from '@/models'
+
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'

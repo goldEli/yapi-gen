@@ -16,7 +16,6 @@ import {
 } from '@wangeditor/editor'
 import fullscreenMenu from './Editor/fullscreen'
 import cancelfullscreenMenu from './Editor/cancelFullscreen'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'

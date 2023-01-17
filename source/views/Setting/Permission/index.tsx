@@ -8,7 +8,7 @@ import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
+
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import DeleteConfirm from '@/components/DeleteConfirm'

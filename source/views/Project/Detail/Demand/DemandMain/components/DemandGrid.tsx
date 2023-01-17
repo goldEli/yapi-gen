@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
+
 import { getParamsData, openDetail } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Spin } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { useModel } from '@/models'
+
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useSelector } from '@store/index'

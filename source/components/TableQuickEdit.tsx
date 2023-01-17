@@ -15,7 +15,6 @@ import {
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
-import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'

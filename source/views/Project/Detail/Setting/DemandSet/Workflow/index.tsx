@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
+
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'

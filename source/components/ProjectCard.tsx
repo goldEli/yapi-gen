@@ -5,7 +5,6 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools/index'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from './MoreDropdown'
 import { Menu } from 'antd'

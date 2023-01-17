@@ -26,7 +26,7 @@ import IconFont from '@/components/IconFont'
 import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useModel } from '@/models'
+
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'

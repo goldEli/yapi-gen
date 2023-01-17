@@ -23,7 +23,7 @@ import {
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -37,6 +37,12 @@ import { SecondButton } from '@/components/StyleCommon'
 import { useSelector } from 'react-redux'
 import { useDispatch } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
+import { setIsRefreshList } from '@store/iterate'
+import {
+  deleteIterate,
+  getIterateList,
+  updateIterateStatus,
+} from '@/services/project/iterate'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -150,17 +156,12 @@ const WrapLeft = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const {
-    getIterateList,
-    updateIterateStatus,
-    deleteIterate,
-    setIsRefreshList,
-    isRefreshList,
-    isUpdateList,
-  } = useModel('iterate')
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
+  )
+  const { isRefreshList, isUpdateList } = useSelector(
+    (store: { iterate: any }) => store.iterate,
   )
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
@@ -202,7 +203,7 @@ const WrapLeft = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     props.onIsUpdateList?.(false)
-    setIsRefreshList(false)
+    dispatch(setIsRefreshList(false))
     if (obj || !props.currentDetail?.id) {
       props.onCurrentDetail(result?.list[0])
     } else {

@@ -9,7 +9,7 @@ import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import DemandSet from './DemandSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
+
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getParamsData } from '@/tools'

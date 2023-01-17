@@ -18,7 +18,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'

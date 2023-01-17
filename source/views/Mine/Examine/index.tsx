@@ -1,7 +1,7 @@
 // 我的审核主页
 
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
+
 import { StaffHeader } from '@/components/StyleCommon'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'

@@ -4,7 +4,7 @@
 import styled from '@emotion/styled'
 import WrapRight from './components/WrapRight'
 import WrapLeft from './components/WrapLeft'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { getParamsData } from '@/tools'

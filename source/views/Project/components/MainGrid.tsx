@@ -9,7 +9,7 @@ import { Space } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
-import { useModel } from '@/models'
+
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'

@@ -22,7 +22,7 @@ import {
   SecondButton,
 } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
+
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'

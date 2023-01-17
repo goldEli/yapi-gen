@@ -10,7 +10,7 @@ import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
-import { useModel } from '@/models'
+
 import {
   StaffHeader,
   Hehavior,

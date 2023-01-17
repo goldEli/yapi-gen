@@ -6,7 +6,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
-import { useModel } from '@/models'
+
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'

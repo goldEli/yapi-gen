@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize } from '@/services/cos'
 import FieldsTemplate from './FieldsTemplate'
-import { useModel } from '@/models'
+
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
