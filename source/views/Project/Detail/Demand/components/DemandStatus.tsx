@@ -18,7 +18,7 @@ import PubSub from 'pubsub-js'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo } from '@/services/project/demand'
-import { setDemandInfo } from '@store/demand'
+import { setDemandInfo, setIsRefreshComment } from '@store/demand'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -79,7 +79,7 @@ const DemandStatusBox = (props: any) => {
       })
       dispatch(setDemandInfo(result))
       await init()
-      PubSub.publish('watch')
+      dispatch(setIsRefreshComment(true))
     } catch (error) {
       //
     }

@@ -515,7 +515,7 @@ export const ShapeContent = (props: any) => {
                       '.ant-form-item-has-error',
                     )
 
-                    errorList[0].scrollIntoView({
+                    errorList[0]?.scrollIntoView({
                       block: 'center',
                       behavior: 'smooth',
                     })

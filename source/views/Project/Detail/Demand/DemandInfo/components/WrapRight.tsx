@@ -49,7 +49,7 @@ import PubSub from 'pubsub-js'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { storyConfigField } from '@/services/project'
 import { getDemandInfo } from '@/services/project/demand'
-import { setDemandInfo } from '@store/demand'
+import { setDemandInfo, setIsRefreshComment } from '@store/demand'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -293,14 +293,15 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     getCommentList,
     addComment,
     deleteComment,
-    isRefreshComment,
-    setIsRefreshComment,
     updatePriority,
     updateTableParams,
   } = useModel('demand')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
+  )
+  const { isRefreshComment } = useSelector(
+    (store: { demand: any }) => store.demand,
   )
   const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [dataList, setDataList] = useState<any>({
@@ -333,7 +334,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     })
     setDataList(result)
     setTimeout(() => {
-      setIsRefreshComment(false)
+      dispatch(setIsRefreshComment(false))
     }, 100)
   }
 
@@ -474,11 +475,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     })
     setPreviewOpen(true)
   }
-  useEffect(() => {
-    PubSub.subscribe('watch', () => {
-      getList()
-    })
-  }, [])
 
   return (
     <div

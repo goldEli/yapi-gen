@@ -37,7 +37,7 @@ import { setIsRefresh } from '@store/user'
 import { useDispatch, useSelector } from '@store/index'
 import { getWorkflowList } from '@/services/project'
 import { getDemandInfo } from '@/services/project/demand'
-import { setDemandInfo } from '@store/demand'
+import { setDemandInfo, setIsRefreshComment } from '@store/demand'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -256,6 +256,7 @@ const DemandBox = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
+      dispatch(setIsRefreshComment(true))
       message.success(t('common.statusSuccess'))
       if (demandId) {
         const result = await getDemandInfo({ projectId, id: demandId })
