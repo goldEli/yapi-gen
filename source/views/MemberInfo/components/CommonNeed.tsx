@@ -318,7 +318,6 @@ const CommonNeed = (props: any) => {
   const showEdit = async (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
-    // await getIterateSelectList({ projectId: record.project_id, all: true })
     setIsVisible(true)
   }
   const showDel = (record: any) => {

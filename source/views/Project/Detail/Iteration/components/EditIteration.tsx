@@ -14,6 +14,9 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
+import { useDispatch, useSelector } from '@store/index'
+import { setIterateInfo } from '@store/iterate'
+import { getIterateInfo } from '@/services/project/iterate'
 
 const FormWrap = styled(Form)({
   paddingTop: 2,
@@ -67,16 +70,14 @@ const EditIteration = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const [html, setHtml] = useState('')
   const projectId = paramsData.id
-  const {
-    addIterate,
-    updateIterate,
-    getIterateInfo,
-    iterateInfo,
-    setIsUpdateList,
-  } = useModel('iterate')
+  const { addIterate, updateIterate, setIsUpdateList } = useModel('iterate')
+  const { iterateInfo } = useSelector(
+    (store: { iterate: any }) => store.iterate,
+  )
   const inputRef = useRef<HTMLInputElement>(null)
   // 迭代时间
   const [times, setTimes] = useState<any>(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (props.id && iterateInfo) {
@@ -144,11 +145,16 @@ const EditIteration = (props: Props) => {
     })
   }
 
+  const onGetIterateInfo = async (id: any) => {
+    const result = await getIterateInfo({ projectId, id })
+    dispatch(setIterateInfo(result))
+  }
+
   useEffect(() => {
     if (props.visible) {
       // 编辑迭代获取详情
       if (props.id) {
-        getIterateInfo({ projectId, id: props.id })
+        onGetIterateInfo(props.id)
       }
       setTimeout(() => {
         inputRef.current?.focus()

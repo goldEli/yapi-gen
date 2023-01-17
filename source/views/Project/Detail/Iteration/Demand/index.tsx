@@ -70,7 +70,10 @@ const DemandWrap = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { iterateInfo, setFilterParams, filterParams } = useModel('iterate')
+  const { iterateInfo } = useSelector(
+    (store: { iterate: any }) => store.iterate,
+  )
+  const { setFilterParams, filterParams } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({

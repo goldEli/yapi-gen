@@ -29,6 +29,8 @@ import DropDownMenu from '@/components/DropDownMenu'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
+import { getIterateInfo } from '@/services/project/iterate'
+import { setIterateInfo } from '@store/iterate'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -129,17 +131,15 @@ const IterationWrap = () => {
   const { type } = paramsData
   const navigate = useNavigate()
   const { iterateId } = paramsData
-  const {
-    getIterateInfo,
-    iterateInfo,
-    deleteIterate,
-    updateIterateStatus,
-    setFilterHeightIterate,
-  } = useModel('iterate')
+  const { deleteIterate, updateIterateStatus, setFilterHeightIterate } =
+    useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
+  )
+  const { iterateInfo } = useSelector(
+    (store: { iterate: any }) => store.iterate,
   )
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -262,11 +262,16 @@ const IterationWrap = () => {
     setSearchList(arr)
   }
 
+  const onUpdateIterateInfo = async (id: any) => {
+    const result = await getIterateInfo({ projectId, id })
+    dispatch(setIterateInfo(result))
+  }
+
   useEffect(() => {
     setFilterHeightIterate(60)
     // 迭代详情页面调用迭代详情
     if (iterateId) {
-      getIterateInfo({ projectId, id: iterateId })
+      onUpdateIterateInfo(iterateId)
     }
   }, [])
 
@@ -334,7 +339,7 @@ const IterationWrap = () => {
           status: val,
         })
         message.success(t('common.editS'))
-        getIterateInfo({ projectId, id: iterateInfo?.id })
+        onUpdateIterateInfo(iterateInfo?.id)
         const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
         // 修改迭代状态更新到项目下拉数据中
         const newValues = beforeValues?.map((i: any) =>

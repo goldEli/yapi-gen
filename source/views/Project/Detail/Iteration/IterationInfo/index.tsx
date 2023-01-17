@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useSelector } from '@store/index'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -164,7 +165,10 @@ const IterationInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { iterateInfo, getIterateStatistics } = useModel('iterate')
+  const { iterateInfo } = useSelector(
+    (store: { iterate: any }) => store.iterate,
+  )
+  const { getIterateStatistics } = useModel('iterate')
   const [chartData, setChartData] = useState<any>({})
   const [isSpinning, setIsSpinning] = useState(false)
 

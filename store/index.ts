@@ -12,6 +12,7 @@ import member from './member'
 import mine from './mine'
 import project from './project'
 import demand from './demand'
+import iterate from './iterate'
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     mine,
     project,
     demand,
+    iterate,
   },
 })
 
