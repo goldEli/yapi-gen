@@ -19,7 +19,7 @@ import { getParamsData, removeNull } from '@/tools'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import ThrottleButton from '../ThrottleButton'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
 import { getWorkflowList, storyConfigField } from '@/services/project'
 
@@ -189,9 +189,9 @@ const EditDemand = (props: Props) => {
     projectInfoValues,
     filterParamsModal,
     setFilterParamsModal,
-    colorList,
     getProjectInfoValues,
   } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
 
   // 获取头部标题
   const titleText = () => {

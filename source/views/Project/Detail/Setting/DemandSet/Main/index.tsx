@@ -356,11 +356,11 @@ const CardGroup = () => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { projectInfo } = useSelector(
+  const { projectInfo, colorList } = useSelector(
     (store: { project: any }) => store.project,
   )
   const [categoryList, setCategoryList] = useState<any>([])
-  const { colorList, changeCategoryStatus } = useModel('project')
+  const { changeCategoryStatus } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
@@ -442,7 +442,8 @@ const CardGroup = () => {
             <CategoryCardHead>
               <CategoryName
                 bgColor={
-                  colorList?.filter(k => k.key === item.color)[0]?.bgColor
+                  colorList?.filter((k: any) => k.key === item.color)[0]
+                    ?.bgColor
                 }
                 color={item.color}
               >

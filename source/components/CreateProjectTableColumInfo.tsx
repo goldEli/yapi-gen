@@ -22,7 +22,6 @@ import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
-import { useModel } from '@/models'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -39,7 +38,7 @@ const Wrap = styled.div<{ isEdit?: any }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   const { userInfo } = useSelector((store: { user: any }) => store.user)
 
   const onToDetail = (item: any) => {

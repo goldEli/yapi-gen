@@ -4,7 +4,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
-import { useModel } from '@/models'
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -145,10 +144,8 @@ const Profile = () => {
 
   const dispatch = useDispatch()
   const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
-  const { colorList } = useModel('project')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])

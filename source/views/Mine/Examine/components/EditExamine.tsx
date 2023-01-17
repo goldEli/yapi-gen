@@ -87,7 +87,7 @@ interface Props {
 const EditExamine = (props: Props) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   const { verifyInfo } = useSelector((store: { mine: any }) => store.mine)
   const [value, setValue] = useState('')
 
@@ -217,8 +217,9 @@ const EditExamine = (props: Props) => {
           <CategoryWrap
             color={verifyInfo?.categoryColor}
             bgColor={
-              colorList?.filter(i => i.key === verifyInfo?.categoryColor)[0]
-                ?.bgColor
+              colorList?.filter(
+                (i: any) => i.key === verifyInfo?.categoryColor,
+              )[0]?.bgColor
             }
           >
             {verifyInfo?.categoryName}

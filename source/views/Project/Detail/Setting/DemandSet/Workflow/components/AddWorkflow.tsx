@@ -20,6 +20,7 @@ import NoData from '@/components/NoData'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import { storyConfigStatusList } from '@/services/project'
+import { useSelector } from '@store/index'
 
 const TableWrap = styled.div({
   height: 400,
@@ -227,7 +228,6 @@ const AddWorkflow = (props: Props) => {
     addStoryConfigStatus,
     updateStoryConfigStatus,
     deleteStoryConfigStatus,
-    colorList,
     addStoryConfigWorkflow,
   } = useModel('project')
   const [searchParams] = useSearchParams()
@@ -237,6 +237,7 @@ const AddWorkflow = (props: Props) => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [form] = Form.useForm()
+  const { colorList } = useSelector((store: { project: any }) => store.project)
 
   const getList = async () => {
     setIsSpinning(true)
@@ -484,8 +485,9 @@ const AddWorkflow = (props: Props) => {
                       style={{ marginRight: 8, marginLeft: 0 }}
                       color={i.category_color}
                       bgColor={
-                        colorList?.filter(k => k.key === i.category_color)[0]
-                          ?.bgColor
+                        colorList?.filter(
+                          (k: any) => k.key === i.category_color,
+                        )[0]?.bgColor
                       }
                     >
                       {i.category_name}

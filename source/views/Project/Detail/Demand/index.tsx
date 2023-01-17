@@ -154,10 +154,10 @@ const DemandBox = () => {
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { projectInfo } = useSelector(
+  const { projectInfo, colorList } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { colorList, projectInfoValues } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const {
     getDemandInfo,
     demandInfo,

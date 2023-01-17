@@ -23,6 +23,7 @@ import {
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import IconFont from './IconFont'
+import { useSelector } from '@store/index'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -60,7 +61,7 @@ const ChildDemandTable = (props: {
   })
   const { getDemandList } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   let isCanEdit: any
 
   const getList = async (item: any) => {

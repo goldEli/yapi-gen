@@ -118,7 +118,7 @@ const SetBreadcrumb = () => {
 
 const Workflow = () => {
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -149,7 +149,8 @@ const Workflow = () => {
           <CategoryWrap
             color={categoryItem.color}
             bgColor={
-              colorList?.filter(i => i.key === categoryItem.color)[0]?.bgColor
+              colorList?.filter((i: any) => i.key === categoryItem.color)[0]
+                ?.bgColor
             }
           >
             {categoryItem.name}

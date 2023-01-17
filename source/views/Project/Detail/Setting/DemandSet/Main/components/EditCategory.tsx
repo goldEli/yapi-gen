@@ -13,6 +13,7 @@ import ChooseColor from '../../components/ChooseColor'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -50,7 +51,8 @@ interface EditorProps {
 }
 
 const EditorCategory = (props: EditorProps) => {
-  const { colorList, updateStoryConfigCategory, addStoryConfigCategory } =
+  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { updateStoryConfigCategory, addStoryConfigCategory } =
     useModel('project')
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
@@ -202,8 +204,9 @@ const EditorCategory = (props: EditorProps) => {
             <ViewWrap
               color={normalColor || '#969799'}
               bgColor={
-                colorList?.filter(i => i.key === (normalColor || '#969799'))[0]
-                  ?.bgColor
+                colorList?.filter(
+                  (i: any) => i.key === (normalColor || '#969799'),
+                )[0]?.bgColor
               }
             >
               {name || t('newlyAdd.nothing')}

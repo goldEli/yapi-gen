@@ -19,22 +19,6 @@ export default () => {
   // 关于项目的下拉数据
   const [projectInfoValues, setProjectInfoValues] = useState<any>([])
 
-  const colorList = [
-    { key: '#2877FF', bgColor: '#F2F7FF' },
-    { key: '#FF5C5E', bgColor: '#FCEEEE' },
-    { key: '#43BA9A', bgColor: '#EDF7F4' },
-    { key: '#FA9746', bgColor: '#FCF3EB' },
-    { key: '#969799', bgColor: '#F2F2F4' },
-    { key: '#8046FA', bgColor: '#F0EBFC' },
-    { key: '#FA46E1', bgColor: '#FCEBFA' },
-    { key: '#FF8B8B', bgColor: '#FCEBEB' },
-    { key: '#269758', bgColor: '#EBFCF3' },
-    { key: '#3AA7FF', bgColor: '#EBF4FC' },
-    { key: '#00ADD2', bgColor: '#EBF9FC' },
-    { key: '#ED7303', bgColor: '#FCF3EB' },
-    { key: '#4D5EFF', bgColor: '#EBEDFC' },
-    { key: '#464646', bgColor: '#EDEDED' },
-  ]
   const option = [
     { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
     { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
@@ -115,7 +99,6 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
-    colorList,
     option,
     addStoryConfigField,
     deleteStoryConfigField,

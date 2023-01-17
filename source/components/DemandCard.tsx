@@ -9,7 +9,6 @@
 import styled from '@emotion/styled'
 import { Menu, Progress, Space } from 'antd'
 import { OmitText } from '@star-yun/ui'
-import { useModel } from '@/models'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools'
 import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
@@ -107,16 +106,13 @@ const NameGroup = styled.div({
 
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
-  const { projectInfo } = useSelector(
+  const { projectInfo, colorList } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { colorList } = useModel('project')
   const hasEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')

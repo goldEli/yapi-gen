@@ -14,6 +14,7 @@ import { ViewWrap, CategoryWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -36,7 +37,8 @@ const EditWorkflow = (props: EditorProps) => {
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')
-  const { colorList, updateStoryConfigWorkflow } = useModel('project')
+  const { updateStoryConfigWorkflow } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
 
   useEffect(() => {
     setNormalColor(props?.item?.color)
@@ -118,7 +120,7 @@ const EditWorkflow = (props: EditorProps) => {
                   style={{ margin: 0, marginTop: 8 }}
                   color={i.color}
                   bgColor={
-                    colorList?.filter(k => k.key === i.color)[0]?.bgColor
+                    colorList?.filter((k: any) => k.key === i.color)[0]?.bgColor
                   }
                   key={i.id}
                 >

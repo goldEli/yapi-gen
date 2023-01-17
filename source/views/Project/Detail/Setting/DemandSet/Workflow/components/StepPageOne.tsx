@@ -40,7 +40,7 @@ import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import { getWorkflowList } from '@/services/project'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
 
 const TableWrap = styled.div({
@@ -79,7 +79,6 @@ const StepPageOne = (propsOne: Props) => {
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const {
-    colorList,
     deleteStoryConfigWorkflow,
     updateStoryConfigWorkflow,
     sortchangeWorkflow,
@@ -94,6 +93,7 @@ const StepPageOne = (propsOne: Props) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   const dispatch = useDispatch()
 
   const getList = async (isUpdateList?: any) => {
@@ -445,7 +445,7 @@ const StepPageOne = (propsOne: Props) => {
                     color={operationObj?.deleteData?.item?.category_color}
                     bgColor={
                       colorList?.filter(
-                        k =>
+                        (k: any) =>
                           k.key ===
                           operationObj?.deleteData?.item?.category_color,
                       )[0]?.bgColor

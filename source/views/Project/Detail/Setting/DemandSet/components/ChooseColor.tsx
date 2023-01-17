@@ -3,6 +3,7 @@
 import IconFont from '@/components/IconFont'
 import { useModel } from '@/models'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import { Popover, Space } from 'antd'
 import { useState } from 'react'
 
@@ -39,7 +40,7 @@ interface ChooseColorProps {
 
 const ChooseColor = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector((store: { project: any }) => store.project)
   const onChangeColor = (val: string) => {
     props?.onChangeValue?.(val)
     props?.onChange?.(val)
@@ -56,7 +57,7 @@ const ChooseColor = (props: ChooseColorProps) => {
       }}
       size={8}
     >
-      {colorList.map(i => (
+      {colorList.map((i: any) => (
         <ColorWrap
           key={i.key}
           style={{ background: i.key }}
