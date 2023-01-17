@@ -7,7 +7,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
@@ -20,7 +19,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import EditFiled from './components/EditField'
 import NoData from '@/components/NoData'
 import { useSelector } from '@store/index'
-import { storyConfigField } from '@/services/project'
+import { deleteStoryConfigField, storyConfigField } from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -109,7 +108,6 @@ const SetBreadcrumb = () => {
 
 const FieldSet = () => {
   const [t] = useTranslation()
-  const { deleteStoryConfigField } = useModel('project')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)

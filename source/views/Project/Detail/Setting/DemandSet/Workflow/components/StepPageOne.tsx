@@ -27,7 +27,6 @@ import EditWorkflow from './EditWorkflow'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
-import { useModel } from '@/models'
 import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
 import { arrayMoveImmutable } from 'array-move'
 import {
@@ -39,7 +38,12 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
-import { getWorkflowList } from '@/services/project'
+import {
+  deleteStoryConfigWorkflow,
+  getWorkflowList,
+  sortchangeWorkflow,
+  updateStoryConfigWorkflow,
+} from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
 
@@ -78,11 +82,6 @@ const StepPageOne = (propsOne: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
-  const {
-    deleteStoryConfigWorkflow,
-    updateStoryConfigWorkflow,
-    sortchangeWorkflow,
-  } = useModel('project')
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)

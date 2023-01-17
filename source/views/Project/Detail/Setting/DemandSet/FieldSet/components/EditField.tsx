@@ -17,10 +17,10 @@ import {
   SortableElement as sortableElement,
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { addStoryConfigField, updateStoryConfigField } from '@/services/project'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -107,7 +107,6 @@ const EditFiled = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const { updateStoryConfigField, addStoryConfigField } = useModel('project')
   const [checked, setChecked] = useState(false)
   const [personValue, setPersonValue] = useState('')
   const ChooseDom = useRef<HTMLInputElement>(null)

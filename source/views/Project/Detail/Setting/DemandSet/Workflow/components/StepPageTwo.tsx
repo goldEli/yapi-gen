@@ -11,12 +11,12 @@ import { OmitText } from '@star-yun/ui'
 import { useMemo, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import SetConfig from './SetConfig'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
+import { saveWorkflowStatus } from '@/services/project'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -53,7 +53,6 @@ const StepPageTwo = () => {
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const { workList } = useSelector((store: { project: any }) => store.project)
-  const { saveWorkflowStatus } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const dispatch = useDispatch()

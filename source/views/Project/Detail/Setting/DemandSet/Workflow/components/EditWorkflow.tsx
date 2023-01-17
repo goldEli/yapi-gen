@@ -9,12 +9,12 @@ import { Input, Form, Switch, Space, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import ChooseColor from '../../components/ChooseColor'
-import { useModel } from '@/models'
 import { ViewWrap, CategoryWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
+import { updateStoryConfigWorkflow } from '@/services/project'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -37,7 +37,6 @@ const EditWorkflow = (props: EditorProps) => {
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')
-  const { updateStoryConfigWorkflow } = useModel('project')
   const { colorList } = useSelector((store: { project: any }) => store.project)
 
   useEffect(() => {

@@ -13,9 +13,14 @@ import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
+import {
+  addProjectGroup,
+  deleteProjectGroup,
+  getGroupList,
+  updateProjectGroup,
+} from '@/services/project'
 
 const WrapLeft = styled.div`
   width: 220px;
@@ -128,12 +133,6 @@ interface Props {
 
 const WrapLeftBox = (props: Props) => {
   const [t] = useTranslation()
-  const {
-    getGroupList,
-    addProjectGroup,
-    updateProjectGroup,
-    deleteProjectGroup,
-  } = useModel('project')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)

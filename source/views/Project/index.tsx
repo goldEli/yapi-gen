@@ -9,7 +9,6 @@ import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { message, Spin } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -18,7 +17,12 @@ import { useTranslation } from 'react-i18next'
 import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { getProjectList } from '@/services/project'
+import {
+  deleteProject,
+  getProjectList,
+  openProject,
+  stopProject,
+} from '@/services/project'
 import { setIsRefreshGroup } from '@store/project'
 
 const Content = styled.div<{ isGrid: boolean }>(
@@ -56,7 +60,6 @@ const Project = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const { deleteProject, stopProject, openProject } = useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const [projectList, setProjectList] = useState<any>({

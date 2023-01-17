@@ -8,12 +8,15 @@ import CommonModal from '@/components/CommonModal'
 import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import ChooseColor from '../../components/ChooseColor'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
+import {
+  addStoryConfigCategory,
+  updateStoryConfigCategory,
+} from '@/services/project'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -52,8 +55,6 @@ interface EditorProps {
 
 const EditorCategory = (props: EditorProps) => {
   const { colorList } = useSelector((store: { project: any }) => store.project)
-  const { updateStoryConfigCategory, addStoryConfigCategory } =
-    useModel('project')
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')

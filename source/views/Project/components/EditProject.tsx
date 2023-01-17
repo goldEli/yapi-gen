@@ -5,12 +5,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Input, Select, message } from 'antd'
 import PosterComponent from './PosterComponent'
-import { useModel } from '@/models'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
+import { addProject, getGroupList, updateProject } from '@/services/project'
 
 interface Props {
   visible: boolean
@@ -27,7 +27,6 @@ const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [selectGroupList, setSelectGroupList] = useState<any>([])
-  const { addProject, updateProject, getGroupList } = useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
 

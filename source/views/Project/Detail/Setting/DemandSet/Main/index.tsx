@@ -13,13 +13,18 @@ import { OmitText } from '@star-yun/ui'
 import EditCategory from './components/EditCategory'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useSelector } from '@store/index'
-import { getWorkflowList, storyConfigCategoryList } from '@/services/project'
+import {
+  changeCategoryStatus,
+  changeStoryConfigCategory,
+  deleteStoryConfigCategory,
+  getWorkflowList,
+  storyConfigCategoryList,
+} from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -180,8 +185,6 @@ const MoreWrap = (props: MoreWrapProps) => {
     list: undefined,
   })
   const [form] = Form.useForm()
-  const { deleteStoryConfigCategory, changeStoryConfigCategory } =
-    useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [disable, setDisable] = useState(true)
@@ -360,7 +363,6 @@ const CardGroup = () => {
     (store: { project: any }) => store.project,
   )
   const [categoryList, setCategoryList] = useState<any>([])
-  const { changeCategoryStatus } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()

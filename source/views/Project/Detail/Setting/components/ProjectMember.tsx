@@ -15,7 +15,6 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
-import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
@@ -31,9 +30,11 @@ import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
   addMember,
+  deleteMember,
   getProjectInfo,
   getProjectMember,
   getProjectPermission,
+  updateMember,
 } from '@/services/project'
 import PubSub from 'pubsub-js'
 import { useDispatch, useSelector } from '@store/index'
@@ -134,7 +135,6 @@ const ProjectMember = () => {
   })
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
-  const { deleteMember, updateMember } = useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,

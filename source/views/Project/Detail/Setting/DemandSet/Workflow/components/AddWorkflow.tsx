@@ -13,13 +13,18 @@ import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
-import { storyConfigStatusList } from '@/services/project'
+import {
+  addStoryConfigStatus,
+  addStoryConfigWorkflow,
+  deleteStoryConfigStatus,
+  storyConfigStatusList,
+  updateStoryConfigStatus,
+} from '@/services/project'
 import { useSelector } from '@store/index'
 
 const TableWrap = styled.div({
@@ -224,12 +229,6 @@ const AddWorkflow = (props: Props) => {
   const [operationObj, setOperationObj] = useState<any>({})
   const [operationDelObj, setOperationDelObj] = useState<any>({})
   const [statusWorkList, setStatusWorkList] = useState<any>([])
-  const {
-    addStoryConfigStatus,
-    updateStoryConfigStatus,
-    deleteStoryConfigStatus,
-    addStoryConfigWorkflow,
-  } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
