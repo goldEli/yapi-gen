@@ -46,6 +46,7 @@ const Wrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+  overflow: 'auto',
 })
 
 const Header = styled.div({
@@ -63,6 +64,7 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   padding: 16,
+  height: 'calc(100% - 64px)',
 })
 
 const FilterWrap = styled(Form)({
@@ -144,8 +146,6 @@ const ProjectMember = () => {
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const stickyWrapDom = useRef<HTMLDivElement>(null)
-  const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
@@ -527,9 +527,6 @@ const ProjectMember = () => {
 
   const onChangeFilter = () => {
     setIsVisible(!isVisible)
-    setTimeout(() => {
-      setFilterHeight(stickyWrapDom.current?.clientHeight)
-    }, 100)
   }
 
   const userObj = {
@@ -784,7 +781,7 @@ const ProjectMember = () => {
             </SearchWrap>
           </FilterWrap>
         </Header>
-        <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+        <Content>
           <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!memberList?.list &&

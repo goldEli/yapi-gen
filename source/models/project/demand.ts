@@ -3,7 +3,6 @@ import { useState } from 'react'
 import * as services from '@/services'
 
 export default () => {
-  const [filterHeight, setFilterHeight] = useState<any>(52)
   const [isRefreshComment, setIsRefreshComment] = useState(false)
   const [isShowProgress, setIsShowProgress] = useState(false)
   const [percentShow, setPercentShow] = useState<boolean>(false)
@@ -90,8 +89,6 @@ export default () => {
     deleteInfoDemand,
     updatePriority,
     addInfoDemand,
-    setFilterHeight,
-    filterHeight,
     getDemandChildInfo,
     setIsRefreshComment,
     isRefreshComment,

@@ -139,8 +139,7 @@ const Operation = (props: Props) => {
   const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setFilterHeight, setCreateCategory, filterParams } =
-    useModel('demand')
+  const { setCreateCategory, filterParams } = useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -243,9 +242,6 @@ const Operation = (props: Props) => {
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
-    setTimeout(() => {
-      setFilterHeight(stickyWrapDom.current?.clientHeight)
-    }, 100)
   }
 
   const onChangeCategory = (e: any, item: any) => {

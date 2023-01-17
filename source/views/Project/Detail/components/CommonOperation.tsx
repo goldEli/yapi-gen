@@ -180,8 +180,6 @@ const CommonOperation = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setFilterHeight } = useModel('demand')
-  const { setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -266,8 +264,6 @@ const CommonOperation = (props: Props) => {
   const onToModel = async (i: any) => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/Detail/${i.type}?data=${params}`)
-    setFilterHeight(52)
-    setFilterHeightIterate(60)
     // 点击切换更新项目info接口
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))

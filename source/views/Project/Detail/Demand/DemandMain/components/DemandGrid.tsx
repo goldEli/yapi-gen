@@ -74,7 +74,6 @@ const DemandGrid = (props: Props) => {
   const { projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { filterHeight } = useModel('demand')
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
 
@@ -110,7 +109,7 @@ const DemandGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+    <Content style={{ height: 'calc(100% - 64px)' }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>

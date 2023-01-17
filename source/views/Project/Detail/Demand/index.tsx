@@ -164,7 +164,6 @@ const DemandBox = () => {
     deleteDemand,
     updateDemandStatus,
     setIsShowProgress,
-    setFilterHeight,
     updateDemandCategory,
     setIsUpdateStatus,
   } = useModel('demand')
@@ -195,7 +194,6 @@ const DemandBox = () => {
 
   useEffect(() => {
     init()
-    setFilterHeight(52)
     return () => {
       dispatch(changeId(0))
     }

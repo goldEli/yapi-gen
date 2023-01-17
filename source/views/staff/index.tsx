@@ -82,7 +82,6 @@ const Staff = () => {
   const { userInfo, isRefresh } = useSelector(
     (store: { user: any }) => store.user,
   )
-  const [filterHeight, setFilterHeight] = useState<any>(116)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
@@ -323,9 +322,6 @@ const Staff = () => {
 
   const onChangeFilter = () => {
     setIsShow(!isShow)
-    setTimeout(() => {
-      setFilterHeight(isShow ? 116 : 180)
-    }, 100)
   }
 
   const menu = (
@@ -377,104 +373,108 @@ const Staff = () => {
       permission={userInfo?.company_permissions}
     >
       <StaffHeader>{t('staff.companyStaff')}</StaffHeader>
-      <Hehavior>
-        <div style={{ display: 'flex', marginLeft: 24 }}>
-          <CommonInput
-            width={292}
-            placeholder={t('staff.pleaseKey')}
-            onChangeSearch={onPressEnter}
-          />
-        </div>
-        <div
-          style={{ marginRight: '12px', display: 'flex', alignItems: 'center' }}
-        >
-          <Reset onClick={rest}>{t('staff.refresh')}</Reset>
-          <Space size={8}>
-            <HoverWrap onClick={onChangeFilter} isActive={isShow}>
-              <IconFont className="iconMain" type="filter" />
-              <span className="label">{t('common.search')}</span>
-            </HoverWrap>
-            <DividerWrap type="vertical" />
-            <DropDownMenu
-              menu={menu}
-              icon="settings"
-              isVisible={isVisibleFields}
-              onChangeVisible={setIsVisibleFields}
-              isActive={isModalVisible}
-            >
-              <div>{t('common.tableFieldSet')}</div>
-            </DropDownMenu>
-          </Space>
-        </div>
-      </Hehavior>
-      {isShow ? <SearchList onSearch={onSearch} /> : null}
+      <div style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
+        <Hehavior>
+          <div style={{ display: 'flex', marginLeft: 24 }}>
+            <CommonInput
+              width={292}
+              placeholder={t('staff.pleaseKey')}
+              onChangeSearch={onPressEnter}
+            />
+          </div>
+          <div
+            style={{
+              marginRight: '12px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Reset onClick={rest}>{t('staff.refresh')}</Reset>
+            <Space size={8}>
+              <HoverWrap onClick={onChangeFilter} isActive={isShow}>
+                <IconFont className="iconMain" type="filter" />
+                <span className="label">{t('common.search')}</span>
+              </HoverWrap>
+              <DividerWrap type="vertical" />
+              <DropDownMenu
+                menu={menu}
+                icon="settings"
+                isVisible={isVisibleFields}
+                onChangeVisible={setIsVisibleFields}
+                isActive={isModalVisible}
+              >
+                <div>{t('common.tableFieldSet')}</div>
+              </DropDownMenu>
+            </Space>
+          </div>
+        </Hehavior>
+        {isShow ? <SearchList onSearch={onSearch} /> : null}
+        <div className={tableWrapP} style={{ height: `calc(100% - 52px)` }}>
+          <StaffTableWrap
+            style={{
+              height: 'calc(100% - 50px)',
+              overflow: 'hidden',
+            }}
+          >
+            <DataWrap ref={dataWrapRef}>
+              <Spin spinning={isSpinning}>
+                {!!listData &&
+                  (listData?.length > 0 ? (
+                    <TableStyleBox
+                      isBottom
+                      rowKey="id"
+                      columns={selectColum}
+                      dataSource={listData}
+                      pagination={false}
+                      scroll={{
+                        x: 'max-content',
+                        y: tableY,
+                      }}
+                      tableLayout="auto"
+                    />
+                  ) : (
+                    <NoData />
+                  ))}
+              </Spin>
+            </DataWrap>
+          </StaffTableWrap>
 
-      <div
-        className={tableWrapP}
-        style={{ height: `calc(100% - ${filterHeight}px)` }}
-      >
-        <StaffTableWrap
-          style={{
-            height: 'calc(100% - 50px)',
-            overflow: 'hidden',
+          <PaginationWrap>
+            <Pagination
+              pageSize={pagesize}
+              current={page}
+              showSizeChanger
+              showQuickJumper
+              total={total}
+              showTotal={newTotal =>
+                t('common.tableTotal', { count: newTotal })
+              }
+              pageSizeOptions={['10', '20', '50']}
+              onChange={onChangePage}
+              onShowSizeChange={onShowSizeChange}
+            />
+          </PaginationWrap>
+        </div>
+
+        <OptionalFeld
+          allTitleList={allTitleList}
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          checkList={titleList}
+          checkList2={titleList2}
+          isVisible={isModalVisible}
+          onClose={close2}
+          getCheckList={getCheckList}
+        />
+        <StaffPersonal
+          data={editData}
+          isVisible={isStaffPersonalVisible}
+          onClose={() => {
+            setIsStaffPersonalVisible(false)
           }}
-        >
-          <DataWrap ref={dataWrapRef}>
-            <Spin spinning={isSpinning}>
-              {!!listData &&
-                (listData?.length > 0 ? (
-                  <TableStyleBox
-                    isBottom
-                    rowKey="id"
-                    columns={selectColum}
-                    dataSource={listData}
-                    pagination={false}
-                    scroll={{
-                      x: 'max-content',
-                      y: tableY,
-                    }}
-                    tableLayout="auto"
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </DataWrap>
-        </StaffTableWrap>
-
-        <PaginationWrap>
-          <Pagination
-            pageSize={pagesize}
-            current={page}
-            showSizeChanger
-            showQuickJumper
-            total={total}
-            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-            pageSizeOptions={['10', '20', '50']}
-            onChange={onChangePage}
-            onShowSizeChange={onShowSizeChange}
-          />
-        </PaginationWrap>
+          onConfirm={closeStaffPersonal}
+        />
       </div>
-
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        checkList={titleList}
-        checkList2={titleList2}
-        isVisible={isModalVisible}
-        onClose={close2}
-        getCheckList={getCheckList}
-      />
-      <StaffPersonal
-        data={editData}
-        isVisible={isStaffPersonalVisible}
-        onClose={() => {
-          setIsStaffPersonalVisible(false)
-        }}
-        onConfirm={closeStaffPersonal}
-      />
     </PermissionWrap>
   )
 }
