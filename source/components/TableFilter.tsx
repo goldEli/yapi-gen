@@ -261,8 +261,9 @@ const TableFilter = (props: any) => {
   const [t] = useTranslation()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
-  const { projectInfoValues } = useModel('project')
-  const { filterKeys } = useSelector((store: { project: any }) => store.project)
+  const { filterKeys, projectInfoValues } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const dispatch = useDispatch()
 
   const filterBasicsList = useMemo(() => {

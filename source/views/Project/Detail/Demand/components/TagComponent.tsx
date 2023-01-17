@@ -114,7 +114,9 @@ interface TagProps {
 
 const TagBox = (props: TagProps) => {
   const [t] = useTranslation()
-  const { projectInfoValues } = useModel('project')
+  const { projectInfoValues } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const { demandInfo, addInfoDemand, getDemandInfo } = useModel('demand')
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])

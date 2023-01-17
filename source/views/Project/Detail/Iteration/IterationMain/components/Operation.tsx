@@ -24,7 +24,7 @@ import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { getSearchField } from '@/services/mine'
 import CommonInput from '@/components/CommonInput'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterKeys } from '@store/project'
+import { setFilterKeys, setProjectInfoValues } from '@store/project'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -80,10 +80,9 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys } = useSelector(
+  const { projectInfo, filterKeys, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setProjectInfoValues, projectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -124,7 +123,7 @@ const Operation = (props: Props) => {
               }
             : i,
         )
-        setProjectInfoValues(newValues)
+        dispatch(setProjectInfoValues(newValues))
         props.onIsUpdateList?.(true)
       } catch (error) {
         //

@@ -20,6 +20,7 @@ import {
   removeNull,
 } from '@/tools'
 import moment from 'moment'
+import { useSelector } from '@store/index'
 
 interface Props {
   isVisible: boolean
@@ -34,7 +35,6 @@ const BatchModal = (props: Props) => {
   const [haveChildren, setHaveChildren] = useState(false)
   const [form] = Form.useForm()
   const { batchDelete, batchEdit, getBatchEditConfig } = useModel('demand')
-  const { projectInfoValues } = useModel('project')
   const [chooseSelect, setChooseSelect] = useState<any>([])
   const [chooseType, setChooseType] = useState('')
   const [chooseAfter, setChooseAfter] = useState<any>({})
@@ -44,6 +44,9 @@ const BatchModal = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { projectInfoValues } = useSelector(
+    (store: { project: any }) => store.project,
+  )
 
   // 获取批量编辑的下拉列表
   const getBatchEditConfigList = async () => {

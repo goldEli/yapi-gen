@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
-import { useState } from 'react'
 import * as services from '@/services'
 import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  // 关于项目的下拉数据
-  const [projectInfoValues, setProjectInfoValues] = useState<any>([])
 
   const option = [
     { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
@@ -26,13 +23,6 @@ export default () => {
       type: 'user_select_checkbox',
     },
   ]
-
-  // 获取项目的下拉数据
-  const getProjectInfoValues = async (params: any) => {
-    const result = await services.project.getProjectInfoValues(params)
-    setProjectInfoValues(result)
-    return result
-  }
 
   const {
     addProject,
@@ -113,8 +103,5 @@ export default () => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    getProjectInfoValues,
-    projectInfoValues,
-    setProjectInfoValues,
   }
 }

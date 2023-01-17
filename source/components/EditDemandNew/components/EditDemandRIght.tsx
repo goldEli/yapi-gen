@@ -68,10 +68,9 @@ const EditDemandRIght = (props: Props) => {
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
   const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { filterParamsModal } = useSelector(
+  const { filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { projectInfoValues } = useModel('project')
   const { demandInfo } = useModel('demand')
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)

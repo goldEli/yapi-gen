@@ -50,7 +50,8 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
-import { getProjectInfo } from '@/services/project'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfoValues } from '@store/project'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -163,7 +164,6 @@ const CommonNeed = (props: any) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { getProjectInfoValues } = useModel('project')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -371,7 +371,8 @@ const CommonNeed = (props: any) => {
 
   const getShowkey = async () => {
     if (props.id) {
-      await getProjectInfoValues({ projectId: props.id })
+      const result = await getProjectInfoValues({ projectId: props.id })
+      dispatch(setProjectInfoValues(result))
     }
     const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)

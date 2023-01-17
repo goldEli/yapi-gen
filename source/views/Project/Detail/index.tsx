@@ -8,12 +8,11 @@
 import CommonOperation from './components/CommonOperation'
 import styled from '@emotion/styled'
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { getProjectInfo } from '@/services/project'
-import { setProjectInfo } from '@store/project'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 
 const Wrap = styled.div({
   height: '100%',
@@ -21,7 +20,6 @@ const Wrap = styled.div({
 })
 
 const Detail = () => {
-  const { getProjectInfoValues } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -35,7 +33,8 @@ const Detail = () => {
   const dispatch = useDispatch()
 
   const getProjectInfoValuesData = async () => {
-    await getProjectInfoValues({ projectId })
+    const result = await getProjectInfoValues({ projectId })
+    dispatch(setProjectInfoValues(result))
   }
 
   // 获取项目信息

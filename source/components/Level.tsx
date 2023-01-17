@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { css } from '@emotion/css'
-import { useModel } from '@/models'
 import { getPriOrStu } from '@/services/mine'
+import { useSelector } from '@store/index'
 
 const flexCss = css`
   height: 32px;
@@ -38,7 +38,9 @@ type LevelProps = {
 }
 
 export const LevelContent = (props: LevelProps) => {
-  const { projectInfoValues } = useModel('project')
+  const { projectInfoValues } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
   const [showData, setShowData] = useState<any>([])

@@ -74,7 +74,6 @@ const EditIteration = (props: Props) => {
     iterateInfo,
     setIsUpdateList,
   } = useModel('iterate')
-  const { getProjectInfoValues } = useModel('project')
   const inputRef = useRef<HTMLInputElement>(null)
   // 迭代时间
   const [times, setTimes] = useState<any>(null)

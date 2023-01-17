@@ -138,10 +138,9 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, colorList, filterKeys } = useSelector(
+  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { projectInfoValues } = useModel('project')
   const { setFilterHeight, setCreateCategory, filterParams } =
     useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])

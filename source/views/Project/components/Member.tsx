@@ -24,7 +24,7 @@ import {
   getProjectPermission,
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo } from '@store/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 
 interface Props {
   visible: boolean
@@ -219,11 +219,10 @@ const MoreDropdown = (props: DropDownProps) => {
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { projectInfo } = useSelector(
+  const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { updateMember, addMember, projectInfoValues, setProjectInfoValues } =
-    useModel('project')
+  const { updateMember, addMember } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])
@@ -272,7 +271,7 @@ const Member = (props: Props) => {
           ? { ...i, children: [...[i.children[0]], ...recombinationMember] }
           : i,
       )
-      setProjectInfoValues(newValues)
+      dispatch(setProjectInfoValues(newValues))
     }
     setMemberList(result)
   }

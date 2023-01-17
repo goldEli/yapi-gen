@@ -34,6 +34,7 @@ import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '../../../../../../../store'
 import { changeId } from '../../../../../../../store/counterSlice'
+import { setProjectInfoValues } from '@store/project'
 
 const Left = styled.div`
   height: calc(100vh - 64px);
@@ -366,7 +367,9 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { setProjectInfoValues, projectInfoValues } = useModel('project')
+  const { projectInfoValues } = useSelector(
+    (store: { project: any }) => store.project,
+  )
 
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {
@@ -393,7 +396,7 @@ const WrapLeft = (props: any, ref: any) => {
           ? { ...i, children: computedChildren(res[0].children) }
           : i,
       )
-      setProjectInfoValues(newValues)
+      dispatch(setProjectInfoValues(newValues))
     }
   }
 

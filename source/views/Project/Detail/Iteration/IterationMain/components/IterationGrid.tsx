@@ -13,6 +13,7 @@ import { useModel } from '@/models'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { useSelector } from '@store/index'
 
 const Content = styled.div({
   padding: 16,
@@ -67,7 +68,9 @@ const IterationGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues } = useModel('project')
+  const { projectInfoValues } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const { filterHeightIterate } = useModel('iterate')
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})

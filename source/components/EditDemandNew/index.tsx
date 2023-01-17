@@ -21,8 +21,12 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import ThrottleButton from '../ThrottleButton'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
-import { getWorkflowList, storyConfigField } from '@/services/project'
-import { setFilterParamsModal } from '@store/project'
+import {
+  getProjectInfoValues,
+  getWorkflowList,
+  storyConfigField,
+} from '@/services/project'
+import { setFilterParamsModal, setProjectInfoValues } from '@store/project'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -185,8 +189,7 @@ const EditDemand = (props: Props) => {
     updateDemand,
     addDemand,
   } = useModel('demand')
-  const { projectInfoValues, getProjectInfoValues } = useModel('project')
-  const { colorList, filterParamsModal } = useSelector(
+  const { colorList, filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
   const dispatch = useDispatch()
@@ -447,7 +450,8 @@ const EditDemand = (props: Props) => {
     }
     // 保存数据后更新项目信息-用于更新标签
     if (projectId) {
-      getProjectInfoValues({ projectId })
+      const result = await getProjectInfoValues({ projectId })
+      dispatch(setProjectInfoValues(result))
     }
     // 是否是快捷创建，是则要刷新相应的列表接口
     if (props?.isQuickCreate) {

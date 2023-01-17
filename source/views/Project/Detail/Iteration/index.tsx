@@ -26,9 +26,9 @@ import IterationStatus from './components/IterationStatus'
 import CommonInput from '@/components/CommonInput'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
-import PubSub from 'pubsub-js'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfoValues } from '@store/project'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -138,10 +138,9 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo } = useSelector(
+  const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { projectInfoValues, setProjectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -169,7 +168,7 @@ const IterationWrap = () => {
     finishAt: [],
     searchVal: '',
   })
-
+  const dispatch = useDispatch()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
 
@@ -349,7 +348,7 @@ const IterationWrap = () => {
               }
             : i,
         )
-        setProjectInfoValues(newValues)
+        dispatch(setProjectInfoValues(newValues))
         setIsUpdateState(true)
       } catch (error) {
         //

@@ -35,6 +35,8 @@ import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
 import { useSelector } from 'react-redux'
+import { useDispatch } from '@store/index'
+import { setProjectInfoValues } from '@store/project'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -156,12 +158,13 @@ const WrapLeft = (props: Props) => {
     isRefreshList,
     isUpdateList,
   } = useModel('iterate')
-  const { projectInfoValues, setProjectInfoValues } = useModel('project')
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo } = useSelector(
+  const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
   const [isSpinning, setIsSpinning] = useState(false)
+  const dispatch = useDispatch()
+
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/store',
@@ -222,7 +225,7 @@ const WrapLeft = (props: Props) => {
           ? { ...i, children: [...[i.children[0]], ...recombinationIteration] }
           : i,
       )
-      setProjectInfoValues(newValues)
+      dispatch(setProjectInfoValues(newValues))
     }
   }
 
@@ -365,8 +368,6 @@ const WrapLeft = (props: Props) => {
         })
         message.success(t('common.editS'))
         getList(null, true)
-        // // 需要修改
-        // getProjectInfoValues({ projectId })
       } catch (error) {
         //
       }
@@ -388,8 +389,6 @@ const WrapLeft = (props: Props) => {
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
       getList({}, true)
-      // // 需要修改
-      // getProjectInfoValues({ projectId })
     } catch (error) {
       //
     }

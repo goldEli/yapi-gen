@@ -11,6 +11,7 @@ export interface CounterState {
   filterParamsModal: any
   isRefreshGroup: boolean
   filterKeys: []
+  projectInfoValues: []
 }
 
 const initialState: CounterState = {
@@ -38,6 +39,7 @@ const initialState: CounterState = {
   filterParamsModal: {},
   isRefreshGroup: false,
   filterKeys: [],
+  projectInfoValues: [],
 }
 
 export const projectSlice = createSlice({
@@ -47,6 +49,10 @@ export const projectSlice = createSlice({
     // 全局使用项目信息
     setProjectInfo: (state: any, action) => {
       state.projectInfo = action.payload
+    },
+    // 关于项目的下拉数据
+    setProjectInfoValues: (state: any, action) => {
+      state.projectInfoValues = action.payload
     },
     // 用于工作流设置 -- 用于流转设置表格
     setWorkList: (state: any, action) => {
@@ -81,6 +87,7 @@ export const {
   setFilterParamsModal,
   setIsRefreshGroup,
   setFilterKeys,
+  setProjectInfoValues,
 } = projectSlice.actions
 
 export default projectSlice.reducer
