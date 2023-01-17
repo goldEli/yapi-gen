@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
@@ -65,11 +64,6 @@ export default () => {
     const result = await services.project.getWorkflowList(params)
     setWorkList(result)
     return result
-  }
-
-  const getStatusList = async (params: any) => {
-    const result = await services.project.storyConfigStatusList(params)
-    setStatusWorkList(result)
   }
 
   // 获取项目的下拉数据
@@ -145,8 +139,6 @@ export default () => {
     deleteStoryConfigCategory,
     changeCategoryStatus,
     changeStoryConfigCategory,
-    getStatusList,
-    statusWorkList,
     getWorkflowList,
     addStoryConfigWorkflow,
     updateStoryConfigWorkflow,

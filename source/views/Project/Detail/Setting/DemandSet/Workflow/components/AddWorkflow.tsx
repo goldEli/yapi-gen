@@ -19,6 +19,7 @@ import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
+import { storyConfigStatusList } from '@/services/project'
 
 const TableWrap = styled.div({
   height: 400,
@@ -221,9 +222,8 @@ const AddWorkflow = (props: Props) => {
   const [isAdd, setIsAdd] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [operationDelObj, setOperationDelObj] = useState<any>({})
+  const [statusWorkList, setStatusWorkList] = useState<any>([])
   const {
-    getStatusList,
-    statusWorkList,
     addStoryConfigStatus,
     updateStoryConfigStatus,
     deleteStoryConfigStatus,
@@ -238,17 +238,15 @@ const AddWorkflow = (props: Props) => {
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [form] = Form.useForm()
 
-  useEffect(() => {
-    const arr = statusWorkList?.list?.filter((i: any) => i.isCheck)
-    setSelectedRowKeys(arr?.map((k: any) => k.id))
-  }, [statusWorkList])
-
   const getList = async () => {
     setIsSpinning(true)
-    await getStatusList({
+    const result = await storyConfigStatusList({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
+    setStatusWorkList(result)
+    const arr = result?.list?.filter((i: any) => i.isCheck)
+    setSelectedRowKeys(arr?.map((k: any) => k.id))
     setIsSpinning(false)
   }
 
