@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import CommonInput from './CommonInput'
 import IconFont from './IconFont'
 import NoData from './NoData'
+import { getProjectList } from '@/services/project'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -91,8 +92,8 @@ interface DemandProps {
 
 const ChooseItems = (props: DemandProps) => {
   const { getDemandList, demandInfo } = useModel('demand')
-  const { getProjectList, projectList } = useModel('project')
   const [dataList, setDataList] = useState<any>([])
+  const [projectList, setProjectList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   const getList = async () => {
@@ -107,8 +108,9 @@ const ChooseItems = (props: DemandProps) => {
     setDataList(arr)
   }
 
-  const getProjectData = () => {
-    getProjectList({ all: true, isPublic: 1 })
+  const getProjectData = async () => {
+    const result = await getProjectList({ all: true, isPublic: 1 })
+    setProjectList(result)
   }
 
   useEffect(() => {

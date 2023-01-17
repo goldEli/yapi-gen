@@ -15,7 +15,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
-import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -85,9 +84,7 @@ interface MoreProps {
 const MoreContent = (props: MoreProps) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,
     'b/project/update',
@@ -194,9 +191,7 @@ const MainTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const hasCreate = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',

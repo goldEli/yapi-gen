@@ -10,6 +10,7 @@ import companyInfo from './companyInfo'
 import user from './user'
 import member from './member'
 import mine from './mine'
+import project from './project'
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     companyInfo,
     member,
     mine,
+    project,
   },
 })
 

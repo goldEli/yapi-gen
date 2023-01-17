@@ -11,10 +11,8 @@ import {
 import { NameWrap } from '@/components/StyleCommon'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getStaffList } from '@/services/staff'
 import { getAsyncMember } from '@store/member'
 import { useDispatch, useSelector } from '@store/index'
 
@@ -100,8 +98,6 @@ const MemberInfo = () => {
   const { isMember, userId } = paramsData
   const { mainInfo } = useSelector((store: { member: any }) => store.member)
 
-  const { setSelectAllStaffData } = useModel('project')
-
   const menuList = [
     {
       id: 1,
@@ -124,16 +120,9 @@ const MemberInfo = () => {
       path: 'finished',
     },
   ]
-
-  // 获取公司员工
-  const getStaffData = async () => {
-    const options = await getStaffList({ all: 1 })
-    setSelectAllStaffData(options)
-  }
-
   useEffect(() => {
+    // 获取当前查看人员信息
     dispatch(getAsyncMember({ userId }))
-    getStaffData()
   }, [])
 
   const changeActive = (value: any) => {

@@ -17,12 +17,11 @@ export const getAsyncMember = createAsyncThunk(
   'nameSpace/getMember',
   async (params: any) => {
     const res = await getMainInfo(params)
-
     return res
   },
 )
 
-export const companyInfoSlice = createSlice({
+export const memberSlice = createSlice({
   name: 'member',
   initialState,
   reducers: {},
@@ -33,4 +32,4 @@ export const companyInfoSlice = createSlice({
   },
 })
 
-export default companyInfoSlice.reducer
+export default memberSlice.reducer

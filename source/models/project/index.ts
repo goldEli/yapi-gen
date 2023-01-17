@@ -7,22 +7,14 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [selectAllStaffData, setSelectAllStaffData] = useState<any>([])
-  const [projectList, setProjectList] = useState<any>({
-    list: undefined,
-  })
-  const [priorityList, setPriorityList] = useState<any>([])
-  const [coverList, setCoverList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
   const [isRefreshMember, setIsRefreshMember] = useState(false)
-  const [filterAll, setFilterAll] = useState<any>([])
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
   const [categoryList, setCategoryList] = useState<any>([])
-  const [categoryEditList, setCategoryEditList] = useState<any>([])
   const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [workList, setWorkList] = useState<any>({
     list: undefined,
@@ -88,12 +80,6 @@ export default () => {
     setStatusWorkList(result)
   }
 
-  const getCategoryEditList = async (params: any) => {
-    const result = await services.project.storyConfigCategoryList(params)
-    setCategoryEditList(result)
-    return result
-  }
-
   const getCategoryList = async (params: any) => {
     const result = await services.project.storyConfigCategoryList(params)
     setCategoryList(result)
@@ -109,21 +95,6 @@ export default () => {
   const getFieldListCustom = async (params: any) => {
     const result = await services.project.storyConfigField(params)
     return result
-  }
-
-  const getProjectList = async (params: any) => {
-    const result = await services.project.getProjectList(params)
-    setProjectList(result)
-  }
-
-  const getPriorityList = async (params: any) => {
-    const result = await services.mine.getPriOrStu(params)
-    setPriorityList(result)
-  }
-
-  const getProjectCoverList = async () => {
-    const result = await services.project.getProjectCoverList()
-    setCoverList(result)
   }
 
   const getProjectInfo = async (params: any) => {
@@ -187,10 +158,6 @@ export default () => {
   } = services.project
 
   return {
-    projectList,
-    getProjectList,
-    coverList,
-    getProjectCoverList,
     projectInfo,
     getProjectInfo,
     addProject,
@@ -214,8 +181,6 @@ export default () => {
     memberList,
     setIsRefreshMember,
     isRefreshMember,
-    setFilterAll,
-    filterAll,
     setProjectInfo,
     colorList,
     getFieldList,
@@ -248,23 +213,16 @@ export default () => {
     updateStoryConfigStatus,
     workList,
     setWorkList,
-    setSelectAllStaffData,
-    selectAllStaffData,
     setIsChangeProject,
     isChangeProject,
     getGroupList,
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    getPriorityList,
-    priorityList,
     setFilterParamsModal,
     filterParamsModal,
     setSelectGroupList,
     selectGroupList,
-    categoryEditList,
-    getCategoryEditList,
-    setCategoryEditList,
     setIsRefreshGroup,
     isRefreshGroup,
     setFilterKeys,

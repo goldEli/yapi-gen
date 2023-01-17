@@ -168,13 +168,13 @@ const EditDemand = (props: Props) => {
     colorList,
     getWorkflowList,
     workList,
-    categoryEditList,
-    getCategoryEditList,
+    // categoryEditList,
+    // getCategoryEditList,
     getMemberList,
     getFieldList,
     filterParamsModal,
     setFilterParamsModal,
-    getPriorityList,
+    // getPriorityList,
     getProjectInfoValues,
   } = useModel('project')
   const {
@@ -210,7 +210,7 @@ const EditDemand = (props: Props) => {
     const [classTree, categoryData, fieldsData] = await Promise.all([
       getTreeList({ id: value || projectId, isTree: 1 }),
       // 获取全部的需求列表
-      getCategoryEditList({ projectId: value || projectId, isEdit: true }),
+      // getCategoryEditList({ projectId: value || projectId, isEdit: true }),
       getFieldList({ projectId: value || projectId }),
       getList(value || projectId),
       getMemberList({
@@ -218,7 +218,7 @@ const EditDemand = (props: Props) => {
         projectId: value || projectId,
       }),
       getIterateSelectList({ projectId: value || projectId, all: true }),
-      getPriorityList({ projectId: value || projectId, type: 'priority' }),
+      // getPriorityList({ projectId: value || projectId, type: 'priority' }),
     ])
     setTreeArr(classTree)
     setFieldsList(fieldsData?.list)
@@ -323,11 +323,11 @@ const EditDemand = (props: Props) => {
   // 选择新的需求类别后，获取他的工作流列表
   const onChangeSelect = async (value: any) => {
     if (value) {
-      setCurrentCategory(
-        categoryEditList?.list
-          ?.filter((i: any) => i.isCheck === 1)
-          ?.filter((i: any) => i.id === value)[0],
-      )
+      // setCurrentCategory(
+      //   categoryEditList?.list
+      //     ?.filter((i: any) => i.isCheck === 1)
+      //     ?.filter((i: any) => i.id === value)[0],
+      // )
       await getWorkflowList({
         projectId,
         categoryId: value,
@@ -354,37 +354,37 @@ const EditDemand = (props: Props) => {
   }
 
   // 切换需求类别下拉选项
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }}
-    >
-      {categoryEditList?.list
-        ?.filter((i: any) => i.isCheck === 1)
-        ?.filter((i: any) => i.id !== categoryObj?.id)
-        ?.map((k: any) => (
-          <LiWrap
-            key={k.id}
-            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-            onClick={() => onClickCategory(k)}
-          >
-            <CanOperationCategory
-              style={{ marginRight: 0, cursor: 'pointer' }}
-              color={k.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-            >
-              <span className="title">{k.name}</span>
-            </CanOperationCategory>
-          </LiWrap>
-        ))}
-    </div>
-  )
+  // const changeStatus = (
+  //   <div
+  //     style={{
+  //       padding: '4px 0px',
+  //       display: 'flex',
+  //       flexDirection: 'column',
+  //       alignItems: 'flex-start',
+  //     }}
+  //   >
+  //     {categoryEditList?.list
+  //       ?.filter((i: any) => i.isCheck === 1)
+  //       ?.filter((i: any) => i.id !== categoryObj?.id)
+  //       ?.map((k: any) => (
+  //         <LiWrap
+  //           key={k.id}
+  //           color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+  //           onClick={() => onClickCategory(k)}
+  //         >
+  //           <CanOperationCategory
+  //             style={{ marginRight: 0, cursor: 'pointer' }}
+  //             color={k.color}
+  //             bgColor={
+  //               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+  //             }
+  //           >
+  //             <span className="title">{k.name}</span>
+  //           </CanOperationCategory>
+  //         </LiWrap>
+  //       ))}
+  //   </div>
+  // )
 
   // 关闭弹窗
   const onCancel = () => {
@@ -561,13 +561,13 @@ const EditDemand = (props: Props) => {
               allowClear
               optionFilterProp="label"
               onChange={onChangeSelect}
-              options={categoryEditList?.list
-                ?.filter((i: any) => i.isCheck === 1)
-                ?.filter((i: any) => i.id !== categoryObj?.id)
-                ?.map((k: any) => ({
-                  label: k.name,
-                  value: k.id,
-                }))}
+              // options={categoryEditList?.list
+              //   ?.filter((i: any) => i.isCheck === 1)
+              //   ?.filter((i: any) => i.id !== categoryObj?.id)
+              //   ?.map((k: any) => ({
+              //     label: k.name,
+              //     value: k.id,
+              //   }))}
             />
           </Form.Item>
           <Form.Item
@@ -610,7 +610,7 @@ const EditDemand = (props: Props) => {
         <ModalHeader>
           <div>
             <span className="label">{titleText()}</span>
-            {categoryObj?.id && (
+            {/* {categoryObj?.id && (
               <Popover
                 key={isShowPop.toString()}
                 trigger={['hover']}
@@ -668,7 +668,7 @@ const EditDemand = (props: Props) => {
                   )}
                 </CanOperationCategory>
               </Popover>
-            )}
+            )} */}
           </div>
           <CloseWrap width={32} height={32} onClick={onCancel}>
             <IconFont type="close" style={{ fontSize: 20 }} />

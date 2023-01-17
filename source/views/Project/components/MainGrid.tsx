@@ -66,9 +66,7 @@ const DataWrap = styled.div({
 const MainGrid = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const isPermission = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',

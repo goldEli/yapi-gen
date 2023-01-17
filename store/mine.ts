@@ -24,7 +24,7 @@ export const getAsyncVerifyInfo = createAsyncThunk(
   },
 )
 
-export const companyInfoSlice = createSlice({
+export const mineSlice = createSlice({
   name: 'mine',
   initialState,
   reducers: {
@@ -39,6 +39,6 @@ export const companyInfoSlice = createSlice({
   },
 })
 
-export const { setIsUpdateCreate } = companyInfoSlice.actions
+export const { setIsUpdateCreate } = mineSlice.actions
 
-export default companyInfoSlice.reducer
+export default mineSlice.reducer

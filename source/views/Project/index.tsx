@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 项目主页
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-params */
@@ -17,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useSelector } from '@store/index'
+import { getProjectList } from '@/services/project'
 
 const Content = styled.div<{ isGrid: boolean }>(
   {
@@ -53,18 +55,13 @@ const Project = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const {
-    getProjectList,
-    projectList,
-    deleteProject,
-    stopProject,
-    openProject,
-    setIsRefreshGroup,
-  } = useModel('project')
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { deleteProject, stopProject, openProject, setIsRefreshGroup } =
+    useModel('project')
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
+  const [projectList, setProjectList] = useState<any>({
+    list: undefined,
+  })
 
   const getList = async (
     active: number,
@@ -96,7 +93,8 @@ const Project = () => {
         params.isPublic = 1
       }
     }
-    await getProjectList(params)
+    const result = await getProjectList(params)
+    setProjectList(result)
     setIsSpinning(false)
   }
 
@@ -283,23 +281,23 @@ const Project = () => {
               <Spin spinning={isSpinning}>
                 {isGrid ? (
                   <MainGrid
-                    projectList={projectList}
                     onChangeVisible={() => setIsVisible(true)}
                     onChangeOperation={onChangeOperation}
                     onAddClear={() => setOperationDetail({})}
                     hasFilter={searchVal.length > 0 || isHidden}
+                    projectList={projectList}
                   />
                 ) : (
                   <MainTable
                     onChangeOperation={(e, type, item) =>
                       onChangeOperation(e, type, item)
                     }
-                    projectList={projectList}
                     onChangePageNavigation={onChangePageNavigation}
                     onUpdateOrderKey={onUpdateOrderKey}
                     order={order}
                     onAddClick={onAddClick}
                     hasFilter={searchVal.length > 0 || isHidden}
+                    projectList={projectList}
                   />
                 )}
               </Spin>

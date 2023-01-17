@@ -5,11 +5,11 @@
 import { Popover, Upload, Space, message } from 'antd'
 import styled from '@emotion/styled'
 import { IconFont } from '@staryuntech/ant-pro'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import type { UploadRequestOption } from 'rc-upload/lib/interface'
 import { useTranslation } from 'react-i18next'
 import { uploadFileByTask } from '@/services/cos'
+import { getProjectCoverList } from '@/services/project'
 
 const ImgWrap = styled.div({
   borderRadius: 6,
@@ -112,30 +112,35 @@ const PosterCard = styled.div({
 interface Props {
   value?: any
   onChangeValue?(cover: any): void
+  isVisible: boolean
 }
 
 const PosterComponent = (props: Props) => {
   const [t] = useTranslation()
-  const { coverList } = useModel('project')
   const [checkedPoster, setCheckedPoster] = useState('')
   const [posterList, setPosterList] = useState<any>([])
+  const [coverList, setCoverList] = useState<any>([])
 
   const onUpdateValue = (path: any) => {
     setCheckedPoster(path)
     props.onChangeValue?.([path])
   }
 
-  useEffect(() => {
-    if (coverList.length && !props.value) {
-      onUpdateValue(coverList[0].path)
-    }
-  }, [coverList])
-
-  useEffect(() => {
+  const getInitCover = async () => {
+    const result = await getProjectCoverList()
+    setCoverList(result)
     if (props?.value) {
       setCheckedPoster(props?.value)
+    } else {
+      onUpdateValue(result[0].path)
     }
-  }, [props?.value])
+  }
+
+  useEffect(() => {
+    if (props.isVisible) {
+      getInitCover()
+    }
+  }, [props.isVisible])
 
   const onUploadBefore = (file: any) => {
     const acceptArr = ['jpg', 'png']
