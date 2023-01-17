@@ -17,8 +17,9 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { getProjectList } from '@/services/project'
+import { setIsRefreshGroup } from '@store/project'
 
 const Content = styled.div<{ isGrid: boolean }>(
   {
@@ -55,13 +56,13 @@ const Project = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const { deleteProject, stopProject, openProject, setIsRefreshGroup } =
-    useModel('project')
+  const { deleteProject, stopProject, openProject } = useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
   })
+  const dispatch = useDispatch()
 
   const getList = async (
     active: number,
@@ -149,7 +150,7 @@ const Project = () => {
       setIsDelete(false)
       setOperationDetail({})
       onUpdate()
-      setIsRefreshGroup(true)
+      dispatch(setIsRefreshGroup(true))
     } catch (error) {
       //
     }

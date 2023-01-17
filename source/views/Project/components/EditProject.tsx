@@ -9,6 +9,8 @@ import { useModel } from '@/models'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import { useDispatch } from '@store/index'
+import { setIsRefreshGroup } from '@store/project'
 
 interface Props {
   visible: boolean
@@ -25,9 +27,9 @@ const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [selectGroupList, setSelectGroupList] = useState<any>([])
-  const { addProject, updateProject, setIsRefreshGroup, getGroupList } =
-    useModel('project')
+  const { addProject, updateProject, getGroupList } = useModel('project')
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const dispatch = useDispatch()
 
   const getGroupData = async () => {
     const result = await getGroupList()
@@ -58,7 +60,7 @@ const EditProject = (props: Props) => {
         }
         await addProject(form.getFieldsValue())
         message.success(t('common.createSuccess'))
-        setIsRefreshGroup(true)
+        dispatch(setIsRefreshGroup(true))
       }
       props.onChangeVisible()
       props.onUpdate?.()

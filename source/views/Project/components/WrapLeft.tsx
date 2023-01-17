@@ -14,6 +14,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useModel } from '@/models'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefreshGroup } from '@store/project'
 
 const WrapLeft = styled.div`
   width: 220px;
@@ -131,8 +133,6 @@ const WrapLeftBox = (props: Props) => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    isRefreshGroup,
-    setIsRefreshGroup,
   } = useModel('project')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -145,6 +145,10 @@ const WrapLeftBox = (props: Props) => {
   })
   const [countData, setCountData] = useState<any>({})
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const { isRefreshGroup } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const dispatch = useDispatch()
 
   const getGroupData = async (isChange?: boolean) => {
     const result = await getGroupList()
@@ -153,7 +157,7 @@ const WrapLeftBox = (props: Props) => {
       publicCount: result.publicCount,
       selfCount: result.selfCount,
     })
-    setIsRefreshGroup(false)
+    dispatch(setIsRefreshGroup(false))
     // 如果当前删除的是当前选择，则切换为分组第一条
     if (isChange) {
       props.onChangeGroup(result?.list[0]?.id)

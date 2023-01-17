@@ -9,6 +9,7 @@ export interface CounterState {
   colorList: any[]
   isChangeProject: number | string
   filterParamsModal: any
+  isRefreshGroup: boolean
 }
 
 const initialState: CounterState = {
@@ -34,6 +35,7 @@ const initialState: CounterState = {
   ],
   isChangeProject: 0,
   filterParamsModal: {},
+  isRefreshGroup: false,
 }
 
 export const projectSlice = createSlice({
@@ -56,6 +58,10 @@ export const projectSlice = createSlice({
     setFilterParamsModal: (state: any, action) => {
       state.filterParamsModal = action.payload
     },
+    // 是否更新分组列表，用于获取count
+    setIsRefreshGroup: (state: any, action) => {
+      state.isRefreshGroup = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -67,6 +73,7 @@ export const {
   setWorkList,
   setIsChangeProject,
   setFilterParamsModal,
+  setIsRefreshGroup,
 } = projectSlice.actions
 
 export default projectSlice.reducer
