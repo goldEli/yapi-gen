@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [categoryList, setCategoryList] = useState<any>([])
   const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [workList, setWorkList] = useState<any>({
     list: undefined,
@@ -71,12 +70,6 @@ export default () => {
   const getStatusList = async (params: any) => {
     const result = await services.project.storyConfigStatusList(params)
     setStatusWorkList(result)
-  }
-
-  const getCategoryList = async (params: any) => {
-    const result = await services.project.storyConfigCategoryList(params)
-    setCategoryList(result)
-    return result
   }
 
   // 获取项目的下拉数据
@@ -147,8 +140,6 @@ export default () => {
     addStoryConfigField,
     deleteStoryConfigField,
     updateStoryConfigField,
-    getCategoryList,
-    categoryList,
     addStoryConfigCategory,
     updateStoryConfigCategory,
     deleteStoryConfigCategory,

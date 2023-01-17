@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useSelector } from '@store/index'
+import { storyConfigCategoryList } from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -166,6 +167,7 @@ interface MoreWrapProps {
   row: any
   onChange(row: any): void
   list?: any
+  onUpdate(): void
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -175,7 +177,6 @@ const MoreWrap = (props: MoreWrapProps) => {
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [form] = Form.useForm()
   const {
-    getCategoryList,
     deleteStoryConfigCategory,
     changeStoryConfigCategory,
     getWorkflowList,
@@ -227,7 +228,7 @@ const MoreWrap = (props: MoreWrapProps) => {
         projectId: paramsData.id,
       })
       message.success(t('common.deleteSuccess'))
-      getCategoryList({ projectId: paramsData.id })
+      props.onUpdate()
     } catch (error) {
       //
     }
@@ -349,11 +350,7 @@ const MoreWrap = (props: MoreWrapProps) => {
   )
 }
 
-interface CardGroupProps {
-  list: any[]
-}
-
-const CardGroup = (props: CardGroupProps) => {
+const CardGroup = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
@@ -361,13 +358,23 @@ const CardGroup = (props: CardGroupProps) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { colorList, changeCategoryStatus, getCategoryList } =
-    useModel('project')
+  const [categoryList, setCategoryList] = useState<any>([])
+  const { colorList, changeCategoryStatus } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
   const activeTabs = Number(paramsData.type) || 0
   asyncSetTtile(`${t('title.a8')}【${projectInfo.name}】`)
+
+  const getList = async () => {
+    const result = await storyConfigCategoryList({ projectId: paramsData.id })
+    setCategoryList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
   const onChangeStatus = async (item: any, state: any) => {
     try {
       await changeCategoryStatus({
@@ -376,20 +383,20 @@ const CardGroup = (props: CardGroupProps) => {
         status: state,
       })
       message.success(t('common.statusSuccess'))
-      getCategoryList({ projectId: paramsData.id })
+      getList()
     } catch (error) {
       //
     }
   }
 
   const onChange = (checked: boolean, row: any) => {
-    const arr = props?.list?.filter(i => i.id !== row.id)
+    const arr = categoryList?.list?.filter((i: any) => i.id !== row.id)
     if (!row.statusCount && checked) {
       message.warning(t('newlyAdd.hasFlowCanOpen'))
       return
     }
 
-    if (!arr?.filter(i => i.isCheck === 1)?.length && !checked) {
+    if (!arr?.filter((i: any) => i.isCheck === 1)?.length && !checked) {
       message.warning(t('newlyAdd.onlyCategoryOpen'))
       return
     }
@@ -422,9 +429,14 @@ const CardGroup = (props: CardGroupProps) => {
 
   return (
     <>
-      <EditCategory isVisible={isEdit} onClose={onClose} item={editRow} />
+      <EditCategory
+        isVisible={isEdit}
+        onClose={onClose}
+        item={editRow}
+        onUpdate={getList}
+      />
       <CardGroupWrap>
-        {props?.list?.map((item: any) => (
+        {categoryList?.list?.map((item: any) => (
           <CategoryCard key={item.id}>
             <CategoryCardHead>
               <CategoryName
@@ -451,7 +463,8 @@ const CardGroup = (props: CardGroupProps) => {
                 <MoreWrap
                   onChange={row => onChangeMore(row)}
                   row={item}
-                  list={props?.list}
+                  list={categoryList?.list}
+                  onUpdate={getList}
                 />
               </div>
             </CategoryCardHead>
@@ -498,17 +511,9 @@ const DemandSet = () => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { getCategoryList, categoryList } = useModel('project')
+
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
-
-  const getList = () => {
-    getCategoryList({ projectId: paramsData.id })
-  }
-
-  useEffect(() => {
-    getList()
-  }, [])
 
   const onToPage = () => {
     const params = encryptPhp(
@@ -543,7 +548,7 @@ const DemandSet = () => {
             <div />
             <span>{t('newlyAdd.demandCategorySet')}</span>
           </LabelWrap>
-          <CardGroup list={categoryList?.list} />
+          <CardGroup />
         </ModeWrap>
       </ContentWrap>
     </Wrap>

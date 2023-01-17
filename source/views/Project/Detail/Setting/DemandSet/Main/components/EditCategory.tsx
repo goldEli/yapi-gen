@@ -46,15 +46,12 @@ interface EditorProps {
   isVisible: boolean
   item?: any
   onClose(): void
+  onUpdate(): void
 }
 
 const EditorCategory = (props: EditorProps) => {
-  const {
-    colorList,
-    getCategoryList,
-    updateStoryConfigCategory,
-    addStoryConfigCategory,
-  } = useModel('project')
+  const { colorList, updateStoryConfigCategory, addStoryConfigCategory } =
+    useModel('project')
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')
@@ -88,11 +85,11 @@ const EditorCategory = (props: EditorProps) => {
 
   const onReset = () => {
     props?.onClose()
+    props.onUpdate()
     setTimeout(() => {
       form.resetFields()
       setNormalColor('#2877FF')
       setName('')
-      getCategoryList({ projectId: paramsData.id })
     }, 100)
   }
 
