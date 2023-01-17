@@ -21,6 +21,7 @@ import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { setFilterKeys } from '@store/project'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -54,7 +55,6 @@ const DemandMain = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { getDemandList, deleteDemand, setFilterParams } = useModel('demand')
-  const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -64,7 +64,8 @@ const DemandMain = (props: Props) => {
   const [isShowLeft, setIsShowLeft] = useState(false)
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
-  const { setFilterKeys, filterKeys } = useModel('project')
+  const { filterKeys } = useSelector((store: { project: any }) => store.project)
+  const dispatch = useDispatch()
 
   const getList = async (
     state: any,
@@ -242,7 +243,7 @@ const DemandMain = (props: Props) => {
         ? [...filterKeys, ...['classId']]
         : filterKeys?.filter((i: any) => i !== 'classId')
 
-      setFilterKeys([...new Set(keys)])
+      dispatch(setFilterKeys([...new Set(keys)]))
     },
   }
 

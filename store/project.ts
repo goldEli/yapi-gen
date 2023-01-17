@@ -10,6 +10,7 @@ export interface CounterState {
   isChangeProject: number | string
   filterParamsModal: any
   isRefreshGroup: boolean
+  filterKeys: []
 }
 
 const initialState: CounterState = {
@@ -36,6 +37,7 @@ const initialState: CounterState = {
   isChangeProject: 0,
   filterParamsModal: {},
   isRefreshGroup: false,
+  filterKeys: [],
 }
 
 export const projectSlice = createSlice({
@@ -46,11 +48,11 @@ export const projectSlice = createSlice({
     setProjectInfo: (state: any, action) => {
       state.projectInfo = action.payload
     },
-    // 用于工作流设置-第二步
+    // 用于工作流设置 -- 用于流转设置表格
     setWorkList: (state: any, action) => {
       state.workList = action.payload
     },
-    // 项目详情头部切换项目使用-是否更新项目信息
+    // 项目详情头部切换项目使用 -- 用于是否更新项目信息
     setIsChangeProject: (state: any, action) => {
       state.isChangeProject = action.payload
     },
@@ -61,6 +63,10 @@ export const projectSlice = createSlice({
     // 是否更新分组列表，用于获取count
     setIsRefreshGroup: (state: any, action) => {
       state.isRefreshGroup = action.payload
+    },
+    // 需求列表筛选项值计数 -- 用于暂无数据优化显示
+    setFilterKeys: (state: any, action) => {
+      state.filterKeys = action.payload
     },
   },
   extraReducers(builder) {
@@ -74,6 +80,7 @@ export const {
   setIsChangeProject,
   setFilterParamsModal,
   setIsRefreshGroup,
+  setFilterKeys,
 } = projectSlice.actions
 
 export default projectSlice.reducer

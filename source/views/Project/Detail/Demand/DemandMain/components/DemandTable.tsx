@@ -59,10 +59,9 @@ const DemandTable = (props: Props) => {
   const projectId = paramsData.id
   const { updatePriority, updateDemandStatus, filterParams } =
     useModel('demand')
-  const { projectInfo } = useSelector(
+  const { projectInfo, filterKeys } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { filterKeys } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])

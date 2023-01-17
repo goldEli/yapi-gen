@@ -7,8 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  // 需求列表筛选项值计数
-  const [filterKeys, setFilterKeys] = useState<any>([])
   // 关于项目的下拉数据
   const [projectInfoValues, setProjectInfoValues] = useState<any>([])
 
@@ -115,8 +113,6 @@ export default () => {
     addProjectGroup,
     updateProjectGroup,
     deleteProjectGroup,
-    setFilterKeys,
-    filterKeys,
     getProjectInfoValues,
     projectInfoValues,
     setProjectInfoValues,

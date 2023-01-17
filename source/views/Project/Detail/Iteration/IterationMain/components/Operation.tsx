@@ -23,7 +23,8 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { getSearchField } from '@/services/mine'
 import CommonInput from '@/components/CommonInput'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterKeys } from '@store/project'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -79,11 +80,10 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useSelector(
+  const { projectInfo, filterKeys } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setProjectInfoValues, setFilterKeys, filterKeys, projectInfoValues } =
-    useModel('project')
+  const { setProjectInfoValues, projectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -91,6 +91,8 @@ const Operation = (props: Props) => {
   const [searchVal, setSearchVal] = useState('')
   const [searchGroups, setSearchGroups] = useState<any>({})
   const stickyWrapDom = useRef<HTMLDivElement>(null)
+  const dispatch = useDispatch()
+
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/status',
@@ -212,7 +214,7 @@ const Operation = (props: Props) => {
     const keys = value
       ? [...filterKeys, ...['searchVal']]
       : filterKeys?.filter((i: any) => i !== 'searchVal')
-    setFilterKeys([...new Set(keys)])
+    dispatch(setFilterKeys([...new Set(keys)]))
   }
 
   return (

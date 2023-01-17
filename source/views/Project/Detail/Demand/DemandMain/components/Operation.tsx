@@ -22,7 +22,7 @@ import { CanOperationCategory } from '@/components/StyleCommon'
 import { useLocation } from 'react-router-dom'
 import { getSearchField } from '@/services/mine'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterParamsModal } from '@store/project'
+import { setFilterKeys, setFilterParamsModal } from '@store/project'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -138,10 +138,10 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, colorList } = useSelector(
+  const { projectInfo, colorList, filterKeys } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { projectInfoValues, setFilterKeys, filterKeys } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { setFilterHeight, setCreateCategory, filterParams } =
     useModel('demand')
   const [searchList, setSearchList] = useState<any[]>([])
@@ -189,7 +189,7 @@ const Operation = (props: Props) => {
     const keys = value
       ? [...filterKeys, ...['searchVal']]
       : filterKeys?.filter((i: any) => i !== 'searchVal')
-    setFilterKeys([...new Set(keys)])
+    dispatch(setFilterKeys([...new Set(keys)]))
   }
 
   const onFilterSearch = (e: any, customField: any) => {
