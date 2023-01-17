@@ -42,6 +42,7 @@ import {
 } from 'react-sortable-hoc'
 import { useTranslation } from 'react-i18next'
 import { getStaffList } from '@/services/staff'
+import { getProjectMember } from '@/services/project'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -150,8 +151,7 @@ const normalObj: any = {
 const SetConfig = (props: Props) => {
   const [t, i18n] = useTranslation()
   const modalBody = useRef<any>(null)
-  const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList } =
-    useModel('project')
+  const { getWorkflowInfo, saveWorkflowConfig, workList } = useModel('project')
   const [isShowPermission, setIsShowPermission] = useState(true)
   const [isSwitch, setIsSwitch] = useState(false)
   const [isShowField, setIsShowField] = useState(true)

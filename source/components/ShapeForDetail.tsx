@@ -16,12 +16,11 @@ import {
   Spin,
   Tooltip,
 } from 'antd'
-import { useModel } from '@/models'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
-import { getShapeLeft, getShapeRight } from '@/services/project/shape'
+import { getShapeRight } from '@/services/project/shape'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
 import { getProjectMember } from '@/services/mine'

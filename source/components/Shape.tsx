@@ -16,7 +16,6 @@ import {
   Spin,
   Tooltip,
 } from 'antd'
-import { useModel } from '@/models'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'

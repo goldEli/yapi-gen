@@ -32,6 +32,7 @@ import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
   addMember,
   getProjectInfo,
+  getProjectMember,
   getProjectPermission,
 } from '@/services/project'
 import PubSub from 'pubsub-js'
@@ -133,8 +134,7 @@ const ProjectMember = () => {
   })
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
-  const { getProjectMember, deleteMember, isRefreshMember, updateMember } =
-    useModel('project')
+  const { deleteMember, isRefreshMember, updateMember } = useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,

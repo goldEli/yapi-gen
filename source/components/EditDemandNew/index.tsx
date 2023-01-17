@@ -14,8 +14,7 @@ import { useModel } from '@/models'
 import IconFont from '../IconFont'
 import CommonModal from '../CommonModal'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
-import { getTreeList } from '@/services/project/tree'
+import { getParamsData, removeNull } from '@/tools'
 import moment from 'moment'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import ThrottleButton from '../ThrottleButton'
@@ -130,178 +129,66 @@ interface Props {
 
   // 无数据创建
   noDataCreate?: any
+
+  // 是否是所有项目
+  isAllProject?: boolean
 }
 
 const EditDemand = (props: Props) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
+  //   获取地址参数
+  const [searchParams] = useSearchParams()
+  let paramsData: any
+  if (!props?.notGetPath) {
+    paramsData = getParamsData(searchParams)
+  }
   const rightDom: any = createRef()
   const leftDom: any = createRef()
-  const [isSaveParams, setIsSaveParams] = useState(false)
+  // 头部显示的需求类别对象
+  const [categoryObj, setCategoryObj] = useState<any>({})
+  // 项目id
+  const [projectId, setProjectId] = useState(null)
+  // 父需求列表
+  const [parentList, setParentList] = useState<any>([])
+  // 自定义字段列表
+  const [fieldsList, setFieldsList] = useState<any>([])
+  const [allCategoryList, setAllCategoryList] = useState<any>([])
   // 需求类别切换提交表单
   const [changeCategoryForm] = Form.useForm()
   // 点击需求类别是否展示popover弹层
   const [isShowPop, setIsShowPop] = useState(false)
   // 点击需求类别弹出修改需求类别相应参数弹窗
   const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
-  // 头部显示的需求类别对象
-  const [categoryObj, setCategoryObj] = useState<any>({})
-  // 存储点击修改需求类别弹出确认按钮时提交的参数
-  const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
   // 当前操作的需求类别
   const [currentCategory, setCurrentCategory] = useState<any>({})
-  // 项目id
-  const [projectId, setProjectId] = useState(null)
-  // 需求分类
-  const [treeArr, setTreeArr] = useState([])
-  // 父需求列表
-  const [parentList, setParentList] = useState<any>([])
-  const [fieldsList, setFieldsList] = useState<any>([])
-  // 需求详情
-  const [demandInfo, setDemandInfo] = useState<any>({})
-  const [searchParams] = useSearchParams()
-  let paramsData: any
-  if (!props?.notGetPath) {
-    paramsData = getParamsData(searchParams)
-  }
-  const { getIterateSelectList } = useModel('iterate')
+  // 存储点击修改需求类别弹出确认按钮时提交的参数
+  const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
+  //   是否是完成并创建下一个 -- 用于提交参数后回填
+  const [isSaveParams, setIsSaveParams] = useState(false)
   const {
-    colorList,
-    getWorkflowList,
-    workList,
-    // categoryEditList,
-    // getCategoryEditList,
-    getMemberList,
-    getFieldList,
-    filterParamsModal,
-    setFilterParamsModal,
-    // getPriorityList,
-    getProjectInfoValues,
-  } = useModel('project')
-  const {
+    createCategory,
     setCreateCategory,
+    // 是否更新需求状态
     setIsUpdateStatus,
+    // 是否更新变更记录
     setIsUpdateChangeLog,
     getDemandList,
-    createCategory,
     getDemandInfo,
     updateDemandCategory,
     updateDemand,
     addDemand,
   } = useModel('demand')
-  const dispatch = useDispatch()
-
-  // 获取需求列表
-  const getList = async (value?: any) => {
-    const result = await getDemandList({
-      projectId: value || projectId,
-      all: true,
-    })
-    const arr = result.map((i: any) => ({
-      label: i.name,
-      value: i.id,
-      parentId: i.parentId,
-    }))
-    setParentList(arr)
-    return arr
-  }
-
-  // 获取回填Info数据的下拉数据
-  const getInit = async (value?: any, categoryId?: any) => {
-    const [classTree, categoryData, fieldsData] = await Promise.all([
-      getTreeList({ id: value || projectId, isTree: 1 }),
-      // 获取全部的需求列表
-      // getCategoryEditList({ projectId: value || projectId, isEdit: true }),
-      getFieldList({ projectId: value || projectId }),
-      getList(value || projectId),
-      getMemberList({
-        all: true,
-        projectId: value || projectId,
-      }),
-      getIterateSelectList({ projectId: value || projectId, all: true }),
-      // getPriorityList({ projectId: value || projectId, type: 'priority' }),
-    ])
-    setTreeArr(classTree)
-    setFieldsList(fieldsData?.list)
-    // 过滤掉未开启的类别
-    const resultCategoryList = categoryData?.list?.filter(
-      (i: any) => i.isCheck === 1,
-    )
-
-    //  没有需id时，则是创建需求
-    if (props.demandId) {
-      setCategoryObj({})
-      const res = await getDemandInfo({
-        projectId: value || projectId,
-        id: props?.demandId,
-      })
-      setDemandInfo(res)
-      if (
-        resultCategoryList?.filter((j: any) => j.id === res.category)?.length
-      ) {
-        setCategoryObj(
-          resultCategoryList?.filter((j: any) => j.id === res.category)[0],
-        )
-      } else {
-        setCategoryObj(
-          categoryData?.list?.filter((j: any) => j.id === res.category)[0],
-        )
-      }
-    } else {
-      setProjectId(value)
-      // 如果是子需求的话，继承父级的需求类别
-      if (props?.isChild) {
-        // 判断父需求类别是否被关闭，是则取列表第一条
-        const isExistence = resultCategoryList?.filter(
-          (i: any) => i.id === props?.categoryId,
-        )
-        setCategoryObj(
-          isExistence?.length ? isExistence[0] : resultCategoryList[0],
-        )
-      }
-      // 如果是快速创建并且有缓存数据
-      if (props?.isQuickCreate && categoryId) {
-        setCategoryObj(
-          resultCategoryList?.filter((i: any) => i.id === categoryId)[0],
-        )
-      }
-      // 如果是快速创建没有缓存数据，取列表第一个
-      if ((props?.isQuickCreate && !categoryId) || props.noDataCreate) {
-        setCategoryObj(resultCategoryList[0])
-      }
-      // 迭代创建 ,当前只有迭代是需要做筛选类别回填
-      if (props?.iterateId) {
-        // 如果是有筛选条件的，回填筛选条件
-        if (filterParamsModal?.category_id?.length) {
-          const resultId = filterParamsModal?.category_id?.filter(
-            (i: any) => i !== -1,
-          )?.[0]
-          // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
-          const resultObj = resultCategoryList?.filter(
-            (i: any) => i.id === resultId,
-          )[0]
-          setCategoryObj(resultObj)
-        } else {
-          setCategoryObj(resultCategoryList[0])
-        }
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (props?.visible) {
-      setCategoryObj(createCategory)
-      let resultValue
-      if (props?.notGetPath) {
-        resultValue = props?.isQuickCreate ? null : props?.projectId
-      } else {
-        resultValue = paramsData?.id
-      }
-      setProjectId(resultValue)
-      if (!props?.isQuickCreate) {
-        getInit(resultValue)
-      }
-    }
-  }, [props?.visible])
+  const {
+    getFieldList,
+    projectInfoValues,
+    filterParamsModal,
+    setFilterParamsModal,
+    colorList,
+    getWorkflowList,
+    workList,
+    getProjectInfoValues,
+  } = useModel('project')
 
   // 获取头部标题
   const titleText = () => {
@@ -320,14 +207,166 @@ const EditDemand = (props: Props) => {
     return text
   }
 
+  // 获取父需求列表
+  const getList = async (value?: any) => {
+    const result = await getDemandList({
+      projectId: value || projectId,
+      all: true,
+    })
+    const arr = result.map((i: any) => ({
+      label: i.name,
+      value: i.id,
+      parentId: i.parentId,
+    }))
+    setParentList(arr)
+    return arr
+  }
+
+  //   获取初始值
+  const getInit = async (value?: any, categoryId?: any) => {
+    let relyData: any = {}
+    // 如果是我的/他的并且是全部项目时，更新项目信息及项目下拉
+    if (props.notGetPath && props.isAllProject) {
+      const [fieldsData, projectInfoData] = await Promise.all([
+        getFieldList({ projectId: value || projectId }),
+        getProjectInfoValues({ projectId: value || projectId }),
+        getList(value || projectId),
+      ])
+      relyData = { fieldsData, projectInfoData }
+    } else {
+      // 项目模块下的
+      const [fieldsData] = await Promise.all([
+        getFieldList({ projectId: value || projectId }),
+        getList(value || projectId),
+      ])
+      relyData = { fieldsData }
+    }
+    // 更新自定义字段列表
+    setFieldsList(relyData.fieldsData?.list)
+    const allCategory = removeNull(
+      relyData?.projectInfoData ?? projectInfoValues,
+      'category',
+    )
+    // 更新所有需求类别列表
+    setAllCategoryList(allCategory)
+    // 过滤掉未开启的类别
+    const resultCategoryList = allCategory?.filter((i: any) => i.status === 1)
+    // 需求id存在则是编辑
+    if (props.demandId) {
+      // 重置需求类别
+      setCategoryObj({})
+      const res = await getDemandInfo({
+        projectId: value || projectId,
+        id: props?.demandId,
+      })
+      //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
+      if (
+        resultCategoryList?.filter((j: any) => j.id === res.category)?.length
+      ) {
+        setCategoryObj(
+          resultCategoryList?.filter((j: any) => j.id === res.category)[0],
+        )
+      } else {
+        // 反之查所有中的需求类别，做展示用
+        setCategoryObj(
+          allCategory?.filter((j: any) => j.id === res.category)[0],
+        )
+      }
+    } else {
+      setProjectId(value)
+      let resultCategory: any = {}
+      // 如果是子需求的话，继承父级的需求类别
+      if (props?.isChild) {
+        // 判断父需求类别是否被关闭，是则取列表第一条
+        const isExistence = resultCategoryList?.filter(
+          (i: any) => i.id === props?.categoryId,
+        )
+        resultCategory = isExistence?.length
+          ? isExistence[0]
+          : resultCategoryList[0]
+      }
+      // 如果是快速创建并且有缓存数据
+      if (props?.isQuickCreate && categoryId) {
+        // 判断需求类别是否被关闭，是则取列表第一条
+        const isExistence = resultCategoryList?.filter(
+          (i: any) => i.id === categoryId,
+        )
+        resultCategory = isExistence?.length
+          ? isExistence[0]
+          : resultCategoryList[0]
+      }
+      // 如果是快速创建没有缓存数据，取列表第一个
+      if ((props?.isQuickCreate && !categoryId) || props.noDataCreate) {
+        resultCategory = resultCategoryList[0]
+      }
+      // 迭代创建 ,当前只有迭代是需要做筛选类别回填
+      if (props?.iterateId) {
+        // 如果是有筛选条件的，回填筛选条件
+        if (filterParamsModal?.category_id?.length) {
+          const resultId = filterParamsModal?.category_id?.filter(
+            (i: any) => i !== -1,
+          )?.[0]
+          // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
+          const resultObj = resultCategoryList?.filter(
+            (i: any) => i.id === resultId,
+          )[0]
+          resultCategory = resultObj
+        } else {
+          resultCategory = resultCategoryList[0]
+        }
+      }
+      //   如果有修改
+      if (resultCategory?.id) {
+        setCategoryObj(resultCategory)
+      }
+    }
+  }
+
+  // 快速创建切换项目获取初始值
+  const getQuickInit = async (value?: any) => {
+    const [fieldsData, projectInfoData] = await Promise.all([
+      getFieldList({ projectId: value || projectId }),
+      getProjectInfoValues({ projectId: value || projectId }),
+      getList(value || projectId),
+    ])
+    // 更新自定义字段列表
+    setFieldsList(fieldsData?.list)
+    const allCategory = removeNull(projectInfoData, 'category')
+    // 更新所有需求类别列表
+    setAllCategoryList(allCategory)
+    // 过滤掉未开启的类别
+    const resultCategoryList = allCategory?.filter((i: any) => i.status === 1)
+    // 快速创建选择项目后默认获取需求类别列表第一条
+    setCategoryObj(resultCategoryList[0])
+  }
+
+  // 修改需求类别的确认
+  const onConfirmCategory = async () => {
+    await changeCategoryForm.validateFields()
+    setIsShowChangeCategory(false)
+    setCategoryObj(currentCategory)
+    setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
+    setTimeout(() => {
+      changeCategoryForm.resetFields()
+    }, 100)
+  }
+
+  // 关闭修改需求类别
+  const onCloseCategory = () => {
+    setIsShowChangeCategory(false)
+    setTimeout(() => {
+      changeCategoryForm.resetFields()
+    }, 100)
+  }
+
   // 选择新的需求类别后，获取他的工作流列表
   const onChangeSelect = async (value: any) => {
     if (value) {
-      // setCurrentCategory(
-      //   categoryEditList?.list
-      //     ?.filter((i: any) => i.isCheck === 1)
-      //     ?.filter((i: any) => i.id === value)[0],
-      // )
+      setCurrentCategory(
+        allCategoryList
+          ?.filter((i: any) => i.status === 1)
+          ?.filter((i: any) => i.id === value)[0],
+      )
       await getWorkflowList({
         projectId,
         categoryId: value,
@@ -354,50 +393,37 @@ const EditDemand = (props: Props) => {
   }
 
   // 切换需求类别下拉选项
-  // const changeStatus = (
-  //   <div
-  //     style={{
-  //       padding: '4px 0px',
-  //       display: 'flex',
-  //       flexDirection: 'column',
-  //       alignItems: 'flex-start',
-  //     }}
-  //   >
-  //     {categoryEditList?.list
-  //       ?.filter((i: any) => i.isCheck === 1)
-  //       ?.filter((i: any) => i.id !== categoryObj?.id)
-  //       ?.map((k: any) => (
-  //         <LiWrap
-  //           key={k.id}
-  //           color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-  //           onClick={() => onClickCategory(k)}
-  //         >
-  //           <CanOperationCategory
-  //             style={{ marginRight: 0, cursor: 'pointer' }}
-  //             color={k.color}
-  //             bgColor={
-  //               colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-  //             }
-  //           >
-  //             <span className="title">{k.name}</span>
-  //           </CanOperationCategory>
-  //         </LiWrap>
-  //       ))}
-  //   </div>
-  // )
-
-  // 关闭弹窗
-  const onCancel = () => {
-    props.onChangeVisible()
-    setCreateCategory({})
-    setChangeCategoryFormData({})
-    setFilterParamsModal({})
-    setIsSaveParams(false)
-    setTimeout(() => {
-      leftDom.current?.reset()
-      rightDom.current?.reset()
-    }, 100)
-  }
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
+    >
+      {allCategoryList
+        ?.filter((i: any) => i.status === 1)
+        ?.filter((i: any) => i.id !== categoryObj?.id)
+        ?.map((k: any) => (
+          <LiWrap
+            key={k.id}
+            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+            onClick={() => onClickCategory(k)}
+          >
+            <CanOperationCategory
+              style={{ marginRight: 0, cursor: 'pointer' }}
+              color={k.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+            >
+              <span className="title">{k.content}</span>
+            </CanOperationCategory>
+          </LiWrap>
+        ))}
+    </div>
+  )
 
   // 保存数据
   const onSaveDemand = async (values: any, hasNext?: any) => {
@@ -444,7 +470,6 @@ const EditDemand = (props: Props) => {
     // 是否是完成并创建下一个
     if (hasNext) {
       leftDom.current.update()
-      rightDom.current.update()
       setIsSaveParams(true)
     } else {
       setChangeCategoryFormData({})
@@ -498,33 +523,49 @@ const EditDemand = (props: Props) => {
     }
   }
 
-  // 修改需求类别的确认
-  const onConfirmCategory = async () => {
-    await changeCategoryForm.validateFields()
-    setIsShowChangeCategory(false)
-    setCategoryObj(currentCategory)
-    setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
+  // 关闭弹窗
+  const onCancel = () => {
+    props.onChangeVisible()
+    // 清除创建需求点击的下拉需求类别 -- 需求
+    setCreateCategory({})
+    setChangeCategoryFormData({})
+    setFilterParamsModal({})
+    setIsSaveParams(false)
     setTimeout(() => {
-      changeCategoryForm.resetFields()
-    }, 100)
-  }
-
-  // 关闭修改需求类别
-  const onCloseCategory = () => {
-    setIsShowChangeCategory(false)
-    setTimeout(() => {
-      changeCategoryForm.resetFields()
+      leftDom.current?.reset()
+      rightDom.current?.reset()
     }, 100)
   }
 
   // 左侧项目切换清除右侧form表单
   const onResetForm = () => {
-    rightDom.current.reset()
     setCategoryObj({})
+    setAllCategoryList([])
+    rightDom?.current.reset()
   }
+
+  useEffect(() => {
+    if (props?.visible) {
+      // 把需求创建选择的需求类别填入当前显示的
+      setCategoryObj(createCategory)
+      let resultValue
+      if (props?.notGetPath) {
+        resultValue = props?.isQuickCreate ? null : props?.projectId
+      } else {
+        resultValue = paramsData?.id
+      }
+      //   更新项目id
+      setProjectId(resultValue)
+      // 如果不是快捷创建，则走获取初始值
+      if (!props?.isQuickCreate) {
+        getInit(resultValue)
+      }
+    }
+  }, [props?.visible])
 
   return (
     <>
+      {/* 切换需求类别弹出 */}
       <CommonModal
         isVisible={isShowChangeCategory}
         onClose={onCloseCategory}
@@ -545,7 +586,7 @@ const EditDemand = (props: Props) => {
                   ?.bgColor
               }
             >
-              <span className="title">{categoryObj?.name}</span>
+              <span className="title">{categoryObj?.content}</span>
             </CanOperationCategory>
           </Form.Item>
           <Form.Item
@@ -561,13 +602,13 @@ const EditDemand = (props: Props) => {
               allowClear
               optionFilterProp="label"
               onChange={onChangeSelect}
-              // options={categoryEditList?.list
-              //   ?.filter((i: any) => i.isCheck === 1)
-              //   ?.filter((i: any) => i.id !== categoryObj?.id)
-              //   ?.map((k: any) => ({
-              //     label: k.name,
-              //     value: k.id,
-              //   }))}
+              options={allCategoryList
+                ?.filter((i: any) => i.status === 1)
+                ?.filter((i: any) => i.id !== categoryObj?.id)
+                ?.map((k: any) => ({
+                  label: k.content,
+                  value: k.id,
+                }))}
             />
           </Form.Item>
           <Form.Item
@@ -591,7 +632,6 @@ const EditDemand = (props: Props) => {
           </Form.Item>
         </FormWrapDemand>
       </CommonModal>
-
       <ModalWrap
         visible={props.visible}
         width="88%"
@@ -606,11 +646,12 @@ const EditDemand = (props: Props) => {
         keyboard={false}
         closable={false}
         wrapClassName="vertical-center-modal"
+        focusTriggerAfterClose={false}
       >
         <ModalHeader>
           <div>
             <span className="label">{titleText()}</span>
-            {/* {categoryObj?.id && (
+            {categoryObj?.id && (
               <Popover
                 key={isShowPop.toString()}
                 trigger={['hover']}
@@ -624,15 +665,16 @@ const EditDemand = (props: Props) => {
                   style={{
                     marginRight: 8,
                     cursor:
-                      categoryEditList?.list
-                        ?.filter((i: any) => i.isCheck === 1)
+                      // 没有已开启的需求类别
+                      allCategoryList
+                        ?.filter((i: any) => i.status === 1)
                         ?.filter((i: any) => i.id !== categoryObj.id)?.length <=
                       0
                         ? 'inherit'
                         : 'pointer',
                   }}
                   color={
-                    categoryEditList?.list?.filter(
+                    allCategoryList?.filter(
                       (i: any) => i.id === categoryObj?.id,
                     )[0]?.color
                   }
@@ -640,7 +682,7 @@ const EditDemand = (props: Props) => {
                     colorList?.filter(
                       (i: any) =>
                         i.key ===
-                        categoryEditList?.list?.filter(
+                        allCategoryList?.filter(
                           (k: any) => k.id === categoryObj?.id,
                         )[0]?.color,
                     )[0]?.bgColor
@@ -648,13 +690,13 @@ const EditDemand = (props: Props) => {
                 >
                   <span className="title">
                     {
-                      categoryEditList?.list?.filter(
+                      allCategoryList?.filter(
                         (i: any) => i.id === categoryObj?.id,
-                      )[0]?.name
+                      )[0]?.content
                     }
                   </span>
-                  {categoryEditList?.list
-                    ?.filter((i: any) => i.isCheck === 1)
+                  {allCategoryList
+                    ?.filter((i: any) => i.status === 1)
                     ?.filter((i: any) => i.id !== categoryObj.id)?.length >
                     0 && (
                     <IconFont
@@ -668,7 +710,7 @@ const EditDemand = (props: Props) => {
                   )}
                 </CanOperationCategory>
               </Popover>
-            )} */}
+            )}
           </div>
           <CloseWrap width={32} height={32} onClick={onCancel}>
             <IconFont type="close" style={{ fontSize: 20 }} />
@@ -678,20 +720,19 @@ const EditDemand = (props: Props) => {
           <ModalContent>
             <EditDemandLeft
               isQuickCreate={props?.isQuickCreate}
+              isAllProject={props?.isAllProject}
               projectId={projectId}
               onChangeProjectId={setProjectId}
-              onGetDataAll={getInit}
+              onGetDataAll={getQuickInit}
               onResetForm={onResetForm}
               onRef={leftDom}
               demandId={props.demandId}
-              demandInfo={demandInfo}
             />
             <EditDemandRIght
               projectId={projectId}
               demandId={props.demandId}
               parentList={parentList}
               onRef={rightDom}
-              treeArr={treeArr}
               iterateId={props.iterateId}
               isChild={props.isChild}
               isSaveParams={isSaveParams}
@@ -701,7 +742,6 @@ const EditDemand = (props: Props) => {
             />
           </ModalContent>
         )}
-
         <ModalFooter>
           <Space size={16}>
             <Button onClick={onCancel}>{t('common.cancel')}</Button>

@@ -18,7 +18,11 @@ import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
 import PubSub from 'pubsub-js'
-import { getProjectInfo, getProjectPermission } from '@/services/project'
+import {
+  getProjectInfo,
+  getProjectMember,
+  getProjectPermission,
+} from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo } from '@store/project'
 
@@ -219,7 +223,6 @@ const Member = (props: Props) => {
     (store: { project: any }) => store.project,
   )
   const {
-    getProjectMember,
     isRefreshMember,
     setIsRefreshMember,
     updateMember,

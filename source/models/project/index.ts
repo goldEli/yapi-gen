@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [memberList, setMemberList] = useState<any>([])
   const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
@@ -102,12 +101,6 @@ export default () => {
     return result
   }
 
-  const getMemberList = async (params: any) => {
-    const result = await services.project.getProjectMember(params)
-    setMemberList(result)
-    return result
-  }
-
   const {
     addProject,
     updateProject,
@@ -164,8 +157,6 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
-    getMemberList,
-    memberList,
     setIsRefreshMember,
     isRefreshMember,
     colorList,
