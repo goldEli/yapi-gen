@@ -5,6 +5,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
+/* eslint-disable no-undefined */
 import styled from '@emotion/styled'
 import { Space, Spin, Timeline } from 'antd'
 import { NameWrap, ViewWrap, DelWrap } from '@/components/StyleCommon'
@@ -18,6 +19,7 @@ import NoData from '@/components/NoData'
 import PubSub from 'pubsub-js'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { getStoryStatusLog } from '@/services/project/demand'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -115,30 +117,48 @@ const Circulation = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getStatusLogs, statusLogs, setStatusLogs } = useModel('demand')
+  const [statusLogs, setStatusLogs] = useState<any>({
+    list: undefined,
+  })
   const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
-  const getLogs = async () => {
-    setIsSpin(true)
-    await getStatusLogs({ projectId, demandId: demandInfo?.id, all: true })
-    dispatch(setIsRefresh(false))
-    setIsSpin(false)
+
+  const getLogs = async (state: boolean) => {
+    if (state) {
+      setIsSpin(true)
+      const result = await getStoryStatusLog({
+        projectId,
+        demandId: demandInfo?.id,
+        all: true,
+      })
+      setStatusLogs(result)
+      dispatch(setIsRefresh(false))
+      setIsSpin(false)
+    } else {
+      const result = await getStoryStatusLog({
+        projectId,
+        demandId: demandInfo?.id,
+        all: true,
+      })
+      setStatusLogs(result)
+    }
   }
 
   useEffect(() => {
-    getLogs()
+    getLogs(true)
   }, [])
 
   useEffect(() => {
     if (isRefresh) {
       setStatusLogs([])
-      getLogs()
+      getLogs(true)
     }
   }, [isRefresh])
+
   useEffect(() => {
     PubSub.subscribe('state', () => {
-      getStatusLogs({ projectId, demandId: demandInfo?.id, all: true })
+      getLogs(false)
     })
   }, [])
 

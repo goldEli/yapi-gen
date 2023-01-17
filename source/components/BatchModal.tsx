@@ -21,6 +21,11 @@ import {
 } from '@/tools'
 import moment from 'moment'
 import { useSelector } from '@store/index'
+import {
+  batchDelete,
+  batchEdit,
+  getBatchEditConfig,
+} from '@/services/project/demand'
 
 interface Props {
   isVisible: boolean
@@ -34,7 +39,6 @@ const BatchModal = (props: Props) => {
   const [t] = useTranslation()
   const [haveChildren, setHaveChildren] = useState(false)
   const [form] = Form.useForm()
-  const { batchDelete, batchEdit, getBatchEditConfig } = useModel('demand')
   const [chooseSelect, setChooseSelect] = useState<any>([])
   const [chooseType, setChooseType] = useState('')
   const [chooseAfter, setChooseAfter] = useState<any>({})

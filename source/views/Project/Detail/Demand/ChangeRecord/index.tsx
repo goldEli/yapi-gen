@@ -25,6 +25,8 @@ import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import { setIsUpdateChangeLog } from '@store/demand'
+import { getDemandChangeLog } from '@/services/project/demand'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -75,8 +77,6 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getDemandChangeLog, isUpdateChangeLog, setIsUpdateChangeLog } =
-    useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -94,6 +94,7 @@ const ChangeRecord = () => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const { isUpdateChangeLog } = useSelector(store => store.demand)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -125,7 +126,7 @@ const ChangeRecord = () => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
-    setIsUpdateChangeLog(false)
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {

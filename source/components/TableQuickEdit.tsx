@@ -20,7 +20,7 @@ import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { getDemandInfo } from '@/services/project/demand'
+import { getDemandInfo, updateTableParams } from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
 
 interface Props {
@@ -62,7 +62,6 @@ const TableQuickEdit = (props: Props) => {
   const { projectInfo, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { updateTableParams } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
   let projectId: any

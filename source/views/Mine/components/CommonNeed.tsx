@@ -49,6 +49,7 @@ import {
 } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfoValues } from '@store/project'
+import { deleteDemand } from '@/services/project/demand'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -143,7 +144,6 @@ const MoreWrap = (props: MoreWrapProps) => {
 
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
-  const { deleteDemand } = useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)

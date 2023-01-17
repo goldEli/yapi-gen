@@ -36,8 +36,17 @@ import { changeId } from '../../../../../store/counterSlice'
 import { setIsRefresh } from '@store/user'
 import { useDispatch, useSelector } from '@store/index'
 import { getWorkflowList } from '@/services/project'
-import { getDemandInfo } from '@/services/project/demand'
-import { setDemandInfo, setIsRefreshComment } from '@store/demand'
+import {
+  deleteDemand,
+  getDemandInfo,
+  updateDemandCategory,
+  updateDemandStatus,
+} from '@/services/project/demand'
+import {
+  setDemandInfo,
+  setIsRefreshComment,
+  setIsUpdateStatus,
+} from '@store/demand'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -162,12 +171,6 @@ const DemandBox = () => {
   const demandInfo = useSelector(
     (store: { demand: any }) => store.demand.demandInfo,
   )
-  const {
-    deleteDemand,
-    updateDemandStatus,
-    updateDemandCategory,
-    setIsUpdateStatus,
-  } = useModel('demand')
   const navigate = useNavigate()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
@@ -256,7 +259,7 @@ const DemandBox = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      // dispatch(setIsRefreshComment(true))
+      dispatch(setIsRefreshComment(true))
       message.success(t('common.statusSuccess'))
       if (demandId) {
         const result = await getDemandInfo({ projectId, id: demandId })
@@ -288,7 +291,7 @@ const DemandBox = () => {
       })
       message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
-      setIsUpdateStatus(true)
+      dispatch(setIsUpdateStatus(true))
       dispatch(setIsRefresh(true))
       const result = await getDemandInfo({ projectId, id: demandInfo?.id })
       dispatch(setDemandInfo(result))
@@ -478,44 +481,28 @@ const DemandBox = () => {
             >
               <span className="demandName">{demandInfo?.name}</span>
             </OmitText>
-            <Popover
-              content={
-                <ShapeContent
-                  tap={(value: any) => onChangeStatus(value)}
-                  // hide={onHide}
-                  row={demandInfo}
-                  hidden={isCanEdit && !demandInfo?.isExamine}
-                  record={{
-                    id: demandInfo.id,
-                    project_id: projectId,
-                    status: {
-                      id: demandInfo.status.id,
-                      can_changes: demandInfo.status.can_changes,
-                    },
-                  }}
-                />
-              }
-              // content={({ onHide }: { onHide(): void }) => {
-              //   return (
-              //     // isCanEdit &&
-              //     // !demandInfo?.isExamine && (
-              //     <ShapeContent
-              //       tap={(value: any) => onChangeStatus(value)}
-              //       hide={onHide}
-              //       row={demandInfo}
-              //       hidden={isCanEdit && !demandInfo?.isExamine}
-              //       record={{
-              //         id: demandInfo.id,
-              //         project_id: projectId,
-              //         status: {
-              //           id: demandInfo.status.id,
-              //           can_changes: demandInfo.status.can_changes,
-              //         },
-              //       }}
-              //     />
-              //     // )
-              //   )
-              // }}
+            <PopConfirm
+              content={({ onHide }: { onHide(): void }) => {
+                return (
+                  // isCanEdit &&
+                  // !demandInfo?.isExamine && (
+                  <ShapeContent
+                    tap={(value: any) => onChangeStatus(value)}
+                    hide={onHide}
+                    row={demandInfo}
+                    hidden={isCanEdit && !demandInfo?.isExamine}
+                    record={{
+                      id: demandInfo.id,
+                      project_id: projectId,
+                      status: {
+                        id: demandInfo.status.id,
+                        can_changes: demandInfo.status.can_changes,
+                      },
+                    }}
+                  />
+                  // )
+                )
+              }}
             >
               <StatusWrap
                 onClick={demandInfo?.isExamine ? onExamine : void 0}
@@ -527,7 +514,7 @@ const DemandBox = () => {
               >
                 {demandInfo?.status?.status?.content}
               </StatusWrap>
-            </Popover>
+            </PopConfirm>
           </NameWrap>
           <Space size={16}>
             {isEdit ? null : (

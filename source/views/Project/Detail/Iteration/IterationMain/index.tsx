@@ -19,7 +19,11 @@ import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { getDemandInfo } from '@/services/project/demand'
+import {
+  deleteDemand,
+  getDemandInfo,
+  getDemandList,
+} from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
 
 const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
@@ -51,7 +55,6 @@ const IterationMain = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { getDemandList, deleteDemand } = useModel('demand')
   const { setIsRefreshList, setIsUpdateList, setFilterParams } =
     useModel('iterate')
   const dispatch = useDispatch()

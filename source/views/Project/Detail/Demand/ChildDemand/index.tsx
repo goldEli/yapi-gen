@@ -30,7 +30,13 @@ import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { getDemandInfo } from '@/services/project/demand'
+import {
+  deleteDemand,
+  getDemandInfo,
+  getDemandList,
+  updateDemandStatus,
+  updatePriority,
+} from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
 
 const Operation = styled.div({
@@ -63,8 +69,6 @@ const ChildDemand = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const { getDemandList, updatePriority, updateDemandStatus, deleteDemand } =
-    useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(

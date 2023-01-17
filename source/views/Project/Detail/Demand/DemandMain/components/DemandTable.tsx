@@ -25,6 +25,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import EditDemand from '@/components/EditDemandNew/index'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
+import { updateDemandStatus, updatePriority } from '@/services/project/demand'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -57,11 +58,10 @@ const DemandTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, filterParams } =
-    useModel('demand')
   const { projectInfo, filterKeys } = useSelector(
     (store: { project: any }) => store.project,
   )
+  const { filterParams } = useSelector((store: { demand: any }) => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])

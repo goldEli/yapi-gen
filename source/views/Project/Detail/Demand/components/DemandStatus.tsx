@@ -17,7 +17,11 @@ import ShapeContentForDetail from '@/components/ShapeForDetail'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo } from '@/services/project/demand'
-import { setDemandInfo, setIsRefreshComment } from '@store/demand'
+import {
+  setDemandInfo,
+  setIsRefreshComment,
+  setIsUpdateStatus,
+} from '@store/demand'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -35,13 +39,14 @@ const StatusWrap = styled.div({
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { isUpdateStatus, setIsUpdateStatus } = useModel('demand')
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { demandInfo, isUpdateStatus } = useSelector(
+    (store: { demand: any }) => store.demand,
+  )
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
   const isCanEdit =
@@ -64,7 +69,7 @@ const DemandStatusBox = (props: any) => {
     })
     setActive(demandInfo?.status?.id)
     setLeftList(res2)
-    setIsUpdateStatus(false)
+    dispatch(setIsUpdateStatus(false))
     setRows(res2.find((i: any) => i.id === demandInfo?.status?.id))
   }
 

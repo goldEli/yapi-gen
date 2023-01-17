@@ -26,6 +26,7 @@ import EditDemand from '@/components/EditDemandNew/index'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
+import { updateDemandStatus, updatePriority } from '@/services/project/demand'
 
 const Content = styled.div({
   padding: 16,
@@ -70,7 +71,6 @@ const IterationTable = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { filterParams } = useModel('iterate')
-  const { updatePriority, updateDemandStatus } = useModel('demand')
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )

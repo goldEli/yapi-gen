@@ -4,8 +4,8 @@
 /* eslint-disable camelcase */
 import { Progress, Popover } from 'antd'
 import { ProgressWrap, SliderWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useState } from 'react'
+import { updateTableParams } from '@/services/project/demand'
 
 interface Props {
   value: number
@@ -17,7 +17,6 @@ interface Props {
 
 const DemandProgress = (props: Props) => {
   const [schedule, setSchedule] = useState(props?.row?.schedule)
-  const { updateTableParams } = useModel('demand')
 
   const onChangeSchedule = async () => {
     const obj = {

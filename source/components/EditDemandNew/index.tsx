@@ -27,8 +27,19 @@ import {
   storyConfigField,
 } from '@/services/project'
 import { setFilterParamsModal, setProjectInfoValues } from '@store/project'
-import { setDemandInfo } from '@store/demand'
-import { getDemandInfo } from '@/services/project/demand'
+import {
+  setCreateCategory,
+  setDemandInfo,
+  setIsUpdateChangeLog,
+  setIsUpdateStatus,
+} from '@store/demand'
+import {
+  addDemand,
+  getDemandInfo,
+  getDemandList,
+  updateDemand,
+  updateDemandCategory,
+} from '@/services/project/demand'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -178,21 +189,10 @@ const EditDemand = (props: Props) => {
   const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
   //   是否是完成并创建下一个 -- 用于提交参数后回填
   const [isSaveParams, setIsSaveParams] = useState(false)
-  const {
-    createCategory,
-    setCreateCategory,
-    // 是否更新需求状态
-    setIsUpdateStatus,
-    // 是否更新变更记录
-    setIsUpdateChangeLog,
-    getDemandList,
-    updateDemandCategory,
-    updateDemand,
-    addDemand,
-  } = useModel('demand')
   const { colorList, filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
+  const { createCategory } = useSelector(store => store.demand)
   const dispatch = useDispatch()
 
   // 获取头部标题
@@ -441,8 +441,8 @@ const EditDemand = (props: Props) => {
         ...values,
       })
       message.success(t('common.editSuccess'))
-      setIsUpdateStatus(true)
-      setIsUpdateChangeLog(true)
+      dispatch(setIsUpdateStatus(true))
+      dispatch(setIsUpdateChangeLog(true))
     } else {
       await addDemand({
         projectId,
@@ -481,7 +481,7 @@ const EditDemand = (props: Props) => {
       setIsSaveParams(true)
     } else {
       setChangeCategoryFormData({})
-      setCreateCategory({})
+      dispatch(setCreateCategory({}))
       setTimeout(() => {
         leftDom.current?.reset()
         rightDom.current?.reset()
@@ -535,7 +535,7 @@ const EditDemand = (props: Props) => {
   const onCancel = () => {
     props.onChangeVisible()
     // 清除创建需求点击的下拉需求类别 -- 需求
-    setCreateCategory({})
+    dispatch(setCreateCategory({}))
     setChangeCategoryFormData({})
     dispatch(setFilterParamsModal({}))
     setIsSaveParams(false)

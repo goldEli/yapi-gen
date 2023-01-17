@@ -35,6 +35,11 @@ import useSetTitle from '@/hooks/useSetTitle'
 import EditDemand from '@/components/EditDemandNew/index'
 import FloatBatch from '@/components/FloatBatch'
 import { useSelector } from '@store/index'
+import {
+  getDemandList,
+  updateDemandStatus,
+  updatePriority,
+} from '@/services/project/demand'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -99,8 +104,6 @@ const DemandTree = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, getDemandList } =
-    useModel('demand')
   const { projectInfo, filterKeys } = useSelector(
     (store: { project: any }) => store.project,
   )

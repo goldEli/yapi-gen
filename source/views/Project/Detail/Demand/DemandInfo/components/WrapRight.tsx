@@ -48,7 +48,14 @@ import { delCommonAt } from '@/services/user'
 import PubSub from 'pubsub-js'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { storyConfigField } from '@/services/project'
-import { getDemandInfo } from '@/services/project/demand'
+import {
+  addComment,
+  deleteComment,
+  getCommentList,
+  getDemandInfo,
+  updatePriority,
+  updateTableParams,
+} from '@/services/project/demand'
 import { setDemandInfo, setIsRefreshComment } from '@store/demand'
 
 const WrapRight = styled.div({
@@ -289,13 +296,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
-  const {
-    getCommentList,
-    addComment,
-    deleteComment,
-    updatePriority,
-    updateTableParams,
-  } = useModel('demand')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,

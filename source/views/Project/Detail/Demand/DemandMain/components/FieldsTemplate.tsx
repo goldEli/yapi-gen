@@ -22,6 +22,7 @@ import {
 import { arrayMoveImmutable } from 'array-move'
 import { ShowText } from '@/components/OptionalFeld'
 import { css } from '@emotion/css'
+import { getExportFields, getLoadListFields } from '@/services/project/demand'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -143,7 +144,6 @@ const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getLoadListFields, getExportFields } = useModel('demand')
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])

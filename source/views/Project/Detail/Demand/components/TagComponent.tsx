@@ -8,7 +8,11 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { getDemandInfo } from '@/services/project/demand'
+import {
+  addInfoDemand,
+  deleteInfoDemand,
+  getDemandInfo,
+} from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
 
 const TagCheckedItem = styled.div<{ color?: string }>(
@@ -121,7 +125,6 @@ const TagBox = (props: TagProps) => {
     (store: { project: any }) => store.project,
   )
   const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
-  const { addInfoDemand } = useModel('demand')
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -247,7 +250,6 @@ interface Props {
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
   const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
-  const { addInfoDemand, deleteInfoDemand } = useModel('demand')
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)

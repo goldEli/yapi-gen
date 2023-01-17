@@ -12,7 +12,7 @@ import { getParamsData } from '@/tools'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
 import { useDispatch, useSelector } from '@store/index'
 import { setDemandInfo } from '@store/demand'
-import { getDemandInfo } from '@/services/project/demand'
+import { deleteInfoDemand, getDemandInfo } from '@/services/project/demand'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -44,7 +44,6 @@ interface Props {
 
 const ParentDemand = (props: Props) => {
   const [t] = useTranslation()
-  const { deleteInfoDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

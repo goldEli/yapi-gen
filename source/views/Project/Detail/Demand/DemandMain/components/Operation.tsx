@@ -21,6 +21,7 @@ import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setFilterParamsModal } from '@store/project'
+import { setCreateCategory } from '@store/demand'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -139,7 +140,7 @@ const Operation = (props: Props) => {
   const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setCreateCategory, filterParams } = useModel('demand')
+  const { filterParams } = useSelector((store: { demand: any }) => store.demand)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -245,7 +246,7 @@ const Operation = (props: Props) => {
   }
 
   const onChangeCategory = (e: any, item: any) => {
-    setCreateCategory(item)
+    dispatch(setCreateCategory({ item }))
     // 需求列表筛选参数赋值给 弹窗
     dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {

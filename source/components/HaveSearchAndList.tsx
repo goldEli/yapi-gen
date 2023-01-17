@@ -15,7 +15,11 @@ import NoData from './NoData'
 import { getProjectList } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsChangeProject } from '@store/project'
-import { getDemandInfo } from '@/services/project/demand'
+import {
+  addInfoDemand,
+  getDemandInfo,
+  getDemandList,
+} from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
@@ -95,7 +99,6 @@ interface DemandProps {
 }
 
 const ChooseItems = (props: DemandProps) => {
-  const { getDemandList } = useModel('demand')
   const [dataList, setDataList] = useState<any>([])
   const [projectList, setProjectList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -213,7 +216,6 @@ const HaveSearchAndList = (props: Props) => {
     (store: { project: any }) => store.project,
   )
   const [isOpen, setIsOpen] = useState(false)
-  const { addInfoDemand } = useModel('demand')
   const [hoverState, setHoverState] = useState(false)
   const dispatch = useDispatch()
 

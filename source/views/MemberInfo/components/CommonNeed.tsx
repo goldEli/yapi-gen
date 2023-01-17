@@ -52,6 +52,7 @@ import { setIsRefresh } from '@store/user'
 import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfoValues } from '@store/project'
+import { deleteDemand } from '@/services/project/demand'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -160,7 +161,6 @@ const CommonNeed = (props: any) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
-  const { deleteDemand } = useModel('demand')
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )

@@ -22,6 +22,8 @@ import WrapLeft from './components/WrapLeft'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { setFilterKeys } from '@store/project'
+import { setFilterParams } from '@store/demand'
+import { deleteDemand, getDemandList } from '@/services/project/demand'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -54,7 +56,6 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand, setFilterParams } = useModel('demand')
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -137,7 +138,7 @@ const DemandMain = (props: Props) => {
       params.tree = 1
       params.topParentId = topId ?? topParentId
     }
-    setFilterParams(params)
+    dispatch(setFilterParams(params))
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)

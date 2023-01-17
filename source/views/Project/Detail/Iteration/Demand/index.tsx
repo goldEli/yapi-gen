@@ -27,6 +27,12 @@ import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { setFilterParamsModal } from '@store/project'
+import {
+  deleteDemand,
+  updateDemandStatus,
+  updatePriority,
+  getDemandList,
+} from '@/services/project/demand'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -59,8 +65,6 @@ const DemandWrap = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
-    useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(

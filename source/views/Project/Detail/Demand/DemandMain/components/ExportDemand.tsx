@@ -7,6 +7,7 @@ import { getParamsData } from '@/tools'
 import { useModel } from '@/models'
 import { useState } from 'react'
 import { useSelector } from '@store/index'
+import { getExportExcel } from '@/services/project/demand'
 
 interface Props {
   // 是否是导出功能
@@ -21,7 +22,6 @@ const ExportDemand = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getExportExcel } = useModel('demand')
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
