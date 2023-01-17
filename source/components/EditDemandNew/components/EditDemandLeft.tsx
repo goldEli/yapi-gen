@@ -52,8 +52,7 @@ const EditDemandLeft = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { setFieldList, filterParamsModal, projectInfoValues } =
-    useModel('project')
+  const { filterParamsModal, projectInfoValues } = useModel('project')
   const { demandInfo } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
@@ -211,7 +210,6 @@ const EditDemandLeft = (props: Props) => {
   // 切换项目
   const onSelectProjectName = async (value: any) => {
     onReset()
-    setFieldList({ list: undefined })
     getProjectInfoData(value)
     form.setFieldsValue({
       projectId: value,
@@ -226,7 +224,6 @@ const EditDemandLeft = (props: Props) => {
     onReset()
     props.onChangeProjectId(null)
     props.onResetForm()
-    setFieldList({ list: undefined })
   }
 
   // 修改标签

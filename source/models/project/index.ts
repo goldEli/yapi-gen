@@ -7,9 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [fieldList, setFieldList] = useState<any>({
-    list: undefined,
-  })
   const [categoryList, setCategoryList] = useState<any>([])
   const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [workList, setWorkList] = useState<any>({
@@ -82,17 +79,6 @@ export default () => {
     return result
   }
 
-  const getFieldList = async (params: any) => {
-    const result = await services.project.storyConfigField(params)
-    setFieldList(result)
-    return result
-  }
-
-  const getFieldListCustom = async (params: any) => {
-    const result = await services.project.storyConfigField(params)
-    return result
-  }
-
   // 获取项目的下拉数据
   const getProjectInfoValues = async (params: any) => {
     const result = await services.project.getProjectInfoValues(params)
@@ -157,10 +143,6 @@ export default () => {
     setPermission,
     getProjectMember,
     colorList,
-    getFieldList,
-    getFieldListCustom,
-    fieldList,
-    setFieldList,
     option,
     addStoryConfigField,
     deleteStoryConfigField,

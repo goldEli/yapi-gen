@@ -20,6 +20,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import EditFiled from './components/EditField'
 import NoData from '@/components/NoData'
 import { useSelector } from '@store/index'
+import { storyConfigField } from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -108,20 +109,23 @@ const SetBreadcrumb = () => {
 
 const FieldSet = () => {
   const [t] = useTranslation()
-  const { getFieldList, fieldList, option, deleteStoryConfigField } =
-    useModel('project')
+  const { option, deleteStoryConfigField } = useModel('project')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [fieldList, setFieldList] = useState<any>({
+    list: undefined,
+  })
 
   const getList = async () => {
     setIsSpinning(true)
-    await getFieldList({
+    const result = await storyConfigField({
       projectId: paramsData.id,
     })
+    setFieldList(result)
     setIsSpinning(false)
   }
 

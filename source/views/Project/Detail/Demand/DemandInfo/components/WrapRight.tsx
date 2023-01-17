@@ -47,6 +47,7 @@ import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
 import PubSub from 'pubsub-js'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { storyConfigField } from '@/services/project'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -275,7 +276,6 @@ const SetHead = styled.div({
 
 const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -284,6 +284,9 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [activeTabs, setActiveTabs] = useState(1)
+  const [fieldList, setFieldList] = useState<any>({
+    list: undefined,
+  })
   const {
     getCommentList,
     addComment,
@@ -299,7 +302,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { fieldList, getFieldList } = useModel('project')
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -334,7 +336,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   }
 
   const getFieldData = async () => {
-    await getFieldList({ projectId })
+    const result = await storyConfigField({ projectId })
+    setFieldList(result)
   }
 
   useEffect(() => {

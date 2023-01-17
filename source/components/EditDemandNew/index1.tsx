@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -20,6 +21,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import ThrottleButton from '../ThrottleButton'
 import { useDispatch } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
+import { storyConfigField } from '@/services/project'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -180,7 +182,6 @@ const EditDemand = (props: Props) => {
     addDemand,
   } = useModel('demand')
   const {
-    getFieldList,
     projectInfoValues,
     filterParamsModal,
     setFilterParamsModal,
@@ -228,7 +229,7 @@ const EditDemand = (props: Props) => {
     // 如果是我的/他的并且是全部项目时，更新项目信息及项目下拉
     if (props.notGetPath && props.isAllProject) {
       const [fieldsData, projectInfoData] = await Promise.all([
-        getFieldList({ projectId: value || projectId }),
+        storyConfigField({ projectId: value || projectId }),
         getProjectInfoValues({ projectId: value || projectId }),
         getList(value || projectId),
       ])
@@ -236,7 +237,7 @@ const EditDemand = (props: Props) => {
     } else {
       // 项目模块下的
       const [fieldsData] = await Promise.all([
-        getFieldList({ projectId: value || projectId }),
+        storyConfigField({ projectId: value || projectId }),
         getList(value || projectId),
       ])
       relyData = { fieldsData }
@@ -325,7 +326,7 @@ const EditDemand = (props: Props) => {
   // 快速创建切换项目获取初始值
   const getQuickInit = async (value?: any) => {
     const [fieldsData, projectInfoData] = await Promise.all([
-      getFieldList({ projectId: value || projectId }),
+      storyConfigField({ projectId: value || projectId }),
       getProjectInfoValues({ projectId: value || projectId }),
       getList(value || projectId),
     ])
@@ -541,6 +542,7 @@ const EditDemand = (props: Props) => {
   const onResetForm = () => {
     setCategoryObj({})
     setAllCategoryList([])
+    setFieldsList({ list: undefined })
     rightDom?.current.reset()
   }
 

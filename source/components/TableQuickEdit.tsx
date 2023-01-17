@@ -8,7 +8,11 @@ import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { getIterateList } from '@/services/project/iterate'
-import { getProjectMember, getTagList } from '@/services/project'
+import {
+  getProjectMember,
+  getTagList,
+  storyConfigField,
+} from '@/services/project'
 import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
 import { useModel } from '@/models'
@@ -56,7 +60,7 @@ const TableQuickEdit = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { getFieldListCustom, projectInfoValues } = useModel('project')
+  const { projectInfoValues } = useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
@@ -90,7 +94,7 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
-    const response = await getFieldListCustom({ projectId, key: props.keyText })
+    const response = await storyConfigField({ projectId, key: props.keyText })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
