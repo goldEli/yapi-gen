@@ -8,7 +8,7 @@
 import Editor from '@/components/Editor'
 import UploadAttach from '../../Demand/components/UploadAttach'
 import { css } from '@emotion/css'
-import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
+import { AddWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useModel } from '@/models'
@@ -50,23 +50,6 @@ interface Props {
   id?: any
   // 是否只读（详情迭代成果页面）
   isReadonly: boolean
-}
-
-interface ChildrenProps {
-  percentShow: any
-  percentVal: any
-  uploadStatus: any
-}
-
-const Children = (props: ChildrenProps) => {
-  return (
-    <ProgressWrapUpload
-      status={props.uploadStatus}
-      percent={props.percentVal}
-      size="small"
-      style={{ display: props.percentShow ? 'block' : 'none' }}
-    />
-  )
 }
 
 const Achievements = (props: Props) => {

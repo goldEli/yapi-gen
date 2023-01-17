@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next'
 import { getShapeLeft } from '@/services/project/shape'
 import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
-import PubSub from 'pubsub-js'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo } from '@/services/project/demand'
@@ -78,7 +77,6 @@ const DemandStatusBox = (props: any) => {
         id: props.sid,
       })
       dispatch(setDemandInfo(result))
-      await init()
       dispatch(setIsRefreshComment(true))
     } catch (error) {
       //

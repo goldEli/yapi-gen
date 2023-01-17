@@ -3,8 +3,6 @@ import { useState } from 'react'
 import * as services from '@/services'
 
 export default () => {
-  const [isShowProgress, setIsShowProgress] = useState(false)
-  const [percentShow, setPercentShow] = useState<boolean>(false)
   const [isUpdateStatus, setIsUpdateStatus] = useState<any>(false)
   const [isUpdateChangeLog, setIsUpdateChangeLog] = useState<any>(false)
   const [percentVal, setPercentVal] = useState<any>()
@@ -89,10 +87,6 @@ export default () => {
     updatePriority,
     addInfoDemand,
     getDemandChildInfo,
-    setIsShowProgress,
-    isShowProgress,
-    percentShow,
-    setPercentShow,
     percentVal,
     setPercentVal,
     uploadStatus,

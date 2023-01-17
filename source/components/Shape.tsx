@@ -421,6 +421,7 @@ export const ShapeContent = (props: any) => {
   }
 
   useEffect(() => {
+    // console.log(111111111111111)
     if (props.noleft) {
       init2()
     } else {
@@ -474,7 +475,7 @@ export const ShapeContent = (props: any) => {
   }
 
   return (
-    <Contain>
+    <Contain hidden={!props.hidden}>
       {!props.noleft && (
         <Left>
           {leftList.map((item: any) => (
