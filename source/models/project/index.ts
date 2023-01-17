@@ -52,11 +52,6 @@ export default () => {
     },
   ]
 
-  const getTagList = async (params: any) => {
-    const result = await services.project.getTagList(params)
-    return result
-  }
-
   // 获取项目的下拉数据
   const getProjectInfoValues = async (params: any) => {
     const result = await services.project.getProjectInfoValues(params)
@@ -157,6 +152,5 @@ export default () => {
     getProjectInfoValues,
     projectInfoValues,
     setProjectInfoValues,
-    getTagList,
   }
 }
