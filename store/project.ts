@@ -5,11 +5,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface CounterState {
   projectInfo: any
+  workList: any
   isUpdateCreate: boolean
 }
 
 const initialState: CounterState = {
   projectInfo: {},
+  workList: {
+    list: undefined,
+  },
   isUpdateCreate: false,
 }
 
@@ -20,12 +24,15 @@ export const projectSlice = createSlice({
     setProjectInfo: (state: any, action) => {
       state.projectInfo = action.payload
     },
+    setWorkList: (state: any, action) => {
+      state.workList = action.payload
+    },
   },
   extraReducers(builder) {
     //
   },
 })
 
-export const { setProjectInfo } = projectSlice.actions
+export const { setProjectInfo, setWorkList } = projectSlice.actions
 
 export default projectSlice.reducer

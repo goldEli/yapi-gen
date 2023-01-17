@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 需求设置主页
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -18,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useSelector } from '@store/index'
-import { storyConfigCategoryList } from '@/services/project'
+import { getWorkflowList, storyConfigCategoryList } from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -175,13 +176,12 @@ const MoreWrap = (props: MoreWrapProps) => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
   const [form] = Form.useForm()
-  const {
-    deleteStoryConfigCategory,
-    changeStoryConfigCategory,
-    getWorkflowList,
-    workList,
-  } = useModel('project')
+  const { deleteStoryConfigCategory, changeStoryConfigCategory } =
+    useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [disable, setDisable] = useState(true)
@@ -258,10 +258,11 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   const onChangeSelect = async (value: any) => {
     if (value) {
-      await getWorkflowList({
+      const result = await getWorkflowList({
         projectId: paramsData.id,
         categoryId: value,
       })
+      setWorkList(result)
       setDisable(false)
       form.setFieldsValue({
         statusId: '',

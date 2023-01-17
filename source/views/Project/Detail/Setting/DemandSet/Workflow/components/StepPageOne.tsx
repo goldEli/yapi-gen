@@ -39,6 +39,9 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
+import { getWorkflowList } from '@/services/project'
+import { useDispatch } from '@store/index'
+import { setWorkList } from '@store/project'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -77,7 +80,6 @@ const StepPageOne = (propsOne: Props) => {
   const { categoryItem } = paramsData
   const {
     colorList,
-    getWorkflowList,
     deleteStoryConfigWorkflow,
     updateStoryConfigWorkflow,
     sortchangeWorkflow,
@@ -92,6 +94,7 @@ const StepPageOne = (propsOne: Props) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
+  const dispatch = useDispatch()
 
   const getList = async (isUpdateList?: any) => {
     if (isUpdateList) {
@@ -101,6 +104,7 @@ const StepPageOne = (propsOne: Props) => {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
+    dispatch(setWorkList(result))
     setDataSource(result)
     setIsSpinning(false)
     return result

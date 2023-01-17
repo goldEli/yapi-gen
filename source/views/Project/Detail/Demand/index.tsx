@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
@@ -34,6 +35,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { changeId } from '../../../../../store/counterSlice'
 import { setIsRefresh } from '@store/user'
 import { useDispatch, useSelector } from '@store/index'
+import { getWorkflowList } from '@/services/project'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -144,6 +146,9 @@ const DemandBox = () => {
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [colorObj, setColorObj] = useState<any>({})
   const [resultCategory, setResultCategory] = useState([])
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -152,8 +157,7 @@ const DemandBox = () => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { colorList, getWorkflowList, workList, projectInfoValues } =
-    useModel('project')
+  const { colorList, projectInfoValues } = useModel('project')
   const {
     getDemandInfo,
     demandInfo,
@@ -296,20 +300,22 @@ const DemandBox = () => {
 
   const onChangeSelect = async (value: any) => {
     if (value) {
-      await getWorkflowList({
+      const result = await getWorkflowList({
         projectId: paramsData.id,
         categoryId: value,
       })
+      setWorkList(result)
     } else {
       form.resetFields()
     }
   }
 
   const onClickCategory = async (k: any) => {
-    await getWorkflowList({
+    const result = await getWorkflowList({
       projectId: paramsData.id,
       categoryId: k.id,
     })
+    setWorkList(result)
     form.setFieldsValue({
       categoryId: k.id,
     })

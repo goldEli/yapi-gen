@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -20,7 +21,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import ThrottleButton from '../ThrottleButton'
 import { useDispatch } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
-import { storyConfigField } from '@/services/project'
+import { getWorkflowList, storyConfigField } from '@/services/project'
 
 const ModalWrap = styled(Modal)({
   '.ant-modal-header': {
@@ -146,6 +147,10 @@ const EditDemand = (props: Props) => {
   }
   const rightDom: any = createRef()
   const leftDom: any = createRef()
+  // 切换需求类别下的工作流
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
   // 头部显示的需求类别对象
   const [categoryObj, setCategoryObj] = useState<any>({})
   // 项目id
@@ -185,8 +190,6 @@ const EditDemand = (props: Props) => {
     filterParamsModal,
     setFilterParamsModal,
     colorList,
-    getWorkflowList,
-    workList,
     getProjectInfoValues,
   } = useModel('project')
 
@@ -367,10 +370,11 @@ const EditDemand = (props: Props) => {
           ?.filter((i: any) => i.status === 1)
           ?.filter((i: any) => i.id === value)[0],
       )
-      await getWorkflowList({
+      const result = await getWorkflowList({
         projectId,
         categoryId: value,
       })
+      setWorkList(result)
     } else {
       changeCategoryForm.resetFields()
       setCurrentCategory({})

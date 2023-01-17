@@ -7,9 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [workList, setWorkList] = useState<any>({
-    list: undefined,
-  })
   // 改变项目-项目id
   const [isChangeProject, setIsChangeProject] = useState(0)
   // 筛选需求列表参数，用于回填创建需求弹窗
@@ -57,12 +54,6 @@ export default () => {
 
   const getTagList = async (params: any) => {
     const result = await services.project.getTagList(params)
-    return result
-  }
-
-  const getWorkflowList = async (params: any) => {
-    const result = await services.project.getWorkflowList(params)
-    setWorkList(result)
     return result
   }
 
@@ -139,7 +130,6 @@ export default () => {
     deleteStoryConfigCategory,
     changeCategoryStatus,
     changeStoryConfigCategory,
-    getWorkflowList,
     addStoryConfigWorkflow,
     updateStoryConfigWorkflow,
     deleteStoryConfigWorkflow,
@@ -150,8 +140,6 @@ export default () => {
     addStoryConfigStatus,
     deleteStoryConfigStatus,
     updateStoryConfigStatus,
-    workList,
-    setWorkList,
     setIsChangeProject,
     isChangeProject,
     getGroupList,

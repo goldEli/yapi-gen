@@ -15,6 +15,8 @@ import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '@store/index'
+import { setWorkList } from '@store/project'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -50,18 +52,21 @@ const StepPageTwo = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
-  const { workList, saveWorkflowStatus, setWorkList } = useModel('project')
+  const { workList } = useSelector((store: { project: any }) => store.project)
+  const { saveWorkflowStatus } = useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
+  const dispatch = useDispatch()
 
   const onClickSet = (row: any, id: any) => {
+    const newRow = Object.assign({}, row)
+    newRow.toId = id
+    setOperationObj(newRow)
     setIsVisible(true)
-    row.toId = id
-    setOperationObj(row)
   }
 
   const onChangeCheck = (e: any, row: any, id: any) => {
-    const arr = workList?.list
+    const arr: any = JSON.parse(JSON.stringify(workList?.list))
     if (e.target.checked) {
       arr?.filter((i: any) => i.id === row.id)[0]?.canChange?.push(String(id))
     } else {
@@ -69,7 +74,7 @@ const StepPageTwo = () => {
         ?.filter((i: any) => i.id === row.id)[0]
         ?.canChange?.filter((k: any) => k !== String(id))
     }
-    setWorkList({ list: arr })
+    dispatch(setWorkList({ list: arr }))
   }
 
   const setColumns: any = useMemo(() => {
