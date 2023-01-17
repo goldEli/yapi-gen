@@ -17,6 +17,7 @@ import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   padding: 16,
@@ -357,7 +358,10 @@ const CardGroup = (props: CardGroupProps) => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { colorList, changeCategoryStatus, getCategoryList, projectInfo } =
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { colorList, changeCategoryStatus, getCategoryList } =
     useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -491,7 +495,10 @@ const DemandSet = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo, getCategoryList, categoryList } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { getCategoryList, categoryList } = useModel('project')
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 

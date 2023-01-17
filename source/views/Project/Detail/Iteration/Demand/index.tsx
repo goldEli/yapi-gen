@@ -58,11 +58,14 @@ const DemandWrap = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { projectInfo, setFilterParamsModal } = useModel('project')
+  const { setFilterParamsModal } = useModel('project')
   const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
     useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const { iterateInfo, setFilterParams, filterParams } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)

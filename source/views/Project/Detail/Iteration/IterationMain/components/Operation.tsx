@@ -23,6 +23,7 @@ import EditorInfoReview from '@/components/EditorInfoReview'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { getSearchField } from '@/services/mine'
 import CommonInput from '@/components/CommonInput'
+import { useSelector } from '@store/index'
 
 const OperationWrap = styled.div({
   padding: '0 24px',
@@ -78,13 +79,11 @@ const Operation = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const {
-    projectInfo,
-    setProjectInfoValues,
-    setFilterKeys,
-    filterKeys,
-    projectInfoValues,
-  } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { setProjectInfoValues, setFilterKeys, filterKeys, projectInfoValues } =
+    useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])

@@ -17,7 +17,7 @@ import FieldsTemplate from './FieldsTemplate'
 import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 
 const Wrap = styled.div<{ language: any }>(
@@ -131,7 +131,9 @@ const ImportDemand = () => {
     getImportExcelUpdate,
   } = useModel('demand')
   const dispatch = useDispatch()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

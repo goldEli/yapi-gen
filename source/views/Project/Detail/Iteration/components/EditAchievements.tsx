@@ -8,6 +8,7 @@ import { Button, message, Space } from 'antd'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const ModalFooter = styled(Space)({
   width: '100%',
@@ -33,7 +34,9 @@ const EditAchievements = (props: Props) => {
   const [isEdit, setIsEdit] = useState(false)
   const childRef: any = createRef()
   const { updateAchieve, getAchieveInfo, getIterateInfo } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/achieve',

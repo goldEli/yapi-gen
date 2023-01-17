@@ -16,6 +16,7 @@ import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
 import PubSub from 'pubsub-js'
 import IconFont from '@/components/IconFont'
+import { useSelector } from '@store/index'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -37,7 +38,9 @@ const DemandStatusBox = (props: any) => {
     useModel('demand')
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [leftList, setLeftList] = useState([])
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&

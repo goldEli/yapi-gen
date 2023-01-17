@@ -17,6 +17,7 @@ import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   padding: 16,
@@ -79,7 +80,9 @@ const SetBreadcrumb = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 

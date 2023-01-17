@@ -295,10 +295,11 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     getDemandInfo,
     updateTableParams,
   } = useModel('demand')
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
   )
-  const { projectInfo, fieldList, getFieldList } = useModel('project')
+  const { fieldList, getFieldList } = useModel('project')
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })

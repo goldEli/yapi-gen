@@ -162,17 +162,13 @@ const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
 const UploadAttach = (props: any) => {
   const scopeRef = useRef(String(Math.random()))
-
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
   })
   const [t] = useTranslation()
-
   const [searchParams] = useSearchParams()
   let projectId: any
   let demandId: any
@@ -185,7 +181,9 @@ const UploadAttach = (props: any) => {
   }
 
   const [fileList, setFileList] = useState<any>([])
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
 
   // 判断权限
 

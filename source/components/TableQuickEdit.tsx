@@ -15,6 +15,7 @@ import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
+import { useSelector } from '@store/index'
 
 interface Props {
   children: any
@@ -52,8 +53,10 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, getFieldListCustom, projectInfoValues } =
-    useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { getFieldListCustom, projectInfoValues } = useModel('project')
   const { updateTableParams, getDemandInfo } = useModel('demand')
   const [params, setParams] = useState<any>({})
   let isCanEdit: any

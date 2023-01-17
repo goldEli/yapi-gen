@@ -28,6 +28,7 @@ import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import PubSub from 'pubsub-js'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -137,8 +138,10 @@ const IterationWrap = () => {
   } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, projectInfoValues, setProjectInfoValues } =
-    useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { projectInfoValues, setProjectInfoValues } = useModel('project')
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])

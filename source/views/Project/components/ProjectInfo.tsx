@@ -1,9 +1,9 @@
 // 项目信息
 
 import styled from '@emotion/styled'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import { useSelector } from '@store/index'
 
 const InfoItem = styled.div({
   display: 'flex',
@@ -51,7 +51,9 @@ interface Props {
 
 const ProjectInfo = (props: Props) => {
   const [t] = useTranslation()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   return (
     <CommonModal
       title={t('project.projectInformation')}

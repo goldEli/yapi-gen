@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditFiled from './components/EditField'
 import NoData from '@/components/NoData'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   padding: 16,
@@ -69,7 +70,9 @@ const SetBreadcrumb = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 

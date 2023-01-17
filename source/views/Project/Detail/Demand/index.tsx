@@ -31,9 +31,9 @@ import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useDispatch } from '../../../../../store'
 import { changeId } from '../../../../../store/counterSlice'
 import { setIsRefresh } from '@store/user'
+import { useDispatch, useSelector } from '@store/index'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -149,13 +149,11 @@ const DemandBox = () => {
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const {
-    projectInfo,
-    colorList,
-    getWorkflowList,
-    workList,
-    projectInfoValues,
-  } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { colorList, getWorkflowList, workList, projectInfoValues } =
+    useModel('project')
   const {
     getDemandInfo,
     demandInfo,

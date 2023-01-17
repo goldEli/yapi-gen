@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { useSelector } from '@store/index'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -45,7 +46,9 @@ const ParentDemand = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')

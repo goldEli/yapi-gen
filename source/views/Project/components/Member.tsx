@@ -18,6 +18,9 @@ import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
 import PubSub from 'pubsub-js'
+import { getProjectInfo, getProjectPermission } from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfo } from '@store/project'
 
 interface Props {
   visible: boolean
@@ -212,17 +215,15 @@ const MoreDropdown = (props: DropDownProps) => {
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const {
     getProjectMember,
     isRefreshMember,
     setIsRefreshMember,
-    projectInfo,
-    setProjectPermission,
-    getProjectPermission,
     updateMember,
-    projectPermission,
     addMember,
-    getProjectInfo,
     projectInfoValues,
     setProjectInfoValues,
   } = useModel('project')
@@ -233,7 +234,9 @@ const Member = (props: Props) => {
   const [search, setSearch] = useState<any>()
   const [memberList, setMemberList] = useState<any>([])
   const [userDataList, setUserDataList] = useState<any[]>([])
+  const [projectPermission, setProjectPermission] = useState<any>([])
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
   const hasEdit = !getIsPermission(
     projectInfo?.projectPermissions,
     'b/project/member/update',
@@ -374,7 +377,8 @@ const Member = (props: Props) => {
     setUserDataList([])
     getList(true)
     setIsVisible(false)
-    getProjectInfo({ projectId: projectInfo.id })
+    const result = await getProjectInfo({ projectId: projectInfo.id })
+    dispatch(setProjectInfo(result))
     PubSub.publish('getPeople')
     setTimeout(() => {
       form.resetFields()

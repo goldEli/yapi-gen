@@ -7,8 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [projectPermission, setProjectPermission] = useState<any>([])
-  const [projectInfo, setProjectInfo] = useState<any>({})
   const [memberList, setMemberList] = useState<any>([])
   const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [fieldList, setFieldList] = useState<any>({
@@ -97,13 +95,6 @@ export default () => {
     return result
   }
 
-  const getProjectInfo = async (params: any) => {
-    const result = await services.project.getProjectInfo(params)
-
-    setProjectInfo(result)
-    return result
-  }
-
   // 获取项目的下拉数据
   const getProjectInfoValues = async (params: any) => {
     const result = await services.project.getProjectInfoValues(params)
@@ -158,8 +149,6 @@ export default () => {
   } = services.project
 
   return {
-    projectInfo,
-    getProjectInfo,
     addProject,
     updateProject,
     deleteProject,
@@ -175,13 +164,10 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
-    setProjectPermission,
-    projectPermission,
     getMemberList,
     memberList,
     setIsRefreshMember,
     isRefreshMember,
-    setProjectInfo,
     colorList,
     getFieldList,
     getFieldListCustom,

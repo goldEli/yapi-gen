@@ -29,11 +29,16 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
-import { addMember } from '@/services/project'
+import {
+  addMember,
+  getProjectInfo,
+  getProjectPermission,
+} from '@/services/project'
 import PubSub from 'pubsub-js'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import AddButton from '@/components/AddButton'
 import CommonInput from '@/components/CommonInput'
+import { setProjectInfo } from '@store/project'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -127,18 +132,13 @@ const ProjectMember = () => {
     list: undefined,
   })
   const [jobList, setJobList] = useState<any>([])
-  const {
-    getProjectMember,
-    deleteMember,
-    projectPermission,
-    projectInfo,
-    isRefreshMember,
-    updateMember,
-    getProjectPermission,
-    setProjectPermission,
-    getProjectInfo,
-  } = useModel('project')
+  const [projectPermission, setProjectPermission] = useState<any>([])
+  const { getProjectMember, deleteMember, isRefreshMember, updateMember } =
+    useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
@@ -155,6 +155,8 @@ const ProjectMember = () => {
   const [userDataList, setUserDataList] = useState<any[]>([])
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
+  const dispatch = useDispatch()
+
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -600,6 +602,13 @@ const ProjectMember = () => {
       //
     }
   }
+
+  // 更新项目信息
+  const onUpdate = async () => {
+    const result = await getProjectInfo({ projectId: projectInfo.id })
+    dispatch(setProjectInfo(result))
+  }
+
   const handleOk = async () => {
     const values = form.getFieldsValue()
 
@@ -626,7 +635,7 @@ const ProjectMember = () => {
     setIsAddVisible(false)
     setTimeout(() => {
       form.resetFields()
-      getProjectInfo({ projectId: projectId })
+      onUpdate()
     }, 100)
   }
   useEffect(() => {
@@ -656,6 +665,7 @@ const ProjectMember = () => {
             setIsEditVisible(false)
           }}
           onConfirm={onConfirmEdit}
+          projectPermission={projectPermission}
         />
         <DeleteConfirm
           text={t('mark.delPeople')}

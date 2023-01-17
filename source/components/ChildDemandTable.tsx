@@ -60,19 +60,8 @@ const ChildDemandTable = (props: {
   })
   const { getDemandList } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo, colorList, getProjectInfo } = useModel('project')
+  const { colorList } = useModel('project')
   let isCanEdit: any
-
-  // 获取是否有编辑需求的权限 --- 主要用于他的/我的
-  const getProjectEdit = () => {
-    if (props.isMineOrHis) {
-      getProjectInfo({ projectId })
-    }
-    isCanEdit =
-      projectInfo.projectPermissions?.length > 0 &&
-      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-        ?.length > 0
-  }
 
   const getList = async (item: any) => {
     const result = await getDemandList({
@@ -87,7 +76,6 @@ const ChildDemandTable = (props: {
 
   const onChildClick = async () => {
     getList(order)
-    getProjectEdit()
     setIsVisible(!isVisible)
   }
 

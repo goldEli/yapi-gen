@@ -17,6 +17,7 @@ import { getIsPermission } from '@/tools'
 import { t } from 'i18next'
 import NoData from '@/components/NoData'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -74,7 +75,9 @@ const Achievements = (props: Props) => {
   const [newAttachList, setNewAttachList] = useState<any>([])
   const [html, setHtml] = useState('')
   const { getAchieveInfo, achieveInfo } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,

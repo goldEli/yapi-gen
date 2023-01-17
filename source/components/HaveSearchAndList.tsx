@@ -13,6 +13,7 @@ import CommonInput from './CommonInput'
 import IconFont from './IconFont'
 import NoData from './NoData'
 import { getProjectList } from '@/services/project'
+import { useSelector } from '@store/index'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -204,9 +205,12 @@ interface Props {
 const HaveSearchAndList = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [isOpen, setIsOpen] = useState(false)
   const { addInfoDemand, getDemandInfo } = useModel('demand')
-  const { setIsChangeProject, projectInfo } = useModel('project')
+  const { setIsChangeProject } = useModel('project')
   const [hoverState, setHoverState] = useState(false)
   const onVisibleOpenChange = (visible: any) => {
     setIsOpen(visible)

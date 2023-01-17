@@ -156,9 +156,11 @@ const WrapLeft = (props: Props) => {
     isRefreshList,
     isUpdateList,
   } = useModel('iterate')
-  const { projectInfo, projectInfoValues, setProjectInfoValues } =
-    useModel('project')
+  const { projectInfoValues, setProjectInfoValues } = useModel('project')
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [isSpinning, setIsSpinning] = useState(false)
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,

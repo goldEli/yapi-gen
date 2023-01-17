@@ -58,7 +58,10 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo, colorList } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { colorList } = useModel('project')
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')

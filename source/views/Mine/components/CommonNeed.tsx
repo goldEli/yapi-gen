@@ -47,6 +47,7 @@ import {
   updateDemandStatus,
   updatePriorityStatus,
 } from '@/services/mine'
+import { getProjectInfo } from '@/services/project'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -142,11 +143,13 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const { deleteDemand } = useModel('demand')
-  const { getProjectInfo, projectInfo, getProjectInfoValues } =
-    useModel('project')
+  const { getProjectInfoValues } = useModel('project')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)

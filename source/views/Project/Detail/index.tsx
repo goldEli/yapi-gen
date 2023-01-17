@@ -11,7 +11,9 @@ import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { getParamsData } from '@/tools'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { getProjectInfo } from '@/services/project'
+import { setProjectInfo } from '@store/project'
 
 const Wrap = styled.div({
   height: '100%',
@@ -19,8 +21,7 @@ const Wrap = styled.div({
 })
 
 const Detail = () => {
-  const { getProjectInfo, isChangeProject, getProjectInfoValues } =
-    useModel('project')
+  const { isChangeProject, getProjectInfoValues } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -28,6 +29,7 @@ const Detail = () => {
   // 用于私有项目权限过渡
   const [isShowPage, setIsShowPage] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const getProjectInfoValuesData = async () => {
     await getProjectInfoValues({ projectId })
@@ -42,6 +44,12 @@ const Detail = () => {
     } else {
       setIsShowPage(true)
     }
+  }
+
+  // 用于编辑更新
+  const onUpdate = async () => {
+    const result = await getProjectInfo({ projectId })
+    dispatch(setProjectInfo(result))
   }
 
   useEffect(() => {
@@ -60,7 +68,7 @@ const Detail = () => {
       {isShowPage && (
         <>
           <CommonOperation
-            onUpdate={() => getProjectInfo({ projectId })}
+            onUpdate={onUpdate}
             onChangeIdx={getProjectInfoValuesData}
           />
           <Outlet key={isChangeProject} />

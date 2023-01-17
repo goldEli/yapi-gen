@@ -21,6 +21,7 @@ import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
 import { useLocation } from 'react-router-dom'
 import { getSearchField } from '@/services/mine'
+import { useSelector } from '@store/index'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -136,8 +137,10 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const {
-    projectInfo,
     projectInfoValues,
     colorList,
     setFilterParamsModal,

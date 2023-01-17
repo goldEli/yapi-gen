@@ -170,10 +170,11 @@ const Profile = () => {
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
   const { mainInfo } = useSelector((store: { member: any }) => store.member)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
+  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
   )
-  const { colorList, projectInfo } = useModel('project')
+  const { colorList } = useModel('project')
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])

@@ -9,6 +9,7 @@ import { editButton } from '@/components/StyleCommon'
 import EditAchievements from '../components/EditAchievements'
 import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const wrap = css`
   height: calc(100% - 24px);
@@ -26,7 +27,9 @@ const Achieve = () => {
   const projectId = paramsData.id
   const { iterateId } = paramsData
   const { getAchieveInfo } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,

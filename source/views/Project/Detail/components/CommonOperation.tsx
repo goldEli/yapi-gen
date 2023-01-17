@@ -14,7 +14,9 @@ import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfo } from '@store/project'
+import { getProjectInfo } from '@/services/project'
 
 const OperationTop = styled.div({
   height: 64,
@@ -174,13 +176,16 @@ const CommonOperation = (props: Props) => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
-  const { projectInfo, setProjectInfo, getProjectInfo } = useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const { setFilterHeight } = useModel('demand')
   const { setFilterHeightIterate } = useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const dispatch = useDispatch()
 
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
@@ -242,7 +247,7 @@ const CommonOperation = (props: Props) => {
   const onToProject = () => {
     navigate('/Project')
     setTimeout(() => {
-      setProjectInfo({})
+      dispatch(setProjectInfo({}))
     }, 100)
   }
 
@@ -264,7 +269,8 @@ const CommonOperation = (props: Props) => {
     setFilterHeight(52)
     setFilterHeightIterate(60)
     // 点击切换更新项目info接口
-    await getProjectInfo({ projectId })
+    const result = await getProjectInfo({ projectId })
+    dispatch(setProjectInfo(result))
     // 点击切换更新项目下拉数据
     props.onChangeIdx()
   }

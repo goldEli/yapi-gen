@@ -7,11 +7,14 @@ import IconFont from '@/components/IconFont'
 import { AddWrap, FormWrapDemand } from '@/components/StyleCommon'
 import { useModel } from '@/models'
 import { getProjectList } from '@/services/mine'
+import { getProjectInfo } from '@/services/project'
 import { removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfo } from '@store/project'
 import { Form, Input, Select } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -46,16 +49,15 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const {
-    projectInfo,
-    getProjectInfo,
-    setFieldList,
-    filterParamsModal,
-    projectInfoValues,
-  } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { setFieldList, filterParamsModal, projectInfoValues } =
+    useModel('project')
   const { demandInfo } = useModel('demand')
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
+  const dispatch = useDispatch()
 
   // 提交参数
   const onConfirm = async () => {
@@ -99,6 +101,12 @@ const EditDemandLeft = (props: Props) => {
     }
   })
 
+  // 获取项目信息
+  const getProjectInfoData = async (id: any) => {
+    const result = await getProjectInfo({ projectId: id })
+    dispatch(setProjectInfo(result))
+  }
+
   // 获取项目数据
   const getProjectData = async () => {
     const res = await getProjectList({
@@ -112,7 +120,7 @@ const EditDemandLeft = (props: Props) => {
         decryptPhp(localStorage.getItem('quickCreateData') as any),
       )
       form.setFieldsValue(hisCategoryData)
-      getProjectInfo({ projectId: hisCategoryData?.projectId })
+      getProjectInfoData(hisCategoryData?.projectId)
       // 项目更新项目下的所有关联数据
       props.onGetDataAll(hisCategoryData?.projectId)
       props.onChangeProjectId(hisCategoryData?.projectId)
@@ -143,7 +151,7 @@ const EditDemandLeft = (props: Props) => {
     }
     // 如果是所有项目调用项目信息
     if (props?.isAllProject) {
-      getProjectInfo({ projectId: props?.projectId })
+      getProjectInfoData(props?.projectId)
     }
     // 创建回填筛选数据 --- 标签
     if (filterParamsModal?.tagIds?.length) {
@@ -204,7 +212,7 @@ const EditDemandLeft = (props: Props) => {
   const onSelectProjectName = async (value: any) => {
     onReset()
     setFieldList({ list: undefined })
-    getProjectInfo({ projectId: value })
+    getProjectInfoData(value)
     form.setFieldsValue({
       projectId: value,
     })

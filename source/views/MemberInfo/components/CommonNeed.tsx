@@ -50,6 +50,7 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
+import { getProjectInfo } from '@/services/project'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -159,8 +160,10 @@ const CommonNeed = (props: any) => {
   const paramsData = getParamsData(searchParams)
   const { isMember, userId } = paramsData
   const { deleteDemand } = useModel('demand')
-  const { getProjectInfo, projectInfo, getProjectInfoValues } =
-    useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { getProjectInfoValues } = useModel('project')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)

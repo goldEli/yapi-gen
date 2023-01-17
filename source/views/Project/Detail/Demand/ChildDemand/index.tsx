@@ -71,6 +71,9 @@ const ChildDemand = () => {
   } = useModel('demand')
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -85,7 +88,6 @@ const ChildDemand = () => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)

@@ -24,6 +24,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import EditDemand from '@/components/EditDemandNew/index1'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
 
 const Content = styled.div({
   padding: 16,
@@ -69,7 +70,10 @@ const IterationTable = (props: Props) => {
   const projectId = paramsData.id
   const { filterParams } = useModel('iterate')
   const { updatePriority, updateDemandStatus } = useModel('demand')
-  const { projectInfo, setFilterParamsModal } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { setFilterParamsModal } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])

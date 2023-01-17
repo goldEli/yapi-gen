@@ -102,7 +102,9 @@ const TreeItem = (props: any) => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visiblePop, setVisiblePop] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const btnsText = [
     {
       id: 1,

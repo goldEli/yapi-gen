@@ -113,9 +113,10 @@ const DemandCard = (props: Props) => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
-  // 是否显示子需求表格
-  const [isShowChild, setIsShowChild] = useState(false)
-  const { projectInfo, colorList } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { colorList } = useModel('project')
   const hasEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')

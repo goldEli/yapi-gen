@@ -34,6 +34,7 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import EditDemand from '@/components/EditDemandNew/index1'
 import FloatBatch from '@/components/FloatBatch'
+import { useSelector } from '@store/index'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -100,7 +101,10 @@ const DemandTree = (props: Props) => {
   const projectId = paramsData.id
   const { updatePriority, updateDemandStatus, getDemandList } =
     useModel('demand')
-  const { projectInfo, filterKeys } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
+  const { filterKeys } = useModel('project')
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])

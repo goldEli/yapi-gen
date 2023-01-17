@@ -3,13 +3,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
-import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { DividerWrap, HasIconMenu, HoverWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import DropDownMenu from './DropDownMenu'
 import { useState } from 'react'
+import { useSelector } from '@store/index'
 
 interface Props {
   onChangeFilter?(): void
@@ -29,7 +29,9 @@ const SpaceWrap = styled(Space)({
 
 const OperationGroup = (props: Props) => {
   const [t] = useTranslation()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(
+    (store: { project: any }) => store.project,
+  )
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
 
