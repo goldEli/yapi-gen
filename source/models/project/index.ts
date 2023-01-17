@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 
 export default () => {
   const [t] = useTranslation()
-  const [isRefreshMember, setIsRefreshMember] = useState(false)
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
@@ -157,8 +156,6 @@ export default () => {
     getPermission,
     setPermission,
     getProjectMember,
-    setIsRefreshMember,
-    isRefreshMember,
     colorList,
     getFieldList,
     getFieldListCustom,

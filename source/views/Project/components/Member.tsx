@@ -222,14 +222,8 @@ const Member = (props: Props) => {
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const {
-    isRefreshMember,
-    setIsRefreshMember,
-    updateMember,
-    addMember,
-    projectInfoValues,
-    setProjectInfoValues,
-  } = useModel('project')
+  const { updateMember, addMember, projectInfoValues, setProjectInfoValues } =
+    useModel('project')
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])
@@ -281,7 +275,6 @@ const Member = (props: Props) => {
       setProjectInfoValues(newValues)
     }
     setMemberList(result)
-    setIsRefreshMember(false)
   }
 
   const init = async () => {
@@ -335,12 +328,6 @@ const Member = (props: Props) => {
       //
     }
   }
-
-  useEffect(() => {
-    if (isRefreshMember) {
-      getList()
-    }
-  }, [isRefreshMember])
 
   const onChangeSearch = (e: any) => {
     setSearch(e.target.value)

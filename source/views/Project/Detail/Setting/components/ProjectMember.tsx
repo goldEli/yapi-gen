@@ -134,7 +134,7 @@ const ProjectMember = () => {
   })
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
-  const { deleteMember, isRefreshMember, updateMember } = useModel('project')
+  const { deleteMember, updateMember } = useModel('project')
   const { userInfo } = useSelector((store: { user: any }) => store.user)
   const { projectInfo } = useSelector(
     (store: { project: any }) => store.project,
@@ -233,12 +233,6 @@ const ProjectMember = () => {
     getJobList()
     getPermission()
   }, [])
-
-  useEffect(() => {
-    if (isRefreshMember) {
-      getList(order, { page: 1, size: pageObj.size })
-    }
-  }, [isRefreshMember])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
