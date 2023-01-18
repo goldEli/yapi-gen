@@ -131,6 +131,7 @@ const PosterComponent = (props: Props) => {
     setCoverList(result)
     if (props?.value) {
       setCheckedPoster(props?.value)
+      setPosterList([[props?.value]])
     } else {
       onUpdateValue(result[0].path)
     }

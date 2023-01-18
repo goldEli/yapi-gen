@@ -181,12 +181,12 @@ const Operation = (props: Props) => {
       params.searchValue = value
       setSearchGroups(params)
       props.onSearch(params)
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
     }
-    // 添加搜索项 计数
-    const keys = value
-      ? [...filterKeys, ...['searchVal']]
-      : filterKeys?.filter((i: any) => i !== 'searchVal')
-    dispatch(setFilterKeys([...new Set(keys)]))
   }
 
   const onFilterSearch = (e: any, customField: any) => {
