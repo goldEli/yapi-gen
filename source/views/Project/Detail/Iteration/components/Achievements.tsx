@@ -59,12 +59,8 @@ const Achievements = (props: Props) => {
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
   const [html, setHtml] = useState('')
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { achieveInfo } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { projectInfo } = useSelector(store => store.project)
+  const { achieveInfo } = useSelector(store => store.iterate)
   const dispatch = useDispatch()
 
   const isCanEdit = getIsPermission(

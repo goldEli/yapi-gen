@@ -145,9 +145,7 @@ const ToastWrap = styled.div({
 })
 
 const NoPermission = () => {
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const [companyList, setCompanyList] = useState<any[]>([])
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)

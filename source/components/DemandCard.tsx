@@ -106,13 +106,11 @@ const NameGroup = styled.div({
 
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
-  const { projectInfo, colorList } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo, colorList } = useSelector(store => store.project)
   const hasEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')

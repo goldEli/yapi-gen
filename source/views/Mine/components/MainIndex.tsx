@@ -26,9 +26,7 @@ interface Props {
 const MainIndex = (props: Props) => {
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const init = async () => {

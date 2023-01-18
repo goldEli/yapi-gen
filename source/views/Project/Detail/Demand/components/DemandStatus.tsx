@@ -41,12 +41,8 @@ const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { demandInfo, isUpdateStatus } = useSelector(
-    (store: { demand: any }) => store.demand,
-  )
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo, isUpdateStatus } = useSelector(store => store.demand)
   const [leftList, setLeftList] = useState([])
   const dispatch = useDispatch()
   const isCanEdit =

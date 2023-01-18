@@ -60,7 +60,7 @@ const ChildDemandTable = (props: {
     list: undefined,
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
   let isCanEdit: any
 
   const getList = async (item: any) => {

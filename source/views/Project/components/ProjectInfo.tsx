@@ -51,9 +51,7 @@ interface Props {
 
 const ProjectInfo = (props: Props) => {
   const [t] = useTranslation()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   return (
     <CommonModal
       title={t('project.projectInformation')}

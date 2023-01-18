@@ -71,9 +71,7 @@ const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfoValues } = useSelector(store => store.project)
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
 

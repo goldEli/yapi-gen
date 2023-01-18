@@ -48,7 +48,7 @@ const EditDemandLeft = (props: Props) => {
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
   const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
+    store => store.project,
   )
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])

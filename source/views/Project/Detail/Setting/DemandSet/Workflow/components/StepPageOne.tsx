@@ -92,7 +92,7 @@ const StepPageOne = (propsOne: Props) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
   const dispatch = useDispatch()
 
   const getList = async (isUpdateList?: any) => {

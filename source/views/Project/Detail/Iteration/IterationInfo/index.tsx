@@ -166,9 +166,7 @@ const IterationInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { iterateInfo } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { iterateInfo } = useSelector(store => store.iterate)
   const [chartData, setChartData] = useState<any>({})
   const [isSpinning, setIsSpinning] = useState(false)
 

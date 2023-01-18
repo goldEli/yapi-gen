@@ -70,12 +70,8 @@ const IterationTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { filterParams } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { projectInfo } = useSelector(store => store.project)
+  const { filterParams } = useSelector(store => store.iterate)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])

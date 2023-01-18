@@ -47,9 +47,7 @@ const BatchModal = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfoValues } = useSelector(store => store.project)
 
   // 获取批量编辑的下拉列表
   const getBatchEditConfigList = async () => {

@@ -14,7 +14,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize } from '@/services/cos'
 import FieldsTemplate from './FieldsTemplate'
-
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
@@ -131,9 +130,7 @@ const ImportDemand = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [importExcel, setImportExcel] = useState<any>({})
   const dispatch = useDispatch()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

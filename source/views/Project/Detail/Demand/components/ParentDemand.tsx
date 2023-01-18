@@ -47,10 +47,8 @@ const ParentDemand = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const dispatch = useDispatch()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&

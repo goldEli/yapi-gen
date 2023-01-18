@@ -164,11 +164,9 @@ const DemandBox = () => {
   const { type } = paramsData
   const { demandId } = paramsData
   const { projectInfo, colorList, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
+    store => store.project,
   )
-  const demandInfo = useSelector(
-    (store: { demand: any }) => store.demand.demandInfo,
-  )
+  const demandInfo = useSelector(store => store.demand.demandInfo)
   const navigate = useNavigate()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)

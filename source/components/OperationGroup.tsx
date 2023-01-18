@@ -29,9 +29,7 @@ const SpaceWrap = styled(Space)({
 
 const OperationGroup = (props: Props) => {
   const [t] = useTranslation()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
 

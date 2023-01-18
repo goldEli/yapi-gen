@@ -89,9 +89,7 @@ interface Props {
 const ProjectCard = (props: Props) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
 
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,

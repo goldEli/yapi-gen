@@ -74,9 +74,7 @@ const EditIteration = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const [html, setHtml] = useState('')
   const projectId = paramsData.id
-  const { iterateInfo } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { iterateInfo } = useSelector(store => store.iterate)
   const inputRef = useRef<HTMLInputElement>(null)
   // 迭代时间
   const [times, setTimes] = useState<any>(null)

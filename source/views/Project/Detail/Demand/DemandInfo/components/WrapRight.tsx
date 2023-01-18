@@ -293,14 +293,10 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [fieldList, setFieldList] = useState<any>({
     list: undefined,
   })
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { isRefreshComment } = useSelector(
-    (store: { demand: any }) => store.demand,
-  )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
+  const { isRefreshComment } = useSelector(store => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })

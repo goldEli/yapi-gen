@@ -5,9 +5,7 @@ import { useMemo } from 'react'
 import { useSelector } from '../../store'
 
 const SvgTextBg = (props: any) => {
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const {
     text = ` ${userInfo?.company_name}  
     `,

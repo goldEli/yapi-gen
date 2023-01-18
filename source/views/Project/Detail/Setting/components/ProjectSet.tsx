@@ -248,10 +248,8 @@ const ProjectSet = () => {
   const projectId = paramsData.id
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)

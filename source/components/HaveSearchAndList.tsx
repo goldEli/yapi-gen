@@ -101,7 +101,7 @@ const ChooseItems = (props: DemandProps) => {
   const [dataList, setDataList] = useState<any>([])
   const [projectList, setProjectList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
 
   const getList = async () => {
     const result = await getDemandList({
@@ -211,9 +211,7 @@ interface Props {
 const HaveSearchAndList = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const [isOpen, setIsOpen] = useState(false)
   const [hoverState, setHoverState] = useState(false)
   const dispatch = useDispatch()

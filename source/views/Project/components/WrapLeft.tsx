@@ -144,9 +144,7 @@ const WrapLeftBox = (props: Props) => {
   })
   const [countData, setCountData] = useState<any>({})
   const inputRefDom = useRef<HTMLInputElement>(null)
-  const { isRefreshGroup } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { isRefreshGroup } = useSelector(store => store.project)
   const dispatch = useDispatch()
 
   const getGroupData = async (isChange?: boolean) => {

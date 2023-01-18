@@ -39,9 +39,7 @@ const EditAchievements = (props: Props) => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const childRef: any = createRef()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const dispatch = useDispatch()
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,

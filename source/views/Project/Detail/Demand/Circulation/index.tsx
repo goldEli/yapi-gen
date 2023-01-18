@@ -119,11 +119,9 @@ const Circulation = () => {
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  const { demandInfo, isUpdateChangeLog } = useSelector(
-    (store: { demand: any }) => store.demand,
-  )
+  const { demandInfo, isUpdateChangeLog } = useSelector(store => store.demand)
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isRefresh } = useSelector(store => store.user)
 
   const getLogs = async (state: boolean) => {
     if (state) {

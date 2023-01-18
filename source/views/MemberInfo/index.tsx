@@ -96,7 +96,7 @@ const MemberInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
-  const { mainInfo } = useSelector((store: { member: any }) => store.member)
+  const { mainInfo } = useSelector(store => store.member)
 
   const menuList = [
     {

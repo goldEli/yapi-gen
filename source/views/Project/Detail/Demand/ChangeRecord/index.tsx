@@ -90,7 +90,7 @@ const ChangeRecord = () => {
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isRefresh } = useSelector(store => store.user)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)

@@ -84,7 +84,7 @@ interface MoreProps {
 const MoreContent = (props: MoreProps) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,
     'b/project/update',
@@ -191,7 +191,7 @@ const MainTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const hasCreate = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',

@@ -79,9 +79,7 @@ const Staff = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
-  const { userInfo, isRefresh } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo, isRefresh } = useSelector(store => store.user)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)

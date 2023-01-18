@@ -51,9 +51,7 @@ const SetHead = styled.div`
 
 export const Personal = (props: { visible: boolean; close(): void }) => {
   const [t] = useTranslation()
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   // eslint-disable-next-line react/hook-use-state
   const [isShow] = useState<any>(false)
 

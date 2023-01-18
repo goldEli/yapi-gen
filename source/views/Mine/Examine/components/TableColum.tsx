@@ -36,7 +36,7 @@ const StatusWrap = styled.div({
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(

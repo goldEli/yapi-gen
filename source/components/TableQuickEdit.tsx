@@ -58,9 +58,7 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
   let projectId: any

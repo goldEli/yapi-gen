@@ -27,9 +27,7 @@ const Achieve = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const dispatch = useDispatch()
 
   const isCanEdit = getIsPermission(

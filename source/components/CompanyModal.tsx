@@ -15,7 +15,7 @@ interface Props {
 
 const CompanyModal = (props: Props) => {
   const [t] = useTranslation()
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
   const [companyParams, setCompanyParams] = useState({

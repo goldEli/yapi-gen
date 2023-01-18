@@ -64,25 +64,13 @@ const SearchWrap = styled.div({
   position: 'relative',
 })
 
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    fontSize: 20,
-    cursor: 'pointer',
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
-  }),
-)
-
 const Need = (props: any) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const [count, setCount] = useState({ verifyUser: 0, verify: 0 })
   const [listData, setListData] = useState<any>({
     list: undefined,

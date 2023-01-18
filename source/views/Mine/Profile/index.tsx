@@ -143,9 +143,9 @@ const Profile = () => {
   asyncSetTtile(t('title.a9'))
 
   const dispatch = useDispatch()
-  const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { isUpdateCreate } = useSelector(store => store.mine)
+  const { userInfo } = useSelector(store => store.user)
+  const { colorList } = useSelector(store => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])

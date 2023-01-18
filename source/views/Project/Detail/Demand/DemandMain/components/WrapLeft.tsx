@@ -103,9 +103,7 @@ const TreeItem = (props: any) => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visiblePop, setVisiblePop] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const btnsText = [
     {
       id: 1,
@@ -367,9 +365,7 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfoValues } = useSelector(store => store.project)
 
   // 重组为下拉筛选格式
   const computedChildren = (array: any) => {

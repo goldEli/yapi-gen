@@ -155,7 +155,7 @@ const normalObj: any = {
 const SetConfig = (props: Props) => {
   const [t, i18n] = useTranslation()
   const modalBody = useRef<any>(null)
-  const { workList } = useSelector((store: { project: any }) => store.project)
+  const { workList } = useSelector(store => store.project)
   const [isShowPermission, setIsShowPermission] = useState(true)
   const [isSwitch, setIsSwitch] = useState(false)
   const [isShowField, setIsShowField] = useState(true)

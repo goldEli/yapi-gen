@@ -103,9 +103,7 @@ const CompanyInfo = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c1'))
-  const { value: companyInfo } = useSelector(
-    (store: { companyInfo: any }) => store.companyInfo,
-  )
+  const { value: companyInfo } = useSelector(store => store.companyInfo)
   return (
     <div style={{ height: '100%' }}>
       <Header>

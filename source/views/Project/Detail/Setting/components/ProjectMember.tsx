@@ -136,10 +136,8 @@ const ProjectMember = () => {
   })
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo, isUpdateMember } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo, isUpdateMember } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()

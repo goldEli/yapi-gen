@@ -28,7 +28,7 @@ const DemandInfo = () => {
   const projectId = paramsData.id
   const { demandId } = paramsData
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isRefresh } = useSelector(store => store.user)
 
   const onUpdate = async () => {
     const result = await getDemandInfo({ projectId, id: demandId })

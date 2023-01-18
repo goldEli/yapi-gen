@@ -41,9 +41,7 @@ export const Container = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo, loginInfo } = useSelector(store => store.user)
   const {
     i18n: { language },
   } = useTranslation()

@@ -46,10 +46,9 @@ const Head = styled.div`
 
 const Situation = () => {
   const asyncSetTtile = useSetTitle()
-
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {

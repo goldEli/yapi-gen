@@ -56,7 +56,7 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isRefresh } = useSelector(store => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   // 用于当前操作层级不折叠
@@ -65,7 +65,7 @@ const DemandMain = (props: Props) => {
   const [isShowLeft, setIsShowLeft] = useState(false)
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
-  const { filterKeys } = useSelector((store: { project: any }) => store.project)
+  const { filterKeys } = useSelector(store => store.project)
   const dispatch = useDispatch()
 
   const getList = async (

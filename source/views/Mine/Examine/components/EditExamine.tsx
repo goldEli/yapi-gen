@@ -87,8 +87,8 @@ interface Props {
 const EditExamine = (props: Props) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { colorList } = useSelector((store: { project: any }) => store.project)
-  const { verifyInfo } = useSelector((store: { mine: any }) => store.mine)
+  const { colorList } = useSelector(store => store.project)
+  const { verifyInfo } = useSelector(store => store.mine)
   const [value, setValue] = useState('')
 
   const getInfo = async () => {

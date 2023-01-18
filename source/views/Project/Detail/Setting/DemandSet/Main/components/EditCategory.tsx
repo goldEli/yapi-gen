@@ -54,7 +54,7 @@ interface EditorProps {
 }
 
 const EditorCategory = (props: EditorProps) => {
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')

@@ -38,9 +38,7 @@ type LevelProps = {
 }
 
 export const LevelContent = (props: LevelProps) => {
-  const { projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfoValues } = useSelector(store => store.project)
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
   const [showData, setShowData] = useState<any>([])

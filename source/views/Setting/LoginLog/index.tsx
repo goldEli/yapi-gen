@@ -103,9 +103,7 @@ const LoginLog = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c4'))
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const [dataList, setDataList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()

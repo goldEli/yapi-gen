@@ -81,7 +81,7 @@ const Operation = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo, filterKeys, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
+    store => store.project,
   )
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])

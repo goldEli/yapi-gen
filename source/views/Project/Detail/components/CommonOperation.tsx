@@ -176,10 +176,8 @@ const CommonOperation = (props: Props) => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id

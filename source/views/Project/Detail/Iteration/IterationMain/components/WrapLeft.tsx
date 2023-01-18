@@ -23,7 +23,6 @@ import {
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -34,8 +33,7 @@ import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
-import { useSelector } from 'react-redux'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import { setIsRefreshList } from '@store/iterate'
 import {
@@ -156,13 +154,9 @@ const WrapLeft = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { isRefreshList, isUpdateList } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { isRefreshList, isUpdateList } = useSelector(store => store.iterate)
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
 

@@ -37,7 +37,7 @@ const EditWorkflow = (props: EditorProps) => {
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
 
   useEffect(() => {
     setNormalColor(props?.item?.color)

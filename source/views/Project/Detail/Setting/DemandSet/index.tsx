@@ -28,9 +28,7 @@ const DemandSet = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const pageIdx = paramsData.pageIdx || 'main'
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
 
   return (
     <PermissionWrap

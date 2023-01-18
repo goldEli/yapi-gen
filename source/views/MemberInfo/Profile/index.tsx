@@ -169,11 +169,9 @@ const TotalWrap = styled.div({
 const Profile = () => {
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
-  const { mainInfo } = useSelector((store: { member: any }) => store.member)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo, colorList } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { mainInfo } = useSelector(store => store.member)
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo, colorList } = useSelector(store => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])

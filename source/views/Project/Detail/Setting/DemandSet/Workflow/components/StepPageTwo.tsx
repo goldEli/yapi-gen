@@ -52,7 +52,7 @@ const StepPageTwo = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
-  const { workList } = useSelector((store: { project: any }) => store.project)
+  const { workList } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const dispatch = useDispatch()

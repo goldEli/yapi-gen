@@ -359,9 +359,7 @@ const CardGroup = () => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { projectInfo, colorList } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo, colorList } = useSelector(store => store.project)
   const [categoryList, setCategoryList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -512,10 +510,7 @@ const DemandSet = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-
+  const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 

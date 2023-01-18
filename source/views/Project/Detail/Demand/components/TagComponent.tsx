@@ -121,10 +121,8 @@ interface TagProps {
 const TagBox = (props: TagProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { projectInfoValues } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -249,7 +247,7 @@ interface Props {
 
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -270,9 +268,7 @@ const TagComponent = (props: Props) => {
     id: i.id,
   }))
 
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')

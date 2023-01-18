@@ -137,12 +137,8 @@ const IterationWrap = () => {
   const { iterateId } = paramsData
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { iterateInfo } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { iterateInfo } = useSelector(store => store.iterate)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])

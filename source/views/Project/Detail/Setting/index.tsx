@@ -97,9 +97,7 @@ const Setting = () => {
   const [t, i18n] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 

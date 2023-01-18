@@ -86,7 +86,7 @@ const MineBox = () => {
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)

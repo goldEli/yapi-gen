@@ -67,13 +67,9 @@ const DemandWrap = (props: Props) => {
   const projectId = paramsData.id
   const { iterateId } = paramsData
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { iterateInfo, filterParams } = useSelector(
-    (store: { iterate: any }) => store.iterate,
-  )
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
+  const { iterateInfo, filterParams } = useSelector(store => store.iterate)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({

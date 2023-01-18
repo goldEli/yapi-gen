@@ -91,11 +91,8 @@ const Setting = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { value: companyInfo } = useSelector(
-    (store: { companyInfo: any }) => store.companyInfo,
-  )
-
+  const { userInfo } = useSelector(store => store.user)
+  const { value: companyInfo } = useSelector(store => store.companyInfo)
   const nowPath = pathname.split('/')[2] || ''
 
   const onChangeActive = (value: MenuList) => {

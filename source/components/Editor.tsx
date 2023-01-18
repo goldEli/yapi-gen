@@ -184,9 +184,7 @@ const EditorBox = (props: Props) => {
     return url
   }
 
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const [editor, setEditor] = useState<IDomEditor | null>(null)
   const [editConfig, setEditConfig] = useState(toolbarConfig)
   const [isOpen, setIsOpen] = useState(false)

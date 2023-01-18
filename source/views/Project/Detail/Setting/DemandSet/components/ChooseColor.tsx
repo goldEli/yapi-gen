@@ -40,7 +40,7 @@ interface ChooseColorProps {
 
 const ChooseColor = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
   const onChangeColor = (val: string) => {
     props?.onChangeValue?.(val)
     props?.onChange?.(val)

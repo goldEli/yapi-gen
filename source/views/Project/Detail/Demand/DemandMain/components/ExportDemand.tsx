@@ -22,9 +22,7 @@ const ExportDemand = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
   const [isSpin, setIsSpin] = useState(false)
 
   // 下载导出模板

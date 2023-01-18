@@ -236,7 +236,7 @@ const AddWorkflow = (props: Props) => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [form] = Form.useForm()
-  const { colorList } = useSelector((store: { project: any }) => store.project)
+  const { colorList } = useSelector(store => store.project)
 
   const getList = async () => {
     setIsSpinning(true)

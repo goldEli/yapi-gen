@@ -96,9 +96,7 @@ interface Props {
 const IterationCard = (props: Props) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,

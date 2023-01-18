@@ -189,7 +189,7 @@ const EditDemand = (props: Props) => {
   //   是否是完成并创建下一个 -- 用于提交参数后回填
   const [isSaveParams, setIsSaveParams] = useState(false)
   const { colorList, filterParamsModal, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
+    store => store.project,
   )
   const { createCategory } = useSelector(store => store.demand)
   const dispatch = useDispatch()

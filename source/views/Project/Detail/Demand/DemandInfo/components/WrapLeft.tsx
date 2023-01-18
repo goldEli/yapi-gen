@@ -69,10 +69,8 @@ const WrapLeftBox = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const [tagList, setTagList] = useState<any>([])
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)

@@ -60,7 +60,7 @@ const Project = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const [projectList, setProjectList] = useState<any>({
     list: undefined,

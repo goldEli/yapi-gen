@@ -12,7 +12,7 @@ import sideLogo from '/sliderLogo.svg'
 import sideLogoText from '/logoText.svg'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useSelector } from '@store/index'
 
 const imgCss = css`
   width: 40px;
@@ -117,9 +117,8 @@ export const RedLogo = styled.span`
 `
 
 export const Side = () => {
-  const count = useSelector((state: any) => state.counter.value)
   const [t] = useTranslation()
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const location = useLocation()
   const { pathname } = location
   const nowPath =

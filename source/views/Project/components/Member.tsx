@@ -223,9 +223,7 @@ const MoreDropdown = (props: DropDownProps) => {
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const { projectInfo, projectInfoValues } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])

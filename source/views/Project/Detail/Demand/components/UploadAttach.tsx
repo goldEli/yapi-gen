@@ -162,7 +162,7 @@ const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
 const UploadAttach = (props: any) => {
   const scopeRef = useRef(String(Math.random()))
-  const { userInfo } = useSelector((store: { user: any }) => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [pictureList, setPictureList] = useState({
     imageArray: [],
@@ -181,9 +181,7 @@ const UploadAttach = (props: any) => {
   }
 
   const [fileList, setFileList] = useState<any>([])
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { projectInfo } = useSelector(store => store.project)
 
   // 判断权限
 

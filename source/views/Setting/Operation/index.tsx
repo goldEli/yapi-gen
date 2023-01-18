@@ -93,9 +93,7 @@ const Operation = () => {
     { label: t('common.edit'), value: 'PUT' },
     { label: t('common.del'), value: 'DELETE' },
   ]
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })

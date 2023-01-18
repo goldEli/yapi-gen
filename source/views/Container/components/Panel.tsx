@@ -148,9 +148,7 @@ interface Props {
 }
 
 export const Panel = (props: Props) => {
-  const { userInfo, loginInfo } = useSelector(
-    (store: { user: any }) => store.user,
-  )
+  const { userInfo } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [personalModalVisible, setPersonalModalVisible] =

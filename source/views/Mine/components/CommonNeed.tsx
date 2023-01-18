@@ -145,11 +145,9 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
-  const { isUpdateCreate } = useSelector((store: { mine: any }) => store.mine)
-  const { projectInfo } = useSelector(
-    (store: { project: any }) => store.project,
-  )
+  const { isRefresh } = useSelector(store => store.user)
+  const { isUpdateCreate } = useSelector(store => store.mine)
+  const { projectInfo } = useSelector(store => store.project)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)

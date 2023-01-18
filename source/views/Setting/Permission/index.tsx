@@ -243,7 +243,7 @@ const Permission = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
-  const { isRefresh } = useSelector((store: { user: any }) => store.user)
+  const { isRefresh } = useSelector(store => store.user)
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
