@@ -28,7 +28,6 @@ import {
 import { setFilterParamsModal, setProjectInfoValues } from '@store/project'
 import {
   setCreateCategory,
-  setDemandInfo,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
 } from '@store/demand'
@@ -163,6 +162,7 @@ const EditDemand = (props: Props) => {
   }
   const rightDom: any = createRef()
   const leftDom: any = createRef()
+  const [demandInfo, setDemandInfo] = useState<any>({})
   // 切换需求类别下的工作流
   const [workList, setWorkList] = useState<any>({
     list: undefined,
@@ -263,7 +263,7 @@ const EditDemand = (props: Props) => {
         projectId: value || projectId,
         id: props?.demandId,
       })
-      dispatch(setDemandInfo(res))
+      setDemandInfo(res)
       //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
       if (
         resultCategoryList?.filter((j: any) => j.id === res.category)?.length
@@ -734,6 +734,7 @@ const EditDemand = (props: Props) => {
               onResetForm={onResetForm}
               onRef={leftDom}
               demandId={props.demandId}
+              demandDetail={demandInfo}
             />
             <EditDemandRIght
               projectId={projectId}
@@ -746,6 +747,7 @@ const EditDemand = (props: Props) => {
               isQuickCreate={props?.isQuickCreate}
               fieldsList={fieldsList}
               parentId={props.parentId}
+              demandDetail={demandInfo}
             />
           </ModalContent>
         )}

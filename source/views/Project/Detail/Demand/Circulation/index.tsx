@@ -9,17 +9,16 @@
 import styled from '@emotion/styled'
 import { Space, Spin, Timeline } from 'antd'
 import { NameWrap, ViewWrap, DelWrap } from '@/components/StyleCommon'
-
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
-import PubSub from 'pubsub-js'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { getStoryStatusLog } from '@/services/project/demand'
+import { setIsUpdateChangeLog } from '@store/demand'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -120,7 +119,9 @@ const Circulation = () => {
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
+  const { demandInfo, isUpdateChangeLog } = useSelector(
+    (store: { demand: any }) => store.demand,
+  )
   const dispatch = useDispatch()
   const { isRefresh } = useSelector((store: { user: any }) => store.user)
 
@@ -132,7 +133,9 @@ const Circulation = () => {
         demandId: demandInfo?.id,
         all: true,
       })
-      setStatusLogs(result)
+      setStatusLogs({
+        list: result,
+      })
       dispatch(setIsRefresh(false))
       setIsSpin(false)
     } else {
@@ -141,8 +144,11 @@ const Circulation = () => {
         demandId: demandInfo?.id,
         all: true,
       })
-      setStatusLogs(result)
+      setStatusLogs({
+        list: result,
+      })
     }
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
@@ -157,10 +163,10 @@ const Circulation = () => {
   }, [isRefresh])
 
   useEffect(() => {
-    PubSub.subscribe('state', () => {
+    if (isUpdateChangeLog) {
       getLogs(false)
-    })
-  }, [])
+    }
+  }, [isUpdateChangeLog])
 
   // 返回自定义值
   const getValues = (key: any, values: any) => {

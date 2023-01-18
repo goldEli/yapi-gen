@@ -61,6 +61,7 @@ interface Props {
   parentId?: any
 
   treeArr?: any
+  demandDetail?: any
 }
 
 const EditDemandRIght = (props: Props) => {
@@ -71,7 +72,6 @@ const EditDemandRIght = (props: Props) => {
   const { filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [priorityDetail, setPriorityDetail] = useState<any>({})
@@ -133,34 +133,34 @@ const EditDemandRIght = (props: Props) => {
   useEffect(() => {
     if (
       props?.demandId &&
-      demandInfo?.id &&
-      props.demandId === demandInfo?.id
+      props?.demandDetail?.id &&
+      props.demandId === props?.demandDetail?.id
     ) {
       // 需求进度
-      setSchedule(demandInfo?.schedule)
+      setSchedule(props?.demandDetail?.schedule)
       // 获取自定义字段回显值
       const form1Obj: any = {}
-      for (const key in demandInfo?.customField) {
+      for (const key in props?.demandDetail?.customField) {
         form1Obj[key] =
-          demandInfo?.customField[key]?.attr === 'date'
-            ? demandInfo?.customField[key]?.value
-              ? moment(demandInfo?.customField[key]?.value)
+          props?.demandDetail?.customField[key]?.attr === 'date'
+            ? props?.demandDetail?.customField[key]?.value
+              ? moment(props?.demandDetail?.customField[key]?.value)
               : ''
-            : demandInfo?.customField[key]?.value
+            : props?.demandDetail?.customField[key]?.value
       }
       form1.setFieldsValue(form1Obj)
       // 回显优先级
-      setPriorityDetail(demandInfo.priority)
+      setPriorityDetail(props?.demandDetail.priority)
       // 开始时间
-      if (demandInfo?.expectedStart) {
+      if (props?.demandDetail?.expectedStart) {
         form.setFieldsValue({
-          startTime: moment(demandInfo.expectedStart || 0),
+          startTime: moment(props?.demandDetail.expectedStart || 0),
         })
       }
       // 结束时间
-      if (demandInfo?.expectedEnd) {
+      if (props?.demandDetail?.expectedEnd) {
         form.setFieldsValue({
-          endTime: moment(demandInfo.expectedEnd || 0),
+          endTime: moment(props?.demandDetail.expectedEnd || 0),
         })
       }
 
@@ -184,14 +184,16 @@ const EditDemandRIght = (props: Props) => {
       form.setFieldsValue({
         // 抄送人
         copySendIds: getCommonUser(
-          demandInfo?.copySend?.map((i: any) => i.copysend),
+          props?.demandDetail?.copySend?.map((i: any) => i.copysend),
           removeNull(projectInfoValues, 'users_copysend_name'),
         ),
         // 附件
-        attachments: demandInfo?.attachment?.map((i: any) => i.attachment.path),
+        attachments: props?.demandDetail?.attachment?.map(
+          (i: any) => i.attachment.path,
+        ),
         // 处理人
         userIds: getCommonUser(
-          demandInfo?.user?.map((i: any) => i.user),
+          props?.demandDetail?.user?.map((i: any) => i.user),
           removeNull(projectInfoValues, 'user_name'),
         ),
         // 迭代
@@ -199,19 +201,20 @@ const EditDemandRIght = (props: Props) => {
           ? hasIterateId
           : removeNull(projectInfoValues, 'iterate_name')
               ?.filter((k: any) => k.status === 1)
-              ?.filter((i: any) => i.id === demandInfo?.iterateId).length
-          ? demandInfo?.iterateId
+              ?.filter((i: any) => i.id === props?.demandDetail?.iterateId)
+              .length
+          ? props?.demandDetail?.iterateId
           : null,
         // 父需求
         parentId: props.isChild
           ? hasChild
           : props.parentList?.filter(
-              (i: any) => i.value === demandInfo?.parentId,
+              (i: any) => i.value === props?.demandDetail?.parentId,
             ).length
-          ? demandInfo?.parentId
+          ? props?.demandDetail?.parentId
           : null,
         // 需求分类
-        class: demandInfo.class || null,
+        class: props?.demandDetail.class || null,
       })
     } else {
       // 子需求默认回填父需求
@@ -345,7 +348,7 @@ const EditDemandRIght = (props: Props) => {
         }
       }
     }
-  }, [props?.demandId, demandInfo, props.parentList, props.fieldsList])
+  }, [props?.demandId, props?.demandDetail, props.parentList, props.fieldsList])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -446,11 +449,11 @@ const EditDemandRIght = (props: Props) => {
                 onChange={value => onChangeSetSchedule(value)}
                 disabled={
                   !(
-                    demandInfo?.user
+                    props?.demandDetail?.user
                       ?.map((i: any) => i.user.id)
                       ?.includes(userInfo?.id) &&
-                    demandInfo.status.is_start !== 1 &&
-                    demandInfo.status.is_end !== 1
+                    props?.demandDetail.status.is_start !== 1 &&
+                    props?.demandDetail.status.is_end !== 1
                   )
                 }
               />
@@ -519,7 +522,7 @@ const EditDemandRIght = (props: Props) => {
                     (k: any) =>
                       k.value !== props?.demandId &&
                       k.parentId !== props?.demandId &&
-                      k.parentId !== demandInfo?.parentId,
+                      k.parentId !== props?.demandDetail?.parentId,
                   )
                 : props.parentList
             }

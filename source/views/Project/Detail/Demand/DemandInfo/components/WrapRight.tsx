@@ -45,7 +45,6 @@ import {
 } from '../../components/UploadAttach'
 import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
-import PubSub from 'pubsub-js'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { storyConfigField } from '@/services/project'
 import {

@@ -38,6 +38,7 @@ interface Props {
   onRef: any
   demandId?: any
   isAllProject?: any
+  demandDetail?: any
 }
 
 const EditDemandLeft = (props: Props) => {
@@ -49,7 +50,6 @@ const EditDemandLeft = (props: Props) => {
   const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
     (store: { project: any }) => store.project,
   )
-  const { demandInfo } = useSelector((store: { demand: any }) => store.demand)
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
   const dispatch = useDispatch()
@@ -169,16 +169,16 @@ const EditDemandLeft = (props: Props) => {
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
     // 需求id为真并且与需求详情id匹配
-    if (props?.demandId && props?.demandId === demandInfo?.id) {
+    if (props?.demandId && props?.demandId === props?.demandDetail?.id) {
       setTagCheckedList(
-        demandInfo?.tag?.map((i: any) => ({
+        props?.demandDetail?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       )
       setAttachList(
-        demandInfo?.attachment?.map((i: any) => ({
+        props?.demandDetail?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
           size: i.attachment.size,
@@ -189,9 +189,9 @@ const EditDemandLeft = (props: Props) => {
         })),
       )
       form.setFieldsValue({
-        name: demandInfo?.name,
-        info: demandInfo?.info,
-        tagIds: demandInfo?.tag?.map((i: any) => ({
+        name: props?.demandDetail?.name,
+        info: props?.demandDetail?.info,
+        tagIds: props?.demandDetail?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
@@ -201,7 +201,7 @@ const EditDemandLeft = (props: Props) => {
         inputRefDom.current?.focus()
       }, 100)
     }
-  }, [props?.demandId, demandInfo])
+  }, [props?.demandId, props?.demandDetail])
 
   // 切换项目
   const onSelectProjectName = async (value: any) => {

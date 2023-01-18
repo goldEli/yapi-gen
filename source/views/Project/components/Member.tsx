@@ -16,7 +16,6 @@ import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
-import PubSub from 'pubsub-js'
 import {
   addMember,
   getProjectInfo,
@@ -25,7 +24,11 @@ import {
   updateMember,
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import {
+  setProjectInfo,
+  setProjectInfoValues,
+  setIsUpdateMember,
+} from '@store/project'
 
 interface Props {
   visible: boolean
@@ -322,7 +325,7 @@ const Member = (props: Props) => {
       message.success(t('common.editS'))
       // 可以考虑不走接口修改
       getList()
-      PubSub.publish('getPeople')
+      dispatch(setIsUpdateMember(true))
     } catch (error) {
       //
     }
@@ -368,7 +371,7 @@ const Member = (props: Props) => {
     setIsVisible(false)
     const result = await getProjectInfo({ projectId: projectInfo.id })
     dispatch(setProjectInfo(result))
-    PubSub.publish('getPeople')
+    dispatch(setIsUpdateMember(true))
     setTimeout(() => {
       form.resetFields()
     }, 100)

@@ -23,9 +23,10 @@ import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import PubSub from 'pubsub-js'
 import { setValue } from './ShapeForDetail'
 import { getProjectMember } from '@/services/mine'
+import { useDispatch } from '@store/index'
+import { setIsUpdateChangeLog } from '@store/demand'
 
 const Left = styled.div`
   min-height: 400px;
@@ -356,6 +357,7 @@ export const ShapeContent = (props: any) => {
   const [activeStatus, setActiveStatus] = useState<any>({})
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
+  const dispatch = useDispatch()
 
   const handleChange = (value: string) => {
     setReviewerValue(value)
@@ -421,7 +423,6 @@ export const ShapeContent = (props: any) => {
   }
 
   useEffect(() => {
-    // console.log(111111111111111)
     if (props.noleft) {
       init2()
     } else {
@@ -464,9 +465,7 @@ export const ShapeContent = (props: any) => {
 
     await tap(props.noleft ? putData2 : putData)
     onClear()
-    setTimeout(() => {
-      PubSub.publish('state')
-    }, 100)
+    dispatch(setIsUpdateChangeLog(true))
   }
 
   const onConfirm = async () => {

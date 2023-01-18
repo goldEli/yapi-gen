@@ -12,6 +12,7 @@ export interface CounterState {
   isRefreshGroup: boolean
   filterKeys: []
   projectInfoValues: []
+  isUpdateMember: boolean
 }
 
 const initialState: CounterState = {
@@ -40,6 +41,7 @@ const initialState: CounterState = {
   isRefreshGroup: false,
   filterKeys: [],
   projectInfoValues: [],
+  isUpdateMember: false,
 }
 
 export const projectSlice = createSlice({
@@ -74,6 +76,10 @@ export const projectSlice = createSlice({
     setFilterKeys: (state: any, action) => {
       state.filterKeys = action.payload
     },
+    // 是否更新项目成员 -- 用于成员弹窗操作后更新设置项目成员
+    setIsUpdateMember: (state: any, action) => {
+      state.isUpdateMember = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -88,6 +94,7 @@ export const {
   setIsRefreshGroup,
   setFilterKeys,
   setProjectInfoValues,
+  setIsUpdateMember,
 } = projectSlice.actions
 
 export default projectSlice.reducer

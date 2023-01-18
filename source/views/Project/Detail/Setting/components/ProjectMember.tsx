@@ -36,11 +36,10 @@ import {
   getProjectPermission,
   updateMember,
 } from '@/services/project'
-import PubSub from 'pubsub-js'
 import { useDispatch, useSelector } from '@store/index'
 import AddButton from '@/components/AddButton'
 import CommonInput from '@/components/CommonInput'
-import { setProjectInfo } from '@store/project'
+import { setIsUpdateMember, setProjectInfo } from '@store/project'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -138,7 +137,7 @@ const ProjectMember = () => {
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector((store: { user: any }) => store.user)
-  const { projectInfo } = useSelector(
+  const { projectInfo, isUpdateMember } = useSelector(
     (store: { project: any }) => store.project,
   )
   const paramsData = getParamsData(searchParams)
@@ -205,6 +204,7 @@ const ProjectMember = () => {
     })
     setMemberList(result)
     setIsSpinning(false)
+    dispatch(setIsUpdateMember(false))
   }
 
   const getJobList = async () => {
@@ -636,10 +636,10 @@ const ProjectMember = () => {
   }, [isAddVisible])
 
   useEffect(() => {
-    PubSub.subscribe('getPeople', () => {
+    if (isUpdateMember) {
       getList(order, { page: 1, size: pageObj.size })
-    })
-  }, [])
+    }
+  }, [isUpdateMember])
 
   return (
     <PermissionWrap
