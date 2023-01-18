@@ -32,6 +32,7 @@ const ChangeStatusPopover = (props: Props) => {
       trigger="click"
       destroyTooltipOnHide
       getPopupContainer={n => (props.isShow ? n : document.body)}
+      // autoAdjustOverflow={false}
       content={
         props?.isCanOperation && (
           <ShapeContent

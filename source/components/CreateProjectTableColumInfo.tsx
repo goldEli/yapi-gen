@@ -338,7 +338,7 @@ export const useDynamicColumns = (state: any) => {
                   !record.project?.isUserMember)
               )
             }
-            projectId={state.projectId}
+            projectId={record.project_id}
             record={record}
             onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
