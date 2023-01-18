@@ -11,7 +11,6 @@
 import { message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -28,8 +27,6 @@ import {
   SliderWrap,
 } from '@/components/StyleCommon'
 import ParentDemand from '../../components/ParentDemand'
-import { LevelContent } from '@/components/Level'
-import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import EditComment from '@/components/EditComment'
 import { useDispatch, useSelector } from '../../../../../../../store'
@@ -56,6 +53,7 @@ import {
   updateTableParams,
 } from '@/services/project/demand'
 import { setDemandInfo, setIsRefreshComment } from '@store/demand'
+import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -666,19 +664,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             </InfoItem>
             <InfoItem>
               <Label>{t('common.priority')}</Label>
-              <Popconfirm
-                content={({ onHide }: { onHide(): void }) => {
-                  return isCanEdit ? (
-                    <LevelContent
-                      onTap={item => onChangeState(item)}
-                      onHide={onHide}
-                      record={{
-                        id: demandId,
-                        project_id: projectId,
-                      }}
-                    />
-                  ) : null
+              <ChangePriorityPopover
+                isCanOperation={isCanEdit}
+                record={{
+                  id: demandId,
+                  project_id: projectId,
                 }}
+                onChangePriority={onChangeState}
               >
                 <div
                   style={{
@@ -700,7 +692,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
                   </CanOperation>
                 </div>
-              </Popconfirm>
+              </ChangePriorityPopover>
             </InfoItem>
             <InfoItem>
               <Label>{t('common.start')}</Label>

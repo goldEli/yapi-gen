@@ -27,6 +27,7 @@ import { setValue } from './ShapeForDetail'
 import { getProjectMember } from '@/services/mine'
 import { useDispatch } from '@store/index'
 import { setIsUpdateChangeLog } from '@store/demand'
+import { CloseWrap } from './StyleCommon'
 
 const Left = styled.div`
   min-height: 400px;
@@ -43,12 +44,10 @@ const Right = styled.div`
   position: relative;
   box-sizing: border-box;
   padding-left: 24px;
-  padding-top: 40px;
   width: 500px;
   min-height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `
 const Contain = styled.div`
   position: relative;
@@ -89,11 +88,9 @@ const ButtonFooter = styled.div`
   flex-direction: row-reverse;
   box-sizing: border-box;
   padding-right: 24px;
-`
-const Close = styled.span`
   position: absolute;
-  right: 10px;
-  top: 10px;
+  bottom: 0;
+  width: calc(100% - 24px);
 `
 const ExcessiveBox = styled.div`
   display: flex;
@@ -185,6 +182,14 @@ const ArrorItem = styled.div`
       visibility: hidden;
     }
   }
+`
+
+const RightCloseBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16px;
+  height: 56px;
 `
 
 const LabelComponent = (props: any) => {
@@ -344,8 +349,8 @@ export const ShapeContent = (props: any) => {
       project_id: projectId,
       status: { id: activeID, can_changes: statusList },
     },
-    hide,
-    tap,
+    onClosePopover,
+    onTap,
   } = props
 
   const [form] = Form.useForm()
@@ -431,7 +436,7 @@ export const ShapeContent = (props: any) => {
   }, [])
 
   const onClear = () => {
-    hide()
+    onClosePopover()
     form.resetFields()
   }
 
@@ -463,7 +468,7 @@ export const ShapeContent = (props: any) => {
       verifyId: reviewerValue,
     }
 
-    await tap(props.noleft ? putData2 : putData)
+    await onTap(props.noleft ? putData2 : putData)
     onClear()
     dispatch(setIsUpdateChangeLog(true))
   }
@@ -474,7 +479,7 @@ export const ShapeContent = (props: any) => {
   }
 
   return (
-    <Contain hidden={!props.hidden}>
+    <Contain>
       {!props.noleft && (
         <Left>
           {leftList.map((item: any) => (
@@ -501,6 +506,14 @@ export const ShapeContent = (props: any) => {
 
       {loading && (
         <Right>
+          <RightCloseBox>
+            <CloseWrap onClick={() => onClear()} width={30} height={30}>
+              <IconFont
+                type="close"
+                style={{ fontSize: 20, cursor: 'pointer' }}
+              />
+            </CloseWrap>
+          </RightCloseBox>
           <div style={{ maxHeight: 280, overflow: 'auto' }}>
             <FormWrap>
               <Form
@@ -849,10 +862,6 @@ export const ShapeContent = (props: any) => {
           }}
         />
       )}
-
-      <Close onClick={() => onClear()}>
-        <IconFont type="close" style={{ fontSize: 16, cursor: 'pointer' }} />
-      </Close>
     </Contain>
   )
 }

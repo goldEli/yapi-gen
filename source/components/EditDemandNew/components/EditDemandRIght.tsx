@@ -12,17 +12,15 @@ import {
   PriorityWrap,
   SliderWrap,
 } from '@/components/StyleCommon'
-import PopConfirm from '@/components/Popconfirm'
 import { DatePicker, Form, Select, TreeSelect } from 'antd'
 import { useTranslation } from 'react-i18next'
-
 import { useEffect, useImperativeHandle, useState } from 'react'
-import { LevelContent } from '@/components/Level'
 import IconFont from '@/components/IconFont'
-import { getNestedChildren, getTypeComponent, removeNull } from '@/tools'
+import { getTypeComponent, removeNull } from '@/tools'
 import moment from 'moment'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
+import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -532,18 +530,10 @@ const EditDemandRIght = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('common.priority')} name="priority">
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                props?.projectId && (
-                  <LevelContent
-                    onHide={onHide}
-                    record={{ project_id: props?.projectId }}
-                    onCurrentDetail={onCurrentDetail}
-                  />
-                )
-              )
-            }}
+          <ChangePriorityPopover
+            isCanOperation={props?.projectId}
+            record={{ project_id: props?.projectId }}
+            onCurrentDetail={(item: any) => onCurrentDetail(item)}
           >
             {props?.projectId && (
               <PriorityWrap>
@@ -564,7 +554,7 @@ const EditDemandRIght = (props: Props) => {
             {!props?.projectId && (
               <span style={{ cursor: 'not-allowed' }}>--</span>
             )}
-          </PopConfirm>
+          </ChangePriorityPopover>
         </Form.Item>
         <Form.Item label={t('common.iterate')} name="iterateId">
           <Select

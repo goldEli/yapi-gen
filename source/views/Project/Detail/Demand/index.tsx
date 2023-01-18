@@ -18,9 +18,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button, message, Popover, Form, Select } from 'antd'
-import { ShapeContent } from '@/components/Shape'
-import PopConfirm from '@/components/Popconfirm'
-
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
@@ -31,6 +28,7 @@ import { CanOperationCategory, StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import useSetTitle from '@/hooks/useSetTitle'
 import { changeId } from '../../../../../store/counterSlice'
 import { setIsRefresh } from '@store/user'
@@ -481,28 +479,11 @@ const DemandBox = () => {
             >
               <span className="demandName">{demandInfo?.name}</span>
             </OmitText>
-            <PopConfirm
-              content={({ onHide }: { onHide(): void }) => {
-                return (
-                  // isCanEdit &&
-                  // !demandInfo?.isExamine && (
-                  <ShapeContent
-                    tap={(value: any) => onChangeStatus(value)}
-                    hide={onHide}
-                    row={demandInfo}
-                    hidden={isCanEdit && !demandInfo?.isExamine}
-                    record={{
-                      id: demandInfo.id,
-                      project_id: projectId,
-                      status: {
-                        id: demandInfo.status.id,
-                        can_changes: demandInfo.status.can_changes,
-                      },
-                    }}
-                  />
-                  // )
-                )
-              }}
+            <ChangeStatusPopover
+              isCanOperation={isCanEdit && !demandInfo?.isExamine}
+              projectId={projectId}
+              record={demandInfo}
+              onChangeStatus={onChangeStatus}
             >
               <StatusWrap
                 onClick={demandInfo?.isExamine ? onExamine : void 0}
@@ -514,7 +495,7 @@ const DemandBox = () => {
               >
                 {demandInfo?.status?.status?.content}
               </StatusWrap>
-            </PopConfirm>
+            </ChangeStatusPopover>
           </NameWrap>
           <Space size={16}>
             {isEdit ? null : (

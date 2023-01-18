@@ -4,9 +4,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-handler-names */
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import PopConfirm from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
@@ -23,6 +20,8 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from './DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
+import ChangeStatusPopover from './ChangeStatusPopover'
+import ChangePriorityPopover from './ChangePriorityPopover'
 import { useSelector } from '@store/index'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
@@ -176,28 +175,11 @@ export const useDynamicColumns = (state: any) => {
       width: 190,
       render: (text: any, record: any) => {
         return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                isCanEdit &&
-                !record.isExamine && (
-                  <ShapeContent
-                    tap={(value: any) => state.onChangeStatus(value, record)}
-                    hide={onHide}
-                    row={record}
-                    record={{
-                      id: record.id,
-                      project_id: state.projectId,
-                      status: {
-                        id: record.status.id,
-                        can_changes: record.status.can_changes,
-                      },
-                    }}
-                  />
-                )
-              )
-            }}
+          <ChangeStatusPopover
+            isCanOperation={isCanEdit && !record.isExamine}
+            projectId={state.projectId}
             record={record}
+            onChangeStatus={state.onChangeStatus}
           >
             <StatusWrap
               onClick={record.isExamine ? onExamine : void 0}
@@ -209,7 +191,7 @@ export const useDynamicColumns = (state: any) => {
             >
               {text?.status.content}
             </StatusWrap>
-          </PopConfirm>
+          </ChangeStatusPopover>
         )
       },
     },
@@ -220,19 +202,10 @@ export const useDynamicColumns = (state: any) => {
       width: 180,
       render: (text: any, record: Record<string, string | number>) => {
         return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                isCanEdit && (
-                  <LevelContent
-                    onTap={item => state.onChangeState(item, record)}
-                    onHide={onHide}
-                    record={{ project_id: state.projectId, id: record.id }}
-                  />
-                )
-              )
-            }}
-            record={record}
+          <ChangePriorityPopover
+            isCanOperation={isCanEdit}
+            onChangePriority={item => state.onChangeState(item, record)}
+            record={{ project_id: state.projectId, id: record.id }}
           >
             <PriorityWrap isShow={isCanEdit}>
               <IconFont
@@ -248,7 +221,7 @@ export const useDynamicColumns = (state: any) => {
                 <IconFont className="icon" type="down-icon" />
               </div>
             </PriorityWrap>
-          </PopConfirm>
+          </ChangePriorityPopover>
         )
       },
     },

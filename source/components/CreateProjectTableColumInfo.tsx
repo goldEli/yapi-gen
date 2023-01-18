@@ -2,17 +2,14 @@
 
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import {
   ClickWrap,
-  ShowWrap,
   StyledShape,
   CategoryWrap,
   HiddenText,
   ListNameWrap,
+  ShowWrap,
 } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
@@ -25,6 +22,8 @@ import DemandProgress from '@/components/DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
+import ChangeStatusPopover from './ChangeStatusPopover'
+import ChangePriorityPopover from './ChangePriorityPopover'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -203,20 +202,13 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       render: (text: any, record: any) => {
         return (
-          <Pop
-            content={({ onHide }: { onHide(): void }) =>
-              !(
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && (
-                <LevelContent
-                  onTap={state.updatePriority}
-                  onHide={onHide}
-                  record={record}
-                  projectId={state.projectId}
-                />
-              )
+          <ChangePriorityPopover
+            isCanOperation={
+              !(record.project?.isPublic !== 1 && !record.project?.isUserMember)
             }
+            onChangePriority={item => state.updatePriority(item, record)}
             record={record}
+            projectId={state.projectId}
           >
             <Wrap
               isEdit={
@@ -249,7 +241,7 @@ export const useDynamicColumns = (state: any) => {
                 </ShowWrap>
               )}
             </Wrap>
-          </Pop>
+          </ChangePriorityPopover>
         )
       },
     },
@@ -338,24 +330,17 @@ export const useDynamicColumns = (state: any) => {
       key: 'status',
       render: (text: any, record: any) => {
         return (
-          <Pop
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                !(
-                  record.isExamine ||
-                  (record.project?.isPublic !== 1 &&
-                    !record.project?.isUserMember)
-                ) && (
-                  <ShapeContent
-                    tap={(value: any) => state.updateStatus(value)}
-                    hide={onHide}
-                    record={record}
-                    row={record}
-                  />
-                )
+          <ChangeStatusPopover
+            isCanOperation={
+              !(
+                record.isExamine ||
+                (record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember)
               )
-            }}
+            }
+            projectId={state.projectId}
             record={record}
+            onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
             <StyledShape
               style={{
@@ -371,7 +356,7 @@ export const useDynamicColumns = (state: any) => {
             >
               {text?.status.content}
             </StyledShape>
-          </Pop>
+          </ChangeStatusPopover>
         )
       },
     },

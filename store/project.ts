@@ -10,8 +10,8 @@ export interface CounterState {
   isChangeProject: number | string
   filterParamsModal: any
   isRefreshGroup: boolean
-  filterKeys: []
-  projectInfoValues: []
+  filterKeys: any[]
+  projectInfoValues: any[]
   isUpdateMember: boolean
 }
 

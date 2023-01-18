@@ -246,7 +246,7 @@ const Operation = (props: Props) => {
   }
 
   const onChangeCategory = (e: any, item: any) => {
-    dispatch(setCreateCategory({ item }))
+    dispatch(setCreateCategory(item))
     // 需求列表筛选参数赋值给 弹窗
     dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
