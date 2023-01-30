@@ -13,7 +13,6 @@ import DemandGrid from './components/DemandGrid'
 import DemandTree from './components/DemandTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
-
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
@@ -204,6 +203,7 @@ const DemandMain = (props: Props) => {
   }
 
   const onSearch = (params: any) => {
+    setDataList({ list: undefined })
     setIsUpdated(true)
     setSearchItems(params)
     setPageObj({

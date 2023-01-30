@@ -9,15 +9,14 @@ import IterationTable from './components/IterationTable'
 import IterationGrid from './components/IterationGrid'
 import WrapLeft from './components/WrapLeft'
 import { message } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
-
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditDemand from '@/components/EditDemandNew/index'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import {
   deleteDemand,

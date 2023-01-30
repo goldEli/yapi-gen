@@ -9,7 +9,6 @@ import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools/index'
-
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'

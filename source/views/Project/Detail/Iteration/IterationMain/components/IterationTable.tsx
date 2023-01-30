@@ -13,7 +13,6 @@ import {
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -308,30 +307,32 @@ const IterationTable = (props: Props) => {
           hasCreate || props.hasId?.status !== 1 || projectInfo?.status !== 1
         }
       >
-        <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId === 'object' &&
-            (props.data?.list && props.data?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={props.data?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-              />
-            ) : (
-              <NoData />
-            ))}
+        {typeof props?.hasId === 'object' && (
+          <Spin spinning={props?.isSpinning}>
+            {!!props.data?.list &&
+              (props.data?.list?.length > 0 ? (
+                <TableStyleBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={props.data?.list}
+                  pagination={false}
+                  scroll={{
+                    x: 'max-content',
+                    y: tableY,
+                  }}
+                  showSorterTooltip={false}
+                  tableLayout="auto"
+                />
+              ) : (
+                <NoData />
+              ))}
+          </Spin>
+        )}
 
-          {typeof props?.hasId !== 'object' && (
-            // 没有迭代的时候
-            <NoData />
-          )}
-        </Spin>
+        {typeof props?.hasId !== 'object' && (
+          // 没有迭代的时候
+          <NoData />
+        )}
       </DataWrap>
       <PaginationWrap>
         <Pagination

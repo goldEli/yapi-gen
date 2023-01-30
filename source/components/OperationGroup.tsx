@@ -40,9 +40,9 @@ const OperationGroup = (props: Props) => {
 
   // 切换显示类型
   const onClickMenu = (number: any) => {
+    message.success(t('version2.reviewModeChangeSuccess'))
     props.onChangeGrid?.(number)
     setIsVisible(false)
-    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   // 切换显示类型

@@ -58,9 +58,9 @@ const Filter = (props: Props) => {
 
   // 切换显示类型
   const onClickMenuFormat = (type: boolean) => {
+    message.success(t('version2.reviewModeChangeSuccess'))
     props.onChangeFormat(type)
     setIsVisibleFormat(false)
-    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   const menu = (

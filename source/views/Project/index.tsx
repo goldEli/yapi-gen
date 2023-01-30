@@ -138,6 +138,9 @@ const Project = () => {
 
   const onChangeSearch = (value: string) => {
     if (searchVal !== value) {
+      setProjectList({
+        list: undefined,
+      })
       setSearchVal(value)
       setPageObj({
         page: 1,

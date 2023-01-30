@@ -14,7 +14,6 @@ import {
   SecondButton,
 } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-
 import { useSearchParams } from 'react-router-dom'
 import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -123,6 +122,7 @@ const DemandWrap = (props: Props) => {
     searchParamsObj?: any,
     updateState?: boolean,
   ) => {
+    setDataList({ list: undefined })
     if (!updateState) {
       setIsSpinning(true)
     }
