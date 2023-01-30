@@ -51,23 +51,15 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     'fontSize',
     'fontFamily',
     'indent',
-
-    // 'delIndent',
-    // 'justifyLeft',
-    // 'justifyRight',
     'justifyCenter',
     'justifyJustify',
     'lineHeight',
     'viewImageLink',
-
-    // 'divider',
     'emotion',
     'insertLink',
     'editLink',
     'unLink',
     'viewLink',
-
-    // 'codeBlock',
     'blockquote',
     'headerSelect',
     'todo',
@@ -78,13 +70,8 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     'numberedList',
     'insertTable',
     'uploadVideo',
-
-    // 'editVideoSize',
     'uploadImage',
     'fullScreen',
-    // 'customFullScreen',
-
-    // 'cancelCustomFullScreen',
   ],
   excludeKeys: [],
 }
@@ -156,7 +143,6 @@ const GrepDiv = styled.div`
   text-align: center;
   line-height: 35px;
   display: inline-block;
-  /* border-radius: 6px 6px 6px 6px; */
   &:hover {
     background: #f1f1f1;
   }
@@ -343,11 +329,6 @@ const EditorBox = (props: Props) => {
     }
   }, [editor])
 
-  // toolbarConfig.excludeKeys = [
-  //   'headerSelect',
-  //   'italic',
-  //   'group-more-style',
-  // ]
   const onGetViewPicture = (e: any) => {
     if (e.path[0].nodeName === 'IMG') {
       const params: any = {}

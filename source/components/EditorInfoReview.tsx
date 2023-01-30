@@ -2,36 +2,9 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import Viewer from 'react-viewer'
 import Editor from './Editor'
-
-const TextWrapEditor = styled.div({
-  color: '#323233',
-  fontSize: 14,
-  display: 'flex',
-  flexDirection: 'column',
-  img: {
-    maxWidth: '100%',
-    height: 'auto!important',
-    cursor: 'pointer',
-  },
-  video: {
-    maxWidth: '400px',
-    height: 'auto!important',
-    cursor: 'pointer',
-  },
-  p: {
-    marginBottom: '0px!important',
-  },
-  table: {
-    'td,th': {
-      height: '20px',
-      border: '1px solid black',
-    },
-  },
-})
 
 interface Props {
   info: any
@@ -82,10 +55,6 @@ const EditorInfoReview = (props: Props) => {
           onClose={() => setIsVisible(false)}
         />
       )}
-      {/* <TextWrapEditor
-        ref={textWrapEditor}
-        dangerouslySetInnerHTML={{ __html: props.info }}
-      /> */}
       <Editor value={props.info} show />
     </>
   )

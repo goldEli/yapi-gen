@@ -1,7 +1,6 @@
 // 错误边界 -- 用于构建新版本后白屏问题
 
 import * as React from 'react'
-import log from '@jihe/secure-log'
 import DeleteConfirm from './DeleteConfirm'
 
 interface PropsType {
