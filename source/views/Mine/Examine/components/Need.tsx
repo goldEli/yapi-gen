@@ -20,8 +20,7 @@ import {
   HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Divider, Pagination, Spin } from 'antd'
-
+import { Pagination, Spin } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -88,6 +87,7 @@ const Need = (props: any) => {
     filterParams?: any,
     val?: any,
   ) => {
+    setListData({ list: undefined })
     setIsSpin(true)
     const params = {
       userId: userInfo?.id,

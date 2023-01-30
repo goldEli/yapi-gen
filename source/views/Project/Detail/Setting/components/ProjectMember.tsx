@@ -190,6 +190,7 @@ const ProjectMember = () => {
   )
 
   const getList = async (orderVal?: any, pagePrams?: any) => {
+    setMemberList({ list: undefined })
     setIsSpinning(true)
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
