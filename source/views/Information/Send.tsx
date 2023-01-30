@@ -27,11 +27,6 @@ import { DailyContext } from '.'
 import CommonInput from '@/components/CommonInput'
 import RangePicker from '@/components/RangePicker'
 
-const titleList = {
-  2: '修改日报',
-  3: '修改周报',
-  4: '修改月报',
-}
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -52,7 +47,6 @@ const Send = () => {
   const [showId, setShowId] = useState('')
   const [editType, setEditType] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
-  const [visibleEditText, setVisibleEditText] = useState('')
   const [type, setType] = useState('')
   const context: any = useContext(DailyContext)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
@@ -237,9 +231,6 @@ const Send = () => {
               <span
                 onClick={() => {
                   setVisibleEdit(true)
-                  setVisibleEditText(
-                    titleList[urlId as unknown as keyof typeof titleList],
-                  )
                   setEditId(record.id)
                   setEditType(record.type)
                   setType(record.type)
@@ -462,7 +453,6 @@ const Send = () => {
       {/* // 写日志的表单D */}
       <WhiteDay
         editId={editId}
-        visibleEditText={visibleEditText}
         visibleEdit={visibleEdit}
         editClose={editClose}
         editConfirm={editConfirm}

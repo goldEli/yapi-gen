@@ -91,7 +91,6 @@ type MenuList = {
 
 const Information = () => {
   const asyncSetTtile = useSetTitle()
-
   const [t] = useTranslation()
   asyncSetTtile(t('title.c6'))
   const menuList = [

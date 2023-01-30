@@ -1,3 +1,5 @@
+// 公用上传附件组件
+
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -184,7 +186,6 @@ const UploadAttach = (props: any) => {
   const { projectInfo } = useSelector(store => store.project)
 
   // 判断权限
-
   let isDownload: boolean
   let isShowDel: boolean
 
@@ -580,8 +581,6 @@ const UploadAttach = (props: any) => {
                       color: '#323233',
                       lineHeight: '22px',
                       wordBreak: 'break-all',
-
-                      // width: '90%',
                     }}
                   >
                     {i.file.name}

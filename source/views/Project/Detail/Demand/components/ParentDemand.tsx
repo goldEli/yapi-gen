@@ -5,7 +5,6 @@
 import styled from '@emotion/styled'
 import { message } from 'antd'
 import IconFont from '@/components/IconFont'
-
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'

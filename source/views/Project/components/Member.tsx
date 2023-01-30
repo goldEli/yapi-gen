@@ -54,7 +54,6 @@ const DrawerWrap = styled(Drawer)({
 })
 
 const ButtonWrap = styled(Button)({
-  // minWidth: '88px',
   height: 32,
   marginLeft: 16,
 })

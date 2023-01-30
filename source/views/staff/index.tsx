@@ -5,12 +5,11 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Pagination, Space, Spin, Tooltip } from 'antd'
+import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
-
 import {
   StaffHeader,
   Hehavior,
@@ -216,7 +215,7 @@ const Staff = () => {
     const arrList = [
       {
         width: 40,
-        render: (text: any, record: any) => {
+        render: (_text: any, record: any) => {
           return (
             <div
               hidden={getIsPermission(
@@ -236,7 +235,7 @@ const Staff = () => {
         dataIndex: 'action',
         width: 120,
         fixed: 'right',
-        render: (text: string, record: any) => {
+        render: (_text: string, record: any) => {
           return (
             <>
               {hasCheck ? (

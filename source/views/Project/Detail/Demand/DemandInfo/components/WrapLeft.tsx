@@ -25,9 +25,9 @@ import {
   getDemandInfo,
 } from '@/services/project/demand'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { useDispatch, useSelector } from '../../../../../../../store'
 import { message } from 'antd'
 import { setDemandInfo } from '@store/demand'
+import { useDispatch, useSelector } from '@store/index'
 
 const WrapLeft = styled.div({
   width: '100%',

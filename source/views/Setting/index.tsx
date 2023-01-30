@@ -6,7 +6,6 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useSelector } from '@store/index'
-import { useEffect } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 

@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { Spin } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useSelector } from '@store/index'
@@ -52,8 +51,6 @@ const SetHead = styled.div`
 export const Personal = (props: { visible: boolean; close(): void }) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  // eslint-disable-next-line react/hook-use-state
-  const [isShow] = useState<any>(false)
 
   const labelList = [
     {
@@ -96,32 +93,29 @@ export const Personal = (props: { visible: boolean; close(): void }) => {
       title={t('container.personInfo')}
       isShowFooter
     >
-      {isShow ? <Spin /> : null}
-      {!isShow && (
-        <div style={{ paddingBottom: 16 }}>
-          <PersonalHead>
-            {userInfo.avatar ? (
-              <img className={imgCss} src={userInfo.avatar} />
-            ) : (
-              <SetHead>
-                {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-              </SetHead>
-            )}
-          </PersonalHead>
-          <PersonalFooter>
-            <Left>
-              {labelList.map(item => (
-                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
-              ))}
-            </Left>
-            <Right>
-              {labelList.map(item => (
-                <Line key={item.label}>{item.value ? item.value : '-'}</Line>
-              ))}
-            </Right>
-          </PersonalFooter>
-        </div>
-      )}
+      <div style={{ paddingBottom: 16 }}>
+        <PersonalHead>
+          {userInfo.avatar ? (
+            <img className={imgCss} src={userInfo.avatar} />
+          ) : (
+            <SetHead>
+              {String(userInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+            </SetHead>
+          )}
+        </PersonalHead>
+        <PersonalFooter>
+          <Left>
+            {labelList.map(item => (
+              <Line key={item.label}>{item.label ? item.label : '-'}</Line>
+            ))}
+          </Left>
+          <Right>
+            {labelList.map(item => (
+              <Line key={item.label}>{item.value ? item.value : '-'}</Line>
+            ))}
+          </Right>
+        </PersonalFooter>
+      </div>
     </CommonModal>
   )
 }

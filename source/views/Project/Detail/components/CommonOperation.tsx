@@ -9,7 +9,6 @@ import { useState } from 'react'
 import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
-
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'

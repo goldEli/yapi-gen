@@ -11,7 +11,6 @@ import {
   TableStyleBox,
 } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'

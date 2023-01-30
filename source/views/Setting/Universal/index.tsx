@@ -1,9 +1,9 @@
 import useSetTitle from '@/hooks/useSetTitle'
 import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
 import { Radio } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from '../../../../store'
 import { changeWaterStatus } from '../../../../store/waterState'
 import { BottomTitle } from '../CompanyInfo'
 

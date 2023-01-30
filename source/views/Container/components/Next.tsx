@@ -102,7 +102,6 @@ const Next = (props: { visible: boolean; close(): void }) => {
         </div>
       </div>
     ))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
   const next = () => {

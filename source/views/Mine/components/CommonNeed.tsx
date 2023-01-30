@@ -26,7 +26,6 @@ import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
-
 import TableFilter from '@/components/TableFilter'
 import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -332,7 +331,6 @@ const CommonNeed = (props: any) => {
       },
     ]
     return [...arrList, ...newList]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
   const getSearchKey = async (key?: any, type?: number) => {

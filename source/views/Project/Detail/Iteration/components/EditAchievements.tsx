@@ -3,7 +3,6 @@
 import CommonModal from '@/components/CommonModal'
 import { createRef, useEffect, useState } from 'react'
 import Achievements from './Achievements'
-
 import { Button, message, Space } from 'antd'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'

@@ -16,7 +16,6 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { useDispatch, useSelector } from '@store/index'
@@ -295,21 +294,6 @@ const EditExamine = (props: Props) => {
                         </div>
                       )}
                     </ContentWrap>
-                    // <ContentWrap>
-                    //   {String(m).includes('custom_') ? (
-                    //     <span>
-                    //       {verifyInfo.fields[m]?.value
-                    //         ?.map((i: any) => i)
-                    //         .join(';') || '--'}
-                    //     </span>
-                    //   ) : (
-                    //     <span>
-                    //       {verifyInfo.fields[m]?.value
-                    //         ?.map((i: any) => i.name?.trim())
-                    //         .join(';') || '--'}
-                    //     </span>
-                    //   )}
-                    // </ContentWrap>
                   ))}
                 {m === 'priority' && (
                   <ContentWrap>

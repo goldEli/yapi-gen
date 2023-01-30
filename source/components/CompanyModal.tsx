@@ -84,7 +84,7 @@ const CompanyModal = (props: Props) => {
             name={i.name}
             key={i.id}
             tap={() => cutCompany(i)}
-            show={i.id === activeId}
+            isShow={i.id === activeId}
           />
         ))}
       </Space>

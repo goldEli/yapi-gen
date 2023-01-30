@@ -74,7 +74,6 @@ const SearchList = (props: Props) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const confirm = async () => {

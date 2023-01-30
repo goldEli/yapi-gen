@@ -1,7 +1,6 @@
 // 颜色选择组件
 
 import IconFont from '@/components/IconFont'
-
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { Popover, Space } from 'antd'

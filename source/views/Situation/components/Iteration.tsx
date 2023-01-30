@@ -67,7 +67,7 @@ const Iteration = (props: any) => {
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.finish_count ?? 0}</span>
-            <span className={title2Css}>完成迭代</span>
+            <span className={title2Css}>{t('version2.finishIteration')}</span>
           </ChartsItem>
           <ChartsItem>
             <span className={title1Css}>{data?.end_count ?? 0}</span>

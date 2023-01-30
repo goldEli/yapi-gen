@@ -9,7 +9,6 @@ import styled from '@emotion/styled'
 import { Progress, Spin } from 'antd'
 import { Line, Column } from '@ant-design/plots'
 import { useEffect, useState } from 'react'
-
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'

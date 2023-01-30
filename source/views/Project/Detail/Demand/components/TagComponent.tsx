@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { Input, message, Popover, Space } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
-
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
@@ -254,7 +253,6 @@ const TagComponent = (props: Props) => {
   const [isClear, setIsClear] = useState(false)
   const [searchParams] = useSearchParams()
   const dispatch = useDispatch()
-
   let projectId: any
   if (props?.id) {
     projectId = props?.id

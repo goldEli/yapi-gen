@@ -4,7 +4,6 @@ import FieldsTemplate from './FieldsTemplate'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-
 import { useState } from 'react'
 import { useSelector } from '@store/index'
 import { getExportExcel } from '@/services/project/demand'
