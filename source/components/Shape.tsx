@@ -490,6 +490,7 @@ export const ShapeContent = (props: any) => {
             >
               <StyledShape
                 style={{
+                  width: 138,
                   color: item.id === active ? '#2877ff' : '#969799',
                   border:
                     item.id === active

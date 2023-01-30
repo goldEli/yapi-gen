@@ -32,7 +32,8 @@ const ChangeStatusPopover = (props: Props) => {
       trigger="click"
       destroyTooltipOnHide
       getPopupContainer={n => (props.isShow ? n : document.body)}
-      // autoAdjustOverflow={false}
+      overlayStyle={{ width: 683 }}
+      // 设置宽度是用于弹窗自适应宽度后会左右摆动问题
       content={
         props?.isCanOperation && (
           <ShapeContent
