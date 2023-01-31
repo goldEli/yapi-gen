@@ -15,6 +15,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getAsyncMember } from '@store/member'
 import { useDispatch, useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -97,6 +98,8 @@ const MemberInfo = () => {
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
   const { mainInfo } = useSelector(store => store.member)
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
 
   const menuList = [
     {
@@ -138,50 +141,61 @@ const MemberInfo = () => {
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
+
   if (!mainInfo) {
     return null
   }
+
   return (
-    <Wrap isMember={isMember}>
-      <Side>
-        <InfoWrap>
-          {mainInfo?.avatar ? (
-            <img
-              src={mainInfo?.avatar}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                marginRight: 8,
-              }}
-              alt=""
-            />
-          ) : (
-            <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
-              {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-            </NameWrap>
-          )}
-          <InfoItem>
-            <div>{mainInfo?.name}</div>
-            <span>{mainInfo?.phone}</span>
-          </InfoItem>
-        </InfoWrap>
-        <Menu>
-          {menuList.map(item => (
-            <MenuItem
-              active={pathname.includes(item.path)}
-              onClick={() => changeActive(item)}
-              key={item.id}
-            >
-              {item.name}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Side>
-      <Main>
-        <Outlet />
-      </Main>
-    </Wrap>
+    <PermissionWrap
+      auth={isMember ? 'b/project/member/info' : 'b/user/info'}
+      permission={
+        isMember
+          ? projectInfo?.projectPermissions
+          : userInfo?.company_permissions
+      }
+    >
+      <Wrap isMember={isMember}>
+        <Side>
+          <InfoWrap>
+            {mainInfo?.avatar ? (
+              <img
+                src={mainInfo?.avatar}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  marginRight: 8,
+                }}
+                alt=""
+              />
+            ) : (
+              <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
+                {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+              </NameWrap>
+            )}
+            <InfoItem>
+              <div>{mainInfo?.name}</div>
+              <span>{mainInfo?.phone}</span>
+            </InfoItem>
+          </InfoWrap>
+          <Menu>
+            {menuList.map(item => (
+              <MenuItem
+                active={pathname.includes(item.path)}
+                onClick={() => changeActive(item)}
+                key={item.id}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Side>
+        <Main>
+          <Outlet />
+        </Main>
+      </Wrap>
+    </PermissionWrap>
   )
 }
 

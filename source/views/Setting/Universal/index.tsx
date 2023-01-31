@@ -1,3 +1,4 @@
+import PermissionWrap from '@/components/PermissionWrap'
 import useSetTitle from '@/hooks/useSetTitle'
 import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
@@ -33,6 +34,7 @@ const Index = () => {
   asyncSetTtile(t('title.c7'))
 
   const { value: valueId } = useSelector(store => store.water)
+  const { userInfo } = useSelector(store => store.user)
   const dispatch = useDispatch()
 
   const onChange = async (e: any) => {
@@ -45,56 +47,61 @@ const Index = () => {
   }
 
   return (
-    <div style={{ height: '100%' }}>
-      <Header>
-        <span>{t('v2_1_1.configuration')}</span>
-      </Header>
-      <Content>
-        <div
-          style={{
-            background: 'white',
-            height: '100%',
-            padding: '25px',
-            borderRadius: 6,
-          }}
-        >
+    <PermissionWrap
+      auth="b/company/config"
+      permission={userInfo?.company_permissions}
+    >
+      <div style={{ height: '100%' }}>
+        <Header>
+          <span>{t('v2_1_1.configuration')}</span>
+        </Header>
+        <Content>
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              background: 'white',
+              height: '100%',
+              padding: '25px',
+              borderRadius: 6,
             }}
           >
-            <BottomTitle
+            <div
               style={{
-                marginBottom: '0px',
-                marginRight: '16px',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
-              {t('v2_1_1.safe')}
-            </BottomTitle>
-            <span
+              <BottomTitle
+                style={{
+                  marginBottom: '0px',
+                  marginRight: '16px',
+                }}
+              >
+                {t('v2_1_1.safe')}
+              </BottomTitle>
+              <span
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 400,
+                  color: '#969799',
+                }}
+              >
+                {t('v2_1_1.c1')}
+              </span>
+            </div>
+            <div
               style={{
-                fontSize: '12px',
-                fontWeight: 400,
-                color: '#969799',
+                marginTop: '17px',
               }}
             >
-              {t('v2_1_1.c1')}
-            </span>
+              <Radio.Group onChange={onChange} value={valueId}>
+                <Radio value={1}>{t('v2_1_1.open')}</Radio>
+                <Radio value={2}>{t('v2_1_1.close')}</Radio>
+              </Radio.Group>
+            </div>
           </div>
-          <div
-            style={{
-              marginTop: '17px',
-            }}
-          >
-            <Radio.Group onChange={onChange} value={valueId}>
-              <Radio value={1}>{t('v2_1_1.open')}</Radio>
-              <Radio value={2}>{t('v2_1_1.close')}</Radio>
-            </Radio.Group>
-          </div>
-        </div>
-      </Content>
-    </div>
+        </Content>
+      </div>
+    </PermissionWrap>
   )
 }
 
