@@ -40,7 +40,7 @@ const Index = () => {
     const res2 = await changeWater({ id: res.id, status: e.target.value })
 
     if (res2.code === 0) {
-      dispatch(changeWaterStatus({ id: res.id, status: e.target.value }))
+      dispatch(changeWaterStatus(e.target.value))
     }
   }
 
