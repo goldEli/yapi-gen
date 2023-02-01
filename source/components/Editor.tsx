@@ -19,7 +19,7 @@ import cancelfullscreenMenu from './Editor/cancelFullscreen'
 import { useTranslation } from 'react-i18next'
 import { type NewIDomEditor } from './Editor/Editor'
 import styled from '@emotion/styled'
-import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
+// import { ChoosePerson } from '@/views/Project/Detail/Setting/DemandSet/Workflow/components/ExamineItem'
 import { Popover, Tooltip } from 'antd'
 import IconFont from './IconFont'
 import Viewer from 'react-viewer'
@@ -395,15 +395,15 @@ const EditorBox = (props: Props) => {
             trigger="click"
             onVisibleChange={visible => setIsOpen(visible)}
             getTooltipContainer={node => node}
-            content={
-              isOpen ? (
-                <ChoosePerson
-                  onChangeValue={obj => onAddPerson(obj)}
-                  options={props.staffList}
-                  visible={isOpen}
-                />
-              ) : null
-            }
+            // content={
+            //   isOpen ? (
+            //     <ChoosePerson
+            //       onChangeValue={obj => onAddPerson(obj)}
+            //       options={props.staffList}
+            //       visible={isOpen}
+            //     />
+            //   ) : null
+            // }
             getPopupContainer={node => node}
           >
             <GrepDiv>

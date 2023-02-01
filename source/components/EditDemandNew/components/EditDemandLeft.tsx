@@ -9,8 +9,8 @@ import { getProjectList } from '@/services/mine'
 import { getProjectInfo } from '@/services/project'
 import { removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
-import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
-import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
+// import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
+// import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo } from '@store/project'
@@ -344,7 +344,7 @@ const EditDemandLeft = (props: Props) => {
                 <div style={{ fontWeight: 'bold' }}>{t('common.tag')}</div>
               }
             >
-              <TagComponent
+              {/* <TagComponent
                 defaultList={tagCheckedList}
                 onChangeTag={onChangeTag}
                 isQuick={props.isQuickCreate}
@@ -353,7 +353,7 @@ const EditDemandLeft = (props: Props) => {
                     <IconFont type="plus" />
                   </AddWrap>
                 }
-              />
+              /> */}
             </Form.Item>
           )}
         {props.projectId &&
@@ -368,7 +368,7 @@ const EditDemandLeft = (props: Props) => {
               }
               name="attachments"
             >
-              <UploadAttach
+              {/* <UploadAttach
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 onBottom={onBottom}
@@ -383,7 +383,7 @@ const EditDemandLeft = (props: Props) => {
                     <div>{t('common.add23')}</div>
                   </AddWrap>
                 }
-              />
+              /> */}
             </Form.Item>
           )}
       </FormWrapDemand>

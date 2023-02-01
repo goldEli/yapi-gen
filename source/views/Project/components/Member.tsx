@@ -12,7 +12,7 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
-import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
+// import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
@@ -106,7 +106,7 @@ const ListItem = styled.div({
     backgroundColor: '#f4f5f5',
   },
 })
-const MoreWrap2 = styled(MoreWrap)`
+const MoreWrap2 = styled.div`
   padding: 0;
   background-color: transparent;
   font-size: 12px;

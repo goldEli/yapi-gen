@@ -1,45 +1,57 @@
-// 整体页面结构
-
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { Side } from './components/Side'
-import Next from './components/Next'
 import { changeLanguage, loadedAntdLocals } from '@/locals'
-import NoPermission from './components/NoPermission'
-import { useTranslation } from 'react-i18next'
-import { ConfigProvider, message } from 'antd'
-import { useDispatch, useSelector } from '../../../store'
-import { getStatus } from '../../../store/waterState'
-import { getLoginDetail } from '../../../store/user/user.thunk'
-import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import { login } from '@/services/user'
 import { getAsyncCompanyInfo } from '@store/companyInfo'
+import { useDispatch, useSelector } from '@store/index'
+import { getStatus } from '@store/waterState'
+import { message, ConfigProvider } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Outlet, useLocation } from 'react-router-dom'
+import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
+import NoPermission from './components/NoPermission'
+import Next from './components/Next'
+import styled from '@emotion/styled'
+import Side from './components/Side'
+import { getLoginDetail } from '@store/user/user.thunk'
+import HeaderLeft from './components/HeaderLeft'
+import HeaderRight from './components/HeaderRight'
+import FoldIcon from '@/components/FoldIcon'
 
-const Wrap = styled.div`
-  display: flex;
-  width: 100vw;
+const LayoutWrap = styled.div`
+  width: 100%;
   height: 100vh;
-  flex: 1;
-  overflow-x: auto;
+`
+
+const HeaderWrap = styled.div`
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #ffe4e4;
+`
+
+const Content = styled.div`
+  height: calc(100vh - 64px);
+  width: 100%;
+  overflow: auto;
+  display: flex;
 `
 
 const Main = styled.div`
-  background: rgba(245, 247, 250, 1);
+  height: 100%;
+  width: calc(100% - 56px);
   flex: 1;
-  min-width: 1440px;
-  padding-left: 80px;
+  background: #d8fff2;
+  position: relative;
 `
 
 export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const { userInfo, loginInfo } = useSelector(store => store.user)
   const {
@@ -74,75 +86,32 @@ export const Container = () => {
 
     init()
   }, [])
-  const jumpList = [
-    {
-      name: '概况',
-      path: '/Situation',
-    },
-    {
-      name: '项目',
-      path: '/Project',
-    },
-    {
-      name: '我的',
-      path: '/mine',
-    },
-    {
-      name: '员工',
-      path: '/staff',
-    },
-    {
-      name: '消息',
-      path: '/Situation',
-    },
-
-    {
-      name: '公司管理',
-      path: '/Setting',
-    },
-    {
-      name: '日志',
-      path: '/Situation',
-    },
-  ]
 
   useEffect(() => {
     setIsNextVisible(loginInfo.admin_first_login)
-    const { company_permissions } = userInfo
-
-    const routerMap = Array.from(
-      new Set(company_permissions?.map((i: any) => i.group_name)),
-    )
-    if (location.pathname === '/') {
-      if (routerMap.length >= 1) {
-        routerMap.concat('日志')
-        if (!sessionStorage.getItem('saveRouter')) {
-          for (let i = 0; i <= jumpList.length; i++) {
-            if (routerMap?.includes(jumpList[i].name)) {
-              sessionStorage.setItem('saveRouter', '首次登录')
-              navigate(jumpList[i].path)
-              break
-            }
-          }
-        }
-      }
-    }
-  }, [loginInfo, userInfo])
+  }, [loginInfo])
 
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         {userInfo?.company_permissions?.length > 0 && (
-          <Wrap>
-            <Side />
-            <Main>
-              <Outlet />
-            </Main>
+          <LayoutWrap>
+            <HeaderWrap>
+              <HeaderLeft />
+              <HeaderRight />
+            </HeaderWrap>
+            <Content>
+              <Side />
+              <Main>
+                <FoldIcon />
+                <Outlet />
+              </Main>
+            </Content>
             <Next
               visible={isNextVisible}
               close={() => setIsNextVisible(false)}
             />
-          </Wrap>
+          </LayoutWrap>
         )}
         {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
       </ConfigProvider>

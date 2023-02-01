@@ -6,8 +6,8 @@
 
 /* eslint-disable no-cond-assign */
 import { getStaffList2 } from '@/services/staff'
-import { LabelTitle } from '@/views/Information/components/WhiteDay'
-import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
+// import { LabelTitle } from '@/views/Information/components/WhiteDay'
+// import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import { Form, message } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -144,7 +144,7 @@ const EditComment = (props: any) => {
             style={{
               marginBottom: '30px',
             }}
-            label={<LabelTitle title={t('new_p1.a4')} />}
+            // label={<LabelTitle title={t('new_p1.a4')} />}
             name="info"
             rules={[
               {
@@ -177,10 +177,10 @@ const EditComment = (props: any) => {
             />
           </Form.Item>
           <Form.Item
-            label={<LabelTitle title={t('common.attachment')} />}
+            // label={<LabelTitle title={t('common.attachment')} />}
             name="attachments"
           >
-            <UploadAttach
+            {/* <UploadAttach
               onRef={attachDom}
               key={1}
               power
@@ -197,7 +197,7 @@ const EditComment = (props: any) => {
                   <div>{t('p2.addAdjunct') as unknown as string}</div>
                 </AddWrap>
               }
-            />
+            /> */}
           </Form.Item>
         </Form>
       </div>

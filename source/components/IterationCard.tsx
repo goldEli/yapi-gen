@@ -9,7 +9,7 @@ import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
-import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
+// import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
 import MoreDropdown from './MoreDropdown'
 
 const DetailWrap = styled.div({
@@ -165,11 +165,11 @@ const IterationCard = (props: Props) => {
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
-          <IterationStatus
+          {/* <IterationStatus
             iterateInfo={props.item}
             hasChangeStatus={hasChangeStatus}
             onChangeStatus={props.onChangeStatus}
-          />
+          /> */}
         </InfoContent>
       </div>
       <DetailWrap onClick={props.onClickInfo}>

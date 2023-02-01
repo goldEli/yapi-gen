@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Space } from 'antd'
-import CompanyCard from '@/views/Container/components/CompanyCard'
+// import CompanyCard from '@/views/Container/components/CompanyCard'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
 import { useSelector } from '@store/index'
@@ -78,7 +78,7 @@ const CompanyModal = (props: Props) => {
           overflow: 'auto',
         }}
       >
-        {companyList.map(i => (
+        {/* {companyList.map(i => (
           <CompanyCard
             logo={i.logo}
             name={i.name}
@@ -86,7 +86,7 @@ const CompanyModal = (props: Props) => {
             tap={() => cutCompany(i)}
             isShow={i.id === activeId}
           />
-        ))}
+        ))} */}
       </Space>
     </CommonModal>
   )
