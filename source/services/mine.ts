@@ -488,53 +488,56 @@ export const getMineNoFinishList: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   if (params?.all) {
-    return response.data?.map((k: any) => ({
-      status_name: k.status_name,
-      count: k.count,
-      list: k.list
-        ? k.list?.map((i: any) => ({
-            new: i.is_new,
-            id: i.id,
-            name: i.name,
-            demand: i.child_story_count,
-            priority: i.priority,
-            iteration: i.iterate_name || '--',
-            status: i.status,
-            dealName: i.users_name || '--',
-            time: i.created_at,
-            expectedStart: i.expected_start_at,
-            expectedEnd: i.expected_end_at,
-            info: i.info,
-            userIds: i.user_id,
-            iterateId: i.iterate_id,
-            parentId: i.parent_id,
-            finishTime: i.finish_at,
-            updatedTime: i.updated_at,
-            usersCopySendName: i.users_copysend_name,
-            userName: i.user_name,
-            tag: i.tag,
-            project_id: i.project_id,
-            schedule: i.schedule,
-            isExamine: i.verify_lock === 1,
-            category: i.category,
-            categoryColor: i.category_color,
-            ...i.custom_field,
-            usersNameIds: i.users_name_ids,
-            usersCopySendIds: i.users_copysend_name_ids,
-            class: i.class,
-            project: {
-              isPublic: i.project.is_public,
-              isUserMember: i.project.user_ismember,
-              isEdit: Object.values(i.project.permissions).includes(
-                'b/story/update',
-              ),
-              isDelete: Object.values(i.project.permissions).includes(
-                'b/story/delete',
-              ),
-            },
-          }))
-        : [],
-    }))
+    return {
+      list: response.data?.list?.map((k: any) => ({
+        status_name: k.status_name,
+        count: k.count,
+        list: k.list
+          ? k.list?.map((i: any) => ({
+              new: i.is_new,
+              id: i.id,
+              name: i.name,
+              demand: i.child_story_count,
+              priority: i.priority,
+              iteration: i.iterate_name || '--',
+              status: i.status,
+              dealName: i.users_name || '--',
+              time: i.created_at,
+              expectedStart: i.expected_start_at,
+              expectedEnd: i.expected_end_at,
+              info: i.info,
+              userIds: i.user_id,
+              iterateId: i.iterate_id,
+              parentId: i.parent_id,
+              finishTime: i.finish_at,
+              updatedTime: i.updated_at,
+              usersCopySendName: i.users_copysend_name,
+              userName: i.user_name,
+              tag: i.tag,
+              project_id: i.project_id,
+              schedule: i.schedule,
+              isExamine: i.verify_lock === 1,
+              category: i.category,
+              categoryColor: i.category_color,
+              ...i.custom_field,
+              usersNameIds: i.users_name_ids,
+              usersCopySendIds: i.users_copysend_name_ids,
+              class: i.class,
+              project: {
+                isPublic: i.project.is_public,
+                isUserMember: i.project.user_ismember,
+                isEdit: Object.values(i.project.permissions).includes(
+                  'b/story/update',
+                ),
+                isDelete: Object.values(i.project.permissions).includes(
+                  'b/story/delete',
+                ),
+              },
+            }))
+          : [],
+      })),
+      total: response.data?.total,
+    }
   } else {
     return {
       list: response.data?.list

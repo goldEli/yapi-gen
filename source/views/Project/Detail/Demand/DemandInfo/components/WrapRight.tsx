@@ -888,7 +888,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                         <div className="common" style={{ paddingRight: 30 }}>
                           {item.createdTime}
                         </div>
-                        <EditorInfoReview info={item.content} />
+                        <EditorInfoReview info={`<div>${item.content}</div>`} />
 
                         <div
                           style={{

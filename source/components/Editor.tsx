@@ -261,6 +261,7 @@ const EditorBox = (props: Props) => {
       .replace(/&nbsp;/gi, '')
       .replace(/<[^<br/>]+>/g, '')
   }
+
   const isNull = (str: string) => {
     if (str === '') {
       return true
@@ -306,6 +307,7 @@ const EditorBox = (props: Props) => {
 
     onChange2(value.name)
   }
+
   useEffect(() => {
     if (editor) {
       const newEditor: NewIDomEditor = editor
@@ -330,7 +332,7 @@ const EditorBox = (props: Props) => {
   }, [editor])
 
   const onGetViewPicture = (e: any) => {
-    if (e.path[0].nodeName === 'IMG') {
+    if (e.target.nodeName === 'IMG') {
       const params: any = {}
       const oPics = textWrapEditor?.current?.getElementsByTagName('img')
 
@@ -340,7 +342,7 @@ const EditorBox = (props: Props) => {
           params.imageArray.push({ src: element.src })
         }
         for (let i = 0; i < oPics.length; i++) {
-          if (e.path[0].src === params.imageArray[i].src) {
+          if (e.target.currentSrc === params.imageArray[i].src) {
             params.index = i
           }
         }
@@ -349,6 +351,7 @@ const EditorBox = (props: Props) => {
       setPictureList(params)
     }
   }
+
   useEffect(() => {
     if (props.show) {
       textWrapEditor?.current?.addEventListener('click', (e: any) =>
@@ -364,7 +367,6 @@ const EditorBox = (props: Props) => {
   return (
     <Wrap
       show={props.show}
-      ref={textWrapEditor}
       red={props.color}
       id="editorWrap"
       minHeight={props?.height}
@@ -429,6 +431,7 @@ const EditorBox = (props: Props) => {
           </Popover>
         </div>
       ) : null}
+
       {isVisible ? (
         <Viewer
           zIndex={9999}
@@ -439,15 +442,17 @@ const EditorBox = (props: Props) => {
         />
       ) : null}
 
-      <Editor
-        defaultConfig={editorConfig}
-        value={props.value}
-        onCreated={(e: IDomEditor) => setEditor(e)}
-        onChange={onChange}
-        mode="simple"
-        key={key}
-        style={{ flex: 1 }}
-      />
+      <div ref={textWrapEditor}>
+        <Editor
+          defaultConfig={editorConfig}
+          value={props.value}
+          onCreated={(e: IDomEditor) => setEditor(e)}
+          onChange={onChange}
+          mode="simple"
+          key={key}
+          style={{ flex: 1 }}
+        />
+      </div>
     </Wrap>
   )
 }

@@ -50,7 +50,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { setProjectInfoValues } from '@store/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { deleteDemand } from '@/services/project/demand'
 
 const TableBox = styled(TableWrap)({
@@ -238,12 +238,14 @@ const CommonNeed = (props: any) => {
     setOrder(orderVal)
     setPage(1)
   }
-  const init = async (pageNumber?: any, updateState?: boolean) => {
+  const init = async (updateState?: boolean) => {
     if (!updateState) {
       setIsSpin(true)
     }
     setListData({ list: undefined })
     setManyListData({ list: undefined })
+    setTotal(0)
+
     if (isMany) {
       const params = {
         projectId: props.id,
@@ -251,11 +253,13 @@ const CommonNeed = (props: any) => {
         panelDate: isMany ? 1 : '',
         targetId: userId,
         keyword,
+        searchGroups,
       }
       const res = isMember
         ? await getMemberInfoAbeyanceStory(params)
         : await getUserInfoAbeyanceStory(params)
-      setManyListData({ list: res })
+      setManyListData({ list: res?.list })
+      setTotal(res?.total)
       setIsSpin(false)
     }
 
@@ -266,7 +270,7 @@ const CommonNeed = (props: any) => {
         searchGroups,
         order,
         orderkey: orderKey,
-        page: pageNumber ? pageNumber : page,
+        page,
         pagesize,
         targetId: userId,
       }
@@ -379,6 +383,7 @@ const CommonNeed = (props: any) => {
     setTitleList3(res2.titleList3)
     setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
     dispatch(setIsRefresh(false))
+    dispatch(setProjectInfo(res2))
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
@@ -416,11 +421,18 @@ const CommonNeed = (props: any) => {
   }
 
   useEffect(() => {
-    init(1)
-  }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
+    init(false)
+  }, [keyword, orderKey, order, searchGroups, isMany, page, pagesize])
 
   // 监听项目id变化，更新项目信息
   useEffect(() => {
+    // 如果分页为1则调用接口
+    if (page === 1) {
+      init(false)
+    } else {
+      // 如果分页改变则，重置分页
+      setPage(1)
+    }
     getShowkey()
   }, [props.id])
 

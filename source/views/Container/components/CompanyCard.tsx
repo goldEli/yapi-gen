@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import projectImg from '/projectImg.png'
+import normalCompany from '/normalCompany.svg'
 import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({
@@ -108,7 +108,7 @@ const CompanyCard = (props: Props) => {
       }}
     >
       <ImgWrap show={props.isShow}>
-        <img src={props.logo ? props.logo : projectImg} alt="" />
+        <img src={props.logo ? props.logo : normalCompany} alt="" />
       </ImgWrap>
       <TextWarp>
         <NameWrap show={props.isShow}>{props.name}</NameWrap>

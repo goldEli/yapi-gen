@@ -47,7 +47,7 @@ import {
   updatePriorityStatus,
 } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { setProjectInfoValues } from '@store/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { deleteDemand } from '@/services/project/demand'
 
 const TableBox = styled(TableWrap)({
@@ -221,12 +221,13 @@ const CommonNeed = (props: any) => {
     setOrder(orderVal)
     setPage(1)
   }
-  const init = async (updateState?: boolean, pageNumber?: any) => {
+  const init = async (updateState?: boolean) => {
     if (!updateState) {
       setIsSpin(true)
     }
     setListData({ list: undefined })
     setManyListData({ list: undefined })
+    setTotal(0)
 
     if (isMany) {
       const params = {
@@ -234,11 +235,13 @@ const CommonNeed = (props: any) => {
         all: isMany ? 1 : '',
         panelDate: isMany ? 1 : '',
         keyword,
+        searchGroups,
       }
       const res = await getMineNoFinishList(params)
-      setManyListData({ list: res })
+      setManyListData({ list: res.list })
       setIsSpin(false)
       dispatch(setIsUpdateCreate(false))
+      setTotal(res?.total)
     }
 
     if (!isMany) {
@@ -282,7 +285,6 @@ const CommonNeed = (props: any) => {
     if (res.code === 0) {
       message.success(t('common.prioritySuccess'))
     }
-
     init()
   }
   const showEdit = async (record: any) => {
@@ -369,6 +371,7 @@ const CommonNeed = (props: any) => {
     setTitleList3(res2.titleList3)
     setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
     dispatch(setIsRefresh(false))
+    dispatch(setProjectInfo(res2))
   }
 
   const onChangePage = (newPage: any) => {
@@ -383,11 +386,18 @@ const CommonNeed = (props: any) => {
   }
 
   useEffect(() => {
-    init(false, 1)
-  }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
+    init(false)
+  }, [keyword, orderKey, order, searchGroups, isMany, page, pagesize])
 
   // 监听项目id变化，更新项目信息
   useEffect(() => {
+    // 如果分页为1则调用接口
+    if (page === 1) {
+      init(false)
+    } else {
+      // 如果分页改变则，重置分页
+      setPage(1)
+    }
     getShowkey()
   }, [props.id])
 
