@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines */
 /* eslint-disable react/no-danger */
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -119,6 +119,7 @@ const Label = styled.div({
   minWidth: 110,
   height: 32,
   lineHeight: '32px',
+  position: 'relative',
 })
 
 const ContentWrap = styled.div<{ notHover?: any }>(
@@ -279,6 +280,27 @@ const SetHead = styled.div({
   marginRight: 12,
   overflow: 'hidden',
 })
+
+const MaxLabel = styled.div<{ width: number }>`
+  width: ${props => props.width}px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const LimitLabel = (props: { label: string; width: number }) => {
+  return (
+    <Label>
+      <Tooltip
+        title={props.label}
+        getPopupContainer={node => node}
+        placement="topLeft"
+      >
+        <MaxLabel width={props.width}>{props.label}</MaxLabel>
+      </Tooltip>
+    </Label>
+  )
+}
 
 const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
@@ -510,17 +532,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         {activeTabs === 1 && (
           <div style={{ maxHeight: 'calc(100% - 100px)' }}>
             <InfoItem>
-              <Label>
-                <OmitText
-                  width={100}
-                  tipProps={{
-                    placement: 'topLeft',
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {t('newlyAdd.demandProgress')}
-                </OmitText>
-              </Label>
+              <LimitLabel label={t('newlyAdd.demandProgress')} width={100} />
               <div
                 style={{
                   display: 'flex',
@@ -562,7 +574,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </div>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.dealName')}</Label>
+              <LimitLabel label={t('common.dealName')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -582,23 +594,23 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.createName')}</Label>
+              <LimitLabel label={t('common.createName')} width={100} />
               <ContentWrap notHover>{demandInfo?.userName || '--'}</ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.createTime')}</Label>
+              <LimitLabel label={t('common.createTime')} width={100} />
               <ContentWrap notHover>
                 {demandInfo?.createdTime || '--'}
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.finishTime')}</Label>
+              <LimitLabel label={t('common.finishTime')} width={100} />
               <ContentWrap notHover>
                 {demandInfo?.finishTime || '--'}
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.parentDemand')}</Label>
+              <LimitLabel label={t('common.parentDemand')} width={100} />
               <div style={{ paddingLeft: 4 }}>
                 <ParentDemand
                   isRight
@@ -612,7 +624,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </div>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.iterate')}</Label>
+              <LimitLabel label={t('common.iterate')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -632,18 +644,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>
-                <OmitText
-                  width={100}
-                  tipProps={{
-                    placement: 'topLeft',
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {t('newlyAdd.demandClass')}
-                </OmitText>
-              </Label>
-
+              <LimitLabel label={t('newlyAdd.demandClass')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -659,7 +660,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.priority')}</Label>
+              <LimitLabel label={t('common.priority')} width={100} />
               <ChangePriorityPopover
                 isCanOperation={isCanEdit}
                 record={{
@@ -691,7 +692,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ChangePriorityPopover>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.start')}</Label>
+              <LimitLabel label={t('common.start')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -706,7 +707,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.end')}</Label>
+              <LimitLabel label={t('common.end')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   isInfo
@@ -721,7 +722,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.copySend')}</Label>
+              <LimitLabel label={t('common.copySend')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -744,17 +745,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
             </InfoItem>
             {fieldList?.list?.map((i: any) => (
               <InfoItem key={i.content}>
-                <Label>
-                  <OmitText
-                    width={80}
-                    tipProps={{
-                      placement: 'topLeft',
-                      getPopupContainer: node => node,
-                    }}
-                  >
-                    {i.name}
-                  </OmitText>
-                </Label>
+                <LimitLabel label={i.name} width={90} />
                 <ContentWrap>
                   <TableQuickEdit
                     item={demandInfo}
@@ -874,7 +865,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                             <span className="common">
                               <HiddenText>
                                 <OmitText
-                                  width={150}
+                                  width={240}
                                   tipProps={{
                                     getPopupContainer: node => node,
                                   }}

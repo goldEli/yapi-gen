@@ -111,10 +111,11 @@ const DemandCard = (props: Props) => {
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
   const { projectInfo, colorList } = useSelector(store => store.project)
-  const hasEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/delete',
