@@ -150,18 +150,16 @@ export const useDynamicColumns = (state: any) => {
               item={record}
               onUpdate={() => onUpdate(record)}
             >
-              <Tooltip title={text} getPopupContainer={node => node}>
-                <ListNameWrap
-                  isName
-                  isClose={record.status?.is_end === 1}
-                  onClick={() => state.onClickItem(record)}
-                  maxWidth={
-                    state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
-                  }
-                >
-                  {text}
-                </ListNameWrap>
-              </Tooltip>
+              <ListNameWrap
+                isName
+                isClose={record.status?.is_end === 1}
+                onClick={() => state.onClickItem(record)}
+                maxWidth={
+                  state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
+                }
+              >
+                {text}
+              </ListNameWrap>
             </TableQuickEdit>
           </div>
         )

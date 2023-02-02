@@ -416,7 +416,11 @@ const TableQuickEdit = (props: Props) => {
             <>
               {props.isInfo && <div>{props.children}</div>}
               {!props.isInfo && (
-                <Tooltip title={props.children} placement="topLeft">
+                <Tooltip
+                  title={props.children}
+                  placement="topLeft"
+                  getPopupContainer={node => node}
+                >
                   <LimitText>{props.children}</LimitText>
                 </Tooltip>
               )}
