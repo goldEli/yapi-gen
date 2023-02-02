@@ -1,11 +1,13 @@
 export const whiteTheme = {
-  header: '#ffe4e4',
-  main: '#feffc6',
+  header: '#fff',
+  main: '#fff',
+  side: '#FCFCFD',
   test: 'red',
 }
 
 export const blackTheme = {
   header: '#c7fdff',
-  main: '#eed1ff',
+  main: '#fff',
+  side: '#FCFCFD',
   test: 'green',
 }

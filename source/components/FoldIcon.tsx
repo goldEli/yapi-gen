@@ -37,9 +37,7 @@ const FoldIcon = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
-  const { firstMenuCollapse, secondaryMenuCollapse } = useSelector(
-    state => state.global,
-  )
+  const { firstMenuCollapse } = useSelector(state => state.global)
 
   const onOpenMenu = () => {
     setOpen(false)
@@ -51,11 +49,6 @@ const FoldIcon = () => {
 
   const iconType = firstMenuCollapse ? 'right' : 'left'
   const title = firstMenuCollapse ? '展开' : '收起'
-  const visible = !secondaryMenuCollapse
-
-  if (!visible) {
-    return <></>
-  }
 
   return (
     <Tooltip

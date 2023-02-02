@@ -24,28 +24,33 @@ import GlobalStyle from '@/components/GlobalStyle'
 const LayoutWrap = styled.div`
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 `
 
 const HeaderWrap = styled.div`
   width: 100%;
-  height: 64px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 24px;
+  box-shadow: 0px 1px 9px 0px #ebecf0;
   background: ${(props: any) => props.theme.header};
+  z-index: 2;
 `
 
 const Content = styled.div`
-  height: calc(100vh - 64px);
+  height: calc(100vh - 56px);
   width: 100%;
   overflow: auto;
   display: flex;
+  z-index: 1;
 `
 
 const Main = styled.div<{ theme?: any }>`
   height: 100%;
-  width: calc(100% - 56px);
+  width: calc(100% - 200px);
   flex: 1;
   background: ${(props: any) => props.theme.main};
   position: relative;

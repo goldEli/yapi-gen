@@ -10,10 +10,6 @@ export interface GlobalState {
   firstMenuCollapse: boolean
 
   /**
-   * 二级菜单是否折叠
-   * */
-  secondaryMenuCollapse: boolean
-  /**
    * 主题
    * */
   theme: {
@@ -24,7 +20,6 @@ export interface GlobalState {
 
 const initialState: GlobalState = {
   firstMenuCollapse: false,
-  secondaryMenuCollapse: false,
   theme: {
     type: 'white',
     themeColors: whiteTheme,
@@ -35,9 +30,6 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    setSecondaryMenuCollapse(preState: GlobalState, action) {
-      preState.secondaryMenuCollapse = action.payload
-    },
     setFirstMenuCollapse(preState: GlobalState, action) {
       preState.firstMenuCollapse = action.payload
     },
