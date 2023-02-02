@@ -1,7 +1,7 @@
 /* eslint-disable no-duplicate-imports */
 // 员工详情
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getMainInfo } from '@/services/member'
+import { getMainInfo } from '@/services/memberInfo'
 
 export interface CounterState {
   mainInfo: any

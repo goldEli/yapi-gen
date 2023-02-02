@@ -16,7 +16,10 @@ export interface GlobalState {
   /**
    * 主题
    * */
-  theme: any
+  theme: {
+    type: 'white' | 'black'
+    themeColors: typeof whiteTheme
+  }
 }
 
 const initialState: GlobalState = {

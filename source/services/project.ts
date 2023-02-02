@@ -3,9 +3,12 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 项目
+
 import { getNestedChildren } from '@/tools'
 import * as http from '@/tools/http'
-import { getStaffList2 } from './../staff'
+import { getStaffListAll } from './staff'
 
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
@@ -730,7 +733,7 @@ export const getProjectInfoValues: any = async (params: any) => {
   // 查所有项目时，不调用人员接口
   if (params.projectId) {
     // 公司
-    const companyList = await getStaffList2({ all: 1 })
+    const companyList = await getStaffListAll({ all: 1 })
     filterCompanyList = companyList.map((item: any) => ({
       id: item.id,
       content: item.name,

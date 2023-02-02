@@ -1,6 +1,9 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 员工
+
 import * as http from '../tools/http'
 
 export const getStaffList: any = async (params: any) => {
@@ -92,7 +95,7 @@ export const getStaffList: any = async (params: any) => {
   }
 }
 
-export const getStaffList2: any = async (params: any) => {
+export const getStaffListAll: any = async (params: any) => {
   const response = await http.get('getStaffList', {
     search: {
       job_id: params?.jobId,

@@ -4,10 +4,13 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 我的
+
 import * as http from '../tools/http'
-import { getTreeList } from '@/services/project/tree'
+import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
-import { getStaffList2 } from './staff'
+import { getStaffListAll } from './staff'
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -55,7 +58,7 @@ export const getSearchField: any = async (params: any) => {
 
   // 公司
 
-  const companyList = await getStaffList2({ all: 1 })
+  const companyList = await getStaffListAll({ all: 1 })
 
   const filterCompanyList = companyList.map((item: any) => ({
     id: item.id,

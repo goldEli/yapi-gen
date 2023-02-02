@@ -8,7 +8,7 @@ import counterReducer from './counterSlice'
 import waterReducer from './waterState'
 import companyInfo from './companyInfo'
 import user from './user'
-import member from './member'
+import memberInfo from './memberInfo'
 import mine from './mine'
 import project from './project'
 import demand from './demand'
@@ -21,7 +21,7 @@ export const store = configureStore({
     water: waterReducer,
     user,
     companyInfo,
-    member,
+    memberInfo,
     mine,
     project,
     demand,

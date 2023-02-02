@@ -1,6 +1,9 @@
 /* eslint-disable no-useless-computed-key */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 大设置
+
 import * as http from '@/tools/http'
 
 export const getCompanyInfo: any = async () => {

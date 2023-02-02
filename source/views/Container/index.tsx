@@ -19,6 +19,7 @@ import HeaderLeft from './components/HeaderLeft'
 import HeaderRight from './components/HeaderRight'
 import FoldIcon from '@/components/FoldIcon'
 import { ThemeProvider } from '@emotion/react'
+import GlobalStyle from '@/components/GlobalStyle'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -32,7 +33,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background: ${(props: any) => props.theme.colors.header};
+  background: ${(props: any) => props.theme.header};
 `
 
 const Content = styled.div`
@@ -46,7 +47,7 @@ const Main = styled.div<{ theme?: any }>`
   height: 100%;
   width: calc(100% - 56px);
   flex: 1;
-  background: ${(props: any) => props.theme.colors.main};
+  background: ${(props: any) => props.theme.main};
   position: relative;
 `
 
@@ -97,6 +98,7 @@ export const Container = () => {
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <ThemeProvider theme={theme.themeColors}>
+          <GlobalStyle />
           {userInfo?.company_permissions?.length > 0 && (
             <LayoutWrap>
               <HeaderWrap>

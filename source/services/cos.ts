@@ -6,6 +6,9 @@
 /* eslint-disable @typescript-eslint/no-extra-parens */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// cos上传
+
 import * as http from '../tools/http'
 import COS, { type Task, type UploadFileItemResult } from 'cos-js-sdk-v5'
 import moment from 'moment'

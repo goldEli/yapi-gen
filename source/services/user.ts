@@ -1,19 +1,21 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { store } from '../../store'
-import { decrypt, encrypt } from '../tools/crypto'
 import * as http from '../tools/http'
 
+// 获取登录信息
 export const getLoginDetail: any = async (isLogin?: boolean) => {
   const response = await http.get('getLoginDetail', {}, { extra: { isLogin } })
   return response
 }
 
+// 退出登录
 export const loginOut: any = async () => {
   const response = await http.get('loginOut')
   return response
 }
 
+// 跳转登录
 export const getTicket = () => {
   const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
@@ -25,12 +27,14 @@ export const getTicket = () => {
   location.href = url.href
 }
 
+// 获取登录者信息
 export const getUserDetail: any = async () => {
   const response = await http.get('getUserDetail')
 
   return response.data
 }
 
+// 登录
 export const login = async () => {
   const ticket: any = new URLSearchParams(location.search).get('ticket')
 
@@ -56,11 +60,13 @@ export const login = async () => {
   return data
 }
 
+// 获取公司信息
 export const getCompanyList: any = async () => {
   const response = await http.get('getCompanyList')
   return response
 }
 
+// 切换公司
 export const updateCompany: any = async (params: any) => {
   await http.put('changeCompany', {
     company_id: params.companyId,
