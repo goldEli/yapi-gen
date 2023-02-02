@@ -23,6 +23,7 @@ import TableQuickEdit from './TableQuickEdit'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
 import { useSelector } from '@store/index'
+import { getCustomNormalValue } from '@/tools'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -495,17 +496,6 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
-  // 返回文本
-  const getText = (attr: any, text: any) => {
-    if (['user_select_checkbox', 'user_select'].includes(attr)) {
-      return text?.true_value || '--'
-    }
-    return (
-      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
-      '--'
-    )
-  }
-
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {
@@ -538,7 +528,7 @@ export const useDynamicColumns = (state: any) => {
               isCustom
               defaultTextValues={text?.true_value}
             >
-              <span>{getText(currentFields.attr, text)}</span>
+              <span>{getCustomNormalValue(currentFields.attr, text)}</span>
             </TableQuickEdit>
           )
         },

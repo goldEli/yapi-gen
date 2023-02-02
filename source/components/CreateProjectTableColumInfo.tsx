@@ -15,7 +15,7 @@ import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
-import { openDetail } from '@/tools'
+import { getCustomNormalValue, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
@@ -523,17 +523,6 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
-  // 返回文本
-  const getText = (attr: any, text: any) => {
-    if (['user_select_checkbox', 'user_select'].includes(attr)) {
-      return text?.true_value || '--'
-    }
-    return (
-      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
-      '--'
-    )
-  }
-
   const getArr = () => {
     const result: any = []
     state.plainOptions3?.forEach((element: any) => {
@@ -563,7 +552,9 @@ export const useDynamicColumns = (state: any) => {
               type={record[element.value]?.attr}
               projectId={state.projectId}
             >
-              <span>{getText(record[element.value]?.attr, text)}</span>
+              <span>
+                {getCustomNormalValue(record[element.value]?.attr, text)}
+              </span>
             </TableQuickEdit>
           )
         },

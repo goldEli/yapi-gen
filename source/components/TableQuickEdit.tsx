@@ -416,7 +416,7 @@ const TableQuickEdit = (props: Props) => {
             <>
               {props.isInfo && <div>{props.children}</div>}
               {!props.isInfo && (
-                <Tooltip title={props.children}>
+                <Tooltip title={props.children} placement="topLeft">
                   <LimitText>{props.children}</LimitText>
                 </Tooltip>
               )}

@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
 import Viewer from 'react-viewer'
-import { bytesToSize, getParamsData } from '@/tools'
+import { bytesToSize, getCustomNormalValue, getParamsData } from '@/tools'
 import {
   AddWrap,
   HiddenText,
@@ -466,16 +466,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     }
   }
 
-  // 返回文本
-  const getText = (attr: any, text: any) => {
-    if (['user_select_checkbox', 'user_select'].includes(attr)) {
-      return text?.true_value || '--'
-    }
-    return (
-      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
-      '--'
-    )
-  }
   const onReview = (item: any, attachList: any) => {
     setPictureList({
       imageArray: attachList
@@ -743,27 +733,31 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 </TableQuickEdit>
               </ContentWrap>
             </InfoItem>
-            {fieldList?.list?.map((i: any) => (
-              <InfoItem key={i.content}>
-                <LimitLabel label={i.name} width={90} />
-                <ContentWrap>
-                  <TableQuickEdit
-                    item={demandInfo}
-                    isInfo
-                    keyText={i.content}
-                    type={i.type?.attr}
-                    defaultText={demandInfo?.customField?.[i.content]?.value}
-                    isCustom
-                    remarks={i?.remarks}
-                  >
-                    {getText(
-                      i.type?.attr,
-                      demandInfo?.customField?.[i.content],
-                    )}
-                  </TableQuickEdit>
-                </ContentWrap>
-              </InfoItem>
-            ))}
+            {fieldList?.list?.map((i: any) => {
+              return (
+                <InfoItem key={i.content}>
+                  <LimitLabel label={i.name} width={90} />
+                  <ContentWrap>
+                    <TableQuickEdit
+                      item={demandInfo}
+                      isInfo
+                      keyText={i.content}
+                      type={i.type?.attr}
+                      defaultText={demandInfo?.customField?.[i.content]?.value}
+                      isCustom
+                      remarks={i?.remarks}
+                    >
+                      <span>
+                        {getCustomNormalValue(
+                          i.type?.attr,
+                          demandInfo?.customField[i.content],
+                        )}
+                      </span>
+                    </TableQuickEdit>
+                  </ContentWrap>
+                </InfoItem>
+              )
+            })}
             <div
               style={{
                 height: '10px',
