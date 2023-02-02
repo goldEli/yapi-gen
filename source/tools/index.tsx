@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 使用多次的公共方法
 
 /* eslint-disable consistent-return */
@@ -103,6 +104,7 @@ function getTypeComponent(
         ref={inputRef}
         autoComplete="off"
         style={{ width: '100%', minWidth: 192 }}
+        maxLength={params?.attr === 'text' ? 100 : undefined}
       />
     )
   } else if (params?.attr === 'textarea') {
@@ -117,6 +119,7 @@ function getTypeComponent(
         ref={inputRef}
         style={{ width: '100%', minWidth: 192 }}
         autoComplete="off"
+        maxLength={100}
       />
     )
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {

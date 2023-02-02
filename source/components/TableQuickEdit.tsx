@@ -16,12 +16,20 @@ import {
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
 import { getDemandInfo, updateTableParams } from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
+import styled from '@emotion/styled'
+
+const LimitText = styled.div`
+  width: 192px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
 
 interface Props {
   children: any
@@ -400,7 +408,21 @@ const TableQuickEdit = (props: Props) => {
           isTable={!props.isInfo}
           isCanEdit={isCanEdit}
         >
-          {props.children}
+          {!['text', 'textarea'].includes(props.type as any) && (
+            <div>{props.children}</div>
+          )}
+
+          {['text', 'textarea'].includes(props.type as any) && (
+            <>
+              {props.isInfo && <div>{props.children}</div>}
+              {!props.isInfo && (
+                <Tooltip title={props.children}>
+                  <LimitText>{props.children}</LimitText>
+                </Tooltip>
+              )}
+            </>
+          )}
+
           {isCanEdit && (
             <IconFontWrapEdit
               onClick={() => setIsShowControl(true)}

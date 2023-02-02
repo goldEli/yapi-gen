@@ -177,7 +177,7 @@ export const useDynamicColumns = (state: any) => {
             isCanOperation={isCanEdit && !record.isExamine}
             projectId={state.projectId}
             record={record}
-            onChangeStatus={state.onChangeStatus}
+            onChangeStatus={item => state.onChangeStatus(item, record)}
           >
             <StatusWrap
               onClick={record.isExamine ? onExamine : void 0}
