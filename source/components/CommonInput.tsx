@@ -5,19 +5,18 @@ import { Input } from 'antd'
 import { useState } from 'react'
 import IconFont from './IconFont'
 
-const MyInput = styled(Input)`
+const MyInput = styled(Input)<{ bgColor?: string }>`
   font-size: 14px;
   height: 32px;
-  background: rgba(245, 246, 247, 1);
+  background: ${props => props.bgColor ?? 'rgba(245, 246, 247, 1)'};
   background-blend-mode: normal;
   mix-blend-mode: normal;
   display: flex;
   justify-content: flex-start;
-
   padding: 5px 12px 5px 12px;
-  border: 1px solid white;
+  border: ${props => (props.bgColor ? '1px solid #ebedf0' : '1px solid white')};
   input {
-    background: rgba(245, 246, 247, 1);
+    background: ${props => props.bgColor ?? 'rgba(245, 246, 247, 1)'};
     &::placeholder {
       font-size: 14px;
     }
@@ -30,6 +29,7 @@ interface Props {
   width?: any
   autoFocus?: boolean
   ref?: any
+  bgColor?: string
 }
 
 const CommonInput = (props: Props) => {
@@ -38,6 +38,7 @@ const CommonInput = (props: Props) => {
 
   return (
     <MyInput
+      bgColor={props.bgColor}
       value={value}
       ref={props?.ref}
       style={{ width: props.width || 240 }}

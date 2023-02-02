@@ -29,6 +29,7 @@ import {
   setProjectInfoValues,
   setIsUpdateMember,
 } from '@store/project'
+import CommonInput from '@/components/CommonInput'
 
 interface Props {
   visible: boolean
@@ -328,8 +329,8 @@ const Member = (props: Props) => {
     }
   }
 
-  const onChangeSearch = (e: any) => {
-    setSearch(e.target.value)
+  const onChangeSearch = (value: string) => {
+    setSearch(value)
   }
   useEffect(() => {
     if (props.visible) {
@@ -377,6 +378,7 @@ const Member = (props: Props) => {
   const onChangeMember = (value: any) => {
     setUserDataList(value)
   }
+
   const userObj = {
     avatar:
       'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1531903254371954690/2022-11-15/71A2A5C7-CFB9CDD612ED.jpeg',
@@ -473,18 +475,12 @@ const Member = (props: Props) => {
             marginBottom: '12px',
           }}
         >
-          <Input
-            autoComplete="off"
-            onPressEnter={onChangeSearch}
-            onBlur={onChangeSearch}
-            prefix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 16 }}
-              />
-            }
+          <CommonInput
+            autoFocus
+            onChangeSearch={onChangeSearch}
+            width="100%"
             placeholder={t('project.searchMember')}
-            allowClear
+            bgColor="#fff"
           />
           {getIsPermission(
             projectInfo?.projectPermissions,
