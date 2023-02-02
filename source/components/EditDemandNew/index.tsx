@@ -78,19 +78,6 @@ const ModalFooter = styled.div({
   paddingRight: 24,
 })
 
-const AddButtonWrap = styled.div({
-  height: 32,
-  boxSizing: 'border-box',
-  borderRadius: 6,
-  border: '1px solid #2877FF',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: '#2877FF',
-  padding: '0 16px',
-  cursor: 'pointer',
-})
-
 const LiWrap = styled.div<{ color: any }>(
   {
     cursor: 'pointer',
@@ -755,9 +742,9 @@ const EditDemand = (props: Props) => {
           <Space size={16}>
             <Button onClick={onCancel}>{t('common.cancel')}</Button>
             {!props?.demandId && (
-              <AddButtonWrap onClick={() => onSaveCategory(1)}>
+              <ThrottleButton thClick={() => onSaveCategory(1)} other>
                 {t('common.finishToAdd')}
-              </AddButtonWrap>
+              </ThrottleButton>
             )}
             <ThrottleButton type="primary" thClick={() => onSaveCategory()}>
               {props?.demandId ? t('common.confirm2') : t('newlyAdd.create')}
