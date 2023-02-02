@@ -59,6 +59,9 @@ interface Props {
 
   // 用于判断当前是否是所有项目， 是则调用就接口获取下拉值
   projectId?: any
+
+  // 是否需求标题 -- 是则不加tooltip并取消padding
+  isDemandName?: boolean
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -408,24 +411,24 @@ const TableQuickEdit = (props: Props) => {
           isTable={!props.isInfo}
           isCanEdit={isCanEdit}
         >
-          {!['text', 'textarea'].includes(props.type as any) && (
-            <div>{props.children}</div>
-          )}
+          {(!['text', 'textarea'].includes(props.type as any) ||
+            props.isDemandName) && <div>{props.children}</div>}
 
-          {['text', 'textarea'].includes(props.type as any) && (
-            <>
-              {props.isInfo && <div>{props.children}</div>}
-              {!props.isInfo && (
-                <Tooltip
-                  title={props.children}
-                  placement="topLeft"
-                  getPopupContainer={node => node}
-                >
-                  <LimitText>{props.children}</LimitText>
-                </Tooltip>
-              )}
-            </>
-          )}
+          {['text', 'textarea'].includes(props.type as any) &&
+            !props.isDemandName && (
+              <>
+                {props.isInfo && <div>{props.children}</div>}
+                {!props.isInfo && (
+                  <Tooltip
+                    title={props.children}
+                    placement="topLeft"
+                    getPopupContainer={node => node}
+                  >
+                    <LimitText>{props.children}</LimitText>
+                  </Tooltip>
+                )}
+              </>
+            )}
 
           {isCanEdit && (
             <IconFontWrapEdit

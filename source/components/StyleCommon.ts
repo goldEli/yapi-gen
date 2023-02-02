@@ -191,12 +191,12 @@ const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
     alignItems: 'center',
     minHeight: 32,
     borderRadius: 4,
-    padding: '0 8px',
   },
   ({ isCanEdit, isTable }) => ({
     cursor: isCanEdit ? 'pointer' : 'inherit',
     justifyContent: isTable ? 'flex-start' : 'space-between',
     minWidth: isTable ? 0 : 60,
+    padding: isTable ? 0 : '0 8px',
     '&: hover': {
       background: isTable ? '' : isCanEdit ? '#f4f5f5' : '',
       [IconFontWrapEdit.toString()]: {

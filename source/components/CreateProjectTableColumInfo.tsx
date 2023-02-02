@@ -140,36 +140,39 @@ export const useDynamicColumns = (state: any) => {
               onUpdate={onUpdate}
               isMineOrHis
               projectId={state.projectId}
+              isDemandName
             >
-              <ListNameWrap
-                isName
-                isClose={record.status?.is_end === 1}
-                onClick={() => onToDetail(record)}
-              >
-                {text}
-                {record.new === 1 && (
-                  <span
-                    style={{
-                      position: 'relative',
-                      display: 'inline-block',
-                      left: '1px',
-                      top: '-10px',
-                      padding: '0px 5px',
-                      minWidth: '28px',
-                      height: '20px',
-                      background: '#FF5C5E',
-                      borderRadius: '10px 10px 10px 10px',
-                      color: '#FFFFFF',
-                      textAlign: 'center',
-                      lineHeight: '15px',
-                      fontSize: '12px',
-                      border: '2px solid #FFFFFF',
-                    }}
-                  >
-                    {t('p2.new')}
-                  </span>
-                )}
-              </ListNameWrap>
+              <Tooltip title={text} getPopupContainer={node => node}>
+                <ListNameWrap
+                  isName
+                  isClose={record.status?.is_end === 1}
+                  onClick={() => onToDetail(record)}
+                >
+                  {text}
+                  {record.new === 1 && (
+                    <span
+                      style={{
+                        position: 'relative',
+                        display: 'inline-block',
+                        left: '1px',
+                        top: '-10px',
+                        padding: '0px 5px',
+                        minWidth: '28px',
+                        height: '20px',
+                        background: '#FF5C5E',
+                        borderRadius: '10px 10px 10px 10px',
+                        color: '#FFFFFF',
+                        textAlign: 'center',
+                        lineHeight: '15px',
+                        fontSize: '12px',
+                        border: '2px solid #FFFFFF',
+                      }}
+                    >
+                      {t('p2.new')}
+                    </span>
+                  )}
+                </ListNameWrap>
+              </Tooltip>
             </TableQuickEdit>
           </div>
         )
