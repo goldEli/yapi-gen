@@ -18,6 +18,7 @@ import { getLoginDetail } from '@store/user/user.thunk'
 import HeaderLeft from './components/HeaderLeft'
 import HeaderRight from './components/HeaderRight'
 import FoldIcon from '@/components/FoldIcon'
+import { ThemeProvider } from '@emotion/react'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -31,7 +32,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background: #ffe4e4;
+  background: ${(props: any) => props.theme.colors.header};
 `
 
 const Content = styled.div`
@@ -41,11 +42,11 @@ const Content = styled.div`
   display: flex;
 `
 
-const Main = styled.div`
+const Main = styled.div<{ theme?: any }>`
   height: 100%;
   width: calc(100% - 56px);
   flex: 1;
-  background: #d8fff2;
+  background: ${(props: any) => props.theme.colors.main};
   position: relative;
 `
 
@@ -54,6 +55,7 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const { userInfo, loginInfo } = useSelector(store => store.user)
+  const { theme } = useSelector(store => store.global)
   const {
     i18n: { language },
   } = useTranslation()
@@ -94,26 +96,28 @@ export const Container = () => {
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
-        {userInfo?.company_permissions?.length > 0 && (
-          <LayoutWrap>
-            <HeaderWrap>
-              <HeaderLeft />
-              <HeaderRight />
-            </HeaderWrap>
-            <Content>
-              <Side />
-              <Main>
-                <FoldIcon />
-                <Outlet />
-              </Main>
-            </Content>
-            <Next
-              visible={isNextVisible}
-              close={() => setIsNextVisible(false)}
-            />
-          </LayoutWrap>
-        )}
-        {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
+        <ThemeProvider theme={theme.themeColors}>
+          {userInfo?.company_permissions?.length > 0 && (
+            <LayoutWrap>
+              <HeaderWrap>
+                <HeaderLeft />
+                <HeaderRight />
+              </HeaderWrap>
+              <Content>
+                <Side />
+                <Main>
+                  <FoldIcon />
+                  <Outlet />
+                </Main>
+              </Content>
+              <Next
+                visible={isNextVisible}
+                close={() => setIsNextVisible(false)}
+              />
+            </LayoutWrap>
+          )}
+          {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
+        </ThemeProvider>
       </ConfigProvider>
     </KitConfigProvider>
   )

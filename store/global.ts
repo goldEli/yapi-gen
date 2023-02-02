@@ -1,7 +1,7 @@
 /* eslint-disable no-duplicate-imports */
-// 员工详情
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getMainInfo } from '@/services/member'
+// 公用状态管理
+import { createSlice } from '@reduxjs/toolkit'
+import { whiteTheme } from '@/theme'
 
 export interface GlobalState {
   /**
@@ -13,11 +13,19 @@ export interface GlobalState {
    * 二级菜单是否折叠
    * */
   secondaryMenuCollapse: boolean
+  /**
+   * 主题
+   * */
+  theme: any
 }
 
 const initialState: GlobalState = {
   firstMenuCollapse: false,
   secondaryMenuCollapse: false,
+  theme: {
+    type: 'white',
+    themeColors: whiteTheme,
+  },
 }
 
 export const globalSlice = createSlice({
@@ -29,6 +37,9 @@ export const globalSlice = createSlice({
     },
     setFirstMenuCollapse(preState: GlobalState, action) {
       preState.firstMenuCollapse = action.payload
+    },
+    setTheme(preState: GlobalState, action) {
+      preState.theme = action.payload
     },
   },
   extraReducers: builder => {
