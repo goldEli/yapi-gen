@@ -301,10 +301,7 @@ const WrapLeft = (props: Props) => {
       <Form form={form} style={{ width: 270, padding: 16 }} layout="vertical">
         <Form.Item
           getValueFromEvent={event => {
-            return event.target.value.replace(
-              /(?<start>^\s*)|(?<end>\s*$)/g,
-              '',
-            )
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
           label={t('common.title')}
           name="name"

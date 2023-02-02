@@ -163,10 +163,7 @@ const EditorCategory = (props: EditorProps) => {
           rules={[{ required: true, message: '' }]}
           getValueFromEvent={event => {
             // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(
-              /(?<start>^\s*)|(?<end>\s*$)/g,
-              '',
-            )
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
         >
           <Input
@@ -182,7 +179,7 @@ const EditorCategory = (props: EditorProps) => {
         <Form.Item
           label={t('newlyAdd.categoryRemark')}
           getValueFromEvent={event => {
-            const reg = new RegExp(/(?<start>^\s*)|(?<end>\s*$)/g)
+            const reg = new RegExp(/(?<start>^\s*)/g)
 
             return event.target.value.replace(reg, '')
           }}

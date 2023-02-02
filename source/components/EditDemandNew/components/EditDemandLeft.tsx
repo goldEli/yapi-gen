@@ -306,10 +306,7 @@ const EditDemandLeft = (props: Props) => {
         )}
         <Form.Item
           getValueFromEvent={event => {
-            return event.target.value.replace(
-              /(?<start>^\s*)|(?<end>\s*$)/g,
-              '',
-            )
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
           label={
             <div style={{ fontWeight: 'bold' }}>{t('common.demandName')}</div>

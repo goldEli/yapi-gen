@@ -474,7 +474,7 @@ const ShapeContentForDetail = (props: any) => {
                       <Form.Item
                         getValueFromEvent={event => {
                           return event.target.value.replace(
-                            /(?<start>^\s*)|(?<end>\s*$)/g,
+                            /(?<start>^\s*)/g,
                             '',
                           )
                         }}
@@ -610,7 +610,7 @@ const ShapeContentForDetail = (props: any) => {
                       <Form.Item
                         getValueFromEvent={event => {
                           return event.target.value.replace(
-                            /(?<start>^\s*)|(?<end>\s*$)/g,
+                            /(?<start>^\s*)/g,
                             '',
                           )
                         }}

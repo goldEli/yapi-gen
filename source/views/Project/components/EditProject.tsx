@@ -114,10 +114,7 @@ const EditProject = (props: Props) => {
         <Form.Item
           label={t('common.projectName')}
           getValueFromEvent={event => {
-            return event.target.value.replace(
-              /(?<start>^\s*)|(?<end>\s*$)/g,
-              '',
-            )
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
           rules={[
             { required: true, message: '' },
@@ -140,10 +137,7 @@ const EditProject = (props: Props) => {
           label={t('project.projectInfo')}
           name="info"
           getValueFromEvent={event => {
-            return event.target.value.replace(
-              /(?<start>^\s*)|(?<end>\s*$)/g,
-              '',
-            )
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
         >
           <Input.TextArea

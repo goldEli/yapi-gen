@@ -317,10 +317,7 @@ const TreeItem = (props: any) => {
                 rules={[{ required: true, message: '' }]}
                 getValueFromEvent={event => {
                   // eslint-disable-next-line require-unicode-regexp
-                  return event.target.value.replace(
-                    /(?<start>^\s*)|(?<end>\s*$)/g,
-                    '',
-                  )
+                  return event.target.value.replace(/(?<start>^\s*)/g, '')
                 }}
               >
                 <Input
@@ -333,10 +330,7 @@ const TreeItem = (props: any) => {
               </Form.Item>
               <Form.Item
                 getValueFromEvent={event => {
-                  return event.target.value.replace(
-                    /(?<start>^\s*)|(?<end>\s*$)/g,
-                    '',
-                  )
+                  return event.target.value.replace(/(?<start>^\s*)/g, '')
                 }}
                 name="remark"
                 label={t('newlyAdd.classRemark')}

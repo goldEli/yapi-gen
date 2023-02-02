@@ -133,10 +133,7 @@ const EditWorkflow = (props: EditorProps) => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Item
               getValueFromEvent={event => {
-                return event.target.value.replace(
-                  /(?<start>^\s*)|(?<end>\s*$)/g,
-                  '',
-                )
+                return event.target.value.replace(/(?<start>^\s*)/g, '')
               }}
               label={t('newlyAdd.statusName')}
               name="name"
@@ -156,10 +153,7 @@ const EditWorkflow = (props: EditorProps) => {
           <Form.Item
             getValueFromEvent={event => {
               // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(
-                /(?<start>^\s*)|(?<end>\s*$)/g,
-                '',
-              )
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
             label={t('newlyAdd.statusRemark')}
             name="info"

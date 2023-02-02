@@ -125,10 +125,7 @@ const SearchList = (props: Props) => {
             </span>
             <Form.Item
               getValueFromEvent={event => {
-                return event.target.value.replace(
-                  /(?<start>^\s*)|(?<end>\s*$)/g,
-                  '',
-                )
+                return event.target.value.replace(/(?<start>^\s*)/g, '')
               }}
               name="remark"
             >

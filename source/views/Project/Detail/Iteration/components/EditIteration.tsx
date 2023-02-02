@@ -188,10 +188,7 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="iterationName"
             getValueFromEvent={event => {
-              return event.target.value.replace(
-                /(?<start>^\s*)|(?<end>\s*$)/g,
-                '',
-              )
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
           >
             <Input

@@ -300,10 +300,7 @@ const EditFiled = (props: Props) => {
               rules={[{ required: true, message: '' }]}
               name="name"
               getValueFromEvent={event => {
-                return event.target.value.replace(
-                  /(?<start>^\s*)|(?<end>\s*$)/g,
-                  '',
-                )
+                return event.target.value.replace(/(?<start>^\s*)/g, '')
               }}
             >
               <Input
@@ -321,10 +318,7 @@ const EditFiled = (props: Props) => {
             label={t('newlyAdd.fieldsRemark')}
             getValueFromEvent={event => {
               // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(
-                /(?<start>^\s*)|(?<end>\s*$)/g,
-                '',
-              )
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
             name="remarks"
           >
