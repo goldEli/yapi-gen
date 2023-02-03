@@ -19,6 +19,7 @@ import HeaderLeft from './components/HeaderLeft'
 import HeaderRight from './components/HeaderRight'
 import { ThemeProvider } from '@emotion/react'
 import GlobalStyle from '@/components/GlobalStyle'
+import ResizeTable from './components/TableDemo'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -113,6 +114,7 @@ export const Container = () => {
                 <Side />
                 <Main>
                   <Outlet />
+                  <ResizeTable />
                 </Main>
               </Content>
               <Next

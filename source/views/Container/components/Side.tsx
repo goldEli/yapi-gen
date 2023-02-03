@@ -132,11 +132,8 @@ const Side = () => {
         style={{ left: leftWidth - 1 }}
         active={focus}
       />
-      <FoldIcon>
-        <IconFont
-          type={firstMenuCollapse ? 'right' : 'left'}
-          onClick={onChangeSide}
-        />
+      <FoldIcon onClick={onChangeSide}>
+        <IconFont type={firstMenuCollapse ? 'right' : 'left'} />
       </FoldIcon>
     </SideWrap>
   )

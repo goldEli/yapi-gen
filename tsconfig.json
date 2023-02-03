@@ -22,5 +22,7 @@
     }
   },
   "include": ["source", "types", "store"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "noImplicitAny": false,
+  "allowJs": true
 }
