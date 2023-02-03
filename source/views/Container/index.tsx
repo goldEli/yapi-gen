@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation } from 'react-router-dom'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import NoPermission from './components/NoPermission'
-import Next from './components/Next'
 import styled from '@emotion/styled'
 import Side from './components/Side'
 import { getLoginDetail } from '@store/user/user.thunk'
@@ -20,6 +19,7 @@ import HeaderRight from './components/HeaderRight'
 import { ThemeProvider } from '@emotion/react'
 import GlobalStyle from '@/components/GlobalStyle'
 import ResizeTable from './components/TableDemo'
+import Guide from './components/Guide'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -52,7 +52,6 @@ const Main = styled.div<{ theme?: any }>`
   height: 100%;
   width: calc(100% - 200px);
   flex: 1;
-  background: ${(props: any) => props.theme.main};
   position: relative;
 `
 
@@ -117,7 +116,7 @@ export const Container = () => {
                   <ResizeTable />
                 </Main>
               </Content>
-              <Next
+              <Guide
                 visible={isNextVisible}
                 close={() => setIsNextVisible(false)}
               />

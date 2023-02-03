@@ -74,11 +74,7 @@ const ResizeTable = () => {
     (e: any, { size }: any) => {
       const nextColumns = [...cols]
       // 拖拽是调整宽度
-      nextColumns[index] = {
-        ...nextColumns[index],
-        width: size.width,
-      }
-
+      nextColumns[index] = { ...nextColumns[index], width: size.width }
       setCols(nextColumns)
     }
 

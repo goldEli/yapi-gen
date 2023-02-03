@@ -72,7 +72,7 @@ const ButtonWrapBorder = styled.div({
   border: '1px solid #2877ff',
 })
 
-const Next = (props: { visible: boolean; close(): void }) => {
+const Guide = (props: { visible: boolean; close(): void }) => {
   const [t] = useTranslation()
   const [active, setActive] = useState(0)
   const inform = [
@@ -143,4 +143,4 @@ const Next = (props: { visible: boolean; close(): void }) => {
   )
 }
 
-export default Next
+export default Guide

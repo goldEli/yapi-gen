@@ -10,11 +10,12 @@ import { CloseWrap } from './StyleCommon'
 
 interface Props {
   isVisible: boolean
+  title?: string
   text?: string
   onChangeVisible?(): void
   onConfirm(): void
-  title?: string
   children?: any
+  // 没有取消按钮
   notCancel?: boolean
 }
 
