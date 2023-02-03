@@ -17,7 +17,6 @@ import Side from './components/Side'
 import { getLoginDetail } from '@store/user/user.thunk'
 import HeaderLeft from './components/HeaderLeft'
 import HeaderRight from './components/HeaderRight'
-import FoldIcon from '@/components/FoldIcon'
 import { ThemeProvider } from '@emotion/react'
 import GlobalStyle from '@/components/GlobalStyle'
 
@@ -113,7 +112,6 @@ export const Container = () => {
               <Content>
                 <Side />
                 <Main>
-                  <FoldIcon />
                   <Outlet />
                 </Main>
               </Content>

@@ -1,3 +1,4 @@
+import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState } from 'react'
@@ -6,13 +7,12 @@ const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
   height: 100%;
   align-items: center;
-  background: #f2f8d2;
   max-width: unset !important;
   min-width: unset !important;
   flex: unset !important;
-  z-index: 9;
-  overflow: hidden;
+  border-right: 1px solid #ecedef;
   background: ${(props: any) => props.theme.side};
+  position: relative;
 `
 
 const Line = styled.div<{ active: boolean }>`
@@ -20,7 +20,7 @@ const Line = styled.div<{ active: boolean }>`
   width: 1px;
   cursor: col-resize;
   overflow: hidden;
-  z-index: 4;
+  z-index: 1;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -43,6 +43,22 @@ const Line = styled.div<{ active: boolean }>`
   }
 `
 
+const FoldIcon = styled.div`
+  position: absolute;
+  top: 24px;
+  width: 24px;
+  height: 24px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 6px 0px rgba(24, 43, 71, 0.12);
+  z-index: 2;
+  right: -12px;
+  cursor: pointer;
+`
+
 const Side = () => {
   const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
@@ -55,6 +71,7 @@ const Side = () => {
   const onDragLine = (event: any) => {
     let width = sliderRef.current?.clientWidth
     document.onmousemove = e => {
+      setEndWidth(200)
       setFocus(true)
       width = e.clientX
       if (width > maxWidth) {
@@ -66,7 +83,7 @@ const Side = () => {
             payload: !firstMenuCollapse,
           })
         }
-        setLeftWidth(width)
+        setLeftWidth(width < 26 ? 26 : width)
       }
     }
     document.onmouseup = () => {
@@ -75,7 +92,7 @@ const Side = () => {
         setLeftWidth(26)
         dispatch({
           type: 'global/setFirstMenuCollapse',
-          payload: !firstMenuCollapse,
+          payload: true,
         })
       } else if (width > maxWidth) {
         setLeftWidth(maxWidth)
@@ -88,6 +105,19 @@ const Side = () => {
     }
   }
 
+  const onChangeSide = () => {
+    if (firstMenuCollapse) {
+      setLeftWidth(200)
+    } else {
+      setLeftWidth(26)
+    }
+    setEndWidth(0)
+    dispatch({
+      type: 'global/setFirstMenuCollapse',
+      payload: !firstMenuCollapse,
+    })
+  }
+
   return (
     <SideWrap
       firstMenuCollapse={firstMenuCollapse}
@@ -97,14 +127,17 @@ const Side = () => {
         transition: endWidth < 200 ? '0.2s' : 'initial',
       }}
     >
-      121221
       <Line
         onMouseDown={onDragLine}
-        style={{
-          left: leftWidth - 3,
-        }}
+        style={{ left: leftWidth - 1 }}
         active={focus}
       />
+      <FoldIcon>
+        <IconFont
+          type={firstMenuCollapse ? 'right' : 'left'}
+          onClick={onChangeSide}
+        />
+      </FoldIcon>
     </SideWrap>
   )
 }
