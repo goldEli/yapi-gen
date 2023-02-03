@@ -25,15 +25,18 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setProjectInfoValues } from '@store/project'
 import { updateIterateStatus } from '@/services/project/iterate'
 
-const OperationWrap = styled.div({
-  padding: '0 24px',
-  minHeight: 52,
-  lineHeight: '52px',
-  background: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-})
+const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
+  {
+    padding: '10px 24px',
+    background: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  ({ isShowLeft }) => ({
+    flexWrap: isShowLeft ? 'wrap' : 'initial',
+  }),
+)
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -233,7 +236,7 @@ const Operation = (props: Props) => {
           )}
         </div>
       </CommonModal>
-      <OperationWrap>
+      <OperationWrap isShowLeft={props.isShowLeft}>
         <IterationInfo>
           {props.isShowLeft ? (
             <Tooltip
