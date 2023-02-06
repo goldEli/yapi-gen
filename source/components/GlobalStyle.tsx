@@ -12,17 +12,6 @@ const GlobalStyle = () => {
     .ant-progress-inner {
       background-color: #ecedef;
     }
-
-    .ant-btn-default:hover {
-      background: #f0f4fa !important;
-      color: #2877ff !important;
-    }
-
-    .ant-btn-default:focus {
-      background: #dbeaff !important;
-      color: #2877ff !important;
-    }
-
     .ant-progress-status-success .ant-progress-text {
       color: #43ba9a;
     }
@@ -137,10 +126,6 @@ const GlobalStyle = () => {
       transition: background-color 5000s ease-in-out 0s !important;
     }
 
-    .ant-btn-link:hover,
-    .ant-btn-link:focus {
-      background: #f2f2f4;
-    }
     .ant-popover-inner-content {
       padding: 0;
     }
@@ -187,14 +172,6 @@ const GlobalStyle = () => {
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
       background-color: #f0f4fa;
-    }
-
-    .ant-btn-default,
-    .ant-btn-default:hover,
-    .ant-btn-default:active {
-      color: #646566;
-      background: #f2f2f4;
-      border: none;
     }
 
     .ant-popover-arrow,
