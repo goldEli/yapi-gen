@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 需求详情-右侧
 
 /* eslint-disable react/no-unstable-nested-components */
@@ -873,7 +874,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                         <div className="common" style={{ paddingRight: 30 }}>
                           {item.createdTime}
                         </div>
-                        <EditorInfoReview info={`<div>${item.content}</div>`} />
+                        <EditorInfoReview
+                          info={
+                            /(?<start>^<p>*)|(?<end><\p>*$)/g.test(item.content)
+                              ? item.content
+                              : `<p>${item.content}</p>`
+                          }
+                        />
 
                         <div
                           style={{
