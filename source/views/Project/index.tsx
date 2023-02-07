@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
 import { Space } from 'antd'
 import IconFont from '@/components/IconFont'
+import RichEditor from '@/components/RichEditor'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -27,6 +28,7 @@ const Project = () => {
           121221
         </CommonButton>
       </Space>
+      <RichEditor />
     </ProjectWrap>
   )
 }

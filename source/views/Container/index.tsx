@@ -105,10 +105,10 @@ export const Container = () => {
           <GlobalStyle />
           {userInfo?.company_permissions?.length > 0 && (
             <LayoutWrap>
-              <HeaderWrap>
+              {/* <HeaderWrap>
                 <HeaderLeft />
                 <HeaderRight />
-              </HeaderWrap>
+              </HeaderWrap> */}
               <Content>
                 <Side />
                 <Main>

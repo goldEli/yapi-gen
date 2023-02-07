@@ -22,9 +22,8 @@
     "@reduxjs/toolkit": "^1.9.0",
     "@star-yun/ui": "^0.0.3",
     "@staryuntech/ant-pro": "0.0.22",
+    "@tinymce/tinymce-react": "^4.1.0",
     "@types/react-router-dom": "^5.3.3",
-    "@wangeditor/editor": "^5.1.11",
-    "@wangeditor/editor-for-react": "^1.0.4",
     "@xyfe/uikit": "^0.0.1-beta.52",
     "antd": "^4.24.0",
     "array-move": "^4.0.0",
@@ -44,10 +43,12 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^12.0.0",
     "react-redux": "^8.0.5",
+    "react-resizable": "^3.0.4",
     "react-router-dom": "^6.6.0",
     "react-sortable-hoc": "^2.0.0",
     "react-viewer": "^3.2.2",
-    "swiper": "^8.3.1"
+    "swiper": "^8.3.1",
+    "tinymce": "^6.1.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
