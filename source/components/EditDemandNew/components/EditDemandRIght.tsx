@@ -12,16 +12,15 @@ import {
   PriorityWrap,
   SliderWrap,
 } from '@/components/StyleCommon'
-import PopConfirm from '@/components/Popconfirm'
 import { DatePicker, Form, Select, TreeSelect } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useModel } from '@/models'
 import { useEffect, useImperativeHandle, useState } from 'react'
-import { LevelContent } from '@/components/Level'
 import IconFont from '@/components/IconFont'
-import { getNestedChildren, getTypeComponent } from '@/tools'
+import { getTypeComponent, removeNull } from '@/tools'
 import moment from 'moment'
 import { decryptPhp } from '@/tools/cryptoPhp'
+import { useSelector } from '@store/index'
+import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 
 const RightWrap = styled.div({
   height: '100%',
@@ -46,12 +45,8 @@ interface Props {
   projectId: any
   // 父需求
   parentList: any
-  // 需求分类
-  treeArr: any
   // 迭代id
   iterateId?: any
-  // 需求详情
-  info?: any
   //是否来自子需求
   isChild?: any
   // 是否是完成并创建
@@ -62,27 +57,22 @@ interface Props {
   fieldsList: any
   // 父需求id --- 和isChild一起使用
   parentId?: any
-  // 用于我的，他的，快速创建取项目id
-  notGetPath?: any
+
+  treeArr?: any
+  demandDetail?: any
 }
 
 const EditDemandRIght = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
-  const { userInfo } = useModel('user')
-  const {
-    selectAllStaffData,
-    memberList,
-    priorityList,
-    filterParamsModal,
-    projectInfoValues,
-  } = useModel('project')
-  const { selectIterate } = useModel('iterate')
+  const { userInfo } = useSelector(store => store.user)
+  const { filterParamsModal, projectInfoValues } = useSelector(
+    store => store.project,
+  )
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
   const [priorityDetail, setPriorityDetail] = useState<any>({})
-  const [classTreeData, setClassTreeData] = useState<any>([])
 
   // 处理人相关的下拉
   const getCommonUser = (arr: any, memberArr: any) => {
@@ -92,20 +82,6 @@ const EditDemandRIght = (props: Props) => {
     }
     return res?.length ? res.map((i: any) => i.id) : []
   }
-
-  useEffect(() => {
-    setClassTreeData([
-      ...[
-        {
-          title: t('newlyAdd.unclassified'),
-          key: 0,
-          value: 0,
-          children: [],
-        },
-      ],
-      ...getNestedChildren(props.treeArr, 0),
-    ])
-  }, [props.treeArr])
 
   // 回填自定义数据 -- params：传入回填数据对象，isFilter：是否是筛选回填
   const setCustomFields = (params: any, isFilter: boolean) => {
@@ -155,30 +131,34 @@ const EditDemandRIght = (props: Props) => {
   useEffect(() => {
     if (
       props?.demandId &&
-      props.info?.id &&
-      props.demandId === props.info?.id
+      props?.demandDetail?.id &&
+      props.demandId === props?.demandDetail?.id
     ) {
-      setSchedule(props.info?.schedule)
+      // 需求进度
+      setSchedule(props?.demandDetail?.schedule)
+      // 获取自定义字段回显值
       const form1Obj: any = {}
-      for (const key in props.info?.customField) {
+      for (const key in props?.demandDetail?.customField) {
         form1Obj[key] =
-          props.info?.customField[key]?.attr === 'date'
-            ? props.info?.customField[key]?.value
-              ? moment(props.info?.customField[key]?.value)
+          props?.demandDetail?.customField[key]?.attr === 'date'
+            ? props?.demandDetail?.customField[key]?.value
+              ? moment(props?.demandDetail?.customField[key]?.value)
               : ''
-            : props.info?.customField[key]?.value
+            : props?.demandDetail?.customField[key]?.value
       }
       form1.setFieldsValue(form1Obj)
-      setPriorityDetail(props.info.priority)
-      if (props.info?.expectedStart) {
+      // 回显优先级
+      setPriorityDetail(props?.demandDetail.priority)
+      // 开始时间
+      if (props?.demandDetail?.expectedStart) {
         form.setFieldsValue({
-          startTime: moment(props.info.expectedStart || 0),
+          startTime: moment(props?.demandDetail.expectedStart || 0),
         })
       }
-
-      if (props.info?.expectedEnd) {
+      // 结束时间
+      if (props?.demandDetail?.expectedEnd) {
         form.setFieldsValue({
-          endTime: moment(props.info.expectedEnd || 0),
+          endTime: moment(props?.demandDetail.expectedEnd || 0),
         })
       }
 
@@ -186,7 +166,7 @@ const EditDemandRIght = (props: Props) => {
       let hasChild: any
       // 如果是迭代创建或编辑，默认填入迭代
       if (props.iterateId) {
-        hasIterateId = selectIterate?.list
+        hasIterateId = removeNull(projectInfoValues, 'iterate_name')
           ?.filter((k: any) => k.status === 1)
           .filter((i: any) => i.id === props?.iterateId).length
           ? props?.iterateId
@@ -200,43 +180,39 @@ const EditDemandRIght = (props: Props) => {
       }
 
       form.setFieldsValue({
+        // 抄送人
         copySendIds: getCommonUser(
-          props.info?.copySend?.map((i: any) => i.copysend),
-          props?.notGetPath
-            ? selectAllStaffData
-            : projectInfoValues
-                ?.filter((i: any) => i.key === 'users_copysend_name')[0]
-                ?.children?.filter((i: any) => i.id !== -1)
-                ?.map((i: any) => ({
-                  label: i.content,
-                  value: i.id,
-                })),
+          props?.demandDetail?.copySend?.map((i: any) => i.copysend),
+          removeNull(projectInfoValues, 'users_copysend_name'),
         ),
-        attachments: props.info?.attachment?.map((i: any) => i.attachment.path),
+        // 附件
+        attachments: props?.demandDetail?.attachment?.map(
+          (i: any) => i.attachment.path,
+        ),
+        // 处理人
         userIds: getCommonUser(
-          props.info?.user?.map((i: any) => i.user),
-          memberList,
+          props?.demandDetail?.user?.map((i: any) => i.user),
+          removeNull(projectInfoValues, 'user_name'),
         ),
+        // 迭代
         iterateId: props.iterateId
           ? hasIterateId
-          : selectIterate?.list
+          : removeNull(projectInfoValues, 'iterate_name')
               ?.filter((k: any) => k.status === 1)
-              ?.filter((i: any) => i.id === props.info?.iterateId).length
-          ? props.info?.iterateId
+              ?.filter((i: any) => i.id === props?.demandDetail?.iterateId)
+              .length
+          ? props?.demandDetail?.iterateId
           : null,
+        // 父需求
         parentId: props.isChild
           ? hasChild
           : props.parentList?.filter(
-              (i: any) => i.value === props.info?.parentId,
+              (i: any) => i.value === props?.demandDetail?.parentId,
             ).length
-          ? props.info?.parentId
+          ? props?.demandDetail?.parentId
           : null,
-        class: props.treeArr?.filter((j: any) => j.id === props.info.class)
-          ?.length
-          ? props.info.class
-          : props.info.class === 0
-          ? 0
-          : null,
+        // 需求分类
+        class: props?.demandDetail.class || null,
       })
     } else {
       // 子需求默认回填父需求
@@ -250,14 +226,14 @@ const EditDemandRIght = (props: Props) => {
       // 迭代创建需求默认回填迭代
       if (props.iterateId) {
         form.setFieldsValue({
-          iterateId: selectIterate?.list
+          iterateId: removeNull(projectInfoValues, 'iterate_name')
             ?.filter((k: any) => k.status === 1)
             .filter((i: any) => i.id === props?.iterateId).length
             ? props?.iterateId
             : null,
         })
       }
-      // 如果不是完成并创建的话，则回填筛选值
+      // 如果不是快速创建并且不是完成并创建下一个，则回填筛选值
       if (!props.isSaveParams && !props.isQuickCreate) {
         // 不是在迭代创建需求并且有筛选项
         if (!props.iterateId && filterParamsModal?.iterateIds?.length) {
@@ -265,7 +241,7 @@ const EditDemandRIght = (props: Props) => {
             (i: any) => i !== -1,
           )?.[0]
           form.setFieldsValue({
-            iterateId: selectIterate?.list
+            iterateId: removeNull(projectInfoValues, 'iterate_name')
               ?.filter((k: any) => k.status === 1)
               .filter((i: any) => i.id === resultId).length
               ? resultId
@@ -282,9 +258,10 @@ const EditDemandRIght = (props: Props) => {
         const priorityId = filterParamsModal?.priorityIds?.filter(
           (i: any) => i !== -1,
         )?.[0]
-        const resultPriority = priorityList?.data?.filter(
-          (i: any) => i.id === priorityId,
-        )?.[0]
+        const resultPriority = removeNull(
+          projectInfoValues,
+          'priority',
+        )?.filter((i: any) => i.id === priorityId)?.[0]
 
         // 筛选回填处理人、抄送人、需求分类、优先级
         form.setFieldsValue({
@@ -338,9 +315,7 @@ const EditDemandRIght = (props: Props) => {
           parentId: hisCategoryData?.parentId,
           iterateId: hisCategoryData?.iterateId,
           copySendIds: hisCategoryData?.copySendIds,
-          // endTime: moment(hisCategoryData?.expectedEnd || 0),
-          // startTime: moment(hisCategoryData?.expectedStart || 0),
-          priority: priorityList?.data?.filter(
+          priority: removeNull(projectInfoValues, 'priority')?.filter(
             (i: any) => i.id === hisCategoryData?.priority,
           )?.[0],
         })
@@ -359,7 +334,7 @@ const EditDemandRIght = (props: Props) => {
 
         // 优先级
         setPriorityDetail(
-          priorityList?.data?.filter(
+          removeNull(projectInfoValues, 'priority')?.filter(
             (i: any) => i.id === hisCategoryData?.priority,
           )?.[0],
         )
@@ -371,13 +346,7 @@ const EditDemandRIght = (props: Props) => {
         }
       }
     }
-  }, [
-    props?.demandId,
-    props.info,
-    props.parentList,
-    selectIterate,
-    props.fieldsList,
-  ])
+  }, [props?.demandId, props?.demandDetail, props.parentList, props.fieldsList])
 
   // 修改需求进度
   const onChangeSetSchedule = (val: any) => {
@@ -433,16 +402,10 @@ const EditDemandRIght = (props: Props) => {
     setIsShowFields(false)
   }
 
-  // 提交参数后的操作
-  const onSubmitUpdate = () => {
-    //
-  }
-
   useImperativeHandle(props.onRef, () => {
     return {
       confirm: onConfirm,
       reset: onReset,
-      update: onSubmitUpdate,
     }
   })
 
@@ -453,19 +416,16 @@ const EditDemandRIght = (props: Props) => {
     if (['user_select_checkbox', 'user_select'].includes(currentItem.attr)) {
       options =
         currentItem.value?.[0] === 'projectMember'
-          ? memberList?.map((i: any) => ({
-              label: i.name,
+          ? removeNull(projectInfoValues, 'user_name')?.map((i: any) => ({
+              label: i.content,
               value: i.id,
             }))
-          : props?.notGetPath
-          ? selectAllStaffData
-          : projectInfoValues
-              ?.filter((i: any) => i.key === 'users_copysend_name')[0]
-              ?.children?.filter((i: any) => i.id !== -1)
-              ?.map((i: any) => ({
+          : removeNull(projectInfoValues, 'users_copysend_name')?.map(
+              (i: any) => ({
                 label: i.content,
                 value: i.id,
-              }))
+              }),
+            )
     }
 
     return getTypeComponent({
@@ -487,11 +447,11 @@ const EditDemandRIght = (props: Props) => {
                 onChange={value => onChangeSetSchedule(value)}
                 disabled={
                   !(
-                    props.info?.user
+                    props?.demandDetail?.user
                       ?.map((i: any) => i.user.id)
                       ?.includes(userInfo?.id) &&
-                    props.info.status.is_start !== 1 &&
-                    props.info.status.is_end !== 1
+                    props?.demandDetail.status.is_start !== 1 &&
+                    props?.demandDetail.status.is_end !== 1
                   )
                 }
               />
@@ -512,10 +472,12 @@ const EditDemandRIght = (props: Props) => {
             getPopupContainer={node => node}
             allowClear
             optionFilterProp="label"
-            options={memberList?.map((i: any) => ({
-              label: i.name,
-              value: i.id,
-            }))}
+            options={removeNull(projectInfoValues, 'user_name')?.map(
+              (i: any) => ({
+                label: i.content,
+                value: i.id,
+              }),
+            )}
           />
         </Form.Item>
         <Form.Item label={t('common.expectedStart')} name="startTime">
@@ -538,7 +500,10 @@ const EditDemandRIght = (props: Props) => {
             placeholder={t('newlyAdd.pleaseClass')}
             getPopupContainer={node => node}
             allowClear
-            treeData={classTreeData}
+            treeData={
+              projectInfoValues?.filter((i: any) => i.key === 'class')[0]
+                ?.children
+            }
             disabled={!props?.projectId}
           />
         </Form.Item>
@@ -555,7 +520,7 @@ const EditDemandRIght = (props: Props) => {
                     (k: any) =>
                       k.value !== props?.demandId &&
                       k.parentId !== props?.demandId &&
-                      k.parentId !== props.info?.parentId,
+                      k.parentId !== props?.demandDetail?.parentId,
                   )
                 : props.parentList
             }
@@ -565,18 +530,10 @@ const EditDemandRIght = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('common.priority')} name="priority">
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                props?.projectId && (
-                  <LevelContent
-                    onHide={onHide}
-                    record={{ project_id: props?.projectId }}
-                    onCurrentDetail={onCurrentDetail}
-                  />
-                )
-              )
-            }}
+          <ChangePriorityPopover
+            isCanOperation={props?.projectId}
+            record={{ project_id: props?.projectId }}
+            onCurrentDetail={(item: any) => onCurrentDetail(item)}
           >
             {props?.projectId && (
               <PriorityWrap>
@@ -597,7 +554,7 @@ const EditDemandRIght = (props: Props) => {
             {!props?.projectId && (
               <span style={{ cursor: 'not-allowed' }}>--</span>
             )}
-          </PopConfirm>
+          </ChangePriorityPopover>
         </Form.Item>
         <Form.Item label={t('common.iterate')} name="iterateId">
           <Select
@@ -608,10 +565,10 @@ const EditDemandRIght = (props: Props) => {
             allowClear
             optionFilterProp="label"
             disabled={!props?.projectId}
-            options={selectIterate?.list
+            options={removeNull(projectInfoValues, 'iterate_name')
               ?.filter((k: any) => k.status === 1)
               ?.map((i: any) => ({
-                label: i.name,
+                label: i.content,
                 value: i.id,
               }))}
           />
@@ -625,17 +582,12 @@ const EditDemandRIght = (props: Props) => {
             placeholder={t('common.pleaseChooseCopySend')}
             getPopupContainer={node => node}
             optionFilterProp="label"
-            options={
-              props?.notGetPath
-                ? selectAllStaffData
-                : projectInfoValues
-                    ?.filter((i: any) => i.key === 'users_copysend_name')[0]
-                    ?.children?.filter((i: any) => i.id !== -1)
-                    ?.map((i: any) => ({
-                      label: i.content,
-                      value: i.id,
-                    }))
-            }
+            options={removeNull(projectInfoValues, 'users_copysend_name')?.map(
+              (i: any) => ({
+                label: i.content,
+                value: i.id,
+              }),
+            )}
           />
         </Form.Item>
       </FormWrapDemand>

@@ -8,14 +8,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Divider, message } from 'antd'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getShapeLeft } from '@/services/project/shape'
 import { updateDemandStatus } from '@/services/mine'
 import ShapeContentForDetail from '@/components/ShapeForDetail'
-import PubSub from 'pubsub-js'
 import IconFont from '@/components/IconFont'
+import { useDispatch, useSelector } from '@store/index'
+import { getDemandInfo } from '@/services/project/demand'
+import {
+  setDemandInfo,
+  setIsRefreshComment,
+  setIsUpdateStatus,
+} from '@store/demand'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -33,12 +38,12 @@ const StatusWrap = styled.div({
 
 const DemandStatusBox = (props: any) => {
   const [t] = useTranslation()
-  const { getDemandInfo, demandInfo, isUpdateStatus, setIsUpdateStatus } =
-    useModel('demand')
   const [active, setActive] = useState(0)
   const [rows, setRows] = useState(null)
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo, isUpdateStatus } = useSelector(store => store.demand)
   const [leftList, setLeftList] = useState([])
+  const dispatch = useDispatch()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -59,7 +64,7 @@ const DemandStatusBox = (props: any) => {
     })
     setActive(demandInfo?.status?.id)
     setLeftList(res2)
-    setIsUpdateStatus(false)
+    dispatch(setIsUpdateStatus(false))
     setRows(res2.find((i: any) => i.id === demandInfo?.status?.id))
   }
 
@@ -67,9 +72,12 @@ const DemandStatusBox = (props: any) => {
     try {
       await updateDemandStatus(res1)
       message.success(t('common.circulationSuccess'))
-      await getDemandInfo({ projectId: props.pid, id: props.sid })
-      await init()
-      PubSub.publish('watch')
+      const result = await getDemandInfo({
+        projectId: props.pid,
+        id: props.sid,
+      })
+      dispatch(setDemandInfo(result))
+      dispatch(setIsRefreshComment(true))
     } catch (error) {
       //
     }

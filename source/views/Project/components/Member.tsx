@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // 项目右侧抽屉弹窗
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -8,7 +9,6 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
@@ -16,7 +16,20 @@ import { MoreWrap } from '../Detail/Demand/DemandMain/components/Operation'
 import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
-import PubSub from 'pubsub-js'
+import {
+  addMember,
+  getProjectInfo,
+  getProjectMember,
+  getProjectPermission,
+  updateMember,
+} from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  setProjectInfo,
+  setProjectInfoValues,
+  setIsUpdateMember,
+} from '@store/project'
+import CommonInput from '@/components/CommonInput'
 
 interface Props {
   visible: boolean
@@ -42,7 +55,6 @@ const DrawerWrap = styled(Drawer)({
 })
 
 const ButtonWrap = styled(Button)({
-  // minWidth: '88px',
   height: 32,
   marginLeft: 16,
 })
@@ -211,19 +223,7 @@ const MoreDropdown = (props: DropDownProps) => {
 
 const Member = (props: Props) => {
   const [t] = useTranslation()
-  const {
-    getProjectMember,
-    isRefreshMember,
-    setIsRefreshMember,
-    projectInfo,
-    setProjectPermission,
-    getProjectPermission,
-    updateMember,
-    projectPermission,
-    addMember,
-    getProjectInfo,
-    getProjectInfoValues,
-  } = useModel('project')
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
   const [departments, setDepartments] = useState([])
@@ -231,7 +231,9 @@ const Member = (props: Props) => {
   const [search, setSearch] = useState<any>()
   const [memberList, setMemberList] = useState<any>([])
   const [userDataList, setUserDataList] = useState<any[]>([])
+  const [projectPermission, setProjectPermission] = useState<any>([])
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
   const hasEdit = !getIsPermission(
     projectInfo?.projectPermissions,
     'b/project/member/update',
@@ -249,16 +251,30 @@ const Member = (props: Props) => {
     )
   }
 
-  const getList = async () => {
+  // 获取项目成员列表 isUpdateProjectInfoValues：是否需要更新项目下拉数据
+  const getList = async (isUpdateProjectInfoValues?: boolean) => {
     const result = await getProjectMember({
       projectId: props.projectId,
       all: true,
       searchValue: search,
     })
-
+    // 更新项目成员下拉
+    if (isUpdateProjectInfoValues) {
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      const recombinationMember = result?.map((k: any) => ({
+        id: k.id,
+        content: k.name,
+        content_txt: k.name,
+      }))
+      const newValues = beforeValues?.map((i: any) =>
+        ['user_name', 'users_name'].includes(i.key) ||
+        (i.key.includes('custom_') && i.customTag[0] === 'projectMember')
+          ? { ...i, children: [...[i.children[0]], ...recombinationMember] }
+          : i,
+      )
+      dispatch(setProjectInfoValues(newValues))
+    }
     setMemberList(result)
-    setIsRefreshMember(false)
-    getPermission()
   }
 
   const init = async () => {
@@ -305,25 +321,21 @@ const Member = (props: Props) => {
         userIds: row.id,
       })
       message.success(t('common.editS'))
+      // 可以考虑不走接口修改
       getList()
-      PubSub.publish('getPeople')
+      dispatch(setIsUpdateMember(true))
     } catch (error) {
       //
     }
   }
 
-  useEffect(() => {
-    if (isRefreshMember) {
-      getList()
-    }
-  }, [isRefreshMember])
-
-  const onChangeSearch = (e: any) => {
-    setSearch(e.target.value)
+  const onChangeSearch = (value: string) => {
+    setSearch(value)
   }
   useEffect(() => {
     if (props.visible) {
       getList()
+      getPermission()
     }
   }, [search, props.visible])
 
@@ -353,10 +365,11 @@ const Member = (props: Props) => {
     await addMember(params)
     message.success(t('common.addSuccess'))
     setUserDataList([])
-    getList()
+    getList(true)
     setIsVisible(false)
-    getProjectInfo({ projectId: projectInfo.id })
-    getProjectInfoValues({ projectId: projectInfo.id })
+    const result = await getProjectInfo({ projectId: projectInfo.id })
+    dispatch(setProjectInfo(result))
+    dispatch(setIsUpdateMember(true))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -365,6 +378,7 @@ const Member = (props: Props) => {
   const onChangeMember = (value: any) => {
     setUserDataList(value)
   }
+
   const userObj = {
     avatar:
       'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1531903254371954690/2022-11-15/71A2A5C7-CFB9CDD612ED.jpeg',
@@ -461,18 +475,12 @@ const Member = (props: Props) => {
             marginBottom: '12px',
           }}
         >
-          <Input
-            autoComplete="off"
-            onPressEnter={onChangeSearch}
-            onBlur={onChangeSearch}
-            suffix={
-              <IconFont
-                type="search"
-                style={{ color: '#BBBDBF', fontSize: 16 }}
-              />
-            }
+          <CommonInput
+            autoFocus
+            onChangeSearch={onChangeSearch}
+            width="100%"
             placeholder={t('project.searchMember')}
-            allowClear
+            bgColor="#fff"
           />
           {getIsPermission(
             projectInfo?.projectPermissions,

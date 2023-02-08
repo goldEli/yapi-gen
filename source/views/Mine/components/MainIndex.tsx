@@ -1,13 +1,14 @@
 // 我的模块所有页面公用布局
 
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
 import { StaffHeader } from '@/components/StyleCommon'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
+import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -24,8 +25,7 @@ interface Props {
 const MainIndex = (props: Props) => {
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
-  const { getMineProjectList } = useModel('mine')
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [loadingState, setLoadingState] = useState<boolean>(false)
 
   const init = async () => {

@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
 import IconFont from './IconFont'
 import { getIsPermission } from '@/tools'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import IterationStatus from '@/views/Project/Detail/Iteration/components/IterationStatus'
 import MoreDropdown from './MoreDropdown'
@@ -96,7 +96,7 @@ interface Props {
 const IterationCard = (props: Props) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,

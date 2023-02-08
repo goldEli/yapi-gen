@@ -16,7 +16,6 @@ import {
   Spin,
   Tooltip,
 } from 'antd'
-import { useModel } from '@/models'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -24,8 +23,11 @@ import { css } from '@emotion/css'
 import { getShapeLeft, getShapeRight } from '@/services/project/shape'
 import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import PubSub from 'pubsub-js'
 import { setValue } from './ShapeForDetail'
+import { getProjectMember } from '@/services/mine'
+import { useDispatch } from '@store/index'
+import { setIsUpdateChangeLog } from '@store/demand'
+import { CloseWrap } from './StyleCommon'
 
 const Left = styled.div`
   min-height: 400px;
@@ -42,12 +44,10 @@ const Right = styled.div`
   position: relative;
   box-sizing: border-box;
   padding-left: 24px;
-  padding-top: 40px;
   width: 500px;
   min-height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `
 const Contain = styled.div`
   position: relative;
@@ -88,11 +88,9 @@ const ButtonFooter = styled.div`
   flex-direction: row-reverse;
   box-sizing: border-box;
   padding-right: 24px;
-`
-const Close = styled.span`
   position: absolute;
-  right: 10px;
-  top: 10px;
+  bottom: 0;
+  width: calc(100% - 24px);
 `
 const ExcessiveBox = styled.div`
   display: flex;
@@ -184,6 +182,14 @@ const ArrorItem = styled.div`
       visibility: hidden;
     }
   }
+`
+
+const RightCloseBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16px;
+  height: 56px;
 `
 
 const LabelComponent = (props: any) => {
@@ -343,13 +349,12 @@ export const ShapeContent = (props: any) => {
       project_id: projectId,
       status: { id: activeID, can_changes: statusList },
     },
-    hide,
-    tap,
+    onClosePopover,
+    onTap,
   } = props
 
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
-  const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
   const [leftList, setLeftList] = useState([])
   const [rightList, setRightList] = useState<any>()
@@ -357,6 +362,7 @@ export const ShapeContent = (props: any) => {
   const [activeStatus, setActiveStatus] = useState<any>({})
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
+  const dispatch = useDispatch()
 
   const handleChange = (value: string) => {
     setReviewerValue(value)
@@ -430,7 +436,7 @@ export const ShapeContent = (props: any) => {
   }, [])
 
   const onClear = () => {
-    hide()
+    onClosePopover()
     form.resetFields()
   }
 
@@ -462,11 +468,9 @@ export const ShapeContent = (props: any) => {
       verifyId: reviewerValue,
     }
 
-    await tap(props.noleft ? putData2 : putData)
+    await onTap(props.noleft ? putData2 : putData)
     onClear()
-    setTimeout(() => {
-      PubSub.publish('state')
-    }, 100)
+    dispatch(setIsUpdateChangeLog(true))
   }
 
   const onConfirm = async () => {
@@ -486,6 +490,7 @@ export const ShapeContent = (props: any) => {
             >
               <StyledShape
                 style={{
+                  width: 138,
                   color: item.id === active ? '#2877ff' : '#969799',
                   border:
                     item.id === active
@@ -502,6 +507,14 @@ export const ShapeContent = (props: any) => {
 
       {loading && (
         <Right>
+          <RightCloseBox>
+            <CloseWrap onClick={() => onClear()} width={30} height={30}>
+              <IconFont
+                type="close"
+                style={{ fontSize: 20, cursor: 'pointer' }}
+              />
+            </CloseWrap>
+          </RightCloseBox>
           <div style={{ maxHeight: 280, overflow: 'auto' }}>
             <FormWrap>
               <Form
@@ -516,7 +529,7 @@ export const ShapeContent = (props: any) => {
                       '.ant-form-item-has-error',
                     )
 
-                    errorList[0].scrollIntoView({
+                    errorList[0]?.scrollIntoView({
                       block: 'center',
                       behavior: 'smooth',
                     })
@@ -657,7 +670,10 @@ export const ShapeContent = (props: any) => {
                     {['text', 'textarea'].includes(i.type) && (
                       <Form.Item
                         getValueFromEvent={event => {
-                          return event.target.value.replace(/\s+/g, '')
+                          return event.target.value.replace(
+                            /(?<start>^\s*)/g,
+                            '',
+                          )
                         }}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -847,10 +863,6 @@ export const ShapeContent = (props: any) => {
           }}
         />
       )}
-
-      <Close onClick={() => onClear()}>
-        <IconFont type="close" style={{ fontSize: 16, cursor: 'pointer' }} />
-      </Close>
     </Contain>
   )
 }

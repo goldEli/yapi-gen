@@ -14,9 +14,15 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize } from '@/services/cos'
 import FieldsTemplate from './FieldsTemplate'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import {
+  getImportDownloadModel,
+  getImportExcel,
+  getImportExcelUpdate,
+} from '@/services/project/demand'
 
 const Wrap = styled.div<{ language: any }>(
   {
@@ -122,14 +128,9 @@ const ImportDemand = () => {
   const [t, i18n] = useTranslation()
   const [spinLoading, setSpinLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const {
-    getImportDownloadModel,
-    getImportExcel,
-    importExcel,
-    getImportExcelUpdate,
-  } = useModel('demand')
-  const { setIsRefresh } = useModel('user')
-  const { projectInfo } = useModel('project')
+  const [importExcel, setImportExcel] = useState<any>({})
+  const dispatch = useDispatch()
+  const { projectInfo } = useSelector(store => store.project)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -153,12 +154,20 @@ const ImportDemand = () => {
 
   const onUpload = async (result: any) => {
     try {
-      tabs === 1
-        ? await getImportExcelUpdate({ projectId, filePath: result })
-        : await getImportExcel({ projectId, filePath: result })
+      setImportExcel({})
+      let resultExcel: any = {}
+      if (tabs === 1) {
+        resultExcel = await getImportExcelUpdate({
+          projectId,
+          filePath: result,
+        })
+      } else {
+        resultExcel = await getImportExcel({ projectId, filePath: result })
+      }
+      setImportExcel(resultExcel)
       setSpinLoading(false)
       setStep(3)
-      setIsRefresh(true)
+      dispatch(setIsRefresh(true))
     } catch (error) {
       setStep(1)
       setSpinLoading(false)

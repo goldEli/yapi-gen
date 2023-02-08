@@ -1,12 +1,16 @@
 // 公司员工筛选组件
 
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
 import { SearchLine, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  getDepartmentSelectList,
+  getPositionSelectList,
+  getRoleList,
+} from '@/services/staff'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -47,8 +51,6 @@ interface Props {
 
 const SearchList = (props: Props) => {
   const [t] = useTranslation()
-  const { getDepartmentSelectList, getPositionSelectList, getRoleList } =
-    useModel('staff')
   const [form] = Form.useForm()
   const [departmentOptions, setDepartmentOptions] = useState([])
   const [positionOptions, setPositionOptions] = useState([])
@@ -72,7 +74,6 @@ const SearchList = (props: Props) => {
 
   useEffect(() => {
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const confirm = async () => {

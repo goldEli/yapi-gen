@@ -5,17 +5,20 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
+/* eslint-disable no-undefined */
 import styled from '@emotion/styled'
 import { Space, Spin, Timeline } from 'antd'
 import { NameWrap, ViewWrap, DelWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
-import PubSub from 'pubsub-js'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { getStoryStatusLog } from '@/services/project/demand'
+import { setIsUpdateChangeLog } from '@store/demand'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -113,32 +116,55 @@ const Circulation = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getStatusLogs, statusLogs, demandInfo, setStatusLogs } =
-    useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const [statusLogs, setStatusLogs] = useState<any>({
+    list: undefined,
+  })
+  const { demandInfo, isUpdateChangeLog } = useSelector(store => store.demand)
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
 
-  const getLogs = async () => {
-    setIsSpin(true)
-    await getStatusLogs({ projectId, demandId: demandInfo?.id, all: true })
-    setIsRefresh(false)
-    setIsSpin(false)
+  const getLogs = async (state: boolean) => {
+    if (state) {
+      setIsSpin(true)
+      const result = await getStoryStatusLog({
+        projectId,
+        demandId: demandInfo?.id,
+        all: true,
+      })
+      setStatusLogs({
+        list: result,
+      })
+      dispatch(setIsRefresh(false))
+      setIsSpin(false)
+    } else {
+      const result = await getStoryStatusLog({
+        projectId,
+        demandId: demandInfo?.id,
+        all: true,
+      })
+      setStatusLogs({
+        list: result,
+      })
+    }
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
-    getLogs()
+    getLogs(true)
   }, [])
 
   useEffect(() => {
     if (isRefresh) {
       setStatusLogs([])
-      getLogs()
+      getLogs(true)
     }
   }, [isRefresh])
+
   useEffect(() => {
-    PubSub.subscribe('state', () => {
-      getStatusLogs({ projectId, demandId: demandInfo?.id, all: true })
-    })
-  }, [])
+    if (isUpdateChangeLog) {
+      getLogs(false)
+    }
+  }, [isUpdateChangeLog])
 
   // 返回自定义值
   const getValues = (key: any, values: any) => {

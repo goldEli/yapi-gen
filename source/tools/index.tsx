@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 使用多次的公共方法
 
 /* eslint-disable consistent-return */
@@ -103,6 +104,7 @@ function getTypeComponent(
         ref={inputRef}
         autoComplete="off"
         style={{ width: '100%', minWidth: 192 }}
+        maxLength={params?.attr === 'text' ? 100 : undefined}
       />
     )
   } else if (params?.attr === 'textarea') {
@@ -117,6 +119,7 @@ function getTypeComponent(
         ref={inputRef}
         style={{ width: '100%', minWidth: 192 }}
         autoComplete="off"
+        maxLength={100}
       />
     )
   } else if (params?.attr === 'number' && params?.value[0] === 'integer') {
@@ -404,6 +407,31 @@ function copyLink(text: any, successText: string, errorText: string) {
   )
 }
 
+// 去除筛选填入的空选项
+function removeNull(list: any, key: string) {
+  return list
+    ?.filter((i: any) => i.key === key)[0]
+    ?.children?.filter((i: any) => i.id !== -1)
+}
+
+// 获取自定义字段默认值
+function getCustomNormalValue(attr: any, text: any) {
+  let result: any
+  if (['user_select_checkbox', 'user_select'].includes(attr)) {
+    result = text?.true_value || '--'
+  }
+
+  if (Array.isArray(text?.value)) {
+    result = text?.value?.join(';')
+  } else if (typeof text?.value === 'object') {
+    result = text?.value.content
+  } else {
+    result = text?.value
+  }
+
+  return result || '--'
+}
+
 export default onPaste
 
 export {
@@ -417,4 +445,6 @@ export {
   bytesToSize,
   onPaste,
   copyLink,
+  removeNull,
+  getCustomNormalValue,
 }

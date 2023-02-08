@@ -12,7 +12,6 @@ import {
   SecondButton,
 } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -22,7 +21,10 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterParamsModal } from '@store/project'
+import { updateDemandStatus, updatePriority } from '@/services/project/demand'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -55,9 +57,8 @@ const DemandTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, filterParams } =
-    useModel('demand')
-  const { projectInfo, setFilterParamsModal, filterKeys } = useModel('project')
+  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -71,6 +72,8 @@ const DemandTable = (props: Props) => {
   const [isAddVisible, setIsAddVisible] = useState(false)
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
+  const dispatch = useDispatch()
+
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -265,7 +268,7 @@ const DemandTable = (props: Props) => {
 
   const onClick = () => {
     setIsAddVisible(!isAddVisible)
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
   }
 
   return (

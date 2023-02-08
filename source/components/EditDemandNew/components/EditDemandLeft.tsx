@@ -1,14 +1,19 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-no-leaked-render */
 import Editor from '@/components/Editor'
 import IconFont from '@/components/IconFont'
 import { AddWrap, FormWrapDemand } from '@/components/StyleCommon'
-import { useModel } from '@/models'
+import { getProjectList } from '@/services/mine'
+import { getProjectInfo } from '@/services/project'
+import { removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import TagComponent from '@/views/Project/Detail/Demand/components/TagComponent'
 import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
 import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfo } from '@store/project'
 import { Form, Input, Select } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,8 +37,8 @@ interface Props {
   onResetForm(): void
   onRef: any
   demandId?: any
-  // 需求详情
-  demandInfo?: any
+  isAllProject?: any
+  demandDetail?: any
 }
 
 const EditDemandLeft = (props: Props) => {
@@ -42,17 +47,12 @@ const EditDemandLeft = (props: Props) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [projectList, setProjectList] = useState<any>([])
-  const {
-    projectInfo,
-    getProjectInfo,
-    setFieldList,
-    filterParamsModal,
-    getTagList,
-    projectInfoValues,
-  } = useModel('project')
-  const { getProjectList } = useModel('mine')
+  const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
+    store => store.project,
+  )
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
+  const dispatch = useDispatch()
 
   // 提交参数
   const onConfirm = async () => {
@@ -96,6 +96,12 @@ const EditDemandLeft = (props: Props) => {
     }
   })
 
+  // 获取项目信息
+  const getProjectInfoData = async (id: any) => {
+    const result = await getProjectInfo({ projectId: id })
+    dispatch(setProjectInfo(result))
+  }
+
   // 获取项目数据
   const getProjectData = async () => {
     const res = await getProjectList({
@@ -103,22 +109,18 @@ const EditDemandLeft = (props: Props) => {
       all: 1,
     })
     setProjectList(res.data)
+    // 获取上次缓存的快速创建参数
     if (localStorage.getItem('quickCreateData')) {
       const hisCategoryData = JSON.parse(
         decryptPhp(localStorage.getItem('quickCreateData') as any),
       )
       form.setFieldsValue(hisCategoryData)
-      getProjectInfo({ projectId: hisCategoryData?.projectId })
-      const resultList = await getTagList({
-        projectId: hisCategoryData?.projectId,
-      })
+      getProjectInfoData(hisCategoryData?.projectId)
+      // 项目更新项目下的所有关联数据
+      props.onGetDataAll(hisCategoryData?.projectId)
       props.onChangeProjectId(hisCategoryData?.projectId)
-      props.onGetDataAll(
-        hisCategoryData?.projectId,
-        hisCategoryData?.categoryId,
-      )
       setTagCheckedList(
-        resultList
+        removeNull(projectInfoValues, 'tag')
           ?.filter((i: any) =>
             hisCategoryData?.tagIds
               ?.map((k: any) => k.name)
@@ -138,16 +140,19 @@ const EditDemandLeft = (props: Props) => {
   }
 
   useEffect(() => {
+    // 是否是快捷创建
     if (props?.isQuickCreate) {
       getProjectData()
+    }
+    // 如果是所有项目调用项目信息
+    if (props?.isAllProject) {
+      getProjectInfoData(props?.projectId)
     }
     // 创建回填筛选数据 --- 标签
     if (filterParamsModal?.tagIds?.length) {
       const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
       setTagCheckedList(
-        projectInfoValues
-          ?.filter((i: any) => i.key === 'tag')[0]
-          ?.children?.filter((k: any) => k.id !== -1)
+        removeNull(projectInfoValues, 'tag')
           ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
           ?.map((i: any) => ({
             id: i.id,
@@ -163,17 +168,17 @@ const EditDemandLeft = (props: Props) => {
 
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
-    if (props?.demandId && props?.demandId === props?.demandInfo?.id) {
+    // 需求id为真并且与需求详情id匹配
+    if (props?.demandId && props?.demandId === props?.demandDetail?.id) {
       setTagCheckedList(
-        props.demandInfo?.tag?.map((i: any) => ({
+        props?.demandDetail?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       )
-
       setAttachList(
-        props.demandInfo?.attachment?.map((i: any) => ({
+        props?.demandDetail?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
           size: i.attachment.size,
@@ -184,9 +189,9 @@ const EditDemandLeft = (props: Props) => {
         })),
       )
       form.setFieldsValue({
-        name: props.demandInfo?.name,
-        info: props.demandInfo?.info,
-        tagIds: props.demandInfo?.tag?.map((i: any) => ({
+        name: props?.demandDetail?.name,
+        info: props?.demandDetail?.info,
+        tagIds: props?.demandDetail?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
@@ -196,16 +201,12 @@ const EditDemandLeft = (props: Props) => {
         inputRefDom.current?.focus()
       }, 100)
     }
-  }, [props?.demandId, props.demandInfo])
+  }, [props?.demandId, props?.demandDetail])
 
   // 切换项目
   const onSelectProjectName = async (value: any) => {
     onReset()
-    setFieldList({ list: undefined })
-    getProjectInfo({ projectId: value })
-    await getTagList({
-      projectId: value,
-    })
+    getProjectInfoData(value)
     form.setFieldsValue({
       projectId: value,
     })
@@ -219,7 +220,6 @@ const EditDemandLeft = (props: Props) => {
     onReset()
     props.onChangeProjectId(null)
     props.onResetForm()
-    setFieldList({ list: undefined })
   }
 
   // 修改标签
@@ -306,8 +306,7 @@ const EditDemandLeft = (props: Props) => {
         )}
         <Form.Item
           getValueFromEvent={event => {
-            // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
           label={
             <div style={{ fontWeight: 'bold' }}>{t('common.demandName')}</div>
@@ -319,7 +318,7 @@ const EditDemandLeft = (props: Props) => {
             autoComplete="off"
             ref={inputRefDom as any}
             placeholder={t('common.pleaseDemandName')}
-            maxLength={50}
+            maxLength={100}
             autoFocus
           />
         </Form.Item>

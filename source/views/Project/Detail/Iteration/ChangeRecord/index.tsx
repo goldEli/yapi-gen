@@ -13,7 +13,6 @@ import {
   PaginationWrap,
   TableStyleBox,
 } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
@@ -22,6 +21,9 @@ import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { getIterateChangeLog } from '@/services/project/iterate'
 
 const ContentWrap = styled.div({
   display: 'flex',
@@ -72,7 +74,6 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = (props?: any) => {
   const [t] = useTranslation()
-  const { getIterateChangeLog } = useModel('iterate')
   const [isVisible, setIsVisible] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -85,7 +86,8 @@ const ChangeRecord = (props?: any) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
@@ -119,7 +121,7 @@ const ChangeRecord = (props?: any) => {
     })
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     props.onChangeUpdate()
   }
 

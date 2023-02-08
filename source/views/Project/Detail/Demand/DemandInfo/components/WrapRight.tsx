@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 需求详情-右侧
 
 /* eslint-disable react/no-unstable-nested-components */
@@ -8,10 +9,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines */
 /* eslint-disable react/no-danger */
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { OmitText } from '@star-yun/ui'
 import Viewer from 'react-viewer'
-import { bytesToSize, getParamsData } from '@/tools'
+import { bytesToSize, getCustomNormalValue, getParamsData } from '@/tools'
 import {
   AddWrap,
   HiddenText,
@@ -28,12 +28,9 @@ import {
   SliderWrap,
 } from '@/components/StyleCommon'
 import ParentDemand from '../../components/ParentDemand'
-import { LevelContent } from '@/components/Level'
-import Popconfirm from '@/components/Popconfirm'
 import TableQuickEdit from '@/components/TableQuickEdit'
 import EditComment from '@/components/EditComment'
-import { useDispatch } from '../../../../../../../store'
-import { changeId } from '../../../../../../../store/modalState'
+import { useDispatch, useSelector } from '../../../../../../../store'
 import {
   BigWrap,
   BlueCss,
@@ -46,8 +43,18 @@ import {
 } from '../../components/UploadAttach'
 import { imgs } from '@/views/Information/components/LookDay'
 import { delCommonAt } from '@/services/user'
-import PubSub from 'pubsub-js'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { storyConfigField } from '@/services/project'
+import {
+  addComment,
+  deleteComment,
+  getCommentList,
+  getDemandInfo,
+  updatePriority,
+  updateTableParams,
+} from '@/services/project/demand'
+import { setDemandInfo, setIsRefreshComment } from '@store/demand'
+import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -113,6 +120,7 @@ const Label = styled.div({
   minWidth: 110,
   height: 32,
   lineHeight: '32px',
+  position: 'relative',
 })
 
 const ContentWrap = styled.div<{ notHover?: any }>(
@@ -274,9 +282,29 @@ const SetHead = styled.div({
   overflow: 'hidden',
 })
 
+const MaxLabel = styled.div<{ width: number }>`
+  width: ${props => props.width}px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const LimitLabel = (props: { label: string; width: number }) => {
+  return (
+    <Label>
+      <Tooltip
+        title={props.label}
+        getPopupContainer={node => node}
+        placement="topLeft"
+      >
+        <MaxLabel width={props.width}>{props.label}</MaxLabel>
+      </Tooltip>
+    </Label>
+  )
+}
+
 const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -285,19 +313,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   const [isDeleteId, setIsDeleteId] = useState(0)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [activeTabs, setActiveTabs] = useState(1)
-  const {
-    getCommentList,
-    addComment,
-    deleteComment,
-    isRefreshComment,
-    setIsRefreshComment,
-    demandInfo,
-    updatePriority,
-    getDemandInfo,
-    updateTableParams,
-  } = useModel('demand')
-  const { userInfo } = useModel('user')
-  const { projectInfo, fieldList, getFieldList } = useModel('project')
+  const [fieldList, setFieldList] = useState<any>({
+    list: undefined,
+  })
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
+  const { isRefreshComment } = useSelector(store => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -306,6 +328,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     index: 0,
   })
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
@@ -327,12 +350,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     })
     setDataList(result)
     setTimeout(() => {
-      setIsRefreshComment(false)
+      dispatch(setIsRefreshComment(false))
     }, 100)
   }
 
   const getFieldData = async () => {
-    await getFieldList({ projectId })
+    const result = await storyConfigField({ projectId })
+    setFieldList(result)
   }
 
   useEffect(() => {
@@ -416,7 +440,8 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
       }
       try {
         await updateTableParams(obj)
-        getDemandInfo({ projectId, id: demandInfo?.id })
+        const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+        dispatch(setDemandInfo(result))
       } catch (error) {
         //
       }
@@ -442,16 +467,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     }
   }
 
-  // 返回文本
-  const getText = (attr: any, text: any) => {
-    if (['user_select_checkbox', 'user_select'].includes(attr)) {
-      return text?.true_value || '--'
-    }
-    return (
-      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
-      '--'
-    )
-  }
   const onReview = (item: any, attachList: any) => {
     setPictureList({
       imageArray: attachList
@@ -466,11 +481,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
     })
     setPreviewOpen(true)
   }
-  useEffect(() => {
-    PubSub.subscribe('watch', () => {
-      getList()
-    })
-  }, [])
 
   return (
     <div
@@ -513,17 +523,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
         {activeTabs === 1 && (
           <div style={{ maxHeight: 'calc(100% - 100px)' }}>
             <InfoItem>
-              <Label>
-                <OmitText
-                  width={100}
-                  tipProps={{
-                    placement: 'topLeft',
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {t('newlyAdd.demandProgress')}
-                </OmitText>
-              </Label>
+              <LimitLabel label={t('newlyAdd.demandProgress')} width={100} />
               <div
                 style={{
                   display: 'flex',
@@ -565,7 +565,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </div>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.dealName')}</Label>
+              <LimitLabel label={t('common.dealName')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -585,23 +585,23 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.createName')}</Label>
+              <LimitLabel label={t('common.createName')} width={100} />
               <ContentWrap notHover>{demandInfo?.userName || '--'}</ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.createTime')}</Label>
+              <LimitLabel label={t('common.createTime')} width={100} />
               <ContentWrap notHover>
                 {demandInfo?.createdTime || '--'}
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.finishTime')}</Label>
+              <LimitLabel label={t('common.finishTime')} width={100} />
               <ContentWrap notHover>
                 {demandInfo?.finishTime || '--'}
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.parentDemand')}</Label>
+              <LimitLabel label={t('common.parentDemand')} width={100} />
               <div style={{ paddingLeft: 4 }}>
                 <ParentDemand
                   isRight
@@ -615,7 +615,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </div>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.iterate')}</Label>
+              <LimitLabel label={t('common.iterate')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -635,18 +635,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>
-                <OmitText
-                  width={100}
-                  tipProps={{
-                    placement: 'topLeft',
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {t('newlyAdd.demandClass')}
-                </OmitText>
-              </Label>
-
+              <LimitLabel label={t('newlyAdd.demandClass')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -662,20 +651,14 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.priority')}</Label>
-              <Popconfirm
-                content={({ onHide }: { onHide(): void }) => {
-                  return isCanEdit ? (
-                    <LevelContent
-                      onTap={item => onChangeState(item)}
-                      onHide={onHide}
-                      record={{
-                        id: demandId,
-                        project_id: projectId,
-                      }}
-                    />
-                  ) : null
+              <LimitLabel label={t('common.priority')} width={100} />
+              <ChangePriorityPopover
+                isCanOperation={isCanEdit}
+                record={{
+                  id: demandId,
+                  project_id: projectId,
                 }}
+                onChangePriority={onChangeState}
               >
                 <div
                   style={{
@@ -697,10 +680,10 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     {isCanEdit ? <IconFontWrapEdit type="down-icon" /> : null}
                   </CanOperation>
                 </div>
-              </Popconfirm>
+              </ChangePriorityPopover>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.start')}</Label>
+              <LimitLabel label={t('common.start')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -715,7 +698,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.end')}</Label>
+              <LimitLabel label={t('common.end')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   isInfo
@@ -730,7 +713,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               </ContentWrap>
             </InfoItem>
             <InfoItem>
-              <Label>{t('common.copySend')}</Label>
+              <LimitLabel label={t('common.copySend')} width={100} />
               <ContentWrap>
                 <TableQuickEdit
                   item={demandInfo}
@@ -751,37 +734,31 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 </TableQuickEdit>
               </ContentWrap>
             </InfoItem>
-            {fieldList?.list?.map((i: any) => (
-              <InfoItem key={i.content}>
-                <Label>
-                  <OmitText
-                    width={80}
-                    tipProps={{
-                      placement: 'topLeft',
-                      getPopupContainer: node => node,
-                    }}
-                  >
-                    {i.name}
-                  </OmitText>
-                </Label>
-                <ContentWrap>
-                  <TableQuickEdit
-                    item={demandInfo}
-                    isInfo
-                    keyText={i.content}
-                    type={i.type?.attr}
-                    defaultText={demandInfo?.customField?.[i.content]?.value}
-                    isCustom
-                    remarks={i?.remarks}
-                  >
-                    {getText(
-                      i.type?.attr,
-                      demandInfo?.customField?.[i.content],
-                    )}
-                  </TableQuickEdit>
-                </ContentWrap>
-              </InfoItem>
-            ))}
+            {fieldList?.list?.map((i: any) => {
+              return (
+                <InfoItem key={i.content}>
+                  <LimitLabel label={i.name} width={90} />
+                  <ContentWrap>
+                    <TableQuickEdit
+                      item={demandInfo}
+                      isInfo
+                      keyText={i.content}
+                      type={i.type?.attr}
+                      defaultText={demandInfo?.customField?.[i.content]?.value}
+                      isCustom
+                      remarks={i?.remarks}
+                    >
+                      <span>
+                        {getCustomNormalValue(
+                          i.type?.attr,
+                          demandInfo?.customField[i.content],
+                        )}
+                      </span>
+                    </TableQuickEdit>
+                  </ContentWrap>
+                </InfoItem>
+              )
+            })}
             <div
               style={{
                 height: '10px',
@@ -815,7 +792,6 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               <AddWrap
                 onClick={() => {
                   setVisibleEdit(true)
-                  dispatch(changeId(true))
                 }}
                 style={{
                   marginRight: '30px',
@@ -884,7 +860,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                             <span className="common">
                               <HiddenText>
                                 <OmitText
-                                  width={150}
+                                  width={240}
                                   tipProps={{
                                     getPopupContainer: node => node,
                                   }}
@@ -898,7 +874,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                         <div className="common" style={{ paddingRight: 30 }}>
                           {item.createdTime}
                         </div>
-                        <EditorInfoReview info={item.content} />
+                        <EditorInfoReview
+                          info={
+                            /(?<start>^<p>*)|(?<end><\p>*$)/g.test(item.content)
+                              ? item.content
+                              : `<p>${item.content}</p>`
+                          }
+                        />
 
                         <div
                           style={{

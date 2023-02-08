@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button, message, Menu } from 'antd'
-import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -26,8 +25,15 @@ import IterationStatus from './components/IterationStatus'
 import CommonInput from '@/components/CommonInput'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
-import PubSub from 'pubsub-js'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfoValues } from '@store/project'
+import {
+  deleteIterate,
+  getIterateInfo,
+  updateIterateStatus,
+} from '@/services/project/iterate'
+import { setIterateInfo } from '@store/iterate'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -128,16 +134,10 @@ const IterationWrap = () => {
   const { type } = paramsData
   const navigate = useNavigate()
   const { iterateId } = paramsData
-  const {
-    getIterateInfo,
-    iterateInfo,
-    deleteIterate,
-    updateIterateStatus,
-    setFilterHeightIterate,
-  } = useModel('iterate')
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
-  const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { iterateInfo } = useSelector(store => store.iterate)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -165,7 +165,7 @@ const IterationWrap = () => {
     finishAt: [],
     searchVal: '',
   })
-
+  const dispatch = useDispatch()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
 
@@ -259,11 +259,15 @@ const IterationWrap = () => {
     setSearchList(arr)
   }
 
+  const onUpdateIterateInfo = async (id: any) => {
+    const result = await getIterateInfo({ projectId, id })
+    dispatch(setIterateInfo(result))
+  }
+
   useEffect(() => {
-    setFilterHeightIterate(60)
     // 迭代详情页面调用迭代详情
     if (iterateId) {
-      getIterateInfo({ projectId, id: iterateId })
+      onUpdateIterateInfo(iterateId)
     }
   }, [])
 
@@ -331,8 +335,21 @@ const IterationWrap = () => {
           status: val,
         })
         message.success(t('common.editS'))
-        getIterateInfo({ projectId, id: iterateInfo?.id })
-        getProjectInfoValues({ projectId })
+        onUpdateIterateInfo(iterateInfo?.id)
+        const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+        // 修改迭代状态更新到项目下拉数据中
+        const newValues = beforeValues?.map((i: any) =>
+          i.key === 'iterate_name'
+            ? {
+                ...i,
+                children: i.children?.map((v: any) => ({
+                  ...v,
+                  status: v.id === iterateInfo?.id ? val : v.status,
+                })),
+              }
+            : i,
+        )
+        dispatch(setProjectInfoValues(newValues))
         setIsUpdateState(true)
       } catch (error) {
         //
@@ -341,9 +358,11 @@ const IterationWrap = () => {
   }
 
   const onPressEnter = (value: any) => {
-    let obj = JSON.parse(JSON.stringify(searchGroups))
-    obj.searchVal = value
-    setSearchGroups(obj)
+    if (searchGroups.searchVal !== value) {
+      let obj = JSON.parse(JSON.stringify(searchGroups))
+      obj.searchVal = value
+      setSearchGroups(obj)
+    }
   }
 
   const getCheckList = (

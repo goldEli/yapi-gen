@@ -13,7 +13,6 @@ import {
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -22,8 +21,11 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterParamsModal } from '@store/project'
+import { updateDemandStatus, updatePriority } from '@/services/project/demand'
 
 const Content = styled.div({
   padding: 16,
@@ -67,9 +69,8 @@ const IterationTable = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { filterParams } = useModel('iterate')
-  const { updatePriority, updateDemandStatus } = useModel('demand')
-  const { projectInfo, setFilterParamsModal } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const { filterParams } = useSelector(store => store.iterate)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -84,6 +85,8 @@ const IterationTable = (props: Props) => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const [isEdit, setIsEdit] = useState(false)
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
+  const dispatch = useDispatch()
+
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -272,7 +275,7 @@ const IterationTable = (props: Props) => {
   }, [titleList, titleList2, titleList3, columns])
 
   const onCreateDemand = () => {
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
       setIsEdit(true)
     }, 100)
@@ -304,30 +307,32 @@ const IterationTable = (props: Props) => {
           hasCreate || props.hasId?.status !== 1 || projectInfo?.status !== 1
         }
       >
-        <Spin spinning={props?.isSpinning}>
-          {typeof props?.hasId === 'object' &&
-            (props.data?.list && props.data?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={props.data?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-              />
-            ) : (
-              <NoData />
-            ))}
+        {typeof props?.hasId === 'object' && (
+          <Spin spinning={props?.isSpinning}>
+            {!!props.data?.list &&
+              (props.data?.list?.length > 0 ? (
+                <TableStyleBox
+                  rowKey="id"
+                  columns={selectColum}
+                  dataSource={props.data?.list}
+                  pagination={false}
+                  scroll={{
+                    x: 'max-content',
+                    y: tableY,
+                  }}
+                  showSorterTooltip={false}
+                  tableLayout="auto"
+                />
+              ) : (
+                <NoData />
+              ))}
+          </Spin>
+        )}
 
-          {typeof props?.hasId !== 'object' && (
-            // 没有迭代的时候
-            <NoData />
-          )}
-        </Spin>
+        {typeof props?.hasId !== 'object' && (
+          // 没有迭代的时候
+          <NoData />
+        )}
       </DataWrap>
       <PaginationWrap>
         <Pagination

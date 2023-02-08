@@ -13,17 +13,21 @@ import IconFont from '@/components/IconFont'
 import TagComponent from '../../components/TagComponent'
 import DemandStatus from '../../components/DemandStatus'
 import UploadAttach from '../../components/UploadAttach'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { AddWrap } from '@/components/StyleCommon'
 import EditorInfoReview from '@/components/EditorInfoReview'
-import { addInfoDemand, deleteInfoDemand } from '@/services/project/demand'
+import {
+  addInfoDemand,
+  deleteInfoDemand,
+  getDemandInfo,
+} from '@/services/project/demand'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { useSelector } from '../../../../../../../store'
 import { message } from 'antd'
+import { setDemandInfo } from '@store/demand'
+import { useDispatch, useSelector } from '@store/index'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -61,17 +65,18 @@ const TextWrap = styled.div({
 
 const WrapLeftBox = () => {
   const [t] = useTranslation()
-  const { demandInfo, getDemandInfo } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { demandId } = paramsData
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const [tagList, setTagList] = useState<any>([])
   const LeftDom = useRef<HTMLInputElement>(null)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [files, setFiles] = useState()
-  const { value: modalState } = useSelector(store => store.modal)
+  const dispatch = useDispatch()
+
   useEffect(() => {
     setTagList(
       demandInfo?.tag?.map((i: any) => ({
@@ -103,8 +108,8 @@ const WrapLeftBox = () => {
         type: 'attachment',
         targetId: [obj],
       })
-
-      getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
       onBottom?.()
     } catch (error) {
       //
@@ -125,7 +130,8 @@ const WrapLeftBox = () => {
         targetId: files,
       })
       message.success(t('common.deleteSuccess'))
-      getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
       onBottom?.()
     } catch (error) {
       //

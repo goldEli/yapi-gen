@@ -8,15 +8,17 @@
 import Editor from '@/components/Editor'
 import UploadAttach from '../../Demand/components/UploadAttach'
 import { css } from '@emotion/css'
-import { AddWrap, ProgressWrapUpload } from '@/components/StyleCommon'
+import { AddWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { getIsPermission } from '@/tools'
 import { t } from 'i18next'
 import NoData from '@/components/NoData'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useDispatch, useSelector } from '@store/index'
+import { getAchieveInfo } from '@/services/project/iterate'
+import { setAchieveInfo } from '@store/iterate'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -51,30 +53,14 @@ interface Props {
   isReadonly: boolean
 }
 
-interface ChildrenProps {
-  percentShow: any
-  percentVal: any
-  uploadStatus: any
-}
-
-const Children = (props: ChildrenProps) => {
-  return (
-    <ProgressWrapUpload
-      status={props.uploadStatus}
-      percent={props.percentVal}
-      size="small"
-      style={{ display: props.percentShow ? 'block' : 'none' }}
-    />
-  )
-}
-
 const Achievements = (props: Props) => {
   const WrapDom = useRef<HTMLInputElement>(null)
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
   const [html, setHtml] = useState('')
-  const { getAchieveInfo, achieveInfo } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const { achieveInfo } = useSelector(store => store.iterate)
+  const dispatch = useDispatch()
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -102,8 +88,8 @@ const Achievements = (props: Props) => {
       projectId: props.projectId,
       id: props.id,
     })
-
     setValue(result)
+    dispatch(setAchieveInfo(result))
   }
 
   useEffect(() => {

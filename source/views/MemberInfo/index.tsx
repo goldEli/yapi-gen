@@ -11,10 +11,11 @@ import {
 import { NameWrap } from '@/components/StyleCommon'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useModel } from '@/models'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getStaffList } from '@/services/staff'
+import { getAsyncMember } from '@store/member'
+import { useDispatch, useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -88,6 +89,7 @@ const InfoItem = styled.div({
 })
 
 const MemberInfo = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -95,8 +97,9 @@ const MemberInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
-  const { getMainInfo, mainInfo } = useModel('member')
-  const { setSelectAllStaffData } = useModel('project')
+  const { mainInfo } = useSelector(store => store.member)
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
 
   const menuList = [
     {
@@ -120,16 +123,9 @@ const MemberInfo = () => {
       path: 'finished',
     },
   ]
-
-  // 获取公司员工
-  const getStaffData = async () => {
-    const options = await getStaffList({ all: 1 })
-    setSelectAllStaffData(options)
-  }
-
   useEffect(() => {
-    getMainInfo({ userId })
-    getStaffData()
+    // 获取当前查看人员信息
+    dispatch(getAsyncMember({ userId }))
   }, [])
 
   const changeActive = (value: any) => {
@@ -146,47 +142,60 @@ const MemberInfo = () => {
     }
   }
 
+  if (!mainInfo) {
+    return null
+  }
+
   return (
-    <Wrap isMember={isMember}>
-      <Side>
-        <InfoWrap>
-          {mainInfo?.avatar ? (
-            <img
-              src={mainInfo?.avatar}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                marginRight: 8,
-              }}
-              alt=""
-            />
-          ) : (
-            <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
-              {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-            </NameWrap>
-          )}
-          <InfoItem>
-            <div>{mainInfo?.name}</div>
-            <span>{mainInfo?.phone}</span>
-          </InfoItem>
-        </InfoWrap>
-        <Menu>
-          {menuList.map(item => (
-            <MenuItem
-              active={pathname.includes(item.path)}
-              onClick={() => changeActive(item)}
-              key={item.id}
-            >
-              {item.name}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Side>
-      <Main>
-        <Outlet />
-      </Main>
-    </Wrap>
+    <PermissionWrap
+      auth={isMember ? 'b/project/member/info' : 'b/user/info'}
+      permission={
+        isMember
+          ? projectInfo?.projectPermissions
+          : userInfo?.company_permissions
+      }
+    >
+      <Wrap isMember={isMember}>
+        <Side>
+          <InfoWrap>
+            {mainInfo?.avatar ? (
+              <img
+                src={mainInfo?.avatar}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  marginRight: 8,
+                }}
+                alt=""
+              />
+            ) : (
+              <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
+                {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+              </NameWrap>
+            )}
+            <InfoItem>
+              <div>{mainInfo?.name}</div>
+              <span>{mainInfo?.phone}</span>
+            </InfoItem>
+          </InfoWrap>
+          <Menu>
+            {menuList.map(item => (
+              <MenuItem
+                active={pathname.includes(item.path)}
+                onClick={() => changeActive(item)}
+                key={item.id}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Side>
+        <Main>
+          <Outlet />
+        </Main>
+      </Wrap>
+    </PermissionWrap>
   )
 }
 

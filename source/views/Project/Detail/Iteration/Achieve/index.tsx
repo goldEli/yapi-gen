@@ -7,8 +7,10 @@ import { useSearchParams } from 'react-router-dom'
 import Achievements from '../components/Achievements'
 import { editButton } from '@/components/StyleCommon'
 import EditAchievements from '../components/EditAchievements'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '@store/index'
+import { getAchieveInfo } from '@/services/project/iterate'
+import { setAchieveInfo } from '@store/iterate'
 
 const wrap = css`
   height: calc(100% - 24px);
@@ -25,8 +27,8 @@ const Achieve = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { getAchieveInfo } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -35,10 +37,11 @@ const Achieve = () => {
 
   // 获取迭代成果详情
   const getInfo = async () => {
-    await getAchieveInfo({
+    const result = await getAchieveInfo({
       projectId,
       id: iterateId,
     })
+    dispatch(setAchieveInfo(result))
   }
 
   useEffect(() => {

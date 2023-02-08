@@ -8,7 +8,6 @@ import { Checkbox, Space, Divider, Button, Row, Col, Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import { useModel } from '@/models'
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
@@ -22,6 +21,7 @@ import {
 import { arrayMoveImmutable } from 'array-move'
 import { ShowText } from '@/components/OptionalFeld'
 import { css } from '@emotion/css'
+import { getExportFields, getLoadListFields } from '@/services/project/demand'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -31,7 +31,6 @@ const Wrap = styled.div({
 const text = css`
   color: rgba(150, 151, 153, 1);
   font-size: 12px;
-  /* margin-bottom: 8px; */
 `
 const LeftWrap = styled.div({
   height: 350,
@@ -143,7 +142,6 @@ const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getLoadListFields, getExportFields } = useModel('demand')
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [checkList2, setCheckList2] = useState<CheckboxValueType[]>([])
   const [checkList3, setCheckList3] = useState<CheckboxValueType[]>([])
@@ -160,7 +158,6 @@ const FieldsTemplate = (props: Props) => {
           isUpdate: props?.importState,
         })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
-
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)
     const customKeys = result?.customFields?.map((k: any) => k.field)
     if (props.isExport) {

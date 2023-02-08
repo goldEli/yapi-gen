@@ -5,9 +5,9 @@ import { CategoryWrap, ClickWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import { useModel } from '@/models'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { openDetail } from '@/tools'
+import { useSelector } from '@store/index'
 
 const CircleWrap = styled.div({
   width: 8,
@@ -35,7 +35,7 @@ const StatusWrap = styled.div({
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector(store => store.project)
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(
@@ -81,7 +81,7 @@ export const useDynamicColumns = (state: any) => {
               style={{ marginLeft: 0 }}
               color={record.categoryColor}
               bgColor={
-                colorList?.filter(i => i.key === record.categoryColor)[0]
+                colorList?.filter((i: any) => i.key === record.categoryColor)[0]
                   ?.bgColor
               }
             >

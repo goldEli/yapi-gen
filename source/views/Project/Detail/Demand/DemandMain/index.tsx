@@ -13,12 +13,16 @@ import DemandGrid from './components/DemandGrid'
 import DemandTree from './components/DemandTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import WrapLeft from './components/WrapLeft'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { setFilterKeys } from '@store/project'
+import { setFilterParams } from '@store/demand'
+import { deleteDemand, getDemandList } from '@/services/project/demand'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -51,16 +55,17 @@ const DemandMain = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getDemandList, deleteDemand, setFilterParams, filterParams } =
-    useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const { isRefresh } = useSelector(store => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   // 用于当前操作层级不折叠
   const [topParentId, setTopParentId] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isShowLeft, setIsShowLeft] = useState(false)
-  const { setFilterKeys, filterKeys } = useModel('project')
+  // 用于控制失焦事件与展开子需求冲突
+  const [isUpdated, setIsUpdated] = useState(false)
+  const { filterKeys } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const getList = async (
     state: any,
@@ -132,13 +137,14 @@ const DemandMain = (props: Props) => {
       params.tree = 1
       params.topParentId = topId ?? topParentId
     }
-    setFilterParams(params)
+    dispatch(setFilterParams(params))
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
     props.onIsUpdate?.()
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
     setTopParentId(0)
+    setIsUpdated(false)
   }
 
   useEffect(() => {
@@ -197,6 +203,8 @@ const DemandMain = (props: Props) => {
   }
 
   const onSearch = (params: any) => {
+    setDataList({ list: undefined })
+    setIsUpdated(true)
     setSearchItems(params)
     setPageObj({
       page: 1,
@@ -236,7 +244,7 @@ const DemandMain = (props: Props) => {
         ? [...filterKeys, ...['classId']]
         : filterKeys?.filter((i: any) => i !== 'classId')
 
-      setFilterKeys([...new Set(keys)])
+      dispatch(setFilterKeys([...new Set(keys)]))
     },
   }
 
@@ -292,7 +300,15 @@ const DemandMain = (props: Props) => {
               onChangeOrder={onChangeOrder}
               isSpinning={isSpinning}
               onUpdate={onUpdate}
-              filterParams={filterParams}
+              filterParams={{
+                ...searchItems,
+                projectId,
+                page: 1,
+                pageSize: 100,
+                order: '',
+                orderKey: '',
+              }}
+              isUpdated={isUpdated}
             />
           )}
           {!isGrid && (

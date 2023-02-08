@@ -14,7 +14,8 @@ import { useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
-import { useModel } from '@/models'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterKeys } from '@store/project'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -256,10 +257,11 @@ export const NumericInput2 = (props: any) => {
 }
 
 const TableFilter = (props: any) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
-  const { filterKeys, setFilterKeys, projectInfoValues } = useModel('project')
+  const { filterKeys, projectInfoValues } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
@@ -295,9 +297,9 @@ const TableFilter = (props: any) => {
     //当前查询的存入计数
     if (operationKey) {
       const keys = [...filterKeys, ...[operationKey]]
-      setFilterKeys([...new Set(keys)])
+      dispatch(setFilterKeys([...new Set(keys)]))
     } else {
-      setFilterKeys([])
+      dispatch(setFilterKeys([]))
     }
 
     const value = await form.getFieldsValue()
@@ -329,7 +331,7 @@ const TableFilter = (props: any) => {
       !form.getFieldValue(operationKey)
     ) {
       const keys = filterKeys?.filter((i: any) => i !== operationKey)
-      setFilterKeys([...new Set(keys)])
+      dispatch(setFilterKeys([...new Set(keys)]))
     }
     props.onSearch(res, customField)
   }
@@ -535,7 +537,7 @@ const TableFilter = (props: any) => {
                     </span>
                     <Form.Item
                       getValueFromEvent={event => {
-                        return event.target.value.replace(/\s+/g, '')
+                        return event.target.value.replace(/(?<start>^\s*)/g, '')
                       }}
                       name={i.key}
                     >

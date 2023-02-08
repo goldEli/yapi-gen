@@ -8,11 +8,11 @@ import styled from '@emotion/styled'
 import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
 import { getParamsData, openDetail } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { useSelector } from '@store/index'
 
 const Content = styled.div({
   padding: 16,
@@ -46,7 +46,7 @@ const Title = styled.div({
   top: 0,
   background: 'white',
   paddingTop: 16,
-  zIndex: 4,
+  zIndex: 6,
   width: '100%',
 })
 
@@ -70,8 +70,7 @@ const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues } = useModel('project')
-  const { filterHeight } = useModel('demand')
+  const { projectInfoValues } = useSelector(store => store.project)
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
 
@@ -107,7 +106,7 @@ const DemandGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+    <Content style={{ height: 'calc(100% - 64px)' }}>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>

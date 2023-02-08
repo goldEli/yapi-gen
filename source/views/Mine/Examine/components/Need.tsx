@@ -20,8 +20,7 @@ import {
   HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Divider, Pagination, Spin } from 'antd'
-import { useModel } from '@/models'
+import { Pagination, Spin } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -29,6 +28,8 @@ import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
 import CommonInput from '@/components/CommonInput'
+import { useSelector } from '@store/index'
+import { getVerifyList, getVerifyUserList } from '@/services/mine'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -62,24 +63,14 @@ const SearchWrap = styled.div({
   position: 'relative',
 })
 
-const IconFontWrap = styled(IconFont)<{ active?: boolean }>(
-  {
-    fontSize: 20,
-    cursor: 'pointer',
-  },
-  ({ active }) => ({
-    color: active ? '#2877FF' : '#969799',
-  }),
-)
-
 const Need = (props: any) => {
   const [t] = useTranslation()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
-  const { userInfo } = useModel('user')
-  const { getVerifyList, getVerifyUserList, setCount, count } = useModel('mine')
+  const { userInfo } = useSelector(store => store.user)
+  const [count, setCount] = useState({ verifyUser: 0, verify: 0 })
   const [listData, setListData] = useState<any>({
     list: undefined,
   })
@@ -96,6 +87,7 @@ const Need = (props: any) => {
     filterParams?: any,
     val?: any,
   ) => {
+    setListData({ list: undefined })
     setIsSpin(true)
     const params = {
       userId: userInfo?.id,
@@ -139,8 +131,10 @@ const Need = (props: any) => {
   }
 
   const onPressEnter = (value: any) => {
-    setKeyword(value)
-    getList(pageObj, order, value, searchParams)
+    if (keyword !== value) {
+      setKeyword(value)
+      getList(pageObj, order, value, searchParams)
+    }
   }
 
   const onChangeOperation = (record: any) => {

@@ -9,10 +9,10 @@ import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools/index'
-import { useModel } from '@/models'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { useSelector } from '@store/index'
 
 const Content = styled.div({
   padding: 16,
@@ -50,7 +50,7 @@ const Title = styled.div({
   top: 0,
   background: 'white',
   paddingTop: 16,
-  zIndex: 2,
+  zIndex: 6,
   width: '100%',
 })
 
@@ -67,8 +67,7 @@ const IterationGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues } = useModel('project')
-  const { filterHeightIterate } = useModel('iterate')
+  const { projectInfoValues } = useSelector(store => store.project)
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
 
@@ -106,7 +105,7 @@ const IterationGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - ${filterHeightIterate}px)` }}>
+    <Content style={{ height: `calc(100% - 52px)` }}>
       <div style={{ height: '100%', overflow: 'auto' }}>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>

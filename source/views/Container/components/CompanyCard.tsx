@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import projectImg from '/projectImg.png'
+import normalCompany from '/normalCompany.svg'
 import { Dropdown } from 'antd'
 
 const DropdownWrap = styled(Dropdown)({
@@ -90,9 +90,9 @@ const TextWarp = styled.div({
   background: 'white',
   borderRadius: '6px',
 })
+
 type Props = {
-  // eslint-disable-next-line react/boolean-prop-naming
-  show?: boolean
+  isShow?: boolean
   tap?(): void
   name: string
   logo: string
@@ -100,18 +100,18 @@ type Props = {
 const CompanyCard = (props: Props) => {
   return (
     <Warp
-      show={props.show}
+      show={props.isShow}
       onClick={() => {
         if (props.tap) {
           props.tap()
         }
       }}
     >
-      <ImgWrap show={props.show}>
-        <img src={props.logo ? props.logo : projectImg} alt="" />
+      <ImgWrap show={props.isShow}>
+        <img src={props.logo ? props.logo : normalCompany} alt="" />
       </ImgWrap>
       <TextWarp>
-        <NameWrap show={props.show}>{props.name}</NameWrap>
+        <NameWrap show={props.isShow}>{props.name}</NameWrap>
       </TextWarp>
     </Warp>
   )

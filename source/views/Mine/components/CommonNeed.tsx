@@ -26,9 +26,8 @@ import { Menu, message, Pagination, Space, Spin } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useModel } from '@/models'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -36,6 +35,20 @@ import NoData from '@/components/NoData'
 import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { setIsUpdateCreate } from '@store/mine'
+import {
+  getMineCreacteList,
+  getMineFinishList,
+  getMineNeedList,
+  getMineNoFinishList,
+  updateDemandStatus,
+  updatePriorityStatus,
+} from '@/services/mine'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import { deleteDemand } from '@/services/project/demand'
 
 const TableBox = styled(TableWrap)({
   '.ant-table-content': {
@@ -130,20 +143,10 @@ const MoreWrap = (props: MoreWrapProps) => {
 
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
-  const { deleteDemand } = useModel('demand')
-  const { getProjectInfo, projectInfo, getProjectInfoValues } =
-    useModel('project')
-  const {
-    updateDemandStatus,
-    updatePriorityStatus,
-    getMineNoFinishList,
-    getMineCreacteList,
-    getMineFinishList,
-    getMineNeedList,
-    isUpdateCreate,
-    setIsUpdateCreate,
-  } = useModel('mine')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
+  const { isUpdateCreate } = useSelector(store => store.mine)
+  const { projectInfo } = useSelector(store => store.project)
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
@@ -218,23 +221,27 @@ const CommonNeed = (props: any) => {
     setOrder(orderVal)
     setPage(1)
   }
-  const init = async (updateState?: boolean, pageNumber?: any) => {
+  const init = async (updateState?: boolean) => {
     if (!updateState) {
       setIsSpin(true)
     }
     setListData({ list: undefined })
     setManyListData({ list: undefined })
+    setTotal(0)
 
     if (isMany) {
       const params = {
         projectId: props.id,
         all: isMany ? 1 : '',
         panelDate: isMany ? 1 : '',
+        keyword,
+        searchGroups,
       }
       const res = await getMineNoFinishList(params)
-      setManyListData({ list: res })
+      setManyListData({ list: res.list })
       setIsSpin(false)
-      setIsUpdateCreate(false)
+      dispatch(setIsUpdateCreate(false))
+      setTotal(res?.total)
     }
 
     if (!isMany) {
@@ -260,7 +267,7 @@ const CommonNeed = (props: any) => {
       setListData(res)
       setTotal(res?.pager?.total)
       setIsSpin(false)
-      setIsUpdateCreate(false)
+      dispatch(setIsUpdateCreate(false))
     }
   }
 
@@ -278,7 +285,6 @@ const CommonNeed = (props: any) => {
     if (res.code === 0) {
       message.success(t('common.prioritySuccess'))
     }
-
     init()
   }
   const showEdit = async (record: any) => {
@@ -327,7 +333,6 @@ const CommonNeed = (props: any) => {
       },
     ]
     return [...arrList, ...newList]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleList, columns])
 
   const getSearchKey = async (key?: any, type?: number) => {
@@ -349,12 +354,13 @@ const CommonNeed = (props: any) => {
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const getShowkey = async () => {
     if (props.id) {
-      await getProjectInfoValues({ projectId: props.id })
+      const result = await getProjectInfoValues({ projectId: props.id })
+      dispatch(setProjectInfoValues(result))
     }
     const res2 = await getProjectInfo({ projectId: props.id })
     setPlainOptions(res2.plainOptions)
@@ -364,7 +370,8 @@ const CommonNeed = (props: any) => {
     setTitleList2(res2.titleList2)
     setTitleList3(res2.titleList3)
     setAllTitleList([...res2.titleList, ...res2.titleList2, ...res2.titleList3])
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
+    dispatch(setProjectInfo(res2))
   }
 
   const onChangePage = (newPage: any) => {
@@ -379,11 +386,18 @@ const CommonNeed = (props: any) => {
   }
 
   useEffect(() => {
-    init(false, 1)
-  }, [keyword, orderKey, order, props.id, searchGroups, isMany, page, pagesize])
+    init(false)
+  }, [keyword, orderKey, order, searchGroups, isMany, page, pagesize])
 
   // 监听项目id变化，更新项目信息
   useEffect(() => {
+    // 如果分页为1则调用接口
+    if (page === 1) {
+      init(false)
+    } else {
+      // 如果分页改变则，重置分页
+      setPage(1)
+    }
     getShowkey()
   }, [props.id])
 
@@ -452,10 +466,10 @@ const CommonNeed = (props: any) => {
   )
 
   const onChangeMany = (state: boolean) => {
+    message.success(t('version2.reviewModeChangeSuccess'))
     setIsMany(state)
     setIsVisibleFormat(false)
     setPage(1)
-    message.success(t('version2.reviewModeChangeSuccess'))
   }
 
   const menuType = (
@@ -596,48 +610,47 @@ const CommonNeed = (props: any) => {
       {isMany ? (
         <div>
           <LoadingSpin spinning={isSpin}>
-            {manyListData.list ? (
-              manyListData.list?.length > 0 ? (
-                <StaffTableWrap2>
-                  {manyListData.list?.map((item: any, index: any) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <div
-                      hidden={!item.list.length}
-                      key={index}
-                      style={{
-                        background: 'white',
-                        borderRadius: 6,
-                        marginTop: 16,
-                      }}
-                    >
-                      <TableTitle>
-                        <span>
-                          {item.status_name}（{item.list.length}）
-                        </span>
-                      </TableTitle>
+            {manyListData?.list?.filter((i: any) => i.count)?.length > 0 && (
+              <StaffTableWrap2>
+                {manyListData.list?.map((item: any, index: any) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <div
+                    hidden={!item.list.length}
+                    key={index}
+                    style={{
+                      background: 'white',
+                      borderRadius: 6,
+                      marginTop: 16,
+                    }}
+                  >
+                    <TableTitle>
+                      <span>
+                        {item.status_name}（{item.list.length}）
+                      </span>
+                    </TableTitle>
 
-                      {item.list ? (
-                        item?.list?.length > 0 ? (
-                          <TableBox
-                            rowKey="id"
-                            columns={selectColum}
-                            dataSource={item.list}
-                            pagination={false}
-                            scroll={{ x: 'max-content' }}
-                          />
-                        ) : (
-                          <NoData />
-                        )
-                      ) : null}
-                    </div>
-                  ))}
-                </StaffTableWrap2>
-              ) : (
-                <div style={{ padding: 16 }}>
-                  <NoData />
-                </div>
-              )
-            ) : null}
+                    {item.list ? (
+                      item?.list?.length > 0 ? (
+                        <TableBox
+                          rowKey="id"
+                          columns={selectColum}
+                          dataSource={item.list}
+                          pagination={false}
+                          scroll={{ x: 'max-content' }}
+                        />
+                      ) : (
+                        <NoData />
+                      )
+                    ) : null}
+                  </div>
+                ))}
+              </StaffTableWrap2>
+            )}
+            {manyListData?.list?.filter((i: any) => i.count)?.length <= 0 && (
+              <div style={{ padding: 16 }}>
+                <NoData />
+              </div>
+            )}
           </LoadingSpin>
         </div>
       ) : null}
@@ -681,6 +694,7 @@ const CommonNeed = (props: any) => {
         projectId={projectId}
         onUpdate={onUpdate}
         notGetPath
+        isAllProject={!props.id}
       />
       <DeleteConfirm
         text={t('common.confirmDelDemand')}

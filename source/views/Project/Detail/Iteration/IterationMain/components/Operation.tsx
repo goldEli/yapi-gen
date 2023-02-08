@@ -11,7 +11,6 @@ import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { IconFont } from '@staryuntech/ant-pro'
 import { message, Space, Tooltip } from 'antd'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -21,17 +20,23 @@ import IterationStatus from '../../components/IterationStatus'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
-import { getSearchField } from '@/services/mine'
+import CommonInput from '@/components/CommonInput'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterKeys, setProjectInfoValues } from '@store/project'
+import { updateIterateStatus } from '@/services/project/iterate'
 
-const OperationWrap = styled.div({
-  padding: '0 24px',
-  minHeight: 52,
-  lineHeight: '52px',
-  background: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-})
+const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
+  {
+    padding: '10px 24px',
+    background: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  ({ isShowLeft }) => ({
+    flexWrap: isShowLeft ? 'wrap' : 'initial',
+  }),
+)
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -73,17 +78,21 @@ const Operation = (props: Props) => {
   const [isAchievements, setIsAchievements] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isShow2, setIsShow2] = useState(false)
-  const { updateIterateStatus, getIterateInfo, setFilterHeightIterate } =
-    useModel('iterate')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { projectInfo, filterKeys, projectInfoValues } = useSelector(
+    store => store.project,
+  )
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
   const [filterCustomList, setFilterCustomList] = useState<any[]>([])
+  const [searchVal, setSearchVal] = useState('')
+  const [searchGroups, setSearchGroups] = useState<any>({})
   const stickyWrapDom = useRef<HTMLDivElement>(null)
+  const dispatch = useDispatch()
+
   const hasChangeStatus = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/status',
@@ -102,9 +111,20 @@ const Operation = (props: Props) => {
           status: val,
         })
         message.success(t('common.editS'))
-        getIterateInfo({ projectId, id: props?.currentDetail?.id })
-        // 更新项目信息-迭代
-        getProjectInfoValues({ projectId })
+        const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+        // 修改迭代状态更新到项目下拉数据中
+        const newValues = beforeValues?.map((i: any) =>
+          i.key === 'iterate_name'
+            ? {
+                ...i,
+                children: i.children?.map((v: any) => ({
+                  ...v,
+                  status: v.id === props?.currentDetail?.id ? val : v.status,
+                })),
+              }
+            : i,
+        )
+        dispatch(setProjectInfoValues(newValues))
         props.onIsUpdateList?.(true)
       } catch (error) {
         //
@@ -131,7 +151,9 @@ const Operation = (props: Props) => {
       schedule_start: e.schedule?.start,
       schedule_end: e.schedule?.end,
       custom_field: customField,
+      searchValue: searchVal,
     }
+    setSearchGroups(params)
     props.onSearch(params)
   }
 
@@ -165,10 +187,6 @@ const Operation = (props: Props) => {
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
-
-    setTimeout(() => {
-      setFilterHeightIterate(Number(stickyWrapDom.current?.clientHeight) + 8)
-    }, 42)
   }
 
   const onClickIcon = (value: any) => {
@@ -178,6 +196,21 @@ const Operation = (props: Props) => {
       setIsShow(false)
     }
     props?.onChangeIsShowLeft?.()
+  }
+
+  const onChangeSearch = (value: string) => {
+    if (searchVal !== value) {
+      setSearchVal(value)
+      const params = searchGroups
+      params.searchValue = value
+      setSearchGroups(params)
+      props.onSearch(params)
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
+    }
   }
 
   return (
@@ -203,7 +236,7 @@ const Operation = (props: Props) => {
           )}
         </div>
       </CommonModal>
-      <OperationWrap>
+      <OperationWrap isShowLeft={props.isShowLeft}>
         <IterationInfo>
           {props.isShowLeft ? (
             <Tooltip
@@ -269,14 +302,20 @@ const Operation = (props: Props) => {
             </>
           )}
         </IterationInfo>
-        <OperationGroup
-          onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
-          isGrid={props.isGrid}
-          filterState={filterState}
-          settingState={props.settingState}
-          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-        />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CommonInput
+            placeholder={t('common.pleaseSearchDemand')}
+            onChangeSearch={onChangeSearch}
+          />
+          <OperationGroup
+            onChangeFilter={onChangeFilter}
+            onChangeGrid={props.onChangeGrid}
+            isGrid={props.isGrid}
+            filterState={filterState}
+            settingState={props.settingState}
+            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          />
+        </div>
       </OperationWrap>
       {filterState ? null : (
         <TableFilter

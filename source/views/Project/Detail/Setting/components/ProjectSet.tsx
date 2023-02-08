@@ -8,7 +8,6 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useModel } from '@/models'
 import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -18,6 +17,16 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import {
+  addPermission,
+  deletePermission,
+  getPermission,
+  getProjectPermission,
+  setPermission,
+  updatePermission,
+} from '@/services/project'
 
 const Warp = styled.div({
   padding: 16,
@@ -237,17 +246,10 @@ const ProjectSet = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const {
-    getProjectPermission,
-    getPermission,
-    setPermission,
-    addPermission,
-    updatePermission,
-    deletePermission,
-    projectInfo,
-  } = useModel('project')
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
@@ -276,7 +278,7 @@ const ProjectSet = () => {
       setActiveDetail(result?.list?.filter((i: any) => i.id === str)[0])
       getPermissionList(result?.list?.filter((i: any) => i.id === str)[0])
     }
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   useEffect(() => {

@@ -3,11 +3,17 @@
 import CommonModal from '@/components/CommonModal'
 import { createRef, useEffect, useState } from 'react'
 import Achievements from './Achievements'
-import { useModel } from '@/models'
 import { Button, message, Space } from 'antd'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  getAchieveInfo,
+  getIterateInfo,
+  updateAchieve,
+} from '@/services/project/iterate'
+import { setIterateInfo } from '@store/iterate'
 
 const ModalFooter = styled(Space)({
   width: '100%',
@@ -32,8 +38,8 @@ const EditAchievements = (props: Props) => {
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const childRef: any = createRef()
-  const { updateAchieve, getAchieveInfo, getIterateInfo } = useModel('iterate')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const dispatch = useDispatch()
   const isCanEdit = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/achieve',
@@ -66,8 +72,11 @@ const EditAchievements = (props: Props) => {
           projectId: props.projectId,
           id: props.id,
         }
-        getAchieveInfo(obj)
-        getIterateInfo(obj)
+        const resultAchieve = await getAchieveInfo(obj)
+        dispatch(setIterateInfo(resultAchieve))
+
+        const result = await getIterateInfo(obj)
+        dispatch(setIterateInfo(result))
       }
     } catch (error) {
       //

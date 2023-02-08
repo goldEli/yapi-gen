@@ -11,12 +11,10 @@ import {
   SelectWrapBedeck,
   HoverWrap,
 } from '@/components/StyleCommon'
-import SearchComponent from '@/components/SearchComponent'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
-import { useModel } from '@/models'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
@@ -29,14 +27,25 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { StaffSelect } from '@xyfe/uikit'
-import { getAddDepartMember } from '@/services/staff'
-import { addMember } from '@/services/project'
-import PubSub from 'pubsub-js'
+import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
+import {
+  addMember,
+  deleteMember,
+  getProjectInfo,
+  getProjectMember,
+  getProjectPermission,
+  updateMember,
+} from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import AddButton from '@/components/AddButton'
+import CommonInput from '@/components/CommonInput'
+import { setIsUpdateMember, setProjectInfo } from '@store/project'
 
 const Wrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+  overflow: 'auto',
 })
 
 const Header = styled.div({
@@ -54,6 +63,7 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   padding: 16,
+  height: 'calc(100% - 64px)',
 })
 
 const FilterWrap = styled(Form)({
@@ -125,27 +135,14 @@ const ProjectMember = () => {
     list: undefined,
   })
   const [jobList, setJobList] = useState<any>([])
-  const {
-    getProjectMember,
-    deleteMember,
-    projectPermission,
-    projectInfo,
-    isRefreshMember,
-    updateMember,
-    getProjectInfoValues,
-    getMemberList,
-    getProjectPermission,
-    setProjectPermission,
-  } = useModel('project')
-  const { getPositionSelectList } = useModel('staff')
-  const { userInfo } = useModel('user')
+  const [projectPermission, setProjectPermission] = useState<any>([])
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo, isUpdateMember } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [form] = Form.useForm()
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const stickyWrapDom = useRef<HTMLDivElement>(null)
-  const [filterHeight, setFilterHeight] = useState<any>(64)
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
@@ -155,6 +152,8 @@ const ProjectMember = () => {
   const [userDataList, setUserDataList] = useState<any[]>([])
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
+  const dispatch = useDispatch()
+
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -191,6 +190,7 @@ const ProjectMember = () => {
   )
 
   const getList = async (orderVal?: any, pagePrams?: any) => {
+    setMemberList({ list: undefined })
     setIsSpinning(true)
     const values = await form.getFieldsValue()
     const result = await getProjectMember({
@@ -203,6 +203,7 @@ const ProjectMember = () => {
     })
     setMemberList(result)
     setIsSpinning(false)
+    dispatch(setIsUpdateMember(false))
   }
 
   const getJobList = async () => {
@@ -231,12 +232,6 @@ const ProjectMember = () => {
     getJobList()
     getPermission()
   }, [])
-
-  useEffect(() => {
-    if (isRefreshMember) {
-      getList(order, { page: 1, size: pageObj.size })
-    }
-  }, [isRefreshMember])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -271,7 +266,6 @@ const ProjectMember = () => {
         navigate('/Project')
       } else {
         getList(order, pageObj)
-        getMemberList({ all: true, projectId })
       }
     } catch (error) {
       //
@@ -287,9 +281,12 @@ const ProjectMember = () => {
     getList(order, { page: 1, size: pageObj.size })
   }
 
-  const onChangeSearch = (val: string) => {
-    form.setFieldsValue({ searchValue: val })
-    getList(order, { page: 1, size: pageObj.size })
+  const onChangeSearch = (value: string) => {
+    // 不相同的才更新
+    if (form.getFieldValue('searchValue') !== value) {
+      form.setFieldsValue({ searchValue: value })
+      getList(order, { page: 1, size: pageObj.size })
+    }
   }
 
   const menu = (item: any) => {
@@ -529,9 +526,6 @@ const ProjectMember = () => {
 
   const onChangeFilter = () => {
     setIsVisible(!isVisible)
-    setTimeout(() => {
-      setFilterHeight(stickyWrapDom.current?.clientHeight)
-    }, 100)
   }
 
   const userObj = {
@@ -591,14 +585,20 @@ const ProjectMember = () => {
       await updateMember(params)
       message.success(t('common.editSuccess'))
       setOperationItem({})
+      // 可以考虑不走接口修改
       onChangeUpdate()
-      getMemberList({ all: true, projectId })
-      getProjectInfoValues({ projectId })
       setIsEditVisible(false)
     } catch (error) {
       //
     }
   }
+
+  // 更新项目信息
+  const onUpdate = async () => {
+    const result = await getProjectInfo({ projectId: projectInfo.id })
+    dispatch(setProjectInfo(result))
+  }
+
   const handleOk = async () => {
     const values = form.getFieldsValue()
 
@@ -625,6 +625,7 @@ const ProjectMember = () => {
     setIsAddVisible(false)
     setTimeout(() => {
       form.resetFields()
+      onUpdate()
     }, 100)
   }
   useEffect(() => {
@@ -634,10 +635,10 @@ const ProjectMember = () => {
   }, [isAddVisible])
 
   useEffect(() => {
-    PubSub.subscribe('getPeople', () => {
+    if (isUpdateMember) {
       getList(order, { page: 1, size: pageObj.size })
-    })
-  }, [])
+    }
+  }, [isUpdateMember])
 
   return (
     <PermissionWrap
@@ -654,6 +655,7 @@ const ProjectMember = () => {
             setIsEditVisible(false)
           }}
           onConfirm={onConfirmEdit}
+          projectPermission={projectPermission}
         />
         <DeleteConfirm
           text={t('mark.delPeople')}
@@ -711,13 +713,18 @@ const ProjectMember = () => {
         />
         <Header>
           <HeaderTop>
-            <SearchComponent
-              onChangeVisible={onChangeValue}
-              text={t('project.addMember1')}
-              placeholder={t('project.pleaseNickname')}
-              onChangeSearch={onChangeSearch}
-              isPermission={hasAdd}
-            />
+            <Space size={24}>
+              {!hasAdd && (
+                <AddButton
+                  text={t('project.addMember1')}
+                  onChangeClick={onChangeValue}
+                />
+              )}
+              <CommonInput
+                onChangeSearch={onChangeSearch}
+                placeholder={t('project.pleaseNickname')}
+              />
+            </Space>
             <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
               <IconFont className="iconMain" type="filter" />
               <span className="label">{t('common.search')}</span>
@@ -773,7 +780,7 @@ const ProjectMember = () => {
             </SearchWrap>
           </FilterWrap>
         </Header>
-        <Content style={{ height: `calc(100% - ${filterHeight}px)` }}>
+        <Content>
           <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!memberList?.list &&

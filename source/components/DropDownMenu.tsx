@@ -1,4 +1,4 @@
-// 操作栏有下拉的组件
+// 操作栏有下拉的组件 例：项目列表右上角切换视图
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Dropdown } from 'antd'

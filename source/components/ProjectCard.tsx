@@ -5,10 +5,10 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools/index'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from './MoreDropdown'
 import { Menu } from 'antd'
+import { useSelector } from '@store/index'
 
 const ImgWrap = styled.div({
   height: 104,
@@ -89,7 +89,7 @@ interface Props {
 const ProjectCard = (props: Props) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
 
   const hasEdit = getIsPermission(
     userInfo?.company_permissions,

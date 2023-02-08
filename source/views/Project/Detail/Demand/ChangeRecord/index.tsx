@@ -14,7 +14,6 @@ import {
   PaginationWrap,
   TableStyleBox,
 } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
@@ -23,6 +22,10 @@ import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { setIsUpdateChangeLog } from '@store/demand'
+import { getDemandChangeLog } from '@/services/project/demand'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -73,8 +76,6 @@ const NewSort = (sortProps: any) => {
 
 const ChangeRecord = () => {
   const [t] = useTranslation()
-  const { getDemandChangeLog, isUpdateChangeLog, setIsUpdateChangeLog } =
-    useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -87,10 +88,12 @@ const ChangeRecord = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const { isUpdateChangeLog } = useSelector(store => store.demand)
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -121,8 +124,8 @@ const ChangeRecord = () => {
     })
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
-    setIsUpdateChangeLog(false)
+    dispatch(setIsRefresh(false))
+    dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {

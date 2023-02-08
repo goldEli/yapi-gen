@@ -7,13 +7,14 @@ import IconFont from '@/components/IconFont'
 import CompanyModal from '@/components/CompanyModal'
 import { Tooltip, Popover, message } from 'antd'
 import { Personal } from './Personal'
-import { useModel } from '@/models'
-import { getTicket } from '@/services/user'
+import { getTicket, loginOut } from '@/services/user'
 import { useTranslation } from 'react-i18next'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { OmitText } from '@star-yun/ui'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { HiddenText } from '@/components/StyleCommon'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const imgCss = css`
   width: 32px;
@@ -146,7 +147,8 @@ interface Props {
 }
 
 export const Panel = (props: Props) => {
-  const { loginOut, userInfo, setIsRefresh } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const [personalModalVisible, setPersonalModalVisible] =
     useState<boolean>(false)
@@ -169,7 +171,7 @@ export const Panel = (props: Props) => {
     message.success(t('common.localsSwitching'))
     setLanguageMode(value)
     setTimeout(() => {
-      setIsRefresh(true)
+      dispatch(setIsRefresh(true))
     }, 100)
   }
 

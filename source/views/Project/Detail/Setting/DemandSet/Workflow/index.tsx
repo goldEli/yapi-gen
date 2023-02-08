@@ -6,7 +6,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
@@ -17,6 +16,7 @@ import { CategoryWrap, StepBoxWrap } from '@/components/StyleCommon'
 import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   padding: 16,
@@ -79,7 +79,7 @@ const SetBreadcrumb = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 
@@ -115,7 +115,7 @@ const SetBreadcrumb = () => {
 
 const Workflow = () => {
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
+  const { colorList } = useSelector(store => store.project)
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -146,7 +146,8 @@ const Workflow = () => {
           <CategoryWrap
             color={categoryItem.color}
             bgColor={
-              colorList?.filter(i => i.key === categoryItem.color)[0]?.bgColor
+              colorList?.filter((i: any) => i.key === categoryItem.color)[0]
+                ?.bgColor
             }
           >
             {categoryItem.name}

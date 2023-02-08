@@ -6,7 +6,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
-import { useModel } from '@/models'
+
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
@@ -29,6 +29,14 @@ import { getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
+import {
+  getMemberGantt,
+  getMemberInfoOverviewStatistics,
+  getUserGantt,
+  getUserInfoOverviewFeed,
+  getUserInfoOverviewStatistics,
+} from '@/services/member'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -161,16 +169,9 @@ const TotalWrap = styled.div({
 const Profile = () => {
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
-  const {
-    getUserInfoOverviewFeed,
-    getUserInfoOverviewStatistics,
-    getMemberInfoOverviewStatistics,
-    getMemberGantt,
-    getUserGantt,
-    mainInfo,
-  } = useModel('member')
-  const { userInfo } = useModel('user')
-  const { colorList, projectInfo } = useModel('project')
+  const { mainInfo } = useSelector(store => store.member)
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo, colorList } = useSelector(store => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])

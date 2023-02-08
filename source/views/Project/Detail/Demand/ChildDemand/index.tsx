@@ -7,7 +7,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
-import { Button, Menu, Pagination, message, Spin } from 'antd'
+import { Menu, Pagination, message, Spin } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -18,16 +18,25 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import {
+  deleteDemand,
+  getDemandInfo,
+  getDemandList,
+  updateDemandStatus,
+  updatePriority,
+} from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const Operation = styled.div({
   display: 'flex',
@@ -59,15 +68,10 @@ const ChildDemand = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const {
-    getDemandList,
-    updatePriority,
-    updateDemandStatus,
-    deleteDemand,
-    getDemandInfo,
-    demandInfo,
-  } = useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -82,7 +86,6 @@ const ChildDemand = () => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const { projectInfo } = useModel('project')
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
@@ -142,7 +145,7 @@ const ChildDemand = () => {
     })
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   useEffect(() => {
@@ -176,8 +179,9 @@ const ChildDemand = () => {
     setIsVisible(true)
   }
 
-  const onUpdate = (updateState?: boolean) => {
-    getDemandInfo({ projectId, id: demandId })
+  const onUpdate = async (updateState?: boolean) => {
+    const result = await getDemandInfo({ projectId, id: demandId })
+    dispatch(setDemandInfo(result))
     getList(pageObj, order, orderKey, updateState)
   }
 

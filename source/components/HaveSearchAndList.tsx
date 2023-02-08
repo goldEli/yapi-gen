@@ -2,7 +2,6 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
-import { useModel } from '@/models'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { message, Popover, Tooltip } from 'antd'
@@ -12,6 +11,15 @@ import { useNavigate } from 'react-router-dom'
 import CommonInput from './CommonInput'
 import IconFont from './IconFont'
 import NoData from './NoData'
+import { getProjectList } from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsChangeProject } from '@store/project'
+import {
+  addInfoDemand,
+  getDemandInfo,
+  getDemandList,
+} from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -90,10 +98,10 @@ interface DemandProps {
 }
 
 const ChooseItems = (props: DemandProps) => {
-  const { getDemandList, demandInfo } = useModel('demand')
-  const { getProjectList, projectList } = useModel('project')
   const [dataList, setDataList] = useState<any>([])
+  const [projectList, setProjectList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const { demandInfo } = useSelector(store => store.demand)
 
   const getList = async () => {
     const result = await getDemandList({
@@ -107,8 +115,9 @@ const ChooseItems = (props: DemandProps) => {
     setDataList(arr)
   }
 
-  const getProjectData = () => {
-    getProjectList({ all: true, isPublic: 1 })
+  const getProjectData = async () => {
+    const result = await getProjectList({ all: true, isPublic: 1 })
+    setProjectList(result)
   }
 
   useEffect(() => {
@@ -202,10 +211,11 @@ interface Props {
 const HaveSearchAndList = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+  const { projectInfo } = useSelector(store => store.project)
   const [isOpen, setIsOpen] = useState(false)
-  const { addInfoDemand, getDemandInfo } = useModel('demand')
-  const { setIsChangeProject, projectInfo } = useModel('project')
   const [hoverState, setHoverState] = useState(false)
+  const dispatch = useDispatch()
+
   const onVisibleOpenChange = (visible: any) => {
     setIsOpen(visible)
   }
@@ -220,7 +230,11 @@ const HaveSearchAndList = (props: Props) => {
         targetId: [item.value],
       })
       message.success(t('common.addSuccess'))
-      getDemandInfo({ projectId: props?.projectId, id: props?.demandId })
+      const result = await getDemandInfo({
+        projectId: props?.projectId,
+        id: props?.demandId,
+      })
+      dispatch(setDemandInfo(result))
     } catch (error) {
       //
     }
@@ -235,7 +249,7 @@ const HaveSearchAndList = (props: Props) => {
         .split('?data')[0]
       const params = encryptPhp(JSON.stringify({ id: item.id }))
       navigate(`/Detail/${beforeUrl}?data=${params}`)
-      setIsChangeProject(item.id)
+      dispatch(setIsChangeProject(item.id))
       message.success(t('version2.changeProjectSuccess'))
     }
     setIsOpen(false)

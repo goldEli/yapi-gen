@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 需求设置-编辑工作流弹窗
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -8,11 +9,12 @@ import { Input, Form, Switch, Space, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import ChooseColor from '../../components/ChooseColor'
-import { useModel } from '@/models'
 import { ViewWrap, CategoryWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
+import { updateStoryConfigWorkflow } from '@/services/project'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -35,7 +37,7 @@ const EditWorkflow = (props: EditorProps) => {
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')
-  const { colorList, updateStoryConfigWorkflow } = useModel('project')
+  const { colorList } = useSelector(store => store.project)
 
   useEffect(() => {
     setNormalColor(props?.item?.color)
@@ -117,7 +119,7 @@ const EditWorkflow = (props: EditorProps) => {
                   style={{ margin: 0, marginTop: 8 }}
                   color={i.color}
                   bgColor={
-                    colorList?.filter(k => k.key === i.color)[0]?.bgColor
+                    colorList?.filter((k: any) => k.key === i.color)[0]?.bgColor
                   }
                   key={i.id}
                 >
@@ -131,8 +133,7 @@ const EditWorkflow = (props: EditorProps) => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Item
               getValueFromEvent={event => {
-                // eslint-disable-next-line require-unicode-regexp
-                return event.target.value.replace(/\s+/g, '')
+                return event.target.value.replace(/(?<start>^\s*)/g, '')
               }}
               label={t('newlyAdd.statusName')}
               name="name"
@@ -152,7 +153,7 @@ const EditWorkflow = (props: EditorProps) => {
           <Form.Item
             getValueFromEvent={event => {
               // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
             label={t('newlyAdd.statusRemark')}
             name="info"

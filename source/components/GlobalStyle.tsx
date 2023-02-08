@@ -394,6 +394,7 @@ const customCss = css`
 
   .ant-tooltip-inner {
     white-space: pre-wrap;
+    min-width: 45px;
   }
   .ant-collapse-content {
     border-top: 1px solid #ecedef;

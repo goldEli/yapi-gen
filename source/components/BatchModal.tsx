@@ -11,10 +11,20 @@ import CommonModal from './CommonModal'
 import { Checkbox, DatePicker, Form, message, Select, TreeSelect } from 'antd'
 import { FormWrapDemand } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
+import {
+  getNestedChildren,
+  getParamsData,
+  getTypeComponent,
+  removeNull,
+} from '@/tools'
 import moment from 'moment'
+import { useSelector } from '@store/index'
+import {
+  batchDelete,
+  batchEdit,
+  getBatchEditConfig,
+} from '@/services/project/demand'
 
 interface Props {
   isVisible: boolean
@@ -28,8 +38,6 @@ const BatchModal = (props: Props) => {
   const [t] = useTranslation()
   const [haveChildren, setHaveChildren] = useState(false)
   const [form] = Form.useForm()
-  const { batchDelete, batchEdit, getBatchEditConfig } = useModel('demand')
-  const { memberList, selectAllStaffData } = useModel('project')
   const [chooseSelect, setChooseSelect] = useState<any>([])
   const [chooseType, setChooseType] = useState('')
   const [chooseAfter, setChooseAfter] = useState<any>({})
@@ -39,6 +47,7 @@ const BatchModal = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { projectInfoValues } = useSelector(store => store.project)
 
   // 获取批量编辑的下拉列表
   const getBatchEditConfigList = async () => {
@@ -67,17 +76,25 @@ const BatchModal = (props: Props) => {
           filterItem.selectList[0] === 'projectMember')
       ) {
         // 单独处理项目人员下拉
-        filterItem.selectList = memberList?.map((i: any) => ({
-          label: i.name,
-          value: i.id,
-        }))
+        filterItem.selectList = removeNull(projectInfoValues, 'user_name')?.map(
+          (k: any) => ({
+            label: k.content,
+            value: k.id,
+          }),
+        )
       } else if (
         chooseType === 'copysend' ||
         (['user_select_checkbox', 'user_select'].includes(filterItem.attr) &&
           filterItem.selectList[0] === 'companyMember')
       ) {
         // 单独处理公司人员下拉
-        filterItem.selectList = selectAllStaffData
+        filterItem.selectList = removeNull(
+          projectInfoValues,
+          'users_copysend_name',
+        )?.map((k: any) => ({
+          label: k.content,
+          value: k.id,
+        }))
       } else if (chooseType === 'category_id') {
         // 单独处理需求类别下拉
         filterItem.selectList = filterItem.selectList?.map((i: any) => ({

@@ -4,9 +4,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-handler-names */
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import PopConfirm from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
@@ -19,11 +16,14 @@ import {
   StatusWrap,
 } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
-import { useModel } from '@/models'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from './DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
+import ChangeStatusPopover from './ChangeStatusPopover'
+import ChangePriorityPopover from './ChangePriorityPopover'
+import { useSelector } from '@store/index'
+import { getCustomNormalValue } from '@/tools'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -56,8 +56,8 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
-  const { projectInfo, colorList } = useModel('project')
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo, colorList } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -149,6 +149,7 @@ export const useDynamicColumns = (state: any) => {
               keyText="name"
               item={record}
               onUpdate={() => onUpdate(record)}
+              isDemandName
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
@@ -174,28 +175,11 @@ export const useDynamicColumns = (state: any) => {
       width: 190,
       render: (text: any, record: any) => {
         return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                isCanEdit &&
-                !record.isExamine && (
-                  <ShapeContent
-                    tap={(value: any) => state.onChangeStatus(value, record)}
-                    hide={onHide}
-                    row={record}
-                    record={{
-                      id: record.id,
-                      project_id: state.projectId,
-                      status: {
-                        id: record.status.id,
-                        can_changes: record.status.can_changes,
-                      },
-                    }}
-                  />
-                )
-              )
-            }}
+          <ChangeStatusPopover
+            isCanOperation={isCanEdit && !record.isExamine}
+            projectId={state.projectId}
             record={record}
+            onChangeStatus={item => state.onChangeStatus(item, record)}
           >
             <StatusWrap
               onClick={record.isExamine ? onExamine : void 0}
@@ -207,7 +191,7 @@ export const useDynamicColumns = (state: any) => {
             >
               {text?.status.content}
             </StatusWrap>
-          </PopConfirm>
+          </ChangeStatusPopover>
         )
       },
     },
@@ -218,19 +202,10 @@ export const useDynamicColumns = (state: any) => {
       width: 180,
       render: (text: any, record: Record<string, string | number>) => {
         return (
-          <PopConfirm
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                isCanEdit && (
-                  <LevelContent
-                    onTap={item => state.onChangeState(item, record)}
-                    onHide={onHide}
-                    record={{ project_id: state.projectId, id: record.id }}
-                  />
-                )
-              )
-            }}
-            record={record}
+          <ChangePriorityPopover
+            isCanOperation={isCanEdit}
+            onChangePriority={item => state.onChangeState(item, record)}
+            record={{ project_id: state.projectId, id: record.id }}
           >
             <PriorityWrap isShow={isCanEdit}>
               <IconFont
@@ -246,7 +221,7 @@ export const useDynamicColumns = (state: any) => {
                 <IconFont className="icon" type="down-icon" />
               </div>
             </PriorityWrap>
-          </PopConfirm>
+          </ChangePriorityPopover>
         )
       },
     },
@@ -522,17 +497,6 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
-  // 返回文本
-  const getText = (attr: any, text: any) => {
-    if (['user_select_checkbox', 'user_select'].includes(attr)) {
-      return text?.true_value || '--'
-    }
-    return (
-      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
-      '--'
-    )
-  }
-
   const getArr = () => {
     const result: any = []
     projectInfo?.plainOptions3?.forEach((element: any) => {
@@ -565,7 +529,7 @@ export const useDynamicColumns = (state: any) => {
               isCustom
               defaultTextValues={text?.true_value}
             >
-              <span>{getText(currentFields.attr, text)}</span>
+              <span>{getCustomNormalValue(currentFields.attr, text)}</span>
             </TableQuickEdit>
           )
         },

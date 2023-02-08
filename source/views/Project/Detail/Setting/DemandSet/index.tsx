@@ -9,7 +9,7 @@ import Workflow from './Workflow'
 import FieldSet from './FieldSet'
 import { getParamsData } from '@/tools'
 import PermissionWrap from '@/components/PermissionWrap'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -28,7 +28,7 @@ const DemandSet = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const pageIdx = paramsData.pageIdx || 'main'
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
 
   return (
     <PermissionWrap

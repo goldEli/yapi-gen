@@ -13,7 +13,14 @@ import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefreshGroup } from '@store/project'
+import {
+  addProjectGroup,
+  deleteProjectGroup,
+  getGroupList,
+  updateProjectGroup,
+} from '@/services/project'
 
 const WrapLeft = styled.div`
   width: 220px;
@@ -126,15 +133,6 @@ interface Props {
 
 const WrapLeftBox = (props: Props) => {
   const [t] = useTranslation()
-  const {
-    getGroupList,
-    addProjectGroup,
-    updateProjectGroup,
-    deleteProjectGroup,
-    setSelectGroupList,
-    isRefreshGroup,
-    setIsRefreshGroup,
-  } = useModel('project')
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
@@ -146,18 +144,17 @@ const WrapLeftBox = (props: Props) => {
   })
   const [countData, setCountData] = useState<any>({})
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const { isRefreshGroup } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const getGroupData = async (isChange?: boolean) => {
     const result = await getGroupList()
     setGroupList({ list: result?.list })
-    setSelectGroupList(
-      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
-    )
     setCountData({
       publicCount: result.publicCount,
       selfCount: result.selfCount,
     })
-    setIsRefreshGroup(false)
+    dispatch(setIsRefreshGroup(false))
     // 如果当前删除的是当前选择，则切换为分组第一条
     if (isChange) {
       props.onChangeGroup(result?.list[0]?.id)
@@ -304,7 +301,7 @@ const WrapLeftBox = (props: Props) => {
             name="name"
             rules={[{ required: true, message: '' }]}
             getValueFromEvent={event => {
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
           >
             <Input

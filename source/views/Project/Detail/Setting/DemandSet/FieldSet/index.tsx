@@ -7,7 +7,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
@@ -19,6 +18,8 @@ import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditFiled from './components/EditField'
 import NoData from '@/components/NoData'
+import { useSelector } from '@store/index'
+import { deleteStoryConfigField, storyConfigField } from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -69,7 +70,7 @@ const SetBreadcrumb = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 
@@ -105,20 +106,39 @@ const SetBreadcrumb = () => {
 
 const FieldSet = () => {
   const [t] = useTranslation()
-  const { getFieldList, fieldList, option, deleteStoryConfigField } =
-    useModel('project')
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const [fieldList, setFieldList] = useState<any>({
+    list: undefined,
+  })
+
+  const option = [
+    { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
+    { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
+    { label: t('newlyAdd.radioDropdown'), value: '3', type: 'select' },
+    { label: t('newlyAdd.multiDropdown'), value: '4', type: 'select_checkbox' },
+    { label: t('newlyAdd.checkbox'), value: '5', type: 'checkbox' },
+    { label: t('newlyAdd.radio'), value: '6', type: 'radio' },
+    { label: t('newlyAdd.time'), value: '7', type: 'date' },
+    { label: t('newlyAdd.number'), value: '8', type: 'number' },
+    { label: t('version2.personRadio'), value: '9', type: 'user_select' },
+    {
+      label: t('version2.personCheckbox'),
+      value: '10',
+      type: 'user_select_checkbox',
+    },
+  ]
 
   const getList = async () => {
     setIsSpinning(true)
-    await getFieldList({
+    const result = await storyConfigField({
       projectId: paramsData.id,
     })
+    setFieldList(result)
     setIsSpinning(false)
   }
 

@@ -1,4 +1,5 @@
 // 需求列表快捷编辑组件
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -8,13 +9,27 @@ import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { getIterateList } from '@/services/project/iterate'
-import { getProjectMember, getTagList } from '@/services/project'
+import {
+  getProjectMember,
+  getTagList,
+  storyConfigField,
+} from '@/services/project'
 import { getStaffList } from '@/services/staff'
 import { getTreeList } from '@/services/project/tree'
-import { useModel } from '@/models'
-import { message } from 'antd'
+import { message, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
+import { useDispatch, useSelector } from '@store/index'
+import { getDemandInfo, updateTableParams } from '@/services/project/demand'
+import { setDemandInfo } from '@store/demand'
+import styled from '@emotion/styled'
+
+const LimitText = styled.div`
+  width: 192px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
 
 interface Props {
   children: any
@@ -44,6 +59,9 @@ interface Props {
 
   // 用于判断当前是否是所有项目， 是则调用就接口获取下拉值
   projectId?: any
+
+  // 是否需求标题 -- 是则不加tooltip并取消padding
+  isDemandName?: boolean
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -52,13 +70,12 @@ const TableQuickEdit = (props: Props) => {
   const inputRef = useRef<any>(null)
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
-  const { projectInfo, getFieldListCustom, projectInfoValues } =
-    useModel('project')
-  const { updateTableParams, getDemandInfo } = useModel('demand')
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [params, setParams] = useState<any>({})
   let isCanEdit: any
   let projectId: any
   let canClick: any
+  const dispatch = useDispatch()
   const isCan =
     props.isInfo ||
     !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
@@ -87,7 +104,7 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
-    const response = await getFieldListCustom({ projectId, key: props.keyText })
+    const response = await storyConfigField({ projectId, key: props.keyText })
     const currentObj = response.list?.filter(
       (i: any) => i.content === props.keyText,
     )[0]
@@ -336,7 +353,8 @@ const TableQuickEdit = (props: Props) => {
     try {
       await updateTableParams(obj)
       if (props.isInfo) {
-        getDemandInfo({ projectId, id: props.item?.id })
+        const result = await getDemandInfo({ projectId, id: props.item?.id })
+        dispatch(setDemandInfo(result))
       } else {
         props.onUpdate?.()
       }
@@ -393,7 +411,25 @@ const TableQuickEdit = (props: Props) => {
           isTable={!props.isInfo}
           isCanEdit={isCanEdit}
         >
-          {props.children}
+          {(!['text', 'textarea'].includes(props.type as any) ||
+            props.isDemandName) && <div>{props.children}</div>}
+
+          {['text', 'textarea'].includes(props.type as any) &&
+            !props.isDemandName && (
+              <>
+                {props.isInfo && <div>{props.children}</div>}
+                {!props.isInfo && (
+                  <Tooltip
+                    title={props.children}
+                    placement="topLeft"
+                    getPopupContainer={node => node}
+                  >
+                    <LimitText>{props.children}</LimitText>
+                  </Tooltip>
+                )}
+              </>
+            )}
+
           {isCanEdit && (
             <IconFontWrapEdit
               onClick={() => setIsShowControl(true)}

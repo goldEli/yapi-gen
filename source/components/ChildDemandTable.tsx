@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools'
 import { useState } from 'react'
-import { useModel } from '@/models'
 import { message, Popover, Progress, Table, Tooltip } from 'antd'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
@@ -23,6 +22,8 @@ import {
 import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import IconFont from './IconFont'
+import { useSelector } from '@store/index'
+import { getDemandList } from '@/services/project/demand'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -58,21 +59,9 @@ const ChildDemandTable = (props: {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const { getDemandList } = useModel('demand')
   const [order, setOrder] = useState<any>({ value: '', key: '' })
-  const { projectInfo, colorList, getProjectInfo } = useModel('project')
+  const { colorList } = useSelector(store => store.project)
   let isCanEdit: any
-
-  // 获取是否有编辑需求的权限 --- 主要用于他的/我的
-  const getProjectEdit = () => {
-    if (props.isMineOrHis) {
-      getProjectInfo({ projectId })
-    }
-    isCanEdit =
-      projectInfo.projectPermissions?.length > 0 &&
-      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-        ?.length > 0
-  }
 
   const getList = async (item: any) => {
     const result = await getDemandList({
@@ -87,7 +76,6 @@ const ChildDemandTable = (props: {
 
   const onChildClick = async () => {
     getList(order)
-    getProjectEdit()
     setIsVisible(!isVisible)
   }
 

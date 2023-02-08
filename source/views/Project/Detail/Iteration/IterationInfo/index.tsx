@@ -9,12 +9,13 @@ import styled from '@emotion/styled'
 import { Progress, Spin } from 'antd'
 import { Line, Column } from '@ant-design/plots'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import EditorInfoReview from '@/components/EditorInfoReview'
+import { useSelector } from '@store/index'
+import { getIterateStatistics } from '@/services/project/iterate'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -164,7 +165,7 @@ const IterationInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { iterateInfo, getIterateStatistics } = useModel('iterate')
+  const { iterateInfo } = useSelector(store => store.iterate)
   const [chartData, setChartData] = useState<any>({})
   const [isSpinning, setIsSpinning] = useState(false)
 

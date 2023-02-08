@@ -1,11 +1,15 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 // 切换公司弹窗
 
 import { useEffect, useState } from 'react'
 import { Space } from 'antd'
 import CompanyCard from '@/views/Container/components/CompanyCard'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
+import { useSelector } from '@store/index'
+import { getCompanyList, updateCompany } from '@/services/user'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   onChangeState(): void
@@ -13,14 +17,64 @@ interface Props {
 }
 
 const CompanyModal = (props: Props) => {
+  const navigate = useNavigate()
   const [t] = useTranslation()
-  const { getCompanyList, updateCompany, userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
   const [companyParams, setCompanyParams] = useState({
     companyId: '',
     companyUserId: '',
   })
+
+  const jump = () => {
+    const jumpList = [
+      {
+        name: '概况',
+        path: '/Situation',
+      },
+      {
+        name: '项目',
+        path: '/Project',
+      },
+      {
+        name: '我的',
+        path: '/mine',
+      },
+      {
+        name: '员工',
+        path: '/staff',
+      },
+      {
+        name: '消息',
+        path: '/Situation',
+      },
+
+      {
+        name: '公司管理',
+        path: '/Setting',
+      },
+      {
+        name: '日志',
+        path: '/Situation',
+      },
+    ]
+    const { company_permissions } = userInfo
+    const routerMap = Array.from(
+      new Set(company_permissions?.map((i: any) => i.group_name)),
+    )
+    if (routerMap.length >= 1) {
+      routerMap.concat('日志')
+
+      for (let i = 0; i <= jumpList.length; i++) {
+        if (routerMap?.includes(jumpList[i].name)) {
+          sessionStorage.setItem('saveRouter', '首次登录')
+          navigate(jumpList[i].path)
+          break
+        }
+      }
+    }
+  }
 
   // 初始化获取公司信息
   const init = async () => {
@@ -53,6 +107,7 @@ const CompanyModal = (props: Props) => {
       await updateCompany(companyParams)
       sessionStorage.removeItem('saveRouter')
       props.onChangeState()
+      jump()
       location.reload()
     } catch (error) {
       //
@@ -83,7 +138,7 @@ const CompanyModal = (props: Props) => {
             name={i.name}
             key={i.id}
             tap={() => cutCompany(i)}
-            show={i.id === activeId}
+            isShow={i.id === activeId}
           />
         ))}
       </Space>

@@ -16,9 +16,11 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
+import { useDispatch, useSelector } from '@store/index'
+import { getAsyncVerifyInfo } from '@store/mine'
+import { updateVerifyOperation } from '@/services/mine'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -82,15 +84,18 @@ interface Props {
 }
 
 const EditExamine = (props: Props) => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
-  const { getVerifyInfo, verifyInfo, updateVerifyOperation } = useModel('mine')
+  const { colorList } = useSelector(store => store.project)
+  const { verifyInfo } = useSelector(store => store.mine)
   const [value, setValue] = useState('')
 
   const getInfo = async () => {
-    await getVerifyInfo({
-      id: props?.isEdit ? props?.item?.storyVerifyId : props?.item?.id,
-    })
+    dispatch(
+      getAsyncVerifyInfo({
+        id: props?.isEdit ? props?.item?.storyVerifyId : props?.item?.id,
+      }),
+    )
   }
 
   useEffect(() => {
@@ -211,8 +216,9 @@ const EditExamine = (props: Props) => {
           <CategoryWrap
             color={verifyInfo?.categoryColor}
             bgColor={
-              colorList?.filter(i => i.key === verifyInfo?.categoryColor)[0]
-                ?.bgColor
+              colorList?.filter(
+                (i: any) => i.key === verifyInfo?.categoryColor,
+              )[0]?.bgColor
             }
           >
             {verifyInfo?.categoryName}
@@ -288,21 +294,6 @@ const EditExamine = (props: Props) => {
                         </div>
                       )}
                     </ContentWrap>
-                    // <ContentWrap>
-                    //   {String(m).includes('custom_') ? (
-                    //     <span>
-                    //       {verifyInfo.fields[m]?.value
-                    //         ?.map((i: any) => i)
-                    //         .join(';') || '--'}
-                    //     </span>
-                    //   ) : (
-                    //     <span>
-                    //       {verifyInfo.fields[m]?.value
-                    //         ?.map((i: any) => i.name?.trim())
-                    //         .join(';') || '--'}
-                    //     </span>
-                    //   )}
-                    // </ContentWrap>
                   ))}
                 {m === 'priority' && (
                   <ContentWrap>

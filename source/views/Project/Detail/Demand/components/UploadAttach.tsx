@@ -1,3 +1,5 @@
+// 公用上传附件组件
+
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -5,7 +7,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useModel } from '@/models'
+
 import { message, Progress, Upload } from 'antd'
 import {
   useCallback,
@@ -22,6 +24,8 @@ import { bytesToSize, getParamsData } from '@/tools'
 import IconFont from '@/components/IconFont'
 import Viewer from 'react-viewer'
 import myImg from '/er.png'
+import { cos, uploadFile } from '@/services/cos'
+import { useSelector } from '@store/index'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -160,16 +164,13 @@ const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
 const UploadAttach = (props: any) => {
   const scopeRef = useRef(String(Math.random()))
-
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
   })
   const [t] = useTranslation()
-  const { uploadFile, cos } = useModel('cos')
-
   const [searchParams] = useSearchParams()
   let projectId: any
   let demandId: any
@@ -182,10 +183,9 @@ const UploadAttach = (props: any) => {
   }
 
   const [fileList, setFileList] = useState<any>([])
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
 
   // 判断权限
-
   let isDownload: boolean
   let isShowDel: boolean
 
@@ -581,8 +581,6 @@ const UploadAttach = (props: any) => {
                       color: '#323233',
                       lineHeight: '22px',
                       wordBreak: 'break-all',
-
-                      // width: '90%',
                     }}
                   >
                     {i.file.name}

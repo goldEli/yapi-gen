@@ -5,11 +5,13 @@
 import styled from '@emotion/styled'
 import { message } from 'antd'
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { useDispatch, useSelector } from '@store/index'
+import { setDemandInfo } from '@store/demand'
+import { deleteInfoDemand, getDemandInfo } from '@/services/project/demand'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -41,11 +43,12 @@ interface Props {
 
 const ParentDemand = (props: Props) => {
   const [t] = useTranslation()
-  const { demandInfo, getDemandInfo, deleteInfoDemand } = useModel('demand')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
+  const { demandInfo } = useSelector(store => store.demand)
+  const dispatch = useDispatch()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -60,7 +63,8 @@ const ParentDemand = (props: Props) => {
         targetId: demandInfo?.parentId,
       })
       message.success(t('common.deleteSuccess'))
-      getDemandInfo({ projectId, id: demandInfo?.id })
+      const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+      dispatch(setDemandInfo(result))
     } catch (error) {
       //
     }

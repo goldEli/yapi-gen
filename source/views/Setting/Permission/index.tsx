@@ -8,7 +8,6 @@ import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -17,6 +16,17 @@ import CommonModal from '@/components/CommonModal'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { GroupWrap } from '@/views/Project/Detail/Setting/components/ProjectSet'
+import PermissionWrap from '@/components/PermissionWrap'
+import {
+  addRole,
+  deleteRole,
+  getRoleList,
+  getRolePermission,
+  setRolePermission,
+  updateRole,
+} from '@/services/setting'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
 
 const Header = styled.div({
   height: 64,
@@ -199,7 +209,6 @@ const PermissionItem = (props: ItemProps) => {
                 disabled={props.activeDetail?.type === 1}
                 value={item.value}
               >
-                {/* <ShowText names={item.label} /> */}
                 <span
                   style={{
                     width: '150px',
@@ -231,17 +240,10 @@ const Permission = () => {
   const [addValue, setAddValue] = useState('')
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [isDelete, setIsDelete] = useState(false)
-  const {
-    getRoleList,
-    getRolePermission,
-    setRolePermission,
-    addRole,
-    updateRole,
-    deleteRole,
-  } = useModel('setting')
   const [isSpinning, setIsSpinning] = useState(false)
-  const { isRefresh, setIsRefresh } = useModel('user')
-
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
+  const { userInfo } = useSelector(store => store.user)
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
@@ -253,7 +255,7 @@ const Permission = () => {
       keys = [...keys, ...a.map((k: any) => k.value)]
     })
     setSelectKeys(keys)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   const init = async (isInit?: boolean, str?: string) => {
@@ -380,114 +382,121 @@ const Permission = () => {
   )
 
   return (
-    <div style={{ height: '100%' }}>
-      <DeleteConfirm
-        isVisible={isDelete}
-        text={t('setting.confirmGroup')}
-        onChangeVisible={() => setIsDelete(!isDelete)}
-        onConfirm={onDeleteConfirm}
-      />
-      <CommonModal
-        isVisible={isVisible}
-        title={
-          operationDetail.id
-            ? t('setting.editPermission')
-            : t('setting.createPermission')
-        }
-        width={420}
-        onClose={onClose}
-        isShowFooter
-      >
-        <div style={{ margin: '0 16px 24px 0' }}>
-          <Input
-            autoComplete="off"
-            value={addValue}
-            onChange={e => setAddValue(e.target.value)}
-            placeholder={t('setting.pleaseEnterName')}
-          />
-        </div>
-        <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
-          <Button onClick={onClose}>{t('common.cancel')}</Button>
-          <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
-            {t('common.confirm2')}
-          </Button>
-        </ModalFooter>
-      </CommonModal>
-      <Header>
-        <span>{t('setting.permissionManagement')}</span>
-      </Header>
-      <Content>
-        <Spin spinning={isSpinning}>
-          <SetMain>
-            <SetLeft>
-              <Title style={{ marginLeft: 24 }}>{t('setting.userGroup')}</Title>
-              <MenuItems>
-                {dataList?.map((item: any) => (
-                  <MenuItem
-                    key={item.id}
-                    onClick={() => onChangeTabs(item)}
-                    isActive={item.id === activeDetail.id}
-                  >
-                    <div className="name">{item.name}</div>
-                    <span className="subName">
-                      {item.type === 1
-                        ? t('setting.systemGroup')
-                        : t('setting.customGroup')}
-                    </span>
-                    <MoreDropdown
-                      isHidden={item.type === 1}
-                      isMoreVisible={isMoreVisible}
-                      onChangeVisible={setIsMoreVisible}
-                      menu={menu(item)}
+    <PermissionWrap
+      auth="b/company/role"
+      permission={userInfo?.company_permissions}
+    >
+      <div style={{ height: '100%' }}>
+        <DeleteConfirm
+          isVisible={isDelete}
+          text={t('setting.confirmGroup')}
+          onChangeVisible={() => setIsDelete(!isDelete)}
+          onConfirm={onDeleteConfirm}
+        />
+        <CommonModal
+          isVisible={isVisible}
+          title={
+            operationDetail.id
+              ? t('setting.editPermission')
+              : t('setting.createPermission')
+          }
+          width={420}
+          onClose={onClose}
+          isShowFooter
+        >
+          <div style={{ margin: '0 16px 24px 0' }}>
+            <Input
+              autoComplete="off"
+              value={addValue}
+              onChange={e => setAddValue(e.target.value)}
+              placeholder={t('setting.pleaseEnterName')}
+            />
+          </div>
+          <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
+            <Button onClick={onClose}>{t('common.cancel')}</Button>
+            <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
+              {t('common.confirm2')}
+            </Button>
+          </ModalFooter>
+        </CommonModal>
+        <Header>
+          <span>{t('setting.permissionManagement')}</span>
+        </Header>
+        <Content>
+          <Spin spinning={isSpinning}>
+            <SetMain>
+              <SetLeft>
+                <Title style={{ marginLeft: 24 }}>
+                  {t('setting.userGroup')}
+                </Title>
+                <MenuItems>
+                  {dataList?.map((item: any) => (
+                    <MenuItem
+                      key={item.id}
+                      onClick={() => onChangeTabs(item)}
+                      isActive={item.id === activeDetail.id}
+                    >
+                      <div className="name">{item.name}</div>
+                      <span className="subName">
+                        {item.type === 1
+                          ? t('setting.systemGroup')
+                          : t('setting.customGroup')}
+                      </span>
+                      <MoreDropdown
+                        isHidden={item.type === 1}
+                        isMoreVisible={isMoreVisible}
+                        onChangeVisible={setIsMoreVisible}
+                        menu={menu(item)}
+                      />
+                    </MenuItem>
+                  ))}
+                </MenuItems>
+                <div
+                  style={{
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    color: '#2877FF',
+                    height: 58,
+                    lineHeight: '58px',
+                  }}
+                  onClick={() => setIsVisible(true)}
+                >
+                  <IconFont type="plus" />
+                  <span>{t('setting.addUserGroup')}</span>
+                </div>
+              </SetLeft>
+              <SetRight>
+                <Title>{activeDetail.name}</Title>
+                <TitleGroup>
+                  <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
+                  <OperationWrap>{t('setting.operationObject')}</OperationWrap>
+                  <span>{t('common.permission')}</span>
+                </TitleGroup>
+                <MainWrap>
+                  {permission.list?.map((i: any) => (
+                    <PermissionItem
+                      key={i.id}
+                      item={i}
+                      onChange={setSelectKeys}
+                      value={selectKeys}
+                      activeDetail={activeDetail}
                     />
-                  </MenuItem>
-                ))}
-              </MenuItems>
-              <div
-                style={{
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  color: '#2877FF',
-                  height: 58,
-                  lineHeight: '58px',
-                }}
-                onClick={() => setIsVisible(true)}
-              >
-                <IconFont type="plus" />
-                <span>{t('setting.addUserGroup')}</span>
-              </div>
-            </SetLeft>
-            <SetRight>
-              <Title>{activeDetail.name}</Title>
-              <TitleGroup>
-                <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
-                <OperationWrap>{t('setting.operationObject')}</OperationWrap>
-                <span>{t('common.permission')}</span>
-              </TitleGroup>
-              <MainWrap>
-                {permission.list?.map((i: any) => (
-                  <PermissionItem
-                    key={i.id}
-                    item={i}
-                    onChange={setSelectKeys}
-                    value={selectKeys}
-                    activeDetail={activeDetail}
-                  />
-                ))}
-              </MainWrap>
-              <Button
-                hidden={activeDetail.type === 1}
-                style={{ width: 'fit-content', marginTop: 16 }}
-                type="primary"
-                onClick={onSavePermission}
-              >
-                {t('common.save')}
-              </Button>
-            </SetRight>
-          </SetMain>
-        </Spin>
-      </Content>
-    </div>
+                  ))}
+                </MainWrap>
+                <Button
+                  hidden={activeDetail.type === 1}
+                  style={{ width: 'fit-content', marginTop: 16 }}
+                  type="primary"
+                  onClick={onSavePermission}
+                >
+                  {t('common.save')}
+                </Button>
+              </SetRight>
+            </SetMain>
+          </Spin>
+        </Content>
+      </div>
+    </PermissionWrap>
   )
 }
 

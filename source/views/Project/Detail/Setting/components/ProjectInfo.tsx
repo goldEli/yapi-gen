@@ -7,12 +7,13 @@ import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
 import EditProject from '@/views/Project/components/EditProject'
-import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
-import PubSub from 'pubsub-js'
+import { useDispatch, useSelector } from '@store/index'
+import { getProjectInfo } from '@/services/project'
+import { setProjectInfo } from '@store/project'
 
 const Wrap = styled.div({
   padding: 24,
@@ -118,12 +119,15 @@ const ProjectInfo = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [visible, setVisible] = useState(false)
-  const { projectInfo, getProjectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { projectInfo } = useSelector(store => store.project)
+  const { userInfo } = useSelector(store => store.user)
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
-  const onUpdate = () => {
-    getProjectInfo({ projectId: projectInfo.id })
+  const dispatch = useDispatch()
+
+  const onUpdate = async () => {
+    const result = await getProjectInfo({ projectId: projectInfo.id })
+    dispatch(setProjectInfo(result))
   }
   return (
     <div style={{ padding: 16, height: '100%' }}>

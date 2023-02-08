@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable complexity */
@@ -8,7 +9,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import DemandMain from './DemandMain'
 import DemandInfo from './DemandInfo'
 import ChangeRecord from './ChangeRecord'
@@ -17,9 +18,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button, message, Popover, Form, Select } from 'antd'
-import { ShapeContent } from '@/components/Shape'
-import PopConfirm from '@/components/Popconfirm'
-import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
@@ -30,9 +28,23 @@ import { CanOperationCategory, StatusWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useDispatch } from '../../../../../store'
 import { changeId } from '../../../../../store/counterSlice'
+import { setIsRefresh } from '@store/user'
+import { useDispatch, useSelector } from '@store/index'
+import { getWorkflowList } from '@/services/project'
+import {
+  deleteDemand,
+  getDemandInfo,
+  updateDemandCategory,
+  updateDemandStatus,
+} from '@/services/project/demand'
+import {
+  setDemandInfo,
+  setIsRefreshComment,
+  setIsUpdateStatus,
+} from '@store/demand'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -143,29 +155,18 @@ const DemandBox = () => {
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [colorObj, setColorObj] = useState<any>({})
   const [resultCategory, setResultCategory] = useState([])
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { setIsRefresh } = useModel('user')
-  const {
-    projectInfo,
-    colorList,
-    getWorkflowList,
-    workList,
-    projectInfoValues,
-  } = useModel('project')
-  const {
-    getDemandInfo,
-    demandInfo,
-    deleteDemand,
-    updateDemandStatus,
-    setIsShowProgress,
-    setFilterHeight,
-    updateDemandCategory,
-    setIsUpdateStatus,
-  } = useModel('demand')
+  const { projectInfo, colorList, projectInfoValues } = useSelector(
+    store => store.project,
+  )
+  const demandInfo = useSelector(store => store.demand.demandInfo)
   const navigate = useNavigate()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
@@ -185,14 +186,14 @@ const DemandBox = () => {
 
   const init = async () => {
     if (demandId) {
-      await getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
     }
     setLoadingState(true)
   }
 
   useEffect(() => {
     init()
-    setFilterHeight(52)
     return () => {
       dispatch(changeId(0))
     }
@@ -224,7 +225,6 @@ const DemandBox = () => {
   }
 
   const onEdit = () => {
-    setIsShowProgress(true)
     setIsVisible(!isVisible)
     setOperationItem(demandInfo)
   }
@@ -255,9 +255,11 @@ const DemandBox = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
+      dispatch(setIsRefreshComment(true))
       message.success(t('common.statusSuccess'))
       if (demandId) {
-        getDemandInfo({ projectId, id: demandId })
+        const result = await getDemandInfo({ projectId, id: demandId })
+        dispatch(setDemandInfo(result))
       }
     } catch (error) {
       //
@@ -285,9 +287,10 @@ const DemandBox = () => {
       })
       message.success(t('newlyAdd.changeSuccess'))
       setIsShowCategory(false)
-      setIsUpdateStatus(true)
-      setIsRefresh(true)
-      getDemandInfo({ projectId, id: demandInfo?.id })
+      dispatch(setIsUpdateStatus(true))
+      dispatch(setIsRefresh(true))
+      const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+      dispatch(setDemandInfo(result))
       setTimeout(() => {
         form.resetFields()
       }, 100)
@@ -298,20 +301,22 @@ const DemandBox = () => {
 
   const onChangeSelect = async (value: any) => {
     if (value) {
-      await getWorkflowList({
+      const result = await getWorkflowList({
         projectId: paramsData.id,
         categoryId: value,
       })
+      setWorkList(result)
     } else {
       form.resetFields()
     }
   }
 
   const onClickCategory = async (k: any) => {
-    await getWorkflowList({
+    const result = await getWorkflowList({
       projectId: paramsData.id,
       categoryId: k.id,
     })
+    setWorkList(result)
     form.setFieldsValue({
       categoryId: k.id,
     })
@@ -472,24 +477,11 @@ const DemandBox = () => {
             >
               <span className="demandName">{demandInfo?.name}</span>
             </OmitText>
-            <PopConfirm
-              content={({ onHide }: { onHide(): void }) => {
-                return isCanEdit && !demandInfo?.isExamine ? (
-                  <ShapeContent
-                    tap={(value: any) => onChangeStatus(value)}
-                    hide={onHide}
-                    row={demandInfo}
-                    record={{
-                      id: demandInfo.id,
-                      project_id: projectId,
-                      status: {
-                        id: demandInfo.status.id,
-                        can_changes: demandInfo.status.can_changes,
-                      },
-                    }}
-                  />
-                ) : null
-              }}
+            <ChangeStatusPopover
+              isCanOperation={isCanEdit && !demandInfo?.isExamine}
+              projectId={projectId}
+              record={demandInfo}
+              onChangeStatus={onChangeStatus}
             >
               <StatusWrap
                 onClick={demandInfo?.isExamine ? onExamine : void 0}
@@ -501,7 +493,7 @@ const DemandBox = () => {
               >
                 {demandInfo?.status?.status?.content}
               </StatusWrap>
-            </PopConfirm>
+            </ChangeStatusPopover>
           </NameWrap>
           <Space size={16}>
             {isEdit ? null : (
@@ -556,9 +548,10 @@ const DemandBox = () => {
     setOperationItem({})
   }
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     if (demandId) {
-      getDemandInfo({ projectId, id: demandId })
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
     }
     setIsUpdate(true)
   }

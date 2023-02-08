@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 // 左侧操作栏
 
 import { useState } from 'react'
@@ -8,10 +10,9 @@ import IconFont from '@/components/IconFont'
 import { Panel } from './Panel'
 import sideLogo from '/sliderLogo.svg'
 import sideLogoText from '/logoText.svg'
-import { useModel } from '@/models'
 import { Popover } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useSelector } from '@store/index'
 
 const imgCss = css`
   width: 40px;
@@ -36,6 +37,7 @@ const imgCSS = css`
   width: 56px;
   margin-top: 24px;
   object-fit: cover;
+  cursor: pointer;
 `
 const SideHeader = styled.div`
   display: flex;
@@ -115,9 +117,8 @@ export const RedLogo = styled.span`
 `
 
 export const Side = () => {
-  const count = useSelector((state: any) => state.counter.value)
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const location = useLocation()
   const { pathname } = location
   const nowPath =
@@ -204,12 +205,64 @@ export const Side = () => {
   const controlPanelVisible = () => {
     setPanelVisible(!panelVisible)
   }
+  const jump = () => {
+    const jumpList = [
+      {
+        name: '概况',
+        path: '/Situation',
+      },
+      {
+        name: '项目',
+        path: '/Project',
+      },
+      {
+        name: '我的',
+        path: '/mine',
+      },
+      {
+        name: '员工',
+        path: '/staff',
+      },
+      {
+        name: '消息',
+        path: '/Situation',
+      },
 
+      {
+        name: '公司管理',
+        path: '/Setting',
+      },
+      {
+        name: '日志',
+        path: '/Situation',
+      },
+    ]
+    const { company_permissions } = userInfo
+    const routerMap = Array.from(
+      new Set(company_permissions?.map((i: any) => i.group_name)),
+    )
+    if (routerMap.length >= 1) {
+      routerMap.concat('日志')
+
+      for (let i = 0; i <= jumpList.length; i++) {
+        if (routerMap?.includes(jumpList[i].name)) {
+          sessionStorage.setItem('saveRouter', '首次登录')
+          navigate(jumpList[i].path)
+          break
+        }
+      }
+    }
+  }
   return (
     <SideWrap>
       <SideHeader>
-        <img className={imgCSS} src={sideLogo} alt="1" />
-        <img style={{ marginBottom: 32 }} src={sideLogoText} alt="1" />
+        <img onClick={jump} className={imgCSS} src={sideLogo} alt="1" />
+        <img
+          onClick={jump}
+          style={{ marginBottom: 32, cursor: 'pointer' }}
+          src={sideLogoText}
+          alt="1"
+        />
         {allEach}
       </SideHeader>
 

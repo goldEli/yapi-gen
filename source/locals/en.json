@@ -100,7 +100,8 @@
     "changeProjectSuccess": "Project switching succeeded!",
     "haveNoSuccessAttach": "There are also attachments that have not been uploaded successfully!",
     "reviewModeChangeSuccess": "Browse mode switch succeeded!",
-    "permissionNull": "Permission group cannot be empty!"
+    "permissionNull": "Permission group cannot be empty!",
+    "finishIteration": "Complete iteration"
   },
   "p2": {
     "del": "Confirm to delete the attachment ",

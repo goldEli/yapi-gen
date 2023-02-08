@@ -4,8 +4,9 @@ import FieldsTemplate from './FieldsTemplate'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import { useModel } from '@/models'
 import { useState } from 'react'
+import { useSelector } from '@store/index'
+import { getExportExcel } from '@/services/project/demand'
 
 interface Props {
   // 是否是导出功能
@@ -20,8 +21,7 @@ const ExportDemand = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { getExportExcel } = useModel('demand')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
   const [isSpin, setIsSpin] = useState(false)
 
   // 下载导出模板

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 需求设置主页
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -12,11 +13,18 @@ import { OmitText } from '@star-yun/ui'
 import EditCategory from './components/EditCategory'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useSelector } from '@store/index'
+import {
+  changeCategoryStatus,
+  changeStoryConfigCategory,
+  deleteStoryConfigCategory,
+  getWorkflowList,
+  storyConfigCategoryList,
+} from '@/services/project'
 
 const Wrap = styled.div({
   padding: 16,
@@ -165,6 +173,7 @@ interface MoreWrapProps {
   row: any
   onChange(row: any): void
   list?: any
+  onUpdate(): void
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -172,14 +181,10 @@ const MoreWrap = (props: MoreWrapProps) => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
   const [form] = Form.useForm()
-  const {
-    getCategoryList,
-    deleteStoryConfigCategory,
-    changeStoryConfigCategory,
-    getWorkflowList,
-    workList,
-  } = useModel('project')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [disable, setDisable] = useState(true)
@@ -226,7 +231,7 @@ const MoreWrap = (props: MoreWrapProps) => {
         projectId: paramsData.id,
       })
       message.success(t('common.deleteSuccess'))
-      getCategoryList({ projectId: paramsData.id })
+      props.onUpdate()
     } catch (error) {
       //
     }
@@ -256,10 +261,11 @@ const MoreWrap = (props: MoreWrapProps) => {
 
   const onChangeSelect = async (value: any) => {
     if (value) {
-      await getWorkflowList({
+      const result = await getWorkflowList({
         projectId: paramsData.id,
         categoryId: value,
       })
+      setWorkList(result)
       setDisable(false)
       form.setFieldsValue({
         statusId: '',
@@ -348,22 +354,28 @@ const MoreWrap = (props: MoreWrapProps) => {
   )
 }
 
-interface CardGroupProps {
-  list: any[]
-}
-
-const CardGroup = (props: CardGroupProps) => {
+const CardGroup = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [editRow, setEditRow] = useState<any>({})
-  const { colorList, changeCategoryStatus, getCategoryList, projectInfo } =
-    useModel('project')
+  const { projectInfo, colorList } = useSelector(store => store.project)
+  const [categoryList, setCategoryList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
   const activeTabs = Number(paramsData.type) || 0
   asyncSetTtile(`${t('title.a8')}【${projectInfo.name}】`)
+
+  const getList = async () => {
+    const result = await storyConfigCategoryList({ projectId: paramsData.id })
+    setCategoryList(result)
+  }
+
+  useEffect(() => {
+    getList()
+  }, [])
+
   const onChangeStatus = async (item: any, state: any) => {
     try {
       await changeCategoryStatus({
@@ -372,20 +384,20 @@ const CardGroup = (props: CardGroupProps) => {
         status: state,
       })
       message.success(t('common.statusSuccess'))
-      getCategoryList({ projectId: paramsData.id })
+      getList()
     } catch (error) {
       //
     }
   }
 
   const onChange = (checked: boolean, row: any) => {
-    const arr = props?.list?.filter(i => i.id !== row.id)
+    const arr = categoryList?.list?.filter((i: any) => i.id !== row.id)
     if (!row.statusCount && checked) {
       message.warning(t('newlyAdd.hasFlowCanOpen'))
       return
     }
 
-    if (!arr?.filter(i => i.isCheck === 1)?.length && !checked) {
+    if (!arr?.filter((i: any) => i.isCheck === 1)?.length && !checked) {
       message.warning(t('newlyAdd.onlyCategoryOpen'))
       return
     }
@@ -418,14 +430,20 @@ const CardGroup = (props: CardGroupProps) => {
 
   return (
     <>
-      <EditCategory isVisible={isEdit} onClose={onClose} item={editRow} />
+      <EditCategory
+        isVisible={isEdit}
+        onClose={onClose}
+        item={editRow}
+        onUpdate={getList}
+      />
       <CardGroupWrap>
-        {props?.list?.map((item: any) => (
+        {categoryList?.list?.map((item: any) => (
           <CategoryCard key={item.id}>
             <CategoryCardHead>
               <CategoryName
                 bgColor={
-                  colorList?.filter(k => k.key === item.color)[0]?.bgColor
+                  colorList?.filter((k: any) => k.key === item.color)[0]
+                    ?.bgColor
                 }
                 color={item.color}
               >
@@ -447,7 +465,8 @@ const CardGroup = (props: CardGroupProps) => {
                 <MoreWrap
                   onChange={row => onChangeMore(row)}
                   row={item}
-                  list={props?.list}
+                  list={categoryList?.list}
+                  onUpdate={getList}
                 />
               </div>
             </CategoryCardHead>
@@ -491,17 +510,9 @@ const DemandSet = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo, getCategoryList, categoryList } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
-
-  const getList = () => {
-    getCategoryList({ projectId: paramsData.id })
-  }
-
-  useEffect(() => {
-    getList()
-  }, [])
 
   const onToPage = () => {
     const params = encryptPhp(
@@ -536,7 +547,7 @@ const DemandSet = () => {
             <div />
             <span>{t('newlyAdd.demandCategorySet')}</span>
           </LabelWrap>
-          <CardGroup list={categoryList?.list} />
+          <CardGroup />
         </ModeWrap>
       </ContentWrap>
     </Wrap>

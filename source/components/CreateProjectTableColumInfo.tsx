@@ -2,29 +2,28 @@
 
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
-import { ShapeContent } from '@/components/Shape'
-import { LevelContent } from '@/components/Level'
-import Pop from '@/components/Popconfirm'
 import IconFont from '@/components/IconFont'
 import {
   ClickWrap,
-  ShowWrap,
   StyledShape,
   CategoryWrap,
   HiddenText,
   ListNameWrap,
+  ShowWrap,
 } from '@/components/StyleCommon'
 import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
-import { openDetail } from '@/tools'
+import { getCustomNormalValue, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { message, Progress, Tooltip } from 'antd'
 import DemandProgress from '@/components/DemandProgress'
-import { useModel } from '@/models'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
+import ChangeStatusPopover from './ChangeStatusPopover'
+import ChangePriorityPopover from './ChangePriorityPopover'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -38,8 +37,8 @@ const Wrap = styled.div<{ isEdit?: any }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { colorList } = useSelector(store => store.project)
+  const { userInfo } = useSelector(store => store.user)
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(
@@ -141,6 +140,7 @@ export const useDynamicColumns = (state: any) => {
               onUpdate={onUpdate}
               isMineOrHis
               projectId={state.projectId}
+              isDemandName
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
@@ -203,20 +203,13 @@ export const useDynamicColumns = (state: any) => {
       key: 'priority',
       render: (text: any, record: any) => {
         return (
-          <Pop
-            content={({ onHide }: { onHide(): void }) =>
-              !(
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && (
-                <LevelContent
-                  onTap={state.updatePriority}
-                  onHide={onHide}
-                  record={record}
-                  projectId={state.projectId}
-                />
-              )
+          <ChangePriorityPopover
+            isCanOperation={
+              !(record.project?.isPublic !== 1 && !record.project?.isUserMember)
             }
+            onChangePriority={item => state.updatePriority(item, record)}
             record={record}
+            projectId={state.projectId}
           >
             <Wrap
               isEdit={
@@ -249,7 +242,7 @@ export const useDynamicColumns = (state: any) => {
                 </ShowWrap>
               )}
             </Wrap>
-          </Pop>
+          </ChangePriorityPopover>
         )
       },
     },
@@ -338,24 +331,17 @@ export const useDynamicColumns = (state: any) => {
       key: 'status',
       render: (text: any, record: any) => {
         return (
-          <Pop
-            content={({ onHide }: { onHide(): void }) => {
-              return (
-                !(
-                  record.isExamine ||
-                  (record.project?.isPublic !== 1 &&
-                    !record.project?.isUserMember)
-                ) && (
-                  <ShapeContent
-                    tap={(value: any) => state.updateStatus(value)}
-                    hide={onHide}
-                    record={record}
-                    row={record}
-                  />
-                )
+          <ChangeStatusPopover
+            isCanOperation={
+              !(
+                record.isExamine ||
+                (record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember)
               )
-            }}
+            }
+            projectId={record.project_id}
             record={record}
+            onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
             <StyledShape
               style={{
@@ -371,7 +357,7 @@ export const useDynamicColumns = (state: any) => {
             >
               {text?.status.content}
             </StyledShape>
-          </Pop>
+          </ChangeStatusPopover>
         )
       },
     },
@@ -538,17 +524,6 @@ export const useDynamicColumns = (state: any) => {
     },
   ]
 
-  // 返回文本
-  const getText = (attr: any, text: any) => {
-    if (['user_select_checkbox', 'user_select'].includes(attr)) {
-      return text?.true_value || '--'
-    }
-    return (
-      (Array.isArray(text?.value) ? text?.value?.join(';') : text?.value) ||
-      '--'
-    )
-  }
-
   const getArr = () => {
     const result: any = []
     state.plainOptions3?.forEach((element: any) => {
@@ -578,7 +553,9 @@ export const useDynamicColumns = (state: any) => {
               type={record[element.value]?.attr}
               projectId={state.projectId}
             >
-              <span>{getText(record[element.value]?.attr, text)}</span>
+              <span>
+                {getCustomNormalValue(record[element.value]?.attr, text)}
+              </span>
             </TableQuickEdit>
           )
         },

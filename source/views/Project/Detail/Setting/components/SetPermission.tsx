@@ -3,11 +3,8 @@
 import { Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
 
 const PersonalHead = styled.div`
@@ -56,31 +53,21 @@ const SetPermissionWrap = (props: {
   isVisible: boolean
   onClose(): void
   onConfirm(roleId: string): void
+  projectPermission?: any
 }) => {
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
   const [t] = useTranslation()
   const { data } = props
-  const [roleOptions, setRoleOptions] = useState([])
   const [infoId, setInfoId] = useState<any>(0)
-  const { getProjectPermission } = useModel('project')
-
-  const init = async () => {
-    const result = await getProjectPermission({ projectId })
-    setRoleOptions(result.list)
-    setInfoId(
-      result.list.filter((item: any) => {
-        return item.id === data.userGroupId
-      }).length
-        ? data.userGroupId
-        : '',
-    )
-  }
 
   useEffect(() => {
     if (props.isVisible) {
-      init()
+      setInfoId(
+        props?.projectPermission.filter((item: any) => {
+          return item.value === data.userGroupId
+        }).length
+          ? data.userGroupId
+          : '',
+      )
     }
   }, [props.isVisible])
 
@@ -132,10 +119,7 @@ const SetPermissionWrap = (props: {
               getPopupContainer={node => node}
               showSearch
               optionFilterProp="label"
-              options={roleOptions.map((item: any) => ({
-                label: item.name,
-                value: item.id,
-              }))}
+              options={props?.projectPermission}
             />
           </RightLine>
         </Right>

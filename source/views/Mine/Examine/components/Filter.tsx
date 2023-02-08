@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 审核列表过滤
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -124,8 +125,7 @@ const SearchList = (props: Props) => {
             </span>
             <Form.Item
               getValueFromEvent={event => {
-                // eslint-disable-next-line require-unicode-regexp
-                return event.target.value.replace(/\s+/g, '')
+                return event.target.value.replace(/(?<start>^\s*)/g, '')
               }}
               name="remark"
             >

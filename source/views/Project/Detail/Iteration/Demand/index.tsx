@@ -14,9 +14,8 @@ import {
   SecondButton,
 } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +23,16 @@ import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import MoreDropdown from '@/components/MoreDropdown'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { setFilterParamsModal } from '@store/project'
+import {
+  deleteDemand,
+  updateDemandStatus,
+  updatePriority,
+  getDemandList,
+} from '@/services/project/demand'
+import { setFilterParams } from '@store/demand'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -56,11 +65,10 @@ const DemandWrap = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { iterateId } = paramsData
-  const { projectInfo, setFilterParamsModal } = useModel('project')
-  const { getDemandList, updateDemandStatus, updatePriority, deleteDemand } =
-    useModel('demand')
-  const { isRefresh, setIsRefresh } = useModel('user')
-  const { iterateInfo, setFilterParams, filterParams } = useModel('iterate')
+  const dispatch = useDispatch()
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
+  const { iterateInfo, filterParams } = useSelector(store => store.iterate)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [dataList, setDataList] = useState<any>({
@@ -114,6 +122,7 @@ const DemandWrap = (props: Props) => {
     searchParamsObj?: any,
     updateState?: boolean,
   ) => {
+    setDataList({ list: undefined })
     if (!updateState) {
       setIsSpinning(true)
     }
@@ -142,11 +151,11 @@ const DemandWrap = (props: Props) => {
       schedule_end: searchParamsObj?.schedule_end,
       custom_field: searchParamsObj?.custom_field,
     }
-    setFilterParams(params)
+    dispatch(setFilterParams(params))
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
-    setIsRefresh(false)
+    dispatch(setIsRefresh(false))
   }
 
   useEffect(() => {
@@ -318,7 +327,7 @@ const DemandWrap = (props: Props) => {
   }, [props?.checkList, props?.checkList2, props?.checkList3, columns])
 
   const onCreateDemand = () => {
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
       setIsVisible(true)
     }, 100)

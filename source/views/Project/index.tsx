@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 项目主页
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-params */
@@ -8,15 +9,21 @@ import MainGrid from './components/MainGrid'
 import MainTable from './components/MainTable'
 import EditProject from './components/EditProject'
 import { useEffect, useState } from 'react'
-import { useModel } from '@/models'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { message, Spin } from 'antd'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import Loading from '@/components/Loading'
 import WrapLeftBox from './components/WrapLeft'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  deleteProject,
+  getProjectList,
+  openProject,
+  stopProject,
+} from '@/services/project'
+import { setIsRefreshGroup } from '@store/project'
 
 const Content = styled.div<{ isGrid: boolean }>(
   {
@@ -53,16 +60,12 @@ const Project = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const {
-    getProjectList,
-    projectList,
-    deleteProject,
-    stopProject,
-    openProject,
-    setIsRefreshGroup,
-  } = useModel('project')
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
+  const [projectList, setProjectList] = useState<any>({
+    list: undefined,
+  })
+  const dispatch = useDispatch()
 
   const getList = async (
     active: number,
@@ -94,7 +97,8 @@ const Project = () => {
         params.isPublic = 1
       }
     }
-    await getProjectList(params)
+    const result = await getProjectList(params)
+    setProjectList(result)
     setIsSpinning(false)
   }
 
@@ -133,11 +137,16 @@ const Project = () => {
   }
 
   const onChangeSearch = (value: string) => {
-    setSearchVal(value)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
+    if (searchVal !== value) {
+      setProjectList({
+        list: undefined,
+      })
+      setSearchVal(value)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+    }
   }
 
   const onDeleteConfirm = async () => {
@@ -147,7 +156,7 @@ const Project = () => {
       setIsDelete(false)
       setOperationDetail({})
       onUpdate()
-      setIsRefreshGroup(true)
+      dispatch(setIsRefreshGroup(true))
     } catch (error) {
       //
     }
@@ -279,23 +288,23 @@ const Project = () => {
               <Spin spinning={isSpinning}>
                 {isGrid ? (
                   <MainGrid
-                    projectList={projectList}
                     onChangeVisible={() => setIsVisible(true)}
                     onChangeOperation={onChangeOperation}
                     onAddClear={() => setOperationDetail({})}
                     hasFilter={searchVal.length > 0 || isHidden}
+                    projectList={projectList}
                   />
                 ) : (
                   <MainTable
                     onChangeOperation={(e, type, item) =>
                       onChangeOperation(e, type, item)
                     }
-                    projectList={projectList}
                     onChangePageNavigation={onChangePageNavigation}
                     onUpdateOrderKey={onUpdateOrderKey}
                     order={order}
                     onAddClick={onAddClick}
                     hasFilter={searchVal.length > 0 || isHidden}
+                    projectList={projectList}
                   />
                 )}
               </Spin>

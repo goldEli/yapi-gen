@@ -9,7 +9,6 @@
 import styled from '@emotion/styled'
 import { Menu, Progress, Space } from 'antd'
 import { OmitText } from '@star-yun/ui'
-import { useModel } from '@/models'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools'
 import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
@@ -18,6 +17,7 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 import DemandProgress from './DemandProgress'
 import MoreDropdown from './MoreDropdown'
 import IconFont from './IconFont'
+import { useSelector } from '@store/index'
 
 interface Props {
   item: any
@@ -106,17 +106,16 @@ const NameGroup = styled.div({
 
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
-  // 是否显示子需求表格
-  const [isShowChild, setIsShowChild] = useState(false)
-  const { projectInfo, colorList } = useModel('project')
-  const hasEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+  const { projectInfo, colorList } = useSelector(store => store.project)
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/delete',

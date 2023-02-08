@@ -11,11 +11,12 @@ import CompanyModal from '@/components/CompanyModal'
 import Staff from './components/Staff'
 import Need from './components/Need'
 import Iteration from './components/Iteration'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import useSetTitle from '@/hooks/useSetTitle'
+import { getGlobalGeneral } from '@/services/user'
 
 const buttonCss = css``
 const PanelHeaderSecond = styled.div`
@@ -45,10 +46,9 @@ const Head = styled.div`
 
 const Situation = () => {
   const asyncSetTtile = useSetTitle()
-
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { getGlobalGeneral, userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [companyModalVisible, setCompanyModalVisible] = useState<boolean>(false)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {

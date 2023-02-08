@@ -3,10 +3,10 @@
 import { Select } from 'antd'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { useModel } from '@/models'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import { getRoleList } from '@/services/staff'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -60,7 +60,6 @@ export const StaffPersonal = (props: {
   const { data } = props
   const [roleOptions, setRoleOptions] = useState([])
   const [infoId, setInfoId] = useState<any>(0)
-  const { getRoleList } = useModel('staff')
 
   const init = async () => {
     const res3 = await getRoleList()

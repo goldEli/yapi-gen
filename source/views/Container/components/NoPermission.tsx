@@ -2,12 +2,17 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import styled from '@emotion/styled'
 import { Button, Popover, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getTicket } from '@/services/user'
+import {
+  getCompanyList,
+  getTicket,
+  loginOut,
+  updateCompany,
+} from '@/services/user'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   height: '100vh',
@@ -139,7 +144,7 @@ const ToastWrap = styled.div({
 })
 
 const NoPermission = () => {
-  const { userInfo, getCompanyList, updateCompany, loginOut } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [companyList, setCompanyList] = useState<any[]>([])
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)

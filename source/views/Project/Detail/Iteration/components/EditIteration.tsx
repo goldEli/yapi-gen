@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 // 编辑迭代
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -5,7 +6,6 @@
 import { Form, Input, message } from 'antd'
 import styled from '@emotion/styled'
 import Editor from '@/components/Editor'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
@@ -13,6 +13,13 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from '@/components/RangePicker'
 import { getParamsData } from '@/tools'
 import CommonModal from '@/components/CommonModal'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsUpdateList, setIterateInfo } from '@store/iterate'
+import {
+  addIterate,
+  getIterateInfo,
+  updateIterate,
+} from '@/services/project/iterate'
 
 const FormWrap = styled(Form)({
   paddingTop: 2,
@@ -66,17 +73,11 @@ const EditIteration = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const [html, setHtml] = useState('')
   const projectId = paramsData.id
-  const {
-    addIterate,
-    updateIterate,
-    getIterateInfo,
-    iterateInfo,
-    setIsUpdateList,
-  } = useModel('iterate')
-  const { getProjectInfoValues } = useModel('project')
+  const { iterateInfo } = useSelector(store => store.iterate)
   const inputRef = useRef<HTMLInputElement>(null)
   // 迭代时间
   const [times, setTimes] = useState<any>(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (props.id && iterateInfo) {
@@ -117,7 +118,7 @@ const EditIteration = (props: Props) => {
         message.success(t('common.createSuccess'))
       }
       props.onChangeVisible()
-      setIsUpdateList(true)
+      dispatch(setIsUpdateList(true))
       setTimeout(() => {
         setHtml('')
         setTimes(null)
@@ -126,7 +127,6 @@ const EditIteration = (props: Props) => {
     } catch (error) {
       //
     }
-    getProjectInfoValues({ projectId })
   }
 
   const onCancel = () => {
@@ -145,11 +145,16 @@ const EditIteration = (props: Props) => {
     })
   }
 
+  const onGetIterateInfo = async (id: any) => {
+    const result = await getIterateInfo({ projectId, id })
+    dispatch(setIterateInfo(result))
+  }
+
   useEffect(() => {
     if (props.visible) {
       // 编辑迭代获取详情
       if (props.id) {
-        getIterateInfo({ projectId, id: props.id })
+        onGetIterateInfo(props.id)
       }
       setTimeout(() => {
         inputRef.current?.focus()
@@ -183,8 +188,7 @@ const EditIteration = (props: Props) => {
             rules={[{ required: true, message: '' }]}
             name="iterationName"
             getValueFromEvent={event => {
-              // eslint-disable-next-line require-unicode-regexp
-              return event.target.value.replace(/\s+/g, '')
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
           >
             <Input

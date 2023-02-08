@@ -1,3 +1,5 @@
+/* eslint-disable prefer-regex-literals */
+/* eslint-disable require-unicode-regexp */
 // 需求设置-编辑需求类别
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -6,11 +8,15 @@ import CommonModal from '@/components/CommonModal'
 import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import ChooseColor from '../../components/ChooseColor'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from '@store/index'
+import {
+  addStoryConfigCategory,
+  updateStoryConfigCategory,
+} from '@/services/project'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -44,15 +50,11 @@ interface EditorProps {
   isVisible: boolean
   item?: any
   onClose(): void
+  onUpdate(): void
 }
 
 const EditorCategory = (props: EditorProps) => {
-  const {
-    colorList,
-    getCategoryList,
-    updateStoryConfigCategory,
-    addStoryConfigCategory,
-  } = useModel('project')
+  const { colorList } = useSelector(store => store.project)
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
   const [normalColor, setNormalColor] = useState<any>('#2877FF')
@@ -86,11 +88,11 @@ const EditorCategory = (props: EditorProps) => {
 
   const onReset = () => {
     props?.onClose()
+    props.onUpdate()
     setTimeout(() => {
       form.resetFields()
       setNormalColor('#2877FF')
       setName('')
-      getCategoryList({ projectId: paramsData.id })
     }, 100)
   }
 
@@ -161,7 +163,7 @@ const EditorCategory = (props: EditorProps) => {
           rules={[{ required: true, message: '' }]}
           getValueFromEvent={event => {
             // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
         >
           <Input
@@ -177,8 +179,9 @@ const EditorCategory = (props: EditorProps) => {
         <Form.Item
           label={t('newlyAdd.categoryRemark')}
           getValueFromEvent={event => {
-            // eslint-disable-next-line require-unicode-regexp
-            return event.target.value.replace(/\s+/g, '')
+            const reg = new RegExp(/(?<start>^\s*)/g)
+
+            return event.target.value.replace(reg, '')
           }}
           name="remark"
         >
@@ -199,8 +202,9 @@ const EditorCategory = (props: EditorProps) => {
             <ViewWrap
               color={normalColor || '#969799'}
               bgColor={
-                colorList?.filter(i => i.key === (normalColor || '#969799'))[0]
-                  ?.bgColor
+                colorList?.filter(
+                  (i: any) => i.key === (normalColor || '#969799'),
+                )[0]?.bgColor
               }
             >
               {name || t('newlyAdd.nothing')}

@@ -27,7 +27,6 @@ import EditWorkflow from './EditWorkflow'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
-import { useModel } from '@/models'
 import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
 import { arrayMoveImmutable } from 'array-move'
 import {
@@ -39,6 +38,14 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
+import {
+  deleteStoryConfigWorkflow,
+  getWorkflowList,
+  sortchangeWorkflow,
+  updateStoryConfigWorkflow,
+} from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import { setWorkList } from '@store/project'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -75,13 +82,6 @@ const StepPageOne = (propsOne: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
-  const {
-    colorList,
-    getWorkflowList,
-    deleteStoryConfigWorkflow,
-    updateStoryConfigWorkflow,
-    sortchangeWorkflow,
-  } = useModel('project')
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelVisible, setIsDelVisible] = useState(false)
@@ -92,6 +92,8 @@ const StepPageOne = (propsOne: Props) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
+  const { colorList } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const getList = async (isUpdateList?: any) => {
     if (isUpdateList) {
@@ -101,6 +103,7 @@ const StepPageOne = (propsOne: Props) => {
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
+    dispatch(setWorkList(result))
     setDataSource(result)
     setIsSpinning(false)
     return result
@@ -441,7 +444,7 @@ const StepPageOne = (propsOne: Props) => {
                     color={operationObj?.deleteData?.item?.category_color}
                     bgColor={
                       colorList?.filter(
-                        k =>
+                        (k: any) =>
                           k.key ===
                           operationObj?.deleteData?.item?.category_color,
                       )[0]?.bgColor

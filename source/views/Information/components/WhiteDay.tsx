@@ -96,6 +96,7 @@ const WhiteDay = (props: any) => {
       localStorage.getItem('language') === 'zh'
         ? `${t('p2.edit')}${res.data.info.name.split('的')[1]}`
         : `${t('p2.edit')}${res.data.info.name.split('of')[1]}`
+
     setTitle(newTitle)
     form.setFieldsValue({
       info: res.data.info.finish_content,
@@ -168,7 +169,7 @@ const WhiteDay = (props: any) => {
   return (
     <CommonModal
       width={784}
-      title={props.editId ? title : props.visibleEditText}
+      title={props.visibleEditText ?? title}
       isVisible={props.visibleEdit}
       onClose={close}
       onConfirm={confirm}

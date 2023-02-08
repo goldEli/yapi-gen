@@ -12,7 +12,6 @@
 /* eslint-disable max-len */
 import CommonModal from '@/components/CommonModal'
 import IconFont from '@/components/IconFont'
-import { useModel } from '@/models'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import {
@@ -42,6 +41,12 @@ import {
 } from 'react-sortable-hoc'
 import { useTranslation } from 'react-i18next'
 import { getStaffList } from '@/services/staff'
+import {
+  getProjectMember,
+  getWorkflowInfo,
+  saveWorkflowConfig,
+} from '@/services/project'
+import { useSelector } from '@store/index'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -150,8 +155,7 @@ const normalObj: any = {
 const SetConfig = (props: Props) => {
   const [t, i18n] = useTranslation()
   const modalBody = useRef<any>(null)
-  const { getWorkflowInfo, saveWorkflowConfig, getProjectMember, workList } =
-    useModel('project')
+  const { workList } = useSelector(store => store.project)
   const [isShowPermission, setIsShowPermission] = useState(true)
   const [isSwitch, setIsSwitch] = useState(false)
   const [isShowField, setIsShowField] = useState(true)

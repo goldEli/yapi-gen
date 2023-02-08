@@ -11,13 +11,16 @@ import {
   SelectWrapBedeck,
   TableStyleBox,
 } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import useSetTitle from '@/hooks/useSetTitle'
+import { getStaffList } from '@/services/staff'
+import { getOperateLogs } from '@/services/setting'
+import { useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Header = styled.div({
   height: 'auto',
@@ -90,9 +93,7 @@ const Operation = () => {
     { label: t('common.edit'), value: 'PUT' },
     { label: t('common.del'), value: 'DELETE' },
   ]
-  const { getOperateLogs } = useModel('setting')
-  const { userInfo } = useModel('user')
-  const { getStaffList } = useModel('staff')
+  const { userInfo } = useSelector(store => store.user)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -251,119 +252,124 @@ const Operation = () => {
   }
 
   return (
-    <Form
-      style={{ height: '100%' }}
-      form={form}
-      onValuesChange={onValuesChange}
-      initialValues={{
-        pageSize: 20,
-        page: 1,
-      }}
+    <PermissionWrap
+      auth="b/company/operate_logs"
+      permission={userInfo?.company_permissions}
     >
-      <Header>
-        <div className="label">{t('setting.operationLog')}</div>
-        <SearchWrap size={16}>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('setting.operationName')}
-            </span>
-            <Form.Item name="pageSize" />
-            <Form.Item name="userIds" noStyle>
-              <SelectWrap
-                showArrow
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder={t('common.all')}
-                showSearch
-                options={staffList}
-                optionFilterProp="label"
-                allowClear
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('setting.operationType')}
-            </span>
-            <Form.Item name="types" noStyle>
-              <SelectWrap
-                showArrow
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder={t('common.all')}
-                showSearch
-                options={typeList}
-                optionFilterProp="label"
-                allowClear
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('setting.operationTime')}
-            </span>
-            <Form.Item name="times" noStyle>
-              <RangePicker
-                isShowQuick
-                dateValue={form.getFieldValue('times')}
-                onChange={(_values: any) => onChangePicker(_values)}
-              />
-            </Form.Item>
-          </SelectWrapBedeck>
-          <div
-            style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
-            onClick={onReset}
-          >
-            {t('common.clearForm')}
-          </div>
-        </SearchWrap>
-      </Header>
-      <Content>
-        <DataWrap ref={dataWrapRef}>
-          <Spin spinning={isSpinning}>
-            {!!dataList?.list &&
-              (dataList?.list?.length > 0 ? (
-                <TableStyleBox
-                  rowKey="id"
-                  columns={columns}
-                  dataSource={dataList.list}
-                  pagination={false}
-                  scroll={{
-                    x: 'max-content',
-                    y: tableY,
-                  }}
-                  tableLayout="auto"
-                  showSorterTooltip={false}
+      <Form
+        style={{ height: '100%' }}
+        form={form}
+        onValuesChange={onValuesChange}
+        initialValues={{
+          pageSize: 20,
+          page: 1,
+        }}
+      >
+        <Header>
+          <div className="label">{t('setting.operationLog')}</div>
+          <SearchWrap size={16}>
+            <SelectWrapBedeck>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('setting.operationName')}
+              </span>
+              <Form.Item name="pageSize" />
+              <Form.Item name="userIds" noStyle>
+                <SelectWrap
+                  showArrow
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder={t('common.all')}
+                  showSearch
+                  options={staffList}
+                  optionFilterProp="label"
+                  allowClear
                 />
-              ) : (
-                <NoData />
-              ))}
-          </Spin>
-        </DataWrap>
-        <PaginationWrap>
-          <Form.Item noStyle dependencies={['pageSize']}>
-            {() => {
-              return (
-                <Form.Item name="page" valuePropName="current" noStyle>
-                  <Pagination
-                    defaultCurrent={1}
-                    showSizeChanger
-                    showQuickJumper
-                    total={dataList.total}
-                    showTotal={total =>
-                      t('common.tableTotal', { count: total })
-                    }
-                    pageSizeOptions={[10, 20, 50]}
-                    pageSize={form.getFieldValue('pageSize') || 20}
-                    onShowSizeChange={onShowSizeChange}
+              </Form.Item>
+            </SelectWrapBedeck>
+            <SelectWrapBedeck>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('setting.operationType')}
+              </span>
+              <Form.Item name="types" noStyle>
+                <SelectWrap
+                  showArrow
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder={t('common.all')}
+                  showSearch
+                  options={typeList}
+                  optionFilterProp="label"
+                  allowClear
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+            <SelectWrapBedeck>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                {t('setting.operationTime')}
+              </span>
+              <Form.Item name="times" noStyle>
+                <RangePicker
+                  isShowQuick
+                  dateValue={form.getFieldValue('times')}
+                  onChange={(_values: any) => onChangePicker(_values)}
+                />
+              </Form.Item>
+            </SelectWrapBedeck>
+            <div
+              style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
+              onClick={onReset}
+            >
+              {t('common.clearForm')}
+            </div>
+          </SearchWrap>
+        </Header>
+        <Content>
+          <DataWrap ref={dataWrapRef}>
+            <Spin spinning={isSpinning}>
+              {!!dataList?.list &&
+                (dataList?.list?.length > 0 ? (
+                  <TableStyleBox
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={dataList.list}
+                    pagination={false}
+                    scroll={{
+                      x: 'max-content',
+                      y: tableY,
+                    }}
+                    tableLayout="auto"
+                    showSorterTooltip={false}
                   />
-                </Form.Item>
-              )
-            }}
-          </Form.Item>
-        </PaginationWrap>
-      </Content>
-    </Form>
+                ) : (
+                  <NoData />
+                ))}
+            </Spin>
+          </DataWrap>
+          <PaginationWrap>
+            <Form.Item noStyle dependencies={['pageSize']}>
+              {() => {
+                return (
+                  <Form.Item name="page" valuePropName="current" noStyle>
+                    <Pagination
+                      defaultCurrent={1}
+                      showSizeChanger
+                      showQuickJumper
+                      total={dataList.total}
+                      showTotal={total =>
+                        t('common.tableTotal', { count: total })
+                      }
+                      pageSizeOptions={[10, 20, 50]}
+                      pageSize={form.getFieldValue('pageSize') || 20}
+                      onShowSizeChange={onShowSizeChange}
+                    />
+                  </Form.Item>
+                )
+              }}
+            </Form.Item>
+          </PaginationWrap>
+        </Content>
+      </Form>
+    </PermissionWrap>
   )
 }
 

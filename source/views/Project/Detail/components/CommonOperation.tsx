@@ -9,11 +9,12 @@ import { useState } from 'react'
 import EditProject from '../../components/EditProject'
 import ProjectInfoModal from '../../components/ProjectInfo'
 import Member from '../../components/Member'
-import { useModel } from '@/models'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfo } from '@store/project'
 import { getProjectInfo } from '@/services/project'
 
 const OperationTop = styled.div({
@@ -174,13 +175,12 @@ const CommonOperation = (props: Props) => {
   const [infoVisible, setInfoVisible] = useState(false)
   const [memberVisible, setMemberVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(false)
-  const { projectInfo, setProjectInfo } = useModel('project')
-  const { userInfo } = useModel('user')
-  const { setFilterHeight } = useModel('demand')
-  const { setFilterHeightIterate } = useModel('iterate')
+  const { userInfo } = useSelector(store => store.user)
+  const { projectInfo } = useSelector(store => store.project)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const dispatch = useDispatch()
 
   const tabsList = [
     { name: t('common.demand'), type: 'Demand', hasPath: ['Demand'] },
@@ -242,7 +242,7 @@ const CommonOperation = (props: Props) => {
   const onToProject = () => {
     navigate('/Project')
     setTimeout(() => {
-      setProjectInfo({})
+      dispatch(setProjectInfo({}))
     }, 100)
   }
 
@@ -258,13 +258,13 @@ const CommonOperation = (props: Props) => {
     setIsVisible(state)
   }
 
-  const onToModel = (i: any) => {
-    getProjectInfo({ projectId })
+  const onToModel = async (i: any) => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/Detail/${i.type}?data=${params}`)
-    setFilterHeight(52)
-    setFilterHeightIterate(60)
     // 点击切换更新项目info接口
+    const result = await getProjectInfo({ projectId })
+    dispatch(setProjectInfo(result))
+    // 点击切换更新项目下拉数据
     props.onChangeIdx()
   }
 

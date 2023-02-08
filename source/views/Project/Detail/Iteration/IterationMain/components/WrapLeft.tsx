@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable require-unicode-regexp */
 // 迭代主页左侧模块
 
@@ -22,7 +23,6 @@ import {
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -33,6 +33,14 @@ import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfoValues } from '@store/project'
+import { setIsRefreshList } from '@store/iterate'
+import {
+  deleteIterate,
+  getIterateList,
+  updateIterateStatus,
+} from '@/services/project/iterate'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -146,16 +154,12 @@ const WrapLeft = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const {
-    getIterateList,
-    updateIterateStatus,
-    deleteIterate,
-    setIsRefreshList,
-    isRefreshList,
-    isUpdateList,
-  } = useModel('iterate')
-  const { projectInfo, getProjectInfoValues } = useModel('project')
+  const { isRefresh } = useSelector(store => store.user)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { isRefreshList, isUpdateList } = useSelector(store => store.iterate)
   const [isSpinning, setIsSpinning] = useState(false)
+  const dispatch = useDispatch()
+
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
     'b/iterate/store',
@@ -165,7 +169,8 @@ const WrapLeft = (props: Props) => {
     'b/iterate/get',
   )
 
-  const getList = async (obj?: any) => {
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
+  const getList = async (obj?: any, isUpdateProjectInfoValues?: boolean) => {
     setIsSpinning(true)
     const values = form.getFieldsValue()
     if (values.startTime) {
@@ -192,7 +197,7 @@ const WrapLeft = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     props.onIsUpdateList?.(false)
-    setIsRefreshList(false)
+    dispatch(setIsRefreshList(false))
     if (obj || !props.currentDetail?.id) {
       props.onCurrentDetail(result?.list[0])
     } else {
@@ -201,6 +206,22 @@ const WrapLeft = (props: Props) => {
         result?.list?.filter((k: any) => k.id === current)[0],
       )
     }
+    // 如果需要更新项目下拉数据
+    if (isUpdateProjectInfoValues) {
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      const recombinationIteration = result?.list?.map((k: any) => ({
+        id: k.id,
+        status: k.status,
+        content: k.name,
+        content_txt: k.name,
+      }))
+      const newValues = beforeValues?.map((i: any) =>
+        i.key === 'iterate_name'
+          ? { ...i, children: [...[i.children[0]], ...recombinationIteration] }
+          : i,
+      )
+      dispatch(setProjectInfoValues(newValues))
+    }
   }
 
   useEffect(() => {
@@ -208,14 +229,14 @@ const WrapLeft = (props: Props) => {
   }, [currentSort])
 
   useEffect(() => {
-    if (isRefreshList) {
+    if (isRefreshList || isRefresh) {
       getList()
     }
-  }, [isRefreshList])
+  }, [isRefreshList, isRefresh])
 
   useEffect(() => {
     if (isUpdateList || props.updateState) {
-      getList()
+      getList(null, true)
     }
   }, [isUpdateList, props.updateState])
 
@@ -280,7 +301,7 @@ const WrapLeft = (props: Props) => {
       <Form form={form} style={{ width: 270, padding: 16 }} layout="vertical">
         <Form.Item
           getValueFromEvent={event => {
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
           label={t('common.title')}
           name="name"
@@ -338,8 +359,7 @@ const WrapLeft = (props: Props) => {
           status: value,
         })
         message.success(t('common.editS'))
-        getList()
-        getProjectInfoValues({ projectId })
+        getList(null, true)
       } catch (error) {
         //
       }
@@ -360,8 +380,7 @@ const WrapLeft = (props: Props) => {
       })
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
-      getList({})
-      getProjectInfoValues({ projectId })
+      getList({}, true)
     } catch (error) {
       //
     }

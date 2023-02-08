@@ -4,7 +4,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable prefer-named-capture-group */
 /* eslint-disable require-unicode-regexp */
-import { useModel } from '@/models'
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
@@ -26,6 +25,13 @@ import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsUpdateCreate } from '@store/mine'
+import {
+  getMineChartsList,
+  getMineGatte,
+  getUserFeedList,
+} from '@/services/mine'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -136,15 +142,10 @@ const Profile = () => {
   const [t, i18n] = useTranslation()
   asyncSetTtile(t('title.a9'))
 
-  const {
-    getMineChartsList,
-    getUserFeedList,
-    getMineGatte,
-    isUpdateCreate,
-    setIsUpdateCreate,
-  } = useModel('mine')
-  const { userInfo } = useModel('user')
-  const { colorList } = useModel('project')
+  const dispatch = useDispatch()
+  const { isUpdateCreate } = useSelector(store => store.mine)
+  const { userInfo } = useSelector(store => store.user)
+  const { colorList } = useSelector(store => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
@@ -200,7 +201,7 @@ const Profile = () => {
     })
 
     setLineData(res1.data)
-    setIsUpdateCreate(false)
+    dispatch(setIsUpdateCreate(false))
   }
 
   const init = async () => {

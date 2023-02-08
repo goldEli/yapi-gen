@@ -5,11 +5,10 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import { getIsPermission } from '@/tools/index'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
-import { getStaffList } from '@/services/staff'
+import { useSelector } from '@store/index'
 
 const AddButton = styled.button({
   border: 'none',
@@ -87,8 +86,7 @@ const MineBox = () => {
   const nowPath = pathname.split('/')[2] || ''
   const [quickCreateVisible, setQuickCreateVisible] = useState(false)
   const navigate = useNavigate()
-  const { userInfo } = useModel('user')
-  const { setSelectAllStaffData } = useModel('project')
+  const { userInfo } = useSelector(store => store.user)
 
   const changeActive = (value: MenuList) => {
     navigate(value.path)
@@ -96,16 +94,6 @@ const MineBox = () => {
   const controlquickCreateVisible = () => {
     setQuickCreateVisible(true)
   }
-
-  // 获取公司员工 -- 用于创建需求抄送人
-  const getStaffData = async () => {
-    const options = await getStaffList({ all: 1 })
-    setSelectAllStaffData(options)
-  }
-
-  useEffect(() => {
-    getStaffData()
-  }, [])
 
   const menuList = [
     {

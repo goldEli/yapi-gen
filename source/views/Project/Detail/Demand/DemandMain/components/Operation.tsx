@@ -8,7 +8,6 @@ import styled from '@emotion/styled'
 import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
-import { useModel } from '@/models'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
@@ -19,8 +18,9 @@ import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import CommonInput from '@/components/CommonInput'
 import { CanOperationCategory } from '@/components/StyleCommon'
-import { useLocation } from 'react-router-dom'
-import { getSearchField } from '@/services/mine'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterKeys, setFilterParamsModal } from '@store/project'
+import { setCreateCategory } from '@store/demand'
 
 const OperationWrap = styled.div({
   minHeight: 52,
@@ -136,17 +136,10 @@ const Operation = (props: Props) => {
   const [filterState, setFilterState] = useState(true)
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const {
-    projectInfo,
-    projectInfoValues,
-    colorList,
-    setFilterParamsModal,
-    setFilterKeys,
-    filterKeys,
-  } = useModel('project')
-  const { setFilterHeight, setCreateCategory, filterParams } =
-    useModel('demand')
-  const location = useLocation()
+  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
+    store => store.project,
+  )
+  const { filterParams } = useSelector(store => store.demand)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -168,6 +161,8 @@ const Operation = (props: Props) => {
     searchValue: '',
   })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
+  const dispatch = useDispatch()
+
   const hasImport = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/import',
@@ -178,17 +173,19 @@ const Operation = (props: Props) => {
     'b/story/export',
   )
 
-  const onChangeSearch = (val: string) => {
-    setSearchVal(val)
-    const params = searchGroups
-    params.searchValue = val
-    setSearchGroups(params)
-    props.onSearch(params)
-    // 添加搜索项 计数
-    const keys = val
-      ? [...filterKeys, ...['searchVal']]
-      : filterKeys?.filter((i: any) => i !== 'searchVal')
-    setFilterKeys([...new Set(keys)])
+  const onChangeSearch = (value: string) => {
+    if (searchVal !== value) {
+      setSearchVal(value)
+      const params = searchGroups
+      params.searchValue = value
+      setSearchGroups(params)
+      props.onSearch(params)
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
+    }
   }
 
   const onFilterSearch = (e: any, customField: any) => {
@@ -245,15 +242,12 @@ const Operation = (props: Props) => {
 
   const onChangeFilter = () => {
     setFilterState(!filterState)
-    setTimeout(() => {
-      setFilterHeight(stickyWrapDom.current?.clientHeight)
-    }, 100)
   }
 
   const onChangeCategory = (e: any, item: any) => {
-    setCreateCategory(item)
+    dispatch(setCreateCategory(item))
     // 需求列表筛选参数赋值给 弹窗
-    setFilterParamsModal(filterParams)
+    dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
       props.onChangeVisible?.(e)
       setIsVisible(false)

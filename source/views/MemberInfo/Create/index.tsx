@@ -1,15 +1,15 @@
 // 他的模块-他的创建
 
 import useSetTitle from '@/hooks/useSetTitle'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import MainIndex from '../components/MainIndex'
 
 const Create = () => {
   const [t] = useTranslation()
   const asyncSetTtile = useSetTitle()
-  const { mainInfo } = useModel('member')
-  const { projectInfo } = useModel('project')
+  const { mainInfo } = useSelector(store => store.member)
+  const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(
     `${t('title.a5')}【${mainInfo.name}】${
       projectInfo.name ? `-【 ${projectInfo.name}】` : ''

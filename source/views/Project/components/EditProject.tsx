@@ -5,10 +5,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Input, Select, message } from 'antd'
 import PosterComponent from './PosterComponent'
-import { useModel } from '@/models'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import { useDispatch } from '@store/index'
+import { setIsRefreshGroup } from '@store/project'
+import { addProject, getGroupList, updateProject } from '@/services/project'
 
 interface Props {
   visible: boolean
@@ -24,16 +26,9 @@ interface Props {
 const EditProject = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const {
-    addProject,
-    updateProject,
-    selectGroupList,
-    setIsRefreshGroup,
-    getGroupList,
-    setSelectGroupList,
-    getProjectCoverList,
-  } = useModel('project')
+  const [selectGroupList, setSelectGroupList] = useState<any>([])
   const inputRefDom = useRef<HTMLInputElement>(null)
+  const dispatch = useDispatch()
 
   const getGroupData = async () => {
     const result = await getGroupList()
@@ -42,14 +37,9 @@ const EditProject = (props: Props) => {
     )
   }
 
-  const getInit = async () => {
-    await getProjectCoverList()
-  }
-
   useEffect(() => {
     if (props.visible) {
       getGroupData()
-      getInit()
     }
   }, [props.visible])
 
@@ -69,7 +59,7 @@ const EditProject = (props: Props) => {
         }
         await addProject(form.getFieldsValue())
         message.success(t('common.createSuccess'))
-        setIsRefreshGroup(true)
+        dispatch(setIsRefreshGroup(true))
       }
       props.onChangeVisible()
       props.onUpdate?.()
@@ -118,21 +108,17 @@ const EditProject = (props: Props) => {
           <PosterComponent
             value={props.details?.id ? props.details?.cover : ''}
             onChangeValue={cover => onChangePoster(cover)}
+            isVisible={props.visible}
           />
         </Form.Item>
         <Form.Item
           label={t('common.projectName')}
           getValueFromEvent={event => {
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
           rules={[
             { required: true, message: '' },
             {
-              // eslint-disable-next-line prefer-regex-literals
-              pattern: new RegExp(
-                /^[\u4e00-\u9fa5_a-zA-Z0-9_(_（_)_）_,_，_:_：_—_\-_/_\n]+$/,
-                'g',
-              ),
               message: t('mark.waring'),
             },
           ]}
@@ -151,9 +137,8 @@ const EditProject = (props: Props) => {
           label={t('project.projectInfo')}
           name="info"
           getValueFromEvent={event => {
-            return event.target.value.replace(/\s+/g, '')
+            return event.target.value.replace(/(?<start>^\s*)/g, '')
           }}
-          rules={[{ required: true, message: '' }]}
         >
           <Input.TextArea
             maxLength={500}

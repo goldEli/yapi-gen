@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable require-unicode-regexp */
 // 需求主页-左侧需求分类
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -28,10 +30,10 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { css } from '@emotion/css'
 import { getIsPermission } from '@/tools'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '../../../../../../../store'
 import { changeId } from '../../../../../../../store/counterSlice'
+import { setProjectInfoValues } from '@store/project'
 
 const Left = styled.div`
   height: calc(100vh - 64px);
@@ -92,6 +94,7 @@ const rightText = css`
   }
 `
 const TreeItem = (props: any) => {
+  const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -99,7 +102,7 @@ const TreeItem = (props: any) => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visiblePop, setVisiblePop] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
   const btnsText = [
     {
       id: 1,
@@ -153,8 +156,13 @@ const TreeItem = (props: any) => {
     if (news.code === 0) {
       message.success(t('common.deleteSuccess'))
     }
+    // 如果当前删除的跟当前选中的一致，则重置
+    if (context?.key === props.id) {
+      props.onDeleteRestKey()
+    }
     close()
     props.onRest()
+
     form.resetFields()
   }
 
@@ -309,7 +317,7 @@ const TreeItem = (props: any) => {
                 rules={[{ required: true, message: '' }]}
                 getValueFromEvent={event => {
                   // eslint-disable-next-line require-unicode-regexp
-                  return event.target.value.replace(/\s+/g, '')
+                  return event.target.value.replace(/(?<start>^\s*)/g, '')
                 }}
               >
                 <Input
@@ -322,8 +330,7 @@ const TreeItem = (props: any) => {
               </Form.Item>
               <Form.Item
                 getValueFromEvent={event => {
-                  // eslint-disable-next-line require-unicode-regexp
-                  return event.target.value.replace(/\s+/g, '')
+                  return event.target.value.replace(/(?<start>^\s*)/g, '')
                 }}
                 name="remark"
                 label={t('newlyAdd.classRemark')}
@@ -351,14 +358,40 @@ const WrapLeft = (props: any, ref: any) => {
   const context: any = useContext(TreeContext)
   const [treeData, setTreeData] = useState<any>([])
   const [show, setShow] = useState<any>(false)
-  const { setSelectTreeData, getProjectInfoValues } = useModel('project')
+  const { projectInfoValues } = useSelector(store => store.project)
 
-  const init = async () => {
+  // 重组为下拉筛选格式
+  const computedChildren = (array: any) => {
+    const resultData = array?.map((k: any) => ({
+      key: k.id,
+      value: k.id,
+      title: k.name,
+      children: computedChildren(k.children),
+    }))
+    return resultData || []
+  }
+
+  // isUpdateProjectInfoValues：是否需要更新项目下拉数据
+  const init = async (isUpdateProjectInfoValues?: boolean) => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    setSelectTreeData(filterTreeData2(res)[0].children)
     setTreeData(filterTreeData(res))
     setShow(true)
+    // 更新项目成员下拉
+    if (isUpdateProjectInfoValues) {
+      const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
+      const newValues = beforeValues?.map((i: any) =>
+        i.key === 'class'
+          ? { ...i, children: computedChildren(res[0].children) }
+          : i,
+      )
+      dispatch(setProjectInfoValues(newValues))
+    }
+  }
+
+  const onDeleteRestKey = () => {
+    context.changeKey(0)
+    dispatch(changeId(0))
   }
 
   function filterTreeData(data: any) {
@@ -367,10 +400,10 @@ const WrapLeft = (props: any, ref: any) => {
       title: (
         <TreeItem
           onRest={() => {
-            init()
-            getProjectInfoValues({ projectId: props.projectId })
+            init(true)
             props.onUpdate()
           }}
+          onDeleteRestKey={onDeleteRestKey}
           projectId={props.projectId}
           {...item}
         />
@@ -383,17 +416,6 @@ const WrapLeft = (props: any, ref: any) => {
     return newData
   }
 
-  function filterTreeData2(data: any) {
-    const newData = data.map((item: any) => ({
-      value: item.key,
-      label: item.name,
-      children:
-        item.children && item.children.length
-          ? filterTreeData2(item.children)
-          : null,
-    }))
-    return newData
-  }
   const onDrop = async (info: any) => {
     const onlyID: any = treeData[0].children[0].title.props.id
     const onlySort: any = treeData[0].children[0].title.props.sort
@@ -446,8 +468,7 @@ const WrapLeft = (props: any, ref: any) => {
       })
     }
 
-    init()
-    getProjectInfoValues({ projectId: props.projectId })
+    init(true)
   }
 
   const onSelect = (selectedKeys: any, e: any) => {

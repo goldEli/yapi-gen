@@ -9,10 +9,10 @@ import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import DemandSet from './DemandSet'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { getParamsData } from '@/tools'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -96,7 +96,7 @@ const Setting = () => {
   const [t, i18n] = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { projectInfo } = useModel('project')
+  const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
 

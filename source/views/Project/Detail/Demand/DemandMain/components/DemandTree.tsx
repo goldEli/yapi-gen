@@ -22,7 +22,6 @@ import {
   SecondButton,
 } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
-import { useModel } from '@/models'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -32,8 +31,14 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import EditDemand from '@/components/EditDemandNew'
+import EditDemand from '@/components/EditDemandNew/index'
 import FloatBatch from '@/components/FloatBatch'
+import { useSelector } from '@store/index'
+import {
+  getDemandList,
+  updateDemandStatus,
+  updatePriority,
+} from '@/services/project/demand'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -61,6 +66,7 @@ interface Props {
   isSpinning?: boolean
   onUpdate(updateState?: boolean, topId?: any): void
   filterParams: any
+  isUpdated?: boolean
 }
 
 interface TreeIconProps {
@@ -97,9 +103,7 @@ const DemandTree = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { updatePriority, updateDemandStatus, getDemandList } =
-    useModel('demand')
-  const { projectInfo, filterKeys } = useModel('project')
+  const { projectInfo, filterKeys } = useSelector(store => store.project)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -123,6 +127,7 @@ const DemandTree = (props: Props) => {
   const batchDom: any = createRef()
   // 用于获取数据更新后的展开key
   const [computedTopId, setComputedTopId] = useState(0)
+  const [delayChild, setDelayChild] = useState<any>({})
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -241,6 +246,13 @@ const DemandTree = (props: Props) => {
 
   // 点击获取子需求
   const onGetChildList = async (row: any) => {
+    // 如果查询列表未执行完，不执行获取子需求
+    let resultData: any = data
+    if (props.isUpdated) {
+      setDelayChild(row)
+      return
+    }
+
     let dataChildren: any
     let resultList: any
     // 第一级调用接口获取子级， 并且全部展开子级
@@ -254,6 +266,7 @@ const DemandTree = (props: Props) => {
         isChildren: true,
       })
     }
+    setDelayChild({})
 
     // 如果折叠起来，则在已勾选的数组中删掉，反之合并
     if (row.isExpended) {
@@ -271,13 +284,16 @@ const DemandTree = (props: Props) => {
       ]
       resultList = [...expandedRowKeys, ...lists]
     }
-    setExpandedRowKeys(resultList)
 
-    row.children = row.parentId ? row.children : dataChildren?.list
-    setData({ ...data, list: [...data.list] })
+    setExpandedRowKeys([...new Set(resultList)])
+    const resultArr = resultData?.list?.map((i: any) => ({
+      ...i,
+      children: row.parentId ? row.children : dataChildren?.list,
+      isExpended: row.id === i.id ? !row.isExpended : false,
+    }))
+    setData({ ...resultData, list: resultArr })
     setTimeout(() => {
-      row.isExpended = !row.isExpended
-      setData({ ...data, list: [...data.list] })
+      setData({ ...resultData, list: resultArr })
     }, 0)
   }
 
@@ -502,6 +518,10 @@ const DemandTree = (props: Props) => {
       if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
         setTableWrapHeight(tableBody.clientHeight)
       }
+    }
+    // 判断列表数据更新完成并且有延时id则调用获取子需求列表
+    if (!props.isUpdated && delayChild?.id) {
+      onGetChildList(delayChild)
     }
   }, [data?.list])
 

@@ -8,13 +8,13 @@ import styled from '@emotion/styled'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools/index'
-import { useModel } from '@/models'
+import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { message, Popover } from 'antd'
 import WhiteDay from './components/WhiteDay'
-import { useSelector } from 'react-redux'
 import { writeDaily } from '@/services/daily'
 import useSetTitle from '@/hooks/useSetTitle'
+import { BooleanString } from 'cos-js-sdk-v5'
 
 const Wrap = styled.div`
   height: 100%;
@@ -61,7 +61,7 @@ const Menu = styled.div`
 
 export const DailyContext: any = React.createContext('')
 
-const MenuItem = styled.div<{ active?: boolean }>(
+const MenuItem = styled.div<{ active?: any }>(
   ({ active }) => ({
     borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
     color: active ? '#2877ff' : '#323233',
@@ -92,7 +92,6 @@ type MenuList = {
 
 const Information = () => {
   const asyncSetTtile = useSetTitle()
-
   const [t] = useTranslation()
   asyncSetTtile(t('title.c6'))
   const menuList = [
@@ -116,9 +115,6 @@ const Information = () => {
       id: 4,
       name: t('p2.dayList.t4'),
       path: 'send/4',
-    },
-    {
-      name: 'provider',
     },
     {
       id: 5,
@@ -159,11 +155,10 @@ const Information = () => {
       name: t('p2.whiteList.t3'),
     },
   ]
-  const count = useSelector((state: any) => state.counter.value)
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const navigate = useNavigate()
-  const { userInfo } = useModel('user')
+  const { userInfo } = useSelector(store => store.user)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
   const [showPop, setShowPop] = useState(false)
@@ -267,46 +262,44 @@ const Information = () => {
           </Popover>
         )}
         <Menu>
-          {menuList.map(item => (
+          {menuList.map((item: any, index: number) => (
             <>
-              {item.id && (
-                <MenuItem
-                  style={{
-                    fontSize: item.state ? '16px' : '',
-                    fontWeight: item.state ? 'bold' : '',
-                    position: 'relative',
-                  }}
-                  active={nowPath2 === item.id}
-                  onClick={() => changeActive(item)}
-                  key={item.id}
-                  hidden={item.isPermission}
-                >
-                  {item.state === 1 && (
-                    <IconFont
-                      type="send"
-                      style={{
-                        fontSize: 20,
-                        marginRight: item.state ? '6px' : '',
-                        position: 'absolute',
-                        left: '24px',
-                      }}
-                    />
-                  )}
-                  {item.state === 2 && (
-                    <IconFont
-                      type="container"
-                      style={{
-                        fontSize: 20,
-                        marginRight: item.state ? '6px' : '',
-                        position: 'absolute',
-                        left: '24px',
-                      }}
-                    />
-                  )}
-                  {item.name}
-                </MenuItem>
-              )}
-              {!item.id && <div className="provider" />}
+              {index === 4 && <div className="provider" />}
+              <MenuItem
+                style={{
+                  fontSize: item.state ? '16px' : '',
+                  fontWeight: item.state ? 'bold' : '',
+                  position: 'relative',
+                }}
+                active={nowPath2 === item.id}
+                onClick={() => changeActive(item)}
+                key={item.id}
+                hidden={item.isPermission}
+              >
+                {item.state === 1 && (
+                  <IconFont
+                    type="send"
+                    style={{
+                      fontSize: 20,
+                      marginRight: item.state ? '6px' : '',
+                      position: 'absolute',
+                      left: '24px',
+                    }}
+                  />
+                )}
+                {item.state === 2 && (
+                  <IconFont
+                    type="container"
+                    style={{
+                      fontSize: 20,
+                      marginRight: item.state ? '6px' : '',
+                      position: 'absolute',
+                      left: '24px',
+                    }}
+                  />
+                )}
+                {item.name}
+              </MenuItem>
             </>
           ))}
         </Menu>

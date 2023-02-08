@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from './StyleCommon'
+import ThrottleButton from './ThrottleButton'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -56,6 +57,7 @@ const CommonModal = (props: ModalProps) => {
       destroyOnClose
       keyboard={false}
       wrapClassName="vertical-center-modal"
+      focusTriggerAfterClose={false}
     >
       <ModalHeader>
         <span>{props?.title}</span>
@@ -73,9 +75,12 @@ const CommonModal = (props: ModalProps) => {
           {!props.hasFooter && (
             <ModalFooter size={16}>
               <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-              <Button onClick={props?.onConfirm} type="primary">
+              <ThrottleButton
+                thClick={() => props?.onConfirm!()}
+                type="primary"
+              >
                 {props?.confirmText ? props?.confirmText : t('common.confirm')}
-              </Button>
+              </ThrottleButton>
             </ModalFooter>
           )}
         </>

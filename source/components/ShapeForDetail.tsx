@@ -1,6 +1,6 @@
-// 公用状态流转弹窗
-
 /* eslint-disable require-unicode-regexp */
+// 状态流转弹窗 -- 需求详情
+
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -16,14 +16,14 @@ import {
   Spin,
   Tooltip,
 } from 'antd'
-import { useModel } from '@/models'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
-import { getShapeLeft, getShapeRight } from '@/services/project/shape'
+import { getShapeRight } from '@/services/project/shape'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
+import { getProjectMember } from '@/services/mine'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -371,7 +371,6 @@ const ShapeContentForDetail = (props: any) => {
 
   const [form] = Form.useForm()
   const [form2] = Form.useForm()
-  const { getProjectMember } = useModel('mine')
   const [optionsList, setOptionsList] = useState([])
   const [rightList, setRightList] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)
@@ -474,7 +473,10 @@ const ShapeContentForDetail = (props: any) => {
                     {i.type === 'area' && (
                       <Form.Item
                         getValueFromEvent={event => {
-                          return event.target.value.replace(/\s+/g, '')
+                          return event.target.value.replace(
+                            /(?<start>^\s*)/g,
+                            '',
+                          )
                         }}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}
@@ -607,7 +609,10 @@ const ShapeContentForDetail = (props: any) => {
                     {['text', 'textarea'].includes(i.type) && (
                       <Form.Item
                         getValueFromEvent={event => {
-                          return event.target.value.replace(/\s+/g, '')
+                          return event.target.value.replace(
+                            /(?<start>^\s*)/g,
+                            '',
+                          )
                         }}
                         label={<LabelComponent title={i.title} />}
                         name={i.content}

@@ -13,12 +13,19 @@ import { useEffect, useRef, useState } from 'react'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
-import { useModel } from '@/models'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
+import {
+  addStoryConfigStatus,
+  addStoryConfigWorkflow,
+  deleteStoryConfigStatus,
+  storyConfigStatusList,
+  updateStoryConfigStatus,
+} from '@/services/project'
+import { useSelector } from '@store/index'
 
 const TableWrap = styled.div({
   height: 400,
@@ -221,15 +228,7 @@ const AddWorkflow = (props: Props) => {
   const [isAdd, setIsAdd] = useState(false)
   const [operationObj, setOperationObj] = useState<any>({})
   const [operationDelObj, setOperationDelObj] = useState<any>({})
-  const {
-    getStatusList,
-    statusWorkList,
-    addStoryConfigStatus,
-    updateStoryConfigStatus,
-    deleteStoryConfigStatus,
-    colorList,
-    addStoryConfigWorkflow,
-  } = useModel('project')
+  const [statusWorkList, setStatusWorkList] = useState<any>([])
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
@@ -237,18 +236,17 @@ const AddWorkflow = (props: Props) => {
   const [isDelVisible, setIsDelVisible] = useState(false)
   const [isHasDelete, setIsHasDelete] = useState(false)
   const [form] = Form.useForm()
-
-  useEffect(() => {
-    const arr = statusWorkList?.list?.filter((i: any) => i.isCheck)
-    setSelectedRowKeys(arr?.map((k: any) => k.id))
-  }, [statusWorkList])
+  const { colorList } = useSelector(store => store.project)
 
   const getList = async () => {
     setIsSpinning(true)
-    await getStatusList({
+    const result = await storyConfigStatusList({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
     })
+    setStatusWorkList(result)
+    const arr = result?.list?.filter((i: any) => i.isCheck)
+    setSelectedRowKeys(arr?.map((k: any) => k.id))
     setIsSpinning(false)
   }
 
@@ -486,8 +484,9 @@ const AddWorkflow = (props: Props) => {
                       style={{ marginRight: 8, marginLeft: 0 }}
                       color={i.category_color}
                       bgColor={
-                        colorList?.filter(k => k.key === i.category_color)[0]
-                          ?.bgColor
+                        colorList?.filter(
+                          (k: any) => k.key === i.category_color,
+                        )[0]?.bgColor
                       }
                     >
                       {i.category_name}
