@@ -56,6 +56,7 @@ const Detail = () => {
   useEffect(() => {
     if (isRefresh || isChangeProject) {
       getInfo()
+      getProjectInfoValuesData()
     }
   }, [isRefresh, isChangeProject])
 
