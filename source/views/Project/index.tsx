@@ -3,7 +3,6 @@ import CommonButton from '@/components/CommonButton'
 import { Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import RichEditor from '@/components/RichEditor'
-import Editor from '@/components/Editor'
 
 const ProjectWrap = styled.div`
   position: relative;

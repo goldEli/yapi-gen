@@ -26,7 +26,8 @@ import editorText from '@/locals/editor.zh-Hans'
 import { uploadFileByTask } from '@/services/cos'
 import type { ITinyEvents } from '@tinymce/tinymce-react/lib/cjs/main/ts/Events'
 import Viewer from 'react-viewer'
-import { Modal } from 'antd'
+import { Input } from 'antd'
+import { position, offset } from 'caret-pos'
 
 declare global {
   interface Window {
@@ -42,16 +43,21 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
   const editorRef = useRef<any>()
   const { i18n } = useTranslation()
   const [key, setKey] = useState(1)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isVisible1, setIsVisible1] = useState(false)
-  const [focusNode, setFocusNode] = useState(0)
-  const [focusOffset, setFocusOffset] = useState(0)
+  // 查看大图相关
   const textWrapEditor = useRef<any>(null)
+  const [valueInfo, setValueInfo] = useState('')
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
   })
+  const [isVisible, setIsVisible] = useState(false)
+  // @人功能相关
+  const [isAtPeople, setIsAtPeople] = useState(false)
+  const [focusNode, setFocusNode] = useState(0)
+  const [focusOffset, setFocusOffset] = useState(0)
+  const dialogEl = useRef<any>(null)
 
+  // 点击查看大图
   const onGetViewPicture = (e: any) => {
     if (e.target.nodeName === 'IMG') {
       const params: any = {}
@@ -82,8 +88,6 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
       onGetViewPicture(e),
     )
   }, [])
-
-  const [valueInfo, setValueInfo] = useState('')
 
   // 对齐
   let activeAlign = ''
@@ -148,6 +152,60 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     setKey(oldKey => oldKey + 1)
   }, [i18n.language])
 
+  // 设置@人弹窗的位置
+  const setDialogPos = () => {
+    const body = editorRef.current.contentWindow.document.body
+    const html =
+      editorRef.current.contentWindow.document.getElementsByTagName('html')[0]
+    // dialogEl 为弹窗dom
+    const childEle = dialogEl.current
+    const parentW = body.offsetWidth
+    const htmlH = html.clientHeight
+    const childW = dialogEl.current.offsetWidth
+    const childH = dialogEl.current.offsetHeight
+    // 因为tinymce为iframe 中，所以要获取iframe 的位置
+    const pos = position(body, { iframe: editorRef.current })
+    const off = offset(body, { iframe: editorRef.current })
+    // 弹框偏移超出父元素的宽高
+    if (parentW - (pos.left + 16) < childW) {
+      childEle.style.left = 'auto'
+      childEle.style.right = '0px'
+    } else {
+      childEle.style.left = off.left + 'px'
+    }
+    if (htmlH - pos.top < childH) {
+      childEle.style.bottom = htmlH - (off.top - html.scrollTop) + 10 + 'px'
+      childEle.style.top = ''
+    } else {
+      childEle.style.top = off.top - html.scrollTop + 95 + 'px'
+      childEle.style.bottom = ''
+    }
+  }
+
+  // show@弹框设置
+  const atPeopleShowSet = () => {
+    setIsAtPeople(true)
+    setDialogPos()
+  }
+
+  // @人插入到富文本编辑器
+  const selectPeople = (item: any) => {
+    let selection = editorRef.current.iframeElement.contentWindow.getSelection()
+    let range = selection.getRangeAt(0)
+    //选中输入的@符号
+    range.setStart(focusNode, focusOffset - 1)
+    range.setEnd(focusNode, focusOffset)
+    //删除输入的@符号
+    range.deleteContents()
+    // 在编辑器中插入选择的要@的人
+    editorRef.current.execCommand(
+      'mceInsertContent',
+      false,
+      `<span style="color: #0089ff" class="mceNonEditable">@${item.name}</span>`,
+    )
+    setIsAtPeople(false)
+  }
+
   const onInitHandler: ITinyEvents['onInit'] = (event, editor) => {
     editorRef.current = editor
     const container = document.querySelector('.tox-tinymce')
@@ -185,10 +243,11 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         })
       })
     }
+
     const selection = e.iframeElement.contentWindow.getSelection()
     const range = selection.getRangeAt(0)
     if (range.commonAncestorContainer.data[range.endOffset - 1] === '@') {
-      setIsVisible1(true)
+      atPeopleShowSet()
       setFocusNode(selection.focusNode)
       setFocusOffset(selection.focusOffset)
     }
@@ -225,37 +284,6 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     return items
   }
 
-  const onSelectSubmit = (list: any) => {
-    let selection = editorRef.current.iframeElement.contentWindow.getSelection()
-    let range = selection.getRangeAt(0)
-    //选中输入的@符号
-    range.setStart(focusNode, focusOffset - 1)
-    range.setEnd(focusNode, focusOffset)
-    //删除输入的@符号
-    range.deleteContents()
-
-    list.forEach((s: any) => {
-      var spanNode1 = document.createElement('span')
-      var spanNode2 = document.createElement('span')
-      spanNode1.innerHTML = `<span>@</span>` + s.name
-      spanNode1.setAttribute('data-userId', s.name)
-      spanNode2.innerHTML = '&nbsp;'
-      var frag = document.createDocumentFragment(),
-        node,
-        lastNode
-      //在 Range 的起点处插入一个节点。
-      frag.appendChild(spanNode1)
-      while ((node = spanNode2.firstChild)) {
-        lastNode = frag.appendChild(node)
-      }
-      range.insertNode(frag)
-      selection.extend(lastNode, 1)
-      //将当前的选区折叠到最末尾的一个点。
-      selection.collapseToEnd()
-      setIsVisible1(false)
-    })
-  }
-
   const onUpdateImage = async (file: any, editor: any) => {
     const response = await uploadFileByTask(
       file,
@@ -267,6 +295,20 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
 
   return (
     <>
+      {/* 选人弹窗 */}
+      <div
+        ref={dialogEl}
+        style={{
+          display: isAtPeople ? 'block' : 'none',
+          position: 'absolute',
+          zIndex: 9999,
+          width: 'max-content',
+        }}
+      >
+        <Input placeholder="asakshakdhak" />
+        <div onClick={selectPeople}>123121212</div>
+      </div>
+      {/* 查看大图 */}
       {isVisible ? (
         <Viewer
           zIndex={9999}
@@ -276,15 +318,10 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
           onClose={() => setIsVisible(false)}
         />
       ) : null}
-      <div
+      {/* <div
         ref={textWrapEditor}
         dangerouslySetInnerHTML={{ __html: valueInfo }}
-      />
-      <Modal visible={isVisible1} onCancel={() => setIsVisible1(false)}>
-        <div onClick={() => onSelectSubmit([{ name: '12' }, { name: '3333' }])}>
-          12121212
-        </div>
-      </Modal>
+      /> */}
       <Editor
         onInit={onInitHandler}
         key={key}
@@ -304,7 +341,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
           plugins: ['fullscreen', 'link', 'lists', 'table', 'emoticons'],
           toolbar:
             'blocks fontsize | bold underline fontMore | forecolor backcolor removeformat |' +
-            ' bullist numlist | alignButton dentMore lineheight | uploadImage uploadMedia table link emoticons blockquote @ | fullscreen',
+            ' bullist numlist | alignButton dentMore lineheight | uploadImage uploadMedia table link emoticons blockquote | fullscreen',
           language: i18n.language === 'en' ? undefined : 'zh-Hans',
           language_load: false,
           image_title: false,
@@ -401,17 +438,6 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
                   value => (activeDent = value),
                 )
                 callback(items)
-              },
-            })
-            editor.ui.registry.addButton('@', {
-              text: '@',
-              tooltip: 'uploadImage',
-              onAction: () => {
-                setIsVisible1(true)
-                let selection =
-                  editorRef.current.iframeElement.contentWindow.getSelection()
-                setFocusNode(selection.focusNode)
-                setFocusOffset(selection.focusOffset)
               },
             })
           },
