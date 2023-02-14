@@ -192,10 +192,10 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
   const selectPeople = (item: any) => {
     let selection = editorRef.current.iframeElement.contentWindow.getSelection()
     let range = selection.getRangeAt(0)
-    //选中输入的@符号
+    // 选中输入的@符号
     range.setStart(focusNode, focusOffset - 1)
     range.setEnd(focusNode, focusOffset)
-    //删除输入的@符号
+    // 删除输入的@符号
     range.deleteContents()
     // 在编辑器中插入选择的要@的人
     editorRef.current.execCommand(
@@ -215,6 +215,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     let isFullscreen = false
     fullscreenButton?.addEventListener('click', e => {
       e.preventDefault()
+      setDialogPos()
       isFullscreen = !isFullscreen
       if (isFullscreen) {
         container?.classList.add('.tox-fullscreen')
@@ -246,11 +247,18 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
 
     const selection = e.iframeElement.contentWindow.getSelection()
     const range = selection.getRangeAt(0)
-    if (range.commonAncestorContainer.data[range.endOffset - 1] === '@') {
+    if (
+      range.endOffset &&
+      range.startOffset &&
+      range.commonAncestorContainer.data[range.endOffset - 1] === '@'
+    ) {
       atPeopleShowSet()
       setFocusNode(selection.focusNode)
       setFocusOffset(selection.focusOffset)
+    } else {
+      setIsAtPeople(false)
     }
+
     if (props.onChange) {
       props.onChange(value)
     }
@@ -293,6 +301,12 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     editor.insertContent(`<img src="${response.url}" />`)
   }
 
+  const onBlur = () => {
+    // setTimeout(() => {
+    //   setIsAtPeople(false)
+    // }, 200)
+  }
+
   return (
     <>
       {/* 选人弹窗 */}
@@ -327,6 +341,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         key={key}
         value={props.value}
         onEditorChange={onChangeHandler}
+        onBlur={onBlur}
         init={{
           height: 434,
           menubar: false,
