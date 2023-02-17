@@ -114,6 +114,24 @@ const useButtonPalette = () => {
         text: theme.themeColors.auxiliaryTextT4,
       },
     },
+    icon: {
+      normal: {
+        background: theme.themeColors.auxiliaryB7,
+        text: theme.themeColors.auxiliaryTextT2,
+      },
+      hover: {
+        background: theme.themeColors.auxiliaryB4,
+        text: theme.themeColors.auxiliaryTextT2,
+      },
+      active: {
+        background: theme.themeColors.auxiliaryB5,
+        text: theme.themeColors.auxiliaryTextT1S1,
+      },
+      disable: {
+        background: theme.themeColors.auxiliaryB10,
+        text: theme.themeColors.auxiliaryTextT4,
+      },
+    },
   }
 }
 

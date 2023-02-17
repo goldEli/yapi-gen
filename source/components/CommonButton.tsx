@@ -5,34 +5,34 @@ import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useSelector } from '@store/index'
 import { Space } from 'antd'
-import { type ReactNode } from 'react'
+import IconFont from './IconFont'
 
-const ButtonWrap = styled(Button)<{ cssStyle?: any; themeColor?: any }>`
+const ButtonWrap = styled(Button)<{ color?: any; theme?: any }>`
   border-radius: 6px;
   height: 32px;
   padding: 0 16px;
   border: none;
-  font-size: ${(props: any) => props.themeColor.font14};
+  font-size: ${(props: any) => props.theme.font14};
   span:first-child {
     display: flex;
     align-items: center;
   }
   svg {
-    font-size: ${(props: any) => props.themeColor.font16}!important;
+    font-size: ${(props: any) => props.theme.font16}!important;
   }
-  background: ${(props: any) => props.cssStyle.normal.background}!important;
-  color: ${(props: any) => props.cssStyle.normal.text}!important;
+  background: ${(props: any) => props.color.normal.background}!important;
+  color: ${(props: any) => props.color.normal.text}!important;
   &:hover {
-    background: ${(props: any) => props.cssStyle.hover.background}!important;
-    color: ${(props: any) => props.cssStyle.hover.text}!important;
+    background: ${(props: any) => props.color.hover.background}!important;
+    color: ${(props: any) => props.color.hover.text}!important;
   }
   &:active {
-    background: ${(props: any) => props.cssStyle.active.background}!important;
-    color: ${(props: any) => props.cssStyle.active.text}!important;
+    background: ${(props: any) => props.color.active.background}!important;
+    color: ${(props: any) => props.color.active.text}!important;
   }
   &:disabled {
-    background: ${(props: any) => props.cssStyle.disable.background}!important;
-    color: ${(props: any) => props.cssStyle.disable.text}!important;
+    background: ${(props: any) => props.color.disable.background}!important;
+    color: ${(props: any) => props.color.disable.text}!important;
   }
   :after {
     border: 0 none;
@@ -45,13 +45,20 @@ const ButtonWrap = styled(Button)<{ cssStyle?: any; themeColor?: any }>`
 interface Props {
   onClick?(): void
   // 按钮文本
-  children: string
+  children?: string
   // 按钮类型
-  type: string
+  type:
+    | 'primary'
+    | 'light'
+    | 'secondary'
+    | 'danger'
+    | 'primaryText'
+    | 'secondaryText'
+    | 'icon'
   //   图标位置
   iconPlacement?: 'left' | 'right'
   //   图标
-  iconNode?: ReactNode
+  icon?: string
   //   是否禁用
   isDisable?: boolean
 }
@@ -65,26 +72,40 @@ const CommonButton = (props: Props) => {
   }, 1000)
 
   //   如果有图标
-  if (props.iconNode) {
+  if (props.icon && props.type !== 'icon') {
     return (
       <ButtonWrap
         onClick={throttleClick}
         disabled={props.isDisable}
-        cssStyle={buttonPalette[props.type]}
-        themeColor={theme.themeColors}
+        color={buttonPalette[props.type]}
+        theme={theme.themeColors}
       >
         {props.iconPlacement === 'right' && (
-          <>
-            <div style={{ marginRight: 8 }}>{props.children}</div>
-            {props.iconNode}
-          </>
+          <Space size={8}>
+            <IconFont type={props.icon} />
+            {props.children}
+          </Space>
         )}
         {props.iconPlacement !== 'right' && (
-          <>
-            {props.iconNode}
-            <div style={{ marginLeft: 8 }}>{props.children}</div>
-          </>
+          <Space size={8}>
+            {props.children}
+            <IconFont type={props.icon} />
+          </Space>
         )}
+      </ButtonWrap>
+    )
+  }
+
+  //   如果有图标没有内容
+  if (props.type === 'icon') {
+    return (
+      <ButtonWrap
+        onClick={throttleClick}
+        disabled={props.isDisable}
+        color={buttonPalette[props.type]}
+        theme={theme.themeColors}
+      >
+        <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
     )
   }
@@ -93,8 +114,8 @@ const CommonButton = (props: Props) => {
     <ButtonWrap
       onClick={throttleClick}
       disabled={props.isDisable}
-      cssStyle={buttonPalette[props.type]}
-      themeColor={theme.themeColors}
+      color={buttonPalette[props.type]}
+      theme={theme.themeColors}
     >
       {props.children}
     </ButtonWrap>

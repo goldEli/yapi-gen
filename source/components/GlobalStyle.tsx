@@ -5,7 +5,19 @@ import { useSelector } from '@store/index'
 
 const GlobalStyle = () => {
   const { theme } = useSelector(store => store.global)
+  const white = css`
+    :root {
+      --light-red: green;
+    }
+  `
+  const black = css`
+    :root {
+      --light-red: red;
+    }
+  `
+  const colors = [white, black]
   const globalCss = css`
+    ${colors[0]}
     .ant-form-item {
       padding-top: 2px !important;
     }
