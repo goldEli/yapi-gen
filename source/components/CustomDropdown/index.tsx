@@ -1,25 +1,35 @@
-import { Dropdown } from 'antd'
+import { Dropdown, MenuProps } from 'antd'
 import React from 'react'
+import { StyleDropdown } from './style'
 
 const index = (props: any) => {
   const items: any = [
     {
-      key: '1',
+      key: 'edit',
       label: <span>编辑</span>,
     },
     {
-      key: '2',
+      key: 'over',
       label: <span>结束</span>,
     },
     {
-      key: '3',
+      key: 'del',
       label: <span>删除</span>,
     },
   ]
+
+  const onClick: MenuProps['onClick'] = ({ key }) => {
+    props.onChange(key)
+  }
   return (
-    <Dropdown trigger={['click']} menu={{ items }} placement="bottomRight">
+    <StyleDropdown
+      trigger={['hover']}
+      menu={{ items, onClick }}
+      placement="bottomRight"
+      getPopupContainer={(i: any) => i.parentNode}
+    >
       {props.children}
-    </Dropdown>
+    </StyleDropdown>
   )
 }
 
