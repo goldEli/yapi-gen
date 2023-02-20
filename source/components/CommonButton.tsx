@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import useButtonPalette from '@/hooks/useButtonPalette'
 import { useThrottle } from '@/hooks/useThrottle'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
@@ -7,32 +6,15 @@ import { useSelector } from '@store/index'
 import { Space } from 'antd'
 import IconFont from './IconFont'
 
-const ButtonWrap = styled(Button)<{ color?: any; theme?: any }>`
+const ButtonWrap = styled(Button)`
   border-radius: 6px;
   height: 32px;
   padding: 0 16px;
   border: none;
-  font-size: ${(props: any) => props.theme.font14};
+  font-size: var(--font14);
   span:first-child {
     display: flex;
     align-items: center;
-  }
-  svg {
-    font-size: ${(props: any) => props.theme.font16}!important;
-  }
-  background: ${(props: any) => props.color.normal.background}!important;
-  color: ${(props: any) => props.color.normal.text}!important;
-  &:hover {
-    background: ${(props: any) => props.color.hover.background}!important;
-    color: ${(props: any) => props.color.hover.text}!important;
-  }
-  &:active {
-    background: ${(props: any) => props.color.active.background}!important;
-    color: ${(props: any) => props.color.active.text}!important;
-  }
-  &:disabled {
-    background: ${(props: any) => props.color.disable.background}!important;
-    color: ${(props: any) => props.color.disable.text}!important;
   }
   :after {
     border: 0 none;
@@ -64,7 +46,6 @@ interface Props {
 }
 
 const CommonButton = (props: Props) => {
-  const buttonPalette: any = useButtonPalette()
   const { theme } = useSelector(store => store.global)
 
   const throttleClick = useThrottle(() => {
@@ -74,12 +55,7 @@ const CommonButton = (props: Props) => {
   //   如果有图标
   if (props.icon && props.type !== 'icon') {
     return (
-      <ButtonWrap
-        onClick={throttleClick}
-        disabled={props.isDisable}
-        color={buttonPalette[props.type]}
-        theme={theme.themeColors}
-      >
+      <ButtonWrap onClick={throttleClick} disabled={props.isDisable}>
         {props.iconPlacement === 'right' && (
           <Space size={8}>
             <IconFont type={props.icon} />
@@ -99,24 +75,14 @@ const CommonButton = (props: Props) => {
   //   如果有图标没有内容
   if (props.type === 'icon') {
     return (
-      <ButtonWrap
-        onClick={throttleClick}
-        disabled={props.isDisable}
-        color={buttonPalette[props.type]}
-        theme={theme.themeColors}
-      >
+      <ButtonWrap onClick={throttleClick} disabled={props.isDisable}>
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
       </ButtonWrap>
     )
   }
 
   return (
-    <ButtonWrap
-      onClick={throttleClick}
-      disabled={props.isDisable}
-      color={buttonPalette[props.type]}
-      theme={theme.themeColors}
-    >
+    <ButtonWrap onClick={throttleClick} disabled={props.isDisable}>
       {props.children}
     </ButtonWrap>
   )

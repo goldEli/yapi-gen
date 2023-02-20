@@ -12,18 +12,12 @@ export interface GlobalState {
   /**
    * 主题
    * */
-  theme: {
-    type: 'white' | 'black'
-    themeColors: typeof whiteTheme
-  }
+  theme: number
 }
 
 const initialState: GlobalState = {
   firstMenuCollapse: false,
-  theme: {
-    type: 'white',
-    themeColors: whiteTheme,
-  },
+  theme: 0,
 }
 
 export const globalSlice = createSlice({

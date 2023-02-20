@@ -101,29 +101,27 @@ export const Container = () => {
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
-        <ThemeProvider theme={theme.themeColors}>
-          <GlobalStyle />
-          {userInfo?.company_permissions?.length > 0 && (
-            <LayoutWrap>
-              {/* <HeaderWrap>
-                <HeaderLeft />
-                <HeaderRight />
-              </HeaderWrap> */}
-              <Content>
-                <Side />
-                <Main>
-                  <Outlet />
-                  <ResizeTable />
-                </Main>
-              </Content>
-              <Guide
-                visible={isNextVisible}
-                close={() => setIsNextVisible(false)}
-              />
-            </LayoutWrap>
-          )}
-          {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
-        </ThemeProvider>
+        <GlobalStyle />
+        {userInfo?.company_permissions?.length > 0 && (
+          <LayoutWrap>
+            <HeaderWrap>
+              <HeaderLeft />
+              <HeaderRight />
+            </HeaderWrap>
+            <Content>
+              <Side />
+              <Main>
+                <Outlet />
+                <ResizeTable />
+              </Main>
+            </Content>
+            <Guide
+              visible={isNextVisible}
+              close={() => setIsNextVisible(false)}
+            />
+          </LayoutWrap>
+        )}
+        {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
       </ConfigProvider>
     </KitConfigProvider>
   )

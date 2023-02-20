@@ -1,9 +1,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Space, Drawer, Button, message, Input } from 'antd'
+import { Space, Drawer } from 'antd'
 import { useState } from 'react'
-import { whiteTheme, blackTheme } from '@/theme'
-import { useDispatch, useSelector } from '@store/index'
 
 const DrawerHeader = styled.div`
   display: flex;
@@ -36,19 +34,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
 
 const HeaderLeft = () => {
   const [isVisible, setIsVisible] = useState(false)
-  const { theme } = useSelector(store => store.global)
-  const dispatch = useDispatch()
-  const onChangeTheme = () => {
-    const resultTheme = {
-      type: theme.type === 'white' ? 'black' : 'white',
-      themeColors: theme.type === 'white' ? blackTheme : whiteTheme,
-    }
-    dispatch({
-      type: 'global/setTheme',
-      payload: resultTheme,
-    })
-    message.success('切换成功')
-  }
 
   return (
     <div>
@@ -56,7 +41,6 @@ const HeaderLeft = () => {
       <Space size={16}>
         <IconFont type="app-store" onClick={() => setIsVisible(true)} />
         <div>项目管理</div>
-        <Button onClick={onChangeTheme}>切换主题</Button>
       </Space>
     </div>
   )

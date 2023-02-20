@@ -4,6 +4,7 @@ import { Button, Drawer, Space } from 'antd'
 import IconFont from '@/components/IconFont'
 import RichEditor from '@/components/RichEditor'
 import { useState } from 'react'
+import { useDispatch } from '@store/index'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -15,6 +16,7 @@ const DivWrap = styled.div`
 
 const Project = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const dispatch = useDispatch()
   return (
     <ProjectWrap>
       project
@@ -33,6 +35,16 @@ const Project = () => {
       </Space>
       <RichEditor />
       <Button onClick={() => setIsVisible(true)}>抽屉</Button>
+      <Button
+        onClick={() =>
+          dispatch({
+            type: 'global/setTheme',
+            payload: { type: 1 },
+          })
+        }
+      >
+        修改主题
+      </Button>
       <Drawer
         onClose={() => setIsVisible(false)}
         open={isVisible}
