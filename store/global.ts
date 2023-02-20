@@ -1,7 +1,6 @@
 /* eslint-disable no-duplicate-imports */
 // 公用状态管理
 import { createSlice } from '@reduxjs/toolkit'
-import { whiteTheme } from '@/theme'
 
 export interface GlobalState {
   /**

@@ -63,31 +63,43 @@ const routes = [
         children: [
           {
             path: 'CompanyInfo',
-            element: lazy(() => import('@/views/Project')),
+            element: lazy(() => import('@/views/AdminManagement/CompanyInfo')),
           },
           {
             path: 'StaffManagement',
-            element: lazy(() => import('@/views/Demand')),
+            element: lazy(
+              () => import('@/views/AdminManagement/StaffManagement'),
+            ),
           },
           {
             path: 'TeamManagement',
-            element: lazy(() => import('@/views/Iteration')),
+            element: lazy(
+              () => import('@/views/AdminManagement/TeamManagement'),
+            ),
           },
           {
             path: 'PermissionManagement',
-            element: lazy(() => import('@/views/ProjectSetting')),
+            element: lazy(
+              () => import('@/views/AdminManagement/PermissionManagement'),
+            ),
           },
           {
             path: 'WaterMarkManagement',
-            element: lazy(() => import('@/views/ProjectSetting')),
+            element: lazy(
+              () => import('@/views/AdminManagement/WaterMarkManagement'),
+            ),
           },
           {
             path: 'OperationManagement',
-            element: lazy(() => import('@/views/ProjectSetting')),
+            element: lazy(
+              () => import('@/views/AdminManagement/OperationManagement'),
+            ),
           },
           {
             path: 'LoginManagement',
-            element: lazy(() => import('@/views/ProjectSetting')),
+            element: lazy(
+              () => import('@/views/AdminManagement/LoginManagement'),
+            ),
           },
         ],
       },
