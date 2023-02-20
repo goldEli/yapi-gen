@@ -112,7 +112,7 @@ export const Container = () => {
               <Side />
               <Main>
                 <Outlet />
-                <ResizeTable />
+                {/* <ResizeTable /> */}
               </Main>
             </Content>
             <Guide
