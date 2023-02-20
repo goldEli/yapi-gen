@@ -35,7 +35,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  box-shadow: 0px 1px 9px 0px #ebecf0;
+  box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
   background: var(--neutral-white-d2);
   z-index: 2;
 `
