@@ -74,6 +74,7 @@ const CommonModal = (props: ModalProps) => {
           {!props.hasFooter && (
             <ModalFooter size={16}>
               <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
+              <Button onClick={props?.onConfirm}>确认</Button>
               {/* <ThrottleButton
                 thClick={() => props?.onConfirm!()}
                 type="primary"
