@@ -12,11 +12,14 @@ export interface GlobalState {
    * 主题
    * */
   theme: number
+
+  language: string
 }
 
 const initialState: GlobalState = {
   firstMenuCollapse: false,
   theme: 0,
+  language: 'zh',
 }
 
 export const globalSlice = createSlice({
@@ -28,6 +31,9 @@ export const globalSlice = createSlice({
     },
     setTheme(preState: GlobalState, action) {
       preState.theme = action.payload
+    },
+    setLanguage(preState: GlobalState, action) {
+      preState.language = action.payload
     },
   },
   extraReducers: builder => {

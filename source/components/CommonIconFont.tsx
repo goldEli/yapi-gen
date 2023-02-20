@@ -1,3 +1,5 @@
+// 公共图标
+
 import IconFont from './IconFont'
 
 interface IconProps {
@@ -14,7 +16,7 @@ const CommonIconFont = (props: IconProps) => {
       onClick={props?.onClick}
       style={{
         color: props.color,
-        fontSize: props.size,
+        fontSize: props.size || 16,
       }}
     />
   )
