@@ -1,12 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Form, Input, Select, Tooltip } from 'antd'
-import React from 'react'
+import React, { ForwardedRef, forwardRef, useImperativeHandle } from 'react'
 import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreSelect from '../MoreSelect'
 import { Wrap } from './style'
 
-const index = () => {
+export type IndexRef = {
+  postValue(): Record<string, unknown>
+}
+
+const index = (props: any, ref: ForwardedRef<IndexRef>) => {
   const [form] = Form.useForm()
 
   const onGenderChange = (value: string) => {
@@ -21,12 +25,16 @@ const index = () => {
         form.setFieldsValue({ note: 'Hi there!' })
     }
   }
+
+  useImperativeHandle(ref, () => ({
+    postValue: () => form?.getFieldsValue(),
+  }))
   return (
     <Wrap>
       <Form form={form} layout="vertical" name="basic" autoComplete="off">
         <Form.Item
           label={<FormTitleSmall text="项目名称" />}
-          name="username"
+          name="name"
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
           <Input />
@@ -34,7 +42,7 @@ const index = () => {
 
         <Form.Item
           label={<FormTitleSmall text="所属" />}
-          name="password"
+          name="their"
           rules={[{ required: true, message: 'Please input your password!' }]}
         >
           <Select
@@ -67,21 +75,27 @@ const index = () => {
               </Tooltip>
             </div>
           }
-          name="username"
+          name="keyboard"
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
           <Input placeholder="请输入键" />
         </Form.Item>
         <Form.Item
           label={<FormTitleSmall text="项目负责人" />}
-          name="username"
+          name="user"
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
           <MoreSelect />
+        </Form.Item>
+        <Form.Item label={<FormTitleSmall text="项目描述" />} name="dec">
+          <Input.TextArea
+            placeholder="Controlled autosize"
+            autoSize={{ minRows: 3, maxRows: 5 }}
+          />
         </Form.Item>
       </Form>
     </Wrap>
   )
 }
 
-export default index
+export default forwardRef(index)

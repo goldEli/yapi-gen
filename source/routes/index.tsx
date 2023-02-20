@@ -107,10 +107,6 @@ const routes = [
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),
       },
-      {
-        path: '/project-management-optimization',
-        element: lazy(() => import('@/views/TestPage')),
-      },
     ],
   },
 ]

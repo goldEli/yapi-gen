@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Button, Divider, Select } from 'antd'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-const index = () => {
+const index = (props: any) => {
   const [items, setItems] = useState(['jack', 'lucy', '1', '2', '3', '4'])
   const [value, setValue] = useState<string[]>([])
   const onClear = () => {
@@ -27,6 +27,11 @@ const index = () => {
     }
     return items
   }, [items, value])
+
+  useEffect(() => {
+    props.onChange(value)
+  }, [value])
+
   return (
     <Select
       value={value}
