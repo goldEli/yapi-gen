@@ -1,7 +1,29 @@
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Space, Drawer } from 'antd'
 import { useState } from 'react'
+import CommonIconFont from '@/components/CommonIconFont'
+
+const HeaderLeftWrap = styled.div`
+  display: flex;
+  align-items: center;
+`
+const MenuLabel = styled.span`
+  color: var(--neutral-n1-d1);
+  font-family: SiYuanMedium;
+  font-weight: 500;
+`
+
+const ChildrenMenu = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 48px;
+`
+
+const ChildrenMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+`
 
 const DrawerHeader = styled.div`
   display: flex;
@@ -26,7 +48,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     >
       <DrawerHeader>
         <span>IFUN Agile</span>
-        <IconFont type="close" onClick={() => props.onChange(false)} />
+        <CommonIconFont type="close" onClick={() => props.onChange(false)} />
       </DrawerHeader>
     </Drawer>
   )
@@ -36,13 +58,30 @@ const HeaderLeft = () => {
   const [isVisible, setIsVisible] = useState(false)
 
   return (
-    <div>
+    <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
-      <Space size={16}>
-        <IconFont type="app-store" onClick={() => setIsVisible(true)} />
-        <div>项目管理</div>
+      <Space size={24}>
+        <CommonIconFont
+          type="menu-02"
+          size={24}
+          onClick={() => setIsVisible(true)}
+        />
+        <Space size={8}>
+          <CommonIconFont type="app-store" />
+          <MenuLabel>项目管理</MenuLabel>
+        </Space>
       </Space>
-    </div>
+      <ChildrenMenu>
+        <ChildrenMenuItem>
+          <span>项目</span>
+          <CommonIconFont type="down" />
+        </ChildrenMenuItem>
+        <ChildrenMenuItem>
+          <span>我的</span>
+          <CommonIconFont type="down" />
+        </ChildrenMenuItem>
+      </ChildrenMenu>
+    </HeaderLeftWrap>
   )
 }
 
