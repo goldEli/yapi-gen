@@ -1,5 +1,11 @@
+import { Outlet } from 'react-router-dom'
+
 const AdminManagement = () => {
-  return <div>后台管理</div>
+  return (
+    <div>
+      <Outlet />
+    </div>
+  )
 }
 
 export default AdminManagement
