@@ -157,12 +157,16 @@ export const ChildrenMenu = styled.div`
   margin-left: 48px;
 `
 
-export const ChildrenMenuItem = styled(Space)`
+export const ChildrenMenuItem = styled(Space)<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   padding: 0 16px;
+  height: 56px;
   cursor: pointer;
-  color: var(--neutral-n1-d2);
+  color: ${props =>
+    props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+  background: ${props =>
+    props.isActive ? 'var(--gradient)' : 'var(--neutral-white-d2)'};
   &:hover {
     color: var(--primary-d2);
   }

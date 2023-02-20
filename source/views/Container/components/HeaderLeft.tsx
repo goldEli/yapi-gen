@@ -72,114 +72,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
             </div>
             <div className="label">日志管理</div>
           </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="system-nor" size={24} />
-            </div>
-            <div className="label">公司概况</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="folder-open-nor" size={24} />
-            </div>
-            <div className="label">项目管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="log-nor" size={24} />
-            </div>
-            <div className="label">日志管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="system-nor" size={24} />
-            </div>
-            <div className="label">公司概况</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="folder-open-nor" size={24} />
-            </div>
-            <div className="label">项目管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="log-nor" size={24} />
-            </div>
-            <div className="label">日志管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="system-nor" size={24} />
-            </div>
-            <div className="label">公司概况</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="folder-open-nor" size={24} />
-            </div>
-            <div className="label">项目管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="log-nor" size={24} />
-            </div>
-            <div className="label">日志管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="system-nor" size={24} />
-            </div>
-            <div className="label">公司概况</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="folder-open-nor" size={24} />
-            </div>
-            <div className="label">项目管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="log-nor" size={24} />
-            </div>
-            <div className="label">日志管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="system-nor" size={24} />
-            </div>
-            <div className="label">公司概况</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="folder-open-nor" size={24} />
-            </div>
-            <div className="label">项目管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="log-nor" size={24} />
-            </div>
-            <div className="label">日志管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="system-nor" size={24} />
-            </div>
-            <div className="label">公司概况</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="folder-open-nor" size={24} />
-            </div>
-            <div className="label">项目管理</div>
-          </DrawerMenuItem>
-          <DrawerMenuItem>
-            <div className="menuIcon">
-              <CommonIconFont type="log-nor" size={24} />
-            </div>
-            <div className="label">日志管理</div>
-          </DrawerMenuItem>
         </Space>
       </DrawerMenu>
       <DrawerFooter>1212</DrawerFooter>
@@ -205,7 +97,7 @@ const HeaderLeft = () => {
         </Space>
       </Space>
       <ChildrenMenu>
-        <ChildrenMenuItem size={8}>
+        <ChildrenMenuItem size={8} isActive>
           <span>项目</span>
           <CommonIconFont type="down" size={14} />
         </ChildrenMenuItem>
