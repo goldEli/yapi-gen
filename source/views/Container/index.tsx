@@ -35,8 +35,8 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  box-shadow: 0px 1px 9px 0px #ebecf0;
-  background: ${(props: any) => props.theme.header};
+  box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
+  background: var(--neutral-white-d2);
   z-index: 2;
 `
 
@@ -60,7 +60,6 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const { userInfo, loginInfo } = useSelector(store => store.user)
-  const { theme } = useSelector(store => store.global)
   const {
     i18n: { language },
   } = useTranslation()
@@ -112,6 +111,7 @@ export const Container = () => {
               <Side />
               <Main>
                 <Outlet />
+                {/* <ResizeTable /> */}
               </Main>
             </Content>
             <Guide

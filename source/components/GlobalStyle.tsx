@@ -67,65 +67,8 @@ const GlobalStyle = () => {
       --function-warning: #fa9746;
     }
   `
-  const black = css`
-    :root {
-      --font12: '12px';
-      --font14: '14px';
-      --font16: '16px';
-      --font18: '18px';
-      --font20: '20px';
-      // 按钮 --- start
-      --auxiliary-b1: #6688ff;
-      --auxiliary-b2: #7a97ff;
-      --auxiliary-b3: #496ef2;
-      --auxiliary-b4: #333640;
-      --auxiliary-b5: #3b3e49;
-      --auxiliary-b6: #2f323c;
-      --auxiliary-b7: #333640;
-      --auxiliary-b8: #3b3e49;
-      --auxiliary-b9: #2f323c;
-      --auxiliary-b10: #2f323c;
-      --auxiliary-text-t1-d1: #ffffff;
-      --auxiliary-text-t1-d2: #ffffff;
-      --auxiliary-text-t2-d1: #ffffff;
-      --auxiliary-text-t2-d2: #ffffff;
-      --auxiliary-text-t3: #ff5c5e;
-      --auxiliary-t4: #3d4251;
-      // 按钮 --- end
-      --primary-d1: #6688ff;
-      --hover-d1: #333640;
-      --hover-d2: #333640;
-      --hover-d3: #474a58;
-      --selected: #333640;
-      --gradient: linear-gradient(90deg, #3a4159 0%, rgba(58, 65, 89, 0) 100%);
-      --primary-d2: #ffffff;
-      --active: #3f4453;
-      --neutral-black: #000000;
-      --neutral-n1-d1: #cfd4e5;
-      --neutral-n1-d2: #a1a5b2;
-      --neutral-n2: #bcbfcc;
-      --neutral-n3: #737680;
-      --neutral-n4: #666975;
-      --neutral-n5: #3d4251;
-      --neutral-n6-d1: #353948;
-      --neutral-n6-d2: #3f4453;
-      --neutral-n7: #424654;
-      --neutral-n8: #3b3f4a;
-      --neutral-n9: #272930;
-      --neutral-white-d1: #292b33;
-      --neutral-white-d2: #2d2f38;
-      --neutral-white-d3: #424654;
-      --neutral-white-d4: #333640;
-      --neutral-white-d5: #373a45;
-      --neutral-white-d6: #3d404d;
-      --neutral-n10: #2d2f38;
-      --neutral-white-d7: #ffffff;
-      --function-success: #43ba9a;
-      --function-error: #ff5c5e;
-      --function-warning: #fa9746;
-    }
-  `
-  const colors = [white, black]
+
+  const colors = [white]
   const globalCss = css`
     ${colors[theme]}
     .ant-form-item {

@@ -1,26 +1,104 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 公用按钮
+
 import { useThrottle } from '@/hooks/useThrottle'
-import styled from '@emotion/styled'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { useSelector } from '@store/index'
+import { css } from '@emotion/css'
 import { Space } from 'antd'
 import IconFont from './IconFont'
 
-const ButtonWrap = styled(Button)`
-  border-radius: 6px;
-  height: 32px;
-  padding: 0 16px;
-  border: none;
-  font-size: var(--font14);
-  span:first-child {
-    display: flex;
-    align-items: center;
+const primary = css`
+  background: var(--auxiliary-b1);
+  color: var(--auxiliary-text-t1-d1);
+  border: 1px solid transparent;
+  &:hover {
+    background: var(--auxiliary-b2);
+    color: var(--auxiliary-text-t1-d1);
   }
-  :after {
-    border: 0 none;
-    opacity: 0;
-    animation: none 0 ease 0 1 normal;
-    outline: none;
+  &:active {
+    background: var(--auxiliary-b3);
+    color: var(--auxiliary-text-t1-d1);
+  }
+`
+const light = css`
+  background: var(--auxiliary-b4);
+  color: var(--auxiliary-text-t2-d1);
+  border: 1px solid transparent;
+  &:hover {
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d2);
+  }
+  &:active {
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
+  }
+`
+const secondary = css`
+  background: var(--auxiliary-b4);
+  color: var(--auxiliary-text-t2-d2);
+  border: 1px solid transparent;
+  &:hover {
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
+  }
+  &:active {
+    background: var(--auxiliary-b6);
+    color: var(--auxiliary-text-t2-d2);
+  }
+`
+const danger = css`
+  background: var(--auxiliary-b7);
+  color: var(--auxiliary-text-t3);
+  border: 1px solid transparent;
+  &:hover {
+    background: var(--auxiliary-b8);
+    color: var(--auxiliary-text-t3);
+  }
+  &:active {
+    background: var(--auxiliary-b9);
+    color: var(--auxiliary-text-t3);
+  }
+`
+const primaryText = css`
+  background: transparent;
+  color: var(--auxiliary-text-t2-d2);
+  border: 1px solid transparent;
+  &:hover {
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d2);
+  }
+  &:active {
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
+  }
+`
+const secondaryText = css`
+  background: transparent;
+  color: var(--auxiliary-text-t2-d1);
+  border: 1px solid transparent;
+  &:hover {
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d1);
+  }
+  &:active {
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
+  }
+`
+const icon = css`
+  background: transparent;
+  color: var(--auxiliary-text-t2-d1);
+  border: 1px solid var(--neutral-n9);
+  padding: 0 6px !important;
+  &:hover {
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d2);
+    border: 1px solid transparent;
+  }
+  &:active {
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
+    border: 1px solid transparent;
   }
 `
 
@@ -46,16 +124,47 @@ interface Props {
 }
 
 const CommonButton = (props: Props) => {
-  const { theme } = useSelector(store => store.global)
-
   const throttleClick = useThrottle(() => {
     props.onClick?.()
   }, 1000)
 
+  const allButton = {
+    primary,
+    light,
+    secondary,
+    danger,
+    primaryText,
+    secondaryText,
+    icon,
+  }
+
+  const commonCss = css`
+    ${allButton[props.type]};
+    border-radius: 6px;
+    height: 32px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    font-size: var(--font14);
+    cursor: pointer;
+    span:first-child {
+      display: flex;
+      align-items: center;
+    }
+    &:disabled {
+      background: var(--auxiliary-b10);
+      color: var(--auxiliary-t4);
+      cursor: no-drop;
+    }
+  `
+
   //   如果有图标
   if (props.icon && props.type !== 'icon') {
     return (
-      <ButtonWrap onClick={throttleClick} disabled={props.isDisable}>
+      <button
+        className={commonCss}
+        onClick={throttleClick}
+        disabled={props.isDisable}
+      >
         {props.iconPlacement === 'right' && (
           <Space size={8}>
             <IconFont type={props.icon} />
@@ -68,23 +177,31 @@ const CommonButton = (props: Props) => {
             <IconFont type={props.icon} />
           </Space>
         )}
-      </ButtonWrap>
+      </button>
     )
   }
 
   //   如果有图标没有内容
   if (props.type === 'icon') {
     return (
-      <ButtonWrap onClick={throttleClick} disabled={props.isDisable}>
+      <button
+        className={commonCss}
+        onClick={throttleClick}
+        disabled={props.isDisable}
+      >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
-      </ButtonWrap>
+      </button>
     )
   }
 
   return (
-    <ButtonWrap onClick={throttleClick} disabled={props.isDisable}>
+    <button
+      className={commonCss}
+      onClick={throttleClick}
+      disabled={props.isDisable}
+    >
       {props.children}
-    </ButtonWrap>
+    </button>
   )
 }
 
