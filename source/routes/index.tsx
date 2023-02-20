@@ -29,6 +29,10 @@ const routes = [
         path: '/Project',
         element: lazy(() => import('@/views/Project')),
       },
+      {
+        path: '/Admin',
+        element: lazy(() => import('@/views/Admin')),
+      },
     ],
   },
 ]
