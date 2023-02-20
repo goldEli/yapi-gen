@@ -21,7 +21,12 @@ const Project = () => {
     <ProjectWrap>
       project
       <Space size={16}>
-        <CommonButton type="primary" icon="plus" iconPlacement="right">
+        <CommonButton
+          isDisable
+          type="primary"
+          icon="plus"
+          iconPlacement="right"
+        >
           primary
         </CommonButton>
         <CommonButton type="light">light</CommonButton>
