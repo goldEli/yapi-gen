@@ -3,10 +3,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Modal, Space } from 'antd'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from './StyleCommon'
+import CommonButton from './CommonButton'
 
 interface Props {
   isVisible: boolean
@@ -25,18 +25,20 @@ const ModalHeader = styled.div({
   justifyContent: 'space-between',
 })
 
-const Title = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  color: '#323233',
-  fontSize: 16,
-  div: {
-    marginLeft: 12,
-  },
-})
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n1-d1);
+  font-size: 16px;
+
+  div {
+    margin-left: 12px;
+    font-weight: 500;
+  }
+`
 
 const ModalContent = styled.div({
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   fontSize: 14,
   marginTop: 12,
   paddingLeft: 36,
@@ -80,11 +82,13 @@ const DeleteConfirm = (props: Props) => {
       <ModalContent>{props.children ?? props.text}</ModalContent>
       <ModalFooter size={16}>
         {!props?.notCancel && (
-          <Button onClick={props.onChangeVisible}>取消</Button>
+          <CommonButton onClick={props.onChangeVisible} type="secondary">
+            取消
+          </CommonButton>
         )}
-        <Button type="primary" onClick={props.onConfirm}>
+        <CommonButton type="primary" onClick={props.onConfirm}>
           确定
-        </Button>
+        </CommonButton>
       </ModalFooter>
     </Modal>
   )

@@ -1,6 +1,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import InputSearch from './InputSearch'
+import { useState } from 'react'
+import InputSearch from '@/components/InputSearch'
 const HeaderWrap = styled.div`
   width: 100%;
   height: 72px;
@@ -36,6 +37,7 @@ const ButtonStyle = styled.div`
   }
 `
 const HeaderSearch = () => {
+  const [searchVal, setSearchVal] = useState('')
   return (
     <HeaderWrap>
       <TitleWrap>
@@ -47,11 +49,14 @@ const HeaderSearch = () => {
       </TitleWrap>
       <SearchBox>
         <InputSearch
-          width="202"
+          width={202}
+          value={searchVal}
+          bgColor="var(--neutral-white-d4)"
           length={12}
           placeholder="请输入昵称姓名邮箱电话"
-          onChange={() => 1223}
-          onBlur={() => 35}
+          onSearch={(value: string) => setSearchVal(value)}
+          onChange={(value: string) => setSearchVal(value)}
+          onClear={() => setSearchVal('')}
         />
         <ButtonStyle>添加成员</ButtonStyle>
       </SearchBox>

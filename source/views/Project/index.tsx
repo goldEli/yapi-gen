@@ -1,4 +1,4 @@
-import ChooseCover from '@/components/ChooseCover'
+import ChooseCover, { IndexRef2 } from '@/components/ChooseCover'
 import CommonModal from '@/components/CommonModal'
 import CreateAProjectForm, { IndexRef } from '@/components/CreateAProjectForm'
 import CustomDropdown from '@/components/CustomDropdown'
@@ -12,6 +12,7 @@ const ProjectManagementOptimization = () => {
   const row = new Array(10).fill(1)
   const [isEdit, setIsEdit] = useState(false)
   const myCreate = useRef<IndexRef>(null)
+  const myCover = useRef<IndexRef2>(null)
 
   const onChange = (key: string) => {
     switch (key) {
@@ -29,6 +30,8 @@ const ProjectManagementOptimization = () => {
   }
   const onConfirm = () => {
     const data = myCreate.current?.postValue()
+    const data2 = myCover.current?.activeCover
+    // console.log(data, data2)
   }
   return (
     <Wrap>
@@ -36,7 +39,12 @@ const ProjectManagementOptimization = () => {
         <ProjectCard key={item}>
           <CustomDropdown onChange={onChange}>
             <HoverIcon>
-              <IconFont type="more" />
+              <IconFont
+                style={{
+                  color: 'var(--neutral-n3)',
+                }}
+                type="more"
+              />
             </HoverIcon>
           </CustomDropdown>
         </ProjectCard>
@@ -53,7 +61,7 @@ const ProjectManagementOptimization = () => {
             display: 'flex',
           }}
         >
-          <ChooseCover />
+          <ChooseCover ref={myCover} />
           <CreateAProjectForm ref={myCreate} />
         </div>
       </CommonModal>

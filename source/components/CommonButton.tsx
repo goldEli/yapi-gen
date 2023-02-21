@@ -35,7 +35,7 @@ const light = css`
 `
 const secondary = css`
   background: var(--auxiliary-b4);
-  color: var(--auxiliary-text-t2-d2);
+  color: var(--neutral-n2);
   border: 1px solid transparent;
   &:hover {
     background: var(--auxiliary-b5);
