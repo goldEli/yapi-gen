@@ -15,6 +15,7 @@ import demand from './demand'
 import iterate from './iterate'
 import global from './global'
 import cover from './cover/index'
+import view from './view/index'
 
 export const store = configureStore({
   reducer: {
@@ -29,6 +30,7 @@ export const store = configureStore({
     iterate,
     global,
     cover,
+    view,
   },
 })
 

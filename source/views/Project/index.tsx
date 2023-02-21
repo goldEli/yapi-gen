@@ -5,6 +5,7 @@ import CustomDropdown from '@/components/CustomDropdown'
 import IconFont from '@/components/IconFont'
 import ProjectCard from '@/components/ProjectCard'
 import { HoverIcon } from '@/components/ProjectCard/style'
+import ViewPort from '@/components/ViewPort'
 import { useRef, useState } from 'react'
 import { Wrap } from './style'
 
@@ -35,7 +36,8 @@ const ProjectManagementOptimization = () => {
   }
   return (
     <Wrap>
-      {row.map(item => (
+      <ViewPort />
+      {/* {row.map(item => (
         <ProjectCard key={item}>
           <CustomDropdown onChange={onChange}>
             <HoverIcon>
@@ -48,7 +50,7 @@ const ProjectManagementOptimization = () => {
             </HoverIcon>
           </CustomDropdown>
         </ProjectCard>
-      ))}
+      ))} */}
       <CommonModal
         onConfirm={onConfirm}
         onClose={() => setIsEdit(false)}

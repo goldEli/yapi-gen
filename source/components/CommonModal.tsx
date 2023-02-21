@@ -59,7 +59,7 @@ const CommonModal = (props: ModalProps) => {
       focusTriggerAfterClose={false}
     >
       <ModalHeader>
-        <span>{props?.title}123</span>
+        <span>{props?.title}</span>
         <Space size={4}>
           {props.hasTop}
           <CloseWrap onClick={props?.onClose} width={32} height={32}>

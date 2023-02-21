@@ -21,6 +21,7 @@ import GlobalStyle from '@/components/GlobalStyle'
 import ResizeTable from './components/TableDemo'
 import Guide from './components/Guide'
 import { getProjectCover } from '@store/cover/thunks'
+import CreateViewPort from '@/components/CreateViewPort'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -122,6 +123,7 @@ export const Container = () => {
           </LayoutWrap>
         )}
         {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
+        <CreateViewPort />
       </ConfigProvider>
     </KitConfigProvider>
   )
