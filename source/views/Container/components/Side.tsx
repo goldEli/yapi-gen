@@ -61,6 +61,12 @@ const FoldIcon = styled.div`
   cursor: pointer;
 `
 
+const SideMain = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`
+
 const Side = () => {
   const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
@@ -131,7 +137,10 @@ const Side = () => {
         transition: endWidth < 200 ? '0.2s' : 'initial',
       }}
     >
-      <ProjectDetailSide />
+      <SideMain>
+        <ProjectDetailSide />
+      </SideMain>
+
       <Line
         onMouseDown={onDragLine}
         style={{ left: leftWidth - 1 }}
