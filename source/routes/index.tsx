@@ -23,7 +23,7 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <Navigate to="/Project" />,
+        element: <Navigate to="/Situation" />,
       },
       {
         path: '/Situation',
@@ -62,7 +62,7 @@ const routes = [
         element: lazy(() => import('@/views/AdminManagement')),
         children: [
           {
-            path: 'CompanyInfo',
+            path: '',
             element: lazy(() => import('@/views/AdminManagement/CompanyInfo')),
           },
           {

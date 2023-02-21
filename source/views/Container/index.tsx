@@ -62,10 +62,14 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const { userInfo, loginInfo } = useSelector(store => store.user)
+  const { currentMenu } = useSelector(store => store.global)
   const {
     i18n: { language },
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
+
+  const notHaveSide = ['/Situation']
+
   message.config({
     duration: 0.8,
     maxCount: 1,
@@ -111,7 +115,7 @@ export const Container = () => {
               <HeaderRight />
             </HeaderWrap>
             <Content>
-              <Side />
+              {!notHaveSide.includes(currentMenu.url) && <Side />}
               <Main>
                 <Outlet />
               </Main>

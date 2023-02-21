@@ -40,6 +40,11 @@ const GlobalStyle = () => {
         #ebefff 0%,
         rgba(243, 246, 255, 0) 100%
       );
+      --gradient-left: linear-gradient(
+        90deg,
+        #ebefff 0%,
+        rgba(243, 246, 255, 0) 100%
+      );
       --primary-d2: #6688ff;
       --active: #ebedf0;
       --neutral-black: #000000;
@@ -65,6 +70,7 @@ const GlobalStyle = () => {
       --function-success: #43ba9a;
       --function-error: #ff5c5e;
       --function-warning: #fa9746;
+      --neutral-transparent-n1-d1: rgba(50, 50, 51, 0.4);
     }
   `
   const black = css`
@@ -98,6 +104,11 @@ const GlobalStyle = () => {
       --hover-d3: #474a58;
       --selected: #333640;
       --gradient: linear-gradient(180deg, #3a4159 0%, rgba(58, 65, 89, 0) 100%);
+      --gradient-left: linear-gradient(
+        90deg,
+        #3a4159 0%,
+        rgba(58, 65, 89, 0) 100%
+      );
       --primary-d2: #ffffff;
       --active: #3f4453;
       --neutral-black: #000000;
@@ -123,6 +134,7 @@ const GlobalStyle = () => {
       --function-success: #43ba9a;
       --function-error: #ff5c5e;
       --function-warning: #fa9746;
+      --neutral-transparent-n1-d1: rgba(50, 50, 51, 0.4);
     }
   `
   const colors = [white, black]
