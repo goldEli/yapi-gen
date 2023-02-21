@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
-// import DeleteConfirm from '@/components/DeleteConfirm'
+import DeleteConfirm from '@/components/DeleteConfirm'
 import { Form, Input, Tooltip } from 'antd'
 import { uploadFileByTask } from '@/services/cos'
 import upload from 'antd/lib/upload'
@@ -173,7 +173,7 @@ const LeftSide = () => {
   const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
   const [value, setValue] = useState('')
   const [form] = Form.useForm()
-  const teamGetForm = () => {
+  const teamGetForm = (row?: any) => {
     return (
       <>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
@@ -214,6 +214,10 @@ const LeftSide = () => {
     setTeamIsVisible(true)
     setTeamForm(teamGetForm())
   }
+  const editTeam = (row: any) => {
+    setTeamForm(teamGetForm(row))
+    setTeamIsVisible(true)
+  }
   useEffect(() => {
     teamIsVisible && setTeamForm(teamGetForm())
   }, [value])
@@ -229,6 +233,9 @@ const LeftSide = () => {
         list={list}
         setList={setList}
         childStyle={childStyle}
+        onChangeTeam={(key: string, row: any) => {
+          key === 'del' ? setDelTeamIsVisible(true) : editTeam(row)
+        }}
       />
       <CommonModal
         title={'创建团队'}
@@ -236,6 +243,13 @@ const LeftSide = () => {
         children={teamForm}
         onClose={() => setTeamIsVisible(false)}
       />
+      <DeleteConfirm
+        title="确认解散【超强团队】团队"
+        text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
+        isVisible={delTeamIsVisible}
+        onConfirm={() => setDelTeamIsVisible(false)}
+        onChangeVisible={() => setDelTeamIsVisible(false)}
+      ></DeleteConfirm>
     </LeftSideContainer>
   )
 }
