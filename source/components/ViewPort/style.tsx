@@ -5,7 +5,8 @@ export const ViewPortWrap = styled.div`
   margin: 60px 0 0 60px;
   height: 32px;
   min-width: 120px;
-  display: flex;
+
+  display: inline-flex;
   align-items: center;
   padding: 0 8px;
 `

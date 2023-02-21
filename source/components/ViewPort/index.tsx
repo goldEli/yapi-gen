@@ -47,6 +47,7 @@ const ViewPort = () => {
     <Dropdown
       trigger={['click']}
       menu={{ items, onClick }}
+      getPopupContainer={(node: any) => node.parentNode}
       dropdownRender={menu => (
         <div className={dropdowncontent}>
           {menu}
