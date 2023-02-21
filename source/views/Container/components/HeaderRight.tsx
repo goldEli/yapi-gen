@@ -12,6 +12,7 @@ import {
   ChangeItem,
   ChangeItems,
   CreateWrap,
+  Provider,
   imgCss,
   Line,
   MenuItem,
@@ -216,13 +217,16 @@ const HeaderRight = () => {
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
-        {/* <UserAvatar style={{ marginLeft: 10 }} /> */}
-        <CommonUserAvatar size="large" />
+        <div style={{ marginLeft: 10 }}>
+          <CommonUserAvatar size="large" />
+        </div>
+
         <UserInfoBox>
           <NameWrap>扎根三</NameWrap>
           <PhoneWrap>181****0821</PhoneWrap>
         </UserInfoBox>
       </UserInfoTop>
+      <Provider />
       <MenuItems>
         {userList.map((i: any) => (
           <div key={i.icon}>
@@ -323,7 +327,9 @@ const HeaderRight = () => {
           onOpenChange={setIsVisible}
           placement="bottomRight"
         >
-          <CommonUserAvatar size="large" />
+          <div>
+            <CommonUserAvatar size="large" />
+          </div>
         </Popover>
       </Space>
     </>

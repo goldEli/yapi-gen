@@ -9,20 +9,29 @@ const UserAvatarWrap = styled.div`
   align-items: center;
 `
 
-const AvatarBox = styled.div<{ size?: string }>`
+const AvatarBox = styled.div<{ size?: string; isBorder?: boolean }>`
   border-radius: 50%;
   width: ${props => (props.size === 'large' ? 32 : 24)}px;
   height: ${props => (props.size === 'large' ? 32 : 24)}px;
+  border: ${props =>
+    props.isBorder ? '1px solid var(--neutral-white-d7)' : 'none'};
   img {
     width: 100%;
     height: 100%;
   }
 `
 
+const NameWrap = styled.div<{ fontSize?: number }>`
+  margin-left: 8px;
+  font-size: ${props => props.fontSize}px;
+  font-family: SiYuanRegular;
+  color: var(--neutral-n2);
+`
+
 interface UserAvatarProps {
   isBorder?: boolean
   avatar?: string
-  isShowName?: boolean
+  name?: string
   size?: 'large' | 'small'
   fontSize?: number
 }
@@ -31,9 +40,12 @@ const CommonUserAvatar = (props: UserAvatarProps) => {
   const { theme } = useSelector(store => store.global)
   return (
     <UserAvatarWrap>
-      <AvatarBox size={props.size}>
-        <img src={props.avatar || (theme ? avatarBlack : avatarWhite)} alt="" />
+      <AvatarBox size={props.size} isBorder={props.isBorder}>
+        {props.avatar && <img src={props.avatar} />}
+        {!props.avatar && theme === 1 && <img src={avatarBlack} />}
+        {!props.avatar && theme === 0 && <img src={avatarWhite} />}
       </AvatarBox>
+      {props.name && <NameWrap>{props?.name}</NameWrap>}
     </UserAvatarWrap>
   )
 }

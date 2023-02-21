@@ -31,7 +31,6 @@ export const UserInfoWrap = styled.div`
 
 export const UserInfoTop = styled.div`
   padding: 0 16px 12px;
-  border-bottom: 1px solid var(--neutral-n6-d1);
   display: flex;
   align-items: center;
 `
@@ -229,22 +228,23 @@ export const CompanyInfo = styled.div`
   }
 `
 
-export const DrawerProvider = styled.div`
+export const Provider = styled.div<{ isBottom?: boolean }>`
   height: 1px;
   width: 88%;
   margin-left: 6%;
   background: var(--neutral-n6-d1);
+  margin-bottom: ${props => (props.isBottom ? 16 : 0)}px;
 `
 
 export const DrawerMenu = styled.div`
   padding: 0 12px;
   display: flex;
   flex-wrap: wrap;
-  max-height: calc(100vh - 188px);
+  max-height: calc(100vh - 204px);
   overflow-y: scroll;
 `
 
-export const DrawerMenuItem = styled.div`
+export const DrawerMenuItem = styled.div<{ isActive?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -260,16 +260,20 @@ export const DrawerMenuItem = styled.div`
     height: 48px;
     width: 48px;
     border-radius: 6px;
-    background: var(--hover-d2);
-    color: var(--neutral-n1-d1);
+    background: ${props =>
+      props.isActive ? 'var(--primary-d1)' : 'var(--hover-d2)'};
+    color: ${props =>
+      props.isActive ? 'var(--neutral-white-d7)' : 'var(--neutral-n1-d1)'};
   }
   .label {
     margin-top: 8px;
-    color: var(--neutral-n1-d2);
+    color: ${props =>
+      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   }
   &:hover {
     .menuIcon {
-      color: var(--primary-d2);
+      color: ${props =>
+        props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d2)'};
     }
   }
 `
@@ -285,6 +289,15 @@ export const DrawerFooter = styled.div`
   background: var(--neutral-white-d5);
   position: absolute;
   bottom: 8px;
+  div {
+    display: flex;
+    align-items: center;
+    div {
+      margin-left: 16px;
+      font-size: 14px;
+      color: var(--neutral-n1-d2);
+    }
+  }
   &:hover {
     background: var(--hover-d2);
   }
