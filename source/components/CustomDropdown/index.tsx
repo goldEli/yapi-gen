@@ -1,8 +1,12 @@
-import { Dropdown, MenuProps } from 'antd'
-import React from 'react'
+import type { MenuProps } from 'antd'
+import type React from 'react'
 import { StyleDropdown } from './style'
 
-const index = (props: any) => {
+type Props = {
+  children?: React.ReactNode
+  onChange(e: string): void
+}
+const index = (props: Props) => {
   const items: any = [
     {
       key: 'edit',

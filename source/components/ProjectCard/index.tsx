@@ -17,7 +17,14 @@ import {
   EndTag,
 } from './style'
 
-const TextOfIcon = (props: any) => (
+type Props = {
+  type: string
+  num: string
+  text: string
+  children?: React.ReactNode
+}
+
+const TextOfIcon = (props: Props) => (
   <Tooltip placement="bottom" title={props.text}>
     <div>
       <IconFont
