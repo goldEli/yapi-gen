@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Button, Divider, Select } from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
+import MoreOptions from '../MoreOptions'
 
 const index = (props: any) => {
-  const [items, setItems] = useState(['jack', 'lucy', '1', '2', '3', '4'])
   const [value, setValue] = useState<string[]>([])
   const onClear = () => {
     setValue([])
@@ -18,15 +18,15 @@ const index = (props: any) => {
     setValue(values)
   }
   const invertSelection = () => {
-    const invertSelectionArray = getArrDifference(items, value)
+    const invertSelectionArray = getArrDifference(props.options, value)
     setValue(invertSelectionArray)
   }
   const prepositionItems = useMemo(() => {
     if (value.length >= 1) {
-      return value.concat(getArrDifference(items, value))
+      return value.concat(getArrDifference(props.options, value))
     }
-    return items
-  }, [items, value])
+    return props.options
+  }, [props.options, value])
 
   useEffect(() => {
     props.onChange(value)
@@ -49,19 +49,9 @@ const index = (props: any) => {
         </>
       )}
     >
-      {prepositionItems.map(i => (
+      {prepositionItems.map((i: any) => (
         <Select.Option key={i} value={i}>
-          <img
-            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-            alt=""
-            style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              marginRight: '8px',
-            }}
-          />
-          {i}
+          <MoreOptions type={props.type} name={i} dec={i} />
         </Select.Option>
       ))}
     </Select>

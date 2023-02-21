@@ -53,7 +53,7 @@ const GlobalStyle = () => {
       --neutral-n6-d2: #ecedef;
       --neutral-n7: #f2f2f4;
       --neutral-n8: #f8f8fa;
-      --neutral-n9: #ecedef;
+      --neutral-n9: #f9f9fa;
       --neutral-white-d1: #ffffff;
       --neutral-white-d2: #ffffff;
       --neutral-white-d3: #ffffff;
@@ -131,6 +131,24 @@ const GlobalStyle = () => {
 
   const globalCss = css`
     ${colors[theme]}
+    :root {
+      --blue: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #00a3ff 100%);
+      --green: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #009b56 100%);
+      --purple: linear-gradient(
+        180deg,
+        rgba(215, 152, 254, 0) 0%,
+        #4200ff 100%
+      );
+      --orange: linear-gradient(
+        180deg,
+        rgba(238, 209, 183, 0) 0%,
+        #c34600 100%,
+        #dd5000 100%
+      );
+    }
+    .ant-progress-text {
+      color: var(--neutral-n2) !important;
+    }
     .ant-form-item {
       padding-top: 2px !important;
     }

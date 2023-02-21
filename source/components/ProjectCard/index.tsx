@@ -17,13 +17,26 @@ import {
   EndTag,
 } from './style'
 
-const TextOfIcon = (props: any) => (
+type Props = {
+  type: string
+  num: string
+  text: string
+  children?: React.ReactNode
+}
+
+const TextOfIcon = (props: Props) => (
   <Tooltip placement="bottom" title={props.text}>
     <div>
-      <IconFont type={props.type} />
+      <IconFont
+        style={{
+          color: 'var(--neutral-n4)',
+        }}
+        type={props.type}
+      />
       <span
         style={{
           marginLeft: '5px',
+          color: 'var(--neutral-n4)',
         }}
       >
         {props.num}
@@ -52,7 +65,11 @@ const index = (props: any) => {
 
   return (
     <ProjectCard>
-      <Image src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+      <Image
+        src={
+          props.img ?? 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
+        }
+      />
 
       <CardRight>
         <Tooltip
@@ -72,7 +89,7 @@ const index = (props: any) => {
           <ProgressWrap>
             <Progress
               size="small"
-              strokeColor="#43ba9a"
+              strokeColor="var(--function-success)"
               strokeWidth={4}
               percent={30}
             />

@@ -45,21 +45,19 @@ const index = (props: any, ref: ForwardedRef<IndexRef>) => {
           name="their"
           rules={[{ required: true, message: 'Please input your password!' }]}
         >
-          <Select
-            placeholder="Select a option and change input text above"
-            onChange={onGenderChange}
-            allowClear
-          >
-            <Select.Option value="male">male</Select.Option>
-            <Select.Option value="female">female</Select.Option>
-            <Select.Option value="other">other</Select.Option>
-          </Select>
+          <MoreSelect
+            type="project"
+            options={['jack', 'lucy', '1', '2', '3', '4']}
+          />
         </Form.Item>
         <Form.Item
           label={
             <div>
               <FormTitleSmall text="键" />
               <Tooltip
+                overlayStyle={{
+                  fontSize: '12px',
+                }}
                 trigger={['click']}
                 placement="top"
                 title="键用以区分项目，作为需求编号前缀使用"
@@ -80,16 +78,32 @@ const index = (props: any, ref: ForwardedRef<IndexRef>) => {
         >
           <Input placeholder="请输入键" />
         </Form.Item>
-        <Form.Item
-          label={<FormTitleSmall text="项目负责人" />}
-          name="user"
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
-          <MoreSelect />
+        <Form.Item label={<FormTitleSmall text="项目负责人" />} name="user">
+          <MoreSelect
+            type="user"
+            options={['jack', 'lucy', '1', '2', '3', '4']}
+          />
+        </Form.Item>
+        <Form.Item label={<FormTitleSmall text="权限" />} name="user">
+          <MoreSelect
+            type="promise"
+            options={['jack', 'lucy', '1', '2', '3', '4']}
+          />
+        </Form.Item>
+        <Form.Item label={<FormTitleSmall text="项目分组" />} name="their">
+          <Select
+            placeholder="Select a option "
+            onChange={onGenderChange}
+            allowClear
+          >
+            <Select.Option value="male">male</Select.Option>
+            <Select.Option value="female">female</Select.Option>
+            <Select.Option value="other">other</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item label={<FormTitleSmall text="项目描述" />} name="dec">
           <Input.TextArea
-            placeholder="Controlled autosize"
+            placeholder="请输入项目描述"
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
         </Form.Item>
