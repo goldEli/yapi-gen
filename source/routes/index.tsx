@@ -23,7 +23,7 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <Navigate to="/Project" />,
+        element: <Navigate to="/Situation" />,
       },
       {
         path: '/Situation',

@@ -293,7 +293,7 @@ export const DrawerFooter = styled.div`
     display: flex;
     align-items: center;
     div {
-      margin-left: 16px;
+      margin-left: 12px;
       font-size: 14px;
       color: var(--neutral-n1-d2);
     }

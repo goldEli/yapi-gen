@@ -61,10 +61,11 @@ const FoldIcon = styled.div`
   cursor: pointer;
 `
 
-const SideMain = styled.div`
+const SideMain = styled.div<{ firstMenuCollapse: boolean }>`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  display: ${props => (props.firstMenuCollapse ? 'none' : 'block')};
 `
 
 const Side = () => {
@@ -137,8 +138,8 @@ const Side = () => {
         transition: endWidth < 200 ? '0.2s' : 'initial',
       }}
     >
-      <SideMain>
-        <ProjectDetailSide />
+      <SideMain firstMenuCollapse={firstMenuCollapse}>
+        <ProjectDetailSide leftWidth={leftWidth} />
       </SideMain>
 
       <Line
