@@ -2,6 +2,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
@@ -215,7 +216,8 @@ const HeaderRight = () => {
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
-        <UserAvatar style={{ marginLeft: 10 }} />
+        {/* <UserAvatar style={{ marginLeft: 10 }} /> */}
+        <CommonUserAvatar size="large" />
         <UserInfoBox>
           <NameWrap>扎根三</NameWrap>
           <PhoneWrap>181****0821</PhoneWrap>
@@ -253,9 +255,9 @@ const HeaderRight = () => {
   const content = (
     <ChangeItems>
       {createList.map((i: any) => (
-        <ChangeItem key={i.key}>
+        <ChangeItem key={i.key} height={40}>
           <Space size={8}>
-            <CommonIconFont type={i.icon} />
+            <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
             {i.name}
           </Space>
         </ChangeItem>
@@ -321,7 +323,7 @@ const HeaderRight = () => {
           onOpenChange={setIsVisible}
           placement="bottomRight"
         >
-          <UserAvatar />
+          <CommonUserAvatar size="large" />
         </Popover>
       </Space>
     </>

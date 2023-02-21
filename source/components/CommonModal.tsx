@@ -3,11 +3,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { Modal, Space } from 'antd'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from './StyleCommon'
+import CommonButton from './CommonButton'
 
 const ModalHeader = styled.div({
   display: 'flex',
@@ -73,14 +73,12 @@ const CommonModal = (props: ModalProps) => {
           {props?.hasFooter}
           {!props.hasFooter && (
             <ModalFooter size={16}>
-              <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-              <Button onClick={props?.onConfirm}>确认</Button>
-              {/* <ThrottleButton
-                thClick={() => props?.onConfirm!()}
-                type="primary"
-              >
-                {props?.confirmText ? props?.confirmText : t('common.confirm')}
-              </ThrottleButton> */}
+              <CommonButton type="secondary" onClick={props?.onClose}>
+                {t('common.cancel')}
+              </CommonButton>
+              <CommonButton type="primary" onClick={props?.onConfirm}>
+                {t('common.confirm')}
+              </CommonButton>
             </ModalFooter>
           )}
         </>
