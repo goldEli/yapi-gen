@@ -79,7 +79,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击菜单
   const onChangeCurrentMenu = (menu: any) => {
     props.onChange(false)
-    navigate(menu.url)
+    navigate(menu.children ? `${menu.url}/Project` : menu.url)
     const resultMenu = {
       ...menu,
       ...{
@@ -95,7 +95,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    navigate('/AdminManagement')
+    navigate('/AdminManagement/TeamManagement')
     const resultMenu = {
       id: 3,
       name: '后台管理',
