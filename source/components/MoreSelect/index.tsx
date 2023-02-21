@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Button, Divider, Select } from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
-import PromiseSelect from '../PromiseSelect'
+import MoreOptions from '../MoreOptions'
 
 const index = (props: any) => {
   const [value, setValue] = useState<string[]>([])
@@ -51,17 +51,7 @@ const index = (props: any) => {
     >
       {prepositionItems.map((i: any) => (
         <Select.Option key={i} value={i}>
-          <img
-            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-            alt=""
-            style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              marginRight: '8px',
-            }}
-          />
-          {i}
+          <MoreOptions type={props.type} name={i} dec={i} />
         </Select.Option>
       ))}
     </Select>

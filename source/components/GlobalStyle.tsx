@@ -70,6 +70,7 @@ const GlobalStyle = () => {
       --function-success: #43ba9a;
       --function-error: #ff5c5e;
       --function-warning: #fa9746;
+      --neutral-transparent-n1-d1: rgba(50, 50, 51, 0.4);
     }
   `
   const black = css`
@@ -133,6 +134,7 @@ const GlobalStyle = () => {
       --function-success: #43ba9a;
       --function-error: #ff5c5e;
       --function-warning: #fa9746;
+      --neutral-transparent-n1-d1: rgba(50, 50, 51, 0.4);
     }
   `
   const colors = [white, black]
