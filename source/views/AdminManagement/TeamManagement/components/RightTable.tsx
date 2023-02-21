@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import HeaderSearch from './HeaderSearch'
 import Table from './Table'
-import Pagination from './Pagination'
+import Pagination from '@/components/TablePagination'
 const RightWrap = styled.div`
   width: 100%;
   padding: 0 24px;
