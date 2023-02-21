@@ -1,10 +1,27 @@
 import styled from '@emotion/styled'
 
 export const Wrap = styled.div`
-  height: 52px;
-  padding: 5px 16px;
+  height: 40px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
 `
 
+export const WrapText = styled.div`
+  height: 40px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: var(--neutral-n2);
+  line-height: 40px;
+  margin-left: 8px;
+`
+export const WrapTextImg = styled.img`
+  width: 20px;
+  height: 20px;
+  background: #98ace0;
+  border-radius: 4px 4px 4px 4px;
+`
 export const WrapFirst = styled.div`
   height: 22px;
   font-size: 14px;
