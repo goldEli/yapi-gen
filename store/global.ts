@@ -30,20 +30,12 @@ const initialState: GlobalState = {
   theme: Number(localStorage.getItem('theme')) || 0,
   language: localStorage.getItem('language') || 'zh',
   currentMenu: {
-    id: 1,
-    name: '项目管理',
-    url: '/ProjectManagement',
+    id: 0,
+    name: '公司概况',
+    url: '/Situation',
     permission: '',
-    icon: 'folder-open-nor',
-    children: [
-      {
-        id: 1,
-        name: '项目',
-        url: '/ProjectManagement/Project',
-        permission: '',
-      },
-      { id: 2, name: '我的', url: '/ProjectManagement/Mine', permission: '' },
-    ],
+    icon: 'system-nor',
+    children: [],
   },
 }
 

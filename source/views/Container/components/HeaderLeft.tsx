@@ -92,6 +92,24 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     })
   }
 
+  // 点击跳转后台管理
+  const onToAdmin = () => {
+    props.onChange(false)
+    navigate('/AdminManagement')
+    const resultMenu = {
+      id: 3,
+      name: '后台管理',
+      url: '/AdminManagement',
+      permission: '',
+      icon: 'management',
+      children: [],
+    }
+    dispatch({
+      type: 'global/setCurrentMenu',
+      payload: resultMenu,
+    })
+  }
+
   return (
     <Drawer
       headerStyle={{ display: 'none' }}
@@ -148,7 +166,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
             ))}
         </Space>
       </DrawerMenu>
-      <DrawerFooter>
+      <DrawerFooter onClick={onToAdmin}>
         <div>
           <CommonIconFont
             type="management"
@@ -185,16 +203,18 @@ const HeaderLeft = () => {
           <MenuLabel>{currentMenu.name}</MenuLabel>
         </Space>
       </Space>
-      <ChildrenMenu>
-        <ChildrenMenuItem size={8} isActive>
-          <span>项目</span>
-          <CommonIconFont type="down" size={14} />
-        </ChildrenMenuItem>
-        <ChildrenMenuItem size={8}>
-          <span>我的</span>
-          <CommonIconFont type="down" size={14} />
-        </ChildrenMenuItem>
-      </ChildrenMenu>
+      {currentMenu.url === '/ProjectManagement' && (
+        <ChildrenMenu>
+          <ChildrenMenuItem size={8} isActive>
+            <span>项目</span>
+            <CommonIconFont type="down" size={14} />
+          </ChildrenMenuItem>
+          <ChildrenMenuItem size={8}>
+            <span>我的</span>
+            <CommonIconFont type="down" size={14} />
+          </ChildrenMenuItem>
+        </ChildrenMenu>
+      )}
     </HeaderLeftWrap>
   )
 }

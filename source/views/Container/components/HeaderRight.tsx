@@ -6,7 +6,8 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CloseWrap } from '@/components/StyleCommon'
 import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
-import { Popover, Space } from 'antd'
+import { changeLanguage, type LocaleKeys } from '@/locals'
+import { message, Popover, Space } from 'antd'
 import { useState } from 'react'
 import {
   ChangeItem,
@@ -28,8 +29,10 @@ import {
   UserInfoTop,
   UserInfoWrap,
 } from './../style'
+import { useTranslation } from 'react-i18next'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
+  const [t] = useTranslation()
   const { language, theme } = useSelector(store => store.global)
   const dispatch = useDispatch()
   const [isChangeVisible, setIsChangeVisible] = useState(false)
@@ -52,9 +55,11 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
   // 可切换的内容
   const changeContent = (key: number) => {
     // 切换语言
-    const onChangeLanguage = (type: string) => {
+    const onChangeLanguage = async (type: string) => {
       if (type === language) return
       onClose()
+      await changeLanguage(type as LocaleKeys)
+      message.success(t('common.localsSwitching'))
       dispatch({
         type: 'global/setLanguage',
         payload: type,
