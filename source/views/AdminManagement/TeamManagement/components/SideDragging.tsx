@@ -181,8 +181,8 @@ const SliderList = (props: any) => {
       label: '删除团队',
     },
   ]
-  const onTapWrite = (item: any) => {
-    return 123
+  const onChangeTeam = (item: any) => {
+    props.onChangeTeam(item.key)
   }
   return (
     <Container
@@ -210,7 +210,7 @@ const SliderList = (props: any) => {
         {children}
       </ListItemStyle>
       <DropdownContainer
-        menu={{ items, onClick: onTapWrite }}
+        menu={{ items, onClick: onChangeTeam }}
         trigger={['click']}
         placement="bottomRight"
         overlayStyle={{ width: 120 }}
@@ -227,6 +227,7 @@ const Sortable = (props: any) => {
     <div>
       {list.map((child: any, i: number) => (
         <SliderList
+          onChangeTeam={(row: any) => props.onChangeTeam(row)}
           onChange={(item: any) => props.onChange(item)}
           childStyle={childStyle}
           key={child.key}
