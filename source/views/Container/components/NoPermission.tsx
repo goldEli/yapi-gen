@@ -1,4 +1,4 @@
-// 暂无权限页面
+// 暂无权限页面 -- 可切换公司
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
