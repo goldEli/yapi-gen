@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
 // import DeleteConfirm from '@/components/DeleteConfirm'
-import { Form, Input } from 'antd'
+import { Form, Input, Tooltip } from 'antd'
 import { uploadFileByTask } from '@/services/cos'
 import upload from 'antd/lib/upload'
 
@@ -91,6 +91,17 @@ const UploadStyle = styled(upload)`
     cursor: pointer;
   }
 `
+const UploadTitle = styled.div`
+  display: flex;
+  align-items: center;
+  height: 22px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n1-d1);
+  margin-bottom: 8px;
+  margin-top: 36px;
+`
 const Upload = () => {
   const [defaultIcon, setDefaultIcon] = useState(true)
   const [uploadImg, setUploadImg] = useState('')
@@ -104,17 +115,32 @@ const Upload = () => {
     setUploadImg(response.url)
   }
   return (
-    <UploadStyle customRequest={customRequest} fileList={[]}>
-      {defaultIcon ? (
-        <IconFont
-          type="team-8a8gio2p"
-          style={{ fontSize: 80, color: '#98ACE0' }}
-        />
-      ) : (
-        <img src={uploadImg} />
-      )}
-      <Mask>重新上传</Mask>
-    </UploadStyle>
+    <>
+      <UploadStyle customRequest={customRequest} fileList={[]}>
+        <UploadTitle>
+          团队LOGO
+          <Tooltip placement="top" title={'支持jpg、png格式，大小80*80像素'}>
+            <IconFont
+              type="question"
+              style={{
+                fontSize: 13,
+                color: 'var(--neutral-n4)',
+                marginLeft: 9,
+              }}
+            />
+          </Tooltip>
+        </UploadTitle>
+        {defaultIcon ? (
+          <IconFont
+            type="team-8a8gio2p"
+            style={{ fontSize: 80, color: '#98ACE0' }}
+          />
+        ) : (
+          <img src={uploadImg} />
+        )}
+        <Mask>重新上传</Mask>
+      </UploadStyle>
+    </>
   )
 }
 const LeftSide = () => {
@@ -177,7 +203,7 @@ const LeftSide = () => {
               }
             />
           </Form.Item>
-          <Form.Item label="团队LOGO" name="img">
+          <Form.Item label="" name="img">
             <Upload />
           </Form.Item>
         </FormStyle>
@@ -205,6 +231,7 @@ const LeftSide = () => {
         childStyle={childStyle}
       />
       <CommonModal
+        title={'创建团队'}
         isVisible={teamIsVisible}
         children={teamForm}
         onClose={() => setTeamIsVisible(false)}
