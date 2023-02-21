@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button, Divider, Select } from 'antd'
+import { Button, Divider, Select, Tag } from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
 import MoreOptions from '../MoreOptions'
 
@@ -48,9 +48,16 @@ const index = (props: any) => {
           </div>
         </>
       )}
+      optionLabelProp="label"
+      // options={prepositionItems.map((i: any) => ({
+      //   label: (
+      //       <MoreOptions type={props.type} name={i} dec={i} />
+      //   ),
+      //   key: i
+      // }))}
     >
       {prepositionItems.map((i: any) => (
-        <Select.Option key={i} value={i}>
+        <Select.Option key={i} label={i}>
           <MoreOptions type={props.type} name={i} dec={i} />
         </Select.Option>
       ))}
