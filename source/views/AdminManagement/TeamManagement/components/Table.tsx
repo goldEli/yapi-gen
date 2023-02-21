@@ -32,7 +32,7 @@ const OperationWrap = styled.div`
     cursor: pointer;
   }
 `
-const Table = () => {
+const Table = (props: any) => {
   const columns: any = [
     {
       align: 'left',
@@ -88,8 +88,8 @@ const Table = () => {
       title: '操作',
       render: (text: string, record: any) => (
         <OperationWrap>
-          <span>编辑</span>
-          <span>移出</span>
+          <span onClick={() => props.onEditRow(record)}>编辑</span>
+          <span onClick={() => props.onDelRow(record)}>移出</span>
           <span>详情</span>
         </OperationWrap>
       ),

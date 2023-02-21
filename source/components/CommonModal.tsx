@@ -17,7 +17,7 @@ const ModalHeader = styled.div`
   color: var(--neutral-n1-d1);
   font-weight: 500;
   height: 56px;
-  padding: 0 24px;
+  padding: 0 17px 0 24px;
 `
 
 const ModalFooter = styled(Space)({

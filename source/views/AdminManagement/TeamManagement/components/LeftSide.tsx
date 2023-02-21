@@ -123,7 +123,7 @@ const Upload = () => {
             <IconFont
               type="question"
               style={{
-                fontSize: 13,
+                fontSize: 16,
                 color: 'var(--neutral-n4)',
                 marginLeft: 9,
               }}
