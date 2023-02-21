@@ -49,7 +49,7 @@ const Content = styled.div`
   z-index: 1;
 `
 
-const Main = styled.div<{ theme?: any }>`
+const Main = styled.div`
   height: 100%;
   width: calc(100% - 200px);
   flex: 1;
@@ -113,7 +113,6 @@ export const Container = () => {
               <Side />
               <Main>
                 <Outlet />
-                {/* <ResizeTable /> */}
               </Main>
             </Content>
             <Guide

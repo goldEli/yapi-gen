@@ -53,7 +53,7 @@ const GlobalStyle = () => {
       --neutral-n6-d2: #ecedef;
       --neutral-n7: #f2f2f4;
       --neutral-n8: #f8f8fa;
-      --neutral-n9: #ecedef;
+      --neutral-n9: #f9f9fa;
       --neutral-white-d1: #ffffff;
       --neutral-white-d2: #ffffff;
       --neutral-white-d3: #ffffff;

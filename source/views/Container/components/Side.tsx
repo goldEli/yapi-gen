@@ -1,7 +1,8 @@
-import IconFont from '@/components/IconFont'
+import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState } from 'react'
+import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
@@ -11,7 +12,8 @@ const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   min-width: unset !important;
   flex: unset !important;
   border-right: 1px solid #ecedef;
-  background: ${(props: any) => props.theme.side};
+  background: ${props =>
+    props.firstMenuCollapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};
   position: relative;
 `
 
@@ -48,7 +50,7 @@ const FoldIcon = styled.div`
   top: 24px;
   width: 24px;
   height: 24px;
-  background: #ffffff;
+  background: var(--neutral-white-d3);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -57,6 +59,12 @@ const FoldIcon = styled.div`
   z-index: 2;
   right: -12px;
   cursor: pointer;
+`
+
+const SideMain = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 `
 
 const Side = () => {
@@ -68,6 +76,7 @@ const Side = () => {
   const [endWidth, setEndWidth] = useState(200)
   const [focus, setFocus] = useState(false)
 
+  // 拖动线条
   const onDragLine = (event: any) => {
     let width = sliderRef.current?.clientWidth
     document.onmousemove = e => {
@@ -105,6 +114,7 @@ const Side = () => {
     }
   }
 
+  // 点击按钮
   const onChangeSide = () => {
     if (firstMenuCollapse) {
       setLeftWidth(200)
@@ -127,13 +137,21 @@ const Side = () => {
         transition: endWidth < 200 ? '0.2s' : 'initial',
       }}
     >
+      <SideMain>
+        <ProjectDetailSide />
+      </SideMain>
+
       <Line
         onMouseDown={onDragLine}
         style={{ left: leftWidth - 1 }}
         active={focus}
       />
       <FoldIcon onClick={onChangeSide}>
-        <IconFont type={firstMenuCollapse ? 'right' : 'left'} />
+        <CommonIconFont
+          type={firstMenuCollapse ? 'right' : 'left'}
+          size={16}
+          color="var(--neutral-n2)"
+        />
       </FoldIcon>
     </SideWrap>
   )
