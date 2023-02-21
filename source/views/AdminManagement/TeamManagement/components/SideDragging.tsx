@@ -173,12 +173,12 @@ const SliderList = (props: any) => {
   }, [index, isDragging])
   const items: MenuProps['items'] = [
     {
-      key: '1',
-      label: '1',
+      key: 'edit',
+      label: '编辑团队',
     },
     {
-      key: '2',
-      label: '2',
+      key: 'del',
+      label: '删除团队',
     },
   ]
   const onTapWrite = (item: any) => {

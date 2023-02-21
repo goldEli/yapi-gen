@@ -7,11 +7,11 @@ const GlobalStyle = () => {
   const { theme } = useSelector(store => store.global)
   const white = css`
     :root {
-      --font12: '12px';
-      --font14: '14px';
-      --font16: '16px';
-      --font18: '18px';
-      --font20: '20px';
+      --font12: 12px;
+      --font14: 14px;
+      --font16: 16px;
+      --font18: 18px;
+      --font20: 20px;
       // 按钮 --- start
       --auxiliary-b1: #6688ff;
       --auxiliary-b2: #7a97ff;
@@ -69,11 +69,11 @@ const GlobalStyle = () => {
   `
   const black = css`
     :root {
-      --font12: '12px';
-      --font14: '14px';
-      --font16: '16px';
-      --font18: '18px';
-      --font20: '20px';
+      --font12: 12px;
+      --font14: 14px;
+      --font16: 16px;
+      --font18: 18px;
+      --font20: 20px;
       // 按钮 --- start
       --auxiliary-b1: #6688ff;
       --auxiliary-b2: #7a97ff;

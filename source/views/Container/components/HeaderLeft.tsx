@@ -1,7 +1,7 @@
 import { Space, Drawer } from 'antd'
 import { useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
-import sideLogo from '/sliderLogo.svg'
+import sideLogo from '/newLogo.svg'
 import {
   ChildrenMenu,
   ChildrenMenuItem,
@@ -29,7 +29,10 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   return (
     <Drawer
       headerStyle={{ display: 'none' }}
-      bodyStyle={{ padding: '16px 0px 8px' }}
+      bodyStyle={{
+        padding: '16px 0px 8px',
+        background: 'var(--neutral-white-d5)',
+      }}
       placement="left"
       onClose={() => props.onChange(false)}
       open={props.value}
@@ -41,7 +44,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           <span>IFUN Agile</span>
         </LogoBox>
         <CloseWrap width={32} height={32} onClick={() => props.onChange(false)}>
-          <CommonIconFont type="close" size={20} />
+          <CommonIconFont type="close" size={20} color="var(--neutral-n2)" />
         </CloseWrap>
       </DrawerHeader>
       <DrawerCompany>
@@ -49,7 +52,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           <img src="" alt="" />
           <span>{userInfo.company_name}</span>
         </CompanyInfo>
-        <CommonIconFont type="swap" size={16} />
+        <CommonIconFont type="swap" color="var(--neutral-n2)" />
       </DrawerCompany>
       <DrawerProvider />
       <DrawerMenu>
@@ -89,10 +92,15 @@ const HeaderLeft = () => {
         <CommonIconFont
           type="menu-02"
           size={24}
+          color="var(--neutral-n2)"
           onClick={() => setIsVisible(true)}
         />
         <Space size={8}>
-          <CommonIconFont type="app-store" />
+          <CommonIconFont
+            type="folder-open-nor"
+            size={24}
+            color="var(--neutral-n3)"
+          />
           <MenuLabel>项目管理</MenuLabel>
         </Space>
       </Space>

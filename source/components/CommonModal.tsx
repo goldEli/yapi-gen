@@ -3,22 +3,22 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { Modal, Space } from 'antd'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap } from './StyleCommon'
+import CommonButton from './CommonButton'
 
-const ModalHeader = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: 16,
-  color: '#323233',
-  fontWeight: '500',
-  height: 56,
-  padding: '0 16px 0 26px',
-})
+const ModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  color: var(--neutral-n1-d1);
+  font-weight: 500;
+  height: 56px;
+  padding: 0 24px;
+`
 
 const ModalFooter = styled(Space)({
   width: '100%',
@@ -51,7 +51,7 @@ const CommonModal = (props: ModalProps) => {
       title={false}
       closable={false}
       bodyStyle={{ padding: 0 }}
-      width={props?.width || 420}
+      width={props?.width || 528}
       maskClosable={false}
       destroyOnClose
       keyboard={false}
@@ -59,11 +59,14 @@ const CommonModal = (props: ModalProps) => {
       focusTriggerAfterClose={false}
     >
       <ModalHeader>
-        <span>{props?.title}</span>
+        <span>{props?.title}123</span>
         <Space size={4}>
           {props.hasTop}
           <CloseWrap onClick={props?.onClose} width={32} height={32}>
-            <IconFont style={{ fontSize: 20 }} type="close" />
+            <IconFont
+              style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+              type="close"
+            />
           </CloseWrap>
         </Space>
       </ModalHeader>
@@ -73,14 +76,12 @@ const CommonModal = (props: ModalProps) => {
           {props?.hasFooter}
           {!props.hasFooter && (
             <ModalFooter size={16}>
-              <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-              <Button onClick={props?.onConfirm}>确认</Button>
-              {/* <ThrottleButton
-                thClick={() => props?.onConfirm!()}
-                type="primary"
-              >
-                {props?.confirmText ? props?.confirmText : t('common.confirm')}
-              </ThrottleButton> */}
+              <CommonButton type="secondary" onClick={props?.onClose}>
+                {t('common.cancel')}
+              </CommonButton>
+              <CommonButton type="primary" onClick={props?.onConfirm}>
+                {t('common.confirm')}
+              </CommonButton>
             </ModalFooter>
           )}
         </>
