@@ -91,7 +91,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击菜单
   const onChangeCurrentMenu = (menu: any) => {
     props.onChange(false)
-    navigate(menu.children ? `${menu.url}/Project` : menu.url)
+    navigate(menu.children?.length > 0 ? `${menu.url}/Project` : menu.url)
     const resultMenu = {
       ...menu,
       ...{
