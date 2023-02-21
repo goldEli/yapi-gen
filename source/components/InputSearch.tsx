@@ -30,6 +30,7 @@ interface PropsType {
   onSearch(value: string): void
   onChange(value: string): void
   onClear(): void
+  leftIcon?: boolean
 }
 const HeaderSearch = (props: PropsType) => {
   return (
@@ -58,10 +59,12 @@ const HeaderSearch = (props: PropsType) => {
         </>
       }
       prefix={
-        <IconFont
-          type="search"
-          style={{ color: `var(--neutral-n4)`, fontSize: 16 }}
-        />
+        props.leftIcon && (
+          <IconFont
+            type="search"
+            style={{ color: `var(--neutral-n4)`, fontSize: 16 }}
+          />
+        )
       }
     />
   )

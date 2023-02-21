@@ -1,7 +1,12 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SideDragging from '../components/SideDragging'
+import CommonModal from '@/components/CommonModal'
+// import DeleteConfirm from '@/components/DeleteConfirm'
+import { Form, Input } from 'antd'
+import { uploadFileByTask } from '@/services/cos'
+import upload from 'antd/lib/upload'
 
 const LeftSideContainer = styled.div`
   width: 232px;
@@ -30,7 +35,90 @@ const IconFontStyle = styled(IconFont)`
   font-size: 18px;
   color: var(--neutral-n2);
 `
+const InputStyle = styled(Input)`
+  width: 480px;
+  height: 32px;
+`
+const FormStyle = styled(Form)`
+  & .ant-form-item {
+    min-height: 62px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  & .ant-form-item-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  & .ant-form-item-label {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-n1-d1);
+    margin-bottom: 8px;
+  }
+  & .ant-form-item-label > label {
+    color: var(--neutral-n1-d1);
+  }
+`
+const Mask = styled.div`
+  width: 80px;
+  height: 24px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 24px;
+  background-color: var(--neutral-transparent-n1-d1);
+  color: var(--neutral-white-d7);
+  border-radius: 0 0px 14px 14px;
+  position: absolute;
+  bottom: 0;
+`
+const UploadStyle = styled(upload)`
+  width: 80px;
+  height: 80px;
+  position: relative;
+  top: 22px;
+  border-radius: 14px;
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`
+const Upload = () => {
+  const [defaultIcon, setDefaultIcon] = useState(true)
+  const [uploadImg, setUploadImg] = useState('')
+  const customRequest = async ({ file }: { file: any }) => {
+    const response = await uploadFileByTask(
+      file,
+      file.name,
+      `richEditorFiles_${new Date().getTime()}`,
+    )
+    setDefaultIcon(false)
+    setUploadImg(response.url)
+  }
+  return (
+    <UploadStyle customRequest={customRequest} fileList={[]}>
+      {defaultIcon ? (
+        <IconFont
+          type="team-8a8gio2p"
+          style={{ fontSize: 80, color: '#98ACE0' }}
+        />
+      ) : (
+        <img src={uploadImg} />
+      )}
+      <Mask>重新上传</Mask>
+    </UploadStyle>
+  )
+}
 const LeftSide = () => {
+  // 拖拽的宽高样式
   const childStyle = {
     width: '200px',
     height: '44px',
@@ -51,17 +139,75 @@ const LeftSide = () => {
       })),
     )
   }
+  // 创建和修改弹窗
+  const [teamIsVisible, setTeamIsVisible] = useState(false)
+  //  创建和修改弹窗的表单
+  const [teamForm, setTeamForm] = useState<any>(null)
+  // 删除团队弹窗
+  const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
+  const [value, setValue] = useState('')
+  const [form] = Form.useForm()
+  const teamGetForm = () => {
+    return (
+      <>
+        <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
+          <Form.Item
+            label="团队名称"
+            name="username"
+            rules={[{ required: true, message: '请输入团队名称' }]}
+          >
+            <InputStyle
+              placeholder="请输入团队名称"
+              value={value}
+              maxLength={20}
+              onChange={e => setValue(e.target.value)}
+              suffix={
+                <>
+                  {/* 删除按钮 */}
+                  {value && (
+                    <IconFont
+                      type="close-circle-fill"
+                      onClick={() => {
+                        setValue('')
+                      }}
+                      style={{ color: '#BBBDBF', fontSize: 16 }}
+                    />
+                  )}
+                </>
+              }
+            />
+          </Form.Item>
+          <Form.Item label="团队LOGO" name="img">
+            <Upload />
+          </Form.Item>
+        </FormStyle>
+      </>
+    )
+  }
+  const createTeam = () => {
+    setTeamIsVisible(true)
+    setTeamForm(teamGetForm())
+  }
+  useEffect(() => {
+    teamIsVisible && setTeamForm(teamGetForm())
+  }, [value])
   return (
     <LeftSideContainer>
-      <TeamAdd>
+      <TeamAdd onClick={() => createTeam()}>
         <TiamTitleText>团队管理</TiamTitleText>
         <IconFontStyle type="plus"></IconFontStyle>
       </TeamAdd>
+      {/* 拖拽组件 */}
       <SideDragging
         onChange={(item: any) => onChangeDragging(item)}
         list={list}
         setList={setList}
         childStyle={childStyle}
+      />
+      <CommonModal
+        isVisible={teamIsVisible}
+        children={teamForm}
+        onClose={() => setTeamIsVisible(false)}
       />
     </LeftSideContainer>
   )
