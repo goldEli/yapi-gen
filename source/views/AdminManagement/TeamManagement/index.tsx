@@ -5,7 +5,7 @@ import RightTable from './components/RightTable'
 const Wrap = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 56px);
 `
 const TeamManagement = () => {
   return (

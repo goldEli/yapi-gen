@@ -8,6 +8,7 @@ const LeftSideContainer = styled.div`
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d2);
   padding: 0 16px;
+  background-color: var(--neutral-white-d1);
 `
 const TeamAdd = styled.div`
   width: 100%;
