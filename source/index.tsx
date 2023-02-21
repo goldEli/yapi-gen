@@ -25,7 +25,11 @@ import '@/locals'
 log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter basename={import.meta.env.__URL_ALIAS__}>
+  <BrowserRouter
+    basename={
+      import.meta.env.__URL_ALIAS__ + '/' + import.meta.env.__URL_HASH__
+    }
+  >
     <ErrorBoundary>
       <Provider store={store}>
         <WaterMarkContent>

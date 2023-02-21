@@ -5,6 +5,7 @@ import CustomDropdown from '@/components/CustomDropdown'
 import IconFont from '@/components/IconFont'
 import ProjectCard from '@/components/ProjectCard'
 import { HoverIcon } from '@/components/ProjectCard/style'
+import ViewPort from '@/components/ViewPort'
 import { useRef, useState } from 'react'
 import { Wrap } from './style'
 
@@ -34,38 +35,43 @@ const ProjectManagementOptimization = () => {
     // console.log(data, data2)
   }
   return (
-    <Wrap>
-      {row.map(item => (
-        <ProjectCard key={item}>
-          <CustomDropdown onChange={onChange}>
-            <HoverIcon>
-              <IconFont
-                style={{
-                  color: 'var(--neutral-n3)',
-                }}
-                type="more"
-              />
-            </HoverIcon>
-          </CustomDropdown>
-        </ProjectCard>
-      ))}
-      <CommonModal
-        onConfirm={onConfirm}
-        onClose={() => setIsEdit(false)}
-        width={832}
-        isVisible={isEdit}
-        title="编辑项目"
-      >
-        <div
-          style={{
-            display: 'flex',
-          }}
+    <div>
+      <div>
+        <ViewPort />
+      </div>
+      <Wrap>
+        {row.map(item => (
+          <ProjectCard key={item}>
+            <CustomDropdown onChange={onChange}>
+              <HoverIcon>
+                <IconFont
+                  style={{
+                    color: 'var(--neutral-n3)',
+                  }}
+                  type="more"
+                />
+              </HoverIcon>
+            </CustomDropdown>
+          </ProjectCard>
+        ))}
+        <CommonModal
+          onConfirm={onConfirm}
+          onClose={() => setIsEdit(false)}
+          width={832}
+          isVisible={isEdit}
+          title="编辑项目"
         >
-          <ChooseCover ref={myCover} />
-          <CreateAProjectForm ref={myCreate} />
-        </div>
-      </CommonModal>
-    </Wrap>
+          <div
+            style={{
+              display: 'flex',
+            }}
+          >
+            <ChooseCover ref={myCover} />
+            <CreateAProjectForm ref={myCreate} />
+          </div>
+        </CommonModal>
+      </Wrap>
+    </div>
   )
 }
 

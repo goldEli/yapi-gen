@@ -62,7 +62,7 @@ const routes = [
         element: lazy(() => import('@/views/AdminManagement')),
         children: [
           {
-            path: 'CompanyInfo',
+            path: '',
             element: lazy(() => import('@/views/AdminManagement/CompanyInfo')),
           },
           {
