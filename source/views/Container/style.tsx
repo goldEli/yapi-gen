@@ -103,12 +103,12 @@ export const ChangeItems = styled.div`
   min-width: 120px;
 `
 
-export const ChangeItem = styled.div<{ isActive?: boolean }>`
+export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: SiYuanRegular;
-  height: 32px;
+  height: ${props => props.height || 32}px;
   cursor: pointer;
   padding: 0 16px;
   color: ${props =>
@@ -149,6 +149,7 @@ export const MenuLabel = styled.span`
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
   font-weight: 500;
+  font-size: var(--font16);
 `
 
 export const ChildrenMenu = styled.div`
@@ -163,6 +164,8 @@ export const ChildrenMenuItem = styled(Space)<{ isActive?: boolean }>`
   padding: 0 16px;
   height: 56px;
   cursor: pointer;
+  font-size: var(--font14);
+  font-family: SiYuanMedium;
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   background: ${props =>
@@ -203,7 +206,7 @@ export const DrawerCompany = styled.div`
   height: 52px;
   cursor: pointer;
   margin: 14px 0;
-  background: var(--neutral-white-d6);
+  background: var(--neutral-white-d5);
   &:hover {
     background: var(--hover-d2);
   }
@@ -279,7 +282,7 @@ export const DrawerFooter = styled.div`
   padding: 0 24px;
   height: 52px;
   cursor: pointer;
-  background: var(--neutral-white-d6);
+  background: var(--neutral-white-d5);
   position: absolute;
   bottom: 8px;
   &:hover {
