@@ -9,7 +9,7 @@ const titleCss = css`
   color: var(--neutral-n1-d1);
   line-height: 22px;
 `
-const FormTitleSmall = (props: any) => {
+const FormTitleSmall = (props: { text: string }) => {
   return <div className={titleCss}>{props.text}</div>
 }
 

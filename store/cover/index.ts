@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { getProjectCover } from './thunks'
 
 type SliceState = {
-  covers?: []
+  covers?: any
 }
 
 const slice = createSlice({
