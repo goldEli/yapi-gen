@@ -2,6 +2,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState } from 'react'
+import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
@@ -130,6 +131,7 @@ const Side = () => {
         transition: endWidth < 200 ? '0.2s' : 'initial',
       }}
     >
+      <ProjectDetailSide />
       <Line
         onMouseDown={onDragLine}
         style={{ left: leftWidth - 1 }}
