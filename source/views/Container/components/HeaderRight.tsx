@@ -293,6 +293,7 @@ const HeaderRight = () => {
         isVisible={isInfoVisible}
         title="个人资料"
         isShowFooter
+        width={420}
       >
         <div style={{ paddingBottom: 16 }}>
           <PersonalHead>
