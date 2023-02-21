@@ -1,3 +1,4 @@
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
 export const CoverAreaWrap = styled.div`
@@ -19,8 +20,58 @@ export const CoverAreaImage = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 6px 6px 6px 6px;
-  opacity: 1;
+  cursor: pointer;
+  object-fit: cover;
+`
+
+export const coverAreaIcon = css`
+  font-size: 24px;
+  position: absolute;
+  top: 0;
+  right: -1px;
+`
+
+export const coverAreadelIcon = css`
+  font-size: 20px;
+`
+
+export const CoverAreaImageShade = styled.div`
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px 6px 6px 6px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+`
+
+export const CoverAreaImageWrap = styled.div`
+  width: 80px;
+  height: 80px;
+  border-radius: 6px 6px 6px 6px;
   border: 1px solid var(--neutral-n6-d2);
+  position: relative;
+  :hover ${CoverAreaImageShade} {
+    visibility: visible;
+  }
+  :hover {
+    ::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      bottom: -2px;
+      left: 0;
+      width: 80px;
+      height: 40px;
+      background: var(--green);
+      border-radius: 6px 6px 6px 6px;
+      opacity: 1;
+    }
+  }
 `
 
 export const CoverAreaAdd = styled.div`
@@ -32,4 +83,5 @@ export const CoverAreaAdd = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `

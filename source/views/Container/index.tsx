@@ -20,6 +20,7 @@ import { ThemeProvider } from '@emotion/react'
 import GlobalStyle from '@/components/GlobalStyle'
 import ResizeTable from './components/TableDemo'
 import Guide from './components/Guide'
+import { getProjectCover } from '@store/cover/thunks'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ export const Container = () => {
   }
 
   useEffect(() => {
+    dispatch(getProjectCover())
     dispatch(getStatus())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())

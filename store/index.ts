@@ -14,6 +14,7 @@ import project from './project'
 import demand from './demand'
 import iterate from './iterate'
 import global from './global'
+import cover from './cover/index'
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     demand,
     iterate,
     global,
+    cover,
   },
 })
 

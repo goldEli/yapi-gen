@@ -60,6 +60,9 @@ const index = (props: any, ref: ForwardedRef<IndexRef>) => {
             <div>
               <FormTitleSmall text="键" />
               <Tooltip
+                overlayStyle={{
+                  fontSize: '12px',
+                }}
                 trigger={['click']}
                 placement="top"
                 title="键用以区分项目，作为需求编号前缀使用"
@@ -80,16 +83,12 @@ const index = (props: any, ref: ForwardedRef<IndexRef>) => {
         >
           <Input placeholder="请输入键" />
         </Form.Item>
-        <Form.Item
-          label={<FormTitleSmall text="项目负责人" />}
-          name="user"
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
-          <MoreSelect />
+        <Form.Item label={<FormTitleSmall text="项目负责人" />} name="user">
+          <MoreSelect options={['jack', 'lucy', '1', '2', '3', '4']} />
         </Form.Item>
         <Form.Item label={<FormTitleSmall text="项目描述" />} name="dec">
           <Input.TextArea
-            placeholder="Controlled autosize"
+            placeholder="请输入项目描述"
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
         </Form.Item>

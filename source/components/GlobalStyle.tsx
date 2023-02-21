@@ -129,6 +129,24 @@ const GlobalStyle = () => {
 
   const globalCss = css`
     ${colors[theme]}
+    :root {
+      --blue: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #00a3ff 100%);
+      --green: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #009b56 100%);
+      --purple: linear-gradient(
+        180deg,
+        rgba(215, 152, 254, 0) 0%,
+        #4200ff 100%
+      );
+      --orange: linear-gradient(
+        180deg,
+        rgba(238, 209, 183, 0) 0%,
+        #c34600 100%,
+        #dd5000 100%
+      );
+    }
+    .ant-progress-text {
+      color: var(--neutral-n2) !important;
+    }
     .ant-form-item {
       padding-top: 2px !important;
     }
