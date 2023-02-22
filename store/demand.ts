@@ -9,6 +9,25 @@ export interface CounterState {
   isUpdateChangeLog: boolean
   createCategory: any
   filterParams: any
+
+  isCreateDemandVisible: boolean
+  createDemandParams: any
+  createDemandProps: {
+    // 编辑需求传入的id
+    demandId?: any
+    // 迭代-需求列表带入迭代id
+    iterateId?: any
+    // 编辑带入项目id
+    projectId?: any
+    // 是否为子需求
+    isChild?: any
+    // 父需求id --- 和isChild一起使用
+    parentId?: any
+    // 我的-快速创建
+    isQuickCreate?: any
+    // 是否是所有项目
+    isAllProject?: boolean
+  }
 }
 
 const initialState: CounterState = {
@@ -18,6 +37,10 @@ const initialState: CounterState = {
   isUpdateChangeLog: false,
   createCategory: {},
   filterParams: {},
+
+  isCreateDemandVisible: false,
+  createDemandParams: {},
+  createDemandProps: {},
 }
 
 export const demandSlice = createSlice({
@@ -48,6 +71,19 @@ export const demandSlice = createSlice({
     setFilterParams: (state: any, action) => {
       state.filterParams = action.payload
     },
+
+    // 创建需求弹窗
+    setIsCreateDemandVisible: (state: any, action) => {
+      state.isCreateDemandVisible = action.payload
+    },
+    // 弹窗参数
+    setCreateDemandParams: (state: any, action) => {
+      state.createDemandParams = action.payload
+    },
+    // 创建弹窗传入的props
+    setCreateDemandProps: (state: any, action) => {
+      state.createDemandProps = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -61,6 +97,10 @@ export const {
   setIsUpdateChangeLog,
   setCreateCategory,
   setFilterParams,
+
+  setIsCreateDemandVisible,
+  setCreateDemandParams,
+  setCreateDemandProps,
 } = demandSlice.actions
 
 export default demandSlice.reducer

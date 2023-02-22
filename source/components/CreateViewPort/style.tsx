@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 export const Wrap = styled.div`
   padding-right: 24px;
 `
+
 export const WrapText = styled.div`
   height: 20px;
   font-size: 12px;

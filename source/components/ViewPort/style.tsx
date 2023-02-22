@@ -2,7 +2,6 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
 export const ViewPortWrap = styled.div`
-  margin: 60px 0 0 60px;
   height: 32px;
   min-width: 120px;
 

@@ -20,7 +20,7 @@ const Wrap = styled.div({
     marginBottom: 35,
   },
   div: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 18,
   },
 })

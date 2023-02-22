@@ -35,7 +35,7 @@ const light = css`
 `
 const secondary = css`
   background: var(--auxiliary-b4);
-  color: var(--neutral-n2);
+  color: var(--auxiliary-text-t2-d2);
   border: 1px solid transparent;
   &:hover {
     background: var(--auxiliary-b5);
@@ -105,7 +105,7 @@ const icon = css`
 interface Props {
   onClick?(): void
   // 按钮文本
-  children?: string
+  children?: React.ReactNode
   // 按钮类型
   type:
     | 'primary'
@@ -115,6 +115,7 @@ interface Props {
     | 'primaryText'
     | 'secondaryText'
     | 'icon'
+
   //   图标位置
   iconPlacement?: 'left' | 'right'
   //   图标

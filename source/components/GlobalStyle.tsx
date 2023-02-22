@@ -144,6 +144,21 @@ const GlobalStyle = () => {
     .tox-tinymce {
       border: 1px solid var(--neutral-n6-d1);
     }
+    .ant-form-item-label > label {
+      color: var(--neutral-n1-d1);
+      font-size: var(--font14);
+    }
+    /* .ant-form-item-control-input-content > input,
+    .ant-select-selection-search > input,
+    .ant-picker,
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+    .ant-input,
+    .ant-input-number,
+    .ant-select-selector {
+      background: var(--neutral-white-d4);
+      border: 1px solid var(--neutral-n6-d1) !important;
+    } */
+
     :root {
       --blue: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #00a3ff 100%);
       --green: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #009b56 100%);
@@ -600,7 +615,7 @@ const GlobalStyle = () => {
       height: 20px !important;
       margin: 10px 5px !important;
     }
-    .ant-dropdown-menu {
+    /* .ant-dropdown-menu {
       background: var(--neutral-white-d2);
       min-width: 120px;
       height: 72px;
@@ -615,7 +630,7 @@ const GlobalStyle = () => {
     .ant-dropdown-menu-item-active {
       background-color: var(--hover-d3);
       color: var(--neutral-n1-d1);
-    }
+    } */
   `
   return <Global styles={globalCss} />
 }

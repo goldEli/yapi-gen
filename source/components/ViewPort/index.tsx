@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { useDispatch, useSelector } from '@store/index'
-import { changeCreateVisible } from '@store/view'
+import { changeCreateVisible, changeViewVisible } from '@store/view'
 import { Button, Divider, Dropdown, MenuProps, Space } from 'antd'
 import React from 'react'
 import CommonIconFont from '../CommonIconFont'
@@ -55,7 +55,7 @@ const ViewPort = () => {
           <SetLine onClick={() => dispatch(changeCreateVisible(true))}>
             <TextSpan>创建视图</TextSpan>
           </SetLine>
-          <SetLine>
+          <SetLine onClick={() => dispatch(changeViewVisible(true))}>
             <TextSpan>管理视图</TextSpan>
           </SetLine>
         </div>

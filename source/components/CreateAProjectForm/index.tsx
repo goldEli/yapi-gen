@@ -40,18 +40,6 @@ const CreateAProjectForm = () => {
     setMyCover(data.url)
   }
 
-  const onGenderChange = (value: string) => {
-    switch (value) {
-      case 'male':
-        form.setFieldsValue({ note: 'Hi, man!' })
-        return
-      case 'female':
-        form.setFieldsValue({ note: 'Hi, lady!' })
-        return
-      case 'other':
-        form.setFieldsValue({ note: 'Hi there!' })
-    }
-  }
   const onConfirm = () => {
     const obj = {
       cover: activeCover,
@@ -131,7 +119,7 @@ const CreateAProjectForm = () => {
           </div>
         </CoverAreaWrap>
         <Wrap>
-          <Form form={form} layout="vertical" name="basic" autoComplete="off">
+          <Form form={form} layout="vertical">
             <Form.Item
               label={<FormTitleSmall text="项目名称" />}
               name="name"
@@ -197,11 +185,7 @@ const CreateAProjectForm = () => {
               />
             </Form.Item>
             <Form.Item label={<FormTitleSmall text="项目分组" />} name="their">
-              <Select
-                placeholder="Select a option "
-                onChange={onGenderChange}
-                allowClear
-              >
+              <Select placeholder="Select a option " allowClear>
                 <Select.Option value="male">male</Select.Option>
                 <Select.Option value="female">female</Select.Option>
                 <Select.Option value="other">other</Select.Option>
