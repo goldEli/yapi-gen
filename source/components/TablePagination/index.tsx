@@ -21,6 +21,14 @@ const PaginationWrap = styled(Pagination)`
   .ant-pagination-item,
   .ant-pagination-item-link {
     border: none;
+    background-color: var(--neutral-white-d1);
+    color: var(--neutral-n2);
+  }
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+  input {
+    background-color: var(--neutral-white-d1);
+    color: var(--neutral-n2);
+    border: 1px solid var(--neutral-white-d4);
   }
   .ant-pagination-item,
   .ant-select-selection-item,
