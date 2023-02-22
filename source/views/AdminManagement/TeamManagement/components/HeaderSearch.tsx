@@ -50,6 +50,7 @@ const HeaderSearch = () => {
       <SearchBox>
         <InputSearch
           width={202}
+          leftIcon={true}
           value={searchVal}
           bgColor="var(--neutral-white-d4)"
           length={12}

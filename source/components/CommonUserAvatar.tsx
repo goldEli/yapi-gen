@@ -10,6 +10,7 @@ const UserAvatarWrap = styled.div`
 `
 
 const AvatarBox = styled.div<{ size?: string; isBorder?: boolean }>`
+  display: flex;
   border-radius: 50%;
   width: ${props => (props.size === 'large' ? 32 : 24)}px;
   height: ${props => (props.size === 'large' ? 32 : 24)}px;

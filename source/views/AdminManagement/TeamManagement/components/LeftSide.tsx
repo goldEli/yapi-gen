@@ -7,7 +7,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { Form, Input, Tooltip } from 'antd'
 import { uploadFileByTask } from '@/services/cos'
 import upload from 'antd/lib/upload'
-
+import CommonModal1 from './CommonModal'
 const LeftSideContainer = styled.div`
   width: 232px;
   height: 100%;
@@ -162,6 +162,7 @@ const Upload = () => {
     </>
   )
 }
+
 const LeftSide = () => {
   // 拖拽的宽高样式
   const childStyle = {
@@ -242,6 +243,7 @@ const LeftSide = () => {
   useEffect(() => {
     teamIsVisible && setTeamForm(teamGetForm())
   }, [value])
+
   return (
     <LeftSideContainer>
       <TeamAdd onClick={() => createTeam()}>
@@ -257,6 +259,11 @@ const LeftSide = () => {
         onChangeTeam={(key: string, row: any) => {
           key === 'del' ? setDelTeamIsVisible(true) : editTeam(row)
         }}
+      />
+      <CommonModal1
+        title={'添加成员'}
+        isVisible={true}
+        onClose={() => setTeamIsVisible(false)}
       />
       <CommonModal
         title={'创建团队'}
