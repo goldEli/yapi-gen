@@ -56,7 +56,8 @@ const FormStyle = styled(Form)`
   & .ant-select-item-option-content,
   .ant-select-item,
   .ant-select-item-option,
-  .rc-virtual-list-holder-inner {
+  .rc-virtual-list-holder-inner,
+  .ant-select-dropdown {
     background-color: var(--neutral-white-d4) !important;
   }
 `

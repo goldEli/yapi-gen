@@ -43,11 +43,11 @@ const InputStyle = styled(Input)`
   width: 480px;
   height: 32px;
   position: relative;
-  background-color: var(--neutral-white-d5);
+  background: var(--neutral-white-d4);
   border: 1px solid var(--neutral-n6-d1);
   color: var(--neutral-n1-d1);
   input {
-    background-color: var(--neutral-white-d5);
+    background: var(--neutral-white-d4);
     color: var(--neutral-n1-d1);
   }
 `
