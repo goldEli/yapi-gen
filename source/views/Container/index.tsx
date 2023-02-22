@@ -22,6 +22,7 @@ import { getProjectCover } from '@store/cover/thunks'
 import CreateViewPort from '@/components/CreateViewPort'
 import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
+import CreateDemand from '@/components/CreateDemand'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -130,6 +131,7 @@ export const Container = () => {
         <CreateViewPort />
         <CreateAProjectForm />
         <CreateIteration />
+        <CreateDemand />
       </ConfigProvider>
     </KitConfigProvider>
   )

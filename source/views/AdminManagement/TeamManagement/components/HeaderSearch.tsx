@@ -2,6 +2,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import InputSearch from '@/components/InputSearch'
+
 const HeaderWrap = styled.div`
   width: 100%;
   height: 72px;
