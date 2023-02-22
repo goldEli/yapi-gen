@@ -1,6 +1,8 @@
 import { Space, Drawer } from 'antd'
 import { useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
+import MyDropdown from './MyDropdown'
+import ItemDropdown from './ItemDropdown'
 import sideLogo from '/newLogo.svg'
 import {
   ChildrenMenu,
@@ -258,7 +260,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     </>
   )
 }
-
 const HeaderLeft = () => {
   const [isVisible, setIsVisible] = useState(false)
   const { currentMenu } = useSelector(store => store.global)
@@ -285,12 +286,10 @@ const HeaderLeft = () => {
       {currentMenu.url === '/ProjectManagement' && (
         <ChildrenMenu>
           <ChildrenMenuItem size={8} isActive>
-            <span>项目</span>
-            <CommonIconFont type="down" size={14} />
+            <ItemDropdown text="项目" />
           </ChildrenMenuItem>
           <ChildrenMenuItem size={8}>
-            <span>我的</span>
-            <CommonIconFont type="down" size={14} />
+            <MyDropdown text="我的" />
           </ChildrenMenuItem>
         </ChildrenMenu>
       )}
