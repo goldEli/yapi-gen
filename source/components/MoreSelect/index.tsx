@@ -49,12 +49,6 @@ const index = (props: any) => {
         </>
       )}
       optionLabelProp="label"
-      // options={prepositionItems.map((i: any) => ({
-      //   label: (
-      //       <MoreOptions type={props.type} name={i} dec={i} />
-      //   ),
-      //   key: i
-      // }))}
     >
       {prepositionItems.map((i: any) => (
         <Select.Option key={i} label={i}>

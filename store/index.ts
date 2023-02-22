@@ -16,6 +16,7 @@ import iterate from './iterate'
 import global from './global'
 import cover from './cover/index'
 import view from './view/index'
+import createProject from './create-propject/index'
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     global,
     cover,
     view,
+    createProject,
   },
 })
 
