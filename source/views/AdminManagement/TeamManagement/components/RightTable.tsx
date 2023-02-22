@@ -74,7 +74,7 @@ const SelectStyle = styled(Select)`
 `
 const PersonStyle = styled.div`
   width: 100%;
-  padding: 24px 0;
+  padding: 24px;
 `
 const Row = styled.div`
   display: flex;
@@ -122,7 +122,7 @@ const RightTable = () => {
   ]
   const teamGetForm = (row?: any) => {
     return (
-      <>
+      <div style={{ margin: '0 24px' }}>
         <TitleStyle>设置【张三】在团队中的角色</TitleStyle>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <Form.Item
@@ -139,7 +139,7 @@ const RightTable = () => {
             />
           </Form.Item>
         </FormStyle>
-      </>
+      </div>
     )
   }
   const personalData = (row: any) => {

@@ -21,6 +21,7 @@ import Guide from './components/Guide'
 import { getProjectCover } from '@store/cover/thunks'
 import CreateViewPort from '@/components/CreateViewPort'
 import CreateAProjectForm from '@/components/CreateAProjectForm'
+import ManageView from '@/components/ManageView'
 import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 
@@ -130,6 +131,7 @@ export const Container = () => {
         {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
         <CreateViewPort />
         <CreateAProjectForm />
+        <ManageView />
         <CreateIteration />
         <CreateDemand />
       </ConfigProvider>

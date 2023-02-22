@@ -194,7 +194,7 @@ const LeftSide = () => {
   const [form] = Form.useForm()
   const teamGetForm = (row?: any) => {
     return (
-      <>
+      <div style={{ padding: '0 24px' }}>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <Form.Item
             label="团队名称"
@@ -228,7 +228,7 @@ const LeftSide = () => {
           </UploadBox>
           {/* </Form.Item> */}
         </FormStyle>
-      </>
+      </div>
     )
   }
   const createTeam = () => {

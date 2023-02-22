@@ -615,6 +615,22 @@ const GlobalStyle = () => {
       height: 20px !important;
       margin: 10px 5px !important;
     }
+    .ant-dropdown-menu {
+      background: var(--neutral-white-d2);
+      min-width: 120px;
+      height: 72px;
+      font-size: var(--font14);
+      font-weight: 400;
+      color: var(--neutral-n2);
+    }
+    .ant-dropdown-menu-item:hover {
+      background-color: var(--hover-d3);
+      color: var(--neutral-n1-d1);
+    }
+    .ant-dropdown-menu-item-active {
+      background-color: var(--hover-d3);
+      color: var(--neutral-n1-d1);
+    }
   `
   return <Global styles={globalCss} />
 }
