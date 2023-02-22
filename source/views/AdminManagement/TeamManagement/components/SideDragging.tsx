@@ -39,13 +39,9 @@ const IconFontStyle = styled(IconFont)`
   }
 `
 const DropdownContainer = styled(Dropdown)`
-  .ant-dropdown-menu {
-    background: var(--neutral-white-d2);
-    min-width: 120px;
-    height: 72px;
-    font-size: var(--font14);
-    font-weight: 400;
-    color: var(--neutral-n2);
+  .ant-dropdown-menu-item:hover {
+    background-color: var(--hover-d3);
+    color: var(--neutral-n1-d1);
   }
   .ant-dropdown-menu-item-active {
     background-color: var(--hover-d3);
@@ -213,7 +209,10 @@ const SliderList = (props: any) => {
         menu={{ items, onClick: onChangeTeam }}
         trigger={['click']}
         placement="bottomRight"
-        overlayStyle={{ width: 120 }}
+        overlayStyle={{
+          width: 120,
+          background: 'var(--neutral-white-d1)',
+        }}
       >
         <IconFontStyle type="more" className="icon" />
       </DropdownContainer>

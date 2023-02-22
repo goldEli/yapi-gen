@@ -8,11 +8,13 @@ const TableStyle = styled(table)`
     font-weight: 500;
     color: var(--neutral-n3);
     font-size: 12px;
+    background-color: var(--neutral-white-d1);
   }
   .ant-table-tbody > tr > td {
     color: var(--neutral-n1-d1);
     font-size: 14px;
     font-weight: 400;
+    background-color: var(--neutral-white-d1);
   }
   .ant-table-cell-row-hover {
     background-color: var(--hover-d2);
@@ -88,9 +90,9 @@ const Table = (props: any) => {
       title: '操作',
       render: (text: string, record: any) => (
         <OperationWrap>
-          <span onClick={() => props.onEditRow(record)}>编辑</span>
+          <span onClick={() => props.onEditRow(record, 'edit')}>编辑</span>
           <span onClick={() => props.onDelRow(record)}>移出</span>
-          <span>详情</span>
+          <span onClick={() => props.onEditRow(record, 'detail')}>详情</span>
         </OperationWrap>
       ),
     },

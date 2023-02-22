@@ -16,14 +16,13 @@ import Side from './components/Side'
 import { getLoginDetail } from '@store/user/user.thunk'
 import HeaderLeft from './components/HeaderLeft'
 import HeaderRight from './components/HeaderRight'
-import { ThemeProvider } from '@emotion/react'
 import GlobalStyle from '@/components/GlobalStyle'
-import ResizeTable from './components/TableDemo'
 import Guide from './components/Guide'
 import { getProjectCover } from '@store/cover/thunks'
 import CreateViewPort from '@/components/CreateViewPort'
 import CreateAProjectForm from '@/components/CreateAProjectForm'
 import ManageView from '@/components/ManageView'
+import CreateIteration from '@/components/CreateIteration'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -132,6 +131,7 @@ export const Container = () => {
         <CreateViewPort />
         <CreateAProjectForm />
         <ManageView />
+        <CreateIteration />
       </ConfigProvider>
     </KitConfigProvider>
   )

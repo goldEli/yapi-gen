@@ -58,6 +58,9 @@ const CreateAProjectForm = () => {
       <div
         style={{
           display: 'flex',
+          padding: '0 16px 0 24px',
+          maxHeight: 536,
+          overflowY: 'auto',
         }}
       >
         <CoverAreaWrap>

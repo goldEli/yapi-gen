@@ -141,6 +141,9 @@ const GlobalStyle = () => {
 
   const globalCss = css`
     ${colors[theme]}
+    .tox-tinymce {
+      border: 1px solid var(--neutral-n6-d1);
+    }
     :root {
       --blue: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #00a3ff 100%);
       --green: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #009b56 100%);
@@ -596,6 +599,22 @@ const GlobalStyle = () => {
     .w-e-bar-divider {
       height: 20px !important;
       margin: 10px 5px !important;
+    }
+    .ant-dropdown-menu {
+      background: var(--neutral-white-d2);
+      min-width: 120px;
+      height: 72px;
+      font-size: var(--font14);
+      font-weight: 400;
+      color: var(--neutral-n2);
+    }
+    .ant-dropdown-menu-item:hover {
+      background-color: var(--hover-d3);
+      color: var(--neutral-n1-d1);
+    }
+    .ant-dropdown-menu-item-active {
+      background-color: var(--hover-d3);
+      color: var(--neutral-n1-d1);
     }
   `
   return <Global styles={globalCss} />
