@@ -144,15 +144,15 @@ const MyDropdown = (props: PropsType) => {
   ]
   const itemArr = [
     {
-      title: '需求名称',
+      title: '需求名称1',
       label: 'DXKJ-0001/项目名称',
     },
     {
-      title: '需求名称需求名称需求名...',
+      title: '2需求名称需求名称需求名...2',
       label: 'DXKJ-0001/项目名称',
     },
     {
-      title: '需求名称需求名称需求名...',
+      title: '3需求名称需求名称需求名...',
       label: 'DXKJ-0001/项目名称',
     },
   ]
@@ -217,14 +217,14 @@ const MyDropdown = (props: PropsType) => {
           </Tabs>
         </HeraderTabs>
         <ScrollWrap>
-          {tabActive === 0
-            ? box.map(el => (
-                <div style={{ marginBottom: '16px' }} key={el.title}>
-                  <Title>{el.title}</Title>
-                  {itmeMain(el.itemArr)}
-                </div>
-              ))
-            : itmeMain(itemArr)}
+          {tabActive === 0 &&
+            box.map(el => (
+              <div style={{ marginBottom: '16px' }} key={el.title}>
+                <Title>{el.title}</Title>
+                {itmeMain(el.itemArr)}
+              </div>
+            ))}
+          {(tabActive === 1 || tabActive === 2) && itmeMain(itemArr)}
           {tabActive === 0 && (
             <>
               <OpenWrap>
