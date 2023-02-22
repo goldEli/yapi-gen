@@ -1,24 +1,20 @@
-import ChooseCover, { IndexRef2 } from '@/components/ChooseCover'
-import CommonModal from '@/components/CommonModal'
-import CreateAProjectForm, { IndexRef } from '@/components/CreateAProjectForm'
 import CustomDropdown from '@/components/CustomDropdown'
 import IconFont from '@/components/IconFont'
 import ProjectCard from '@/components/ProjectCard'
 import { HoverIcon } from '@/components/ProjectCard/style'
 import ViewPort from '@/components/ViewPort'
-import { useRef, useState } from 'react'
+import { changeCreateVisible } from '@store/create-propject'
+import { useDispatch } from '@store/index'
 import { Wrap } from './style'
 
 const ProjectManagementOptimization = () => {
   const row = new Array(10).fill(1)
-  const [isEdit, setIsEdit] = useState(false)
-  const myCreate = useRef<IndexRef>(null)
-  const myCover = useRef<IndexRef2>(null)
+  const dispatch = useDispatch()
 
   const onChange = (key: string) => {
     switch (key) {
       case 'edit':
-        setIsEdit(true)
+        dispatch(changeCreateVisible(true))
         break
       case 'over':
         break
@@ -29,11 +25,7 @@ const ProjectManagementOptimization = () => {
         break
     }
   }
-  const onConfirm = () => {
-    const data = myCreate.current?.postValue()
-    const data2 = myCover.current?.activeCover
-    // console.log(data, data2)
-  }
+
   return (
     <div>
       <div>
@@ -54,22 +46,6 @@ const ProjectManagementOptimization = () => {
             </CustomDropdown>
           </ProjectCard>
         ))}
-        <CommonModal
-          onConfirm={onConfirm}
-          onClose={() => setIsEdit(false)}
-          width={832}
-          isVisible={isEdit}
-          title="编辑项目"
-        >
-          <div
-            style={{
-              display: 'flex',
-            }}
-          >
-            <ChooseCover ref={myCover} />
-            <CreateAProjectForm ref={myCreate} />
-          </div>
-        </CommonModal>
       </Wrap>
     </div>
   )
