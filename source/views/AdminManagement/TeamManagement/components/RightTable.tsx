@@ -72,11 +72,44 @@ const SelectStyle = styled(Select)`
     background-color: var(--neutral-white-d4) !important;
   }
 `
+const PersonStyle = styled.div`
+  width: 100%;
+  padding: 24px 0;
+`
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`
+const LeftItem = styled.span`
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n2);
+`
+const RightItem = styled.span`
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n1-d1);
+`
+const RightItemIcon = styled.span`
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: #feb2a1;
+  border-radius: 50px 50px 50px 50px;
+  color: var(--neutral-white-d1);
+  text-align: center;
+  line-height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+`
 const RightTable = () => {
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   const [editForm, setEditForm] = useState<any>()
   const [delIsVisible, setDelIsVisible] = useState(false)
+  const [type, setType] = useState('')
   const options = [
     {
       value: '123',
@@ -109,13 +142,63 @@ const RightTable = () => {
       </>
     )
   }
+  const personalData = (row: any) => {
+    return (
+      <PersonStyle>
+        <Row>
+          <LeftItem>头像</LeftItem>
+          <RightItemIcon>李</RightItemIcon>
+        </Row>
+        <Row>
+          <LeftItem>手机号</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>登录邮箱</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>昵称</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>姓名</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>性别</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>所属部门</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>职位</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row>
+          <LeftItem>所在团队</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+        <Row className="row">
+          <LeftItem>权限组</LeftItem>
+          <RightItem>18866686868</RightItem>
+        </Row>
+      </PersonStyle>
+    )
+  }
   return (
     <RightWrap>
       <HeaderSearch />
       <TableBox>
         <Table
-          onEditRow={(row: any) => {
-            setIsVisible(true), setEditForm(teamGetForm(row))
+          onEditRow={(row: any, state: string) => {
+            setIsVisible(true),
+              setType(state),
+              setEditForm(
+                state === 'detail' ? personalData(row) : teamGetForm(row),
+              )
           }}
           onDelRow={(row: any) => {
             setDelIsVisible(true)
@@ -130,11 +213,13 @@ const RightTable = () => {
         />
       </PaginationBox>
       <CommonModal
-        title={'编辑成员'}
+        title={type === 'detail' ? '个人资料' : '编辑成员'}
         isVisible={isVisible}
         children={editForm}
+        hasFooter={type === 'detail' ? true : false}
         onClose={() => setIsVisible(false)}
       />
+
       <DeleteConfirm
         title="移除确认"
         text="确认移除该成员？"
