@@ -16,12 +16,14 @@ export const WrapText = styled.div`
   line-height: 40px;
   margin-left: 8px;
 `
+
 export const WrapTextImg = styled.img`
   width: 20px;
   height: 20px;
   background: #98ace0;
   border-radius: 4px 4px 4px 4px;
 `
+
 export const WrapFirst = styled.div`
   height: 22px;
   font-size: 14px;

@@ -36,7 +36,7 @@ const ModalStyle = styled(Modal)`
   }
 `
 interface ModalProps {
-  width?: number
+  width?: number | string
   isVisible: boolean
   title?: string
   onClose?(): void
@@ -53,7 +53,7 @@ const CommonModal = (props: ModalProps) => {
   return (
     <ModalStyle
       footer={false}
-      visible={props?.isVisible}
+      open={props?.isVisible}
       title={false}
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}

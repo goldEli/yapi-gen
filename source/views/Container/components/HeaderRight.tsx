@@ -31,6 +31,7 @@ import {
 } from './../style'
 import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
+import { setIsCreateDemandVisible } from '@store/demand'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -233,7 +234,7 @@ const HeaderRight = () => {
         dispatch(setIsCreateIterationVisible(true))
         return
       case 'demand':
-      //
+        dispatch(setIsCreateDemandVisible(true))
     }
   }
 

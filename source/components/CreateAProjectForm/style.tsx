@@ -5,6 +5,7 @@ export const Wrap = styled.div`
   width: 388px;
   padding-left: 24px;
 `
+
 export const CoverAreaWrap = styled.div`
   box-sizing: content-box;
   width: 368px;
