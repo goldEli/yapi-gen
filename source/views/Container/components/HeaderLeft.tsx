@@ -15,6 +15,8 @@ import {
   HeaderLeftWrap,
   LogoBox,
   MenuLabel,
+  CompanyCard,
+  CompanyCards,
 } from '../style'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
@@ -22,7 +24,6 @@ import { useNavigate } from 'react-router-dom'
 import { getCompanyList, updateCompany } from '@/services/user'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
-import CompanyCard from './CompanyCard'
 
 interface DrawerComponentProps {
   value: boolean
@@ -160,28 +161,30 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         title={t('components.changeCompany')}
         onClose={() => setIsChangeCompany(false)}
         onConfirm={onConfirmChange}
-        width={750}
       >
-        <Space
-          size={16}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            maxHeight: 600,
-            overflow: 'auto',
-          }}
-        >
-          {companyList.map(i => (
-            <CompanyCard
-              logo={i.logo}
-              name={i.name}
-              key={i.id}
-              tap={() => onClickCompany(i)}
-              isShow={i.id === activeId}
-            />
-          ))}
-        </Space>
+        <CompanyCards>
+          <div style={{ padding: '0 8px' }}>
+            {companyList.map((i: any) => (
+              <CompanyCard
+                key={i.id}
+                isActive={i.id === activeId}
+                onClick={() => onClickCompany(i)}
+              >
+                <div className="info">
+                  <img src={i.logo} alt="" />
+                  <span>{i.name}</span>
+                </div>
+                {i.id === activeId && (
+                  <CommonIconFont
+                    type="check"
+                    size={20}
+                    color="var(--primary-d2)"
+                  />
+                )}
+              </CompanyCard>
+            ))}
+          </div>
+        </CompanyCards>
       </CommonModal>
 
       {/* 左侧弹层 */}

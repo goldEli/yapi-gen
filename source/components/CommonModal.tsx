@@ -76,7 +76,7 @@ const CommonModal = (props: ModalProps) => {
           </CloseWrap>
         </Space>
       </ModalHeader>
-      <div style={{ padding: '0 24px' }}>{props?.children}</div>
+      <div>{props?.children}</div>
       {!props?.isShowFooter && (
         <>
           {props?.hasFooter}
