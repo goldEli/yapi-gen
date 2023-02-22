@@ -109,7 +109,7 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
     '.checked': {
       fontSize: 16,
       marginLeft: 36,
-      color: '#2877ff',
+      color: 'var(--auxiliary-b1)',
     },
     '.left': {
       padding: 0,
@@ -118,19 +118,19 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
     },
     '&: hover': {
       '.label': {
-        color: '#323233',
+        color: 'var(--neutral-n1-d1)',
       },
       '.icon': {
-        color: '#323233',
+        color: 'var(--neutral-n1-d1)',
       },
     },
   },
   ({ isCheck }) => ({
     '.label': {
-      color: isCheck ? '#2877ff!important' : '#646566',
+      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n2)',
     },
     '.icon': {
-      color: isCheck ? '#2877ff!important' : '#646566',
+      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n2)',
     },
   }),
 )
@@ -143,7 +143,7 @@ const HoverWrap = styled.div<{ isActive?: any }>(
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    color: '#646566',
+    color: 'var(--neutral-n2)',
     '.iconMain': {
       marginRight: 8,
       fontSize: 18,
@@ -153,12 +153,12 @@ const HoverWrap = styled.div<{ isActive?: any }>(
     },
     '&: hover': {
       background: '#F4F5F5',
-      color: '#323233',
+      color: 'var(--neutral-n1-d1)',
     },
   },
   ({ isActive }) => ({
     background: isActive ? '#F4F5F5' : 'white',
-    color: isActive ? '#323233!important' : '#646566',
+    color: isActive ? 'var(--neutral-n1-d1)!important' : 'var(--neutral-n2)',
   }),
 )
 

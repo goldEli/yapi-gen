@@ -10,7 +10,7 @@ const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
     cursor: 'pointer',
     '&: hover': {
       svg: {
-        color: '#2877ff',
+        color: 'var(--auxiliary-b1)',
       },
     },
     '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
@@ -66,7 +66,7 @@ const MoreDropdown = (props: Props) => {
         <IconFont
           style={{
             fontSize: props.size || 16,
-            color: props.color || '#BBBDBF',
+            color: props.color || 'var(--neutral-n4)',
           }}
           type="more"
         />
