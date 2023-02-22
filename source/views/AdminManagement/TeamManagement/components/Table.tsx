@@ -90,9 +90,9 @@ const Table = (props: any) => {
       title: '操作',
       render: (text: string, record: any) => (
         <OperationWrap>
-          <span onClick={() => props.onEditRow(record)}>编辑</span>
+          <span onClick={() => props.onEditRow(record, 'edit')}>编辑</span>
           <span onClick={() => props.onDelRow(record)}>移出</span>
-          <span>详情</span>
+          <span onClick={() => props.onEditRow(record, 'detail')}>详情</span>
         </OperationWrap>
       ),
     },
