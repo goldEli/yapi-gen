@@ -12,6 +12,7 @@ const RightWrap = styled.div`
   padding: 0 24px;
   height: 100%;
   position: relative;
+  background-color: var(--neutral-white-d1);
 `
 const PaginationBox = styled.div`
   position: absolute;
@@ -41,14 +42,35 @@ const FormStyle = styled(Form)`
     color: var(--neutral-n1-d1);
     margin-bottom: 8px;
   }
-  & .ant-form-item-label > label {
+  & .ant-form-item-label > label,
+  .ant-select-selection-item {
     color: var(--neutral-n1-d1);
+  }
+  & .ant-picker,
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+  .ant-input,
+  .ant-input-number {
+    border: 1px solid var(--neutral-n6-d1) !important;
+    background-color: var(--neutral-white-d4) !important;
+  }
+  & .ant-select-item-option-content,
+  .ant-select-item,
+  .ant-select-item-option,
+  .rc-virtual-list-holder-inner,
+  .ant-select-dropdown {
+    background-color: var(--neutral-white-d4) !important;
   }
 `
 const TitleStyle = styled.div`
   margin: 0 0 24px 0;
   font-size: 14px;
   color: var(--neutral-n2);
+`
+const SelectStyle = styled(Select)`
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: 1px solid var(--neutral-n6-d1) !important;
+    background-color: var(--neutral-white-d4) !important;
+  }
 `
 const RightTable = () => {
   const [form] = Form.useForm()
@@ -75,7 +97,8 @@ const RightTable = () => {
             name="username"
             rules={[{ required: true, message: '请输入团队名称' }]}
           >
-            <Select
+            <SelectStyle
+              getPopupContainer={node => node}
               placeholder="请输入团队名称"
               style={{ width: '100%' }}
               options={options}

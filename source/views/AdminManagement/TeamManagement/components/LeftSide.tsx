@@ -34,14 +34,25 @@ const TiamTitleText = styled.span`
 const IconFontStyle = styled(IconFont)`
   font-size: 18px;
   color: var(--neutral-n2);
+  border-radius: 6px;
+  &:hover {
+    background-color: var(--hover-d1);
+  }
 `
 const InputStyle = styled(Input)`
   width: 480px;
   height: 32px;
+  position: relative;
+  background: var(--neutral-white-d4);
+  border: 1px solid var(--neutral-n6-d1);
+  color: var(--neutral-n1-d1);
+  input {
+    background: var(--neutral-white-d4);
+    color: var(--neutral-n1-d1);
+  }
 `
 const FormStyle = styled(Form)`
   & .ant-form-item {
-    min-height: 62px !important;
     display: flex;
     flex-direction: column;
   }
@@ -60,6 +71,13 @@ const FormStyle = styled(Form)`
   & .ant-form-item-label > label {
     color: var(--neutral-n1-d1);
   }
+  & .ant-form-item-control-input-content {
+    background-color: var(--neutral-white-d5) !important;
+  }
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+    background-color: var(--neutral-white-d5) !important;
+  }
 `
 const Mask = styled.div`
   width: 80px;
@@ -76,8 +94,6 @@ const Mask = styled.div`
 const UploadStyle = styled(upload)`
   width: 80px;
   height: 80px;
-  position: relative;
-  top: 22px;
   border-radius: 14px;
   img {
     width: 80px;
@@ -91,6 +107,9 @@ const UploadStyle = styled(upload)`
     cursor: pointer;
   }
 `
+const UploadBox = styled.div`
+  position: relative;
+`
 const UploadTitle = styled.div`
   display: flex;
   align-items: center;
@@ -100,7 +119,7 @@ const UploadTitle = styled.div`
   font-weight: 400;
   color: var(--neutral-n1-d1);
   margin-bottom: 8px;
-  margin-top: 36px;
+  margin-top: 24px;
 `
 const Upload = () => {
   const [defaultIcon, setDefaultIcon] = useState(true)
@@ -203,9 +222,11 @@ const LeftSide = () => {
               }
             />
           </Form.Item>
-          <Form.Item label="" name="img">
+          {/* <Form.Item label="" name="img"> */}
+          <UploadBox>
             <Upload />
-          </Form.Item>
+          </UploadBox>
+          {/* </Form.Item> */}
         </FormStyle>
       </>
     )

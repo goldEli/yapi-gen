@@ -51,11 +51,17 @@ const ModalFooter = styled(Space)({
   justifyContent: 'flex-end',
   paddingRight: 8,
 })
-
+const ModalStyle = styled(Modal)`
+  .ant-modal-body {
+    background-color: var(--neutral-white-d5);
+    border-radius: 6px;
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  }
+`
 const DeleteConfirm = (props: Props) => {
   const [t] = useTranslation()
   return (
-    <Modal
+    <ModalStyle
       visible={props.isVisible}
       title={false}
       footer={false}
@@ -90,7 +96,7 @@ const DeleteConfirm = (props: Props) => {
           确定
         </CommonButton>
       </ModalFooter>
-    </Modal>
+    </ModalStyle>
   )
 }
 

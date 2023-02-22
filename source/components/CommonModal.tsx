@@ -28,7 +28,13 @@ const ModalFooter = styled(Space)({
   height: 80,
   padding: '0 24px',
 })
-
+const ModalStyle = styled(Modal)`
+  .ant-modal-body {
+    background-color: var(--neutral-white-d5);
+    border-radius: 6px;
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  }
+`
 interface ModalProps {
   width?: number
   isVisible: boolean
@@ -45,7 +51,7 @@ interface ModalProps {
 const CommonModal = (props: ModalProps) => {
   const [t] = useTranslation()
   return (
-    <Modal
+    <ModalStyle
       footer={false}
       visible={props?.isVisible}
       title={false}
@@ -86,7 +92,7 @@ const CommonModal = (props: ModalProps) => {
           )}
         </>
       )}
-    </Modal>
+    </ModalStyle>
   )
 }
 

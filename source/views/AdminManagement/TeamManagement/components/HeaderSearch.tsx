@@ -8,7 +8,7 @@ const HeaderWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #ecedef;
+  border-bottom: 1px solid var(--neutral-n6-d1);
 `
 const TitleWrap = styled.div`
   font-size: var(--font14);
