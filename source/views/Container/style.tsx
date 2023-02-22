@@ -114,6 +114,9 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
     color: var(--primary-d2);
+    svg {
+      color: var(--primary-d2);
+    }
   }
 `
 
@@ -300,5 +303,54 @@ export const DrawerFooter = styled.div`
   }
   &:hover {
     background: var(--hover-d2);
+  }
+`
+
+export const CompanyCards = styled.div`
+  min-height: 384px;
+  max-height: 540px;
+  overflow-y: auto;
+  padding: 0 16px;
+  padding-top: 8px;
+`
+
+export const CompanyCard = styled.div<{ isActive?: boolean }>`
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  margin-top: 16px;
+  padding: 0 12px;
+  border: ${props =>
+    props.isActive
+      ? '1px solid transparent'
+      : '1px solid var(--neutral-n6-d2)'};
+  background: ${props =>
+    props.isActive ? 'var(--hover-d2)' : 'var(--neutral-white-d6)'};
+  box-sizing: border-box;
+  cursor: pointer;
+  .info {
+    display: flex;
+    align-items: center;
+    img {
+      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+    }
+    span {
+      font-size: var(--font14);
+      color: var(--neutral-n1-d1);
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &:hover {
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    background: var(--hover-d2);
+    border: 1px solid transparent;
   }
 `

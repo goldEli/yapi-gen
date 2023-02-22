@@ -343,7 +343,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         onEditorChange={onChangeHandler}
         onBlur={onBlur}
         init={{
-          height: 434,
+          height: props.height || 334,
           menubar: false,
           contextmenu: false,
           statusbar: false,

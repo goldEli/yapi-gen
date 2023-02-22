@@ -30,6 +30,7 @@ import {
   UserInfoWrap,
 } from './../style'
 import { useTranslation } from 'react-i18next'
+import { setIsCreateIterationVisible } from '@store/iterate'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -136,9 +137,11 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
 }
 
 const HeaderRight = () => {
+  const dispatch = useDispatch()
   const { language } = useSelector(store => store.global)
   const { userInfo } = useSelector(store => store.user)
   const [isVisible, setIsVisible] = useState(false)
+  const [isCreateVisible, setIsCreateVisible] = useState(false)
   const [isInfoVisible, setIsInfoVisible] = useState(false)
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
 
@@ -219,6 +222,21 @@ const HeaderRight = () => {
     }
   }
 
+  // 创建需求
+  const onCreate = (key: string) => {
+    setIsCreateVisible(false)
+    switch (key) {
+      case 'project':
+        dispatch({ type: 'createProject/changeCreateVisible', payload: true })
+        return
+      case 'iteration':
+        dispatch(setIsCreateIterationVisible(true))
+        return
+      case 'demand':
+      //
+    }
+  }
+
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -264,7 +282,7 @@ const HeaderRight = () => {
   const content = (
     <ChangeItems>
       {createList.map((i: any) => (
-        <ChangeItem key={i.key} height={40}>
+        <ChangeItem key={i.key} height={40} onClick={() => onCreate(i.key)}>
           <Space size={8}>
             <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
             {i.name}
@@ -319,7 +337,12 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        <Popover content={content} placement="bottomRight">
+        <Popover
+          content={content}
+          open={isCreateVisible}
+          onOpenChange={setIsCreateVisible}
+          placement="bottomRight"
+        >
           <CreateWrap>
             <CommonIconFont type="plus" size={20} />
           </CreateWrap>
