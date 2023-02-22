@@ -114,6 +114,9 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
     color: var(--primary-d2);
+    svg {
+      color: var(--primary-d2);
+    }
   }
 `
 

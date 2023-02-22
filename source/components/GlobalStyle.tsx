@@ -141,6 +141,9 @@ const GlobalStyle = () => {
 
   const globalCss = css`
     ${colors[theme]}
+    .tox-tinymce {
+      border: 1px solid var(--neutral-n6-d1);
+    }
     :root {
       --blue: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #00a3ff 100%);
       --green: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #009b56 100%);

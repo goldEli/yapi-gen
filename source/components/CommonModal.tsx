@@ -17,7 +17,7 @@ const ModalHeader = styled.div`
   color: var(--neutral-n1-d1);
   font-weight: 500;
   height: 56px;
-  padding: 0 17px 0 24px;
+  padding: 0 13px 0 24px;
 `
 
 const ModalFooter = styled(Space)({
@@ -26,7 +26,7 @@ const ModalFooter = styled(Space)({
   alignItems: 'center',
   justifyContent: 'flex-end',
   height: 80,
-  padding: '0 24px',
+  padding: '0 20px 0 24px',
 })
 const ModalStyle = styled(Modal)`
   .ant-modal-body {
@@ -56,7 +56,7 @@ const CommonModal = (props: ModalProps) => {
       visible={props?.isVisible}
       title={false}
       closable={false}
-      bodyStyle={{ padding: 0 }}
+      bodyStyle={{ padding: '0 4px 0 0' }}
       width={props?.width || 528}
       maskClosable={false}
       destroyOnClose
