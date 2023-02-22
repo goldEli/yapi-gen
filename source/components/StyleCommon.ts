@@ -92,6 +92,70 @@ const ChartsWrap = styled.div`
   padding: 16px 24px;
   border-radius: 6px;
 `
+const HasIconMenu = styled.div<{ isCheck?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    '.icon': {
+      marginRight: 12,
+      fontSize: 16,
+    },
+    '.checked': {
+      fontSize: 16,
+      marginLeft: 36,
+      color: '#2877ff',
+    },
+    '.left': {
+      padding: 0,
+      display: 'flex',
+      alignItems: 'center',
+    },
+    '&: hover': {
+      '.label': {
+        color: '#323233',
+      },
+      '.icon': {
+        color: '#323233',
+      },
+    },
+  },
+  ({ isCheck }) => ({
+    '.label': {
+      color: isCheck ? '#2877ff!important' : '#646566',
+    },
+    '.icon': {
+      color: isCheck ? '#2877ff!important' : '#646566',
+    },
+  }),
+)
+// 新版移入效果例：项目列表左上方操作
+const HoverWrap = styled.div<{ isActive?: any }>(
+  {
+    padding: '0 8px',
+    height: 32,
+    borderRadius: 6,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    color: '#646566',
+    '.iconMain': {
+      marginRight: 8,
+      fontSize: 18,
+    },
+    svg: {
+      fontSize: 18,
+    },
+    '&: hover': {
+      background: '#F4F5F5',
+      color: '#323233',
+    },
+  },
+  ({ isActive }) => ({
+    background: isActive ? '#F4F5F5' : 'white',
+    color: isActive ? '#323233!important' : '#646566',
+  }),
+)
 
 export {
   CloseWrap,
@@ -105,4 +169,6 @@ export {
   title1Css,
   title2Css,
   titleCss,
+  HasIconMenu,
+  HoverWrap,
 }

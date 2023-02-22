@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState } from 'react'
 import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
+import MoreProjectSide from '@/components/AllSide/MoreProjectSide'
+import { useLocation } from 'react-router-dom'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
@@ -76,6 +78,7 @@ const Side = () => {
   const [leftWidth, setLeftWidth] = useState(200)
   const [endWidth, setEndWidth] = useState(200)
   const [focus, setFocus] = useState(false)
+  const { pathname } = useLocation()
 
   // 拖动线条
   const onDragLine = (event: any) => {
@@ -128,7 +131,12 @@ const Side = () => {
       payload: !firstMenuCollapse,
     })
   }
-
+  const getClassSide = () => {
+    if (pathname === '/ProjectManagement/Project') {
+      return <MoreProjectSide leftWidth={leftWidth} />
+    }
+    return <ProjectDetailSide leftWidth={leftWidth} />
+  }
   return (
     <SideWrap
       firstMenuCollapse={firstMenuCollapse}
@@ -139,7 +147,7 @@ const Side = () => {
       }}
     >
       <SideMain firstMenuCollapse={firstMenuCollapse}>
-        <ProjectDetailSide leftWidth={leftWidth} />
+        {getClassSide()}
       </SideMain>
 
       <Line
