@@ -42,7 +42,6 @@ const IconFontStyle = styled(IconFont)`
 const InputStyle = styled(Input)`
   width: 480px;
   height: 32px;
-  position: relative;
   background: var(--neutral-white-d4);
   border: 1px solid var(--neutral-n6-d1);
   color: var(--neutral-n1-d1);
@@ -52,6 +51,8 @@ const InputStyle = styled(Input)`
   }
 `
 const FormStyle = styled(Form)`
+  position: relative;
+  height: 68px;
   & .ant-form-item {
     display: flex;
     flex-direction: column;
@@ -70,6 +71,11 @@ const FormStyle = styled(Form)`
   }
   & .ant-form-item-label > label {
     color: var(--neutral-n1-d1);
+  }
+  & .ant-form-item-control-input {
+    display: inline-block;
+    height: 32px;
+    max-height: 32px;
   }
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
@@ -191,7 +197,6 @@ const LeftSide = () => {
   const [teamForm, setTeamForm] = useState<any>(null)
   // 删除团队弹窗
   const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
-  const [value, setValue] = useState('')
   const [form] = Form.useForm()
   const teamGetForm = (row?: any) => {
     return (
@@ -204,31 +209,14 @@ const LeftSide = () => {
           >
             <InputStyle
               placeholder="请输入团队名称"
-              value={value}
               maxLength={20}
-              onChange={e => setValue(e.target.value)}
-              suffix={
-                <>
-                  {/* 删除按钮 */}
-                  {value && (
-                    <IconFont
-                      type="close-circle-fill"
-                      onClick={() => {
-                        setValue('')
-                      }}
-                      style={{ color: '#BBBDBF', fontSize: 16 }}
-                    />
-                  )}
-                </>
-              }
+              allowClear
             />
           </Form.Item>
-          {/* <Form.Item label="" name="img"> */}
-          <UploadBox>
-            <Upload />
-          </UploadBox>
-          {/* </Form.Item> */}
         </FormStyle>
+        <UploadBox>
+          <Upload />
+        </UploadBox>
       </div>
     )
   }
@@ -240,10 +228,6 @@ const LeftSide = () => {
     setTeamForm(teamGetForm(row))
     setTeamIsVisible(true)
   }
-  useEffect(() => {
-    teamIsVisible && setTeamForm(teamGetForm())
-  }, [value])
-
   return (
     <LeftSideContainer>
       <TeamAdd onClick={() => createTeam()}>
