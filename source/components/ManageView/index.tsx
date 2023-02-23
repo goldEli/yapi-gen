@@ -226,21 +226,27 @@ const ManageView = () => {
       onClose={() => dispatch(changeViewVisible(false))}
       isVisible={viewVisible}
     >
-      <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-          }}
-        />
-      </Form>
+      <div
+        style={{
+          padding: '24px',
+        }}
+      >
+        <Form form={form} component={false}>
+          <Table
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+            dataSource={data}
+            columns={mergedColumns}
+            rowClassName="editable-row"
+            pagination={{
+              onChange: cancel,
+            }}
+          />
+        </Form>
+      </div>
     </CommonModal>
   )
 }
