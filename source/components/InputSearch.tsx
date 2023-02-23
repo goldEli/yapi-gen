@@ -1,10 +1,11 @@
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
+import { useState } from 'react'
+import CommonIconFont from './CommonIconFont'
 
-const InputStyle = styled(Input)<{ bgColor: string }>`
+const InputStyle = styled(Input)<{ bgColor: any }>`
   height: 32px;
-  background: ${props => props.bgColor ?? '#fff'};
+  background: ${props => props.bgColor ?? 'var(--neutral-white-d4)'};
   border-radius: 6px;
   .ant-input {
     font-size: 14px;
@@ -18,55 +19,58 @@ const InputStyle = styled(Input)<{ bgColor: string }>`
     font-size: 14px;
   }
   input {
-    background: ${props => props.bgColor ?? '#fff'};
+    background: ${props => props.bgColor ?? 'var(--neutral-white-d4)'};
   }
 `
-interface PropsType {
-  bgColor: string
-  width: number
-  value: string
+
+interface Props {
+  onChangeSearch?(val: string): void
   placeholder: string
-  length: number
-  onSearch(value: string): void
-  onChange(value: string): void
-  onClear(): void
+  width?: any
+  autoFocus?: boolean
+  ref?: any
+  bgColor?: string
+  length?: number
   leftIcon?: boolean
 }
-const HeaderSearch = (props: PropsType) => {
+
+const InputSearch = (props: Props) => {
+  // 用于控制输入框的删除图标
+  const [value, setValue] = useState('')
+
   return (
     <InputStyle
+      ref={props?.ref}
       bgColor={props.bgColor}
       width={props.width}
-      value={props.value}
+      value={value}
       placeholder={props.placeholder}
       maxLength={props.length}
-      onBlur={(e: any) => props.onSearch(e.target.value)}
-      onChange={(e: any) => props.onChange(e.target.value)}
-      onPressEnter={(e: any) => props.onSearch?.(e.target.value)}
+      onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
+      onChange={(e: any) => setValue(e.target.value)}
+      onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={
         <>
           {/* 删除按钮 */}
-          {props.value && (
-            <IconFont
+          {value && (
+            <CommonIconFont
               type="close-circle-fill"
               onClick={() => {
-                props.onSearch?.('')
-                props.onClear()
+                props.onChangeSearch?.('')
+                setValue('')
               }}
-              style={{ color: '#BBBDBF', fontSize: 16 }}
+              size={16}
+              color="var(--neutral-n4)"
             />
           )}
         </>
       }
       prefix={
         props.leftIcon && (
-          <IconFont
-            type="search"
-            style={{ color: `var(--neutral-n4)`, fontSize: 16 }}
-          />
+          <CommonIconFont type="search" size={16} color="var(--neutral-n4)" />
         )
       }
     />
   )
 }
-export default HeaderSearch
+export default InputSearch

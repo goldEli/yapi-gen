@@ -95,13 +95,11 @@ const ProjectManagementOptimization = () => {
         <div>
           <InputSearch
             width={184}
-            value={searchVal}
             bgColor="var(--neutral-white-d4)"
             length={12}
             placeholder="请输入昵称姓名邮箱电话"
-            onSearch={(value: string) => setSearchVal(value)}
-            onChange={(value: string) => setSearchVal(value)}
-            onClear={() => setSearchVal('')}
+            onChangeSearch={(value: string) => setSearchVal(value)}
+            leftIcon
           />
         </div>
       </div>
