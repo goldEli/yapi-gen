@@ -10,6 +10,7 @@ import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreSelect from '../MoreSelect'
 import ProjectCard from '../ProjectCard'
+import ProjectCardShow from '../ProjectCardShow'
 import {
   CoverArea,
   CoverAreaAdd,
@@ -115,7 +116,7 @@ const CreateAProjectForm = () => {
               marginTop: '16px',
             }}
           >
-            <ProjectCard img={activeCover} />
+            <ProjectCardShow img={activeCover} />
           </div>
         </CoverAreaWrap>
         <Wrap>
