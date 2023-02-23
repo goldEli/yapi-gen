@@ -55,12 +55,12 @@ const Index = (props: any) => {
     {
       type: 'project',
       num: props.item.iterateCount,
-      text: '项目人数',
+      text: '需求数',
     },
     {
       type: 'm1y',
       num: props.item.storyCount,
-      text: '项目人数',
+      text: '迭代数',
     },
   ]
 
@@ -113,15 +113,15 @@ const Index = (props: any) => {
           <CardRightFirst>{props.item.name}</CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：{props.item.createName}</CardRightSecond>
-        <CardRightSecond>键：DXKJ</CardRightSecond>
+        <CardRightSecond>负责人：{props.item.leaderName}</CardRightSecond>
+        <CardRightSecond>键：{props.item.prefix}</CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
             <Progress
               size="small"
               strokeColor="var(--function-success)"
               strokeWidth={4}
-              percent={30}
+              percent={Math.trunc(Number(props.item.progress) * 100)}
             />
           </ProgressWrap>
 
