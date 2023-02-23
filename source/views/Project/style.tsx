@@ -8,6 +8,7 @@ export const Wrap = styled.div`
 `
 export const Content = styled.div<{ isGrid: boolean }>(
   {
+    width: '100%',
     background: '#F5F7FA',
     height: 'calc(100% - 64px)',
   },

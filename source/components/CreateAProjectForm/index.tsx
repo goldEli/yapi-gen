@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { uploadFileByTask } from '@/services/cos'
 import { changeCreateVisible } from '@store/create-propject'
@@ -22,6 +23,7 @@ import {
   CoverAreaWrap,
   Wrap,
 } from './style'
+import { makePy, mkRslt } from './tool'
 
 export type IndexRef = {
   postValue(): Record<string, unknown>
@@ -31,6 +33,7 @@ const CreateAProjectForm = () => {
   const [form] = Form.useForm()
   const [activeCover, setActiveCover] = useState<any>()
   const [myCover, setMyCover] = useState<string>('')
+  const [lock, setLock] = useState(true)
   const covers = useSelector(state => state.cover.covers)
   const createVisible = useSelector(state => state.createProject.createVisible)
   const dispatch = useDispatch()
@@ -46,7 +49,45 @@ const CreateAProjectForm = () => {
       cover: activeCover,
       ...form.getFieldsValue(),
     }
+
     dispatch(postCreate(obj))
+  }
+
+  function upper(str: string) {
+    // eslint-disable-next-line prefer-regex-literals
+    const pattern = new RegExp('[\u4E00-\u9FA5]+')
+    const newStr = []
+    for (const i of str.split('')) {
+      if (pattern.test(i)) {
+        newStr.push(makePy(i))
+      } else {
+        newStr.push(i.toLocaleUpperCase())
+      }
+    }
+    return newStr.join('')
+  }
+
+  function transformStr(str: string) {
+    // eslint-disable-next-line prefer-regex-literals
+    const judgeFn = new RegExp(/\s+/g)
+    const newStr = []
+    if (judgeFn.test(str)) {
+      for (const i of str.split(' ')) {
+        newStr.push(i.substring(0, 1))
+      }
+
+      return upper(newStr.join(''))
+    }
+    return upper(str)
+  }
+
+  const onChange = (e: any) => {
+    const textStr = e.target.value.trim()
+    if (lock) {
+      form.setFieldsValue({
+        keyboard: transformStr(textStr),
+      })
+    }
   }
   return (
     <CommonModal
@@ -128,7 +169,7 @@ const CreateAProjectForm = () => {
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input />
+              <Input onChange={onChange} />
             </Form.Item>
 
             <Form.Item
@@ -171,7 +212,7 @@ const CreateAProjectForm = () => {
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input placeholder="请输入键" />
+              <Input onFocus={() => setLock(false)} placeholder="请输入键" />
             </Form.Item>
             <Form.Item label={<FormTitleSmall text="项目负责人" />} name="user">
               <MoreSelect

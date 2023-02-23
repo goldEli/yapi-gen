@@ -308,10 +308,10 @@ function bytesToSize(fileByte: any) {
 // 复制
 function copyLink(text: any, successText: string, errorText: string) {
   navigator.clipboard.writeText(text).then(
-    function () {
+    () => {
       message.success(successText)
     },
-    function (err) {
+    err => {
       message.error(errorText)
     },
   )
