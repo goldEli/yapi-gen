@@ -272,6 +272,7 @@ const PriorityWrap = styled.div<{ status?: any }>({
   },
 })
 
+// ----------------- 颜色未处理
 const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
   {
     margin: '0!important',
@@ -304,6 +305,38 @@ const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
   }),
 )
 
+const SelectWrapBedeck = styled.div`
+  height: 32px;
+  position: relative;
+  height: 32px;
+  border: 1px solid #ebedf0;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  span {
+    white-space: nowrap;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+    padding-top: 0 !important;
+  }
+  .ant-picker {
+    border: none;
+  }
+  .ant-select-selection-placeholder {
+    color: black;
+  }
+`
+
+const SearchLine = styled.div`
+  box-sizing: border-box;
+  padding: 16px 0;
+  display: flex;
+  gap: 16px;
+  padding-left: 24px;
+  background: rgba(255, 255, 255, 1);
+`
+
 export {
   CloseWrap,
   ChartsItem,
@@ -322,4 +355,6 @@ export {
   AddWrap,
   PriorityWrap,
   SliderWrap,
+  SelectWrapBedeck,
+  SearchLine,
 }
