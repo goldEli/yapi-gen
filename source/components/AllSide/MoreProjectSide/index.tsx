@@ -1,20 +1,27 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-constant-condition */
 // 项目二级菜单
 
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonModal from '@/components/CommonModal'
+import DeleteConfirm from '@/components/DeleteConfirm'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
-import { Menu } from 'antd'
-import { useRef, useState } from 'react'
+import {
+  addProjectGroup,
+  deleteProjectGroup,
+  getGroupList,
+  updateProjectGroup,
+} from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefreshGroup } from '@store/project'
+import { Form, Input, Menu, message } from 'antd'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   AllWrap,
   MenuBox,
   MenuItem,
-  Provider,
-  SideFooter,
-  SideInfo,
-  SideTop,
-  WrapSet,
   WrapDetail,
   GroupBox,
   CloseWrap,
@@ -23,30 +30,196 @@ import {
   GroupItems,
 } from './style'
 
-const MoreProjectSide = (props: { leftWidth: number }) => {
+interface Props {
+  onAddClick(): void
+  onChangeType(val: number): void
+  activeType: number
+  isPermission?: boolean
+  onChangeGroup(value: any): void
+  leftWidth: number
+}
+
+const MoreProjectSide = (props: Props) => {
+  const [t] = useTranslation()
+  const [form] = Form.useForm()
   const projectSide: any = useRef<HTMLInputElement>(null)
+  const [groupId, setGroupId] = useState<any>(null)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [operationObj, setOperationObj] = useState<any>({})
+  const [groupList, setGroupList] = useState<any>({
+    list: undefined,
+  })
+  const { isRefreshGroup } = useSelector(store => store.project)
+  const inputRefDom = useRef<HTMLInputElement>(null)
+  const [countData, setCountData] = useState<any>({})
+  const dispatch = useDispatch()
+
+  // 点击下拉项
   const onClickMenu = (type: any, item: any, e: any) => {
     e.stopPropagation()
     setIsMoreVisible(false)
+    setOperationObj(item)
+    if (type === 'edit') {
+      setIsVisible(true)
+      form.setFieldsValue({ name: item.name })
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    } else {
+      setIsDeleteVisible(true)
+    }
   }
+
   const menu = (item: any) => {
     const menuItems = [
       {
         key: '1',
-        label: <div onClick={e => onClickMenu('edit', item, e)}>编辑</div>,
+        label: (
+          <div onClick={e => onClickMenu('edit', item, e)}>
+            {t('version2.editGroup')}
+          </div>
+        ),
       },
       {
         key: '2',
-        label: <div onClick={e => onClickMenu('del', item, e)}>删除</div>,
+        label: (
+          <div onClick={e => onClickMenu('del', item, e)}>
+            {t('version2.deleteGroup')}
+          </div>
+        ),
       },
     ]
 
     return <Menu items={menuItems} />
   }
+  const getGroupData = async (isChange?: boolean) => {
+    const result = await getGroupList()
 
+    setGroupList({ list: result?.list })
+    setCountData({
+      publicCount: result.publicCount,
+      selfCount: result.selfCount,
+    })
+    dispatch(setIsRefreshGroup(false))
+    // 如果当前删除的是当前选择，则切换为分组第一条
+    if (isChange) {
+      props.onChangeGroup(result?.list[0]?.id)
+      setGroupId(result?.list[0]?.id)
+    }
+  }
+
+  // 关闭弹窗
+  const onClose = (type: string) => {
+    if (type === 'del') {
+      setIsDeleteVisible(!isDeleteVisible)
+    } else {
+      setIsVisible(!isVisible)
+      form.resetFields()
+    }
+    setOperationObj({})
+  }
+  // 点击切换我参与的或企业所有
+  const onChangeType = (value: number) => {
+    setGroupId(null)
+    props.onChangeType(value)
+  }
+
+  // 点击切分组
+  const onChangeGroup = (item: any) => {
+    props.onChangeGroup(item.id)
+    setGroupId(item.id)
+  }
+
+  // 操作成功后，清除
+  const onUpdateGroup = (isChange?: boolean) => {
+    setIsDeleteVisible(false)
+    setIsVisible(false)
+    setOperationObj({})
+    form.resetFields()
+    getGroupData(isChange)
+  }
+  // 确认删除分组
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteProjectGroup({ id: operationObj?.id })
+      message.success(t('common.deleteSuccess'))
+      onUpdateGroup(groupId === operationObj?.id)
+      // 如果分组只剩最后一个分组,默认切换到我参与的，反之切换到分组第一个
+      if (groupList?.list?.length === 1) {
+        onChangeType(0)
+      }
+    } catch (error) {
+      //
+    }
+  }
+
+  // 创建分组和编辑分组
+  const onConfirm = async () => {
+    await form.validateFields()
+    const values = form.getFieldsValue()
+
+    if (operationObj?.id) {
+      values.id = operationObj?.id
+      try {
+        await updateProjectGroup(values)
+        message.success(t('common.editSuccess'))
+        onUpdateGroup()
+      } catch (error) {
+        //
+      }
+    } else {
+      try {
+        await addProjectGroup(values)
+        message.success(t('common.createSuccess'))
+        onUpdateGroup()
+      } catch (error) {
+        //
+      }
+    }
+  }
+  useEffect(() => {
+    getGroupData()
+  }, [isRefreshGroup])
   return (
     <AllWrap>
+      <DeleteConfirm
+        isVisible={isDeleteVisible}
+        text={t('version2.deleteGroupText')}
+        onChangeVisible={() => onClose('del')}
+        onConfirm={onDeleteConfirm}
+      />
+
+      <CommonModal
+        isVisible={isVisible}
+        title={
+          operationObj.id ? t('version2.editGroup') : t('version2.createGroup')
+        }
+        onClose={() => onClose('edit')}
+        onConfirm={onConfirm}
+      >
+        <Form form={form} layout="vertical" style={{ padding: '24px' }}>
+          <Form.Item
+            label={t('version2.groupName')}
+            name="name"
+            rules={[{ required: true, message: '' }]}
+            getValueFromEvent={event => {
+              // eslint-disable-next-line require-unicode-regexp
+              return event.target.value.replace(/(?<start>^\s*)/g, '')
+            }}
+          >
+            <Input
+              placeholder={t('version2.pleaseGroupName')}
+              autoComplete="off"
+              maxLength={10}
+              autoFocus
+              allowClear
+              ref={inputRefDom as any}
+            />
+          </Form.Item>
+        </Form>
+      </CommonModal>
       <WrapDetail ref={projectSide}>
         <MenuBox>
           <MenuItem>
@@ -55,7 +228,11 @@ const MoreProjectSide = (props: { leftWidth: number }) => {
               color="var(--neutral-n3)"
               size={18}
             />
-            <div>我参与的（12）</div>
+            <div>
+              {' '}
+              {t('project.mineJoin')}
+              {countData.selfCount ? `（${countData.selfCount}）` : ''}
+            </div>
           </MenuItem>
           <MenuItem>
             <CommonIconFont
@@ -63,19 +240,23 @@ const MoreProjectSide = (props: { leftWidth: number }) => {
               color="var(--neutral-n3)"
               size={18}
             />
-            <div>企业全部（30）</div>
+            <div>
+              {' '}
+              {t('project.companyAll')}
+              {countData.publicCount ? `（${countData.publicCount}）` : ''}
+            </div>
           </MenuItem>
         </MenuBox>
 
         <GroupBox>
-          <div>项目分组</div>
+          <div>{t('version2.projectGroup')}</div>
           <CloseWrap
             width={24}
             height={24}
             onClick={() => {
-              // setIsVisible(true)
+              setIsVisible(true)
               setTimeout(() => {
-                // inputRefDom.current?.focus()
+                inputRefDom.current?.focus()
               }, 100)
             }}
           >
@@ -86,12 +267,17 @@ const MoreProjectSide = (props: { leftWidth: number }) => {
           </CloseWrap>
         </GroupBox>
         <GroupItems>
-          {[] ? (
-            [1, 2].length > 0 ? (
+          {!!groupList?.list &&
+            (groupList?.list?.length > 0 ? (
               <>
-                {[1, 2].map((item: any) => (
-                  <TitleBox isSpace key={item}>
-                    {item}
+                {groupList.list?.map((item: any) => (
+                  <TitleBox
+                    isSpace
+                    onClick={() => onChangeGroup(item)}
+                    key={item.id}
+                    idx={item.id === groupId}
+                  >
+                    {item.name}
                     <MoreDropdown
                       onChangeVisible={setIsMoreVisible}
                       menu={menu(item)}
@@ -106,18 +292,26 @@ const MoreProjectSide = (props: { leftWidth: number }) => {
                 <NoDataCreateWrap>
                   <div className="top">
                     <IconFont type="Warning" />
-                    <div>暂无分组，创建一个吧~</div>
+                    <div>{t('version2.noDataCreateGroup')}</div>
                   </div>
                   <div className="bottom">
-                    <div className="bottom" style={{ cursor: 'pointer' }}>
+                    <div
+                      className="bottom"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        setIsVisible(true)
+                        setTimeout(() => {
+                          inputRefDom.current?.focus()
+                        }, 100)
+                      }}
+                    >
                       <IconFont type="plus" />
-                      <div>添加分组</div>
+                      <div>{t('version2.addGroup')}</div>
                     </div>
                   </div>
                 </NoDataCreateWrap>
               </div>
-            )
-          ) : null}
+            ))}
         </GroupItems>
       </WrapDetail>
     </AllWrap>

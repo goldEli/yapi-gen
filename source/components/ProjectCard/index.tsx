@@ -1,8 +1,9 @@
 // 项目卡片 children传入右上操作
 
-import { Progress, Tooltip } from 'antd'
+import { changeCreateVisible } from '@store/create-propject'
+import { useDispatch } from '@store/index'
+import { Dropdown, MenuProps, Progress, Tooltip } from 'antd'
 import React from 'react'
-import CustomDropdown from '../CustomDropdown'
 import IconFont from '../IconFont'
 import {
   ProjectCard,
@@ -21,7 +22,6 @@ type Props = {
   type: string
   num: string
   text: string
-  children?: React.ReactNode
 }
 
 const TextOfIcon = (props: Props) => (
@@ -44,30 +44,62 @@ const TextOfIcon = (props: Props) => (
     </div>
   </Tooltip>
 )
-const index = (props: any) => {
+const Index = (props: any) => {
+  const dispatch = useDispatch()
   const arr = [
     {
       type: 'my',
-      num: '12',
+      num: props.item.memberCount,
       text: '项目人数',
     },
     {
       type: 'project',
-      num: '12',
+      num: props.item.iterateCount,
       text: '项目人数',
     },
     {
       type: 'm1y',
-      num: '12',
+      num: props.item.storyCount,
       text: '项目人数',
     },
   ]
 
+  const items: any = [
+    {
+      key: 'edit',
+      label: <span>编辑</span>,
+    },
+    {
+      key: 'over',
+      label: <span>结束</span>,
+    },
+    {
+      key: 'del',
+      label: <span>删除</span>,
+    },
+  ]
+  const onClick: MenuProps['onClick'] = ({ key }) => {
+    switch (key) {
+      case 'edit':
+        dispatch(changeCreateVisible(true))
+        break
+      case 'over':
+        props.onChangeOperation('end', props.item)
+        break
+      case 'del':
+        props.onChangeOperation('delete', props.item)
+        break
+
+      default:
+        break
+    }
+  }
   return (
     <ProjectCard>
       <Image
         src={
-          props.img ?? 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
+          props.item.cover ??
+          'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
         }
       />
 
@@ -76,14 +108,12 @@ const index = (props: any) => {
           arrowPointAtCenter
           autoAdjustOverflow={false}
           placement="top"
-          title=" 跑酷跑酷美术项目跑酷美术项目跑酷美术项目跑酷美术项目美术项目"
+          title={props.item.name}
         >
-          <CardRightFirst>
-            跑酷跑酷美术项目跑酷美术项目跑酷美术项目跑酷美术项目美术项目
-          </CardRightFirst>
+          <CardRightFirst>{props.item.name}</CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：王富贵</CardRightSecond>
+        <CardRightSecond>负责人：{props.item.createName}</CardRightSecond>
         <CardRightSecond>键：DXKJ</CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
@@ -107,11 +137,25 @@ const index = (props: any) => {
           </ShowWrap>
         </TransformWrap>
       </CardRight>
-      {props.children}
+      <Dropdown
+        trigger={['hover']}
+        menu={{ items, onClick }}
+        placement="bottomRight"
+        getPopupContainer={(i: any) => i.parentNode}
+      >
+        <HoverIcon>
+          <IconFont
+            style={{
+              color: 'var(--neutral-n3)',
+            }}
+            type="more"
+          />
+        </HoverIcon>
+      </Dropdown>
 
       <EndTag>End</EndTag>
     </ProjectCard>
   )
 }
 
-export default index
+export default Index

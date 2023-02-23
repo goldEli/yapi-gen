@@ -1,48 +1,103 @@
+/* eslint-disable max-params */
+/* eslint-disable no-undefined */
 import CommonButton from '@/components/CommonButton'
 import CreateActionBar from '@/components/CreateActionBar'
-import CustomDropdown from '@/components/CustomDropdown'
+import DeleteConfirm from '@/components/DeleteConfirm'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import LeftTitle from '@/components/LeftTitle'
+import MainGrid from '@/components/MainGrid/MainGrid'
+import MainTable from '@/components/MainTable/MainTable'
 import ProjectCard from '@/components/ProjectCard'
 import { HoverIcon } from '@/components/ProjectCard/style'
 import ViewPort from '@/components/ViewPort'
+import useSetTitle from '@/hooks/useSetTitle'
+import {
+  deleteProject,
+  getProjectList,
+  openProject,
+  stopProject,
+} from '@/services/project'
 import { changeCreateVisible } from '@store/create-propject'
-import { useDispatch } from '@store/index'
-import { useState } from 'react'
-import { Wrap } from './style'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefreshGroup } from '@store/project'
+import { message, Spin } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Content, Wrap } from './style'
 
 const ProjectManagementOptimization = () => {
-  const row = new Array(10).fill(1)
+  const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(t('title.project'))
   const [isGrid, setIsGrid] = useState(true)
+  const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [groupId, setGroupId] = useState<any>(null)
-  const [searchVal, setSearchVal] = useState('')
   const [isHidden, setIsHidden] = useState(false)
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [searchVal, setSearchVal] = useState('')
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  const [operationDetail, setOperationDetail] = useState<any>({})
+  const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
+  const [groupId, setGroupId] = useState<any>(null)
+  const { userInfo } = useSelector(store => store.user)
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [projectList, setProjectList] = useState<any>({
+    list: undefined,
+  })
 
-  const onChange = (key: string) => {
-    switch (key) {
-      case 'edit':
-        dispatch(changeCreateVisible(true))
-        break
-      case 'over':
-        break
-      case 'del':
-        break
-
-      default:
-        break
+  const getList = async (
+    active: number,
+    isTable: boolean,
+    isDisable: boolean,
+    val: string,
+    sortVal: any,
+    pageVal: any,
+    groupIdVal?: any,
+  ) => {
+    setIsSpinning(true)
+    const params: any = {
+      searchValue: val,
+      orderKey: sortVal.key,
+      order: sortVal.value,
+      status: isDisable ? 1 : 0,
+      groupId: groupIdVal,
     }
+    if (isTable) {
+      params.all = true
+    }
+    if (!isTable) {
+      params.page = pageVal.page
+      params.pageSize = pageVal.size
+    }
+    if (!groupIdVal) {
+      params.self = active !== 1
+      if (active) {
+        params.isPublic = 1
+      }
+    }
+    const result = await getProjectList(params)
+    setProjectList(result)
+    setIsSpinning(false)
   }
+
+  useEffect(() => {
+    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId])
+
+  // 更新列表
+  const onUpdate = () => {
+    getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
+  }
+
   const onChangeType = (type: number) => {
     setActiveType(type)
     setGroupId(null)
     setPageObj({
       page: 1,
-      size: 10,
+      size: pageObj.size,
     })
   }
 
@@ -50,7 +105,7 @@ const ProjectManagementOptimization = () => {
     setIsHidden(hidden)
     setPageObj({
       page: 1,
-      size: 10,
+      size: pageObj.size,
     })
   }
 
@@ -58,18 +113,72 @@ const ProjectManagementOptimization = () => {
     setOrder({ value: 'asc', key: str })
     setPageObj({
       page: 1,
-      size: 10,
+      size: pageObj.size,
     })
   }
 
   const onChangeSearch = (value: string) => {
     if (searchVal !== value) {
+      setProjectList({
+        list: undefined,
+      })
       setSearchVal(value)
       setPageObj({
         page: 1,
-        size: 10,
+        size: pageObj.size,
       })
     }
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteProject({ id: operationDetail.id })
+      message.success(t('common.deleteSuccess'))
+      setIsDelete(false)
+      setOperationDetail({})
+      onUpdate()
+      dispatch(setIsRefreshGroup(true))
+    } catch (error) {
+      //
+    }
+  }
+
+  const onEndOrOpen = async (item: any) => {
+    try {
+      if (item.status === 1) {
+        await stopProject({ id: item.id })
+      } else {
+        await openProject({ id: item.id })
+      }
+      message.success(
+        item.status === 1 ? t('common.endSuccess') : t('common.openSuccess'),
+      )
+      setOperationDetail({})
+      setIsStop(false)
+      onUpdate()
+    } catch (error) {
+      //
+    }
+  }
+
+  const onChangeOperation = (type: string, item: any, e?: any) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    setOperationDetail(item)
+    if (type === 'delete') {
+      setIsDelete(true)
+    } else if (type === 'edit') {
+      setIsVisible(true)
+    } else if (item.status === 1) {
+      setIsStop(true)
+    } else {
+      onEndOrOpen(item)
+    }
+  }
+
+  const onStopProject = () => {
+    onEndOrOpen(operationDetail)
   }
 
   const onChangeGrid = (val: boolean) => {
@@ -80,8 +189,46 @@ const ProjectManagementOptimization = () => {
     })
   }
 
+  const onAddClick = () => {
+    setIsVisible(true)
+    setOperationDetail({})
+  }
+
+  const onChangePageNavigation = (item: any) => {
+    setPageObj({
+      page: item.page,
+      size: item.size,
+    })
+  }
+
+  const onUpdateOrderKey = (item: any) => {
+    setOrder(item)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }
+
+  // 切换分组查询列表
+  const onChangeGroup = (id: number) => {
+    setGroupId(id)
+    setActiveType(-1)
+  }
   return (
     <div>
+      <DeleteConfirm
+        text={t('mark.delP')}
+        isVisible={isDelete}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
+      <DeleteConfirm
+        title={t('mark.endP')}
+        text={t('common.stopProjectToast', { name: operationDetail?.name })}
+        isVisible={isStop}
+        onChangeVisible={() => setIsStop(!isStop)}
+        onConfirm={onStopProject}
+      />
       <div
         style={{
           display: 'flex',
@@ -135,20 +282,31 @@ const ProjectManagementOptimization = () => {
         />
       </div>
       <Wrap>
-        {row.map(item => (
-          <ProjectCard key={item}>
-            <CustomDropdown onChange={onChange}>
-              <HoverIcon>
-                <IconFont
-                  style={{
-                    color: 'var(--neutral-n3)',
-                  }}
-                  type="more"
-                />
-              </HoverIcon>
-            </CustomDropdown>
-          </ProjectCard>
-        ))}
+        <Content isGrid={isGrid}>
+          <Spin spinning={isSpinning}>
+            {isGrid ? (
+              <MainGrid
+                onChangeVisible={() => setIsVisible(true)}
+                onChangeOperation={onChangeOperation}
+                onAddClear={() => setOperationDetail({})}
+                hasFilter={searchVal.length > 0 || isHidden}
+                projectList={projectList}
+              />
+            ) : (
+              <MainTable
+                onChangeOperation={(e, type, item) =>
+                  onChangeOperation(e, type, item)
+                }
+                onChangePageNavigation={onChangePageNavigation}
+                onUpdateOrderKey={onUpdateOrderKey}
+                order={order}
+                onAddClick={onAddClick}
+                hasFilter={searchVal.length > 0 || isHidden}
+                projectList={projectList}
+              />
+            )}
+          </Spin>
+        </Content>
       </Wrap>
     </div>
   )
