@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState, useEffect } from 'react'
 import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
 import MoreProjectSide from '@/components/AllSide/MoreProjectSide'
+import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
@@ -169,6 +170,16 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
           onChangeType={onChangeType}
           activeType={activeType}
           onChangeGroup={onChangeGroup}
+          leftWidth={leftWidth}
+        />
+      )
+    } else if (pathname === '/AdminManagement/TeamManagement') {
+      return (
+        <AdminSide
+          // onAddClick={onAddClick}
+          // onChangeType={onChangeType}
+          // activeType={activeType}
+          // onChangeGroup={onChangeGroup}
           leftWidth={leftWidth}
         />
       )
