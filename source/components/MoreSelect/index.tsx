@@ -59,6 +59,9 @@ const index = (props: any) => {
   }, [props.options, value])
 
   useEffect(() => {
+    if (value.length < 1) {
+      return
+    }
     props.onChange(value)
   }, [value])
 
