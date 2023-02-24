@@ -147,6 +147,8 @@ const CommonButton = (props: Props) => {
     box-sizing: border-box;
     font-size: var(--font14);
     cursor: pointer;
+    display: flex;
+    align-items: center;
     span:first-child {
       display: flex;
       align-items: center;
@@ -166,13 +168,13 @@ const CommonButton = (props: Props) => {
         onClick={throttleClick}
         disabled={props.isDisable}
       >
-        {props.iconPlacement === 'right' && (
+        {props.iconPlacement !== 'right' && (
           <Space size={8}>
             <IconFont type={props.icon} />
             {props.children}
           </Space>
         )}
-        {props.iconPlacement !== 'right' && (
+        {props.iconPlacement === 'right' && (
           <Space size={8}>
             {props.children}
             <IconFont type={props.icon} />

@@ -4,7 +4,8 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Button, Slider, Table } from 'antd'
+import { Button, Divider, Slider, Table } from 'antd'
+import IconFont from './IconFont'
 
 // 弹窗右上角关闭图标
 const CloseWrap = styled.div<{ width?: any; height?: any }>`
@@ -234,7 +235,7 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
       },
     },
     '&: active': {
-      background: hasColor ? 'var(--primary-d2)' : '',
+      background: hasColor ? 'var(--auxiliary-b6)' : '',
     },
   }),
 )
@@ -449,6 +450,154 @@ const PaginationWrap = styled.div`
   align-items: center;
   padding-right: 16px;
 `
+
+const CanOperationCategory = styled.div<{ color?: string; bgColor?: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    width: 'fit-content',
+    '.title': {
+      '::before': {
+        content: "'#'",
+      },
+      '::after': {
+        content: "'#'",
+      },
+    },
+  },
+  ({ color, bgColor }) => ({
+    color,
+    background: bgColor,
+  }),
+)
+
+const DividerWrap = styled(Divider)({
+  height: 20,
+  margin: 0,
+})
+
+const ShowWrap = styled.div`
+  visibility: hidden;
+`
+
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
+  {
+    height: 22,
+    borderRadius: 11,
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '22px',
+    fontSize: 12,
+    fontWeight: 400,
+    marginLeft: 8,
+    flexShrink: 0,
+    '::before': {
+      content: "'#'",
+    },
+    '::after': {
+      content: "'#'",
+    },
+  },
+  ({ color, bgColor }) => ({
+    background: bgColor,
+    color,
+  }),
+)
+
+const ListNameWrap = styled.div<{
+  isClose?: boolean
+  isName?: boolean
+  maxWidth?: any
+}>(
+  {
+    padding: '10px 0px',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    cursor: 'pointer',
+    '&: hover': {
+      color: '#2877ff',
+    },
+  },
+  ({ isClose, isName, maxWidth }) => ({
+    color: isClose ? '#969799' : '',
+    textDecoration: isName && isClose ? 'line-through' : '',
+    maxWidth: maxWidth || 500,
+  }),
+)
+
+const StatusWrap = styled.div<{ isShow?: boolean }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #2877FF',
+    color: '#2877FF',
+    width: 'fit-content',
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+  }),
+)
+
+const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
+  {
+    marginLeft: 16,
+    color: '#2877ff',
+    visibility: 'hidden',
+  },
+  ({ isTable }) => ({
+    fontSize: isTable ? 20 : 14,
+  }),
+)
+
+const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    minHeight: 32,
+    borderRadius: 4,
+  },
+  ({ isCanEdit, isTable }) => ({
+    cursor: isCanEdit ? 'pointer' : 'inherit',
+    justifyContent: isTable ? 'flex-start' : 'space-between',
+    minWidth: isTable ? 0 : 60,
+    padding: isTable ? 0 : '0 8px',
+    '&: hover': {
+      background: isTable ? '' : isCanEdit ? '#f4f5f5' : '',
+      [IconFontWrapEdit.toString()]: {
+        visibility: 'visible',
+      },
+    },
+  }),
+)
+
+const StyledShape = styled.div<{ color: any }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 1px 8px 1px 8px;
+  width: 60px;
+  height: 25px;
+  background: rgba(255, 255, 255, 1);
+  background-blend-mode: normal;
+  border: 1px solid rgba(235, 237, 240, 1);
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid rgba(40, 119, 255, 1);
+  border-color: ${({ color }) => color};
+  color: ${({ color }) => color};
+  cursor: pointer;
+`
+
 export {
   HiddenText,
   ClickWrap,
@@ -474,4 +623,13 @@ export {
   SelectWrapBedeck,
   SearchLine,
   SecondButton,
+  CanOperationCategory,
+  DividerWrap,
+  ShowWrap,
+  CategoryWrap,
+  ListNameWrap,
+  StatusWrap,
+  CanOperation,
+  IconFontWrapEdit,
+  StyledShape,
 }

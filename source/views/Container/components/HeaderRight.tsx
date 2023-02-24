@@ -31,7 +31,7 @@ import {
 } from './../style'
 import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
-import { setIsCreateDemandVisible } from '@store/demand'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -235,6 +235,9 @@ const HeaderRight = () => {
         return
       case 'demand':
         dispatch(setIsCreateDemandVisible(true))
+        dispatch(
+          setCreateDemandProps({ notGetPath: true, isQuickCreate: true }),
+        )
     }
   }
 

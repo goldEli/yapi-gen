@@ -36,24 +36,22 @@ const routes = [
           {
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
-            children: [
-              {
-                path: 'Demand',
-                element: lazy(() => import('@/views/Demand')),
-              },
-              {
-                path: 'Iteration',
-                element: lazy(() => import('@/views/Iteration')),
-              },
-              {
-                path: 'ProjectSetting',
-                element: lazy(() => import('@/views/ProjectSetting')),
-              },
-            ],
           },
           {
             path: 'Mine',
             element: lazy(() => import('@/views/Mine')),
+          },
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'ProjectSetting',
+            element: lazy(() => import('@/views/ProjectSetting')),
           },
         ],
       },

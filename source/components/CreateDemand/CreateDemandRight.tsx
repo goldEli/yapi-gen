@@ -59,7 +59,7 @@ interface Props {
   demandDetail?: any
 }
 
-const EditDemandRIght = (props: Props) => {
+const CreateDemandRight = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const [form1] = Form.useForm()
@@ -619,4 +619,4 @@ const EditDemandRIght = (props: Props) => {
   )
 }
 
-export default EditDemandRIght
+export default CreateDemandRight
