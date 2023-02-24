@@ -40,7 +40,7 @@ const MainGrid = (props: Props) => {
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(JSON.stringify({ id: item.id }))
-    navigate(`/Detail/Demand?data=${params}`)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
 
   const onAddClick = () => {
@@ -54,7 +54,7 @@ const MainGrid = (props: Props) => {
         (props.projectList?.list?.length > 0 ? (
           <SpaceWrap size={24}>
             {props.projectList.list?.map((item: any) => (
-              <div key={item.id}>
+              <div key={item.id} onClick={() => onToDetail(item)}>
                 <ProjectCard
                   onChangeOperation={props.onChangeOperation}
                   item={item}

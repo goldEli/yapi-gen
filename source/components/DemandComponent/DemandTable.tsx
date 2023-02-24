@@ -4,13 +4,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Pagination, message, Spin, Menu } from 'antd'
+import { message, Spin, Menu } from 'antd'
 import styled from '@emotion/styled'
-import {
-  TableStyleBox,
-  PaginationWrap,
-  SecondButton,
-} from '@/components/StyleCommon'
+import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -25,11 +21,11 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
+import PaginationBox from '../TablePagination'
 
 const Content = styled.div({
-  padding: '16px 16px 0 16px',
-  background: '#F5F7FA',
-  height: 'auto',
+  height: 'calc(100% - 52px)',
+  marginTop: 20,
 })
 
 const DataWrap = styled.div({
@@ -271,8 +267,12 @@ const DemandTable = (props: Props) => {
     dispatch(setFilterParamsModal(filterParams))
   }
 
+  const onChange = () => {
+    //
+  }
+
   return (
-    <Content style={{ height: 'calc(100% - 52px)' }}>
+    <Content>
       {/* 暂无数据创建 */}
       {/* <EditDemand
         visible={isAddVisible}
@@ -310,8 +310,13 @@ const DemandTable = (props: Props) => {
             ))}
         </Spin>
       </DataWrap>
-
-      <PaginationWrap>
+      <PaginationBox
+        total={100}
+        currentPage={1}
+        pageSize={20}
+        onChange={onChange}
+      />
+      {/* <PaginationWrap>
         <Pagination
           defaultCurrent={1}
           current={props.data?.currentPage}
@@ -324,7 +329,7 @@ const DemandTable = (props: Props) => {
           onChange={onChangePage}
           onShowSizeChange={onShowSizeChange}
         />
-      </PaginationWrap>
+      </PaginationWrap> */}
 
       <OptionalFeld
         allTitleList={allTitleList}

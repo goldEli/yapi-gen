@@ -5,10 +5,6 @@ export const DemandWrap = styled.div`
   padding: 20px 24px 0;
 `
 
-export const DemandContent = styled.div`
-  display: flex;
-`
-
 export const DemandOperation = styled.div`
   display: flex;
   align-items: center;

@@ -209,6 +209,7 @@ const RightTable = () => {
         <Pagination
           total={100}
           pageSize={20}
+          currentPage={1}
           onChange={(page: number, pageSize: number) => 123}
         />
       </PaginationBox>

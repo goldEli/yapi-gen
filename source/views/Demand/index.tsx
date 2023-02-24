@@ -1,7 +1,9 @@
+/* eslint-disable max-params */
+/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { DemandWrap, DemandContent, DemandOperation } from './style'
+import { DemandWrap, DemandOperation } from './style'
 import ProjectDetailHeader from '@/components/ProjectDetailHeader'
 import DemandClass from './DemandClass'
 import DemandTable from '@/components/DemandComponent/DemandTable'
@@ -10,15 +12,17 @@ import DemandTree from '@/components/DemandComponent/DemandTree'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Popover, Space } from 'antd'
 import CommonButton from '@/components/CommonButton'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import { setCreateCategory } from '@store/demand'
+import { setCreateCategory, setFilterParams } from '@store/demand'
 import { setFilterParamsModal } from '@store/project'
 import { CanOperationCategory } from '@/components/StyleCommon'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import OperationGroup from '@/components/OperationGroup'
+import { useSearchParams } from 'react-router-dom'
+import { getDemandList } from '@/services/demand'
 
 const LiWrap = styled.div({
   cursor: 'pointer',
@@ -48,7 +52,16 @@ const MoreItem = styled.div({
 const Demand = () => {
   const dispatch = useDispatch()
   const [t, i18n] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const [isGrid, setIsGrid] = useState(0)
+  const keyRef = useRef()
+  const [searchItems, setSearchItems] = useState({})
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  // 用于当前操作层级不折叠
+  const [topParentId, setTopParentId] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -72,6 +85,90 @@ const Demand = () => {
     projectInfo?.projectPermissions,
     'b/story/export',
   )
+
+  const getList = async (
+    state: any,
+    searchParamsObj: any,
+    item?: any,
+    orderItem?: any,
+    updateState?: boolean,
+    topId?: any,
+  ) => {
+    if (!updateState) {
+      setIsSpinning(true)
+    }
+
+    let params: any = {}
+    if (state === 1) {
+      params = {
+        projectId,
+        all: true,
+        panel: true,
+        searchValue: searchParamsObj.searchValue,
+        statusIds: searchParamsObj.statusId,
+        iterateIds: searchParamsObj.iterateId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
+        class_id: keyRef.current,
+      }
+    } else {
+      params = {
+        projectId,
+        page: item.page,
+        pageSize: item.size,
+        order: orderItem.value,
+        orderKey: orderItem.key,
+        searchValue: searchParamsObj.searchValue,
+        statusIds: searchParamsObj.statusId,
+        iterateIds: searchParamsObj.iterateId,
+        priorityIds: searchParamsObj.priorityId,
+        userId: searchParamsObj.userId,
+        tagIds: searchParamsObj.tagId,
+        startTime: searchParamsObj.createdAtId,
+        expectedStart: searchParamsObj.expectedStartAtId,
+        expectedEnd: searchParamsObj.expectedendat,
+        updatedTime: searchParamsObj.updatedat,
+        endTime: searchParamsObj.finishAt,
+        usersNameId: searchParamsObj.usersnameId,
+        copySendId: searchParamsObj.usersCopysendNameId,
+        class_ids: searchParamsObj.class_ids,
+        category_id: searchParamsObj.category_id,
+        schedule_start: searchParamsObj.schedule_start,
+        schedule_end: searchParamsObj.schedule_end,
+        custom_field: searchParamsObj?.custom_field,
+        class_id: keyRef.current,
+      }
+    }
+    if (state === 2) {
+      params.tree = 1
+      params.topParentId = topId ?? topParentId
+    }
+    dispatch(setFilterParams(params))
+    const result = await getDemandList(params)
+    setDataList(result)
+    setIsSpinning(false)
+    // props.onIsUpdate?.()
+    // dispatch(setIsRefresh(false))
+    setTopParentId(0)
+    // setIsUpdated(false)
+  }
+
+  useEffect(() => {
+    getList(isGrid, searchItems, pageObj, order)
+  }, [])
 
   const onChangeCategory = (e: any, item: any) => {
     dispatch(setCreateCategory(item))
@@ -172,7 +269,7 @@ const Demand = () => {
   return (
     <DemandWrap>
       <ProjectDetailHeader />
-      <DemandContent>
+      <div style={{ height: 'calc(100% - 52px)' }}>
         {/* <DemandClass /> */}
         <DemandOperation>
           <Space size={16}>
@@ -278,7 +375,7 @@ const Demand = () => {
             onUpdate={onUpdate}
           />
         )} */}
-      </DemandContent>
+      </div>
     </DemandWrap>
   )
 }

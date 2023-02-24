@@ -26,6 +26,12 @@ const routes = [
         element: <Navigate to="/Situation" />,
       },
       {
+        path: 'PrivatePermission',
+        element: lazy(
+          () => import('@/views/ProjectManagement/PrivatePermission'),
+        ),
+      },
+      {
         path: '/Situation',
         element: lazy(() => import('@/views/Situation')),
       },
