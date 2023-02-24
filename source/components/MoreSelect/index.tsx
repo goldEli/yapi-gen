@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Button, Divider, Select, Tag } from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -65,7 +66,7 @@ const index = (props: any) => {
     <Select
       disabled={props.disabled}
       value={value}
-      mode="multiple"
+      mode={props.mode ? 'multiple' : undefined}
       onChange={handleChange}
       placeholder="custom dropdown render"
       dropdownRender={menu => (
