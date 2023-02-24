@@ -1,13 +1,19 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { uploadFileByTask } from '@/services/cos'
-import { getAffiliation, getGroupList } from '@/services/project'
+import {
+  getAffiliation,
+  getAffiliationUser,
+  getGroupList,
+} from '@/services/project'
 import { changeCreateVisible } from '@store/create-propject'
 import { postCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
+import { type } from 'os'
 import React, { ForwardedRef, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
@@ -38,11 +44,13 @@ const CreateAProjectForm = () => {
   const [form] = Form.useForm()
   const [activeCover, setActiveCover] = useState<any>()
   const [myCover, setMyCover] = useState<string>('')
+  const [leaderId, setLeaderId] = useState<any>('')
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
   const covers = useSelector(state => state.cover.covers)
   const createVisible = useSelector(state => state.createProject.createVisible)
   const [selectGroupList, setSelectGroupList] = useState<any>([])
+  const [selectLeaders, setSelectLeaders] = useState<any>([])
   const [affiliations, setAffiliations] = useState<any>([])
   const dispatch = useDispatch()
 
@@ -93,7 +101,7 @@ const CreateAProjectForm = () => {
     const textStr = e.target.value.trim()
     if (lock) {
       form.setFieldsValue({
-        keyboard: transformStr(textStr),
+        prefix: transformStr(textStr),
       })
     }
   }
@@ -112,18 +120,44 @@ const CreateAProjectForm = () => {
       })),
     )
   }
+
+  const getLeader = async () => {
+    const res = await getAffiliationUser(leaderId)
+    setSelectLeaders(
+      res.map((i: any) => ({
+        name: i.name,
+        id: i.id,
+      })),
+    )
+  }
+
+  const onFormLayoutChange = ({ team_id }: { team_id: any }) => {
+    setLeaderId(team_id)
+  }
+
+  const keyChange = (e: any) => {
+    if (!e.target.value) {
+      setLock(true)
+    }
+  }
+  useEffect(() => {
+    if (!canChooseLeader) {
+      if (!Array.isArray(leaderId)) {
+        getLeader()
+      }
+    }
+  }, [canChooseLeader, leaderId])
+
   useEffect(() => {
     if (createVisible) {
       getGroupData()
     }
   }, [createVisible])
-  const onFormLayoutChange = ({ team_id }: { team_id: string[] }) => {
-    if (team_id.length >= 1) {
+  useEffect(() => {
+    if (leaderId || leaderId === 0) {
       setCanChooseLeader(false)
-    } else {
-      setCanChooseLeader(true)
     }
-  }
+  }, [leaderId])
 
   return (
     <CommonModal
@@ -220,7 +254,7 @@ const CreateAProjectForm = () => {
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <MoreSelect type="project" options={affiliations} />
+              <MoreSelect mode={false} type="project" options={affiliations} />
             </Form.Item>
             <Form.Item
               label={
@@ -250,16 +284,17 @@ const CreateAProjectForm = () => {
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input onFocus={() => setLock(false)} placeholder="请输入键" />
+              <Input
+                onFocus={() => setLock(false)}
+                onChange={keyChange}
+                placeholder="请输入键"
+              />
             </Form.Item>
             <Form.Item
               label={<FormTitleSmall text="项目负责人" />}
               name="leader_id"
             >
-              <MoreSelect
-                type="user"
-                options={['jack', 'lucy', '1', '2', '3', '4']}
-              />
+              <MoreSelect type="user" options={selectLeaders} />
             </Form.Item>
             <Form.Item label={<FormTitleSmall text="权限" />} name="isPublic">
               <MoreSelect
@@ -286,7 +321,7 @@ const CreateAProjectForm = () => {
             </Form.Item>
             <Form.Item
               label={<FormTitleSmall text={t('version2.projectGroup')} />}
-              name="team_id"
+              name="groups"
             >
               <Select
                 placeholder={t('common.pleaseSelect')}

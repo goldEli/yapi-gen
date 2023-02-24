@@ -31,8 +31,8 @@ const initialState: GlobalState = {
   language: localStorage.getItem('language') || 'zh',
   currentMenu: {
     id: 0,
-    name: '项目需求',
-    url: '/ProjectManagement/Demand',
+    name: '公司概况',
+    url: '/Situation',
     permission: '',
     icon: 'system-nor',
     children: [],

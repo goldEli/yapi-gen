@@ -1,7 +1,12 @@
 // 项目二级菜单
 
 import CommonIconFont from '@/components/CommonIconFont'
-import { useRef } from 'react'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { getParamsData } from '@/tools'
+import { useDispatch } from '@store/index'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import { useEffect, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   AllWrap,
   MenuBox,
@@ -17,6 +22,26 @@ import {
 const ProjectDetailSide = (props: { leftWidth: number }) => {
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+
+  const getProjectInfoValuesData = async () => {
+    const result = await getProjectInfoValues({ projectId })
+    dispatch(setProjectInfoValues(result))
+  }
+
+  // 获取项目信息
+  const getInfo = async () => {
+    const result = await getProjectInfo({ projectId })
+    dispatch(setProjectInfo(result))
+  }
+
+  useEffect(() => {
+    getInfo()
+    getProjectInfoValuesData()
+  }, [])
 
   //   点击项目设置
   const onChangeSet = () => {
