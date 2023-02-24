@@ -7,7 +7,6 @@ import styled from '@emotion/styled'
 import { Menu, Pagination, Progress } from 'antd'
 import {
   TableStyleBox,
-  PaginationWrap,
   ClickWrap,
   HiddenText,
   SecondButton,
@@ -22,6 +21,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useSelector } from '@store/index'
+import PaginationBox from '../TablePagination'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -429,10 +429,6 @@ const MainTable = (props: Props) => {
     props.onChangePageNavigation({ page, size })
   }
 
-  const onShowSizeChange = (page: number, size: number) => {
-    props.onChangePageNavigation({ page, size })
-  }
-
   const onTableRow = useCallback((row: any) => {
     return {
       onClick: () => {
@@ -477,21 +473,12 @@ const MainTable = (props: Props) => {
             </NoData>
           ))}
       </DataWrap>
-
-      <PaginationWrap>
-        <Pagination
-          defaultCurrent={1}
-          current={props.projectList?.currentPage}
-          pageSize={props.projectList?.pageSize || 20}
-          showSizeChanger
-          showQuickJumper
-          total={props.projectList?.total}
-          showTotal={total => t('common.tableTotal', { count: total })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+      <PaginationBox
+        total={props.projectList?.total}
+        currentPage={props.projectList?.currentPage}
+        pageSize={props.projectList?.pageSize}
+        onChange={onChangePage}
+      />
     </div>
   )
 }

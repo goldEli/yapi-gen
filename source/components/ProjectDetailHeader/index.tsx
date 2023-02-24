@@ -1,7 +1,13 @@
+import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
+import { setFilterKeys } from '@store/project'
 import { Space } from 'antd'
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import InputSearch from '../InputSearch'
+import Member from './Member'
 
 const Header = styled.div`
   display: flex;
@@ -27,17 +33,55 @@ const MemberIcon = styled.div`
   background: var(--neutral-white-d4);
 `
 
-const ProjectDetailHeader = () => {
+interface Props {
+  searchGroups: any
+  onSearch(params: any): void
+}
+
+const ProjectDetailHeader = (props: Props) => {
+  const [memberVisible, setMemberVisible] = useState(false)
+  const [searchVal, setSearchVal] = useState('')
+  const { filterKeys } = useSelector(store => store.project)
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+
+  const onChangeSearch = (value: string) => {
+    if (searchVal !== value) {
+      setSearchVal(value)
+      const params = props.searchGroups
+      params.searchValue = value
+      props.onSearch(params)
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
+    }
+  }
+
   return (
-    <Header>
-      <div>面包屑</div>
-      <SearchOrProjectMember size={16}>
-        <InputSearch placeholder="搜索需求名称或编号" leftIcon />
-        <MemberIcon>
-          <CommonIconFont type="team" color="var(--neutral-n2)" size={20} />
-        </MemberIcon>
-      </SearchOrProjectMember>
-    </Header>
+    <>
+      <Header>
+        <div>面包屑</div>
+        <SearchOrProjectMember size={16}>
+          <InputSearch
+            onChangeSearch={onChangeSearch}
+            placeholder="搜索需求名称或编号"
+            leftIcon
+          />
+          <MemberIcon onClick={() => setMemberVisible(true)}>
+            <CommonIconFont type="team" color="var(--neutral-n2)" size={20} />
+          </MemberIcon>
+        </SearchOrProjectMember>
+      </Header>
+      <Member
+        visible={memberVisible}
+        onChangeVisible={() => setMemberVisible(!memberVisible)}
+        projectId={projectId}
+      />
+    </>
   )
 }
 

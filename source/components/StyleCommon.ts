@@ -443,13 +443,6 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
     textDecoration: isName && isClose ? 'line-through' : '',
   }),
 )
-const PaginationWrap = styled.div`
-  height: 64px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  padding-right: 16px;
-`
 
 const CanOperationCategory = styled.div<{ color?: string; bgColor?: string }>(
   {
@@ -644,7 +637,6 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
 export {
   HiddenText,
   ClickWrap,
-  PaginationWrap,
   TableStyleBox,
   CloseWrap,
   ChartsItem,

@@ -104,10 +104,6 @@ const DemandTable = (props: Props) => {
     props.onChangePageNavigation?.({ page, size })
   }
 
-  const onShowSizeChange = (page: number, size: number) => {
-    props.onChangePageNavigation?.({ page, size })
-  }
-
   const onClickItem = (item: any) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
@@ -267,10 +263,6 @@ const DemandTable = (props: Props) => {
     dispatch(setFilterParamsModal(filterParams))
   }
 
-  const onChange = () => {
-    //
-  }
-
   return (
     <Content>
       {/* 暂无数据创建 */}
@@ -311,10 +303,10 @@ const DemandTable = (props: Props) => {
         </Spin>
       </DataWrap>
       <PaginationBox
-        total={100}
-        currentPage={1}
-        pageSize={20}
-        onChange={onChange}
+        total={props.data.total}
+        currentPage={props.data.currentPage}
+        pageSize={props.data.pageSize}
+        onChange={onChangePage}
       />
 
       <OptionalFeld

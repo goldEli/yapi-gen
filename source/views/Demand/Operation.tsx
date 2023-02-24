@@ -72,7 +72,7 @@ const IconWrap = styled(IconFont)({
   },
 })
 
-export const MoreWrap = styled.div<{ type?: any }>(
+const MoreWrap = styled.div<{ type?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -114,7 +114,7 @@ interface Props {
   isGrid: any
   onChangeGrid(val: any): void
   onChangeVisible?(e?: any): void
-  // onSearch(params: any): void
+  onSearch(params: any): void
   settingState: boolean
   onChangeSetting(val: boolean): void
   onChangeIsShowLeft?(): void
@@ -172,21 +172,6 @@ const Operation = (props: Props) => {
     'b/story/export',
   )
 
-  const onChangeSearch = (value: string) => {
-    if (searchVal !== value) {
-      setSearchVal(value)
-      const params = searchGroups
-      params.searchValue = value
-      setSearchGroups(params)
-      // props.onSearch(params)
-      // 添加搜索项 计数
-      const keys = value
-        ? [...filterKeys, ...['searchVal']]
-        : filterKeys?.filter((i: any) => i !== 'searchVal')
-      dispatch(setFilterKeys([...new Set(keys)]))
-    }
-  }
-
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.status,
@@ -209,7 +194,7 @@ const Operation = (props: Props) => {
       custom_field: customField,
     }
     setSearchGroups(params)
-    // props.onSearch(params)
+    props.onSearch(params)
   }
 
   const getSearchKey = async (key?: any, type?: number) => {
@@ -418,11 +403,6 @@ const Operation = (props: Props) => {
           )}
         </Space>
 
-        {/* <div style={{ display: 'flex', alignItems: 'center' }}>
-          <InputSearch
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onChangeSearch}
-          /> */}
         <OperationGroup
           onChangeFilter={onChangeFilter}
           onChangeGrid={props.onChangeGrid}
@@ -432,7 +412,6 @@ const Operation = (props: Props) => {
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
           isDemand
         />
-        {/* </div> */}
       </OperationWrap>
       {!filterState && (
         <TableFilter

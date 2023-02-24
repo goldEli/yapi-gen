@@ -13,11 +13,10 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Pagination, message, Spin, Menu, Table } from 'antd'
+import { message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
-  PaginationWrap,
   ExpendedWrap,
   SecondButton,
 } from '@/components/StyleCommon'
@@ -30,6 +29,7 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
+import PaginationBox from '../TablePagination'
 import useSetTitle from '@/hooks/useSetTitle'
 // import EditDemand from '@/components/EditDemandNew/index'
 // import FloatBatch from '@/components/FloatBatch'
@@ -160,12 +160,6 @@ const DemandTree = (props: Props) => {
   }
 
   const onChangePage = (page: number, size: number) => {
-    props.onChangePageNavigation?.({ page, size })
-    setSelectedRowKeys([])
-    onOperationCheckbox('remove')
-  }
-
-  const onShowSizeChange = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
     setSelectedRowKeys([])
     onOperationCheckbox('remove')
@@ -640,21 +634,12 @@ const DemandTree = (props: Props) => {
           />
         )} */}
       </DataWrap>
-
-      <PaginationWrap>
-        <Pagination
-          defaultCurrent={1}
-          current={data?.currentPage}
-          pageSize={data?.pageSize || 20}
-          showSizeChanger
-          showQuickJumper
-          total={data?.total}
-          showTotal={total => t('common.tableTotal', { count: total })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+      <PaginationBox
+        total={data?.total}
+        currentPage={data?.currentPage}
+        pageSize={data?.pageSize}
+        onChange={onChangePage}
+      />
 
       <OptionalFeld
         allTitleList={allTitleList}
