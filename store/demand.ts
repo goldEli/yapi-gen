@@ -27,6 +27,16 @@ export interface CounterState {
     isQuickCreate?: any
     // 是否是所有项目
     isAllProject?: boolean
+    // 用于我的，他的，快速创建取项目id
+    notGetPath?: any
+    // 是否是需求详情，用于更新需求状态
+    isInfo?: any
+    // 子需求列表
+    childList?: any
+    // 子需求延用父需求类别
+    categoryId?: any
+    // 无数据创建
+    noDataCreate?: any
   }
 }
 

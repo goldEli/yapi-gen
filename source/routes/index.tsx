@@ -26,6 +26,12 @@ const routes = [
         element: <Navigate to="/Situation" />,
       },
       {
+        path: 'PrivatePermission',
+        element: lazy(
+          () => import('@/views/ProjectManagement/PrivatePermission'),
+        ),
+      },
+      {
         path: '/Situation',
         element: lazy(() => import('@/views/Situation')),
       },
@@ -36,24 +42,22 @@ const routes = [
           {
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
-            children: [
-              {
-                path: 'Demand',
-                element: lazy(() => import('@/views/Demand')),
-              },
-              {
-                path: 'Iteration',
-                element: lazy(() => import('@/views/Iteration')),
-              },
-              {
-                path: 'ProjectSetting',
-                element: lazy(() => import('@/views/ProjectSetting')),
-              },
-            ],
           },
           {
             path: 'Mine',
             element: lazy(() => import('@/views/Mine')),
+          },
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'ProjectSetting',
+            element: lazy(() => import('@/views/ProjectSetting')),
           },
         ],
       },

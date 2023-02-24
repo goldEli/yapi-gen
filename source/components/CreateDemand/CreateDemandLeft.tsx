@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -32,6 +33,8 @@ interface Props {
   demandId?: any
   isAllProject?: any
   demandDetail?: any
+  allCategoryList?: any
+  categoryParams?: any
 }
 
 const LeftWrap = styled.div({
@@ -53,8 +56,17 @@ const CreateDemandLeft = (props: Props) => {
   const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
     store => store.project,
   )
+
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
+  // 切换需求类别下的工作流
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
+  // 点击需求类别弹出修改需求类别相应参数弹窗
+  const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
+  // 存储点击修改需求类别弹出确认按钮时提交的参数
+  const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
   const dispatch = useDispatch()
 
   // 清空左侧参数
@@ -72,6 +84,7 @@ const CreateDemandLeft = (props: Props) => {
       name: i.name,
       color: i.color,
     }))
+    values.changeCategoryFormData = changeCategoryFormData
     return { ...values }
   }
 
@@ -143,10 +156,7 @@ const CreateDemandLeft = (props: Props) => {
   }
 
   useEffect(() => {
-    // 是否是快捷创建
-    if (props?.isQuickCreate) {
-      getProjectData()
-    }
+    getProjectData()
     // 如果是所有项目调用项目信息
     if (props?.isAllProject) {
       getProjectInfoData(props?.projectId)
@@ -257,6 +267,13 @@ const CreateDemandLeft = (props: Props) => {
     dom.scrollTop = dom.scrollHeight
   }
 
+  // 监听需求类别的变化
+  useEffect(() => {
+    form.setFieldsValue({
+      category: props.categoryParams.id,
+    })
+  }, [props.categoryParams])
+
   return (
     <LeftWrap ref={leftDom}>
       <Form layout="vertical" form={form}>
@@ -286,17 +303,20 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
           <Form.Item
             label="需求类别"
-            name="type"
+            name="category"
             rules={[{ required: true, message: '' }]}
           >
             <Select
-              placeholder={t('common.selectType')}
+              value={props.categoryParams.id}
+              placeholder="请选择需求类别"
               showArrow
+              allowClear
               optionFilterProp="label"
               getPopupContainer={node => node}
-            >
-              <Select.Option value="need">{t('common.demand')}</Select.Option>
-            </Select>
+              options={props.allCategoryList
+                ?.filter((i: any) => i.status === 1)
+                ?.map((i: any) => ({ label: i.content, value: i.id }))}
+            />
           </Form.Item>
         </Space>
         <Form.Item
