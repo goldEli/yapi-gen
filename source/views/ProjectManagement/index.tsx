@@ -4,7 +4,12 @@ import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 
 const ProjectWrap = styled.div`
   position: relative;
@@ -14,11 +19,16 @@ const ProjectWrap = styled.div`
 const Project = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const isProject = pathname === '/ProjectManagement/Project'
+  let projectId: any
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  if (pathname !== '/ProjectManagement/Project') {
+    const paramsData = getParamsData(searchParams)
+    projectId = paramsData.id
+  }
   // 用于私有项目权限过渡
-  const [isShowPage, setIsShowPage] = useState(false)
+  const [isShowPage, setIsShowPage] = useState(isProject ? true : false)
 
   const getProjectInfoValuesData = async () => {
     const result = await getProjectInfoValues({ projectId })
@@ -38,8 +48,10 @@ const Project = () => {
   }
 
   useEffect(() => {
-    getInfo()
-    getProjectInfoValuesData()
+    if (pathname !== '/ProjectManagement/Project') {
+      getInfo()
+      getProjectInfoValuesData()
+    }
   }, [])
 
   return <ProjectWrap>{isShowPage && <Outlet />}</ProjectWrap>

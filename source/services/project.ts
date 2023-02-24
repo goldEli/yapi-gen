@@ -816,3 +816,9 @@ export const getProjectInfoValues: any = async (params: any) => {
     customTag: i.includes('custom_') ? response.data[i] : null,
   }))
 }
+
+export const getAffiliation = async () => {
+  const response = await http.get<any>(`/b/project/affiliation`)
+  // console.log(response)
+  return response.data
+}
