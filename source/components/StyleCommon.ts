@@ -4,7 +4,7 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Slider } from 'antd'
+import { Button, Slider, Table } from 'antd'
 
 // 弹窗右上角关闭图标
 const CloseWrap = styled.div<{ width?: any; height?: any }>`
@@ -337,7 +337,123 @@ const SearchLine = styled.div`
   background: rgba(255, 255, 255, 1);
 `
 
+// 次按钮样式
+const SecondButton = styled(Button)`
+  height: 32px;
+  border-radius: 6px;
+  background: #f0f4fa;
+  cursor: pointer;
+  padding: 0 16px;
+  color: #2877ff;
+  display: flex;
+  align-items: center;
+  svg {
+    font-size: 16px;
+  }
+  div {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  &:hover {
+    background: #e8f1ff !important;
+    color: #2877ff !important;
+  }
+  &:focus {
+    background: #dbeaff;
+    color: #2877ff;
+  }
+`
+const TableWrap = styled(Table)({
+  '.ant-table table': {
+    paddingBottom: 10,
+  },
+})
+// 表格-滚动条居底
+const TableStyleBox = styled(TableWrap)<{
+  isPadding?: any
+  isBottom?: any
+  isHover?: any
+}>(
+  {
+    '.ant-progress-text': {
+      fontSize: 12,
+    },
+    '.ant-table-tbody .tagLength': {
+      visibility: 'hidden',
+    },
+    '.tagLength': {
+      marginLeft: 8,
+      fontSize: 12,
+      color: '#969799',
+    },
+    '.ant-table-selection': {
+      flexDirection: 'inherit',
+    },
+    '.ant-table-selection-column': {
+      textAlign: 'left',
+      width: 70,
+    },
+    '.ant-table-expanded-row .ant-table-thead': {
+      opacity: 0,
+      position: 'absolute',
+    },
+    height: '100%',
+    '.ant-table, .ant-table-content,.ant-table-container': {
+      height: '100%',
+    },
+    '.ant-table-row:hover': {
+      '.dropdownIcon': {
+        visibility: 'visible',
+      },
+    },
+    '.ant-table-expanded-row': {
+      'td[colspan]': {
+        padding: '0px!important',
+        '.ant-table-scroll-horizontal': {
+          margin: '0px!important',
+        },
+      },
+    },
+  },
+  ({ isPadding }) => ({
+    '.ant-table-thead > tr > th:nth-child(1)': {
+      paddingLeft: isPadding ? 64 : 16,
+    },
+  }),
+  ({ isBottom }) => ({
+    '.ant-table table': {
+      paddingBottom: isBottom,
+    },
+  }),
+)
+const HiddenText = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+})
+const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
+  {
+    cursor: 'pointer',
+    '&: hover': {
+      color: '#2877ff',
+    },
+  },
+  ({ isClose, isName }) => ({
+    color: isClose ? '#969799' : '',
+    textDecoration: isName && isClose ? 'line-through' : '',
+  }),
+)
+const PaginationWrap = styled.div`
+  height: 64px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-right: 16px;
+`
 export {
+  HiddenText,
+  ClickWrap,
+  PaginationWrap,
+  TableStyleBox,
   CloseWrap,
   ChartsItem,
   chartsTitle,
@@ -357,4 +473,5 @@ export {
   SliderWrap,
   SelectWrapBedeck,
   SearchLine,
+  SecondButton,
 }

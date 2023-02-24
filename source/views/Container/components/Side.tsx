@@ -79,7 +79,12 @@ const Side = () => {
   const [endWidth, setEndWidth] = useState(200)
   const [focus, setFocus] = useState(false)
   const { pathname } = useLocation()
-
+  const [activeType, setActiveType] = useState(0)
+  const [groupId, setGroupId] = useState<any>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  const [operationDetail, setOperationDetail] = useState<any>({})
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   // 拖动线条
   const onDragLine = (event: any) => {
     let width = sliderRef.current?.clientWidth
@@ -131,9 +136,36 @@ const Side = () => {
       payload: !firstMenuCollapse,
     })
   }
+
+  // 切换分组查询列表
+  const onChangeGroup = (id: number) => {
+    setGroupId(id)
+    setActiveType(-1)
+  }
+  const onChangeType = (type: number) => {
+    setActiveType(type)
+    setGroupId(null)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }
+
+  const onAddClick = () => {
+    setIsVisible(true)
+    setOperationDetail({})
+  }
   const getClassSide = () => {
     if (pathname === '/ProjectManagement/Project') {
-      return <MoreProjectSide leftWidth={leftWidth} />
+      return (
+        <MoreProjectSide
+          onAddClick={onAddClick}
+          onChangeType={onChangeType}
+          activeType={activeType}
+          onChangeGroup={onChangeGroup}
+          leftWidth={leftWidth}
+        />
+      )
     }
     return <ProjectDetailSide leftWidth={leftWidth} />
   }

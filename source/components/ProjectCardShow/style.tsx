@@ -82,12 +82,7 @@ export const ProjectCard = styled.div`
   opacity: 1;
   display: flex;
   gap: 16px;
-  &:hover {
-    transition: all 0.3s;
-    transform: translate(0, -10px);
-    box-shadow: 0px 4px 8px 0px rgba(102, 136, 255, 0.12),
-      0px -2px 2px 0px rgba(102, 136, 255, 0.04);
-  }
+
   &:hover ${ShowWrap} {
     display: flex;
   }

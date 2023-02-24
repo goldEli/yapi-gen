@@ -45,22 +45,21 @@ const TextOfIcon = (props: Props) => (
   </Tooltip>
 )
 const Index = (props: any) => {
-  const dispatch = useDispatch()
   const arr = [
     {
       type: 'my',
-      num: props.item.memberCount,
+      num: '1',
       text: '项目人数',
     },
     {
-      type: 'project',
-      num: props.item.iterateCount,
-      text: '需求数',
+      type: '1',
+      num: '1',
+      text: '项目人数',
     },
     {
-      type: 'm1y',
-      num: props.item.storyCount,
-      text: '迭代数',
+      type: '1',
+      num: '1',
+      text: '项目人数',
     },
   ]
 
@@ -78,28 +77,12 @@ const Index = (props: any) => {
       label: <span>删除</span>,
     },
   ]
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    switch (key) {
-      case 'edit':
-        dispatch(changeCreateVisible(true))
-        break
-      case 'over':
-        props.onChangeOperation('end', props.item)
-        break
-      case 'del':
-        props.onChangeOperation('delete', props.item)
-        break
 
-      default:
-        break
-    }
-  }
   return (
     <ProjectCard>
       <Image
         src={
-          props.item.cover ??
-          'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
+          props.img ?? 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
         }
       />
 
@@ -108,20 +91,20 @@ const Index = (props: any) => {
           arrowPointAtCenter
           autoAdjustOverflow={false}
           placement="top"
-          title={props.item.name}
+          title="1"
         >
-          <CardRightFirst>{props.item.name}</CardRightFirst>
+          <CardRightFirst>马兰士</CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：{props.item.leaderName}</CardRightSecond>
-        <CardRightSecond>键：{props.item.prefix}</CardRightSecond>
+        <CardRightSecond>负责人：马兰士</CardRightSecond>
+        <CardRightSecond>键：DXKJ</CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
             <Progress
               size="small"
               strokeColor="var(--function-success)"
               strokeWidth={4}
-              percent={Math.trunc(Number(props.item.progress) * 100)}
+              percent={30}
             />
           </ProgressWrap>
 
@@ -137,21 +120,6 @@ const Index = (props: any) => {
           </ShowWrap>
         </TransformWrap>
       </CardRight>
-      <Dropdown
-        trigger={['hover']}
-        menu={{ items, onClick }}
-        placement="bottomRight"
-        getPopupContainer={(i: any) => i.parentNode}
-      >
-        <HoverIcon>
-          <IconFont
-            style={{
-              color: 'var(--neutral-n3)',
-            }}
-            type="more"
-          />
-        </HoverIcon>
-      </Dropdown>
 
       <EndTag>End</EndTag>
     </ProjectCard>
