@@ -6,6 +6,7 @@ import { postCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
 import React, { ForwardedRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
@@ -30,6 +31,7 @@ export type IndexRef = {
 }
 
 const CreateAProjectForm = () => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const [activeCover, setActiveCover] = useState<any>()
   const [myCover, setMyCover] = useState<string>('')
@@ -223,7 +225,23 @@ const CreateAProjectForm = () => {
             <Form.Item label={<FormTitleSmall text="权限" />} name="user">
               <MoreSelect
                 type="promise"
-                options={['jack', 'lucy', '1', '2', '3', '4']}
+                options={[
+                  {
+                    name: t('project.companyOpen'),
+                    id: '1',
+                    dec: '仅项目成员可查看编辑',
+                  },
+                  {
+                    name: t('common.privateProject'),
+                    id: '2',
+                    dec: '企业内所有成员可见，仅项目成员可编辑',
+                  },
+                  {
+                    name: '团队公开',
+                    id: '3',
+                    dec: '团队内所有成员可见，仅项目成员可编辑',
+                  },
+                ]}
               />
             </Form.Item>
             <Form.Item label={<FormTitleSmall text="项目分组" />} name="their">
