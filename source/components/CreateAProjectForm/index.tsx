@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
@@ -121,7 +122,7 @@ const CreateAProjectForm = () => {
   }
 
   const getLeader = async () => {
-    const res = await getAffiliationUser(form.getFieldValue('team_id'))
+    const res = await getAffiliationUser(leaderId)
     setSelectLeaders(
       res.map((i: any) => ({
         name: i.name,
@@ -141,7 +142,9 @@ const CreateAProjectForm = () => {
   }
   useEffect(() => {
     if (!canChooseLeader) {
-      getLeader()
+      if (!Array.isArray(leaderId)) {
+        getLeader()
+      }
     }
   }, [canChooseLeader, leaderId])
 
