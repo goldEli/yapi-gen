@@ -17,7 +17,7 @@ type Props = {
 }
 
 const index = (props: any) => {
-  const [value, setValue] = useState<string[]>([])
+  const [value, setValue] = useState<string[]>(() => props.value)
 
   const onClear = () => {
     setValue([])
@@ -50,7 +50,7 @@ const index = (props: any) => {
   }
 
   const prepositionItems = useMemo(() => {
-    if (value.length >= 1) {
+    if (value?.length >= 1) {
       const reRroup = value.concat(getArrDifference(props.options, value))
 
       return mySort(props.options, reRroup)
@@ -59,7 +59,7 @@ const index = (props: any) => {
   }, [props.options, value])
 
   useEffect(() => {
-    if (value.length < 1) {
+    if (value?.length < 1) {
       return
     }
     props.onChange(value)
