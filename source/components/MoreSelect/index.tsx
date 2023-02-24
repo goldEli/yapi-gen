@@ -63,6 +63,7 @@ const index = (props: any) => {
 
   return (
     <Select
+      disabled={props.disabled}
       value={value}
       mode="multiple"
       onChange={handleChange}
