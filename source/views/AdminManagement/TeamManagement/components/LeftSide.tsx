@@ -246,7 +246,7 @@ const LeftSide = () => {
       />
       <CommonModal1
         title={'添加成员'}
-        isVisible={true}
+        isVisible={false}
         onClose={() => setTeamIsVisible(false)}
       />
       <CommonModal
