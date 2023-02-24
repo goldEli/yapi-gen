@@ -1,9 +1,10 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
 import MoreProjectSide from '@/components/AllSide/MoreProjectSide'
+import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
@@ -70,7 +71,7 @@ const SideMain = styled.div<{ firstMenuCollapse: boolean }>`
   display: ${props => (props.firstMenuCollapse ? 'none' : 'block')};
 `
 
-const Side = () => {
+const Side = (props: { onChangeLeft(value: number): void }) => {
   const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
   const sliderRef = useRef<any>(null)
@@ -85,6 +86,11 @@ const Side = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+
+  useEffect(() => {
+    props.onChangeLeft(leftWidth)
+  }, [leftWidth])
+
   // 拖动线条
   const onDragLine = (event: any) => {
     let width = sliderRef.current?.clientWidth
@@ -167,9 +173,20 @@ const Side = () => {
           leftWidth={leftWidth}
         />
       )
+    } else if (pathname === '/AdminManagement/TeamManagement') {
+      return (
+        <AdminSide
+          // onAddClick={onAddClick}
+          // onChangeType={onChangeType}
+          // activeType={activeType}
+          // onChangeGroup={onChangeGroup}
+          leftWidth={leftWidth}
+        />
+      )
     }
     return <ProjectDetailSide leftWidth={leftWidth} />
   }
+
   return (
     <SideWrap
       firstMenuCollapse={firstMenuCollapse}

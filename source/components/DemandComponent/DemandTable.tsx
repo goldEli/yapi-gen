@@ -316,20 +316,6 @@ const DemandTable = (props: Props) => {
         pageSize={20}
         onChange={onChange}
       />
-      {/* <PaginationWrap>
-        <Pagination
-          defaultCurrent={1}
-          current={props.data?.currentPage}
-          pageSize={props.data?.pageSize || 20}
-          showSizeChanger
-          showQuickJumper
-          total={props.data?.total}
-          showTotal={total => t('common.tableTotal', { count: total })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap> */}
 
       <OptionalFeld
         allTitleList={allTitleList}

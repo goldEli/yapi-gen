@@ -41,7 +41,7 @@ const HeaderWrap = styled.div`
   padding: 0 24px;
   box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
   background: var(--neutral-white-d2);
-  z-index: 1;
+  z-index: 2;
 `
 
 const Content = styled.div`
@@ -52,9 +52,9 @@ const Content = styled.div`
   z-index: 1;
 `
 
-const Main = styled.div`
+const Main = styled.div<{ left: number }>`
   height: 100%;
-  width: calc(100% - 200px);
+  width: ${props => `calc(100% - ${props.left}px)`};
   flex: 1;
   position: relative;
 `
@@ -63,13 +63,13 @@ export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
+  const [changeLeft, setChangeLeft] = useState(200)
   const { userInfo, loginInfo } = useSelector(store => store.user)
   const { currentMenu } = useSelector(store => store.global)
   const {
     i18n: { language },
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
-
   const notHaveSide = ['/Situation']
 
   message.config({
@@ -117,8 +117,10 @@ export const Container = () => {
               <HeaderRight />
             </HeaderWrap>
             <Content>
-              {!notHaveSide.includes(currentMenu.url) && <Side />}
-              <Main>
+              {!notHaveSide.includes(currentMenu.url) && (
+                <Side onChangeLeft={setChangeLeft} />
+              )}
+              <Main left={changeLeft}>
                 <Outlet />
               </Main>
             </Content>

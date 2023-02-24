@@ -297,7 +297,7 @@ const CommonModal = (props: ModalProps) => {
   return (
     <ModalStyle
       footer={false}
-      visible={true}
+      visible={false}
       title={false}
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}
