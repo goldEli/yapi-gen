@@ -28,6 +28,7 @@ import type { ITinyEvents } from '@tinymce/tinymce-react/lib/cjs/main/ts/Events'
 import Viewer from 'react-viewer'
 import { Input } from 'antd'
 import { position, offset } from 'caret-pos'
+import loading from '/public/loading.gif'
 
 declare global {
   interface Window {
@@ -143,6 +144,9 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         if (editorRef.current) {
           editorRef.current.insertContent(`<img src="${url}" alt="" />`)
         }
+      },
+      getValue() {
+        return editorRef.current.getContent()
       },
     }),
     [],
@@ -298,7 +302,8 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
       file.name,
       `richEditorFiles_${new Date().getTime()}`,
     )
-    editor.insertContent(`<img src="${response.url}" />`)
+
+    editor.insertContent(`<img src="${response.url}"  />`)
   }
 
   const onBlur = () => {
@@ -315,7 +320,6 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         style={{
           display: isAtPeople ? 'block' : 'none',
           position: 'absolute',
-          zIndex: 9999,
           width: 'max-content',
         }}
       >
@@ -336,6 +340,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         ref={textWrapEditor}
         dangerouslySetInnerHTML={{ __html: valueInfo }}
       /> */}
+
       <Editor
         onInit={onInitHandler}
         key={key}
@@ -343,6 +348,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
         onEditorChange={onChangeHandler}
         onBlur={onBlur}
         init={{
+          plugins: 'advlist autolink link image lists preview',
           height: props.height || 334,
           menubar: false,
           contextmenu: false,
@@ -353,7 +359,6 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
           content_style: 'html,body{font-family:Microsoft YaHei;}',
           style_formats_merge: false,
           style_formats_autohide: true,
-          plugins: ['fullscreen', 'link', 'lists', 'table', 'emoticons'],
           toolbar:
             'blocks fontsize | bold underline fontMore | forecolor backcolor removeformat |' +
             ' bullist numlist | alignButton dentMore lineheight | uploadImage uploadMedia table link emoticons blockquote | fullscreen',

@@ -1,11 +1,14 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { uploadFileByTask } from '@/services/cos'
+import { getAffiliation, getGroupList } from '@/services/project'
 import { changeCreateVisible } from '@store/create-propject'
 import { postCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
-import React, { ForwardedRef, useState } from 'react'
+import React, { ForwardedRef, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
@@ -36,8 +39,11 @@ const CreateAProjectForm = () => {
   const [activeCover, setActiveCover] = useState<any>()
   const [myCover, setMyCover] = useState<string>('')
   const [lock, setLock] = useState(true)
+  const [canChooseLeader, setCanChooseLeader] = useState(true)
   const covers = useSelector(state => state.cover.covers)
   const createVisible = useSelector(state => state.createProject.createVisible)
+  const [selectGroupList, setSelectGroupList] = useState<any>([])
+  const [affiliations, setAffiliations] = useState<any>([])
   const dispatch = useDispatch()
 
   const onCustomRequest = async (file: any) => {
@@ -91,6 +97,34 @@ const CreateAProjectForm = () => {
       })
     }
   }
+
+  const getGroupData = async () => {
+    const result = await getGroupList()
+    setSelectGroupList(
+      result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
+    )
+    const result2 = await getAffiliation()
+
+    setAffiliations(
+      result2.map((i: any) => ({
+        name: `${i.team_id === 0 ? '企业项目' : '团队项目'}/${i.name}`,
+        id: i.team_id,
+      })),
+    )
+  }
+  useEffect(() => {
+    if (createVisible) {
+      getGroupData()
+    }
+  }, [createVisible])
+  const onFormLayoutChange = ({ team_id }: { team_id: string[] }) => {
+    if (team_id.length >= 1) {
+      setCanChooseLeader(false)
+    } else {
+      setCanChooseLeader(true)
+    }
+  }
+
   return (
     <CommonModal
       onConfirm={onConfirm}
@@ -163,7 +197,12 @@ const CreateAProjectForm = () => {
           </div>
         </CoverAreaWrap>
         <Wrap>
-          <Form form={form} layout="vertical">
+          <Form
+            form={form}
+            layout="vertical"
+            onValuesChange={onFormLayoutChange}
+            disabled={false}
+          >
             <Form.Item
               label={<FormTitleSmall text="项目名称" />}
               name="name"
@@ -176,15 +215,12 @@ const CreateAProjectForm = () => {
 
             <Form.Item
               label={<FormTitleSmall text="所属" />}
-              name="their"
+              name="team_id"
               rules={[
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <MoreSelect
-                type="project"
-                options={['jack', 'lucy', '1', '2', '3', '4']}
-              />
+              <MoreSelect type="project" options={affiliations} />
             </Form.Item>
             <Form.Item
               label={
@@ -209,21 +245,25 @@ const CreateAProjectForm = () => {
                   </Tooltip>
                 </div>
               }
-              name="keyboard"
+              name="prefix"
               rules={[
                 { required: true, message: 'Please input your username!' },
               ]}
             >
               <Input onFocus={() => setLock(false)} placeholder="请输入键" />
             </Form.Item>
-            <Form.Item label={<FormTitleSmall text="项目负责人" />} name="user">
+            <Form.Item
+              label={<FormTitleSmall text="项目负责人" />}
+              name="leader_id"
+            >
               <MoreSelect
                 type="user"
                 options={['jack', 'lucy', '1', '2', '3', '4']}
               />
             </Form.Item>
-            <Form.Item label={<FormTitleSmall text="权限" />} name="user">
+            <Form.Item label={<FormTitleSmall text="权限" />} name="isPublic">
               <MoreSelect
+                disabled={canChooseLeader}
                 type="promise"
                 options={[
                   {
@@ -244,14 +284,21 @@ const CreateAProjectForm = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label={<FormTitleSmall text="项目分组" />} name="their">
-              <Select placeholder="Select a option " allowClear>
-                <Select.Option value="male">male</Select.Option>
-                <Select.Option value="female">female</Select.Option>
-                <Select.Option value="other">other</Select.Option>
-              </Select>
+            <Form.Item
+              label={<FormTitleSmall text={t('version2.projectGroup')} />}
+              name="team_id"
+            >
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                mode="multiple"
+                options={selectGroupList}
+                showArrow
+                showSearch
+                allowClear
+                optionFilterProp="label"
+              />
             </Form.Item>
-            <Form.Item label={<FormTitleSmall text="项目描述" />} name="dec">
+            <Form.Item label={<FormTitleSmall text="项目描述" />} name="info">
               <Input.TextArea
                 placeholder="请输入项目描述"
                 autoSize={{ minRows: 3, maxRows: 5 }}
