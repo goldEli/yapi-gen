@@ -62,7 +62,8 @@ const MenuStyle = styled(Menu)`
       color: var(--primary-d2) !important;
     }
   }
-  & .ant-menu-item-selected::after {
+  & .ant-menu-item-selected::after,
+  & .ant-menu-item::after {
     border: none !important;
     border-right: 0 !important;
   }
