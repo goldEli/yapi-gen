@@ -59,22 +59,28 @@ export const MenuBox = styled.div`
   overflow-x: hidden;
 `
 
-export const MenuItem = styled.div`
+export const MenuItem = styled.div<{ isActive?: boolean }>`
   height: 44px;
   display: flex;
   align-items: center;
   padding: 0 24px;
-  color: var(--neutral-n1-d2);
+  color: ${props =>
+    props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   cursor: pointer;
   white-space: nowrap;
   div {
     margin-left: 12px;
   }
+  svg {
+    color: ${props =>
+      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+  }
+  background: ${props =>
+    props.isActive ? 'var(--gradient-left)' : 'transparent'};
   &:hover {
     svg {
       color: var(--primary-d2) !important;
     }
-    background: var(--gradient-left);
     color: var(--primary-d2) !important;
   }
 `

@@ -213,6 +213,7 @@ export const getProjectInfo: any = async (params: any) => {
     projectPermissions: response.data.company_permissions,
     groupIds: response.data?.groups?.map((i: any) => i.id),
     isMember: response.data.user_ismember,
+    teamId: response.data.team_id,
   }
 }
 

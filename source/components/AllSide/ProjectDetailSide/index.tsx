@@ -3,10 +3,11 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { getParamsData } from '@/tools'
-import { useDispatch } from '@store/index'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useRef } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   AllWrap,
   MenuBox,
@@ -26,6 +27,14 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { projectInfo } = useSelector(store => store.project)
+  const routerPath = useLocation()
+  const navigate = useNavigate()
+
+  const menuList = [
+    { name: '需求', icon: 'demand', path: '/ProjectManagement/Demand' },
+    { name: '迭代', icon: 'interation', path: '/ProjectManagement/Iteration' },
+  ]
 
   const getProjectInfoValuesData = async () => {
     const result = await getProjectInfoValues({ projectId })
@@ -59,34 +68,38 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     }, 200)
   }
 
+  // 点击切换模块
+  const onChangeRouter = (path: string) => {
+    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    navigate(`${path}?data=${params}`)
+  }
+
   return (
     <AllWrap>
       <WrapDetail ref={projectSide}>
         <SideTop>
-          <img src="" alt="" />
+          <img src={projectInfo.cover} alt="" />
           <SideInfo>
-            <div>项目婚纱卡萨贺卡坎大哈看得开</div>
-            <span>团队项目</span>
+            <div>{projectInfo.name}</div>
+            <span>{projectInfo.teamId ? '团队项目' : '企业项目'}</span>
           </SideInfo>
         </SideTop>
         <Provider />
         <MenuBox>
-          <MenuItem>
-            <CommonIconFont
-              type="settings"
-              color="var(--neutral-n3)"
-              size={18}
-            />
-            <div>需求</div>
-          </MenuItem>
-          <MenuItem>
-            <CommonIconFont
-              type="settings"
-              color="var(--neutral-n3)"
-              size={18}
-            />
-            <div>迭代</div>
-          </MenuItem>
+          {menuList.map((i: any) => (
+            <MenuItem
+              key={i.icon}
+              isActive={routerPath.pathname === i.path}
+              onClick={() => onChangeRouter(i.path)}
+            >
+              <CommonIconFont
+                type={i.icon}
+                color="var(--neutral-n3)"
+                size={18}
+              />
+              <div>{i.name}</div>
+            </MenuItem>
+          ))}
         </MenuBox>
         <SideFooter onClick={onChangeSet}>
           <div>

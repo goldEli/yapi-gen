@@ -5,7 +5,7 @@ import Loading from '@/components/Loading'
 
 const lazy = (
   component: () => Promise<{
-    default: React.ComponentType<unknown>
+    default: any
   }>,
 ) => {
   const LazyComponent = React.lazy(component)

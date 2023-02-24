@@ -154,7 +154,7 @@ const HeaderRight = () => {
   ]
 
   const createList = [
-    { name: '创建需求', key: 'demand', icon: 'project' },
+    { name: '创建需求', key: 'demand', icon: 'demand' },
     { name: '创建迭代', key: 'iteration', icon: 'interation' },
     { name: '创建项目', key: 'project', icon: 'folder-open-nor' },
   ]

@@ -97,7 +97,7 @@ const AdminSide = (props: any) => {
         <span>公司名称oo</span>
       </HeaderWrap>
       <MenuStyle
-        style={{ width: props.leftWidth }}
+        // style={{ width: props.leftWidth }}
         expandIcon={e =>
           e.isOpen ? (
             <IconFontStyle className="icon" type="up" />

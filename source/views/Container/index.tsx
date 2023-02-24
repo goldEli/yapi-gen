@@ -57,6 +57,7 @@ const Main = styled.div<{ left: number }>`
   width: ${props => `calc(100% - ${props.left}px)`};
   flex: 1;
   position: relative;
+  overflow: auto;
 `
 
 export const Container = () => {

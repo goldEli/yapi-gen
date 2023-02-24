@@ -1,90 +1,72 @@
-/* eslint-disable max-params */
+// 需求主页
+
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable no-undefined */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/naming-convention */
-import { DemandWrap, DemandOperation } from './style'
-import ProjectDetailHeader from '@/components/ProjectDetailHeader'
-import DemandClass from './DemandClass'
+/* eslint-disable max-params */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-len */
+import React, { useState, useEffect, useRef } from 'react'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { useSearchParams } from 'react-router-dom'
+import { message } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { getParamsData } from '@/tools'
+import styled from '@emotion/styled'
+import { useDispatch, useSelector } from '@store/index'
+import { setIsRefresh } from '@store/user'
+import { setFilterKeys } from '@store/project'
+import { setFilterParams } from '@store/demand'
+import { deleteDemand, getDemandList } from '@/services/demand'
+import Operation from './Operation'
+import DemandTree from '@/components/DemandComponent/DemandTree'
 import DemandTable from '@/components/DemandComponent/DemandTable'
 import DemandPanel from '@/components/DemandComponent/DemandPanel'
-import DemandTree from '@/components/DemandComponent/DemandTree'
-import CommonIconFont from '@/components/CommonIconFont'
-import { Popover, Space } from 'antd'
-import CommonButton from '@/components/CommonButton'
-import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from '@store/index'
-import { useTranslation } from 'react-i18next'
-import styled from '@emotion/styled'
-import { setCreateCategory, setFilterParams } from '@store/demand'
-import { setFilterParamsModal } from '@store/project'
-import { CanOperationCategory } from '@/components/StyleCommon'
-import { getIsPermission, getParamsData } from '@/tools'
-import OperationGroup from '@/components/OperationGroup'
-import { useSearchParams } from 'react-router-dom'
-import { getDemandList } from '@/services/demand'
+import DemandClass from './DemandClass'
+import ProjectDetailHeader from '@/components/ProjectDetailHeader'
 
-const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
+const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'white',
+  height: '100%',
+  overflowY: 'auto',
 })
 
-const MoreItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  color: '#646566',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-  padding: '0 16px',
-  '&: hover': {
-    color: '#323233',
-    background: '#f4f5f5',
-  },
-})
+interface Props {
+  onChangeVisible(e: any): void
+  onSetOperationItem(item: any): void
+  isUpdate?: boolean
+  onIsUpdate?(): void
+}
 
-const Demand = () => {
-  const dispatch = useDispatch()
-  const [t, i18n] = useTranslation()
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const [isGrid, setIsGrid] = useState(0)
+export const TreeContext: any = React.createContext('')
+
+const DemandMain = (props: Props) => {
+  const myTreeComponent: any = useRef(null)
+  const [t] = useTranslation()
+  const [key, setKey] = useState()
   const keyRef = useRef()
+  const [isGrid, setIsGrid] = useState(0)
   const [searchItems, setSearchItems] = useState({})
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
-  // 用于当前操作层级不折叠
-  const [topParentId, setTopParentId] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
-  const [isSettingState, setIsSettingState] = useState(false)
-  const [isSpinning, setIsSpinning] = useState(false)
-  // 导出超出限制提示
-  const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
-    store => store.project,
-  )
+  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [deleteId, setDeleteId] = useState(0)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const [filterState, setFilterState] = useState(true)
-  const { filterParams } = useSelector(store => store.demand)
-  const hasImport = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/import',
-  )
-
-  const hasExport = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/export',
-  )
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { isRefresh } = useSelector(store => store.user)
+  const [isSettingState, setIsSettingState] = useState(false)
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  // 用于当前操作层级不折叠
+  const [topParentId, setTopParentId] = useState(0)
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [isShowLeft, setIsShowLeft] = useState(false)
+  // 用于控制失焦事件与展开子需求冲突
+  const [isUpdated, setIsUpdated] = useState(false)
+  const { filterKeys } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const getList = async (
     state: any,
@@ -160,88 +142,33 @@ const Demand = () => {
     const result = await getDemandList(params)
     setDataList(result)
     setIsSpinning(false)
-    // props.onIsUpdate?.()
-    // dispatch(setIsRefresh(false))
+    props.onIsUpdate?.()
+    dispatch(setIsRefresh(false))
     setTopParentId(0)
-    // setIsUpdated(false)
+    setIsUpdated(false)
   }
 
   useEffect(() => {
+    // 进入需求主页清除已存储的筛选计数
+    setFilterKeys([])
+  }, [])
+
+  useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [isGrid])
+  }, [key, isGrid, order, pageObj])
 
-  const onChangeCategory = (e: any, item: any) => {
-    dispatch(setCreateCategory(item))
-    // 需求列表筛选参数赋值给 弹窗
-    dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      // props.onChangeVisible?.(e)
-      setIsVisible(false)
-    }, 0)
-  }
+  useEffect(() => {
+    if (isRefresh) {
+      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
+    }
+  }, [isRefresh])
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => (
-          <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-            <CanOperationCategory
-              style={{ marginRight: 0 }}
-              color={k.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-            >
-              <span className="title">{k.content}</span>
-            </CanOperationCategory>
-          </LiWrap>
-        ))}
-    </div>
-  )
-
-  const onImportClick = () => {
-    // setIsVisible(false)
-    // setIsShowImport(true)
-    // setIsVisibleMore(false)
-  }
-
-  const onExportClick = () => {
-    // if (props.dataLength > 5000) {
-    //   setIsVisibleMore(false)
-    //   setExceedState(true)
-    //   return
-    // }
-    // setIsVisible(false)
-    // setIsShowExport(true)
-    // setIsVisibleMore(false)
-  }
-
-  const moreOperation = (
-    <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
-      {hasImport || projectInfo?.status !== 1 ? null : (
-        <MoreItem onClick={onImportClick}>
-          <CommonIconFont type="Import" />
-          <span>{t('newlyAdd.importDemand')}</span>
-        </MoreItem>
-      )}
-      {hasExport ? null : (
-        <MoreItem onClick={onExportClick}>
-          <CommonIconFont type="export" />
-          <span>{t('newlyAdd.exportDemand')}</span>
-        </MoreItem>
-      )}
-    </div>
-  )
+  useEffect(() => {
+    if (props.isUpdate) {
+      getList(isGrid, searchItems, pageObj, order)
+    }
+    myTreeComponent?.current?.init()
+  }, [props.isUpdate])
 
   const onChangeGrid = (val: any) => {
     if (val !== isGrid) {
@@ -250,134 +177,177 @@ const Demand = () => {
     }
   }
 
+  // 点击操作左侧三点
+  const onChangeOperation = (e: any, item?: any) => {
+    props.onSetOperationItem(item)
+    props.onChangeVisible(e)
+    setTopParentId(item?.topId)
+  }
+
   const onDelete = (item: any) => {
-    //
+    setDeleteId(item.id)
+    setIsVisible(true)
+    setTopParentId(item?.topId)
   }
 
-  const onUpdate = () => {
-    //
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({ projectId, id: deleteId })
+      message.success(t('common.deleteSuccess'))
+      setIsVisible(false)
+      setDeleteId(0)
+      getList(isGrid, searchItems, pageObj, order)
+      myTreeComponent?.current?.init()
+    } catch (error) {
+      //
+    }
   }
 
-  const onChangeOperation = () => {
-    //
+  const onSearch = (params: any) => {
+    setDataList({ list: undefined })
+    setIsUpdated(true)
+    setSearchItems(params)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
   }
 
-  const onChangeOrder = () => {
-    //
+  const onChangePageNavigation = (item: any) => {
+    setPageObj(item)
+  }
+
+  const onChangeRow = (topId?: any) => {
+    getList(isGrid, searchItems, pageObj, order, false, topId)
+  }
+
+  const onChangeOrder = (item: any) => {
+    setOrder(item)
+  }
+
+  // 更新需求列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类
+  const onUpdate = (state?: boolean, topId?: any, isClass?: any) => {
+    getList(isGrid, searchItems, pageObj, order, state, topId)
+    // 是编辑需求分类的话，就更新左侧需求分类列表
+    if (isClass) {
+      myTreeComponent?.current?.init()
+    }
+  }
+
+  const keyValue = {
+    key,
+    changeKey: (value: any) => {
+      setPageObj({ page: 1, size: pageObj.size })
+      setKey(value)
+      keyRef.current = value
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['classId']]
+        : filterKeys?.filter((i: any) => i !== 'classId')
+
+      dispatch(setFilterKeys([...new Set(keys)]))
+    },
   }
 
   return (
-    <DemandWrap>
-      <ProjectDetailHeader />
-      <div style={{ height: 'calc(100% - 52px)' }}>
-        {/* <DemandClass /> */}
-        <DemandOperation>
-          <Space size={16}>
-            <CommonIconFont
-              type="indent"
-              size={20}
-              color="var(--neutral-n1-d1)"
+    <TreeContext.Provider value={keyValue}>
+      <div style={{ padding: '20px 24px 0 24px', height: '100%' }}>
+        <ProjectDetailHeader />
+        <div
+          style={{
+            height: 'calc(100% - 52px)',
+            display: 'flex',
+            marginTop: 20,
+          }}
+        >
+          <DeleteConfirm
+            text={t('common.confirmDelDemand')}
+            isVisible={isVisible}
+            onChangeVisible={() => setIsVisible(!isVisible)}
+            onConfirm={onDeleteConfirm}
+          />
+          {isShowLeft && (
+            <DemandClass
+              ref={myTreeComponent}
+              projectId={projectId}
+              isShowLeft={isShowLeft}
+              onUpdate={onUpdate}
+              iKey={key}
             />
-            {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
-            projectInfo?.status !== 1 ? null : (
-              <Popover
-                content={changeStatus}
-                placement="bottomLeft"
-                getPopupContainer={node => node}
-                open={isVisible}
-                onOpenChange={visible => setIsVisible(visible)}
-              >
-                <div>
-                  <CommonButton
-                    type="primary"
-                    icon={isVisible ? 'up' : 'down'}
-                    iconPlacement="right"
-                  >
-                    创建需求
-                  </CommonButton>
-                </div>
-              </Popover>
+          )}
+          <Right isShowLeft={isShowLeft}>
+            <Operation
+              pid={projectId}
+              isGrid={isGrid}
+              onChangeGrid={(val: any) => onChangeGrid(val)}
+              onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+              onChangeVisible={(e: any) => props.onChangeVisible(e)}
+              // onSearch={onSearch}
+              settingState={isSettingState}
+              onChangeSetting={setIsSettingState}
+              isShowLeft={isShowLeft}
+              otherParams={{
+                page: pageObj.page,
+                pageSize: pageObj.size,
+                orderKey: order.key,
+                order: order.value,
+                classId: key,
+                all: isGrid,
+                panel: isGrid,
+              }}
+              dataLength={dataList?.total}
+            />
+            {isGrid === 2 && (
+              <DemandTree
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                onChangePageNavigation={onChangePageNavigation}
+                onChangeRow={onChangeRow}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+                filterParams={{
+                  ...searchItems,
+                  projectId,
+                  page: 1,
+                  pageSize: 100,
+                  order: '',
+                  orderKey: '',
+                }}
+                isUpdated={isUpdated}
+              />
             )}
-            {!(hasExport && hasImport) && (
-              <Popover
-                content={moreOperation}
-                placement="bottom"
-                getPopupContainer={node => node}
-                key={isVisibleMore.toString()}
-                open={isVisibleMore}
-                onOpenChange={visible => setIsVisibleMore(visible)}
-              >
-                <div>
-                  <CommonButton
-                    type="secondary"
-                    icon={isVisibleMore ? 'up' : 'down'}
-                    iconPlacement="right"
-                  >
-                    {t('newlyAdd.moreOperation')}
-                  </CommonButton>
-                </div>
-              </Popover>
+            {!isGrid && (
+              <DemandTable
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                onChangePageNavigation={onChangePageNavigation}
+                onChangeRow={onChangeRow}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+              />
             )}
-          </Space>
-          <OperationGroup
-            onChangeFilter={() => setFilterState(!filterState)}
-            onChangeGrid={onChangeGrid}
-            isGrid={isGrid}
-            filterState={filterState}
-            settingState={isSettingState}
-            onChangeSetting={() => setIsSettingState(!setIsSettingState)}
-            isDemand
-          />
-        </DemandOperation>
-        {isGrid === 2 && (
-          <DemandTree
-            onChangeVisible={onChangeOperation}
-            onDelete={onDelete}
-            data={dataList}
-            // onChangePageNavigation={onChangePageNavigation}
-            // onChangeRow={onChangeRow}
-            settingState={isSettingState}
-            onChangeSetting={setIsSettingState}
-            onChangeOrder={onChangeOrder}
-            isSpinning={isSpinning}
-            onUpdate={onUpdate}
-            filterParams={{
-              ...searchItems,
-              projectId,
-              page: 1,
-              pageSize: 100,
-              order: '',
-              orderKey: '',
-            }}
-            // isUpdated={isUpdated}
-          />
-        )}
-        {!isGrid && (
-          <DemandTable
-            onChangeVisible={onChangeOperation}
-            onDelete={onDelete}
-            data={dataList}
-            // onChangePageNavigation={onChangePageNavigation}
-            // onChangeRow={onChangeRow}
-            settingState={isSettingState}
-            onChangeSetting={setIsSettingState}
-            onChangeOrder={onChangeOrder}
-            isSpinning={isSpinning}
-            onUpdate={onUpdate}
-          />
-        )}
-        {isGrid === 1 && (
-          <DemandPanel
-            onChangeVisible={onChangeOperation}
-            onDelete={onDelete}
-            data={dataList}
-            isSpinning={isSpinning}
-            onUpdate={onUpdate}
-          />
-        )}
+            {isGrid === 1 && (
+              <DemandPanel
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+              />
+            )}
+          </Right>
+        </div>
       </div>
-    </DemandWrap>
+    </TreeContext.Provider>
   )
 }
 
-export default Demand
+export default DemandMain
