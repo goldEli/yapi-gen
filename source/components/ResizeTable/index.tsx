@@ -115,6 +115,8 @@ const ResizeTable = (props: ResizeTableProps) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  // console.log(columns,'===')
+
   return (
     <DataWrap height={props.dataWrapNormalHeight} ref={dataWrapRef}>
       <div

@@ -41,10 +41,14 @@ interface Props {
 export const TreeContext: any = React.createContext('')
 
 const DemandMain = (props: Props) => {
-  const myTreeComponent: any = useRef(null)
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const [key, setKey] = useState()
   const keyRef = useRef()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const myTreeComponent: any = useRef(null)
   const [isGrid, setIsGrid] = useState(0)
   const [searchItems, setSearchItems] = useState({})
   const [isVisible, setIsVisible] = useState(false)
@@ -53,9 +57,7 @@ const DemandMain = (props: Props) => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+
   const { isRefresh } = useSelector(store => store.user)
   const [isSettingState, setIsSettingState] = useState(false)
   const [order, setOrder] = useState<any>({ value: '', key: '' })
@@ -66,7 +68,6 @@ const DemandMain = (props: Props) => {
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   const { filterKeys } = useSelector(store => store.project)
-  const dispatch = useDispatch()
 
   const getList = async (
     state: any,
@@ -252,7 +253,8 @@ const DemandMain = (props: Props) => {
   return (
     <TreeContext.Provider value={keyValue}>
       <div style={{ padding: '20px 24px 0 24px', height: '100%' }}>
-        <ProjectDetailHeader />
+        {/* 面包屑部分 */}
+        <ProjectDetailHeader searchGroups={searchItems} onSearch={onSearch} />
         <div
           style={{
             height: 'calc(100% - 52px)',
@@ -282,7 +284,7 @@ const DemandMain = (props: Props) => {
               onChangeGrid={(val: any) => onChangeGrid(val)}
               onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
               onChangeVisible={(e: any) => props.onChangeVisible(e)}
-              // onSearch={onSearch}
+              onSearch={onSearch}
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}
               isShowLeft={isShowLeft}

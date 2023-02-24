@@ -2,6 +2,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Menu } from 'antd'
+import { useNavigate } from 'react-router-dom'
 const AdminSideWrap = styled.div`
   background-color: var(--neutral-n6-d1);
   height: 100%;
@@ -72,24 +73,67 @@ const IconFontStyle = styled(IconFont)`
   font-size: 18px !important;
 `
 const AdminSide = (props: any) => {
+  const navigate = useNavigate()
+
   const side: any = [
     {
-      label: '项目成员',
+      label: '公司信息',
       key: '1',
+      icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      path: '/AdminManagement/CompanyInfo',
+    },
+    {
+      label: '组织信息',
+      key: '2',
       icon: <IconFontStyle className="icon" type="folder-open-nor" />,
       children: [
         {
-          label: '项目成员',
-          key: '1-1',
+          label: '员工管理',
+          key: '1-33',
+          path: '/AdminManagement/StaffManagement',
+        },
+        {
+          label: '团队管理',
+          key: '12',
+          path: '/AdminManagement/TeamManagement',
         },
       ],
     },
     {
-      label: '2-2',
-      key: '2-2',
+      label: '权限管理',
+      key: '3',
       icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      path: '/AdminManagement/PermissionManagement',
+    },
+    {
+      label: '安全管理',
+      key: '4',
+      icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      children: [
+        {
+          label: '安全水印',
+          key: '1-12',
+          path: '/AdminManagement/WaterMarkManagement',
+        },
+        {
+          label: '操作日志',
+          key: '1-13',
+          path: '/AdminManagement/OperationManagement',
+        },
+        {
+          label: '登录日志',
+          key: '1-14',
+          path: '/AdminManagement/LoginManagement',
+        },
+      ],
     },
   ]
+
+  const onMenuClick = (e: any) => {
+    const pathObject = side.filter((i: any) => i.key === e.key)[0]
+    navigate(pathObject.path)
+  }
+
   return (
     <AdminSideWrap>
       <HeaderWrap>
@@ -97,7 +141,6 @@ const AdminSide = (props: any) => {
         <span>公司名称oo</span>
       </HeaderWrap>
       <MenuStyle
-        // style={{ width: props.leftWidth }}
         expandIcon={e =>
           e.isOpen ? (
             <IconFontStyle className="icon" type="up" />
@@ -109,6 +152,7 @@ const AdminSide = (props: any) => {
         defaultOpenKeys={['sub1']}
         mode="inline"
         items={side}
+        onSelect={onMenuClick}
       />
     </AdminSideWrap>
   )

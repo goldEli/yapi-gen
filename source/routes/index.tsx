@@ -36,6 +36,10 @@ const routes = [
         element: lazy(() => import('@/views/Situation')),
       },
       {
+        path: 'Mine',
+        element: lazy(() => import('@/views/Mine')),
+      },
+      {
         path: '/ProjectManagement',
         element: lazy(() => import('@/views/ProjectManagement')),
         children: [
@@ -43,10 +47,7 @@ const routes = [
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
           },
-          {
-            path: 'Mine',
-            element: lazy(() => import('@/views/Mine')),
-          },
+
           {
             path: 'Demand',
             element: lazy(() => import('@/views/Demand')),
@@ -66,7 +67,7 @@ const routes = [
         element: lazy(() => import('@/views/AdminManagement')),
         children: [
           {
-            path: '',
+            path: 'CompanyInfo',
             element: lazy(() => import('@/views/AdminManagement/CompanyInfo')),
           },
           {
@@ -110,6 +111,16 @@ const routes = [
       {
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),
+        // children: [
+        //   {
+        //     path: 'send/:id',
+        //     element: lazy(() => import('@/views/LogManagement/Send')),
+        //   },
+        //   {
+        //     path: 'get/:id',
+        //     element: lazy(() => import('@/views/LogManagement/GetDaily')),
+        //   },
+        // ],
       },
     ],
   },

@@ -110,7 +110,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    navigate('/AdminManagement/TeamManagement')
+    navigate('/AdminManagement/CompanyInfo')
     const resultMenu = {
       id: 3,
       name: '后台管理',
@@ -266,6 +266,15 @@ const DrawerComponent = (props: DrawerComponentProps) => {
 const HeaderLeft = () => {
   const [isVisible, setIsVisible] = useState(false)
   const { currentMenu } = useSelector(store => store.global)
+  const navigate = useNavigate()
+
+  const onToProject = () => {
+    navigate('/ProjectManagement/Project')
+  }
+
+  const onToMine = () => {
+    navigate('/Mine')
+  }
 
   return (
     <HeaderLeftWrap>
@@ -288,10 +297,10 @@ const HeaderLeft = () => {
       </Space>
       {currentMenu.url === '/ProjectManagement' && (
         <ChildrenMenu>
-          <ChildrenMenuItem size={8} isActive>
+          <ChildrenMenuItem size={8} isActive onClick={onToProject}>
             <ItemDropdown text="项目" />
           </ChildrenMenuItem>
-          <ChildrenMenuItem size={8}>
+          <ChildrenMenuItem size={8} onClick={onToMine}>
             <MyDropdown text="我的" />
           </ChildrenMenuItem>
         </ChildrenMenu>

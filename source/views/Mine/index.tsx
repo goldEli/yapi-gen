@@ -6,7 +6,8 @@ const Mine = () => {
 
   return (
     <div>
-      <RichEditor ref={myEd} />
+      12
+      {/* <RichEditor ref={myEd} /> */}
     </div>
   )
 }
