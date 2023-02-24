@@ -2,7 +2,8 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { Input, message, Modal, Select, Space, Spin, Tree } from 'antd'
+/* eslint-disable react/no-unstable-nested-components */
+import { Input, message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
@@ -11,8 +12,6 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { clear } from 'console'
-import { cos } from '@/services/cos'
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
   display: flex;
@@ -370,11 +369,9 @@ const CommonModal = (props: ModalProps) => {
                 style={{ color: ' #646566', fontSize: '8' }}
               />
             }
-            // titleRender={(node: any) =>
-            //   <TreeTitle>
-            //     <CommonUserAvatar avatar={node.avatar} name={node.name} />
-            //   </TreeTitle>
-            // }
+            titleRender={(node: any) => (
+              <CommonUserAvatar avatar={node.avatar} name={node.name} />
+            )}
             treeData={treeData}
           />
         </LeftWrap>
