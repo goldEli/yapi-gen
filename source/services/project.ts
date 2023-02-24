@@ -223,7 +223,10 @@ export const addProject: any = async (params: any) => {
     name: params.name,
     info: params?.info,
     cover: params?.cover,
+    team_id: params?.team_id,
+    prefix: params?.prefix,
     groups: params?.groupIds,
+    leader_id: params?.leader_id,
   })
 }
 
@@ -820,6 +823,14 @@ export const getProjectInfoValues: any = async (params: any) => {
 
 export const getAffiliation = async () => {
   const response = await http.get<any>(`/b/project/affiliation`)
+  // console.log(response)
+  return response.data
+}
+
+export const getAffiliationUser = async (id: any) => {
+  const response = await http.get<any>(`/b/project/affiliation_user`, {
+    team_id: id,
+  })
   // console.log(response)
   return response.data
 }

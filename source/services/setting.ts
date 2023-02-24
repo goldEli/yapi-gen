@@ -138,3 +138,48 @@ export const getWater: any = async () => {
     status: response.data.list[0].status,
   }
 }
+// 新增团队
+export const addTeams: any = async (params: any) => {
+  const response = await http.post<any>('/b/company/teams', params)
+  return response
+}
+// 添加成员弹窗
+export const departmentUserList: any = async (params: any) => {
+  const response = await http.get<any>('/b/user/department_user_list', params)
+  return response
+}
+// 解散团队
+export const dismissTeams: any = async (id: any) => {
+  const response = await http.delete<any>(`/b/user/department_user_list/${id}`)
+  return response
+}
+// 编辑团队
+export const editTeams: any = async (id: any) => {
+  const response = await http.patch<any>(`/b/company/teams/${id}`)
+  return response
+}
+// 团队列表
+export const companyTeamsList: any = async () => {
+  const response = await http.get<any>(`/b/company/teams`)
+  return response
+}
+// 拖拽排序
+export const moveTeamsList: any = async (id: any) => {
+  const response = await http.put<any>(`/b/company/teams`)
+  return response
+}
+// 添加团队成员
+export const teamsMember: any = async (parmas: any) => {
+  const response = await http.post<any>(`/b/company/teams/member`, parmas)
+  return response
+}
+// 移出团队成员
+export const deleteMemberList: any = async (parmas: any) => {
+  const response = await http.delete<any>(`/b/company/teams/member`, parmas)
+  return response
+}
+// 团队成员列表
+export const getMemberList: any = async (parmas: any) => {
+  const response = await http.get<any>(`/b/company/teams/member`, parmas)
+  return response
+}

@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { Form, Input, Tooltip } from 'antd'
+import { Form, Input, message, Tooltip } from 'antd'
 import { uploadFileByTask } from '@/services/cos'
 import upload from 'antd/lib/upload'
-import CommonModal1 from './CommonModal'
 const LeftSideContainer = styled.div`
   width: 232px;
   height: 100%;
@@ -127,10 +126,14 @@ const UploadTitle = styled.div`
   margin-bottom: 8px;
   margin-top: 24px;
 `
-const Upload = () => {
+const Upload = (props: any) => {
   const [defaultIcon, setDefaultIcon] = useState(true)
   const [uploadImg, setUploadImg] = useState('')
   const customRequest = async ({ file }: { file: any }) => {
+    if (file.type !== 'image/png') {
+      message.warning('请上传图片')
+      return
+    }
     const response = await uploadFileByTask(
       file,
       file.name,
@@ -138,6 +141,7 @@ const Upload = () => {
     )
     setDefaultIcon(false)
     setUploadImg(response.url)
+    props.uploadImg(response)
   }
   return (
     <>
@@ -169,7 +173,22 @@ const Upload = () => {
   )
 }
 
-const LeftSide = () => {
+import { companyTeamsList } from '@store/teams/thunk'
+import { addTeams, dismissTeams, editTeams } from '@/services/setting'
+import { useDispatch } from 'react-redux'
+const LeftSide = (props: any) => {
+  const dispatch = useDispatch()
+  // const { teamsMembersList } = useSelector(s => s.teams)
+  const [formType, setFormType] = useState('')
+  const [uploadImgs, setUploadImgs] = useState<any>()
+  const [activeRow, setActiveRow] = useState()
+  // 团队列表
+  const getTeamsList = async () => {
+    await dispatch(companyTeamsList())
+  }
+  useEffect(() => {
+    getTeamsList()
+  }, [])
   // 拖拽的宽高样式
   const childStyle = {
     width: '200px',
@@ -215,18 +234,49 @@ const LeftSide = () => {
           </Form.Item>
         </FormStyle>
         <UploadBox>
-          <Upload />
+          <Upload uploadImg={(obj: any) => setUploadImgs(obj)} />
         </UploadBox>
       </div>
     )
   }
+  // 创建团队弹窗
   const createTeam = () => {
     setTeamIsVisible(true)
     setTeamForm(teamGetForm())
+    setFormType('create')
   }
+  // 编辑团队弹窗
   const editTeam = (row: any) => {
     setTeamForm(teamGetForm(row))
+    setFormType('edit')
     setTeamIsVisible(true)
+  }
+  // 弹窗确认按钮
+  // addTeams,dismissTeams,editTeams
+  const onConfirm = async () => {
+    const name = form.getFieldsValue().username
+    const logo = {
+      name: uploadImgs.name,
+      size: uploadImgs.size,
+      ctime: uploadImgs.time,
+      url: uploadImgs.url,
+      ext: '',
+    }
+    props.isSpin(true)
+    if (formType === 'create') {
+      const res = await addTeams({ name, logo })
+    } else {
+      const res = await editTeams({ name, logo })
+    }
+    props.isSpin(false)
+  }
+  const delOnConfirm = async () => {
+    setDelTeamIsVisible(false)
+    const res = await addTeams()
+  }
+  const onChangeTeam = (key: any, child: any) => {
+    key === 'del' ? setDelTeamIsVisible(true) : editTeam(child)
+    setActiveRow(child)
   }
   return (
     <LeftSideContainer>
@@ -240,26 +290,27 @@ const LeftSide = () => {
         list={list}
         setList={setList}
         childStyle={childStyle}
-        onChangeTeam={(key: string, row: any) => {
-          key === 'del' ? setDelTeamIsVisible(true) : editTeam(row)
-        }}
+        onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
       />
-      <CommonModal1
+      {/* <CommonModal1
         title={'添加成员'}
         isVisible={false}
         onClose={() => setTeamIsVisible(false)}
-      />
+      /> */}
       <CommonModal
-        title={'创建团队'}
+        title={formType === 'create' ? '创建团队' : '编辑团队'}
         isVisible={teamIsVisible}
         children={teamForm}
+        onConfirm={() => onConfirm()}
         onClose={() => setTeamIsVisible(false)}
       />
       <DeleteConfirm
         title="确认解散【超强团队】团队"
         text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
         isVisible={delTeamIsVisible}
-        onConfirm={() => setDelTeamIsVisible(false)}
+        onConfirm={() => {
+          delOnConfirm()
+        }}
         onChangeVisible={() => setDelTeamIsVisible(false)}
       ></DeleteConfirm>
     </LeftSideContainer>
