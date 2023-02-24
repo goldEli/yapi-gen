@@ -168,7 +168,7 @@ const Demand = () => {
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [])
+  }, [isGrid])
 
   const onChangeCategory = (e: any, item: any) => {
     dispatch(setCreateCategory(item))
@@ -329,13 +329,13 @@ const Demand = () => {
             isDemand
           />
         </DemandOperation>
-        {/* {isGrid === 2 && (
+        {isGrid === 2 && (
           <DemandTree
             onChangeVisible={onChangeOperation}
             onDelete={onDelete}
             data={dataList}
-            onChangePageNavigation={onChangePageNavigation}
-            onChangeRow={onChangeRow}
+            // onChangePageNavigation={onChangePageNavigation}
+            // onChangeRow={onChangeRow}
             settingState={isSettingState}
             onChangeSetting={setIsSettingState}
             onChangeOrder={onChangeOrder}
@@ -349,9 +349,9 @@ const Demand = () => {
               order: '',
               orderKey: '',
             }}
-            isUpdated={isUpdated}
+            // isUpdated={isUpdated}
           />
-        )} */}
+        )}
         {!isGrid && (
           <DemandTable
             onChangeVisible={onChangeOperation}
@@ -366,15 +366,15 @@ const Demand = () => {
             onUpdate={onUpdate}
           />
         )}
-        {/* {isGrid === 1 && (
-          <DemandGrid
+        {isGrid === 1 && (
+          <DemandPanel
             onChangeVisible={onChangeOperation}
             onDelete={onDelete}
             data={dataList}
             isSpinning={isSpinning}
             onUpdate={onUpdate}
           />
-        )} */}
+        )}
       </div>
     </DemandWrap>
   )

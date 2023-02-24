@@ -598,6 +598,19 @@ const StyledShape = styled.div<{ color: any }>`
   cursor: pointer;
 `
 
+// 列表的加号，获取子需求
+const ExpendedWrap = styled(IconFont)({
+  marginRight: 12,
+  color: '#BBBDBF',
+  fontSize: 16,
+  cursor: 'pointer',
+  background: 'white',
+  zIndex: 1,
+  '&: hover': {
+    color: '#2877ff',
+  },
+})
+
 export {
   HiddenText,
   ClickWrap,
@@ -632,4 +645,5 @@ export {
   CanOperation,
   IconFontWrapEdit,
   StyledShape,
+  ExpendedWrap,
 }

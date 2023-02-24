@@ -155,6 +155,7 @@ const Side = () => {
     setIsVisible(true)
     setOperationDetail({})
   }
+
   const getClassSide = () => {
     if (pathname === '/ProjectManagement/Project') {
       return (
