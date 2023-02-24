@@ -232,12 +232,14 @@ export const addProject: any = async (params: any) => {
 
 export const updateProject: any = async (params: any) => {
   await http.put<any>('updateProject', {
-    is_public: params.isPublic,
+    is_public: params?.isPublic,
     name: params.name,
-    info: params.info,
-    cover: params.cover,
-    id: params.id,
+    info: params?.info,
+    cover: params?.cover,
+    team_id: params?.team_id,
+    prefix: params?.prefix,
     groups: params?.groupIds,
+    leader_id: params?.leader_id,
   })
 }
 

@@ -1,5 +1,6 @@
+import { message } from 'antd'
 import { createSlice } from '@reduxjs/toolkit'
-import { getProjectCover } from '@store/cover/thunks'
+import { postCreate } from './thunks'
 
 type SliceState = {
   createVisible: boolean
@@ -17,8 +18,9 @@ const slice = createSlice({
   },
 
   extraReducers(builder) {
-    builder.addCase(getProjectCover.fulfilled, (state, action) => {
-      // console.log(action)
+    builder.addCase(postCreate.fulfilled, (state, action) => {
+      message.success('创建成功')
+      state.createVisible = false
     })
   },
 })

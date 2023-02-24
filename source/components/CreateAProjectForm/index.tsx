@@ -128,6 +128,7 @@ const CreateAProjectForm = () => {
       getGroupData()
       setActiveCover(covers[0]?.path)
     }
+    form.resetFields()
   }, [createVisible])
 
   const getLeader = async () => {
