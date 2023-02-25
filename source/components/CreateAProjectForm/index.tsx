@@ -13,14 +13,12 @@ import { changeCreateVisible } from '@store/create-propject'
 import { postCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
-import { type } from 'os'
-import React, { ForwardedRef, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
-import MoreSelect from '../MoreSelect'
-import ProjectCard from '../ProjectCard'
+import MoreOptions from '../MoreOptions'
 import ProjectCardShow from '../ProjectCardShow'
 import {
   CoverArea,
@@ -33,21 +31,21 @@ import {
   CoverAreaWrap,
   Wrap,
 } from './style'
-import { makePy, mkRslt } from './tool'
+import { makePy } from './tool'
 
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
 
 const CreateAProjectForm = () => {
+  const covers = useSelector(state => state.cover.covers)
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const [activeCover, setActiveCover] = useState<any>()
+  const [activeCover, setActiveCover] = useState<any>('')
   const [myCover, setMyCover] = useState<string>('')
   const [leaderId, setLeaderId] = useState<any>('')
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
-  const covers = useSelector(state => state.cover.covers)
   const createVisible = useSelector(state => state.createProject.createVisible)
   const [selectGroupList, setSelectGroupList] = useState<any>([])
   const [selectLeaders, setSelectLeaders] = useState<any>([])
@@ -60,10 +58,12 @@ const CreateAProjectForm = () => {
     setMyCover(data.url)
   }
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
+    const formData = await form.validateFields()
+
     const obj = {
       cover: activeCover,
-      ...form.getFieldsValue(),
+      ...formData,
     }
 
     dispatch(postCreate(obj))
@@ -107,10 +107,13 @@ const CreateAProjectForm = () => {
   }
 
   const getGroupData = async () => {
+    // 获取项目分组
     const result = await getGroupList()
     setSelectGroupList(
       result?.list?.map((i: any) => ({ label: i.name, value: i.id })),
     )
+
+    // 获取所属
     const result2 = await getAffiliation()
 
     setAffiliations(
@@ -120,6 +123,13 @@ const CreateAProjectForm = () => {
       })),
     )
   }
+  useEffect(() => {
+    if (createVisible) {
+      getGroupData()
+      setActiveCover(covers[0]?.path)
+    }
+    form.resetFields()
+  }, [createVisible])
 
   const getLeader = async () => {
     const res = await getAffiliationUser(leaderId)
@@ -130,35 +140,12 @@ const CreateAProjectForm = () => {
       })),
     )
   }
-
-  const onFormLayoutChange = ({ team_id }: { team_id: any }) => {
-    setLeaderId(team_id)
-  }
-
-  const keyChange = (e: any) => {
-    if (!e.target.value) {
-      setLock(true)
-    }
-  }
-  useEffect(() => {
-    if (!canChooseLeader) {
-      if (!Array.isArray(leaderId)) {
-        getLeader()
-      }
-    }
-  }, [canChooseLeader, leaderId])
-
-  useEffect(() => {
-    if (createVisible) {
-      getGroupData()
-    }
-  }, [createVisible])
   useEffect(() => {
     if (leaderId || leaderId === 0) {
+      getLeader()
       setCanChooseLeader(false)
     }
   }, [leaderId])
-
   return (
     <CommonModal
       onConfirm={onConfirm}
@@ -231,12 +218,7 @@ const CreateAProjectForm = () => {
           </div>
         </CoverAreaWrap>
         <Wrap>
-          <Form
-            form={form}
-            layout="vertical"
-            onValuesChange={onFormLayoutChange}
-            disabled={false}
-          >
+          <Form form={form} layout="vertical">
             <Form.Item
               label={<FormTitleSmall text="项目名称" />}
               name="name"
@@ -254,7 +236,17 @@ const CreateAProjectForm = () => {
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <MoreSelect mode={false} type="project" options={affiliations} />
+              <Select
+                placeholder="custom dropdown render"
+                optionLabelProp="label"
+                onChange={value => setLeaderId(value)}
+              >
+                {affiliations.map((i: any) => (
+                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                    <MoreOptions type="project" name={i.name} dec={i.dec} />
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item
               label={
@@ -281,12 +273,15 @@ const CreateAProjectForm = () => {
               }
               name="prefix"
               rules={[
-                { required: true, message: 'Please input your username!' },
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
               ]}
             >
               <Input
+                onChange={e => !e.target.value && setLock(true)}
                 onFocus={() => setLock(false)}
-                onChange={keyChange}
                 placeholder="请输入键"
               />
             </Form.Item>
@@ -294,13 +289,24 @@ const CreateAProjectForm = () => {
               label={<FormTitleSmall text="项目负责人" />}
               name="leader_id"
             >
-              <MoreSelect type="user" options={selectLeaders} />
+              <Select
+                disabled={canChooseLeader}
+                placeholder="custom dropdown render"
+                optionLabelProp="label"
+              >
+                {selectLeaders.map((i: any) => (
+                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                    <MoreOptions type="user" name={i.name} dec={i.dec} />
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item label={<FormTitleSmall text="权限" />} name="isPublic">
-              <MoreSelect
-                disabled={canChooseLeader}
-                type="promise"
-                options={[
+              <Select
+                placeholder="custom dropdown render"
+                optionLabelProp="label"
+              >
+                {[
                   {
                     name: t('project.companyOpen'),
                     id: '1',
@@ -316,8 +322,12 @@ const CreateAProjectForm = () => {
                     id: '3',
                     dec: '团队内所有成员可见，仅项目成员可编辑',
                   },
-                ]}
-              />
+                ].map((i: any) => (
+                  <Select.Option value={i.id} key={i.id} label={i.name}>
+                    <MoreOptions type="promise" name={i.name} dec={i.dec} />
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item
               label={<FormTitleSmall text={t('version2.projectGroup')} />}
