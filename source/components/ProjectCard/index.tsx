@@ -78,7 +78,8 @@ const Index = (props: any) => {
       label: <span>删除</span>,
     },
   ]
-  const onClick: MenuProps['onClick'] = ({ key }) => {
+  const onClick: MenuProps['onClick'] = ({ key, domEvent }) => {
+    domEvent.stopPropagation()
     switch (key) {
       case 'edit':
         dispatch(editProject({ visible: true, id: props.item.id }))
@@ -139,7 +140,10 @@ const Index = (props: any) => {
       </CardRight>
       <Dropdown
         trigger={['hover']}
-        menu={{ items, onClick }}
+        menu={{
+          items,
+          onClick,
+        }}
         placement="bottomRight"
         getPopupContainer={(i: any) => i.parentNode}
       >
