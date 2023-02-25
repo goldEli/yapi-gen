@@ -108,7 +108,7 @@ const DemandTable = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
     )
-    openDetail(`/Detail/Demand?data=${params}`)
+    openDetail(`/ProjectManagement/Demand?data=${params}`)
   }
 
   const onChangeState = async (item: any) => {

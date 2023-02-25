@@ -36,8 +36,34 @@ const routes = [
         element: lazy(() => import('@/views/Situation')),
       },
       {
-        path: 'Mine',
+        path: '/Mine',
         element: lazy(() => import('@/views/Mine')),
+        children: [
+          {
+            path: 'Agenda',
+            element: lazy(() => import('@/views/Mine/Agenda')),
+          },
+          {
+            path: 'Carbon',
+            element: lazy(() => import('@/views/Mine/Carbon')),
+          },
+          {
+            path: 'Create',
+            element: lazy(() => import('@/views/Mine/Create')),
+          },
+          {
+            path: 'Finished',
+            element: lazy(() => import('@/views/Mine/Finished')),
+          },
+          {
+            path: 'Examine',
+            element: lazy(() => import('@/views/Mine/Examine')),
+          },
+          {
+            path: 'Profile',
+            element: lazy(() => import('@/views/Mine/Profile')),
+          },
+        ],
       },
       {
         path: '/ProjectManagement',
@@ -59,6 +85,53 @@ const routes = [
           {
             path: 'ProjectSetting',
             element: lazy(() => import('@/views/ProjectSetting')),
+            children: [
+              {
+                path: 'ProjectInfo',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/ProjectInfo'),
+                ),
+              },
+
+              {
+                path: 'Member',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/ProjectMember'),
+                ),
+              },
+              {
+                path: 'Permission',
+                element: lazy(
+                  () => import('@/views/ProjectSetting/ProjectSet'),
+                ),
+              },
+              {
+                path: 'DemandSet',
+                element: lazy(() => import('@/views/ProjectSetting/DemandSet')),
+              },
+            ],
+          },
+          {
+            path: 'MemberInfo',
+            element: lazy(() => import('@/views/MemberInfo')),
+            children: [
+              {
+                path: 'Carbon',
+                element: lazy(() => import('@/views/MemberInfo/Carbon')),
+              },
+              {
+                path: 'Create',
+                element: lazy(() => import('@/views/MemberInfo/Create')),
+              },
+              {
+                path: 'Finished',
+                element: lazy(() => import('@/views/MemberInfo/Finished')),
+              },
+              {
+                path: 'Profile',
+                element: lazy(() => import('@/views/MemberInfo/Profile')),
+              },
+            ],
           },
         ],
       },
@@ -109,18 +182,40 @@ const routes = [
         ],
       },
       {
+        path: '/MemberInfo',
+        element: lazy(() => import('@/views/MemberInfo')),
+        children: [
+          {
+            path: 'Carbon',
+            element: lazy(() => import('@/views/MemberInfo/Carbon')),
+          },
+          {
+            path: 'Create',
+            element: lazy(() => import('@/views/MemberInfo/Create')),
+          },
+          {
+            path: 'Finished',
+            element: lazy(() => import('@/views/MemberInfo/Finished')),
+          },
+          {
+            path: 'Profile',
+            element: lazy(() => import('@/views/MemberInfo/Profile')),
+          },
+        ],
+      },
+      {
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),
-        // children: [
-        //   {
-        //     path: 'send/:id',
-        //     element: lazy(() => import('@/views/LogManagement/Send')),
-        //   },
-        //   {
-        //     path: 'get/:id',
-        //     element: lazy(() => import('@/views/LogManagement/GetDaily')),
-        //   },
-        // ],
+        children: [
+          {
+            path: 'send/:id',
+            element: lazy(() => import('@/views/LogManagement/Send')),
+          },
+          {
+            path: 'get/:id',
+            element: lazy(() => import('@/views/LogManagement/GetDaily')),
+          },
+        ],
       },
     ],
   },

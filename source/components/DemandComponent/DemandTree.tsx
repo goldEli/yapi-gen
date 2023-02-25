@@ -170,7 +170,7 @@ const DemandTree = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
     )
-    openDetail(`/Detail/Demand?data=${params}`)
+    openDetail(`/ProjectManagement/Demand?data=${params}`)
   }
 
   // 修改优先级

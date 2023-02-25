@@ -102,7 +102,7 @@ const DemandPanel = (props: Props) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
     )
-    openDetail(`/Detail/Demand?data=${params}`)
+    openDetail(`/ProjectManagement/Demand?data=${params}`)
   }
 
   return (

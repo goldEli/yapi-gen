@@ -1,5 +1,7 @@
+import { Outlet } from 'react-router-dom'
+
 const ProjectSetting = () => {
-  return <div>项目设置</div>
+  return <Outlet />
 }
 
 export default ProjectSetting
