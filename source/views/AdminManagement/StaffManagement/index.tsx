@@ -186,12 +186,12 @@ const StaffManagement = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      openDetail('/mine')
+      openDetail('/Mine')
     } else {
       const params = encryptPhp(
         JSON.stringify({ id: '', isMember: false, userId: row.id }),
       )
-      openDetail(`/MemberInfo/profile?data=${params}`)
+      openDetail(`/MemberInfo/Profile?data=${params}`)
     }
   }
 

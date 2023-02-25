@@ -433,7 +433,7 @@ const MainTable = (props: Props) => {
     return {
       onClick: () => {
         const params = encryptPhp(JSON.stringify({ id: row.id }))
-        navigate(`/Detail/Demand?data=${params}`)
+        navigate(`/ProjectManagement/Demand?data=${params}`)
       },
     }
   }, [])

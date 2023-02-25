@@ -634,6 +634,91 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
   }),
 )
 
+const SecondTitle = styled.span`
+  padding-left: 8px;
+  border-left: 3px solid #2877ff;
+  color: rgba(0, 0, 0, 1);
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 20px;
+`
+
+const TabsItem = styled.div<{ isActive: boolean }>(
+  {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    div: {
+      fontSize: 16,
+      fontWeight: 400,
+      height: 62,
+      lineHeight: '62px',
+    },
+  },
+  ({ isActive }) => ({
+    div: {
+      color: String(isActive ? '#2877FF' : '#323233'),
+      borderBottom: `3px solid ${isActive ? '#2877FF' : 'white'}`,
+    },
+  }),
+)
+const LabNumber = styled.div<{ isActive: boolean }>`
+  margin-left: 12px;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+
+  color: ${({ isActive }) => (isActive ? 'white' : 'rgba(150, 151, 153, 1)')};
+  background: ${({ isActive }) =>
+    isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
+`
+
+const NameWrap = styled.div({
+  width: 24,
+  height: 24,
+  borderRadius: 16,
+  background: '#A4ACF5',
+  color: 'white',
+  fontSize: 12,
+  fontWeight: 400,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 4,
+  overflow: 'hidden',
+})
+
+const ViewWrap = styled.div<{ color: string }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '20px',
+    fontSize: 12,
+    fontWeight: 400,
+    width: 'fit-content',
+    background: 'white',
+  },
+  ({ color }) => ({
+    color,
+    border: `1px solid ${color}`,
+  }),
+)
+
+const DelWrap = styled.span({
+  fontSize: 12,
+  marginLeft: 8,
+  color: '#969799',
+  textDecoration: 'line-through',
+})
+
 export {
   HiddenText,
   ClickWrap,
@@ -669,4 +754,10 @@ export {
   StyledShape,
   ExpendedWrap,
   StepBoxWrap,
+  SecondTitle,
+  TabsItem,
+  LabNumber,
+  ViewWrap,
+  NameWrap,
+  DelWrap,
 }

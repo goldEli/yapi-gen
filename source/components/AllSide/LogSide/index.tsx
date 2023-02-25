@@ -12,22 +12,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-const Wrap = styled.div`
-  height: 100%;
-  display: flex;
-`
-const Side = styled.div`
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  padding-top: 24px;
-  width: 220px;
-  background: rgba(255, 255, 255, 1);
-  flex-shrink: 0;
-`
-
 const Menu = styled.div`
   width: 100%;
   margin-top: 24px;
@@ -66,40 +50,40 @@ const LogSide = () => {
     {
       id: 1,
       name: t('p2.dayList.t1'),
-      path: 'send/1',
+      path: '/LogManagement/Send/1',
       state: 1,
     },
     {
       id: 2,
       name: t('p2.dayList.t2'),
-      path: 'send/2',
+      path: '/LogManagement/Send/2',
     },
     {
       id: 3,
       name: t('p2.dayList.t3'),
-      path: 'send/3',
+      path: '/LogManagement/Send/3',
     },
     {
       id: 4,
       name: t('p2.dayList.t4'),
-      path: 'send/4',
+      path: '/LogManagement/Send/4',
     },
     {
       id: 5,
       name: t('p2.dayList.t5'),
-      path: 'get/5',
+      path: '/LogManagement/Get/5',
       state: 2,
     },
     {
       id: 6,
       name: t('p2.dayList.t6'),
-      path: 'get/6',
+      path: '/LogManagement/Get/6',
       isPermission: false,
     },
     {
       id: 7,
       name: t('p2.dayList.t7'),
-      path: 'get/7',
+      path: '/LogManagement/Get/7',
       isPermission: false,
     },
     {
@@ -201,69 +185,67 @@ const LogSide = () => {
   )
   const title = menuList[(nowPath2 as number) - 1]?.name
   return (
-    <Wrap>
-      <Side>
-        {getIsPermission(
+    <div>
+      {/* {getIsPermission(
           userInfo?.company_permissions,
           'b/user/fast/create',
-        ) ? null : (
-          <Popover
-            placement="bottomLeft"
-            trigger="hover"
-            onVisibleChange={visible => setShowPop(visible)}
-            visible={showPop}
-            content={content}
-            getPopupContainer={node => node}
-          >
-            <CommonButton type="primary" icon="plus" iconPlacement="right">
-              {t('p2.whiteDay')}
-            </CommonButton>
-          </Popover>
-        )}
-        <Menu>
-          {menuList.map((item: any, index: number) => (
-            <>
-              {index === 4 && <div className="provider" />}
-              <MenuItem
-                style={{
-                  fontSize: item.state ? '16px' : '',
-                  fontWeight: item.state ? 'bold' : '',
-                  position: 'relative',
-                }}
-                active={nowPath2 === item.id}
-                onClick={() => changeActive(item)}
-                key={item.id}
-                hidden={item.isPermission}
-              >
-                {item.state === 1 && (
-                  <IconFont
-                    type="send"
-                    style={{
-                      fontSize: 20,
-                      marginRight: item.state ? '6px' : '',
-                      position: 'absolute',
-                      left: '24px',
-                    }}
-                  />
-                )}
-                {item.state === 2 && (
-                  <IconFont
-                    type="container"
-                    style={{
-                      fontSize: 20,
-                      marginRight: item.state ? '6px' : '',
-                      position: 'absolute',
-                      left: '24px',
-                    }}
-                  />
-                )}
-                {item.name}
-              </MenuItem>
-            </>
-          ))}
-        </Menu>
-      </Side>
-    </Wrap>
+        ) ? null : ( */}
+      <Popover
+        placement="bottomLeft"
+        trigger="hover"
+        onVisibleChange={visible => setShowPop(visible)}
+        visible={showPop}
+        content={content}
+        getPopupContainer={node => node}
+      >
+        <CommonButton type="primary" icon="plus" iconPlacement="right">
+          {t('p2.whiteDay')}
+        </CommonButton>
+      </Popover>
+      {/* )} */}
+      <Menu>
+        {menuList.map((item: any, index: number) => (
+          <>
+            {index === 4 && <div className="provider" />}
+            <MenuItem
+              style={{
+                fontSize: item.state ? '16px' : '',
+                fontWeight: item.state ? 'bold' : '',
+                position: 'relative',
+              }}
+              active={nowPath2 === item.id}
+              onClick={() => changeActive(item)}
+              key={item.id}
+              hidden={item.isPermission}
+            >
+              {item.state === 1 && (
+                <IconFont
+                  type="send"
+                  style={{
+                    fontSize: 20,
+                    marginRight: item.state ? '6px' : '',
+                    position: 'absolute',
+                    left: '24px',
+                  }}
+                />
+              )}
+              {item.state === 2 && (
+                <IconFont
+                  type="container"
+                  style={{
+                    fontSize: 20,
+                    marginRight: item.state ? '6px' : '',
+                    position: 'absolute',
+                    left: '24px',
+                  }}
+                />
+              )}
+              {item.name}
+            </MenuItem>
+          </>
+        ))}
+      </Menu>
+    </div>
   )
 }
 

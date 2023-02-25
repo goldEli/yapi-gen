@@ -51,7 +51,7 @@ export const useDynamicColumns = (state: any) => {
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
       message.warning(t('common.notCheckInfo'))
     } else {
-      openDetail(`/Detail/Demand?data=${params}`)
+      openDetail(`/ProjectManagement/Demand?data=${params}`)
     }
   }
 

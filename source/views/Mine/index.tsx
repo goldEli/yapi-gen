@@ -1,13 +1,9 @@
-import RichEditor from '@/components/RichEditor'
-import { useRef } from 'react'
+import { Outlet } from 'react-router-dom'
 
 const Mine = () => {
-  const myEd = useRef<any>()
-
   return (
     <div>
-      12
-      {/* <RichEditor ref={myEd} /> */}
+      <Outlet />
     </div>
   )
 }
