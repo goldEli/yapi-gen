@@ -1,6 +1,6 @@
 // 项目卡片 children传入右上操作
 
-import { changeCreateVisible } from '@store/create-propject'
+import { changeCreateVisible, editProject } from '@store/create-propject'
 import { useDispatch } from '@store/index'
 import { Dropdown, MenuProps, Progress, Tooltip } from 'antd'
 import React from 'react'
@@ -81,7 +81,7 @@ const Index = (props: any) => {
   const onClick: MenuProps['onClick'] = ({ key }) => {
     switch (key) {
       case 'edit':
-        dispatch(changeCreateVisible(true))
+        dispatch(editProject({ visible: true, id: props.item.id }))
         break
       case 'over':
         props.onChangeOperation('end', props.item)

@@ -8,9 +8,10 @@ import {
   getAffiliation,
   getAffiliationUser,
   getGroupList,
+  getProjectInfoOnly,
 } from '@/services/project'
 import { changeCreateVisible } from '@store/create-propject'
-import { postCreate } from '@store/create-propject/thunks'
+import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
 import { useEffect, useState } from 'react'
@@ -46,7 +47,7 @@ const CreateAProjectForm = () => {
   const [leaderId, setLeaderId] = useState<any>('')
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
-  const createVisible = useSelector(state => state.createProject.createVisible)
+  const { createVisible, isEditId } = useSelector(state => state.createProject)
   const [selectGroupList, setSelectGroupList] = useState<any>([])
   const [selectLeaders, setSelectLeaders] = useState<any>([])
   const [affiliations, setAffiliations] = useState<any>([])
@@ -65,7 +66,10 @@ const CreateAProjectForm = () => {
       cover: activeCover,
       ...formData,
     }
-
+    if (isEditId) {
+      dispatch(postEditCreate({ ...obj, id: isEditId }))
+      return
+    }
     dispatch(postCreate(obj))
   }
 
@@ -123,13 +127,21 @@ const CreateAProjectForm = () => {
       })),
     )
   }
-  useEffect(() => {
-    if (createVisible) {
-      getGroupData()
-      setActiveCover(covers[0]?.path)
-    }
-    form.resetFields()
-  }, [createVisible])
+
+  //编辑项目逻辑
+  const getProjectInfo = async () => {
+    const res = await getProjectInfoOnly(isEditId)
+    setActiveCover(res.cover)
+    form.setFieldsValue({
+      name: res.name,
+      team_id: res.team_id,
+      prefix: res.prefix,
+      leader_id: res.leader_id,
+      isPublic: res.is_public,
+      groups: res.groups,
+      info: res.info,
+    })
+  }
 
   const getLeader = async () => {
     const res = await getAffiliationUser(leaderId)
@@ -146,6 +158,17 @@ const CreateAProjectForm = () => {
       setCanChooseLeader(false)
     }
   }, [leaderId])
+  useEffect(() => {
+    if (createVisible) {
+      getGroupData()
+      setActiveCover(covers[0]?.path)
+      if (isEditId) {
+        getProjectInfo()
+      }
+    }
+
+    form.resetFields()
+  }, [createVisible])
   return (
     <CommonModal
       onConfirm={onConfirm}
