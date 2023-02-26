@@ -1,36 +1,42 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable camelcase */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable no-undefined */
+// 需求主页-左侧需求分类
 /* eslint-disable complexity */
-import CommonModal from '@/components/CommonModal'
-import DeleteConfirm from '@/components/DeleteConfirm'
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable no-duplicate-imports */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undefined */
+/* eslint-disable @typescript-eslint/naming-convention */
+import styled from '@emotion/styled'
+import { Form, Input, message, Popover, Tree } from 'antd'
+import {
+  useEffect,
+  useState,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react'
+import { TreeContext } from '../index'
 import IconFont from '@/components/IconFont'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import CommonModal from '@/components/CommonModal'
+import { css } from '@emotion/css'
+import { getIsPermission } from '@/tools'
+import { useTranslation } from 'react-i18next'
+import { setProjectInfoValues } from '@store/project'
+import { useDispatch, useSelector } from '@store/index'
 import {
   addTreeList,
   delTreeList,
   getTreeList,
   moveTreeList,
 } from '@/services/demand'
-import { getIsPermission } from '@/tools'
-import { css } from '@emotion/css'
-import styled from '@emotion/styled'
 import { changeId } from '@store/counterSlice'
-import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfoValues } from '@store/project'
-import { Form, Input, message, Popover, Tree } from 'antd'
-import {
-  forwardRef,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
-import { useTranslation } from 'react-i18next'
-import { TreeContext } from '.'
 
 const Left = styled.div`
-  height: 100%;
+  height: calc(100vh - 64px);
   background-color: #fff;
   position: relative;
 `
@@ -87,7 +93,6 @@ const rightText = css`
     color: #2877ff;
   }
 `
-
 const TreeItem = (props: any) => {
   const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -346,7 +351,7 @@ const TreeItem = (props: any) => {
   )
 }
 
-const DemandClass = (props: any, ref: any) => {
+const WrapLeft = (props: any, ref: any) => {
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -396,7 +401,7 @@ const DemandClass = (props: any, ref: any) => {
         <TreeItem
           onRest={() => {
             init(true)
-            // props.onUpdate()
+            props.onUpdate()
           }}
           onDeleteRestKey={onDeleteRestKey}
           projectId={props.projectId}
@@ -487,43 +492,47 @@ const DemandClass = (props: any, ref: any) => {
       init,
     }
   })
-  return (
-    <Left>
-      <div className="resize_bar" />
-      <div className="resize_line" />
-      <div className="resize_save">
-        <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
-        {treeData.length > 0 && show ? (
-          <Tree
-            selectedKeys={[valueId]}
-            allowDrop={(dropNode: any) => {
-              if (dropNode.dropNode.title.props.grade === 4) {
-                return false
-              }
-              return true
-            }}
-            defaultExpandAll
-            autoExpandParent
-            onDrop={onDrop}
-            onSelect={onSelect}
-            draggable={(node: any) => {
-              const {
-                title: {
-                  props: { id },
-                },
-              } = node
-              if (id === -1 || id === 0) {
-                return false
-              }
 
-              return true
-            }}
-            treeData={treeData}
-          />
-        ) : null}
-      </div>
-    </Left>
-  )
+  if (props.isShowLeft) {
+    return (
+      <Left>
+        <div className="resize_bar" />
+        <div className="resize_line" />
+        <div className="resize_save">
+          <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
+          {treeData.length > 0 && show ? (
+            <Tree
+              selectedKeys={[valueId]}
+              allowDrop={(dropNode: any) => {
+                if (dropNode.dropNode.title.props.grade === 4) {
+                  return false
+                }
+                return true
+              }}
+              defaultExpandAll
+              autoExpandParent
+              onDrop={onDrop}
+              onSelect={onSelect}
+              draggable={(node: any) => {
+                const {
+                  title: {
+                    props: { id },
+                  },
+                } = node
+                if (id === -1 || id === 0) {
+                  return false
+                }
+
+                return true
+              }}
+              treeData={treeData}
+            />
+          ) : null}
+        </div>
+      </Left>
+    )
+  }
+  return null
 }
 
-export default forwardRef(DemandClass)
+export default forwardRef(WrapLeft)

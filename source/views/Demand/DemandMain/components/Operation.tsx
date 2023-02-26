@@ -23,13 +23,14 @@ import { setCreateCategory } from '@store/demand'
 import InputSearch from '@/components/InputSearch'
 
 const OperationWrap = styled.div({
-  minHeight: 32,
+  minHeight: 52,
   minWidth: '800px',
   lineHeight: '52px',
   background: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  padding: '0 24px',
   '.ant-space-item': {
     display: 'flex',
     alignItems: 'center',
@@ -72,7 +73,7 @@ const IconWrap = styled(IconFont)({
   },
 })
 
-const MoreWrap = styled.div<{ type?: any }>(
+export const MoreWrap = styled.div<{ type?: any }>(
   {
     display: 'flex',
     alignItems: 'center',
@@ -171,6 +172,21 @@ const Operation = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/story/export',
   )
+
+  const onChangeSearch = (value: string) => {
+    if (searchVal !== value) {
+      setSearchVal(value)
+      const params = searchGroups
+      params.searchValue = value
+      setSearchGroups(params)
+      props.onSearch(params)
+      // 添加搜索项 计数
+      const keys = value
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
+    }
+  }
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
@@ -403,15 +419,22 @@ const Operation = (props: Props) => {
           )}
         </Space>
 
-        <OperationGroup
-          onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
-          isGrid={props.isGrid}
-          filterState={filterState}
-          settingState={props.settingState}
-          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-          isDemand
-        />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <InputSearch
+            placeholder={t('common.pleaseSearchDemand')}
+            onChangeSearch={onChangeSearch}
+            leftIcon
+          />
+          <OperationGroup
+            onChangeFilter={onChangeFilter}
+            onChangeGrid={props.onChangeGrid}
+            isGrid={props.isGrid}
+            filterState={filterState}
+            settingState={props.settingState}
+            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+            isDemand
+          />
+        </div>
       </OperationWrap>
       {!filterState && (
         <TableFilter

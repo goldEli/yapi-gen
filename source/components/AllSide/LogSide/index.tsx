@@ -5,6 +5,7 @@ import IconFont from '@/components/IconFont'
 import useSetTitle from '@/hooks/useSetTitle'
 import { writeDaily } from '@/services/daily'
 import { getIsPermission } from '@/tools'
+import WhiteDay from '@/views/LogManagement/components/WhiteDay'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { message, Popover } from 'antd'
@@ -89,7 +90,7 @@ const LogSide = () => {
     {
       id: 8,
       name: t('p2.dayList.t8'),
-      path: 'get/8',
+      path: '/LogManagement/Get/8',
       isPermission: false,
     },
   ]
@@ -198,9 +199,11 @@ const LogSide = () => {
         content={content}
         getPopupContainer={node => node}
       >
-        <CommonButton type="primary" icon="plus" iconPlacement="right">
-          {t('p2.whiteDay')}
-        </CommonButton>
+        <div>
+          <CommonButton type="primary" icon="plus" iconPlacement="right">
+            {t('p2.whiteDay')}
+          </CommonButton>
+        </div>
       </Popover>
       {/* )} */}
       <Menu>
@@ -245,6 +248,14 @@ const LogSide = () => {
           </>
         ))}
       </Menu>
+      {/* // 写日志的表单D */}
+      <WhiteDay
+        visibleEditText={visibleEditText}
+        visibleEdit={visibleEdit}
+        editClose={editClose}
+        editConfirm={editConfirm}
+        type={type}
+      />
     </div>
   )
 }

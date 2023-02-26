@@ -1,355 +1,564 @@
-// 需求主页
-
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
 /* eslint-disable no-undefined */
-/* eslint-disable max-params */
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable complexity */
+/* eslint-disable camelcase */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable max-len */
-import React, { useState, useEffect, useRef } from 'react'
-import DeleteConfirm from '@/components/DeleteConfirm'
-import { useSearchParams } from 'react-router-dom'
-import { message } from 'antd'
-import { useTranslation } from 'react-i18next'
-import { getParamsData } from '@/tools'
-import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
-import { setIsRefresh } from '@store/user'
-import { setFilterKeys } from '@store/project'
-import { setFilterParams } from '@store/demand'
-import { deleteDemand, getDemandList } from '@/services/demand'
-import Operation from './Operation'
-import DemandTree from '@/components/DemandComponent/DemandTree'
-import DemandTable from '@/components/DemandComponent/DemandTable'
-import DemandPanel from '@/components/DemandComponent/DemandPanel'
-import DemandClass from './DemandClass'
-import ProjectDetailHeader from '@/components/ProjectDetailHeader'
+/* eslint-disable no-empty-function */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/naming-convention */
 
-const Right = styled.div<{ isShowLeft: boolean }>({
-  width: '100%',
-  height: '100%',
-  overflowY: 'auto',
+import DemandMain from './DemandMain'
+import DemandInfo from './DemandInfo'
+import ChangeRecord from './ChangeRecord'
+import ChildDemand from './ChildDemand'
+import { useEffect, useState } from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
+import styled from '@emotion/styled'
+import { Space, Button, message, Popover, Form, Select } from 'antd'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { getIsPermission, getParamsData } from '@/tools'
+import { useTranslation } from 'react-i18next'
+import Loading from '@/components/Loading'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { OmitText } from '@star-yun/ui'
+import { CanOperationCategory, StatusWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
+import Circulation from './Circulation'
+import CommonModal from '@/components/CommonModal'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover'
+import useSetTitle from '@/hooks/useSetTitle'
+import { setIsRefresh } from '@store/user'
+import { useDispatch, useSelector } from '@store/index'
+import { getWorkflowList } from '@/services/project'
+import {
+  deleteDemand,
+  getDemandInfo,
+  updateDemandCategory,
+  updateDemandStatus,
+} from '@/services/demand'
+import {
+  setDemandInfo,
+  setIsRefreshComment,
+  setIsUpdateStatus,
+} from '@store/demand'
+import { changeId } from '@store/counterSlice'
+
+const DemandInfoWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  height: 64,
+  background: 'white',
+  padding: '0 24px',
 })
 
-interface Props {
-  onChangeVisible(e: any): void
-  onSetOperationItem(item: any): void
-  isUpdate?: boolean
-  onIsUpdate?(): void
-}
+const NameWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  '.demandName': {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+    marginRight: 8,
+  },
+})
 
-export const TreeContext: any = React.createContext('')
+const ContentWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: 'calc(100% - 84px)',
+})
 
-const DemandMain = (props: Props) => {
+const MainWrap = styled(Space)({
+  borderRadius: 4,
+  paddingLeft: 24,
+  background: 'white',
+  width: '100%',
+  position: 'relative',
+})
+
+const Item = styled.div<{ activeIdx: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    span: {
+      fontSize: 14,
+      fontWeight: 400,
+      marginRight: 4,
+      color: '#323233',
+      display: 'inline-block',
+      height: 50,
+      lineHeight: '50px',
+    },
+    div: {
+      minWidth: 20,
+      height: 20,
+      padding: '0 6px',
+      borderRadius: 10,
+      color: '#2877FF',
+      background: '#F0F4FA',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  },
+  ({ activeIdx }) => ({
+    span: {
+      color: activeIdx ? '#2877FF' : '#323233',
+      borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
+      fontWeight: activeIdx ? 'bold' : 400,
+    },
+    div: {
+      color: activeIdx ? 'white' : '#2877FF',
+      background: activeIdx ? '#2877FF' : '#F0F4FA',
+    },
+  }),
+)
+
+const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '22px 0 0 0',
+  },
+})
+
+const LiWrap = styled.div<{ color: any }>(
+  {
+    cursor: 'pointer',
+    padding: '0 16px',
+    width: '100%',
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    background: 'white',
+  },
+  ({ color }) => ({
+    '&: hover': {
+      background: color,
+    },
+  }),
+)
+
+const DemandBox = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const [key, setKey] = useState()
-  const keyRef = useRef()
+  const [form] = Form.useForm()
+  const [isShowChange, setIsShowChange] = useState(false)
+  const [isShowCategory, setIsShowCategory] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDelVisible, setIsDelVisible] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false)
+  const [operationItem, setOperationItem] = useState<any>({})
+  const [loadingState, setLoadingState] = useState<boolean>(false)
+  const [colorObj, setColorObj] = useState<any>({})
+  const [resultCategory, setResultCategory] = useState([])
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const myTreeComponent: any = useRef(null)
-  const [isGrid, setIsGrid] = useState(0)
-  const [searchItems, setSearchItems] = useState({})
-  const [isVisible, setIsVisible] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [deleteId, setDeleteId] = useState(0)
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
+  const { type } = paramsData
+  const { demandId } = paramsData
+  const { projectInfo, colorList, projectInfoValues } = useSelector(
+    store => store.project,
+  )
+  const demandInfo = useSelector(store => store.demand.demandInfo)
+  const navigate = useNavigate()
+  const asyncSetTtile = useSetTitle()
+  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
+  const isEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/update',
+  )
+  const isDelete = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/delete',
+  )
 
-  const { isRefresh } = useSelector(store => store.user)
-  const [isSettingState, setIsSettingState] = useState(false)
-  const [order, setOrder] = useState<any>({ value: '', key: '' })
-  // 用于当前操作层级不折叠
-  const [topParentId, setTopParentId] = useState(0)
-  const [isSpinning, setIsSpinning] = useState(false)
-  const [isShowLeft, setIsShowLeft] = useState(false)
-  // 用于控制失焦事件与展开子需求冲突
-  const [isUpdated, setIsUpdated] = useState(false)
-  const { filterKeys } = useSelector(store => store.project)
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
-  const getList = async (
-    state: any,
-    searchParamsObj: any,
-    item?: any,
-    orderItem?: any,
-    updateState?: boolean,
-    topId?: any,
-  ) => {
-    if (!updateState) {
-      setIsSpinning(true)
+  const init = async () => {
+    if (demandId) {
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
     }
-
-    let params: any = {}
-    if (state === 1) {
-      params = {
-        projectId,
-        all: true,
-        panel: true,
-        searchValue: searchParamsObj.searchValue,
-        statusIds: searchParamsObj.statusId,
-        iterateIds: searchParamsObj.iterateId,
-        priorityIds: searchParamsObj.priorityId,
-        userId: searchParamsObj.userId,
-        tagIds: searchParamsObj.tagId,
-        startTime: searchParamsObj.createdAtId,
-        expectedStart: searchParamsObj.expectedStartAtId,
-        expectedEnd: searchParamsObj.expectedendat,
-        updatedTime: searchParamsObj.updatedat,
-        endTime: searchParamsObj.finishAt,
-        usersNameId: searchParamsObj.usersnameId,
-        copySendId: searchParamsObj.usersCopysendNameId,
-        class_ids: searchParamsObj.class_ids,
-        category_id: searchParamsObj.category_id,
-        schedule_start: searchParamsObj.schedule_start,
-        schedule_end: searchParamsObj.schedule_end,
-        custom_field: searchParamsObj?.custom_field,
-        class_id: keyRef.current,
-      }
-    } else {
-      params = {
-        projectId,
-        page: item.page,
-        pageSize: item.size,
-        order: orderItem.value,
-        orderKey: orderItem.key,
-        searchValue: searchParamsObj.searchValue,
-        statusIds: searchParamsObj.statusId,
-        iterateIds: searchParamsObj.iterateId,
-        priorityIds: searchParamsObj.priorityId,
-        userId: searchParamsObj.userId,
-        tagIds: searchParamsObj.tagId,
-        startTime: searchParamsObj.createdAtId,
-        expectedStart: searchParamsObj.expectedStartAtId,
-        expectedEnd: searchParamsObj.expectedendat,
-        updatedTime: searchParamsObj.updatedat,
-        endTime: searchParamsObj.finishAt,
-        usersNameId: searchParamsObj.usersnameId,
-        copySendId: searchParamsObj.usersCopysendNameId,
-        class_ids: searchParamsObj.class_ids,
-        category_id: searchParamsObj.category_id,
-        schedule_start: searchParamsObj.schedule_start,
-        schedule_end: searchParamsObj.schedule_end,
-        custom_field: searchParamsObj?.custom_field,
-        class_id: keyRef.current,
-      }
-    }
-    if (state === 2) {
-      params.tree = 1
-      params.topParentId = topId ?? topParentId
-    }
-    dispatch(setFilterParams(params))
-    const result = await getDemandList(params)
-    setDataList(result)
-    setIsSpinning(false)
-    props.onIsUpdate?.()
-    dispatch(setIsRefresh(false))
-    setTopParentId(0)
-    setIsUpdated(false)
+    setLoadingState(true)
   }
 
   useEffect(() => {
-    // 进入需求主页清除已存储的筛选计数
-    setFilterKeys([])
+    init()
+    return () => {
+      dispatch(changeId(0))
+    }
   }, [])
 
   useEffect(() => {
-    getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj])
+    // 获取项目信息中的需求类别
+    const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
+      ?.children
 
-  useEffect(() => {
-    if (isRefresh) {
-      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
-    }
-  }, [isRefresh])
+    setColorObj(list?.filter((k: any) => k.id === demandInfo?.category)[0])
+    setResultCategory(
+      list
+        ?.filter((i: any) => i.id !== demandInfo?.category)
+        ?.filter((i: any) => i.status === 1),
+    )
+  }, [demandInfo, projectInfoValues])
 
-  useEffect(() => {
-    if (props.isUpdate) {
-      getList(isGrid, searchItems, pageObj, order)
-    }
-    myTreeComponent?.current?.init()
-  }, [props.isUpdate])
-
-  const onChangeGrid = (val: any) => {
-    if (val !== isGrid) {
-      setIsGrid(val)
-      setDataList({ list: undefined })
-    }
+  const onChangeIdx = (val: string) => {
+    const params = encryptPhp(
+      JSON.stringify({ type: val, id: projectId, demandId }),
+    )
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
 
-  // 点击操作左侧三点
-  const onChangeOperation = (e: any, item?: any) => {
-    props.onSetOperationItem(item)
-    props.onChangeVisible(e)
-    setTopParentId(item?.topId)
+  const moreClick = (e: any) => {
+    e.stopPropagation()
+    setIsVisible(!isVisible)
   }
 
-  const onDelete = (item: any) => {
-    setDeleteId(item.id)
-    setIsVisible(true)
-    setTopParentId(item?.topId)
+  const onEdit = () => {
+    setIsVisible(!isVisible)
+    setOperationItem(demandInfo)
   }
 
   const onDeleteConfirm = async () => {
     try {
-      await deleteDemand({ projectId, id: deleteId })
+      await deleteDemand({ projectId, id: demandInfo.id })
       message.success(t('common.deleteSuccess'))
-      setIsVisible(false)
-      setDeleteId(0)
-      getList(isGrid, searchItems, pageObj, order)
-      myTreeComponent?.current?.init()
+      setIsDelVisible(false)
+      const params = encryptPhp(JSON.stringify({ id: projectId }))
+      navigate(`/ProjectManagement/Demand?data=${params}`)
     } catch (error) {
       //
     }
   }
 
-  const onSearch = (params: any) => {
-    setDataList({ list: undefined })
-    setIsUpdated(true)
-    setSearchItems(params)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
+  const childContent = () => {
+    if (type === 'info') {
+      return <DemandInfo />
+    } else if (type === 'child') {
+      return <ChildDemand />
+    } else if (type === 'record') {
+      return <ChangeRecord />
+    }
+    return <Circulation />
   }
 
-  const onChangePageNavigation = (item: any) => {
-    setPageObj(item)
-  }
-
-  const onChangeRow = (topId?: any) => {
-    getList(isGrid, searchItems, pageObj, order, false, topId)
-  }
-
-  const onChangeOrder = (item: any) => {
-    setOrder(item)
-  }
-
-  // 更新需求列表，state： 是否有加载动画，topId: 用于树形结构展开，isClass： 是否编辑的是需求分类
-  const onUpdate = (state?: boolean, topId?: any, isClass?: any) => {
-    getList(isGrid, searchItems, pageObj, order, state, topId)
-    // 是编辑需求分类的话，就更新左侧需求分类列表
-    if (isClass) {
-      myTreeComponent?.current?.init()
+  const onChangeStatus = async (value: any) => {
+    try {
+      await updateDemandStatus(value)
+      dispatch(setIsRefreshComment(true))
+      message.success(t('common.statusSuccess'))
+      if (demandId) {
+        const result = await getDemandInfo({ projectId, id: demandId })
+        dispatch(setDemandInfo(result))
+      }
+    } catch (error) {
+      //
     }
   }
 
-  const keyValue = {
-    key,
-    changeKey: (value: any) => {
-      setPageObj({ page: 1, size: pageObj.size })
-      setKey(value)
-      keyRef.current = value
-      // 添加搜索项 计数
-      const keys = value
-        ? [...filterKeys, ...['classId']]
-        : filterKeys?.filter((i: any) => i !== 'classId')
-
-      dispatch(setFilterKeys([...new Set(keys)]))
-    },
+  const onExamine = () => {
+    message.warning(t('newlyAdd.underReview'))
   }
 
-  return (
-    <TreeContext.Provider value={keyValue}>
-      <div style={{ padding: '20px 24px 0 24px', height: '100%' }}>
-        {/* 面包屑部分 */}
-        <ProjectDetailHeader searchGroups={searchItems} onSearch={onSearch} />
-        <div
-          style={{
-            height: 'calc(100% - 52px)',
-            display: 'flex',
-            marginTop: 20,
-          }}
+  const onCloseCategory = () => {
+    setIsShowCategory(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
+
+  const onConfirmCategory = async () => {
+    await form.validateFields()
+    try {
+      await updateDemandCategory({
+        projectId,
+        id: demandInfo?.id,
+        ...form.getFieldsValue(),
+      })
+      message.success(t('newlyAdd.changeSuccess'))
+      setIsShowCategory(false)
+      dispatch(setIsUpdateStatus(true))
+      dispatch(setIsRefresh(true))
+      const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+      dispatch(setDemandInfo(result))
+      setTimeout(() => {
+        form.resetFields()
+      }, 100)
+    } catch (error) {
+      //
+    }
+  }
+
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      const result = await getWorkflowList({
+        projectId: paramsData.id,
+        categoryId: value,
+      })
+      setWorkList(result)
+    } else {
+      form.resetFields()
+    }
+  }
+
+  const onClickCategory = async (k: any) => {
+    const result = await getWorkflowList({
+      projectId: paramsData.id,
+      categoryId: k.id,
+    })
+    setWorkList(result)
+    form.setFieldsValue({
+      categoryId: k.id,
+    })
+    setIsShowChange(false)
+    setIsShowCategory(true)
+  }
+
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
+    >
+      {resultCategory?.map((k: any) => (
+        <LiWrap
+          key={k.id}
+          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+          onClick={() => onClickCategory(k)}
         >
-          <DeleteConfirm
-            text={t('common.confirmDelDemand')}
-            isVisible={isVisible}
-            onChangeVisible={() => setIsVisible(!isVisible)}
-            onConfirm={onDeleteConfirm}
-          />
-          {isShowLeft && (
-            <DemandClass
-              ref={myTreeComponent}
-              projectId={projectId}
-              isShowLeft={isShowLeft}
-              onUpdate={onUpdate}
-              iKey={key}
-            />
-          )}
-          <Right isShowLeft={isShowLeft}>
-            <Operation
-              pid={projectId}
-              isGrid={isGrid}
-              onChangeGrid={(val: any) => onChangeGrid(val)}
-              onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
-              onChangeVisible={(e: any) => props.onChangeVisible(e)}
-              onSearch={onSearch}
-              settingState={isSettingState}
-              onChangeSetting={setIsSettingState}
-              isShowLeft={isShowLeft}
-              otherParams={{
-                page: pageObj.page,
-                pageSize: pageObj.size,
-                orderKey: order.key,
-                order: order.value,
-                classId: key,
-                all: isGrid,
-                panel: isGrid,
-              }}
-              dataLength={dataList?.total}
-            />
-            {isGrid === 2 && (
-              <DemandTree
-                onChangeVisible={onChangeOperation}
-                onDelete={onDelete}
-                data={dataList}
-                onChangePageNavigation={onChangePageNavigation}
-                onChangeRow={onChangeRow}
-                settingState={isSettingState}
-                onChangeSetting={setIsSettingState}
-                onChangeOrder={onChangeOrder}
-                isSpinning={isSpinning}
-                onUpdate={onUpdate}
-                filterParams={{
-                  ...searchItems,
-                  projectId,
-                  page: 1,
-                  pageSize: 100,
-                  order: '',
-                  orderKey: '',
-                }}
-                isUpdated={isUpdated}
-              />
-            )}
-            {!isGrid && (
-              <DemandTable
-                onChangeVisible={onChangeOperation}
-                onDelete={onDelete}
-                data={dataList}
-                onChangePageNavigation={onChangePageNavigation}
-                onChangeRow={onChangeRow}
-                settingState={isSettingState}
-                onChangeSetting={setIsSettingState}
-                onChangeOrder={onChangeOrder}
-                isSpinning={isSpinning}
-                onUpdate={onUpdate}
-              />
-            )}
-            {isGrid === 1 && (
-              <DemandPanel
-                onChangeVisible={onChangeOperation}
-                onDelete={onDelete}
-                data={dataList}
-                isSpinning={isSpinning}
-                onUpdate={onUpdate}
-              />
-            )}
-          </Right>
-        </div>
-      </div>
-    </TreeContext.Provider>
+          <CanOperationCategory
+            style={{ marginRight: 0, cursor: 'pointer' }}
+            color={k.color}
+            bgColor={
+              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+            }
+          >
+            <span className="title">{k.content}</span>
+          </CanOperationCategory>
+        </LiWrap>
+      ))}
+    </div>
   )
+
+  const content = () => {
+    if (!type) {
+      return (
+        <DemandMain
+          onSetOperationItem={setOperationItem}
+          onChangeVisible={(e: any) => moreClick(e)}
+          isUpdate={isUpdate}
+          onIsUpdate={() => setIsUpdate(false)}
+        />
+      )
+    }
+    return (
+      <>
+        <CommonModal
+          isVisible={isShowCategory}
+          onClose={onCloseCategory}
+          title={t('newlyAdd.changeCategory')}
+          onConfirm={onConfirmCategory}
+        >
+          <FormWrap
+            form={form}
+            layout="vertical"
+            style={{ padding: '0 20px 0 2px' }}
+          >
+            <Form.Item label={t('newlyAdd.beforeCategory')}>
+              <CanOperationCategory
+                style={{ marginRight: 8, cursor: 'pointer' }}
+                color={colorObj?.color}
+                bgColor={
+                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                    ?.bgColor
+                }
+              >
+                <span className="title">{colorObj?.content}</span>
+              </CanOperationCategory>
+            </Form.Item>
+            <Form.Item
+              label={t('newlyAdd.afterCategory')}
+              name="categoryId"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                onChange={onChangeSelect}
+                options={resultCategory?.map((k: any) => ({
+                  label: k.content,
+                  value: k.id,
+                }))}
+              />
+            </Form.Item>
+            <Form.Item
+              label={t('newlyAdd.afterStatus')}
+              name="statusId"
+              rules={[{ required: true, message: '' }]}
+            >
+              <Select
+                placeholder={t('common.pleaseSelect')}
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                allowClear
+                optionFilterProp="label"
+                options={workList?.list?.map((k: any) => ({
+                  label: k.name,
+                  value: k.statusId,
+                }))}
+              />
+            </Form.Item>
+          </FormWrap>
+        </CommonModal>
+        <DeleteConfirm
+          text={t('common.confirmDelDemand')}
+          isVisible={isDelVisible}
+          onChangeVisible={() => setIsDelVisible(!isDelVisible)}
+          onConfirm={onDeleteConfirm}
+        />
+        <DemandInfoWrap>
+          <NameWrap>
+            <Popover
+              trigger={['hover']}
+              visible={isShowChange}
+              placement="bottomLeft"
+              content={changeStatus}
+              getPopupContainer={node => node}
+              onVisibleChange={visible => setIsShowChange(visible)}
+            >
+              <CanOperationCategory
+                style={{
+                  cursor: resultCategory?.length > 0 ? 'pointer' : 'inherit',
+                  marginRight: 8,
+                }}
+                color={colorObj?.color}
+                bgColor={
+                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
+                    ?.bgColor
+                }
+              >
+                <span className="title">{colorObj?.content}</span>
+                {resultCategory?.length > 0 && (
+                  <IconFont
+                    type="down-icon"
+                    style={{
+                      fontSize: 12,
+                      marginLeft: 4,
+                      color: '43BA9A',
+                    }}
+                  />
+                )}
+              </CanOperationCategory>
+            </Popover>
+            <div className="demandName">【{demandInfo?.id}】</div>
+            <OmitText
+              width={800}
+              tipProps={{
+                getPopupContainer: node => node,
+              }}
+            >
+              <span className="demandName">{demandInfo?.name}</span>
+            </OmitText>
+            <ChangeStatusPopover
+              isCanOperation={isCanEdit && !demandInfo?.isExamine}
+              projectId={projectId}
+              record={demandInfo}
+              onChangeStatus={onChangeStatus}
+            >
+              <StatusWrap
+                onClick={demandInfo?.isExamine ? onExamine : void 0}
+                isShow={isCanEdit || demandInfo?.isExamine}
+                style={{
+                  color: demandInfo?.status?.status?.color,
+                  border: `1px solid ${demandInfo?.status?.status?.color}`,
+                }}
+              >
+                {demandInfo?.status?.status?.content}
+              </StatusWrap>
+            </ChangeStatusPopover>
+          </NameWrap>
+          <Space size={16}>
+            {isEdit ? null : (
+              <Button type="primary" onClick={onEdit}>
+                {t('common.edit')}
+              </Button>
+            )}
+            {isDelete ? null : (
+              <Button onClick={() => setIsDelVisible(true)}>
+                {t('common.del')}
+              </Button>
+            )}
+          </Space>
+        </DemandInfoWrap>
+        <ContentWrap>
+          <MainWrap size={32}>
+            <Item
+              onClick={() => onChangeIdx('info')}
+              activeIdx={type === 'info'}
+            >
+              <span>{t('project.detailInfo')}</span>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('child')}
+              activeIdx={type === 'child'}
+            >
+              <span>{t('common.childDemand')}</span>
+              <div>{demandInfo?.childCount || 0}</div>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('record')}
+              activeIdx={type === 'record'}
+            >
+              <span>{t('common.changeRecord')}</span>
+              <div>{demandInfo?.changeCount || 0}</div>
+            </Item>
+            <Item
+              onClick={() => onChangeIdx('circulation')}
+              activeIdx={type === 'circulation'}
+            >
+              <span>{t('newlyAdd.circulationRecord')}</span>
+            </Item>
+          </MainWrap>
+          {childContent()}
+        </ContentWrap>
+      </>
+    )
+  }
+
+  const onChangeVisible = () => {
+    setIsVisible(!isVisible)
+    setOperationItem({})
+  }
+
+  const onUpdate = async () => {
+    if (demandId) {
+      const result = await getDemandInfo({ projectId, id: demandId })
+      dispatch(setDemandInfo(result))
+    }
+    setIsUpdate(true)
+  }
+  if (!loadingState) {
+    return <Loading />
+  }
+
+  return <div style={{ height: 'calc(100% - 64px)' }}>{content()}</div>
 }
 
-export default DemandMain
+export default DemandBox

@@ -4,7 +4,7 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Button, Divider, Slider, Table } from 'antd'
+import { Button, Divider, Progress, Slider, Table } from 'antd'
 import IconFont from './IconFont'
 
 // 弹窗右上角关闭图标
@@ -719,6 +719,29 @@ const DelWrap = styled.span({
   textDecoration: 'line-through',
 })
 
+const StatusTag = styled.div<{ status: number }>(
+  {
+    height: 22,
+    borderRadius: 6,
+    textAlign: 'center',
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    cursor: 'pointer',
+    width: 'fit-content',
+  },
+  ({ status }) => ({
+    color: status === 1 ? '#2877FF' : status === 2 ? '#43BA9A' : '#969799',
+    background: status === 1 ? '#F2F7FF' : status === 2 ? '#EDF7F4' : '#F2F2F4',
+  }),
+)
+
+const ProgressWrap = styled.div({
+  background: 'white',
+  padding: '16px 24px',
+  borderRadius: 6,
+})
+
 export {
   HiddenText,
   ClickWrap,
@@ -760,4 +783,6 @@ export {
   ViewWrap,
   NameWrap,
   DelWrap,
+  StatusTag,
+  ProgressWrap,
 }
