@@ -84,6 +84,13 @@ export const getProjectCoverList: any = async () => {
   return response.data
 }
 
+export const getProjectInfoOnly: any = async (params: any) => {
+  const response: any = await http.get<any>('getProjectInfo', {
+    id: params,
+  })
+  return response.data
+}
+
 export const getProjectInfo: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params.projectId,
@@ -225,7 +232,7 @@ export const addProject: any = async (params: any) => {
     cover: params?.cover,
     team_id: params?.team_id,
     prefix: params?.prefix,
-    groups: params?.groupIds,
+    groups: params?.groups,
     leader_id: params?.leader_id,
   })
 }
@@ -238,8 +245,9 @@ export const updateProject: any = async (params: any) => {
     cover: params?.cover,
     team_id: params?.team_id,
     prefix: params?.prefix,
-    groups: params?.groupIds,
+    groups: params?.groups,
     leader_id: params?.leader_id,
+    id: params.id,
   })
 }
 
