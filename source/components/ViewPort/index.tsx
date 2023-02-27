@@ -3,46 +3,51 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeCreateVisible, changeViewVisible } from '@store/view'
 import { getViewList } from '@store/view/thunk'
 import { Button, Divider, Dropdown, MenuProps, Space } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
 const ViewPort = (props: any) => {
   const dispatch = useDispatch()
-  const items: MenuProps['items'] = [
+  const { viewList } = useSelector(state => state.view)
+
+  const items: any = [
     {
       key: '1',
       type: 'group',
       label: '个人视图',
-      children: [
-        {
-          key: '1-1',
-          label: <TextSpan>视图名称</TextSpan>,
-        },
-        {
-          key: '1-2',
-          label: <TextSpan>所有的</TextSpan>,
-        },
-      ],
+      children: viewList
+        .filter((i: any) => {
+          return i.type !== 2
+        })
+        .map((item: any) => {
+          return {
+            key: item.id,
+            label: <TextSpan>{item.name}</TextSpan>,
+          }
+        }),
     },
     {
       key: '2',
       type: 'group',
       label: '系统',
-      children: [
-        {
-          key: '1-1',
-          label: <TextSpan>所有的</TextSpan>,
-        },
-        {
-          key: '1-2',
-          label: <TextSpan>所有的</TextSpan>,
-        },
-      ],
+      children: viewList
+        .filter((i: any) => {
+          return i.type === 2
+        })
+        .map((item: any) => {
+          return {
+            key: item.id,
+            label: <TextSpan>{item.name}</TextSpan>,
+          }
+        }),
     },
   ]
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    // console.log(key)
+
+  const onClick = (e: any) => {
+    const value =
+      viewList[viewList.findIndex((i: any) => String(i.id) === e.key)]
+    // console.log(value)
   }
   useEffect(() => {
     dispatch(getViewList(props.pid))

@@ -3,7 +3,7 @@
 
 import { useDispatch, useSelector } from '@store/index'
 import { changeCreateVisible } from '@store/view'
-import { addViewList } from '@store/view/thunk'
+import { addViewList, getViewList } from '@store/view/thunk'
 import { Form, Input } from 'antd'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
@@ -12,11 +12,9 @@ import { Wrap, WrapText } from './style'
 const CreateViewPort = (props: any) => {
   const [form] = Form.useForm()
   const createData = useSelector(state => state.view)
-
   const dispatch = useDispatch()
   const onConfirm = async () => {
     const res = await form.validateFields()
-
     const obj: any = {}
     for (const i in createData.screen.key) {
       obj[createData.screen.key[i].key] = ''
@@ -32,7 +30,9 @@ const CreateViewPort = (props: any) => {
       project_id: props.pid,
     }
 
-    dispatch(addViewList(data))
+    await dispatch(addViewList(data))
+    await dispatch(getViewList(props.pid))
+    await dispatch(changeCreateVisible(false))
   }
   const onClose = () => {
     dispatch(changeCreateVisible(false))

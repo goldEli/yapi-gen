@@ -23,6 +23,7 @@ interface Item {
   name: string
   viewType: string
   state: boolean
+  isC?: any
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -90,8 +91,9 @@ const ManageView = (props: any) => {
         return {
           key: i.id,
           name: i.name,
-          viewType: '个人视图',
+          viewType: i.type === 2 ? '系统视图' : '个人视图',
           state: i.status === 1,
+          isC: i.type,
         }
       }),
     )
@@ -175,7 +177,11 @@ const ManageView = (props: any) => {
       title: '操作',
       dataIndex: 'operation',
       render: (p: any, record: Item) => {
+        const isC = record.isC === 2
         const editable = isEditing(record)
+        if (isC) {
+          return <span>- -</span>
+        }
         return editable ? (
           <span>
             <Typography.Link
