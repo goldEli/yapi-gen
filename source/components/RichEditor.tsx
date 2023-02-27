@@ -30,6 +30,7 @@ import { Input } from 'antd'
 import { position, offset } from 'caret-pos'
 import loading from '/loading.gif'
 import { useLocation } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 declare global {
   interface Window {
@@ -330,7 +331,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     //   setIsAtPeople(false)
     // }, 200)
   }
-
+  const Wrap = styled.div``
   return (
     <>
       {/* 选人弹窗 */}

@@ -1,12 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { useDispatch, useSelector } from '@store/index'
 import { changeCreateVisible, changeViewVisible } from '@store/view'
+import { getViewList } from '@store/view/thunk'
 import { Button, Divider, Dropdown, MenuProps, Space } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
-const ViewPort = () => {
+const ViewPort = (props: any) => {
   const dispatch = useDispatch()
   const items: MenuProps['items'] = [
     {
@@ -43,6 +44,10 @@ const ViewPort = () => {
   const onClick: MenuProps['onClick'] = ({ key }) => {
     // console.log(key)
   }
+  useEffect(() => {
+    dispatch(getViewList(props.pid))
+  }, [])
+
   return (
     <Dropdown
       trigger={['click']}

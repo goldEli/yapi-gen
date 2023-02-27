@@ -10,12 +10,13 @@ import styled from '@emotion/styled'
 import { Form, Select, Popover, Collapse, Input, TreeSelect } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
+import { saveScreen } from '@store/view'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -261,6 +262,7 @@ const TableFilter = (props: any) => {
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
   const { filterKeys, projectInfoValues } = useSelector(store => store.project)
+
   const dispatch = useDispatch()
 
   const filterBasicsList = useMemo(() => {
@@ -291,6 +293,14 @@ const TableFilter = (props: any) => {
     )
     return arr
   }, [list, customList])
+
+  useEffect(() => {
+    dispatch(
+      saveScreen({
+        key: list,
+      }),
+    )
+  }, [list])
 
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
@@ -334,6 +344,13 @@ const TableFilter = (props: any) => {
       dispatch(setFilterKeys([...new Set(keys)]))
     }
     props.onSearch(res, customField)
+
+    dispatch(
+      saveScreen({
+        value: res,
+        key: list,
+      }),
+    )
   }
 
   // 点击删除按钮

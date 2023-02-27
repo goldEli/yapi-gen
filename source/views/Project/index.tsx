@@ -11,7 +11,6 @@ import MainTable from '@/components/MainTable/MainTable'
 import ProjectCard from '@/components/ProjectCard'
 import { HoverIcon } from '@/components/ProjectCard/style'
 import RichEditor from '@/components/RichEditor'
-import ViewPort from '@/components/ViewPort'
 import useSetTitle from '@/hooks/useSetTitle'
 import {
   deleteProject,
@@ -272,7 +271,6 @@ const ProjectManagementOptimization = () => {
           </span>
         </CommonButton>
 
-        <ViewPort />
         <CreateActionBar
           sort={order.key}
           isGrid={isGrid}
