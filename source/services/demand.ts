@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
@@ -8,6 +9,31 @@
 
 import * as http from '@/tools/http'
 import { transData } from '@/tools'
+
+// 获取需求类别配置列表
+export const getCategoryConfigList = async (params: any) => {
+  const response = await http.get(
+    `/b/project/story_config/category/config/list/${params.categoryId}`,
+    {
+      project_id: params.projectId,
+    },
+  )
+
+  return response.data?.map((i: any) => ({
+    id: i.id,
+    categoryId: i.category_id,
+    storyId: i.story_config_id,
+    isRequired: i.is_required,
+    status: i.status,
+    isFold: i.is_fold,
+    sort: i.sort,
+    content: i.content,
+    title: i.title,
+    isCustomize: i.is_customize,
+    fieldContent: i.field_content,
+    remarks: i.remarks,
+  }))
+}
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -676,19 +702,20 @@ export const addDemand: any = async (params: any) => {
     project_id: Number(params.projectId),
     name: params.name,
     info,
-    expected_start_at: params?.expectedStart,
-    expected_end_at: params?.expectedEnd,
-    iterate_id: params?.iterateId || 0,
-    parent_id: params?.parentId || 0,
-    priority: params?.priority || 0,
-    users: params?.userIds,
-    copysend: params?.copySendIds,
+    expected_start_at: params?.expected_start_at,
+    expected_end_at: params?.expected_end_at,
+    iterate_id: params?.iterate_name || 0,
+    parent_id: params?.parent_id || 0,
+    priority: params?.priority?.id || 0,
+    users: params?.users_name,
+    copysend: params?.users_copysend_name,
     tag: params?.tagIds,
     attachment: params?.attachments,
     custom_field: params?.customField,
-    category_id: params?.category,
+    category_id: params?.category_id,
     class_id: params?.class,
     schedule: params?.schedule,
+    status: params?.status,
   })
 }
 
@@ -705,22 +732,22 @@ export const updateDemand: any = async (params: any) => {
     project_id: params.projectId,
     name: params.name,
     info,
-    expected_start_at: params.expectedStart,
-    expected_end_at: params.expectedEnd,
+    expected_start_at: params.expected_start_at,
+    expected_end_at: params.expected_end_at,
     iterate_id:
-      JSON.stringify(params.iterateId) !== '[]' && params.iterateId
-        ? params.iterateId
+      JSON.stringify(params.iterateId) !== '[]' && params.iterate_name
+        ? params.iterate_name
         : 0,
     parent_id:
-      JSON.stringify(params.parentId) !== '[]' && params.parentId
-        ? params.parentId
+      JSON.stringify(params.parentId) !== '[]' && params.parent_id
+        ? params.parent_id
         : 0,
     priority:
       JSON.stringify(params.priority) !== '[]' && params.priority
-        ? params.priority
+        ? params.priority?.id
         : 0,
-    users: params.userIds,
-    copysend: params.copySendIds,
+    users: params?.users_name,
+    copysend: params?.users_copysend_name,
     tag: params.tagIds,
     attachment: params.attachments,
     id: params.id,

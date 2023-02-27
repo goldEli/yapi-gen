@@ -1,41 +1,22 @@
-/* eslint-disable no-undefined */
+/* eslint-disable camelcase */
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable react/jsx-no-leaked-render */
+import { getProjectInfo } from '@/services/project'
+import { getCategoryConfigList } from '@/services/demand'
 import styled from '@emotion/styled'
-import CommonIconFont from '../CommonIconFont'
-import RichEditor from '../RichEditor'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo } from '@store/project'
-import { Form, Input, Select, Space } from 'antd'
+import { Form, Input, Select } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getProjectList } from '@/services/mine'
-import { getProjectInfo } from '@/services/project'
-import { removeNull } from '@/tools'
-import { decryptPhp } from '@/tools/cryptoPhp'
-import { AddWrap } from '@/components/StyleCommon'
-import UploadAttach from '../UploadAttach'
+import IconFont from '../IconFont'
+import RichEditor from '../RichEditor'
+import { AddWrap } from '../StyleCommon'
 import TagComponent from '../TagComponent'
-
-interface Props {
-  // 是否来自快速创建
-  isQuickCreate?: boolean
-  // 项目id
-  projectId: any
-  // 修改项目id
-  onChangeProjectId(value: any): void
-  // 修改项目id后更新相应数据
-  onGetDataAll(values: any, categoryId?: any): void
-  // 清除右侧的form表单
-  onResetForm(): void
-  onRef: any
-  demandId?: any
-  isAllProject?: any
-  demandDetail?: any
-  allCategoryList?: any
-  categoryParams?: any
-}
+import UploadAttach from '../UploadAttach'
+import { decryptPhp } from '@/tools/cryptoPhp'
+import { removeNull } from '@/tools'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -47,45 +28,44 @@ const LeftWrap = styled.div({
   },
 })
 
+interface Props {
+  projectList: any[]
+  onRef: any
+  allCategoryList: any[]
+  projectId: string | number
+  demandDetail?: any
+  onGetFieldList(list: []): void
+  onResetForm(): void
+  // 修改项目id
+  onChangeProjectId(value: any): void
+  // 修改项目id后更新相应数据
+  onGetDataAll(values: any, categoryId?: any): void
+}
+
 const CreateDemandLeft = (props: Props) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [form] = Form.useForm()
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
-  const [projectList, setProjectList] = useState<any>([])
+  const [attachList, setAttachList] = useState<any>([])
+  const [tagCheckedList, setTagCheckedList] = useState<any>([])
   const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
     store => store.project,
   )
-
-  const [attachList, setAttachList] = useState<any>([])
-  const [tagCheckedList, setTagCheckedList] = useState<any>([])
-  // 切换需求类别下的工作流
-  const [workList, setWorkList] = useState<any>({
-    list: undefined,
-  })
-  // 点击需求类别弹出修改需求类别相应参数弹窗
-  const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
-  // 存储点击修改需求类别弹出确认按钮时提交的参数
-  const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
-  const dispatch = useDispatch()
-
-  // 清空左侧参数
-  const onReset = () => {
-    form.resetFields()
-    setAttachList([])
-    setTagCheckedList([])
-  }
+  const { createDemandProps } = useSelector(store => store.demand)
 
   // 提交参数
-  const onConfirm = async () => {
-    await form.validateFields()
-    const values = form.getFieldsValue()
-    values.tagIds = tagCheckedList?.map((i: any) => ({
-      name: i.name,
-      color: i.color,
-    }))
-    values.changeCategoryFormData = changeCategoryFormData
-    return { ...values }
+  const onConfirm = () => {
+    form.validateFields()
+    form.validateFields().then(() => {
+      const values = form.getFieldsValue()
+      values.tagIds = tagCheckedList?.map((i: any) => ({
+        name: i.name,
+        color: i.color,
+      }))
+      return { ...values }
+    })
   }
 
   // 提交参数后的操作
@@ -104,6 +84,14 @@ const CreateDemandLeft = (props: Props) => {
     }, 100)
   }
 
+  // 清空左侧参数
+  const onReset = () => {
+    form.resetFields()
+    setAttachList([])
+    setTagCheckedList([])
+    dispatch(setProjectInfo({}))
+  }
+
   useImperativeHandle(props.onRef, () => {
     return {
       confirm: onConfirm,
@@ -111,129 +99,6 @@ const CreateDemandLeft = (props: Props) => {
       update: onSubmitUpdate,
     }
   })
-
-  // 获取项目信息
-  const getProjectInfoData = async (id: any) => {
-    const result = await getProjectInfo({ projectId: id })
-    dispatch(setProjectInfo(result))
-  }
-
-  // 获取项目数据
-  const getProjectData = async () => {
-    const res = await getProjectList({
-      self: 1,
-      all: 1,
-    })
-    setProjectList(res.data)
-    // 获取上次缓存的快速创建参数
-    if (localStorage.getItem('quickCreateData')) {
-      const hisCategoryData = JSON.parse(
-        decryptPhp(localStorage.getItem('quickCreateData') as any),
-      )
-      form.setFieldsValue(hisCategoryData)
-      getProjectInfoData(hisCategoryData?.projectId)
-      // 项目更新项目下的所有关联数据
-      props.onGetDataAll(hisCategoryData?.projectId)
-      props.onChangeProjectId(hisCategoryData?.projectId)
-      setTagCheckedList(
-        removeNull(projectInfoValues, 'tag')
-          ?.filter((i: any) =>
-            hisCategoryData?.tagIds
-              ?.map((k: any) => k.name)
-              .some((k: any) => k === i.content),
-          )
-          ?.map((i: any) => ({
-            id: i.id,
-            color: i.color,
-            name: i.content,
-          })),
-      )
-    }
-
-    setTimeout(() => {
-      inputRefDom.current?.focus()
-    }, 100)
-  }
-
-  useEffect(() => {
-    getProjectData()
-    // 如果是所有项目调用项目信息
-    if (props?.isAllProject) {
-      getProjectInfoData(props?.projectId)
-    }
-    // 创建回填筛选数据 --- 标签
-    if (filterParamsModal?.tagIds?.length) {
-      const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
-      setTagCheckedList(
-        removeNull(projectInfoValues, 'tag')
-          ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
-          ?.map((i: any) => ({
-            id: i.id,
-            color: i.color,
-            name: i.content,
-          })),
-      )
-    }
-    setTimeout(() => {
-      inputRefDom.current?.focus()
-    }, 100)
-  }, [])
-
-  // 需求详情返回后给标签及附件数组赋值
-  useEffect(() => {
-    // 需求id为真并且与需求详情id匹配
-    if (props?.demandId && props?.demandId === props?.demandDetail?.id) {
-      setTagCheckedList(
-        props?.demandDetail?.tag?.map((i: any) => ({
-          id: i.id,
-          color: i.tag?.color,
-          name: i.tag?.content,
-        })),
-      )
-      setAttachList(
-        props?.demandDetail?.attachment?.map((i: any) => ({
-          url: i.attachment.path,
-          id: i.id,
-          size: i.attachment.size,
-          time: i.created_at,
-          name: i.attachment.name,
-          suffix: i.attachment.ext,
-          username: i.user_name ?? '--',
-        })),
-      )
-      form.setFieldsValue({
-        name: props?.demandDetail?.name,
-        info: props?.demandDetail?.info,
-        tagIds: props?.demandDetail?.tag?.map((i: any) => ({
-          id: i.id,
-          color: i.tag?.color,
-          name: i.tag?.content,
-        })),
-      })
-      setTimeout(() => {
-        inputRefDom.current?.focus()
-      }, 100)
-    }
-  }, [props?.demandId, props?.demandDetail])
-
-  // 切换项目
-  const onSelectProjectName = async (value: any) => {
-    onReset()
-    getProjectInfoData(value)
-    form.setFieldsValue({
-      projectId: value,
-    })
-    props.onChangeProjectId(value)
-    props.onGetDataAll(value)
-    props.onResetForm()
-  }
-
-  // 删除项目
-  const onClearProjectId = () => {
-    onReset()
-    props.onChangeProjectId(null)
-    props.onResetForm()
-  }
 
   // 修改标签
   const onChangeTag = (result: any, type: string) => {
@@ -267,21 +132,154 @@ const CreateDemandLeft = (props: Props) => {
     dom.scrollTop = dom.scrollHeight
   }
 
-  // 监听需求类别的变化
-  useEffect(() => {
+  // 获取项目信息
+  const getProjectInfoData = async (id: any) => {
+    const result = await getProjectInfo({ projectId: id })
+    dispatch(setProjectInfo(result))
+  }
+
+  // 切换项目
+  const onSelectProjectName = async (value: any) => {
+    onReset()
     form.setFieldsValue({
-      category: props.categoryParams.id,
+      projectId: value,
     })
-  }, [props.categoryParams])
+    // 更新项目信息
+    getProjectInfoData(value)
+    props.onChangeProjectId(value)
+    //清除右侧数据
+    props.onResetForm()
+    props.onGetDataAll(value)
+    props.onGetFieldList([])
+  }
+
+  // 删除项目
+  const onClearProjectId = () => {
+    onReset()
+    props.onChangeProjectId('')
+    props.onResetForm()
+    props.onGetFieldList([])
+  }
+
+  // 切换需求类别
+  const onSelectCategory = async (value: any) => {
+    const result = await getCategoryConfigList({
+      projectId: props.projectId,
+      categoryId: value,
+    })
+    props.onGetFieldList(result)
+  }
+
+  // 删除需求类别
+  const onClearCategory = () => {
+    props.onResetForm()
+    props.onGetFieldList([])
+  }
+
+  // 获取项目数据
+  const getProjectData = async () => {
+    // 获取上次缓存的快速创建参数
+    if (localStorage.getItem('quickCreateData')) {
+      const hisCategoryData = JSON.parse(
+        decryptPhp(localStorage.getItem('quickCreateData') as any),
+      )
+      form.setFieldsValue(hisCategoryData)
+      getProjectInfoData(hisCategoryData?.projectId)
+      // // 项目更新项目下的所有关联数据
+      props.onGetDataAll(hisCategoryData?.projectId)
+      props.onChangeProjectId(hisCategoryData?.projectId)
+      setTagCheckedList(
+        removeNull(projectInfoValues, 'tag')
+          ?.filter((i: any) =>
+            hisCategoryData?.tagIds
+              ?.map((k: any) => k.name)
+              .some((k: any) => k === i.content),
+          )
+          ?.map((i: any) => ({
+            id: i.id,
+            color: i.color,
+            name: i.content,
+          })),
+      )
+    }
+  }
+
+  useEffect(() => {
+    // 是否是快捷创建
+    if (createDemandProps?.isQuickCreate) {
+      getProjectData()
+    }
+    // 如果是所有项目调用项目信息
+    if (createDemandProps?.isAllProject) {
+      getProjectInfoData(props?.projectId)
+    }
+    // 创建回填筛选数据 --- 标签
+    if (filterParamsModal?.tagIds?.length) {
+      const resultArr = filterParamsModal?.tagIds?.filter((i: any) => i !== -1)
+      setTagCheckedList(
+        removeNull(projectInfoValues, 'tag')
+          ?.filter((i: any) => resultArr.some((k: any) => k === i.id))
+          ?.map((i: any) => ({
+            id: i.id,
+            color: i.color,
+            name: i.content,
+          })),
+      )
+    }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
+  }, [])
+
+  // 需求详情返回后给标签及附件数组赋值
+  useEffect(() => {
+    // 需求id为真并且与需求详情id匹配
+    if (
+      createDemandProps?.demandId &&
+      createDemandProps?.demandId === props?.demandDetail?.id
+    ) {
+      setTagCheckedList(
+        props?.demandDetail?.tag?.map((i: any) => ({
+          id: i.id,
+          color: i.tag?.color,
+          name: i.tag?.content,
+        })),
+      )
+      setAttachList(
+        props?.demandDetail?.attachment?.map((i: any) => ({
+          url: i.attachment.path,
+          id: i.id,
+          size: i.attachment.size,
+          time: i.created_at,
+          name: i.attachment.name,
+          suffix: i.attachment.ext,
+          username: i.user_name ?? '--',
+        })),
+      )
+      form.setFieldsValue({
+        name: props?.demandDetail?.name,
+        info: props?.demandDetail?.info,
+        category_id: props.demandDetail?.categoryId,
+        tagIds: props?.demandDetail?.tag?.map((i: any) => ({
+          id: i.id,
+          color: i.tag?.color,
+          name: i.tag?.content,
+        })),
+      })
+      setTimeout(() => {
+        inputRefDom.current?.focus()
+      }, 100)
+    }
+  }, [createDemandProps?.demandId, props?.demandDetail])
 
   return (
     <LeftWrap ref={leftDom}>
       <Form layout="vertical" form={form}>
-        <Space style={{ display: 'flex' }}>
+        <div style={{ display: 'flex' }}>
           <Form.Item
-            label="选择项目"
+            label={t('common.createProject')}
             name="projectId"
-            style={{ marginRight: 24 }}
+            style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
             <Select
@@ -293,7 +291,7 @@ const CreateDemandLeft = (props: Props) => {
               optionFilterProp="label"
               getPopupContainer={node => node}
               showSearch
-              options={projectList
+              options={props.projectList
                 ?.filter((i: any) => i.status === 1)
                 ?.map((k: any) => ({
                   label: k.name,
@@ -303,22 +301,30 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
           <Form.Item
             label="需求类别"
-            name="category"
+            name="category_id"
+            style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
             <Select
-              value={props.categoryParams.id}
-              placeholder="请选择需求类别"
-              showArrow
+              onSelect={onSelectCategory}
+              onClear={onClearCategory}
+              placeholder={t('common.selectType')}
               allowClear
+              showArrow
               optionFilterProp="label"
               getPopupContainer={node => node}
+              showSearch
               options={props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
-                ?.map((i: any) => ({ label: i.content, value: i.id }))}
-            />
+                ?.map((k: any) => ({
+                  label: k.content,
+                  value: k.id,
+                }))}
+            >
+              <Select.Option value="need">{t('common.demand')}</Select.Option>
+            </Select>
           </Form.Item>
-        </Space>
+        </div>
         <Form.Item
           getValueFromEvent={event => {
             return event.target.value.replace(/(?<start>^\s*)/g, '')
@@ -336,26 +342,21 @@ const CreateDemandLeft = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('mine.demandInfo')} name="info">
-          <RichEditor height={292} />
+          <RichEditor />
         </Form.Item>
         {props.projectId &&
           projectInfo.projectPermissions?.length > 0 &&
           projectInfo.projectPermissions?.filter(
             (i: any) => i.name === '编辑需求',
           )?.length > 0 && (
-            <Form.Item
-              name="tagIds"
-              label={
-                <div style={{ fontWeight: 'bold' }}>{t('common.tag')}</div>
-              }
-            >
+            <Form.Item name="tagIds" label={t('common.tag')}>
               <TagComponent
                 defaultList={tagCheckedList}
                 onChangeTag={onChangeTag}
-                isQuick={props.isQuickCreate}
+                isQuick
                 addWrap={
                   <AddWrap hasDash>
-                    <CommonIconFont type="plus" />
+                    <IconFont type="plus" />
                   </AddWrap>
                 }
               />
@@ -365,14 +366,7 @@ const CreateDemandLeft = (props: Props) => {
           projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',
           )?.length > 0 && (
-            <Form.Item
-              label={
-                <div style={{ fontWeight: 'bold' }}>
-                  {t('common.attachment')}
-                </div>
-              }
-              name="attachments"
-            >
+            <Form.Item label={t('common.attachment')} name="attachments">
               <UploadAttach
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
@@ -384,7 +378,7 @@ const CreateDemandLeft = (props: Props) => {
                     }}
                     hasColor
                   >
-                    <CommonIconFont type="plus" />
+                    <IconFont type="plus" />
                     <div>{t('common.add23')}</div>
                   </AddWrap>
                 }

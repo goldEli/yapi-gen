@@ -2,7 +2,6 @@ import { Space, Drawer } from 'antd'
 import { useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
-import ItemDropdown from './ItemDropdown'
 import sideLogo from '/newLogo.svg'
 import {
   ChildrenMenu,
@@ -169,7 +168,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         </DrawerHeader>
         <DrawerCompany onClick={onChangeCompany}>
           <CompanyInfo>
-            <img src="" alt="" />
+            <img src={userInfo.company_logo} alt="" />
             <span>{userInfo.company_name}</span>
           </CompanyInfo>
           <CommonIconFont type="swap" color="var(--neutral-n2)" />

@@ -144,7 +144,7 @@ const AdminSide = (props: any) => {
   return (
     <AdminSideWrap>
       <HeaderWrap>
-        <img src="" />
+        <img src={userInfo.company_logo} />
         <span>{userInfo.company_name}</span>
       </HeaderWrap>
       <MenuStyle
