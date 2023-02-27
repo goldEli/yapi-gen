@@ -138,9 +138,9 @@ export const Container = () => {
           </LayoutWrap>
         )}
         {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
-        <CreateViewPort />
+
         <CreateAProjectForm />
-        <ManageView />
+
         <CreateIteration />
         <CreateDemand />
       </ConfigProvider>

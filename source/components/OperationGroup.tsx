@@ -3,14 +3,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
-import { getIsPermission } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import { DividerWrap, HasIconMenu, HoverWrap } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import DropDownMenu from './DropDownMenu'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from '@store/index'
 import ViewPort from './ViewPort'
+import { useSearchParams } from 'react-router-dom'
 
 interface Props {
   onChangeFilter?(): void
@@ -30,6 +31,9 @@ const SpaceWrap = styled(Space)({
 
 const OperationGroup = (props: Props) => {
   const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { projectInfo } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
@@ -122,7 +126,7 @@ const OperationGroup = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      <ViewPort />
+      <ViewPort pid={projectId} />
       <DropDownMenu
         isVisible={isVisible}
         onChangeVisible={setIsVisible}

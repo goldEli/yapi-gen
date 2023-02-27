@@ -1,17 +1,38 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import { useDispatch, useSelector } from '@store/index'
 import { changeCreateVisible } from '@store/view'
+import { addViewList, getViewList } from '@store/view/thunk'
 import { Form, Input } from 'antd'
-import React from 'react'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
 import { Wrap, WrapText } from './style'
 
-const CreateViewPort = () => {
+const CreateViewPort = (props: any) => {
   const [form] = Form.useForm()
-  const createVisible = useSelector(state => state.view.createVisible)
+  const createData = useSelector(state => state.view)
   const dispatch = useDispatch()
-  const onConfirm = () => {
-    // console.log(form.getFieldsValue())
+  const onConfirm = async () => {
+    const res = await form.validateFields()
+    const obj: any = {}
+    for (const i in createData.screen.key) {
+      obj[createData.screen.key[i].key] = ''
+    }
+
+    const data = {
+      name: res.name,
+      config: {
+        search: { ...obj, ...createData.screen.value },
+        fields: createData.titles,
+        sort: createData.sort,
+      },
+      project_id: props.pid,
+    }
+
+    await dispatch(addViewList(data))
+    await dispatch(getViewList(props.pid))
+    await dispatch(changeCreateVisible(false))
   }
   const onClose = () => {
     dispatch(changeCreateVisible(false))
@@ -21,7 +42,7 @@ const CreateViewPort = () => {
       onConfirm={onConfirm}
       onClose={onClose}
       title="创建视图"
-      isVisible={createVisible}
+      isVisible={createData.createVisible}
     >
       <Wrap>
         <WrapText>将当前筛选条件、显示字段、排序方式、保存为新的视图</WrapText>

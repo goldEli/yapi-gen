@@ -23,6 +23,8 @@ import { setIsRefresh } from '@store/user'
 import { setFilterKeys } from '@store/project'
 import { setFilterParams } from '@store/demand'
 import { deleteDemand, getDemandList } from '@/services/demand'
+import ManageView from '@/components/ManageView'
+import CreateViewPort from '@/components/CreateViewPort'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -257,6 +259,8 @@ const DemandMain = (props: Props) => {
           onChangeVisible={() => setIsVisible(!isVisible)}
           onConfirm={onDeleteConfirm}
         />
+        <CreateViewPort pid={projectId} />
+        <ManageView pid={projectId} />
         {isShowLeft && (
           <WrapLeft
             ref={myTreeComponent}

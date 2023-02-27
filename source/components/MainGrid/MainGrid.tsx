@@ -18,6 +18,7 @@ import { AddProject, DataWrap, SpaceWrap } from './style'
 import { changeCreateVisible } from '@store/create-propject'
 
 import { HoverIcon } from '../ProjectCard/style'
+import { getViewList } from '@store/view/thunk'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void

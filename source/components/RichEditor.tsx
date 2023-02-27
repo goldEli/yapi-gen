@@ -28,7 +28,9 @@ import type { ITinyEvents } from '@tinymce/tinymce-react/lib/cjs/main/ts/Events'
 import Viewer from 'react-viewer'
 import { Input } from 'antd'
 import { position, offset } from 'caret-pos'
-import loading from '/public/loading.gif'
+import loading from '/loading.gif'
+import { useLocation } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 declare global {
   interface Window {
@@ -236,7 +238,35 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
       }
     })
   }
+  const onUpdateImage = async (file: any, editor: any) => {
+    editor.insertContent(
+      `<img src="${loading}" data-loading="true" data-src="" />`,
+    )
 
+    const response = await uploadFileByTask(
+      file,
+      file.name,
+      `richEditorFiles_${new Date().getTime()}`,
+    )
+    const oPics =
+      editor.iframeElement.contentWindow.frameElement.contentDocument.getElementsByTagName(
+        'img',
+      )
+
+    if (oPics) {
+      for (const element of oPics) {
+        if (
+          element.src ===
+          `${window.location.origin}${import.meta.env.__URL_ALIAS__}/${
+            import.meta.env.__URL_HASH__
+          }/loading.gif`
+        ) {
+          element.src = response.url
+          element['data-mce-src'] = response.url
+        }
+      }
+    }
+  }
   const onChangeHandler = (value: string, e: any) => {
     const link = editorRef.current?.dom.select('a')
     setValueInfo(value)
@@ -249,19 +279,19 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
       })
     }
 
-    const selection = e.iframeElement.contentWindow.getSelection()
-    const range = selection.getRangeAt(0)
-    if (
-      range.endOffset &&
-      range.startOffset &&
-      range.commonAncestorContainer.data[range.endOffset - 1] === '@'
-    ) {
-      atPeopleShowSet()
-      setFocusNode(selection.focusNode)
-      setFocusOffset(selection.focusOffset)
-    } else {
-      setIsAtPeople(false)
-    }
+    // const selection = e.iframeElement.contentWindow.getSelection()
+    // const range = selection.getRangeAt(0)
+    // if (
+    //   range.endOffset &&
+    //   range.startOffset &&
+    //   range.commonAncestorContainer.data[range.endOffset - 1] === '@'
+    // ) {
+    //   atPeopleShowSet()
+    //   setFocusNode(selection.focusNode)
+    //   setFocusOffset(selection.focusOffset)
+    // } else {
+    //   setIsAtPeople(false)
+    // }
 
     if (props.onChange) {
       props.onChange(value)
@@ -296,22 +326,12 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     return items
   }
 
-  const onUpdateImage = async (file: any, editor: any) => {
-    const response = await uploadFileByTask(
-      file,
-      file.name,
-      `richEditorFiles_${new Date().getTime()}`,
-    )
-
-    editor.insertContent(`<img src="${response.url}"  />`)
-  }
-
   const onBlur = () => {
     // setTimeout(() => {
     //   setIsAtPeople(false)
     // }, 200)
   }
-
+  const Wrap = styled.div``
   return (
     <>
       {/* 选人弹窗 */}

@@ -1,4 +1,6 @@
-import { useState } from 'react'
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { useEffect, useState } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import type React from 'react'
 import CommonModal from '../CommonModal'
@@ -13,22 +15,15 @@ import {
 } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { changeViewVisible } from '@store/view'
+import { delViews, editViews } from '@/services/view'
+import { getViewList } from '@store/view/thunk'
 
 interface Item {
   key: string
   name: string
   viewType: string
   state: boolean
-}
-
-const originData: Item[] = []
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    viewType: '个人视图',
-    state: false,
-  })
+  isC?: any
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -82,13 +77,32 @@ const EditableCell: React.FC<EditableCellProps> = ({
   )
 }
 
-const ManageView = () => {
+const ManageView = (props: any) => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  const [data, setData] = useState(originData)
+  const [data, setData] = useState<Item[]>([])
   const [editingKey, setEditingKey] = useState('')
   const isEditing = (record: Item) => record.key === editingKey
-  const viewVisible = useSelector(state => state.view.viewVisible)
+  const { viewVisible, viewList } = useSelector(state => state.view)
+
+  const getData = () => {
+    setData(
+      viewList.map((i: any) => {
+        return {
+          key: i.id,
+          name: i.name,
+          viewType: i.type === 2 ? '系统视图' : '个人视图',
+          state: i.status === 1,
+          isC: i.type,
+        }
+      }),
+    )
+  }
+  useEffect(() => {
+    if (viewVisible) {
+      getData()
+    }
+  }, [viewVisible])
 
   const edit = (record: Partial<Item> & { key: React.Key }) => {
     form.setFieldsValue({ name: '', viewType: '', state: '', ...record })
@@ -99,6 +113,10 @@ const ManageView = () => {
     const newData = [...data]
     const index = newData.findIndex(item => key === item.key)
     newData.splice(index, 1)
+    delViews({
+      id: key,
+      project_id: props.pid,
+    })
     setData(newData)
     setEditingKey('')
   }
@@ -106,6 +124,7 @@ const ManageView = () => {
   const save = async (key: React.Key) => {
     try {
       const row = (await form.validateFields()) as Item
+
       const newData = [...data]
       const index = newData.findIndex(item => key === item.key)
       if (index > -1) {
@@ -121,6 +140,12 @@ const ManageView = () => {
         setData(newData)
         setEditingKey('')
       }
+      editViews({
+        state: row.state,
+        name: row.name,
+        id: key,
+        project_id: props.pid,
+      })
     } catch (errInfo) {
       throw new Error('something bad')
     }
@@ -152,7 +177,11 @@ const ManageView = () => {
       title: '操作',
       dataIndex: 'operation',
       render: (p: any, record: Item) => {
+        const isC = record.isC === 2
         const editable = isEditing(record)
+        if (isC) {
+          return <span>- -</span>
+        }
         return editable ? (
           <span>
             <Typography.Link
@@ -178,10 +207,7 @@ const ManageView = () => {
               title="确认删除该视图？"
               onConfirm={() => cancel(record.key)}
             >
-              <Typography.Link
-                onClick={() => save(record.key)}
-                disabled={editingKey !== ''}
-              >
+              <Typography.Link disabled={editingKey !== ''}>
                 删除
               </Typography.Link>
             </Popconfirm>
@@ -223,8 +249,12 @@ const ManageView = () => {
     <CommonModal
       width={784}
       title="视图管理"
-      onClose={() => dispatch(changeViewVisible(false))}
+      onClose={() => {
+        dispatch(changeViewVisible(false))
+        dispatch(getViewList(props.pid))
+      }}
       isVisible={viewVisible}
+      hasFooter={true}
     >
       <div
         style={{
@@ -241,9 +271,7 @@ const ManageView = () => {
             dataSource={data}
             columns={mergedColumns}
             rowClassName="editable-row"
-            pagination={{
-              onChange: cancel,
-            }}
+            pagination={false}
           />
         </Form>
       </div>

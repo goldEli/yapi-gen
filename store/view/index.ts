@@ -1,16 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getViewList } from './thunk'
 
 type SliceState = {
-  screen?: any
-  titles?: any
+  screen: {
+    key: any
+    value: any
+  }
+  titles: any
   createVisible: boolean
   viewVisible: boolean
+  viewList: any[]
+  sort: any
 }
 
 const slice = createSlice({
   name: 'view',
   initialState: {
-    screen: [],
+    screen: {
+      key: [],
+      value: [],
+    },
     titles: [],
     createVisible: false,
     viewVisible: false,
@@ -22,11 +31,33 @@ const slice = createSlice({
     changeViewVisible: (state, action) => {
       state.viewVisible = action.payload
     },
+    saveScreen: (state, action) => {
+      state.screen = {
+        key: { ...state.screen.key, ...action.payload.key },
+        value: { ...state.screen.value, ...action.payload.value },
+      }
+    },
+    saveTitles: (state, action) => {
+      state.titles = action.payload
+    },
+    saveSort: (state, action) => {
+      state.sort = action.payload
+    },
   },
 
-  //   extraReducers(builder) {},
+  extraReducers(builder) {
+    builder.addCase(getViewList.fulfilled, (state, action) => {
+      state.viewList = action.payload
+    })
+  },
 })
 
-export const { changeCreateVisible, changeViewVisible } = slice.actions
+export const {
+  changeCreateVisible,
+  changeViewVisible,
+  saveScreen,
+  saveTitles,
+  saveSort,
+} = slice.actions
 
 export default slice.reducer

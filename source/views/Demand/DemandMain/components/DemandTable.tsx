@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
+import { saveSort, saveTitles } from '@store/view'
 
 const Content = styled.div({
   padding: '16px 16px 0 16px',
@@ -70,6 +71,13 @@ const DemandTable = (props: Props) => {
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(
+      saveSort({
+        [orderKey]: order,
+      }),
+    )
+  }, [orderKey, order])
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -98,6 +106,7 @@ const DemandTable = (props: Props) => {
     setTitleList2(list2)
     setTitleList3(list3)
     setAllTitleList(all)
+    dispatch(saveTitles(all))
   }
 
   const onChangePage = (page: number, size: number) => {
