@@ -22,10 +22,6 @@ const routes = [
     element: <Container />,
     children: [
       {
-        path: '/',
-        element: <Navigate to="/Situation" />,
-      },
-      {
         path: 'PrivatePermission',
         element: lazy(
           () => import('@/views/ProjectManagement/PrivatePermission'),

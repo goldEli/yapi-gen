@@ -126,6 +126,7 @@ const urls = {
   batchDelete: '/b/story/batch_delete',
   batchEdit: '/b/story/batch_update',
   getBatchEditConfig: '/b/story/batch_fields',
+  getMenuPermission: '/b/user_menu_list',
 }
 
 export default urls

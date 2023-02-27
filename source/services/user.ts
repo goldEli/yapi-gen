@@ -87,3 +87,18 @@ export const delCommonAt: any = async (params: any) => {
   const response = await http.delete('/b/story/comment/delete_att', params)
   return response.data
 }
+
+// 获取登录人的菜单权限
+export const getMenuPermission: any = async () => {
+  const response = await http.get('getMenuPermission')
+  return {
+    menus: response.data.menus?.map((i: any) => ({
+      id: i.id,
+      url: i.url,
+      permission: i.permission,
+      name: i.name,
+      children: i.children,
+    })),
+    priorityUrl: response.data.priority_url,
+  }
+}

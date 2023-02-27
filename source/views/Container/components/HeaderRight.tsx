@@ -245,12 +245,12 @@ const HeaderRight = () => {
     <UserInfoWrap>
       <UserInfoTop>
         <div style={{ marginLeft: 10 }}>
-          <CommonUserAvatar size="large" />
+          <CommonUserAvatar avatar={userInfo.avatar} size="large" />
         </div>
 
         <UserInfoBox>
-          <NameWrap>扎根三</NameWrap>
-          <PhoneWrap>181****0821</PhoneWrap>
+          <NameWrap>{userInfo.name}</NameWrap>
+          <PhoneWrap>{userInfo.phone}</PhoneWrap>
         </UserInfoBox>
       </UserInfoTop>
       <Provider />
@@ -361,7 +361,7 @@ const HeaderRight = () => {
           placement="bottomRight"
         >
           <div>
-            <CommonUserAvatar size="large" />
+            <CommonUserAvatar avatar={userInfo.avatar} size="large" />
           </div>
         </Popover>
       </Space>

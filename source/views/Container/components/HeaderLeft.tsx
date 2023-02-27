@@ -22,7 +22,7 @@ import {
 } from '../style'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { getCompanyList, updateCompany } from '@/services/user'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
@@ -36,8 +36,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { userInfo } = useSelector(store => store.user)
-  const { currentMenu } = useSelector(store => store.global)
+  const { userInfo, menuPermission, currentMenu, menuIconList } = useSelector(
+    store => store.user,
+  )
   const [companyList, setCompanyList] = useState<any[]>([])
   const [activeId, setActiveId] = useState('')
   const [isChangeCompany, setIsChangeCompany] = useState(false)
@@ -46,63 +47,20 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyUserId: '',
   })
 
-  const menuIconList = [
-    { id: 0, normal: 'system-nor', active: 'system-sel' },
-    { id: 1, normal: 'folder-open-nor', active: 'folder-open-sel' },
-    { id: 2, normal: 'log-nor', active: 'log-sel' },
-  ]
-
-  const menuList = [
-    {
-      id: 0,
-      name: '公司概况',
-      url: '/Situation',
-      permission: '',
-      children: [],
-    },
-    {
-      id: 1,
-      name: '项目管理',
-      url: '/ProjectManagement',
-      permission: '',
-      children: [
-        {
-          id: 1,
-          name: '项目',
-          url: '/ProjectManagement/Project',
-          permission: '',
-        },
-        { id: 2, name: '我的', url: '/ProjectManagement/Mine', permission: '' },
-      ],
-    },
-    {
-      id: 2,
-      name: '日志管理',
-      url: '/LogManagement',
-      permission: '',
-      children: [],
-    },
-    {
-      id: 3,
-      name: '后台管理',
-      url: '/AdminManagement',
-      permission: '',
-      children: [],
-    },
-  ]
-
   // 点击菜单
-  const onChangeCurrentMenu = (menu: any) => {
+  const onChangeCurrentMenu = (item: any) => {
     props.onChange(false)
-    navigate(menu.children?.length > 0 ? `${menu.url}/Project` : menu.url)
+    const navigateUrl =
+      item.children?.length > 0 ? item.children[0].url : item.url
+    navigate(navigateUrl)
     const resultMenu = {
-      ...menu,
+      ...item,
       ...{
-        icon: menuIconList?.filter((i: any) => i.id === menu.id)[0]?.normal,
+        icon: menuIconList?.filter((i: any) => i.key === item.url)[0]?.normal,
       },
     }
     dispatch({
-      type: 'global/setCurrentMenu',
+      type: 'user/setCurrentMenu',
       payload: resultMenu,
     })
   }
@@ -111,16 +69,11 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   const onToAdmin = () => {
     props.onChange(false)
     navigate('/AdminManagement/CompanyInfo')
-    const resultMenu = {
-      id: 3,
-      name: '后台管理',
-      url: '/AdminManagement',
-      permission: '',
-      icon: 'management',
-      children: [],
-    }
+    const resultMenu = menuPermission?.menus?.filter(
+      (i: any) => i.url === '/AdminManagement',
+    )[0]
     dispatch({
-      type: 'global/setCurrentMenu',
+      type: 'user/setCurrentMenu',
       payload: resultMenu,
     })
   }
@@ -222,10 +175,11 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           <CommonIconFont type="swap" color="var(--neutral-n2)" />
         </DrawerCompany>
         <Provider isBottom />
+        {/* 其他菜单 */}
         <DrawerMenu>
           <Space size={12} style={{ flexWrap: 'wrap' }}>
-            {menuList
-              ?.filter((k: any) => k.id !== 3)
+            {menuPermission?.menus
+              ?.filter((k: any) => k.url !== '/AdminManagement')
               .map((i: any) => (
                 <DrawerMenuItem
                   key={i.id}
@@ -236,9 +190,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                     <CommonIconFont
                       type={
                         currentMenu.id === i.id
-                          ? menuIconList?.filter((k: any) => k.id === i.id)[0]
+                          ? menuIconList?.filter((k: any) => k.key === i.url)[0]
                               ?.active
-                          : menuIconList?.filter((k: any) => k.id === i.id)[0]
+                          : menuIconList?.filter((k: any) => k.key === i.url)[0]
                               ?.normal
                       }
                       size={24}
@@ -249,31 +203,39 @@ const DrawerComponent = (props: DrawerComponentProps) => {
               ))}
           </Space>
         </DrawerMenu>
-        <DrawerFooter onClick={onToAdmin}>
-          <div>
-            <CommonIconFont
-              type="management"
-              size={20}
-              color="var(--neutral-n2)"
-            />
-            <div>后台管理</div>
-          </div>
-        </DrawerFooter>
+        {/* 后台管理 */}
+        {menuPermission?.menus?.filter(
+          (i: any) => i.url === '/AdminManagement',
+        ) && (
+          <DrawerFooter onClick={onToAdmin}>
+            <div>
+              <CommonIconFont
+                type={
+                  menuIconList?.filter(
+                    (i: any) => i.key === '/AdminManagement',
+                  )[0].normal
+                }
+                size={20}
+                color="var(--neutral-n2)"
+              />
+              <div>后台管理</div>
+            </div>
+          </DrawerFooter>
+        )}
       </Drawer>
     </>
   )
 }
+
 const HeaderLeft = () => {
   const [isVisible, setIsVisible] = useState(false)
-  const { currentMenu } = useSelector(store => store.global)
+  const { currentMenu, menuIconList } = useSelector(store => store.user)
   const navigate = useNavigate()
+  const routerPath = useLocation()
 
-  const onToProject = () => {
-    navigate('/ProjectManagement/Project')
-  }
-
-  const onToMine = () => {
-    navigate('/Mine')
+  // 点击切换二级菜单
+  const onClickMenu = (item: any) => {
+    navigate(item.url)
   }
 
   return (
@@ -288,7 +250,10 @@ const HeaderLeft = () => {
         />
         <Space size={8}>
           <CommonIconFont
-            type={currentMenu.icon}
+            type={
+              menuIconList?.filter((i: any) => i.key === currentMenu.url)[0]
+                .normal
+            }
             size={24}
             color="var(--neutral-n3)"
           />
@@ -297,12 +262,16 @@ const HeaderLeft = () => {
       </Space>
       {currentMenu.url === '/ProjectManagement' && (
         <ChildrenMenu>
-          <ChildrenMenuItem size={8} isActive onClick={onToProject}>
-            <ItemDropdown text="项目" />
-          </ChildrenMenuItem>
-          <ChildrenMenuItem size={8} onClick={onToMine}>
-            <MyDropdown text="我的" />
-          </ChildrenMenuItem>
+          {currentMenu.children?.map((i: any) => (
+            <ChildrenMenuItem
+              key={i.id}
+              size={8}
+              onClick={() => onClickMenu(i)}
+              isActive={String(routerPath.pathname).includes(currentMenu.url)}
+            >
+              <MyDropdown text={i.name} />
+            </ChildrenMenuItem>
+          ))}
         </ChildrenMenu>
       )}
     </HeaderLeftWrap>

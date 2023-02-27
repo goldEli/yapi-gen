@@ -14,29 +14,12 @@ export interface GlobalState {
   theme: number
 
   language: string
-
-  currentMenu: {
-    id: number
-    name: string
-    url: string
-    permission: string
-    children: any[]
-    icon: string
-  }
 }
 
 const initialState: GlobalState = {
   firstMenuCollapse: false,
   theme: Number(localStorage.getItem('theme')) || 0,
   language: localStorage.getItem('language') || 'zh',
-  currentMenu: {
-    id: 0,
-    name: '公司概况',
-    url: '/Situation',
-    permission: '',
-    icon: 'system-nor',
-    children: [],
-  },
 }
 
 export const globalSlice = createSlice({
@@ -53,9 +36,6 @@ export const globalSlice = createSlice({
     setLanguage(preState: GlobalState, action) {
       localStorage.setItem('language', action.payload)
       preState.language = action.payload
-    },
-    setCurrentMenu(preState: GlobalState, action) {
-      preState.currentMenu = action.payload
     },
   },
   extraReducers: builder => {

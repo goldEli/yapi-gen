@@ -8,7 +8,7 @@ import { getStatus } from '@store/waterState'
 import { message, ConfigProvider } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import NoPermission from './components/NoPermission'
 import styled from '@emotion/styled'
@@ -65,12 +65,16 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
-  const { userInfo, loginInfo } = useSelector(store => store.user)
-  const { currentMenu } = useSelector(store => store.global)
+  const { userInfo, loginInfo, menuPermission, currentMenu } = useSelector(
+    store => store.user,
+  )
   const {
     i18n: { language },
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
+  const navigate = useNavigate()
+
+  // 没有二级菜单的
   const notHaveSide = ['/Situation']
 
   message.config({
@@ -99,13 +103,15 @@ export const Container = () => {
         | 'en')
     localStorage.setItem('language', languageParams)
     changeLanguage(languageParams)
-
     init()
   }, [])
 
   useEffect(() => {
+    if (menuPermission.priorityUrl) {
+      navigate(menuPermission.priorityUrl)
+    }
     setIsNextVisible(loginInfo.admin_first_login)
-  }, [loginInfo])
+  }, [loginInfo, menuPermission])
 
   return (
     <KitConfigProvider local={language as any}>
