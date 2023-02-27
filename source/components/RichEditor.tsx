@@ -28,7 +28,8 @@ import type { ITinyEvents } from '@tinymce/tinymce-react/lib/cjs/main/ts/Events'
 import Viewer from 'react-viewer'
 import { Input } from 'antd'
 import { position, offset } from 'caret-pos'
-import loading from '/public/loading.gif'
+import loading from '/loading.gif'
+import { useLocation } from 'react-router-dom'
 
 declare global {
   interface Window {
@@ -255,7 +256,9 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
       for (const element of oPics) {
         if (
           element.src ===
-          'http://192.168.2.64:8000/dev-agile-web/asdhjk/public/loading.gif'
+          `${window.location.origin}${import.meta.env.__URL_ALIAS__}/${
+            import.meta.env.__URL_HASH__
+          }/loading.gif`
         ) {
           element.src = response.url
           element['data-mce-src'] = response.url
